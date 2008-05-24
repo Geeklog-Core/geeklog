@@ -28,13 +28,14 @@
 global $LANG32;
 
 ###############################################################################
-# Array Format:
-# $LANGXX[YY]:  $LANG - variable name
-#               XX    - file id number
-#               YY    - phrase id number
+# Array Format: 
+# $LANGXX[YY]:	$LANG - variable name
+#		  	XX - file id number
+#			YY - phrase id number
 ###############################################################################
 
-$LANG_STATIC = array(
+
+$LANG_STATIC= array(
     'newpage' => 'Uus leht',
     'adminhome' => 'Admin avaleht',
     'staticpages' => 'Staatilised lehed',
@@ -72,7 +73,7 @@ $LANG_STATIC = array(
     'php_warn' => 'Hoiatus! Selle valiku sisselülitamisel käivitatakse lehel olevad PHP käsud. Kasuta ettevaatusega!',
     'exit_msg' => 'Tagastuse tüüp',
     'exit_info' => 'Kasuta logimismärkuste jaoks. Tavalise lehe kasutus- ja turvateadete jaoks jäta märge tegemata.',
-    'deny_msg' => 'Ligipääs sellele lehele on tõkestatud. Võimalik, et  see leht on kas kustutatud või ümbernimetatud või pole sul piisavalt õigusi seda lehte näha.',
+    'deny_msg' => 'Ligipääs sellele lehele on tõkestatud. Võimalik, et  see leht on kas kustutatud või ümbernimetatud või pole sul piisavalt õigusi.',
     'stats_headline' => 'Staatiliste lehtede top 10',
     'stats_page_title' => 'Lehe tiitel',
     'stats_hits' => 'Klikke',
@@ -104,8 +105,9 @@ $LANG_STATIC = array(
     'select_php_none' => 'ära käivita PHP',
     'select_php_return' => 'käivita PHP (return)',
     'select_php_free' => 'käivita PHP',
-    'php_not_activated' => "Staatilistel lehtedel pole PHP kasutamine sisse lülitatud. Täpsemat infot palun vaata <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">dokumentatsioonist.</a>",
+    'php_not_activated' => 'Staatilistel lehtedel pole PHP kasutamine sisse lülitatud. Täpsemat infot palun vaata <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">dokumentatsioonist.</a>',
     'printable_format' => 'Prinditaval kujul',
+    'edit' => 'Toimeta',
     'copy' => 'Koopia',
     'limit_results' => 'Piira tulemused',
     'search' => 'Otsi',
@@ -113,47 +115,48 @@ $LANG_STATIC = array(
 );
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_staticpages_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
-    'label' => 'Static Pages',
-    'title' => 'Static Pages Configuration'
+    'label' => 'Staatilised lehed',
+    'title' => 'Staatiliste lehtede häälestamine'
 );
 
 $LANG_confignames['staticpages'] = array(
-    'allow_php' => 'Allow PHP?',
-    'sort_by' => 'Sort Centerblocks by',
-    'sort_menu_by' => 'Sort Menu Entries by',
-    'delete_pages' => 'Delete Pages with Owner?',
-    'in_block' => 'Wrap Pages in Block?',
-    'show_hits' => 'Show Hits?',
-    'show_date' => 'Show Date?',
-    'filter_html' => 'Filter HTML?',
-    'censor' => 'Censor Content?',
-    'default_permissions' => 'Page Default Permissions',
-    'aftersave' => 'After Saving Page',
-    'atom_max_items' => 'Max. Pages in Webservices Feed'
+    'allow_php' => 'Luba PHP?',
+    'sort_by' => 'Keskblokkide sorteerimisalus',
+    'sort_menu_by' => 'Menüüelementide sorteerimisalus',
+    'delete_pages' => 'Kustuta lehed, omanikuks?',
+    'in_block' => 'Paiguta lehed blokki?',
+    'show_hits' => 'Näita klike?',
+    'show_date' => 'Näita aega?',
+    'filter_html' => 'Filtreeri HTML-i?',
+    'censor' => 'Tsenseeri sisu?',
+    'default_permissions' => 'Lehe vaikimisi õigused',
+    'aftersave' => 'Pärast lehe salvestamist',
+    'atom_max_items' => 'Maks. lehti veebiteenuste lõimes'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Peaseaded'
 );
 
 $LANG_fs['staticpages'] = array(
-    'fs_main' => 'Static Pages Main Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Staatiliste  lehtede peaseadistused',
+    'fs_permissions' => 'Vaikimisi õigused'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    1 => array('True' => TRUE, 'False' => FALSE),
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );
+
 
 ?>

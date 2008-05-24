@@ -158,17 +158,17 @@ $LANG_CAL_ADMIN = array(
     23 => 'Sobimatu algusaeg.',
     24 => 'Sobimatu lõpuaeg.',
     25 => 'Lõpuaeg on enne algusaega.',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted'
+    26 => 'Kustuta vanad kanded',
+    27 => 'Need on sündmused, mis on vanemad kui ',
+    28 => ' kuud. Nende kustutamiseks klõpsa lehe allosas oleval prügikasti nupul või vali teine ajavahemik:<br'. XHTML . '> Leia sündmused, mis on vanemad kui ',   
+    29 => ' kuud.',
+    30 => 'Värskenda loetelu',
+    31 => 'Oled sa kindel, et soovid kustutada kõik valitud kasutajad?',
+    32 => 'Näita kõiki',
+    33 => 'Kustutamiseks pole valitud ühtegi sündmust',
+    34 => 'Sündmuse ID',
+    35 => 'ei kustutatud ',
+    36 => 'Edukalt kustutatud'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -184,41 +184,41 @@ $LANG_CAL_MESSAGE = array(
 $PLG_calendar_MESSAGE4 = "Täname sind {$_CONF['site_name']} lehele sündmuse sisestamise eest.  See saadeti meie meeskonnale kinnitamiseks. Pärast kinnitamist on see sündmus näha <a href=\"{$_CONF['site_url']}/calendar/\">kalendri</a> osas.";
 $PLG_calendar_MESSAGE17 = 'Sündmus on edukalt salvestatud.';
 $PLG_calendar_MESSAGE18 = 'Sinu sündmus on edukalt kustutatud.';
-$PLG_calendar_MESSAGE24 = 'Sündmus on salvestatud sinu kalendrisse.';
+$PLG_calendar_MESSAGE24 = 'Sündmus on sinu kalendrisse salvestatud.';
 $PLG_calendar_MESSAGE26 = 'Sündmus on edukalt kustutatud.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Kalender',
+    'title' => 'Kalendrihaldur'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
-    'default_permissions' => 'Event Default Permissions'
+    'calendarloginrequired' => 'Kalender vajab sisselogimist?',
+    'hidecalendarmenu' => 'Peida kalendri menüüpunkt?',
+    'personalcalendars' => 'Luba isiklikud kalendrid?',
+    'eventsubmission' => 'Luba sisestustepuhver?',
+    'showupcomingevents' => 'Näita tulevasi sündmusi?',
+    'upcomingeventsrange' => 'Tulevaste sündmuste ajavahemik',
+    'event_types' => 'Sündmuste tüübid',
+    'hour_mode' => 'Tunnireþiim',
+    'notification' => 'Teavituskiri?',
+    'delete_event' => 'Kustuta sündmused, omanikuks?',
+    'aftersave' => 'Pärast sündmuste salvestamist',
+    'default_permissions' => 'Sündmuste vaikimisi õigused'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Peahäälestused'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Kalendri üldised häälestused',
+    'fs_permissions' => 'Vaikimisi õigused'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']

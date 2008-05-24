@@ -53,92 +53,92 @@ $LANG_POLLS = array(
     'stats_none' => 'Näib et sellel lehel pole ühtegi küsitlust või mitte keegi ei ole veel hääletanud.',
     'stats_summary' => 'Küsitlusi (vastuseid)',
     'open_poll' => 'Avatud hääletamiseks',
-    'answer_all' => 'Please answer all remaining questions',
-    'not_saved' => 'Result not saved',
-    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
-    'upgrade2' => 'upgrade',
-    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
-);
+    'answer_all' => 'Palun vasta kõigile ülejäänud küsimustele',
+    'not_saved' => 'Tulemus pole salvestatud',
+    'upgrade1' => 'Installeerisid küsitluste plugina uue versiooni. Palun ',
+    'upgrade2' => 'uuenda',
+    'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti'  
+    );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Pollblock',
-    9 => 'Topic',
-    10 => 'Answers / Votes / Remark',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'save',
-    15 => 'cancel',
-    16 => 'delete',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Yes',
-    26 => 'No',
-    27 => 'Edit',
-    28 => 'Submit',
-    29 => 'Search',
-    30 => 'Limit Results',
-    31 => 'Question',
-    32 => 'To remove this question from the poll, remove its question text',
-    33 => 'Open for voting',
-    34 => 'Poll Topic:',
-    35 => 'This poll has',
-    36 => 'more questions.',
-    37 => 'Hide results while poll is open',
-    38 => 'While the poll is open, only the owner &amp; root can see the results',
-    39 => 'The topic will be only displayed if there are more than 1 questions.',
-    40 => 'See all answers to this poll'
+    1 => 'Reþiim',
+    2 => 'Palun sisesta rubriik, vähemalt üks küsimus ja sellele küsimusele vähemalt üks vastusevariant', 
+    3 => 'Küsitlus on loodud',
+    4 => 'Küsitlus %s salvestatud',
+    5 => 'Toimeta küsitlust',
+    6 => 'Küsitluse ID',
+    7 => '(ära kasuta tühikuid)',
+    8 => 'Nähtav küsitluseblokis',
+    9 => 'Rubriik',
+    10 => 'Vastused / hääletused / märkus',
+    11 => 'Küsitluse  %s vastusteinfo laadimisel tekkis viga ',
+    12 => 'Küsitluse  %s küsimusteinfo laadimisel tekkis viga',
+    13 => 'Loo küsitlus',
+    14 => 'Salvesta',
+    15 => 'Tühista',
+    16 => 'Kustuta',
+    17 => 'Palun sisesta küsitluse ID',
+    18 => 'Küsitluste loetelu',
+    19 => 'Küsitluse toimetamiseks või kustutamiseks klõpsa küsitluse toimetamisikooni. Uue küsitluse loomiseks klõpsa "Uus küsitlus" ülal.',  
+    20 => 'Hääletajad',
+    21 => 'Ligipääs tõkestatud',
+    22 => "Sa üritasid ligi pääseda küsitlusele, milleks pole sul õigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/poll.php\">mine tagasi küsitluste haldamislehele</a>.",
+    23 => 'Uus küsitlus',
+    24 => 'Admin avaleht',
+    25 => 'Jah',
+    26 => 'Ei',
+    27 => 'Toimeta',
+    28 => 'Sisesta',
+    29 => 'Otsi',
+    30 => 'Piira tulemusi',
+    31 => 'Küsimus',
+    32 => 'Selle küsimuse küsitlusest eemaldamiseks, kustuta küsimuse tekst',
+    33 => 'Avatud hääletamiseks',
+    34 => 'Küsitluse rubriik:',
+    35 => 'Selles küsitluses on veel',
+    36 => 'küsimust',
+    37 => 'Peida tulemused kuni küsitlus on avatud',
+    38 => 'Kuni küsitlus on avatud, näevad  &tulemusi ainult omanik amp; root ',
+    39 => 'Rubriiki näidatakse vaid siis, kui selles on üle ühe küsimuse.',
+    40 => 'Vaata kõiki sellele küsitlusele antud vastuseid'
 );
 
 $PLG_polls_MESSAGE19 = 'Sinu küsitlus on edukalt salvestatud.';
 $PLG_polls_MESSAGE20 = 'Sinu küsitlus on edukalt kustutatud.';
 
 // Messages for the plugin upgrade
-$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_polls_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
-    'label' => 'Polls',
-    'title' => 'Polls Configuration'
+    'label' => 'Küsitlused',
+    'title' => 'Küsitluste haldur'
 );
 
 $LANG_confignames['polls'] = array(
-    'pollsloginrequired' => 'Polls Login Required?',
-    'hidepollsmenu' => 'Hide Polls Menu Entry?',
-    'maxquestions' => 'Max. Questions per Poll',
-    'maxanswers' => 'Max. Options per Question',
-    'answerorder' => 'Sort Results ...',
-    'pollcookietime' => 'Voter Cookie valid for',
-    'polladdresstime' => 'Voter IP Address valid for',
-    'delete_polls' => 'Delete Polls with Owner?',
-    'aftersave' => 'After Saving Poll',
-    'default_permissions' => 'Poll Default Permissions'
+    'pollsloginrequired' => 'Küsitlused vajavad sisselogimist?',
+    'hidepollsmenu' => 'Peida küsitluste menüüpunkt?',
+    'maxquestions' => 'Maks. küsimusi küsitluses',
+    'maxanswers' => 'Maks. vastusevariante',
+    'answerorder' => 'Sorteeri tulemusi ...',
+    'pollcookietime' => 'Hääletusküpsise kehtivusaeg',
+    'polladdresstime' => 'Hääletaja IP Aadress kehtib kuni',
+    'delete_polls' => 'Kustuta küsitlused, omanikuks?',
+    'aftersave' => 'Pärast küsitluse salvestamist',
+    'default_permissions' => 'Küsitluse vaikimisi õigused'
 );
 
 $LANG_configsubgroups['polls'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Peahäälestused'
 );
 
 $LANG_fs['polls'] = array(
-    'fs_main' => 'General Polls Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Küsitluste üldised häälestused',
+    'fs_permissions' => 'Vaikimisi õigused'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
