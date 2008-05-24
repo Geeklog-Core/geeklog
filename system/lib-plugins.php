@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.147 2008/05/23 21:35:37 dhaun Exp $
+// $Id: lib-plugins.php,v 1.148 2008/05/24 10:38:55 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -2316,7 +2316,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
     switch ($target) {
     case 'item':
         $url = $item_url;
-        if (!empty($msg)) {
+        if (!empty($msg) && ($plugin != 'story')) {
             $url .= '&amp;' . $msg;
         }
         break;
