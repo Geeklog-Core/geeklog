@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2008/05/24 08:57:35 dhaun Exp $
+// $Id: index.php,v 1.37 2008/05/24 09:49:19 dhaun Exp $
 
 /**
  * This is the links page
@@ -128,7 +128,7 @@ function links_list($message)
         $display .= $message[1];
         $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
     } else if (isset($_REQUEST['msg'])) {
-        $msg = COM_applyFilter($_REQUEST['msg']);
+        $msg = COM_applyFilter($_REQUEST['msg'], true);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'links');
         }
