@@ -1708,7 +1708,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => '每文章的最多圖像限度',
     'limitnews' => '每頁最多文章顯示',
     'minnews' => '每頁最少文章顯示',
-    'contributedbyline' => '顯示 "提交者"?"',
+    'contributedbyline' => '顯示 "提交者"?',
     'hideviewscount' => '隱藏文章觀數?',
     'hideemailicon' => '隱藏電郵圖示?',
     'hideprintericon' => '隱藏列印圖示?',
@@ -1851,5 +1851,4 @@ $LANG_configselects['Core'] = array(
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
-
 ?>

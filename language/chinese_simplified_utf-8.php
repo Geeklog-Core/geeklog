@@ -9,7 +9,7 @@
 # This is the Chinese Simplified (UTF-8) language set for GeekLog 1.5
 #
 # Copyright (C) 2003 Samuel Maung Stone
-# sam@stonemicro.com
+# sam AT stonemicro DOT com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -1708,7 +1708,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => '每文章的最多图像限度',
     'limitnews' => '每页最多文章显示',
     'minnews' => '每页最少文章显示',
-    'contributedbyline' => '显示 "提交者"?"',
+    'contributedbyline' => '显示 "提交者"?',
     'hideviewscount' => '隐藏文章观数?',
     'hideemailicon' => '隐藏电邮图标?',
     'hideprintericon' => '隐藏打印图标?',
@@ -1851,5 +1851,4 @@ $LANG_configselects['Core'] = array(
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
-
 ?>
