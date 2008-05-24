@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.30 2008/05/23 14:40:16 dhaun Exp $
+// $Id: event.php,v 1.31 2008/05/24 08:28:17 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -464,8 +464,14 @@ default:
             DB_query ("UPDATE {$_TABLES['events']} SET hits = hits + 1 WHERE eid = '$eid'");
         }
 
-        $display .= COM_siteHeader ('menu', $pagetitle);
-        $display .= COM_startBlock ($pagetitle);
+        $display .= COM_siteHeader('menu', $pagetitle);
+        if (isset($_GET['msg'])) {
+            $msg = COM_applyFilter($_GET['msg'], true);
+            if ($msg > 0) {
+                $display .= COM_showMessage($msg, 'calendar');
+            }
+        }
+        $display .= COM_startBlock($pagetitle);
 
     } else {
         $year = 0;
