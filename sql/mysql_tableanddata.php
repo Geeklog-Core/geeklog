@@ -346,7 +346,7 @@ CREATE TABLE {$_TABLES['tokens']} (
   token varchar(32) NOT NULL,
   created datetime NOT NULL,
   owner_id mediumint(8) unsigned NOT NULL,
-  urlfor varchar(2000) NOT NULL,
+  urlfor varchar(255) NOT NULL,
   ttl mediumint(8) unsigned NOT NULL default '1',
   PRIMARY KEY (token)
 ) TYPE=MyISAM
