@@ -2,7 +2,7 @@
 
 ###############################################################################
 # slovenian.php
-# language file for geeklog version 1.4.1 beta by mb
+# language file for geeklog version 1.5 by mb
 # gape@gape.org ; za pripombe, predloge ipd ... piši na email
 #
 # This is the slovenian language page for GeekLog!
@@ -160,7 +160,7 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'Ni novih trackback komentarjev',
     116 => 'Trackback',
-    117 => 'Directory',
+    117 => 'Imenik èlankov',
     118 => 'Beri dalje na naslednji strani:',
     119 => "Si izgubil svoje <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">geslo</a>?",
     120 => 'Trajna povezava na ta komentar',
@@ -171,9 +171,9 @@ $LANG01 = array(
     125 => 'Hoèeš res izbrisati vse preverjene predmete?',
     126 => 'Izberi ali preklièi vse predmete',
     127 => 'Permalink',
-    128 => 'Login with OpenID:',
-    129 => 'Configuration',
-    130 => 'Webservices'
+    128 => 'Prijavi se z OpenID:',
+    129 => 'Nastavitve',
+    130 => 'Spletne storitve'
 );
 
 ###############################################################################
@@ -364,9 +364,9 @@ $LANG04 = array(
     149 => 'Spremeni svoje uporabniške informacije, ki bodo vidne drugim uporabnikom.<li>Podpis bo dodan k vsem tvojim komentarjem in objavam na forumu</li><li>BIO je kratek povzetek o tebi, ki ga želiš deliti z drugimi</li><li>Deli z drugimi svoj kljuè PGP</li>',
     150 => 'Opozorilo: Javascript priporoèen za razširjeno funkcionalnost',
     156 => 'Izbriši raèun',
-    157 => 'Delete Option',
-    158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.'
+    157 => 'Briši opcijo',
+    158 => 'Èasovni pas',
+    159 => 'Ta pošta je poslana samodejno. Prosim ne odgovarjaj najo.'
 );
 
 ###############################################################################
@@ -374,12 +374,12 @@ $LANG04 = array(
 # Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
-    'pe_preview' => 'Preview',
-    'pe_namepass' => 'Username &amp; Password',
-    'pe_userinfo' => 'About You',
-    'pe_layout' => 'Layout &amp; Language',
-    'pe_content' => 'Content',
-    'pe_privacy' => 'Privacy'
+    'pe_preview' => 'Predogled',
+    'pe_namepass' => 'Uporabniško ime &amp; Geslo',
+    'pe_userinfo' => 'O tebi',
+    'pe_layout' => 'Postavitev &amp; Jezik',
+    'pe_content' => 'Vsebina',
+    'pe_privacy' => 'Zasebnost'
 );
 
 ###############################################################################
@@ -609,8 +609,8 @@ $LANG12 = array(
     51 => 'Lokacija',
     52 => 'Zbriši',
     53 => 'Ustvari raèun',
-    54 => 'Story Introduction',
-    55 => 'Story Body'
+    54 => 'Uvod èlanek',
+    55 => 'Nadaljevanje èlanka'
 );
 
 ###############################################################################
@@ -701,7 +701,7 @@ $LANG21 = array(
     65 => 'naroèilo',
     66 => 'Samodejni ukazi',
     67 => 'Potrdi za odobritev samodejnih ukazov',
-    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
+    68 => 'Združena vsebina tega bloka je predolga za prikaz. Prosim nastavi najveèje število èlankov za uvoz, v nastavitvah bloka, ali nastavi najvišje število (global maximum) v nastavitvah Geekloga (Geeklog Configuration).'
 );
 
 ###############################################################################
@@ -918,10 +918,10 @@ $LANG28 = array(
     79 => 'No User selected for reminders',
     80 => 'Successfully sent Reminders',
     81 => 'Reminder to verify account for %s',
-    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
-    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
-    84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
-    85 => 'If you have forgotten the password use the following link: %s'
+    82 => "Vaš raèun na {$_CONF['site_name']} ni bil uporabljen od %s in bo onemogoèen, èe ga ne uporabite v 30 dneh.",
+    83 => "Vaš raèun na {$_CONF['site_name']} ni bil uporabljen odkar je bil ustvarjen in bo pobrisak kmalu, èe ga ne uporabite.",
+    84 => "Vaše uporabniško ime je: %s  za internetno stran: {$_CONF['site_url']}",
+    85 => 'èe ste pozabili geslo, uporabite tole povezavo: %s'
 );
 
 ###############################################################################
@@ -1167,18 +1167,18 @@ $MESSAGE = array(
     82 => 'Število dovoljenih poskusov prijave je bilo preseženo. Prosim poskusi ponovno pozneje.',
     83 => 'Za spremembo gesla in e-naslova ter za izbiro tega, koliko èasa naj si te stran zapomni, vnesi svoje trenutno veljavno geslo.',
     84 => 'Za izbris svojega raèuna vnesi svoje trenutno veljavno geslo.',
-    85 => 'There was a problem sending the email.',
-    86 => 'The OpenID server invalidated your login attempt.',
-    87 => 'OpenID login operation cancelled by user.',
-    88 => 'The OpenID server returned an error.',
-    89 => 'Unable to find an OpenID server for the given identity URL.',
-    90 => 'OpenID identification cancelled.',
-    91 => 'You specified an invalid identity URL.',
-    92 => "Please <a href=\"{$_CONF['site_admin_url']}/sectest.php\">check the security of your site</a> before using it!",
-    93 => 'Database back up was successful.',
-    94 => 'Backup Failed: Filesize less than 1kb',
-    95 => 'There was an error.',
-    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.'
+    85 => 'Prišlo je do napake pri pošiljanju pošte.',
+    86 => 'OpenID server je zavrnil vaš poskus prijave.',
+    87 => 'OpenID prijavo je prekinil uporabnik.',
+    88 => 'OpenID server je vrnil napako.',
+    89 => 'Ne najdem OpenID serverja za ta URL.',
+    90 => 'OpenID identifikacija preklicana.',
+    91 => 'Napisali (izbrali?) ste napaèen URL.',
+    92 => "Prosim <a href=\"{$_CONF['site_admin_url']}/sectest.php\">preveri varnost svojih strani</a> preden jih uporabljaš!",
+    93 => 'Varnostna kopija baze podatkov, je bila uspešno narejena.',
+    94 => 'Varnostna kopija baze podatkov NI uspela: Datoteka je manjša kot 1kb',
+    95 => 'Prišlo je do napake.',
+    96 => 'Žal, nimaš dostopa do strani z nastavitvami!   Vedi da so vsi poskusi za dostop do zašèitenih lastnosti strani zabeleženi.'
 );
 
 ###############################################################################
@@ -1265,7 +1265,7 @@ $LANG_DB_BACKUP = array(
     'size' => 'Velikost',
     'bytes' => 'Bajtov',
     'total_number' => 'Skupno število varnostnih kopij: %d',
-    'download' => 'Click to download this file'
+    'download' => 'Kliknite za prenos datoteke'
 );
 
 ###############################################################################
@@ -1414,10 +1414,10 @@ $LANG_TRB = array(
 # directory.php
 
 $LANG_DIR = array(
-    'title' => 'Article Directory',
-    'title_year' => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top' => 'Back to Article Directory',
+    'title' => 'Imenik èlankov',
+    'title_year' => 'Imenik èlankov za %d',
+    'title_month_year' => 'Imenik èlankov za %s %d',
+    'nav_top' => 'Nazaj na Imenik èlankov',
     'no_articles' => 'Ni èlankov.'
 );
 
@@ -1506,9 +1506,9 @@ $LANG_ADMIN = array(
     'data_error' => 'Pri obdelavi naroèniških podatkov je prišlo do napake. Prosim preveri podatke.',
     'preview' => 'Predogled',
     'records_found' => 'Najdeni zapisi',
-    'addchild' => 'Add child',
-    'list' => 'list',
-    'list_all' => 'List all'
+    'addchild' => 'Dodaj novo (child)',
+    'list' => 'izpiši',
+    'list_all' => 'Izpiši vse'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1518,7 +1518,7 @@ $LANG_ADMIN = array(
 $LANG_commentcodes = array(
     0 => 'Komentarji omogoèeni',
     -1 => 'Komentarji onemogoèeni',
-    1 => 'Comments Closed'
+    1 => 'Komentarji zaprti'
 );
 
 $LANG_commentmodes = array(
