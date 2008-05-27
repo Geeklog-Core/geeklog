@@ -14,6 +14,8 @@ Changes since 1.5.0rc1:
 - The install script had the text direction hard-coded as "ltr" (reported by
   LWC) [Dirk]
 
+- Updated Japanese language files, provided by Takahiro Kambe
+
 
 May 25, 2008 (1.5.0rc1)
 ------------

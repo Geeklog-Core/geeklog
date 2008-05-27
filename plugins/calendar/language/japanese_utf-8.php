@@ -154,20 +154,20 @@ $LANG_CAL_ADMIN = array(
     20 => '保存',
     21 => 'キャンセル',
     22 => '削除',
-    23 => '開始日時をただしく入力してください。',
-    24 => '終了日時をただしく入力してください。',
-    25 => '終了日時をただしく入力してください。',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted'
+    23 => '開始日時を正しく入力してください。',
+    24 => '終了日時を正しく入力してください。',
+    25 => '終了日時を正しく入力してください。',
+    26 => '古いエントリを削除',
+    27 => 'これらは',
+    28 => ' ヶ月以上も古いイベントです。削除するには一番下のゴミ箱のアイコンをクリックして下さい。または、異なる期間:<br' . XHTML . '>',
+    29 => ' ヶ月以上古いすべてのエントリを探す。',
+    30 => 'リストを更新',
+    31 => '本当にすべての選択したユーザを完全に削除しますか?',
+    32 => 'すべてリスト',
+    33 => '削除するイベントを選択していません',
+    34 => 'イベントID',
+    35 => '削除できませんでした',
+    36 => '削除に成功しました'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -187,46 +187,46 @@ $PLG_calendar_MESSAGE24 = 'イベントが個人カレンダに保存されま�
 $PLG_calendar_MESSAGE26 = 'イベントが削除されました。';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'カレンダー',
+    'title' => 'カレンダーの設定'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
-    'default_permissions' => 'Event Default Permissions'
+    'calendarloginrequired' => 'カレンダーの使用にログインが必要?',
+    'hidecalendarmenu' => 'カレンダーのメニューの項目を隠す?',
+    'personalcalendars' => '個人のカレンダーを有効?',
+    'eventsubmission' => 'イベントの申し込みキューを有効?',
+    'showupcomingevents' => '近付いたイベントを表示?',
+    'upcomingeventsrange' => '近付いたイベントの範囲',
+    'event_types' => 'イベントのタイプ',
+    'hour_mode' => '時間表示',
+    'notification' => '電子メールで通知?',
+    'delete_event' => '所有者と共にイベントを削除?',
+    'aftersave' => 'イベントの保存後',
+    'default_permissions' => 'イベントのデフォルトのパーミッション'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => '主な設定'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => '一般的なカレンダーの設定',
+    'fs_permissions' => 'デフォルトのパーミッション'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('はい' => 1, 'いいえ' => 0),
+    1 => array('はい' => true, 'いいえ' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    9 => array('イベントに進む' => 'item', '管理リストを表示' => 'list', 'カレンダーを表示' => 'plugin', 'HOMEページを表示' => 'home', '管理画面を表示' => 'admin'),
+    12 => array('アクセス不可' => 0, '書き込み禁止' => 2, '読み書き可能' => 3)
 );
 
 ?>
