@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Fixed SQL error in the Mail Utility when using the option to override user
+  settings (reported by Michael Brusletten) [Dirk]
 - The install script had the text direction hard-coded as "ltr" (reported by
   LWC) [Dirk]
 

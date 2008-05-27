@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.36 2008/05/18 16:58:51 dhaun Exp $
+// $Id: mail.php,v 1.37 2008/05/27 20:53:10 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -160,12 +160,12 @@ function send_messages ($vars)
     if (isset ($vars['overstyr'])) {
         $sql = "SELECT DISTINCT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
         $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
-        $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id in  IN ({$groupList})";
+        $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id IN ({$groupList})";
     } else {
         $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
         $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
-        $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id  IN ({$groupList})";
+        $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id IN ({$groupList})";
     }
 
     $result = DB_query ($sql);
