@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.41 2008/05/24 19:12:02 dhaun Exp $
+// $Id: index.php,v 1.42 2008/05/27 17:45:46 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -1622,6 +1622,9 @@ if (defined('XHTML')) {
 	$display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>';
 }
+if (empty($LANG_DIRECTION)) {
+    $LANG_DIRECTION = 'ltr';
+}
 $display .= '<head>
 <meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
 <link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
@@ -1629,7 +1632,7 @@ $display .= '<head>
 <title>' . $LANG_INSTALL[0] . '</title>
 </head>
 
-<body dir="ltr">
+<body dir="' . $LANG_DIRECTION . '">
     <div class="header-navigation-container">
         <div class="header-navigation-line">
             <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;

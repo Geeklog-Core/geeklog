@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May 25, 2008 (1.5.0rc1)
+May ??, 2008 (1.5.0)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -9,6 +9,14 @@ the 2007 Google Summer of Code:
 + New user-friendly install script by Matt West
 + New Configuration GUI (replacing config.php) by Aaron Blankstein
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
+
+Changes since 1.5.0rc1:
+- The install script had the text direction hard-coded as "ltr" (reported by
+  LWC) [Dirk]
+
+
+May 25, 2008 (1.5.0rc1)
+------------
 
 Changes since 1.5.0b2:
 - Fixed story date/time when using the timezone hack (bug #0000639) [Dirk]
