@@ -9,6 +9,8 @@
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
 # Tranlated by Geeklog Japanese group SaY and Ivy
+# Copyright (C) 2008 Takahiro Kambe
+# Additional translation to Japanese by taca AT back-street DOT net
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,108 +47,108 @@ $LANG_POLLS = array(
     'savedvotetitle' => '投票が登録されました',
     'savedvotemsg' => '今の投票が登録されました',
     'pollstitle' => '募集中のアンケート',
-    'polltopics' => 'Other polls',
-    'stats_top10' => 'Top Ten Polls',
-    'stats_topics' => 'Poll Topic',
-    'stats_votes' => 'Votes',
-    'stats_none' => 'It appears that there are no polls on this site or no one has ever voted.',
-    'stats_summary' => 'Polls (Answers) in the system',
-    'open_poll' => 'Open for Voting',
-    'answer_all' => 'Please answer all remaining questions',
-    'not_saved' => 'Result not saved',
-    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
-    'upgrade2' => 'upgrade',
-    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.'
+    'polltopics' => '他のアンケート',
+    'stats_top10' => '上位10のアンケート',
+    'stats_topics' => 'アンケートの話題',
+    'stats_votes' => '投票',
+    'stats_none' => 'このサイトにはアンケートがないか、誰も投票していないようです。',
+    'stats_summary' => 'アンケート (回答) in the system',
+    'open_poll' => '投票を受け付け中',
+    'answer_all' => '残りの質問にすべて答えてください。',
+    'not_saved' => '結果は保存されませんでした。',
+    'upgrade1' => '新しいアンケートのプラグインをインストールされえいます。どうか、',
+    'upgrade2' => 'アップグレードして下さい。',
+    'editinstructions' => 'アンケートのIDと少なくとも1つの質問、その質問に対応した2つの回答が必要です。',
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Pollblock',
-    9 => 'Topic',
-    10 => 'Answers / Votes / Remark',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'save',
-    15 => 'cancel',
-    16 => 'delete',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Yes',
-    26 => 'No',
-    27 => 'Edit',
-    28 => 'Submit',
-    29 => 'Search',
-    30 => 'Limit Results',
-    31 => 'Question',
-    32 => 'To remove this question from the poll, remove its question text',
-    33 => 'Open for voting',
-    34 => 'Poll Topic:',
-    35 => 'This poll has',
-    36 => 'more questions.',
-    37 => 'Hide results while poll is open',
-    38 => 'While the poll is open, only the owner &amp; root can see the results',
-    39 => 'The topic will be only displayed if there are more than 1 questions.',
-    40 => 'See all answers to this poll'
+    1 => 'モード',
+    2 => '話題と少なくとも1つの質問、その質問に対応した2つの回答を入力して下さい。',
+    3 => '作成日',
+    4 => 'アンケート %s を保存しました',
+    5 => 'アンケートを編集',
+    6 => 'アンケートのID',
+    7 => '(スペースを使用しないでください)',
+    8 => 'アンケート・ブロックに表示',
+    9 => '話題',
+    10 => '回答 / 投票 / 注意',
+    11 => 'アンケート%sの回答のデータの取得でエラーが発生しました。',
+    12 => 'アンケート%sの質問のデータの取得でエラーが発生しました。',
+    13 => 'アンケートを作成',
+    14 => '保存',
+    15 => 'キャンセル',
+    16 => '削除',
+    17 => 'アンケートのIDを入力して下さい',
+    18 => '|アンケートの|リスト',
+    19 => 'アンケートの編集や削除するには、アンケートの編集アイコンをクリックして下さい。新しいアンケートを作成するには上の「新規作成」をクリックして下さい。',
+    20 => '投票者',
+    21 => 'アクセスを拒否されました',
+    22 => "アクセス権を持たないアンケートにアクセスしようとされました。この試みは記録されています。どうぞ<a href=\"{$_CONF['site_admin_url']}/poll.php\">アンケートの管理の画面に戻って下さい。</a>",
+    23 => '新しいアンケート',
+    24 => '管理Home',
+    25 => 'はい',
+    26 => 'いいえ',
+    27 => '編集',
+    28 => '投票',
+    29 => '検索',
+    30 => '結果を制限',
+    31 => '質問',
+    32 => '質問をアンケートから削除するには、質問のテキストを空にしてください。',
+    33 => '投票受け付け中',
+    34 => 'アンケートの話題:',
+    35 => 'このアンケートは、あと',
+    36 => '個の質問があります。',
+    37 => '受け付け中は結果を隠す',
+    38 => 'アンケートが受け付け中の間は、所有者とrootだけが結果を見れます。',
+    39 => '話題は1つ以上の質問がある場合だけ表示されます。',
+    40 => 'このアンケートのすべての回答を見る。'
 );
 
-$PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
-$PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
+$PLG_polls_MESSAGE19 = 'アンケートを登録しました。';
+$PLG_polls_MESSAGE20 = 'アンケートを削除しました。';
 
 // Messages for the plugin upgrade
-$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_polls_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
-    'label' => 'Polls',
-    'title' => 'Polls Configuration'
+    'label' => 'アンケート',
+    'title' => 'アンケートの設定'
 );
 
 $LANG_confignames['polls'] = array(
-    'pollsloginrequired' => 'Polls Login Required?',
-    'hidepollsmenu' => 'Hide Polls Menu Entry?',
-    'maxquestions' => 'Max. Questions per Poll',
-    'maxanswers' => 'Max. Options per Question',
-    'answerorder' => 'Sort Results ...',
-    'pollcookietime' => 'Voter Cookie valid for',
-    'polladdresstime' => 'Voter IP Address valid for',
-    'delete_polls' => 'Delete Polls with Owner?',
-    'aftersave' => 'After Saving Poll',
-    'default_permissions' => 'Poll Default Permissions'
+    'pollsloginrequired' => 'アンケートにログインが必要?',
+    'hidepollsmenu' => 'アンケートのメニュー項目を隠す?',
+    'maxquestions' => 'アンケートあたりの設問の最大数',
+    'maxanswers' => '設問あたりの回答の最大数',
+    'answerorder' => 'アンケートの結果...',
+    'pollcookietime' => 'アンケートのCookieの有効期間',
+    'polladdresstime' => 'アンケートのIPアドレスの有効期間',
+    'delete_polls' => '所有者と共にアンケートを削除?',
+    'aftersave' => 'アンケートの保存後',
+    'default_permissions' => 'アンケートのデフォルトのパーミッション'
 );
 
 $LANG_configsubgroups['polls'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => '主な設定'
 );
 
 $LANG_fs['polls'] = array(
-    'fs_main' => 'General Polls Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'アンケートの一般的な設定',
+    'fs_permissions' => 'デフォルトのパーミッション'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
-    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('はい' => 1, 'いいえ' => 0),
+    1 => array('はい' => true, 'いいえ' => false),
+    2 => array('アンケート順' => 'submitorder', '投票順' => 'voteorder'),
+    9 => array('アンケートに進む' => 'item', '管理リストを表示' => 'list', '公開されたリストを表示' => 'plugin', 'HOMEページを表示' => 'home', '管理画面を表示' => 'admin'),
+    12 => array('アクセス不可' => 0, '書き込み禁止' => 2, '読み書き可能' => 3)
 );
 
 ?>

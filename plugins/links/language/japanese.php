@@ -9,6 +9,8 @@
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
 # Tranlated by Geeklog Japanese group
+# Copyright (C) 2008 Takahiro Kambe
+# Additional translation to Japanese by taca AT back-street DOT net
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,17 +44,17 @@ $LANG_LINKS = array(
     88 => '新しいリンクはありません',
     114 => 'リンク',
     116 => 'リンクの追加',
-    117 => 'Report Broken Link',
-    118 => 'Broken Link Report',
-    119 => 'The following link has been reported to be broken: ',
-    120 => 'To edit the link, click here: ',
-    121 => 'The broken Link was reported by: ',
-    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
-    123 => 'Thank you',
-    124 => 'Go',
-    125 => 'Categories',
-    126 => 'You are here:',
-    'root' => 'Root'
+    117 => '壊れたリンクを報告',
+    118 => '壊れたリンクのレポート',
+    119 => '以下のリンクが壊れています: ',
+    120 => 'リンクを編集するにはここをクリック: ',
+    121 => '壊れたリンクの報告者: ',
+    122 => '壊れたリンクを報告していただき、ありがとうございます。管理者はできるだけ早く問題を直すでしょう。',
+    123 => 'ありがとうございます',
+    124 => '移動',
+    125 => 'カテゴリ',
+    126 => '現在位置:',
+    'root' => 'ルート'
 );
 
 ###############################################################################
@@ -101,19 +103,19 @@ $PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンク登録ありがとうございます。ス
 $PLG_links_MESSAGE2 = 'リンクは無事登録されました。';
 $PLG_links_MESSAGE3 = 'リンクの削除が完了しました。';
 $PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。<a href={$_CONF['site_url']}/links/index.php>リンク</a>でご確認ください。";
-$PLG_links_MESSAGE5 = 'You do not have sufficient access rights to view this category.';
-$PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
-$PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
-$PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
-$PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
-$PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
-$PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
-$PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
-$PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
-$PLG_links_MESSAGE16 = 'No such category exists.';
+$PLG_links_MESSAGE5 = 'このカテゴリを見る十分なアクセス権がありません。';
+$PLG_links_MESSAGE6 = 'このカテゴリを編集する十分なアクセス権がありません。';
+$PLG_links_MESSAGE7 = 'カテゴリの名前と説明を入力して下さい。';
+$PLG_links_MESSAGE10 = 'カテゴリの保存に成功しました。';
+$PLG_links_MESSAGE11 = 'カテゴリのIDを"site"や"user"とすることは許可されていません。これらの名前は内部的な使用のために予約されています。';
+$PLG_links_MESSAGE12 = '親のカテゴリを、カテゴリ自身のサブカテゴリにしようとしました。これはまいごのカテゴリを作成してしまいますので、まず最初に子のカテゴリを移動するか、より高位のカテゴリから親カテゴリを選んで下さい。';
+$PLG_links_MESSAGE13 = 'カテゴリの削除に成功しました。';
+$PLG_links_MESSAGE14 = 'カテゴリはリンクやはカテゴリを含んでいます。まず、それらを削除して下さい。';
+$PLG_links_MESSAGE15 = 'このカテゴリを削除すするのに十分なアクセス権がありません。';
+$PLG_links_MESSAGE16 = 'そのようなカテゴリは存在しません。';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_links_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -139,35 +141,35 @@ $LANG_LINKS_ADMIN = array(
     21 => '保存',
     22 => 'キャンセル',
     23 => '削除',
-    24 => 'Link not found',
-    25 => 'The link you selected for editing could not be found.',
-    26 => 'Validate Links',
-    27 => 'HTML Status',
-    28 => 'Edit category',
-    29 => 'Enter or edit the details below.',
-    30 => 'Category',
-    31 => 'Description',
-    32 => 'Category ID',
-    33 => 'Topic',
-    34 => 'Parent',
-    35 => 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.',
-    40 => 'Edit this category',
-    41 => 'Create child category',
-    42 => 'Delete this category',
-    43 => 'Site categories',
-    44 => 'Add&nbsp;child',
-    46 => 'User %s tried to delete a category to which they do not have access rights',
-    50 => 'List categories',
-    51 => 'New link',
-    52 => 'New category',
-    53 => 'List links',
-    54 => 'Category Manager',
-    55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
-    56 => 'Category Editor',
-    57 => 'Not validated yet',
-    58 => 'Validate now',
-    59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
-    60 => 'User %s tried illegally to edit category %s.'
+    24 => 'リンクが見つかりません',
+    25 => '編集しようと選択されたリンクは見つかりませんでした。',
+    26 => 'リンクを検証',
+    27 => 'HTMLの状態',
+    28 => 'カテゴリを編集',
+    29 => '以下の詳細を入力または編集して下さい。',
+    30 => 'カテゴリ',
+    31 => '説明',
+    32 => 'カテゴリID',
+    33 => '話題',
+    34 => '親',
+    35 => 'カテゴリのIDを"site"や"user"とすることは許可されていません。これらの名前は内部的な使用のために予約されています。',
+    40 => 'このカテゴリを編集',
+    41 => '子のカテゴリを作成',
+    42 => 'このカテゴリを削除',
+    43 => 'Siteカテゴリ',
+    44 => '子を追加',
+    46 => 'ユーザ %s が、アクセス権を持たないカテゴリを削除しようとしました。',
+    50 => 'カテゴリのリスト',
+    51 => '新しいリンク',
+    52 => '新しいカテゴリ',
+    53 => 'リンクのリスト',
+    54 => 'カテゴリ・マネージャ',
+    55 => '下のカテゴリを編集して下さい。他のカテゴリやリンクを含んでいるカテゴリは削除できないことに注意して下さい。このようなカテゴリを削除するには、先に含まれているものを削除するか、他のカテゴリに移動する必要があります。',
+    56 => 'カテゴリ・エディタ',
+    57 => '未検証',
+    58 => '今すぐ検証',
+    59 => '<p>表示されているすべてのリンクを検証するには、下の「今すぐ検証」のリンクをクリックしてください。リンクの検証には、表示されているリンクの数によって、ある程度の時間が掛かることに注意して下さい。</p>',
+    60 => 'ユーザ %s がカテゴリ %s を不正に編集しようとしました。'
 );
 
 
@@ -217,43 +219,43 @@ $LANG_LINKS_STATUS = array(
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
-    'label' => 'Links',
-    'title' => 'Links Configuration'
+    'label' => 'リンク',
+    'title' => 'リンクの設定'
 );
 
 $LANG_confignames['links'] = array(
-    'linksloginrequired' => 'Links Login Required?',
-    'linksubmission' => 'Enable Submission Queue?',
-    'newlinksinterval' => 'New Links Interval',
-    'hidenewlinks' => 'Hide New Links?',
-    'hidelinksmenu' => 'Hide Links Menu Entry?',
-    'linkcols' => 'Categories per Column',
-    'linksperpage' => 'Links per Page',
-    'show_top10' => 'Show Top 10 Links?',
-    'notification' => 'Notification Email?',
-    'delete_links' => 'Delete Links with Owner?',
-    'aftersave' => 'After Saving Link',
-    'show_category_descriptions' => 'Show Category Description?',
-    'root' => 'ID of Root Category',
-    'default_permissions' => 'Link Default Permissions'
+    'linksloginrequired' => 'リンクにログインが必要?',
+    'linksubmission' => 'リンクの申し込みキューを有効?',
+    'newlinksinterval' => '新しいリンク作成の間隔',
+    'hidenewlinks' => '新しいリンクを隠す?',
+    'hidelinksmenu' => 'リンクのメニュー項目を隠す?',
+    'linkcols' => '行毎のカテゴリ数',
+    'linksperpage' => 'ページ毎のリンクの数',
+    'show_top10' => '上位10のリンクを表示?',
+    'notification' => '電子メールで通知?',
+    'delete_links' => '所有者と共にリンクを削除?',
+    'aftersave' => 'リンクの保存後',
+    'show_category_descriptions' => 'カテゴリの説明を表示?',
+    'root' => 'ルートのカテゴリのID',
+    'default_permissions' => 'リンクのデフォルトのパーミッション'
 );
 
 $LANG_configsubgroups['links'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => '主な設定'
 );
 
 $LANG_fs['links'] = array(
-    'fs_public' => 'Public Links List Settings',
-    'fs_admin' => 'Links Admin Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_public' => '公開されたリンクのリストの設定',
+    'fs_admin' => 'リンクの管理設定',
+    'fs_permissions' => 'デフォルトのパーミッション'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('はい' => 1, 'いいえ' => 0),
+    1 => array('はい' => true, 'いいえ' => false),
+    9 => array('リンクされたサイトに進む' => 'item', '管理リストを表示' => 'list', '公開されたリストを表示' => 'plugin', 'HOMEページを表示' => 'home', '管理画面を表示' => 'admin'),
+    12 => array('アクセス不可' => 0, '書き込み禁止' => 2, '読み書き可能' => 3)
 );
 
 ?>

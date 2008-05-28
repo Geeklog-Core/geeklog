@@ -14,8 +14,11 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Randy Kolenko     - randy AT nextide DOT ca
+// |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // |          Matt West         - matt AT mattdanger DOT net                   |
+// |                                                                           |
+// | Translation to Japanese                                                   |
+// |          Takahiro Kambe    - taca AT back-street DOT net                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -34,7 +37,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: japanese.php,v 1.1 2008/05/27 19:02:56 dhaun Exp $
+// $Id: japanese.php,v 1.2 2008/05/28 19:02:25 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 

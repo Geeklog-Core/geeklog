@@ -7,10 +7,12 @@
  * Copyright (C) 2004-2006 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * Tranlated by Ivy (Geeklog Japanese)
+ * Copyright (C) 2008 Takahiro Kambe
+ * Additional translation to Japanese by taca AT back-street DOT net
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese.php,v 1.8 2008/05/06 18:20:43 dhaun Exp $
+ * $Id: japanese.php,v 1.9 2008/05/28 19:02:25 dhaun Exp $
  */
 
 global $LANG32;
@@ -45,8 +47,8 @@ $LANG_SX00 = array(
     'adminc' => '管理者コマンド:',
     'mblack' => 'マイブラックリスト:',
     'rlinks' => '関係先リンク:',
-    'e3' => 'Geeklogのセンサーリスト追加:',
-    'addcen' => 'センサーリスト追加',
+    'e3' => 'Geeklogの監視リスト追加:',
+    'addcen' => '監視リスト追加',
     'addentry' => 'エントリ追加',
     'e1' => 'クリックしてエントリを削除',
     'e2' => 'エントリを追加して, エントリ追加ボタンをクリックしてください。エントリーは完全なPerl正規表現を使用することができます。 ',
@@ -56,7 +58,7 @@ $LANG_SX00 = array(
     'exmod' => 'Spam-X イグザミンモジュール',
     'actmod' => 'アクティブモジュール',
     'avmod' => 'アベイラブルモジュール',
-    'coninst' => '<hrXHTML>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<br' . XHTML . '>モジュールは、示された順序で実行されます。 ',
+    'coninst' => '<hr' . XHTML . '>クリックしてアクティブモジュールを削除、クリックしてアベイラブルモジュールを追加。<br' . XHTML . '>モジュールは、示された順序で実行されます。 ',
     'fsc' => ' スパムポストマッチングが見つかりました。',
     'fsc1' => ' ユーザによる投稿',
     'fsc2' => ' IP から',
@@ -98,8 +100,8 @@ $LANG_SX00 = array(
     'note4' => 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>',
     'note5' => '最新コメントを最後のコメントに追加チェック -- コメントチェック ',
     'note6' => 'チェックをより多く要求します。</p>',
-    'masshead' => '<hrXHTML><h1 align="center">マスデリート〜スパムコメント</h1>',
-    'masstb' => '<hrXHTML><h1 align="center">マスデリート〜トラックバックスパム</h1>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">マスデリート〜スパムコメント</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">マスデリート〜トラックバックスパム</h1>',
     'comdel' => 'コメントが削除されました。',
     'initial_Pimport' => '<p>パーソナルブラックリスト インポート"',
     'initial_import' => '初期 MT-ブラックリスト インポート',
@@ -131,35 +133,35 @@ $PLG_spamx_MESSAGE128 = 'Spam 削除。投稿は削除されました。';
 $PLG_spamx_MESSAGE8 = 'Spam 削除。メールが管理者に送られました。';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_spamx_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
     'label' => 'Spam-X',
-    'title' => 'Spam-X Configuration'
+    'title' => 'Spam-X設定'
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-X Actions',
-    'notification_email' => 'Notification Email',
-    'admin_override' => 'Don\'t Filter Admin Posts',
-    'logging' => 'Enable Logging',
-    'timeout' => 'Timeout'
+    'action' => 'Spam-Xのアクション',
+    'notification_email' => '電子メールで通知',
+    'admin_override' => 'Adminの投稿をフィルタしない',
+    'logging' => 'ログを有効',
+    'timeout' => 'タイムアウト'
 );
 
 $LANG_configsubgroups['spamx'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => '主な設定'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings'
+    'fs_main' => 'Spam-Xの主な設定'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false)
+    0 => array('はい' => 1, 'いいえ' => 0),
+    1 => array('はい' => true, 'いいえ' => false),
 );
 
 ?>
