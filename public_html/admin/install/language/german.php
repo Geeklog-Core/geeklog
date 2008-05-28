@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: german.php,v 1.8 2008/05/17 10:58:25 dhaun Exp $
+// $Id: german.php,v 1.9 2008/05/28 18:46:52 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -69,9 +69,9 @@ $LANG_INSTALL = array(
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
-    19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
+    19 => 'Geeklog setzt voraus, dass bestimmte Dateien und Verzeichnisse für den Webserver schreibbar sind. Es folgt eine Liste der Dateien und Verzeichnisse, die geändert werden müssen.',
     20 => 'Warnung!',
-    21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Please make the necessary changes before you continue.',
+    21 => 'Geeklog und Deine Website werden nicht funktionsfähig sein, solange diese Fehler nicht korrigiert werden. Bitte nimm die notwendigen Änderungen vor, bevor Du mit der Installation fortfährst.',
     22 => 'unbekannt',
     23 => 'Bitte wähle eine Installationsmethode:',
     24 => 'Neuinstallation',
@@ -132,7 +132,7 @@ $LANG_INSTALL = array(
     79 => 'An error occured while upgrading your Geeklog installation.',
     80 => 'Ändern',
     81 => 'Stop!',
-    82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
+    82 => 'Es ist unbedingt nötig, die Zugriffsrechte der unten aufgeführten Dateien zu ändern. Andernfalls wirst Du Geeklog nicht installieren können.',
     83 => 'Installation Error',
     84 => 'The path "',
     85 => '" does not appear to be correct. Please go back and try again.',
