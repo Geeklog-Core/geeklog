@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# polish.php
+# polish_utf-8.php
 # This is the Polish language page for GeekLog!
 # Special thanks to Robert Stadnik geeklog@geeklog.now.pl for his work on this project
 #
@@ -24,7 +24,7 @@
 #
 ###############################################################################
 
-$LANG_CHARSET = 'UTF-8';
+$LANG_CHARSET = 'utf-8';
 
 ###############################################################################
 # Array Format:
@@ -154,23 +154,23 @@ $LANG01 = array(
     111 => 'Wersja PDF',
     112 => 'Zarejestrowani Użytkownicy',
     113 => 'Dokumentacja',
-    114 => 'TRACKBACKS',
-    115 => 'No new trackback comments',
-    116 => 'Trackback',
-    117 => 'Directory',
-    118 => 'Please continue reading on the next page:',
-    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">password</a>?",
-    120 => 'Permanent link to this comment',
-    121 => 'Comments (%d)',
-    122 => 'Trackbacks (%d)',
-    123 => 'All HTML is allowed',
-    124 => 'Click to delete all checked items',
-    125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items',
-    127 => 'Permalink',
-    128 => 'Login with OpenID:',
-    129 => 'Configuration',
-    130 => 'Webservices'
+    114 => 'POWIADOMIENIA ZWROTNE',
+    115 => 'Brak nowych powiadomień zwrotnych dla komentarzy',
+    116 => 'Powiadomienia zwrotne',
+    117 => 'Katalog',
+    118 => 'Dalszy ciąg na kolejnej stronie:',
+    119 => "Nie pamiętasz <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">hasła</a>?",
+    120 => 'Stały odnośnik do tego komentarza',
+    121 => 'Komentarze (%d)',
+    122 => 'Powiadomienia zwrotne (%d)',
+    123 => 'Wszystkie znaczniki HTML są dozwolone',
+    124 => 'Kliknij aby usunąć wszystkie zaznaczone pozycje',
+    125 => 'Czy aby na pewno chcesz Usunąć wszystkie zaznaczone pozycje?',
+    126 => 'Zaznacz lub odznacz wszystkie pozycje',
+    127 => 'Stały odnośnik',
+    128 => 'Zaloguj z OpenID:',
+    129 => 'Konfiguracja',
+    130 => 'Usługi Web-owe'
 );
 
 ###############################################################################
@@ -222,7 +222,7 @@ $LANG04 = array(
     10 => 'Ostatnie 10 komentarzy użytkownika',
     11 => 'Brak Komentarzy Użytkownika',
     12 => 'Preferencje Użytkownika',
-    13 => 'Email Nightly Digest',
+    13 => 'Dzienne Zestawienie Artykułów',
     14 => 'Hasło jest generowane automatycznie. Zalecana jest szybka zmiana hasła. Aby zmienić hasło, należy się zalogować a następnie kliknąć na Konto Info w Menu Użytkownika.',
     15 => "Twoje {$_CONF['site_name']} konto zostało założone. Zaloguj się wykorzystując informacje poniżej. Proszę zachować tego maila w bezpiecznym miejscu.",
     16 => 'Informacje Dotyczące Twojego Konta',
@@ -234,7 +234,7 @@ $LANG04 = array(
     22 => "Zarejestruj się w serwisie {$_CONF['site_name']}!",
     23 => "Konto w serwisie {$_CONF['site_name']} pozwoli ci zamieszczać komentarze i inne pozycje w twoim imieniu. Brak konta umożliwia tylko zamieszczanie jako anonim. Twój adres email <b><i>nigdy</i></b> nie będzie widoczny publicznie.",
     24 => 'Twoje hasło zostanie wysłane pod podany adres email.',
-    25 => 'Zapomniałeś/aś hasło?',
+    25 => 'Nie pamiętasz hasła?',
     26 => 'Wpisz <em>albo</em> swój login <em>albo</em> adres email podany podczas rejestracji i kliknij Prześlij Hasło. Instrukcje jak ustawić nowe hasło zostaną wysłane do Ciebie mailem.',
     27 => 'Zarejestruj Się!',
     28 => 'Prześlij Hasło',
@@ -317,29 +317,29 @@ $LANG04 = array(
     105 => 'Pokaż w bloku Who\'s Online',
     106 => 'Lokalizacja',
     107 => 'Pokaż w swoim publicznym profilu',
-    108 => 'Confirm new password',
-    109 => 'Enter the New password again here',
-    110 => 'Current Password',
-    111 => 'Please enter your Current password',
+    108 => 'Potwierdź nowe hasło',
+    109 => 'Wpisz tutaj ponownie Nowe hasło',
+    110 => 'Obecne Hasło',
+    111 => 'Proszę wpisać swoje Obecne hasło',
     112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    113 => 'Login Attempt Failed',
-    114 => 'Account Disabled',
-    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
-    116 => 'Account Awaiting Activation',
-    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
+    113 => 'Nieudana Próba Zalogowania',
+    114 => 'Konto WYłączone',
+    115 => 'Twoje konto zostało wyłączone, nie można się zalogować. Proszę skontaktować się z Administratorem.',
+    116 => 'Konto Czeka Na Aktywację',
+    117 => 'Twoje konto czeka obecnie na aktywację przez administratora. You will not be able to login until your account has been approved.',
     118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
     119 => 'If you have forgotten your password, you may request a new one at this url:',
     120 => 'Account Activated',
     121 => 'Service',
-    122 => 'Sorry, new user registration is disabled',
+    122 => 'Przepraszamy, rejestracja nowych użytkowników jest wyłączona',
     123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">new user</a>?",
-    124 => 'Confirm Email',
+    124 => 'Potwierdzenie Adresu Email',
     125 => 'You have to enter the same email address in both fields!',
     126 => 'Please repeat for confirmation',
     127 => 'To change any of these settings, you will have to enter your current password.',
     128 => 'Your Name',
-    129 => 'Password &amp; Email',
-    130 => 'About You',
+    129 => 'Hasło &amp; Email',
+    130 => 'O Sobie',
     131 => 'Daily Digest Options',
     132 => 'Daily Digest Feature',
     133 => 'Comment Display',
@@ -362,7 +362,7 @@ $LANG04 = array(
     150 => 'Warning: Javascript recommended for enhanced functionality',
     156 => 'Delete Account',
     157 => 'Delete Option',
-    158 => 'Time Zone',
+    158 => 'Strefa Czasowa',
     159 => 'This email was generated automatically. Please do not reply to this email.'
 );
 
