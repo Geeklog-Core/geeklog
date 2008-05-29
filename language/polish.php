@@ -328,42 +328,42 @@ $LANG04 = array(
     116 => 'Konto Czeka Na Aktywacjê',
     117 => 'Twoje konto czeka obecnie na aktywacjê przez administratora. You will not be able to login until your account has been approved.',
     118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
-    120 => 'Account Activated',
+    119 => 'Je¶li nie pamiêtasz swojego has³a, kliknij na ten odno¶nik aby otrzymaæ nowe:',
+    120 => 'Konto Zosta³o Aktywowane',
     121 => 'Service',
     122 => 'Przepraszamy, rejestracja nowych u¿ytkowników jest wy³±czona',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">new user</a>?",
+    123 => "Czy jeste¶ <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">nowym u¿ytkownikiem</a>?",
     124 => 'Potwierdzenie Adresu Email',
-    125 => 'You have to enter the same email address in both fields!',
+    125 => 'W obu polach nale¿y wpisaæ taki sam adres email!',
     126 => 'Please repeat for confirmation',
-    127 => 'To change any of these settings, you will have to enter your current password.',
-    128 => 'Your Name',
+    127 => 'Aby zmieniæ którekolwiek z tych ustawieñ, musisz podaæ swoje bie¿±ce has³o.',
+    128 => 'Twoje Imiê',
     129 => 'Has³o &amp; Email',
     130 => 'O Sobie',
     131 => 'Daily Digest Options',
     132 => 'Daily Digest Feature',
-    133 => 'Comment Display',
-    134 => 'Comment Options',
-    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
-    136 => 'Exclude Topics and Authors',
-    137 => 'Filter Story Content',
-    138 => 'Misc Settings',
-    139 => 'Layout and Language',
+    133 => 'Wy¶wietlanie Komentarzy',
+    134 => 'Opcje Komentarzy',
+    135 => '<li>Domy¶lny tryb wy¶wietlania komentarzy</li><li>Domy¶lne sortowanie komentarzy</li><li>Liczba wy¶wietlanych komentarzy - domy¶lnie jest 100</li>',
+    136 => 'Nie Pokazuj Tematów i Autorów',
+    137 => 'Filtruj Zawarto¶æ Artyku³ów',
+    138 => 'Ustawienia Ró¿ne',
+    139 => 'Layout i Jêzyk',
     140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
-    141 => 'Privacy Settings',
+    141 => 'Ustawienia Prywatno¶ci',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
-    143 => 'Filter Block Content',
-    144 => 'Show & hide boxes',
-    145 => 'Your Public Profile',
-    146 => 'Password and email',
+    143 => 'Filtruj Zawarto¶æ Bloków',
+    144 => 'Poka¿ & ukryj pola',
+    145 => 'Twój Profil Publiczny',
+    146 => 'Has³o i email',
     147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
-    148 => 'User Information',
+    148 => 'Informacje o U¿ytkowniku',
     149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
-    150 => 'Warning: Javascript recommended for enhanced functionality',
-    156 => 'Delete Account',
+    150 => 'Uwaga: Javascript jest rekomendowany aby korzystaæ z zaawansowanych funkcji',
+    156 => 'Usuñ Konto',
     157 => 'Delete Option',
     158 => 'Strefa Czasowa',
-    159 => 'This email was generated automatically. Please do not reply to this email.'
+    159 => 'Ta wiadomo¶æ zosta³a wygenerowana automatycznie. Proszê nie odpowiadaæ.'
 );
 
 ###############################################################################
@@ -371,12 +371,12 @@ $LANG04 = array(
 # Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
-    'pe_preview' => 'Preview',
-    'pe_namepass' => 'Username &amp; Password',
-    'pe_userinfo' => 'About You',
-    'pe_layout' => 'Layout &amp; Language',
-    'pe_content' => 'Content',
-    'pe_privacy' => 'Privacy'
+    'pe_preview' => 'Podgl±d',
+    'pe_namepass' => 'U¿ytkownik &amp; Has³o',
+    'pe_userinfo' => 'O Sobie',
+    'pe_layout' => 'Layout &amp; Jêzyk',
+    'pe_content' => 'Zawarto¶æ',
+    'pe_privacy' => 'Prywtno¶æ'
 );
 
 ###############################################################################
@@ -495,10 +495,10 @@ $LANG09 = array(
     55 => 'fraza',
     56 => 'AND',
     57 => 'OR',
-    58 => 'More results &gt;&gt;',
-    59 => 'Results',
-    60 => 'per page',
-    61 => 'Refine search'
+    58 => 'WIêcej wyników &gt;&gt;',
+    59 => 'Wyniki',
+    60 => 'na stronê',
+    61 => 'Zmieñ zapytanie'
 );
 
 ###############################################################################
@@ -529,12 +529,12 @@ $LANG10 = array(
     22 => '10 Najczê¶ciej Emaliowanych Artyku³ów',
     23 => 'Emaile',
     24 => 'Wygl±da na to, ¿e nikt nie przes³a³ swoim znajomym ¿adnego artyku³u',
-    25 => 'Top Ten Trackback Commented Stories',
-    26 => 'No trackback comments found.',
-    27 => 'Number of active users',
+    25 => '10 Najczê¶ciej Komentowanych Zwrotnie Artyku³ów',
+    26 => 'Brak komentarzy zwrotnych.',
+    27 => 'Liczba aktywnych u¿ytkowników',
     28 => '',
     29 => '',
-    30 => 'Hits',
+    30 => 'Ods³on',
     31 => ''
 );
 
@@ -606,8 +606,8 @@ $LANG12 = array(
     51 => 'Lokalizacja',
     52 => 'Kasuj',
     53 => 'Za³ó¿ Konto',
-    54 => 'Story Introduction',
-    55 => 'Story Body'
+    54 => 'Artyku³ Wstêp',
+    55 => 'Artyku³ Czê¶æ G³ówna'
 );
 
 ###############################################################################
@@ -691,13 +691,13 @@ $LANG21 = array(
     58 => 'Przesuñ Blok w Górê',
     59 => 'Przesuñ blok na prawo',
     60 => 'Przesuñ blok w lewo',
-    61 => 'No Title',
-    62 => 'Article Limit',
-    63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!',
-    65 => 'Order',
-    66 => 'Autotags',
-    67 => 'Check to allow autotags',
+    61 => 'Brak Tytu³u',
+    62 => 'Limit Artyku³ów',
+    63 => 'Nieprawid³ówy Tytu³ Bloku',
+    64 => 'Pole Tytu³ nie mo¿e byæ puste i nie mo¿e zawieraæ znaczników HTML!',
+    65 => 'Sorotwanie',
+    66 => 'Autotagi',
+    67 => 'Zaznacz aby w³±czyæ autotagi',
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
 );
 
@@ -729,10 +729,10 @@ $LANG24 = array(
     22 => 'Lista Artyku³ów',
     23 => 'Aby zmodyfikowaæ lub wykasowaæ artyku³, kliknij na numer danego artyku³u poni¿ej. Aby przegl±dn±æ artyku³ kliknij na tytu³ danego artyku³u. Aby wpisaæ nowy artyku³ kliknij na Nowy Artyku³ powy¿ej.',
     24 => 'The ID you chose for this story is already in use. Please use another ID.',
-    25 => 'Error when saving story',
+    25 => 'B³±d podczas zapisywania artyku³u',
     26 => 'Podgl±d Artyku³u',
-    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
-    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    27 => 'Je¶li u¿ywasz [unscaledX] zamiast [imageX], zdjêcie zostanie zamieszczone w oryginalnym rozmiarze.',
+    28 => '<p><b>PODGL¡D</b>: Podgl±d artyku³u z za³±czonymi zdjêciami dzia³a najlepiej po uprzednim zapisaniu artyku³u jako kopia robocza ZAMIAST klikaniu na przycisk podgl±du.  Przycisk podgl±du najlepiej u¿ywaæ gdy nie za³±czamy zdjêæ.',
     29 => 'Trackbacks',
     30 => 'B³±d Uploadu Pliku',
     31 => 'Proszê wpisaæ Tytu³ i Wstêp',
@@ -771,28 +771,28 @@ $LANG24 = array(
     64 => '',
     65 => '',
     66 => '',
-    67 => 'Expand the Content Edit Area size',
-    68 => 'Reduce the Content Edit Area size',
-    69 => 'Publish Story Date',
-    70 => 'Toolbar Selection',
-    71 => 'Basic Toolbar',
+    67 => 'Powiêksz Edytor',
+    68 => 'Zmniejsz Edytor',
+    69 => 'Data Publikacji Artyku³u',
+    70 => 'Wybór Paska Narzêdzi',
+    71 => 'Pasek Podstawowy',
     72 => 'Common Toolbar',
-    73 => 'Advanced Toolbar',
-    74 => 'Advanced II Toolbar',
-    75 => 'Full Featured',
-    76 => 'Publish Options',
-    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
-    79 => 'Preview',
-    80 => 'Editor',
-    81 => 'Publish Options',
-    82 => 'Images',
-    83 => 'Archive Options',
-    84 => 'Permissions',
-    85 => 'Show All',
-    86 => 'Advanced Editor',
-    87 => 'Story Stats',
-    88 => 'Wiki-style format'
+    73 => 'Pasek Zaawansowany',
+    74 => 'Pasek Zaawansowany II',
+    75 => 'Pe³na Opcja',
+    76 => 'Opcje Publikowania',
+    77 => 'Edytor Zaawansowany wymaga w³±czenia Javascript-u. Opcja mo¿e zostaæ wy³±czona w g³ównym pliku config.php',
+    78 => 'Kliknij <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">tutaj</a> aby w³±czyæ edytor domy¶lny',
+    79 => 'Podgl±d',
+    80 => 'Edytor',
+    81 => 'Opcje Publikacji',
+    82 => 'Zdjêcia',
+    83 => 'Opcje Archiwizacji',
+    84 => 'Dostêp',
+    85 => 'Poka¿ Wszystko',
+    86 => 'Edytor Zaawansowany',
+    87 => 'Artyku³ - Statystyki',
+    88 => 'Format w stylu Wiki'
 );
 
 ###############################################################################
@@ -825,9 +825,9 @@ $LANG27 = array(
     24 => '(*)',
     25 => 'Sekcja Archiwalna',
     26 => 'domy¶lna sekcja dla archiwizowanych artyku³ów. Dozwolona jest tylko jedna sekcja.',
-    27 => 'Or Upload Topic Icon',
-    28 => 'Maximum',
-    29 => 'File Upload Errors'
+    27 => 'Lub Wgraj Ikonê Sekcji',
+    28 => 'Max',
+    29 => 'B³±d podczas przesy³ania pliku'
 );
 
 ###############################################################################
