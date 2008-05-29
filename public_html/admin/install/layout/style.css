@@ -280,7 +280,6 @@ code {
   border-bottom:1px solid #CCCCCC;
   color:#000000;
   padding: 4px 20px 10px 50px;
-  text-align:left;
 }
 .install-type-container-outer {
   background: #1A3955;
@@ -369,4 +368,5 @@ code {
 }
 .indent {
   margin-left:1em;
+  margin-right:1em;
 }
