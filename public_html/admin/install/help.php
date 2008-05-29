@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: help.php,v 1.4 2008/05/01 09:52:56 dhaun Exp $
+// $Id: help.php,v 1.5 2008/05/29 19:38:59 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -57,6 +57,9 @@ if ( defined( 'XHTML' ) ) {
 	$display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>';
 }
+if (empty($LANG_DIRECTION)) {
+    $LANG_DIRECTION = 'ltr';
+}
 $display .= '<head>
 <meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
 <link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
@@ -64,7 +67,7 @@ $display .= '<head>
 <title>' . $LANG_INSTALL[0] . '</title>
 </head>
 
-<body dir="ltr">
+<body dir="' . $LANG_DIRECTION . '">
     <div class="header-navigation-container">
         <div class="header-navigation-line">
             <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
