@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.700 2008/05/17 17:30:28 dhaun Exp $
+// $Id: lib-common.php,v 1.701 2008/05/31 18:38:48 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1487,26 +1487,6 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
 
-    // Set a blockid
-    if (!isset($GLOBALS['siteblocks'])) $GLOBALS['siteblocks'] = array();
-    $blockid = stripslashes ($title);
-    $blockid = COM_sanitizeID($title);
-    // Check if there is already a block of the same name
-    if (in_array($blockid,$GLOBALS['siteblocks'])) {
-        // Now, in the unlikely chance there are multiple matching blocks
-        for ($i=2; $i <= 5; $i++) {   // there can't be more then 5 blocks of the same name
-            $nblockid = "{$blockid}{$i}";
-            if (!in_array($nblockid,$GLOBALS['siteblocks'])) {
-                $blockid = $nblockid;
-                $GLOBALS['siteblocks'][] = $blockid;
-                break;
-            }
-        }
-    } else {
-        $GLOBALS['siteblocks'][] = $blockid;
-    }
-    $block->set_var( 'blockid', $blockid);
-
     if( !empty( $helpfile ))
     {
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
@@ -2110,7 +2090,7 @@ function COM_showTopics( $topic='' )
         $sections->set_file( array( 'option'   => 'topicoption.thtml',
                                     'inactive' => 'topicoption_off.thtml' ));
     }
-    $retval = '<ul>';
+
     $sections->set_var( 'xhtml', XHTML );
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
@@ -2227,7 +2207,7 @@ function COM_showTopics( $topic='' )
             $retval .= $sections->parse( 'item', 'option' );
         }
     }
-    $retval .= '</ul>';
+
     return $retval;
 }
 
@@ -2279,7 +2259,6 @@ function COM_userMenu( $help='', $title='' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
-        $retval .= '<ul>';
 
         // This function will show the user options for all installed plugins
         // (if any)
@@ -2331,7 +2310,6 @@ function COM_userMenu( $help='', $title='' )
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );
         $retval .= $usermenu->parse( 'item', 'option' );
-        $retval .= '</ul>';
         $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
     else
@@ -2470,7 +2448,6 @@ function COM_adminMenu( $help = '', $title = '' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'admin_block', 'header' ));
-        $retval .= "<ul>";
 
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
@@ -2783,7 +2760,7 @@ function COM_adminMenu( $help = '', $title = '' )
         {
             $retval .= $link;
         }
-        $retval .= "</ul>";
+
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
 

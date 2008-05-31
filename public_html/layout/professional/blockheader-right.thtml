@@ -1,4 +1,4 @@
-<div class="block-box-right" id="{blockid}">
+<div class="block-box-right">
     <span class="block-helpicon">
         {block_help}
     </span>

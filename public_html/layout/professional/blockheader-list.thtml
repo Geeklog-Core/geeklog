@@ -1,0 +1,6 @@
+<div class="block-box blocklist">
+    <span class="block-helpicon">
+        {block_help}
+    </span>
+    <h1>{block_title}</h1>
+    <ul>

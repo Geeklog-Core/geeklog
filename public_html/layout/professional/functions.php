@@ -28,4 +28,9 @@ $_BLOCK_TEMPLATE['configmanager_subblock'] = 'blockheader-config.thtml,blockfoot
 $_BLOCK_TEMPLATE['whats_related_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 $_BLOCK_TEMPLATE['story_options_block'] = 'blockheader-related.thtml,blockfooter-related.thtml';
 
+// Define the blocks that are a list of links styled as an unordered list - using class="blocklist"
+$_BLOCK_TEMPLATE['admin_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
+$_BLOCK_TEMPLATE['section_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
+$_BLOCK_TEMPLATE['user_block'] = 'blockheader-list.thtml,blockfooter-list.thtml';
+
 ?>
