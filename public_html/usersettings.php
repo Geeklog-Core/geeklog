@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.172 2008/05/17 11:00:49 dhaun Exp $
+// $Id: usersettings.php,v 1.173 2008/05/31 19:49:36 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -902,6 +902,12 @@ function saveuser($A)
 
             return COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&amp;msg=83');
+        } elseif ($_CONF['custom_registration'] &&
+                    function_exists ('CUSTOM_userCheck')) {
+            $ret = CUSTOM_userCheck ($A['username'], $A['email']);
+            // Need a numeric return for the default message hander - if not numeric use default message
+            if (!is_numeric($ret)) $ret = 97;
+            return COM_refresh ("{$_CONF['site_url']}/usersettings.php?mode=edit&amp;msg={$ret}");
         }
     }
 

@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.39 2008/05/11 07:25:08 dhaun Exp $
+// $Id: lib-custom.php,v 1.40 2008/05/31 19:49:36 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -332,17 +332,17 @@ function CUSTOM_userForm ($msg = '')
 }
 
 /**
-* Check if it's okay to create a new user.
-*
-* Geeklog is about to create a new user with the given username and email
-* address. This is the custom code's last chance to prevent that,
+* Geeklog is about to create a new user or edit an existing user.
+* This is the custom code's last chance to do any form validation,
 * e.g. to check if all required data has been entered.
 *
 * @param    string  $username   username that Geeklog would use for the new user* @param    string  $email      email address of that user
-* @return   string              an error message or an empty string for "OK"
-*
+* @return   mixed               Creating a new user: An error message or an empty string for "OK".
+*                               Edit user function under My Account:  the script expects a message number,
+*                                 that will map to the GLOBALS $MESSAGE define in the site language files
+*                                 By default $MESSAGE[97] will appear if a non-numeric is returned to usersettings.php - saveuser function
 */
-function CUSTOM_userCheck ($username, $email)
+function CUSTOM_userCheck ($username, $email='')
 {
     $msg = '';
 
@@ -386,7 +386,7 @@ function CUSTOM_showBlocks($showblocks)
     } else {
         $noboxes = $_USER['noboxes'];
     }
- 
+
     foreach($showblocks as $block) {
         $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help,allow_autotags FROM {$_TABLES['blocks']} WHERE name='$block'";
         $result = DB_query($sql);
