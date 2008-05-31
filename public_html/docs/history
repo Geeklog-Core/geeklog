@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Fixed setting the site's default language and default theme (bugs #0000646
+  and #0000648) [Aaron, Dirk]
 - The bundled plugins don't need to read their config.php any more. This also
   avoids confusion if renaming the old config.php failed during the upgrade
   [Dirk]

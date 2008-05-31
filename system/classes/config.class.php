@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.40 2008/05/11 07:07:20 dhaun Exp $
+// $Id: config.class.php,v 1.41 2008/05/31 16:34:08 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -688,8 +688,24 @@ class config {
      */
     function updateConfig($change_array, $group)
     {
+        global $_TABLES;
+
         if (!SEC_inGroup('Root')) {
             return null;
+        }
+
+        if ($group == 'Core') {
+            /**
+             * $_CONF['theme'] and $_CONF['language'] are overwritten with
+             * the user's preferences in lib-common.php. Re-read values from
+             * the database so that we're comparing the correct values below.
+             */
+            $value = DB_getItem($_TABLES['conf_values'], 'value',
+                                "group_name='Core' AND name='theme'");
+            $this->config_array['Core']['theme'] = unserialize($value);
+            $value = DB_getItem($_TABLES['conf_values'], 'value',
+                                "group_name='Core' AND name='language'");
+            $this->config_array['Core']['language'] = unserialize($value);
         }
 
         $success_array = array();
