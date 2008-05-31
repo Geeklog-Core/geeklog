@@ -177,16 +177,34 @@ select {
 label {
   padding: 0px;
   width: 14em;
-  float: left;
-  text-align: left;
   margin-top: 5px;
   display: block
+}
+.label-left {
+  float: left;
+  text-align: left;
+}
+.label-right {
+  float: right;
+  text-align: right;
 }
 code {
   font-size: 8pt;
 }
 
 /* Header ******************************************************************/
+.header-logo {
+  float:left;
+  padding-left:15px;
+  padding-top:13px;
+}
+.header-slogan {
+  float:right;
+  padding-right:15px;
+  padding-top:13px;
+  color: #ffffff;
+  text-align:right;
+}
 .header-navigation-container {
   border-bottom:1px solid #FFFFFF;
 }
@@ -229,6 +247,7 @@ code {
 .header-logobg-container-inner {
   background:url(../layout/header-bg.png) #1A3955;
   border-bottom:1px solid #CCCCCC;
+  height:78px;
 }
 .header-logobg-left {
   padding-top:4px;
@@ -291,7 +310,7 @@ code {
   padding: 10px;
 }
 .install-type-container-inner {
-  width: 412px; 
+  width: 452px; 
   margin-left: auto; 
   margin-right: auto; 
   border: 0px solid;
@@ -303,7 +322,22 @@ code {
 }
 .install {
   position: relative; 
-  width: 200px; 
+  width: 220px; 
+  height: 55px; 
+  background-color: #CCC; 
+  text-align: center; 
+  font-size: 20pt; 
+  font-family: "Verdana";
+  padding-top: 20px; 
+  border: 1px; 
+  border-color: #000; 
+  border-style: dashed;
+}
+.upgrade {
+  position: relative; 
+  left: 230px; 
+  top: -77px;
+  width: 220px; 
   height: 55px; 
   background-color: #CCC; 
   text-align: center;
@@ -314,18 +348,18 @@ code {
   border-color: #000; 
   border-style: dashed;
 }
-.upgrade {
+.upgrade-rtl {
   position: relative; 
-  left: 210px; 
-  top: -77px; 
-  width: 200px; 
+  right: 230px; 
+  top: -77px;
+  width: 220px; 
   height: 55px; 
   background-color: #CCC; 
-  text-align: center; 
+  text-align: center;
   font-size: 20pt; 
   font-family: "Verdana";
   padding-top: 20px; 
-  border: 1px; 
+  border: 1px;
   border-color: #000; 
   border-style: dashed;
 }

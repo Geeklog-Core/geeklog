@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: help.php,v 1.5 2008/05/29 19:38:59 dhaun Exp $
+// $Id: help.php,v 1.6 2008/05/31 21:36:15 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -73,17 +73,11 @@ $display .= '<head>
             <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
-    <div class="header-logobg-container-outer">
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
-            <tr>
-                <td class="header-logobg-left">
-                    <a href="http://www.geeklog.net/"><img src="layout/logo.png" width="151" height="56" alt="Geeklog" border="0"' . XHTML . '></a>
-                </td>
-                <td class="header-logobg-right">
-                    <div class="site-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>
-                </td>
-            </tr>
-        </table>
+    <div class="header-logobg-container-inner">
+        <a class="header-logo" href="http://www.geeklog.net/">
+            <img src="layout/logo.png"  width="151" height="56" alt="Geeklog"' . XHTML . '>
+        </a>
+        <div class="header-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '></div>
     </div>
     <div class="installation-container">
         <div class="installation-body-container">

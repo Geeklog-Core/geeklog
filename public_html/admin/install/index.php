@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.42 2008/05/27 17:45:46 dhaun Exp $
+// $Id: index.php,v 1.43 2008/05/31 21:36:15 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -117,7 +117,7 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $_CONF, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language;
+    global $_CONF, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $label_dir;
 
     switch ($install_step) {
 
@@ -194,28 +194,28 @@ function INST_installEngine($install_type, $install_step)
                 <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
 
-                <p><label>' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="40"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p><br' . XHTML . '>
-                <p><label>' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="40"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p><br' . XHTML . '>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
                     <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                     ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
                     <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . $innodbnote . '</p>
-                <p><label>' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20"' . XHTML . '></p>
 
                 <br' . XHTML . '>
                 <h2>' . $LANG_INSTALL[44] . '</h2>
-                <p><label>' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-                <p><label>' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
-                <p><label>' . $LANG_INSTALL[49] . ' ' . INST_helpLink('noreply_mail') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
+                <p><label class="' . $label_dir . '">' . $LANG_INSTALL[49] . ' ' . INST_helpLink('noreply_mail') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
 
             if ($install_type == 'install') {
                 $display .= '
-                    <p><label>' . $LANG_INSTALL[92] . ' ' . INST_helpLink('utf8') . '</label> <input type="checkbox" name="utf8"' . ($utf8 ? ' checked="checked"' : '') . XHTML . '></p>';
+                    <p><label class="' . $label_dir . '">' . $LANG_INSTALL[92] . ' ' . INST_helpLink('utf8') . '</label> <input type="checkbox" name="utf8"' . ($utf8 ? ' checked="checked"' : '') . XHTML . '></p>';
             }
 
             $display .= '
@@ -427,7 +427,7 @@ function INST_installEngine($install_type, $install_step)
                                         <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                         <input type="hidden" name="step" value="3"' . XHTML . '>
                                         <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
-                                        <p><label>' . $LANG_INSTALL[89] . '</label> <select name="version">';
+                                        <p><label class="' . $label_dir . '">' . $LANG_INSTALL[89] . '</label> <select name="version">';
                                     $tmp_counter = 0;
                                     $ver_selected = '';
                                     foreach ($old_versions as $version) {
@@ -1625,6 +1625,11 @@ if (defined('XHTML')) {
 if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
+if ($LANG_DIRECTION == 'rtl') {
+    $label_dir = 'label-right';
+} else {
+    $label_dir = 'label-left';
+}
 $display .= '<head>
 <meta http-equiv="Content-Type" content="text/html;charset=' . $LANG_CHARSET . '"' . XHTML . '>
 <link rel="stylesheet" type="text/css" href="layout/style.css"' . XHTML . '>
@@ -1638,18 +1643,15 @@ $display .= '<head>
             <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
-    <div class="header-logobg-container-outer">
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="header-logobg-container-inner">
-            <tr>
-                <td class="header-logobg-left">
-                    <a href="http://www.geeklog.net/"><img src="layout/logo.png" width="151" height="56" alt="Geeklog" border="0"' . XHTML . '></a>
-                </td>
-                <td class="header-logobg-right">
-                    <div class="site-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>' . LB;
+    <div class="header-logobg-container-inner">
+        <a class="header-logo" href="http://www.geeklog.net/">
+            <img src="layout/logo.png"  width="151" height="56" alt="Geeklog"' . XHTML . '>
+        </a>
+        <div class="header-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>' . LB;
 
 // Show the language drop down selection on the first page
 if ($mode == 'check_permissions') {
-    $display .='<form action="index.php" method="post">' . LB;
+    $display .='<form action="index.php" method="post" style="display:inline;">' . LB;
 
     $_PATH = array('dbconfig', 'public_html');
     if (isset($_GET['mode']) || isset($_POST['mode'])) {
@@ -1675,10 +1677,7 @@ if ($mode == 'check_permissions') {
             </form>';
 }
 $display .= '
-                    </div>
-                </td>
-            </tr>
-        </table>
+        </div>
     </div>
     <div class="installation-container">
         <div class="installation-body-container">
@@ -1932,13 +1931,18 @@ switch ($mode) {
                         . '&amp;public_html_path=' . urlencode($_PATH['public_html/'])
                         . '&amp;language=' . $language;
 
+            if ($LANG_DIRECTION == 'rtl') {
+                $upgr_class = 'upgrade-rtl';
+            } else {
+                $upgr_class = 'upgrade';
+            }
             $display .= '
             <div class="install-type-container-outer">
                <div class="install-type-container-inner">
                    <h2>' . $LANG_INSTALL[23] . '</h2>
                    <div class="install" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a href="' . $req_string
                     . '&amp;op=install">' . $LANG_INSTALL[24] . '</a></div>
-                   <div class="upgrade" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a href="' . $req_string
+                   <div class="' . $upgr_class . '" onmouseover="this.style.background=\'#BBB\'" onmouseout="this.style.background=\'#CCC\'"><a href="' . $req_string
                     . '&amp;op=upgrade">' . $LANG_INSTALL[25] . '</a></div>
                </div>
             </div>' . LB;
