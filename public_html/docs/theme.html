@@ -224,11 +224,15 @@ turned on and off by changing the templates. The files:</p>
 <p>Contain table rows containing the bodytext inputs. Simply removing these
 inputs returns behaviour to the original.</p>
 
-<h3>Admin-Menu, Topic-List &amp; User-Menus</h3>
+<h3>Admin Menu, User Menu &amp; Topic List</h3>
 
 <p>All the above mentioned items are now lists, using <code>ul</code> and
-<code>li</code> tags. The <code>ul</code> is inserted by the core code, the
-<code>li</code> is in the templates</p>
+<code>li</code> tags (and a new CSS class, <tt>blocklist</tt>, to hide the list
+bullets). Two new template files have been added to create these blocks:</p>
+<ul>
+    <li>blockheader-list.thtml</li>
+    <li>blockfooter-list.thtml</li>
+</ul>
 
 <h3>Security Changes</h3>
 

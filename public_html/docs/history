@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May ??, 2008 (1.5.0)
+June 1, 2008 (1.5.0rc2)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -11,6 +11,19 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Added a workaround for the Yulup Atompub client that sometimes sends Text
+  nodes within XHTML nodes [Dirk]
+- Made the Install / Upgrade buttons in the install script a bit wider to
+  provide more space for the Japanese and German translations [Dirk]
+- Fixed bug #0000647: All modifications of usersettings should go through
+  CUSTOM_usercheck [Blaine]
+- Removed hard-coded <ul> tags from the functions for the Admin, User, and
+  Topics blocks. Added new blockheader-list.thtml, blockfooter-list.thtml
+  template files for those blocks [Blaine]
+- Removed the fake {blockid} for the block templates as it was actually derived
+  from the block title, resulting in layout changes when you changed the block
+  title. It also didn't work properly with non-ASCII languages. Updated
+  style.css and the block templates accordingly [Blaine]
 - Fixed setting the site's default language and default theme (bugs #0000646
   and #0000648) [Aaron, Dirk]
 - The bundled plugins don't need to read their config.php any more. This also
@@ -18,8 +31,8 @@ Changes since 1.5.0rc1:
   [Dirk]
 - Fixed SQL error in the Mail Utility when using the option to override user
   settings (reported by Michael Brusletten) [Dirk]
-- The install script had the text direction hard-coded as "ltr" (reported by
-  LWC) [Dirk]
+- Fixed problems with the text direction in the install script (reported by LWC)
+  [Dirk]
 
 - Updated Japanese language files, provided by Takahiro Kambe
 - Updated Polish language files, provided by Robert Stadnik
