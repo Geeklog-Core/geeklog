@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.36 2008/05/01 17:01:43 dhaun Exp $
+// $Id: lib-webservices.php,v 1.37 2008/05/31 21:42:27 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -476,6 +476,10 @@ function WS_getContent(&$args, $atom_doc, $node)
                 $args['content'] .= $atom_doc->saveXML($item);
             }
             $args['content_type'] = 'html'; // it's all the same to us ...
+        } elseif ($div->nodeType == XML_TEXT_NODE) {
+            // hack for Yulup which sometimes sends Text nodes within the XHTML
+            $args['content'] = trim((string) $node->nodeValue);
+            $args['content_type'] = 'html';
         }
         break;
 
