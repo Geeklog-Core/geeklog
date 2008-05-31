@@ -10,7 +10,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.35 2008/03/17 21:12:54 dhaun Exp $
+ * $Id: functions.inc,v 1.36 2008/05/31 07:55:08 dhaun Exp $
  */
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
@@ -27,14 +27,6 @@ if (file_exists($langfile)) {
     include_once $langfile;
 } else {
     include_once $plugin_path . 'language/english.php';
-}
-
-/*
-* As of Geeklog 1.5, the plugin's config.php is not needed any more and
-* should be removed after upgrading.
-*/
-if (file_exists($plugin_path . 'config.php')) {
-    include_once $plugin_path . 'config.php';
 }
 
 /*
