@@ -1181,7 +1181,8 @@ $MESSAGE = array(
     93 => 'Andmebaasi varundamine oli edukas.',
     94 => 'Varundamine ebaõnnestus: faili suurus on alla 1kb',
     95 => 'Oli viga.',
-    96 => 'Sul pole ligipääsu admistreerimislehele.  Pane tähele, et kõik õigustamata katsed sellele lehele ligi pääseda logitakse.'
+    96 => 'Sul pole ligipääsu admistreerimislehele.  Pane tähele, et kõik õigustamata katsed sellele lehele ligi pääseda logitakse.',
+    97 => 'Not all required fields have been passed validation - default custom membership message'
 );
 
 ###############################################################################
