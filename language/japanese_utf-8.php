@@ -898,9 +898,9 @@ $LANG28 = array(
     57 => '幽霊ユーザ',
     58 => '一時的ユーザ',
     59 => '過去のユーザ',
-    60 => '',
+    60 => 'Users that registered more than ',
     61 => 'ヶ月前に登録したが，一度もログインしていないユーザ。',
-    62 => '',
+    62 => 'Users that registered more than ',
     63 => 'ヶ月前に登録して，それから24時間以内にログインしたが，それ以来一度も戻ってきてログインしていないユーザ。',
     64 => '単に ',
     65 => 'ヶ月間，サイトを訪問していない普通のユーザ。',
@@ -1180,7 +1180,8 @@ $MESSAGE = array(
     93 => 'データベースのバックアップに成功しました。',
     94 => 'バックアップに失敗しました: ファイルサイズが1キロバイト未満です。',
     95 => 'エラーがありました。',
-    96 => '申し訳ありませんが, 設定管理ページへのアクセス権がありません。許可されないアクセスをしようとする試みは記録されていることに注意してください。'
+    96 => '申し訳ありませんが, 設定管理ページへのアクセス権がありません。許可されないアクセスをしようとする試みは記録されていることに注意してください。',
+    97 => 'Not all required fields have been passed validation - default custom membership message'
 );
 
 ###############################################################################
@@ -1838,14 +1839,7 @@ $LANG_configselects['Core'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('拒否' => 0, '最後だけ保持' => 1, '複数のポストを許可' => 2),
     3 => array('トラックバック有効' => 0, 'トラックバック' => -1),
-    4 => array('何も検査しない' => 0,
-      	       'サイトのURLで検査' => 1,
-	       '完全なURLで検査' => 2,
-	       'サイトのURLと完全なURLを検査' => 3,
-	       'Check IP against Site IP' => 4,
-	       'Check IP and Site URL' => 5,
-	       'Check IP and Full URL' => 6,
-	       'Check IP, Full URL, and Site URL' => 7),
+    4 => array('何も検査しない' => 0, 'サイトのURLで検査' => 1, '完全なURLで検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'Check IP against Site IP' => 4, 'Check IP and Site URL' => 5, 'Check IP and Full URL' => 6, 'Check IP, Full URL, and Site URL' => 7),
     5 => array('簡易なテキスト' => 'plaintext', 'HTML形式' => 'html'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),

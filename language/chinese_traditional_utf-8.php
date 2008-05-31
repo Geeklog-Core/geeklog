@@ -542,7 +542,7 @@ $LANG10 = array(
 );
 
 ###############################################################################
-#文章.php
+# article.php
 
 $LANG11 = array(
     1 => '有什麽是相關的',
@@ -1852,4 +1852,5 @@ $LANG_configselects['Core'] = array(
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
+
 ?>

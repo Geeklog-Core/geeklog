@@ -1178,7 +1178,8 @@ $MESSAGE = array(
     93 => 'Varnostna kopija baze podatkov, je bila uspešno narejena.',
     94 => 'Varnostna kopija baze podatkov NI uspela: Datoteka je manjša kot 1kb',
     95 => 'Prišlo je do napake.',
-    96 => 'Žal, nimaš dostopa do strani z nastavitvami!   Vedi da so vsi poskusi za dostop do zašèitenih lastnosti strani zabeleženi.'
+    96 => 'Žal, nimaš dostopa do strani z nastavitvami!   Vedi da so vsi poskusi za dostop do zašèitenih lastnosti strani zabeleženi.',
+    97 => 'Not all required fields have been passed validation - default custom membership message'
 );
 
 ###############################################################################
