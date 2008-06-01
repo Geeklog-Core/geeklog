@@ -618,6 +618,12 @@ select {
   color:#ffffff;
   background:transparent;
 }
+.sysmessage img {
+  border:none;
+  float:left;
+  padding-bottom:3px;
+  padding-right:5px;
+}
 /* Stats **********************************************************************/
 .stats-list-count {
   text-align:right;

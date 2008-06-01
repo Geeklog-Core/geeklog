@@ -11,6 +11,7 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Moved the hard-coded CSS for the System Message to the stylesheet [Dirk]
 - Added a workaround for the Yulup Atompub client that sometimes sends Text
   nodes within XHTML nodes [Dirk]
 - Made the Install / Upgrade buttons in the install script a bit wider to

@@ -202,7 +202,7 @@ featured and archived stories.</li>
 
 <p>Geeklog now supports XHTML compliant themes. These themes should define the
 following constant in their <tt>functions.php</tt> file:</p>
-<pre><code>    define('XHTML', ' /'); </code></pre>
+<pre style="margin-left:4em;"><code>define('XHTML', ' /');</code></pre>
 <p>This will ensure that Geeklog switches to XHTML internally. If you want your
 theme be working both as an HTML and an XHTML theme, you should use the
 <code>{xhtml}</code> variable wherever XHTML requires a self-closing tag,
@@ -212,7 +212,7 @@ theme for XHTML only.</p>
 ensure that your site's content (stories, comments, etc.) is XHTML compliant.
 Geeklog does <em>not</em> convert your content to XHTML.</p>
 
-<h3>"Contribute" - User submitted stories</h3>
+<h3><a name="story-submission">"Contribute" - User submitted stories</a></h3>
 
 <p>Geeklog 1.5.0 supports the ability for users to specify story intro text
   and body text seperately rather than just the intro text. This can be
@@ -224,7 +224,7 @@ turned on and off by changing the templates. The files:</p>
 <p>Contain table rows containing the bodytext inputs. Simply removing these
 inputs returns behaviour to the original.</p>
 
-<h3>Admin Menu, User Menu &amp; Topic List</h3>
+<h3><a name="admin-menu">Admin Menu, User Menu &amp; Topic List</a></h3>
 
 <p>All the above mentioned items are now lists, using <code>ul</code> and
 <code>li</code> tags (and a new CSS class, <tt>blocklist</tt>, to hide the list
@@ -233,13 +233,15 @@ bullets). Two new template files have been added to create these blocks:</p>
     <li>blockheader-list.thtml</li>
     <li>blockfooter-list.thtml</li>
 </ul>
+<p>Please note that the <code>{blockid}</code> variable that was present in
+pre-release versions of Geeklog 1.5.0 has since been removed.</p>
 
-<h3>Security Changes</h3>
+<h3><a name="gltoken">Security Changes</a></h3>
 
 <p>Many forms, particularly in the admin section of the site need a new hidden
 form field in order for saving the form/processing the action to work. Add:</p>
 
-<pre><code>    &lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;</code></pre>
+<pre style="margin-left:4em;"><code>&lt;input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}&gt;</code></pre>
 <p>To the following templates:</p>
 <ul>
     <li>admin/block/blockeditor.thtml</li>
@@ -272,6 +274,22 @@ check:</p>
     <li>plugins/staticpages/templates/admin/editor.thtml</li>
     <li>plugins/staticpages/templates/admin/editor_advanced.thtml</li>
 </ul>
+
+<h3><a name="removed">Removed Files</a></h3>
+
+<p>The following template files have been removed and are no longer needed:</p>
+
+<ul>
+    <li>admin/lists/menufields.thtml</li>
+    <li>admin/lists/topmenu_nosearch.thtml</li>
+    <li>admin/plugins/newlistitem.thtml</li>
+    <li>admin/plugins/newpluginlist.thtml</li>
+</ul>
+
+<h3><a name="sysmessage">System Message</a></h3>
+
+<p>The previously hard-coded CSS for the System Messages has been moved to the
+stylesheet (new CSS class <tt>sysmessage</tt>).</p>
 
 
 <h2><a name="changes141">Theme changes in Geeklog 1.4.1</a></h2>
