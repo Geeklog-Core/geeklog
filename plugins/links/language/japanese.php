@@ -2,12 +2,13 @@
 
 ###############################################################################
 # japanese.php
-# This is the Japanese language page for the Geeklog links Plug-in!
+#
+# This is the Japanese language file for the Geeklog Links Plugin
 #
 # Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# tony AT tonybibbs DOT com
 # Copyright (C) 2005 Trinity Bays
-# trinity93@gmail.com
+# trinity93 AT gmail DOT com
 # Tranlated by Geeklog Japanese group
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
@@ -27,63 +28,98 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+# $Id: japanese.php,v 1.15 2008/06/03 17:40:49 dhaun Exp $
+# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
+
+/**
+ * This is the english language page for the Geeklog links Plug-in!
+ *
+ * @package Links
+ * @subpackage Language
+ * @filesource
+ * @version 2.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005-2007
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @author Trinity Bays <trinity93 AT gmail DOT com>
+ * @author Tony Bibbs <tony AT tonybibbs DOT com>
+ * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
+ *
+ */
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:  $LANG - variable name
-#               XX    - file id number
-#               YY    - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#                 XX - file id number
+#                 YY - phrase id number
 ###############################################################################
 
+/**
+* the link plugin's lang array
+*
+* @global array $LANG_LINKS
+*/
 $LANG_LINKS = array(
     10 => '投稿',
     14 => 'リンク',
     84 => 'リンク',
     88 => '新しいリンクはありません',
     114 => 'リンク',
-    116 => 'リンクの追加',
-    117 => '壊れたリンクを報告',
-    118 => '壊れたリンクのレポート',
-    119 => '以下のリンクが壊れています: ',
-    120 => 'リンクを編集するにはここをクリック: ',
-    121 => '壊れたリンクの報告者: ',
-    122 => '壊れたリンクを報告していただき、ありがとうございます。管理者はできるだけ早く問題を直すでしょう。',
-    123 => 'ありがとうございます',
-    124 => '移動',
+    116 => 'リンク投稿',
+    117 => 'リンク切れをご報告ください。',
+    118 => 'リンク切れの報告',
+    119 => '次のリンクは切れていると報告されました： ',
+    120 => 'リンクの編集は、ここをクリック： ',
+    121 => 'リンク切れの報告者： ',
+    122 => 'リンク切れをご報告いただきありがとうございます。できるだけ速やかに修正いたします。',
+    123 => 'ありがとうございます。',
+    124 => '表示',
     125 => 'カテゴリ',
-    126 => '現在位置:',
-    'root' => 'ルート'
+    126 => '現在の位置：',
+    'root' => 'トップ' // title used for top level category
 );
 
 ###############################################################################
 # for stats
-
+/**
+* the link plugin's lang stats array
+*
+* @global array $LANG_LINKS_STATS
+*/
 $LANG_LINKS_STATS = array(
-    'links' => '登録されているリンク（クリック数）',
+    'links' => 'リンク数（クリック数）',
     'stats_headline' => 'リンク(上位10件)',
     'stats_page_title' => 'リンク',
     'stats_hits' => 'ヒット',
-    'stats_no_hits' => 'このサイトにはリンクがないか、クリックした人がいないかのどちらかのようです。'
+    'stats_no_hits' => 'このサイトにはリンクがないか，クリックした人がいないかのどちらかのようです。',
 );
 
 ###############################################################################
 # for the search
-
+/**
+* the link plugin's lang search array
+*
+* @global array $LANG_LINKS_SEARCH
+*/
 $LANG_LINKS_SEARCH = array(
-    'results' => 'リンクの検索結果',
-    'title' => 'タイトル',
-    'date' => '追加した日時',
-    'author' => '投稿者',
-    'hits' => 'クリック数'
+ 'results' => 'リンクの検索結果',
+ 'title' => 'タイトル',
+ 'date' => '投稿した日時',
+ 'author' => '投稿者',
+ 'hits' => 'クリック数'
 );
 
 ###############################################################################
 # for the submission form
-
+/**
+* the link plugin's lang submit form array
+*
+* @global array $LANG_LINKS_SUBMIT
+*/
 $LANG_LINKS_SUBMIT = array(
-    1 => 'リンクの登録',
+    1 => 'リンクを投稿する',
     2 => 'リンク',
     3 => 'カテゴリ',
     4 => 'その他',
@@ -93,25 +129,26 @@ $LANG_LINKS_SUBMIT = array(
     8 => 'タイトル',
     9 => 'URL',
     10 => 'カテゴリ',
-    11 => 'リンクを登録する'
+    11 => 'リンクの投稿申請'
 );
 
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンク登録ありがとうございます。スタッフが内容を確認します。承認されたら<a href={$_CONF['site_url']}/links/index.php>リンク</a>セクションに表示されます。";
-$PLG_links_MESSAGE2 = 'リンクは無事登録されました。';
-$PLG_links_MESSAGE3 = 'リンクの削除が完了しました。';
-$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンク登録ありがとうございます。<a href={$_CONF['site_url']}/links/index.php>リンク</a>でご確認ください。";
-$PLG_links_MESSAGE5 = 'このカテゴリを見る十分なアクセス権がありません。';
-$PLG_links_MESSAGE6 = 'このカテゴリを編集する十分なアクセス権がありません。';
-$PLG_links_MESSAGE7 = 'カテゴリの名前と説明を入力して下さい。';
-$PLG_links_MESSAGE10 = 'カテゴリの保存に成功しました。';
-$PLG_links_MESSAGE11 = 'カテゴリのIDを"site"や"user"とすることは許可されていません。これらの名前は内部的な使用のために予約されています。';
-$PLG_links_MESSAGE12 = '親のカテゴリを、カテゴリ自身のサブカテゴリにしようとしました。これはまいごのカテゴリを作成してしまいますので、まず最初に子のカテゴリを移動するか、より高位のカテゴリから親カテゴリを選んで下さい。';
-$PLG_links_MESSAGE13 = 'カテゴリの削除に成功しました。';
-$PLG_links_MESSAGE14 = 'カテゴリはリンクやはカテゴリを含んでいます。まず、それらを削除して下さい。';
-$PLG_links_MESSAGE15 = 'このカテゴリを削除すするのに十分なアクセス権がありません。';
+$PLG_links_MESSAGE1 = "{$_CONF['site_name']}にリンクを登録していただき、ありがとうございます。このリンクは承認のためにスタッフに送られました。承認されますと、あなたのリンクは<a href={$_CONF['site_url']}/links/index.php>リンクセクション</a>に表示されます。";
+$PLG_links_MESSAGE2 = 'リンクは保存されました。';
+$PLG_links_MESSAGE3 = 'リンクは削除されました。';
+$PLG_links_MESSAGE4 = "{$_CONF['site_name']}にリンクを登録していただき、ありがとうございます。<a href={$_CONF['site_url']}/links/index.php>リンク</a>セクションでご覧いただけます。";
+$PLG_links_MESSAGE5 = "あなたには、このカテゴリを見るための十分なアクセス権がありません。";
+$PLG_links_MESSAGE6 = 'あなたには、このカテゴリを編集する十分な権利がありません。';
+$PLG_links_MESSAGE7 = 'カテゴリの名前と説明を入力してください。';
+
+$PLG_links_MESSAGE10 = 'カテゴリは保存されました。';
+$PLG_links_MESSAGE11 = 'カテゴリ IDを「site」または「user」に設定することはできません。これらは内部で使用するために予約されています。';
+$PLG_links_MESSAGE12 = 'あなたは、編集中のカテゴリ自身のサブカテゴリを、親カテゴリに設定しようとしています。これは孤立するカテゴリを作成することになりますので、先に子カテゴリまたはカテゴリを、より高いレベルへ移動させてください。';
+$PLG_links_MESSAGE13 = 'カテゴリは削除されました。';
+$PLG_links_MESSAGE14 = 'カテゴリはリンクやカテゴリを含んでいます。先にそれらを取り除いてください。';
+$PLG_links_MESSAGE15 = 'あなたには、このカテゴリを削除する十分な権利がありません。';
 $PLG_links_MESSAGE16 = 'そのようなカテゴリは存在しません。';
 
 // Messages for the plugin upgrade
@@ -119,21 +156,25 @@ $PLG_links_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
-# admin/plugins/links/index.php
-
+# admin/link.php
+/**
+* the link plugin's lang admin array
+*
+* @global array $LANG_LINKS_ADMIN
+*/
 $LANG_LINKS_ADMIN = array(
     1 => 'リンクの編集',
-    2 => 'ID',
+    2 => 'リンクID',
     3 => 'タイトル',
     4 => 'URL',
     5 => 'カテゴリ',
     6 => '(http://を含む)',
     7 => 'その他',
-    8 => 'リンクの参照',
+    8 => 'ヒット数',
     9 => '説明',
-    10 => 'タイトル、URL、説明が必要です',
-    11 => 'リンクの管理',
-    12 => 'リンクを修正、削除する場合は各リンクの「編集」アイコンをクリックしてください。新規作成は上の「新規」をクリックしてください。',
+    10 => 'タイトル，URL，説明の入力が必要です',
+    11 => 'リンク管理',
+    12 => 'リンクを修正・削除する場合は各リンクの「編集」アイコンをクリックしてください。リンクまたはカテゴリを作成する場合は、上の「リンクの作成」または「カテゴリの作成」をクリックしてください。マルチカテゴリを編集する場合は、上の「カテゴリの編集」をクリックしてください。',
     14 => 'カテゴリ',
     16 => 'アクセスが拒否されました',
     17 => "権限のないリンクにアクセスしようとしましたのでログに記録しました。<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">リンクの管理画面に戻って</a>ください。",
@@ -141,81 +182,81 @@ $LANG_LINKS_ADMIN = array(
     21 => '保存',
     22 => 'キャンセル',
     23 => '削除',
-    24 => 'リンクが見つかりません',
-    25 => '編集しようと選択されたリンクは見つかりませんでした。',
-    26 => 'リンクを検証',
-    27 => 'HTMLの状態',
-    28 => 'カテゴリを編集',
-    29 => '以下の詳細を入力または編集して下さい。',
+    24 => 'リンク先が見つかりません',
+    25 => '編集対象のリンクが見つかりませんでした.',
+    26 => 'リンクの確認',
+    27 => 'HTMLステータス',
+    28 => 'カテゴリの編集',
+    29 => '以下の項目を入力または編集してください。',
     30 => 'カテゴリ',
     31 => '説明',
     32 => 'カテゴリID',
     33 => '話題',
-    34 => '親',
-    35 => 'カテゴリのIDを"site"や"user"とすることは許可されていません。これらの名前は内部的な使用のために予約されています。',
-    40 => 'このカテゴリを編集',
-    41 => '子のカテゴリを作成',
-    42 => 'このカテゴリを削除',
-    43 => 'Siteカテゴリ',
-    44 => '子を追加',
-    46 => 'ユーザ %s が、アクセス権を持たないカテゴリを削除しようとしました。',
+    34 => '親カテゴリ',
+    35 => 'すべて',
+    40 => 'このカテゴリを編集する',
+    41 => '子カテゴリを作成する',
+    42 => 'このカテゴリを削除する',
+    43 => 'サイトカテゴリ',
+    44 => '子カテゴリの追加',
+    46 => 'ユーザ %s は、アクセス権限がないカテゴリを削除しようとしました。',
     50 => 'カテゴリのリスト',
-    51 => '新しいリンク',
-    52 => '新しいカテゴリ',
+    51 => 'リンクの作成',
+    52 => 'カテゴリの作成',
     53 => 'リンクのリスト',
-    54 => 'カテゴリ・マネージャ',
-    55 => '下のカテゴリを編集して下さい。他のカテゴリやリンクを含んでいるカテゴリは削除できないことに注意して下さい。このようなカテゴリを削除するには、先に含まれているものを削除するか、他のカテゴリに移動する必要があります。',
-    56 => 'カテゴリ・エディタ',
-    57 => '未検証',
-    58 => '今すぐ検証',
-    59 => '<p>表示されているすべてのリンクを検証するには、下の「今すぐ検証」のリンクをクリックしてください。リンクの検証には、表示されているリンクの数によって、ある程度の時間が掛かることに注意して下さい。</p>',
-    60 => 'ユーザ %s がカテゴリ %s を不正に編集しようとしました。'
+    54 => 'カテゴリの管理',
+    55 => '以下のカテゴリを編集してください。 リンクやカテゴリを含むカテゴリは削除できません。先にこれらを削除するか、ほかのカテゴリに移す必要があります。',
+    56 => 'カテゴリの編集',
+    57 => 'まだ確認されていません。',
+    58 => 'リンクの確認',
+    59 => '<p>表示されている全てのリンクを確認する場合は、下の「リンクの確認」をクリックしてください。この処理はリンクの数に応じてかなりの時間がかかるかもしれません。</p>',
+    60 => 'ユーザ %s は権限なしにカテゴリ %s を編集しようとしました。'
 );
-
 
 $LANG_LINKS_STATUS = array(
-    100 => 'Continue',
-    101 => 'Switching Protocols',
-    200 => 'OK',
-    201 => 'Created',
-    202 => 'Accepted',
-    203 => 'Non-Authoritative Information',
-    204 => 'No Content',
-    205 => 'Reset Content',
-    206 => 'Partial Content',
-    300 => 'Multiple Choices',
-    301 => 'Moved Permanently',
-    302 => 'Found',
-    303 => 'See Other',
-    304 => 'Not Modified',
-    305 => 'Use Proxy',
-    307 => 'Temporary Redirect',
-    400 => 'Bad Request',
-    401 => 'Unauthorized',
-    402 => 'Payment Required',
-    403 => 'Forbidden',
-    404 => 'Not Found',
-    405 => 'Method Not Allowed',
-    406 => 'Not Acceptable',
-    407 => 'Proxy Authentication Required',
-    408 => 'Request Timeout',
-    409 => 'Conflict',
-    410 => 'Gone',
-    411 => 'Length Required',
-    412 => 'Precondition Failed',
-    413 => 'Request Entity Too Large',
-    414 => 'Request-URI Too Long',
-    415 => 'Unsupported Media Type',
-    416 => 'Requested Range Not Satisfiable',
-    417 => 'Expectation Failed',
-    500 => 'Internal Server Error',
-    501 => 'Not Implemented',
-    502 => 'Bad Gateway',
-    503 => 'Service Unavailable',
-    504 => 'Gateway Timeout',
-    505 => 'HTTP Version Not Supported',
-    999 => 'Connection Timed out'
+    100 => "Continue",
+    101 => "Switching Protocols",
+    200 => "OK",
+    201 => "Created",
+    202 => "Accepted",
+    203 => "Non-Authoritative Information",
+    204 => "No Content",
+    205 => "Reset Content",
+    206 => "Partial Content",
+    300 => "Multiple Choices",
+    301 => "Moved Permanently",
+    302 => "Found",
+    303 => "See Other",
+    304 => "Not Modified",
+    305 => "Use Proxy",
+    307 => "Temporary Redirect",
+    400 => "Bad Request",
+    401 => "Unauthorized",
+    402 => "Payment Required",
+    403 => "Forbidden",
+    404 => "Not Found",
+    405 => "Method Not Allowed",
+    406 => "Not Acceptable",
+    407 => "Proxy Authentication Required",
+    408 => "Request Timeout",
+    409 => "Conflict",
+    410 => "Gone",
+    411 => "Length Required",
+    412 => "Precondition Failed",
+    413 => "Request Entity Too Large",
+    414 => "Request-URI Too Long",
+    415 => "Unsupported Media Type",
+    416 => "Requested Range Not Satisfiable",
+    417 => "Expectation Failed",
+    500 => "Internal Server Error",
+    501 => "Not Implemented",
+    502 => "Bad Gateway",
+    503 => "Service Unavailable",
+    504 => "Gateway Timeout",
+    505 => "HTTP Version Not Supported",
+    999 => "Connection Timed out"
 );
+
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
@@ -224,38 +265,38 @@ $LANG_configsections['links'] = array(
 );
 
 $LANG_confignames['links'] = array(
-    'linksloginrequired' => 'リンクにログインが必要?',
-    'linksubmission' => 'リンクの申し込みキューを有効?',
-    'newlinksinterval' => '新しいリンク作成の間隔',
-    'hidenewlinks' => '新しいリンクを隠す?',
-    'hidelinksmenu' => 'リンクのメニュー項目を隠す?',
-    'linkcols' => '行毎のカテゴリ数',
-    'linksperpage' => 'ページ毎のリンクの数',
-    'show_top10' => '上位10のリンクを表示?',
-    'notification' => '電子メールで通知?',
-    'delete_links' => '所有者と共にリンクを削除?',
-    'aftersave' => 'リンクの保存後',
-    'show_category_descriptions' => 'カテゴリの説明を表示?',
-    'root' => 'ルートのカテゴリのID',
-    'default_permissions' => 'リンクのデフォルトのパーミッション'
+    'linksloginrequired' => 'ログインを要求する',
+    'linksubmission' => 'リンクの投稿を管理者が承認する',
+    'newlinksinterval' => 'リンク作成の間隔',
+    'hidenewlinks' => 'リンク投稿ボタンを隠す',
+    'hidelinksmenu' => 'メニューに表示しない',
+    'linkcols' => 'カテゴリの表示カラム数',
+    'linksperpage' => 'ページあたりのリンク数',
+    'show_top10' => 'リンクのトップ10を表示する',
+    'notification' => 'メールで通知する',
+    'delete_links' => '所有者の削除と共に削除する',
+    'aftersave' => 'リンク保存後の画面遷移',
+    'show_category_descriptions' => 'カテゴリの説明を表示する',
+    'root' => 'トップカテゴリのID',
+    'default_permissions' => 'パーミッション'
 );
 
 $LANG_configsubgroups['links'] = array(
-    'sg_main' => '主な設定'
+    'sg_main' => 'メイン'
 );
 
 $LANG_fs['links'] = array(
-    'fs_public' => '公開されたリンクのリストの設定',
-    'fs_admin' => 'リンクの管理設定',
-    'fs_permissions' => 'デフォルトのパーミッション'
+    'fs_public' => 'リンクの表示',
+    'fs_admin' => 'リンクの管理',
+    'fs_permissions' => 'リンクのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
-    9 => array('リンクされたサイトに進む' => 'item', '管理リストを表示' => 'list', '公開されたリストを表示' => 'plugin', 'HOMEページを表示' => 'home', '管理画面を表示' => 'admin'),
-    12 => array('アクセス不可' => 0, '書き込み禁止' => 2, '読み書き可能' => 3)
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    9 => array('リンク先サイトを表示する' => 'item', 'リンク管理を表示する' => 'list', '公開リンクリストを表示する' => 'plugin', 'Homeを表示する' => 'home', '管理画面TOPを表示する' => 'admin'),
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );
 
 ?>

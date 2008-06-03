@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-June 1, 2008 (1.5.0rc2)
+June ?, 2008 (1.5.0rc2)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -35,7 +35,8 @@ Changes since 1.5.0rc1:
 - Fixed problems with the text direction in the install script (reported by LWC)
   [Dirk]
 
-- Updated Japanese language files, provided by Takahiro Kambe
+- Updated Japanese language files, provided by Takahiro Kambe, Tetsuko Komma,
+  and the Geeklog.jp group
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file, provided by gape
 

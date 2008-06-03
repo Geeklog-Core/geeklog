@@ -2,7 +2,7 @@
 
 ###############################################################################
 # japanese_utf-8.php
-# This is the Japanese language page for the Geeklog Static Page Plug-in!
+# This is the Japanese language file for the Geeklog Static Page plugin!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -25,14 +25,15 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:  $LANG - variable name
-#               XX    - file id number
-#               YY    - phrase id number
+# $LANGXX[YY]:	$LANG - variable name
+#		  	XX - file id number
+#			YY - phrase id number
 ###############################################################################
 
 $LANG_STATIC = array(
@@ -49,12 +50,12 @@ $LANG_STATIC = array(
     'url' => 'URL',
     'edit' => '編集',
     'lastupdated' => '最終更新日：',
-    'pageformat' => 'ページレイアウト',
+    'pageformat' => 'レイアウト',
     'leftrightblocks' => 'ヘッダ・フッタ・左右ブロックあり',
     'blankpage' => '全画面表示（ヘッダ・フッタ・ブロックなし）',
     'noblocks' => 'ヘッダ・フッタあり（ブロックなし）',
-    'leftblocks' => 'ヘッダ・フッタ・左側ブロックあり（右側ブロックなし）',
-    'addtomenu' => 'ヘッダメニューに追加',
+    'leftblocks' => 'ヘッダ・フッタ・左ブロックあり（右ブロックなし）',
+    'addtomenu' => 'ヘッダメニュー',
     'label' => 'メニュー名',
     'nopages' => '静的ページがありません',
     'save' => '保存',
@@ -68,10 +69,10 @@ $LANG_STATIC = array(
     'author' => '所有者',
     'no_title_or_content' => '<b>タイトル</b>と<b>内容</b>を記入してください。',
     'no_such_page_anon' => 'ログインしてください。',
-    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
+    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
     'php_warn' => '<br' . XHTML . '>注意：このオプションを有効にすると，あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には，あらかじめ管理画面「グループ:Static Page Admin」で，権限「staticpages.PHP」にチェックしてください。PHPを使う場合，通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
-    'exit_msg' => '閲覧権限がない場合: ',
+    'exit_msg' => 'ログイン要求: ',
     'exit_info' => 'チェックすると，閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか，権限がないかのいずれかです。',
     'stats_headline' => '静的ページ（上位10件）',
@@ -80,11 +81,11 @@ $LANG_STATIC = array(
     'stats_no_hits' => '静的ページがないか，閲覧者がいないかのどちらかです。',
     'id' => 'ID',
     'duplicate_id' => '指定したIDはすでに使われています。別のIDをご使用ください。',
-    'instructions' => 'ページを編集・削除は，各ページの先頭の編集アイコンをクリック。ページの閲覧は，タイトルをクリック。新しいページを作成する場合は「新規作成」リンクをクリック。ページのコピーは[C]をクリックしてください。',
-    'centerblock' => 'センターエリア表示: ',
+    'instructions' => '静的ページを編集・削除する場合は各ページの先頭の編集アイコンをクリックしてください。静的ページを閲覧する場合は，閲覧したいページのタイトルをクリックしてください。新しい静的ページを作成する場合は「新規作成」をクリックしてください。静的ページのコピーは[C]をクリックしてください。',
+    'centerblock' => 'センターエリア: ',
     'centerblock_msg' => 'チェックすると，トップページまたは話題のトップページのセンターエリアに表示されます。表示はIDでソートされます。',
     'topic' => '話題: ',
-    'position' => '表示場所: ',
+    'position' => '表示エリア: ',
     'all_topics' => 'すべて',
     'no_topic' => 'ホームページのみ',
     'position_top' => 'ページの最上部',
@@ -98,24 +99,27 @@ $LANG_STATIC = array(
     'centerblock_bottom' => '下部',
     'centerblock_entire' => 'ページ全体',
     'inblock_msg' => 'ブロックで囲む: ',
-    'inblock_info' => 'チェックすると，タイトルが表示され，コンテンツがブロックで囲まれます。',
+    'inblock_info' => 'タイトルが表示され，コンテンツがブロックで囲まれます。',
     'title_edit' => '編集',
     'title_copy' => 'コピーを作成',
     'title_display' => 'ページを表示する',
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => '静的ページでPHPは使用しない設定になっています。詳細については <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">関連ドキュメント</a> をご覧下さい。',
     'printable_format' => '印刷用フォーマット',
+    'edit' => '編集',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
     'submit' => '登録'
 );
 
+
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
@@ -124,37 +128,37 @@ $LANG_configsections['staticpages'] = array(
 );
 
 $LANG_confignames['staticpages'] = array(
-    'allow_php' => 'PHPを許可?',
-    'sort_by' => '中央ブロックのソート',
-    'sort_menu_by' => 'メニュー項目のソート',
-    'delete_pages' => '所有者と共にページを削除?',
-    'in_block' => 'ブロック中のページをくるむ?',
-    'show_hits' => 'ヒット数を表示?',
-    'show_date' => '日付を表示?',
-    'filter_html' => 'HTMLをフィルタ?',
-    'censor' => '内容を検閲?',
-    'default_permissions' => 'ページのデフォルトのパーミッション',
-    'aftersave' => 'ページの保存後',
-    'atom_max_items' => 'Webサービスのフィードの最大ページ数'
+    'allow_php' => 'PHPを許可する',
+    'sort_by' => 'センターブロックでのソート項目',
+    'sort_menu_by' => 'メニューでのソート項目',
+    'delete_pages' => '所有者の削除と共に削除する',
+    'in_block' => 'ページをブロックで囲む',
+    'show_hits' => 'ヒット数を表示する',
+    'show_date' => '日付を表示する',
+    'filter_html' => 'HTMLをフィルターする',
+    'censor' => '内容を検閲する',
+    'default_permissions' => 'パーミッション',
+    'aftersave' => 'ページ保存後の画面遷移',
+    'atom_max_items' => 'フィードに使用するページの最大数'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    'sg_main' => '主な設定'
+    'sg_main' => 'メイン'
 );
 
 $LANG_fs['staticpages'] = array(
-    'fs_main' => '静的ページの主な設定',
-    'fs_permissions' => 'デフォルトのパーミッション'
+    'fs_main' => '静的ページのメイン設定',
+    'fs_permissions' => '静的ページのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
-      9 => array('ページに進む' => 'item', 'リストを表示' => 'list', 'HOMEページを表示' => 'home', '管理画面を表示' => 'admin'),
-    12 => array('アクセス不可' => 0, '書き込み禁止' => 2, '読み書き可能' => 3)
+    9 => array('作成した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'Homeを表示する' => 'home', '管理画面TOPを表示する' => 'admin'),
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );
 
 ?>

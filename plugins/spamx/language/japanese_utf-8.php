@@ -4,7 +4,7 @@
  * File: japanese_utf-8.php
  * This is the Japanese language file for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2006 by the following authors:
+ * Copyright (C) 2004-2008 by the following authors:
  * Author        Tom Willett        tomw AT pigstye DOT net
  * Tranlated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
@@ -12,24 +12,25 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.9 2008/05/28 19:02:25 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.10 2008/06/03 17:40:49 dhaun Exp $
  */
+# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 global $LANG32;
 
-$LANG_SX00 = array(
+$LANG_SX00 = array (
     'inst1' => '<p>もしこれをおこなったら他も ',
-    'inst2' => '見えます。そしてあなたのブラックリストをインポートしてより効果を発揮します。',
+    'inst2' => '見えます。そしてあなたのブラックリストをインポートするとさらに効果を発揮します。',
     'inst3' => 'データベースが構築されました。</p><p>もし、ウェブサイトを作ってもリスティングされないためには',
     'inst4' => ' <a href="mailto:spamx@pigstye.net">spamx@pigstye.net</a>までメールを送信してください。',
     'inst5' => 'リクエストは尊重されます。',
     'submit' => '実行',
-    'subthis' => 'このSpam-X情報は、中央データベースです。',
+    'subthis' => 'このSpam-X情報は、Spam-X Central Databaseを参照しています。',
     'secbut' => '2番目のボタンは、RDFフィードを作成します。他サイトから呼ぶことができます。',
     'sitename' => 'サイト名: ',
     'URL' => 'URL Spam-X リスト: ',
     'RDF' => 'RDF url: ',
-    'impinst1a' => 'Spam-Xを使う前に、 Spamブロッカー機能のパーソナルブラックリストを閲覧してインポートします。',
+    'impinst1a' => 'Spam-Xを使う前に、スパムブロッカー機能のパーソナルブラックリストを閲覧してインポートします。',
     'impinst1b' => 'サイト、つぎのボタンを。 (最後のボタンをクリック)',
     'impinst2' => 'Gplugs/Spam-X の最初の実行はマスターリストに加えられます ',
     'impinst2a' => 'ブラックリストが反映。 (註: 複数サイトあるのなら、 その中のひとつを指定したいかもしれない',
@@ -43,12 +44,12 @@ $LANG_SX00 = array(
     'rsscreated' => 'RSSフィードが作成されました',
     'add1' => '追加されました ',
     'add2' => ' エントリー: ',
-    'add3' => 'のブラックリスト',
+    'add3' => "のブラックリスト",
     'adminc' => '管理者コマンド:',
     'mblack' => 'マイブラックリスト:',
     'rlinks' => '関係先リンク:',
-    'e3' => 'Geeklogの監視リスト追加:',
-    'addcen' => '監視リスト追加',
+    'e3' => 'Geeklogのセンサーリスト追加:',
+    'addcen' => 'センサーリスト追加',
     'addentry' => 'エントリ追加',
     'e1' => 'クリックしてエントリを削除',
     'e2' => 'エントリを追加して, エントリ追加ボタンをクリックしてください。エントリーは完全なPerl正規表現を使用することができます。 ',
@@ -94,15 +95,15 @@ $LANG_SX00 = array(
     'foundspam3' => ' IPから ',
     'deletespam' => 'スパム削除',
     'numtocheck' => 'コメント数チェック',
-    'note1' => '<p>Note: マスデリートで攻撃から守ります。',
-    'note2' => ' コメントスパムと Spam-X はキャッチしません。 </p><ul><li>最初のリンクとその他 ',
-    'note3' => 'このスパムコメントをあなたのパーソナルブラックリストへ追加</li><li>',
-    'note4' => 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>',
-    'note5' => '最新コメントを最後のコメントに追加チェック -- コメントチェック ',
-    'note6' => 'チェックをより多く要求します。</p>',
-    'masshead' => '<hr' . XHTML . '><h1 align="center">マスデリート～スパムコメント</h1>',
-    'masstb' => '<hr' . XHTML . '><h1 align="center">マスデリート～トラックバックスパム</h1>',
-    'comdel' => 'コメントが削除されました。',
+    'note1'     => '<p>Note: マスデリートで攻撃から守ります。',
+    'note2'     => ' コメントスパムと Spam-X はキャッチしません。 </p><ul><li>最初のリンクとその他 ',
+    'note3'     => 'このスパムコメントをあなたのパーソナルブラックリストへ追加</li><li>',
+    'note4'     => 'ここに戻り、最近のコメントを Spam-X チェック</li></ul><p>',
+    'note5'     => '最新コメントを最後のコメントに追加チェック -- コメントチェック ',
+    'note6'     => 'チェックをより多く要求します。</p>',
+    'masshead'  => '<hr' . XHTML . '><h1 align="center">マスデリート - スパムコメント</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">マスデリート - トラックバックスパム</h1>',
+    'comdel'    => 'コメントが削除されました。',
     'initial_Pimport' => '<p>パーソナルブラックリスト インポート"',
     'initial_import' => '初期 MT-ブラックリスト インポート',
     'import_success' => '<p> %d ブラクリストエントリーがインストールできました。',
@@ -110,58 +111,61 @@ $LANG_SX00 = array(
     'allow_url_fopen' => '<p>申し訳ありませんがあなたのウェブサーバのコンフィギュレーションはリモートファイルの読み込みを許可していません。 (<code>allow_url_fopen</code> がオフ). 次のURLからブラックリストをダウンロードしてGeeklogの "データ" ディレクトリにアップロードしてください。<tt>%s</tt>, 再実行の前に:',
     'documentation' => 'Spam-X プラグインドキュメント',
     'emailmsg' => "新しいスパム投稿 \"%s\"\nUser UID: \"%s\"\n\nコンテンツ:\"%s\"",
-    'emailsubject' => 'Spam ポスト %s',
+    'emailsubject' => 'スパムポスト %s',
     'ipblack' => 'Spam-X IP ブラックリスト',
     'ipofurlblack' => 'Spam-X IP of URL ブラックリスト',
     'headerblack' => 'Spam-X HTTP Header ブラックリスト',
     'headers' => 'リクエストヘッダ:',
-    'stats_headline' => 'Spam-X ステータス',
+
+    'stats_headline' => 'Spam-Xステータス',
     'stats_page_title' => 'ブラックリスト',
     'stats_entries' => 'エントリ',
     'stats_mtblacklist' => 'MT-ブラックリスト',
     'stats_pblacklist' => 'パーソナルブラックリスト',
     'stats_ip' => 'ブロックIP',
     'stats_ipofurl' => 'URLのIPによってブロックされました',
-    'stats_header' => 'HTTP ヘッダ',
-    'stats_deleted' => 'スパムとして投稿削除',
+    'stats_header' => 'HTTPヘッダ',
+    'stats_deleted' => 'スパム投稿削除数',
+
     'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'SLV ホワイトリスト'
+    'slvwhitelist' => 'SLVホワイトリスト'
 );
 
-// Define Messages that are shown when Spam-X module action is taken
-$PLG_spamx_MESSAGE128 = 'Spam 削除。投稿は削除されました。';
-$PLG_spamx_MESSAGE8 = 'Spam 削除。メールが管理者に送られました。';
+
+/* Define Messages that are shown when Spam-X module action is taken */
+$PLG_spamx_MESSAGE128 = 'スパム削除。投稿は削除されました。';
+$PLG_spamx_MESSAGE8   = 'スパム削除。メールが管理者に送られました。';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
 
+
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
     'label' => 'Spam-X',
-    'title' => 'Spam-X設定'
+    'title' => 'Spam-Xの設定'
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-Xのアクション',
-    'notification_email' => '電子メールで通知',
-    'admin_override' => 'Adminの投稿をフィルタしない',
-    'logging' => 'ログを有効',
+    'action' => 'Spam-X の動作',
+    'notification_email' => 'メールで通知する',
+    'admin_override' => "管理者の入力はフィルターしない",
+    'logging' => 'ログを有効にする',
     'timeout' => 'タイムアウト'
 );
 
 $LANG_configsubgroups['spamx'] = array(
-    'sg_main' => '主な設定'
+    'sg_main' => 'メイン'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-Xの主な設定'
+    'fs_main' => 'Spam-Xの設定'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE)
 );
 
 ?>
