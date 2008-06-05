@@ -38,6 +38,8 @@ Changes since 1.5.0rc1:
 - Updated Hebrew language files, provided by LWC
 - Updated Japanese language files, provided by Takahiro Kambe, Tetsuko Komma,
   and the Geeklog.jp group
+  Note: Only the UTF-8 versions of the Japanaes language files are supported
+  from now on. The euc-jp versions have been removed from the distribution.
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file, provided by gape
 
