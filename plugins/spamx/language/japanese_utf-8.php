@@ -12,7 +12,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: japanese_utf-8.php,v 1.11 2008/06/03 19:28:46 dhaun Exp $
+ * $Id: japanese_utf-8.php,v 1.12 2008/06/05 18:48:35 dhaun Exp $
  */
 # Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 

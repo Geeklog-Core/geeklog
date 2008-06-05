@@ -28,7 +28,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: japanese_utf-8.php,v 1.15 2008/06/03 19:28:46 dhaun Exp $
+# $Id: japanese_utf-8.php,v 1.16 2008/06/05 18:48:35 dhaun Exp $
 # Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 /**
