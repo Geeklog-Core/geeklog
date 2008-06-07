@@ -18,6 +18,7 @@
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_eventstartdate}:</b></td>
                                         <td>
+                                          <span dir="ltr">
                                             <select name="start_month">
                                                 {startmonth_options}
                                             </select>
@@ -38,11 +39,13 @@
                                                 {startminute_options}
                                             </select>
                                             {startampm_selection}
+                                          </span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_eventenddate}:</b></td>
                                         <td>
+                                          <span dir="ltr">
                                             <select name="end_month">
                                                 {endmonth_options}
                                             </select>
@@ -63,6 +66,7 @@
                                                 {endminute_options}
                                             </select>
                                             {endampm_selection}
+                                          </span>
                                         </td>
                                     </tr>
                                     <tr>

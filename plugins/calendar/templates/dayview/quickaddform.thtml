@@ -17,6 +17,7 @@
                                                 <tr>
                                                     <td><input type="text" size="20" maxlength="96" name="title"{xhtml}></td>
                                                     <td>
+                                                      <span dir="ltr">
                                                         <select name="start_month">
                                                             {month_options}
                                                         </select>
@@ -28,8 +29,10 @@
                                                         <select name="start_year">
                                                             {year_options}
                                                         </select>
+                                                      </span>
                                                     </td>
                                                     <td>
+                                                      <span dir="ltr">
                                                         <select name="start_hour">
                                                             {hour_options}
                                                         </select>
@@ -38,6 +41,7 @@
                                                             {minute_options}
                                                         </select>
                                                         {startampm_selection}
+                                                      </span>
                                                         <input type="submit" value="{lang_add}"{xhtml}>
                                                         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                                     </td>

@@ -13,6 +13,7 @@
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_startdate}:</div>
                                 <div class="form-field">
+                                  <span dir="ltr">
                                     <select name="start_month">
                                         {month_options}
                                     </select>
@@ -33,10 +34,12 @@
                                         {minute_options}
                                     </select>
                                     {startampm_selection}
+                                  </span>
                                 </div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_enddate}:</div>
                                 <div class="form-field">
+                                  <span dir="ltr">
                                     <select name="end_month">
                                         {month_options}
                                     </select>
@@ -57,6 +60,7 @@
                                         {minute_options}
                                     </select>
                                     {startampm_selection}
+                                  </span>
                                 </div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_alldayevent}:</div>
