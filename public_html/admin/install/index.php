@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.43 2008/05/31 21:36:15 dhaun Exp $
+// $Id: index.php,v 1.44 2008/06/07 07:48:10 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -1603,7 +1603,6 @@ if (isset($_POST['language'])) {
     // Okay, so the name of the language cookie is configurable, so it may not
     // be named 'language' after all. Still worth a try ...
     $lng = $_COOKIE['language'];
-    $lng = str_replace('_utf-8', '', $lng); // for now
 } else {
     $lng = $language;
 }
