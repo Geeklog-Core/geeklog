@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.44 2008/06/07 07:48:10 dhaun Exp $
+// $Id: index.php,v 1.45 2008/06/07 13:38:48 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -932,6 +932,11 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
 */
 function INST_getDefaultLanguage($langpath, $language, $utf8 = false)
 {
+    $pos = strpos($language, '_utf-8');
+    if ($pos !== false) {
+        $language = substr($language, 0, $pos);
+    }
+
     if ($utf8) {
         $lngname = $language . '_utf-8';
     } else {
