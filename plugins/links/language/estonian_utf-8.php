@@ -26,7 +26,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: estonian_utf-8.php,v 1.6 2008/05/24 07:35:54 dhaun Exp $
+# $Id: estonian_utf-8.php,v 1.7 2008/06/07 14:27:34 dhaun Exp $
 
 /** 
  * This is the estonian language page for the Geeklog links Plug-in! 
@@ -253,7 +253,7 @@ $LANG_configsections['links'] = array(
 $LANG_confignames['links'] = array(
     'linksloginrequired' => 'Lingid vajavad sisselogimist?',
     'linksubmission' => 'Luba linkide puhver?',
-    'Uute linkide intervall',
+    'newlinksinterval' => 'Uute linkide intervall',
     'hidenewlinks' => 'Peida uued lingid',
     'hidelinksmenu' => 'Peida linkide menüüpunkt',
     'linkcols' => 'Kategooriaid veerus',

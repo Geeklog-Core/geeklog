@@ -11,6 +11,10 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Fixed handling of UTF-8 languages in the install script (reported by Tetsuko
+  Komma) [Dirk]
+- Ensure consistent display of the admin lists (bug #0000650) [Dirk]
+- Sanitize the language in the install help (reported by Mark Evans) [Dirk]
 - Moved the hard-coded CSS for the System Message to the stylesheet [Dirk]
 - Added a workaround for the Yulup Atompub client that sometimes sends Text
   nodes within XHTML nodes [Dirk]
@@ -35,10 +39,11 @@ Changes since 1.5.0rc1:
 - Fixed problems with the text direction in the install script (reported by LWC)
   [Dirk]
 
+- Updated Estonian language files, provided by Artur Räpp
 - Updated Hebrew language files, provided by LWC
 - Updated Japanese language files, provided by Takahiro Kambe, Tetsuko Komma,
   and the Geeklog.jp group
-  Note: Only the UTF-8 versions of the Japanaes language files are supported
+  Note: Only the UTF-8 versions of the Japanese language files are supported
   from now on. The euc-jp versions have been removed from the distribution.
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file, provided by gape
