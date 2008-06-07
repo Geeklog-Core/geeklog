@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.123 2008/05/31 07:55:08 dhaun Exp $
+// $Id: functions.inc,v 1.124 2008/06/07 18:31:56 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -338,8 +338,8 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
     $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
     $spage->set_var('content', $content );
 
+    $spage->set_var('info_separator', 'hidden');
     if ($A['sp_format'] <> 'blankpage') {
-        $spage->set_var('info_separator','hidden');
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
         if ($_SP_CONF['show_date'] == 1) {
             $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
@@ -354,8 +354,6 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
             $spage->set_var('hits', $hits);
         }
     }
-
-
 
     $retval .= $spage->finish($spage->parse('output', 'page'));
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
