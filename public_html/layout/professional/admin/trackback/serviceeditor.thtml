@@ -13,13 +13,13 @@
         <tr>
             <td class="alignright">{lang_site_url}:</td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="service_site_url" value="{service_site_url}"{xhtml}>
+                <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="service_site_url" value="{service_site_url}"{xhtml}>
             </td>
         </tr>
         <tr>
             <td class="alignright">{lang_ping_url}:</td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="service_ping_url" value="{service_ping_url}"{xhtml}>
+                <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="service_ping_url" value="{service_ping_url}"{xhtml}>
             </td>
         </tr>
         <tr>

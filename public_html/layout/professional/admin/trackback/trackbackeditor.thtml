@@ -4,7 +4,7 @@
         <tr>
             <td class="alignright"><b>{lang_trackback_url}:</b></td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
+                <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
             </td>
         </tr>
         <tr>
@@ -16,7 +16,7 @@
         <tr>
             <td class="alignright"><b>{lang_entry_url}:</b></td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="url" value="{url}"{xhtml}>
+                <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="url" value="{url}"{xhtml}>
             </td>
         </tr>
         <tr>

@@ -4,7 +4,7 @@
         <tr>
             <td class="alignright"><b>{lang_pingback_url}:</b></td>
             <td>
-                <input type="text" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
+                <input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="target" value="{target_url}"{xhtml}>
             </td>
         </tr>
         <tr>

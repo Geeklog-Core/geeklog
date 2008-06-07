@@ -11,7 +11,7 @@
                                         </tr>
                                         <tr>
                                             <td class="alignright" style="vertical-align:top">{lang_blockhelpurl}:</td>
-                                            <td><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"{xhtml}><div class="pluginMediumText">{lang_includehttp}&nbsp;{lang_explanation}</div></td>
+                                            <td><input type="text" dir="ltr" name="help" value="{block_help}" size="48" maxlength="{max_url_length}"{xhtml}><div class="pluginMediumText">{lang_includehttp}&nbsp;{lang_explanation}</div></td>
                                         </tr>
                                         <tr>
                                             <td class="alignright" style="vertical-align:top">{lang_blockname}:</td>
@@ -69,7 +69,7 @@
                                         </tr>
                                         <tr>
                                             <td class="alignright">{lang_rdfurl}:</td>
-                                            <td><input type="text" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"{xhtml}></td>
+                                            <td><input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"{xhtml}></td>
                                         </tr>
                                         <tr>
                                             <td class="alignright">{lang_rdflimit}:</td>

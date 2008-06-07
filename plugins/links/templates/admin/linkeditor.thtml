@@ -20,7 +20,7 @@
                                         <tr>
                                             <td align="right">{lang_linkurl}:</td>
                                             <td>
-                                                <input type="text" size="48" maxlength="{max_url_length}" name="url" value="{link_url}"{xhtml}> {lang_includehttp}
+                                                <input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="{link_url}"{xhtml}> {lang_includehttp}
                                             </td>
                                         </tr>
                                         <tr>

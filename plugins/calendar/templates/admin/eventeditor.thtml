@@ -101,7 +101,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_eventurl}:</b></td>
-                                        <td><input type="text" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"{xhtml}> {lang_includehttp}</td>
+                                        <td><input type="text" dir="ltr" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"{xhtml}> {lang_includehttp}</td>
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_eventdescription}:</b></td>

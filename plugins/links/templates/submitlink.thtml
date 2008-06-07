@@ -6,7 +6,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_link}:</b></td>
-                                        <td><input type="text" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></td>
+                                        <td><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_category}:</b></td>
