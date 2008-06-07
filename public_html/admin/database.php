@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.48 2008/05/18 11:37:20 dhaun Exp $
+// $Id: database.php,v 1.49 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -73,6 +73,7 @@ function compareBackupFiles($pFileA, $pFileB)
 function listbackups()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG08, $LANG_ADMIN, $LANG_DB_BACKUP;
+
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
@@ -118,9 +119,12 @@ function listbackups()
             array('url' => $_CONF['site_admin_url'],
                   'text' => $LANG_ADMIN['admin_home'])
         );
+        $retval .= COM_startBlock($LANG_DB_BACKUP['last_ten_backups'], '',
+                            COM_getBlockTemplate('_admin_block', 'header'));
         $retval .= ADMIN_createMenu(
             $menu_arr,
-            "<p>{$LANG_DB_BACKUP['db_explanation']}</p><p>" . sprintf($LANG_DB_BACKUP['total_number'], $index) . '</p>',
+            "<p>{$LANG_DB_BACKUP['db_explanation']}</p>" .
+            '<p>' . sprintf($LANG_DB_BACKUP['total_number'], $index) . '</p>',
             $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE
         );
 
@@ -130,7 +134,6 @@ function listbackups()
         );
 
         $text_arr = array(
-            'title' => $LANG_DB_BACKUP['last_ten_backups'],
             'form_url' => $thisUrl
         );
         $form_arr = array('bottom' => '', 'top' => '');
@@ -141,7 +144,9 @@ function listbackups()
         }
         $listoptions = array('chkdelete' => true, 'chkminimum' => 0,
                              'chkfield' => 'filename');
-        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr, $listoptions, $form_arr);
+        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr,
+                                    $listoptions, $form_arr);
+        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     } else {
         $retval .= COM_startBlock($LANG08[06], '',
                             COM_getBlockTemplate('_msg_block', 'header'));

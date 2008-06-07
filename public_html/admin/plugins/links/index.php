@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.60 2008/05/18 13:55:40 dhaun Exp $
+// $Id: index.php,v 1.61 2008/06/07 12:41:45 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -404,11 +404,13 @@ function listlinks ()
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']);
 
+    $retval .= COM_startBlock($LANG_LINKS_ADMIN[11], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12] . $validate_help, plugin_geticon_links());
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG_LINKS_ADMIN[11],
+        'has_extras' => true,
         'form_url' => $_CONF['site_admin_url'] . "/plugins/links/index.php$validate"
     );
 
@@ -423,8 +425,9 @@ function listlinks ()
         'default_filter' => COM_getPermSql ('AND', 0, 3, 'l')
     );
 
-    $retval .= ADMIN_list ("links", "plugin_getListField_links", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, '', '', '', $form_arr);
+    $retval .= ADMIN_list('links', 'plugin_getListField_links', $header_arr,
+                    $text_arr, $query_arr, $defsort_arr, '', '', '', $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }

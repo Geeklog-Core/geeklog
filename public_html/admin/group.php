@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.102 2008/05/18 11:37:20 dhaun Exp $
+// $Id: group.php,v 1.103 2008/06/07 12:41:44 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -44,12 +44,12 @@
 /**
 * Geeklog common function library
 */
-require_once ('../lib-common.php');
+require_once '../lib-common.php';
 
 /**
 * Verifies that current user even has access to the page to this point
 */
-require_once ('auth.inc.php');
+require_once 'auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -614,7 +614,8 @@ function listusers ($grp_id)
 {
     global $_CONF, $_TABLES, $LANG28, $LANG_ACCESS, $LANG_ADMIN, $_IMAGE_TYPE;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
@@ -669,6 +670,10 @@ function listusers ($grp_id)
                           'text' => $LANG28[38]),
                     array('url'  => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
+
+    $retval .= COM_startBlock($headline, '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         '&nbsp;',
@@ -676,10 +681,9 @@ function listusers ($grp_id)
     );
 
     $text_arr = array (
-        'has_extras'   => true,
-        'title'        => $headline,
-        'form_url'     => $form_url,
-        'help_url'     => ''
+        'has_extras' => true,
+        'form_url'   => $form_url,
+        'help_url'   => ''
     );
 
     $join_userinfo = '';
@@ -704,8 +708,9 @@ function listusers ($grp_id)
                         'default_filter' => "AND {$_TABLES['users']}.uid > 1"
     );
 
-    $retval .= ADMIN_list ( 'user', 'ADMIN_getListField_users',
-        $header_arr, $text_arr, $query_arr, $defsort_arr);
+    $retval .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
+                          $text_arr, $query_arr, $defsort_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -714,7 +719,7 @@ function listgroups()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG28, $_IMAGE_TYPE;
 
-    require_once ($_CONF['path_system'] . 'lib-admin.php');
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -739,6 +744,10 @@ function listgroups()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
+
+    $retval .= COM_startBlock($LANG_ACCESS['groupmanager'], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_ACCESS['newgroupmsg'],
@@ -746,9 +755,8 @@ function listgroups()
     );
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG_ACCESS['groupmanager'],
-        'form_url' => $form_url
+        'has_extras' => true,
+        'form_url'   => $form_url
     );
 
     $filter = '<span style="padding-right:20px;">';
@@ -791,8 +799,9 @@ function listgroups()
     }
     $filter .= $LANG28[48] . '</label></span>';
 
-    $retval .= ADMIN_list ('groups', 'ADMIN_getListField_groups', $header_arr,
-                    $text_arr, $query_arr, $defsort_arr, $filter);
+    $retval .= ADMIN_list('groups', 'ADMIN_getListField_groups', $header_arr,
+                          $text_arr, $query_arr, $defsort_arr, $filter);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }

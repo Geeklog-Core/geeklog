@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.54 2008/05/18 08:19:35 dhaun Exp $
+// $Id: syndication.php,v 1.55 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -153,6 +153,10 @@ function listfeeds()
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home'])
     );
+
+    $retval .= COM_startBlock($LANG33[10], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG33[13],
@@ -160,15 +164,15 @@ function listfeeds()
     );
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG33[10],
-        'form_url' => $_CONF['site_admin_url'] . "/syndication.php"
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/syndication.php'
     );
 
     $query_arr = array('table' => 'syndication',
                        'sql' => "SELECT *,UNIX_TIMESTAMP(updated) AS date FROM {$_TABLES['syndication']} WHERE 1=1",
                        'query_fields' => array('title', 'filename'),
                        'default_filter' => '');
+
     // this is a dummy variable so we know the form has been used if all feeds
     // should be disabled in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true"' . XHTML . '>');
@@ -176,6 +180,8 @@ function listfeeds()
     $retval .= ADMIN_list('syndication', 'ADMIN_getListField_syndication',
                           $header_arr, $text_arr, $query_arr, $defsort_arr, '',
                           $token, '', $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
     return $retval;
 }
 

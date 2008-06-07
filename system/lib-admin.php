@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-admin.php,v 1.133 2008/05/22 08:23:53 dhaun Exp $
+// $Id: lib-admin.php,v 1.134 2008/06/07 12:41:44 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
     die ('This file can not be used on its own!');
@@ -53,16 +53,17 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-admin.php') !== false) {
 function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
                            $data_arr, $options = '', $form_arr='')
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $_IMAGE_TYPE, $MESSAGE;
+    global $_CONF, $_TABLES, $LANG01, $LANG_ADMIN, $LANG_ACCESS, $MESSAGE,
+           $_IMAGE_TYPE;
 
     $retval = '';
 
-    $help_url = "";
+    $help_url = '';
     if (!empty($text_arr['help_url'])) {
         $help_url = $text_arr['help_url'];
     }
 
-    $title = "";
+    $title = '';
     if (!empty($text_arr['title'])) {
         $title = $text_arr['title'];
     }
@@ -176,10 +177,14 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 
     $admin_templates->parse('output', 'list');
 
-    $retval .= COM_startBlock ($title, $help_url,
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    if (!empty($title)) {
+        $retval .= COM_startBlock($title, $help_url,
+                            COM_getBlockTemplate('_admin_block', 'header'));
+    }
     $retval .= $admin_templates->finish($admin_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    if (!empty($title)) {
+        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    }
 
     return $retval;
 }
@@ -538,11 +543,15 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     $admin_templates->parse('output', 'list');
 
-    # Do the actual output
-    $retval .= COM_startBlock ($title, $help_url,
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-    $retval .= $admin_templates->finish($admin_templates->get_var('output'))
-             . COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    // Do the actual output
+    if (!empty($title)) {
+        $retval .= COM_startBlock($title, $help_url,
+                            COM_getBlockTemplate('_admin_block', 'header'));
+    }
+    $retval .= $admin_templates->finish($admin_templates->get_var('output'));
+    if (!empty($title)) {
+        $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    }
 
     return $retval;
 }

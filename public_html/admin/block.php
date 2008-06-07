@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.123 2008/05/18 08:19:35 dhaun Exp $
+// $Id: block.php,v 1.124 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -370,7 +370,9 @@ function listblocks()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    $retval = '';
     $token = SEC_createToken();
 
     // writing the menu on top
@@ -381,7 +383,9 @@ function listblocks()
               'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $retval = ADMIN_createMenu(
+    $retval .= COM_startBlock($LANG21[19], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG21[25],
         $_CONF['layout_url'] . '/images/icons/block.'. $_IMAGE_TYPE
@@ -403,9 +407,8 @@ function listblocks()
     $defsort_arr = array('field' => 'blockorder', 'direction' => 'asc');
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG21[19],
-        'form_url' => $_CONF['site_admin_url'] . "/block.php"
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
     $query_arr = array(
@@ -415,14 +418,17 @@ function listblocks()
         'default_filter' => COM_getPermSql ('AND')
     );
 
-    // this is a dummy-variable so we know the form has been used if all blocks should be disabled
-    // on one side in order to disable the last one. The value is the onleft var
+    // this is a dummy variable so we know the form has been used if all blocks
+    // should be disabled on one side in order to disable the last one.
+    // The value is the onleft var
     $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1"' . XHTML . '>');
 
-    $retval .= ADMIN_list (
-        "blocks", "ADMIN_getListField_blocks", $header_arr, $text_arr,
+    $retval .= ADMIN_list(
+        'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
         $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     $query_arr = array(
         'table' => 'blocks',
@@ -432,9 +438,9 @@ function listblocks()
     );
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => "$LANG21[19] ($LANG21[41])",
-        'form_url' => $_CONF['site_admin_url'] . '/block.php'
+        'has_extras' => true,
+        'title'      => "$LANG21[19] ($LANG21[41])",
+        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled

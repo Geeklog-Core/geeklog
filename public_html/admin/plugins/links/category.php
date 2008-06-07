@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.16 2008/05/18 13:55:40 dhaun Exp $
+// $Id: category.php,v 1.17 2008/06/07 12:41:45 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -101,12 +101,15 @@ function links_list_categories($root)
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
+
+    $retval .= COM_startBlock($LANG_LINKS_ADMIN[54], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu($menu_arr, $LANG_LINKS_ADMIN[12], plugin_geticon_links());
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG_LINKS_ADMIN[54],
-        'form_url' => $_CONF['site_admin_url'] . '/plugins/links/category.php'
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/plugins/links/category.php'
     );
 
     $dummy = array();
@@ -114,6 +117,7 @@ function links_list_categories($root)
 
     $retval .= ADMIN_simpleList('plugin_getListField_categories', $header_arr,
                                 $text_arr, $data_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.205 2008/05/22 12:06:06 dhaun Exp $
+// $Id: user.php,v 1.206 2008/06/07 12:41:44 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -395,6 +395,10 @@ function listusers()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
+
+    $retval .= COM_startBlock($LANG28[11], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG28[12],
@@ -402,10 +406,9 @@ function listusers()
     );
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title'        => $LANG28[11],
-        'form_url'     => $_CONF['site_admin_url'] . "/user.php",
-        'help_url'     => ''
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/user.php',
+        'help_url'   => ''
     );
 
     if ($_CONF['lastlogin']) {
@@ -420,8 +423,10 @@ function listusers()
                        'query_fields' => array('username', 'email', 'fullname'),
                        'default_filter' => "AND {$_TABLES['users']}.uid > 1");
 
-    $retval .= ADMIN_list ("user", "ADMIN_getListField_users", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr);
+    $retval .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
+                          $text_arr, $query_arr, $defsort_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
     return $retval;
 }
 

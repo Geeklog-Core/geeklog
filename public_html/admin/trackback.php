@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.53 2008/05/23 11:23:43 dhaun Exp $
+// $Id: trackback.php,v 1.54 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -480,7 +480,7 @@ function getItemInfo ($type, $id, $what)
 * @return   string          HTML for the list
 *
 */
-function listServices ()
+function listServices()
 {
     global $LANG_ADMIN, $LANG_TRB, $_CONF, $_IMAGE_TYPE, $_TABLES;
 
@@ -503,6 +503,10 @@ function listServices ()
               'text' => $LANG_ADMIN['create_new']),
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
+
+    $retval .= COM_startBlock($LANG_TRB['services_headline'], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_TRB['service_explain'],
@@ -510,10 +514,9 @@ function listServices ()
     );
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG_TRB['services_headline'],
-        'form_url' => $_CONF['site_admin_url'] . "/trackback.php",
-        'help_url' => $_CONF['site_url'] . '/docs/trackback.html#ping'
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/trackback.php',
+        'help_url'   => $_CONF['site_url'] . '/docs/trackback.html#ping'
     );
 
     $query_arr = array(
@@ -524,13 +527,14 @@ function listServices ()
         'no_data' => $LANG_TRB['no_services']
     );
 
-    // this is a dummy-variable so we know the form has been used if all services should be disabled
-    // in order to disable the last one.
+    // this is a dummy variable so we know the form has been used if all services
+    // should be disabled in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list('pingservice', 'ADMIN_getListField_trackback',
                           $header_arr, $text_arr, $query_arr, $defsort_arr,
                           '', SEC_createToken(), '', $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
@@ -538,6 +542,7 @@ function listServices ()
     if ($_CONF['pingback_enabled']) {
         $retval .= freshPingback ();
     }
+
     return $retval;
 }
 

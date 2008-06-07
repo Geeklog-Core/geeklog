@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.268 2008/05/11 22:03:25 dhaun Exp $
+// $Id: story.php,v 1.269 2008/06/07 12:41:44 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -45,13 +45,13 @@
 /**
 * Geeklog common function library
 */
-require_once ('../lib-common.php');
-require_once ($_CONF['path_system'] . 'lib-story.php');
+require_once '../lib-common.php';
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
 * Security check to ensure user even belongs on this page
 */
-require_once ('auth.inc.php');
+require_once 'auth.inc.php';
 
 // Set this to true if you want to have this code output debug messages to
 // the error log
@@ -109,7 +109,7 @@ function liststories()
     global $_CONF, $_TABLES, $_IMAGE_TYPE,
            $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -183,15 +183,18 @@ function liststories()
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']);
+
+    $retval .= COM_startBlock($LANG24[22], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG24[23],
         $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE
     );
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG24[22],
-        'form_url' => $_CONF['site_admin_url'] . "/story.php"
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/story.php'
     );
 
     $sql = "SELECT {$_TABLES['stories']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname, "
@@ -209,8 +212,10 @@ function liststories()
         'default_filter' => $excludetopics . COM_getPermSQL ('AND')
     );
 
-    $retval .= ADMIN_list ("story", "ADMIN_getListField_stories", $header_arr, $text_arr,
-                            $query_arr, $defsort_arr, $filter);
+    $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,
+                          $text_arr, $query_arr, $defsort_arr, $filter);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
     return $retval;
 }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.57 2008/05/24 09:04:59 dhaun Exp $
+// $Id: index.php,v 1.58 2008/06/07 12:41:45 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -74,6 +74,9 @@ function listpolls()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
 
+    $retval .= COM_startBlock($LANG25[18], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG25[19],
@@ -93,9 +96,9 @@ function listpolls()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $text_arr = array(
-        'has_extras' => true,
-        'title' => $LANG25[18], 'instructions' => $LANG25[19],
-        'form_url' => $_CONF['site_admin_url'] . "/plugins/polls/index.php"
+        'has_extras'   => true,
+        'instructions' => $LANG25[19],
+        'form_url'     => $_CONF['site_admin_url'] . '/plugins/polls/index.php'
     );
 
     $query_arr = array(
@@ -110,6 +113,7 @@ function listpolls()
         'polls', 'plugin_getListField_polls', $header_arr,
         $text_arr, $query_arr, $defsort_arr
     );
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }

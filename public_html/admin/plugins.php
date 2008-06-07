@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.82 2008/05/18 16:58:51 dhaun Exp $
+// $Id: plugins.php,v 1.83 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -385,7 +385,8 @@ function do_uninstall ($pi_name)
 function listplugins ($token)
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     $header_arr = array(      # display 'text' and use table field 'field'
@@ -401,6 +402,10 @@ function listplugins ($token)
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
                           'text' => $LANG_ADMIN['admin_home']));
+
+    $retval .= COM_startBlock($LANG32[5], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG32[11],
@@ -408,10 +413,9 @@ function listplugins ($token)
     );
 
     $text_arr = array(
-        'has_extras' => true,
-        'title' => $LANG32[5],
+        'has_extras'   => true,
         'instructions' => $LANG32[11],
-        'form_url' => $_CONF['site_admin_url'] . '/plugins.php'
+        'form_url'     => $_CONF['site_admin_url'] . '/plugins.php'
     );
 
     $query_arr = array(
@@ -421,15 +425,16 @@ function listplugins ($token)
         'query_fields' => array('pi_name'),
         'default_filter' => ''
     );
-    // this is a dummy-variable so we know the form has been used if all plugins should be disabled
-    // in order to disable the last one.
+
+    // this is a dummy variable so we know the form has been used if all plugins
+    //  should be disabled in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
 
-    $retval .= ADMIN_list ('plugins', 'ADMIN_getListField_plugins', $header_arr,
-                       $text_arr, $query_arr, $defsort_arr, '', $token, '', $form_arr);
+    $retval .= ADMIN_list('plugins', 'ADMIN_getListField_plugins', $header_arr,
+                $text_arr, $query_arr, $defsort_arr, '', $token, '', $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
-
 }
 
 // MAIN
