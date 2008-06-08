@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-June ?, 2008 (1.5.0rc2)
+June 8, 2008 (1.5.0rc2)
 ------------
 
 Geeklog 1.5.0 incorporates the following projects implemented during
@@ -11,6 +11,8 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Hide the | separator for static pages with page format "blank page" (reported
+  by Tetsuko Komma) [Dirk]
 - Hardcoded all URL entry fields in the templates and the date selection in the
   calendar plugin to dir="ltr" (reported by LWC) [Dirk]
 - Fixed handling of UTF-8 languages in the install script (reported by Tetsuko
