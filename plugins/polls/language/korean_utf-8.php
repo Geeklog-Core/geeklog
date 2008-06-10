@@ -2,7 +2,7 @@
 
 ###############################################################################
 # korean_utf-8.php
-# This is the english language page for the Geeklog Polls Plug-in!
+# This is the Korean language page for the Geeklog Polls Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com

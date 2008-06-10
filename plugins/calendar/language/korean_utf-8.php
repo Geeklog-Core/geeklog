@@ -2,13 +2,13 @@
 
 ###############################################################################
 # korean_utf-8.php
-# This is the Japanese UTF-8 language page for the Geeklog Calendar Plug-in!
+# This is the Korean UTF-8 language page for the Geeklog Calendar Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
 # Copyright (C) 2005 Trinity Bays
 # trinity93@gmail.com
-# Tranlated by IvySOHO Ivy(KOMMA Tetsuko/Kim Younghie)
+# Translated by IvySOHO Ivy(KOMMA Tetsuko/Kim Younghie)
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
