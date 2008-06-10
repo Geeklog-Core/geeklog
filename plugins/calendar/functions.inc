@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.88 2008/05/31 07:55:07 dhaun Exp $
+// $Id: functions.inc,v 1.89 2008/06/10 17:26:49 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -989,12 +989,14 @@ function CALENDAR_listevents()
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
+
+    $retval .= COM_startBlock($LANG_CAL_ADMIN[11], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= ADMIN_createMenu($menu_arr, $LANG_CAL_ADMIN[12], plugin_geticon_calendar());
 
     $text_arr = array(
-        'has_extras'   => true,
-        'title' => $LANG_CAL_ADMIN[11],
-        'form_url' => $_CONF['site_admin_url'] . "/plugins/calendar/index.php"
+        'has_extras' => true,
+        'form_url'   => $_CONF['site_admin_url'] . '/plugins/calendar/index.php'
     );
 
     $sql = "SELECT {$_TABLES['events']}.*, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
@@ -1013,6 +1015,8 @@ function CALENDAR_listevents()
     $retval .= ADMIN_list ('calendar', 'plugin_getListField_calendar',
                            $header_arr, $text_arr, $query_arr,
                            $defsort_arr);
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }

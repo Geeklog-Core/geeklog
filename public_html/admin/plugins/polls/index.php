@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.58 2008/06/07 12:41:45 dhaun Exp $
+// $Id: index.php,v 1.59 2008/06/10 17:26:50 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -314,6 +314,9 @@ function editpoll ($pid = '')
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
 
+    $retval .= COM_startBlock ($LANG25[5], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_POLLS['editinstructions'],
@@ -346,9 +349,6 @@ function editpoll ($pid = '')
             return $retval;
         }
     }
-
-    $retval .= COM_startBlock ($LANG25[5], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (!empty ($pid) AND ($access == 3) AND !empty ($T['owner_id'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
