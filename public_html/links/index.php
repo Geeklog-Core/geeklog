@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2008/05/24 09:49:19 dhaun Exp $
+// $Id: index.php,v 1.38 2008/06/12 19:45:26 dhaun Exp $
 
 /**
  * This is the links page
@@ -97,8 +97,12 @@ function links_list($message)
             $page_title = $LANG_LINKS[114];
         }
     } else {
-        $category = DB_getItem($_TABLES['linkcategories'], 'category',
-                               "cid = '{$cat}'");
+        if ($cid == $_LI_CONF['root']) {
+            $category = $LANG_LINKS['root'];
+        } else {
+            $category = DB_getItem($_TABLES['linkcategories'], 'category',
+                                   "cid = '{$cat}'");
+        }
         if ($page > 1) {
             $page_title = sprintf ($LANG_LINKS[114] . ': %s (%d)', $category,
                                                                    $page);

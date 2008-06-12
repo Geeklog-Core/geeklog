@@ -11,8 +11,14 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc1:
+- Links plugin: The word "Root" wasn't taken from the language file for the page
+  title of the public list of links (reported by Markus Wollschläger) [Dirk]
 - Fixed remaining places where the Admin panels had inconsistent layouts:
   Calendar list of events, Polls editor (bug #0000650) [Dirk]
+
+- Updated Hebrew language file, provided by LWC
+- Some Korean language files had a mixture of CR/LF and LF as line separators
+  (bug #0000655) [Dirk]
 
 
 June 8, 2008 (1.5.0rc2)
