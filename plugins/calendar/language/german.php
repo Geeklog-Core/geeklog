@@ -5,8 +5,8 @@
 #
 # This is the German language file for the Geeklog Calendar Plugin
 #
-# Copyright (C) 2006 Dirk Haun
-# dirk AT haun-online DOT de
+# Authors: Dirk Haun <dirk AT haun-online DOT de>
+#          Markus Wollschläger
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ $LANG_CAL_2 = array(
     34 => 'Uhrzeit',
     35 => 'Neuer Termin',
     36 => 'Abschicken',
-    37 => 'Sorry, der persönliche Kalender ist auf dieser Site nicht verfügbar.',
+    37 => 'Der persönliche Kalender ist auf dieser Website nicht verfügbar.',
     38 => 'Persönlicher Termin-Editor',
     39 => 'Tag',
     40 => 'Woche',
@@ -146,7 +146,7 @@ $LANG_CAL_ADMIN = array(
     14 => 'Startdatum',
     15 => 'Enddatum',
     16 => '',
-    17 => "Du hast keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">Zurück zum Administrator-Menü</a>.",
+    17 => "Keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">Zurück zum Administrator-Menü</a>.",
     18 => '',
     19 => '',
     20 => 'Speichern',
@@ -155,21 +155,21 @@ $LANG_CAL_ADMIN = array(
     23 => 'Ungültiges Startdatum.',
     24 => 'Ungültiges Enddatum.',
     25 => 'Enddatum ist vor dem Startdatum.',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted'
+    26 => 'Alte Einträge löschen',
+    27 => 'Diese Termine sind älter als ',
+    28 => ' Monate. Bite auf das Mülleimer-Icon klicken, um sie zu entfernen, oder eine andere Zeitspanne auswählen:<brXHTML>Suche alle Einträge älter als ',
+    29 => ' Monate.',
+    30 => 'Liste aktualisieren',
+    31 => 'Sind Sie sicher, dass Sie alle ausgewählten User permanent löschen möchten?',
+    32 => 'Alle auflisten',
+    33 => 'Keine Termine zum Löschen ausgewählt',
+    34 => 'Termin ID',
+    35 => 'konnte nicht gelöscht werden',
+    36 => 'Erfolgreich gelöscht'
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save' => 'Dein Termin wurde gespeichert.',
+    'save' => 'Der Termin wurde gespeichert.',
     'delete' => 'Der Termin wurde gelöscht.',
     'private' => 'Der Termin wurde in Deinen Kalender eingetragen.',
     'login' => 'Du musst angemeldet sein, um auf Deinen persönlichen Kalender zugreifen zu können.',
@@ -190,41 +190,41 @@ $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Kalender',
+    'title' => 'Kalendereinstellungen'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
-    'default_permissions' => 'Event Default Permissions'
+    'calendarloginrequired' => 'Zur Einsicht einloggen nötig?',
+    'hidecalendarmenu' => 'Menüeintrag ausblenden?',
+    'personalcalendars' => 'Persönliche Kalender?',
+    'eventsubmission' => 'Einträge moderieren?',
+    'showupcomingevents' => 'Zukünftige Termine anzeigen?',
+    'upcomingeventsrange' => 'Zeitraum zukünftige Termine',
+    'event_types' => 'Art der Termine',
+    'hour_mode' => 'Stunden-Modus',
+    'notification' => 'Benachrichtigungs-eMail?',
+    'delete_event' => 'Termine mit User löschen?',
+    'aftersave' => 'Nach Speichern des Termins',
+    'default_permissions' => 'Grundeinstellungen Termine'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Hauptbereich'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Allgemeine Kalendereinstellungen',
+    'fs_permissions' => 'Grundeinstellungen Rechte'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Ja' => 1, 'Nein' => 0),
+    1 => array('Ja' => true, 'Nein' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    9 => array('Zum Termin weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Kalender anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Kommandozentrale' => 'admin'),
+    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
 );
 
 ?>

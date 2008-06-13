@@ -9,6 +9,7 @@
 # tony AT tonybibbs DOT com
 #
 # German translation by Dirk Haun <dirk AT haun-online DOT de>
+# and Markus Wollschläger
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +38,7 @@ global $LANG32;
 
 $LANG_STATIC = array(
     'newpage' => 'Neue Seite',
-    'adminhome' => 'Admin Home',
+    'adminhome' => 'Kommandozentrale',
     'staticpages' => 'Statische Seiten',
     'staticpageeditor' => 'Editor für Statische Seiten',
     'writtenby' => 'Autor',
@@ -62,13 +63,13 @@ $LANG_STATIC = array(
     'delete' => 'Löschen',
     'cancel' => 'Abbruch',
     'access_denied' => 'Zugriff verweigert',
-    'access_denied_msg' => 'Sie haben unerlaubter Weise versucht, auf eine der Admin-Seiten für Statische Seiten zuzugreifen. Hinweis: Alle derartigen Versuche werden protokolliert',
+    'access_denied_msg' => 'Unerlaubter Zugriff, auf eine der Admin-Seiten für Statische Seiten. Hinweis: Alle derartigen Versuche werden protokolliert',
     'all_html_allowed' => 'Alle HTML-Tags sind erlaubt',
     'results' => 'Gefundene Statische Seiten',
     'author' => 'Autor',
-    'no_title_or_content' => 'Bitte füllen Sie mindestens die Felder <b>Titel</b> und <b>Inhalt</b> aus.',
+    'no_title_or_content' => 'Bitte mindestens die Felder <b>Titel</b> und <b>Inhalt</b> ausfüllen.',
     'no_such_page_anon' => 'Bitte einloggen.',
-    'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF['site_name']}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF['site_name']} to receive full membership access.",
+    'no_page_access_msg' => "Dies könnte passiert sein, weil Sie nicht eingeloggt sind, oder kein Mitglied sind von  {$_CONF['site_name']}. Bitte <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> Mitglied werden</a> bei {$_CONF['site_name']}, um vollen Zugriff zu erhalten.",
     'php_msg' => 'PHP: ',
     'php_warn' => 'Hinweis: Wenn diese Option aktiviert ist, wird in der Seite enthaltener PHP-Code ausgeführt. <em>Bitte mit Bedacht verwenden!</em>',
     'exit_msg' => 'Hinweistext: ',
@@ -79,7 +80,7 @@ $LANG_STATIC = array(
     'stats_hits' => 'Angezeigt',
     'stats_no_hits' => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
     'id' => 'ID',
-    'duplicate_id' => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wählen Sie eine andere ID.',
+    'duplicate_id' => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte andere ID wählen.',
     'instructions' => 'Um eine Statische Seite zu ändern oder zu löschen, auf das Ändern-Icon klicken. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neu anlegen (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das Kopie-Icon klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
     'centerblock' => 'Centerblock: ',
     'centerblock_msg' => 'Wenn angekreuzt wird diese Seite als Block auf der Index-Seite angezeigt.',
@@ -107,10 +108,10 @@ $LANG_STATIC = array(
     'select_php_free' => 'PHP ausführen',
     'php_not_activated' => "Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">Dokumentation</a>.",
     'printable_format' => 'Druckfähige Version',
-    'copy' => 'Copy',
-    'limit_results' => 'Limit Results',
-    'search' => 'Search',
-    'submit' => 'Submit'
+    'copy' => 'Kopieren',
+    'limit_results' => 'Ergebnisse einschränken',
+    'search' => 'Suchen',
+    'submit' => 'Absenden'
 );
 
 // Messages for the plugin upgrade
@@ -119,42 +120,42 @@ $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
-    'label' => 'Static Pages',
-    'title' => 'Static Pages Configuration'
+    'label' => 'Statische Seiten',
+    'title' => 'Konfiguration Statische Seiten'
 );
 
 $LANG_confignames['staticpages'] = array(
-    'allow_php' => 'Allow PHP?',
-    'sort_by' => 'Sort Centerblocks by',
-    'sort_menu_by' => 'Sort Menu Entries by',
-    'delete_pages' => 'Delete Pages with Owner?',
-    'in_block' => 'Wrap Pages in Block?',
-    'show_hits' => 'Show Hits?',
-    'show_date' => 'Show Date?',
-    'filter_html' => 'Filter HTML?',
-    'censor' => 'Censor Content?',
-    'default_permissions' => 'Page Default Permissions',
-    'aftersave' => 'After Saving Page',
-    'atom_max_items' => 'Max. Pages in Webservices Feed'
+    'allow_php' => 'PHP erlauben?',
+    'sort_by' => 'Centerblocks sortieren nach',
+    'sort_menu_by' => 'Menüeinträge sortieren nach',
+    'delete_pages' => 'Seiten mit Benutzer löschen?',
+    'in_block' => 'Block-Template verwenden?',
+    'show_hits' => 'Treffer anzeigen?',
+    'show_date' => 'Datum anzeigen?',
+    'filter_html' => 'HTML filtern?',
+    'censor' => 'Inhalt zensieren?',
+    'default_permissions' => 'Grundeinstellungen Statische Seiten',
+    'aftersave' => 'Nach dem Speichern der Seiten',
+    'atom_max_items' => 'Max. Seiten in Webservices News-Feed'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Haupteinstellungen'
 );
 
 $LANG_fs['staticpages'] = array(
-    'fs_main' => 'Static Pages Main Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Statische Seiten Haupteinstellungen',
+    'fs_permissions' => 'Grundeinstellungen Rechte'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
-    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('Ja' => 1, 'Nein' => 0),
+    1 => array('Ja' => true, 'Nein' => false),
+    2 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title'),
+    3 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title', 'Menüpunkt' => 'label'),
+    9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Kommandozentrale' => 'admin'),
+    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
 );
 
 ?>

@@ -17,6 +17,7 @@ Changes since 1.5.0rc1:
   Calendar list of events, Polls editor (bug #0000650) [Dirk]
 
 - Updated Hebrew language file, provided by LWC
+- Updated German language files, provided by Markus Wollschläger
 - Some Korean language files had a mixture of CR/LF and LF as line separators
   (bug #0000655) [Dirk]
 
