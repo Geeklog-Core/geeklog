@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.41 2008/05/31 16:34:08 dhaun Exp $
+// $Id: config.class.php,v 1.42 2008/06/14 15:28:01 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -349,10 +349,16 @@ class config {
     // Changes any config settings that depend on other configuration settings.
     function _post_configuration()
     {
-        $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes']
-            . $this->config_array['Core']['theme'] . '/';
-        $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url']
-            . '/layout/' . $this->config_array['Core']['theme'];
+        global $_USER;
+
+        if (empty($_USER['theme'])) {
+            $theme = $this->config_array['Core']['theme'];
+        } else {
+            $theme = $_USER['theme'];
+        }
+
+        $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
+        $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
     }
 
     function _get_groups()

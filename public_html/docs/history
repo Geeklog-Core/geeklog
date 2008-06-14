@@ -11,6 +11,9 @@ the 2007 Google Summer of Code:
 + New Webservices API based on the Atom Publishing Protocol by Ramnath R. Iyer
 
 Changes since 1.5.0rc2:
+- Users that used a different theme than the site default would see the site
+  switch temporarily back to the site's default theme when changing a config
+  option. This was a side effect of the fix for bug #0000648 [Dirk]
 - In a tradeoff between security and convenience, we decided to go with
   security: The install script will no longer display the database credentials
   from db-config.php. The downside is that you will have to enter them again
