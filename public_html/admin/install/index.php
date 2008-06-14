@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.45 2008/06/07 13:38:48 dhaun Exp $
+// $Id: index.php,v 1.46 2008/06/14 13:02:25 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -157,11 +157,23 @@ function INST_installEngine($install_type, $install_step)
                         break;
                 }
             }
-            $db_host = isset($_POST['db_host']) ? $_POST['db_host'] : $_DB_host;
-            $db_name = isset($_POST['db_name']) ? $_POST['db_name'] : $_DB_name;
-            $db_user = isset($_POST['db_user']) ? $_POST['db_user'] : ($_DB_user != 'username' ? $_DB_user : '');
-            $db_pass = isset($_POST['db_pass']) ? $_POST['db_pass'] : ($_DB_pass != 'password' ? $_DB_pass : '');
-            $db_prefix = isset($_POST['db_prefix']) ? $_POST['db_prefix'] : $_DB_table_prefix;
+            if (($_DB_host != 'localhost') || ($_DB_name != 'geeklog') ||
+                    ($_DB_user != 'username') || ($_DB_pass != 'password')) {
+                // only display those if they all have their default values
+                $_DB_host = '';
+                $_DB_name = '';
+                $_DB_user = '';
+                $_DB_pass = '';
+            }
+            $db_host = isset($_POST['db_host']) ? $_POST['db_host']
+                     : ($_DB_host != 'localhost' ? '' : $_DB_host);
+            $db_name = isset($_POST['db_name']) ? $_POST['db_name']
+                     : ($_DB_name != 'geeklog' ? '' : $_DB_name);
+            $db_user = isset($_POST['db_user']) ? $_POST['db_user']
+                     : ($_DB_user != 'username' ? '' : $_DB_user);
+            $db_pass = isset($_POST['db_pass']) ? $_POST['db_pass'] : '';
+            $db_prefix = isset($_POST['db_prefix']) ? $_POST['db_prefix']
+                       : $_DB_table_prefix;
 
             $site_url = isset($_POST['site_url']) ? $_POST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
             $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']) ; 
