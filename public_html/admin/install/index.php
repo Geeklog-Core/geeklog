@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.46 2008/06/14 13:02:25 dhaun Exp $
+// $Id: index.php,v 1.47 2008/06/15 06:41:26 mwest Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -886,7 +886,7 @@ function INST_createDatabaseStructures ($use_innodb = false)
                 DB_query ("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
             }
             break;
-        case 'mssql';
+        case 'mssql':
             foreach ($_SQL as $sql) {
                 $_DB->dbQuery($sql, 0, 1);
             }
