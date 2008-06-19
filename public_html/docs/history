@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Approving a story submission by saving it from the Admin's story editor left
+  a duplicate in the submission queue, unless you changed the story ID at the
+  same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
 
 

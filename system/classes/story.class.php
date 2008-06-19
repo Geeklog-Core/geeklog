@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.27 2008/05/24 19:46:13 dhaun Exp $
+// $Id: story.class.php,v 1.28 2008/06/19 20:25:48 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -573,6 +573,8 @@ class Story
         $currentSidExists = false;
 
         /* Fix up old sid => new sid stuff */
+        $checksid = addslashes($this->_originalSid); // needed below
+
         if ($this->_sid != $this->_originalSid) {
             /* The sid has changed. Load from request will have
              * ensured that if the new sid exists an error has
@@ -581,7 +583,6 @@ class Story
              * sid that was then thrown away) to reduce the sheer
              * number of SQL queries we do.
              */
-            $checksid = addslashes($this->_originalSid);
             $newsid = addslashes($this->_sid);
 
             $sql = "SELECT 1 FROM {$_TABLES['stories']} WHERE sid='{$checksid}'";
