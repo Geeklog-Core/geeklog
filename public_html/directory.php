@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | directory.php                                                             |
 // |                                                                           |
 // | Directory of all the stories on a Geeklog site.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2006 by the following authors:                         |
+// | Copyright (C) 2004-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.18 2007/11/25 06:55:07 ospiess Exp $
+// $Id: directory.php,v 1.19 2008/06/20 19:12:56 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -287,9 +287,6 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
                     $retval .= COM_makeList ($entries);
                     $entries = array ();
                 }
-
-                $curtime = COM_getUserDateTimeFormat ($A['day']);
-                $day = $curtime[0];
 
                 $day = strftime ($_CONF['shortdate'], $A['day']);
 
