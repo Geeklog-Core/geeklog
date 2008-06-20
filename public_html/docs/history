@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Changed SEC_createToken so that it will only return one token per page
+  (effectively making it a singelton). This fixes the problem of not being able
+  to delete comments when you also have trackbacks for the same article
+  [Mike, Dirk]
 - Approving a story submission by saving it from the Admin's story editor left
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
