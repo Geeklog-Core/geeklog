@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.47 2008/05/23 14:40:16 dhaun Exp $
+// $Id: index.php,v 1.48 2008/06/20 15:12:36 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -43,7 +43,7 @@ if (!in_array('staticpages', $_PLUGINS)) {
 
 // MAIN
 
-COM_setArgNames(array('page', 'mode'));
+COM_setArgNames(array('page', 'disp_mode'));
 $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
 

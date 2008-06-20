@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed printer friendly version of a static page not working when url_rewrite
+  is enabled (bug #0000661) [Dirk]
 - Changed SEC_createToken so that it will only return one token per page
   (effectively making it a singelton). This fixes the problem of not being able
   to delete comments when you also have trackbacks for the same article
