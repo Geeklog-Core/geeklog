@@ -16,14 +16,15 @@ Geeklog History/Changes:
 
 Links plugin
 ------------
+- Fixed new category silently overwriting an existing category if they had the
+  same id (part 2 of bug #0000659) [Dirk]
 - Fixed SQL error when trying to change a category id to an already existing id
-  (part of bug #0000659) [Dirk]
+  (part 1 of bug #0000659) [Dirk]
 
 Static Pages plugin
 -------------------
 - Fixed printer friendly version of a static page not working when url_rewrite
   is enabled (bug #0000661) [Dirk]
-
 
 
 June 15, 2008 (1.5.0)

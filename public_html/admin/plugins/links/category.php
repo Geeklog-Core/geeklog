@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.18 2008/06/22 08:24:13 dhaun Exp $
+// $Id: category.php,v 1.19 2008/06/22 08:55:01 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -297,14 +297,26 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
+    // clean 'em up
+    $description = addslashes(COM_checkHTML(COM_checkWords($description)));
+    $category    = addslashes(COM_checkHTML(COM_checkWords($category)));
+    $pid         = addslashes(strip_tags($pid));
+    $cid         = addslashes(strip_tags($cid));
+    $old_cid     = addslashes(strip_tags($old_cid));
+
+    if (empty($category) || empty($description)) {
+        return 7;
+    }
+
     // Check cid to make sure not illegal
-    if (($cid == $_LI_CONF['root']) || ($cid == 'user')) {
+    if (($cid == addslashes($_LI_CONF['root'])) || ($cid == 'user')) {
         return 11;
     }
 
-    if (!empty($old_cid) && !empty($cid) && ($cid != $old_cid)) {
-        // attempt to change the cid - check it doesn't exist yet
-        $ctrl = DB_getItem($_TABLES['linkcategories'], 'cid', "cid = '" . addslashes($cid) . "'");
+    if (!empty($cid) && ($cid != $old_cid)) {
+        // this is either a new category or an attempt to change the cid
+        // - check that cid doesn't exist yet
+        $ctrl = DB_getItem($_TABLES['linkcategories'], 'cid', "cid = '$cid'");
         if (!empty($ctrl)) {
             if (isset($PLG_links_MESSAGE17)) {
                 return 17;
@@ -312,17 +324,6 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
                 return 11;
             }
         }
-    }
-
-    // clean 'em up
-    $description = addslashes (COM_checkHTML(COM_checkWords($description)));
-    $category    = addslashes (COM_checkHTML(COM_checkWords($category)));
-    $pid     = addslashes(strip_tags($pid));
-    $cid     = addslashes(strip_tags($cid));
-    $old_cid = addslashes(strip_tags($old_cid));
-
-    if (empty($category) || empty($description)) {
-        return 7;
     }
 
     // Check that they didn't delete the cid. If so, get the hidden one
