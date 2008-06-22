@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: category.php,v 1.17 2008/06/07 12:41:45 dhaun Exp $
+// $Id: category.php,v 1.18 2008/06/22 08:24:13 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -289,7 +289,8 @@ function links_edit_category($cid, $pid)
 
 function links_save_category($cid, $old_cid, $pid, $category, $description, $tid, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN, $_LI_CONF;
+    global $_CONF, $_TABLES, $_USER, $LANG_LINKS, $LANG_LINKS_ADMIN, $_LI_CONF,
+           $PLG_links_MESSAGE17;
 
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
@@ -299,6 +300,18 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     // Check cid to make sure not illegal
     if (($cid == $_LI_CONF['root']) || ($cid == 'user')) {
         return 11;
+    }
+
+    if (!empty($old_cid) && !empty($cid) && ($cid != $old_cid)) {
+        // attempt to change the cid - check it doesn't exist yet
+        $ctrl = DB_getItem($_TABLES['linkcategories'], 'cid', "cid = '" . addslashes($cid) . "'");
+        if (!empty($ctrl)) {
+            if (isset($PLG_links_MESSAGE17)) {
+                return 17;
+            } else {
+                return 11;
+            }
+        }
     }
 
     // clean 'em up
