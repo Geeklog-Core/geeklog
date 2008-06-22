@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.28 2008/06/19 20:25:48 dhaun Exp $
+// $Id: story.class.php,v 1.29 2008/06/22 20:23:07 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -812,6 +812,10 @@ class Story
         $this->_sid = COM_applyFilter($array['sid']);
         $this->_uid = COM_applyFilter($array['uid'], true);
         $this->_unixdate = COM_applyFilter($array['date'], true);
+
+        if (!isset($array['bodytext'])) {
+            $array['bodytext'] = '';
+        }
 
         /* Then load the title, intro and body */
         if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor')) {
