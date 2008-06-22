@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.93 2008/06/07 12:41:45 dhaun Exp $
+// $Id: index.php,v 1.94 2008/06/22 14:49:06 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -120,7 +120,7 @@ function form ($A, $error = false)
                 $sp_template->set_var('show_adveditor','none');
                 $sp_template->set_var('show_htmleditor','');
             }
-            $post_options .= '<option value="html" selected="selected">'.$LANG_postmodes['html'].'</option>';
+            $post_options = '<option value="html" selected="selected">'.$LANG_postmodes['html'].'</option>';
             if ($A['postmode'] == 'adveditor') {
                 $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
             } else {
