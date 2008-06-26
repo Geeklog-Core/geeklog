@@ -17,6 +17,7 @@ Geeklog History/Changes:
   formatting in feed readers. [bug 0000662] [bru_man]
 - Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
   HTML compliance issues. [bug  0000669] [LWC]
+- Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
 
 - Updated Hebrew language file, provided by LWC
 

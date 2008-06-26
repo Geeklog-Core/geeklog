@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.47 2008/06/15 06:41:26 mwest Exp $
+// $Id: index.php,v 1.48 2008/06/26 21:33:42 mjervis Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -1019,6 +1019,11 @@ function INST_checkTableExists ($table)
 
     if ($_DB_dbms == 'mysql') {
         $result = DB_query ("SHOW TABLES LIKE '{$_TABLES[$table]}'");
+        if (DB_numRows ($result) > 0) {
+            $exists = true;
+        }
+    } elseif ($_DB_dbms == 'mssql') {
+        $result = DB_Query("SELECT 1 FROM sysobjects WHERE name='{$_TABLES[$table]}' AND xtype='U'");
         if (DB_numRows ($result) > 0) {
             $exists = true;
         }
