@@ -13,6 +13,8 @@ Geeklog History/Changes:
 - Fixed user submission queue (reported by greenteagod) [Dirk]
 - Calendar block now includes events from the current day (in progress or all
   day events, bug 0000604, patch from forums) (really)
+- Plaintext stories have nl2br applied in syndication feeds to provide correct
+  formatting in feed readers. [bug 0000662] [bru_man]
 
 - Updated Hebrew language file, provided by LWC
 
