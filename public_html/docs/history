@@ -11,6 +11,8 @@ Geeklog History/Changes:
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
+- Calendar block now includes events from the current day (in progress or all
+  day events, bug 0000604, patch from forums) (really)
 
 - Updated Hebrew language file, provided by LWC
 
