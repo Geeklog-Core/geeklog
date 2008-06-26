@@ -5,7 +5,7 @@
  * (C) Copyright 1999-2000 NetUSE GmbH
  *                    Kristian Koehntopp
  *
- * $Id: template.class.php,v 1.8 2007/11/25 06:59:56 ospiess Exp $
+ * $Id: template.class.php,v 1.9 2008/06/26 00:26:43 blaine Exp $
  *
  */
 
@@ -823,12 +823,14 @@ class Template
     if ($this->debug & 4) {
       echo "<p><b>filename:</b> filename = $filename</p>\n";
     }
-    if (substr($filename, 0, 1) != "/") {
-      $filename = $this->root."/".$filename;
-    }
 
+    // Test if file exist and add physical path as 2nd test
     if (!file_exists($filename)) {
-      $this->halt("filename: file $filename does not exist.");
+        // Try appending file to template root
+        $filename = $this->root."/".$filename;
+        if (!file_exists($filename)) {
+            $this->halt("filename: file $filename does not exist.");
+        }
     }
     return $filename;
   }
