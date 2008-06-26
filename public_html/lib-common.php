@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.702 2008/06/01 07:39:17 dhaun Exp $
+// $Id: lib-common.php,v 1.703 2008/06/26 21:27:57 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3765,15 +3765,15 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
     {
         if( !$list_only )
         {
-            $retval .= '<span class="warningsmall">' . $LANG01[123] . '</span>, ';
+            $retval .= '<span class="warningsmall">' . $LANG01[123] . ',</span> ';
         }
-
+        $retval .= '<div dir="ltr" class="warningsmall">';
     }
     else
     {
         if( !$list_only )
         {
-            $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
+            $retval .= '<span class="warningsmall">' . $LANG01[31] . '</span> ';
         }
 
         if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
@@ -3798,7 +3798,8 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
                 }
             }
         }
-
+        
+        $retval .= '<div dir="ltr" class="warningsmall">';
         foreach( $html as $tag => $attr )
         {
             $retval .= '&lt;' . $tag . '&gt;, ';
@@ -3818,11 +3819,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
     {
         $retval .= ', [' . $tag . ':]';
     }
-
-    if( !$list_only )
-    {
-        $retval .= '</span>';
-    }
+    $retval .= '</div>';
 
     return $retval;
 }
