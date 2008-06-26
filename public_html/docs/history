@@ -18,6 +18,7 @@ Geeklog History/Changes:
 - Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
   HTML compliance issues. [bug  0000669] [LWC]
 - Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
+- Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [LWC]
 
 - Updated Hebrew language file, provided by LWC
 
