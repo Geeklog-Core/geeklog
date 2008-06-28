@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.37 2008/05/31 21:42:27 dhaun Exp $
+// $Id: lib-webservices.php,v 1.38 2008/06/28 19:37:40 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -235,7 +235,10 @@ function WS_put()
     /* Indicates that the method are being called by the webservice */
     $args['gl_svc']  = true;
     $args['gl_edit'] = true;
-    $args['gl_etag'] = trim($_SERVER['HTTP_IF_MATCH'], '"');
+    $args['gl_etag'] = '';
+    if (isset($_SERVER['HTTP_IF_MATCH'])) {
+        $args['gl_etag'] = trim($_SERVER['HTTP_IF_MATCH'], '"');
+    }
 
     // Call PLG_invokeService here
     $ret = PLG_invokeService($WS_PLUGIN, 'submit', $args, $out, $svc_msg);
@@ -243,6 +246,10 @@ function WS_put()
     if ($ret == PLG_RET_OK) {
         header($_SERVER['SERVER_PROTOCOL'] . ' 200 OK');
         return;
+    }
+
+    if (!isset($svc_msg['error_desc'])) {
+        $svc_msg['error_desc'] = '';
     }
 
     WS_error($ret, $svc_msg['error_desc']);
@@ -346,7 +353,10 @@ function WS_get()
 
         if (!$svc_msg['gl_feed']) {
             /* This is an entry, not a feed */
-            $etag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
+            $etag = '';
+            if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
+                $etag = trim($_SERVER['HTTP_IF_NONE_MATCH'], '"');
+            }
             if (!empty($etag) && ($out['updated'] == $etag)) {
                 header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
                 exit();
@@ -672,26 +682,29 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
     // Geeklog-specific elements
 
     foreach ($extn_elements as $elem) {
-        if (is_array($arr[$elem])) {
-            $count = 0;
-            $extn_elem = $atom_doc->createElement('gl:' . $elem);
-            foreach ($arr[$elem] as $param) {
-                if (empty($param)) {
-                    continue;
+
+        if (isset($arr[$elem])) {
+            if (is_array($arr[$elem])) {
+                $count = 0;
+                $extn_elem = $atom_doc->createElement('gl:' . $elem);
+                foreach ($arr[$elem] as $param) {
+                    if (empty($param)) {
+                        continue;
+                    }
+
+                    $count += 1;
+
+                    $param_elem = $atom_doc->createElement('gl:param', $param);
+                    $extn_elem->appendChild($param_elem);
                 }
-
-                $count += 1;
-
-                $param_elem = $atom_doc->createElement('gl:param', $param);
-                $extn_elem->appendChild($param_elem);
-            }
-            if ($count > 0) {
-                $entry_elem->appendChild($extn_elem);
-            }
-        } else {
-            $extn_elem = $atom_doc->createElement('gl:' . $elem, $arr[$elem]);
-            if (!empty($arr[$elem])) {
-                $entry_elem->appendChild($extn_elem);
+                if ($count > 0) {
+                    $entry_elem->appendChild($extn_elem);
+                }
+            } else {
+                $extn_elem = $atom_doc->createElement('gl:' . $elem, $arr[$elem]);
+                if (!empty($arr[$elem])) {
+                    $entry_elem->appendChild($extn_elem);
+                }
             }
         }
     }
@@ -824,7 +837,26 @@ function WS_authenticate()
     }
 
     if (!empty($username) && !empty($password)) {
-        if ($_CONF['user_login_method']['standard']) {
+        if ($_CONF['user_login_method']['3rdparty']) {
+            // remote users will have to use username@servicename
+            $u = explode('@', $username);
+            if (count($u) > 1) {
+                $sv = $u[count($u) - 1];
+                if (!empty($sv)) {
+                    $modules = SEC_collectRemoteAuthenticationModules();
+                    foreach ($modules as $smod) {
+                        if (strcasecmp($sv, $smod) == 0) {
+                            array_pop($u); // drop the service name
+                            $uname = implode('@', $u);
+                            $status = SEC_remoteAuthentication($uname,
+                                                    $password, $smod, $uid);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (($status == -1) && $_CONF['user_login_method']['standard']) {
             $status = SEC_authenticate($username, $password, $uid);
         }
     }
