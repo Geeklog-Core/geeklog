@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.10 2008/03/15 20:37:34 dhaun Exp $
+// $Id: services.inc.php,v 1.11 2008/06/28 18:44:09 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -445,8 +445,12 @@ function service_get_staticpages($args, &$output, &$svc_msg)
     }
 
     if ($args['gl_svc']) {
-        $args['sp_id'] = COM_applyBasicFilter($args['sp_id']);
-        $args['mode'] = COM_applyBasicFilter($args['mode']);
+        if (isset($args['sp_id'])) {
+            $args['sp_id'] = COM_applyBasicFilter($args['sp_id']);
+        }
+        if (isset($args['mode'])) {
+            $args['mode'] = COM_applyBasicFilter($args['mode']);
+        }
 
         if (empty($args['sp_id'])) {
             $svc_msg['gl_feed'] = true;
@@ -458,8 +462,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
     }
 
     if (!$svc_msg['gl_feed']) {
-        $page = $args['sp_id'];
-        $mode = $args['mode'];
+        $page = '';
+        if (isset($args['sp_id'])) {
+            $page = $args['sp_id'];
+        }
+        $mode = '';
+        if (isset($args['mode'])) {
+            $mode = $args['mode'];
+        }
 
         $error = 0;
 
@@ -555,14 +565,20 @@ function service_get_staticpages($args, &$output, &$svc_msg)
     } else {
         $output = array();
 
-        $mode = $args['mode'];
+        $mode = '';
+        if (isset($args['mode'])) {
+            $mode = $args['mode'];
+        }
 
-        $perms = SP_getPerms ();
+        $perms = SP_getPerms();
         if (!empty ($perms)) {
             $perms = ' WHERE ' . $perms;
         }
 
-        $offset = COM_applyBasicFilter($args['offset'], true);
+        $offset = 0;
+        if (isset($args['offset'])) {
+            $offset = COM_applyBasicFilter($args['offset'], true);
+        }
         $max_items = $_SP_CONF['atom_max_items'] + 1;
 
         $limit = " LIMIT $offset, $max_items";
