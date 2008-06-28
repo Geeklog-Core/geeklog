@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.124 2008/06/07 18:31:56 dhaun Exp $
+// $Id: functions.inc,v 1.125 2008/06/28 14:41:51 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1080,9 +1080,7 @@ function plugin_autouninstall_staticpages ()
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
         /* give all vars with their name */
-        'vars'=> array(),
-        /* give the full name of the plugins config data to be removed from the config table */
-        'config_data' => array('staticpages')
+        'vars'=> array()
     );
 
     return $out;
