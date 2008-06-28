@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.11 2008/06/28 18:44:09 dhaun Exp $
+// $Id: services.inc.php,v 1.12 2008/06/28 21:20:34 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -131,19 +131,26 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
     // Apply filters to the parameters passed by the webservice 
     if ($args['gl_svc']) {
-        $args['mode'] = COM_applyBasicFilter($args['mode']);
-        $args['sp_id'] = COM_applyBasicFilter($args['sp_id']);
-        $args['sp_old_id'] = COM_applyBasicFilter($args['sp_old_id']);
-        $args['sp_uid'] = COM_applyBasicFilter($args['sp_uid'], true);
-        $args['sp_tid'] = COM_applyBasicFilter($args['sp_tid']);
-        $args['sp_hits'] = COM_applyBasicFilter($args['sp_hits'], true);
-        $args['sp_format'] = COM_applyBasicFilter($args['sp_format']);
-        $args['owner_id'] = COM_applyBasicFilter($args['owner_id'], true);
-        $args['group_id'] = COM_applyBasicFilter($args['group_id'], true);
-        $args['sp_where'] = COM_applyBasicFilter($args['sp_where'], true);
-        $args['sp_php'] = COM_applyBasicFilter($args['sp_php'], true);
-        $args['postmode'] = COM_applyBasicFilter($args['postmode']);
-        $args['commentcode'] = COM_applyBasicFilter($args['commentcode'], true);
+        $par_str = array('mode', 'sp_id', 'sp_old_id', 'sp_tid', 'sp_format',
+                         'postmode');
+        $par_num = array('sp_uid', 'sp_hits', 'owner_id', 'group_id',
+                         'sp_where', 'sp_php', 'commentcode');
+
+        foreach ($par_str as $str) {
+            if (isset($args[$str])) {
+                $args[$str] = COM_applyBasicFilter($args[$str]);
+            } else {
+                $args[$str] = '';
+            }
+        }
+
+        foreach ($par_num as $num) {
+            if (isset($args[$num])) {
+                $args[$num] = COM_applyBasicFilter($args[$num], true);
+            } else {
+                $args[$num] = 0;
+            }
+        }
     }
 
     // START: Staticpages defaults 
@@ -191,7 +198,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
 
-        if (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
+        if (!isset($args['sp_onmenu'])) {
+            $args['sp_onmenu'] = '';
+        } else if (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
             $svc_msg['error_desc'] = 'Menu label missing';
             return PLG_RET_ERROR;
         }
@@ -210,7 +219,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-
     // END: Staticpages defaults 
 
     $sp_id = $args['sp_id'];
@@ -220,7 +228,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_hits = $args['sp_hits'];
     $sp_format = $args['sp_format'];
     $sp_onmenu = $args['sp_onmenu'];
-    $sp_label = $args['sp_label'];
+    $sp_label = '';
+    if (!empty($args['sp_label'])) {
+        $sp_label = $args['sp_label'];
+    }
     $commentcode = $args['commentcode'];
     $owner_id = $args['owner_id'];
     $group_id = $args['group_id'];
@@ -229,10 +240,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $perm_members = $args['perm_members'];
     $perm_anon = $args['perm_anon'];
     $sp_php = $args['sp_php'];
-    $sp_nf = $args['sp_nf'];
+    $sp_nf = '';
+    if (!empty($args['sp_nf'])) {
+        $sp_nf = $args['sp_nf'];
+    }
     $sp_old_id = $args['sp_old_id'];
     $sp_centerblock = $args['sp_centerblock'];
-    $sp_help = $args['sp_help'];
+    $sp_help = '';
+    if (!empty($args['sp_help'])) {
+        $sp_help = $args['sp_help'];
+    }
     $sp_tid = $args['sp_tid'];
     $sp_where = $args['sp_where'];
     $sp_inblock = $args['sp_inblock'];
