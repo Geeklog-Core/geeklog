@@ -3,6 +3,16 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Allow remote users to use the webservices (bug #0000640). Due to the
+  authentication it is not possible for OpenID users to use the webservices.
+  Other remote users will have to use the form username@servicename for their
+  username [Dirk]
+- Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [Mike]
+- Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
+- Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
+  HTML compliance issues. [bug  0000669] [Mike]
+- Plaintext stories have nl2br applied in syndication feeds to provide correct
+  formatting in feed readers. [bug 0000662] [Mike]
 - Changed SEC_createToken so that it will only return one token per page
   (effectively making it a singleton). This fixes the problem of not being able
   to delete comments when you also have trackbacks for the same article
@@ -11,16 +21,13 @@ Geeklog History/Changes:
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
-- Calendar block now includes events from the current day (in progress or all
-  day events, bug 0000604, patch from forums) (really)
-- Plaintext stories have nl2br applied in syndication feeds to provide correct
-  formatting in feed readers. [bug 0000662] [bru_man]
-- Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
-  HTML compliance issues. [bug  0000669] [LWC]
-- Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
-- Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [LWC]
 
 - Updated Hebrew language file, provided by LWC
+
+Calendar plugin
+---------------
+- Calendar block now includes events from the current day (in progress or all
+  day events, bug 0000604, patch from forums) (really) [Mike]
 
 Links plugin
 ------------
@@ -31,6 +38,8 @@ Links plugin
 
 Static Pages plugin
 -------------------
+- Removed unused 'config_data' entry from the plugin uninstall function
+  (bug #0000666) [Dirk]
 - Fixed printer friendly version of a static page not working when url_rewrite
   is enabled (bug #0000661) [Dirk]
 
