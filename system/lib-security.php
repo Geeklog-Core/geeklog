@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.71 2008/06/20 14:32:51 dhaun Exp $
+// $Id: lib-security.php,v 1.72 2008/06/29 19:02:50 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -1078,7 +1078,7 @@ function SEC_encryptPassword($password)
   */
 function SEC_createToken($ttl = 1200)
 {
-    global $_USER, $_TABLES;
+    global $_USER, $_TABLES, $_DB_dbms;
 
     static $last_token;
 
@@ -1094,9 +1094,13 @@ function SEC_createToken($ttl = 1200)
     $pageURL = addslashes($pageURL);
     
     /* Destroy exired tokens: */
-    /* Note: TTL not yet implemented! So commented out */
-    $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
+    if($_DB_dbms == 'mssql') {
+        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW())"
            . " AND (ttl > 0)";
+    } else {
+        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
+           . " AND (ttl > 0)";
+    }
     DB_Query($sql);
     
     /* Destroy tokens for this user/url combination */
@@ -1125,7 +1129,7 @@ function SEC_createToken($ttl = 1200)
   */
 function SEC_checkToken()
 {
-    global $_USER, $_TABLES;
+    global $_USER, $_TABLES, $_DB_dbms;
     
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
@@ -1137,8 +1141,18 @@ function SEC_checkToken()
     }
     
     if(trim($token) != '') {
-        $sql = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
+        if($_DB_dbms != 'mssql') {
+            $sql = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
+        } else {
+            $sql = "SELECT owner_id, urlfor, expired = 
+                      CASE 
+                         WHEN (DATEADD(s,ttl,created) < getUTCDate()) AND (ttl>0) THEN 1
+                
+                         ELSE 0
+                      END
+                    FROM gl_tokens WHERE token='$token'";
+        }
         $tokens = DB_Query($sql);
         $numberOfTokens = DB_numRows($tokens);
         if($numberOfTokens != 1) {
