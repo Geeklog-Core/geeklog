@@ -305,7 +305,7 @@ CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['tokens']} (
+CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
     [token] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     [created] [datetime] NOT NULL,
     [owner_id] [numeric] (8,0) NOT NULL,
