@@ -36,7 +36,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.109 2008/05/31 07:55:08 dhaun Exp $
+// $Id: functions.inc,v 1.110 2008/07/01 19:52:58 mjervis Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -169,7 +169,7 @@ function plugin_getwhatsnew_links()
 */
 function plugin_autotags_links($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_DIRECTION;
 
     if ($op == 'tagname' ) {
         return 'link';
@@ -184,9 +184,13 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
             $linktext = $autotag['parm2'];
             $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
         }
+        $class = 'ext-link';
+        if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
+            $class .= '-rtl';
+        }
         $attr = array(
                     'title' => $siteurl,
-                    'class' => 'ext-link'
+                    'class' => $class
                      );
         $link = COM_createLink($linktext, $url, $attr);
         $content = str_replace($autotag['tagstr'], $link, $content);

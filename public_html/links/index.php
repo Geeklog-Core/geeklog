@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2008/06/12 19:45:26 dhaun Exp $
+// $Id: index.php,v 1.39 2008/07/01 19:52:59 mjervis Exp $
 
 /**
  * This is the links page
@@ -342,7 +342,7 @@ function links_list($message)
 */
 function prepare_link_item ($A, &$template)
 {
-    global $_CONF, $_USER, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE;
+    global $_CONF, $_USER, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE, $LANG_DIRECTION;
 
     $url = COM_buildUrl ($_CONF['site_url']
                  . '/links/portal.php?what=link&amp;item=' . $A['lid']);
@@ -353,9 +353,13 @@ function prepare_link_item ($A, &$template)
     $template->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
     $content = stripslashes ($A['title']);
+    $class = 'ext-link';
+    if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
+        $class .= '-rtl';
+    }
     $attr = array(
         'title' => stripslashes ($A['url']),
-        'class' => 'ext-link');
+        'class' => $class);
     $html = COM_createLink($content, $url, $attr);
     $template->set_var ('link_html', $html);
     if (!COM_isAnonUser() && !SEC_hasRights('links.edit')) {
