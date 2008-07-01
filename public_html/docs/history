@@ -21,6 +21,18 @@ Geeklog History/Changes:
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
+- Calendar block now includes events from the current day (in progress or all
+  day events, bug 0000604, patch from forums) (really)
+- Plaintext stories have nl2br applied in syndication feeds to provide correct
+  formatting in feed readers. [bug 0000662] [bru_man]
+- Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
+  HTML compliance issues. [bug  0000669] [LWC]
+- Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
+- Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [LWC]
+- The bundled plugins' install_defaults.php use "global" outside of any function
+  [bug 0000663] [LWC]
+- Enabled siteconfig.php to override database config in core, primarily for
+  rootdebug. [bug 0000673] [Mike]
 
 - Updated Hebrew language file, provided by LWC
 

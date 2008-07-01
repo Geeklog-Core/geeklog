@@ -17,6 +17,11 @@ global $_CONF;
 // To disable your site quickly, simply set this flag to false
 $_CONF['site_enabled'] = true;
 
+// If you have errors on your site, can't login, or can't get to the
+// config UI, then you can comment this in to set the root debug option
+// on and get detailed error messages:
+// $_CONF['rootdebug'] = true;
+
 $_CONF['path'] = '/path/to/Geeklog/';
 $_CONF['path_system'] = $_CONF['path'] . 'system/';
 

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.42 2008/06/14 15:28:01 dhaun Exp $
+// $Id: config.class.php,v 1.43 2008/07/01 20:27:35 mjervis Exp $
 
 class config {
     var $dbconfig_file;
@@ -112,7 +112,9 @@ class config {
         $result = DB_query($sql_query);
         while ($row = DB_fetchArray($result)) {
             if ($row[1] !== 'unset') {
-                $this->config_array[$row[2]][$row[0]] = unserialize($row[1]);
+                if(!array_key_exists($row[2], $this->config_array) || !array_key_exists($row[0], $this->config_array[$row[2]])) {
+                    $this->config_array[$row[2]][$row[0]] = unserialize($row[1]);
+                }
             }
         }
         $this->_post_configuration();
