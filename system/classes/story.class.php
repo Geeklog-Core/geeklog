@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.29 2008/06/22 20:23:07 dhaun Exp $
+// $Id: story.class.php,v 1.30 2008/07/03 19:44:31 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -495,6 +495,8 @@ class Story
                     return STORY_PERMISSION_DENIED;
                 } elseif ($this->_access == 2 && $mode != 'view') {
                     return STORY_EDIT_DENIED;
+                } elseif ((($this->_access == 2) && ($mode == 'view')) && (($this->_draft_flag == 1) || ($this->_date > time()))) {
+                        return STORY_INVALID_SID;
                 }
             } else {
                 return STORY_INVALID_SID;
@@ -801,6 +803,9 @@ class Story
     function loadSubmission()
     {
         $array = $_POST;
+        
+        $this->_expire = time();
+        $this->_expiredate = 0;
 
         // Handle Magic GPC Garbage:
         while (list($key, $value) = each($array))
