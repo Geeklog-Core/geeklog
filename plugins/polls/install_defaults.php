@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.6 2008/07/01 19:42:03 mjervis Exp $
+// $Id: install_defaults.php,v 1.7 2008/07/03 18:00:53 mjervis Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -45,7 +45,7 @@ if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
  * and not referenced any more once the plugin is installed
  *
  */
-
+global $_PO_DEFAULT;
 $_PO_DEFAULT = array();
 
 // when set to 1 will only allow logged-in users to view the list of past polls

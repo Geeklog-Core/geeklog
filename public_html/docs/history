@@ -5,8 +5,6 @@ Geeklog History/Changes:
 
 - Enabled siteconfig.php to override database config in core, primarily for
   rootdebug. [bug 0000673] [Mike]
-- The bundled plugins' install_defaults.php use "global" outside of any function
-  [bug 0000663] [Mike]
 - Allow remote users to use the webservices (bug #0000640). Due to the
   authentication it is not possible for OpenID users to use the webservices.
   Other remote users will have to use the form username@servicename for their
@@ -25,6 +23,7 @@ Geeklog History/Changes:
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
+
 
 - Updated Hebrew language file, provided by LWC
 

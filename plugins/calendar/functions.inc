@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.91 2008/06/29 19:02:49 mjervis Exp $
+// $Id: functions.inc,v 1.92 2008/07/03 18:00:50 mjervis Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -122,7 +122,7 @@ function phpblock_calendar( $help='', $title='' )
         if($_DB_dbms == 'mssql') {
             $eventSql .= "WHERE dateend >= DATEADD(hh, 24, NOW()) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
         } else {
-            $eventSql .= "WHERE dateend >= (getUTCDate() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";            
+            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";            
         }
         $eventSql .= 'ORDER BY datestart,timestart';
         
