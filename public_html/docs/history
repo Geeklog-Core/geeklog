@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Adopted hack to allow multilingual blocks (bug #0000626) [Dirk]
+- Fixed SQL error in story submissions (reported by Chase) [Mike]
+- Stories with a publishing date in the future and stories with the draft flag
+  set were accessible if you knew their story id (bug #0000678) [Mike]
 - Enabled siteconfig.php to override database config in core, primarily for
   rootdebug. [bug 0000673] [Mike]
 - Allow remote users to use the webservices (bug #0000640). Due to the
@@ -23,7 +27,6 @@ Geeklog History/Changes:
   a duplicate in the submission queue, unless you changed the story ID at the
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
-
 
 - Updated Hebrew language file, provided by LWC
 

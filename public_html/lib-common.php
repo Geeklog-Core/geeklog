@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.703 2008/06/26 21:27:57 mjervis Exp $
+// $Id: lib-common.php,v 1.704 2008/07/04 11:58:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3448,7 +3448,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
 
-    $commonsql .= ' ORDER BY blockorder,title asc';
+    $commonsql .= ' ORDER BY blockorder,title ASC';
 
     $blocksql['mysql'] .= $commonsql;
     $blocksql['mssql'] .= $commonsql;
@@ -3513,6 +3513,29 @@ function COM_formatBlock( $A, $noboxes = false )
     global $_CONF, $_TABLES, $_USER, $LANG21;
 
     $retval = '';
+
+    $lang = COM_getLanguageId();
+    if (!empty($lang)) {
+
+        $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, ";
+        $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
+        $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
+
+        $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
+
+        $commonsql = "FROM {$_TABLES['blocks']} WHERE name = '"
+                   . $A['name'] . '_' . $lang . "'";
+
+        $blocksql['mysql'] .= $commonsql;
+        $blocksql['mssql'] .= $commonsql;
+        $result = DB_query( $blocksql );
+
+        if (DB_numRows($result) == 1) {
+            // overwrite with data for language-specific block
+            $A = DB_fetchArray($result);
+        }
+    }
+
     if( $A['type'] == 'portal' )
     {
         if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'] ))

@@ -1,20 +1,25 @@
 <?php
 
 // this file can't be used on its own
-if (strpos ($_SERVER['PHP_SELF'], 'functions.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos($_SERVER['PHP_SELF'], 'functions.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 $_IMAGE_TYPE = 'png';
 
-if (!defined ('XHTML')) {
-    define('XHTML',''); // change this to ' /' for XHTML
+if (!defined('XHTML')) {
+    define('XHTML', ''); // change this to ' /' for XHTML
 }
 
-$result = DB_query ("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
-$nrows = DB_numRows ($result);
+$lang = COM_getLanguageId();
+if (empty($lang)) {
+    $result = DB_query("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
+} else {
+    $result = DB_query("SELECT onleft,name FROM {$_TABLES['blocks']}");
+}
+$nrows = DB_numRows($result);
 for ($i = 0; $i < $nrows; $i++) {
-    $A = DB_fetchArray ($result);
+    $A = DB_fetchArray($result);
         if ($A['onleft'] == 1) {
             $_BLOCK_TEMPLATE[$A['name']] = 'blockheader-left.thtml,blockfooter-left.thtml';
         } else {
