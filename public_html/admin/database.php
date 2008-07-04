@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.49 2008/06/07 12:41:44 dhaun Exp $
+// $Id: database.php,v 1.50 2008/07/04 18:08:12 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -183,6 +183,11 @@ function dobackup()
         }
         $command .= " $_DB_name > \"$backupfile\"";
 
+        $log_command = $command;
+        if (!empty($_DB_pass)) {
+            $log_command = str_replace(" -p$_DB_pass", ' -p*****', $command);
+        }
+
         if (function_exists('is_executable')) {
             $canExec = is_executable($_DB_mysqldump_path);
         } else {
@@ -196,7 +201,7 @@ function dobackup()
             } else {
                 $retval .= COM_showMessage(94);
                 COM_errorLog('Backup Filesize was less than 1kb', 1);
-                COM_errorLog("Command used for mysqldump: $command", 1);
+                COM_errorLog("Command used for mysqldump: $log_command", 1);
             }
         } else {
             $retval .= COM_startBlock($LANG08[06], '',
@@ -205,7 +210,7 @@ function dobackup()
             $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block',
                                                          'footer'));
             COM_errorLog('Backup Error: Bad path or mysqldump does not exist', 1);
-            COM_errorLog("Command used for mysqldump: $command", 1);
+            COM_errorLog("Command used for mysqldump: $log_command", 1);
         }
     } else {
         $retval .= COM_startBlock($MESSAGE[30], '',
