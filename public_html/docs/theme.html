@@ -196,7 +196,28 @@ featured and archived stories.</li>
 </ol>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.5.0</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.5.1</a></h2>
+
+<h3>Multilingual blocks</h3>
+
+<p>The multi-language support for blocks introduced in Geeklog 1.5.1 relies on
+<em>disabled</em> blocks being swapped in dynamically. If you are using
+Geeklog's multi-language support, you may need to modify the piece of PHP code
+in your theme's <tt>functions.php</tt> so that it picks the correct templates
+for these multilingual blocks:</p>
+
+<pre style="margin-left:4em;"><code>$lang = COM_getLanguageId();
+if (empty($lang)) {
+    $result = DB_query("SELECT onleft,name FROM {$_TABLES['blocks']} WHERE is_enabled = 1");
+} else {
+    $result = DB_query("SELECT onleft,name FROM {$_TABLES['blocks']}");
+}</code></pre>
+
+<p>Prior to Geeklog 1.5.1, you will probably only find the first SQL request
+in your <tt>functions.php</tt> file.</p>
+
+
+<h2><a name="changes150">Theme changes in Geeklog 1.5.0</a></h2>
 
 <h3><a name="xhtml">XHTML support</a></h3>
 
