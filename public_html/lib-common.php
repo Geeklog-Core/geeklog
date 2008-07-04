@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.707 2008/07/04 15:59:18 dhaun Exp $
+// $Id: lib-common.php,v 1.708 2008/07/04 17:26:47 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6234,15 +6234,16 @@ function COM_getLanguageId($language = '')
         $language = COM_getLanguage();
     }
 
-    $lang_id = false;
+    $lang_id = '';
     if (isset($_CONF['language_files'])) {
         $lang_id = array_search($language, $_CONF['language_files']);
-    }
-    if ($lang_id === false) {
-        // that looks like a misconfigured $_CONF['language_files'] array ...
-        COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
 
-        $lang_id = ''; // not much we can do here ...
+        if ($lang_id === false) {
+            // that looks like a misconfigured $_CONF['language_files'] array
+            COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
+
+            $lang_id = ''; // not much we can do here ...
+        }
     }
 
     return $lang_id;
