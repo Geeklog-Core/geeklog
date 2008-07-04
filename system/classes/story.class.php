@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.30 2008/07/03 19:44:31 mjervis Exp $
+// $Id: story.class.php,v 1.31 2008/07/04 18:26:25 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -795,6 +795,7 @@ class Story
 
         // Use what we have:
         $this->_tid = $topic;
+        $this->_date = time();
     }
 
     /**
@@ -805,6 +806,7 @@ class Story
         $array = $_POST;
         
         $this->_expire = time();
+        $this->_date = time();
         $this->_expiredate = 0;
 
         // Handle Magic GPC Garbage:
