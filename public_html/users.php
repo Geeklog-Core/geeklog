@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.167 2008/03/15 08:57:15 dhaun Exp $
+// $Id: users.php,v 1.168 2008/07/04 15:26:45 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -815,9 +815,9 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
             function_exists('CUSTOM_loginErrorHandler')) {
         // Typically this will be used if you have a custom main site page
         // and need to control the login process
-        $display .= CUSTOM_loginErrorHandler($msg);
+        CUSTOM_loginErrorHandler($msg);
     } else {
-        $retval .= COM_siteHeader('menu', $message_title)
+        $retval = COM_siteHeader('menu', $message_title)
                 . COM_startBlock($message_title, '',
                                  COM_getBlockTemplate('_msg_block', 'header'))
                 . $message_text
