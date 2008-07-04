@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.708 2008/07/04 17:26:47 dhaun Exp $
+// $Id: lib-common.php,v 1.709 2008/07/04 18:19:43 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -98,21 +98,19 @@ $_CONF = $config->get_config('Core');
 
 // Before we do anything else, check to ensure site is enabled
 
-if( isset( $_CONF['site_enabled'] ) && !$_CONF['site_enabled'] )
-{
-    if( empty( $_CONF['site_disabled_msg'] ))
-    {
-        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon';
-    }
-    else
-    {
+if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
+
+    if (empty($_CONF['site_disabled_msg'])) {
+        header("HTTP/1.1 503 Service Unavailable");
+        header("Status: 503 Service Unavailable");
+        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.';
+    } else {
         // if the msg starts with http: assume it's a URL we should redirect to
-        if( preg_match( "/^(https?):/", $_CONF['site_disabled_msg'] ) === 1 )
-        {
-            echo COM_refresh( $_CONF['site_disabled_msg'] );
-        }
-        else
-        {
+        if (preg_match("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
+            echo COM_refresh($_CONF['site_disabled_msg']);
+        } else {
+            header("HTTP/1.1 503 Service Unavailable");
+            header("Status: 503 Service Unavailable");
             echo $_CONF['site_disabled_msg'];
         }
     }
@@ -3967,7 +3965,7 @@ function COM_hit()
 
 function COM_emailUserTopics()
 {
-    global $_CONF, $_TABLES, $LANG08, $LANG24;
+    global $_CONF, $_TABLES, $LANG04, $LANG08, $LANG24;
 
     $subject = strip_tags( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() ));
 
