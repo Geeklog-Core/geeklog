@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.44 2008/07/04 13:21:25 dhaun Exp $
+// $Id: config.class.php,v 1.45 2008/07/04 14:46:07 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -609,7 +609,8 @@ class config {
         } else {
             if ($allow_reset) {
                 $t->set_var('unset_link',
-                        "(<a href='#' onClick='unset(\"{$name}\");'>X</a>)");
+                        "(<a href='#' onClick='unset(\"{$name}\");' title='"
+                        . $LANG_CONFIG['disable'] . "'>X</a>)");
             }
             if (($a = strrchr($name, '[')) !== FALSE) {
                 $on = substr($a, 1, -1);
