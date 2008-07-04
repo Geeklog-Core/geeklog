@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.706 2008/07/04 15:14:28 dhaun Exp $
+// $Id: lib-common.php,v 1.707 2008/07/04 15:59:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2371,7 +2371,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         // OpenID remote authentification.
-        if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
+        if ($_CONF['user_login_method']['openid'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
             $login->set_file('openid_login', 'loginform_openid.thtml');
             $login->set_var('lang_openid_login', $LANG01[128]);
             $login->set_var('input_field_size', 18);

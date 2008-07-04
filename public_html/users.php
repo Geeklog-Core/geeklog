@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.168 2008/07/04 15:26:45 dhaun Exp $
+// $Id: users.php,v 1.169 2008/07/04 15:59:19 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -658,7 +658,8 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     }
 
     // OpenID remote authentification.
-    if ($_CONF['user_login_method']['openid'] && !$_CONF['usersubmission']) {
+    if ($_CONF['user_login_method']['openid'] && ($_CONF['usersubmission'] == 0)
+            && !$_CONF['disable_new_user_registration']) {
         $user_templates->set_file('openid_login', '../loginform_openid.thtml');
         $user_templates->set_var('lang_openid_login', $LANG01[128]);
         $user_templates->set_var('input_field_size', 40);
@@ -1060,7 +1061,10 @@ default:
         //pass $loginname by ref so we can change it ;-)
         $status = SEC_remoteAuthentication($loginname, $passwd, $service, $uid);
 
-    } elseif (($_CONF['usersubmission'] == 0) && $_CONF['user_login_method']['openid'] && (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
+    } elseif ($_CONF['user_login_method']['openid'] &&
+            ($_CONF['usersubmission'] == 0) &&
+            !$_CONF['disable_new_user_registration'] &&
+            (isset($_GET['openid_login']) && ($_GET['openid_login'] == '1'))) {
         // Here we go with the handling of OpenID authentification.
 
         $query = array_merge($_GET, $_POST);
