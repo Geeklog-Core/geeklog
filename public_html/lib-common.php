@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.709 2008/07/04 18:19:43 dhaun Exp $
+// $Id: lib-common.php,v 1.710 2008/07/06 20:18:22 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1930,6 +1930,10 @@ function COM_errorLog( $logentry, $actionid = '' )
 
         $timestamp = strftime( '%c' );
 
+        if (!isset($_CONF['path_log']) && ($actionid != 2)) {
+            $actionid = 3;
+        }
+
         switch( $actionid )
         {
             case 1:
@@ -1945,12 +1949,16 @@ function COM_errorLog( $logentry, $actionid = '' )
                 }
                 break;
 
-           case 2:
+            case 2:
                 $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp, '',
                                COM_getBlockTemplate( '_msg_block', 'header' ))
                         . nl2br( $logentry )
                         . COM_endBlock( COM_getBlockTemplate( '_msg_block',
                                                               'footer' ));
+                break;
+
+            case 3:
+                $retval = nl2br($logentry);
                 break;
 
             default:
@@ -6474,7 +6482,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     /*
      * If we have a root user, then output detailed error message:
      */
-    if( ( is_array($_USER) && function_exists('SEC_inGroup') ) || $_CONF['rootdebug'] )
+    if( ( is_array($_USER) && function_exists('SEC_inGroup') ) || (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) )
     {
         if($_CONF['rootdebug'] || SEC_inGroup('Root'))
         {
@@ -6500,7 +6508,9 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     {
         if( array_key_exists('path_system', $_CONF) )
         {
-            require_once($_CONF['path_system'].'lib-custom.php');
+            if (file_exists($_CONF['path_system'].'lib-custom.php')) {
+                require_once($_CONF['path_system'].'lib-custom.php');
+            }
             if( function_exists('CUSTOM_handleError') )
             {
                 CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext);
@@ -6513,16 +6523,20 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     COM_errorLog("$errno - $errstr @ $errfile line $errline", 1);
 
     /* Does the theme implement an error message html file? */
-    if(file_exists($_CONF['path_layout'].'errormessage.html'))
-    {
+    if (!empty($_CONF['path_layout']) &&
+            file_exists($_CONF['path_layout'] . 'errormessage.html')) {
         // NOTE: NOT A TEMPLATE! JUST HTML!
-        include($_CONF['path_layout'].'errormessage.html');
+        include $_CONF['path_layout'] . 'errormessage.html';
     } else {
         /* Otherwise, display simple error message */
+        $title = "An Error Occurred";
+        if (!empty($_CONF['site_name'])) {
+            $title = $_CONF['site_name'] . ' - ' . $title;
+        }
         echo("
         <html>
             <head>
-                <title>{$_CONF['site_name']} - An Error Occurred</title>
+                <title>{$title}</title>
             </head>
             <body>
             <div style=\"width: 100%; text-align: center;\">
