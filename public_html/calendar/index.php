@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2008/05/23 14:40:16 dhaun Exp $
+// $Id: index.php,v 1.27 2008/07/06 20:15:10 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -219,7 +219,7 @@ function addMode ($mode, $more = true)
 */
 function getDeleteImageLink($mode, $A, $token)
 {
-    global $_CONF, $LANG_CAL_ADMIN, $LANG_CAL_2, $_IMAGE_TYPE;
+    global $_CONF, $LANG_ADMIN, $LANG_CAL_2, $_IMAGE_TYPE;
 
     $retval = '';
     $img = '<img src="' . $_CONF['site_url']
@@ -238,9 +238,9 @@ function getDeleteImageLink($mode, $A, $token)
         if (SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
             $retval = COM_createLink($img, $_CONF['site_admin_url']
-                    . '/plugins/calendar/index.php?mode=' . $LANG_CAL_ADMIN[22]
-                    . '&amp;eid=' . $A['eid'] . '&amp;' . CSRF_TOKEN . '='
-                    . $token);
+                    . '/plugins/calendar/index.php?mode='
+                    . $LANG_ADMIN['delete'] . '&amp;eid=' . $A['eid'] . '&amp;'
+                    . CSRF_TOKEN . '=' . $token);
         }
     }
 
