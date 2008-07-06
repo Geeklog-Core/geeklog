@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.206 2008/06/07 12:41:44 dhaun Exp $
+// $Id: user.php,v 1.207 2008/07/06 20:20:32 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -67,35 +67,36 @@ if (!SEC_hasRights('user.edit')) {
 * @see function COM_checkList
 *
 */
-function GROUP_checkList ($table, $selection, $where='', $selected='', $orderby='')
+function GROUP_checkList($table, $selection, $where='', $selected='', $orderby='')
 {
     global $_TABLES, $LANG_ACCESS;
 
     $retval = '';
 
     $sql = "SELECT $selection FROM $table";
-    if (!empty ($where)) {
+    if (!empty($where)) {
         $sql .= " WHERE $where";
     }
-    if (!empty ($orderby)) {
+    if (!empty($orderby)) {
         $sql .= " ORDER BY $orderby";
     }
-    $result = DB_query ($sql);
-    $nrows = DB_numRows ($result);
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
 
-    if (empty ($selected)) {
-        $S = array ();
+    if (empty($selected)) {
+        $S = array();
     } else {
-        $S = explode (' ', $selected);
+        $S = explode(' ', $selected);
     }
+    $num_selected = count($S);
 
     for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result, true);
+        $A = DB_fetchArray($result, true);
 
         $readonly = false;
         $input = '<input type="checkbox"';
 
-        for ($x = 0; $x < count ($S); $x++) {
+        for ($x = 0; $x < $num_selected; $x++) {
             if ($A[0] == $S[$x]) {
                 $input .= ' checked="checked"';
 
@@ -113,10 +114,11 @@ function GROUP_checkList ($table, $selection, $where='', $selected='', $orderby=
                    . '<input type="hidden" name="' . $table . '[]" value="'
                    . $A[0] . '" checked="checked"' . XHTML . '>';
             $retval .= '<span title="' . $LANG_ACCESS['readonly'] . '">'
-                    . $input . stripslashes ($A[1]) . '</span><br' . XHTML . '>' . LB;
+                    . $input . stripslashes($A[1]) . '</span><br' . XHTML . '>' . LB;
         } else {
             $input .= ' name="' . $table . '[]" value="' . $A[0] . '"';
-            $retval .= $input . XHTML . '>' . stripslashes ($A[1]) . '<br' . XHTML . '>' . LB;
+            $retval .= $input . XHTML . '>' . stripslashes($A[1])
+                    . '<br' . XHTML . '>' . LB;
         }
     }
 
@@ -268,21 +270,22 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('do_not_use_spaces', '');
 
-    $statusarray = array (USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
-                          USER_ACCOUNT_ACTIVE              => $LANG28[45]
+    $statusarray = array(USER_ACCOUNT_AWAITING_ACTIVATION => $LANG28[43],
+                         USER_ACCOUNT_ACTIVE              => $LANG28[45]
                    );
 
     $allow_ban = true;
 
-    if ($A['uid'] == $_USER['uid']) {
-        $allow_ban = false; // do not allow to ban yourself
-    } else if (SEC_inGroup('Root',$A['uid'])) { // is this user a root user?
-        $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} "
-                    . "WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
-        $count_root_result = DB_query($count_root_sql);
-        $C = DB_fetchArray($count_root_result); // how many are left?
-        if ($C['root_count'] < 2) {
-            $allow_ban = false; // prevent banning the last root user
+    if (!empty($uid)) {
+        if ($A['uid'] == $_USER['uid']) {
+            $allow_ban = false; // do not allow to ban yourself
+        } else if (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
+            $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
+            $count_root_result = DB_query($count_root_sql);
+            $C = DB_fetchArray($count_root_result); // how many are left?
+            if ($C['root_count'] < 2) {
+                $allow_ban = false; // prevent banning the last root user
+            }
         }
     }
 
@@ -290,7 +293,7 @@ function edituser($uid = '', $msg = '')
         $statusarray[USER_ACCOUNT_DISABLED] = $LANG28[42];
     }
 
-    if ($_CONF['usersubmission'] == 1) {
+    if (($_CONF['usersubmission'] == 1) && !empty($uid)) {
         $statusarray[USER_ACCOUNT_AWAITING_APPROVAL] = $LANG28[44];
     }
     asort($statusarray);
@@ -523,9 +526,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
 
             $uid = USER_createAccount ($username, $email, $passwd, $fullname,
                                        $homepage);
-            if (($uid > 1) && ($_CONF['usersubmission'] == 1)) {
-                // we don't want to queue new users created by a User Admin
-                DB_query ("UPDATE {$_TABLES['users']} SET status = " . USER_ACCOUNT_AWAITING_ACTIVATION . " WHERE uid = $uid");
+            if ($uid > 1) {
+                DB_query("UPDATE {$_TABLES['users']} SET status = $userstatus WHERE uid = $uid");
             }
         } else {
             $fullname = addslashes ($fullname);
@@ -563,7 +565,6 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             }
             if( ($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
                    && ($userstatus == USER_ACCOUNT_ACTIVE) ) {
-                //USER_sendActivationEmail($username, $email);
                 USER_createAndSendPassword ($username, $email, $uid);
             }
             $userChanged = true;
@@ -723,7 +724,8 @@ function batchdelete()
     $user_templates->set_var ('lang_instruction', $LANG28[56]);
     $user_templates->set_var ('lang_updatelist', $LANG28[66]);
 
-    for ($i = 0; $i < count ($opt_arr); $i++) {
+    $num_opts = count($opt_arr);
+    for ($i = 0; $i < $num_opts; $i++) {
         $selector = '';
         if ($usr_type == $opt_arr[$i]['sel']) {
             $selector = ' checked="checked"';
@@ -1059,7 +1061,7 @@ function importusers()
             $ecount = DB_count ($_TABLES['users'], 'email',
                                 addslashes ($emailAddr));
 
-            if ($ucount == 0 && $ecount == 0) {
+            if (($ucount == 0) && ($ecount == 0)) {
                 // user doesn't already exist
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
