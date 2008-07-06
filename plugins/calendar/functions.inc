@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.92 2008/07/03 18:00:50 mjervis Exp $
+// $Id: functions.inc,v 1.93 2008/07/06 20:16:59 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -939,8 +939,10 @@ function CALENDAR_listOld()
 * @return   string          HTML with success or error message
 *
 */
-function CALENDAR_deleteOld() {
+function CALENDAR_deleteOld()
+{
     global $_CONF, $LANG_CAL_ADMIN;
+
     $msg = '';
     $event_list = array();
     if (isset($_POST['delitem'])) {
@@ -961,10 +963,12 @@ function CALENDAR_deleteOld() {
             }
         }
     }
+
     // Since this function is used for deletion only, its necessary to say that
     // zero were deleted instead of just leaving this message away.
-    COM_numberFormat($c); // just in case we have more than 999)..
+    COM_numberFormat($c); // just in case we have more than 999 ...
     $msg .= "{$LANG_CAL_ADMIN[36]}: $c<br" . XHTML . ">\n";
+
     return $msg;
 }
 
@@ -1633,6 +1637,9 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
             $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
             $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
         }
+    }
+    if (!empty($author)) {
+        $sql .= "AND (owner_id = '$author')";
     }
     $sql .= COM_getPermSQL ('AND');
     $sql .= ' GROUP BY datestart, eid, title, description, location, dateend, timestart, timeend, allday, event_type ORDER BY datestart DESC ';
