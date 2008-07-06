@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Allow creation of banned users, i.e. ban the user on account creation [Dirk]
+- Minor improvements in the error handling, e.g. preventing Geeklog from
+  creating error.log files outside the logs directory [Dirk]
 - Send a HTTP status code 503 "Service Unavailable" when the site is disabled
   [Dirk]
 - Hide the database password when the database backup failed and we're logging
@@ -39,6 +42,8 @@ Geeklog History/Changes:
 
 Calendar plugin
 ---------------
+- Fixed Admin delete links in day and week view (bug #0000680) [Dirk]
+- Search for an event's "author" didn't work [Dirk]
 - Calendar block now includes events from the current day (in progress or all
   day events, bug 0000604, patch from forums) (really) [Mike]
 
