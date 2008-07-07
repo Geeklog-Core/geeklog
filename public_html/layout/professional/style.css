@@ -280,9 +280,6 @@ select {
   text-decoration: line-through;
 }
 /* Blocks *********************************************************************/
-.block-box-left {
-  margin:10px;
-}
 .block-box-left,
 .block-box-right,
 .block-box {
@@ -993,10 +990,10 @@ a.tooltip {
 }
 a.tooltip:hover  {
   z-index:100;
-  text-decoration:none
+  text-decoration:none;
 }
 a.tooltip span {
-  display: none
+  display: none;
 }
 a.tooltip:hover span {
   /*the span will display just on :hover state*/
