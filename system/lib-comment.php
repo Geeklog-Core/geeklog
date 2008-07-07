@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.65 2008/05/23 10:50:50 dhaun Exp $
+// $Id: lib-comment.php,v 1.66 2008/07/07 18:29:08 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -719,7 +719,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $newcomment = $comment;
             if (!empty ($sig)) {
                 if (($postmode == 'html') || ($fakepostmode == 'html')) {
-                    $newcomment .= '<p>---<br' . XHTML . '>' . nl2br ($sig);
+                    $newcomment .= '<p>---<br' . XHTML . '>' . nl2br($sig)
+                                . '</p>';
                 } else {
                     $newcomment .= LB . LB . '---' . LB . $sig;
                 }
@@ -920,7 +921,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     }
     if (!empty ($sig)) {
         if ($postmode == 'html') {
-            $comment .= '<p>---<br' . XHTML . '>' . nl2br($sig);
+            $comment .= '<p>---<br' . XHTML . '>' . nl2br($sig) . '</p>';
         } else {
             $comment .= LB . LB . '---' . LB . $sig;
         }
