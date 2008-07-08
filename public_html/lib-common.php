@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.710 2008/07/06 20:18:22 dhaun Exp $
+// $Id: lib-common.php,v 1.711 2008/07/08 18:42:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2779,12 +2779,15 @@ function COM_adminMenu( $help = '', $title = '' )
 * This function does a redirect using a meta refresh. This is (or at least
 * used to be) more compatible than using a HTTP Location: header.
 *
-* @param        string      $url        URL to send user to
+* @param    string  $url    URL to send user to
+* @return   string          HTML meta redirect
+* @note     This does not need to be XHTML compliant. It may also be used
+*           in situations where the XHTML constant is not defined yet ...
 *
 */
 function COM_refresh($url)
 {
-    return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"" . XHTML . "></head></html>\n";
+    return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
 }
 
 /**

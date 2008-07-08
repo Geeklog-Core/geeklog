@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.207 2008/07/06 20:20:32 dhaun Exp $
+// $Id: user.php,v 1.208 2008/07/08 18:42:54 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -566,6 +566,9 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             if( ($_CONF['usersubmission'] == 1) && ($oldstatus == USER_ACCOUNT_AWAITING_APPROVAL)
                    && ($userstatus == USER_ACCOUNT_ACTIVE) ) {
                 USER_createAndSendPassword ($username, $email, $uid);
+            }
+            if ($userstatus == USER_ACCOUNT_DISABLED) {
+                SESS_endUserSession($uid);
             }
             $userChanged = true;
         }

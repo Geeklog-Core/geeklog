@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- End a user's session when they are being banned [Dirk]
+- Signatures in HTML-formatted comments weren't XHTML compliant [Dirk]
+- Minor cleanups in style.css - no actual layout changes (bug #0000683) [Dirk]
 - Allow creation of banned users, i.e. ban the user on account creation [Dirk]
 - Minor improvements in the error handling, e.g. preventing Geeklog from
   creating error.log files outside the logs directory [Dirk]

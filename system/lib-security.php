@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.72 2008/06/29 19:02:50 mjervis Exp $
+// $Id: lib-security.php,v 1.73 2008/07/08 18:42:54 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -67,7 +67,7 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
-/* Constants for acount stats */
+/* Constants for account stats */
 define('USER_ACCOUNT_DISABLED', 0); // Account is banned/disabled
 define('USER_ACCOUNT_AWAITING_ACTIVATION', 1); // Account awaiting user to login.
 define('USER_ACCOUNT_AWAITING_APPROVAL', 2); // Account awaiting moderator approval
@@ -732,6 +732,7 @@ function SEC_authenticate($username, $password, &$uid)
 *
 * @param    int  $userid   Valid uid value.
 * @return   int            user status, 0-3
+* @note     May not return for banned/non-approved users.
 *
 */
 function SEC_checkUserStatus($userid)
@@ -743,36 +744,33 @@ function SEC_checkUserStatus($userid)
 
     // only do redirects if we aren't on users.php in a valid mode (logout or
     // default)
-    if (strpos ($_SERVER['PHP_SELF'], 'users.php') === false)
-    {
+    if (strpos($_SERVER['PHP_SELF'], 'users.php') === false) {
         $redirect = true;
     } else {
-        if (empty($_REQUEST['mode']) || ($_REQUEST['mode'] == 'logout'))
-        {
+        if (empty($_REQUEST['mode']) || ($_REQUEST['mode'] == 'logout')) {
             $redirect = false;
         } else {
             $redirect = true;
         }
     }
-    if ($status == USER_ACCOUNT_AWAITING_ACTIVATION)
-    {
+    if ($status == USER_ACCOUNT_AWAITING_ACTIVATION) {
         DB_change($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE, 'uid', $userid);
     } elseif ($status == USER_ACCOUNT_AWAITING_APPROVAL) {
         // If we aren't on users.php with a default action then go to it
-        if ($redirect)
-        {
+        if ($redirect) {
             COM_accessLog("SECURITY: Attempted Cookie Session login from user awaiting approval $userid.");
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
             exit;
         }
     } elseif ($status == USER_ACCOUNT_DISABLED) {
-        if ($redirect)
-        {
+        if ($redirect) {
             COM_accessLog("SECURITY: Attempted Cookie Session login from banned user $userid.");
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=69');
             exit;
         }
     }
+
+    return $status;
 }
 
 /**
