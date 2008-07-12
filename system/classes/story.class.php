@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.31 2008/07/04 18:26:25 mjervis Exp $
+// $Id: story.class.php,v 1.32 2008/07/12 12:51:18 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -917,9 +917,12 @@ class Story
 
             $this->_oldsid = $this->_sid;
             $this->_date = mktime();
+            $this->_featured = 0;
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
+            $this->_statuscode = 0;
             $this->_show_topic_icon = $_CONF['show_topic_icon'];
+            $this->_owner_id = $_USER['uid'];
             $this->_group_id = $T['group_id'];
             $this->_perm_owner = $T['perm_owner'];
             $this->_perm_group = $T['perm_group'];

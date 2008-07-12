@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed SQL error(s) for story submissions by users with story.submit but no
+  further Story Admin permissions (reported by Orion) [Dirk]
 - End a user's session when they are being banned [Dirk]
 - Signatures in HTML-formatted comments weren't XHTML compliant [Dirk]
 - Minor cleanups in style.css - no actual layout changes (bug #0000683) [Dirk]
