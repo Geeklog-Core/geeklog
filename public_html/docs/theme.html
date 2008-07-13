@@ -216,6 +216,22 @@ if (empty($lang)) {
 <p>Prior to Geeklog 1.5.1, you will probably only find the first SQL request
 in your <tt>functions.php</tt> file.</p>
 
+<h3>Other changes</h3>
+
+<ul>
+<li>In Geeklog 1.5.0, the behaviour of the variable <code>{page_title}</code>
+    changed so that it now only contains the actual page title or the site's
+    slogan (in earlier versions, it contained both the site's name and either
+    the page title or the site's slogan). This was done so that the combination
+    <code>{page_title}{page_site_splitter}{site_name}</code> could be used
+    to place the page title before the site's name for better <a
+    href="http://en.wikipedia.org/wiki/Search_engine_optimization"
+    class="wikipedia" title="Search Engine Optimization">SEO</a>. If you prefer
+    to have the site's name first on the index page and the page title first on
+    all other pages, you can now use the new variable
+    <code>{page_title_and_site_name}</code></li>
+</ul>
+
 
 <h2><a name="changes150">Theme changes in Geeklog 1.5.0</a></h2>
 
@@ -440,8 +456,8 @@ entire 'admin' directory with the one from Geeklog's Professional theme.</p>
     <li><tt>users/registrationform.thtml</tt></li>
     </ul>
     This variable is supposed to be used by a plugin that implements <a
-    href="http://en.wikipedia.org/wiki/Captcha">CAPTCHA</a>s and will simply be
-    empty when no such plugin is installed.</li>
+    href="http://en.wikipedia.org/wiki/CAPTCHA" class="wikipedia">CAPTCHA</a>s
+    and will simply be empty when no such plugin is installed.</li>
 </ul>
 
 <h3>Professional theme</h3>
