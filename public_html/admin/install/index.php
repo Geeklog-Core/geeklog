@@ -37,20 +37,20 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.48 2008/06/26 21:33:42 mjervis Exp $
+// $Id: index.php,v 1.49 2008/07/13 12:03:59 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
-if (function_exists ('ini_set')) {
-    ini_set ('display_errors', '1');
+if (function_exists('ini_set')) {
+    ini_set('display_errors', '1');
 }
-error_reporting (E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
-if (!defined ("LB")) {
+if (!defined("LB")) {
     define("LB", "\n");
 }
-if (!defined ('VERSION')) {
-    define('VERSION', '1.5.0');
+if (!defined('VERSION')) {
+    define('VERSION', '1.5.1');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
@@ -107,6 +107,110 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
 }
 
 
+/**
+ * Check if we can skip upgrade steps (post-1.5.0)
+ *
+ * If we're doing an upgrade from 1.5.0 or later and we have the necessary
+ * DB credentials, skip the forms and upgrade directly.
+ *
+ * @param   string  $dbconfig_path      path to db-config.php
+ * @param   string  $siteconfig_path    path to siteconfig.php
+ * @return  string                      database version, if possible
+ * @note    Will not return if upgrading from 1.5.0 or later.
+ *
+ */
+function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
+{
+    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass;
+
+    require $dbconfig_path;
+    require $siteconfig_path;
+
+    $connected = false;
+    $version = '';
+
+    switch ($_DB_dbms) {
+    case 'mysql':
+        $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
+        if ($db_handle) {
+            $connected = @mysql_select_db($_DB_name, $db_handle);
+        }
+        break;
+
+    case 'mssql':    
+        $db_handle = @mssql_connect($_DB_host, $_DB_user, $_DB_pass);
+        if ($db_handle) {
+            $connected = @mssql_select_db($_DB_name, $db_handle);
+        }
+        break;
+
+    default:
+        $connected = false;
+        break;
+    }
+
+    if ($connected) {
+        require $_CONF['path_system'] . 'lib-database.php';
+
+        $version = INST_identifyGeeklogVersion();
+
+        switch ($_DB_dbms) {
+        case 'mysql':
+            @mysql_close($db_handle);
+            break;
+
+        case 'mssql':
+            @mssql_close($db_handle);
+            break;
+        }
+
+        if (!empty($version) && ($version != VERSION) &&
+                (substr($version, 0, 4) == '1.5.')) {
+
+            // this is a 1.5.x version, so upgrade directly
+            $req_string = 'index.php?mode=upgrade&step=3'
+                        . '&dbconfig_path=' . $dbconfig_path
+                        . '&version=' . $version;
+
+            header('Location: ' . $req_string);
+            exit;
+        }
+    }
+
+    return $version;
+}
+
+
+/**
+ * Set VERSION constant in siteconfig.php after successful upgrade
+ *
+ * @param   string  $siteconfig_path    path to siteconfig.php
+ * @return  void
+ *
+ */
+function INST_setVersion($siteconfig_path)
+{
+    global $LANG_INSTALL;
+
+    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
+    fclose($siteconfig_file);
+
+    $siteconfig_data = preg_replace
+            (
+             '/define\s*\(\'VERSION\',[^;]*;/',
+             "define('VERSION', '" . VERSION . "');",
+             $siteconfig_data
+            );
+
+    $siteconfig_file = fopen($siteconfig_path, 'w');
+    if (!fwrite($siteconfig_file, $siteconfig_data)) {
+        exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
+    }
+    fclose($siteconfig_file);
+}
+
+
 /*
  * Installer engine
  *
@@ -126,6 +230,18 @@ function INST_installEngine($install_type, $install_step)
          */
         case 1:
             require_once $dbconfig_path; // Get the current DB info
+
+            if ($install_type == 'upgrade') {
+                $v = INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path);
+                // will skip to step 3 if possible, otherwise return here
+
+                if ($v == VERSION) {
+                    // looks like we're already up to date
+                    $display .= '<h2>' . $LANG_INSTALL[74] . '</h2>' . LB
+                             . '<p>' . $LANG_INSTALL[75] . '</p>';
+                    return;
+                }
+            }
 
             // Set all the form values either with their defaults or with received POST data.
             // The only instance where you'd get POST data would be if the user has to
@@ -429,7 +545,7 @@ function INST_installEngine($install_type, $install_step)
                                           . '<p>' . $LANG_INSTALL[91] . '</p>';
                             } else {
 
-                                $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1');
+                                $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1','1.5.0');
                                 if (empty($curv)) {
                                     // If we were unable to determine the current GL
                                     // version is then ask the user what it is
@@ -608,25 +724,27 @@ function INST_installEngine($install_type, $install_step)
                     }
 
                     if (INST_doDatabaseUpgrades($version, $use_innodb)) {
-                        // After updating the database we'll want to update some of the information from the form.
-                        $site_name      = isset($_POST['site_name']) ? $_POST['site_name'] : (isset($_GET['site_name']) ? $_GET['site_name'] : '') ;
-                        $site_slogan    = isset($_POST['site_slogan']) ? $_POST['site_slogan'] : (isset($_GET['site_slogan']) ? $_GET['site_slogan'] : '') ;
-                        $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
-                        $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
-                        $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
-                        $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
+                        if (version_compare($version, '1.5.0') == -1) {
+                            // After updating the database we'll want to update some of the information from the form.
+                            $site_name      = isset($_POST['site_name']) ? $_POST['site_name'] : (isset($_GET['site_name']) ? $_GET['site_name'] : '') ;
+                            $site_slogan    = isset($_POST['site_slogan']) ? $_POST['site_slogan'] : (isset($_GET['site_slogan']) ? $_GET['site_slogan'] : '') ;
+                            $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
+                            $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
+                            $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
+                            $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
 
-                        require_once $_CONF['path_system'] . 'classes/config.class.php';
-                        $config = config::get_instance();
-                        $config->set('site_name', urldecode($site_name));
-                        $config->set('site_slogan', urldecode($site_slogan));
-                        $config->set('site_url', urldecode($site_url));
-                        $config->set('site_admin_url', urldecode($site_admin_url));
-                        $config->set('site_mail', urldecode($site_mail));
-                        $config->set('noreply_mail', urldecode($noreply_mail));
-                        $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
+                            require_once $_CONF['path_system'] . 'classes/config.class.php';
+                            $config = config::get_instance();
+                            $config->set('site_name', urldecode($site_name));
+                            $config->set('site_slogan', urldecode($site_slogan));
+                            $config->set('site_url', urldecode($site_url));
+                            $config->set('site_admin_url', urldecode($site_admin_url));
+                            $config->set('site_mail', urldecode($site_mail));
+                            $config->set('noreply_mail', urldecode($noreply_mail));
+                            $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
-                        INST_checkPlugins();
+                            INST_checkPlugins();
+                        }
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
@@ -783,6 +901,7 @@ function INST_identifyGeeklogVersion ()
 
     case 'mysql':
         $test = array(
+            '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
             '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
             '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
@@ -798,6 +917,7 @@ function INST_identifyGeeklogVersion ()
 
     case 'mssql':
 	    $test = array(
+            '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
             '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
             // 1.4.1 was the first version with MS SQL support
@@ -1483,14 +1603,26 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             $_SQL = '';
             break;
 
+        case '1.5.0':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.0_to_1.5.1.php';
+            INST_updateDB($_SQL);
+
+            $current_gl_version = '1.5.1';
+            $_SQL = '';
+            break;
+
         default:
             $done = true;
         }
     }
 
+    INST_setVersion($siteconfig_path);
+
     // delete the security check flag on every update to force the user
     // to run admin/sectest.php again
-    DB_delete ($_TABLES['vars'], 'name', 'security_check');
+    DB_delete($_TABLES['vars'], 'name', 'security_check');
+
+    DB_change($_TABLES['vars'], 'value', VERSION, 'name', 'database_version');
 
     return true;
 }

@@ -58,7 +58,7 @@
         </li>
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
-            <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-1.5.1.tar.gz</code> </p>
             
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> or <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
         </li>
@@ -66,9 +66,9 @@
             <p>Create a blank MySQL or Microsoft SQL database and a user account with privileges to modify it. Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
         </li>
         <li>
-            <p>Place the contents of <code>geeklog-1.5.0/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
+            <p>Place the contents of <code>geeklog-1.5.1/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
         
-            <p>Next, place the remaining contents of <code>geeklog-1.5.0/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
+            <p>Next, place the remaining contents of <code>geeklog-1.5.1/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
             
             <p><strong>Note:</strong> If your hosting provider does not allow you to place files outside of your root web directory:</p>
             <ul>
@@ -106,15 +106,18 @@
         </li>
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
-            <p><code>tar -zxvf geeklog-1.5.0.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-1.5.1.tar.gz</code> </p>
             
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/" target="_blank">7-Zip</a> or <a href="http://www.rarlab.com/" target="_blank">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
-            <p>Place the contents of <code>geeklog-1.5.0/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
+            <p>Place the contents of <code>geeklog-1.5.1/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
         </li>
-        <li>
-            <p><strong>When upgrading from Geeklog 1.4.1 or earlier</strong>: Put the <tt>config.php</tt> files from your old install back into their place now (the main <tt>config.php</tt> and those for the plugins). The install script will read these files during the upgrade to pre-populate the new Configuration admin panel with your settings. If you skip this step, you will end up with default settings for Geeklog and the pre-installed plugins.</p>
+        <li>Depending on the version you're upgrading from:
+            <ul>
+                <li><p><strong>When upgrading from Geeklog 1.4.1 or earlier</strong>: Put the <tt>config.php</tt> files from your old install back into their place now (the main <tt>config.php</tt> and those for the plugins). The install script will read these files during the upgrade to pre-populate the new Configuration admin panel with your settings. If you skip this step, you will end up with default settings for Geeklog and the pre-installed plugins.</p></li>
+                <li><p><strong>When upgrading from Geeklog 1.5.0 or later</strong>: Put the <tt>db-config.php</tt> and <tt>siteconfig.php</tt> from your old install back into their place now, overwriting the files of the same name that came in the tarball. Otherwise, you would have to enter your database credentials and other information during the upgrade process again.</p></li>
+            </ul>
         </li>
         <li>
             <p>Open your browser and navigate to the Geeklog installation wizard file <code>admin/install/index.php</code> on your web server. The path to this file will depend on where you chose to put the Geeklog files on your web server. The default location is: </p>

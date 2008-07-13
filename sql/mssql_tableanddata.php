@@ -1735,6 +1735,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0')
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter','0')";
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','1.5.1')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled')";
 $_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled')";
