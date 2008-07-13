@@ -54,6 +54,7 @@ Calendar plugin
 
 Links plugin
 ------------
+- Fixed passing the category on multi-page link lists [Dirk]
 - Fixed new category silently overwriting an existing category if they had the
   same id (part 2 of bug #0000659) [Dirk]
 - Fixed SQL error when trying to change a category id to an already existing id

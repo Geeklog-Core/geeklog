@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.39 2008/07/01 19:52:59 mjervis Exp $
+// $Id: index.php,v 1.40 2008/07/13 15:03:52 dhaun Exp $
 
 /**
  * This is the links page
@@ -313,14 +313,14 @@ function links_list($message)
             }
         }
         if ($pages > 0) {
-            if (($_LI_CONF['linkcols'] > 0) && isset($currentcategory)) {
-                $catlink = '?category=' . urlencode ($currentcategory);
+            if (($_LI_CONF['linkcols'] > 0) && !empty($currentcid)) {
+                $catlink = '?category=' . urlencode($currentcid);
             } else {
                 $catlink = '';
             }
-            $linklist->set_var ('page_navigation',
-                    COM_printPageNavigation ($_CONF['site_url']
-                        . '/links/index.php' .  $catlink, $page, $pages));
+            $linklist->set_var('page_navigation',
+                    COM_printPageNavigation($_CONF['site_url']
+                        . '/links/index.php' . $catlink, $page, $pages));
         } else {
             $linklist->set_var ('page_navigation', '');
         }
