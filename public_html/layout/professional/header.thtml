@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html {lang_attribute}>
 <head>
-<title>{page_title}{page_site_splitter}{site_name}</title>
+<title>{page_title_and_site_name}</title>
 <meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
 <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
 <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
