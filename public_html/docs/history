@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Introduced new variable {page_title_and_site_name} for header.thtml so that
+  we can have "Site Name - Site Slogan" in the frontpage's title again [Dirk]
 - Fixed SQL error(s) for story submissions by users with story.submit but no
   further Story Admin permissions (reported by Orion) [Dirk]
 - End a user's session when they are being banned [Dirk]
