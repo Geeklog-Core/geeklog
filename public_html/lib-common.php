@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.712 2008/07/13 16:47:19 dhaun Exp $
+// $Id: lib-common.php,v 1.713 2008/07/19 19:22:37 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3844,7 +3844,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
                 }
             }
         }
-        
+
         $retval .= '<div dir="ltr" class="warningsmall">';
         foreach( $html as $tag => $attr )
         {
@@ -4439,6 +4439,9 @@ function COM_showMessage($msg, $plugin = '')
     global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
+    if (empty($plugin) AND !empty($_REQUEST['plugin'])) {
+        $plugin = COM_applyFilter($_REQUEST['plugin']);
+    };
 
     if ($msg > 0) {
         $timestamp = strftime($_CONF['daytime']);
