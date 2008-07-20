@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.66 2008/05/11 07:25:08 dhaun Exp $
+// $Id: search.class.php,v 1.67 2008/07/20 17:17:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
     die ('This file can not be used on its own.');
@@ -303,12 +303,11 @@ class Search {
                 // get rows
                 $A['title'] = str_replace ('$', '&#36;', $A['title']);
                 $thetime = COM_getUserDateTimeFormat ($A['day']);
-                if (empty($this->_query)) {
-                    $articleUrl = COM_buildUrl($_CONF['site_url']
-                                    . '/article.php?story=' . $A['sid']);
-                } else {
-                    $articleUrl = $_CONF['site_url'] . '/article.php?story='
-                        . $A['sid'] . '&amp;query=' . urlencode($this->_query);
+                $articleUrl = COM_buildUrl($_CONF['site_url']
+                                           . '/article.php?story=' . $A['sid']);
+                if (!empty($this->_query)) {
+                    $articleUrl .= (strpos($articleUrl, '?') ? '&' : '?')
+                                . 'query=' . urlencode($this->_query);
                 }
                 $author = htmlspecialchars($this->_displayName($A['username'],
                                                                $A['fullname']));

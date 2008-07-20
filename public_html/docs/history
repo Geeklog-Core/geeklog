@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Provide nicer URLs to story search results when URL rewriting is enabled
+  (bug #0000665, based on a patch by Sami Barakat) [Dirk]
+- Better support for plugin messages (bug #0000618) [Blaine]
 - Introduced new variable {page_title_and_site_name} for header.thtml so that
   we can have "Site Name - Site Slogan" in the frontpage's title again [Dirk]
 - Fixed SQL error(s) for story submissions by users with story.submit but no
