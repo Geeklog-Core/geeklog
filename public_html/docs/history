@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Keep letter case intact when highlighting a search query string (patch
+  provided by Sami Barakat)
 - Provide nicer URLs to story search results when URL rewriting is enabled
   (bug #0000665, based on a patch by Sami Barakat) [Dirk]
 - Better support for plugin messages (bug #0000618) [Blaine]
