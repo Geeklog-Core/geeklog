@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.40 2008/07/26 07:41:29 dhaun Exp $
+// $Id: lib-webservices.php,v 1.41 2008/07/26 11:18:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -509,7 +509,7 @@ function WS_getContent(&$args, $atom_doc, $node)
  */
 function WS_xmlToArgs(&$args)
 {
-    global $_USER, $WS_EXTN_NS, $WS_ATOM_NS, $WS_APP_NS;
+    global $_USER, $WS_EXTN_NS, $WS_ATOM_NS, $WS_APP_NS, $WS_APP_NS2;
 
     /* Previous data in args is NOT deleted */
 
