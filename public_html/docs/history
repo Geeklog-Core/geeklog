@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Cop-out fix for bug #0000671: Don't display the icon for external links when
+  the text direction is 'rtl' (e.g. Hebrew) [Dirk, Mike]
 - Keep letter case intact when highlighting a search query string (patch
   provided by Sami Barakat)
 - Provide nicer URLs to story search results when URL rewriting is enabled

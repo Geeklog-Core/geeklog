@@ -271,10 +271,6 @@ select {
   padding-right: 13px;
 }
 .ext-link-rtl {
-  background-color: transparent;
-  background: url(./images/external.png) left center no-repeat;
-  background-attachment: scroll;
-  padding-left: 13px;
 }
 .strike {
   text-decoration: line-through;

@@ -230,6 +230,12 @@ in your <tt>functions.php</tt> file.</p>
     to have the site's name first on the index page and the page title first on
     all other pages, you can now use the new variable
     <code>{page_title_and_site_name}</code></li>
+<li>In the Links plugin, links have an icon indicating that it's an external
+    link (taking the user away from the current site). This icon did not show
+    up properly for RTL languages (e.g Hebrew), making the link text unreadable.
+    Since we could not find a way to make it show up properly in this case, the
+    icon is not displayed when the text direction is switched to 'rtl'
+    (for now).</li>
 </ul>
 
 
