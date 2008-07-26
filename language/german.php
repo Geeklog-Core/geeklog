@@ -550,7 +550,8 @@ $LANG11 = array(
     2 => 'An einen Freund schicken',
     3 => 'Druckfähige Version',
     4 => 'Optionen',
-    5 => 'Als PDF'
+    5 => 'Als PDF',
+    6 => "Feed '%s' abonnieren"
 );
 
 ###############################################################################
@@ -1581,7 +1582,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Änderungen speichern',
     'reset_form' => 'Angaben zurücksetzen',
     'changes_made' => 'Änderungen wurden erfolgreich übernommen',
-    'title' => 'Konfigurations-Manager'
+    'title' => 'Konfigurations-Manager',
+    'disable' => 'Funktion deaktivieren'
 );
 
 $LANG_configsections['Core'] = array(

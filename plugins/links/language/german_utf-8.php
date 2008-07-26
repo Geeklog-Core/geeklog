@@ -110,6 +110,7 @@ $PLG_links_MESSAGE13 = 'Die Kategorie wurde erfolgreich gelöscht.';
 $PLG_links_MESSAGE14 = 'Die Kategorie enthält Links und / oder Kategorien. Bitte diese erst entfernen.';
 $PLG_links_MESSAGE15 = 'Keine ausreichenden Rechte, diese Kategorie zu löschen.';
 $PLG_links_MESSAGE16 = 'So eine Kategorie existiert nicht.';
+$PLG_links_MESSAGE17 = 'Diese Kategorie-ID existiert schon.';
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
