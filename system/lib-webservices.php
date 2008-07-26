@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.39 2008/07/23 19:34:13 dhaun Exp $
+// $Id: lib-webservices.php,v 1.40 2008/07/26 07:41:29 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -40,6 +40,7 @@ $WS_INTROSPECTION = false;
 $WS_TEXT = '';
 $WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
 $WS_APP_NS  = 'http://www.w3.org/2007/app';
+$WS_APP_NS2 = 'http://purl.org/atom/app#';
 $WS_EXTN_NS = 'http://www.geeklog.net/xmlns/app/gl';
 
 // Set = true to enable verbose logging (in error.log)
@@ -537,7 +538,8 @@ function WS_xmlToArgs(&$args)
             $node = $nodes->item($index);
 
             if (($node->namespaceURI != $WS_ATOM_NS) &&
-                ($node->namespaceURI != $WS_APP_NS ) &&
+                ($node->namespaceURI != $WS_APP_NS) &&
+                ($node->namespaceURI != $WS_APP_NS2) &&
                 ($node->namespaceURI != $WS_EXTN_NS)) {
                 continue;
             }
@@ -561,6 +563,25 @@ function WS_xmlToArgs(&$args)
                 break;
             case 'content':
                 WS_getContent($args, $atom_doc, $node);
+                break;
+            case 'control':
+                if ($node->nodeType == XML_ELEMENT_NODE) {
+                    $child_nodes = $node->childNodes;
+                    if ($child_nodes == null) {
+                        continue;
+                    }
+                    $args[$node->localName] = array();
+                    for ($i = 0; $i < $child_nodes->length; $i++) {
+                        $child_node = $child_nodes->item($i);
+                        if ($child_node->nodeType == XML_ELEMENT_NODE) {
+                            if ($child_node->firstChild->nodeType == XML_TEXT_NODE) {
+                                $args[$node->localName][$child_node->localName]
+                                        = $child_node->firstChild->nodeValue;
+                                break;
+                            }
+                        }
+                    }
+                }
                 break;
             default:
                 if ($node->nodeType == XML_ELEMENT_NODE) {
@@ -597,7 +618,7 @@ function WS_xmlToArgs(&$args)
         $args['publish_minute'] = date('i', strtotime($args['updated']));
         $args['publish_second'] = date('s', strtotime($args['updated']));
 
-        if (isset($args['control'])) {
+        if (isset($args['control']) && is_array($args['control'])) {
             foreach ($args['control'] as $key => $value) {
                 if ($key == 'draft') {
                     $args['draft_flag'] = ($value == 'yes' ? 1 : 0);
