@@ -266,11 +266,19 @@ select {
 }
 .ext-link {
   background-color: transparent;
-  background: url(./images/external.png) right center no-repeat;
+  background: url(./images/external.png) center right no-repeat;
   background-attachment: scroll;
   padding-right: 13px;
 }
 .ext-link-rtl {
+}
+.feed-link {
+  background-color: transparent;
+  background: url(./images/feed.png) center right no-repeat;
+  background-attachment: scroll;
+  padding: 2px 16px 2px 0px;
+}
+.feed-link-rtl {
 }
 .strike {
   text-decoration: line-through;

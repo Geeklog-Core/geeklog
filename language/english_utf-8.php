@@ -547,7 +547,8 @@ $LANG11 = array(
     2 => 'Mail Story to a Friend',
     3 => 'Printable Story Format',
     4 => 'Story Options',
-    5 => 'PDF Story Format'
+    5 => 'PDF Story Format',
+    6 => "Subscribe to '%s'"
 );
 
 ###############################################################################

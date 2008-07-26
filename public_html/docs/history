@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- If there is a feed for a topic, there will now be a "Subscribe to ..." option
+  in the Story Options block for every story for that topic (feature request
+  #0000154) [Dirk]
 - Cop-out fix for bug #0000671: Don't display the icon for external links when
   the text direction is 'rtl' (e.g. Hebrew) [Dirk, Mike]
 - Keep letter case intact when highlighting a search query string (patch

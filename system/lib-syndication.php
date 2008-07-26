@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.41 2008/06/26 21:16:00 mjervis Exp $
+// $Id: lib-syndication.php,v 1.42 2008/07/26 16:25:17 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -673,6 +673,21 @@ function SYND_getFeedUrl( $feedfile = '' )
     $url .= $feedfile;
 
     return $url;
+}
+
+/**
+* Helper function: Return MIME type for a feed format
+*
+* @param    string  $format     internal name of the feed format, e.g. Atom-1.0
+* @return   string              MIME type, e.g. application/atom+xml
+*
+*/
+function SYND_getMimeType($format)
+{
+    $fmt = explode('-', $format);
+    $type = strtolower($fmt[0]);
+
+    return 'application/' . $type . '+xml';
 }
 
 ?>
