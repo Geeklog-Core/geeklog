@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.126 2008/07/27 08:08:16 dhaun Exp $
+// $Id: lib-story.php,v 1.127 2008/07/27 18:10:09 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1087,8 +1087,12 @@ function service_submit_story($args, &$output, &$svc_msg)
     /* Apply filters to the parameters passed by the webservice */
 
     if ($args['gl_svc']) {
-        $args['mode'] = COM_applyBasicFilter($args['mode']);
-        $args['editopt'] = COM_applyBasicFilter($args['editopt']);
+        if (isset($args['mode'])) {
+            $args['mode'] = COM_applyBasicFilter($args['mode']);
+        }
+        if (isset($args['editopt'])) {
+            $args['editopt'] = COM_applyBasicFilter($args['editopt']);
+        }
     }
 
     /* - START: Set all the defaults - */
@@ -1183,6 +1187,9 @@ function service_submit_story($args, &$output, &$svc_msg)
     // exit ();
     // END TEST CODE
 
+    if (!isset($args['sid'])) {
+        $args['sid'] = '';
+    }
     $args['sid'] = COM_sanitizeID($args['sid']);
     if (!$gl_edit) {
         if (strlen($args['sid']) > STORY_MAX_ID_LENGTH) {
