@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- A small tweak to the Professional theme's commentbar to make the "Post a
+  comment" option easier to find [Dirk]
 - Renamed the syndication feed type "geeklog" to "article" since that's what
   they are nowadays [Dirk]
 - New option "All Frontpage Stories" for article feeds: skip stories that have

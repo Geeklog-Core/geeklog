@@ -135,6 +135,19 @@ created when you use an undefined variable.</p>
     <td><tt>&lt;link rel="home" href="http://www.example.com/" title="Home"&gt;</tt></td>
     <td>Provides a set of predefined <a href="http://www.w3.org/TR/html4/struct/links.html#edef-LINK">link tags</a>, offering additional navigation links and
         relationship information.</td></tr>
+<tr><td><code>page_title_and_site_name</code></td>
+    <td><tt>Geeklog Site - Another Nifty Geeklog Site</tt></td>
+    <td>As the name suggests, this variable provides the site name and the title
+        for the current page. The order in which these two are provided depends
+        on the current location on the website: On the site's frontpage, the
+        site name comes first. On all the other pages, the current page title
+        comes first.</td></tr>
+<tr><td><code>page_site_splitter</code></td>
+    <td><tt> - </tt> (a dash surrounded by spaces)</td>
+    <td>This variable comes in handy when creating your own page title, as it
+        will be empty when the <code>{page_title}</code> variable is empty. Use
+        in combination with <code>{page_title}</code> and
+        <code>{site_name}</code> (see above).</td></tr>
 </table>
 
 
