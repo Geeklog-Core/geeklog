@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.98 2008/07/26 16:25:16 dhaun Exp $
+// $Id: article.php,v 1.99 2008/07/27 09:11:29 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -292,7 +292,7 @@ if ($A['count'] > 0) {
         }
         if ($_CONF['backend'] == 1) {
             $tid = $story->displayElements('tid');
-            $result = DB_query("SELECT filename, title, format FROM {$_TABLES['syndication']} WHERE type = 'geeklog' AND topic = '$tid' AND is_enabled = 1");
+            $result = DB_query("SELECT filename, title, format FROM {$_TABLES['syndication']} WHERE type = 'article' AND topic = '$tid' AND is_enabled = 1");
             $feeds = DB_numRows($result);
             for ($i = 0; $i < $feeds; $i++) {
                 list($filename, $title, $format) = DB_fetchArray($result);

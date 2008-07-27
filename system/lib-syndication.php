@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.43 2008/07/27 07:35:58 dhaun Exp $
+// $Id: lib-syndication.php,v 1.44 2008/07/27 09:11:31 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -472,7 +472,7 @@ function SYND_updateFeed( $fid )
             $feed->encoding = $A['charset'];
             $feed->lang = $A['language'];
 
-            if ($A['type'] == 'geeklog') {
+            if ($A['type'] == 'article') {
                 if ($A['topic'] == '::all') {
                     $content = SYND_getFeedContentAll(false, $A['limits'],
                                     $link, $data, $A['content_length'],

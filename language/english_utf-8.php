@@ -1061,7 +1061,7 @@ $LANG33 = array(
     34 => 'Entries',
     35 => 'Hours',
     36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
+    37 => '',
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
@@ -1077,7 +1077,9 @@ $LANG33 = array(
     50 => "Relative to site url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
     52 => 'Error: existing Filename',
-    53 => 'All Frontpage Stories'
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.714 2008/07/21 20:15:41 dhaun Exp $
+// $Id: lib-common.php,v 1.715 2008/07/27 09:11:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1857,10 +1857,10 @@ function COM_rdfUpToDateCheck( $updated_type = '', $updated_topic = '', $updated
 
     if( $_CONF['backend'] > 0 )
     {
-        if( !empty( $updated_type ) && ( $updated_type != 'geeklog' ))
+        if( !empty( $updated_type ) && ( $updated_type != 'article' ))
         {
             // when a plugin's feed is to be updated, skip Geeklog's own feeds
-            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE (is_enabled = 1) AND (type <> 'geeklog')";
+            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE (is_enabled = 1) AND (type <> 'article')";
         }
         else
         {
@@ -1873,7 +1873,7 @@ function COM_rdfUpToDateCheck( $updated_type = '', $updated_topic = '', $updated
             $A = DB_fetchArray( $result );
 
             $is_current = true;
-            if( $A['type'] == 'geeklog' )
+            if( $A['type'] == 'article' )
             {
                 $is_current = SYND_feedUpdateCheck( $A['topic'],
                                 $A['update_info'], $A['limits'],

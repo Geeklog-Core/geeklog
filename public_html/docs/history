@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Renamed the syndication feed type "geeklog" to "article" since that's what
+  they are nowadays [Dirk]
 - New option "All Frontpage Stories" for article feeds: skip stories that have
   the "Show only in topic" option set (feature request #0000652) [Dirk]
 - If there is a feed for a topic, there will now be a "Subscribe to ..." option

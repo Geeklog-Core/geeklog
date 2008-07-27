@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.56 2008/07/27 07:35:56 dhaun Exp $
+// $Id: syndication.php,v 1.57 2008/07/27 09:11:30 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -93,12 +93,12 @@ function find_feedFormats ()
 }
 
 /**
-* Create a list of feed types that Geeklog offers.
+* Return list of types available for article feeds
 *
 * @return   string   an array with id/name pairs for every feed
 *
 */
-function get_geeklogFeeds ()
+function get_articleFeeds()
 {
     global $_CONF, $_TABLES, $LANG33;
 
@@ -190,7 +190,7 @@ function listfeeds()
 * Display the feed editor.
 *
 * @param    int      $fid    feed id (0 for new feeds)
-* @param    string   $type   type of feed, e.g. 'geeklog'
+* @param    string   $type   type of feed, e.g. 'article'
 * @return   string           HTML for the feed editor
 *
 */
@@ -287,7 +287,11 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_content_length', $A['content_length']);
     $feed_template->set_var ('feed_filename', $A['filename']);
     $feed_template->set_var ('feed_type', $A['type']);
-    $feed_template->set_var ('feed_type_display', ucwords ($A['type']));
+    if ($A['type'] == 'article') {
+        $feed_template->set_var('feed_type_display', $LANG33[55]);
+    } else {
+        $feed_template->set_var('feed_type_display', ucwords($A['type']));
+    }
     $feed_template->set_var ('feed_charset', $A['charset']);
     $feed_template->set_var ('feed_language', $A['language']);
 
@@ -331,8 +335,8 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_limits', $limits);
     $feed_template->set_var ('feed_limits_what', $selection);
 
-    if ($A['type'] == 'geeklog') {
-        $options = get_geeklogFeeds ();
+    if ($A['type'] == 'article') {
+        $options = get_articleFeeds();
     } else {
         $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
         if($result)
@@ -389,11 +393,12 @@ function newfeed ()
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
         $retval = COM_siteHeader ('menu', $LANG33[11])
-                . editfeed (0, 'geeklog')
+                . editfeed (0, 'article')
                 . COM_siteFooter ();
     } else {
         $selection = '<select name="type">' . LB;
-        $selection .= '<option value="geeklog">Geeklog</option>' . LB;
+        $selection .= '<option value="article">' . $LANG33[55]
+                   . '</option>' . LB;
         foreach ($plugins as $p) {
             $selection .= '<option value="' . $p . '">' . ucwords ($p)
                        . '</option>' . LB;
@@ -411,7 +416,7 @@ function newfeed ()
 
         $feed_template->set_var ('type_selection', $selection);
 
-        $feed_template->set_var ('lang_explain', $LANG33[37]);
+        $feed_template->set_var ('lang_explain', $LANG33[54]);
         $feed_template->set_var ('lang_go', $LANG33[1]);
 
         $retval .= COM_siteHeader ('menu', $LANG33[11]);

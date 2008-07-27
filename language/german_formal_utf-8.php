@@ -1064,7 +1064,7 @@ $LANG33 = array(
     34 => 'Einträge',
     35 => 'Stunden',
     36 => 'Art des Newsfeeds festlegen',
-    37 => 'Sie haben (mindestens) ein Plugin installiert, das Newsfeeds unterstützt. Bitte wählen Sie zunächst aus, ob Sie einen Feed für Geeklog oder für ein Plugin anlegen wollen.',
+    37 => '',
     38 => 'Fehler: Nicht alle Felder ausgefüllt',
     39 => 'Bitte die Felder Newsfeeds-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
@@ -1080,7 +1080,9 @@ $LANG33 = array(
     50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})",
     51 => 'Der gewählte Dateiname wird bereits von einem anderen Newsfeed verwendet. Bitte wählen Sie einen anderen.',
     52 => 'Fehler: Dateiname existiert schon',
-    53 => 'Alle auf der Startseite'
+    53 => 'Alle auf der Startseite',
+    54 => 'Bitte wählen Sie die Art des Newsfeeds aus.',
+    55 => 'Artikel'
 );
 
 ###############################################################################
