@@ -11,6 +11,7 @@
 // | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer        - rri AT silentyak DOT com                 |
+// |          Dirk Haun             - dirk AT haun-online DOT de               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,19 +30,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.41 2008/07/26 11:18:00 dhaun Exp $
+// $Id: lib-webservices.php,v 1.42 2008/07/27 18:11:26 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
 }
 
+define('WS_ATOM_NS', 'http://www.w3.org/2005/Atom');
+define('WS_APP_NS',  'http://www.w3.org/2007/app');
+define('WS_APP_NS2', 'http://purl.org/atom/app#');
+define('WS_EXTN_NS', 'http://www.geeklog.net/xmlns/app/gl');
+
 $WS_PLUGIN    = '';
 $WS_INTROSPECTION = false;
 $WS_TEXT = '';
-$WS_ATOM_NS = 'http://www.w3.org/2005/Atom';
-$WS_APP_NS  = 'http://www.w3.org/2007/app';
-$WS_APP_NS2 = 'http://purl.org/atom/app#';
-$WS_EXTN_NS = 'http://www.geeklog.net/xmlns/app/gl';
 
 // Set = true to enable verbose logging (in error.log)
 $WS_VERBOSE = false;
@@ -150,8 +152,7 @@ function WS_dissectURI(&$args)
  */
 function WS_post()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
-           $_CONF;
+    global $_CONF, $WS_PLUGIN, $WS_VERBOSE;
 
     if ($WS_VERBOSE) {
         COM_errorLog("WS: POST request received");
@@ -200,10 +201,10 @@ function WS_post()
         if ($ret == PLG_RET_OK) {
             $atom_doc = new DOMDocument('1.0', 'utf-8');
 
-            $entry_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:entry');
+            $entry_elem = $atom_doc->createElementNS(WS_ATOM_NS, 'atom:entry');
             $atom_doc->appendChild($entry_elem);
-            $atom_doc->createAttributeNS($WS_APP_NS, 'app:entry');
-            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:entry');
+            $atom_doc->createAttributeNS(WS_APP_NS, 'app:entry');
+            $atom_doc->createAttributeNS(WS_EXTN_NS, 'gl:entry');
 
             WS_arrayToEntryXML($out, $svc_msg['output_fields'], $entry_elem, $atom_doc);
             WS_write($atom_doc->saveXML());
@@ -220,8 +221,7 @@ function WS_post()
  */
 function WS_put()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
-           $_CONF;
+    global $_CONF, $WS_PLUGIN, $WS_VERBOSE;
 
     if ($WS_VERBOSE) {
         COM_errorLog("WS: PUT request received");
@@ -261,8 +261,7 @@ function WS_put()
  */
 function WS_get()
 {
-    global $WS_PLUGIN, $WS_INTROSPECTION, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS,
-           $WS_VERBOSE, $_CONF, $_PLUGINS;
+    global $_CONF, $WS_PLUGIN, $WS_INTROSPECTION, $WS_VERBOSE, $_PLUGINS;
 
     if ($WS_VERBOSE) {
         COM_errorLog("WS: GET request received");
@@ -295,10 +294,10 @@ function WS_get()
         /* It might be simpler to do this part directly :-/ */
 
         $atom_doc = new DOMDocument('1.0', 'utf-8');
-        $root_elem = $atom_doc->createElementNS($WS_APP_NS, 'app:service');
+        $root_elem = $atom_doc->createElementNS(WS_APP_NS, 'app:service');
         $atom_doc->appendChild($root_elem);
-        $atom_doc->createAttributeNS($WS_ATOM_NS, 'atom:service');
-        $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:service');
+        $atom_doc->createAttributeNS(WS_ATOM_NS, 'atom:service');
+        $atom_doc->createAttributeNS(WS_EXTN_NS, 'gl:service');
 
         $workspace = $atom_doc->createElement('app:workspace');
         $root_elem->appendChild($workspace);
@@ -366,10 +365,10 @@ function WS_get()
             }
             $atom_doc = new DOMDocument('1.0', 'utf-8');
 
-            $entry_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:entry');
+            $entry_elem = $atom_doc->createElementNS(WS_ATOM_NS, 'atom:entry');
             $atom_doc->appendChild($entry_elem);
-            $atom_doc->createAttributeNS($WS_APP_NS, 'app:entry');
-            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:entry');
+            $atom_doc->createAttributeNS(WS_APP_NS, 'app:entry');
+            $atom_doc->createAttributeNS(WS_EXTN_NS, 'gl:entry');
 
             WS_arrayToEntryXML($out, $svc_msg['output_fields'], $entry_elem, $atom_doc);
             WS_write($atom_doc->saveXML());
@@ -377,10 +376,10 @@ function WS_get()
             /* Output the feed here */
             $atom_doc = new DOMDocument('1.0', 'utf-8');
 
-            $feed_elem = $atom_doc->createElementNS($WS_ATOM_NS, 'atom:feed');
+            $feed_elem = $atom_doc->createElementNS(WS_ATOM_NS, 'atom:feed');
             $atom_doc->appendChild($feed_elem);
-            $atom_doc->createAttributeNS($WS_APP_NS, 'app:feed');
-            $atom_doc->createAttributeNS($WS_EXTN_NS, 'gl:feed');
+            $atom_doc->createAttributeNS(WS_APP_NS, 'app:feed');
+            $atom_doc->createAttributeNS(WS_EXTN_NS, 'gl:feed');
 
             $feed_id = $atom_doc->createElement('atom:id', $_CONF['site_name']);
             $feed_elem->appendChild($feed_id);
@@ -425,8 +424,7 @@ function WS_get()
  */
 function WS_delete()
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $WS_VERBOSE,
-           $_CONF;
+    global $_CONF, $WS_PLUGIN, $WS_VERBOSE;
 
     if ($WS_VERBOSE) {
         COM_errorLog("WS: DELETE request received");
@@ -509,7 +507,7 @@ function WS_getContent(&$args, $atom_doc, $node)
  */
 function WS_xmlToArgs(&$args)
 {
-    global $_USER, $WS_EXTN_NS, $WS_ATOM_NS, $WS_APP_NS, $WS_APP_NS2;
+    global $_USER;
 
     /* Previous data in args is NOT deleted */
 
@@ -525,7 +523,7 @@ function WS_xmlToArgs(&$args)
     }
 
     /* Get the action, if it exists */
-    $action_element = $entry_element->getElementsByTagNameNS($WS_EXTN_NS, 'action')->item(0);
+    $action_element = $entry_element->getElementsByTagNameNS(WS_EXTN_NS, 'action')->item(0);
     $action = '';
     if ($action_element != null) {
         $args['action'] = strtolower((string)($action_element->firstChild->data));
@@ -537,10 +535,10 @@ function WS_xmlToArgs(&$args)
         for ($index = 0; $index < $nodes->length; $index++) {
             $node = $nodes->item($index);
 
-            if (($node->namespaceURI != $WS_ATOM_NS) &&
-                ($node->namespaceURI != $WS_APP_NS) &&
-                ($node->namespaceURI != $WS_APP_NS2) &&
-                ($node->namespaceURI != $WS_EXTN_NS)) {
+            if (($node->namespaceURI != WS_ATOM_NS) &&
+                ($node->namespaceURI != WS_APP_NS) &&
+                ($node->namespaceURI != WS_APP_NS2) &&
+                ($node->namespaceURI != WS_EXTN_NS)) {
                 continue;
             }
 
@@ -550,7 +548,7 @@ function WS_xmlToArgs(&$args)
                 if ($author_name_element != null) {
                     $args['author_name'] = (string)($author_name_element->firstChild->nodeValue);
                 }
-                $author_uid_element = $node->getElementsByTagNameNS($WS_EXTN_NS, 'uid')->item(0);
+                $author_uid_element = $node->getElementsByTagNameNS(WS_EXTN_NS, 'uid')->item(0);
                 if ($author_uid_element != null) {
                     $args['uid'] = (string)($author_uid_element->firstChild->nodeValue);
                 }
@@ -641,7 +639,7 @@ function WS_xmlToArgs(&$args)
  */
 function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
 {
-    global $WS_PLUGIN, $WS_ATOM_NS, $WS_APP_NS, $WS_EXTN_NS, $_CONF;
+    global $_CONF, $WS_PLUGIN;
 
     /* Standard Atom elements */
 
@@ -950,7 +948,6 @@ function WS_write($text)
     global $WS_TEXT;
 
     $WS_TEXT .= $text;
-
 }
 
 /**
@@ -961,7 +958,6 @@ function WS_writeSync()
     global $WS_TEXT;
 
     echo $WS_TEXT;
-
 }
 
 /*
