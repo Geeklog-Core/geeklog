@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.125 2008/05/01 21:01:47 dhaun Exp $
+// $Id: lib-story.php,v 1.126 2008/07/27 08:08:16 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -740,8 +740,12 @@ function STORY_getItemInfo ($sid, $what)
                 $retval[] = trim (PLG_replaceTags ($excerpt));
                 break;
             case 'feed':
-                $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
-                                        "topic = '::all'");
+                $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
+                                       "topic = '::all'");
+                if (empty($feedfile)) {
+                    $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
+                                           "topic = '::frontpage'");
+                }
                 if (empty ($feedfile)) {
                     $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
                                             "topic = '{$A['tid']}'");
