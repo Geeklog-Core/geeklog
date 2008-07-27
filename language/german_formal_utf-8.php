@@ -1050,7 +1050,7 @@ $LANG33 = array(
     20 => 'Ja',
     21 => 'Nein',
     22 => '<i>(keine Newsfeeds)</i>',
-    23 => 'alle Artikel',
+    23 => 'Alle Artikel',
     24 => 'Newsfeed-Editor',
     25 => 'Newsfeed-Titel',
     26 => 'Limit',
@@ -1079,7 +1079,8 @@ $LANG33 = array(
     49 => 'Newsfeed-Logo',
     50 => "Relativ zur URL dieser Site ({$_CONF['site_url']})",
     51 => 'Der gewählte Dateiname wird bereits von einem anderen Newsfeed verwendet. Bitte wählen Sie einen anderen.',
-    52 => 'Fehler: Dateiname existiert schon'
+    52 => 'Fehler: Dateiname existiert schon',
+    53 => 'Alle auf der Startseite'
 );
 
 ###############################################################################

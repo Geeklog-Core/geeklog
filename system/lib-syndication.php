@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.42 2008/07/26 16:25:17 dhaun Exp $
+// $Id: lib-syndication.php,v 1.43 2008/07/27 07:35:58 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -40,12 +40,13 @@ if (strpos ($_SERVER['PHP_SELF'], 'lib-syndication.php') !== false) {
 }
 
 if ($_CONF['trackback_enabled']) {
-    require_once ($_CONF['path_system'] . 'lib-trackback.php');
+    require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
 
 /**
 * Check if a feed for all stories needs to be updated.
 *
+* @param    bool    $frontpage_only true: only articles shown on the frontpage
 * @param    string  $update_info    list of story ids
 * @param    string  $limit          number of entries or number of hours
 * @param    string  $updated_topic  (optional) topic to be updated
@@ -53,7 +54,7 @@ if ($_CONF['trackback_enabled']) {
 * @return   bool                    false = feed needs to be updated
 *
 */
-function SYND_feedUpdateCheckAll( $update_info, $limit, $updated_topic = '', $updated_id = '' )
+function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $updated_topic = '', $updated_id = '' )
 {
     global $_CONF, $_TABLES, $_SYND_DEBUG;
 
@@ -90,6 +91,9 @@ function SYND_feedUpdateCheckAll( $update_info, $limit, $updated_topic = '', $up
     {
         $tlist = "'" . implode( "','", $topiclist ) . "'";
         $where .= " AND (tid IN ($tlist))";
+    }
+    if ($frontpage_only) {
+        $where .= ' AND frontpage = 1';
     }
 
     $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
@@ -186,23 +190,24 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
 * @return   bool                    false = feed has to be updated, true = ok
 *
 */
-function SYND_feedUpdateCheck( $topic, $update_data, $limit, $updated_topic = '', $updated_id = '' )
+function SYND_feedUpdateCheck($topic, $update_data, $limit, $updated_topic = '', $updated_id = '')
 {
     $is_current = true; 
 
-    switch( $topic )
-    {
-        case '::all':
-        {
-            $is_current = SYND_feedUpdateCheckAll( $update_data, $limit,
-                            $updated_topic, $updated_id );
-        }
+    switch($topic) {
+    case '::all':
+        $is_current = SYND_feedUpdateCheckAll(false, $update_data, $limit,
+                            $updated_topic, $updated_id);
         break;
-        default:
-        {
-            $is_current = SYND_feedUpdateCheckTopic( $topic, $update_data,
-                            $limit, $updated_topic, $updated_id );
-        }
+
+    case '::frontpage':
+        $is_current = SYND_feedUpdateCheckAll(true, $update_data, $limit,
+                            $updated_topic, $updated_id);
+        break;
+
+    default:
+        $is_current = SYND_feedUpdateCheckTopic($topic, $update_data,
+                            $limit, $updated_topic, $updated_id);
         break;
     }
 
@@ -315,6 +320,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 /**
 * Get content for a feed that holds all stories.
 *
+* @param    bool     $frontpage_only true: only articles shown on the frontpage
 * @param    string   $limit    number of entries or number of stories
 * @param    string   $link     link to homepage
 * @param    string   $update   list of story ids
@@ -323,7 +329,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feedType, $feedVersion, $fid)
+function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $contentLength, $feedType, $feedVersion, $fid)
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -366,6 +372,9 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
     {
         $where .= " AND (tid IN ($tlist))";
     }
+    if ($frontpage_only) {
+        $where .= ' AND frontpage = 1';
+    }
 
     $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
@@ -400,30 +409,28 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength, $feed
         
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
-        $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $fid, '::all');
+        $extensionTags = PLG_getFeedElementExtensions('article', $row['sid'], $feedType, $feedVersion, $fid, ($frontpage_only ? '::frontpage' : '::all'));
         if( $_CONF['trackback_enabled'] && ($feedType == 'RSS') && ($row['trackbackcode'] >= 0))
         {
             $trbUrl = TRB_makeTrackbackUrl( $row['sid'] );
             $extensionTags['trackbacktag'] = '<trackback:ping>'.htmlspecialchars($trbUrl).'</trackback:ping>';
         }
         $article = array( 'title'      => $storytitle,
-                            'summary'    => $storytext,
-                            'text'       => $fulltext,
-                            'link'       => $storylink,
-                            'uid'        => $row['uid'],
-                            'author'     => COM_getDisplayName( $row['uid'] ),
-                            'date'       => $row['modified'],
-                            'format'     => $row['postmode'],
-                            'topic'      => $topics[$row['tid']],
-                            'extensions' => $extensionTags
-                          );
+                          'summary'    => $storytext,
+                          'text'       => $fulltext,
+                          'link'       => $storylink,
+                          'uid'        => $row['uid'],
+                          'author'     => COM_getDisplayName( $row['uid'] ),
+                          'date'       => $row['modified'],
+                          'format'     => $row['postmode'],
+                          'topic'      => $topics[$row['tid']],
+                          'extensions' => $extensionTags
+                        );
         if($row['commentcode'] >= 0)
         {
             $article['commenturl'] = $storylink . '#comments';
         }
         $content[] = $article;
-
-
     }
 
     $link = $_CONF['site_url'];
@@ -449,10 +456,10 @@ function SYND_updateFeed( $fid )
     if( $A['is_enabled'] == 1 )
     {
         // Import the feed handling classes:
-        require_once( $_CONF['path_system']
-                      . '/classes/syndication/parserfactory.class.php' );
-        require_once( $_CONF['path_system']
-                      . '/classes/syndication/feedparserbase.class.php' );
+        require_once $_CONF['path_system']
+                     . '/classes/syndication/parserfactory.class.php';
+        require_once $_CONF['path_system']
+                     . '/classes/syndication/feedparserbase.class.php';
 
         // Load the actual feed handlers:
         $factory = new FeedParserFactory( $_CONF['path_system']
@@ -465,38 +472,35 @@ function SYND_updateFeed( $fid )
             $feed->encoding = $A['charset'];
             $feed->lang = $A['language'];
 
-            if( $A['type'] == 'geeklog' )
-            {
-                if( $A['topic'] == '::all')
-                {
-                    $content = SYND_getFeedContentAll( $A['limits'], $link,
-                                                       $data, $A['content_length'],
-                                                       $format[0], $format[1], $fid );
+            if ($A['type'] == 'geeklog') {
+                if ($A['topic'] == '::all') {
+                    $content = SYND_getFeedContentAll(false, $A['limits'],
+                                    $link, $data, $A['content_length'],
+                                    $format[0], $format[1], $fid);
+                } elseif ($A['topic'] == '::frontpage') {
+                    $content = SYND_getFeedContentAll(true, $A['limits'],
+                                    $link, $data, $A['content_length'],
+                                    $format[0], $format[1], $fid);
+                } else { // feed for a single topic only
+                    $content = SYND_getFeedContentPerTopic($A['topic'],
+                                    $A['limits'], $link, $data,
+                                    $A['content_length'], $format[0],
+                                    $format[1], $fid);
                 }
-                else // feed for a single topic only
-                {
-                    $content = SYND_getFeedContentPerTopic( $A['topic'],
-                            $A['limits'], $link, $data, $A['content_length'],
-                            $format[0], $format[1], $fid );
-                }
-            }
-            else
-            {
-                $content = PLG_getFeedContent( $A['type'], $fid, $link, $data, $format[0], $format[1] );
+            } else {
+                $content = PLG_getFeedContent($A['type'], $fid, $link, $data, $format[0], $format[1]);
+
                 // can't randomly change the api to send a max length, so
                 // fix it here:
-                if ($A['content_length'] != 1)
-                {
-                    $count = count( $content );
-                    for( $i = 0; $i < $count; $i++ )
-                    {
+                if ($A['content_length'] != 1) {
+                    $count = count($content);
+                    for ($i = 0; $i < $count; $i++ ) {
                         $content[$i]['summary'] = SYND_truncateSummary(
-                                    $content[$i]['text'], $A['content_length'] );
+                                    $content[$i]['text'], $A['content_length']);
                     }
                 }
             }
-            if( empty( $link ))
-            {
+            if (empty($link)) {
                 $link = $_CONF['site_url'];
             }
 

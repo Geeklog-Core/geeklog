@@ -1047,7 +1047,7 @@ $LANG33 = array(
     20 => 'Yes',
     21 => 'No',
     22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
+    23 => 'All Stories',
     24 => 'Feed Editor',
     25 => 'Feed Title',
     26 => 'Limit',
@@ -1076,7 +1076,8 @@ $LANG33 = array(
     49 => 'Feed Logo',
     50 => "Relative to site url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    52 => 'Error: existing Filename',
+    53 => 'All Frontpage Stories'
 );
 
 ###############################################################################

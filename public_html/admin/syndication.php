@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.55 2008/06/07 12:41:44 dhaun Exp $
+// $Id: syndication.php,v 1.56 2008/07/27 07:35:56 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -114,7 +114,8 @@ function get_geeklogFeeds ()
     $num = DB_numRows ($result);
 
     if ($num > 0) {
-        $options[] = array ('id' => '::all', 'name' => $LANG33[23]);
+        $options[] = array ('id' => '::all',       'name' => $LANG33[23]);
+        $options[] = array ('id' => '::frontpage', 'name' => $LANG33[53]);
     }
 
     for ($i = 0; $i < $num; $i++) {
