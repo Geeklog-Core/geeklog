@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.66 2008/07/07 18:29:08 dhaun Exp $
+// $Id: lib-comment.php,v 1.67 2008/07/27 15:21:00 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-comment.php') !== false) {
     die ('This file can not be used on its own!');
@@ -750,9 +750,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     }
                 }
 
-                if (empty ($A['username'])) {
-                    $A['username'] = DB_getItem ($_TABLES['users'], 'username',
-                                                 "uid = $uid");
+                if (empty($A['username']) || empty($A['fullname']) || empty($A['email'])) {
+                    $nresult = DB_query("SELECT username, fullname, email FROM {$_TABLES['users']} WHERE uid = $uid");
+                    list($A['username'], $A['fullname'], $A['email']) = DB_fetchArray($nresult);
                 }
                 $thecomments = CMT_getComment ($A, 'flat', $type, 'ASC', false,
                                                true);
