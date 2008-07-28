@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.127 2008/07/27 18:10:09 dhaun Exp $
+// $Id: lib-story.php,v 1.128 2008/07/28 19:35:46 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -1568,6 +1568,7 @@ function service_get_story($args, &$output, &$svc_msg)
             }
             $output['id']           = $output['sid'];
             $output['category']     = array($output['tid']);
+            $output['published']    = date('c', $output['date']);
             $output['updated']      = date('c', $output['date']);
             if (empty($output['bodytext'])) {
                 $output['content']  = $output['introtext'];
@@ -1653,6 +1654,7 @@ function service_get_story($args, &$output, &$svc_msg)
                 }
                 $output_item['id']           = $output_item['sid'];
                 $output_item['category']     = array($output_item['tid']);
+                $output_item['published']    = date('c', $output_item['date']);
                 $output_item['updated']      = date('c', $output_item['date']);
                 if (empty($output_item['bodytext'])) {
                     $output_item['content']  = $output_item['introtext'];

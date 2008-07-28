@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: services.inc.php,v 1.12 2008/06/28 21:20:34 dhaun Exp $
+// $Id: services.inc.php,v 1.13 2008/07/28 19:35:46 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -566,6 +566,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if ($args['gl_svc']) {
             // This date format is PHP 5 only,
             // but only the web-service uses the value
+            $output['published']    = date('c', strtotime($output['sp_date']));
             $output['updated']      = date('c', strtotime($output['sp_date']));
             $output['id']           = $page;
             $output['title']        = $output['sp_title'];
@@ -622,6 +623,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
             if($args['gl_svc']) {
                 // This date format is PHP 5 only, but only the web-service uses the value 
+                $output_item['published']    = date('c', strtotime($output_item['sp_date']));
                 $output_item['updated']      = date('c', strtotime($output_item['sp_date']));
                 $output_item['id']           = $output_item['sp_id'];
                 $output_item['title']        = $output_item['sp_title'];

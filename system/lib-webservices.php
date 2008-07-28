@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.42 2008/07/27 18:11:26 dhaun Exp $
+// $Id: lib-webservices.php,v 1.43 2008/07/28 19:35:46 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
     die ('This file can not be used on its own!');
@@ -559,6 +559,12 @@ function WS_xmlToArgs(&$args)
             case 'updated':
                 $args['updated'] = (string)$node->firstChild->nodeValue;
                 break;
+            case 'edited':
+                $args['edited'] = (string)$node->firstChild->nodeValue;
+                break;
+            case 'published':
+                $args['published'] = (string)$node->firstChild->nodeValue;
+                break;
             case 'content':
                 WS_getContent($args, $atom_doc, $node);
                 break;
@@ -606,15 +612,20 @@ function WS_xmlToArgs(&$args)
             }
         }
 
-        if (empty($args['updated'])) {
-            $args['updated'] = date('c');
+        $timestamp = date('c');
+        if (!empty($args['published'])) {
+            $timestamp = $args['published'];
+        } elseif (!empty($args['updated'])) {
+            $timestamp = $args['updated'];
+        } elseif (!empty($args['edited'])) {
+            $timestamp = $args['edited'];
         }
-        $args['publish_month'] = date('m', strtotime($args['updated']));
-        $args['publish_year'] = date('Y', strtotime($args['updated']));
-        $args['publish_day'] = date('d', strtotime($args['updated']));
-        $args['publish_hour'] = date('H', strtotime($args['updated']));
-        $args['publish_minute'] = date('i', strtotime($args['updated']));
-        $args['publish_second'] = date('s', strtotime($args['updated']));
+        $args['publish_month'] = date('m', strtotime($timestamp));
+        $args['publish_year'] = date('Y', strtotime($timestamp));
+        $args['publish_day'] = date('d', strtotime($timestamp));
+        $args['publish_hour'] = date('H', strtotime($timestamp));
+        $args['publish_minute'] = date('i', strtotime($timestamp));
+        $args['publish_second'] = date('s', strtotime($timestamp));
 
         if (isset($args['control']) && is_array($args['control'])) {
             foreach ($args['control'] as $key => $value) {
@@ -645,6 +656,11 @@ function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
 
     $id = $atom_doc->createElement('atom:id', $arr['id']);
     $entry_elem->appendChild($id);
+
+    if (!empty($arr['published'])) {
+        $published = $atom_doc->createElement('atom:published', $arr['published']);
+        $entry_elem->appendChild($published);
+    }
 
     $updated = $atom_doc->createElement('atom:updated', $arr['updated']);
     $entry_elem->appendChild($updated);
