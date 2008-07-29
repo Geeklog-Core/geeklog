@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fix for date formatting in RSS fields (bug #0000696) [mystral_kk]
 - A small tweak to the Professional theme's commentbar to make the "Post a
   comment" option easier to find [Dirk]
 - Renamed the syndication feed type "geeklog" to "article" since that's what

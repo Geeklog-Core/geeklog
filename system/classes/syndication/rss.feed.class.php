@@ -269,20 +269,13 @@
       */
     function _RFC822DateFormat($timestamp='')
     {
-    	// Cache the current timezone:
-    	$cache_timezone = setlocale(LC_TIME,0);
-    	// Time locales that will give us the required output
-    	$timezones = array('en_GB','en_US');
-    	setlocale(LC_TIME,$timezones); // set to whichever the system supports.
     	// format the date
     	if(!empty($timestamp))
     	{
-    		$time = strftime( '%a, %d %b %Y %H:%M:%S %z', $timestamp);
+    		$time = date( 'r', $timestamp);
     	} else {
-    		$time = strftime( '%a, %d %b %Y %H:%M:%S %z' );
+    		$time = date( 'r' );
     	}
-    	// Set the timezone back
-    	setlocale(LC_TIME, $cache_timezone);
     	// return the time
     	return $time;
     }
