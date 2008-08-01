@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.208 2008/07/08 18:42:54 dhaun Exp $
+// $Id: user.php,v 1.209 2008/08/01 18:48:58 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -1065,9 +1065,9 @@ function importusers()
                                 addslashes ($emailAddr));
 
             if (($ucount == 0) && ($ecount == 0)) {
-                // user doesn't already exist
+                // user doesn't already exist - pass in optional true for $batchimport parm
                 $uid = USER_createAccount ($userName, $emailAddr, '',
-                                           $fullName);
+                                           $fullName,'','','',true);
 
                 $result = USER_createAndSendPassword ($userName, $emailAddr, $uid);
 

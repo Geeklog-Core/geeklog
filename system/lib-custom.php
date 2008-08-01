@@ -43,7 +43,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.40 2008/05/31 19:49:36 blaine Exp $
+// $Id: lib-custom.php,v 1.41 2008/08/01 18:49:09 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-custom.php') !== false) {
     die ('This file can not be used on its own!');
@@ -136,6 +136,9 @@ function CUSTOM_templateSetVars ($templatename, &$template)
     located under the theme_dir/custom directory.
     Sample is provided under /system with the distribution.
 
+    Note3: Optional parm $bulkimport added so that if your using the [Batch Add] feature,
+    you can execute different logic if required.
+
     Functions have been provided that are called from the Core Geeklog user and admin functions
     - This works with User Moderation as well
     - Admin will see the new registration info when checking a member's profile only
@@ -147,7 +150,7 @@ function CUSTOM_templateSetVars ($templatename, &$template)
 /* Create any new records in additional tables you may have added  */
 /* Update any fields in the core GL tables for this user as needed */
 /* Called when user is first created */
-function CUSTOM_userCreate ($uid)
+function CUSTOM_userCreate ($uid,$bulkimport=false)
 {
     global $_CONF, $_TABLES;
 

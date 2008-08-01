@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.46 2008/05/05 20:04:38 dhaun Exp $
+// $Id: lib-user.php,v 1.47 2008/08/01 18:49:09 blaine Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -237,15 +237,16 @@ function USER_sendActivationEmail ($username, $useremail)
 *
 * NOTE: Does NOT send out password emails.
 *
-* @param    string  $username   user name (mandatory)
-* @param    string  $email      user's email address (mandatory)
-* @param    string  $passwd     password (optional, see above)
-* @param    string  $fullname   user's full name (optional)
-* @param    string  $homepage   user's home page (optional)
-* @return   int                 new user's ID
+* @param    string  $username    user name (mandatory)
+* @param    string  $email       user's email address (mandatory)
+* @param    string  $passwd      password (optional, see above)
+* @param    string  $fullname    user's full name (optional)
+* @param    string  $homepage    user's home page (optional)
+* @param    boolean $batchimport set to true when called from importuser() in admin/users.php (optional)
+* @return   int                  new user's ID
 *
 */
-function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '')
+function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '',$batchimport=false)
 {
     global $_CONF, $_TABLES;
 
@@ -323,7 +324,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 
     // call custom registration function and plugins
     if ($_CONF['custom_registration'] && (function_exists ('CUSTOM_userCreate'))) {
-        CUSTOM_userCreate ($uid);
+        CUSTOM_userCreate ($uid,$batchimport);
     }
     PLG_createUser ($uid);
 
