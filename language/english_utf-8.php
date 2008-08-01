@@ -1851,7 +1851,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>
