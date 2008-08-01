@@ -2,7 +2,8 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.1)
 ------------
-
+- Change for CUSTOM_usercreate to support passing in $batchimport, 
+  set true if called via the Admin->Users Batch_Add [Blaine]
 - Fix for date formatting in RSS fields (bug #0000696) [mystral_kk]
 - A small tweak to the Professional theme's commentbar to make the "Post a
   comment" option easier to find [Dirk]
@@ -47,6 +48,7 @@ Geeklog History/Changes:
   authentication it is not possible for OpenID users to use the webservices.
   Other remote users will have to use the form username@servicename for their
   username [Dirk]
+- Fix to template.class to better hanndle full path being passed in [Blaine]
 - Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [Mike]
 - Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
 - Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
