@@ -68,7 +68,7 @@ function add_element(tbl, arr_name, index, disp_type, def_val, deletable){
  }
 }
 
-function remove(self){
+function gl_cfg_remove(self){
  cell = self.parentNode.parentNode;
  cell.parentNode.removeChild(cell);
 }

@@ -1,5 +1,5 @@
 <!-- BEGIN delete-button -->
-<input type="button" class="del-link" value="x" onclick="remove(this);"{xhtml}>
+<input type="button" class="del-link" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
 <!-- END delete-button -->
 
 <!-- BEGIN text-element -->
