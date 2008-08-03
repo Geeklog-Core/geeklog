@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.93 2008/07/06 20:16:59 dhaun Exp $
+// $Id: functions.inc,v 1.94 2008/08/03 17:43:55 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
@@ -1791,7 +1791,12 @@ function CALENDAR_eventTypeList ($currtype = '')
 
     $retval = '';
 
-    $event_types = $_CA_CONF['event_types'];
+    if (!isset($_CA_CONF['event_types']) ||
+            !is_array($_CA_CONF['event_types'])) {
+        $event_types = array();
+    } else {
+        $event_types = $_CA_CONF['event_types'];
+    }
     asort($event_types);
 
     foreach ($event_types as $type) {
