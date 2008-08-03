@@ -1856,7 +1856,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sonntag' => 'Sun', 'Montag' => 'Mon'),
     15 => array('Nummerisch' => 'sortnum', 'Alphabetisch' => 'alpha'),
     16 => array('Kein Login benötigt' => 0, 'Nur erweiterte Suche' => 1, 'Einfache und erweiterte Suche' => 2),
-    17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1)
+    17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1),
+    18 => array('Aus' => 0, 'Ein (Exakte Übereinstimmung)' => 1, 'Ein (Wortanfang)' => 2, 'Ein (Teilwort)' => 3)
 );
 
 ?>
