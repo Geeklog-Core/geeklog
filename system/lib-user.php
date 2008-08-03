@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2007 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.47 2008/08/01 18:49:09 blaine Exp $
+// $Id: lib-user.php,v 1.48 2008/08/03 08:05:50 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
     die ('This file can not be used on its own!');
@@ -672,6 +672,159 @@ function USER_getChildGroups($groupid)
     }
 
     return $groups;
+}
+
+/**
+* Subscribe user to a topic (for the Daily Digest)
+*
+* @param    string  $tid    Topic ID
+*
+*/
+function USER_subscribeToTopic($tid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    if ($_CONF['emailstories'] == 0) {
+        return;
+    }
+
+    if (COM_isAnonUser()) {
+        return;
+    }
+
+    if (!SEC_hasTopicAccess($tid)) {
+        return;
+    }
+
+    $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
+                             "uid = {$_USER['uid']}");
+    if (empty($user_etids)) {
+        return; // already subscribed to all topics
+    }
+
+    if ($user_etids == '-') {
+        $user_etids = $tid; // first topic user subscribed to
+    } else {
+        $etids = explode(' ', $user_etids);
+        if (in_array($tid, $etids)) {
+            return; // already subscribed
+        }
+        $etids[] = $tid;
+        $user_etids = implode(' ', $etids);
+    }
+    $user_etids = addslashes($user_etids);
+
+    DB_query("UPDATE {$_TABLES['userindex']} SET etids = '$user_etids' WHERE uid = {$_USER['uid']}");
+}
+
+/**
+* Unsubscribe user from a topic (for the Daily Digest)
+*
+* @param    string  $tid    Topic ID
+*
+*/
+function USER_unsubscribeFromTopic($tid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    if ($_CONF['emailstories'] == 0) {
+        return;
+    }
+
+    if (COM_isAnonUser()) {
+        return;
+    }
+
+    // no check for SEC_hasTopicAccess here to unsubscribe user "just in case"
+
+    $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
+                             "uid = {$_USER['uid']}");
+    if ($user_etids == '-') {
+        return; // not subscribed to any topics
+    }
+
+    if (empty($user_etids)) {
+        // subscribed to all topics - get list
+        $etids = USER_getAllowedTopics();
+    } else {
+        $etids = explode(' ', $user_etids);
+    }
+
+    $key = array_search($tid, $etids);
+    if ($key === false) {
+        return; // not subscribed to this topic
+    }
+
+    unset($etids[$key]);
+
+    if (count($etids) == 0) {
+        $user_etids = '-';
+    } else {
+        $user_etids = implode(' ', $etids);
+    }
+    $user_etids = addslashes($user_etids);
+
+    DB_query("UPDATE {$_TABLES['userindex']} SET etids = '$user_etids' WHERE uid = {$_USER['uid']}");
+}
+
+/**
+* Check if user is subscribed to a topic
+*
+* @param    string  $tid    Topic ID
+* @return   boolean         true: subscribed, false: not subscribed
+*
+*/
+function USER_isSubscribedToTopic($tid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    if ($_CONF['emailstories'] == 0) {
+        return false;
+    }
+
+    if (COM_isAnonUser()) {
+        return false;
+    }
+
+    if (!SEC_hasTopicAccess($tid)) {
+        return false;
+    }
+
+    $user_etids = DB_getItem($_TABLES['userindex'], 'etids',
+                             "uid = {$_USER['uid']}");
+    if (empty($user_etids)) {
+        return true; // subscribed to all topics
+    } elseif ($user_etids == '-') {
+        return false; // not subscribed to any topics
+    }
+
+    $etids = explode(' ', $user_etids);
+
+    return in_array($tid, $etids);
+}
+
+/**
+* Get topics the current user has access to
+*
+* @return   array   Array of topic IDs
+*
+*/
+function USER_getAllowedTopics()
+{
+    global $_TABLES;
+
+    $topics = array();
+
+    $result = DB_query("SELECT tid FROM {$_TABLES['topics']}");
+    $numrows = DB_numRows($result);
+    for ($i = 0; $i < $numrows; $i++) {
+        $A = DB_fetchArray($result);
+        if (SEC_hasTopicAccess($A['tid'])) {
+            $topics[] = $A['tid'];
+        }
+    }
+
+    return $topics;
 }
 
 ?>

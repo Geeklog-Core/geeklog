@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.715 2008/07/27 09:11:29 dhaun Exp $
+// $Id: lib-common.php,v 1.716 2008/08/03 08:05:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -367,8 +367,7 @@ else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
 }
 
 // Handle Who's Online block
-if( COM_isAnonUser() )
-{
+if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR']) {
     // The following code handles anonymous users so they show up properly
     DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1" );
 
@@ -3992,6 +3991,10 @@ function COM_emailUserTopics()
 {
     global $_CONF, $_TABLES, $LANG04, $LANG08, $LANG24;
 
+    if ($_CONF['emailstories'] == 0) {
+        return;
+    }
+
     $subject = strip_tags( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() ));
 
     $authors = array();
@@ -4007,7 +4010,7 @@ function COM_emailUserTopics()
     $lastrun = DB_getItem( $_TABLES['vars'], 'value', "name = 'lastemailedstories'" );
 
     // For each user, pull the stories they want and email it to them
-    for( $x = 1; $x <= $nrows; $x++ )
+    for( $x = 0; $x < $nrows; $x++ )
     {
         $U = DB_fetchArray( $users );
 
@@ -4030,7 +4033,7 @@ function COM_emailUserTopics()
         }
 
         $TIDS = array();
-        for( $i = 1; $i <= $trows; $i++ )
+        for( $i = 0; $i < $trows; $i++ )
         {
             $T = DB_fetchArray( $tresult );
             $TIDS[] = $T['tid'];

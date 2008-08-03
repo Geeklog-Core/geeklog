@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.173 2008/05/31 19:49:36 blaine Exp $
+// $Id: usersettings.php,v 1.174 2008/08/03 08:05:50 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -310,33 +310,6 @@ function deleteUserAccount ($form_reqid)
     }
 
     return COM_refresh ($_CONF['site_url'] . '/index.php?msg=57');
-}
-
-/**
-* Build a list of all topics the current user has access to
-*
-* @return   string   List of topic IDs, separated by spaces
-*
-*/
-function buildTopicList ()
-{
-    global $_TABLES;
-
-    $topics = '';
-
-    $result = DB_query ("SELECT tid FROM {$_TABLES['topics']}");
-    $numrows = DB_numRows ($result);
-    for ($i = 1; $i <= $numrows; $i++) {
-        $A = DB_fetchArray ($result);
-        if (SEC_hasTopicAccess ($A['tid'])) {
-            if ($i > 1) {
-                $topics .= ' ';
-            }
-            $topics .= $A['tid'];
-        }
-    }
-
-    return $topics;
 }
 
 /**
@@ -654,7 +627,8 @@ function editpreferences()
         $user_etids = DB_getItem ($_TABLES['userindex'], 'etids',
                                   "uid = {$_USER['uid']}");
         if (empty ($user_etids)) { // an empty string now means "all topics"
-            $user_etids = buildTopicList ();
+            $etids = USER_getAllowedTopics();
+            $user_etids = implode(' ', $etids);
         } elseif ($user_etids == '-') { // this means "no topics"
             $user_etids = '';
         }
@@ -1394,8 +1368,7 @@ function savepreferences($A)
 
     $etids = '';
     if (sizeof ($ETIDS) > 0) {
-        $allowed_etids = buildTopicList ();
-        $AETIDS = explode (' ', $allowed_etids);
+        $AETIDS = USER_getAllowedTopics();
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
 

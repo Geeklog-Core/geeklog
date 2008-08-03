@@ -1859,7 +1859,7 @@ Oct 24, 2004 (1.3.10rc2)
 Oct 17, 2004 (1.3.10rc1)
 ------------
 - Added new functionality to [autotags] - New plugin API's added  [Blaine]
-- Added [autotag] hooks for stories  [Bline]
+- Added [autotag] hooks for stories  [Blaine]
 - When a plugin had its icon only in the admin directoy, the plugin editor
   did not find it and displayed a generic icon instead [Dirk]
 - In admin/mail.php, apply htmlspecialchars() on the email addresses before
