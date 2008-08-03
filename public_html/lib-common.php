@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.716 2008/08/03 08:05:50 dhaun Exp $
+// $Id: lib-common.php,v 1.717 2008/08/03 19:15:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1943,6 +1943,10 @@ function COM_errorLog( $logentry, $actionid = '' )
 
         $timestamp = strftime( '%c' );
 
+        if (!isset($_CONF['path_layout']) &&
+                (($actionid == 2) || empty($actionid))) {
+            $actionid = 1;
+        }
         if (!isset($_CONF['path_log']) && ($actionid != 2)) {
             $actionid = 3;
         }
