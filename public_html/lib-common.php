@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.717 2008/08/03 19:15:41 dhaun Exp $
+// $Id: lib-common.php,v 1.718 2008/08/04 09:34:43 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -367,7 +367,7 @@ else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
 }
 
 // Handle Who's Online block
-if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR']) {
+if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
     // The following code handles anonymous users so they show up properly
     DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1" );
 
