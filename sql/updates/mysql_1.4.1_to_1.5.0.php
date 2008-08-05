@@ -95,7 +95,7 @@ function create_ConfValues()
     $c->add('path_images','','text',0,3,NULL,130,TRUE);
 
     $c->add('fs_pear', NULL, 'fieldset', 0, 4, NULL, 0, TRUE);
-    $c->add('have_pear','','select',0,4,1,135,TRUE);
+    $c->add('have_pear',FALSE,'select',0,4,1,135,TRUE);
     $c->add('path_pear','','text',0,4,NULL,140,TRUE);
 
     $c->add('fs_mysql', NULL, 'fieldset', 0, 5, NULL, 0, TRUE);

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.31 2008/03/21 15:38:05 dhaun Exp $
+// $Id: config-install.php,v 1.32 2008/08/05 17:52:16 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
     die ('This file can not be used on its own!');
@@ -76,7 +76,7 @@ function install_config()
     $c->add('path_images','','text',0,3,NULL,130,TRUE);
 
     $c->add('fs_pear', NULL, 'fieldset', 0, 4, NULL, 0, TRUE);
-    $c->add('have_pear','','select',0,4,1,135,TRUE);
+    $c->add('have_pear',FALSE,'select',0,4,1,135,TRUE);
     $c->add('path_pear','','text',0,4,NULL,140,TRUE);
 
     $c->add('fs_mysql', NULL, 'fieldset', 0, 5, NULL, 0, TRUE);
