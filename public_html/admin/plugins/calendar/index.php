@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2008/05/24 07:45:28 dhaun Exp $
+// $Id: index.php,v 1.38 2008/08/10 15:29:45 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -423,7 +423,8 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
 
     // Make sure start date is before end date
     if (checkdate ($start_month, $start_day, $start_year)) {
-        $datestart = $start_year . '-' . $start_month . '-' . $start_day;
+        $datestart = sprintf('%4d-%02d-%02d',
+                             $start_year, $start_month, $start_day);
         $timestart = $start_hour . ':' . $start_minute . ':00';
     } else {
         $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);
@@ -436,7 +437,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         return $retval;
     }
     if (checkdate ($end_month, $end_day, $end_year)) {
-        $dateend = $end_year . '-' . $end_month . '-' . $end_day;
+        $dateend = sprintf('%4d-%02d-%02d', $end_year, $end_month, $end_day);
         $timeend = $end_hour . ':' . $end_minute . ':00';
     } else {
         $retval .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[2]);

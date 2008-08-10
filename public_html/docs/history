@@ -66,11 +66,11 @@ Geeklog History/Changes:
   same time [Dirk, Mark Evans]
 - Fixed user submission queue (reported by greenteagod) [Dirk]
 
-
-- Updated Hebrew language file, provided by LWC
+- Updated Hebrew language files, provided by LWC
 
 Calendar plugin
 ---------------
+- Fixed date comparison ("End date is before start date.", bug #0000703) [Dirk]
 - Fixed Admin delete links in day and week view (bug #0000680) [Dirk]
 - Search for an event's "author" didn't work [Dirk]
 - Calendar block now includes events from the current day (in progress or all
