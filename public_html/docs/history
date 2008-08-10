@@ -2,7 +2,7 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.1)
 ------------
-
+- Updated FCKEditor to v2.6.3 [Blaine]
 - Moved remove() (config javascript) to gl_cfg_remove (bug #0000681) [Mike]
 - Change for CUSTOM_usercreate to support passing in $batchimport, 
   set true if called via the Admin->Users Batch_Add [Blaine]
