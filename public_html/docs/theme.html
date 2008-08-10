@@ -198,10 +198,11 @@ featured and archived stories.</li>
 
 <h2><a name="changes">Theme changes in Geeklog 1.5.1</a></h2>
 
-<p>Note: Themes made for Geeklog 1.5.0 should be compatible with Geeklog 1.5.1.
-We only made a few optional additions and a few adjustments for special setups
-(e.g. multi-language sites, right-to-left languages) which are detailed
-below.</p>
+<p>Note: Themes made for Geeklog 1.5.0 are mostly compatible with Geeklog 1.5.1. We only made one mandatory change (for the Configuration admin panel) - all the other changes listed below are optional or adjustments for special setups (e.g. multi-language sites, right-to-left languages). See details below.</p>
+
+<h3>Important change: Configuration</h3>
+
+<p>The JavaScript code used for the Configuration admin panel used a generic name which caused conflicts with other JavaScript code. You should update the file <tt>admin/config/config_element.thtml</tt> to make sure your theme works with Geeklog 1.5.1.</p>
 
 <h3>Multilingual blocks</h3>
 
@@ -225,11 +226,11 @@ in your <tt>functions.php</tt> file.</p>
 
 <ul>
 <li>In Geeklog 1.5.0, the behaviour of the variable <code>{page_title}</code>
-    changed so that it now only contains the actual page title or the site's
-    slogan (in earlier versions, it contained both the site's name and either
-    the page title or the site's slogan). This was done so that the combination
-    <code>{page_title}{page_site_splitter}{site_name}</code> could be used
-    to place the page title before the site's name for better <a
+    (in <tt>header.thtml</tt>) changed so that it now only contains the actual
+    page title or the site's slogan (in earlier versions, it contained both the
+    site's name and either the page title or the site's slogan). This was done
+    so that the combination <code>{page_title}{page_site_splitter}{site_name}</code>
+    could be used to place the page title before the site's name for better <a
     href="http://en.wikipedia.org/wiki/Search_engine_optimization"
     class="wikipedia" title="Search Engine Optimization">SEO</a>. If you prefer
     to have the site's name first on the index page and the page title first on
@@ -250,6 +251,11 @@ in your <tt>functions.php</tt> file.</p>
     the "Post a comment" button float to the left and easier to see. There were
     no changes in functionality and other commentbar layouts will continue to
     work as before.</li>
+<li>The story template files <tt>archivestorytext.thtml</tt>,
+    <tt>featuredstorytext.thtml</tt>, and <tt>storytext.thtml</tt> are now
+    using the <code>{story_text_no_br}</code> variable to refer to the story
+    text. Template files that use <code>{story_introtext}</code> here will
+    continue to work as before.</li>
 </ul>
 
 

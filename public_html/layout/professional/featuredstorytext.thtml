@@ -12,7 +12,7 @@
         <p>{lang_views} {story_hits}</p>
     </div>
     <div class="story-body">
-        {story_anchortag_and_image}{story_introtext}{story_bodytext}
+        {story_anchortag_and_image}{story_text_no_br}
     </div>
     <div class="story-footer">
         <p>{page_selector}</p>

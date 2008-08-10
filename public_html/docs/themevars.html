@@ -207,6 +207,15 @@ file (which is used to display a story on its own page).</p>
         text" part of a story. However, when displayed as an article on a
         single page, it contains <em>both</em> the intro text <em>and</em> the
         body text of the story.</td></tr>
+<tr><td><code>story_text_no_br</code></td>
+    <td>Welcome and let me be the first to congratulate you on installing Geeklog ...</td>
+    <td>When displayed on the index page, this variable contains The "intro
+        text" part of a story. However, when displayed as an article on a
+        single page, it contains <em>both</em> the intro text <em>and</em> the
+        body text of the story. The difference between <tt>story_introtext</tt>
+        and <tt>story_text_no_br</tt> is that <tt>story_introtext</tt> inserts
+        two HTML <tt>&lt;br&gt;</tt> tags between the intro and the body text
+        whereas <tt>story_text_no_br</tt> does not do that (hence the name).</td></tr>
 <tr><td><code>lang_todays_featured_article</code></td>
     <td>Today's Featured Article</td>
     <td>The words "Today's Featured Article" in the user's preferred language.
