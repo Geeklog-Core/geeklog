@@ -73,8 +73,10 @@
         <!-- HTML Editor -->
         <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
             {lang_introtext}:
+            <!--
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','smaller');"{xhtml}>
+            -->
             <span style="padding-left:15px;">{lang_toolbar}:&nbsp;
                 <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
                      <option value="editor-toolbar1">{toolbar1}</option>
@@ -85,8 +87,10 @@
             </span>
             <textarea id="introhtml" style="padding:5px 10px 5px 10px;" name="introhtml" cols="45" rows="12">{story_introtext}</textarea>
             {lang_bodytext}:
-            <img src="{layout_url}/images/expand.png" title="lang_expandhelp" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');"{xhtml}>
+            <!--
+            <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"{xhtml}>
+            -->
             <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="45" rows="20">{story_bodytext}</textarea>
         </div>
         <div id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
