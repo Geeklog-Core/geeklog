@@ -13,11 +13,18 @@ FCKConfig.ToolbarSets["editor-toolbar2"] = [
 ] ;
 
 FCKConfig.ToolbarSets["editor-toolbar3"] = [
-    ['Source','Templates','-','Cut','Copy','Paste','PasteText','PasteWord','-',
-    'Find','Replace','-','Undo','Redo','-','RemoveFormat','-','Link','Unlink','-',
-    'Image','SpecialChar','-','Print','SpellCheck','FitWindow'],
-    ['Table','Rule','Bold','Italic','Underline','StrikeThrough','-',
-    'Subscript','Superscript','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyFull','-',
-    'OrderedList','UnorderedList','-','Outdent','Indent','-','TextColor','BGColor','-','About'],
-    ['Style','-','FontFormat','-','FontName','-','FontSize']
+    ['Source','DocProps','-','Save','NewPage','Preview','-','Templates'],
+    ['Cut','Copy','Paste','PasteText','PasteWord','-','Print','SpellCheck'],
+    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+    ['Form','Checkbox','Radio','TextField','Textarea','Select','Button','ImageButton','HiddenField'],
+    '/',
+    ['Bold','Italic','Underline','StrikeThrough','-','Subscript','Superscript'],
+    ['OrderedList','UnorderedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyFull'],
+    ['Link','Unlink','Anchor'],
+    ['Image','Flash','Table','Rule','Smiley','SpecialChar','PageBreak'],
+    '/',
+    ['Style','FontFormat','FontName','FontSize'],
+    ['TextColor','BGColor'],
+    ['FitWindow','ShowBlocks','-','About']        // No comma for the last row.
 ] ;
