@@ -2,6 +2,9 @@ Geeklog History/Changes:
 
 ??? ??, 2008 (1.5.1)
 ------------
+
+- Fixed error when attempting to highlight a search query that contained a
+  slash [Dirk]
 - Updated FCKEditor to v2.6.3 [Blaine]
 - Moved remove() (config javascript) to gl_cfg_remove (bug #0000681) [Mike]
 - Change for CUSTOM_usercreate to support passing in $batchimport, 
