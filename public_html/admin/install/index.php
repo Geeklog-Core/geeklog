@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.49 2008/07/13 12:03:59 dhaun Exp $
+// $Id: index.php,v 1.50 2008/08/11 20:23:11 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -408,7 +408,7 @@ function INST_installEngine($install_type, $install_step)
                     }
                     break;
                 case 'mssql':
-                    if (!$db_handle = @mssql_connect($db_host, $db_user, $db_pass)) {
+                    if (!$db_handle = mssql_connect($db_host, $db_user, $db_pass)) {
                         $invalid_db_auth = true;
                     }
                     break;
@@ -912,35 +912,38 @@ function INST_identifyGeeklogVersion ()
             // It's hard to (reliably) test for 1.3.7 - let's just hope
             // nobody uses such an old version any more ...
             );
-
+        $firstCheck = "DESCRIBE {$_TABLES['access']} acc_ft_id";
+        $result = DB_query($firstCheck, 1);
+        if ($result === false) {
+            // A check for the first field in the first table failed?
+            // Sounds suspiciously like an empty table ...
+            return 'empty';
+        }
         break;
 
     case 'mssql':
 	    $test = array(
             '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
-            '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
+            '1.5.0'  => array("SELECT c.name FROM syscolumns c JOIN sysobjects o ON o.id = c.id WHERE c.name='bodytext' AND o.name='{$_TABLES['storysubmission']}'",'bodytext'),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
             // 1.4.1 was the first version with MS SQL support
             );
-
+        $firstCheck = "SELECT 1 FROM sysobjects WHERE name='{$_TABLES['access']}'";
+        $result = DB_query($firstCheck, 1);
+        if (($result === false) || (DB_numRows($result) < 1)) {
+            // a check for the first table returned nothing.
+            // empty database?
+            return 'empty';
+        }
         break;
 
     }
 
     $version = '';
 
-    $result = DB_query("DESCRIBE {$_TABLES['access']} acc_ft_id", 1);
-    if ($result === false) {
-        // A check for the first field in the first table failed?
-        // Sounds suspiciously like an empty table ...
-
-        return 'empty';
-    }
-
     foreach ($test as $v => $qarray) {
         $result = DB_query($qarray[0], 1);
         if ($result === false) {
-
             // error - continue with next test
 
         } else if (DB_numRows($result) > 0) {
@@ -2167,5 +2170,8 @@ $display .= '
 </html>' . LB;
 
 echo $display;
-
+function d($in)
+{
+    echo('<pre>');var_dump($in);echo('</pre>');
+}
 ?>
