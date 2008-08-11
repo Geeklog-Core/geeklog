@@ -6,7 +6,7 @@ Geeklog History/Changes:
 - Fixed error when attempting to highlight a search query that contained a
   slash [Dirk]
 - Updated FCKEditor to v2.6.3 [Blaine]
-- Moved remove() (config javascript) to gl_cfg_remove (bug #0000681) [Mike]
+- Moved remove() (config JavaScript) to gl_cfg_remove (bug #0000681) [Mike]
 - Change for CUSTOM_usercreate to support passing in $batchimport, 
   set true if called via the Admin->Users Batch_Add [Blaine]
 - Fix for date formatting in RSS fields (bug #0000696) [mystral_kk]
