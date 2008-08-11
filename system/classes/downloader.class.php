@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | downloader.class.php                                                      |
 // |                                                                           |
 // | Geeklog file download class library.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2005 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.14 2007/11/25 06:59:56 ospiess Exp $
+// $Id: downloader.class.php,v 1.15 2008/08/11 14:11:21 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -207,6 +207,7 @@ class downloader
                     'gif' => 'image/gif',
                     'jpg' => 'image/jpeg',
                     'jpeg' => 'image/jpeg',
+                    'png' => 'image/png',
                     'png' => 'image/x-png',
                     'mp3' => 'audio/mpeg',
                     'wav' => 'audio/wav',
