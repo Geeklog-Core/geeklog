@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.33 2008/07/27 18:10:10 dhaun Exp $
+// $Id: story.class.php,v 1.34 2008/08/12 19:23:57 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1430,6 +1430,10 @@ class Story
             $return = COM_getUserDateTimeFormat($this->_date);
 
             $return = $return[0];
+            break;
+
+        case 'unixdate':
+            $return = $this->_date;
             break;
 
         case 'hits':
