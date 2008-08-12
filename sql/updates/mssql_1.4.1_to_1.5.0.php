@@ -7,7 +7,7 @@
 // remove time zone table since its included into PEAR now
 $_SQL[] = "DROP TABLE " . $_DB_table_prefix . 'tzcodes';
 $_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ALTER COLUMN [tzid] VARCHAR(125) NOT NULL";
-$_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD CONSTRAINT [DF_gl_userprefs_tzid] DEFAULT ('') FOR [tzid]";
+$_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD CONSTRAINT [DF_{$_TABLES['userprefs']}_tzid] DEFAULT ('') FOR [tzid]";
 // change former default values to '' so users dont all have edt for no reason
 $_SQL[] = "UPDATE {$_TABLES['userprefs']} set tzid = ''";
 // Add new field to track the number of reminders to login and use the site or account may be deleted
@@ -43,7 +43,7 @@ CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
 ";
  
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tokens']}] ADD
-    CONSTRAINT [PK_gl_tokens] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['tokens']}] PRIMARY KEY  CLUSTERED
     (
         [token]
     )  ON [PRIMARY]
@@ -417,14 +417,14 @@ function upgrade_PollsPlugin()
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollanswers']}.qid', 'pid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD qid VARCHAR(20) NOT NULL default '0'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} DROP CONSTRAINT [PK_gl_pollanswers];";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY CLUSTERED ([pid], [qid], [aid]) ON [PRIMARY];";
+    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} ADD CONSTRAINT [PK_{$_TABLES['pollanswers']}] PRIMARY KEY CLUSTERED ([pid], [qid], [aid]) ON [PRIMARY];";
     $P_SQL[] = "EXEC sp_rename '{$_TABLES['pollvoters']}.qid', 'pid', 'COLUMN'";
     $P_SQL[] = "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHAR( 20 ) NOT NULL";
     $P_SQL[] = "CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
         [qid] [int] NOT NULL DEFAULT 0,
         [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
         [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-        CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED 
+        CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED 
 	    (
 		    [qid]
 	    )  ON [PRIMARY] 
@@ -650,7 +650,7 @@ function upgrade_LinksPlugin()
         [perm_anon] [tinyint] NOT NULL
     ) ON [PRIMARY]";
     $P_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
-        CONSTRAINT [PK_gl_linkcategories] PRIMARY KEY  CLUSTERED
+        CONSTRAINT [PK_{$_TABLES['linkcategories']}] PRIMARY KEY  CLUSTERED
         (
             [pid]
         )  ON [PRIMARY]";

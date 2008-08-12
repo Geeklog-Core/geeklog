@@ -653,7 +653,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD
-    CONSTRAINT [PK_gl_access] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['access']}] PRIMARY KEY  CLUSTERED
     (
         [acc_ft_id],
         [acc_grp_id]
@@ -663,7 +663,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['article_images']}] ADD
-    CONSTRAINT [PK_gl_article_images] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['article_images']}] PRIMARY KEY  CLUSTERED
     (
         [ai_sid],
         [ai_img_num]
@@ -673,140 +673,140 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['article_images']}] ADD
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['blocks']}] ADD
-    CONSTRAINT [DF_gl_blocks_type] DEFAULT ('normal') FOR [type],
-    CONSTRAINT [DF_gl_blocks_tid] DEFAULT ('All') FOR [tid],
-    CONSTRAINT [DF_gl_blocks_blockorder] DEFAULT (1) FOR [blockorder],
-    CONSTRAINT [DF_gl_blocks_content] DEFAULT (null) FOR [content],
-    CONSTRAINT [DF_gl_blocks_rdfupdated] DEFAULT (getdate()) FOR [rdfupdated],
-    CONSTRAINT [DF_gl_blocks_rdflimit] DEFAULT (0) FOR [rdflimit],
-    CONSTRAINT [DF_gl_blocks_onleft] DEFAULT (1) FOR [onleft],
-    CONSTRAINT [DF_gl_blocks_owner_id] DEFAULT (1) FOR [owner_id],
-    CONSTRAINT [DF_gl_blocks_group_id] DEFAULT (1) FOR [group_id],
-    CONSTRAINT [DF_gl_blocks_perm_owner] DEFAULT (3) FOR [perm_owner],
-    CONSTRAINT [DF_gl_blocks_perm_group] DEFAULT (3) FOR [perm_group],
-    CONSTRAINT [DF_gl_blocks_perm_members] DEFAULT (2) FOR [perm_members],
-    CONSTRAINT [DF_gl_blocks_perm_anon] DEFAULT (2) FOR [perm_anon],
-    CONSTRAINT [DF_gl_blocks_allow_autotags] DEFAULT (0) FOR [allow_autotags],
-    CONSTRAINT [PK_gl_blocks] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['blocks']}_type] DEFAULT ('normal') FOR [type],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_tid] DEFAULT ('All') FOR [tid],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_blockorder] DEFAULT (1) FOR [blockorder],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_content] DEFAULT (null) FOR [content],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_rdfupdated] DEFAULT (getdate()) FOR [rdfupdated],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_rdflimit] DEFAULT (0) FOR [rdflimit],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_onleft] DEFAULT (1) FOR [onleft],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_owner_id] DEFAULT (1) FOR [owner_id],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_group_id] DEFAULT (1) FOR [group_id],
+    CONSTRAINT [DF_{$_TABLES['blocks']}s_perm_owner] DEFAULT (3) FOR [perm_owner],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_perm_group] DEFAULT (3) FOR [perm_group],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_perm_members] DEFAULT (2) FOR [perm_members],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_perm_anon] DEFAULT (2) FOR [perm_anon],
+    CONSTRAINT [DF_{$_TABLES['blocks']}_allow_autotags] DEFAULT (0) FOR [allow_autotags],
+    CONSTRAINT [PK_{$_TABLES['blocks']}] PRIMARY KEY  CLUSTERED
     (
         [bid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentcodes']}] ADD
-    CONSTRAINT [PK_gl_commentcodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['commentcodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['commentmodes']}] ADD
-    CONSTRAINT [PK_gl_commentmodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['commentmodes']}] PRIMARY KEY  CLUSTERED
     (
         [mode]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['comments']}] ADD
-    CONSTRAINT [PK_gl_comments] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['comments']}] PRIMARY KEY  CLUSTERED
     (
         [cid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['cookiecodes']}] ADD
-    CONSTRAINT [PK_gl_cookiecodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['cookiecodes']}] PRIMARY KEY  CLUSTERED
     (
         [cc_value]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['dateformats']}] ADD
-    CONSTRAINT [PK_gl_dateformats] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['dateformats']}] PRIMARY KEY  CLUSTERED
     (
         [dfid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD
-    CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['events']}] PRIMARY KEY  CLUSTERED
     (
         [eid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD
-    CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['eventsubmission']}] PRIMARY KEY  CLUSTERED
     (
         [eid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['featurecodes']}] ADD
-    CONSTRAINT [PK_gl_featurecodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['featurecodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['features']}] ADD
-    CONSTRAINT [DF_gl_features_ft_gl_core] DEFAULT (0) FOR [ft_gl_core],
-    CONSTRAINT [PK_gl_features] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['features']}_ft_gl_core] DEFAULT (0) FOR [ft_gl_core],
+    CONSTRAINT [PK_{$_TABLES['features']}] PRIMARY KEY  CLUSTERED
     (
         [ft_id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['frontpagecodes']}] ADD
-    CONSTRAINT [PK_gl_frontpagecodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['frontpagecodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD
-    CONSTRAINT [DF_gl_groups_grp_gl_core] DEFAULT (0) FOR [grp_gl_core],
-    CONSTRAINT [PK_gl_groups] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['groups']}_grp_gl_core] DEFAULT (0) FOR [grp_gl_core],
+    CONSTRAINT [PK_{$_TABLES['groups']}] PRIMARY KEY  CLUSTERED
     (
         [grp_id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
-    CONSTRAINT [PK_gl_linkcategories] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['linkcategories']}] PRIMARY KEY  CLUSTERED
     (
         [pid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
-    CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
-    CONSTRAINT [DF_gl_links_perm_anon] DEFAULT (2) FOR [perm_anon],
-    CONSTRAINT [DF_gl_links_perm_members] DEFAULT (2) FOR [perm_members],
-    CONSTRAINT [DF_gl_links_perm_owner] DEFAULT (3) FOR [perm_owner],
-    CONSTRAINT [DF_gl_links_hits] DEFAULT (0) FOR [hits],
-    CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_group] DEFAULT (3) FOR [perm_group],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_anon] DEFAULT (2) FOR [perm_anon],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_members] DEFAULT (2) FOR [perm_members],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_owner] DEFAULT (3) FOR [perm_owner],
+    CONSTRAINT [DF_{$_TABLES['links']}_hits] DEFAULT (0) FOR [hits],
+    CONSTRAINT [PK_{$_TABLES['links']}] PRIMARY KEY  CLUSTERED
     (
         [lid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD
-    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['linksubmission']}] PRIMARY KEY  CLUSTERED
     (
         [lid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['maillist']}] ADD
-    CONSTRAINT [PK_gl_maillist] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['maillist']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
-    CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['personal_events']}] PRIMARY KEY  CLUSTERED
     (
         [eid],
         [uid]
@@ -814,21 +814,21 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pingservice']}] ADD
-    CONSTRAINT [PK_gl_pingservice] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pingservice']}] PRIMARY KEY  CLUSTERED
     (
         [pid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['plugins']}] ADD
-    CONSTRAINT [PK_gl_plugins] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['plugins']}] PRIMARY KEY  CLUSTERED
     (
         [pi_name]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
-    CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollanswers']}] PRIMARY KEY  CLUSTERED
     (
         [qid],
         [aid]
@@ -836,131 +836,131 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
-    CONSTRAINT [DF_gl_pollanswers_qid] DEFAULT ('0') FOR [qid]
+    CONSTRAINT [DF_{$_TABLES['pollanswers']}_qid] DEFAULT ('0') FOR [qid]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
-    CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED
     (
         [qid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['polltopics']}] ADD
-    CONSTRAINT [PK_gl_polltopics] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['polltopics']}] PRIMARY KEY  CLUSTERED
     (
         [pid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
-    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollvoters']}] PRIMARY KEY  CLUSTERED
     (
         [id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['postmodes']}] ADD
-    CONSTRAINT [PK_gl_postmodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['postmodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['sessions']}] ADD
-    CONSTRAINT [PK_gl_sessions] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['sessions']}] PRIMARY KEY  CLUSTERED
     (
         [sess_id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['speedlimit']}] ADD
-    CONSTRAINT [PK_gl_speedlimit] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['speedlimit']}] PRIMARY KEY  CLUSTERED
     (
         [id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
-    CONSTRAINT [DF_gl_staticpage] DEFAULT ('html') FOR [postmode],
-    CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
+    CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
     (
         [sp_id]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['statuscodes']}] ADD
-    CONSTRAINT [PK_gl_statuscodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['statuscodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['stories']}] ADD
-    CONSTRAINT [DF_gl_stories_uid] DEFAULT (1) FOR [uid],
-    CONSTRAINT [DF_gl_stories_draft_flag] DEFAULT (0) FOR [draft_flag],
-    CONSTRAINT [DF_gl_stories_tid] DEFAULT ('General') FOR [tid],
-    CONSTRAINT [DF_gl_stories_hits] DEFAULT (0) FOR [hits],
-    CONSTRAINT [DF_gl_stories_comments] DEFAULT (0) FOR [comments],
-    CONSTRAINT [DF_gl_stories_trackbacks] DEFAULT (0) FOR [trackbacks],
-    CONSTRAINT [DF_gl_stories_featured] DEFAULT (0) FOR [featured],
-    CONSTRAINT [DF_gl_stories_show_topic_icon] DEFAULT (1) FOR [show_topic_icon],
-    CONSTRAINT [DF_gl_stories_commentcode] DEFAULT (0) FOR [commentcode],
-    CONSTRAINT [DF_gl_stories_trackbackcode] DEFAULT (0) FOR [trackbackcode],
-    CONSTRAINT [DF_gl_stories_statuscode] DEFAULT (0) FOR [statuscode],
-    CONSTRAINT [DF_gl_stories_expire] DEFAULT (getdate()) FOR [expire],
-    CONSTRAINT [DF_gl_stories_postmode] DEFAULT ('html') FOR [postmode],
-    CONSTRAINT [DF_gl_stories_owner_id] DEFAULT (1) FOR [owner_id],
-    CONSTRAINT [DF_gl_stories_group_id] DEFAULT (2) FOR [group_id],
-    CONSTRAINT [DF_gl_stories_perm_owner] DEFAULT (3) FOR [perm_owner],
-    CONSTRAINT [DF_gl_stories_perm_group] DEFAULT (3) FOR [perm_group],
-    CONSTRAINT [DF_gl_stories_perm_members] DEFAULT (2) FOR [perm_members],
-    CONSTRAINT [DF_gl_stories_perm_anon] DEFAULT (2) FOR [perm_anon],
-    CONSTRAINT [DF_gl_stories_advanced_editor_mode] DEFAULT (0) FOR [advanced_editor_mode],
-    CONSTRAINT [PK_gl_stories] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['stories']}_uid] DEFAULT (1) FOR [uid],
+    CONSTRAINT [DF_{$_TABLES['stories']}_draft_flag] DEFAULT (0) FOR [draft_flag],
+    CONSTRAINT [DF_{$_TABLES['stories']}_tid] DEFAULT ('General') FOR [tid],
+    CONSTRAINT [DF_{$_TABLES['stories']}_hits] DEFAULT (0) FOR [hits],
+    CONSTRAINT [DF_{$_TABLES['stories']}_comments] DEFAULT (0) FOR [comments],
+    CONSTRAINT [DF_{$_TABLES['stories']}_trackbacks] DEFAULT (0) FOR [trackbacks],
+    CONSTRAINT [DF_{$_TABLES['stories']}_featured] DEFAULT (0) FOR [featured],
+    CONSTRAINT [DF_{$_TABLES['stories']}_show_topic_icon] DEFAULT (1) FOR [show_topic_icon],
+    CONSTRAINT [DF_{$_TABLES['stories']}_commentcode] DEFAULT (0) FOR [commentcode],
+    CONSTRAINT [DF_{$_TABLES['stories']}_trackbackcode] DEFAULT (0) FOR [trackbackcode],
+    CONSTRAINT [DF_{$_TABLES['stories']}_statuscode] DEFAULT (0) FOR [statuscode],
+    CONSTRAINT [DF_{$_TABLES['stories']}_expire] DEFAULT (getdate()) FOR [expire],
+    CONSTRAINT [DF_{$_TABLES['stories']}_postmode] DEFAULT ('html') FOR [postmode],
+    CONSTRAINT [DF_{$_TABLES['stories']}_owner_id] DEFAULT (1) FOR [owner_id],
+    CONSTRAINT [DF_{$_TABLES['stories']}_group_id] DEFAULT (2) FOR [group_id],
+    CONSTRAINT [DF_{$_TABLES['stories']}_perm_owner] DEFAULT (3) FOR [perm_owner],
+    CONSTRAINT [DF_{$_TABLES['stories']}_perm_group] DEFAULT (3) FOR [perm_group],
+    CONSTRAINT [DF_{$_TABLES['stories']}_perm_members] DEFAULT (2) FOR [perm_members],
+    CONSTRAINT [DF_{$_TABLES['stories']}_perm_anon] DEFAULT (2) FOR [perm_anon],
+    CONSTRAINT [DF_{$_TABLES['stories']}_advanced_editor_mode] DEFAULT (0) FOR [advanced_editor_mode],
+    CONSTRAINT [PK_{$_TABLES['stories']}] PRIMARY KEY  CLUSTERED
     (
         [sid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['storysubmission']}] ADD
-    CONSTRAINT [PK_gl_storysubmission] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['storysubmission']}] PRIMARY KEY  CLUSTERED
     (
         [sid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['syndication']}] ADD
-    CONSTRAINT [PK_gl_syndication] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['syndication']}] PRIMARY KEY  CLUSTERED
     (
         [fid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['tokens']}] ADD
-    CONSTRAINT [PK_gl_tokens] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['tokens']}] PRIMARY KEY  CLUSTERED
     (
         [token]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['topics']}] ADD
-    CONSTRAINT [DF_gl_topics_is_default] DEFAULT (0) FOR [is_default],
-    CONSTRAINT [PK_gl_topics] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['topics']}_is_default] DEFAULT (0) FOR [is_default],
+    CONSTRAINT [PK_{$_TABLES['topics']}] PRIMARY KEY  CLUSTERED
     (
         [tid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackback']}] ADD
-    CONSTRAINT [PK_gl_trackback] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['trackback']}] PRIMARY KEY  CLUSTERED
     (
         [cid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackbackcodes']}] ADD
-    CONSTRAINT [PK_gl_trackbackcodes] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['trackbackcodes']}] PRIMARY KEY  CLUSTERED
     (
         [code]
     )  ON [PRIMARY]
@@ -968,41 +968,41 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['trackbackcodes']}] ADD
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['usercomment']}] ADD
-    CONSTRAINT [PK_gl_usercomment] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['usercomment']}] PRIMARY KEY  CLUSTERED
     (
         [uid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userindex']}] ADD
-    CONSTRAINT [DF_gl_userindex_boxes] DEFAULT (0) FOR [boxes],
-    CONSTRAINT [DF_gl_userindex_noboxes] DEFAULT (0) FOR [noboxes],
-    CONSTRAINT [DF_gl_userindex_tids] DEFAULT ('0') FOR [tids],
-    CONSTRAINT [DF_gl_userindex_etids] DEFAULT ('0') FOR [etids],
-    CONSTRAINT [DF_gl_userindex_aids] DEFAULT ('0') FOR [aids],
-    CONSTRAINT [PK_gl_userindex] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['userindex']}_boxes] DEFAULT (0) FOR [boxes],
+    CONSTRAINT [DF_{$_TABLES['userindex']}_noboxes] DEFAULT (0) FOR [noboxes],
+    CONSTRAINT [DF_{$_TABLES['userindex']}_tids] DEFAULT ('0') FOR [tids],
+    CONSTRAINT [DF_{$_TABLES['userindex']}_etids] DEFAULT ('0') FOR [etids],
+    CONSTRAINT [DF_{$_TABLES['userindex']}_aids] DEFAULT ('0') FOR [aids],
+    CONSTRAINT [PK_{$_TABLES['userindex']}] PRIMARY KEY  CLUSTERED
     (
         [uid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userinfo']}] ADD
-    CONSTRAINT [PK_gl_userinfo] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['userinfo']}] PRIMARY KEY  CLUSTERED
     (
         [uid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD
-    CONSTRAINT [DF_gl_userprefs_noicons] DEFAULT (0) FOR [noicons],
-    CONSTRAINT [DF_gl_userprefs_willing] DEFAULT (0) FOR [willing],
-    CONSTRAINT [DF_gl_userprefs_dfid] DEFAULT (0) FOR [dfid],
-    CONSTRAINT [DF_gl_userprefs_emailstories] DEFAULT (0) FOR [emailstories],
-    CONSTRAINT [DF_gl_userprefs_emailfromadmin] DEFAULT (0) FOR [emailfromadmin],
-    CONSTRAINT [DF_gl_userprefs_emailfromuser] DEFAULT (0) FOR [emailfromuser],
-    CONSTRAINT [DF_gl_userprefs_showonline] DEFAULT (0) FOR [showonline],
-    CONSTRAINT [DF_gl_userprefs_tzid] DEFAULT ('') FOR [tzid],
-    CONSTRAINT [PK_gl_userprefs] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_noicons] DEFAULT (0) FOR [noicons],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_willing] DEFAULT (0) FOR [willing],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_dfid] DEFAULT (0) FOR [dfid],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_emailstories] DEFAULT (0) FOR [emailstories],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_emailfromadmin] DEFAULT (0) FOR [emailfromadmin],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_emailfromuser] DEFAULT (0) FOR [emailfromuser],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_showonline] DEFAULT (0) FOR [showonline],
+    CONSTRAINT [DF_{$_TABLES['userprefs']}_tzid] DEFAULT ('') FOR [tzid],
+    CONSTRAINT [PK_{$_TABLES['userprefs']}] PRIMARY KEY  CLUSTERED
     (
         [uid]
     )  ON [PRIMARY]
@@ -1010,8 +1010,8 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['userprefs']}] ADD
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['users']}] ADD
-    CONSTRAINT [DF_gl_users_status] DEFAULT ('1') FOR [status],
-    CONSTRAINT [PK_gl_users] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['users']}_status] DEFAULT ('1') FOR [status],
+    CONSTRAINT [PK_{$_TABLES['users']}] PRIMARY KEY  CLUSTERED
     (
         [username]
     )  ON [PRIMARY]
@@ -1019,7 +1019,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['users']}] ADD
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['vars']}] ADD
-    CONSTRAINT [PK_gl_vars] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['vars']}] PRIMARY KEY  CLUSTERED
     (
         [name]
     )  ON [PRIMARY]
@@ -1417,17 +1417,17 @@ end
 $_SQL[] = "CREATE TRIGGER FixBoxes ON [dbo].[{$_TABLES['userindex']}]
 FOR INSERT, UPDATE
 AS
-update gl_userindex
+update {$_TABLES['userindex']}
 set boxes='0' where boxes=''
 
 
-update gl_userindex
+update {$_TABLES['userindex']}
 set noboxes='0' where noboxes=''
 
-update gl_userindex
+update {$_TABLES['userindex']}
 set aids='0' where aids=''
 
-update gl_userindex
+update {$_TABLES['userindex']}
 set tids='0' where tids=''
 
 ";
@@ -1445,11 +1445,11 @@ where content like''
 
 
 
-$_SQL[] = "CREATE TRIGGER fixPhoto ON dbo.gl_users
+$_SQL[] = "CREATE TRIGGER fixPhoto ON dbo.{$_TABLES['users']}
 FOR INSERT, UPDATE
 AS
 
-update gl_users
+update {$_TABLES['users']}
 set photo=null
 where photo=''
 

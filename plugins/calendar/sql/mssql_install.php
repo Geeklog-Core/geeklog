@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.5 2008/05/02 12:08:07 dhaun Exp $
+// $Id: mssql_install.php,v 1.6 2008/08/12 18:13:33 mjervis Exp $
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['events']}] (
@@ -114,21 +114,21 @@ CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
 
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['events']}] ADD
-    CONSTRAINT [PK_gl_events] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['events']}] PRIMARY KEY  CLUSTERED
     (
         [eid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['eventsubmission']}] ADD
-    CONSTRAINT [PK_gl_eventsubmission] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['eventsubmission']}] PRIMARY KEY  CLUSTERED
     (
         [eid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
-    CONSTRAINT [PK_gl_personal_events] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['personal_events']}] PRIMARY KEY  CLUSTERED
     (
         [eid],
         [uid]

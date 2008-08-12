@@ -100,26 +100,26 @@ CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
-    CONSTRAINT [PK_gl_linkcategories] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['linkcategories']}] PRIMARY KEY  CLUSTERED
     (
         [pid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
-    CONSTRAINT [DF_gl_links_perm_group] DEFAULT (3) FOR [perm_group],
-    CONSTRAINT [DF_gl_links_perm_anon] DEFAULT (2) FOR [perm_anon],
-    CONSTRAINT [DF_gl_links_perm_members] DEFAULT (2) FOR [perm_members],
-    CONSTRAINT [DF_gl_links_perm_owner] DEFAULT (3) FOR [perm_owner],
-    CONSTRAINT [DF_gl_links_hits] DEFAULT (0) FOR [hits],
-    CONSTRAINT [PK_gl_links] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_group] DEFAULT (3) FOR [perm_group],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_anon] DEFAULT (2) FOR [perm_anon],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_members] DEFAULT (2) FOR [perm_members],
+    CONSTRAINT [DF_{$_TABLES['links']}_perm_owner] DEFAULT (3) FOR [perm_owner],
+    CONSTRAINT [DF_{$_TABLES['links']}_hits] DEFAULT (0) FOR [hits],
+    CONSTRAINT [PK_{$_TABLES['links']}] PRIMARY KEY  CLUSTERED
     (
         [lid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD
-    CONSTRAINT [PK_gl_linksubmission] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['linksubmission']}] PRIMARY KEY  CLUSTERED
     (
         [lid]
     )  ON [PRIMARY]

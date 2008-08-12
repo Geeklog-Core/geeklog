@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.5 2008/05/13 18:49:54 mwest Exp $
+// $Id: mssql_install.php,v 1.6 2008/08/12 18:13:34 mjervis Exp $
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
@@ -83,7 +83,7 @@ CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
-    CONSTRAINT [PK_gl_pollanswers] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollanswers']}] PRIMARY KEY  CLUSTERED
     (
         [qid],
         [aid]
@@ -91,21 +91,21 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
-    CONSTRAINT [PK_gl_pollquestions] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED
     (
         [qid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['polltopics']}] ADD
-    CONSTRAINT [PK_gl_polltopics] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['polltopics']}] PRIMARY KEY  CLUSTERED
     (
         [pid]
     )  ON [PRIMARY]
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
-    CONSTRAINT [PK_gl_pollvoters] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [PK_{$_TABLES['pollvoters']}] PRIMARY KEY  CLUSTERED
     (
         [id]
     )  ON [PRIMARY]

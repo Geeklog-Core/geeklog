@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mssql_install.php,v 1.4 2007/08/09 18:29:34 dhaun Exp $
+// $Id: mssql_install.php,v 1.5 2008/08/12 18:13:35 mjervis Exp $
 
 
 
@@ -64,8 +64,8 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
 ";
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
-    CONSTRAINT [DF_gl_staticpage] DEFAULT ('html') FOR [postmode],
-	CONSTRAINT [PK_gl_staticpage] PRIMARY KEY  CLUSTERED
+    CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
+	CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
 	(
 		[sp_id]
 	)  ON [PRIMARY]

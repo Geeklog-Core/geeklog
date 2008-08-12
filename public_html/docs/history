@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed table prefix issues with constraints (bug #0000702) [Mike/furiousdog]
 - Fixed error when attempting to highlight a search query that contained a
   slash [Dirk]
 - Updated FCKEditor to v2.6.3 [Blaine]
