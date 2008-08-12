@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.50 2008/08/11 20:23:11 dhaun Exp $
+// $Id: index.php,v 1.51 2008/08/12 06:31:49 mjervis Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -2170,8 +2170,4 @@ $display .= '
 </html>' . LB;
 
 echo $display;
-function d($in)
-{
-    echo('<pre>');var_dump($in);echo('</pre>');
-}
 ?>
