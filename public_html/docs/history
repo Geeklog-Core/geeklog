@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed issue where you can post a comment to an unpublished story (bug
+  #0000705) [Mystral_KK/Mike]
 - Fixed make clickable links with quotes (bug #0000691) plus truncated long
   urls. [furiousdog]
 - Fixed table prefix issues with constraints (bug #0000702) [Mike/furiousdog]

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.115 2008/05/23 10:50:51 dhaun Exp $
+// $Id: comment.php,v 1.116 2008/08/12 19:15:36 mjervis Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -78,7 +78,9 @@ function handleSubmit()
     switch ( $type ) {
         case 'article':
             $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
-                                       "sid = '$sid'" . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
+                                       "sid = '$sid'" . COM_getPermSQL('AND')
+                                       . " AND (draft_flag = 0) AND (date <= NOW()) "
+                                       . COM_getTopicSQL('AND'));
             if (!isset($commentcode) || ($commentcode != 0)) {
                 return COM_refresh($_CONF['site_url'] . '/index.php');
             }
@@ -311,6 +313,7 @@ case 'sendreport':
     break;
 
 default:  // New Comment
+    $abort = false;
     $sid = COM_applyFilter ($_REQUEST['sid']);
     $type = COM_applyFilter ($_REQUEST['type']);
     $title = '';
@@ -322,27 +325,38 @@ default:  // New Comment
         $postmode = COM_applyFilter ($_REQUEST['postmode']);
     }
 
-    if (!empty ($sid) && !empty ($type)) { 
-        if (empty ($title)) {
-            if ($type == 'article') {
-                $title = DB_getItem($_TABLES['stories'], 'title',
-                                    "sid = '{$sid}'" . COM_getPermSQL('AND')
-                                    . COM_getTopicSQL('AND'));
-            }
-            $title = str_replace ('$', '&#36;', $title);
-            // CMT_commentForm expects non-htmlspecial chars for title...
-            $title = str_replace ( '&amp;', '&', $title );
-            $title = str_replace ( '&quot;', '"', $title );
-            $title = str_replace ( '&lt;', '<', $title );
-            $title = str_replace ( '&gt;', '>', $title );
+    if ($type == 'article') {
+        $dbTitle = DB_getItem($_TABLES['stories'], 'title',
+                                "sid = '{$sid}'" . COM_getPermSQL('AND')
+                                . " AND (draft_flag = 0) AND (date <= NOW()) "
+                                . COM_getTopicSQL('AND'));
+        if ($dbTitle === null) {
+            // no permissions, or no story of that title
+            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+            $abort = true;
         }
-        $display .= COM_siteHeader('menu', $LANG03[1])
-                 . CMT_commentForm ($title, '', $sid,
-                        COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
-                        $postmode)
-                 . COM_siteFooter();
-    } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+    if (!$abort) {
+        if (!empty ($sid) && !empty ($type)) { 
+            if (empty ($title)) {
+                if ($type == 'article') {
+                    $title = $dbTitle;
+                }
+                $title = str_replace ('$', '&#36;', $title);
+                // CMT_commentForm expects non-htmlspecial chars for title...
+                $title = str_replace ( '&amp;', '&', $title );
+                $title = str_replace ( '&quot;', '"', $title );
+                $title = str_replace ( '&lt;', '<', $title );
+                $title = str_replace ( '&gt;', '>', $title );
+            }
+            $display .= COM_siteHeader('menu', $LANG03[1])
+                     . CMT_commentForm ($title, '', $sid,
+                            COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
+                            $postmode)
+                     . COM_siteFooter();
+        } else {
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        }
     }
     break;
 }
