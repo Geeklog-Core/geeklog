@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.719 2008/08/11 07:50:23 dhaun Exp $
+// $Id: lib-common.php,v 1.720 2008/08/12 09:34:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -708,7 +708,7 @@ function COM_renderMenu( &$header, $plugin_menu )
                 break;
 
             case 'prefs':
-                $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
+                $url = $_CONF['site_url'] . '/usersettings.php';
                 $label = $LANG01[48];
                 break;
 
@@ -2315,7 +2315,7 @@ function COM_userMenu( $help='', $title='' )
             next( $plugin_options );
         }
 
-        $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
+        $url = $_CONF['site_url'] . '/usersettings.php';
         $usermenu->set_var( 'option_label', $LANG01[48] );
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );

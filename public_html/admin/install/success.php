@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: success.php,v 1.19 2008/01/02 13:29:02 dhaun Exp $
+// $Id: success.php,v 1.20 2008/08/12 09:34:29 dhaun Exp $
 
 require_once '../../lib-common.php';
 if (!defined('XHTML')) {
@@ -65,7 +65,7 @@ $display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
 <li>' . $LANG_SUCCESS[13] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
 
 if ($type == 'install') {
-    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php?mode=edit\">" . $LANG_SUCCESS[14] . ' <strong>' . $LANG_SUCCESS[7] . '</strong> ' . $LANG_SUCCESS[15] . '</a></li>';
+    $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php\">" . $LANG_SUCCESS[14] . ' <strong>' . $LANG_SUCCESS[7] . '</strong> ' . $LANG_SUCCESS[15] . '</a></li>';
 }
 
 $display .= '<li>' . $LANG_SUCCESS[16] . ' <tt>' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_SUCCESS[17] . ' <tt>' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_SUCCESS[18] . ' 755.</li>
