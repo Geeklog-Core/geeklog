@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.720 2008/08/12 09:34:29 dhaun Exp $
+// $Id: lib-common.php,v 1.721 2008/08/12 18:24:53 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5666,10 +5666,10 @@ function COM_sanitizeFilename($filename, $allow_dots = false)
 */
 function COM_makeClickableLinks( $text )
 {
-    $text = preg_replace( '/([^"]?)((((ht|f)tps?):(\/\/)|www\.)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '\\1<a href="\\2">\\2</a>', $text );
-    $text = str_replace( '<a href="www', '<a href="http://www', $text );
+   $regex = '/((ht|f)tp(s?)\:\/\/|~\/|\/)?([\w]+:\w+@)?(([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((\/?\w+\/)+|\/?)([\w\-%]+(\.[\w]{3,4})?)?((\?|&|&amp;)[\w\-%]+=[\w\-%]+)*)/is';
 
-    return $text;
+   $text = preg_replace( $regex, '<a href="\\1\\5">\\6</a>', $text );
+   return $text;
 }
 
 /**
@@ -5682,7 +5682,7 @@ function COM_makeClickableLinks( $text )
 */
 function COM_undoClickableLinks( $text )
 {
-    $text = preg_replace( '/<a href="[^"]*">([^<]*)<\/a>/', '\1', $text );
+    $text = preg_replace( '/<a href="([^"]*)">([^<]*)<\/a>/', '\1', $text );
 
     return $text;
 }
