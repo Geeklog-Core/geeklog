@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.51 2008/08/12 06:31:49 mjervis Exp $
+// $Id: index.php,v 1.52 2008/08/13 07:39:47 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -104,6 +104,43 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
     @mysql_close ();
 
     return array ($mysqlmajorv, $mysqlminorv, $mysqlrev);
+}
+
+
+/*
+* Checks for Static Pages Version
+*
+* @return   0 = not installed, 1 = original plugin, 2 = plugin by Phill or Tom, 3 = v1.3 (center block, etc.), 4 = 1.4 ('in block' flag)
+*
+* Note: Needed for upgrades from old versions - don't remove.
+*
+*/
+function get_SP_Ver()
+{
+    global $_TABLES;
+
+    $retval = 0;
+
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'staticpages') > 0) {
+        $result = DB_query ("DESCRIBE {$_TABLES['staticpage']}");
+        $numrows = DB_numRows ($result);
+
+        $retval = 1; // assume v1.1 for now ...
+
+        for ($i = 0; $i < $numrows; $i++) {
+            $A = DB_fetchArray ($result, true);
+            if ($A[0] == 'sp_nf') {
+                $retval = 3; // v1.3
+            } elseif ($A[0] == 'sp_pos') {
+                $retval = 2; // v1.2
+            } elseif ($A[0] == 'sp_inblock') {
+                $retval = 4; // v1.4
+                break;
+            }
+        }
+    }
+
+    return $retval;
 }
 
 
