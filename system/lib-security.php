@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.73 2008/07/08 18:42:54 dhaun Exp $
+// $Id: lib-security.php,v 1.74 2008/08/13 07:22:26 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -1149,7 +1149,7 @@ function SEC_checkToken()
                 
                          ELSE 0
                       END
-                    FROM gl_tokens WHERE token='$token'";
+                    FROM {$_TABLES['tokens']} WHERE token='$token'";
         }
         $tokens = DB_Query($sql);
         $numberOfTokens = DB_numRows($tokens);
