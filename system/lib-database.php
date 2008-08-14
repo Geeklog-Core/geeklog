@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.52 2008/04/12 11:21:46 dhaun Exp $
+// $Id: lib-database.php,v 1.53 2008/08/14 16:52:02 mjervis Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -535,6 +535,34 @@ function DB_unlockTable($table)
     global $_DB;
 
     $_DB->dbUnlockTable($table);
+}
+
+/**
+ * Check if a table exists
+ *
+ * @param   string $table   Table name
+ * @return  boolean         True if table exists, false if it does not
+ *
+ */
+function DB_checkTableExists($table)
+{
+    global $_TABLES, $_DB_dbms;
+
+    $exists = false;
+
+    if ($_DB_dbms == 'mysql') {
+        $result = DB_query ("SHOW TABLES LIKE '{$_TABLES[$table]}'");
+        if (DB_numRows ($result) > 0) {
+            $exists = true;
+        }
+    } elseif ($_DB_dbms == 'mssql') {
+        $result = DB_Query("SELECT 1 FROM sysobjects WHERE name='{$_TABLES[$table]}' AND xtype='U'");
+        if (DB_numRows ($result) > 0) {
+            $exists = true;
+        }
+    }
+
+    return $exists;
 }
 
 ?>

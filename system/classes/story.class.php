@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.34 2008/08/12 19:23:57 dhaun Exp $
+// $Id: story.class.php,v 1.35 2008/08/14 16:52:01 mjervis Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -634,8 +634,8 @@ class Story
         // Get the related URLs
         $this->_related = implode("\n", STORY_extractLinks("{$this->_introtext} {$this->_bodytext}"));
         $this->_in_transit = 1;
-        $sql = 'REPLACE INTO ' . $_TABLES['stories'] . ' (';
-        $values = ' VALUES (';
+        $values = '';
+        $fields = '';
         reset($this->_dbFields);
 
         /* This uses the database field array to generate a SQL Statement. This
@@ -645,7 +645,7 @@ class Story
         while (list($fieldname, $save) = each($this->_dbFields)) {
             if ($save === 1) {
                 $varname = '_' . $fieldname;
-                $sql .= $fieldname . ', ';
+                $fields .= $fieldname . ', ';
                 if (($fieldname == 'date') || ($fieldname == 'expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
                     $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
@@ -655,11 +655,10 @@ class Story
             }
         }
 
-        $sql = substr($sql, 0, strlen($sql) - 2);
+        // Fields and values has a trailing ', ' remove them:
+        $fields = substr($fields, 0, strlen($fields) - 2);
         $values = substr($values, 0, strlen($values) - 2);
-        $sql .= ') ' . $values . ')';
-
-        DB_query($sql);
+        DB_Save($_TABLES['stories'], $fields, $values);
 
         /* Clean up the old story */
         if ($oldArticleExists) {

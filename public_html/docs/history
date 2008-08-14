@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Added DB_checkTableExists and changed INST_checkTableExists to use it. [Mike]
+- Changed REPLACE INTO for DB_save for MSSQL compat [Mike]
 - Re-introduced function get_SP_Ver in the install script, which is still needed
   when upgrading from old Geeklog releases (reported by libexec) [Dirk]
 - Fixed issue where you can post a comment to an unpublished story (bug
