@@ -21,7 +21,7 @@
         </ul>
     </div>
     <div class="header-logobg-container-inner">
-        <a class="header-logo" href="{site_url}/">
+        <a class="header-logo" href="{site_url}/" rel="home">
             <img src="{site_logo}" width="151" height="56" alt="{site_name}"{xhtml}>
         </a>
         <span class="header-slogan">{site_slogan}</span>
