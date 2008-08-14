@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.721 2008/08/12 18:24:53 mjervis Exp $
+// $Id: lib-common.php,v 1.722 2008/08/14 15:14:45 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4843,7 +4843,9 @@ function COM_getDayFormOptions( $selected = '' )
 * Returns Option list Containing 5 years starting with current
 * unless @selected is < current year then starts with @selected
 *
-* @param        string      $selected       Selected year
+* @param        string      $selected     Selected year
+* @param        int         $startoffset  Optional (can be +/-) Used to determine start year for range of years
+* @param        int         $endoffset    Optional (can be +/-) Used to determine end year for range of years
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getHourFormOptions
@@ -4851,11 +4853,19 @@ function COM_getDayFormOptions( $selected = '' )
 * @return string  HTML years as option values
 */
 
-function COM_getYearFormOptions( $selected = '' )
+function COM_getYearFormOptions( $selected = '', $startoffset=0, $endoffset=5 )
 {
     $year_options = '';
+    if ($startoffset != 0)
+    {
+        $start_year = date ( 'Y' ) + $startoffset;
+    }
+    else
+    {
+        $start_year = date( 'Y', time() );
+    }
     $cur_year = date( 'Y', time() );
-    $start_year = $cur_year;
+    $finish_year = $cur_year + $endoffset;
 
     if( !empty( $selected ))
     {
@@ -4865,7 +4875,7 @@ function COM_getYearFormOptions( $selected = '' )
         }
     }
 
-    for( $i = $start_year - 1; $i <= $cur_year + 5; $i++ )
+    for( $i = $start_year - 1; $i <= $finish_year; $i++ )
     {
         $year_options .= '<option value="' . $i . '"';
 
