@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.175 2008/08/12 09:34:29 dhaun Exp $
+// $Id: usersettings.php,v 1.176 2008/08/15 14:26:05 blaine Exp $
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
@@ -863,8 +863,10 @@ function saveuser($A)
     }
 
     $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
-    if ($A['cooktime'] < 0) {
-        $A['cooktime'] = 0;
+    // If not set or possibly removed from template - set to user default
+    // So code after this does not fail the user password required test
+    if (empty($A['cooktime'])) {
+        $A['cooktime'] = $_USER['cookietimeout'];
     }
 
     // to change the password, email address, or cookie timeout,
