@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.48 2008/08/11 07:07:44 mjervis Exp $
+// $Id: config.class.php,v 1.49 2008/08/16 21:48:44 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -614,7 +614,7 @@ class config {
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         if (!is_array($val)) {
-            $t->set_var('value', $val);
+            $t->set_var('value', htmlspecialchars($val));
         }
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));

@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed handling of HTML entities in the Configuration (bug #0000710)
+  [Sami, Dirk]
 - Story image upload: Only add a link to the unscaled image if such an image
   actually exists [Dirk]
 - Removed unused code from lib-story.php [Dirk]
@@ -16,8 +18,8 @@ Geeklog History/Changes:
 - Fixed issue where you can post a comment to an unpublished story (bug
   #0000705) [Mystral_KK/Mike]
 - Fixed make clickable links with quotes (bug #0000691) plus truncated long
-  urls. [furiousdog]
-- Fixed table prefix issues with constraints (bug #0000702) [Mike/furiousdog]
+  urls. [Sami]
+- Fixed table prefix issues with constraints (bug #0000702) [Mike/Sami]
 - Fixed error when attempting to highlight a search query that contained a
   slash [Dirk]
 - Updated FCKEditor to v2.6.3 [Blaine]
