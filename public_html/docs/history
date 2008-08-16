@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- COM_siteFooter no-longer creates two sets of right blocks. (bug #0000698)
+  [Mike]
 - Microsummaries work in topics, reported by Joe. [Mike]
 - Added DB_checkTableExists and changed INST_checkTableExists to use it. [Mike]
 - Changed REPLACE INTO for DB_save for MSSQL compat [Mike]

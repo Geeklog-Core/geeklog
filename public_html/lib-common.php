@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.722 2008/08/14 15:14:45 blaine Exp $
+// $Id: lib-common.php,v 1.723 2008/08/16 17:44:29 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1275,22 +1275,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 {
     global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS;
 
-    // use the right blocks here only if not in header already
-    if ($_CONF['right_blocks_in_footer'] == 1)
-    {
-        if( $rightblock < 0)
-        {
-            if( isset( $_CONF['show_right_blocks'] ))
-            {
-                $rightblock = $_CONF['show_right_blocks'];
-            }
-            else
-            {
-                $rightblock = false;
-            }
-        }
-    }
-
     // If the theme implemented this for us then call their version instead.
 
     $function = $_CONF['theme'] . '_siteFooter';
@@ -1352,21 +1336,70 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     $footer->set_var( 'button_advsearch', $LANG_BUTTONS[10] );
     $footer->set_var( 'button_directory', $LANG_BUTTONS[11] );
 
-    /* Check if an array has been passed that includes the name of a plugin
-     * function or custom function.
-     * This can be used to take control over what blocks are then displayed
+    /* Right blocks. Argh. Don't talk to me about right blocks...
+     * Right blocks will be displayed if Right_blocks_in_footer is set [1],
+     * AND (this function has been asked to show them (first param) OR the
+     * show_right_blocks conf variable has been set to override what the code
+     * wants to do.
+     *
+     * If $custom sets an array (containing functionname and first argument)
+     * then this is used instead of the default (COM_showBlocks) to render
+     * the right blocks (and left).
+     *
+     * [1] - if it isn't, they'll be in the header already.
+     *
      */
-    if( is_array( $custom ))
+    $displayRightBlocks = true;
+    if ($_CONF['right_blocks_in_footer'] == 1)
     {
-        $function = $custom['0'];
-        if( function_exists( $function ))
+        if( $rightblock < 0)
         {
-            $rblocks = $function( $custom['1'], 'right' );
+            if( isset( $_CONF['show_right_blocks'] ) )
+            {
+                $displayRightBlocks = $_CONF['show_right_blocks'];
+            }
+            else
+            {
+                $displayRightBlocks = false;
+            }
+        } else {
+            $displayRightBlocks = true;
         }
+    } else {
+        $displayRightBlocks = false;
     }
-    elseif( $rightblock )
+    
+    if ($displayRightBlocks)
     {
-        $rblocks = COM_showBlocks( 'right', $topic );
+        /* Check if an array has been passed that includes the name of a plugin
+         * function or custom function.
+         * This can be used to take control over what blocks are then displayed
+         */
+        if( is_array( $custom ))
+        {
+            $function = $custom['0'];
+            if( function_exists( $function ))
+            {
+                $rblocks = $function( $custom['1'], 'right' );
+            } else {
+                $rblocks = COM_showBlocks( 'right', $topic );
+            }
+        } else {
+            $rblocks = COM_showBlocks( 'right', $topic );
+        }
+        
+        if( empty( $rblocks ))
+        {
+            $footer->set_var( 'geeklog_blocks', '');
+            $footer->set_var( 'right_blocks', '' );
+        } else {
+            $footer->set_var( 'geeklog_blocks', $rblocks);
+            $footer->parse( 'right_blocks', 'rightblocks', true );
+            $footer->set_var( 'geeklog_blocks', '');
+        }
+    } else {
+        $footer->set_var( 'geeklog_blocks', '');
+        $footer->set_var( 'right_blocks', '' );
     }
 
     if( $_CONF['left_blocks_in_footer'] == 1 )
@@ -1399,45 +1432,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
         {
             $footer->set_var( 'geeklog_blocks', $lblocks);
             $footer->parse( 'left_blocks', 'leftblocks', true );
-            $footer->set_var( 'geeklog_blocks', '');
-        }
-    }
-
-    if( $_CONF['right_blocks_in_footer'] == 1 && $rightblock)
-    {
-        $rblocks = '';
-
-        /* Check if an array has been passed that includes the name of a plugin
-         * function or custom function
-         * This can be used to take control over what blocks are then displayed
-         */
-        if( isset( $what) && is_array( $what ))
-        {
-            $function = $what[0];
-            if( function_exists( $function ))
-            {
-                $rblocks = $function( $what[1], 'right' );
-            }
-            else
-            {
-                $rblocks = COM_showBlocks( 'right', $topic );
-            }
-        }
-        else if( !isset( $what ) || ( $what <> 'none' ))
-        {
-            // Now show any blocks -- need to get the topic if not on home page
-            $rblocks = COM_showBlocks( 'right', $topic );
-        }
-
-        if( empty( $rblocks ))
-        {
-            $footer->set_var( 'geeklog_blocks', '');
-            $footer->set_var( 'right_blocks', '' );
-        }
-        else
-        {
-            $footer->set_var( 'geeklog_blocks', $rblocks);
-            $footer->parse( 'right_blocks', 'rightblocks', true );
             $footer->set_var( 'geeklog_blocks', '');
         }
     }
