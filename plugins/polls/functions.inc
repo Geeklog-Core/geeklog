@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.89 2008/05/31 07:55:08 dhaun Exp $
+// $Id: functions.inc,v 1.90 2008/08/16 19:43:58 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -496,19 +496,21 @@ function POLLS_pollVote($pid, $showall=true)
                         . '/polls/index.php');
                 $poll->set_var('lang_vote', $LANG_POLLS['vote']);
                 $poll->set_var('lang_votes', $LANG_POLLS['votes']);
-                $results = "";
 
-                if (($P['is_open'] == 0) || (
-                        ($P['hideresults'] == 1) && (isset($_USER['uid']) && $_USER['uid'] == $P['owner_id'])
-                    ) || (
-                        ($P['hideresults'] == 1) && (SEC_inGroup('Root'))
-                    )
-                ) {
+                $results = '';
+                if (($P['is_open'] == 0) || ($P['hideresults'] == 0) ||
+                    (($P['hideresults'] == 1) &&
+                        (
+                        SEC_inGroup('Root') ||
+                        (isset($_USER['uid'])
+                            && ($_USER['uid'] == $P['owner_id']))
+                        ))) {
                     $results = COM_createLink($LANG_POLLS['results'],
-                        "{$_CONF['site_url']}/polls/index.php?pid="
-                        . "$pid&amp;aid=-1");
+                        $_CONF['site_url'] . '/polls/index.php?pid=' . $pid
+                        . '&amp;aid=-1');
                 }
                 $poll->set_var('poll_results', $results);
+
                 $access = SEC_hasAccess($topic['owner_id'],$topic['group_id'],$topic['perm_owner'],
                     $topic['perm_group'],$topic['perm_members'],$topic['perm_anon']);
                 if ($access == 3) {

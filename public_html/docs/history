@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Story image upload: Only add a link to the unscaled image if such an image
+  actually exists [Dirk]
+- Removed unused code from lib-story.php [Dirk]
 - COM_siteFooter no-longer creates two sets of right blocks. (bug #0000698)
   [Mike]
 - Microsummaries work in topics, reported by Joe. [Mike]
@@ -98,6 +101,10 @@ Links plugin
   same id (part 2 of bug #0000659) [Dirk]
 - Fixed SQL error when trying to change a category id to an already existing id
   (part 1 of bug #0000659) [Dirk]
+
+Polls plugin
+------------
+- Fixed display of "Results" link while a poll is open [Dirk]
 
 Static Pages plugin
 -------------------
