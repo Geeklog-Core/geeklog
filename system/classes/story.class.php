@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.class.php,v 1.35 2008/08/14 16:52:01 mjervis Exp $
+// $Id: story.class.php,v 1.36 2008/08/16 18:07:09 dhaun Exp $
 
 /**
  * This file provides a class to represent a story, or article. It provides a
@@ -1037,11 +1037,18 @@ class Story
                                                     $lFilename_large;
                         }
 
-                        // And finally, replace the [imagex_mode] tags with the image and it's
-                        // hyperlink:
-                        $lLink_url = $lFilename_large_URL;
-                        $lLink_attr = array('title' => $LANG24[57]);
+                        // And finally, replace the [imageX_mode] tags with the
+                        // image and its hyperlink (only when the large image
+                        // actually exists)
+                        $lLink_url  = '';
+                        $lLink_attr = '';
+                        if (file_exists($lFilename_large_complete)) {
+                            $lLink_url = $lFilename_large_URL;
+                            $lLink_attr = array('title' => $LANG24[57]);
+                        }
+                    }
 
+                    if (!empty($lLink_url)) {
                         $intro = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $intro);
                         $body  = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $body);
                         $intro = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $intro);
