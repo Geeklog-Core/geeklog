@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.723 2008/08/16 17:44:29 mjervis Exp $
+// $Id: lib-common.php,v 1.724 2008/08/17 07:39:43 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1352,7 +1352,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     $displayRightBlocks = true;
     if ($_CONF['right_blocks_in_footer'] == 1)
     {
-        if( $rightblock < 0)
+        if( ($rightblock < 0) || !$rightblock )
         {
             if( isset( $_CONF['show_right_blocks'] ) )
             {
