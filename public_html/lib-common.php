@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.724 2008/08/17 07:39:43 mjervis Exp $
+// $Id: lib-common.php,v 1.725 2008/08/17 14:16:02 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -457,15 +457,16 @@ else
 *
 * @param        string      $blockname      corresponds to name field in block table
 * @param        string      $which          can be either 'header' or 'footer' for corresponding template
+* @param        string      $position       can be 'left', 'right' or blank. If set, will be used to find a side specific override template.
 * @see function COM_startBlock
 * @see function COM_endBlock
 * @see function COM_showBlocks
 * @see function COM_showBlock
 * @return   string  template name
 */
-function COM_getBlockTemplate( $blockname, $which )
+function COM_getBlockTemplate( $blockname, $which, $position='' )
 {
-    global $_BLOCK_TEMPLATE, $_COM_VERBOSE;
+    global $_BLOCK_TEMPLATE, $_COM_VERBOSE, $_CONF;
 
     if( $_COM_VERBOSE )
     {
@@ -507,6 +508,21 @@ function COM_getBlockTemplate( $blockname, $which )
         else
         {
             $template = 'blockfooter.thtml';
+        }
+    }
+
+    // If we have a position specific request, and the template is not already
+    // position specific then look to see if there is a position specific
+    // override.
+    $templateLC = strtolower($template);
+    if( !empty($position) && ( strpos($templateLC, $position) === false ) )
+    {
+        // Trim .thtml from the end.
+        $positionSpecific = substr($template, 0, strlen($template) - 6);
+        $positionSpecific .= '-' . $position . '.thtml';
+        if( file_exists( $_CONF['path_layout'] . $positionSpecific ) )
+        {
+            $template = $positionSpecific;
         }
     }
 
@@ -2235,11 +2251,12 @@ function COM_showTopics( $topic='' )
 *
 * @param        string      $help       Help file to show
 * @param        string      $title      Title of Menu
+* @param        string      $position   Side being shown on 'left', 'right'. Though blank works not likely.
 * @see function COM_adminMenu
 *
 */
 
-function COM_userMenu( $help='', $title='' )
+function COM_userMenu( $help='', $title='', $position='' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE;
 
@@ -2275,7 +2292,7 @@ function COM_userMenu( $help='', $title='' )
         $thisUrl = COM_getCurrentURL();
 
         $retval .= COM_startBlock( $title, $help,
-                           COM_getBlockTemplate( 'user_block', 'header' ));
+                           COM_getBlockTemplate( 'user_block', 'header', $position ));
 
         // This function will show the user options for all installed plugins
         // (if any)
@@ -2327,12 +2344,12 @@ function COM_userMenu( $help='', $title='' )
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );
         $retval .= $usermenu->parse( 'item', 'option' );
-        $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
+        $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer', $position ));
     }
     else
     {
         $retval .= COM_startBlock( $LANG01[47], $help,
-                           COM_getBlockTemplate( 'user_block', 'header' ));
+                           COM_getBlockTemplate( 'user_block', 'header', $position ));
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'xhtml', XHTML );
@@ -2401,7 +2418,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         $retval .= $login->parse( 'output', 'form' );
-        $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer', $position ));
     }
 
     return $retval;
@@ -2415,11 +2432,12 @@ function COM_userMenu( $help='', $title='' )
 *
 * @param        string      $help       Help file to show
 * @param        string      $title      Menu Title
+* @param        string      $position   Side being shown on 'left', 'right' or blank.
 * @see function COM_userMenu
 *
 */
 
-function COM_adminMenu( $help = '', $title = '' )
+function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF,
            $_DB_dbms, $config;
@@ -2464,7 +2482,7 @@ function COM_adminMenu( $help = '', $title = '' )
         }
 
         $retval .= COM_startBlock( $title, $help,
-                           COM_getBlockTemplate( 'admin_block', 'header' ));
+                           COM_getBlockTemplate( 'admin_block', 'header', $position ));
 
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
@@ -2778,7 +2796,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $retval .= $link;
         }
 
-        $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer', $position ));
     }
 
     return $retval;
@@ -3339,12 +3357,13 @@ function COM_olderStuff()
 * @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'whats_new_block'.
 * @param        string      $help       Help file location
 * @param        string      $title      Title shown in block header
+* @param        string      $position   Side, 'left', 'right' or empty.
 * @see function COM_showBlocks
 * @return   string  HTML Formated block
 *
 */
 
-function COM_showBlock( $name, $help='', $title='' )
+function COM_showBlock( $name, $help='', $title='', $position='' )
 {
     global $_CONF, $topic, $_TABLES, $_USER;
 
@@ -3366,24 +3385,24 @@ function COM_showBlock( $name, $help='', $title='' )
     switch( $name )
     {
         case 'user_block':
-            $retval .= COM_userMenu( $help,$title );
+            $retval .= COM_userMenu( $help,$title, $position );
             break;
 
         case 'admin_block':
-            $retval .= COM_adminMenu( $help,$title );
+            $retval .= COM_adminMenu( $help,$title, $position );
             break;
 
         case 'section_block':
             $retval .= COM_startBlock( $title, $help,
-                               COM_getBlockTemplate( $name, 'header' ))
+                               COM_getBlockTemplate( $name, 'header', $position ))
                 . COM_showTopics( $topic )
-                . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
+                . COM_endBlock( COM_getBlockTemplate( $name, 'footer', $position ));
             break;
 
         case 'whats_new_block':
             if( !$_USER['noboxes'] )
             {
-                $retval .= COM_whatsNewBlock( $help, $title );
+                $retval .= COM_whatsNewBlock( $help, $title, $position );
             }
             break;
     }
@@ -3555,6 +3574,18 @@ function COM_formatBlock( $A, $noboxes = false )
             $A = DB_fetchArray($result);
         }
     }
+    
+    if( array_key_exists( 'onleft', $A ) )
+    {
+        if( $A['onleft'] == 1 )
+        {
+            $position = 'left';
+        } else {
+            $position = 'right';
+        }
+    } else {
+        $position = '';
+    }
 
     if( $A['type'] == 'portal' )
     {
@@ -3567,7 +3598,7 @@ function COM_formatBlock( $A, $noboxes = false )
 
     if( $A['type'] == 'gldefault' )
     {
-        $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
+        $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'], $position );
     }
 
     if( $A['type'] == 'phpblock' && !$noboxes )
@@ -3582,9 +3613,9 @@ function COM_formatBlock( $A, $noboxes = false )
                 $args = $matches[2];
             }
             $blkheader = COM_startBlock( $A['title'], $A['help'],
-                    COM_getBlockTemplate( $A['name'], 'header' ));
+                    COM_getBlockTemplate( $A['name'], 'header', $position ));
             $blkfooter = COM_endBlock( COM_getBlockTemplate( $A['name'],
-                    'footer' ));
+                    'footer', $position ));
 
             if( function_exists( $function ))
             {
@@ -3632,9 +3663,9 @@ function COM_formatBlock( $A, $noboxes = false )
         $blockcontent = str_replace( array( '<?', '?>' ), '', $blockcontent );
 
         $retval .= COM_startBlock( $A['title'], $A['help'],
-                       COM_getBlockTemplate( $A['name'], 'header' ))
+                       COM_getBlockTemplate( $A['name'], 'header', $position ))
                 . $blockcontent . LB
-                . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
+                . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer', $position ));
     }
 
     return $retval;
@@ -4130,18 +4161,19 @@ function COM_emailUserTopics()
 *
 * Return the HTML that shows any new stories, comments, etc
 *
-* @param    string  $help   Help file for block
-* @param    string  $title  Title used in block header
+* @param    string  $help     Help file for block
+* @param    string  $title    Title used in block header
+* @param    string  $position Position in which block is being rendered 'left', 'right' or blank (for centre)
 * @return   string  Return the HTML that shows any new stories, comments, etc
 *
 */
 
-function COM_whatsNewBlock( $help = '', $title = '' )
+function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_WHATSNEW, $page, $newstories;
 
     $retval = COM_startBlock( $title, $help,
-                       COM_getBlockTemplate( 'whats_new_block', 'header' ));
+                       COM_getBlockTemplate( 'whats_new_block', 'header', $position ));
 
     $topicsql = '';
     if(( $_CONF['hidenewstories'] == 0 ) || ( $_CONF['hidenewcomments'] == 0 )
@@ -4362,7 +4394,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         }
     }
 
-    $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer' ));
+    $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer', $position ));
 
     return $retval;
 }

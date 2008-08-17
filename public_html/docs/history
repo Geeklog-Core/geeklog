@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Provided auto-detection of -left and -right overrides for any given block
+  template. This allows any block to auto-style to left and right for themes
+  without the need for the theme to work it out, or talk to the database.
+  ("Bug" #0000684) [Mike]
 - Fixed handling of corrupted config value db entries, e.g. after importing
   Calendar event_types with the wrong character set (bug #0000690) [Dirk]
 - Fixed handling of HTML entities in the Configuration (bug #0000710)
