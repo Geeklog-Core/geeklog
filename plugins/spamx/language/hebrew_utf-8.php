@@ -14,7 +14,7 @@
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>אם תעשו זאת, אז אחרים ',
     'inst2' => 'יוכלו לראות ולייבא את הרשימה השחורה שלכם ואנו נוכל ליצור ',
     'inst3' => 'מאגר נתונים מופץ יותר אפקטיבי.</p><p>אם שלחתם את האתר שלכם ואז החלטתם שאינכם מעוניינים שהאתר שלכם יישאר ברשימה ',
@@ -40,7 +40,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'נוצרה הזנת RSS',
     'add1' => 'הוספו ',
     'add2' => ' פריטים מ: ',
-    'add3' => "מהרשימה השחורה שלו.",
+    'add3' => 'מהרשימה השחורה שלו.',
     'adminc' => 'פקודות ניהול:',
     'mblack' => 'הרשימה השחורה שלי:',
     'rlinks' => 'קישורים רבלנטיים:',
@@ -55,7 +55,7 @@ $LANG_SX00 = array (
     'exmod' => 'מודולי הבחינה של Spam-X',
     'actmod' => 'מודולים פעילים',
     'avmod' => 'מודולים אפשריים',
-    'coninst' => '<hr' . XHTML . '>ליחצו על מודול פעיל בשביל להסיר אותו, ליחצו את מודול אפשרי כדי להוסיף אותו.<br>המודולים מבוצעים לפי סדר הצגתם.',
+    'coninst' => '<hr' . XHTML . '>ליחצו על מודול פעיל בשביל להסיר אותו, ליחצו את מודול אפשרי כדי להוסיף אותו.<br' . XHTML . '>המודולים מבוצעים לפי סדר הצגתם.',
     'fsc' => 'נמצאה תגובת ספאם מתאימה ',
     'fsc1' => ' נשלח על ידי המשתמש ',
     'fsc2' => ' מכתובת ה-IP ',
@@ -89,17 +89,17 @@ $LANG_SX00 = array (
     'foundspam' => 'נמצאה תגובת ספאם שמתאימה ל: ',
     'foundspam2' => ' נשלח על ידי המשתמש ',
     'foundspam3' => ' מכתובת ה-IP ',
-	'deletespam' => 'מחיקת ספאם',
-	'numtocheck' => 'מספר התגובות שיבדקו',
-	'note1'		=> '<p>שימו לב: מחיקה המונית מטרתה לעזור לכם כאשר אתם מוצפים על ידי',
-	'note2'		=> ' תגובות ספאם ו-Spam-X לא מצליח לתפוס אותן. </p><ul><li>קודם כל, מיצאו את הקישור/ים או משהו אחר ',
-	'note3'		=> 'שמזוהה עם תגובת ספאם זו והוסיפו זאת לרשימה השחורה האישית שלכם.</li><li>אז ',
-	'note4'		=> 'חיזרו לכאן ותנו ל-Spam-X לבדוק את התגובות האחרונות בשביל ספאם.</li></ul>התגובות ',
-	'note5'		=> 'נבדקות מהחדשות לישנות -- ככל שיבדקו יותר תגובות ',
-	'note6'		=> 'זמן הבדיקה יהיה ארוך יותר.</p>',
-	'masshead'	=> '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
-	'masstb' => '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
-	'comdel'	=> ' תגובות נמחקו.',
+    'deletespam' => 'מחיקת ספאם',
+    'numtocheck' => 'מספר התגובות שיבדקו',
+    'note1' => '<p>שימו לב: מחיקה המונית מטרתה לעזור לכם כאשר אתם מוצפים על ידי',
+    'note2' => ' תגובות ספאם ו-Spam-X לא מצליח לתפוס אותן. </p><ul><li>קודם כל, מיצאו את הקישור/ים או משהו אחר ',
+    'note3' => 'שמזוהה עם תגובת ספאם זו והוסיפו זאת לרשימה השחורה האישית שלכם.</li><li>אז ',
+    'note4' => 'חיזרו לכאן ותנו ל-Spam-X לבדוק את התגובות האחרונות בשביל ספאם.</li></ul>התגובות ',
+    'note5' => 'נבדקות מהחדשות לישנות -- ככל שיבדקו יותר תגובות ',
+    'note6' => 'זמן הבדיקה יהיה ארוך יותר.</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">מחיקה המונית של הפניות ספאם</h1>',
+    'comdel' => ' תגובות נמחקו.',
     'initial_Pimport' => '<p>יבוא רשימה שחורה אישית"',
     'initial_import' => 'יבוא רשימת MT-Blacklist ראשונית',
     'import_success' => '<p>יובאו בהצלחה %d פרטי רשימות שחורות.',
@@ -112,7 +112,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'הרשימה השחורה של כתובות ה-IP של כתובות אתרים של Spam-X',
     'headerblack' => 'הרשימה השחורה של HTTP Headers של Spam-X',
     'headers' => 'Request headers:',
-
     'stats_headline' => 'הסטטיסטיקה של Spam-X',
     'stats_page_title' => 'רשימה שחורה',
     'stats_entries' => 'פריטים',
@@ -122,20 +121,17 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'נחסם על ידי כתובת ה-IP של כתובת אתר',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'פריטים שנמחקו כספאם',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'זוהה ספאם והתגובה או ההודעה נמחקו.';
-$PLG_spamx_MESSAGE8   = 'זוהה ספאם. אימייל נשלח למנהלים.';
+$PLG_spamx_MESSAGE8 = 'זוהה ספאם. אימייל נשלח למנהלים.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'אין תמיכה בשידרוג ה-plugin.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
@@ -146,7 +142,7 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'פעולות Spam-X',
     'notification_email' => 'התרעה בהודעת אימייל',
-    'admin_override' => "לא לסנן הודעות מנהלים",
+    'admin_override' => 'לא לסנן הודעות מנהלים',
     'logging' => 'איפשור לוג',
     'timeout' => 'פקיעת זמן מוקצב'
 );
@@ -159,9 +155,10 @@ $LANG_fs['spamx'] = array(
     'fs_main' => 'ההגדרות הראשיות של Spam-X'
 );
 
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE)
+    1 => array('True' => true, 'False' => false)
 );
 
 ?>

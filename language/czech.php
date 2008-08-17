@@ -545,7 +545,8 @@ $LANG11 = array(
     2 => 'Poslat mailem',
     3 => 'Verze pro tiskárnu',
     4 => 'Volby èlánku',
-    5 => 'PDF Story Format'
+    5 => 'PDF Story Format',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1057,7 +1058,7 @@ $LANG33 = array(
     34 => 'Entries',
     35 => 'Hours',
     36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
+    37 => '',
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
@@ -1072,7 +1073,10 @@ $LANG33 = array(
     49 => 'Feed Logo',
     50 => "Relative to site url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    52 => 'Error: existing Filename',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1577,7 +1581,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1846,7 +1851,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

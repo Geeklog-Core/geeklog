@@ -548,7 +548,8 @@ $LANG11 = array(
     2 => 'שליחת המאמר לחבר',
     3 => 'גירסה להדפסה',
     4 => 'אפשרויות למאמר זה',
-    5 => 'המאמר בפורמט PDF'
+    5 => 'המאמר בפורמט PDF',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1060,7 +1061,7 @@ $LANG33 = array(
     34 => 'פריטים',
     35 => 'שעות',
     36 => 'ביחרו את סוג ההזנה',
-    37 => 'יש לכם לפחות plugin אחד מותקן שתומך בסינדיקציית תוכן. תצטרכו לבחור מתחת אם הינכם מעוניינים ליצור הזנת מערכת או הזנה מאחד ה-plugins.',
+    37 => '',
     38 => 'שגיאה: שדות חסרים',
     39 => 'אנא מלאו את כותרת ההזנה, תיאור ושם קובץ.',
     40 => 'אנא הכניסו את מספר הפריטים או את מספר השעות.',
@@ -1075,7 +1076,10 @@ $LANG33 = array(
     49 => 'הלוגו של ההזנה',
     50 => "יחסי לכתובת האתר ({$_CONF['site_url']})",
     51 => 'שם הקובץ שבחרתם כבר נמצא בשימוש של הזנה אחרת. אנא ביחרו אחד אחר.',
-    52 => 'שגיאה: שם הקובץ כבר קיים'
+    52 => 'שגיאה: שם הקובץ כבר קיים',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1580,7 +1584,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'שמירת שינויים',
     'reset_form' => 'איפוס הטופס',
     'changes_made' => 'השינויים בוצעו בהצלחה אצל',
-    'title' => 'ניהול ההגדרות'
+    'title' => 'ניהול ההגדרות',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1849,7 +1854,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

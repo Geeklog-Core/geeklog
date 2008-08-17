@@ -547,7 +547,8 @@ $LANG11 = array(
     2 => '친구에게 메일로 기사보내기',
     3 => '인쇄용 페이지',
     4 => '기사 옵션',
-    5 => 'PDF 스토리 포멧'
+    5 => 'PDF 스토리 포멧',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1059,7 +1060,7 @@ $LANG33 = array(
     34 => '건',
     35 => '시간이내',
     36 => '피드 종류를 선택하시기 바랍니다',
-    37 => 'RSS 배신을 유효하게 하기 위해서는 관련된 플러그인을 적어도 한가지는 인스트롤 해 두시기 바랍니다.  아래에는 Geeklog의 피이드를 작성할지, 플러그인으로 취득한 피이드를 작성할지 여부를 선택 하시기 바랍니다.',
+    37 => '',
     38 => '에러 : 입력하지 않은 항목이 있습니다.',
     39 => '피이드의 제목, 설명. 파일명을 입력하시기 바랍니다.',
     40 => '입장수 혹은 취득한 시간을 입력하기바랍니다.',
@@ -1074,7 +1075,10 @@ $LANG33 = array(
     49 => '로고',
     50 => "본 사이트로 부터의 상대 URL ({$_CONF['site_url']})",
     51 => '선택한 피이드명은 다른 피이드에서 사용 되었습니다.  다른 이름으로 하시기 바랍니다.',
-    52 => '에러 : 이 파일명은 이미 사용되고 있습니다'
+    52 => '에러 : 이 파일명은 이미 사용되고 있습니다',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1579,7 +1583,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1848,7 +1853,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

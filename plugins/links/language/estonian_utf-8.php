@@ -26,38 +26,16 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: estonian_utf-8.php,v 1.7 2008/06/07 14:27:34 dhaun Exp $
-
-/** 
- * This is the estonian language page for the Geeklog links Plug-in! 
- * 
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 1.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
- * @author Trinity Bays <trinity93@gmail.com>
- * @author Tony Bibbs <tony@tonybibbs.com>
- * @author Tom Willett <twillett@users.sourceforge.net>
- * 
- */
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:    $LANG - variable name
-#              XX - file id number
-#            YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-/**
-* the link plugin's lang array
-* 
-* @global array $LANG_LINKS 
-*/
 $LANG_LINKS = array(
     10 => 'Sisestatud',
     14 => 'Linke',
@@ -65,56 +43,44 @@ $LANG_LINKS = array(
     88 => 'Pole uusi linke',
     114 => 'Linke',
     116 => 'Lisa link',
-        117 => 'Teata mittetöötavast lingist',
+    117 => 'Teata mittetöötavast lingist',
     118 => 'Mittetöötavast lingist teatamine',
     119 => 'Järgmisest lingist on teatatud kui mittetöötavast: ',
     120 => 'Lingi toimetamiseks kliki siin: ',
     121 => 'Mittetöötavast lingist teatas: ',
-    122 => 'Täname mittetöötavast lingist teatamise eest. Administraator parandab lingi nii ruttu kui võimalik.', 
+    122 => 'Täname mittetöötavast lingist teatamise eest. Administraator parandab lingi nii ruttu kui võimalik.',
     123 => 'Täname sind',
     124 => 'Mine',
     125 => 'Kategooriad',
     126 => 'Oled siin:',
-    'root' => 'Pea' // title used for top level category
+    'root' => 'Pea'
 );
 
 ###############################################################################
 # for stats
-/**
-* the link plugin's lang stats array
-* 
-* @global array $LANG_LINKS_STATS
-*/
+
 $LANG_LINKS_STATS = array(
     'links' => 'Linke (klikke) lehtedel',
     'stats_headline' => 'Top 10 linki',
     'stats_page_title' => 'Lingid',
     'stats_hits' => 'Klikke',
-    'stats_no_hits' => 'Näib, et lehel pole linke või keegi pole neil klõpsanud.',
+    'stats_no_hits' => 'Näib, et lehel pole linke või keegi pole neil klõpsanud.'
 );
 
 ###############################################################################
 # for the search
-/**
-* the link plugin's lang search array
-* 
-* @global array $LANG_LINKS_SEARCH 
-*/
+
 $LANG_LINKS_SEARCH = array(
- 'results' => 'Linkide tulemus',
- 'title' => 'Tiitel',
- 'date' => 'Lisamisaeg',
- 'author' => 'Lisaja',
- 'hits' => 'Klikke'
+    'results' => 'Linkide tulemus',
+    'title' => 'Tiitel',
+    'date' => 'Lisamisaeg',
+    'author' => 'Lisaja',
+    'hits' => 'Klikke'
 );
 
 ###############################################################################
 # for the submission form
-/**
-* the link plugin's lang submit form array
-* 
-* @global array $LANG_LINKS_SUBMIT 
-*/
+
 $LANG_LINKS_SUBMIT = array(
     1 => 'Saada link',
     2 => 'Link',
@@ -136,18 +102,25 @@ $PLG_links_MESSAGE1 = "Täname sind {$_CONF['site_name']} lehele lingi sisestami
 $PLG_links_MESSAGE2 = 'Sinu link on edukalt salvestatud.';
 $PLG_links_MESSAGE3 = 'Link on edukalt kustutatud';
 $PLG_links_MESSAGE4 = "Täname sind {$_CONF['site_name']}  lehele lingi lisamise eest. Sa võid seda linki juba näha <a href=\"{$_CONF['site_url']}/links/\">linkide osas.</a>";
+$PLG_links_MESSAGE5 = 'You do not have sufficient access rights to view this category.';
+$PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
+$PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
+$PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
+$PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
+$PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
+$PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
+$PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
+$PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
+$PLG_links_MESSAGE16 = 'No such category exists.';
+$PLG_links_MESSAGE17 = 'This category id is already in use.';
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
-# admin/link.php
-/**
-* the link plugin's lang admin array
-* 
-* @global array $LANG_LINKS_ADMIN 
-*/
+# admin/plugins/links/index.php
+
 $LANG_LINKS_ADMIN = array(
     1 => 'Lingi toimetaja',
     2 => 'Lingi ID',
@@ -173,7 +146,7 @@ $LANG_LINKS_ADMIN = array(
     26 => 'Kontrolli linke',
     27 => 'HTML Staatus',
     28 => 'Toimeta kategooriat',
-    29 => 'Sisesta allpool kategooria detaile või toimeta neid.', 
+    29 => 'Sisesta allpool kategooria detaile või toimeta neid.',
     30 => 'Kategooria',
     31 => 'Kirjeldus',
     32 => 'Kategooria ID',
@@ -191,58 +164,58 @@ $LANG_LINKS_ADMIN = array(
     52 => 'Uus kategooria',
     53 => 'Loetle linke',
     54 => 'Kategooriahaldur',
-    55 => 'Toimeta allpool olevaid kategooriaid. Pane tähele, et sa ei saa kustutada kategooriaid, milles on alamkategooriaid või linke. Kustuta need eelnevalt või vii need mõnda teise kategooriasse.',  
-     56 => 'Kategooriatoimetaja',
+    55 => 'Toimeta allpool olevaid kategooriaid. Pane tähele, et sa ei saa kustutada kategooriaid, milles on alamkategooriaid või linke. Kustuta need eelnevalt või vii need mõnda teise kategooriasse.',
+    56 => 'Kategooriatoimetaja',
     57 => 'Veel kontrollimata',
     58 => 'Kontrolli nüüd',
     59 => '<p>Kõigi nähtaval olevate linkide kontrollimiseks, klõpsa palun allpool oleval lingil "Kontrolli nüüd". Pane tähele, et kontrollimine võib sõltuvalt nähtaval olevate linkide arvust võtta veidi aega.</p>',
     60 => 'Kasutaja %s proovis õigustamatult  muuta kategooriat: %s.'
 );
 
-$LANG_LINKS_STATUS = array(
-    100 => "Jätka",
-    101 => "Vahetan protokolli",
-    200 => "OK",
-    201 => "Loodud",
-    202 => "Kinnitatud",
-    203 => "Ebausaldusväärne info",
-    204 => "Pole sisu",
-    205 => "Reseti sisu",
-    206 => "Osaline sisu",
-    300 => "Mitu valikut",
-    301 => "Püsivalt teises kohas",
-    302 => "Leitud",
-    303 => "Vaata muud",
-    304 => "Pole muudetud",
-    305 => "Kasuta Proxyt",
-    307 => "Ajutine ümbersuunamine",
-    400 => "Halb päring",
-    401 => "Pole autoriseeritud",
-    402 => "Tasuline teenus",
-    403 => "Keelatud",
-    404 => "Ei leidnud",
-    405 => "Meetod pole lubatud",
-    406 => "Pole vastuvõetav",
-    407 => "Nõutav Proxy kaudu autoriseerimine",
-    408 => "Päringu ajapiir",
-    409 => "Konflikt",
-    410 => "Läinud",
-    411 => "Pikkus nõutav",
-    412 => "Eeltingimused ebaõnnestusid",
-    413 => "Päringu sisu liiga suur",
-    414 => "Päringu URI liiga pikk",
-    415 => "Toetamata meedia Tüüp",
-    416 => "Nõutud piirkond pole rahuldatav",
-    417 => "Expectation Failed",
-    500 => "Sisemine serveri viga",
-    501 => "Pole implementeeritud",
-    502 => "Halb Gateway",
-    503 => "Teenus pole saadaval",
-    504 => "Gateway ajapiir",
-    505 => "HTTP Versioon pole toetatud",
-    999 => "Ühenduse ajapiir"
-);
 
+$LANG_LINKS_STATUS = array(
+    100 => 'Jätka',
+    101 => 'Vahetan protokolli',
+    200 => 'OK',
+    201 => 'Loodud',
+    202 => 'Kinnitatud',
+    203 => 'Ebausaldusväärne info',
+    204 => 'Pole sisu',
+    205 => 'Reseti sisu',
+    206 => 'Osaline sisu',
+    300 => 'Mitu valikut',
+    301 => 'Püsivalt teises kohas',
+    302 => 'Leitud',
+    303 => 'Vaata muud',
+    304 => 'Pole muudetud',
+    305 => 'Kasuta Proxyt',
+    307 => 'Ajutine ümbersuunamine',
+    400 => 'Halb päring',
+    401 => 'Pole autoriseeritud',
+    402 => 'Tasuline teenus',
+    403 => 'Keelatud',
+    404 => 'Ei leidnud',
+    405 => 'Meetod pole lubatud',
+    406 => 'Pole vastuvõetav',
+    407 => 'Nõutav Proxy kaudu autoriseerimine',
+    408 => 'Päringu ajapiir',
+    409 => 'Konflikt',
+    410 => 'Läinud',
+    411 => 'Pikkus nõutav',
+    412 => 'Eeltingimused ebaõnnestusid',
+    413 => 'Päringu sisu liiga suur',
+    414 => 'Päringu URI liiga pikk',
+    415 => 'Toetamata meedia Tüüp',
+    416 => 'Nõutud piirkond pole rahuldatav',
+    417 => 'Expectation Failed',
+    500 => 'Sisemine serveri viga',
+    501 => 'Pole implementeeritud',
+    502 => 'Halb Gateway',
+    503 => 'Teenus pole saadaval',
+    504 => 'Gateway ajapiir',
+    505 => 'HTTP Versioon pole toetatud',
+    999 => 'Ühenduse ajapiir'
+);
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
@@ -280,7 +253,7 @@ $LANG_fs['links'] = array(
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
+    1 => array('True' => true, 'False' => false),
     9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );

@@ -28,9 +28,9 @@ global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 $LANG_STATIC = array(
@@ -103,20 +103,17 @@ $LANG_STATIC = array(
     'select_php_none' => 'אל תבצע PHP',
     'select_php_return' => 'בצע PHP (return)',
     'select_php_free' => 'בצע PHP',
-    'php_not_activated' => 'השימוש ב-PHP בעמודים סטטיים לא מופעל. אנא ראו את <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">הדוקומנטציה</a> בשביל פרטים.',
+    'php_not_activated' => "השימוש ב-PHP בעמודים סטטיים לא מופעל. אנא ראו את <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">הדוקומנטציה</a> בשביל פרטים.",
     'printable_format' => 'פורמט להדפסה',
-    'edit' => 'עריכה',
     'copy' => 'העתקה',
     'limit_results' => 'הגבלת תוצאות',
     'search' => 'חיפוש',
     'submit' => 'שליחה'
 );
 
-
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'אין תמיכה בשידרוג ה-plugin.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
@@ -151,7 +148,7 @@ $LANG_fs['staticpages'] = array(
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
+    1 => array('True' => true, 'False' => false),
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),

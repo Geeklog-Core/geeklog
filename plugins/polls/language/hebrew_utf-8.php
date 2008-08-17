@@ -28,28 +28,36 @@
 
 global $LANG32;
 
+###############################################################################
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
+###############################################################################
+
 $LANG_POLLS = array(
-    'polls'             => 'סקרים',
-    'results'           => 'תוצאות',
-    'pollresults'       => 'תוצאות סקרים',
-    'votes'             => 'הצבעות',
-    'vote'              => 'הצבעה',
-    'pastpolls'         => 'סקרי עבר',
-    'savedvotetitle'    => 'ההצבעה נשמרה',
-    'savedvotemsg'      => 'הצבעתם נשמרה בסקר',
-    'pollstitle'        => 'סקרים במערכת',
-    'polltopics'     => 'סקרים נוספים',
-    'stats_top10'       => 'עשרת הסקרים הגדולים',
-    'stats_topics'   => 'נושא הסקר',
-    'stats_votes'       => 'הצבעות',
-    'stats_none'        => 'נראה שאין סקרים באתר זה או שאף אחד עוד לא הצביע.',
-    'stats_summary'     => 'סקרים (תשובות) במערכת',
-    'open_poll'         => 'פתוח להצבעה',
-    'answer_all'        => 'אנא ענו על כל השאלות שנותרו',
-    'not_saved'         => 'התוצאות לא נשמרו',
-    'upgrade1'          => 'התקנתם גרסה חדשה של plugins הסקרים. אנא',
-    'upgrade2'          => 'שדרגו',
-    'editinstructions'  => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.'
+    'polls' => 'סקרים',
+    'results' => 'תוצאות',
+    'pollresults' => 'תוצאות סקרים',
+    'votes' => 'הצבעות',
+    'vote' => 'הצבעה',
+    'pastpolls' => 'סקרי עבר',
+    'savedvotetitle' => 'ההצבעה נשמרה',
+    'savedvotemsg' => 'הצבעתם נשמרה בסקר',
+    'pollstitle' => 'סקרים במערכת',
+    'polltopics' => 'סקרים נוספים',
+    'stats_top10' => 'עשרת הסקרים הגדולים',
+    'stats_topics' => 'נושא הסקר',
+    'stats_votes' => 'הצבעות',
+    'stats_none' => 'נראה שאין סקרים באתר זה או שאף אחד עוד לא הצביע.',
+    'stats_summary' => 'סקרים (תשובות) במערכת',
+    'open_poll' => 'פתוח להצבעה',
+    'answer_all' => 'אנא ענו על כל השאלות שנותרו',
+    'not_saved' => 'התוצאות לא נשמרו',
+    'upgrade1' => 'התקנתם גרסה חדשה של plugins הסקרים. אנא',
+    'upgrade2' => 'שדרגו',
+    'editinstructions' => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.',
+    'start_poll' => 'Start Poll'
 );
 
 ###############################################################################
@@ -59,15 +67,15 @@ $LANG25 = array(
     1 => 'מצב',
     2 => 'אנא הכניסו נושא, לפחות שאלה אחת ולפחות תשובה אחת לה.',
     3 => 'הסקר נוצר',
-    4 => "הסקר %s נשמר",
+    4 => 'הסקר %s נשמר',
     5 => 'עריכת הסקר',
     6 => 'קוד זיהוי סקר',
     7 => '(אל תשתמשו ברווחים)',
     8 => 'הופעה בקוביית המידע של סקרים',
     9 => 'נושא',
     10 => 'תשובות / הצבעות / הערות',
-    11 => "חלה שגיאה בהוצאת מידע על תשובות הסקר לגבי הסקר %s",
-    12 => "חלה שגיאה בהוצאת מידע על שאלת הסקר לגבי הסקר %s",
+    11 => 'חלה שגיאה בהוצאת מידע על תשובות הסקר לגבי הסקר %s',
+    12 => 'חלה שגיאה בהוצאת מידע על שאלת הסקר לגבי הסקר %s',
     13 => 'צרו סקר',
     14 => 'שמירה',
     15 => 'ביטול',
@@ -105,12 +113,11 @@ $PLG_polls_MESSAGE20 = 'הסקר שלכם נמחק בהצלחה.';
 $PLG_polls_MESSAGE3001 = 'אין תמיכה בשדרוג ה-plugin.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
-
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
     'label' => 'סקרים',
     'title' => 'ניהול הסקרים'
-);  
+);
 
 $LANG_confignames['polls'] = array(
     'pollsloginrequired' => 'נדרשת הזדהות בשביל צפייה בסקרים?',
@@ -137,7 +144,7 @@ $LANG_fs['polls'] = array(
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
+    1 => array('True' => true, 'False' => false),
     2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
     9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)

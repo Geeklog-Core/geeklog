@@ -549,7 +549,8 @@ $LANG11 = array(
     2 => 'Envoyer cet article &agrave; un ami',
     3 => 'Version imprimable',
     4 => 'Option des articles',
-    5 => 'Article en format PDF'
+    5 => 'Article en format PDF',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1061,7 +1062,7 @@ $LANG33 = array(
     34 => 'Entr&eacute;es',
     35 => 'Heures',
     36 => 'S&eacute;lectionnez le type de flux',
-    37 => 'Vous avez au moins un plugin autorisant le partge de l\'information. Vous devrez choisir plus bas si vous d&eacute;sirez un flux du syst&egrave;me ou celui d\'un autre plugin.',
+    37 => '',
     38 => 'Erreur : champs incomplets',
     39 => 'Merci d\'inscrire le titre du flux, sa description, et son nom de fichier.',
     40 => 'Merci d\.inscrire un nombre d\'entr&eacute;s ou un nombre d\'heures.',
@@ -1076,7 +1077,10 @@ $LANG33 = array(
     49 => 'Logo du flux',
     50 => "URL du site ({$_CONF['site_url']})",
     51 => 'Le nom de fichier choisi est pr&eacute;sentement utilis&eacute; par un autre flux. Merci de choisir un nom diff&eacute;rent.',
-    52 => 'Erreur: nom de fichier existant'
+    52 => 'Erreur: nom de fichier existant',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1581,7 +1585,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1850,7 +1855,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

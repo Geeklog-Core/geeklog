@@ -549,7 +549,8 @@ $LANG11 = array(
     2 => 'Pošlji èlanek prijatelju po e-pošti',
     3 => 'Za tisk prijazna stran',
     4 => 'Dodatne možnosti',
-    5 => 'Èlanek v formatu PDF'
+    5 => 'Èlanek v formatu PDF',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1061,7 +1062,7 @@ $LANG33 = array(
     34 => 'Vpisi',
     35 => 'Ure',
     36 => 'Izberi tip združene vsebine',
-    37 => 'Namešèen imaš vsaj en vtiènik, ki podpira združevanje vsebine. Spodaj je treba izbrati, ali hoèeš ustvariti združeno vsebino za Geeklog ali za katerega od vtiènikov.',
+    37 => '',
     38 => 'Napaka: Manjkajoèa polja',
     39 => 'Izpolni polja Naslov združene vsebine, Opis, Ime datoteke.',
     40 => 'Vpiši število vpisov ali število ur.',
@@ -1076,7 +1077,10 @@ $LANG33 = array(
     49 => 'Logotip združene vsebine',
     50 => "Glede na url strani ({$_CONF['site_url']})",
     51 => 'Izbrano ime datoteke že uporablja druga združena vsebina. Prosim izberi drugega.',
-    52 => 'Napaka: Ime datoteke že obstaja.'
+    52 => 'Napaka: Ime datoteke že obstaja.',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1581,7 +1585,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Shrani spremembe',
     'reset_form' => 'Ponastavi obrazec',
     'changes_made' => 'Spremembe so bile uspešno izvedene nad',
-    'title' => 'Upravljavec nastavitev'
+    'title' => 'Upravljavec nastavitev',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1850,7 +1855,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Nedelja' => 'Sun', 'Ponedeljek' => 'Mon'),
     15 => array('Po zaporednih številkah' => 'sortnum', 'Po abecedi' => 'alpha'),
     16 => array('Prijava ni potrebna' => 0, 'Samo napredno iskanje' => 1, 'Preprosto in napredno iskanje' => 2),
-    17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1)
+    17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

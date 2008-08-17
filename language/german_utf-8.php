@@ -551,7 +551,7 @@ $LANG11 = array(
     3 => 'Druckfähige Version',
     4 => 'Optionen',
     5 => 'Als PDF',
-    6 => "Feed '%s' abonnieren"
+    6 => 'Feed \'%s\' abonnieren'
 );
 
 ###############################################################################
@@ -1183,7 +1183,8 @@ $MESSAGE = array(
     93 => 'Database back up war erfolgreich.',
     94 => 'Backup Failed: Dateigröße unter 1kb',
     95 => 'Es gab einen Fehler.',
-    96 => 'Sorry, kein Zugang zur Admin-Seite. Unzulässige Zugangsversuche werden gelogged.'
+    96 => 'Sorry, kein Zugang zur Admin-Seite. Unzulässige Zugangsversuche werden gelogged.',
+    97 => 'Not all required fields have been passed validation - default custom membership message'
 );
 
 ###############################################################################

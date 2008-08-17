@@ -546,7 +546,8 @@ $LANG11 = array(
     2 => 'Epos Artikel aan \'n Vriend',
     3 => 'Drukbare artikelformaat',
     4 => 'Artikelopsies',
-    5 => 'PDF Artikelformaat'
+    5 => 'PDF Artikelformaat',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1058,7 +1059,7 @@ $LANG33 = array(
     34 => 'Inskrywings',
     35 => 'Ure',
     36 => 'Kies jou soort nuusvoer',
-    37 => 'U het ten minste een prop ge&iuml;nstalleer wat inhoudsindikasie ondersteun. Hieronder moet u kies of u \'n Geeklog nuusvoer wil h&ecirc; of \'n voer vanaf een van die proppe.',
+    37 => '',
     38 => 'Fout: Vermiste Velde',
     39 => 'Vul asseblief die Nuusvoer se Titel, Beskrywing en L&ecirc;ernaam in.',
     40 => 'Vul asseblief die aantal inskrywings of aantal ure in.',
@@ -1073,7 +1074,10 @@ $LANG33 = array(
     49 => 'Nuusvoer Logo',
     50 => "Relatief tot werf se url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    52 => 'Error: existing Filename',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1578,7 +1582,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1847,7 +1852,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

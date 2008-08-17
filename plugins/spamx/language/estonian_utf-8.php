@@ -10,12 +10,12 @@
   * 
  * Licensed under GNU General Public License
  *
- * $Id: estonian_utf-8.php,v 1.1 2008/06/07 14:27:34 dhaun Exp $
+ * $Id: estonian_utf-8.php,v 1.2 2008/08/17 16:11:25 dhaun Exp $
  */
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>Kui sa teed nii, saavad ',
     'inst2' => 'teised vaadata sinu isiklikku blacklisti ja seda importida ja nii saame me luua   efektiivsema  ',
     'inst3' => 'jagatud andmebaasi.</p><p>Kui sa   sisestasid oma veebilehe ja pärast seda otsustasid, et soovid oma lehe antud loetelust eemaldada,  ',
@@ -41,7 +41,7 @@ $LANG_SX00 = array (
     'rsscreated' => 'RSS lõim loodud',
     'add1' => 'Lisatud ',
     'add2' => ' kannet, allikas  ',
-    'add3' => " blacklist.",
+    'add3' => ' blacklist.',
     'adminc' => 'Administreerimiskäsud:',
     'mblack' => 'Minu blacklist:',
     'rlinks' => 'Seotud lingid:',
@@ -49,7 +49,7 @@ $LANG_SX00 = array (
     'addcen' => 'Lisa Tsensuuriloetelu',
     'addentry' => 'Lisa kanne',
     'e1' => 'Kande kustutamiseks klõpsa sellel',
-    'e2' => 'Kande lisamiseks kirjuta uus kanne kirjutamisväljale ja klõpsa Lisa nuppu. Kannetes saab kasutada täiemahulisi Perli regulaaravaldisi.', 
+    'e2' => 'Kande lisamiseks kirjuta uus kanne kirjutamisväljale ja klõpsa Lisa nuppu. Kannetes saab kasutada täiemahulisi Perli regulaaravaldisi.',
     'pblack' => 'Spam-X isikli blacklist',
     'conmod' => 'Häälesta Spam-X Mooduli kasutamist',
     'acmod' => 'Spam-X toimingute  Moodulid',
@@ -90,30 +90,29 @@ $LANG_SX00 = array (
     'foundspam' => 'Leitud spampostitus, reegel ',
     'foundspam2' => ' postitajaks kasutaja ',
     'foundspam3' => ' IP-lt ',
-	'deletespam' => 'Kustuta Spam',
-	'numtocheck' => 'kontrollitavate kommentaaride arv',
-	'note1'		=> '<p>Märkus: Masskustutamine on mõeldud juhuks kui  lehte on tabanud ',
-	'note2'		=> ' spamkommentaarid ja  Spam-X ei saa nendega hakkama.</p><ul><li>Algul  leia ling(id) või teised ',
-	'note3'		=> 'spamkommentaaride tunnused  ja lisa need isiklikku blacklisti.</li><li>Seejärel ',
-	'note4'		=> 'tule siia tagasi ja lase Spam-X-l viimaseid kommentaare kontrollida .</li></ul><p>Kommentaare ',
-	'note5'		=> 'kontrollitakse alates uuematest. Suurema arvu kommentaaride kontrollimine ', 
-	'note6'		=> 'nõuab kontrollimiselt rohkem aega.</p>',
-	'masshead'	=> '<hr' . XHTML . '><h1 align="center">Masskustuta spamkommentaare</h1>',
-	'masstb' => '<hr' . XHTML . '><h1 align="center">Masskustuta trackback spam</h1>',
-	'comdel'	=> ' kommentaari kustutatud.',
+    'deletespam' => 'Kustuta Spam',
+    'numtocheck' => 'kontrollitavate kommentaaride arv',
+    'note1' => '<p>Märkus: Masskustutamine on mõeldud juhuks kui  lehte on tabanud ',
+    'note2' => ' spamkommentaarid ja  Spam-X ei saa nendega hakkama.</p><ul><li>Algul  leia ling(id) või teised ',
+    'note3' => 'spamkommentaaride tunnused  ja lisa need isiklikku blacklisti.</li><li>Seejärel ',
+    'note4' => 'tule siia tagasi ja lase Spam-X-l viimaseid kommentaare kontrollida .</li></ul><p>Kommentaare ',
+    'note5' => 'kontrollitakse alates uuematest. Suurema arvu kommentaaride kontrollimine ',
+    'note6' => 'nõuab kontrollimiselt rohkem aega.</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">Masskustuta spamkommentaare</h1>',
+    'masstb' => '<hr' . XHTML . '><h1 align="center">Masskustuta trackback spam</h1>',
+    'comdel' => ' kommentaari kustutatud.',
     'initial_Pimport' => '<p>Isikliku blacklisti importimine"',
     'initial_import' => 'Algne MT-Blacklisti importimine',
     'import_success' => '<p>%d blacklisti kannet on edukalt imporditud.',
     'import_failure' => '<p><strong>Viga:</strong> Kandeid ei leitud.',
-    'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:', // tõlkida
+    'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
     'documentation' => 'Spam-X Plugina Dokumentatsioon',
     'emailmsg' => "Lehel \"%s\" on postitatud uus spampostitus\nKasutaja UID: \"%s\"\n\nSisu:\"%s\"",
     'emailsubject' => 'Spampostitus - %s',
     'ipblack' => 'Spam-X IP Blacklist',
-    'ipofurlblack' => 'Spam-X IP of URL Blacklist', // tõlkida
+    'ipofurlblack' => 'Spam-X IP of URL Blacklist',
     'headerblack' => 'Spam-X HTTP päiste blacklist',
     'headers' => 'Päringute päised:',
-
     'stats_headline' => 'Spam-X Statistika',
     'stats_page_title' => 'Blacklist',
     'stats_entries' => 'Kanded',
@@ -123,20 +122,17 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'Blocked by IP of URL',
     'stats_header' => 'HTTP päised',
     'stats_deleted' => 'Spammina kustutatud postitused',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Tuvastati spam. Postitus kustutati.';
-$PLG_spamx_MESSAGE8   = 'Tuvastati spam. Administraatorile saadeti E-kiri';
+$PLG_spamx_MESSAGE8 = 'Tuvastati spam. Administraatorile saadeti E-kiri';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugina uuendamine pole toetatud';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
@@ -147,7 +143,7 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'Spam-X tegevused',
     'notification_email' => 'Teavituskiri',
-    'admin_override' => "Ära filtreeri administraatori postitusi",
+    'admin_override' => 'Ära filtreeri administraatori postitusi',
     'logging' => 'Luba logimine',
     'timeout' => 'Ajapiir'
 );
@@ -160,9 +156,10 @@ $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-X peahäälestused'
 );
 
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE)
+    1 => array('True' => true, 'False' => false)
 );
 
 ?>

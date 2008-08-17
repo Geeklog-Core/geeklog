@@ -57,15 +57,16 @@ $LANG_POLLS = array(
     'not_saved' => 'Tulemus pole salvestatud',
     'upgrade1' => 'Installeerisid küsitluste plugina uue versiooni. Palun ',
     'upgrade2' => 'uuenda',
-    'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti'  
-    );
+    'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti',
+    'start_poll' => 'Start Poll'
+);
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
     1 => 'Reþiim',
-    2 => 'Palun sisesta rubriik, vähemalt üks küsimus ja sellele küsimusele vähemalt üks vastusevariant', 
+    2 => 'Palun sisesta rubriik, vähemalt üks küsimus ja sellele küsimusele vähemalt üks vastusevariant',
     3 => 'Küsitlus on loodud',
     4 => 'Küsitlus %s salvestatud',
     5 => 'Toimeta küsitlust',
@@ -82,7 +83,7 @@ $LANG25 = array(
     16 => 'Kustuta',
     17 => 'Palun sisesta küsitluse ID',
     18 => 'Küsitluste loetelu',
-    19 => 'Küsitluse toimetamiseks või kustutamiseks klõpsa küsitluse toimetamisikooni. Uue küsitluse loomiseks klõpsa "Uus küsitlus" ülal.',  
+    19 => 'Küsitluse toimetamiseks või kustutamiseks klõpsa küsitluse toimetamisikooni. Uue küsitluse loomiseks klõpsa "Uus küsitlus" ülal.',
     20 => 'Hääletajad',
     21 => 'Ligipääs tõkestatud',
     22 => "Sa üritasid ligi pääseda küsitlusele, milleks pole sul õigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/poll.php\">mine tagasi küsitluste haldamislehele</a>.",

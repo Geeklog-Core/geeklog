@@ -549,7 +549,8 @@ $LANG11 = array(
     2 => '寄文章给朋友',
     3 => '可印的文章格式',
     4 => '文章选项',
-    5 => 'PDF 文章版本'
+    5 => 'PDF 文章版本',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1061,7 +1062,7 @@ $LANG33 = array(
     34 => '条目',
     35 => '小时',
     36 => '选择文流种类',
-    37 => '你有最少一个安装了的插件能配合内容辛迪加.一下你需要选择你是否要建立一个主系统文流或插件文流.',
+    37 => '',
     38 => '错误: 缺少信息',
     39 => '请填入文流标题, 说明, 和文件名.',
     40 => '请输入条目数目或小时数目.',
@@ -1076,7 +1077,10 @@ $LANG33 = array(
     49 => '新闻 Feed 的标志',
     50 => "跟网址有关 ({$_CONF['site_url']})",
     51 => '你所选的文件名已经在另一个文流中用着了。请选另一个。',
-    52 => '错误: 文件名已存在'
+    52 => '错误: 文件名已存在',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1581,7 +1585,8 @@ $LANG_CONFIG = array(
     'save_changes' => '存续所更改的',
     'reset_form' => '恢复表格原状',
     'changes_made' => '更改已成功地安置于',
-    'title' => '设定管理'
+    'title' => '设定管理',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1850,7 +1855,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

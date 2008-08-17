@@ -111,6 +111,7 @@ $PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
 $PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
 $PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
 $PLG_links_MESSAGE16 = 'No such category exists.';
+$PLG_links_MESSAGE17 = 'This category id is already in use.';
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';

@@ -550,7 +550,8 @@ $LANG11 = array(
     2 => 'В╕д╕слати статтю ',
     3 => 'Форма статт╕ для друку',
     4 => 'Параметри',
-    5 => 'Формат статт╕ PDF'
+    5 => 'Формат статт╕ PDF',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1062,7 +1063,7 @@ $LANG33 = array(
     34 => 'Записи',
     35 => 'Годин',
     36 => 'Обер╕ть тип стр╕чки',
-    37 => 'У вас встановлено принаймн╕ один модуль, що п╕дтриму╓ експорт контенту. Нижче вам потр╕бно обрати, хочете ви створити стр╕чку Geeklog чи стр╕чку одного з модул╕в.',
+    37 => '',
     38 => 'Помилка: незаповнен╕ поля',
     39 => 'Будь-ласка, заповн╕ть Заголовок стр╕чки, Опис та ╤м\'я файла.',
     40 => 'Будь-ласка, введ╕ть к╕льк╕сть запис╕в або к╕льк╕сть годин.',
@@ -1077,7 +1078,10 @@ $LANG33 = array(
     49 => 'Логотип стр╕чки',
     50 => "В╕дносно до URL сайту ({$_CONF['site_url']})",
     51 => '╤м\'я файла яке ви обрали, вже використано для ╕ншо╖ стр╕чки. Будь-ласка, обер╕ть ╕нше.',
-    52 => 'Помилка: ╕м\'я файла вже ╕сну╓'
+    52 => 'Помилка: ╕м\'я файла вже ╕сну╓',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1582,7 +1586,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1851,7 +1856,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>

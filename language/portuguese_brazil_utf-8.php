@@ -550,7 +550,8 @@ $LANG11 = array(
     2 => 'Enviar para um Amigo',
     3 => 'Versão para Impressão',
     4 => 'Opções da Publicação',
-    5 => 'Formato de Publicação PDF'
+    5 => 'Formato de Publicação PDF',
+    6 => 'Subscribe to \'%s\''
 );
 
 ###############################################################################
@@ -1062,7 +1063,7 @@ $LANG33 = array(
     34 => 'Entradas',
     35 => 'Horas',
     36 => 'Seleciona tipo de feed',
-    37 => 'Você tem ao menos um plugin instalado que suporta assinatura de conteúdos. Abaixo você precisará selecionar se você quer criar um feed Geeklog feed ou criar um feed através de um dos plugins.',
+    37 => '',
     38 => 'Erro: Faltando preencher campos',
     39 => 'Por favor preencha Título do Feed, Descrição e Nome do Arquivo.',
     40 => 'Por favor defina um número de entradas ou um número de horas.',
@@ -1077,7 +1078,10 @@ $LANG33 = array(
     49 => 'Feed Logo',
     50 => "Relative to site url ({$_CONF['site_url']})",
     51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename'
+    52 => 'Error: existing Filename',
+    53 => 'All Frontpage Stories',
+    54 => 'Please select the type of feed to create.',
+    55 => 'Articles'
 );
 
 ###############################################################################
@@ -1582,7 +1586,8 @@ $LANG_CONFIG = array(
     'save_changes' => 'Save Changes',
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager'
+    'title' => 'Configuration Manager',
+    'disable' => 'Click to disable this option'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1851,7 +1856,8 @@ $LANG_configselects['Core'] = array(
     14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
 );
 
 ?>
