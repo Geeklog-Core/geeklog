@@ -55,7 +55,8 @@ $LANG_POLLS = array(
     'not_saved' => 'Ergebnis nicht gespeichert',
     'upgrade1' => 'Neue Version des Umfrage-Plugins installiert. Bitte',
     'upgrade2' => 'upgraden',
-    'editinstructions' => 'Bitte für die Umfrage-ID mindestens eine Frage und zwei Antworten eintragen.'
+    'editinstructions' => 'Bitte für die Umfrage-ID mindestens eine Frage und zwei Antworten eintragen.',
+    'start_poll'       => 'Zur Umfrage'
 );
 
 ###############################################################################

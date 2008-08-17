@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.90 2008/08/16 19:43:58 dhaun Exp $
+// $Id: functions.inc,v 1.91 2008/08/17 08:41:59 dhaun Exp $
 
 if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -456,7 +456,7 @@ function polls_templatePath ($path = '')
 *
 */
 
-function POLLS_pollVote($pid, $showall=true)
+function POLLS_pollVote($pid, $showall = true)
 {
     global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25, $_IMAGE_TYPE;
     $retval = '';
@@ -466,9 +466,10 @@ function POLLS_pollVote($pid, $showall=true)
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
     $ntopics = DB_numRows($topic);
 
-    if($ntopics == 0 ) {
+    if ($ntopics == 0) {
         return $retval;
     }
+
     $P = DB_fetchArray($topic);
     if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
@@ -479,12 +480,13 @@ function POLLS_pollVote($pid, $showall=true)
             $questions = DB_query($questions_sql);
             $nquestions = DB_numRows($questions );
 
-            if($nquestions > 0 ) {
-                $poll = new Template($_CONF['path'] . 'plugins/polls/templates/');
-                $poll->set_file(array('panswer' => 'pollanswer.thtml',
-                                        'block' => 'pollblock.thtml',
-                                        'pquestions' => 'pollquestions.thtml',
-                                        'comments' => 'pollcomments.thtml'));
+            if ($nquestions > 0) {
+                $poll = new Template($_CONF['path']
+                                     . 'plugins/polls/templates/');
+                $poll->set_file(array('panswer'    => 'pollanswer.thtml',
+                                      'block'      => 'pollblock.thtml',
+                                      'pquestions' => 'pollquestions.thtml',
+                                      'comments'   => 'pollcomments.thtml'));
                 $poll->set_var('xhtml', XHTML);
                 $poll->set_var('site_url', $_CONF['site_url']);
                 $poll->set_var('layout_url', $_CONF['layout_url']);
@@ -493,8 +495,12 @@ function POLLS_pollVote($pid, $showall=true)
                 $poll->set_var('poll_topic', $P['topic'] );
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));
                 $poll->set_var('poll_vote_url', $_CONF['site_url']
-                        . '/polls/index.php');
-                $poll->set_var('lang_vote', $LANG_POLLS['vote']);
+                                                . '/polls/index.php');
+                if (($nquestions == 1) || $showall) {
+                    $poll->set_var('lang_vote', $LANG_POLLS['vote']);
+                } else {
+                    $poll->set_var('lang_vote', $LANG_POLLS['start_poll']);
+                }
                 $poll->set_var('lang_votes', $LANG_POLLS['votes']);
 
                 $results = '';
@@ -511,17 +517,18 @@ function POLLS_pollVote($pid, $showall=true)
                 }
                 $poll->set_var('poll_results', $results);
 
-                $access = SEC_hasAccess($topic['owner_id'],$topic['group_id'],$topic['perm_owner'],
-                    $topic['perm_group'],$topic['perm_members'],$topic['perm_anon']);
+                $access = SEC_hasAccess($topic['owner_id'], $topic['group_id'],
+                                $topic['perm_owner'], $topic['perm_group'],
+                                $topic['perm_members'], $topic['perm_anon']);
                 if ($access == 3) {
                     $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
-                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
+                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
                     $poll->set_var('edit_link', $editlink);
                     $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
                     $icon_attr = array('title' => $LANG25[27]);
                     $editiconhtml = COM_createImage($editicon, $LANG25[27], $icon_attr);
                     $editlink = COM_createLink($editiconhtml, $_CONF['site_admin_url']
-                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
+                        . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
                     $poll->set_var('edit_icon', $editlink);
                 }
 
@@ -531,14 +538,14 @@ function POLLS_pollVote($pid, $showall=true)
                     $aid = array();
                 }
 
-                for($j=0; $j<$nquestions; $j++) {
+                for ($j = 0; $j < $nquestions; $j++) {
                     $Q = DB_fetchArray($questions);
-                    $poll->set_var('poll_question', " ".$Q['question']);
+                    $poll->set_var('poll_question', $Q['question']);
                     $poll->set_var('question_id', $j);
 
-                    $notification = "";
-                    $filter = "";
-                    if ($showall == false) {
+                    $notification = '';
+                    $filter = '';
+                    if (!$showall) {
                         $nquestions--;
                         $notification = $LANG25[35] . " $nquestions " . $LANG25[36];
                         $filter = "AND qid='0'";
@@ -586,7 +593,7 @@ function POLLS_pollVote($pid, $showall=true)
                 }
                 $retval =  $poll->finish($poll->parse('output', 'block')) . LB;
 
-                if($showall == true && $P['commentcode'] >= 0 ) {
+                if ($showall && ($P['commentcode'] >= 0)) {
                     $delete_option = (SEC_hasRights('polls.edit') &&
                         SEC_hasAccess($P['owner_id'], $P['group_id'],
                         $P['perm_owner'], $P['perm_group'], $P['perm_members'],
@@ -623,9 +630,10 @@ function POLLS_pollVote($pid, $showall=true)
 *
 */
 
-function POLLS_showPoll($size, $pid='', $showall=false )
+function POLLS_showPoll($size, $pid='', $showall = false )
 {
     global $_CONF, $_PO_CONF, $_TABLES;
+
     $retval = '';
 
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}");
@@ -646,7 +654,7 @@ function POLLS_showPoll($size, $pid='', $showall=false )
             for ($i = 1; $i <= $nrows; $i++) {
                 $Q = DB_fetchArray($result);
                 $pid = $Q['pid'];
-                if ($size < 120) {// assume we're in the poll block
+                if ($size < 120) { // assume we're in the poll block
                     $showall = false;
                 } else { // assume we're in polls/index.php
                     $retval .= COM_startBlock($title);

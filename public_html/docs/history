@@ -106,6 +106,8 @@ Links plugin
 
 Polls plugin
 ------------
+- For multi-question polls, make the "Vote" button read "Start Poll" in the
+  polls block (bug #0000633) [Dirk]
 - Fixed display of "Results" link while a poll is open [Dirk]
 
 Static Pages plugin
