@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Fixed handling of corrupted config value db entries, e.g. after importing
+  Calendar event_types with the wrong character set (bug #0000690) [Dirk]
 - Fixed handling of HTML entities in the Configuration (bug #0000710)
   [Sami, Dirk]
 - Story image upload: Only add a link to the unscaled image if such an image
@@ -67,10 +69,10 @@ Geeklog History/Changes:
 - Enabled siteconfig.php to override database config in core, primarily for
   rootdebug. [bug 0000673] [Mike]
 - Allow remote users to use the webservices (bug #0000640). Due to the
-  authentication it is not possible for OpenID users to use the webservices.
-  Other remote users will have to use the form username@servicename for their
-  username [Dirk]
-- Fix to template.class to better hanndle full path being passed in [Blaine]
+  authentication method it is not possible for OpenID users to use the
+  webservices. Other remote users will have to use username@servicename for
+  their username when logging in through the webservices [Dirk]
+- Fix to template.class to better handle full path being passed in [Blaine]
 - Updated PLG_uninstall to supress errors for table drop. [bug 0000668] [Mike]
 - Fixed INST_checkTableExists for MS SQL Support. [bug 0000668] [Mike]
 - Hardcode an ltr div around HTML tags in the allowed html tag list. Plus minor
@@ -90,6 +92,7 @@ Geeklog History/Changes:
 
 Calendar plugin
 ---------------
+- Fixed <brXHTML> tags in the German language files for the Calendar [Dirk]
 - Fixed date comparison ("End date is before start date.", bug #0000703) [Dirk]
 - Fixed Admin delete links in day and week view (bug #0000680) [Dirk]
 - Search for an event's "author" didn't work [Dirk]
