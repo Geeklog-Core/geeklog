@@ -760,9 +760,9 @@ select {
   color:#FFFFFF
 }
 .pluginCellTitle {
-  color:#FFFFFF;
+  color:#666666;
   font-weight:bold;
-  background-color:#7398BA;
+  background-color:#E6E6E6;
   padding:5px;
 }
 .pluginCellFill {
