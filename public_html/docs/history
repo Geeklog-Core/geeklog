@@ -119,6 +119,8 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- Menu entries were not language-aware (in multi-language setups), i.e. all the
+  menu entries were always displayed (bug #0000713) [Dirk]
 - Removed unused 'config_data' entry from the plugin uninstall function
   (bug #0000666) [Dirk]
 - Fixed printer friendly version of a static page not working when url_rewrite
