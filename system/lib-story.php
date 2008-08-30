@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.130 2008/08/16 18:08:11 dhaun Exp $
+// $Id: lib-story.php,v 1.131 2008/08/30 07:26:42 dhaun Exp $
 
 if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
     die ('This file can not be used on its own!');
@@ -208,14 +208,20 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     // n = 'Compact display' for list of stories. p = 'Preview' mode.
 
     if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
-        $article->set_var( 'start_storylink_anchortag', '<a href="'
-                . $articleUrl . '" class="non-ul">' );
-        $article->set_var( 'end_storylink_anchortag', '</a>' );
-        $article->set_var( 'story_title_link',
+        $attributes = ' class="non-ul"';
+        $attr_array = array('class' => 'non-ul');
+        if (!empty($query)) {
+            $attributes .= ' rel="bookmark"';
+            $attr_array['rel'] = 'bookmark';
+        }
+        $article->set_var('start_storylink_anchortag',
+                          '<a href="' . $articleUrl . '"' . $attributes);
+        $article->set_var('end_storylink_anchortag', '</a>');
+        $article->set_var('story_title_link',
             COM_createLink(
                     $story->DisplayElements('title'),
                     $articleUrl,
-                    array('class'=>'non-ul')
+                    $attr_array
             )
         );
     } else {
