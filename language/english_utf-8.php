@@ -1261,7 +1261,10 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Do Backup',
     'backup_successful' => 'Database back up was successful.',
     'db_explanation' => 'To create a new backup of your site\'s database, click on "Create New" above. Click on a file name to download that backup.',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br' . XHTML . '> Check <strong>mysqldump_path</strong> definition in the Configuration.<br' . XHTML . '> Path currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => 'Incorrect path, security restriction in effect or mysqldump utility not executable.<br'
+                    . XHTML . '> Check <strong>mysqldump_path</strong> definition in the Configuration.<br'
+                    . XHTML . '> Check <a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a> settings in PHP.<br'
+                    . XHTML . "> Path currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
