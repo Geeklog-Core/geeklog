@@ -22,37 +22,38 @@ PHP.
 <h2>Creating a theme</h2>
 
 <p>First, copy an existing theme that is most similar to what you want to
-implement (if one exists). If what you will do is radically different (and
-we hope so!) then copying any one will do. Copy the existing theme to the
-name you want your theme to have (please, <em>no</em> spaces in the theme name):
+implement (if one exists). If what you will do is radically different (and we
+hope so!) then copying any one will do. Copy the existing theme to the name you
+want your theme to have (please, <em>no</em> spaces in the theme name):</p>
 
-<p><kbd>cp -R /path/to/geeklog/public_html/layout/professional /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd>
+<p><kbd>cp -R /path/to/geeklog/public_html/layout/professional /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd></p>
 
-<p>Change into your new theme directory:
+<p>Change into your new theme directory:</p>
 
-<p><kbd>cd /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd>
+<p><kbd>cd /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd></p>
 
 <p>Now edit the templates to suit your needs. Keep in mind that templates,
 generally are partial HTML files. The directory you just created holds ALL
 templates Geeklog needs but you will only need to modify a small few to
-make a huge impact on the look.
+make a huge impact on the look.</p>
 
 <p>In particular these are the templates you will undoubtedly want to
-change:
+change:</p>
 
 <ul>
-<li>header.thtml
-<li>footer.thtml
-<li>blockheader.thtml
-<li>blockfooter.thtml
-<li>storybody.thtml
-<li>storybodytext.thtml
-<li>featuredstorybody.thtml
-<li>featuredstorybodytext.thtml
-<li>archivestorybody.thtml
-<li>archivestorybodytext.thtml
-<li>style.css
+<li>header.thtml</li>
+<li>footer.thtml</li>
+<li>blockheader.thtml</li>
+<li>blockfooter.thtml</li>
+<li>storytext.thtml</li>
+<li>storybodytext.thtml</li>
+<li>featuredstorytext.thtml</li>
+<li>featuredstorybodytext.thtml</li>
+<li>archivestorytext.thtml</li>
+<li>archivestorybodytext.thtml</li>
+<li>style.css</li>
 </ul>
+
 
 <h3><a name="how-themes-work">How themes work</a></h3>
 
@@ -106,7 +107,7 @@ href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>).
 Read their documentation and, optionally, look at
 /path/to/geeklog/system/classes/template.class.php to see how it is
 implemented. Even with this knowledge it may not be clear which templates
-are used in conjunction with one another (i.e. <tt>storybody.thtml</tt> and
+are used in conjunction with one another (i.e. <tt>storytext.thtml</tt> and
 <tt>storybodytext.thtml</tt> together make up the complete format of a
 <em>single</em>
 story). If you have questions join our mailing list at <a
