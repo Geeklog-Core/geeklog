@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Geeklog Documentation - Changes</title>
@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a>
+<p><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Changes</div>
 
 <h1>Changes</h1>
@@ -15,6 +15,74 @@
 and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
+
+<h2><a name="changes151">Geeklog 1.5.1</a></h2>
+
+<p>Geeklog 1.5.1 is mostly a bugfix release and a recommended upgrade for users
+of Geeklog 1.5.0. There were also a few minor feature additions.</p>
+
+<h3>Bugfixes</h3>
+
+<h4>Security related</h4>
+
+<ul>
+<li>It was possible to view stories with a publication date in the future and
+    stories that had the draft flag set if you knew their story ID.</li>
+<li>It was possible to post comments on unpublished stories if you knew their
+    story ID.</li>
+<li>When a database backup fails, the database password is no longer logged to
+    <tt>error.log</tt>.</li>
+</ul>
+
+<h4>Other Bugfixes</h4>
+
+<ul>
+<li>All right-side blocks were rendered twice, which not only took more time
+    than necessary, but could also affect the functionality of add-ons like
+    the Chatterblock or Shoutbox.</li>
+<li>Fixed handling of security tokens (for CSRF protection) that prevented
+    you from deleting comments on a story that had trackbacks.</li>
+<li>Also fixed: user submission queue, story submissions, MS SQL support.</li>
+</ul>
+
+<h4>Fixes in the bundled Plugins</h4>
+
+<ul>
+<li>Calendar: Fixed display of events in the Upcoming Events block for the
+    current day (really this time ...)</li>
+<li>Links: Fixed SQL error when trying to change a category and new categories
+    silently overwriting existing categories with the same ID.</li>
+<li>Static Pages: Fixed printer friendly version when <tt>url_rewrite</tt> is
+    enabled.</li>
+</ul>
+
+<h3>New Features and Improvements</h3>
+
+<ul>
+<li>In multi-language setups, blocks can now also be multi-lingual.</li>
+<li>New "Subscribe to ..." feed story option when there is a separate feed for
+    a story's topic.</li>
+<li>New option "All Frontpage Stories" for article feeds (skip stories that have
+    the "Show only in topic" option set).</li>
+<li>Allow to unset Configuration options again after they have been "restored",
+    e.g. after accidental activation.</li>
+<li>Configuration options can now be overwritten in <tt>siteconfig.php</tt>.
+    This is mostly useful for the <code>$_CONF['rootdebug']</code> option.</li>
+<li>Remotely authenticated users can now use the webservices (they need to use
+    <tt>username@servicename</tt> for their username).<br>
+    <strong>Note:</strong> OpenID users can <em>not</em> use the webservices,
+    due to technical issues with the authentication method.</li>
+<li>Improved compatibility of the webservices (i.e. AtomPub).</li>
+</ul>
+
+<h3>Theme Changes</h3>
+
+<p>There was one mandatory theme change: The template file for configuration
+   items, <tt>admin/config/config_element.thtml</tt> has to be updated (copy
+   from the Professional theme). All other theme changes in this release are
+   optional - see the <a href="theme.html#changes">theme documentation</a> for
+   details.</p>
+
 
 <h2><a name="changes150">Geeklog 1.5.0</a></h2>
 
