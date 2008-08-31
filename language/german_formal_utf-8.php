@@ -1264,7 +1264,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Backup anlegen',
     'backup_successful' => 'Backup der Datenbank war erfolgreich.',
     'db_explanation' => 'Um ein neues Backup Ihrer Datenbank anzulegen, bitte auf Neu anlegen (s.o.) klicken. Ein Klick auf einen Dateinamen lädt das Backup herunter.',
-    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br' . XHTML . '>Bitte überprüfen Sie die Einstellung <strong>mysqldump_path</strong> in der Konfiguration.<br' . XHTML . '>Aktuelle Einstellung: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => 'Falscher Pfad oder sicherheitsbedingte Einschränkung oder mysqldump ist nicht ausführbar.<br' . XHTML . '>Bitte überprüfen Sie die Einstellung <strong>mysqldump_path</strong> in der Konfiguration und ggfs. die <a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a>-Einstellung in PHP.<br' . XHTML . ">Aktuelle Einstellung: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup fehlgeschlagen: Datei ist 0 Bytes groß.',
     'path_not_found' => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
     'no_access' => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
@@ -1582,13 +1582,14 @@ $LANG_CONFIG = array(
     'home' => 'Home',
     'admin_home' => 'Verwaltung der Site',
     'sections' => 'Bereich Konfiguration',
-    'restore' => 'Funktion aktivieren',
+    'restore' => 'Zurücksetzen',
     'add_element' => 'Element hinzufügen',
     'save_changes' => 'Änderungen speichern',
     'reset_form' => 'Angaben zurücksetzen',
     'changes_made' => 'Änderungen wurden erfolgreich übernommen',
     'title' => 'Konfigurations-Manager',
-    'disable' => 'Funktion deaktivieren'
+    'disable' => 'Funktion deaktivieren',
+    'enable' => 'Funktion aktivieren'
 );
 
 $LANG_configsections['Core'] = array(

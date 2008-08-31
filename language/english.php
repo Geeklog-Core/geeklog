@@ -1578,7 +1578,8 @@ $LANG_CONFIG = array(
     'reset_form'    => 'Reset Form',
     'changes_made'  => 'Changes were successfully made to',
     'title'         => 'Configuration Manager',
-    'disable'       => 'Click to disable this option'
+    'disable'       => 'Click to disable this option',
+    'enable'        => 'Enable'
 );
 
 $LANG_configsections['Core'] = array(

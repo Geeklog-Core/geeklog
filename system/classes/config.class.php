@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.class.php,v 1.49 2008/08/16 21:48:44 dhaun Exp $
+// $Id: config.class.php,v 1.50 2008/08/31 19:17:39 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -609,6 +609,7 @@ class config {
         $t->set_var('xhtml', XHTML);
 
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
+        $t->set_var('lang_enable', $LANG_CONFIG['enable']);
         $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
 
         $t->set_var('name', $name);
