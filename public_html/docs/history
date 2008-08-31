@@ -29,7 +29,7 @@ Geeklog History/Changes:
 - Fixed table prefix issues with constraints (bug #0000702) [Mike/Sami]
 - Fixed error when attempting to highlight a search query that contained a
   slash [Dirk]
-- Updated FCKEditor to v2.6.3 [Blaine]
+- Updated FCKeditor to v2.6.3 [Blaine]
 - Moved remove() (config JavaScript) to gl_cfg_remove (bug #0000681) [Mike]
 - Change for CUSTOM_usercreate to support passing in $batchimport, 
   set true if called via the Admin->Users Batch_Add [Blaine]
@@ -287,7 +287,7 @@ Static Pages plugin
 May 5, 2008 (1.5.0b1)
 -----------
 
-- Updated FCKEditor to v2.6 [Blaine]
+- Updated FCKeditor to v2.6 [Blaine]
 - LDAP remote authentication module, provided by Jessica Blank / MTV Networks
 - The {lang_attribute} can only properly be set in a multi-language setup
   (bug #0000616) [Dirk]
@@ -945,7 +945,7 @@ Static Pages plugin (1.4.3)
   (reported by LWC) [Dirk]
 - Added a help URL for the block display of static pages [Oliver]
 - Added ability in staticpage editor to enable/disable Advanced Editor mode
-  so you can use FCKEditor and then if need basic html edit mode [Blaine]
+  so you can use FCKeditor and then if need basic html edit mode [Blaine]
 - Fixed default sorting order for the list of static pages [Dirk]
 - Allow to show/hide update date/time and hits [Oliver]
 - When creating a new page, don't set the default group ownership to the Static
@@ -1100,7 +1100,7 @@ Jan 22, 2006 (1.4.0rc2)
 ------------
 
 - header.thtml now specifies the CSS Class Declaration to use for the body.
-  This addresses the issue with FCKEditor when displayed, its CSS was
+  This addresses the issue with FCKeditor when displayed, its CSS was
   over-riding the main site <body> tag and the site margin padding was being
   affected [Blaine]
 - Removed CSS for the Forum plugin from style.css [Blaine]

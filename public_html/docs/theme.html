@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Geeklog Documentation - Theme How-To</title>
@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a>
+<p><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Theme How-To</div>
 
 <p><small>(see below for a list of <a href="#changes">theme changes</a> in
@@ -80,10 +80,8 @@ certain part of Geeklog, have a look at the URL. You will notice the name of
 a PHP file there, e.g. the <tt>users.php</tt> file when you view a user's
 profile. Open that file and search for '<kbd>.thtml</kbd>'. For the profile
 you will find these lines (in <code>function userprofile()</code>):</p>
-<blockquote><code>
-    $user_templates = new Template ($_CONF['path_layout'] . 'users');<br>
-    $user_templates->set_file (array ('profile'=>'profile.thtml', 'row'=>'commentrow.thtml', 'strow'=>'storyrow.thtml'));
-</code></blockquote>
+<pre style="margin-left:4em;"><code>$user_templates = new Template ($_CONF['path_layout'] . 'users');
+$user_templates->set_file (array ('profile'=>'profile.thtml', 'row'=>'commentrow.thtml', 'strow'=>'storyrow.thtml'));</code></pre>
 <p>You don't need to understand PHP code to see that this uses the template
 files <tt>profile.thtml</tt>, <tt>commentrow.thtml</tt>, and
 <tt>storyrow.thtml</tt>. The first line also indicates that these are taken
@@ -770,8 +768,7 @@ were done to incorporate new Geeklog features.</p>
 the standard themes that ship with Geeklog (most of these files contain HTML
 that was previously hard-coded into Geeklog).</p>
 
-<pre>
-adminoption_off.thtml
+<pre>adminoption_off.thtml
 loginform.thtml
 topicoption.thtml
 topicoption_off.thtml
@@ -805,8 +802,7 @@ search/resultauthdatehits.thtml
 search/resultrowenhanced.thtml
 search/resultsummary.thtml
 search/resulttitle.thtml
-users/newpassword.thtml
-</pre>
+users/newpassword.thtml</pre>
 
 <p>Note: <tt>preferences</tt> and <tt>admin/database</tt> are new directores.</p>
 
@@ -819,8 +815,7 @@ existing theme, it is probably best to simply copy them over from one of the
 themes that ship with Geeklog (with the exception of <tt>style.css</tt> and
 <tt>header.thtml</tt>, see below).</p>
 
-<pre>
-style.css <em>(see below)</em>
+<pre>style.css <em>(see below)</em>
 header.thtml <em>(see below)</em>
 admin/block/blockeditor.thtml
 admin/block/listblocks.thtml
@@ -839,8 +834,7 @@ calendar/eventdetails.thtml
 search/searchform.thtml
 search/searchresults.thtml
 submit/submitevent.thtml
-users/getpasswordform.thtml
-</pre>
+users/getpasswordform.thtml</pre>
 
 <p>In <tt>style.css</tt>, four classes have been added that are used in the
 new search code of Geeklog 1.3.8. Instead of copying over the entire file, you
@@ -853,13 +847,9 @@ will probably only want to copy over the code for those four classes:
 changes to it. If it is not using that variable, then you will need to make one
 change to it. In that case, search your <tt>header.thtml</tt> for the link
 to the story submission form, i.e. something like</p>
-<pre>
-    &lt;a href="{site_url}/submit.php?type=story"&gt;
-</pre>
+<pre style="margin-left:4em;"><code>&lt;a href="{site_url}/submit.php?type=story"&gt;</code></pre>
 <p>and change it to read</p>
-<pre>
-    &lt;a href="{site_url}/submit.php?type=story{current_topic}"&gt;
-</pre>
+<pre style="margin-left:4em;"><code>&lt;a href="{site_url}/submit.php?type=story{current_topic}"&gt;</code></pre>
 
 
 <h3>Removed template files</h3>
@@ -993,9 +983,7 @@ Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
 
 <p><strong>Note:</strong> Theme authors are encouraged to specify a character
 set in the <tt>header.thtml</tt> of their themes like this:</p>
-<blockquote><code>
-&lt;meta http-equiv="Content-Type" content="text/html; charset={charset}"&gt;
-</code></blockquote>
+<pre style="margin-left:4em;"><code>&lt;meta http-equiv="Content-Type" content="text/html; charset={charset}"&gt;</code></pre>
 <p>Geeklog will replace the <code>{charset}</code> variable with the proper
 character set based on the currently used language file. Also make sure that
 you put the above line <em>before</em> the <code>&lt;title&gt;</code> tag in

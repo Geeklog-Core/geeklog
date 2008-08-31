@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Geeklog Documentation - Plugin Development</title>
@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a>
+<p><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Plugin Development</div>
 
 <h1>Plugin Development</h1>
@@ -87,12 +87,14 @@ help  understand  in the plugin process.
 <strong>Note about &lt;plugin name&gt;:</strong> You will see references to
 &lt;plugin name&gt; in all the functions below.&nbsp; The &lt;plugin
 name&gt; values will come from you the name of your plugin tarfile. All plugin
-tarfiles have a strict naming convention that they <em>must</em> follow and it is:
+tarfiles have a strict naming convention that they <em>must</em> follow and it is:</p>
 
-<blockquote>
-  &lt;plugin name&gt;_&lt;plugin version&gt;_&lt;geeklog version&gt;.tar.gz<br>
-  e.g. <tt>photos_1.0_1.3.tar.gz</tt>
-</blockquote>
+<p style="margin-left:4em;">
+  &lt;plugin name&gt;_&lt;plugin version&gt;_&lt;geeklog version&gt;.tar.gz
+</p>
+
+<p>e.g. <tt>photos_1.0_1.3.tar.gz</tt></p>
+
 
 <h2><a name="mod_functions">Moderation functions</a></h2>
 
@@ -115,8 +117,8 @@ must be named&nbsp; bookreviewssubmission.
 <p>If you want your plugin to be moderated like Geeklog stories
 and links then you must implement these functions.</p>
 
-<table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
-<caption align="bottom">Table 1. Moderation functions<br></caption>
+<table cellpadding="2" cellspacing="2" border="1" width="90%">
+<caption style="caption-side:bottom">Table 1. Moderation functions<br></caption>
 <tr>
   <th valign="top">Function</th>
   <th valign="top">Description of Function</th></tr>
@@ -154,8 +156,8 @@ and links then you must implement these functions.</p>
 that show up on every Geeklog page then you must implement these
 functions.</p>
 
-      <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 2. Admin and User functions</caption>
+      <table cellpadding="2" cellspacing="2" border="1" width="90%">
+        <caption style="caption-side:bottom">Table 2. Admin and User functions</caption>
           <tr>
             <th valign="top">Function</th>
             <th valign="top">Description of Function</th>
@@ -197,8 +199,8 @@ functions.</p>
 
 <p>If you want your plugin to be searchable, implement these functions.</p>
 
-      <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 3. Search functions</caption>
+      <table cellpadding="2" cellspacing="2" border="1" width="90%">
+        <caption style="caption-side:bottom">Table 3. Search functions</caption>
           <tr>
             <th valign="top">Function</th>
             <th valign="top">Description of Function</th>
@@ -225,8 +227,8 @@ functions.</p>
 engine, then you need to implement these functions in your plugin
 functions.inc file:</p>
 
-<table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-<caption align="bottom">Table 4. Comment functions</caption>
+<table cellpadding="2" cellspacing="2" border="1" width="90%">
+<caption style="caption-side:bottom">Table 4. Comment functions</caption>
   <tr>
     <th valign="top">Function</th>
     <th valign="top">Description of Function</th>
@@ -260,8 +262,8 @@ functions.inc file:</p>
 <p>If you want your plugin to show up on the stats page then you must
 implement this function.</p>
 
-      <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 5. Stats function</caption>
+      <table cellpadding="2" cellspacing="2" border="1" width="90%">
+        <caption style="caption-side:bottom">Table 5. Stats function</caption>
           <tr>
             <th valign="top">Function</th>
             <th valign="top">Description of Function</th>
@@ -281,8 +283,8 @@ Top  Ten Commented  Stories).</td>
 
 <p>If you want to give your plugin the ability to uninstall itself then you must implement this function.</p>
 
-      <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 6. Uninstall function</caption>
+      <table cellpadding="2" cellspacing="2" border="1" width="90%">
+        <caption style="caption-side:bottom">Table 6. Uninstall function</caption>
           <tr>
             <th valign="top">Function</th>
             <th valign="top">Description of Function</th>
@@ -299,8 +301,8 @@ The function should return <code>true</code> if the uninstall succeeded and <cod
 
 <p>For some plugins, it may be necessary to track creation and deletion of user accounts.</p>
 
-  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-    <caption align="bottom">Table 7. User functions</caption>
+  <table cellpadding="2" cellspacing="2" border="1" width="90%">
+    <caption style="caption-side:bottom">Table 7. User functions</caption>
       <tr>
         <th valign="top">Function</th>
         <th valign="top">Description of Function</th>
@@ -321,8 +323,8 @@ This function does not have a return value.</td>
 
 <p>Plugins can add blocks or individual items to the user profile.</p>
 
-  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
-    <caption align="bottom">Table 8. Profile Functions</caption>
+  <table cellpadding="2" cellspacing="2" border="1" width="90%">
+    <caption style="caption-side:bottom">Table 8. Profile Functions</caption>
       <tr>
         <th valign="top">Function</th>
         <th valign="top">Description of Function</th>
@@ -353,8 +355,8 @@ The function is expected to return the HTML for a block or an empty string.</td>
 
 <p>The following is a list of (optional) functions for misc. purposes.</p>
 
-  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
-    <caption align="bottom">Table 9. Misc. functions</caption>
+  <table cellpadding="2" cellspacing="2" border="1" width="90%">
+    <caption style="caption-side:bottom">Table 9. Misc. functions</caption>
       <tr>
         <th valign="top">Function</th>
         <th valign="top">Description of Function</th>
@@ -400,8 +402,8 @@ The function should return a concatenated string of all its extra header code.</
 
 <p>The following is a list of (optional) functions for syndication feed purposes.</p>
 
-  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
-    <caption align="bottom">Table 10. Feed functions</caption>
+  <table cellpadding="2" cellspacing="2" border="1" width="90%">
+    <caption style="caption-side:bottom">Table 10. Feed functions</caption>
       <tr>
         <th valign="top">Function</th>
         <th valign="top">Description of Function</th>
@@ -450,11 +452,11 @@ outlined  in this document.
 
 <h3>The plugin tarfile</h3>
 
-<p>All Geeklog plugin tarfiles should use the following naming convention:
+<p>All Geeklog plugin tarfiles should use the following naming convention:</p>
 
-<blockquote>
+<p style="margin-left:4em;">
 &lt;plugin name&gt;_&lt;plugin version&gt;_&lt;geeklog version&gt;.tar.gz
-</blockquote>
+</p>
 
 <h3>Descriptions</h3>
 <dl>

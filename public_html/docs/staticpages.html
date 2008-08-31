@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Geeklog Documentation - Static Pages Plugin</title>
@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a>
+<p><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Static Pages Plugin</div>
 
 <h1>Static Pages plugin</h1>
@@ -42,7 +42,7 @@
 
 <h3><a name="usage">Usage</a></h3>
 
-<p align="center"><em>The use of PHP in static pages may result in security issues if not used properly. Use this feature with care!</em></p>
+<p style="text-align:center"><em>The use of PHP in static pages may result in security issues if not used properly. Use this feature with care!</em></p>
 
 <p>The use of PHP has to be enabled for each individual static page. Below the content edit field, you will find a drop-down menu with the following options:</p>
 <ul>
@@ -67,7 +67,7 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>The static pages editor will let you change the page ID. For example, you may want to rename the ID for your "about" page from "20030313100131123" to "about", thus creating a URL like</p>
 
-<p align="center"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
+<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
 
 <p>which looks much nicer when quoted (and is easier to remember). You could further improve this by making use of Geeklog's <a href="#url">URL rewrite feature</a>.</p>
 
@@ -119,19 +119,19 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h2><a name="url">URL rewriting</a></h2>
 
-<p align="center"><em>Please note that this feature is considered experimental and is known not to work with IIS.</em></p>
+<p style="text-align:center"><em>Please note that this feature is considered experimental and is known not to work with IIS.</em></p>
 
 <p>Geeklog supports a form of URL rewriting, i.e. change the look of URLs such that they are more search engine friendly. For example, instead of</p>
 
-<p align="center"><tt>http://yoursite/staticpages/index.php?page=20030313100131123</tt></p>
+<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php?page=20030313100131123</tt></p>
 
 <p>the URL could look like this</p>
 
-<p align="center"><tt>http://yoursite/staticpages/index.php/20030313100131123</tt></p>
+<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/20030313100131123</tt></p>
 
 <p>Some search engines are known not to index pages when the URL includes characters like '?' and '='. You could further improve the chances of this page being indexed by <a href="#id">replacing the numeric page ID</a> with a word or expression (preferrably something that corresponds to the page's content), e.g.</p>
 
-<p align="center"><tt>http://yoursite/staticpages/index.php/about</tt></p>
+<p style="margin-left:4em;"><tt>http://yoursite/staticpages/index.php/about</tt></p>
 
 <p>To make use of URL rewriting, you will need to set the option "Enable URL Rewriting" to True in Geeklog's Configuration admin panel.</p>
 

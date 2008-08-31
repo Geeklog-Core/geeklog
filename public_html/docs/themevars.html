@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
   <title>Geeklog Documentation - Variables in Themes</title>
@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a>
+<p><a href="index.html" style="background:transparent"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
 <div class="menu"><a href="index.html">Geeklog Documentation</a> - Variables in Themes</div>
 
 <h1>Variables in Themes</h1>
@@ -43,9 +43,9 @@ created when you use an undefined variable.</p>
 <tt>header.thtml</tt> template file:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>site_url</code></td>
     <td><tt>http://www.example.com</tt></td>
     <td>The URL of your Geeklog site (the exact same URL you specified in
@@ -162,9 +162,9 @@ render stories for the index page as well as the content of the
 file (which is used to display a story on its own page).</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>site_url</code></td>
     <td><tt>http://www.example.com</tt></td>
     <td>The URL of your Geeklog site (the exact same URL you specified in
@@ -235,9 +235,9 @@ story is displayed on the index page <em>and</em> the body text of the story is
 <em>not</em> empty:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>lang_readmore</code></td>
     <td>read more</td>
     <td>The words "read more" in the user's preferred language.</td></tr>
@@ -281,9 +281,9 @@ story is displayed on the index page <em>and</em> the body text of the story is
 enabled and when comments have been made to the story already:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>comments_url</code></td>
     <td><tt>http://www.example.com/article.php<br>?story=20021022234959146#comments</tt></td>
     <td>URL of the comments section (when a story is displayed on a separate
@@ -309,9 +309,9 @@ enabled and when comments have been made to the story already:</p>
 when you allow the name of the story's author to be displayed:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>lang_contributed_by</code></td>
     <td>Contributed by:</td>
     <td>The text "Contributed by:" in the user's preferred language.</td></tr>
@@ -351,9 +351,9 @@ the story <em>and</em> the user has not disabled topic icons in his/her
 display preferences:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>story_anchortag_and_image</code></td>
     <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>Topic icon for the story's topic, enclosed in a link to the site's
@@ -388,9 +388,9 @@ display preferences:</p>
 permissions to edit a story:</p>
 
 <table border="1" width="100%" cellpadding="2">
-<tr><th width="8%">Variable</th>
-    <th width="29%">Example</th>
-    <th width="63%">Description</th></tr>
+<tr><th style="width:8%">Variable</th>
+    <th style="width:29%">Example</th>
+    <th style="width:63%">Description</th></tr>
 <tr><td><code>edit_link</code></td>
     <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
     <td>Link to open the story in the admin's story editor.</td></tr>
@@ -404,8 +404,6 @@ permissions to edit a story:</p>
     <td>edit</td>
     <td>The word "edit" in the user's preferred language.</td></tr>
 </table>
-
-<br><br>
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>

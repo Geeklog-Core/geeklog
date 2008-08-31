@@ -12,6 +12,7 @@ h1 {
 
 h2 {
   font-size: 1.2em;
+  padding-top: 1.2em;
 }
 
 h3 {
@@ -79,8 +80,8 @@ dt {
   background: #dddddd;
   color: black;
   padding:5px;
+  margin-top:4ex;
 }
-
 
 .comment {
   font-size: 80%;
