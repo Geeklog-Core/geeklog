@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.725 2008/08/17 14:16:02 mjervis Exp $
+// $Id: lib-common.php,v 1.726 2008/09/01 09:21:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1068,7 +1068,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'rdf_file', $rdf );
     $header->set_var( 'rss_url', $rdf );
 
-    $msg = $LANG01[67] . ' ' . $_CONF['site_name'];
+    $msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
 
     if( !empty( $_USER['username'] ))
     {
