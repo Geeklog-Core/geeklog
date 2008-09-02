@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- Prevent direct execution of the FCKeditor upload script (reported by t0pP8uZz)  [Dirk]
 - Renamed the "Restore" option in the Configuration to "Enable" [Dirk]
 - Provided better error handling for database backups (bug 0000714) [Mike]
 - Provided auto-detection of -left and -right overrides for any given block
