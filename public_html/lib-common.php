@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.726 2008/09/01 09:21:04 dhaun Exp $
+// $Id: lib-common.php,v 1.727 2008/09/02 19:08:56 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6550,17 +6550,32 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     {
         if($_CONF['rootdebug'] || SEC_inGroup('Root'))
         {
-            echo("
-                An error has occurred:<br>
-                $errno - $errstr @ $errfile line $errline<br>
-            <pre>");
+            echo('<h1>An error has occurred:</h1>');
+            if($_CONF['rootdebug']) {
+                echo('<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
+                        in your Geeklog configuration.</h2><p>If this is a production
+                        website you <strong><em>must disable</em></strong> this
+                        option once you have resolved any issues you are
+                        investigating.</p>');
+            } else {
+                echo('(This text is only displayed to users in the group \'Root\')<br>');
+            }
+            echo("$errno - $errstr @ $errfile line $errline<br>");
+            if(!SEC_inGroup('Root')) {
+                if('force' != ''.$_CONF['rootdebug']) {
+                    $errcontext = COM_rootDebugClean($errcontext);
+                } else {
+                    echo('<h2 style="color: red">Root Debug is set to "force", this
+                    means that passwords and session cookies are exposed in this
+                    message!!!</h2>');
+                }
+            }
+            echo('<pre>');
             ob_start();
             var_dump($errcontext);
             $errcontext = htmlspecialchars(ob_get_contents());
             ob_end_clean();
-            echo("$errcontext</pre>
-            (This text is only displayed to users in the group 'Root')
-            ");
+            echo("$errcontext</pre>");
             exit;
         }
     }
@@ -6613,6 +6628,37 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     }
 
     exit;
+}
+
+/**
+  * Recurse through the error context array removing/blanking password/cookie
+  * values in case the "for development" only switch is left on in a production
+  * environment.
+  *
+  * [Not fit for public consumption comments about what users who enable root
+  * debug in production should have done to them, and why making this change
+  * defeats the point of the entire root debug feature go here.]
+  *
+  * @param $array   Array of state info (Recursive array).
+  * @return Cleaned array
+  */
+function COM_rootDebugClean($array, $blank=false)
+{
+    $blankField = false;
+    while(list($key, $value) = each($array)) {
+        $lkey = strtolower($key);
+        if((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie')!== false)) {
+            $blankField = true;
+        } else {
+            $blankField = $blank;
+        }
+        if(is_array($value)) {
+            $array[$key] = COM_rootDebugClean($value, $blankField);
+        } elseif($blankField) {
+            $array[$key] = '[VALUE REMOVED]';
+        }
+    }
+    return $array;
 }
 
 /**

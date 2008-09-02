@@ -3,9 +3,12 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.1)
 ------------
 
+- If root debugging is enabled, hide anything in the array stack that has a key
+  containing 'cookie' or 'pass'. And added option to override this.
+  (bug #0000722) [Mike]
 - Prevent direct execution of the FCKeditor upload script (reported by t0pP8uZz)  [Dirk]
 - Renamed the "Restore" option in the Configuration to "Enable" [Dirk]
-- Provided better error handling for database backups (bug 0000714) [Mike]
+- Provided better error handling for database backups (bug #0000714) [Mike]
 - Provided auto-detection of -left and -right overrides for any given block
   template. This allows any block to auto-style to left and right for themes
   without the need for the theme to work it out, or talk to the database.
