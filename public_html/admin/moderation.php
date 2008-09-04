@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.123 2008/06/19 18:46:21 dhaun Exp $
+// $Id: moderation.php,v 1.124 2008/09/04 19:03:29 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -216,7 +216,7 @@ function commandcontrol($token)
 
     if (SEC_hasRights('story.edit')) {
         if ($_CONF['listdraftstories'] == 1) {
-            $retval .= draftlist ();
+            $retval .= draftlist ($token);
         }
     }
     if ($_CONF['usersubmission'] == 1) {
@@ -399,7 +399,7 @@ function userlist ($token)
 * thus publish the story.
 *
 */
-function draftlist ()
+function draftlist ($token)
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
@@ -438,6 +438,7 @@ function draftlist ()
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {
         $form_arr['bottom'] = '<input type="hidden" name="type" value="draft"' . XHTML . '>' . LB
+                . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
                 . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
                 . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
                 . '<p align="center"><input type="submit" value="'
