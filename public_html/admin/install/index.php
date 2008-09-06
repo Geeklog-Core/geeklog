@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.54 2008/09/06 13:18:50 dhaun Exp $
+// $Id: index.php,v 1.55 2008/09/06 14:46:24 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -1898,7 +1898,7 @@ switch ($mode) {
                 // See whether the file/directory is located in the default place or in public_html
                 $dbconfig_path = file_exists($gl_path . $dbconfig_file)
                                     ? $gl_path . $dbconfig_file
-                                    : $gl_path . 'public_html' . $dbconfig_file;
+                                    : $gl_path . 'public_html/' . $dbconfig_file;
             }
 
 
