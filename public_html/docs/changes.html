@@ -26,6 +26,10 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 <h4>Security related</h4>
 
 <ul>
+<li>The upload script for FCKeditor could be <a
+    href="http://www.geeklog.net/article.php/file-uploads">called directly</a>
+    to upload various media files (but not executable scripts), as reported
+    by t0pP8uZz.</li>
 <li>It was possible to view stories with a publication date in the future and
     stories that had the draft flag set if you knew their story ID.</li>
 <li>It was possible to post comments on unpublished stories if you knew their
@@ -42,16 +46,17 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
     the Chatterblock or Shoutbox.</li>
 <li>Fixed handling of security tokens (for CSRF protection) that prevented
     you from deleting comments on a story that had trackbacks.</li>
-<li>Also fixed: user submission queue, story submissions, MS SQL support.</li>
+<li>Other fixes were applied to the user submission queue, story submissions,
+    the list of draft stories and the support for MS SQL.</li>
 </ul>
 
 <h4>Fixes in the bundled Plugins</h4>
 
 <ul>
 <li>Calendar: Fixed display of events in the Upcoming Events block for the
-    current day (really this time ...)</li>
-<li>Links: Fixed SQL error when trying to change a category and new categories
-    silently overwriting existing categories with the same ID.</li>
+    current day (really this time ...).</li>
+<li>Links: Fixed SQL error when trying to change a category and fixed new
+    categories silently overwriting existing categories with the same ID.</li>
 <li>Static Pages: Fixed printer friendly version when <tt>url_rewrite</tt> is
     enabled.</li>
 </ul>
@@ -59,6 +64,7 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
 <h3>New Features and Improvements</h3>
 
 <ul>
+<li>Includes <a href="http://fckeditor.net/">FCKeditor</a> 2.6.3</li>
 <li>In multi-language setups, blocks can now also be multi-lingual.</li>
 <li>New "Subscribe to ..." feed story option when there is a separate feed for
     a story's topic.</li>
@@ -172,6 +178,11 @@ release.</p>
 <h3>Spam Protection</h3>
 
 <p>With this release we are finally removing support for the <a href="http://www.geeklog.net/article.php/mt-blacklist-discontinued">discontinued</a> MT-Blacklist. In its place, we are now using a system called Spam Link Verification (SLV) run by Russ Jones at <a href="http://www.linksleeve.org/">www.linksleeve.org</a>. SLV could be described as a community-driven, automatically updated blacklist. See the documentation of the <a href="spamx.html" rel="nofollow">Spam-X plugin</a> for details.</p>
+
+
+<h2><a name="changes140sr6">Geeklog 1.4.0sr6</a></h2>
+
+<p>MustLive pointed out a possible <a href="http://en.wikipedia.org/wiki/XSS" title="Click to look up 'XSS' on Wikipedia" style="text-decoration: none; color: black; border-bottom: 1px dotted black;">XSS</a> in the form to email an article to a friend that we're fixing with this release.</p>
 
 
 <h2><a name="changes140sr5-1">Geeklog 1.4.0sr5-1</a></h2>
