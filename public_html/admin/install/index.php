@@ -37,7 +37,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.53 2008/08/14 16:51:59 mjervis Exp $
+// $Id: index.php,v 1.54 2008/09/06 13:18:50 dhaun Exp $
 
 // this should help expose parse errors even when
 // display_errors is set to Off in php.ini
@@ -779,9 +779,9 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('site_mail', urldecode($site_mail));
                             $config->set('noreply_mail', urldecode($noreply_mail));
                             $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
-
-                            INST_checkPlugins();
                         }
+
+                        INST_checkPlugins();
 
                         // Great, installation is complete, redirect to success page
                         header('Location: success.php?type=upgrade&language=' . $language);
