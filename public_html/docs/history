@@ -1,8 +1,9 @@
 Geeklog History/Changes:
 
-??? ??, 2008 (1.5.1)
-------------
+Sep 7, 2008 (1.5.1)
+-----------
 
+- Added missing slash in the install script (bug #0000715) [Dirk]
 - CSRF token not passed to draft list (bug #0000726) [Ted Powell]
 - If root debugging is enabled, hide anything in the array stack that has a key
   containing 'cookie' or 'pass'. And added option to override this.
