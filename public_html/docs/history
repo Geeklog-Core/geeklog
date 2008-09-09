@@ -1,6 +1,12 @@
 Geeklog History/Changes:
 
-Sep 7, 2008 (1.5.1)
+Sep ??, 2008 (1.5.1)
+------------
+
+- Updated Japanese language files, provided by the Geeklog.jp group
+
+
+Sep 7, 2008 (1.5.1rc1)
 -----------
 
 - Added missing slash in the install script (bug #0000715) [Dirk]

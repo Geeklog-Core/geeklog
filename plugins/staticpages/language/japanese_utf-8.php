@@ -25,14 +25,15 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:  $LANG - variable name
-#               XX    - file id number
-#               YY    - phrase id number
+# $LANGXX[YY]:	$LANG - variable name
+#		  	XX - file id number
+#			YY - phrase id number
 ###############################################################################
 
 $LANG_STATIC = array(
@@ -61,28 +62,28 @@ $LANG_STATIC = array(
     'preview' => 'プレビュー',
     'delete' => '削除',
     'cancel' => 'キャンセル',
-    'access_denied' => '申し訳ありませんが，先にログインしてください。',
+    'access_denied' => '申し訳ありませんが、先にログインしてください。',
     'access_denied_msg' => 'チェックするとアクセス権限がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
     'no_title_or_content' => '<b>タイトル</b>と<b>内容</b>を記入してください。',
     'no_such_page_anon' => 'ログインしてください。',
-    'no_page_access_msg' => "この問題は，まだログインしていないか，そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか，適切なアクセス権を管理者から取得してください。",
+    'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF["site_name"]}）のメンバーではないためだと考えられます。{$_CONF["site_name"]}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br' . XHTML . '>注意：このオプションを有効にすると，あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には，あらかじめ管理画面「グループ:Static Page Admin」で，権限「staticpages.PHP」にチェックしてください。PHPを使う場合，通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
+    'php_warn' => '<br' . XHTML . '>注意：このオプションを有効にすると、あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
     'exit_msg' => 'ログイン要求: ',
-    'exit_info' => 'チェックすると，閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
-    'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか，権限がないかのいずれかです。',
+    'exit_info' => 'チェックすると、閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか、権限がないかのいずれかです。',
     'stats_headline' => '静的ページ（上位10件）',
     'stats_page_title' => 'タイトル',
     'stats_hits' => '閲覧数',
-    'stats_no_hits' => '静的ページがないか，閲覧者がいないかのどちらかです。',
+    'stats_no_hits' => '静的ページがないか、閲覧者がいないかのどちらかです。',
     'id' => 'ID',
     'duplicate_id' => '指定したIDはすでに使われています。別のIDをご使用ください。',
-    'instructions' => '静的ページを編集・削除する場合は各ページの先頭の編集アイコンをクリックしてください。静的ページを閲覧する場合は，閲覧したいページのタイトルをクリックしてください。新しい静的ページを作成する場合は「新規作成」をクリックしてください。静的ページのコピーは[C]をクリックしてください。',
+    'instructions' => '静的ページの編集は編集アイコンをクリック、静的ページのコピーはコピーアイコンをクリックしてください。静的ページの作成は上の「新規作成」をクリックしてください。',
     'centerblock' => 'センターエリア: ',
-    'centerblock_msg' => 'チェックすると，トップページまたは話題のトップページのセンターエリアに表示されます。表示はIDでソートされます。',
+    'centerblock_msg' => 'チェックすると、トップページまたは話題のトップページのセンターエリアに表示されます。',
     'topic' => '話題: ',
     'position' => '表示エリア: ',
     'all_topics' => 'すべて',
@@ -98,24 +99,27 @@ $LANG_STATIC = array(
     'centerblock_bottom' => '下部',
     'centerblock_entire' => 'ページ全体',
     'inblock_msg' => 'ブロックで囲む: ',
-    'inblock_info' => 'タイトルが表示され，コンテンツがブロックで囲まれます。',
+    'inblock_info' => 'タイトルが表示され、コンテンツがブロックで囲まれます。',
     'title_edit' => '編集',
     'title_copy' => 'コピーを作成',
     'title_display' => 'ページを表示する',
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => '静的ページでPHPは使用しない設定になっています。詳細については <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">関連ドキュメント</a> をご覧下さい。',
     'printable_format' => '印刷用フォーマット',
+    'edit' => '編集',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
     'submit' => '登録'
 );
 
+
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
+
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
@@ -150,7 +154,7 @@ $LANG_fs['staticpages'] = array(
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     9 => array('作成した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'Homeを表示する' => 'home', '管理画面TOPを表示する' => 'admin'),
