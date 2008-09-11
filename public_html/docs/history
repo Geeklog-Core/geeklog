@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Sep ??, 2008 (1.5.1)
 ------------
 
+- Fixed problem with the MySQL class not recognizing UTF-8 when the character
+  set name was written in uppercase (bug #0000731) [Dirk]
+
 - Updated Japanese language files, provided by the Geeklog.jp group
 
 

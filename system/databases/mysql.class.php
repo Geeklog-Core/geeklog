@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.27 2007/11/25 06:59:56 ospiess Exp $
+// $Id: mysql.class.php,v 1.28 2008/09/11 19:07:42 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -173,7 +173,7 @@ class database {
         $this->_pass = $dbpass;
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
-        $this->_charset = $charset;
+        $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
 
         $this->_connect();
