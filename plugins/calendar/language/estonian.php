@@ -2,7 +2,7 @@
 
 ###############################################################################
 # estonian.php
-# This is the estonian language page for the Geeklog Calendar Plug-in!
+# This is the Estonian language file for the Geeklog Calendar plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -64,7 +64,7 @@ $LANG_CAL_1 = array(
     24 => 'Sündmused',
     25 => 'Pole tulevasi sündmusi',
     26 => 'Lisa sündmus',
-    27 => "Lisades {$_CONF['site_name']} lehele sündmuse, paigutub see peakalendrisse, kust kasutajad saavad soovi korral lisada selle oma enda isiklikku kalendrisse. Lehe kalender <b>ei ole </b> mõeldud teieisiklike sündmuste, nagu sünnipäevade või tähtpäevade jaoks.<br" . XHTML . "><br" . XHTML . ">Pärast sündmuse lisamist saadetakse see meie administraatoritele. Administraatorite poolt kinnitatud sündmus ilmub peakalendrisse.",
+    27 => "Lisades {$_CONF['site_name']} lehele sündmuse, paigutub see peakalendrisse, kust kasutajad saavad soovi korral lisada selle oma enda isiklikku kalendrisse. Lehe kalender <b>ei ole </b> mõeldud teie isiklike sündmuste, nagu sünnipäevade või tähtpäevade jaoks.<br" . XHTML . "><br" . XHTML . ">Pärast sündmuse lisamist saadetakse see meie administraatoritele. Administraatorite poolt kinnitatud sündmus ilmub peakalendrisse.",
     28 => 'Tiitel',
     29 => 'Lõpuaeg',
     30 => 'Algusaeg',
@@ -223,11 +223,11 @@ $LANG_fs['calendar'] = array(
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Jah' => 1, 'Ei' => 0),
+    1 => array('Jah' => true, 'Ei' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    9 => array('Suuna sündmuste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita kalendrit' => 'plugin', 'Näiga avalehte' => 'home', 'Näita admini lehte' => 'admin'),
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );
 
 ?>

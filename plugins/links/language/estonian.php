@@ -2,7 +2,7 @@
 
 ###############################################################################
 # estonian.php
-# This is the estonian language page for the Geeklog links Plug-in
+# This is the Estonian language file for the Geeklog Link plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -102,17 +102,17 @@ $PLG_links_MESSAGE1 = "Täname sind {$_CONF['site_name']} lehele lingi sisestamis
 $PLG_links_MESSAGE2 = 'Sinu link on edukalt salvestatud.';
 $PLG_links_MESSAGE3 = 'Link on edukalt kustutatud';
 $PLG_links_MESSAGE4 = "Täname sind {$_CONF['site_name']}  lehele lingi lisamise eest. Sa võid seda linki juba näha <a href=\"{$_CONF['site_url']}/links/\">linkide osas.</a>";
-$PLG_links_MESSAGE5 = 'You do not have sufficient access rights to view this category.';
-$PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
-$PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
-$PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
-$PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
-$PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
-$PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
-$PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
-$PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
-$PLG_links_MESSAGE16 = 'No such category exists.';
-$PLG_links_MESSAGE17 = 'This category id is already in use.';
+$PLG_links_MESSAGE5 = 'Sul pole piisavalt ligipääsuõigusi selle kategooria vaatamiseks.';
+$PLG_links_MESSAGE6 = 'Sul pole piisavalt õigusi selle kategooria toimetamiseks.';
+$PLG_links_MESSAGE7 = 'Palun sisesta kategooria nimi ja kirjeldus.';
+$PLG_links_MESSAGE10 = 'Sinu kategooria on edukalt salvestatud.';
+$PLG_links_MESSAGE11 = 'Sa ei saa kategooria ID-ks määrata "site" või "user" - need on reserveeritud sisemiseks kasutamiseks.';
+$PLG_links_MESSAGE12 = 'Sa proovid teha vanemkategooriast selle kategooria alamkategooria alamkategooriat. Nii tekiks orbkategooria. Palun vii enne alamkategooriad kõrgemale tasemele.';
+$PLG_links_MESSAGE13 = 'Kategooria on edukalt kustutatud.';
+$PLG_links_MESSAGE14 = 'Kategooria sisaldab linke või alamkategooriaid. Eemalda need enne.';
+$PLG_links_MESSAGE15 = 'Sul pole piisavalt õigusi, et seda kategooriat kustutada.';
+$PLG_links_MESSAGE16 = 'Pole sellist kategooriat.';
+$PLG_links_MESSAGE17 = 'See kategooria-ID on juba kasutuses.';
 
 // Messages for the plugin upgrade
 $PLG_links_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
@@ -252,10 +252,10 @@ $LANG_fs['links'] = array(
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('Jah' => 1, 'Ei' => 0),
+    1 => array('Jah' => true, 'Ei' => false),
+    9 => array('Suuna edasi lingitud lehele' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita Admini lehte' => 'admin'),
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );
 
 ?>

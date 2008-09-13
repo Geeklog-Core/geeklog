@@ -2,7 +2,7 @@
 
 ###############################################################################
 # estonian_utf-8.php
-# This is the estonian language page for the Geeklog Polls Plug-in
+# This is the Estonian language file for the Geeklog Polls plugin
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -58,7 +58,7 @@ $LANG_POLLS = array(
     'upgrade1' => 'Installeerisid küsitluste plugina uue versiooni. Palun ',
     'upgrade2' => 'uuenda',
     'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti',
-    'start_poll' => 'Start Poll'
+    'start_poll' => 'Käivita küsitlus'
 );
 
 ###############################################################################
@@ -144,11 +144,11 @@ $LANG_fs['polls'] = array(
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
-    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('Jah' => 1, 'Ei' => 0),
+    1 => array('Jah' => true, 'Ei' => false),
+    2 => array('Nagu sisestatud' => 'submitorder', 'Häälte järgi' => 'voteorder'),
+    9 => array('Suuna küsitluste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita administreerimislehte' => 'admin'),
+        12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );
 
 ?>
