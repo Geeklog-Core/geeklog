@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.269 2008/06/07 12:41:44 dhaun Exp $
+// $Id: story.php,v 1.270 2008/09/13 07:26:43 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -382,7 +382,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var ('delete_option_no_confirmation',
                                    sprintf ($delbutton, ''));
     }
-    if ($mode == 'editsubmission') {
+    if (($mode == 'editsubmission') || ($story->type == 'submission')) {
         $story_templates->set_var ('submission_option',
                 '<input type="hidden" name="type" value="submission"' . XHTML . '>');
     }
