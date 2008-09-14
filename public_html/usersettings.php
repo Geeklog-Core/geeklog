@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.177 2008/08/15 18:38:57 blaine Exp $
+// $Id: usersettings.php,v 1.178 2008/09/14 17:13:35 dhaun Exp $
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
@@ -863,7 +863,7 @@ function saveuser($A)
     }
 
     // If not set or possibly removed from template - initialize variable
-    if (!isset($A['cookime'])) {
+    if (!isset($A['cooktime'])) {
         $A['cooktime'] = 0;
     } else {
         $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
