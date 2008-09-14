@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Sep ??, 2008 (1.5.1)
 ------------
 
+- Fixed bug with HTML Encoding of default comment title for articles
+  (bug #0000737) [Mike]
 - Fixed another case where a duplicate of a story submission was left in the
   submission queue after approving the story [Mike]
 - Fixed problem with the MySQL class not recognizing UTF-8 when the character
