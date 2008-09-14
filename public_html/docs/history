@@ -1,8 +1,10 @@
 Geeklog History/Changes:
 
-Sep ??, 2008 (1.5.1)
+Sep 2?, 2008 (1.5.1)
 ------------
 
+- Fixed failure to switch language with new query highlighting URLs
+  (bug #0000733) [Dirk]
 - Fixed bug with HTML Encoding of default comment title for articles
   (bug #0000737) [Mike]
 - Fixed another case where a duplicate of a story submission was left in the
