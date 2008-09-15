@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.169 2008/07/04 15:59:19 dhaun Exp $
+// $Id: users.php,v 1.170 2008/09/15 18:26:17 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -489,7 +489,8 @@ function createuser ($username, $email, $email_conf)
     }
 
     if (COM_isEmail ($email) && !empty ($username) && ($email === $email_conf)
-            && !USER_emailMatches ($email, $_CONF['disallow_domains'])) {
+            && !USER_emailMatches ($email, $_CONF['disallow_domains'])
+            && (strlen ($username) <= 16)) {
 
         $ucount = DB_count ($_TABLES['users'], 'username',
                             addslashes ($username));
@@ -562,7 +563,7 @@ function createuser ($username, $email, $email_conf)
         $retval .= COM_siteFooter();
     } else { // invalid username or email address
 
-        if (empty ($username)) {
+        if ((empty ($username)) || (strlen($username) > 16)) {
             $msg = $LANG01[32]; // invalid username
         } else {
             $msg = $LANG04[18]; // invalid email address
