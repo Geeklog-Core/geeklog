@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.178 2008/09/14 17:13:35 dhaun Exp $
+// $Id: usersettings.php,v 1.179 2008/09/15 18:29:39 mjervis Exp $
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
@@ -931,29 +931,6 @@ function saveuser($A)
         }
     }
 
-    if (!empty($A['passwd'])) {
-        if (($A['passwd'] == $A['passwd_conf']) &&
-                (SEC_encryptPassword($A['old_passwd']) == $_USER['passwd'])) {
-            $passwd = SEC_encryptPassword($A['passwd']);
-            DB_change($_TABLES['users'], 'passwd', "$passwd",
-                      "uid", $_USER['uid']);
-            if ($A['cooktime'] > 0) {
-                $cooktime = $A['cooktime'];
-            } else {
-                $cooktime = -1000;
-            }
-            setcookie($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                      $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                      $_CONF['cookiesecure']);
-        } elseif (SEC_encryptPassword($A['old_passwd']) != $_USER['passwd']) {
-            return COM_refresh ($_CONF['site_url']
-                                . '/usersettings.php?msg=68');
-        } elseif ($A['passwd'] != $A['passwd_conf']) {
-            return COM_refresh ($_CONF['site_url']
-                                . '/usersettings.php?msg=67');
-        }
-    }
-
     // a quick spam check with the unfiltered field contents
     $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1>'
              . '<p>'. COM_createLink($A['homepage'], $A['homepage'])
@@ -985,6 +962,30 @@ function saveuser($A)
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?msg=56');
     } else {
+        
+        if (!empty($A['passwd'])) {
+            if (($A['passwd'] == $A['passwd_conf']) &&
+                    (SEC_encryptPassword($A['old_passwd']) == $_USER['passwd'])) {
+                $passwd = SEC_encryptPassword($A['passwd']);
+                DB_change($_TABLES['users'], 'passwd', "$passwd",
+                          "uid", $_USER['uid']);
+                if ($A['cooktime'] > 0) {
+                    $cooktime = $A['cooktime'];
+                } else {
+                    $cooktime = -1000;
+                }
+                setcookie($_CONF['cookie_password'], $passwd, time() + $cooktime,
+                          $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                          $_CONF['cookiesecure']);
+            } elseif (SEC_encryptPassword($A['old_passwd']) != $_USER['passwd']) {
+                return COM_refresh ($_CONF['site_url']
+                                    . '/usersettings.php?msg=68');
+            } elseif ($A['passwd'] != $A['passwd_conf']) {
+                return COM_refresh ($_CONF['site_url']
+                                    . '/usersettings.php?msg=67');
+            }
+        }
+        
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }

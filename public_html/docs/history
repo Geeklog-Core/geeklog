@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Sep 2?, 2008 (1.5.1)
 ------------
 
+- Fix for first change of password issue (bug #0000724) [Mike]
 - Fixed failure to switch language with new query highlighting URLs
   (bug #0000733) [Dirk]
 - Fixed bug with HTML Encoding of default comment title for articles
