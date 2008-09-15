@@ -26,7 +26,7 @@
   /*  3. This notice may not be removed or altered from any source            */
   /*     distribution.                                                        */
   /****************************************************************************/
-  // $Id: atom.feed.class.php,v 1.13 2008/02/19 06:49:02 mjervis Exp $
+  // $Id: atom.feed.class.php,v 1.14 2008/09/15 08:15:26 dhaun Exp $
 
   /**
     * Provides feed handlers for Atom 0.3 and Atom 1.0
@@ -447,3 +447,4 @@
       }
     }
   }
+?>
