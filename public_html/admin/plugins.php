@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.83 2008/06/07 12:41:44 dhaun Exp $
+// $Id: plugins.php,v 1.84 2008/09/18 19:09:38 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -249,8 +249,8 @@ function show_newplugins ($token)
     $retval = '';
     $data_arr = array();
     while (($dir = @readdir ($fd)) == TRUE) {
-        if (is_dir ($plugins_dir . $dir) && ($dir <> '.') && ($dir <> '..') &&
-                ($dir <> 'CVS') && (substr ($dir, 0 , 1) <> '.')) {
+        if (($dir <> '.') && ($dir <> '..') && ($dir <> 'CVS') &&
+                (substr($dir, 0 , 1) <> '.') && is_dir($plugins_dir . $dir)) {
             clearstatcache ();
             // Check and see if this plugin is installed - if there is a record.
             // If not then it's a new plugin
