@@ -30,7 +30,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ################################################################################
-# Last Update 2008/06/14 by Geeklog.jp group  - info AT geeklog DOT jp
+# Last Update 2008/09/21 by Geeklog.jp group  - info AT geeklog DOT jp
 
 $LANG_CHARSET = 'utf-8';
 
@@ -1068,7 +1068,7 @@ $LANG33 = array(
     34 => '件',
     35 => '時間以内',
     36 => 'フィードのタイプを選択してください。',
-    37 => 'どのフィードを作成するか，Geeklog（記事）とフィードに対応するプラグインから選んでください。',
+    37 => 'どのフィードを作成するか、Geeklog（記事）とフィードに対応するプラグインから選んでください。',
     38 => 'エラー: 入力していない項目があります。',
     39 => 'フィードのタイトル、詳細、ファイル名を入力してください。',
     40 => 'エントリ数または、取得する時間を入力してください。',
@@ -1721,7 +1721,7 @@ $LANG_confignames['Core'] = array(
     'show_topic_icon' => "話題アイコン表示設定の初期値",
     'draft_flag' => "ドラフト設定の初期値",
     'frontpage' => "トップページ配置の初期値",
-    'hide_no_news_msg' => "記事がない場合のメッセージ表示",
+    'hide_no_news_msg' => "記事がない場合のメッセージを表示しない",
     'hide_main_page_navigation' => "ページナビゲーションを表示しない",
     'onlyrootfeatures' => "Rootユーザのみ注目記事を設定",
     'aftersave_story' => "記事保存後の画面遷移",
