@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# slovenian.php - version 1.4.1
+# slovenian_utf-8.php - version 1.4.1
 # This is the slovenian language page for the Geeklog Polls Plug-in!
 # language file for geeklog version 1.4.1 beta by mb
 # gape@gape.org ; za pripombe, predloge ipd ... piši na email
@@ -58,7 +58,7 @@ $LANG_POLLS = array(
     'upgrade1' => 'You installed a new version of the Polls plugin. Please',
     'upgrade2' => 'upgrade',
     'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.',
-    'start_poll' => 'Start Poll'
+    'start_poll' => 'Začni anketo'
 );
 
 ###############################################################################

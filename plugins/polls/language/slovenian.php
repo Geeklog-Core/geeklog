@@ -58,7 +58,7 @@ $LANG_POLLS = array(
     'upgrade1' => 'You installed a new version of the Polls plugin. Please',
     'upgrade2' => 'upgrade',
     'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.',
-    'start_poll' => 'Start Poll'
+    'start_poll' => 'Zaèni anketo'
 );
 
 ###############################################################################
