@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Sep 2?, 2008 (1.5.1)
 ------------
 
+- Saving a story as someone other than the owner will revert the story to your
+  ownership. (bug #0000742) [Mike]
 - Fixed searching for non-installed plugins when open_basedir restrictions are
   in effect (bug #0000741)
 - Fix for first change of password issue (bug #0000724) [Mike]
