@@ -550,7 +550,7 @@ $LANG11 = array(
     3 => 'Za tisk prijazna stran',
     4 => 'Dodatne možnosti',
     5 => 'Èlanek v formatu PDF',
-    6 => 'Subscribe to \'%s\''
+    6 => 'Obvesti me o komentarjih na \'%s\''
 );
 
 ###############################################################################
@@ -1078,9 +1078,9 @@ $LANG33 = array(
     50 => "Glede na url strani ({$_CONF['site_url']})",
     51 => 'Izbrano ime datoteke že uporablja druga združena vsebina. Prosim izberi drugega.',
     52 => 'Napaka: Ime datoteke že obstaja.',
-    53 => 'All Frontpage Stories',
-    54 => 'Please select the type of feed to create.',
-    55 => 'Articles'
+    53 => 'Vsi èlanki glavne strani',
+    54 => 'Prosim izberi tip združene vsebine (feed), ki naj ga ustvarim.',
+    55 => 'Èlanki'
 );
 
 ###############################################################################
@@ -1261,8 +1261,11 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Zadnjih 10 varnostnih kopij',
     'do_backup' => 'Naredi varnostno kopijo',
     'backup_successful' => 'Varnostno shranjevanje baze podatkov je bilo uspešno.',
-    'db_explanation' => 'Èe hoèeš ustvariti novo varnostno kopijo baze podatkov sistema Geeklog , klikni "Ustvari" zgoraj.',
-    'not_found' => "Napaèna pot ali pa orodje mysqldump ni izvršljivo.<br" . XHTML . ">Preveri definicijo <strong>\$_DB_mysqldump_path</strong> v config.php.<br" . XHTML . ">Spremenljivka je trenutno definirana kot: <var>{$_DB_mysqldump_path}</var>",
+    'db_explanation' => 'Èe hoèeš ustvariti novo varnostno kopijo baze podatkov sistema Geeklog , klikni "Ustvari" zgoraj.',    
+    'not_found' => "Napaèna pot ali pa orodje mysqldump ni izvršljivo.<br" 
+        . XHTML . ">Preveri definicijo <strong>\$_DB_mysqldump_path</strong> v Nastavitvah.<br" 
+        . XHTML . '> Preveri <a href="http://www.php.net/ manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a> nastavitev v PHP nastavitvah.<br'
+        . XHTML . ">Pot je trenutno definirana kot: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Varnostno kopiranje neuspešno: Velikost datoteke je 0 bajtov',
     'path_not_found' => "{$_CONF['backup_path']} ne obstaja ali pa ni direktorij",
     'no_access' => "NAPAKA: Direktorij {$_CONF['backup_path']} ni dosegljiv.",
@@ -1586,7 +1589,8 @@ $LANG_CONFIG = array(
     'reset_form' => 'Ponastavi obrazec',
     'changes_made' => 'Spremembe so bile uspešno izvedene nad',
     'title' => 'Upravljavec nastavitev',
-    'disable' => 'Click to disable this option'
+    'disable' => 'Klikni da onemogoèiš to izbiro',
+    'enable' => 'Omogoèi'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1856,7 +1860,7 @@ $LANG_configselects['Core'] = array(
     15 => array('Po zaporednih številkah' => 'sortnum', 'Po abecedi' => 'alpha'),
     16 => array('Prijava ni potrebna' => 0, 'Samo napredno iskanje' => 1, 'Preprosto in napredno iskanje' => 2),
     17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1),
-    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
+    18 => array('Onemogoèeno' => 0, 'Omogoèeno (Popolno ujemanje)' => 1, 'Omogoèeno (Zaèetek besede)' => 2, 'Omogoèeno (Del besede)' => 3)
 );
 
 ?>
