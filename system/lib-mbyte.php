@@ -29,9 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-mbyte.php,v 1.20 2008/02/16 16:45:03 dhaun Exp $
+// $Id: lib-mbyte.php,v 1.21 2008/09/21 08:37:11 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'lib-mbyte.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-mbyte.php') !== false) {
     die('This file can not be used on its own!');
 }
 

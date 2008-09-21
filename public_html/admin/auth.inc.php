@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.39 2008/03/09 17:05:00 dhaun Exp $
+// $Id: auth.inc.php,v 1.40 2008/09/21 08:37:09 dhaun Exp $
 
 // this file can't be used on its own
-if (strpos($_SERVER['PHP_SELF'], 'auth.inc.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'auth.inc.php') !== false) {
     die('This file can not be used on its own.');
 }
 

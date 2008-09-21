@@ -33,10 +33,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-story.php,v 1.132 2008/09/20 08:20:54 mjervis Exp $
+// $Id: lib-story.php,v 1.133 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-story.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-story.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 require_once $_CONF['path_system'] . '/classes/story.class.php';

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.53 2008/08/14 16:52:02 mjervis Exp $
+// $Id: lib-database.php,v 1.54 2008/09/21 08:37:11 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -38,8 +38,8 @@
 * NOTE: As of Geeklog 1.3.5 you should not have to edit this file any more.
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-database.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-database.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 // +---------------------------------------------------------------------------+

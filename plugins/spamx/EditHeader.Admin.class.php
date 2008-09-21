@@ -11,10 +11,10 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.10 2008/05/23 08:59:12 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.11 2008/09/21 08:37:08 dhaun Exp $
 */
 
-if (strpos($_SERVER['PHP_SELF'], 'EditHeader.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditHeader.Admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

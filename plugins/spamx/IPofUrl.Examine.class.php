@@ -9,17 +9,17 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: IPofUrl.Examine.class.php,v 1.5 2006/06/25 08:40:54 dhaun Exp $
+* $Id: IPofUrl.Examine.class.php,v 1.6 2008/09/21 08:37:08 dhaun Exp $
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'IPofUrl.Examine.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'IPofUrl.Examine.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
 * Include Abstract Examine Class
 */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
 * html_entity_decode is only available as of PHP 4.3.0

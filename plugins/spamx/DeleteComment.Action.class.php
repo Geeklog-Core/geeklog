@@ -9,17 +9,17 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: DeleteComment.Action.class.php,v 1.6 2006/08/22 17:57:54 dhaun Exp $
+ * $Id: DeleteComment.Action.class.php,v 1.7 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos ($_SERVER['PHP_SELF'], 'DeleteComment.Action.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'DeleteComment.Action.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
  * Include Abstract Action Class
  */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
  * Action Class which just discards comment

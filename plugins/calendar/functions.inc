@@ -34,10 +34,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.94 2008/08/03 17:43:55 dhaun Exp $
+// $Id: functions.inc,v 1.95 2008/09/21 08:37:07 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
+    die('This file can not be used on its own.');
 }
 
 $plugin_path = $_CONF['path'] . 'plugins/calendar/';

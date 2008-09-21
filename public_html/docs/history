@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Sep 2?, 2008 (1.5.1)
 ------------
 
+- Fixed protection against direct execution in various include files which may
+  have failed on non-case sensitive file systems (reported by Mark Evans) [Dirk]
 - Saving a story as someone other than the owner will revert the story to your
   ownership. (bug #0000742) [Mike]
 - Fixed searching for non-installed plugins when open_basedir restrictions are
@@ -19,7 +21,7 @@ Sep 2?, 2008 (1.5.1)
 
 - Updated Estonian language files, provided by Artur Räpp
 - Updated Japanese language files, provided by the Geeklog.jp group
-- Updated Slovenian language file, provided by gape
+- Updated Slovenian language files, provided by gape
 
 
 Sep 7, 2008 (1.5.1rc1)

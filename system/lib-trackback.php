@@ -29,9 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-trackback.php,v 1.51 2008/05/23 11:23:43 dhaun Exp $
+// $Id: lib-trackback.php,v 1.52 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'lib-trackback.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-trackback.php') !== false) {
     die('This file can not be used on its own!');
 }
 

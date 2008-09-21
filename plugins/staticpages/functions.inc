@@ -34,9 +34,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.126 2008/08/28 09:50:13 dhaun Exp $
+// $Id: functions.inc,v 1.127 2008/09/21 08:37:08 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
     die('This file can not be used on its own.');
 }
 

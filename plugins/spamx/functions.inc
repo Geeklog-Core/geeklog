@@ -10,10 +10,10 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.36 2008/05/31 07:55:08 dhaun Exp $
+ * $Id: functions.inc,v 1.37 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos($_SERVER['PHP_SELF'], 'functions.inc') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
     die ('This file can not be used on its own.');
 }
 

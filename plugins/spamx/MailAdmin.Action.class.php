@@ -9,17 +9,17 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: MailAdmin.Action.class.php,v 1.14 2008/01/26 17:17:41 dhaun Exp $
+ * $Id: MailAdmin.Action.class.php,v 1.15 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos ($_SERVER['PHP_SELF'], 'MailAdmin.Action.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'MailAdmin.Action.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
  * Include Abstract Action Class
  */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
  * Action Class which emails the spam post to the site admin

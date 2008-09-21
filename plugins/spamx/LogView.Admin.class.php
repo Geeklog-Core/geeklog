@@ -9,14 +9,14 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: LogView.Admin.class.php,v 1.10 2007/11/25 06:56:05 ospiess Exp $
+ * $Id: LogView.Admin.class.php,v 1.11 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos ($_SERVER['PHP_SELF'], 'LogView.Admin.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'LogView.Admin.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
-require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
 class LogView extends BaseAdmin {
     /**

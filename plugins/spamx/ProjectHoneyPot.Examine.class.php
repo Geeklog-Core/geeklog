@@ -34,16 +34,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: ProjectHoneyPot.Examine.class.php,v 1.3 2008/02/02 20:03:06 dhaun Exp $
+// $Id: ProjectHoneyPot.Examine.class.php,v 1.4 2008/09/21 08:37:08 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'ProjectHoneyPot.Examine.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'ProjectHoneyPot.Examine.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
 * Include Abstract Examine Class
 */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 define('HTTP_BL_SEARCH_ENGINE',        0);
 define('HTTP_BL_SUSPICIOUS',           1);

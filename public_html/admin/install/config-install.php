@@ -29,10 +29,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config-install.php,v 1.32 2008/08/05 17:52:16 dhaun Exp $
+// $Id: config-install.php,v 1.33 2008/09/21 08:37:09 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'config-install.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 function install_config()

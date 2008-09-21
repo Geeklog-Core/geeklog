@@ -2,16 +2,16 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | openidhelper.class.php                                                    |
 // |                                                                           |
 // | OpenID helper classes                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007 by the following authors:                              |
+// | Copyright (C) 2007-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Choplair         - chopinou AT choplair DOT org                  |
-// |          Dirk Haun        - dirk AT haun-online DOT de
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,9 +30,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: openidhelper.class.php,v 1.1 2007/05/26 19:31:59 dhaun Exp $
+// $Id: openidhelper.class.php,v 1.2 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'openidhelper.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'openidhelper.class.php') !== false) {
     die('This file can not be used on its own.');
 }
 

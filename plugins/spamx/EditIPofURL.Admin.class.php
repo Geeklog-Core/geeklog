@@ -10,10 +10,10 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditIPofURL.Admin.class.php,v 1.11 2008/05/23 08:59:12 dhaun Exp $
+* $Id: EditIPofURL.Admin.class.php,v 1.12 2008/09/21 08:37:08 dhaun Exp $
 */
 
-if (strpos($_SERVER['PHP_SELF'], 'EditIPofURL.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditIPofURL.Admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

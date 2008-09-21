@@ -15,10 +15,10 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.14 2007/11/25 06:56:05 ospiess Exp $
+ * $Id: Import.Admin.class.php,v 1.15 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos($_SERVER['PHP_SELF'], 'Import.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

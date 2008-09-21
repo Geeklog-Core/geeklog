@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install_defaults.php,v 1.7 2008/07/03 18:00:53 mjervis Exp $
+// $Id: install_defaults.php,v 1.8 2008/09/21 08:37:08 dhaun Exp $
 
-if (strpos($_SERVER['PHP_SELF'], 'install_defaults.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
 }
 

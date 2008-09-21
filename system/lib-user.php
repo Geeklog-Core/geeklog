@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.48 2008/08/03 08:05:50 dhaun Exp $
+// $Id: lib-user.php,v 1.49 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-user.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-user.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**

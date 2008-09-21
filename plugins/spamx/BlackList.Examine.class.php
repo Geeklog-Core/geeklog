@@ -9,17 +9,17 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: BlackList.Examine.class.php,v 1.12 2006/12/10 08:57:49 dhaun Exp $
+ * $Id: BlackList.Examine.class.php,v 1.13 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos ($_SERVER['PHP_SELF'], 'BlackList.Examine.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'BlackList.Examine.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
  * Include Abstract Examine Class
  */
-require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
 * html_entity_decode is only available as of PHP 4.3.0

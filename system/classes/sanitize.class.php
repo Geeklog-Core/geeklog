@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.5                                                               |
 // +---------------------------------------------------------------------------+
 // | sanitize.class.php                                                        |
 // |                                                                           |
 // | Geeklog data filtering or sanitizing class library.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2006 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -36,14 +36,14 @@
 *  Jan 2005: Blaine Lang
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'sanitize.class.php') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'sanitize.class.php') !== false) {
+    die('This file can not be used on its own.');
 }
 
 /**
  * Include the base kses class if not already loaded
  */
-require_once($_CONF['path_system'] . 'classes/kses.class.php');
+require_once $_CONF['path_system'] . 'classes/kses.class.php';
 
 class sanitize extends kses {
 

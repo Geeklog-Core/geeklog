@@ -10,10 +10,10 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: EditBlackList.Admin.class.php,v 1.13 2008/05/23 08:59:12 dhaun Exp $
+ * $Id: EditBlackList.Admin.class.php,v 1.14 2008/09/21 08:37:08 dhaun Exp $
  */
 
-if (strpos($_SERVER['PHP_SELF'], 'EditBlackList.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditBlackList.Admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

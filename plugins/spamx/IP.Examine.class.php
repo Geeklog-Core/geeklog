@@ -9,11 +9,11 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: IP.Examine.class.php,v 1.11 2007/05/05 18:28:39 dhaun Exp $
+* $Id: IP.Examine.class.php,v 1.12 2008/09/21 08:37:08 dhaun Exp $
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'IP.Examine.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'IP.Examine.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**

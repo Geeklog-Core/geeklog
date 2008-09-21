@@ -30,6 +30,9 @@ of Geeklog 1.5.0. There were also a few minor feature additions.</p>
     href="http://www.geeklog.net/article.php/file-uploads">called directly</a>
     to upload various media files (but not executable scripts), as reported
     by t0pP8uZz.</li>
+<li>The protection in various include files against direct execution did not
+    work properly on non-case sensitive file systems, e.g. on Windows
+    (reported by Mark Evans).</li>
 <li>It was possible to view stories with a publication date in the future and
     stories that had the draft flag set if you knew their story ID.</li>
 <li>It was possible to post comments on unpublished stories if you knew their

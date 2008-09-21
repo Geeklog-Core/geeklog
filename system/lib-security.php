@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.74 2008/08/13 07:22:26 dhaun Exp $
+// $Id: lib-security.php,v 1.75 2008/09/21 08:37:11 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -63,8 +63,8 @@
 // Turn this on to get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-security.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-security.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /* Constants for account stats */

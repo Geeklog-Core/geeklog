@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.149 2008/06/26 21:39:06 mjervis Exp $
+// $Id: lib-plugins.php,v 1.150 2008/09/21 08:37:11 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -40,8 +40,8 @@
 *
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-plugins.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-plugins.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 require_once $_CONF['path_system'] . 'classes/plugin.class.php';

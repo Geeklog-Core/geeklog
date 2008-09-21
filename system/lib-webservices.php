@@ -30,10 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-webservices.php,v 1.43 2008/07/28 19:35:46 dhaun Exp $
+// $Id: lib-webservices.php,v 1.44 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'lib-webservices.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-webservices.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 define('WS_ATOM_NS', 'http://www.w3.org/2005/Atom');

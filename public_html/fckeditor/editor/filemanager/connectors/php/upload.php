@@ -22,7 +22,7 @@
  * This is the "File Uploader" for PHP.
  */
 
-if (strpos($_SERVER['PHP_SELF'], 'upload.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'upload.php') !== false) {
     die('This file can not be used on its own!');
 }
 

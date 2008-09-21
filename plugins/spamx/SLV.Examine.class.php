@@ -9,18 +9,18 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLV.Examine.class.php,v 1.1 2006/08/27 09:30:19 dhaun Exp $
+* $Id: SLV.Examine.class.php,v 1.2 2008/09/21 08:37:08 dhaun Exp $
 */
 
-if (strpos ($_SERVER['PHP_SELF'], 'SLV.Examine.class.php') !== false) {
-    die ('This file can not be used on its own!');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLV.Examine.class.php') !== false) {
+    die('This file can not be used on its own!');
 }
 
 /**
 * Include Base Classes
 */
-require_once ($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
-require_once ($_CONF['path'] . 'plugins/spamx/' . 'SLVbase.class.php');
+require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
+require_once $_CONF['path'] . 'plugins/spamx/' . 'SLVbase.class.php';
 
 /**
 * Sends posts to SLV (linksleeve.org) for examination

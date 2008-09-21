@@ -30,13 +30,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.67 2008/07/20 17:17:09 dhaun Exp $
+// $Id: search.class.php,v 1.68 2008/09/21 08:37:12 dhaun Exp $
 
-if (strpos ($_SERVER['PHP_SELF'], 'search.class.php') !== false) {
-    die ('This file can not be used on its own.');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'search.class.php') !== false) {
+    die('This file can not be used on its own.');
 }
 
-require_once ($_CONF['path_system'] . 'classes/plugin.class.php');
+require_once $_CONF['path_system'] . 'classes/plugin.class.php';
 
 /**
 * Geeklog Search Class
