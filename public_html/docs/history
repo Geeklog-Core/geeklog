@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Sep 2?, 2008 (1.5.1)
+Sep 22, 2008 (1.5.1)
 ------------
 
 - Fixed protection against direct execution in various include files which may
@@ -19,6 +19,7 @@ Sep 2?, 2008 (1.5.1)
 - Fixed problem with the MySQL class not recognizing UTF-8 when the character
   set name was written in uppercase (bug #0000731) [Dirk]
 
+- Updated Hebrew language files, provided by LWC
 - Updated Estonian language files, provided by Artur Räpp
 - Updated Japanese language files, provided by the Geeklog.jp group
 - Updated Slovenian language files, provided by gape
