@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# hebrew.php # last Update  11/7/2008
-# Version 1.5.0 #1.0
+# hebrew.php # last Update  10/9/2008
+# Version 1.5.1 #1.0
 # Copyright (C) http://lior.weissbrod.com
 #
 # Originally:
@@ -549,7 +549,7 @@ $LANG11 = array(
     3 => 'גירסה להדפסה',
     4 => 'אפשרויות למאמר זה',
     5 => 'המאמר בפורמט PDF',
-    6 => 'Subscribe to \'%s\''
+    6 => 'רישום ל-\'%s\''
 );
 
 ###############################################################################
@@ -1077,9 +1077,9 @@ $LANG33 = array(
     50 => "יחסי לכתובת האתר ({$_CONF['site_url']})",
     51 => 'שם הקובץ שבחרתם כבר נמצא בשימוש של הזנה אחרת. אנא ביחרו אחד אחר.',
     52 => 'שגיאה: שם הקובץ כבר קיים',
-    53 => 'All Frontpage Stories',
-    54 => 'Please select the type of feed to create.',
-    55 => 'Articles'
+    53 => 'כל המאמרים של העמוד הראשי',
+    54 => 'אנא ביחרו איזה סוג הזנה יש ליצור.',
+    55 => 'מאמרים'
 );
 
 ###############################################################################
@@ -1261,7 +1261,10 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'צרו גיבוי',
     'backup_successful' => 'גיבוי מאגר המידע עבר בהצלחה.',
     'db_explanation' => 'כדי ליצור גיבוי חדש של המערכת, ליחצו על הכפתור שלעיל. ליחצו על שם הקובץ כדי להוריד את הגיבוי.',
-    'not_found' => "מיקום שגוי או שה-mysqldump utility הוא לא executable.<br" . XHTML . ">בידקו את הגדרת ה-<strong>mysqldump_path</strong> בהגדרות.<br" . XHTML . "> הנתיב כרגע מוגדר כ: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => 'מיקום שגוי או שה-mysqldump utility הוא לא executable.<br'
+                    . XHTML . '> בידקו את ההגדרה של <strong>mysqldump_path</strong> בהגדרות.<br'
+                    . XHTML . '> בידקו את ההגדרה של <a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a> בהגדרות של PHP.<br'
+                    . XHTML . "> הנתיב כרגע מוגדר כ: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'הגיבוי נכשל. גודל הקובץ היה 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} לא קיים או שזו לא ספרייה",
     'no_access' => "שגיאה: הספרייה {$_CONF['backup_path']} חסומה.",
@@ -1585,7 +1588,8 @@ $LANG_CONFIG = array(
     'reset_form' => 'איפוס הטופס',
     'changes_made' => 'השינויים בוצעו בהצלחה אצל',
     'title' => 'ניהול ההגדרות',
-    'disable' => 'Click to disable this option'
+    'disable'       => 'ליחצו כדי לנטרל אפשרות זו',
+    'enable'        => 'הפעלה'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1855,7 +1859,7 @@ $LANG_configselects['Core'] = array(
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
+    18 => array('ניטרול' => 0, 'הפעלה (התאמה מדויקת)' => 1, 'הפעלה (לפי התחלת המילה)' => 2, 'הפעלה (לפי חלקי מילה)' => 3)
 );
 
 ?>
