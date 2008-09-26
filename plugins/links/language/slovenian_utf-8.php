@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# slovenian.php - version 1.4.1
+# slovenian_utf-8.php - version 1.5.1
 # This is the slovenian language file for the Geeklog Links Plugin
 # language file for geeklog version 1.4.1 beta by mb
 # gape@gape.org ; za pripombe, predloge ipd ... piši na email
@@ -43,16 +43,16 @@ $LANG_LINKS = array(
     88 => 'Ni nedavnih novih povezav',
     114 => 'Povezave',
     116 => 'Dodaj povezavo',
-    117 => 'Report Broken Link',
-    118 => 'Broken Link Report',
-    119 => 'The following link has been reported to be broken: ',
-    120 => 'To edit the link, click here: ',
-    121 => 'The broken Link was reported by: ',
-    122 => 'Thank you for reporting this broken link. The administrator will correct the problem as soon as possible',
-    123 => 'Thank you',
+    117 => 'Prijavi napako v povezavi',
+    118 => 'Prijava napake v povezavi',
+    119 => 'Te povezave so prijavljene kot nedelujoče: ',
+    120 => 'Da popraviš povezavo klikni tukj: ',
+    121 => 'Napako v povezavi je prijavil: ',
+    122 => 'Hvala da ste prijavili to napako v povezavi. Administrator bo odpravil težavo takoj ko bo mogoče.',
+    123 => 'Hvala',
     124 => 'Go',
-    125 => 'Categories',
-    126 => 'You are here:',
+    125 => 'Kategorije',
+    126 => 'Ti si tukaj:',
     'root' => 'Root'
 );
 
@@ -60,10 +60,10 @@ $LANG_LINKS = array(
 # for stats
 
 $LANG_LINKS_STATS = array(
-    'links' => 'Links (Clicks) in the System',
-    'stats_headline' => 'Top Ten Links',
-    'stats_page_title' => 'Links',
-    'stats_hits' => 'Hits',
+    'links' => 'Povezave (Kliki) v Sistemu',
+    'stats_headline' => '10 najbolj popularnih povezav',
+    'stats_page_title' => 'Povezave',
+    'stats_hits' => 'Zadetki',
     'stats_no_hits' => 'Izgleda, da na tem mestu ni povezav ali pa še nikoli ni nihče kliknil na nobeno.'
 );
 
@@ -74,7 +74,7 @@ $LANG_LINKS_SEARCH = array(
     'results' => 'Rezultati povezav',
     'title' => 'Naslov',
     'date' => 'Dodani datum',
-    'author' => 'Odposlal:',
+    'author' => 'Avtor:',
     'hits' => 'Kliki'
 );
 
@@ -102,20 +102,20 @@ $PLG_links_MESSAGE1 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['s
 $PLG_links_MESSAGE2 = 'Tvoja povezava je uspešno shranjena.';
 $PLG_links_MESSAGE3 = 'Povezava je uspešno izbrisana.';
 $PLG_links_MESSAGE4 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['site_name']}.  Sedaj jo lahko vidiš v razdelku <a href={$_CONF['site_url']}/links/index.php>povezave</a>.";
-$PLG_links_MESSAGE5 = 'You do not have sufficient access rights to view this category.';
-$PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
-$PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
-$PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
-$PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
+$PLG_links_MESSAGE5 = 'Nimaš zadosti visokih pravic za prikaz te kategorije.';
+$PLG_links_MESSAGE6 = 'Nimaš zadosti visokih pravic za urejanje te kategorije.';
+$PLG_links_MESSAGE7 = 'Prosim vpiši ime kategorije in njen opis.';
+$PLG_links_MESSAGE10 = 'Kategorija je bila uspešno shranjena.';
+$PLG_links_MESSAGE11 = 'Ni dovoljeno uporabiti imen "site" ali "user" za kategorijo - ta so rezervirana za notranjo uporabo.';
 $PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
-$PLG_links_MESSAGE13 = 'The category has been successfully deleted.';
-$PLG_links_MESSAGE14 = 'Category contains links and/or categories. Please remove these first.';
-$PLG_links_MESSAGE15 = 'You do not have sufficient rights to delete this category.';
-$PLG_links_MESSAGE16 = 'No such category exists.';
-$PLG_links_MESSAGE17 = 'This category id is already in use.';
+$PLG_links_MESSAGE13 = 'Kategorija je bila uspešno izbrisana.';
+$PLG_links_MESSAGE14 = 'Kategorija vsebuje povezave in ali kategorije. Prosim da jih prej izbrišeš.';
+$PLG_links_MESSAGE15 = 'Nimaš dovolj visokih pravic za izbris te kategorije.';
+$PLG_links_MESSAGE16 = 'Kategorija s tem imenom ne obstaja.';
+$PLG_links_MESSAGE17 = 'Ime (id) te kategorije je že uporabljeno.';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_links_MESSAGE3001 = 'Nadgradnja vtičnika ni podprta.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -141,7 +141,7 @@ $LANG_LINKS_ADMIN = array(
     21 => 'shrani',
     22 => 'prekliči',
     23 => 'izbriši',
-    24 => 'Link not found',
+    24 => 'Ne najdem povezave',
     25 => 'The link you selected for editing could not be found.',
     26 => 'Validate Links',
     27 => 'HTML Status',
