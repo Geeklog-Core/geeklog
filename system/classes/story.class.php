@@ -1456,9 +1456,7 @@ class Story
             if (empty($this->_expire)) {
                 $return = time();
             } else {
-                // Need to convert text date/time to a timestamp
-                $return = explode(' ', $this->_expire);
-                $return = COM_convertDate2Timestamp($return[0], $return[1]);
+                $return = $this->_expire;
             }
 
             break;
