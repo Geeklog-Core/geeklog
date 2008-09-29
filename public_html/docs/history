@@ -3,6 +3,11 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Force a refresh after uninstalling a plugin so that the plugin's entry
+  disappears from the Admins block [Dirk]
+- Fixed an issue with story expiry dates on PHP 4/Windows (reported by zeb)
+  [Mike]
+
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 
