@@ -347,30 +347,26 @@ function do_update ($pi_name)
 * @return             string   HTML for error or success message
 *
 */
-function do_uninstall ($pi_name)
+function do_uninstall($pi_name)
 {
-    global $_CONF, $LANG32, $LANG08, $MESSAGE, $_IMAGE_TYPE;
+    global $_CONF;
 
-    $retval = '';
+    $retval = false;
 
-    if (strlen ($pi_name) == 0) {
-        $retval .= COM_startBlock ($LANG32[13], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= COM_errorLog ($LANG32[12]);
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-
-        return $retval;
+    if (empty($pi_name) || (strlen($pi_name) == 0)) {
+        return false;
     }
 
     // if the plugin is disabled, load the functions.inc now
-    if (!function_exists ('plugin_uninstall_' . $pi_name)) {
-        require_once ($_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc');
+    if (!function_exists('plugin_uninstall_' . $pi_name) &&
+        !function_exists('plugin_autouninstall_' . $pi_name)) {
+        require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
     }
 
-    if (PLG_uninstall ($pi_name)) {
-        $retval .= COM_showMessage (45);
+    if (PLG_uninstall($pi_name)) {
+        $retval = 45; // success msg
     } else {
-        $retval .= COM_showMessage (95);
+        $retval = 95; // error msg
     }
 
     return $retval;
@@ -453,22 +449,24 @@ if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
 }
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
-    $pi_name = COM_applyFilter ($_POST['pi_name']);
+    $pi_name = COM_applyFilter($_POST['pi_name']);
     if (($_POST['confirmed'] == 1) && (SEC_checkToken())) {
-        $display .= COM_siteHeader ('menu', $LANG32[30]);
-        $display .= do_uninstall ($pi_name);
-        $token = SEC_createToken();
-        $display .= listplugins ($token);
-        $display .= show_newplugins($token);
-        $display .= COM_siteFooter ();
+        $msg = do_uninstall($pi_name);
+        if ($msg === false) {
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+        } else {
+            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg='
+                                                      . $msg);
+        }
+        exit;
     } else { // ask user for confirmation
-        $display .= COM_siteHeader ('menu', $LANG32[30]);
-        $display .= COM_startBlock ($LANG32[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= COM_siteHeader('menu', $LANG32[30]);
+        $display .= COM_startBlock($LANG32[30], '',
+                            COM_getBlockTemplate('_msg_block', 'header'));
         $display .= $LANG32[31];
-        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= plugineditor ($pi_name, 1);
-        $display .= COM_siteFooter ();
+        $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $display .= plugineditor($pi_name, 1);
+        $display .= COM_siteFooter();
     }
 
 } else if (($mode == $LANG32[34]) && !empty ($LANG32[34]) && SEC_checkToken()) { // update
