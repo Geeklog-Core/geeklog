@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Added support for CUSTOM_formatEmailAddress and CUSTOM_emailEscape functions
+  (feature request #0000727) [Dirk]
 - Fixed 'cookiedomain' being reported as changed in the Configuration
   (bug #0000638) [Dirk]
 - Reverted fix for bug #0000618 (COM_showMessage automatically picking up a
