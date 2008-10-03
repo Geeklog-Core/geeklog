@@ -3122,6 +3122,10 @@ function COM_emailEscape( $string )
 {
     global $_CONF;
 
+    if (function_exists('CUSTOM_emailEscape')) {
+        return CUSTOM_emailEscape($string);
+    }
+
     $charset = COM_getCharset();
     if(( $charset == 'utf-8' ) && ( $string != utf8_decode( $string )))
     {
@@ -3159,6 +3163,10 @@ function COM_emailEscape( $string )
 */
 function COM_formatEmailAddress( $name, $address )
 {
+    if (function_exists('CUSTOM_formatEmailAddress')) {
+        return CUSTOM_formatEmailAddress($name, $address);
+    }
+
     $formatted_name = COM_emailEscape( $name );
 
     // if the name comes back unchanged, it's not UTF-8, so preg_match is fine
