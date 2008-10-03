@@ -22,6 +22,10 @@ Geeklog History/Changes:
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 
+Polls plugin
+------------
+- Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]
+
 
 Sep 22, 2008 (1.5.1)
 ------------
