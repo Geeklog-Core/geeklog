@@ -6704,6 +6704,31 @@ function COM_isAnonUser($uid = '')
     }
 }
 
+/**
+* Convert wiki-formatted text to (X)HTML
+*
+* @param    string  $wikitext   wiki-formatted text
+* @return   string              XHTML formatted text
+*
+*/
+function COM_renderWikiText($wikitext)
+{
+    global $_CONF;
+
+    if (!$_CONF['wikitext_editor']) {
+        return $wikitext;
+    }
+
+    require_once 'Text/Wiki.php';
+
+    $wiki = &new Text_Wiki();
+    $wiki->disableRule('wikilink');
+    $wiki->disableRule('freelink');
+    $wiki->disableRule('interwiki');
+
+    return $wiki->transform($wikitext, 'Xhtml');
+}
+
 // Now include all plugin functions
 foreach( $_PLUGINS as $pi_name )
 {
