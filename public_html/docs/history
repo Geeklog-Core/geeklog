@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Added missing check for allowed IP addresses in downloader class
+  (bug #0000709) [Dirk]
 - Force a refresh after uninstalling a plugin so that the plugin's entry
   disappears from the Admins block [Dirk]
 - Fixed an issue with story expiry dates on PHP 4/Windows (reported by zeb)
