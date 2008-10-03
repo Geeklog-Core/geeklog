@@ -515,14 +515,21 @@ class downloader
         if ($this->checkExtension($fextension)) {
             // Display file inside browser.
             header('Content-Type: ' . $this->_availableMimeTypes[$fextension]);
-            header('Content-transfer-encoding: binary');
-            header('Content-length: ' . filesize($this->_sourceDirectory . $fileName));
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: '
+                   . filesize($this->_sourceDirectory . $fileName));
+
+            // send images as 'inline' everything else as 'attachment'
+            if (substr($this->_availableMimeTypes[$fextension], 0, 6) == 'image/') {
+                header('Content-Disposition: inline; filename="' . $fileName . '"');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            }
 
             // Send file contents.
             $fp = fopen($this->_sourceDirectory . $fileName, 'rb');
-
-            fpassthru( $fp );
+            fpassthru($fp);
+            fclose($fp);
         }
 
         return true;
