@@ -6534,34 +6534,45 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     global $_CONF, $_USER;
 
     // Handle @ operator
-    if( error_reporting() == 0 )
-    {
+    if (error_reporting() == 0) {
         return;
     }
 
-    /* If in PHP4, then respect error_reporting */
-    if( (PHP_VERSION < 5) && (($errno & error_reporting()) == 0) ) return;
+    // If in PHP4, then respect error_reporting
+    if ((PHP_VERSION < 5) && (($errno & error_reporting()) == 0)) {
+        return;
+    }
 
     /*
      * If we have a root user, then output detailed error message:
      */
-    if( ( is_array($_USER) && function_exists('SEC_inGroup') ) || (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) )
-    {
-        if($_CONF['rootdebug'] || SEC_inGroup('Root'))
-        {
+    if ((is_array($_USER) && function_exists('SEC_inGroup'))
+            || (isset($_CONF['rootdebug']) && $_CONF['rootdebug'])) {
+        if ($_CONF['rootdebug'] || SEC_inGroup('Root')) {
+
+            header('HTTP/1.1 500 Internal Server Error');
+            header('Status: 500 Internal Server Error');
+
+            $title = 'An Error Occurred';
+            if (!empty($_CONF['site_name'])) {
+                $title = $_CONF['site_name'] . ' - ' . $title;
+            }
+            echo("<html><head><title>$title</title></head>\n<body>\n");
+
             echo('<h1>An error has occurred:</h1>');
-            if($_CONF['rootdebug']) {
+            if ($_CONF['rootdebug']) {
                 echo('<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
                         in your Geeklog configuration.</h2><p>If this is a production
                         website you <strong><em>must disable</em></strong> this
                         option once you have resolved any issues you are
                         investigating.</p>');
             } else {
-                echo('(This text is only displayed to users in the group \'Root\')<br>');
+                echo('<p>(This text is only displayed to users in the group \'Root\')</p>');
             }
-            echo("$errno - $errstr @ $errfile line $errline<br>");
-            if(!SEC_inGroup('Root')) {
-                if('force' != ''.$_CONF['rootdebug']) {
+            echo("<p>$errno - $errstr @ $errfile line $errline</p>");
+
+            if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
+                if ('force' != ''.$_CONF['rootdebug']) {
                     $errcontext = COM_rootDebugClean($errcontext);
                 } else {
                     echo('<h2 style="color: red">Root Debug is set to "force", this
@@ -6574,7 +6585,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             var_dump($errcontext);
             $errcontext = htmlspecialchars(ob_get_contents());
             ob_end_clean();
-            echo("$errcontext</pre>");
+            echo("$errcontext</pre></body></html>");
             exit;
         }
     }
@@ -6582,15 +6593,12 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     /* If there is a custom error handler, fail over to that, but only
      * if the error wasn't in lib-custom.php
      */
-    if( is_array($_CONF) && !(strstr($errfile, 'lib-custom.php')))
-    {
-        if( array_key_exists('path_system', $_CONF) )
-        {
-            if (file_exists($_CONF['path_system'].'lib-custom.php')) {
-                require_once($_CONF['path_system'].'lib-custom.php');
+    if (is_array($_CONF) && !(strstr($errfile, 'lib-custom.php'))) {
+        if (array_key_exists('path_system', $_CONF)) {
+            if (file_exists($_CONF['path_system'] . 'lib-custom.php')) {
+                require_once $_CONF['path_system'] . 'lib-custom.php';
             }
-            if( function_exists('CUSTOM_handleError') )
-            {
+            if (function_exists('CUSTOM_handleError')) {
                 CUSTOM_handleError($errno, $errstr, $errfile, $errline, $errcontext);
                 exit;
             }
@@ -6600,14 +6608,17 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
     // if we do not throw the error back to an admin, still log it in the error.log
     COM_errorLog("$errno - $errstr @ $errfile line $errline", 1);
 
-    /* Does the theme implement an error message html file? */
+    header('HTTP/1.1 500 Internal Server Error');
+    header('Status: 500 Internal Server Error');
+
+    // Does the theme implement an error message html file?
     if (!empty($_CONF['path_layout']) &&
             file_exists($_CONF['path_layout'] . 'errormessage.html')) {
         // NOTE: NOT A TEMPLATE! JUST HTML!
         include $_CONF['path_layout'] . 'errormessage.html';
     } else {
-        /* Otherwise, display simple error message */
-        $title = "An Error Occurred";
+        // Otherwise, display simple error message
+        $title = 'An Error Occurred';
         if (!empty($_CONF['site_name'])) {
             $title = $_CONF['site_name'] . ' - ' . $title;
         }
