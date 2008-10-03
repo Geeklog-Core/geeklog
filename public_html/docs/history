@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Reverted fix for bug #0000618 (COM_showMessage automatically picking up a
+  'plugin' parameter) as it's causing problems when displaying more than one
+  message on the same page [Dirk]
 - Added missing check for allowed IP addresses in downloader class
   (bug #0000709) [Dirk]
 - Force a refresh after uninstalling a plugin so that the plugin's entry
