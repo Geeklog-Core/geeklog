@@ -628,7 +628,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']) && SEC_ch
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else {
-    $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpagelist']);
+    $display .= COM_siteHeader('menu', $LANG_STATIC['staticpagelist']);
+    if (isset($_REQUEST['msg'])) {
+        $msg = COM_applyFilter($_REQUEST['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage($msg, 'staticpages');
+        }
+    }
     $display .= liststaticpages();
     $display .= COM_siteFooter ();
 }

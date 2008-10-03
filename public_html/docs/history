@@ -16,6 +16,11 @@ Geeklog History/Changes:
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 
+Static Pages plugin
+-------------------
+- Display "successfully saved" and "successfully deleted" messages, just like
+  every other plugin and built-in function does (bug #0000644) [Dirk]
+
 
 Sep 22, 2008 (1.5.1)
 ------------

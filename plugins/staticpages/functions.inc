@@ -260,14 +260,15 @@ function SP_countVisiblePages ()
 /**
 * Prepare static page for display.
 *
-* @param    string  $page       static page id
-* @param    array   $A          static page data
-* @param    string  comment_order sorting of comments
-* @param    string  comment_mode
-* @return   string              HTML for the static page
+* @param    string  $page           static page id
+* @param    array   $A              static page data
+* @param    string  $comment_order  sorting of comments
+* @param    string  $comment_mode   comment mode (nested, flat, etc.)
+* @param    int     $msg            optional message number
+* @return   string                  HTML for the static page
 *
 */
-function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nested')
+function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER,
            $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
@@ -280,6 +281,9 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode ='nest
         if ($A['sp_format'] <> 'blankpage') {
             $retval .= COM_siteHeader ('none');
         }
+    }
+    if ($msg > 0) {
+        $retval .= COM_showMessage($msg, 'staticpages');
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_startBlock (stripslashes ($A['sp_title']), $A['sp_help'],
@@ -436,14 +440,15 @@ function SP_printPage ($page, $A)
 /**
 * Prepare static page for display
 *
-* @param    string  $page       static page id
-* @param    string  $mode       type of display to return ('', 'print', 'autotag'
-* @param    string  comment_order sorting of comments
-* @param    string  comment_mode
-* @return   string              HTML for the static page
+* @param    string  $page           static page id
+* @param    string  $mode           type of display to return ('', 'print', 'autotag'
+* @param    string  $comment_order  sorting of comments
+* @param    string  $comment_mode   comment mode (nested, flat, etc.)
+* @param    int     $msg            optional message number
+* @return   string                  HTML for the static page
 *
 */
-function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode ='nested')
+function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0)
 {
     global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
 
@@ -462,7 +467,7 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
         } else if ($mode =='autotag') {
             $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
         } else {
-            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode);
+            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $msg);
         }
 
         // increment hit counter for page

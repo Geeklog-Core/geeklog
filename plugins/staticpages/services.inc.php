@@ -367,7 +367,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
                             . $sp_id);
         $output .= PLG_afterSaveSwitch($_SP_CONF['aftersave'], $url,
-                                       'staticpages');
+                                       'staticpages', 19);
 
         $svc_msg['id'] = $sp_id;
         return PLG_RET_OK;
@@ -395,7 +395,8 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
            $LANG_LOGIN;
 
-    $output = COM_refresh($_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+    $output = COM_refresh($_CONF['site_admin_url']
+                          . '/plugins/staticpages/index.php?msg=20');
 
     if (empty($args['sp_id']) && !empty($args['id']))
         $args['sp_id'] = $args['id'];

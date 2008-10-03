@@ -114,6 +114,9 @@ $LANG_STATIC = array(
     'submit' => 'Absenden'
 );
 
+$PLG_staticpages_MESSAGE19 = 'Seite wurde gespeichert.';
+$PLG_staticpages_MESSAGE20 = 'Seite wurde gelöscht';
+
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
