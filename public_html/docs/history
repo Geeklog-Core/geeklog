@@ -22,6 +22,10 @@ Geeklog History/Changes:
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 
+Links plugin
+------------
+- Prevent overwriting existing links when changing the link ID [Dirk]
+
 Polls plugin
 ------------
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]

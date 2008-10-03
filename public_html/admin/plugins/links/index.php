@@ -273,12 +273,22 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         $perm_anon = 2;
     }
 
-    $lid = COM_sanitizeID ($lid);
-    if (empty ($lid)) {
-        if (empty ($old_lid)) {
-            $lid = COM_makeSid ();
+    $lid = COM_sanitizeID($old_lid);
+    $old_lid = COM_sanitizeID($old_lid);
+    if (empty($lid)) {
+        if (empty($old_lid)) {
+            $lid = COM_makeSid();
         } else {
             $lid = $old_lid;
+        }
+    }
+
+    // check for link id change
+    if (!empty($old_lid) && ($lid != $old_lid)) {
+        // check if new lid is already in use
+        if (DB_count($_TABLES['links'], 'lid', $lid) > 0) {
+            // TBD: abort, display editor with all content intact again
+            $lid = $old_lid; // for now ...
         }
     }
 
