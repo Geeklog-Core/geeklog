@@ -481,7 +481,7 @@ switch ($what) {
                                           $_POST['shortmsg'])
                          . COM_siteFooter ();
             } else {
-                $msg = PLG_itemPreSave ('emailstory', $message);
+                $msg = PLG_itemPreSave ('emailstory', $_POST['shortmsg']);
                 if (!empty ($msg)) {
                     $display .= COM_siteHeader ('menu', '')
                              . COM_errorLog ($msg, 2)
