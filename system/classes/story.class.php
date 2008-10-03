@@ -1383,14 +1383,7 @@ class Story
             if ($this->_postmode == 'plaintext') {
                 $return = nl2br($this->_introtext);
             } elseif ($this->_postmode == 'wikitext') {
-                require_once 'Text/Wiki.php';
-
-                $wiki = &new Text_Wiki();
-                $wiki->disableRule('wikilink');
-                $wiki->disableRule('freelink');
-                $wiki->disableRule('interwiki');
-                $return = $this->_editUnescape($this->_introtext);
-                $return = $wiki->transform($return, 'Xhtml');
+                $return = COM_renderWikiText($this->_editUnescape($this->_introtext));
             } else {
                 $return = $this->_introtext;
             }
@@ -1402,14 +1395,7 @@ class Story
             if (($this->_postmode == 'plaintext') && !(empty($this->_bodytext))) {
                 $return = nl2br($this->_bodytext);
             } elseif (($this->_postmode == 'wikitext') && !(empty($this->_bodytext))) {
-                require_once 'Text/Wiki.php';
-
-                $wiki = &new Text_Wiki();
-                $wiki->disableRule('wikilink');
-                $wiki->disableRule('freelink');
-                $wiki->disableRule('interwiki');
-                $return = $this->_editUnescape($this->_bodytext);
-                $return = $wiki->transform($return, 'Xhtml');
+                $return = COM_renderWikiText($this->_editUnescape($this->_bodytext));
             } elseif (!empty($this->_bodytext)) {
                 $return = $this->_displayEscape($this->_bodytext);
             }
