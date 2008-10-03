@@ -738,6 +738,14 @@ class config {
             $value = DB_getItem($_TABLES['conf_values'], 'value',
                                 "group_name='Core' AND name='language'");
             $this->config_array['Core']['language'] = unserialize($value);
+
+            /**
+             * Same with $_CONF['cookiedomain'], which is overwritten in
+             * in lib-sessions.php (if empty).
+             */
+            $value = DB_getItem($_TABLES['conf_values'], 'value',
+                                "group_name='Core' AND name='cookiedomain'");
+            $this->config_array['Core']['cookiedomain'] = unserialize($value);
         }
 
         $success_array = array();
