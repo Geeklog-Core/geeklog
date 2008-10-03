@@ -4471,9 +4471,6 @@ function COM_showMessage($msg, $plugin = '')
     global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
-    if (empty($plugin) AND !empty($_REQUEST['plugin'])) {
-        $plugin = COM_applyFilter($_REQUEST['plugin']);
-    };
 
     if ($msg > 0) {
         $timestamp = strftime($_CONF['daytime']);
