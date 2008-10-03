@@ -171,7 +171,7 @@ class downloader
     function _logItem($logtype, $text)
     {
         $timestamp = strftime("%c");
-        if (!$file = fopen($this->_logFile,a)) {
+        if (!$file = fopen($this->_logFile, 'a')) {
             // couldn't open log file for writing so let's disable logging and add an error
             $this->setLogging(false);
             $this->_addError('Error writing to log file: ' . $this->_logFile . '.  Logging has been disabled');
@@ -481,6 +481,16 @@ class downloader
     */
     function downloadFile($fileName)
     {
+        // Before we do anything, let's see if we are limiting file downloads by
+        // IP address and, if so, verify the user is originating from one of
+        // those places
+        if ($this->_limitByIP) {
+            if (!in_array($_SERVER['REMOTE_ADDR'], $this->_allowedIPS)) {
+                $this->_addError('The IP, ' . $_SERVER['REMOTE_ADDR'] . ' is not in the list of accepted IP addresses.  Refusing to allow file download(s)');
+                return false;
+            }
+        }
+
         if (strstr( PHP_OS, "WIN")) {  // Added as test1 below was failing on Windows platforms 
             $strPathSeparator = '\\';
             $this->_sourceDirectory = str_replace('/','\\',$this->_sourceDirectory);
