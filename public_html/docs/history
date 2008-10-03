@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Fixed 'cookiedomain' being reported as changed in the Configuration
+  (bug #0000638) [Dirk]
 - Reverted fix for bug #0000618 (COM_showMessage automatically picking up a
   'plugin' parameter) as it's causing problems when displaying more than one
   message on the same page [Dirk]
