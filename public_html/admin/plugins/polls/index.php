@@ -124,6 +124,7 @@ function listpolls()
 * Saves a poll topic and potential answers to the database
 *
 * @param    string  $pid            Poll topic ID
+* @param    string  $old_pid        Previous poll topic ID
 * @param    array   $Q              Array of poll questions
 * @param    string  $mainpage       Checkbox: poll appears on homepage
 * @param    string  $topic          The text for the topic
@@ -143,9 +144,9 @@ function listpolls()
 * @return   string                  HTML redirect or error message
 *
 */
-function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
-                  $commentcode, $A, $V, $R, $owner_id, $group_id, $perm_owner,
-                  $perm_group, $perm_members, $perm_anon)
+function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
+                  $hideresults, $commentcode, $A, $V, $R, $owner_id, $group_id,
+                  $perm_owner, $perm_group, $perm_members, $perm_anon)
 
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $LANG25, $MESSAGE, $_POLL_VERBOSE,
@@ -156,8 +157,16 @@ function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-    $pid = COM_sanitizeID($pid);
     $topic = COM_stripslashes($topic);
+    $pid = COM_sanitizeID($pid);
+    $old_pid = COM_sanitizeID($old_pid);
+    if (empty($pid)) {
+        if (empty($old_pid)) {
+            $pid = COM_makeSid();
+        } else {
+            $pid = $old_pid;
+        }
+    }
 
     // check if any question was entered
     if (empty($topic) or (sizeof($Q) == 0) or (strlen($Q[0]) == 0) or
@@ -177,12 +186,21 @@ function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
                            . '/plugins/polls/index.php');
     }
 
+    // check for poll id change
+    if (!empty($old_pid) && ($pid != $old_pid)) {
+        // check if new pid is already in use
+        if (DB_count($_TABLES['polltopics'], 'pid', $pid) > 0) {
+            // TBD: abort, display editor with all content intact again
+            $pid = $old_pid; // for now ...
+        }
+    }
+
     // start processing the poll topic
     if ($_POLL_VERBOSE) {
         COM_errorLog ('**** Inside savepoll() in '
                       . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
     }
-    $pid = str_replace (' ', '', $pid); // strip spaces from poll id
+
     $access = 0;
     if (DB_count ($_TABLES['polltopics'], 'pid', $pid) > 0) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'");
@@ -217,10 +235,15 @@ function savepoll($pid, $Q, $mainpage, $topic, $statuscode, $open, $hideresults,
         COM_errorLog('member permissions: ' . $perm_members, 1);
         COM_errorLog('anonymous permissions: ' . $perm_anon, 1);
     }
+
     // we delete everything and re-create it with the input from the form
-    DB_delete ($_TABLES['polltopics'], 'pid', $pid);
-    DB_delete ($_TABLES['pollanswers'], 'pid', $pid);
-    DB_delete ($_TABLES['pollquestions'], 'pid', $pid);
+    $del_pid = $pid;
+    if (!empty($old_pid) && ($pid != $old_pid)) {
+        $del_pid = $old_pid; // delete by old pid, create using new pid below
+    }
+    DB_delete($_TABLES['polltopics'], 'pid', $del_pid);
+    DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
+    DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
     $topic = addslashes ($topic);
 
@@ -531,8 +554,15 @@ if ($mode == 'edit') {
     $display .= editpoll ($pid);
     $display .= COM_siteFooter ();
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
-    $pid = COM_applyFilter ($_POST['pid']);
-    if (!empty ($pid)) {
+    $pid = COM_applyFilter($_POST['pid']);
+    $old_pid = '';
+    if (isset($_POST['old_pid'])) {
+        $old_pid = COM_applyFilter($_POST['old_pid']);
+    }
+    if (empty($pid) && !empty($old_pid)) {
+        $pid = $old_pid;
+    }
+    if (!empty($pid)) {
         $statuscode = 0;
         if (isset ($_POST['statuscode'])) {
             $statuscode = COM_applyFilter ($_POST['statuscode'], true);
@@ -549,8 +579,8 @@ if ($mode == 'edit') {
         if (isset ($_POST['hideresults'])) {
             $hideresults = COM_applyFilter ($_POST['hideresults']);
         }
-        $display .= savepoll ($pid, $_POST['question'], $mainpage, $_POST['topic'],
-                        $statuscode, $open, $hideresults,
+        $display .= savepoll ($pid, $old_pid, $_POST['question'], $mainpage,
+                        $_POST['topic'], $statuscode, $open, $hideresults,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         COM_applyFilter ($_POST['owner_id'], true),
