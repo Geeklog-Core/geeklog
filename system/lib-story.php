@@ -221,7 +221,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $attr_array['rel'] = 'bookmark';
         }
         $article->set_var('start_storylink_anchortag',
-                          '<a href="' . $articleUrl . '"' . $attributes);
+                          '<a href="' . $articleUrl . '"' . $attributes . '>');
         $article->set_var('end_storylink_anchortag', '</a>');
         $article->set_var('story_title_link',
             COM_createLink(
