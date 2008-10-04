@@ -32,8 +32,8 @@
 //
 // $Id: mail.php,v 1.37 2008/05/27 20:53:10 dhaun Exp $
 
-require_once ('../lib-common.php');
-require_once ('auth.inc.php');
+require_once '../lib-common.php';
+require_once 'auth.inc.php';
 
 $display = '';
 
@@ -230,6 +230,7 @@ $display .= COM_siteHeader ('menu', $LANG31[1]);
 if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
     $display .= send_messages ($_POST);
 } else {
+    $display .= COM_showMessageFromParameter();
     $display .= display_mailform ();
 }
 

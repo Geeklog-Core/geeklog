@@ -1511,14 +1511,8 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         break;
 
     default: // also if $mode == 'edit', 'preferences', or 'comments'
-        $display .= COM_siteHeader ('menu', $LANG04[16]);
-        $msg = 0;
-        if (isset ($_GET['msg'])) {
-            $msg = COM_applyFilter ($_GET['msg'], true);
-            if ($msg > 0) {
-                $display .= COM_showMessage ($msg);
-            }
-        }
+        $display .= COM_siteHeader('menu', $LANG04[16]);
+        $display .= COM_showMessageFromParameter();
         $display .= edituser();
         $display .= COM_siteFooter();
         break;

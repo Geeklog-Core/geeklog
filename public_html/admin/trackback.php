@@ -1128,13 +1128,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
              . COM_siteFooter ();
 } else if (($mode == 'fresh') || ($mode == 'preview')) {
     $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
-
-    if (isset ($_REQUEST['msg'])) {
-        $msg = COM_applyFilter ($_REQUEST['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage ($msg);
-        }
-    }
+    $display .= COM_showMessageFromParameter();
 
     $target = '';
     if (isset ($_REQUEST['target'])) {
@@ -1216,14 +1210,13 @@ if (($mode == 'delete') && SEC_checkToken()) {
 
     $display .= editServiceForm ($pid);
 } else if ($mode == 'listservice') {
-    $display .= COM_siteHeader ('menu', $LANG_TRB['services_headline']);
-    if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
-    }
-    $display .= listServices ();
+    $display .= COM_siteHeader('menu', $LANG_TRB['services_headline']);
+    $display .= COM_showMessageFromParameter();
+    $display .= listServices();
     $display .= COM_siteFooter();
 } else if ($mode == 'freepb') {
     $display .= COM_siteHeader ('menu', $LANG_TRB['pingback']);
+    $display .= COM_showMessageFromParameter();
     $display .= pingbackForm ();
     $display .= COM_siteFooter();
 } else if ($mode == 'sendpingback') {

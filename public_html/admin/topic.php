@@ -595,9 +595,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu', $LANG27[8]);
-    if (isset ($_GET['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
-    }
+    $display .= COM_showMessageFromParameter();
     $display .= listtopics();
     $display .= COM_siteFooter();
 }

@@ -492,16 +492,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG32[5]);
-    if (isset ($_REQUEST['msg'])) {
-        $msg = COM_applyFilter ($_REQUEST['msg'], true);
-        if (!empty ($msg)) {
-            $plugin = '';
-            if (isset ($_REQUEST['plugin'])) {
-                $plugin = COM_applyFilter ($_REQUEST['plugin']);
-            }
-            $display .= COM_showMessage ($msg, $plugin);
-        }
-    }
+    $display .= COM_showMessageFromParameter();
     $token = SEC_createToken();
     $display .= listplugins ($token);
     $display .= show_newplugins($token);
@@ -509,4 +500,5 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 }
 
 echo $display;
+
 ?>

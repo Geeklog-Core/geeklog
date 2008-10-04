@@ -311,6 +311,8 @@ if ($mode == 'backup') {
             }
         }
     }
+} else {
+    $display .= COM_showMessageFromParameter();
 }
 
 // Show all backups

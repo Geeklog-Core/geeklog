@@ -4462,6 +4462,31 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
     return $retval;
 }
 
+/**
+* Displays a message text in a "System Message" block
+*
+* @param    string  $message    Message text; may contain HTML
+* @return   string              HTML block with message
+*
+*/
+function COM_showMessageText($message)
+{
+    global $_CONF, $MESSAGE, $_IMAGE_TYPE;
+
+    $retval = '';
+
+    if (!empty($message)) {
+        $timestamp = strftime($_CONF['daytime']);
+        $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
+                                  COM_getBlockTemplate('_msg_block', 'header'))
+                . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
+                . '>' . $message . '</p>'
+                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+    }
+
+    return $retval;
+}
 
 /**
 * Displays a message on the webpage
@@ -4469,19 +4494,17 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 * Pulls $msg off the URL string and gets the corresponding message and returns
 * it for display on the calling page
 *
-* @param      int     $msg        ID of message to show
-* @param      string  $plugin     Optional Name of plugin to lookup plugin defined message
-* @return     string  HTML block with message
+* @param    int     $msg        ID of message to show
+* @param    string  $plugin     Optional Name of plugin to lookup plugin defined message
+* @return   string              HTML block with message
 */
-
 function COM_showMessage($msg, $plugin = '')
 {
-    global $_CONF, $MESSAGE, $_IMAGE_TYPE;
+    global $MESSAGE;
 
     $retval = '';
 
     if ($msg > 0) {
-        $timestamp = strftime($_CONF['daytime']);
         if (!empty($plugin)) {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
@@ -4496,18 +4519,40 @@ function COM_showMessage($msg, $plugin = '')
         }
 
         if (!empty($message)) {
-            $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
-                                  COM_getBlockTemplate('_msg_block', 'header'))
-                . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
-                . '>' . $message . '</p>'
-                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+            $retval .= COM_showMessageText($message);
         }
     }
 
     return $retval;
 }
 
+/**
+* Displays a message, as defined by URL parameters
+*
+* Helper function to display a message, if URL parameters 'msg' and 'plugin'
+* (optional) are defined. Only for GET requests, but that's what Geeklog uses
+* everywhere anyway.
+*
+* @return   string  HTML block with message
+*
+*/
+function COM_showMessageFromParameter()
+{
+    $retval = '';
+
+    if (isset($_GET['msg'])) {
+        $msg = COM_applyFilter($_GET['msg'], true);
+        if ($msg > 0) {
+            $plugin = '';
+            if (isset($_GET['plugin'])) {
+                $plugin = COM_applyFilter($_GET['plugin']);
+            }
+            $retval .= COM_showMessage($msg, $plugin);
+        }
+    }
+
+    return $retval;
+}
 
 /**
 * Prints Google(tm)-like paging navigation

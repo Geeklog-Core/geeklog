@@ -3,6 +3,11 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Introduced new function COM_showMessageText to display a free-form text in a
+  "System Message" box (feature request #0000676) [Dirk]
+- Introduced new function COM_showMessageFromParameter for easy and consistent
+  display of messages passed in the URL, including plugin messages (second
+  attempt to fix bug #0000618) [Dirk]
 - Display confirmation message when emailing a story (feature request #0000689)
   [Dirk]
 - Implemented new function COM_renderWikiText to convert wiki-formatted text
