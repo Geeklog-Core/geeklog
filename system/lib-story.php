@@ -49,6 +49,12 @@ if ($_CONF['allow_user_photo']) {
 // this must be kept in sync with the actual size of 'sid' in the db ...
 define('STORY_MAX_ID_LENGTH', 40);
 
+// Story Record Options for the STATUS Field
+if (!defined ('STORY_ARCHIVE_ON_EXPIRE')) {
+    define ('STORY_ARCHIVE_ON_EXPIRE', '10');
+    define ('STORY_DELETE_ON_EXPIRE',  '11');
+}
+
 /**
  * Takes an article class and renders HTML in the specified template and style.
  *
@@ -522,7 +528,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         PLG_templateSetVars( 'featuredstorytext', $article );
         $article->parse( 'finalstory', 'featuredarticle' );
     }
-    elseif( $story->DisplayElements('statuscode') == 10 AND $story->DisplayElements('expire') <= time() )
+    elseif( $story->DisplayElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE AND $story->DisplayElements('expire') <= time() )
     {
         $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
         PLG_templateSetVars( 'archivestorytext', $article );
@@ -536,12 +542,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     }
 
     return $article->finish( $article->get_var( 'finalstory' ));
-}
-
-// Story Record Options for the STATUS Field
-if (!defined ('STORY_ARCHIVE_ON_EXPIRE')) {
-    define ('STORY_ARCHIVE_ON_EXPIRE', '10');
-    define ('STORY_DELETE_ON_EXPIRE',  '11');
 }
 
 /**
