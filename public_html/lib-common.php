@@ -4495,12 +4495,14 @@ function COM_showMessage($msg, $plugin = '')
             $message = $MESSAGE[$msg];
         }
 
-        $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
+        if (!empty($message)) {
+            $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
                                   COM_getBlockTemplate('_msg_block', 'header'))
                 . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
                 . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
                 . '>' . $message . '</p>'
                 . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        }
     }
 
     return $retval;

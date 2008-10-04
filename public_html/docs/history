@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Display confirmation message when emailing a story (feature request #0000689)
+  [Dirk]
 - Implemented new function COM_renderWikiText to convert wiki-formatted text
   to (X)HTML (feature request #0000643) [Dirk]
 - Added support for CUSTOM_formatEmailAddress and CUSTOM_emailEscape functions

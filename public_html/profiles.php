@@ -271,16 +271,20 @@ function contactform ($uid, $subject = '', $message = '')
 *                this code
 *
 */
-function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
+function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
-    $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
-                                         . '/article.php?story=' . $sid));
+    $storyurl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
+    if ($_CONF['url_rewrite']) {
+        $retval = COM_refresh($storyurl . '?msg=85');
+    } else {
+        $retval = COM_refresh($storyurl . '&amp;msg=85');
+    }
 
     // check for correct $_CONF permission
-    if (empty ($_USER['username']) &&
-        (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
+                             ($_CONF['emailstoryloginrequired'] == 1))) {
         return $retval;
     }
 
@@ -290,8 +294,8 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     }
 
     // check mail speedlimit
-    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
-    if (COM_checkSpeedlimit ('mail') > 0) {
+    COM_clearSpeedlimit($_CONF['speedlimit'], 'mail');
+    if (COM_checkSpeedlimit('mail') > 0) {
         return $retval;
     }
 
@@ -343,6 +347,12 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     // Increment numemails counter for story
     DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
+
+    if ($_CONF['url_rewrite']) {
+        $retval = COM_refresh($storyurl . '?msg=27');
+    } else {
+        $retval = COM_refresh($storyurl . '&amp;msg=27');
+    }
 
     return $retval;
 }
