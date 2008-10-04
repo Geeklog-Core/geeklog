@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Display a "Service" column in the Admin's list of users when remote auth is
+  activated [Dirk]
 - Introduced new function COM_showMessageText to display a free-form text in a
   "System Message" box (feature request #0000676) [Dirk]
 - Introduced new function COM_showMessageFromParameter for easy and consistent
