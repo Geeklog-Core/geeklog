@@ -1250,10 +1250,8 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         . batchdelete()
         . COM_siteFooter();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu', $LANG28[11]);
-    if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
-    }
+    $display .= COM_siteHeader('menu', $LANG28[11]);
+    $display .= COM_showMessageFromParameter();
     $display .= listusers();
     $display .= COM_siteFooter();
 }

@@ -1034,10 +1034,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= editusers ($grp_id);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu', $LANG28[38]);
-    if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
-    }
+    $display .= COM_siteHeader('menu', $LANG28[38]);
+    $display .= COM_showMessageFromParameter();
     $display .= listgroups();
     $display .= COM_siteFooter();
 }

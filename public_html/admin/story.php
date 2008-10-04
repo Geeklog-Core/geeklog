@@ -785,11 +785,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display .= COM_siteHeader('menu', $LANG24[22]);
-        $msg = "";
-        if (isset($_GET['msg'])) {
-            $msg = COM_applyFilter($_GET['msg'], true);
-            $display .= COM_showMessage($msg);
-        }
+        $display .= COM_showMessageFromParameter();
         $display .= liststories();
         $display .= COM_siteFooter();
     }

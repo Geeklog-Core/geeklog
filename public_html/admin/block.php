@@ -847,16 +847,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= listblocks();
     $display .= COM_siteFooter();
 } else {  // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu', $LANG21[19]);
-    $msg = 0;
-    if (isset ($_POST['msg'])) {
-        $msg = COM_applyFilter ($_POST['msg'], true);
-    } else if (isset ($_GET['msg'])) {
-        $msg = COM_applyFilter ($_GET['msg'], true);
-    }
-    if ($msg > 0) {
-        $display .= COM_showMessage ($msg);
-    }
+    $display .= COM_siteHeader('menu', $LANG21[19]);
+    $display .= COM_showMessageFromParameter();
     $display .= listblocks();
 
     $display .= COM_siteFooter();

@@ -63,10 +63,11 @@ $VERBOSE = false;
 *
 * @param    int     $user   User ID of profile to get
 * @param    int     $msg    Message to display (if != 0)
+* @param    string  $plugin optional plugin name for message
 * @return   string          HTML for user profile page
 *
 */
-function userprofile ($user, $msg = 0)
+function userprofile($user, $msg = 0, $plugin = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN;
 
@@ -109,7 +110,7 @@ function userprofile ($user, $msg = 0)
 
     $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $display_name);
     if ($msg > 0) {
-        $retval .= COM_showMessage ($msg);
+        $retval .= COM_showMessage($msg, $plugin);
     }
 
     // format date/time to user preference
@@ -867,10 +868,14 @@ case 'profile':
     $uid = COM_applyFilter ($_GET['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
         $msg = 0;
-        if (isset ($_GET['msg'])) {
-            $msg = COM_applyFilter ($_GET['msg'], true);
+        if (isset($_GET['msg'])) {
+            $msg = COM_applyFilter($_GET['msg'], true);
         }
-        $display .= userprofile ($uid, $msg);
+        $plugin = '';
+        if ($msg > 0) {
+            $plugin = COM_applyFilter($_GET['plugin']);
+        }
+        $display .= userprofile($uid, $msg, $plugin);
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }

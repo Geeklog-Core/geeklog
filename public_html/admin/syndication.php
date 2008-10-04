@@ -583,13 +583,12 @@ elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC
 }
 else
 {
-    $display .= COM_siteHeader ('menu', $LANG33[10]);
-    if (isset ($_REQUEST['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter($_REQUEST['msg']));
-    }
+    $display .= COM_siteHeader('menu', $LANG33[10]);
+    $display .= COM_showMessageFromParameter();
     $display .= listfeeds();
-    $display .= COM_siteFooter ();
+    $display .= COM_siteFooter();
 }
 
 echo $display;
+
 ?>
