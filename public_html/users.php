@@ -1114,6 +1114,7 @@ default:
                         $_CONF['site_url'], // Trust root.
                         null,
                         "email,nickname,fullname")); // Required fields.
+                exit;
             }
         } elseif (isset($query['openid.mode']) || isset($query['openid_mode'])) {
             $openid_mode = '';
