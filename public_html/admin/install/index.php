@@ -109,7 +109,7 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
 * Note: Needed for upgrades from old versions - don't remove.
 *
 */
-function get_SP_Ver()
+function get_SP_ver()
 {
     global $_TABLES;
 
@@ -1357,7 +1357,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             INST_updateDB($_SQL);
 
             // upgrade Static Pages plugin
-            $spversion = get_SP_ver ();
+            $spversion = get_SP_ver();
             if ($spversion == 1) { // original version
                 DB_query ("ALTER TABLE {$_TABLES['staticpage']} "
                     . "ADD COLUMN group_id mediumint(8) unsigned DEFAULT '1',"
@@ -1431,7 +1431,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$sitename}', '{$siteslogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
 
             // upgrade static pages plugin
-            $spversion = get_SP_ver ();
+            $spversion = get_SP_ver();
             if ($spversion > 0) {
                 if ($spversion < 4) {
                     if (!isset ($_SP_CONF['in_block'])) {
@@ -1499,7 +1499,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 }
             }
 
-            $spversion = get_SP_ver ();
+            $spversion = get_SP_ver();
             if ($spversion > 0) {
                 // no database changes this time, but set new version number
                 DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.1', pi_gl_version = '1.3.10' WHERE pi_name = 'staticpages'");
