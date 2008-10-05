@@ -641,7 +641,9 @@ function plugin_upload()
                 }
                 if ($upload_success) { 
 
-                    rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
+                    if (file_exists($_CONF['path'] . 'plugins/' . $pi_name . '/public_html')) {
+                        rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
+                    }
                     rename($_CONF['path'] . 'plugins/' . $pi_name . '/admin', $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
 
                 }
