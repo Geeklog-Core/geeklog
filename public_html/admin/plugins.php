@@ -14,6 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Matt West         - matt AT mattdanger DOT net                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -42,10 +43,10 @@ require_once 'auth.inc.php';
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
-// Number of plugins to list per page
-// We use 25 here instead of the 50 entries in other lists to leave room
-// for the list of uninstalled plugins.
-define ('PLUGINS_PER_PAGE', 25);
+// define upload error codes introduced in later PHP versions
+if (!defined('UPLOAD_ERR_NO_TMP_DIR')) { define('UPLOAD_ERR_NO_TMP_DIR', 6); }
+if (!defined('UPLOAD_ERR_CANT_WRITE')) { define('UPLOAD_ERR_CANT_WRITE', 7); }
+if (!defined('UPLOAD_ERR_EXTENSION'))  { define('UPLOAD_ERR_EXTENSION',  8); }
 
 $display = '';
 
@@ -433,6 +434,264 @@ function listplugins ($token)
     return $retval;
 }
 
+/**
+ * Check if an error occured while uploading a file
+ *
+ * @param   array   $mFile  $_FILE['uploaded_file']
+ * @return  mixed           Returns the error string if an error occured,
+ *                          returns false if no error occured
+ *
+ */
+function plugin_getUploadError($mFile) 
+{
+    global $LANG32;
+
+    $retval = '';
+
+    if (isset($mFile['error']) && ($mFile['error'] !== UPLOAD_ERR_OK)) { // If an error occured while uploading the file.
+
+        if ($mFile['error'] > UPLOAD_ERR_EXTENSION) { // If the error code isn't known
+
+            $retval = $LANG32[99]; // Unknown error
+
+        } else {
+
+            $retval = $LANG32[$mFile['error'] + 100]; // Print the error
+
+        }
+
+    } else { // If no upload error occurred
+
+        $retval = false;
+
+    }
+    
+    return $retval;
+}
+
+/**
+* Check if uploads are possible
+*
+* @return   boolean     true: uploads possible; false: not possible
+*
+*/
+function plugin_upload_enabled()
+{
+    global $_CONF;
+
+    // If 'file_uploads' is enabled in php.ini
+    // and the plugin directories are writable by the web server.
+    $upload_enabled = (ini_get('file_uploads')
+                        && is_writable($_CONF['path'] . 'plugins/') 
+                        && is_writable($_CONF['path_html'])
+                        && is_writable($_CONF['path_html'] . 'admin/plugins/')) 
+                            ? true
+                            : false;
+
+    return $upload_enabled;
+}
+
+/**
+* Display upload form
+*
+* @return   string      HTML for the upload form
+*
+*/
+function plugin_show_uploadform($token)
+{
+    global $_CONF, $LANG28, $LANG32;
+
+    $retval = '';
+
+    $retval .= COM_startBlock($LANG32[39], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
+    // Show the upload form
+    $retval .= '<p>' . $LANG32[40] . '</p>' . LB
+            . '<form name="plugins_upload" action="' . $_CONF['site_admin_url']             . '/plugins.php" method="post" enctype="multipart/form-data">' . LB
+            . '<div>' . $LANG28[29] . ': '
+            . '<input type="file" dir="ltr" name="plugin" size="40"' . XHTML
+            . '> ' . LB
+            . '<input type="submit" name="upload" value="' . $LANG32[41] . '"'
+            . XHTML . '>' . LB
+            . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token
+            . '"' . XHTML . '>' . '</div>' . LB . '</form>' . LB;
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
+    return $retval;
+}
+
+/**
+* Handle uploaded plugin
+*
+* @return   string      HTML: redirect or main plugin screen + error message
+*
+*/
+function plugin_upload()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    // Check if a plugin file was uploaded
+    $upload_success = false;
+    if (isset($_FILES['plugin'])) { 
+
+        // If an error occured while uploading the file.
+        $error_msg = plugin_getUploadError($_FILES['plugin']);
+        if (!empty($error_msg)) {
+
+            $retval .= plugin_main($error_msg);
+
+        } else {
+
+            $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
+
+            if ($_FILES['plugin']['type'] == 'application/zip') {
+
+                // Zip
+                require_once 'Archive/Zip.php';  // import Archive_Zip library
+                $archive = new Archive_Zip($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Zip to extract the package
+
+            } else {
+
+                // Tarball
+                require_once 'Archive/Tar.php';  // import Archive_Tar library
+                $archive = new Archive_Tar($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Tar to extract the package
+
+            }
+            $tmp = $archive->listContent(); // Grab the contents of the tarball to see what the plugin name is
+            $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
+
+            if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
+
+                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
+
+            } else if (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
+
+                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
+
+            } else {
+
+                /** 
+                 * Install the plugin
+                 * This doesn't work if the public_html & public_html/admin/plugins directories aren't 777
+                 */
+
+                // Extract the tarball to data so we can get the $pi_name name from admin/install.php
+                if ($_FILES['plugin']['type'] == 'application/zip') {
+
+                    // Zip
+                    $archive->extract(array('add_path' => $_CONF['path'] . 'data/',
+                                            'by_name' => $dirname . '/admin/install.php'));
+
+                } else {
+
+                    // Tarball
+                    $archive->extractList(array($dirname . '/admin/install.php'), $_CONF['path'] . 'data/');
+
+                }
+                $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
+                $fhandle = fopen($plugin_inst, 'r');
+                $fdata = fread($fhandle, filesize($plugin_inst));
+                fclose($fhandle);
+
+                // Remove the plugin from data/
+                require_once 'System.php';
+                @System::rm('-rf ' . $_CONF['path'] . 'data/' . $dirname);
+
+                /**
+                 * One time I wanted to install a muffler on my car and
+                 * needed to match up the outside diameter of the car's
+                 * exhaust pipe to the inside diameter of the muffler. 
+                 * Unfortunately, when I went to the auto parts store they
+                 * didn't have a coupling adapter that would perfectly
+                 * match the two pipes, only a bunch of smaller adapters.
+                 * I ended up using about 4 small adapters to step down 
+                 * one size at a time to the size of the muffler's input.
+                 *
+                 * It's kind of like this regular expression:
+                 *
+                 */
+                $fdata = preg_replace('/\n/', '', $fdata);
+                $fdata = preg_replace('/ /', '', $fdata);
+                $pi_name = preg_replace('/^.*\$pi\_name=\'/', '', $fdata);
+                $pi_name = preg_replace('/\'.*$/', '', $pi_name);
+
+                // Some plugins don't have $pi_name set in their install.php file,
+                // This means our regex won't work and we should just use $dirname
+                if (preg_match('/\<\?php/', $pi_name) || preg_match('/--/', $pi_name)) {
+
+                    $pi_name = $dirname;
+
+                }
+
+                // Extract the uploaded archive to the plugins directory
+                if ($_FILES['plugin']['type'] == 'application/zip') {
+
+                    // Zip
+                    $upload_success = $archive->extract(array('add_path' => $_CONF['path'] . 'plugins/'));
+
+                } else {
+
+                    // Tarball
+                    $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
+
+                }
+                if ($upload_success) { 
+
+                    rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
+                    rename($_CONF['path'] . 'plugins/' . $pi_name . '/admin', $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
+
+                }
+
+                unset($archive); // Collect some garbage
+
+                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=98');
+
+            }
+        }
+
+    } // End check if a plugin file was uploaded
+
+    return $retval;
+}
+
+/**
+* Show main plugin screen: installed and uninstalled plugins, upload form
+*
+* @param    string  $message    (optional) message to display
+* @return   string              HTML for the plugin screen
+*
+*/
+function plugin_main($message = '')
+{
+    global $LANG32;
+
+    $retval = '';
+
+    $retval .= COM_siteHeader('menu', $LANG32[5]);
+    if (!empty($message)) {
+        $retval .= COM_showMessageText($message);
+    } else {
+        $retval .= COM_showMessageFromParameter();
+    }
+
+    $token = SEC_createToken();
+    $retval .= listplugins($token);
+    $retval .= show_newplugins($token);
+
+    // If the web server will allow the user to upload a plugin
+    if (plugin_upload_enabled()) {
+        $retval .= plugin_show_uploadform($token);
+    }
+
+    $retval .= COM_siteFooter();
+
+    return $retval;
+}
+
 // MAIN
 $display = '';
 if (isset ($_POST['pluginenabler']) && SEC_checkToken()) {
@@ -490,13 +749,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                             COM_applyFilter ($_POST['pi_gl_version']),
                             $enabled, COM_applyFilter ($_POST['pi_homepage']));
 
+} elseif (isset($_FILES['plugin']) && SEC_checkToken()) { 
+    $display .= plugin_upload();
+
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu', $LANG32[5]);
-    $display .= COM_showMessageFromParameter();
-    $token = SEC_createToken();
-    $display .= listplugins ($token);
-    $display .= show_newplugins($token);
-    $display .= COM_siteFooter();
+    $display .= plugin_main();
+
 }
 
 echo $display;
