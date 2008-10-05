@@ -4466,18 +4466,22 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 * Displays a message text in a "System Message" block
 *
 * @param    string  $message    Message text; may contain HTML
+* @param    string  $title      (optional) alternative block title
 * @return   string              HTML block with message
 *
 */
-function COM_showMessageText($message)
+function COM_showMessageText($message, $title = '')
 {
     global $_CONF, $MESSAGE, $_IMAGE_TYPE;
 
     $retval = '';
 
     if (!empty($message)) {
+        if (empty($title)) {
+            $title = $MESSAGE[40];
+        }
         $timestamp = strftime($_CONF['daytime']);
-        $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp, '',
+        $retval .= COM_startBlock($title . ' - ' . $timestamp, '',
                                   COM_getBlockTemplate('_msg_block', 'header'))
                 . '<p class="sysmessage"><img src="' . $_CONF['layout_url']
                 . '/images/sysmessage.' . $_IMAGE_TYPE . '" alt="" ' . XHTML
