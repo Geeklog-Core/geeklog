@@ -82,17 +82,11 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
     if (@mysql_connect($_DB_host, $_DB_user, $_DB_pass) === false) {
         return false;
     }
-    $mysqlv = '';
 
-    // mysql_get_server_info() is only available as of PHP 4.0.5
-    $phpv = php_v ();
-    if (($phpv[0] > 4) || (($phpv[0] == 4) && ($phpv[1] > 0)) ||
-        (($phpv[0] == 4) && ($phpv[1] == 0) && ($phpv[2] > 4))) {
-        $mysqlv = @mysql_get_server_info();
-    }
+    $mysqlv = @mysql_get_server_info();
 
-    if (!empty ($mysqlv)) {
-        preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
+    if (!empty($mysqlv)) {
+        preg_match('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
         $mysqlmajorv = $match[1];
         $mysqlminorv = $match[2];
         $mysqlrev = $match[3];
@@ -101,9 +95,9 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
         $mysqlminorv = 0;
         $mysqlrev = 0;
     }
-    @mysql_close ();
+    @mysql_close();
 
-    return array ($mysqlmajorv, $mysqlminorv, $mysqlrev);
+    return array($mysqlmajorv, $mysqlminorv, $mysqlrev);
 }
 
 
@@ -202,9 +196,9 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
         }
 
         if (!empty($version) && ($version != VERSION) &&
-                (substr($version, 0, 4) == '1.5.')) {
+                (version_compare($version, '1.5.0') >= 0)) {
 
-            // this is a 1.5.x version, so upgrade directly
+            // current version is at least 1.5.0, so upgrade directly
             $req_string = 'index.php?mode=upgrade&step=3'
                         . '&dbconfig_path=' . $dbconfig_path
                         . '&version=' . $version;
