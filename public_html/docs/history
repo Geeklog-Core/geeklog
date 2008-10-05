@@ -39,6 +39,8 @@ Links plugin
 
 Polls plugin
 ------------
+- Fixed SQL error when poll questions contained single quotes (bug #0000756)
+  [Dirk]
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]
 
 Static Pages plugin

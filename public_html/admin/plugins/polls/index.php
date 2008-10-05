@@ -250,14 +250,19 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
     $v = 0; // re-count votes sine they might have been changed
     // first dimension of array are the questions
-    for ($i=0; $i<sizeof($Q); $i++) {
-        $Q[$i] = COM_stripslashes ($Q[$i]);
-        if (strlen ($Q[$i]) > 0) { // only insert questions that exist
-            DB_save ($_TABLES['pollquestions'], 'qid, pid, question', "'$k', '$pid', '$Q[$i]'");
-            // within the questions, we have another dimensions with answers, votes and remarks
-            for ($j=0; $j<sizeof($A[$i]); $j++) {
-                $A[$i][$j] = COM_stripslashes ($A[$i][$j]);
-                if (strlen ($A[$i][$j]) > 0) { // only insert answers etc that exist
+    $num_questions = sizeof($Q);
+    for ($i = 0; $i < $num_questions; $i++) {
+        $Q[$i] = COM_stripslashes($Q[$i]);
+        if (strlen($Q[$i]) > 0) { // only insert questions that exist
+            $Q[$i] = addslashes($Q[$i]);
+            DB_save($_TABLES['pollquestions'], 'qid, pid, question',
+                                               "'$k', '$pid', '$Q[$i]'");
+            // within the questions, we have another dimensions with answers,
+            // votes and remarks
+            $num_answers = sizeof($A[$i]);
+            for ($j = 0; $j < $num_answers; $j++) {
+                $A[$i][$j] = COM_stripslashes($A[$i][$j]);
+                if (strlen($A[$i][$j]) > 0) { // only insert answers etc that exist
                     if (!is_numeric($V[$i][$j])) {
                         $V[$i][$j] = "0";
                     }
