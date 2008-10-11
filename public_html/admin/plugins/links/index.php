@@ -273,7 +273,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         $perm_anon = 2;
     }
 
-    $lid = COM_sanitizeID($old_lid);
+    $lid = COM_sanitizeID($lid);
     $old_lid = COM_sanitizeID($old_lid);
     if (empty($lid)) {
         if (empty($old_lid)) {
