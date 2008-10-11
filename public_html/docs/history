@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Delete a feed's file when deleting a feed (bug #0000758) [Dirk]
 - The {start_storylink_anchortag} variable in the story templates was missing
   a '>' (reported by Michael Brusletten) [Dirk]
 - Display a "Service" column in the Admin's list of users when remote auth is
