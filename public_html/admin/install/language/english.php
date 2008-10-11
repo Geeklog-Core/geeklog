@@ -59,26 +59,26 @@ $LANG_INSTALL = array(
     5 => 'Sorry, but Geeklog requires at least PHP 4.1.0 to run (you have version ',
     6 => '). Please <a href="http://www.php.net/downloads.php">upgrade your PHP</a> install or ask your hosting service to do it for you.',
     7 => 'Unable to locate Geeklog files',
-    8 => 'The installation script was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
+    8 => 'The installer was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
     9 => 'Welcome and thank you for choosing Geeklog!',
     10 => 'File/Directory',
     11 => 'Permissions',
     12 => 'Change to',
     13 => 'Currently',
-    14 => 'Change directory to',
+    14 => 'Set File Permissions',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
-    19 => 'Geeklog requires certain files and directories to be writeable by the web server. Below is a list of which files and directories need to be changed.',
-    20 => 'Warning!',
-    21 => 'Your Geeklog and site will not work properly until the errors listed above are corrected. Not following this step is the #1 reason why people receive errors when they first try to use Geeklog. Please make the necessary changes before you continue.',
+    19 => 'In order to operate correctly Geeklog requires that certain files and directories be writable by the web server. Below is a list of file and directory permissions that you need to modify before continuing with the your installation.',
+    20 => 'Warning',
+    21 => 'There are still a few files or directories that have incorrect permissions. You cannot proceed until all permissions are correctly set.',
     22 => 'unknown',
-    23 => 'Choose your installation method:',
+    23 => 'Choose an Installation Method',
     24 => 'New Install',
     25 => 'Upgrade',
     26 => 'Unable to modify',
-    27 => '. Did you make sure the file is write-able by the web server?',
-    28 => 'siteconfig.php. Did you make sure the file is write-able by the web server?',
+    27 => '. Did you make sure the file is writable by the web server?',
+    28 => 'siteconfig.php. Did you make sure the file is writable by the web server?',
     29 => 'Geeklog Site',
     30 => 'Another Nifty Geeklog Site',
     31 => 'Required Configuration Information',
@@ -88,7 +88,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL with InnoDB Table support',
     37 => 'Microsoft SQL',
-    38 => '',
+    38 => 'Error',
     39 => 'Database Hostname',
     40 => 'Database Name',
     41 => 'Database Username',
@@ -101,15 +101,15 @@ $LANG_INSTALL = array(
     48 => 'Site Email',
     49 => 'Site No-Reply Email',
     50 => 'Install',
-    51 => 'MySQL 3.23.2 required',
+    51 => 'MySQL 3.23.2 or newer required',
     52 => 'Sorry, but Geeklog requires at least MySQL 3.23.2 to run (you have version ',
     53 => '). Please <a href="http://dev.mysql.com/downloads/mysql/">upgrade your MySQL</a> install or ask your hosting service to do it for you.',
     54 => 'Incorrect database information',
     55 => 'Sorry, but the database information you entered does not appear to be correct. Please go back and try again.',
     56 => 'Could not connect to database',
     57 => 'Sorry, but the installer could not find the database you specified. Either the database does not exist or you misspelled the name. Please go back and try again.',
-    58 => '. Did you make sure the file is write-able by the web server?',
-    59 => 'Notice:',
+    58 => '. Did you make sure the file is writable by the web server?',
+    59 => 'Notice',
     60 => 'InnoDB tables are not supported by your version of MySQL. Would you like to continue the installation without InnoDB support?',
     61 => 'Back',
     62 => 'Continue',
@@ -134,15 +134,16 @@ $LANG_INSTALL = array(
     81 => 'Stop!',
     82 => 'It is critical that you change permissions on the files listed below. Geeklog will not be able to be installed until you do so.',
     83 => 'Installation Error',
-    84 => 'The path "',
-    85 => '" does not appear to be correct. Please go back and try again.',
+    84 => 'The path ',
+    85 => ' does not appear to be correct. Please go back and try again.',
     86 => 'Language',
     87 => 'http://www.geeklog.net/forum/index.php?forum=1',
     88 => 'Change directory and containing files to',
     89 => 'Current Version:',
     90 => 'Empty database?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
-    92 => 'Use UTF-8'
+    92 => 'Use UTF-8',
+    93 => 'Success'
 );
 
 // +---------------------------------------------------------------------------+
@@ -170,7 +171,8 @@ $LANG_SUCCESS = array(
     18 => 'back to',
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
     20 => 'installed',
-    21 => 'upgraded'
+    21 => 'upgraded',
+    22 => 'migrated'
 );
 
 // +---------------------------------------------------------------------------+
@@ -191,6 +193,106 @@ $LANG_HELP = array(
     11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.'
+);
+
+// +---------------------------------------------------------------------------+
+// migrate.php
+
+$LANG_MIGRATE = array(
+    0 => 'The migration process will overwrite any existing database information.',
+    1 => 'Before Proceding',
+    2 => 'Be sure any previously installed plugins have been copied to your new server.',
+    3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
+    4 => 'If you\'re upgrading to a new Geeklog version, then run the <a href="index.php">install script</a> in upgrade mode first.',
+    5 => 'If you\'re upgrading to a new Geeklog version, then don\'t upload your theme just yet. Use the included default theme until you can be sure your migrated site works properly.',
+    6 => 'Select an existing backup',
+    7 => 'Choose file...',
+    8 => 'From the server\'s backups directory',
+    9 => 'From your computer',
+    10 => 'Choose file...',
+    11 => 'No backup files found.',
+    12 => 'The upload limit for this server is ',
+    13 => '. If your backup file is larger than ',
+    14 => ' or if you experience a timeout, then you should upload he file to Geeklog\'s backups directory via FTP.',
+    15 => 'Your backups directory is not writable by the web server. Permissions need to be 777.',
+    16 => 'Migrate',
+    17 => 'Migrate From Backup',
+    18 => 'No backup file was selected',
+    19 => 'Could not save ',
+    20 => ' to ',
+    21 => 'The file',
+    22 => 'already exists. Would you like to replace it?',
+    23 => 'Yes',
+    24 => 'No',
+    25 => 'The version of Geeklog you chose to migrate from is out of date.',
+    26 => 'Migration notice: ',
+    27 => 'The "',
+    28 => '" plugin is missing and has been disabled. You can install and reactivate it at any time from the administration section.',
+    29 => 'The image "',
+    30 => '" listed in the "',
+    31 => '" table could not be found in ',
+    32 => 'The database file contained information for one or more plugins that the migration script could not locate in your',
+    33 => 'directory. The plugins have been deactivated. You can install and reactivate them at any time from the administration section.',
+    34 => 'The database file contained information for one or more files that the migration script could not locate in your',
+    35 => 'directory. Check <code>error.log</code> for more details.',
+    36 => 'You can correct these any time.',
+    37 => 'Migration Complete',
+    38 => 'The migration process has completed. However, the installation script found the following issues:'
+);
+
+// +---------------------------------------------------------------------------+
+// bigdump.php
+
+$LANG_BIGDUMP = array(
+    0 => 'Start Import',
+    1 => ' from ',
+    2 => ' into ',
+    3 => ' at ',
+    4 => 'Can\'t seek into ',
+    5 => 'Can\'t open ',
+    6 => ' for import.',
+    7 => 'UNEXPECTED: Non-numeric values for start and foffset.',
+    8 => 'Processing file:',
+    9 => 'Can\'t set file pointer behind the end of file.',
+    10 => 'Can\'t set file pointer to offset: ',
+    11 => 'Stopped at the line ',
+    12 => '. At this place the current query is from csv file, but ',
+    13 => ' was not set.',
+    14 => 'Stopped at the line ',
+    15 => '. At this place the current query includes more than ',
+    16 => ' dump lines. That can happen if your dump file was created by some tool which doesn\'t place a semicolon followed by a linebreak at the end of each query, or if your dump contains extended inserts. Please read the BigDump FAQs for more information.',
+    17 => 'Error at the line ',
+    18 => 'Query: ',
+    19 => 'MySQL: ',
+    20 => 'Can\'t read the file pointer offset.',
+    21 => 'Not available for gzipped files',
+    22 => 'Progress',
+    23 => 'The database migration completed successfully! You will be forwarded momentarily.',
+    24 => 'Waiting ',
+    25 => ' milliseconds</b> before starting next session...',
+    26 => 'Click here',
+    27 => 'to abort the import',
+    28 => 'or wait!',
+    29 => 'An error occurred.',
+    30 => 'Start from the beginning',
+    31 => '(DROP the old tables before restarting)'
+);
+
+// +---------------------------------------------------------------------------+
+// Error messages
+
+$LANG_ERROR = array(
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    2 => 'The uploaded file was only partially uploaded.',
+    3 => 'No file was uploaded.',
+    4 => 'Missing a temporary folder.',
+    5 => 'Failed to write file to disk.',
+    6 => 'File upload stopped by extension.',
+    7 => 'The uploaded file exceeds the post_max_size directive in your php.ini. Please upload your database file using another method, such as FTP.',
+    8 => 'Error',
+    9 => 'Failed to connect to the database with the error: ',
+    10 => 'Check your database settings'
 );
 
 ?>
