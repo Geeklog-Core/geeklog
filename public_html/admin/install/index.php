@@ -50,7 +50,7 @@ if (!defined("LB")) {
     define("LB", "\n");
 }
 if (!defined('VERSION')) {
-    define('VERSION', '1.5.1');
+    define('VERSION', '1.5.2');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
@@ -576,7 +576,7 @@ function INST_installEngine($install_type, $install_step)
                                           . '<p>' . $LANG_INSTALL[91] . '</p>';
                             } else {
 
-                                $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1','1.5.0');
+                                $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1','1.5.0','1.5.1');
                                 if (empty($curv)) {
                                     // If we were unable to determine the current GL
                                     // version is then ask the user what it is
@@ -1628,6 +1628,11 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             INST_updateDB($_SQL);
 
             $current_gl_version = '1.5.1';
+            $_SQL = '';
+            break;
+
+        case '1.5.1':
+            $current_gl_version = '1.5.2';
             $_SQL = '';
             break;
 
