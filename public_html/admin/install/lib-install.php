@@ -565,6 +565,8 @@ function INST_urlExists($url)
  */
 function INST_getUploadError($mFile) 
 {
+    global $LANG_ERROR;
+
     $mRetval = '';
     $mErrors = array(
         UPLOAD_ERR_INI_SIZE => $LANG_ERROR[0],
