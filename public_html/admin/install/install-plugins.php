@@ -37,11 +37,11 @@
 // | Main                                                                      |
 // +---------------------------------------------------------------------------+
 
-require_once "lib-install.php";
 require_once '../../lib-common.php';
+require_once 'lib-install.php';
 
 // Set some vars
-$html_path          = str_replace('admin/install/migrate.php', '', str_replace('admin\install\migrate.php', '', str_replace('\\', '/', __FILE__)));
+$html_path          = str_replace('admin/install/install-plugins.php', '', str_replace('admin\install\install-plugins.php', '', str_replace('\\', '/', __FILE__)));
 $siteconfig_path    = '../../siteconfig.php';
 
 if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been defined.
@@ -456,12 +456,14 @@ if (INST_phpOutOfDate()) {
 /*
         foreach ($_POST['plugins'] as $plugin) {
 
-            if ($plugin['install'] == 'on') { // If the plugin was selected to be installed
-
+            // If the plugin was selected to be installed
+            if (isset($plugin['install']) && ($plugin['install'] == 'on')) {
+*/
                 /**
                  * Install the plugin by including & executing the database queries for each plugin
                  * Start by looking for the database install file.
                  */
+/*
                 $plugin_sql = '';
                 if (file_exists($_CONF['path'] . 'plugins/' . $plugin['name'] . '/sql/' . $_DB_dbms . '_install.php')) {
 
