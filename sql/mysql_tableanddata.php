@@ -491,256 +491,6 @@ CREATE TABLE {$_TABLES['vars']} (
 ) TYPE=MyISAM
 ";
 
-// Tables used by the bundled plugins
-
-// Calendar plugin
-$_SQL[] = "
-CREATE TABLE {$_TABLES['events']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  description text,
-  postmode varchar(10) NOT NULL default 'plaintext',
-  datestart date default NULL,
-  dateend date default NULL,
-  url varchar(255) default NULL,
-  hits mediumint(8) unsigned NOT NULL default '0',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  address1 varchar(40) default NULL,
-  address2 varchar(40) default NULL,
-  city varchar(60) default NULL,
-  state varchar(40) default NULL,
-  zipcode varchar(5) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  event_type varchar(40) NOT NULL default '',
-  location varchar(128) default NULL,
-  timestart time default NULL,
-  timeend time default NULL,
-  INDEX events_eid(eid),
-  INDEX events_event_type(event_type),
-  INDEX events_datestart(datestart),
-  INDEX events_dateend(dateend),
-  PRIMARY KEY  (eid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['eventsubmission']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  description text,
-  location varchar(128) default NULL,
-  datestart date default NULL,
-  dateend date default NULL,
-  url varchar(255) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  zipcode varchar(5) default NULL,
-  state varchar(40) default NULL,
-  city varchar(60) default NULL,
-  address2 varchar(40) default NULL,
-  address1 varchar(40) default NULL,
-  event_type varchar(40) NOT NULL default '',
-  timestart time default NULL,
-  timeend time default NULL,
-  PRIMARY KEY  (eid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['personal_events']} (
-  eid varchar(20) NOT NULL default '',
-  title varchar(128) default NULL,
-  event_type varchar(40) NOT NULL default '',
-  datestart date default NULL,
-  dateend date default NULL,
-  address1 varchar(40) default NULL,
-  address2 varchar(40) default NULL,
-  city varchar(60) default NULL,
-  state varchar(40) default NULL,
-  zipcode varchar(5) default NULL,
-  allday tinyint(1) NOT NULL default '0',
-  url varchar(255) default NULL,
-  description text,
-  postmode varchar(10) NOT NULL default 'plaintext',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  uid mediumint(8) NOT NULL default '0',
-  location varchar(128) default NULL,
-  timestart time default NULL,
-  timeend time default NULL,
-  PRIMARY KEY  (eid,uid)
-) TYPE=MyISAM
-";
-
-// Links plugin
-$_SQL[] = "
-CREATE TABLE {$_TABLES['linkcategories']} (
-  cid varchar(32) NOT NULL,
-  pid varchar(32) NOT NULL,
-  category varchar(32) NOT NULL,
-  description text DEFAULT NULL,
-  tid varchar(20) DEFAULT NULL,
-  created datetime DEFAULT NULL,
-  modified datetime DEFAULT NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  PRIMARY KEY (cid),
-  KEY links_pid (pid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['links']} (
-  lid varchar(40) NOT NULL default '',
-  cid varchar(32) default NULL,
-  url varchar(255) default NULL,
-  description text,
-  title varchar(96) default NULL,
-  hits int(11) NOT NULL default '0',
-  date datetime default NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX links_category(cid),
-  INDEX links_date(date),
-  PRIMARY KEY (lid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['linksubmission']} (
-  lid varchar(40) NOT NULL default '',
-  cid varchar(32) default NULL,
-  url varchar(255) default NULL,
-  description text,
-  title varchar(96) default NULL,
-  hits int(11) default NULL,
-  date datetime default NULL,
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  PRIMARY KEY (lid)
-) TYPE=MyISAM
-";
-
-// Polls plugin
-$_SQL[] = "
-CREATE TABLE {$_TABLES['pollanswers']} (
-  pid varchar(20) NOT NULL default '',
-  qid mediumint(9) NOT NULL default '0',
-  aid tinyint(3) unsigned NOT NULL default '0',
-  answer varchar(255) default NULL,
-  votes mediumint(8) unsigned default NULL,
-  remark varchar(255) NULL,
-  PRIMARY KEY (pid, qid, aid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['pollquestions']} (
-  qid mediumint(9) NOT NULL DEFAULT '0',
-  pid varchar(20) NOT NULL,
-  question varchar(255) NOT NULL,
-  PRIMARY KEY (qid, pid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(20) NOT NULL,
-  topic varchar(255) default NULL,
-  voters mediumint(8) unsigned default NULL,
-  questions int(11) NOT NULL default '0',
-  date datetime default NULL,
-  display tinyint(4) NOT NULL default '0',
-  is_open tinyint(1) NOT NULL default '1',
-  hideresults tinyint(1) NOT NULL default '0',
-  commentcode tinyint(4) NOT NULL default '0',
-  statuscode tinyint(4) NOT NULL default '0',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  INDEX pollquestions_pid(pid),
-  INDEX pollquestions_date(date),
-  INDEX pollquestions_display(display),
-  INDEX pollquestions_commentcode(commentcode),
-  INDEX pollquestions_statuscode(statuscode),
-  PRIMARY KEY  (pid)
-) TYPE=MyISAM
-";
-
-$_SQL[] = "
-CREATE TABLE {$_TABLES['pollvoters']} (
-  id int(10) unsigned NOT NULL auto_increment,
-  pid varchar(20) NOT NULL default '',
-  ipaddress varchar(15) NOT NULL default '',
-  date int(10) unsigned default NULL,
-  PRIMARY KEY (id)
-) TYPE=MyISAM
-";
-
-// Spam-X plugin
-$_SQL[] = "
-CREATE TABLE {$_TABLES['spamx']} (
-  name varchar(20) NOT NULL default '',
-  value varchar(255) NOT NULL default '',
-  INDEX spamx_name(name)
-) TYPE=MyISAM
-";
-
-// Static Pages plugin
-$_SQL[] = "
-CREATE TABLE {$_TABLES['staticpage']} (
-  sp_id varchar(40) NOT NULL default '',
-  sp_uid mediumint(8) NOT NULL default '1',
-  sp_title varchar(128) NOT NULL default '',
-  sp_content text NOT NULL,
-  sp_hits mediumint(8) unsigned NOT NULL default '0',
-  sp_date datetime NOT NULL default '0000-00-00 00:00:00',
-  sp_format varchar(20) NOT NULL default '',
-  sp_onmenu tinyint(1) unsigned NOT NULL default '0',
-  sp_label varchar(64) default NULL,
-  commentcode tinyint(4) NOT NULL default '0',
-  owner_id mediumint(8) unsigned NOT NULL default '1',
-  group_id mediumint(8) unsigned NOT NULL default '1',
-  perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '2',
-  perm_members tinyint(1) unsigned NOT NULL default '2',
-  perm_anon tinyint(1) unsigned NOT NULL default '2',
-  sp_centerblock tinyint(1) unsigned NOT NULL default '0',
-  sp_help varchar(255) default '',
-  sp_tid varchar(20) NOT NULL default 'none',
-  sp_where tinyint(1) unsigned NOT NULL default '1',
-  sp_php tinyint(1) unsigned NOT NULL default '0',
-  sp_nf tinyint(1) unsigned default '0',
-  sp_inblock tinyint(1) unsigned default '1',
-  postmode varchar(16) NOT NULL default 'html',
-  PRIMARY KEY  (sp_id),
-  KEY staticpage_sp_uid (sp_uid),
-  KEY staticpage_sp_date (sp_date),
-  KEY staticpage_sp_onmenu (sp_onmenu),
-  KEY staticpage_sp_centerblock (sp_centerblock),
-  KEY staticpage_sp_tid (sp_tid),
-  KEY staticpage_sp_where (sp_where)
-) TYPE=MyISAM
-";
-
 
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
@@ -770,12 +520,10 @@ $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (26,
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1,1,'user_block','gldefault','User Functions','all',2,'','','0000-00-00 00:00:00',1,'',4,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (2,1,'admin_block','gldefault','Admins Only','all',1,'','','0000-00-00 00:00:00',1,'',4,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,1,'section_block','gldefault','Topics','all',0,'','','0000-00-00 00:00:00',1,'',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'polls_block','phpblock','Poll','all',2,'','','0000-00-00 00:00:00',0,'phpblock_polls',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'events_block','phpblock','Events','all',4,'','','0000-00-00 00:00:00',1,'phpblock_calendar',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whats_new_block','gldefault','What\'s New','all',3,'','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'first_block','normal','About Geeklog','homeonly',1,'<p><b>Welcome to Geeklog!</b></p><p>If you\'re already familiar with Geeklog - and especially if you\'re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/support.html\">support options</a>.</p>','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (8,1,'whosonline_block','phpblock','Who\'s Online','all',0,'','','0000-00-00 00:00:00',0,'phpblock_whosonline',4,2,3,3,2,2) ";
-$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (9,1,'older_stories','gldefault','Older Stories','all',5,'','','0000-00-00 00:00:00',1,'',4,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'whats_new_block','gldefault','What\'s New','all',3,'','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'first_block','normal','About Geeklog','homeonly',1,'<p><b>Welcome to Geeklog!</b></p><p>If you\'re already familiar with Geeklog - and especially if you\'re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/support.html\">support options</a>.</p>','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whosonline_block','phpblock','Who\'s Online','all',0,'','','0000-00-00 00:00:00',0,'phpblock_whosonline',4,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'older_stories','gldefault','Older Stories','all',5,'','','0000-00-00 00:00:00',1,'',4,2,3,3,2,2) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (0,'Comments Enabled') ";
 $_DATA[] = "INSERT INTO {$_TABLES['commentcodes']} (code, name) VALUES (-1,'Comments Disabled') ";
@@ -813,8 +561,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VA
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (16,'%y-%m-%d %I:%M','99-03-21 10:00') ";
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (17,'%d/%m/%y %H:%M','21/03/99 22:00') ";
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (18,'%a %d %b %I:%M%p','Sun 21 Mar 10:00PM') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2006051410130162','Geeklog installed','Today, you successfully installed this Geeklog site.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (0,'Not Featured') ";
 $_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (1,'Featured') ";
@@ -909,36 +655,10 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (17,'Syndication Admin', 'Can create and modify web feeds for the site',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (18,'Webservices Users', 'Can use the Webservices API (if restricted)',0) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('site', 'root', 'Root', 'Website root', NULL, NOW(), NOW(), 2, 5, 3, 3, 2, 2);";
-$_DATA[] = "INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog-sites', 'site', 'Geeklog Sites', 'Sites using or related to the Geeklog CMS', NULL, NOW(), NOW(), 2, 5, 3, 3, 2, 2);";
-$_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, hits, date, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklog.net', 'geeklog-sites', 'http://www.geeklog.net/', 'Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.', 'Geeklog Project Homepage', 123, NOW(), 1, 5, 3, 3, 2, 2);";
-
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";
-
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.5.0','1.5.0',1,'http://www.geeklog.net/') ";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.1.1','1.5.0',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '2.0.0', '1.5.0', 1, 'http://www.geeklog.net/')";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '2.0.1', '1.5.0', '1', 'http://www.geeklog.net/')";
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.2', '1.5.0', '1', 'http://www.geeklog.net/')";
-
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 1, 'MS SQL support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 2, 'Multi-language support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 3, 'Calendar as a plugin', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 4, 'SLV spam protection', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 5, 'Mass-delete users', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 6, 'Other', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 1, 'Story-Images', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 2, 'User-Rights handling', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 3, 'The Support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
-
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 0, 'What is the best new feature of Geeklog?');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 1, 'What is the all-time best feature of Geeklog?');";
-
-$_DATA[] = "INSERT INTO `{$_TABLES['polltopics']}` (`pid`, `topic`, `voters`, `questions`, `date`, `display`, `is_open`, `hideresults`, `commentcode`, `statuscode`, `owner_id`, `group_id`, `perm_owner`, `perm_group`, `perm_members`, `perm_anon`) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, '2007-01-16 12:24:22', 1, 1, 1, 0, 0, 2, 8, 3, 2, 2, 2);";
 
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
@@ -981,7 +701,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, em
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','') ";
-$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','1.5.2') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
