@@ -129,7 +129,13 @@ function INST_installEngine($install_type, $install_step)
         $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']) ; 
         $host_name = explode(':', $_SERVER['HTTP_HOST']);
         $host_name = $host_name[0];
+        if (empty($_CONF['site_mail'])) {
+            $_CONF['site_mail'] = 'admin@example.com';
+        }
         $site_mail = isset($_POST['site_mail']) ? $_POST['site_mail'] : ($_CONF['site_mail'] == 'admin@example.com' ? $_CONF['site_mail'] : 'admin@' . $host_name);
+        if (empty($_CONF['noreply_mail'])) {
+            $_CONF['noreply_mail'] = 'noreply@example.com';
+        }
         $noreply_mail = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : ($_CONF['noreply_mail'] == 'noreply@example.com' ? $_CONF['noreply_mail'] : 'noreply@' . $host_name);
         if (isset($_POST['utf8']) && ($_POST['utf8'] == 'on')) {
             $utf8 = true;
@@ -1303,7 +1309,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             }
 
             // Update the GL configuration with the correct paths.
-            $config->set('path_html', 0);
+            $config->set('path_html', $html_path);
             $config->set('path_log', $_CONF['path'] . 'logs/');
             $config->set('path_language', $_CONF['path'] . 'language/');
             $config->set('backup_path', $_CONF['path'] . 'backups/');

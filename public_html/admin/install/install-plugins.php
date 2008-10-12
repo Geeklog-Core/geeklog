@@ -413,7 +413,7 @@ if (INST_phpOutOfDate()) {
                                 . ($missing_public_html || $missing_admin 
                                     ? '<br' . XHTML . '><br' . XHTML . '><p><small><span class="error">Warning:</span> This plugin is not fully installed. Check that the plugin has been correctly installed to:<br' . XHTML . '><br' . XHTML . '>' 
                                         . ($missing_public_html ? '<code>' . $_CONF['path_html'] . '</code><br' . XHTML . '>' : '') 
-                                        . ($missing_admin ? '<code>' . $admindir . '</code><br' . XHTML . '>' : '') . '</small></p>'
+                                        . ($missing_admin ? '<code>' . $admin_dir . '</code><br' . XHTML . '>' : '') . '</small></p>'
                                     : '')
                             . '</td>' . LB
                             . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>' 
