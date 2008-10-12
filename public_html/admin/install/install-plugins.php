@@ -453,6 +453,7 @@ if (INST_phpOutOfDate()) {
     case 2:
 
         $error = 0;
+/*
         foreach ($_POST['plugins'] as $plugin) {
 
             if ($plugin['install'] == 'on') { // If the plugin was selected to be installed
@@ -512,7 +513,7 @@ if (INST_phpOutOfDate()) {
             }
 
         }
-
+*/
         // Done!
 //            $display .= '<p>Done doing stuff</p>' . LB;
         header('Location: success.php?language=' . $language);
