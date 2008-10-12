@@ -32,8 +32,9 @@
 // $Id: downloader.class.php,v 1.15 2008/08/11 14:11:21 dhaun Exp $
 
 /**
-* This class allows you to download a file from outside the web tree.  Many hooks
-* around security and file types have been added for customization within any app
+* This class allows you to download a file from outside the web tree.  Many
+* hooks around security and file types have been added for customization within
+* any app.
 *
 * @author   Tony Bibbs
 *
@@ -85,7 +86,7 @@ class downloader
     * @access private
     */
     var $_limitByIP;            // Boolean
-    
+
     /**
     * Constructor
     *
@@ -105,7 +106,7 @@ class downloader
         $this->_setAvailableExtensions ();
 
     }
-    
+
     // PRIVATE METHODS
 
     /**
@@ -124,7 +125,7 @@ class downloader
             $this->_logItem('Warning',$warningText);
         }
     }
-    
+
     /**
     * Adds an error that was encountered
     *
@@ -158,7 +159,7 @@ class downloader
             $this->_logItem('Debug',$debugText);
         }
     }
-    
+
     /**
     * Logs an item to the log file
     *
@@ -181,7 +182,7 @@ class downloader
         fclose($file);
         return true;
     }
-    
+
     /**
     * Defines superset of available Mime types.
     *
@@ -193,30 +194,30 @@ class downloader
         if (sizeof($extensions) == 0) {
             $this->_availableMimeTypes = 
                 array(
-                    'tgz' => 'application/x-gzip-compressed',
-                    'gz' =>  'application/x-gzip-compressed',
-                    'zip' => 'application/x-zip-compresseed',
-                    'tar' => 'application/x-tar',
-                    'php' => 'text/plain',
+                    'tgz'  => 'application/x-gzip-compressed',
+                    'gz'   => 'application/x-gzip-compressed',
+                    'zip'  => 'application/x-zip-compresseed',
+                    'tar'  => 'application/x-tar',
+                    'php'  => 'text/plain',
                     'phps' => 'text/plain',
-                    'txt' => 'text/plain',
+                    'txt'  => 'text/plain',
                     'html' => 'text/html',
-                    'htm' => 'text/html',
-                    'bmp' => 'image/bmp',
-                    'ico' => 'image/bmp',
-                    'gif' => 'image/gif',
-                    'jpg' => 'image/jpeg',
+                    'htm'  => 'text/html',
+                    'bmp'  => 'image/bmp',
+                    'ico'  => 'image/bmp',
+                    'gif'  => 'image/gif',
+                    'jpg'  => 'image/jpeg',
                     'jpeg' => 'image/jpeg',
-                    'png' => 'image/png',
-                    'png' => 'image/x-png',
-                    'mp3' => 'audio/mpeg',
-                    'wav' => 'audio/wav',
-                    'pdf' => 'application/pdf',
-                    'swf' => 'application/x-shockwave-flash',
-                    'doc' => 'application/msword',
-                    'xls' => 'application/vnd.ms-excel',
-                    'exe' => 'application/octet-stream',
-                    'sql' => 'text/plain'
+                    'png'  => 'image/png',
+                    'png'  => 'image/x-png',
+                    'mp3'  => 'audio/mpeg',
+                    'wav'  => 'audio/wav',
+                    'pdf'  => 'application/pdf',
+                    'swf'  => 'application/x-shockwave-flash',
+                    'doc'  => 'application/msword',
+                    'xls'  => 'application/vnd.ms-excel',
+                    'exe'  => 'application/octet-stream',
+                    'sql'  => 'text/plain'
                 );
         } else {
             $this->_availableMimeTypes = $extensions;
@@ -227,9 +228,9 @@ class downloader
             $this->_availableExtensions[] = $ext;
         }
     }
-    
+
     // Public Methods
-    
+
     /**
     * Extra security option that forces all attempts to upload a file to be done
     * so from a set of VERY specific IP's.  This is only good for those who are
@@ -250,7 +251,7 @@ class downloader
             return false;
         }
     }
-    
+
     /**
     * Sets log file
     *
@@ -269,7 +270,7 @@ class downloader
         $this->_logFile = $logFile;
         return true;
     }
-    
+
     /**
     * Enables/disables logging of errors and warnings
     *
@@ -298,7 +299,7 @@ class downloader
     {
         return $this->_doLogging;
     }
-    
+
     /**
     * Will force the debug messages in this class to be
     * printed
@@ -316,7 +317,7 @@ class downloader
             $this->_debug = false;
         }
     }
-    
+
     /**
     * This function will print any errors out.  This is useful in debugging
     *
@@ -341,7 +342,7 @@ class downloader
             return $retval;
         }
     }
-    
+
     /**
     * This function will print any warnings out.  This is useful in debugging
     *
@@ -357,7 +358,7 @@ class downloader
             }
         }
     }
-    
+
     /**
     * This function will print any debmug messages out.
     *
@@ -373,7 +374,7 @@ class downloader
             }
         }
     }
-    
+
     /**
     * Returns if any errors have been encountered thus far
     *
@@ -388,7 +389,7 @@ class downloader
             return false;
         }
     }
-    
+
     /**
     * Sets allowed mime types for this instance
     *
@@ -408,7 +409,7 @@ class downloader
         }
         $this->_allowedExtensions = $validExtensions;
     }
-    
+
     /**
     * Gets allowed mime types for this instance
     *
@@ -419,7 +420,7 @@ class downloader
     {
         return $this->_allowedExtensions;
     }
-    
+
     /**
     * Checks to see that mime type for current file is allowed for upload
     *
@@ -436,7 +437,7 @@ class downloader
             return true;
         }
     }
-    
+
     /**
     * Sets file upload path
     *
@@ -460,7 +461,7 @@ class downloader
         
         return true;
     }
-    
+
     /**
     * Returns directory to upload to
     *
@@ -471,7 +472,7 @@ class downloader
     {
         return $this->_sourceDirectory;
     }
-    
+
     /**
     * Attempts to dowload a file
     *
