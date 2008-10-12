@@ -1,0 +1,19 @@
+system/pear/Archive
+system/pear/Console
+system/pear/Date
+system/pear/HTTP
+system/pear/Mail
+system/pear/Net
+system/pear/OS
+system/pear/PEAR
+system/pear/PHP
+system/pear/System.php
+system/pear/Text
+system/pear/XML
+system/pear/scripts
+
+db-config.php
+public_html/siteconfig.php
+
+syntax: glob
+backups/*.sql
