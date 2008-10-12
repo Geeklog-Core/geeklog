@@ -534,15 +534,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[11]);
-    if (isset ($_REQUEST['msg'])) {
-        $msg = COM_applyFilter ($_REQUEST['msg'], true);
+    $display .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[11]);
+    if (isset($_GET['msg'])) {
+        $msg = COM_applyFilter($_GET['msg'], true);
         if ($msg > 0) {
-            $display .= COM_showMessage ($msg, 'links');
+            $display .= COM_showMessage($msg, 'links');
         }
     }
     $display .= listlinks();
-    $display .= COM_siteFooter ();
+    $display .= COM_siteFooter();
 }
 
 echo $display;
