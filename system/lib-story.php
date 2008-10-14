@@ -1210,7 +1210,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
 
         // update feed(s) and Older Stories block
-        COM_rdfUpToDateCheck ('geeklog', $story->DisplayElements('tid'), $sid);
+        COM_rdfUpToDateCheck('article', $story->DisplayElements('tid'), $sid);
         COM_olderStuff ();
 
         if ($story->type == 'submission') {
