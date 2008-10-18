@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Removing an element from the middle of the censorlist caused the censoring
+  to act up (bug #0000763) [Dirk]
 - Saving a story tried to update a feed of type 'geeklog' instead of 'article'
   (reported by Tom Homer)
 - Delete a feed's file when deleting a feed (bug #0000758) [Dirk]
