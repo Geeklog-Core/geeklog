@@ -227,8 +227,12 @@ if ($A['count'] > 0) {
                 }
             }
         }
-        $story_template->set_var( 'lang_id', $langId );
-        $story_template->set_var( 'lang_attribute', $langAttr );
+        $story_template->set_var('lang_id', $langId);
+        if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+            $story_template->set_var('lang_attribute', $langAttr);
+        } else {
+            $story_template->set_var('lang_attribute', '');
+        }
 
         $story_template->parse ('output', 'article');
         $display = $story_template->finish ($story_template->get_var('output'));
