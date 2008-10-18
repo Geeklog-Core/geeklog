@@ -67,6 +67,10 @@ if ($display_mode != 'print') {
 
 $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode);
 
+if ($display_mode == 'print') {
+    header('Content-Type: text/html; charset=' . COM_getCharset());
+}
+
 echo $retval;
 
 ?>

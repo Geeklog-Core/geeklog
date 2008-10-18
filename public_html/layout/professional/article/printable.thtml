@@ -3,7 +3,7 @@
 <head>
     <title>{page_title}</title>
 </head>
-<body>
+<body dir="{direction}">
     <h1>{story_title}</h1>
     <h3>{story_date}</h3>
     <b>{lang_contributedby} {story_author}</b>

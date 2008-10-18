@@ -394,7 +394,12 @@ DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE start_time < " . ( time() - 
 *
 */
 
-require_once( $_CONF['path_language'] . $_CONF['language'] . '.php' );
+require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
+
+if (empty($LANG_DIRECTION)) {
+    // default to left-to-right
+    $LANG_DIRECTION = 'ltr';
+}
 
 COM_switchLocaleSettings();
 
@@ -1047,7 +1052,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
             }
         }
     }
-    $header->set_var('lang_id', $langId );
+    $header->set_var('lang_id', $langId);
     if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
         $header->set_var('lang_attribute', $langAttr);
     } else {
@@ -1084,16 +1089,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'css_url', $_CONF['layout_url'] . '/style.css' );
     $header->set_var( 'theme', $_CONF['theme'] );
 
-    $header->set_var( 'charset', COM_getCharset());
-    if( empty( $LANG_DIRECTION ))
-    {
-        // default to left-to-right
-        $header->set_var( 'direction', 'ltr' );
-    }
-    else
-    {
-        $header->set_var( 'direction', $LANG_DIRECTION );
-    }
+    $header->set_var('charset', COM_getCharset());
+    $header->set_var('direction', $LANG_DIRECTION);
 
     // Now add variables for buttons like e.g. those used by the Yahoo theme
     $header->set_var( 'button_home', $LANG_BUTTONS[1] );
