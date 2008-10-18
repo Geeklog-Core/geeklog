@@ -405,6 +405,7 @@ function SP_printPage($page, $A)
     $print->set_var('site_slogan', $_CONF['site_slogan']);
 
     $print->set_var('direction', $LANG_DIRECTION);
+    $print->set_var('xhtml', XHTML);
     $print->set_var('page_title', $_CONF['site_name'] . ' - '
                                   . stripslashes($A['sp_title']));
     $sp_url = COM_buildUrl($_CONF['site_url']
