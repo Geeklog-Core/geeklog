@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Set language direction in templates for printable versions of articles and
+  static pages. Also set $LANG_DIRECTION to 'ltr' now if the language file does
+  not already define it (bug #0000762) [Dirk]
 - Removing an element from the middle of the censorlist caused the censoring
   to act up (bug #0000763) [Dirk]
 - Saving a story tried to update a feed of type 'geeklog' instead of 'article'

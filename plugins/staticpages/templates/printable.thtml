@@ -3,7 +3,7 @@
 <head>
     <title>{page_title}</title>
 </head>
-<body>
+<body dir="{direction}">
     <h1>{sp_title}</h1>
 
     <p>{sp_content}</p>

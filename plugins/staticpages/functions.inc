@@ -395,46 +395,50 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 * @return   string              HTML for the static page
 *
 */
-function SP_printPage ($page, $A)
+function SP_printPage($page, $A)
 {
-    global $_CONF, $LANG01, $_TABLES;
+    global $_CONF, $_TABLES, $LANG01, $LANG_DIRECTION;
 
-    $template_path = staticpages_templatePath ();
-    $print = new Template ($template_path);
-    $print->set_file (array ('print' => 'printable.thtml'));
-    $print->set_var ('site_url', $_CONF['site_url']);
-    $print->set_var ('site_name', $_CONF['site_name']);
-    $print->set_var ('site_slogan', $_CONF['site_slogan']);
+    $template_path = staticpages_templatePath();
+    $print = new Template($template_path);
+    $print->set_file(array('print' => 'printable.thtml'));
+    $print->set_var('site_url', $_CONF['site_url']);
+    $print->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $print->set_var('layout_url', $_CONF['layout_url']);
+    $print->set_var('site_name', $_CONF['site_name']);
+    $print->set_var('site_slogan', $_CONF['site_slogan']);
 
-    $print->set_var ('page_title', $_CONF['site_name'] . ' - '
-                                   . stripslashes ($A['sp_title']));
-    $sp_url = COM_buildUrl ($_CONF['site_url']
-                               . '/staticpages/index.php?page=' . $page);
-    $print->set_var ('sp_url', $sp_url);
-    $print->set_var ('sp_title', stripslashes ($A['sp_title']));
-    $print->set_var ('sp_content',
-            SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']));
-    $print->set_var ('sp_hits', COM_numberFormat ($A['sp_hits']));
+    $print->set_var('direction', $LANG_DIRECTION);
+    $print->set_var('page_title', $_CONF['site_name'] . ' - '
+                                  . stripslashes($A['sp_title']));
+    $sp_url = COM_buildUrl($_CONF['site_url']
+                                  . '/staticpages/index.php?page=' . $page);
+    $print->set_var('sp_url', $sp_url);
+    $print->set_var('sp_title', stripslashes($A['sp_title']));
+    $print->set_var('sp_content',
+            SP_render_content(stripslashes($A['sp_content']), $A['sp_php']));
+    $print->set_var('sp_hits', COM_numberFormat($A['sp_hits']));
     if ($A['commentcode'] >= 0) {
         $commentsUrl = $sp_url . '#comments';
         $comments = DB_count($_TABLES['comments'],
                              array('sid', 'type'), array($page, 'staticpages'));
-        $numComments = COM_numberFormat ($comments);
-        $print->set_var ('story_comments', $numComments);
-        $print->set_var ('comments_url', $commentsUrl);
-        $print->set_var ('comments_text', $numComments . ' ' . $LANG01[3]);
-        $print->set_var ('comments_count', $numComments);
-        $print->set_var ('lang_comments', $LANG01[3]);
-        $comments_with_count = sprintf ($LANG01[121], $numComments);
+        $numComments = COM_numberFormat($comments);
+        $print->set_var('story_comments', $numComments);
+        $print->set_var('comments_url', $commentsUrl);
+        $print->set_var('comments_text', $numComments . ' ' . $LANG01[3]);
+        $print->set_var('comments_count', $numComments);
+        $print->set_var('lang_comments', $LANG01[3]);
+        $comments_with_count = sprintf($LANG01[121], $numComments);
 
         if ($comments > 0) {
-            $comments_with_count = COM_createLink($comments_with_count, $commentsUrl);
+            $comments_with_count = COM_createLink($comments_with_count,
+                                                  $commentsUrl);
         }
-        $print->set_var ('comments_with_count', $comments_with_count);
+        $print->set_var('comments_with_count', $comments_with_count);
     }
-    $print->parse ('output', 'print');
+    $print->parse('output', 'print');
 
-    return $print->finish ($print->get_var ('output'));
+    return $print->finish($print->get_var('output'));
 }
 
 /**
