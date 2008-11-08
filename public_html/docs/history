@@ -56,6 +56,8 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
+  (found by Marc Maier) [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
 

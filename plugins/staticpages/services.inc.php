@@ -51,6 +51,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
            $LANG_LOGIN, $_GROUPS, $_SP_CONF;
 
+    require_once $_CONF['path_system'] . '/lib-webservices.php';
+
     $output = '';
 
     if (!SEC_hasRights('staticpages.edit')) {
@@ -125,7 +127,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $args['sp_id'] = COM_sanitizeID($args['sp_id']);
     if (!$gl_edit) {
         if (strlen($args['sp_id']) > STATICPAGE_MAX_ID_LENGTH) {
-            $args['sp_id'] = WS_makeId($args['slug'], STATICPAGE_MAX_ID_LENGTH);
+            $slug = '';
+            if (isset($args['slug'])) {
+                $slug = $args['slug'];
+            }
+            $args['sp_id'] = WS_makeId($slug, STATICPAGE_MAX_ID_LENGTH);
         }
     }
 
