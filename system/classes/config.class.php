@@ -118,7 +118,9 @@ class config {
                     !array_key_exists($row[0], $this->config_array[$row[2]])) {
                     $value = @unserialize($row[1]);
                     if (($value === false) && ($row[1] != $false_str)) {
-                        COM_errorLog("Unable to unserialize {$row[1]} for {$row[2]}:{$row[0]}");
+                        if (function_exists('COM_errorLog')) {
+                            COM_errorLog("Unable to unserialize {$row[1]} for {$row[2]}:{$row[0]}");
+                        }
                     } else {
                         $this->config_array[$row[2]][$row[0]] = $value;
                     }

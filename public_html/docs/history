@@ -3,9 +3,11 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Check if COM_errorLog exists before using it in the config class (for possible
+  problems during installation, bug #0000768) [Dirk]
 - Fixed filling out the Site Email / No-Reply Email fields in the install
   script, which was overwriting the correct values from config.php during
-  upgrades (bug #0000759)
+  upgrades (bug #0000759) [Dirk]
 - Set language direction in templates for printable versions of articles and
   static pages. Also set $LANG_DIRECTION to 'ltr' now if the language file does
   not already define it (bug #0000762) [Dirk]
