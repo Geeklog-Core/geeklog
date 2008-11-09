@@ -1514,7 +1514,7 @@ $LANG_ADMIN = array(
     'records_found' => 'Einträge',
     'addchild' => 'Add child',
     'list' => 'auflisten',
-    'list_all' => 'alle auflisten'
+    'list_all' => 'Alle auflisten'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
