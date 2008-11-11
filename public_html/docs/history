@@ -46,6 +46,10 @@ Geeklog History/Changes:
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 
+Calendar plugin
+---------------
+- Make {event_url} available in eventdetails.thtml [Dirk]
+
 Links plugin
 ------------
 - Prevent overwriting existing links when changing the link ID [Dirk]
