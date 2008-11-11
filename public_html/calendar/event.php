@@ -553,6 +553,7 @@ default:
                 $event_title = stripslashes($A['title']);
                 if (!empty($A['url'])) {
                     $event_title = COM_createLink($event_title, $A['url']);
+                    $cal_templates->set_var('event_url', $A['url']);
                 }
                 $cal_templates->set_var('event_title', $event_title);
                 if (($_CA_CONF['personalcalendars'] == 1)
