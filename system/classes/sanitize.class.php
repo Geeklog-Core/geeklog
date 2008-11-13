@@ -2,17 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.4                                                               |
 // +---------------------------------------------------------------------------+
 // | sanitize.class.php                                                        |
 // |                                                                           |
 // | Geeklog data filtering or sanitizing class library.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2008 by the following authors:                         |
-// |                                                                           |
-// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
-// |          Dirk Haun        - dirk AT haun-online DOT de                    |
-// |          Blaine Lang      - blaine AT portalparts DOT com                 |
+// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Authors: Blaine Lang      - blaine AT portalparts DOT com                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,293 +29,463 @@
 // +---------------------------------------------------------------------------+
 //
 
-/* Class derived from original procedural code in Geeklog 1.3.x lib-common.php
-*  Jan 2005: Blaine Lang
+/* This class can be used to filter a single variable or an array of data
+*  Three filtering modes are currently supported but the class can easily be extended
+*  Mode int:   will return integer value or 0 if NULL or non-integer
+*  Mode char:  strong character  filter that will remove any HTML or quotes
+*  Mode text:  Use for text fields and will use the site HTML filtering functions and user allowable HTML returned as well as quotes
+*
+*  Data can be returned filtered or optionally prep'ed for DB or Web use
+*  Usage Examples:
+*  $filter = new sanitizer();
+*
+*  Example 1: Load up data to be filtered and then call method to return data prep'ed for DB, Web or default format
+*  Better if you have a lot of data to filter and if you want to return it for DB and Web Presentation format
+
+   $filter = new sanitizer();
+   $charvars = array(
+        'id'    => $_REQUEST['id'],
+        'mode'  => $_REQUEST['mode']
+    );
+    $textvars = array(
+        'title' => $_REQUEST['movietitle'],     // Able to change the key that will be used in filtered return array
+        'desc'  => $_REQUEST['moviedesc'],
+        'keywords'  => $_REQUEST['keywords'],
+    );
+
+    // Initialize the filter and load the data and types to be filtered
+    $filter = new nexfilter();
+    $filter->cleanData('char',$charvars);
+    $filter->cleanData('text',$textvars);
+
+    $dbData = $filter->getDbData();     // Filtered data is prep'ed for SQL use - addslashes added
+    $webData = $filter->getWebData();  //  Filtered data like text filtered data with stripslashes already done
+
+    $title = $dbData['title'];
+    DB_query("UPDATE {$_TABLES['media']} SET title='{$dbData['title']} WHERE id='{$dbData['id']}'");
+
+
+* Example 2:  Define the variables to be filtered, mode and returns sanitized data
+* Not able to specify SUPER GLOBAL to filter data from unless you call multiple methods
+* but you can specify multiple filtering modes
+
+  $filter = new sanitizer();
+  $clean = $filter->cleanPostData(array('movietitle' => 'text', 'id' => 'int'));
+  DB_query("UPDATE {$_TABLES['media']} SET title='{$clean['movietitle']} WHERE id='{$clean['id']}'");
+
+* Example 3: Pass in multiple variables but a single filtering mode
+  $clean = $filter->getCleanData('text', array('title' => $_POST['movietitle'],'desc' => $_POST['moviedesc'] ));
+
+* Example 4: Pass in a single variable to sanitize
+  $id = $filter->getCleanData('int',$_GET['id']);
+
+*  How to extend allowable types - add a new function
+*  Example Type: Int -- function _cleanInt(), so adding a function called _cleanDate could be added for a date filter
+
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'sanitize.class.php') !== false) {
-    die('This file can not be used on its own.');
+
+if (strpos ($_SERVER['PHP_SELF'], 'sanitize.class.php') !== false) {
+    die ('This file can not be used on its own.');
 }
 
-/**
- * Include the base kses class if not already loaded
- */
-require_once $_CONF['path_system'] . 'classes/kses.class.php';
 
-class sanitize extends kses {
+class sanitizer {
 
-    var $string = '';
-    var $_parmissions = '';
-    var $_isnumeric = false;
-    var $_logging = false;
-    var $_setglobal = false;
-    var $_censordata = false;
+    var $_dirtydata = array();      // Data to be filtered
+    var $_cleandata = array();      // Sanitized Data after filtering
+    var $_makeglobal = false;       // Set to true to also create a global matching variable name if passed in
+    var $_logmode    = false;       // Set true to log to error.log
+    var $_checkwords = true;        // Set true to enable word censor filter
+    var $_checkhtml = true;         // Set true to enable HTML filtering
+    var $_prepfordb = false;        // Set true to place filter class into DB mode -- will addslashes around quotes
+    var $_prepforweb = false;       // Set true to place filter class into WEB mode - will use stripslashes before returning data
+    var $_maxlength = 0;            // Set to 0 to disable, else if set will trim data to this length
 
-    /* Filter or sanitize single parm */
-    function filterparm ($parm) {
+    /* Filter modes allows this class to be extended.
+     * Need to have matching class method _cleanType
+     */
+    var $_filtermodes = array('int','char','text');
 
-        $p = $this->Parse( $parm );
 
-        if( $this->_isnumeric )
-        {
-            // Note: PHP's is_numeric() accepts values like 4e4 as numeric
-            if( !is_numeric( $p ) || ( preg_match( '/^([0-9]+)$/', $p ) == 0 ))
-            {
-               $p = 0;
-            }
+    public function setLogging($state) {
+        if ($state === true or $state == 'on') {
+            $this->_logmode = true;
+        } elseif ($state === false or $state == 'off') {
+            $this->_logmode = false;
         }
-        else
-        {
+    }
+
+    public function setGlobals($state) {
+        if ($state === true or $state == 'on') {
+            $this->_makeglobal = true;
+        } elseif ($state === false or $state == 'off') {
+            $this->_makeglobal = false;
+        }
+    }
+
+    public function setCheckwords($state) {
+        if ($state === true or $state == 'on') {
+            $this->_checkwords = true;
+        } elseif ($state === false or $state == 'off') {
+            $this->_checkwords = false;
+        }
+    }
+
+    public function setPrepfordb($state) {
+        if ($state === true or $state == 'on') {
+            $this->_prepfordb = true;
+            $this->_prepforweb = false;
+        } elseif ($state === false or $state == 'off') {
+            $this->_prepfordb = false;
+        }
+    }
+
+    public function setPrepforweb($state) {
+        if ($state === true or $state == 'on') {
+            $this->_prepforweb = true;
+            $this->_prepfordb = false;
+        } elseif ($state === false or $state == 'off') {
+            $this->_prepforweb = false;
+        }
+    }
+
+    public function setMaxlength($length) {
+        if ($length > 0) {
+            $this->_maxlength = $length;
+        } else {
+            $this->_maxlength = 0;
+        }
+    }
+
+    public function initFilter() {
+        $this->_dirtydata = array();
+        $this->_cleandata = array();
+    }
+
+    /* apply the free webtext filter to input which may need to contain quote's or other special characters */
+    private function _filterText( $var ) {
+        // Need to call addslashes again as COM_checkHTML strips it out
+        if ($this->_checkhtml) $var = COM_checkHTML($var);
+        if ($this->_checkwords) $var = COM_checkWords($var);
+        $var = COM_killJS($var);
+        if ($this->_maxlength > 0) {
+            $var = substr($var, 0, $this->_maxlength);
+        }
+        if ($this->_prepfordb) {
+            $var = addslashes($var);
+        } elseif ($this->_prepforweb) {
+            $var = stripslashes($var);
+        }
+        return $var;
+    }
+
+    /* Default filter for character and numeric data */
+    private function _applyFilter( $parameter, $isnumeric = false ) {
+        $p = COM_stripslashes( $parameter );
+        $p = strip_tags( $p );
+        $p = COM_killJS( $p ); // doesn't help a lot right now, but still ...
+        if( $isnumeric ) {
+            // Note: PHP's is_numeric() accepts values like 4e4 as numeric
+            if( !is_numeric( $p ) || ( preg_match( '/^-?\d+$/', $p ) == 0 )) {
+                $p = 0;
+            }
+        } else {
+            if ($this->_checkwords) $p = COM_checkWords($p);
             $p = preg_replace( '/\/\*.*/', '', $p );
             $pa = explode( "'", $p );
             $pa = explode( '"', $pa[0] );
             $pa = explode( '`', $pa[0] );
             $pa = explode( ';', $pa[0] );
+            //$pa = explode( ',', $pa[0] );
             $pa = explode( '\\', $pa[0] );
             $p = $pa[0];
+
+            if ($this->_prepfordb) {
+                $p = addslashes($p);
+            } elseif ($this->_prepforweb) {
+                $p = stripslashes($p);
+            }
         }
 
-        if( $this->logging )
-        {
-            if( strcmp( $p, $parm ) != 0 )
-            {
-                COM_errorLog( "Filter applied: >> $parm << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
+        if ($this->_maxlength > 0) {
+            $p = substr($p, 0, $this->_maxlength);
+        }
+
+        if( $this->_logmode ) {
+            if( strcmp( $p, $parameter ) != 0 ) {
+                COM_errorLog( "Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
             }
         }
 
         return $p;
-
-    }
-
-    /* Prepare data for SQL insert and apply filtering 
-    *  Supports passing a single parm or array of parms
-    */
-    function prepareForDB($data) {
-        if (is_array($data)) {
-            # loop through array and apply the filters
-            foreach($data as $var)  {
-                $return_data[]  = addslashes($this->filterHTML($var));
-            }
-            return $return_data;
-        }
-        else
-        {
-            $data = $this->filterHTML($data);
-            $data = addslashes($data);
-            return $data;
-        }
-    }
-
-    function filterHTML ($message) {
-        global $_CONF;
-
-        // strip_tags() gets confused by HTML comments ...
-        $message = preg_replace( '/<!--.+?-->/', '', $message );
-
-        if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( sizeof( $_CONF['allowed_protocols'] ) > 0 ))
-        {
-            $this->Protocols( $_CONF['allowed_protocols'] );
-        }
-        else
-        {
-            $this->Protocols( array( 'http:', 'https:', 'ftp:' ));
-        }
-
-        if( empty( $this->permissions) || !SEC_hasRights( $this->permissions ) ||
-                empty( $_CONF['admin_html'] ))
-        {
-            $html = $_CONF['user_html'];
-        }
-        else
-        {
-            $html = array_merge_recursive( $_CONF['user_html'],
-                                           $_CONF['admin_html'] );
-        }
-
-        foreach( $html as $tag => $attr )
-        {
-            $this->AddHTML( $tag, $attr );
-        }
-
-        $message = $this->Parse( $message );
-        $message = $this->formatCode($message);
-        $message = $this->censor($message);
-        return $message;
-
     }
 
 
-    /* Apply filtering to a single parm or array of parms
-    *  Parms may be in either $_POST or $_GET input parms array
-    *  If type (GET or POST) is not set then POST is checked first
-    *  Optionally Parms can be made global
-    */
-    function sanitizeParms($vars,$type='')  {
-      $return_data = array();
+    private function _makeGlobal() {
 
-      #setup common reference to SuperGlobals depending which array is needed
-      if ($type == "GET" OR $type == "POST") {
-        if ($type =="GET") { $SG_Array =& $_GET; }
-        if ($type =="POST") { $SG_Array =& $_POST; }
-
-        # loop through SuperGlobal data array and grab out data for allowed fields if found
-        foreach($vars as $key)  {
-          if (array_key_exists($key,$SG_Array)) { $return_data[$key]=$SG_Array[$key]; }
-        }
-
-      }
-      else
-      {
-        foreach ($vars as $key) {
-          if (array_key_exists($key, $_POST)) { 
-            $return_data[$key] = $_POST[$key];
-          }
-          elseif (array_key_exists($key, $_GET))
-          { 
-            $return_data[$key] = $_GET[$key];
-          }
-        }
-      }
-
-        # loop through $vars array and apply the filter
-        foreach($vars as $value)  {
-          $return_data[$value]  = $this->filterparm($return_data[$value]);
-        }
-
-      // Optionally set $GLOBALS or return the array
-      if ($this->_setglobal) {
-          # loop through final data and define all the variables using the $GLOBALS array
-          foreach ($return_data as $key=>$value)  {
-            $GLOBALS[$key]=$value;
-          }
-      }
-      else
-      {
-         return $return_data;
-      }
-
-    }
-
-
-    function formatCode($message)  {
-
-        // Get rid of any newline characters
-        $message = preg_replace( "/\n/", '', $message );
-
-        // Replace any $ with &#36; (HTML equiv)
-        $message = str_replace( '$', '&#36;', $message );
-
-        // handle [code] ... [/code]
-        do
-        {
-            $start_pos = MBYTE_substr( MBYTE_strtolower( $message ), '[code]' );
-            if( $start_pos !== false )
-            {
-                $end_pos = MBYTE_substr( MBYTE_strtolower( $message ), '[/code]' );
-                if( $end_pos !== false )
-                {
-                    $encoded = $this->_handleCode( MBYTE_substr( $message, $start_pos + 6,
-                            $end_pos - ( $start_pos + 6 )));
-                    $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                    $message = MBYTE_substr( $message, 0, $start_pos ) . $encoded
-                         . MBYTE_substr( $message, $end_pos + 7 );
-                }
-                else // missing [/code]
-                {
-                    // Treat the rest of the text as code (so as not to lose any
-                    // special characters). However, the calling entity should
-                    // better be checking for missing [/code] before calling this
-                    // function ...
-                    $encoded = $this->_handleCode( MBYTE_substr( $message, $start_pos + 6 ));
-                    $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                    $message = MBYTE_substr( $message, 0, $start_pos ) . $encoded;
-                }
-            }
-        }
-        while( $start_pos !== false );
-
-        return $message;
-
-    }
-
-    /**
-    * Handles the part within a [code] ... [/code] section, i.e. escapes all
-    * special characters.
-    *
-    * @param   string  $str  the code section to encode
-    * @return  string  $str with the special characters encoded
-    *
-    */
-    function _handleCode( $str )
-    {
-        $search  = array( '&',     '\\',    '<',    '>',    '[',     ']'     );
-        $replace = array( '&amp;', '&#92;', '&lt;', '&gt;', '&#91;', '&#93;' );
-
-        $str = str_replace( $search, $replace, $str );
-
-        return( $str );
-    }
-
-
-    /**
-    * This censors inappropriate content
-    *
-    * This will replace 'bad words' with something more appropriate
-    *
-    * @param        string      $message        String to check
-    * @return   string  Edited $Message
-    *
-    */
-
-    function censor ($message)
-    {
-        global $_CONF;
-
-        $editedMessage = $message;
-
-        if( $this->_censordata )
-        {
-            if( is_array( $_CONF['censorlist'] ))
-            {
-                $replacement = $_CONF['censorreplace'];
-
-                switch( $_CONF['censormode'])
-                {
-                    case 1: # Exact match
-                        $regExPrefix = '(\s*)';
-                        $regExSuffix = '(\W*)';
-                        break;
-
-                    case 2: # Word beginning
-                        $regExPrefix = '(\s*)';
-                        $regExSuffix = '(\w*)';
-                        break;
-
-                    case 3: # Word fragment
-                        $regExPrefix   = '(\w*)';
-                        $regExSuffix   = '(\w*)';
-                        break;
-                }
-
-                for( $i = 0; $i < count( $_CONF['censorlist']); $i++ )
-                {
-                    $editedMessage = MBYTE_eregi_replace( $regExPrefix . $_CONF['censorlist'][$i] . $regExSuffix, "\\1$replacement\\2", $editedMessage );
+        if ($this->_makeglobal) {
+            foreach ($this->_cleandata as $var) {
+                if (is_array($var)) {
+                    foreach ($var as $varname => $value) {
+                        // Only if variable name is a true string like name
+                        if (!is_numeric($varname)) $GLOBALS[$varname] = $value;
+                    }
                 }
             }
         }
 
-        return $editedMessage;
     }
 
 
-    function setPermissions($permissions) {
-        $this->permissions = $permissions;
+    private function _cleanText() {
+
+        foreach ($this->_dirtydata['text'] as $var => $value) {
+            // Check if this variable is an array - maybe a checkbox or multiple select
+            if (is_array($value)) {
+                $subvalues_array = array();
+                foreach ($value as $subvalue) {
+                    $subvalues_array[] = $this->_filterText($subvalue);
+                }
+                $this->_cleandata['text'][$var] = $subvalues_array;
+            } else {
+                $this->_cleandata['text'][$var] = $this->_filterText($value);
+            }
+        }
+
     }
 
-    function setLogging($state=false) {
-        $this->logging = $state;
+
+    private function _cleanChar() {
+
+        foreach ($this->_dirtydata['char'] as $var => $value) {
+            // Check if this variable is an array - maybe a checkbox or multiple select
+            if (is_array($value)) {
+                $subvalues_array = array();
+                foreach ($value as $subvalue) {
+                    $subvalues_array[] = $this->_applyFilter($subvalue);
+                }
+                $this->_cleandata['char'][$var] = $subvalues_array;
+            } else {
+                $this->_cleandata['char'][$var] = $this->_applyFilter($value);
+            }
+        }
+
     }
 
-}
+    private function _cleanInt() {
+
+        foreach ($this->_dirtydata['int'] as $var => $value) {
+            // Check if this variable is an array - maybe a checkbox or multiple select
+            if (is_array($value)) {
+                $subvalues_array = array();
+                foreach ($value as $subvalue) {
+                    $subvalues_array[] = $this->_applyFilter($subvalue,true);
+                }
+                $this->_cleandata['int'][$var] = $subvalues_array;
+            } else {
+                $this->_cleandata['int'][$var] = $this->_applyFilter($value,true);
+            }
+        }
+
+    }
+
+    private function _santizeData($type='',$data='') {
+
+        if (!empty($data)) {
+            $this->cleanData($type,$data);
+        }
+
+        /* Check if we need to return just one type of filtered data */
+        if ($type != '' AND in_array($type,$this->_filtermodes)) {
+            $filterFunction = '_clean' . ucfirst($type);
+            if (method_exists($this,$filterFunction)) {
+                $this->$filterFunction();
+                // If just one variable in clean data, then no need to return an array of values
+                if (count($this->_cleandata[$type]) == 1) {
+                    $retval = $this->_cleandata[$type][0];
+                } else {
+                    $retval = $this->_cleandata[$type];
+                }
+            }
+
+        } else {
+            /* Filter and return an associative array of filtered data - per filter type */
+            foreach($this->_dirtydata as $type => $data)  {
+                $filterFunction = '_clean' . ucfirst($type);
+                if (method_exists($this,$filterFunction)) {
+                    $this->$filterFunction();
+                }
+            }
+            $retval = $this->_cleandata;
+        }
+
+        return $retval;
+
+    }
+
+
+    /* Used to load the data that you want cleaned
+    *  Call the getCleanData or getDbData or getWebData() methods to return filtered data
+    */
+    public function cleanData($mode,$data) {
+        if (in_array($mode,$this->_filtermodes)) {
+            if (is_array($data)) {
+                foreach ($data as $var => $value ) {
+                  $this->_dirtydata[$mode][$var] = $value;
+                }
+            } else {
+                $this->_dirtydata[$mode][] = $data;
+            }
+        }
+    }
+
+    /* Optional methods to clean and return filtered data from a specific GLOBAL (GET, POST, COOKIE or REQUEST) */
+    /* Expect an array of variables from a specific SUPPER GLOBAL
+       $data is an array of variable names and type - example:
+         array ( 'var1' => 'int', 'var2name' => 'char', 'message' => 'text')
+    */
+
+    /* Expect an array of $_GET variables as per above array format to filter and return sanitized values  */
+    public function cleanGetData($data) {
+        if (!is_array($data)) {
+            return FALSE;
+        }
+        $cleandata = array();
+        foreach ($data as $varname => $type) {
+            if (isset($_GET[$varname]) AND !empty($_GET[$varname])) {
+                $data = $_GET[$varname];
+                $cleandata[$varname] = $this->getCleanData($type,$data);
+            } else {
+                if ($type = 'int') {
+                    $cleandata[$varname] = 0;
+                } else {
+                    $cleandata[$varname] = '';
+                }
+            }
+        }
+        return $cleandata;
+
+    }
+
+    /* Expect an array of $_POST variables to filter and return sanitized values  */
+    public function cleanPostData($data) {
+        if (!is_array($data)) {
+            return FALSE;
+        }
+        $cleandata = array();
+        foreach ($data as $varname => $type) {
+            if (isset($_POST[$varname]) AND !empty($_POST[$varname])) {
+                $data = $_POST[$varname];
+                $cleandata[$varname] = $this->getCleanData($type,$data);
+            } else {
+                if ($type = 'int') {
+                    $cleandata[$varname] = 0;
+                } else {
+                    $cleandata[$varname] = '';
+                }
+            }
+        }
+        return $cleandata;
+
+    }
+
+    /* Expect an array of $_REQUEST variables to filter and return sanitized values  */
+    public function cleanRequestData($data) {
+        if (!is_array($data)) {
+            return FALSE;
+        }
+        $cleandata = array();
+        foreach ($data as $varname => $type) {
+            if (isset($_REQUEST[$varname]) AND !empty($_REQUEST[$varname])) {
+                $data = $_REQUEST[$varname];
+                $cleandata[$varname] = $this->getCleanData($type,$data);
+            } else {
+                if ($type = 'int') {
+                    $cleandata[$varname] = 0;
+                } else {
+                    $cleandata[$varname] = '';
+                }
+            }
+        }
+        return $cleandata;
+
+    }
+
+
+    /* Expect an array of $_COOKIE variables to filter and return sanitized values  */
+    public function cleanCookieData($data) {
+        if (!is_array($data)) {
+            return FALSE;
+        }
+        $cleandata = array();
+        foreach ($data as $varname => $type) {
+            if (isset($_COOKIE[$varname]) AND !empty($_COOKIE[$varname])) {
+                $data = $_COOKIE[$varname];
+                $cleandata[$varname] = $this->getCleanData($type,$data);
+            } else {
+                if ($type = 'int') {
+                    $cleandata[$varname] = 0;
+                } else {
+                    $cleandata[$varname] = '';
+                }
+            }
+        }
+        return $cleandata;
+
+    }
+
+
+
+
+    /* Main public functions to filter data
+       Return the cleaned data loaded using the cleanData method
+     * Or optionally pass in the data to be cleaned as well for a direct one-function call use
+    */
+    public function getCleanData($type='',$data='') {
+
+        $retval = $this->_santizeData($type,$data);
+        $this->_makeGlobal();
+        // Reset the filter class data now that we have processed the filtering
+        $this->initFilter();
+
+        return $retval;
+    }
+
+    public function getWebData($type='',$data='') {
+
+        $retval = '';
+        $currentWebState = $this->_prepforweb;
+        $currentDbState = $this->_prepfordb;
+        $this->setPrepforweb(true);
+
+        $retval = $this->_santizeData($type,$data);
+
+        // Reset filter options
+        $this->setPrepforweb($currentWebState);
+        $this->setPrepfordb($currentDbState);
+
+        return $retval;
+    }
+
+    public function getDbData($type='',$data='') {
+
+        $retval = '';
+        $currentWebState = $this->_prepforweb;
+        $currentDbState = $this->_prepfordb;
+        $this->setPrepfordb(true);
+
+        $retval = $this->_santizeData($type,$data);
+
+        // Reset filter options
+        $this->setPrepforweb($currentWebState);
+        $this->setPrepfordb($currentDbState);
+
+        return $retval;
+    }
+
+
+} // End of class
+
 
 ?>
