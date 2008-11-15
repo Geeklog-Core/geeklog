@@ -593,6 +593,12 @@ class upload
                     exit;
                 }
 
+                if (!function_exists('gd_info')) {
+                    $this->_addError('GD library does not seem to be enabled.');
+                    $this->printErrors();
+                    exit;
+                }
+
                 if (($this->_currentFile['type'] == 'image/png') OR
                     ($this->_currentFile['type'] == 'image/x-png')) {
                     if (!function_exists ('imagecreatefrompng')) {
