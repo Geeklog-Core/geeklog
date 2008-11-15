@@ -665,9 +665,9 @@ class upload
                     unlink ($filename);
                 }
 
-                imagecopyresized ($image_dest, $image_source, 0, 0, 0, 0,
-                                  $newwidth, $newheight, $imageInfo['width'],
-                                  $imageInfo['height']);
+                imagecopyresampled($image_dest, $image_source, 0, 0, 0, 0,
+                                   $newwidth, $newheight, $imageInfo['width'],
+                                   $imageInfo['height']);
                 if (($this->_currentFile['type'] == 'image/png') OR
                     ($this->_currentFile['type'] == 'image/x-png')) {
                     if (!imagepng ($image_dest, $filename)) {
