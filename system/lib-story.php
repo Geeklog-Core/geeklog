@@ -1112,6 +1112,9 @@ function service_submit_story($args, &$output, &$svc_msg)
                 } else {
                     $upload->keepOriginalImage (false);
                 }
+                if (isset($_CONF['jpeg_quality'])) {
+                    $upload->setJpegQuality($_CONF['jpeg_quality']);
+                }
             }
             $upload->setAllowedMimeTypes (array (
                     'image/gif'   => '.gif',

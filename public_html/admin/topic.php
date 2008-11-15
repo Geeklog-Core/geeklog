@@ -476,6 +476,9 @@ function handleIconUpload($tid)
             $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
             $upload->setDebug (true);
         }
+        if (isset($_CONF['jpeg_quality'])) {
+            $upload->setJpegQuality($_CONF['jpeg_quality']);
+        }
     }
     $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
                                          'image/jpeg'  => '.jpg,.jpeg',
