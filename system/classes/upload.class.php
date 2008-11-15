@@ -534,6 +534,7 @@ class upload
                                  . $newheight . ' using ' . $this->_imageLib);
 
             if ($this->_imageLib == 'imagemagick') {
+
                 $newsize = $newwidth . 'x' . $newheight;
                 $quality = '';
                 if ($this->_jpegQuality > 0) {
@@ -556,17 +557,19 @@ class upload
                 $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                 $cmd_end = " '" . $filename . "' | " . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM;
                 // convert to pnm, resize, convert back
-                if (eregi ('\.png', $filename)) {
+                if (($this->_currentFile['type'] == 'image/png') ||
+                    ($this->_currentFile['type'] == 'image/x-png')) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.png';
                     $cmd .= 'pngtopnm ' . $cmd_end . 'pnmtopng > ' . $tmpfile;
-                } else if (eregi ('\.(jpg|jpeg)', $filename)) {
+                } elseif (($this->_currentFile['type'] == 'image/jpeg') ||
+                          ($this->_currentFile['type'] == 'image/pjpeg')) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.jpg';
                     $quality = '';
                     if ($this->_jpegQuality > 0) {
                         $quality = sprintf(' -quality=%d', $this->_jpegQuality);
                     }
                     $cmd .= 'jpegtopnm ' . $cmd_end . 'pnmtojpeg' . $quality . ' > ' . $tmpfile;
-                }  else if (eregi ('\.gif', $filename)) {
+                } elseif ($this->_currentFile['type'] == 'image/gif') {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
                     $cmd .= 'giftopnm ' . $cmd_end . 'ppmquant 256 | '
                          . $this->_pathToNetPBM . 'ppmtogif > ' . $tmpfile;
@@ -711,6 +714,7 @@ class upload
                         exit;
                     }
                 }
+
             }
 
             if ($retval > 0) {
