@@ -509,20 +509,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_optionarchive', $LANG24[61]);
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
-//    if ($A['postmode'] == 'plaintext') {
-//        $A['title'] = str_replace ('$', '&#36;', $A['title']);
-//    }
-//
-//    $A['title'] = str_replace('{','&#123;',$A['title']);
-//    $A['title'] = str_replace('}','&#125;',$A['title']);
-//    $A['title'] = str_replace('"','&quot;',$A['title']);
-    $story_templates->set_var('story_title', $story->EditElements('title'));//stripslashes ($A['title']));
+    $story_templates->set_var('story_title', $story->EditElements('title'));
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
-    if(empty($currenttopic) && ($story->EditElements('tid') == ''))
-    {
-        $story->setTid( DB_getItem ($_TABLES['topics'], 'tid',
-                                'is_default = 1' . COM_getPermSQL ('AND')));
-    } else if ($story->EditElements('tid') == '') {
+    if(empty($currenttopic) && ($story->EditElements('tid') == '')) {
+        $story->setTid(DB_getItem($_TABLES['topics'], 'tid',
+                                  'is_default = 1' . COM_getPermSQL('AND')));
+    } elseif ($story->EditElements('tid') == '') {
         $story->setTid($currenttopic);
     }
     $story_templates->set_var ('topic_options',
