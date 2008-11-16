@@ -1184,7 +1184,11 @@ $MESSAGE = array(
     94 => 'Backup Failed: Dateigröße unter 1kb',
     95 => 'Es gab einen Fehler.',
     96 => 'Sorry, kein Zugang zur Admin-Seite. Unzulässige Zugangsversuche werden gelogged.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    97 => 'Not all required fields have been passed validation - default custom membership message',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.'
 );
 
 ###############################################################################

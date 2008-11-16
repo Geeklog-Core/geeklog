@@ -143,10 +143,17 @@ function liststories()
                 $seltopics .= '>' . $T['topic'] . '</option>' . LB;
             }
             $excludetopics .= ') ';
+        } else {
+            $retval .= COM_showMessage(101);
+            return $retval;
         }
     } else {
         $excludetopics = " tid = '$current_topic' ";
         $seltopics = COM_topicList ('tid,topic', $current_topic, 1, true);
+        if (empty($seltopics)) {
+            $retval .= COM_showMessage(101);
+            return $retval;
+        }
     }
 
     $alltopics = '<option value="' .$LANG09[9]. '"';
@@ -370,8 +377,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var ('navbar', $navbar->generate() );
     }
 
-    $display .= COM_startBlock ($LANG24[5], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
     $oldsid = $story->EditElements('originalSid');
     if (!empty ($oldsid)) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -517,8 +522,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     } elseif ($story->EditElements('tid') == '') {
         $story->setTid($currenttopic);
     }
-    $story_templates->set_var ('topic_options',
-                               COM_topicList ('tid,topic', $story->EditElements('tid'), 1, true));
+
+    $tlist = COM_topicList('tid,topic', $story->EditElements('tid'), 1, true);
+    if (empty($tlist)) {
+        $display .= COM_showMessage(101);
+        return $display;
+    }
+    $story_templates->set_var('topic_options', $tlist);
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
     if ($story->EditElements('show_topic_icon') == 1) {
         $story_templates->set_var('show_topic_icon_checked', 'checked="checked"');
@@ -633,6 +643,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('gltoken_name', CSRF_TOKEN);
     $story_templates->set_var('gltoken', SEC_createToken());
     $story_templates->parse('output','editor');
+
+    $display .= COM_startBlock ($LANG24[5], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 

@@ -135,8 +135,6 @@ function submitstory($topic = '')
         $story->initSubmission($topic);
     }
 
-    $retval .= COM_startBlock($LANG12[6],'submitstory.html');
-
     $storyform = new Template($_CONF['path_layout'] . 'submit');
     if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
         file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) {
@@ -194,7 +192,12 @@ function submitstory($topic = '')
     $storyform->set_var('story_title', $story->EditElements('title'));
     $storyform->set_var('lang_topic', $LANG12[28]);
 
-    $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$story->EditElements('tid')));
+    $tlist = COM_topicList('tid,topic', $story->EditElements('tid'));
+    if (empty($tlist)) {
+        $retval .= COM_showMessage(101);
+        return $retval;
+    }
+    $storyform->set_var('story_topic_options', $tlist);
     $storyform->set_var('lang_story', $LANG12[29]);
     $storyform->set_var('lang_introtext', $LANG12[54]);
     $storyform->set_var('lang_bodytext', $LANG12[55]);
@@ -206,14 +209,17 @@ function submitstory($topic = '')
     $storyform->set_var('story_uid', $story->EditElements('uid'));
     $storyform->set_var('story_sid', $story->EditElements('sid'));
     $storyform->set_var('story_date', $story->EditElements('unixdate'));
+    $storyform->set_var('lang_preview', $LANG12[32]);
 
     if (($_CONF['skip_preview'] == 1) ||
             (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32]))) {
-        PLG_templateSetVars ('story', $storyform);
-        $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '"' . XHTML . '>');
+        PLG_templateSetVars('story', $storyform);
+        $storyform->set_var('save_button',
+                            '<input name="mode" type="submit" value="'
+                            . $LANG12[8] . '"' . XHTML . '>');
     }
 
-    $storyform->set_var('lang_preview', $LANG12[32]);
+    $retval .= COM_startBlock($LANG12[6],'submitstory.html');
     $storyform->parse('theform', 'storyform');
     $retval .= $storyform->finish($storyform->get_var('theform'));
     $retval .= COM_endBlock();

@@ -1202,7 +1202,8 @@ $MESSAGE = array(
     97 => 'Not all required fields have been passed validation - default custom membership message',
     98 => 'The plugin was successfully uploaded.',
     99 => 'The plugin already exists.',
-    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.'
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.'
 );
 
 ###############################################################################
