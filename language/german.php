@@ -367,7 +367,10 @@ $LANG04 = array(
     156 => 'Account löschen',
     157 => 'Löschen',
     158 => 'Zeitzone',
-    159 => 'Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese E-Mail antworten.'
+    159 => 'Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese E-Mail antworten.',
+    160 => '(max. %d x %d Pixel, %d Bytes; %s)',
+    161 => 'wird ggfs. skaliert',
+    162 => 'wird nicht skaliert'
 );
 
 ###############################################################################

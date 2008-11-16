@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Added a note about the max. dimensions of a userphoto in the About You pane
+  of a user's My Account page (feature request #0000629) [Dirk]
 - Don't include X-Originating-IP header in emails sent from the site's admin
   area (bug #0000701) [Dirk]
 - Display a message when no topics exist and don't let the user enter the story
