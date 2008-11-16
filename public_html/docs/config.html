@@ -85,7 +85,7 @@ manually.</p>
     in the <tt>siteconfig.php</tt> file.</td></tr>
 <tr>
   <td valign="top"><a name="desc_copyrightyear">copyrightyear</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">Set this to the year you want to appear in the copyright notice of your
     site's footer. If not set, Geeklog will use the current year.</td></tr>
 <tr>
@@ -882,13 +882,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <th style="width:63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_image_lib">image_lib</a></td>
-  <td valign="top">'' <i>(empty string)</i></td>
+  <td valign="top">None</td>
   <td valign="top">Set this to either 'imagemagick', 'netpbm', or 'gdlib' if
-    images should be resized during upload. Leave as '' if you don't want
+    images should be resized during upload. Leave as 'None' if you don't want
     images to be resized or if you don't have those packages available.</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">If you chose 'imagemagick' for
     <code>$_CONF['image_lib']</code> above, then this should hold the
     <strong>complete path</strong> to the mogrify executable (from the
@@ -898,15 +898,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     (version 5.4.9 or newer is recommended).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">If you chose 'netpbm' for <code>$_CONF['image_lib']</code>
     above, then this should hold the complete path to the <em>directory</em>
-    where the binaries from the netpbm package are kept, e.g.
+    where the binaries from the Netpbm package are kept, e.g.
     <code>'/usr/bin/netpbm/'</code>. Note that the path must end in a slash.<br>
-    Precompiled binaries of the netpbm package for various platforms can be
-    downloaded from the <a
-    href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
-    project</a>.</td></tr>
+    Precompiled binaries for various platforms can be downloaded from the <a
+    href="http://netpbm.sourceforge.net/">Netpbm homepage</a>.</td></tr>
 </table>
 
 <h3><a name="images_upload">Images: Upload</a></h3>
@@ -927,10 +925,24 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     enables the <code>[unscaled<i>X</i>]</code> image tag (in addition to the
     <code>[image<i>X</i>]</code> tag).</td></tr>
 <tr>
+  <td valign="top"><a name="desc_jpeg_quality">jpeg_quality</a></td>
+  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top">Control the image quality when resizing JPEGs. All the image
+    libraries supported by Geeklog are based on the IJG JPEG library which uses
+    an arbitrary range of 0-100 to specify the "quality" (note that this is
+    <em>not</em> a percent value). The default, when not set, is 75 which
+    provides good quality in most cases. In some cases, higher values may
+    provide better results.<br>
+    Rules of thumb: Values above 90 usually don't improve the image quality any
+    more but only produce larger files. Values below 50 will result in poor
+    image quality. Values of 25 and below will produce distorted
+    images.</td></tr>
+<tr>
   <td valign="top"><a name="desc_debug_image_upload">debug_image_upload</a></td>
-  <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">When not commented out(!) and set to <code>true</code>, this
-    option enables debugging output to be written into Geeklog's <tt>error.log</tt> file during the upload of an image. This is useful to track down problems
+  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top">When enabled and set to <code>true</code>, this option
+    enables debugging output to be written into Geeklog's <tt>error.log</tt>
+    file during the upload of an image. This is useful to track down problems
     with the image upload.</td></tr>
 </table>
 
@@ -1009,7 +1021,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     is rejected (even if you're using a graphics package to resize images).</td></tr>
 <tr>
   <td valign="top"><a name="desc_force_photo_width">force_photo_width</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">This option, when enabled, will only apply when
     <em>displaying</em> a user photo. The <code>&lt;img&gt;</code> tag for the
     user photo will be emitted with a max. width, as specified by this option.
@@ -1018,7 +1030,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     shaped user photos to break your page's layout (e.g. in a forum).</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_photo">default_photo</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">When enabled, this option should point to an image (full URL
     required!) that should be displayed for users without a user photo. When
     this option is not set and a user does not have a user photo (or an avatar)
@@ -1042,7 +1054,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     a lot of userphotos for different users (e.g. forum threads).</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">gravatar_rating</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">Avatars submitted to gravatar.com are <a
     href="http://gravatar.com/rating.php">rated</a> with the rating system used
     for movies (in the U.S.), i.e. the letters G, PG, R, or X. This option will
@@ -1069,12 +1081,12 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     href="#Localization">Localization</a> below.</td></tr>
 <tr>
   <td valign="top"><a name="desc_language_files">language_files</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">For multi-lingual setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the Geeklog language files to use.</td></tr>
 <tr>
   <td valign="top"><a name="desc_languages">languages</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">For multi-lingual setups only: A list mapping language
     shortcuts ('en', 'de', etc.) to the language's native name ("English",
     "Deutsch", etc.).</td></tr>
@@ -1145,7 +1157,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">How many decimal places to display.</td></tr>
 <tr>
   <td valign="top"><a name="desc_timezone">timezone</a></td>
-  <td valign="top"><i>(commented out)</i></td>
+  <td valign="top"><i>(disabled)</i></td>
   <td valign="top">If your server is located in a different timezone, use this
     option to set your local (i.e. your own) timezone, so that the time and
     date on the site match your own.<br>

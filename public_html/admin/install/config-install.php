@@ -228,6 +228,7 @@ function install_config()
     $c->add('fs_upload', NULL, 'fieldset', 5, 23, NULL, 0, TRUE);
     $c->add('keep_unscaled_image',0,'select',5,23,0,1480,TRUE);
     $c->add('allow_user_scaling',1,'select',5,23,0,1490,TRUE);
+    $c->add('jpeg_quality',75,'text',5,23,NULL,1495,FALSE);
     $c->add('debug_image_upload',FALSE,'select',5,23,1,1500,TRUE);
 
     $c->add('fs_articleimg', NULL, 'fieldset', 5, 24, NULL, 0, TRUE);

@@ -1757,6 +1757,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => "Debug Image Uploading?",
     'keep_unscaled_image' => "Keep Unscaled Image?",
     'allow_user_scaling' => "Allow User Scaling?",
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => "Max Image Width?",
     'max_image_height' => "Max Image Height?",
     'max_image_size' => "Max Image Size?",

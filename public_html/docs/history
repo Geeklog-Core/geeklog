@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Improved image quality when using gdlib to rescale images. Also added a
+  configuration option to control the JPEG quality (Feature request #0000720)
+  [Dirk]
 - Check if COM_errorLog exists before using it in the config class (for possible
   problems during installation, bug #0000768) [Dirk]
 - Fixed filling out the Site Email / No-Reply Email fields in the install
