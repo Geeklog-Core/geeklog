@@ -59,6 +59,7 @@ Links plugin
 
 Polls plugin
 ------------
+- Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
 - Fixed SQL error when poll questions contained single quotes (bug #0000756)
   [Dirk]
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]

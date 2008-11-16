@@ -1373,6 +1373,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
 
             update_ConfValues();
 
+            if (INST_pluginExists('polls')) {
+                $check = upgrade_PollsPluginId();
+                if (!$check) {
+                    echo "Error updating the polls";
+                    return false;
+                }
+            }
+
             $current_gl_version = '1.5.2';
             $_SQL = '';
             break;
