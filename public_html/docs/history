@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Don't include X-Originating-IP header in emails sent from the site's admin
+  area (bug #0000701) [Dirk]
 - Display a message when no topics exist and don't let the user enter the story
   editors (bug #0000738) [Dirk]
 - Improved image quality when using gdlib to rescale images. Also added a
