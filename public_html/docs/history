@@ -54,6 +54,7 @@ Calendar plugin
 
 Links plugin
 ------------
+- Added urlencoded versions of {link_actual_url} and {link_name} [Dirk]
 - Prevent overwriting existing links when changing the link ID [Dirk]
 
 Polls plugin
