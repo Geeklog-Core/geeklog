@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Re-introduced the path hints in the install script when it can't find
+  db-config.php [Dirk]
 - Added a note about the max. dimensions of a userphoto in the About You pane
   of a user's My Account page (feature request #0000629) [Dirk]
 - Don't include X-Originating-IP header in emails sent from the site's admin

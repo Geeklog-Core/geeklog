@@ -1613,6 +1613,13 @@ if (INST_phpOutOfDate()) {
                 ' . $form_fields . '
                 <input type="submit" name="submit" class="submit" value="Next &gt;&gt;"' . XHTML . '>
                 </form>' . LB;
+            $display .= '<p>' . $LANG_INSTALL[94] . '<p>' . LB
+                     . '<ul><li>' . $LANG_INSTALL[95] . '<br' . XHTML . '>' . LB
+                     . '<code>' . strtr(__FILE__, '\\', '/') . '</code></li>'
+                     . '<li>' . sprintf($LANG_INSTALL[96],
+                                        '<code>db-config.php</code>')
+                     . '<br' . XHTML . '>' . LB . '<code>' . $gl_path
+                     . '</code></li></ul>' . LB;
         }
         break;
 

@@ -143,7 +143,10 @@ $LANG_INSTALL = array(
     90 => 'Empty database?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
     92 => 'Use UTF-8',
-    93 => 'Success'
+    93 => 'Success',
+    94 => 'Here are some hints to find the correct path:',
+    95 => 'The complete path to this file (the install script) is:',
+    96 => 'The installer was looking for %s in:'
 );
 
 // +---------------------------------------------------------------------------+
