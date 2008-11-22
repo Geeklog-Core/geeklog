@@ -530,11 +530,6 @@ select {
   font-size:.9em;
   border-left: 1px dotted #FFFFFF;
 }
-
-.header-navigation-container li.last {
-  border:none;
-}
-
 .header-navigation-container a:link {
   color:#0000FF;
 }
