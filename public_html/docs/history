@@ -63,6 +63,9 @@ Calendar plugin
 
 Links plugin
 ------------
+- Added an option to allow opening external links in a new window (feature
+  request #0000693). Use with care, please [Dirk]
+- Only external links are marked with class="ext-link" [Dirk]
 - Added urlencoded versions of {link_actual_url} and {link_name} [Dirk]
 - Prevent overwriting existing links when changing the link ID [Dirk]
 
