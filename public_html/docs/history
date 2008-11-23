@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Added a print.css stylesheet to be used by the printable template files
+  (feature request #0000766) [Dirk]
 - Re-introduced the path hints in the install script when it can't find
   db-config.php [Dirk]
 - Added a note about the max. dimensions of a userphoto in the About You pane
@@ -78,6 +80,8 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- The printable.thtml template file uses the HTML Strict doctype and print.css
+  now [Dirk]
 - Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
   (found by Marc Maier) [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like

@@ -1,0 +1,11 @@
+/* STYLESHEET FOR PRINTOUTS ***************************************************
+
+ Minimal stylesheet for printable templates.
+
+*/
+
+body {
+  background:#FFFFFF;
+  color:#000000;
+  font-family: arial,verdana,tahoma,helvetica,sans-serif;
+}

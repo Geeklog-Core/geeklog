@@ -1,7 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html {lang_attribute}>
 <head>
-    <title>{page_title}</title>
+  <title>{page_title}</title>
+  <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
+  <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
 </head>
 <body dir="{direction}">
     <h1>{sp_title}</h1>
@@ -13,6 +15,6 @@
     <p>{site_name}<br{xhtml}>
         <a href="{sp_url}">{sp_url}</a>
     </p>
-({comments_text})
+<p>({comments_text})</p>
 </body>
 </html>
