@@ -576,7 +576,7 @@ class config {
 
     function _UI_perm_denied()
     {
-        global $MESSAGE;
+        global $_USER, $MESSAGE;
 
         $display = COM_siteHeader('menu', $MESSAGE[30])
             . COM_startBlock($MESSAGE[30], '',
