@@ -872,7 +872,7 @@ case 'profile':
             $msg = COM_applyFilter($_GET['msg'], true);
         }
         $plugin = '';
-        if ($msg > 0) {
+        if (($msg > 0) && isset($_GET['plugin'])) {
             $plugin = COM_applyFilter($_GET['plugin']);
         }
         $display .= userprofile($uid, $msg, $plugin);
