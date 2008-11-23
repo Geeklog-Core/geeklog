@@ -40,9 +40,8 @@ require_once '../../auth.inc.php';
 $display = '';
 
 if (!SEC_hasRights('staticpages.edit')) {
-    $display .= COM_siteHeader('menu', $LANG_STATIC['access_denied'])
-             . COM_showMessageText($LANG_STATIC['access_denied_msg'],
-                                   $LANG_STATIC['access_denied'])
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the static pages administration screen.");
     echo $display;

@@ -42,10 +42,9 @@ $display = '';
 // Only let admin users access this page
 if (!SEC_hasRights('spamx.admin')) {
     // Someone is trying to illegally access this page
-    $display .= COM_siteHeader('menu', $LANG_SX00['access_denied'])
-             . COM_showMessageText($LANG_SX00['access_denied_msg'],
-                                   $LANG_SX00['access_denied'])
-             . COM_siteFooter(true);
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
     COM_accessLog("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
     echo $display;
     exit;
