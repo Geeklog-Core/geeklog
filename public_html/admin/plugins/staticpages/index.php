@@ -37,14 +37,14 @@
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 
-if (!SEC_hasRights ('staticpages.edit')) {
-    $display = COM_siteHeader ('menu', $LANG_STATIC['access_denied']);
-    $display .= COM_startBlock ($LANG_STATIC['access_denied'], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $LANG_STATIC['access_denied_msg'];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the static pages administration screen.");
+$display = '';
+
+if (!SEC_hasRights('staticpages.edit')) {
+    $display .= COM_siteHeader('menu', $LANG_STATIC['access_denied'])
+             . COM_showMessageText($LANG_STATIC['access_denied_msg'],
+                                   $LANG_STATIC['access_denied'])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the static pages administration screen.");
     echo $display;
     exit;
 }

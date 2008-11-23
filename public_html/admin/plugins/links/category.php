@@ -46,13 +46,10 @@ require_once '../../auth.inc.php';
 $display = '';
 
 if (!SEC_hasRights('links.edit')) {
-    $display .= COM_siteHeader ('menu');
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[34];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog("User {$_USER['username']} tried to illegally access the link administration screen.");
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the link category administration screen.");
     echo $display;
     exit;
 }

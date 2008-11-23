@@ -36,13 +36,23 @@
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
-require_once $_CONF['path_system'] . 'lib-security.php';
+
+$display = '';
+
+// If user isn't a Root user or if the backup feature is disabled, bail.
+if (!SEC_inGroup('Root') OR ($_CONF['allow_mysqldump'] == 0)) {
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups'])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
+    echo $display;
+    exit;
+}
 
 /**
-* This page allows all Root admins to create a database backup.  This will not
-* allow the removal of past backups.  It's pretty simple actually.  The admin
-* clicks a button, we do a mysqldump to a file in the following format:
-* geeklog_db_backup_YYYY_MM_DD.sql  That's it.
+* This page allows all Root admins to create a database backup.  It's pretty
+* simple actually.  The admin clicks a button, we do a mysqldump to a file in
+* the following format: geeklog_db_backup_YYYY_MM_DD_hh_mm_ss.sql  That's it.
 */
 
 /**
@@ -252,19 +262,6 @@ function downloadbackup($file)
 
 // MAIN
 $display = '';
-
-// If user isn't a root user or if the backup feature is disabled, bail.
-if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
-    $display .= COM_startBlock($MESSAGE[30], '',
-                    COM_getBlockTemplate('_msg_block', 'header'));
-    $display .= $MESSAGE[46];
-    $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-    $display .= COM_siteFooter();
-    COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
-    echo $display;
-    exit;
-}
 
 $mode = '';
 if (isset($_GET['mode'])) {

@@ -35,13 +35,12 @@
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
-if (!SEC_hasRights ('syndication.edit')) {
-    $display .= COM_siteHeader ('menu', $MESSAGE[30])
-        . COM_startBlock ($MESSAGE[30], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'))
-        . $MESSAGE[34]
-        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-        . COM_siteFooter ();
+$display = '';
+
+if (!SEC_hasRights('syndication.edit')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
     echo $display;
     exit;

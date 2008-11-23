@@ -53,7 +53,6 @@
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
-require_once $_CONF['path_system'] . 'lib-security.php';
 
 // Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -63,14 +62,11 @@ require_once $_CONF['path_system'] . 'lib-security.php';
 
 $display = '';
 
-if (!SEC_hasRights ('links.edit')) {
-    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[34];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the links administration screen.");
+if (!SEC_hasRights('links.edit')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the links administration screen.");
     echo $display;
     exit;
 }
@@ -304,13 +300,10 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
-    if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-        $display .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $MESSAGE[31];
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= COM_siteFooter ();
+    if (($access < 3) || !SEC_inGroup($group_id)) {
+        $display .= COM_siteHeader('menu', $MESSAGE[30])
+                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                 . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
         echo $display;
         exit;

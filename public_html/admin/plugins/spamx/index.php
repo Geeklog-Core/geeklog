@@ -33,20 +33,20 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
 
-require_once('../../../lib-common.php');
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
+$display = '';
 
 // Only let admin users access this page
-if (!SEC_hasRights ('spamx.admin')) {
+if (!SEC_hasRights('spamx.admin')) {
     // Someone is trying to illegally access this page
-    COM_accessLog ("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
-    $display = COM_siteHeader ('menu', $LANG_SX00['access_denied']);
-    $display .= COM_startBlock ($LANG_SX00['access_denied']);
-    $display .= $LANG_SX00['access_denied_msg'];
-    $display .= COM_endBlock ();
-    $display .= COM_siteFooter (true);
+    $display .= COM_siteHeader('menu', $LANG_SX00['access_denied'])
+             . COM_showMessageText($LANG_SX00['access_denied_msg'],
+                                   $LANG_SX00['access_denied'])
+             . COM_siteFooter(true);
+    COM_accessLog("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
     echo $display;
     exit;
 }

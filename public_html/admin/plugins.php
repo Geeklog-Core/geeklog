@@ -50,14 +50,11 @@ if (!defined('UPLOAD_ERR_EXTENSION'))  { define('UPLOAD_ERR_EXTENSION',  8); }
 
 $display = '';
 
-if (!SEC_hasrights ('plugin.edit')) {
-    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[38];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the plugin administration screen.");
+if (!SEC_hasrights('plugin.edit')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the plugin administration screen.");
     echo $display;
     exit;
 }

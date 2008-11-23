@@ -46,12 +46,9 @@ $display = '';
 
 // Ensure user even has the rights to access this page
 if (!SEC_hasRights('calendar.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30]);
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[35];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter();
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
 
     // Log attempt to error.log
     COM_accessLog("User {$_USER['username']} tried to illegally access the event administration screen.");
@@ -380,12 +377,9 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader('menu', $MESSAGE[30]);
-        $retval .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[31];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter();
+        $retval .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter();
         COM_accessLog ("User {$_USER['username']} tried to illegally submit or edit event $eid.");
         return $retval;
     }

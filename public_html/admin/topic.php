@@ -38,13 +38,12 @@ require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
 
+$display = '';
+
 if (!SEC_hasRights('topic.edit')) {
-    $display = COM_siteHeader ('menu', $MESSAGE[30]);
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[32];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
     echo $display;
     exit;
@@ -243,13 +242,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
-    if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
-        $retval .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[32];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter ();
+    if (($access < 3) || !SEC_inGroup($group_id)) {
+        $retval .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
     } elseif (!empty($tid) && !empty($topic)) {
         if ($imageurl == '/images/topics/') {

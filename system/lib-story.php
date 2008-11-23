@@ -832,12 +832,9 @@ function service_submit_story($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
 
     if (!SEC_hasRights('story.edit')) {
-        $output .= COM_siteHeader('menu', $MESSAGE[30]);
-        $output .= COM_startBlock($MESSAGE[30], '',
-                                  COM_getBlockTemplate('_msg_block', 'header'));
-        $output .= $MESSAGE[31];
-        $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        $output .= COM_siteFooter();
+        $output .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter();
 
         return PLG_RET_AUTH_FAILED;
     }
@@ -1036,21 +1033,15 @@ function service_submit_story($args, &$output, &$svc_msg)
         $output .= COM_siteFooter ();
         return PLG_RET_ERROR;
     case STORY_EXISTING_NO_EDIT_PERMISSION:
-        $output .= COM_siteHeader ('menu', $MESSAGE[30]);
-        $output .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $output .= $MESSAGE[31];
-        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $output .= COM_siteFooter ();
+        $output .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter ();
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_NO_ACCESS_PARAMS:
-        $output .= COM_siteHeader ('menu', $MESSAGE[30]);
-        $output .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $output .= $MESSAGE[31];
-        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $output .= COM_siteFooter ();
+        $output .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter ();
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_EMPTY_REQUIRED_FIELDS:
