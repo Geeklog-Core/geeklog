@@ -58,6 +58,7 @@ Geeklog History/Changes:
 - Fixed an issue with story expiry dates on PHP 4/Windows (reported by zeb)
   [Mike]
 
+- Updated Japanese language files, provided by the Geeklog.jp group
 - Updated Polish language files, provided by Robert Stadnik
 - Updated Slovenian language file for the Links plugin, provided by gape
 

@@ -9,12 +9,13 @@
  * Tranlated by Ivy (Geeklog Japanese)
  * Copyright (C) 2008 Takahiro Kambe
  * Additional translation to Japanese by taca AT back-street DOT net
+ * Copyright (C) 2006,2007,2008 Geeklog.jp group
+ * Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
  * 
  * Licensed under GNU General Public License
  *
  * $Id: japanese_utf-8.php,v 1.14 2008/09/09 18:26:18 dhaun Exp $
  */
-# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 global $LANG32;
 

@@ -12,6 +12,8 @@
 # Tranlated by Geeklog Japanese group
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
+# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,7 +31,6 @@
 #
 ###############################################################################
 # $Id: japanese_utf-8.php,v 1.19 2008/09/17 07:52:08 dhaun Exp $
-# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 /**
  * This is the english language page for the Geeklog links Plug-in!
