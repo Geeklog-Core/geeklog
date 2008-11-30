@@ -409,8 +409,7 @@ function SP_printPage($page, $A)
     $print->set_var('site_slogan', $_CONF['site_slogan']);
 
     $print->set_var('direction', $LANG_DIRECTION);
-    $print->set_var('lang_id', '');        // TBD
-    $print->set_var('lang_attribute', ''); // TBD
+    COM_setLangIdAndAttribute($print);
     $print->set_var('xhtml', XHTML);
     $print->set_var('page_title', $_CONF['site_name'] . ' - '
                                   . stripslashes($A['sp_title']));

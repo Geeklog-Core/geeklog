@@ -191,51 +191,10 @@ if ($A['count'] > 0) {
         $story_template->set_var ('lang_full_article', $LANG08[33]);
         $story_template->set_var ('article_url', $articleUrl);
 
-        $langAttr = '';
-        if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
-        {
-            $langId = COM_getLanguageId();
-        }
-        else
-        {
-            // try to derive the language id from the locale
-            $l = explode( '.', $_CONF['locale'] );
-            $langId = $l[0];
-        }
-        if( !empty( $langId ))
-        {
-            $l = explode( '-', str_replace( '_', '-', $langId ));
-            if(( count( $l ) == 1 ) && ( strlen( $langId ) == 2 ))
-            {
-                $langAttr = 'lang="' . $langId . '"';
-            }
-            else if( count( $l ) == 2 )
-            {
-                if(( $l[0] == 'i' ) || ( $l[0] == 'x' ))
-                {
-                    $langId = implode( '-', $l );
-                    $langAttr = 'lang="' . $langId . '"';
-                }
-                else if( strlen( $l[0] ) == 2 )
-                {
-                    $langId = implode( '-', $l );
-                    $langAttr = 'lang="' . $langId . '"';
-                }
-                else
-                {
-                    $langId = $l[0];
-                }
-            }
-        }
-        $story_template->set_var('lang_id', $langId);
-        if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
-            $story_template->set_var('lang_attribute', $langAttr);
-        } else {
-            $story_template->set_var('lang_attribute', '');
-        }
+        COM_setLangIdAndAttribute($story_template);
 
-        $story_template->parse ('output', 'article');
-        $display = $story_template->finish ($story_template->get_var('output'));
+        $story_template->parse('output', 'article');
+        $display = $story_template->finish($story_template->get_var('output'));
     } else {
         // Set page title
         $pagetitle = $story->DisplayElements('title');

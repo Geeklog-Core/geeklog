@@ -97,6 +97,10 @@ function plugin_compatible_with_this_geeklog_version()
         return false;
     }
 
+    if (!function_exists('COM_setLangIdAndAttribute')) {
+        return false;
+    }
+
     return true;
 }
 
