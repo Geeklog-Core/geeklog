@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Removed rel="tag" from topic links in lib-story.php as that would indicate a
+  Microformat with a slightly different meaning [Dirk]
 - Fixed inconsistencies and various small mistakes when displaying "Access
   denied" messages on the admin pages [Dirk]
 - Added a print.css stylesheet to be used by the printable template files
