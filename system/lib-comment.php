@@ -427,16 +427,17 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // create a reply to link
         $reply_link = '';
-        if( $ccode == 0 ) {
+        if ($ccode == 0) {
             $reply_link = $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
                         . '&amp;pid=' . $A['cid'] . '&amp;title='
-                        . urlencode( $A['title'] ) . '&amp;type=' . $A['type'];
-            $reply_option = COM_createLink($LANG01[43], $reply_link ) . ' | ';
-            $template->set_var( 'reply_option', $reply_option );
+                        . urlencode($A['title']) . '&amp;type=' . $A['type'];
+            $reply_option = COM_createLink($LANG01[43], $reply_link,
+                                           array('rel' => 'nofollow')) . ' | ';
+            $template->set_var('reply_option', $reply_option);
         } else {
-            $template->set_var( 'reply_option', '' );
+            $template->set_var('reply_option', '');
         }
-        $template->set_var( 'reply_link', $reply_link );
+        $template->set_var('reply_link', $reply_link);
 
         // format title for display, must happen after reply_link is created
         $A['title'] = htmlspecialchars( $A['title'] );
