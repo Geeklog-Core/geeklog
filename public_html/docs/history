@@ -87,6 +87,8 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- The owner of a static page changed to the user who last edited it
+  (bug #0000777) [Dirk]
 - The printable.thtml template file uses the HTML Strict doctype and print.css
   now [Dirk]
 - Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
