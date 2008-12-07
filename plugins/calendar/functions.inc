@@ -830,7 +830,7 @@ function CALENDAR_deleteEvent($eid, $type = '')
 
         DB_delete($_TABLES['events'], 'eid', $eid);
         DB_delete($_TABLES['personal_events'], 'eid', $eid);
-        COM_rdfUpToDateCheck('geeklog', 'calendar', $eid);
+        COM_rdfUpToDateCheck('calendar');
 
         return COM_refresh($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');
     } elseif ($type == 'submission') {
