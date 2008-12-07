@@ -246,11 +246,11 @@
       */
     function _injectExtendingTags()
     {
-        $xml = '';
-        if( is_array( $this->extensions ) )
+      $xml = '';
+      if( is_array( $this->extensions ) )
       {
         $this->extensions = array_unique($this->extensions);
-            $xml .= implode("\n", $this->extensions);
+        $xml .= implode("\n", $this->extensions) . "\n";
       }
       return $xml;
     }
