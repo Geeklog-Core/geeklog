@@ -439,8 +439,8 @@ function deleteTopic ($tid)
     DB_delete ($_TABLES['topics'], 'tid', $tid);
 
     // update feed(s) and Older Stories block
-    COM_rdfUpToDateCheck ('geeklog');
-    COM_olderStuff ();
+    COM_rdfUpToDateCheck('article');
+    COM_olderStuff();
 
     return COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=14');
 }
