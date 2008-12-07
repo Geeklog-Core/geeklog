@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Fixed updating feeds after changing topic permissions (bug #0000779) [Dirk]
 - The security token was missing from the trackback editor template file
   (reported and patch provided by hiroron, bug #0000778)
 - Removed rel="tag" from topic links in lib-story.php as that would indicate a
