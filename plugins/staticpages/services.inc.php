@@ -103,7 +103,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    $args['sp_uid'] = $_USER['uid'];
+    if (!isset($args['sp_uid'])) {
+        $args['sp_uid'] = $_USER['uid'];
+    }
 
     if (empty($args['sp_title']) && !empty($args['title'])) {
         $args['sp_title'] = $args['title'];
@@ -118,7 +120,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $args['sp_tid'] = $args['category'][0];
     }
 
-    $args['owner_id'] = $_USER['uid'];
+    if (!isset($args['owner_id'])) {
+        $args['owner_id'] = $_USER['uid'];
+    }
 
     if (empty($args['group_id'])) {
         $args['group_id'] = SEC_getFeatureGroup('staticpages.edit', $_USER['uid']);
