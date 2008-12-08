@@ -53,7 +53,12 @@ Polls plugin
 - Fixed SQL error when poll questions contained single quotes (bug #0000756)
   [Dirk]
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]
-
+ 
+Static Pages plugin
+-------------------
+- Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
+  (found by Marc Maier) [Dirk]
+ 
 
 Sep 22, 2008 (1.5.1)
 ------------
