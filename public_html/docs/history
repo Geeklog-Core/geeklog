@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Don't include X-Originating-IP header in emails sent from the site's admin
+  area (bug #0000701) [Dirk]
 - Check if COM_errorLog exists before using it in the config class (for possible
   problems during installation, bug #0000768) [Dirk]
 - Fixed filling out the Site Email / No-Reply Email fields in the install

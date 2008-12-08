@@ -3273,7 +3273,11 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     if (!empty($_SERVER['REMOTE_ADDR']) && !empty($_SERVER['SERVER_ADDR']) &&
             ($_SERVER['REMOTE_ADDR'] != $_SERVER['SERVER_ADDR'])) {
-        $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
+        $url = COM_getCurrentURL();
+        if (substr($url, 0, strlen($_CONF['site_admin_url']))
+                != $_CONF['site_admin_url']) {
+            $headers['X-Originating-IP'] = $_SERVER['REMOTE_ADDR'];
+        }
     }
 
     $retval = $mailobj->send( $to, $headers, $message );
