@@ -9,6 +9,8 @@
 # Tranlated by Geeklog Japanese group SaY and Ivy
 # Copyright (C) 2008 Takahiro Kambe
 # Additional translation to Japanese by taca AT back-street DOT net
+# Copyright (C) 2006,2007,2008 Geeklog.jp group
+# Additional translation to Japanese by Geeklog.jp group info AT geeklog DOT jp
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,7 +27,6 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# Last Update 2008/06/02 by Geeklog.jp group  - info AT geeklog DOT jp
 
 global $LANG32;
 
@@ -115,11 +116,12 @@ $LANG_STATIC = array(
     'submit' => '登録'
 );
 
+$PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
+$PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
