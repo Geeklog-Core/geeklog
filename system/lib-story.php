@@ -184,7 +184,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 COM_createLink(
                     $topicimage,
                     $topicurl,
-                    array('rel'=>"category tag")
+                    array('rel'=>"category")
                 )
             );
             $article->set_var( 'story_topic_image', $topicimage );
@@ -194,7 +194,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 COM_createLink(
                     $topicimage_noalign,
                     $topicurl,
-                    array('rel'=>"category tag")
+                    array('rel'=>"category")
                 )
             );
             $article->set_var( 'story_topic_image_no_align',

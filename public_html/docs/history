@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Removed rel="tag" from topic links in lib-story.php as that would indicate a
+  Microformat with a slightly different meaning [Dirk]
 - Don't include X-Originating-IP header in emails sent from the site's admin
   area (bug #0000701) [Dirk]
 - Check if COM_errorLog exists before using it in the config class (for possible
