@@ -1016,48 +1016,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
     $header->set_var('page_title_and_site_name', $title_and_name);
 
-    $langAttr = '';
-    if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
-    {
-        $langId = COM_getLanguageId();
-    }
-    else
-    {
-        // try to derive the language id from the locale
-        $l = explode( '.', $_CONF['locale'] );
-        $langId = $l[0];
-    }
-    if( !empty( $langId ))
-    {
-        $l = explode( '-', str_replace( '_', '-', $langId ));
-        if(( count( $l ) == 1 ) && ( strlen( $langId ) == 2 ))
-        {
-            $langAttr = 'lang="' . $langId . '"';
-        }
-        else if( count( $l ) == 2 )
-        {
-            if(( $l[0] == 'i' ) || ( $l[0] == 'x' ))
-            {
-                $langId = implode( '-', $l );
-                $langAttr = 'lang="' . $langId . '"';
-            }
-            else if( strlen( $l[0] ) == 2 )
-            {
-                $langId = implode( '-', $l );
-                $langAttr = 'lang="' . $langId . '"';
-            }
-            else
-            {
-                $langId = $l[0];
-            }
-        }
-    }
-    $header->set_var('lang_id', $langId);
-    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
-        $header->set_var('lang_attribute', $langAttr);
-    } else {
-        $header->set_var('lang_attribute', '');
-    }
+    COM_setLangIdAndAttribute($header);
 
     $header->set_var( 'background_image', $_CONF['layout_url']
                                           . '/images/bg.' . $_IMAGE_TYPE );
@@ -6782,20 +6741,68 @@ function COM_renderWikiText($wikitext)
     return $wiki->transform($wikitext, 'Xhtml');
 }
 
-// Now include all plugin functions
-foreach( $_PLUGINS as $pi_name )
+/**
+* Set the {lang_id} and {lang_attribute} variables for a template
+*
+* @param    ref     $template   template to use
+* @return   void
+* @note     {lang_attribute} is only set in multi-language environments.
+*
+*/
+function COM_setLangIdAndAttribute(&$template)
 {
-    require_once( $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc' );
+    global $_CONF;
+
+    $langAttr = '';
+    $langId   = '';
+
+    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+        $langId = COM_getLanguageId();
+    } else {
+        // try to derive the language id from the locale
+        $l = explode('.', $_CONF['locale']); // get rid of character set
+        $langId = $l[0];
+        $l = explode('@', $langId); // get rid of '@euro', etc.
+        $langId = $l[0];
+    }
+
+    if (!empty($langId)) {
+        $l = explode('-', str_replace('_', '-', $langId));
+        if ((count($l) == 1) && (strlen($langId) == 2)) {
+            $langAttr = 'lang="' . $langId . '"';
+        } else if (count($l) == 2) {
+            if (($l[0] == 'i') || ($l[0] == 'x')) {
+                $langId = implode('-', $l);
+                $langAttr = 'lang="' . $langId . '"';
+            } else if (strlen($l[0]) == 2) {
+                $langId = implode('-', $l);
+                $langAttr = 'lang="' . $langId . '"';
+            } else {
+                $langId = $l[0];
+                // this isn't a valid lang attribute, so don't set $langAttr
+            }
+        }
+    }
+    $template->set_var('lang_id', $langId);
+
+    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+        $template->set_var('lang_attribute', $langAttr);
+    } else {
+        $template->set_var('lang_attribute', '');
+    }
+}
+
+// Now include all plugin functions
+foreach ($_PLUGINS as $pi_name) {
+    require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
 }
 
 // Check and see if any plugins (or custom functions)
 // have scheduled tasks to perform
-if( $_CONF['cron_schedule_interval'] > 0 )
-{
-    if(( DB_getItem( $_TABLES['vars'], 'value', "name='last_scheduled_run'" )
-            + $_CONF['cron_schedule_interval'] ) <= time())
-    {
-        DB_query( "UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'" );
+if ($_CONF['cron_schedule_interval'] > 0) {
+    if ((DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'")
+            + $_CONF['cron_schedule_interval']) <= time()) {
+        DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
     }
 }
