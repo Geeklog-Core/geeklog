@@ -72,6 +72,8 @@ Polls plugin
  
 Static Pages plugin
 -------------------
+- The owner of a static page changed to the user who last edited it
+  (bug #0000777) [Dirk]
 - Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
   (found by Marc Maier) [Dirk]
  
