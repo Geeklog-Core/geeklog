@@ -112,6 +112,9 @@ $LANG_STATIC = array(
     'submit' => 'Sisesta'
 );
 
+$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
+$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
@@ -152,8 +155,8 @@ $LANG_configselects['staticpages'] = array(
     1 => array('Jah' => true, 'Ei' => false),
     2 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title'),
     3 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title', 'Silt' => 'label'),
-        9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
-12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
-    );
+    9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+);
 
 ?>

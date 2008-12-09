@@ -35,7 +35,7 @@
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [qid] [int] NOT NULL ,
     [aid] [tinyint] NOT NULL ,
     [answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -47,14 +47,14 @@ CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
     [qid] [int] NOT NULL ,
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
 ) ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [voters] [numeric](8, 0) NULL ,
     [questions] [int] NOT NULL ,
@@ -76,7 +76,7 @@ CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]

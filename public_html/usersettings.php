@@ -194,6 +194,15 @@ function edituser()
             }
             $preferences->set_var ('display_photo', $photo);
         }
+        if (empty($_CONF['image_lib'])) {
+            $scaling = $LANG04[162];
+        } else {
+            $scaling = $LANG04[161];
+        }
+        $preferences->set_var('photo_max_dimensions',
+            sprintf($LANG04[160],
+                    $_CONF['max_photo_width'], $_CONF['max_photo_height'],
+                    $_CONF['max_photo_size'], $scaling));
         $preferences->parse ('userphoto_option', 'photo', true);
     } else {
         $preferences->set_var ('userphoto_option', '');
@@ -749,6 +758,9 @@ function handlePhotoUpload ($delete_photo = '')
                 $_CONF['debug_image_upload']) {
             $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
             $upload->setDebug (true);
+        }
+        if (isset($_CONF['jpeg_quality'])) {
+            $upload->setJpegQuality($_CONF['jpeg_quality']);
         }
     }
     $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: success.php,v 1.20 2008/08/12 09:34:29 dhaun Exp $
+// $Id: success.php,v 1.19 2008/01/02 13:29:02 dhaun Exp $
 
 require_once '../../lib-common.php';
 if (!defined('XHTML')) {
@@ -51,7 +51,21 @@ $_CONF['rootdebug'] = true;
 $display = COM_siteHeader( 'menu', $LANG_SUCCESS[0] );
 $display .= COM_startBlock( $LANG_SUCCESS[1] . VERSION . $LANG_SUCCESS[2] );
 
-$display .= '<p>' . $LANG_SUCCESS[3] . (($type == 'install') ? $LANG_SUCCESS[20] : $LANG_SUCCESS[21]) . $LANG_SUCCESS[4] . '</p>' ;
+$display .= '<p>' . $LANG_SUCCESS[3];
+
+switch ($type) {
+case 'install':
+    $display .= $LANG_SUCCESS[20];
+    break;
+case 'upgrade':
+    $display .= $LANG_SUCCESS[21];
+    break;
+case 'migrate':
+    $display .= $LANG_SUCCESS[22];
+    break;
+}
+ 
+$display .= $LANG_SUCCESS[4] . '</p>' ;
 
 if ($type == 'install') {
 	$display .= '<p>' . $LANG_SUCCESS[5] . '</p>
@@ -60,7 +74,7 @@ if ($type == 'install') {
 }
 
 $display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
-<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'upgrade') ? '2' : '3') . '</strong> ' . $LANG_SUCCESS[12] . ':</p>
+<p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'install') ? '3' : '2') . '</strong> ' . $LANG_SUCCESS[12] . ':</p>
 <ul>
 <li>' . $LANG_SUCCESS[13] . ' <tt>' . $_CONF['path_html'] . 'admin/install</tt>.</li>';
 

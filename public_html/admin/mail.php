@@ -38,15 +38,12 @@ require_once 'auth.inc.php';
 $display = '';
 
 // Make sure user has access to this page
-if (!SEC_inGroup ('Mail Admin') && !SEC_hasrights ('user.mail')) {
-    $retval .= COM_siteHeader ('menu', $MESSAGE[30]);
-    $retval .= COM_startBlock ($MESSAGE[30], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-    $retval .= $MESSAGE[39];
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $retval .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the mail administration screen.");
-    echo $retval;
+if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the mail administration screen.");
+    echo $display;
     exit;
 }
 

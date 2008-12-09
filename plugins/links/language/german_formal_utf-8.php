@@ -234,6 +234,7 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'Links löschen mit User?',
     'aftersave' => 'Nach Abspeichern des Links',
     'show_category_descriptions' => 'Kategoriebeschreibung anzeigen?',
+    'new_window' => 'Externe Links in neuem Fenster öffnen?',
     'root' => 'ID der Oberkategorie',
     'default_permissions' => 'Grundeinstellung Rechte'
 );

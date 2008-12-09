@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Does a quick security check of the Geeklog install                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2007 by the following authors:                         |
+// | Copyright (C) 2002-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun            - dirk AT haun-online DOT de                |
 // |          Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
@@ -35,13 +35,13 @@
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
-if (!SEC_inGroup ('Root')) {
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[46];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the security check.");
+$display = '';
+
+if (!SEC_inGroup('Root')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the security check.");
     echo $display;
     exit;
 }

@@ -133,7 +133,7 @@ $LANG_INSTALL = array(
     80 => 'Ändern',
     81 => 'Stop!',
     82 => 'Es ist unbedingt nötig, die Zugriffsrechte der unten aufgeführten Dateien zu ändern. Andernfalls wirst Du Geeklog nicht installieren können.',
-    83 => 'Installation Error',
+    83 => 'Fehler bei der Installation',
     84 => 'The path "',
     85 => '" does not appear to be correct. Please go back and try again.',
     86 => 'Sprache',
@@ -142,7 +142,11 @@ $LANG_INSTALL = array(
     89 => 'Aktuelle Version:',
     90 => 'Leere Datenbank?',
     91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
-    92 => 'Benutze UTF-8'
+    92 => 'Benutze UTF-8',
+    93 => 'Success',
+    94 => 'Hier sind einige Hinweise, um den richtigen Pfad zu ermitteln:',
+    95 => 'Der komplette Pfad zu dieser Datei (dem Installations-Skript) ist:',
+    96 => 'Das Installations-Skript hat nach %s in diesem Verzeichnis gesucht:'
 );
 
 // +---------------------------------------------------------------------------+

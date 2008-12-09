@@ -37,21 +37,19 @@
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
-require_once $_CONF['path_system'] . 'lib-security.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
-if (!SEC_hasRights ('block.edit')) {
-    $display .= COM_siteHeader ('menu', $MESSAGE[30])
-        . COM_startBlock ($MESSAGE[30], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'))
-        . $MESSAGE[33]
-        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-        . COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the block administration screen");
+$display = '';
+
+if (!SEC_hasRights('block.edit')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the block administration screen");
     echo $display;
     exit;
 }
@@ -513,13 +511,10 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
-    if (($access < 3) || !hasBlockTopicAccess ($tid) || !SEC_inGroup ($group_id)) {
-        $retval .= COM_siteHeader('menu', $MESSAGE[30]);
-        $retval .= COM_startBlock ($MESSAGE[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $MESSAGE[33];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter();
+    if (($access < 3) || !hasBlockTopicAccess($tid) || !SEC_inGroup($group_id)) {
+        $retval .= COM_siteHeader('menu', $MESSAGE[30])
+                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;

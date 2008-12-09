@@ -2317,7 +2317,11 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
     case 'item':
         $url = $item_url;
         if (!empty($msg) && ($plugin != 'story')) {
-            $url .= '&amp;' . $msg;
+            if (strpos($url, '?') === false) {
+                $url .= '?' . $msg;
+            } else {
+                $url .= '&amp;' . $msg;
+            }
         }
         break;
 

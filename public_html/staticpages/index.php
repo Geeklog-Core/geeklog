@@ -65,7 +65,19 @@ if ($display_mode != 'print') {
     $display_mode = '';
 }
 
-$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode);
+$msg = 0;
+if (isset($_GET['msg'])) {
+    $msg = COM_applyFilter($_GET['msg'], true);
+    if ($msg <= 0) {
+        $msg = 0;
+    }
+}
+
+$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $msg);
+
+if ($display_mode == 'print') {
+    header('Content-Type: text/html; charset=' . COM_getCharset());
+}
 
 if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());

@@ -46,13 +46,10 @@ if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] &&
 
 $display = '';
 
-if (!SEC_hasRights ('story.ping')) {
-    $display .= COM_siteHeader ('menu', $MESSAGE[30]);
-    $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $MESSAGE[34];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
+if (!SEC_hasRights('story.ping')) {
+    $display .= COM_siteHeader('menu', $MESSAGE[30])
+             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+             . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the trackback administration screen.");
     echo $display;
     exit;

@@ -274,6 +274,7 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'Delete Links with Owner?',
     'aftersave' => 'After Saving Link',
     'show_category_descriptions' => 'Show Category Description?',
+    'new_window' => 'Open external links in new window?',
     'root' => 'ID of Root Category',
     'default_permissions' => 'Link Default Permissions'
 );

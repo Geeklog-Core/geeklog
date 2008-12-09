@@ -431,226 +431,6 @@ CREATE TABLE [dbo].[{$_TABLES['vars']}] (
 ) ON [PRIMARY]
 ";
 
-// Tables used by the bundled plugins
-
-// Calendar plugin
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['events']}] (
-    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [datestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [dateend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [numeric](8, 0) NULL ,
-    [owner_id] [numeric](8, 0) NULL ,
-    [group_id] [numeric](8, 0) NULL ,
-    [perm_owner] [tinyint] NULL ,
-    [perm_group] [tinyint] NULL ,
-    [perm_members] [tinyint] NULL ,
-    [perm_anon] [tinyint] NULL ,
-    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [allday] [smallint] NULL ,
-    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['eventsubmission']}] (
-    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [datestart] [smalldatetime] NULL ,
-    [dateend] [smalldatetime] NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [allday] [smallint] NOT NULL ,
-    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [timestart] [smalldatetime] NULL ,
-    [timeend] [smalldatetime] NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['personal_events']}] (
-    [eid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [datestart] [smalldatetime] NULL ,
-    [dateend] [smalldatetime] NULL ,
-    [address1] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [address2] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [city] [varchar] (60) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [state] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [zipcode] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [allday] [smallint] NOT NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL ,
-    [uid] [int] NOT NULL ,
-    [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [timestart] [smalldatetime] NULL ,
-    [timeend] [smalldatetime] NULL
-) ON [PRIMARY]
-";
-
-// Links plugin
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['linkcategories']}] (
-    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [created] [datetime] NULL ,
-    [modified] [datetime] NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['links']}] (
-    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [int] NOT NULL ,
-    [date] [datetime] NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['linksubmission']}] (
-    [lid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [title] [varchar] (96) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [hits] [int] NULL ,
-    [date] [datetime] NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL
-) ON [PRIMARY]
-";
-
-// Polls plugin
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [qid] [int] NOT NULL ,
-    [aid] [tinyint] NOT NULL ,
-    [answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [votes] [numeric](8, 0) NULL ,
-    [remark] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
-    [qid] [int] NOT NULL ,
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [voters] [numeric](8, 0) NULL ,
-    [questions] [int] NOT NULL ,
-    [date] [datetime] NULL ,
-    [display] [tinyint] NOT NULL ,
-    [is_open] [tinyint] NOT NULL ,
-    [hideresults] [tinyint] NOT NULL ,
-    [commentcode] [smallint] NOT NULL ,
-    [statuscode] [smallint] NOT NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL
-) ON [PRIMARY]
-";
-
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
-    [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [date] [numeric](10, 0) NULL
-) ON [PRIMARY]
-";
-
-// Spam-X plugin
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
-    [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY]
-";
-
-// Static Pages plugin
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
-    [sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_uid] [int] NOT NULL ,
-    [sp_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_hits] [numeric](8, 0) NOT NULL ,
-    [sp_date] [datetime] NOT NULL ,
-    [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_onmenu] [tinyint] NOT NULL ,
-    [sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentcode] [smallint] NOT NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL ,
-    [sp_centerblock] [tinyint] NOT NULL ,
-    [sp_help] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_where] [tinyint] NOT NULL ,
-    [sp_php] [tinyint] NOT NULL ,
-    [sp_nf] [tinyint] NULL ,
-    [sp_inblock] [tinyint] NULL  ,
-    [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
-) ON [PRIMARY]
-";
-
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['access']}] ADD
     CONSTRAINT [PK_{$_TABLES['access']}] PRIMARY KEY  CLUSTERED
@@ -772,44 +552,10 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['groups']}] ADD
     )  ON [PRIMARY]
 ";
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
-    CONSTRAINT [PK_{$_TABLES['linkcategories']}] PRIMARY KEY  CLUSTERED
-    (
-        [pid]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['links']}] ADD
-    CONSTRAINT [DF_{$_TABLES['links']}_perm_group] DEFAULT (3) FOR [perm_group],
-    CONSTRAINT [DF_{$_TABLES['links']}_perm_anon] DEFAULT (2) FOR [perm_anon],
-    CONSTRAINT [DF_{$_TABLES['links']}_perm_members] DEFAULT (2) FOR [perm_members],
-    CONSTRAINT [DF_{$_TABLES['links']}_perm_owner] DEFAULT (3) FOR [perm_owner],
-    CONSTRAINT [DF_{$_TABLES['links']}_hits] DEFAULT (0) FOR [hits],
-    CONSTRAINT [PK_{$_TABLES['links']}] PRIMARY KEY  CLUSTERED
-    (
-        [lid]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['linksubmission']}] ADD
-    CONSTRAINT [PK_{$_TABLES['linksubmission']}] PRIMARY KEY  CLUSTERED
-    (
-        [lid]
-    )  ON [PRIMARY]
-";
-
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['maillist']}] ADD
     CONSTRAINT [PK_{$_TABLES['maillist']}] PRIMARY KEY  CLUSTERED
     (
         [code]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['personal_events']}] ADD
-    CONSTRAINT [PK_{$_TABLES['personal_events']}] PRIMARY KEY  CLUSTERED
-    (
-        [eid],
-        [uid]
     )  ON [PRIMARY]
 ";
 
@@ -824,39 +570,6 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['plugins']}] ADD
     CONSTRAINT [PK_{$_TABLES['plugins']}] PRIMARY KEY  CLUSTERED
     (
         [pi_name]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
-    CONSTRAINT [PK_{$_TABLES['pollanswers']}] PRIMARY KEY  CLUSTERED
-    (
-        [qid],
-        [aid]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollanswers']}] ADD
-    CONSTRAINT [DF_{$_TABLES['pollanswers']}_qid] DEFAULT ('0') FOR [qid]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollquestions']}] ADD
-    CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED
-    (
-        [qid]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['polltopics']}] ADD
-    CONSTRAINT [PK_{$_TABLES['polltopics']}] PRIMARY KEY  CLUSTERED
-    (
-        [pid]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
-    CONSTRAINT [PK_{$_TABLES['pollvoters']}] PRIMARY KEY  CLUSTERED
-    (
-        [id]
     )  ON [PRIMARY]
 ";
 
@@ -878,14 +591,6 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['speedlimit']}] ADD
     CONSTRAINT [PK_{$_TABLES['speedlimit']}] PRIMARY KEY  CLUSTERED
     (
         [id]
-    )  ON [PRIMARY]
-";
-
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
-    CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
-    CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
-    (
-        [sp_id]
     )  ON [PRIMARY]
 ";
 
@@ -1460,28 +1165,20 @@ where photo=''
 
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (3,5)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (4,5)";
+$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (4,3)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (5,9)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (5,11)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (6,9)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (6,11)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES(7,12)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (8,7)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (9,7)";
+$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (7,12)";
+$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (8,5)";
+$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (9,8)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (10,4)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (11,6)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (12,8)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (13,10)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (14,11)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (15,11)";
 $_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (16,4)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (17,14)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (18,14)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (23,15)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (24,3)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (25,17)";
-$_SQL[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (26,18)";
 
 $_SQL[] = "
 set identity_insert {$_TABLES['blocks']} on;
@@ -1490,12 +1187,10 @@ set identity_insert {$_TABLES['blocks']} on;
 INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1,1,'user_block','gldefault','User Functions','all',2,'','',getdate(),1,'',4,2,3,3,2,2);
 INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (2,1,'admin_block','gldefault','Admins Only','all',1,'','',getdate(),1,'',4,2,3,3,2,2);
 INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,1,'section_block','gldefault','Topics','all',0,'','',getdate(),1,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'polls_block','phpblock','Poll','all',2,'','',getdate(),0,'phpblock_polls',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'events_block','phpblock','Events','all',4,'','',getdate(),1,'phpblock_calendar',1,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whats_new_block','gldefault','What''s New','all',3,'','',getdate(),0,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'first_block','normal','About Geeklog','homeonly',1,'<p><b>Welcome to Geeklog!</b></p><p>If you''re already familiar with Geeklog - and especially if you''re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/support.html\">support options</a>.</p>','',getdate(),0,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (8,1,'whosonline_block','phpblock','Who''s Online','all',0,'','',getdate(),0,'phpblock_whosonline',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (9,1,'older_stories','gldefault','Older Stories','all',5,'','',getdate(),1,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'whats_new_block','gldefault','What''s New','all',3,'','',getdate(),0,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'first_block','normal','About Geeklog','homeonly',1,'<p><b>Welcome to Geeklog!</b></p><p>If you''re already familiar with Geeklog - and especially if you''re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/support.html\">support options</a>.</p>','',getdate(),0,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whosonline_block','phpblock','Who''s Online','all',0,'','',getdate(),0,'phpblock_whosonline',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'older_stories','gldefault','Older Stories','all',5,'','',getdate(),1,'',4,2,3,3,2,2);
 
 
 set identity_insert {$_TABLES['blocks']} off;
@@ -1539,8 +1234,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VAL
 $_SQL[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (17,'%d/%m/%y %H:%M','21/03/99 22:00')";
 $_SQL[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (18,'%a %d %b %I:%M%p','Sun 21 Mar 10:00PM')";
 
-$_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2005100114064662','Geeklog installed','Today, you successfully installed this Geeklog site.','Your webserver',getdate(),getdate(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL)";
-
 $_SQL[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (0,'Not Featured')";
 $_SQL[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (1,'Featured')";
 
@@ -1553,30 +1246,19 @@ set identity_insert {$_TABLES['features']} on
 
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (1,'story.edit','Access to story editor',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (2,'story.moderate','Ability to moderate pending stories',1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (3,'story.submit','May skip the story submission queue',1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (4,'story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (5,'user.edit','Access to user editor',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (6,'user.delete','Ability to delete a user',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (7,'user.mail','Ability to send email to members',1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (8,'calendar.moderate','Ability to moderate pending events',1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (9,'calendar.edit','Access to event editor',1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (8,'syndication.edit', 'Access to Content Syndication', 1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (9,'webservices.atompub', 'May use Atompub Webservices (if restricted)', 1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (10,'block.edit','Access to block editor',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (11,'topic.edit','Access to topic editor',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (13,'plugin.edit','Access to plugin editor',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (14,'group.edit','Ability to edit groups',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (15,'group.delete','Ability to delete groups',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (16,'block.delete','Ability to delete a block',1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (17,'staticpages.edit','Ability to edit a static page',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (18,'staticpages.delete','Ability to delete static pages',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (19,'story.submit','May skip the story submission queue',1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (21,'calendar.submit','May skip the event submission queue',1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (22,'staticpages.PHP','Ability use PHP in static pages',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (23,'spamx.admin', 'Full access to Spam-X plugin', 0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (24,'story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (3,'links.moderate','Ability to moderate pending links',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (4,'links.edit','Access to links editor',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (20,'links.submit','May skip the links submission queue',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (12,'polls.edit','Access to polls editor',0)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (25,'syndication.edit', 'Access to Content Syndication', 1)
-INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (26,'webservices.atompub', 'May use Atompub Webservices (if restricted)', 1)
 
 set identity_insert {$_TABLES['features']} off
 ";
@@ -1590,10 +1272,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, 
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (3,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (4,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (5,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (6,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (7,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (10,NULL,1)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (11,NULL,1)";
@@ -1603,10 +1282,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, 
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,12)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,10)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,9)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,8)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,7)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,6)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,5)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,4)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,3)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (12,NULL,1)";
@@ -1614,20 +1290,16 @@ $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, 
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,11)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (10,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,2,NULL)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,2,NULL)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (7,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (6,2,NULL)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (5,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (4,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (3,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,2,NULL)";
 $_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (1,2,NULL)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (14,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (15,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (17,NULL,1)";
-$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (18,NULL,1)";
+$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (5,NULL,1)";
+$_SQL[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,NULL,1)";
 
 
+// Traditionally, grp_id 1 = Root, 2 = All Users, 13 = Logged-In Users
 $_SQL[] = "
 set identity_insert {$_TABLES['groups']} on
 
@@ -1635,26 +1307,19 @@ INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALU
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (2,'All Users','Group that a typical user is added to',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (3,'Story Admin','Has full access to story features',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (4,'Block Admin','Has full access to block features',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (5,'Links Admin','Has full access to links features',0)
+INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (5,'Syndication Admin', 'Can create and modify web feeds for the site',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (6,'Topic Admin','Has full access to topic features',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (7,'Calendar Admin','Has full access to calendar features',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (8,'Polls Admin','Has full access to polls features',0)
+INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (7,'Remote Users', 'Users in this group can have authenticated against a remote server.',1)
+INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (8,'Webservices Users', 'Can use the Webservices API (if restricted)',0)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (9,'User Admin','Has full access to user features',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (10,'Plugin Admin','Has full access to plugin features',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (11,'Group Admin','Is a User Admin with access to groups, too',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (12,'Mail Admin','Can use Mail Utility',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All registered members',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (14,'Static Page Admin','Can administer static pages',0)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (15,'spamx Admin', 'Users in this group can administer the Spam-X plugin',0)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (16,'Remote Users', 'Users in this group can have authenticated against a remote server.',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (17,'Syndication Admin', 'Can create and modify web feeds for the site',1)
-INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (18,'Webservices Users', 'Can use the Webservices API (if restricted)',0)
 
 set identity_insert {$_TABLES['groups']} off
 ";
 
-
-$_SQL[] = "INSERT INTO {$_TABLES['links']} (lid, cid, url, description, title, date, owner_id, group_id) VALUES ('geeklog.net','Geeklog Sites','http://www.geeklog.net/','Visit the Geeklog homepage for support, FAQs, updates, add-ons, and a great community.','Geeklog Project Homepage',getdate(),1,5)";
 
 $_SQL[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don''t Email')";
 $_SQL[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night')";
@@ -1669,26 +1334,6 @@ set identity_insert {$_TABLES['pingservice']} off
 ";
 
 
-
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.5','1.4.1',1,'http://www.geeklog.net/')";
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.1.1','1.4.1',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx')";
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '2.0', '1.4.1', 1, 'http://www.geeklog.net/')";
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('polls', '2.0.1', '1.4.1', '1', 'http://www.geeklog.net/')";
-$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('calendar', '1.0.2', '1.4.1', '1', 'http://www.geeklog.net/')";
-
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 0, 'What is the best new feature of Geeklog?');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollquestions']}` (`pid`, `qid`, `question`) VALUES ('geeklogfeaturepoll', 1, 'What is the all-time best feature of Geeklog?');";
-
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 1, 'MS SQL support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 2, 'Multi-language support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 3, 'Calendar as a plugin', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 4, 'SLV spam protection', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 5, 'Mass-delete users', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 0, 6, 'Other', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 1, 'Story-Images', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 2, 'User-Rights handling', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 3, 'The Support', 0, '');";
-$_DATA[] = "INSERT INTO `{$_TABLES['pollanswers']}` (`pid`, `qid`, `aid`, `answer`, `votes`, `remark`) VALUES ('geeklogfeaturepoll', 1, 4, 'Plugin Availability', 0, '');";
 
 $_SQL[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text')";
 $_SQL[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted')";
@@ -1734,8 +1379,7 @@ set identity_insert {$_TABLES['users']} off
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','')";
-$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter','0')";
-$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','1.5.1')";
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','1.5.2')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled')";
 $_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled')";

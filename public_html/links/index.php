@@ -340,55 +340,64 @@ function links_list($message)
 * @param    ref     $template   reference of the links template
 *
 */
-function prepare_link_item ($A, &$template)
+function prepare_link_item($A, &$template)
 {
-    global $_CONF, $_USER, $LANG_ADMIN, $LANG_LINKS, $_IMAGE_TYPE, $LANG_DIRECTION;
+    global $_CONF, $_USER, $_LI_CONF, $LANG_ADMIN, $LANG_LINKS, $LANG_DIRECTION,
+           $_IMAGE_TYPE;
 
     $url = COM_buildUrl($_CONF['site_url']
                         . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+    $actualUrl = stripslashes($A['url']);
+    $title = stripslashes($A['title']);
+
     $template->set_var('link_url', $url);
-    $template->set_var('link_actual_url', $A['url']);
-    $template->set_var('link_actual_url_encoded', urlencode($A['url']));
-    $template->set_var('link_name', stripslashes($A['title']));
-    $template->set_var('link_name_encoded',
-                       urlencode(stripslashes($A['title'])));
-    $template->set_var('link_hits', COM_numberFormat ($A['hits']));
+    $template->set_var('link_actual_url', $actualUrl);
+    $template->set_var('link_actual_url_encoded', urlencode($actualUrl));
+    $template->set_var('link_name', $title);
+    $template->set_var('link_name_encoded', urlencode($title));
+    $template->set_var('link_hits', COM_numberFormat($A['hits']));
     $template->set_var('link_description',
                        nl2br(stripslashes($A['description'])));
-    $content = stripslashes($A['title']);
-    $class = 'ext-link';
-    if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
-        $class .= '-rtl';
+
+    $attr = array('title' => $actualUrl);
+    if (substr($actualUrl, 0, strlen($_CONF['site_url'])) != $_CONF['site_url']) {
+        $class = 'ext-link';
+        if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
+            $class .= '-rtl';
+        }
+        $attr['class'] = $class;
+        if ($_LI_CONF['new_window']) {
+            $attr['target'] = '_blank';
+        }
     }
-    $attr = array(
-        'title' => stripslashes ($A['url']),
-        'class' => $class);
-    $html = COM_createLink($content, $url, $attr);
-    $template->set_var ('link_html', $html);
+    $html = COM_createLink($title, $url, $attr);
+    $template->set_var('link_html', $html);
+
     if (!COM_isAnonUser() && !SEC_hasRights('links.edit')) {
         $reporturl = $_CONF['site_url']
-                 . '/links/index.php?mode=report&amp;lid=' . $A['lid'];
-        $template->set_var ('link_broken',
+                   . '/links/index.php?mode=report&amp;lid=' . $A['lid'];
+        $template->set_var('link_broken',
                 COM_createLink($LANG_LINKS[117], $reporturl,
                                array('class' => 'pluginSmallText',
                                      'rel'   => 'nofollow'))
         );
     } else {
-        $template->set_var ('link_broken', '');
+        $template->set_var('link_broken', '');
     }
 
-    if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+    if ((SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-            SEC_hasRights ('links.edit')) {
+            SEC_hasRights('links.edit')) {
         $editurl = $_CONF['site_admin_url']
                  . '/plugins/links/index.php?mode=edit&amp;lid=' . $A['lid'];
-        $template->set_var ('link_edit', COM_createLink($LANG_ADMIN['edit'],$editurl));
+        $template->set_var('link_edit',
+                           COM_createLink($LANG_ADMIN['edit'], $editurl));
         $edit_icon = "<img src=\"{$_CONF['layout_url']}/images/edit.$_IMAGE_TYPE\" "
             . "alt=\"{$LANG_ADMIN['edit']}\" title=\"{$LANG_ADMIN['edit']}\"" . XHTML . ">";
-        $template->set_var ('edit_icon', COM_createLink($edit_icon, $editurl));
+        $template->set_var('edit_icon', COM_createLink($edit_icon, $editurl));
     } else {
-        $template->set_var ('link_edit', '');
-        $template->set_var ('edit_icon', '');
+        $template->set_var('link_edit', '');
+        $template->set_var('edit_icon', '');
     }
 }
 

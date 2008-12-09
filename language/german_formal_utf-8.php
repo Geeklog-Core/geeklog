@@ -368,7 +368,10 @@ $LANG04 = array(
     156 => 'Account löschen',
     157 => 'Löschen',
     158 => 'Zeitzone',
-    159 => 'Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese E-Mail antworten.'
+    159 => 'Diese E-Mail wurde automatisch generiert. Bitte nicht auf diese E-Mail antworten.',
+    160 => '(max. %d x %d Pixel, %d Bytes; %s)',
+    161 => 'wird ggfs. skaliert',
+    162 => 'wird nicht skaliert'
 );
 
 ###############################################################################
@@ -1117,7 +1120,7 @@ $MESSAGE = array(
     26 => '',
     27 => 'Nachricht wurde verschickt.',
     28 => 'Das Plugin wurde gespeichert.',
-    29 => '',
+    29 => 'Sie haben keinen Zugriff auf diese Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
     30 => 'Zugriff verweigert',
     31 => 'Sie haben keinen Zugriff auf die Artikel-Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
     32 => 'Sie haben keinen Zugriff auf die Kategorie-Administrationsseite. Alle Versuche, auf Bereiche ohne entsprechende Berechtigung zuzugreifen, werdenprotokolliert.',
@@ -1185,7 +1188,11 @@ $MESSAGE = array(
     94 => 'Backup Failed: Dateigröße unter 1kb',
     95 => 'Es gab einen Fehler.',
     96 => 'Sorry, kein Zugang zur Admin-Seite. Unzulässige Zugangsversuche werden gelogged.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    97 => 'Not all required fields have been passed validation - default custom membership message',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.'
 );
 
 ###############################################################################
@@ -1747,6 +1754,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debug Image-Upload?',
     'keep_unscaled_image' => 'Bild in Originalgröße behalten?',
     'allow_user_scaling' => 'User darf skalieren?',
+    'jpeg_quality' => 'JPEG-Qualität?',
     'max_image_width' => 'Max. Bildbreite?',
     'max_image_height' => 'Max. Bildhöhe?',
     'max_image_size' => 'Max. Bildgröße?',

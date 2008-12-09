@@ -364,7 +364,10 @@ $LANG04 = array(
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.'
+    159 => 'This email was generated automatically. Please do not reply to this email.',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -1023,7 +1026,24 @@ $LANG32 = array(
     35 => 'Edit',
     36 => 'Code',
     37 => 'Data',
-    38 => 'Update!'
+    38 => 'Update!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+
+    // to match the PHP error constants,
+    // http://www.php.net/manual/en/features.file-upload.errors.php
+    // TBD: move to a separate $LANG array
+     99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1114,24 +1134,24 @@ $MESSAGE = array(
     26 => '',
     27 => 'Message successfully sent.',
     28 => 'The plugin has been successfully saved',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Access Denied',
-    31 => 'Sorry, you do not have access to the story administration page.  Please note that all attempts to access unauthorized features are logged',
-    32 => 'Sorry, you do not have access to the topic administration page.  Please note that all attempts to access unauthorized features are logged',
-    33 => 'Sorry, you do not have access to the block administration page.  Please note that all attempts to access unauthorized features are logged',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => 'Sorry, you do not have access to the user administration page.  Please note that all attempts to access unauthorized features are logged',
-    38 => 'Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged',
-    39 => 'Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => 'System Message',
-    41 => 'Sorry, you do not have access to the word replacement page.  Please note that all attempts to access unauthorized features are logged',
+    41 => '',
     42 => 'Your word has been successfully saved.',
     43 => 'The word has been successfully deleted.',
     44 => 'The plugin was successfully installed!',
     45 => 'The plugin was successfully deleted.',
-    46 => 'Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged',
+    46 => '',
     47 => 'This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.',
     48 => "Thank you for applying for a membership with {$_CONF['site_name']}. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.",
     49 => 'Your group has been successfully saved.',
@@ -1181,8 +1201,12 @@ $MESSAGE = array(
     93 => 'Database back up was successful.',
     94 => 'Backup Failed: Filesize less than 1kb',
     95 => 'There was an error.',
-    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    96 => '',
+    97 => 'Not all required fields have been passed validation - default custom membership message',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.'
 );
 
 ###############################################################################
@@ -1737,6 +1761,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => "Debug Image Uploading?",
     'keep_unscaled_image' => "Keep Unscaled Image?",
     'allow_user_scaling' => "Allow User Scaling?",
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => "Max Image Width?",
     'max_image_height' => "Max Image Height?",
     'max_image_size' => "Max Image Size?",

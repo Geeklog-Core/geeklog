@@ -134,6 +134,12 @@ $_LI_DEFAULT['aftersave'] = 'list';
 $_LI_DEFAULT['show_category_descriptions'] = true;
 
 /**
+ * open links in new window
+ * Whether to open external links in a new window or not.
+ */
+$_LI_DEFAULT['new_window'] = false;
+
+/**
  * Links root category id
  */
 $_LI_DEFAULT['root'] = 'site';
@@ -182,6 +188,8 @@ function plugin_initconfig_links()
         $c->add('show_top10', $_LI_DEFAULT['show_top10'], 'select',
                 0, 0, 1, 40, true, 'links');
         $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'], 'select', 0, 0, 1, 50, true, 'links');
+        $c->add('new_window', $_LI_DEFAULT['new_window'], 'select',
+                0, 0, 1, 55, true, 'links');
 
         $c->add('fs_admin', NULL, 'fieldset', 0, 1, NULL, 0, true, 'links');
         $c->add('hidenewlinks', $_LI_DEFAULT['hidenewlinks'], 'select',
