@@ -4895,34 +4895,23 @@ function COM_getDayFormOptions( $selected = '' )
 * @return string  HTML years as option values
 */
 
-function COM_getYearFormOptions( $selected = '', $startoffset=0, $endoffset=5 )
+function COM_getYearFormOptions($selected = '', $startoffset = -1, $endoffset = 5)
 {
     $year_options = '';
-    if ($startoffset != 0)
-    {
-        $start_year = date ( 'Y' ) + $startoffset;
-    }
-    else
-    {
-        $start_year = date( 'Y', time() );
-    }
-    $cur_year = date( 'Y', time() );
+    $start_year  = date('Y') + $startoffset;
+    $cur_year    = date('Y', time());
     $finish_year = $cur_year + $endoffset;
 
-    if( !empty( $selected ))
-    {
-        if( $selected < $cur_year )
-        {
+    if (!empty($selected)) {
+        if ($selected < $cur_year) {
             $start_year = $selected;
         }
     }
 
-    for( $i = $start_year - 1; $i <= $finish_year; $i++ )
-    {
+    for ($i = $start_year; $i <= $finish_year; $i++) {
         $year_options .= '<option value="' . $i . '"';
 
-        if( $i == $selected )
-        {
+        if ($i == $selected) {
             $year_options .= ' selected="selected"';
         }
 
