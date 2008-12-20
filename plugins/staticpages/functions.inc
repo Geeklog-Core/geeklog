@@ -1213,10 +1213,149 @@ function SP_render_content ($sp_content, $sp_php)
 /**
  * Return true since this plugin supports webservices
  *
- * @return  bool	True, of webservices are supported
+ * @return  bool	True, if webservices are supported
  */
-function plugin_wsEnabled_staticpages() {
+function plugin_wsEnabled_staticpages()
+{
     return true;
+}
+
+/**
+* Return information for a static page
+*
+* @param    string  $sp_id      static page ID or '*'
+* @param    string  $what       comma-separated list of properties
+* @param    int     $uid        if > 0: only return items accessible by user
+* @param    array   $options    (reserved for future extensions)
+* @return   mixed               string or array of strings with the information
+*
+*/
+function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = array())
+{
+    global $_CONF, $_TABLES;
+
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = array();
+    foreach ($properties as $p) {
+        switch ($p) {
+        case 'date-modified':
+            $fields[] = 'UNIX_TIMESTAMP(sp_date) AS unixdate';
+            break;
+        case 'description':
+        case 'excerpt':
+            $fields[] = 'sp_content';
+            $fields[] = 'sp_php';
+            break;
+        case 'id':
+            $fields[] = 'sp_id';
+            break;
+        case 'title':
+            $fields[] = 'sp_title';
+            break;
+        case 'url':
+            if ($sp_id == '*') {
+                // in this case, we need the sp_id to build the URL
+                $fields[] = 'sp_id';
+            }
+            break;
+        default:
+            // nothing to do
+            break;
+        }
+    }
+
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
+    }
+
+    // prepare SQL request
+    if ($sp_id == '*') {
+        $where = '';
+        $permOp = 'WHERE';
+    } else {
+        $where = " WHERE sp_id = '$sp_id'";
+        $permOp = 'AND';
+    }
+    if ($uid > 0) {
+        $permSql = COM_getPermSql($permOp, $uid);
+    } else {
+        $permSql = COM_getPermSql($permOp);
+    }
+    $sql = "SELECT " . implode(',', $fields)
+            . " FROM {$_TABLES['staticpage']}" . $where . $permSql;
+    if ($sp_id != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $props = array();
+        foreach ($properties as $p) {
+            switch ($p) {
+            case 'date-modified':
+                $props['date-modified'] = $A['unixdate'];
+                break;
+            case 'description':
+            case 'excerpt':
+                $props[$p] = SP_render_content(stripslashes($A['sp_content']),
+                                                            $A['sp_php']);
+                break;
+            case 'id':
+                $props['id'] = $A['sp_id'];
+                break;
+            case 'title':
+                $props['title'] = stripslashes($A['sp_title']);
+                break;
+            case 'url':
+                if (empty($A['sp_id'])) {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                            . '/staticpages/index.php?page=' . $sp_id);
+                } else {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                            . '/staticpages/index.php?page=' . $A['sp_id']);
+                }
+                break;
+            default:
+                // return empty string for unknown properties
+                $props[$p] = '';
+                break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($sp_id == '*') {
+                if ($value != '') {
+                    $mapped[$key] = $value;
+                }
+            } else {
+                $mapped[] = $value;
+            }
+        }
+
+        if ($sp_id == '*') {
+            $retval[] = $mapped;
+        } else {
+            $retval = $mapped;
+            break;
+        }
+    }
+
+    if (($sp_id != '*') && (count($retval) == 1)) {
+        $retval = $retval[0];
+    }
+
+    return $retval;
 }
 
 ?>
