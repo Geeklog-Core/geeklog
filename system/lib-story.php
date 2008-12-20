@@ -692,59 +692,103 @@ function STORY_deleteImages ($sid)
 * This is the story equivalent of PLG_getItemInfo. See lib-plugins.php for
 * details.
 *
-* @param    string  $sid    story ID
-* @param    string  $what   comma-separated list of story properties
-* @return   mixed           string or array of strings with the information
+* @param    string  $sid        story ID or '*'
+* @param    string  $what       comma-separated list of story properties
+* @param    int     $uid        if > 0: only return items accessible by user
+* @param    array   $options    (reserved for future extensions)
+* @return   mixed               string or array of strings with the information
 *
 */
-function STORY_getItemInfo ($sid, $what)
+function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
 
-    $properties = explode (',', $what);
-    $fields = array ();
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = array();
     foreach ($properties as $p) {
         switch ($p) {
-            case 'description':
-                $fields[] = 'introtext';
-                $fields[] = 'bodytext';
-                break;
-            case 'excerpt':
-                $fields[] = 'introtext';
-                break;
-            case 'feed':
-                $fields[] = 'tid';
-                break;
-            case 'title':
-                $fields[] = 'title';
-                break;
-            default: // including 'url'
-                // nothing to do
-                break;
+        case 'date-created':
+            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            break;
+        case 'description':
+            $fields[] = 'introtext';
+            $fields[] = 'bodytext';
+            break;
+        case 'excerpt':
+            $fields[] = 'introtext';
+            break;
+        case 'feed':
+            $fields[] = 'tid';
+            break;
+        case 'id':
+            $fields[] = 'sid';
+            break;
+        case 'title':
+            $fields[] = 'title';
+            break;
+        case 'url':
+            if ($sid == '*') {
+                // in this case, we need the sid to build the URL
+                $fields[] = 'sid';
+            }
+            break;
+        default:
+            // nothing to do
+            break;
         }
     }
 
-    if (count ($fields) > 0) {
-        $result = DB_query ("SELECT " . implode (',', $fields)
-                    . " FROM {$_TABLES['stories']} WHERE sid = '$sid'"
-                    . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
-        $A = DB_fetchArray ($result);
-    } else {
-        $A = array ();
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
     }
 
-    $retval = array ();
-    foreach ($properties as $p) {
-        switch ($p) {
+    // prepare SQL request
+    if ($sid == '*') {
+        $where = '';
+        $permOp = 'WHERE';
+    } else {
+        $where = " WHERE sid = '$sid'";
+        $permOp = 'AND';
+    }
+    if ($uid > 0) {
+        $permSql = COM_getPermSql($permOp, $uid)
+                 . COM_getTopicSql('AND', $uid);
+    } else {
+        $permSql = COM_getPermSql($permOp) . COM_getTopicSql('AND');
+    }
+    $sql = "SELECT " . implode(',', $fields)
+            . " FROM {$_TABLES['stories']}" . $where . $permSql;
+    if ($sid != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $props = array();
+        foreach ($properties as $p) {
+            switch ($p) {
+            case 'date-created':
+                $props['date-created'] = $A['unixdate'];
+                break;
             case 'description':
-                $retval[] = trim (PLG_replaceTags (stripslashes ($A['introtext']) . ' ' . stripslashes ($A['bodytext'])));
+                $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext'])));
                 break;
             case 'excerpt':
-                $excerpt = stripslashes ($A['introtext']);
-                if (!empty ($A['bodytext'])) {
-                    $excerpt .= "\n\n" . stripslashes ($A['bodytext']);
+                $excerpt = stripslashes($A['introtext']);
+                if (!empty($A['bodytext'])) {
+                    $excerpt .= "\n\n" . stripslashes($A['bodytext']);
                 }
-                $retval[] = trim (PLG_replaceTags ($excerpt));
+                $props['excerpt'] = trim(PLG_replaceTags($excerpt));
                 break;
             case 'feed':
                 $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
@@ -753,30 +797,58 @@ function STORY_getItemInfo ($sid, $what)
                     $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
                                            "topic = '::frontpage'");
                 }
-                if (empty ($feedfile)) {
-                    $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
-                                            "topic = '{$A['tid']}'");
+                if (empty($feedfile)) {
+                    $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
+                                           "topic = '{$A['tid']}'");
                 }
-                if (empty ($feedfile)) {
-                    $retval[] = '';
+                if (empty($feedfile)) {
+                    $props['feed'] = '';
                 } else {
-                    $retval[] = SYND_getFeedUrl ($feedfile);
+                    $props['feed'] = SYND_getFeedUrl($feedfile);
                 }
+                break;
+            case 'id':
+                $props['id'] = $A['sid'];
                 break;
             case 'title':
-                $retval[] = stripslashes ($A['title']);
+                $props['title'] = stripslashes($A['title']);
                 break;
             case 'url':
-                $retval[] = COM_buildUrl ($_CONF['site_url']
-                                          . '/article.php?story=' . $sid);
+                if (empty($A['sid'])) {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                                        . '/article.php?story=' . $sid);
+                } else {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                                        . '/article.php?story=' . $A['sid']);
+                }
                 break;
             default:
-                $retval[] = ''; // return empty string for unknown properties
+                // return empty string for unknown properties
+                $props[$p] = '';
                 break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($sid == '*') {
+                if ($value != '') {
+                    $mapped[$key] = $value;
+                }
+            } else {
+                $mapped[] = $value;
+            }
+        }
+
+        if ($sid == '*') {
+            $retval[] = $mapped;
+        } else {
+            $retval = $mapped;
+            break;
         }
     }
 
-    if (count ($retval) == 1) {
+    if (($sid != '*') && (count($retval) == 1)) {
         $retval = $retval[0];
     }
 

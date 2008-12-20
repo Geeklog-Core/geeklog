@@ -493,12 +493,7 @@ function TRB_linksToUs ($sid, $type, $urlToGet)
 
     if ($_CONF['check_trackback_link'] & 2) {
         // build the URL of the pinged page on our site
-        if ($type == 'article') {
-            $urlToCheck = COM_buildUrl ($_CONF['site_url']
-                                        . '/article.php?story=' . $sid);
-        } else {
-            $urlToCheck = PLG_getItemInfo ($type, $sid, 'url');
-        }
+        $urlToCheck = PLG_getItemInfo($type, $sid, 'url');
     } else {
         // check only against the site_url
         $urlToCheck = $_CONF['site_url'];
@@ -920,14 +915,10 @@ function TRB_sendNotificationEmail ($cid, $what = 'trackback')
         $mailbody .= $A['excerpt'] . "\n\n";
     }
 
-    if ($type == 'article') {
-        $commenturl = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                    . $id) . '#trackback';
-    } else {
-        $commenturl = PLG_getItemInfo ($type, $id, 'url');
-    }
+    // assume that plugins follow the convention and have a 'trackback' anchor
+    $trackbackurl = PLG_getItemInfo($type, $id, 'url') . '#trackback';
 
-    $mailbody .= $LANG08[33] . ' <' . $commenturl . ">\n\n";
+    $mailbody .= $LANG08[33] . ' <' . $trackbackurl . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";

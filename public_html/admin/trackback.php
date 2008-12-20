@@ -168,7 +168,7 @@ function deleteTrackbackComment ($id)
     $cid = addslashes ($id);
     $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
     list ($sid, $type) = DB_fetchArray ($result);
-    $url = getItemInfo ($type, $sid, 'url');
+    $url = PLG_getItemInfo($type, $sid, 'url');
 
     if (TRB_allowDelete ($sid, $type)) {
         TRB_deleteTrackbackComment ($id);
@@ -222,7 +222,7 @@ function sendPingbacks ($type, $id)
 
     $retval = '';
 
-    list ($url, $text) = getItemInfo ($type, $id, 'url,description');
+    list($url, $text) = PLG_getItemInfo($type, $id, 'url,description');
 
     // extract all links from the text
     preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
@@ -327,7 +327,7 @@ function sendPings ($type, $id)
 
     $retval = '';
 
-    list ($itemurl,$feedurl) = getItemInfo ($type, $id, 'url,feed');
+    list($itemurl,$feedurl) = PLG_getItemInfo($type, $id, 'url,feed');
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pinglist.thtml',
@@ -451,24 +451,6 @@ function prepareAutodetect ($type, $id, $text)
     }
 
     return $retval;
-}
-
-/**
-* Wrapper for STORY_getItemInfo / PLG_getItemInfo to keep things readable
-*
-* @param    string  $type   type of entry ('article' = story, else plugin)
-* @param    string  $id     ID of that entry
-* @param    string  $what   info requested
-* @return   mixed           requested info, as a string or array of strings
-*
-*/
-function getItemInfo ($type, $id, $what)
-{
-    if ($type == 'article') {
-        return STORY_getItemInfo ($id, $what);
-    } else {
-        return PLG_getItemInfo ($type, $id, $what);
-    }
 }
 
 /**
@@ -932,8 +914,8 @@ if (($mode == 'delete') && SEC_checkToken()) {
     }
     $id = COM_applyFilter ($_REQUEST['id']);
     if (!empty ($id)) {
-        list ($url, $title, $excerpt) = getItemInfo ($type, $id,
-                                                     'url,title,excerpt');
+        list($url, $title, $excerpt) = PLG_getItemInfo($type, $id,
+                                                       'url,title,excerpt');
         $excerpt = trim (strip_tags ($excerpt));
         $blog = TRB_filterBlogname ($_CONF['site_name']);
 
@@ -996,7 +978,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
         }
     }
 
-    $title = getItemInfo ($type, $id, 'title');
+    $title = PLG_getItemInfo($type, $id, 'title');
 
     $display .= COM_siteHeader ('menu', $LANG_TRB['send_pings']);
     $display .= COM_startBlock (sprintf ($LANG_TRB['send_pings_for'], $title));
@@ -1086,7 +1068,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
         $type = 'article';
     }
 
-    $fulltext = getItemInfo ($type, $id, 'description');
+    $fulltext = PLG_getItemInfo($type, $id, 'description');
 
     $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
               . COM_startBlock ($LANG_TRB['select_url'], $_CONF['site_url']
@@ -1111,7 +1093,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
 
     $trackbackUrl = TRB_detectTrackbackUrl ($url);
 
-    list ($url, $title, $excerpt) = getItemInfo ($type, $id,
+    list($url, $title, $excerpt) = PLG_getItemInfo($type, $id,
                                                  'url,title,excerpt');
     $excerpt = trim (strip_tags ($excerpt));
     $blog = TRB_filterBlogname ($_CONF['site_name']);
@@ -1152,8 +1134,8 @@ if (($mode == 'delete') && SEC_checkToken()) {
         $id = COM_applyFilter ($_REQUEST['id']);
         $type = COM_applyFilter ($_REQUEST['type']);
         if (!empty ($id) && !empty ($type)) {
-            list ($newurl, $newtitle, $newexcerpt) =
-                                getItemInfo ($type, $id, 'url,title,excerpt');
+            list($newurl, $newtitle, $newexcerpt) =
+                            PLG_getItemInfo($type, $id, 'url,title,excerpt');
             $newexcerpt = trim (strip_tags ($newexcerpt));
 
             if (empty ($url) && !empty ($newurl)) {

@@ -1962,16 +1962,21 @@ function PLG_spamAction($content, $action = -1)
 /**
 * Ask plugin for information about one of its items
 *
-* @param    string  $type       plugin type
-* @param    string  $id         ID of an item under the plugin's control
+* @param    string  $type       plugin type (incl. 'article' for stories)
+* @param    string  $id         ID of an item under the plugin's control or '*'
 * @param    string  $what       comma-separated list of item properties
+* @param    int     $uid        if > 0: only return items accessible by user
+* @param    array   $options    (reserved for future extensions)
 * @return   mixed               string or array of strings with the information
 *
 * Item properties that can be requested:
-* 'url'         - URL of the item
-* 'title'       - title of the item
-* 'excerpt'     - short description of the item
-* 'description' - full description of the item
+* 'date-created'  - creation date, if available
+* 'date-modified' - date of last modification, if available
+* 'description'   - full description of the item
+* 'excerpt'       - short description of the item
+* 'id'            - ID of the item, e.g. sid for articles
+* 'title'         - title of the item
+* 'url'           - URL of the item
 *
 * 'excerpt' and 'description' may return the same value. Properties should be
 * returned in the order they are listed in $what. Properties that are not
@@ -1979,14 +1984,27 @@ function PLG_spamAction($content, $action = -1)
 * Return false for errors (e.g. access denied, item does not exist, etc.).
 *
 */
-function PLG_getItemInfo ($type, $id, $what)
+function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 {
-    $args[1] = $id;
-    $args[2] = $what;
+    if ($type == 'article') {
 
-    $function = 'plugin_getiteminfo_' . $type;
+        global $_CONF;
 
-    return PLG_callFunctionForOnePlugin ($function, $args);
+        require_once $_CONF['path_system'] . 'lib-story.php';
+
+        return STORY_getItemInfo($id, $what, $uid, $options);
+
+    } else {
+
+        $args[1] = $id;
+        $args[2] = $what;
+        $args[3] = $uid;
+        $args[4] = $options;
+
+        $function = 'plugin_getiteminfo_' . $type;
+
+        return PLG_callFunctionForOnePlugin($function, $args);
+    }
 }
 
 /**
