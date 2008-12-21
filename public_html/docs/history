@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2008 (1.5.2)
 ------------
 
+- Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
 - When calling COM_getYearFormOptions with a $startoffset parameter, the list
   of years was off by one (bug #0000783; patch provided by hiroron)
 - Fixed updating feeds after changing topic permissions (bug #0000779) [Dirk]

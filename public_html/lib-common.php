@@ -5385,7 +5385,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     }
 
     $UserGroups = array();
-    if( COM_isAnonUser() || ( $uid == $_USER['uid'] ))
+    if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] ))
     {
         if( empty( $_GROUPS ))
         {
