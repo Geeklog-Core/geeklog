@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-??? ??, 2008 (1.5.2)
+??? ??, 2009 (1.6.0)
 ------------
 
 - Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
@@ -77,6 +77,8 @@ Calendar plugin
 
 Links plugin
 ------------
+- Introduced function LINKS_getCategorySQL and fixed visibility of link
+  categories in the Top 10 Links list and site statistics [Dirk]
 - Added an option to allow opening external links in a new window (feature
   request #0000693). Use with care, please [Dirk]
 - Only external links are marked with class="ext-link" [Dirk]
