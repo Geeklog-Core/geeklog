@@ -124,7 +124,7 @@ function plugin_getwhatsnew_links()
     $retval = '';
 
     // Get newest links
-    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
+    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
