@@ -1278,7 +1278,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
         $where = '';
         $permOp = 'WHERE';
     } else {
-        $where = " WHERE sp_id = '$sp_id'";
+        $where = " WHERE sp_id = '" . addslashes($sp_id) . "'";
         $permOp = 'AND';
     }
     if ($uid > 0) {

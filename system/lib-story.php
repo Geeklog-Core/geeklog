@@ -751,7 +751,7 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
     if ($sid == '*') {
         $where = ' WHERE';
     } else {
-        $where = " WHERE (sid = '$sid') AND";
+        $where = " WHERE (sid = '" . addslashes($sid) . "') AND";
     }
     $where .= ' (draft_flag = 0) AND (date <= NOW())';
     if ($uid > 0) {

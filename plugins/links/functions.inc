@@ -1499,7 +1499,7 @@ function plugin_getiteminfo_links($lid, $what, $uid = 0, $options = array())
         $where = '';
         $permOp = 'WHERE';
     } else {
-        $where = " WHERE lid = '$lid'";
+        $where = " WHERE lid = '" . addslashes($lid) . "'";
         $permOp = 'AND';
     }
     if ($uid > 0) {

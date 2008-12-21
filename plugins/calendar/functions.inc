@@ -1865,7 +1865,7 @@ function plugin_getiteminfo_calendar($eid, $what, $uid = 0, $options = array())
         $where = '';
         $permOp = 'WHERE';
     } else {
-        $where = " WHERE eid = '$eid'";
+        $where = " WHERE eid = '" . addslashes($eid) . "'";
         $permOp = 'AND';
     }
     if ($uid > 0) {
