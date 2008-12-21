@@ -30,8 +30,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-plugins.php,v 1.150 2008/09/21 08:37:11 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1965,7 +1963,7 @@ function PLG_spamAction($content, $action = -1)
 * @param    string  $type       plugin type (incl. 'article' for stories)
 * @param    string  $id         ID of an item under the plugin's control or '*'
 * @param    string  $what       comma-separated list of item properties
-* @param    int     $uid        if > 0: only return items accessible by user
+* @param    int     $uid        user ID or 0 = current user
 * @param    array   $options    (reserved for future extensions)
 * @return   mixed               string or array of strings with the information
 *

@@ -33,8 +33,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: functions.inc,v 1.92 2008/09/21 08:37:08 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
     die('This file can not be used on its own.');
@@ -1126,7 +1124,7 @@ function plugin_upgrade_polls()
 *
 * @param    string  $pid        poll ID or '*'
 * @param    string  $what       comma-separated list of properties
-* @param    int     $uid        if > 0: only return items accessible by user
+* @param    int     $uid        user ID or 0 = current user
 * @param    array   $options    (reserved for future extensions)
 * @return   mixed               string or array of strings with the information
 *

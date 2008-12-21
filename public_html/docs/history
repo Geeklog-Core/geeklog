@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.0)
 ------------
 
+- Implemented extended API for PLG_getItemInfo [mystral-kk, Dirk]
 - Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
 - When calling COM_getYearFormOptions with a $startoffset parameter, the list
   of years was off by one (bug #0000783; patch provided by hiroron)
@@ -73,10 +74,12 @@ Geeklog History/Changes:
 
 Calendar plugin
 ---------------
+- Added support for PLG_getItemInfo [Dirk]
 - Make {event_url} available in eventdetails.thtml [Dirk]
 
 Links plugin
 ------------
+- Added support for PLG_getItemInfo [Dirk]
 - Introduced function LINKS_getCategorySQL and fixed visibility of link
   categories in the Top 10 Links list and site statistics [Dirk]
 - Added an option to allow opening external links in a new window (feature
@@ -87,6 +90,7 @@ Links plugin
 
 Polls plugin
 ------------
+- Added support for PLG_getItemInfo [Dirk]
 - Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
 - Fixed SQL error when poll questions contained single quotes (bug #0000756)
   [Dirk]
@@ -94,6 +98,7 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- Added support for PLG_getItemInfo [Dirk]
 - The owner of a static page changed to the user who last edited it
   (bug #0000777) [Dirk]
 - The printable.thtml template file uses the HTML Strict doctype and print.css
@@ -102,6 +107,12 @@ Static Pages plugin
   (found by Marc Maier) [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+Jan ??, 2009 (1.5.2)
+------------
+
+(TBD)
 
 
 Sep 22, 2008 (1.5.1)
