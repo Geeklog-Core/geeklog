@@ -749,17 +749,16 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
 
     // prepare SQL request
     if ($sid == '*') {
-        $where = '';
-        $permOp = 'WHERE';
+        $where = ' WHERE';
     } else {
-        $where = " WHERE sid = '$sid'";
-        $permOp = 'AND';
+        $where = " WHERE (sid = '$sid') AND";
     }
+    $where .= ' (draft_flag = 0) AND (date <= NOW())';
     if ($uid > 0) {
-        $permSql = COM_getPermSql($permOp, $uid)
+        $permSql = COM_getPermSql('AND', $uid)
                  . COM_getTopicSql('AND', $uid);
     } else {
-        $permSql = COM_getPermSql($permOp) . COM_getTopicSql('AND');
+        $permSql = COM_getPermSql('AND') . COM_getTopicSql('AND');
     }
     $sql = "SELECT " . implode(',', $fields)
             . " FROM {$_TABLES['stories']}" . $where . $permSql;
