@@ -1121,4 +1121,134 @@ function plugin_upgrade_polls()
     return 3001;
 }
 
+/**
+* Return information for a poll
+*
+* @param    string  $pid        poll ID or '*'
+* @param    string  $what       comma-separated list of properties
+* @param    int     $uid        if > 0: only return items accessible by user
+* @param    array   $options    (reserved for future extensions)
+* @return   mixed               string or array of strings with the information
+*
+*/
+function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
+{
+    global $_CONF, $_TABLES;
+
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = array();
+    foreach ($properties as $p) {
+        switch ($p) {
+        case 'date-modified':
+            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            break;
+        case 'id':
+            $fields[] = 'pid';
+            break;
+        case 'title':
+            $fields[] = 'topic';
+            break;
+        case 'url':
+            if ($pid == '*') {
+                // in this case, we need the pid to build the URL
+                $fields[] = 'pid';
+            }
+            break;
+        default:
+            // nothing to do
+            break;
+        }
+    }
+
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
+    }
+
+    // prepare SQL request
+    if ($pid == '*') {
+        $where = '';
+        $permOp = 'WHERE';
+    } else {
+        $where = " WHERE pid = '$pid'";
+        $permOp = 'AND';
+    }
+    if ($uid > 0) {
+        $permSql = COM_getPermSql($permOp, $uid);
+    } else {
+        $permSql = COM_getPermSql($permOp);
+    }
+    $sql = "SELECT " . implode(',', $fields)
+            . " FROM {$_TABLES['polltopics']}" . $where . $permSql;
+    if ($pid != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $props = array();
+        foreach ($properties as $p) {
+            switch ($p) {
+            case 'date-modified':
+                $props['date-modified'] = $A['unixdate'];
+                break;
+            case 'id':
+                $props['id'] = $A['pid'];
+                break;
+            case 'title':
+                $props['title'] = $A['topic'];
+                break;
+            case 'url':
+                if (empty($A['pid'])) {
+                    $props['url'] = $_CONF['site_url']
+                                  . '/polls/index.php?pid=' . $pid
+                                  . '&amp;aid=-1';
+                } else {
+                    $props['url'] = $_CONF['site_url']
+                                  . '/polls/index.php?pid=' . $A['pid']
+                                  . '&amp;aid=-1';
+                }
+                break;
+            default:
+                // return empty string for unknown properties
+                $props[$p] = '';
+                break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($pid == '*') {
+                if ($value != '') {
+                    $mapped[$key] = $value;
+                }
+            } else {
+                $mapped[] = $value;
+            }
+        }
+
+        if ($pid == '*') {
+            $retval[] = $mapped;
+        } else {
+            $retval = $mapped;
+            break;
+        }
+    }
+
+    if (($pid != '*') && (count($retval) == 1)) {
+        $retval = $retval[0];
+    }
+
+    return $retval;
+}
+
 ?>
