@@ -361,13 +361,13 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
 
     // link search
     $select = 'SELECT lid,title,url,owner_id,hits,UNIX_TIMESTAMP(date) AS day';
-    $sql = " FROM {$_TABLES['links']} WHERE date <> 1 ";
+    $sql = " FROM {$_TABLES['links']} WHERE date <> 1";
 
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
             $mysearchterm = addslashes ($query);
-            $sql .= " AND (description LIKE '%$mysearchterm%')"
-                 . " OR (title LIKE '%$mysearchterm%')";
+            $sql .= " AND ((description LIKE '%$mysearchterm%')"
+                 . " OR (title LIKE '%$mysearchterm%'))";
         } else if ($keyType == 'all') {
             $mywords = explode (' ', $query);
             $sql .= ' AND (';
@@ -375,8 +375,8 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
             foreach ($mywords AS $mysearchterm) {
                 $mysearchterm = addslashes (trim ($mysearchterm));
                 if (!empty ($mysearchterm)) {
-                    $tmp .= "(description LIKE '%$mysearchterm%')"
-                         . " OR (title LIKE '%$mysearchterm%') AND ";
+                    $tmp .= "((description LIKE '%$mysearchterm%')"
+                         . " OR (title LIKE '%$mysearchterm%')) AND ";
                 }
             }
             $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
@@ -388,16 +388,16 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
             foreach ($mywords AS $mysearchterm) {
                 $mysearchterm = addslashes (trim ($mysearchterm));
                 if (!empty ($mysearchterm)) {
-                    $tmp .= "(description LIKE '%$mysearchterm%')"
-                         . " OR (title LIKE '%$mysearchterm%') OR ";
+                    $tmp .= "((description LIKE '%$mysearchterm%')"
+                         . " OR (title LIKE '%$mysearchterm%')) OR ";
                 }
             }
             $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
             $sql .= $tmp . ')';
         } else {  // quick search
             $mysearchterm = addslashes ($query);
-            $sql .= " AND (description LIKE '%$mysearchterm%')"
-                 . " OR (title LIKE '%$mysearchterm%')";
+            $sql .= " AND ((description LIKE '%$mysearchterm%')"
+                 . " OR (title LIKE '%$mysearchterm%'))";
         }
     }
 
@@ -413,9 +413,9 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     }
 
     if (!empty ($author)) {
-        $sql .= "AND (owner_id = '$author')";
+        $sql .= " AND (owner_id = '$author')";
     }
-    $sql .= COM_getPermSQL ('AND');
+    $sql .= COM_getPermSQL('AND') . LINKS_getCategorySQL('AND');
     $sql .= ' GROUP BY date, lid, cid, url, description, title, hits, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ORDER BY date DESC';
     $l = ($perpage * $page) - $perpage;
     $sql .= ' LIMIT ' . $l . ',' . $perpage;
