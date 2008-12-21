@@ -1442,4 +1442,141 @@ function phpblock_topic_categories()
     return $retval;
 }
 
+/**
+* Return information for a link
+*
+* @param    string  $lid        link ID or '*'
+* @param    string  $what       comma-separated list of properties
+* @param    int     $uid        if > 0: only return items accessible by user
+* @param    array   $options    (reserved for future extensions)
+* @return   mixed               string or array of strings with the information
+*
+*/
+function plugin_getiteminfo_links($lid, $what, $uid = 0, $options = array())
+{
+    global $_CONF, $_TABLES;
+
+    // parse $what to see what we need to pull from the database
+    $properties = explode(',', $what);
+    $fields = array();
+    foreach ($properties as $p) {
+        switch ($p) {
+        case 'date-modified':
+            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            break;
+        case 'description':
+        case 'excerpt':
+            $fields[] = 'description';
+            break;
+        case 'id':
+            $fields[] = 'lid';
+            break;
+        case 'title':
+            $fields[] = 'title';
+            break;
+        case 'url':
+            if ($lid == '*') {
+                // in this case, we need the lid to build the URL
+                $fields[] = 'lid';
+            }
+            break;
+        default:
+            // nothing to do
+            break;
+        }
+    }
+
+    $fields = array_unique($fields);
+
+    if (count($fields) == 0) {
+        $retval = array();
+
+        return $retval;
+    }
+
+    // prepare SQL request
+    if ($lid == '*') {
+        $where = '';
+        $permOp = 'WHERE';
+    } else {
+        $where = " WHERE lid = '$lid'";
+        $permOp = 'AND';
+    }
+    if ($uid > 0) {
+        $permSql = COM_getPermSql($permOp, $uid);
+    } else {
+        $permSql = COM_getPermSql($permOp);
+    }
+    $sql = "SELECT " . implode(',', $fields)
+            . " FROM {$_TABLES['links']}" . $where . $permSql;
+    if ($lid != '*') {
+        $sql .= ' LIMIT 1';
+    }
+
+    $result = DB_query($sql);
+    $numRows = DB_numRows($result);
+
+    $retval = array();
+    for ($i = 0; $i < $numRows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $props = array();
+        foreach ($properties as $p) {
+            switch ($p) {
+            case 'date-modified':
+                $props['date-modified'] = $A['unixdate'];
+                break;
+            case 'description':
+            case 'excerpt':
+                $props[$p] = stripslashes($A['description']);
+                break;
+            case 'id':
+                $props['id'] = $A['lid'];
+                break;
+            case 'title':
+                $props['title'] = stripslashes($A['title']);
+                break;
+            case 'url':
+                if (empty($A['lid'])) {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                            . '/links/portal.php?what=link&amp;item=' . $lid);
+                } else {
+                    $props['url'] = COM_buildUrl($_CONF['site_url']
+                            . '/links/portal.php?what=link&amp;item='
+                            . $A['lid']);
+                }
+                break;
+            default:
+                // return empty string for unknown properties
+                $props[$p] = '';
+                break;
+            }
+        }
+
+        $mapped = array();
+        foreach ($props as $key => $value) {
+            if ($lid == '*') {
+                if ($value != '') {
+                    $mapped[$key] = $value;
+                }
+            } else {
+                $mapped[] = $value;
+            }
+        }
+
+        if ($lid == '*') {
+            $retval[] = $mapped;
+        } else {
+            $retval = $mapped;
+            break;
+        }
+    }
+
+    if (($lid != '*') && (count($retval) == 1)) {
+        $retval = $retval[0];
+    }
+
+    return $retval;
+}
+
 ?>
