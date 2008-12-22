@@ -372,13 +372,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
     }
-    $th_subtags = ''; // other tags in the th, such as onlick and mouseover
+    $th_subtags = ''; // other tags in the th, such as onclick and mouseover
     $header_text = ''; // title as displayed to the user
     // HEADER FIELDS array(text, field, sort, class)
     // this part defines the contents & format of the header fields
 
     for ($i=0; $i < count( $header_arr ); $i++) { #iterate through all headers
         $header_text = $header_arr[$i]['text'];
+        $th_subtags = '';
         if ($header_arr[$i]['sort'] != false) { # is this sortable?
             if ($order==$header_arr[$i]['field']) { # is this currently sorted?
                 $header_text .= $img_arrow;

@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.0)
 ------------
 
+- Admin lists allowed non-sortable columns to be sortable (reported and patch
+  provided by hiroron, bug #0000791)
 - Implemented extended API for PLG_getItemInfo [mystral-kk, Dirk]
 - Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
 - When calling COM_getYearFormOptions with a $startoffset parameter, the list
