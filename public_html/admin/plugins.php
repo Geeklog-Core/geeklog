@@ -99,7 +99,7 @@ function plugineditor ($pi_name, $confirmed = 0)
 
     $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'editor.thtml');
-    $plg_templates->set_var( 'xhtml', XHTML );
+    $plg_templates->set_var('xhtml', XHTML);
     $plg_templates->set_var('site_url', $_CONF['site_url']);
     $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -161,20 +161,21 @@ function plugineditor ($pi_name, $confirmed = 0)
 * @return   void
 *
 */
-function changePluginStatus ($pi_name_arr)
+function changePluginStatus($pi_name_arr)
 {
     global $_TABLES, $_DB_table_prefix;
+
     // first, get a list of all plugins
-    $rst = DB_query ("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']}");
+    $rst = DB_query("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']}");
     $plg_count = DB_numRows($rst);
-    for ($i=0; $i<$plg_count; $i++) { // iterate and check/change match with array
+    for ($i = 0; $i < $plg_count; $i++) { // iterate and check/change match with array
         $P = DB_fetchArray($rst);
-        if (isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 0) { // enable it
-            PLG_enableStateChange ($P['pi_name'], true);
-            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '1' WHERE pi_name = '{$P['pi_name']}'");
-        } else if (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
-            PLG_enableStateChange ($P['pi_name'], false);
-            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '0' WHERE pi_name = '{$P['pi_name']}'");
+        if (isset($pi_name_arr[$P['pi_name']]) && ($P['pi_enabled'] == 0)) { // enable it
+            PLG_enableStateChange($P['pi_name'], true);
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 1 WHERE pi_name = '{$P['pi_name']}'");
+        } elseif (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
+            PLG_enableStateChange($P['pi_name'], false);
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '{$P['pi_name']}'");
         }
     }
 }
@@ -218,7 +219,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 
         $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=28');
     } else {
-        $retval .= COM_siteHeader ('menu', $LANG32[13]);
+        $retval .= COM_siteHeader('menu', $LANG32[13]);
         $retval .= COM_startBlock ($LANG32[13], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= COM_errorLog ('error saving plugin, no pi_name provided', 1);
@@ -233,52 +234,73 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 /**
 * Creates list of uninstalled plugins (if any) and offers install link to them.
 *
-* @return   string      HTML containing list of uninstalled plugins
+* @param    strint  $token  security token to use in list
+* @return   string          HTML containing list of uninstalled plugins
 *
 */
-function show_newplugins ($token)
+function show_newplugins($token)
 {
     global $_CONF, $_TABLES, $LANG32;
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
-    $plugins = array ();
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    $plugins = array();
     $plugins_dir = $_CONF['path'] . 'plugins/';
-    $fd = opendir ($plugins_dir);
+    $fd = opendir($plugins_dir);
     $index = 1;
     $retval = '';
     $data_arr = array();
-    while (($dir = @readdir ($fd)) == TRUE) {
+    while (($dir = @readdir($fd)) == TRUE) {
         if (($dir <> '.') && ($dir <> '..') && ($dir <> 'CVS') &&
                 (substr($dir, 0 , 1) <> '.') && is_dir($plugins_dir . $dir)) {
             clearstatcache ();
             // Check and see if this plugin is installed - if there is a record.
             // If not then it's a new plugin
-            if (DB_count($_TABLES['plugins'],'pi_name',$dir) == 0) {
+            if (DB_count($_TABLES['plugins'], 'pi_name', $dir) == 0) {
+                $plugin_ok = false;
+                $plugin_new_style = false;
                 // additionally, check if a 'functions.inc' exists
-                if (file_exists ($plugins_dir . $dir . '/functions.inc')) {
-                    // and finally, since we're going to link to it, check if
-                    // an install script exists
-                    $adminurl = $_CONF['site_admin_url'];
-                    if (strrpos ($adminurl, '/') == strlen ($adminurl)) {
-                        $adminurl = substr ($adminurl, 0, -1);
-                    }
-                    $pos = strrpos ($adminurl, '/');
-                    if ($pos === false) {
-                        // didn't work out - use the URL
-                        $admindir = $_CONF['site_admin_url'];
+                if (file_exists($plugins_dir . $dir . '/functions.inc')) {
+                    // new plugins will have a autoinstall.php
+                    if (file_exists($plugins_dir . $dir . '/autoinstall.php')) {
+                        $plugin_ok = true;
+                        $plugin_new_style = true;
                     } else {
-                        $admindir = $_CONF['path_html']
-                                  . substr ($adminurl, $pos + 1);
+                        // and finally, since we're going to link to it, check
+                        // if an install script exists
+                        $adminurl = $_CONF['site_admin_url'];
+                        if (strrpos($adminurl, '/') == strlen($adminurl)) {
+                            $adminurl = substr($adminurl, 0, -1);
+                        }
+                        $pos = strrpos($adminurl, '/');
+                        if ($pos === false) {
+                            // didn't work out - use the URL
+                            $admindir = $_CONF['site_admin_url'];
+                        } else {
+                            $admindir = $_CONF['path_html']
+                                      . substr($adminurl, $pos + 1);
+                        }
+                        $fh = @fopen($admindir . '/plugins/' . $dir
+                                     . '/install.php', 'r');
+                        if ($fh) {
+                            fclose($fh);
+                            $plugin_ok = true;
+                            $plugin_new_style = false;
+                        }
                     }
-                    $fh = @fopen ($admindir . '/plugins/' . $dir
-                        . '/install.php', 'r');
-                    if ($fh) {
-                        fclose ($fh);
+                    if ($plugin_ok) {
+                        if ($plugin_new_style) {
+                            $url = $_CONF['site_admin_url'] . '/plugins.php'
+                                 . '?mode=autoinstall&amp;plugin=' . $dir;
+                        } else {
+                            $url = $_CONF['site_admin_url'] . '/plugins/' . $dir
+                                 . '/install.php?action=install';
+                        }
+                        $url .= '&amp;' . CSRF_TOKEN . '=' . $token;
                         $data_arr[] = array(
-                            'pi_name' => $dir,
-                            'number' => $index,
-                            'install_link'=> COM_createLink($LANG32[22],
-                                $_CONF['site_admin_url'] . '/plugins/' . $dir
-                                . '/install.php?action=install&amp;'.CSRF_TOKEN.'='.$token)
+                            'pi_name'      => $dir,
+                            'number'       => $index,
+                            'install_link' => COM_createLink($LANG32[22], $url)
                         );
                         $index++;
                     }
@@ -294,8 +316,8 @@ function show_newplugins ($token)
     );
 
     $text_arr = array('title' => $LANG32[14]);
-    $retval .= ADMIN_simpleList('', $header_arr, $text_arr,
-                           $data_arr);
+    $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
+
     return $retval;
 }
 
@@ -306,27 +328,25 @@ function show_newplugins ($token)
 * @return             string   HTML for error or success message
 *
 */
-function do_update ($pi_name)
+function do_update($pi_name)
 {
-    global $_CONF, $LANG32, $LANG08, $MESSAGE, $_IMAGE_TYPE;
+    global $_CONF, $LANG32;
 
     $retval = '';
 
-    if (strlen ($pi_name) == 0) {
-        $retval .= COM_startBlock ($LANG32[13], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= COM_errorLog ($LANG32[12]);
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (strlen($pi_name) == 0) {
+        $retval .= COM_showMessageText($LANG32[12], $LANG32[13]);
 
         return $retval;
     }
-    $result = PLG_upgrade ($pi_name);
+
+    $result = PLG_upgrade($pi_name);
     if ($result > 0 ) {
         if ($result === TRUE) { // Catch returns that are just true/false
-            $retval .= COM_refresh ($_CONF['site_admin_url']
+            $retval .= COM_refresh($_CONF['site_admin_url']
                     . '/plugins.php?msg=60');
         } else {  // Plugin returned a message number
-            $retval = COM_refresh ($_CONF['site_admin_url']
+            $retval = COM_refresh($_CONF['site_admin_url']
                     . '/plugins.php?msg=' . $result . '&amp;plugin='
                     . $pi_name);
         }
@@ -565,7 +585,7 @@ function plugin_upload()
 
                 $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
 
-            } else if (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
+            } elseif (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
 
                 $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
 
@@ -636,7 +656,7 @@ function plugin_upload()
                     $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
 
                 }
-                if ($upload_success) { 
+                if ($upload_success) {
 
                     if (file_exists($_CONF['path'] . 'plugins/' . $pi_name . '/public_html')) {
                         rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
@@ -646,6 +666,12 @@ function plugin_upload()
                 }
 
                 unset($archive); // Collect some garbage
+
+                // if the plugin has an autoinstall.php, install it now
+                if (file_exists($_CONF['path'] . 'plugins/' . $plugin
+                        . '/autoinstall.php')) {
+                    plugin_autoinstall($plugin);
+                }
 
                 $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=98');
 
@@ -691,24 +717,295 @@ function plugin_main($message = '')
     return $retval;
 }
 
+/**
+* Prepare and perform plugin auto install
+*
+* @param    string  $plugin     Plugin name (internal name, i.e. directory name)
+* @return   boolean             true on success, false otherwise
+*
+*/
+function plugin_autoinstall($plugin)
+{
+    global $_CONF, $LANG32;
+
+    $plugin = COM_applyFilter($plugin);
+    $plugin = COM_sanitizeFilename($plugin);
+    $autoinstall = $_CONF['path'] . 'plugins/' . $plugin . '/autoinstall.php';
+
+    if (empty($plugin) || !file_exists($autoinstall)) {
+        COM_errorLog('autoinstall.php not found', 1);
+
+        return false;
+    }
+
+    require_once $autoinstall;
+
+    $check_compatible = 'plugin_compatible_with_this_version_' . $plugin;
+    if (function_exists($check_compatible)) {
+        if (! $check_compatible($plugin)) {
+            COM_errorLog($LANG32[9]);
+
+            return false;
+        }
+    }
+
+    $auto_install = 'plugin_autoinstall_' . $plugin;
+    if (! function_exists($auto_install)) {
+        COM_errorLog("Function '$auto_install' not found", 1);
+
+        return false;
+    }
+
+    $inst_parms = $auto_install($plugin);
+    if (($inst_parms === false) || empty($inst_parms)) {
+        COM_errorLog('No install parameters', 1);
+
+        return false;
+    }
+
+    return plugin_do_autoinstall($plugin, $inst_parms);
+}
+
+/**
+* Do the actual plugin auto install
+*
+* @param    string  $plugin     Plugin name
+* @param    array   $inst_parm  Installation parameters for the plugin
+* @param    boolean $verbose    true: enable verbose logging
+* @return   boolean             true on success, false otherwise
+*
+*/
+function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
+{
+    global $_CONF, $_TABLES, $_USER, $_DB_dbms;
+
+    $base_path = $_CONF['path'] . 'plugins/' . $plugin . '/';
+
+    if ($verbose) {
+        COM_errorLog("Attempting to install the '$plugin' plugin", 1);
+    }
+
+    // sanity checks in $inst_parms
+    if (isset($inst_parms['info'])) {
+        $pi_name       = $inst_parms['info']['pi_name'];
+        $pi_version    = $inst_parms['info']['pi_version'];
+        $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+        $pi_homepage   = $inst_parms['info']['pi_homepage'];
+    }
+    if (empty($pi_name) || ($pi_name != $plugin) || empty($pi_version) ||
+            empty($pi_gl_version) || empty($pi_homepage)) {
+        COM_errorLog('Incomplete plugin info', 1);
+
+        return false;
+    }
+
+    // Create the plugin's group(s), if any
+    $groups = array();
+    $admin_group_id = 0;
+    if (! empty($inst_parms['groups'])) {
+        $groups = $inst_parms['groups'];
+        foreach ($groups as $name => $desc) {
+            if ($verbose) {
+                COM_errorLog("Attempting to create plugin '$name' group", 1);
+            }
+
+            $grp_name = addslashes($name);
+            $grp_desc = addslashes($desc);
+            DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
+            if (DB_error()) {
+                COM_errorLog('Error creating plugin group', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+
+            // keep the new group's ID for use in the mappings section (below)
+            $groups[$name] = DB_insertId();
+
+            // assume that the first group is the plugin's Admin group
+            if ($admin_group_id == 0) {
+                $admin_group_id = $groups[$name];
+            }
+        }
+    }
+
+    // Create the plugin's table(s)
+    $_SQL = array();
+    $DEFVALUES = array();
+    if (file_exists($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
+        require_once $base_path . 'sql/' . $_DB_dbms . '_install.php';
+    }
+
+    if (count($_SQL) > 0) {
+        $use_innodb = false;
+        if (($_DB_dbms == 'mysql') &&
+            (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'")
+                == 'InnoDB')) {
+            $use_innodb = true;
+        }
+
+        foreach ($_SQL as $sql) {
+            $sql = str_replace('#group#', $admin_group_id, $sql);
+            if ($use_innodb) {
+                $sql = str_replace('MyISAM', 'InnoDB', $sql);
+            }
+            DB_query($sql);
+            if (DB_error()) {
+                COM_errorLog('Error creating plugin table', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+        }
+    }
+
+    // Add the plugin's features
+    if ($verbose) {
+        COM_errorLog("Attempting to add '$plugin' features", 1);
+    }
+
+    $features = array();
+    $mappings = array();
+    if (!empty($inst_parms['features'])) {
+        $features = $inst_parms['features'];
+        if (!empty($inst_parms['mappings'])) {
+            $mappings = $inst_parms['mappings'];
+        }
+
+        foreach ($features as $feature => $desc) {
+            $ft_name = addslashes($feature);
+            $ft_desc = addslashes($desc);
+            DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                     . "VALUES ('$ft_name', '$ft_desc')", 1);
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin feature', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+
+            $feat_id = DB_insertId();
+
+            if (isset($mappings[$feature])) {
+                foreach ($mappings[$feature] as $group) {
+                    if ($verbose) {
+                        COM_errorLog("Adding '$feature' feature to the '$group' group", 1);
+                    }
+
+                    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$groups[$group]})");
+                    if (DB_error()) {
+                        COM_errorLog('Error mapping plugin feature', 1);
+                        PLG_uninstall($plugin);
+
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Add plugin's Admin group to the Root user group 
+    // (assumes that the Root group's ID is always 1)
+    if ($admin_group_id > 1) {
+        if ($verbose) {
+            COM_errorLog("Attempting to give all users in the Root group access to the '$plugin' Admin group", 1);
+        }
+
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+                 . "($admin_group_id, NULL, 1)");
+        if (DB_error()) {
+            COM_errorLog('Error adding plugin admin group to Root group', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }
+    }
+
+    // Pre-populate tables or run any other SQL queries
+    if (count($DEFVALUES) > 0) {
+        if ($verbose) {
+            COM_errorLog('Inserting default data', 1);
+        }
+        foreach ($DEFVALUES as $sql) {
+            $sql = str_replace('#group#', $admin_group_id, $sql);
+            DB_query($sql, 1);
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin default data', 1);
+                PLG_uninstall($plugin);
+            
+                return false;
+            }
+        }
+    }
+
+    // Load the online configuration records
+    $load_config = 'plugin_load_configuration_' . $plugin;
+    if (function_exists($load_config)) {
+        if (! $load_config($plugin)) {
+            COM_errorLog('Error loading plugin configuration', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }
+    }
+
+    // Finally, register the plugin with Geeklog
+    if ($verbose) {
+        COM_errorLog("Registering '$plugin' plugin", 1);
+    }
+
+    // silently delete an existing entry
+    DB_delete($_TABLES['plugins'], 'pi_name', $plugin);
+
+    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+        . "('$plugin', '$pi_version', '$pi_gl_version', '$pi_homepage', 1)");
+
+    if (DB_error()) {
+        COM_errorLog('Failed to register plugin', 1);
+        PLG_uninstall($plugin);
+
+        return false;
+    }
+
+    // give the plugin a chance to perform any post-install operations
+    $post_install = 'plugin_postinstall_' . $plugin;
+    if (function_exists($post_install)) {
+        if (! $post_install($plugin)) {
+            COM_errorLog('Plugin postinstall failed', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }   
+    }
+
+    if ($verbose) {
+        COM_errorLog("Successfully installed the '$plugin' plugin!", 1);
+    }
+
+    return true;
+}
+
+
 // MAIN
 $display = '';
-if (isset ($_POST['pluginenabler']) && SEC_checkToken()) {
-    changePluginStatus ($_POST['enabledplugins']);
+if (isset($_POST['pluginenabler']) && SEC_checkToken()) {
+    changePluginStatus($_POST['enabledplugins']);
 
     // force a refresh so that the information of the plugin that was just
     // enabled / disabled (menu entries, etc.) is displayed properly
-    header ('Location: ' . $_CONF['site_admin_url'] . '/plugins.php');
+    header('Location: ' . $_CONF['site_admin_url'] . '/plugins.php');
     exit;
 }
 
 $mode = '';
-if (isset ($_REQUEST['mode'])) {
-    $mode = $_REQUEST['mode'];
+if (isset($_POST['mode'])) {
+    $mode = $_POST['mode'];
+} elseif (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
 }
-if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
+if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $pi_name = COM_applyFilter($_POST['pi_name']);
-    if (($_POST['confirmed'] == 1) && (SEC_checkToken())) {
+    if (($_POST['confirmed'] == 1) && SEC_checkToken()) {
         $msg = do_uninstall($pi_name);
         if ($msg === false) {
             echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
@@ -727,26 +1024,39 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= COM_siteFooter();
     }
 
-} else if (($mode == $LANG32[34]) && !empty ($LANG32[34]) && SEC_checkToken()) { // update
-        $pi_name = COM_applyFilter ($_POST['pi_name']);
-        $display .= COM_siteHeader ('menu', $LANG32[13]);
-        $display .= do_update ($pi_name);
-        $display .= COM_siteFooter ();
+} elseif ((($mode == $LANG32[34]) && !empty($LANG32[34])) && SEC_checkToken()) { // update
+    $pi_name = COM_applyFilter($_POST['pi_name']);
+    $display .= COM_siteHeader('menu', $LANG32[13]);
+    $display .= do_update($pi_name);
+    $display .= COM_siteFooter();
 
-} else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu', $LANG32[13]);
-    $display .= plugineditor (COM_applyFilter ($_GET['pi_name']));
-    $display .= COM_siteFooter ();
+} elseif ($mode == 'edit') {
+    $display .= COM_siteHeader('menu', $LANG32[13]);
+    $display .= plugineditor(COM_applyFilter($_GET['pi_name']));
+    $display .= COM_siteFooter();
 
-} else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
+} elseif ((($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) && SEC_checkToken()) {
     $enabled = '';
     if (isset($_POST['enabled'])) {
         $enabled = COM_applyFilter($_POST['enabled']);
     }
-    $display .= saveplugin (COM_applyFilter ($_POST['pi_name']),
-                            COM_applyFilter ($_POST['pi_version']),
-                            COM_applyFilter ($_POST['pi_gl_version']),
-                            $enabled, COM_applyFilter ($_POST['pi_homepage']));
+    $display .= saveplugin (COM_applyFilter($_POST['pi_name']),
+                            COM_applyFilter($_POST['pi_version']),
+                            COM_applyFilter($_POST['pi_gl_version']),
+                            $enabled, COM_applyFilter($_POST['pi_homepage']));
+
+} elseif (($mode == 'autoinstall') && SEC_checkToken()) {
+    $plugin = '';
+    if (isset($_GET['plugin'])) {
+        $plugin = COM_applyFilter($_GET['plugin']);
+    }
+    if (plugin_autoinstall($plugin)) {
+        $display .= COM_refresh($_CONF['site_admin_url']
+                                . '/plugins.php?msg=44');
+    } else {
+        $display .= COM_refresh($_CONF['site_admin_url']
+                                . '/plugins.php?msg=72');
+    }
 
 } elseif (isset($_FILES['plugin']) && SEC_checkToken()) { 
     $display .= plugin_upload();
