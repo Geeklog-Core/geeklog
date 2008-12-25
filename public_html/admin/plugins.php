@@ -643,6 +643,10 @@ function plugin_upload()
 
                 $pi_name = $dirname;
 
+            } elseif (empty($pi_name)) {
+
+                $pi_name = $dirname;
+
             }
 
             // Extract the uploaded archive to the plugins directory
@@ -667,7 +671,7 @@ function plugin_upload()
                 }
                 if (file_exists($plg_path . 'admin')) {
                     rename($plg_path . 'admin',
-                        $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
+                           $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
                 }
 
             }
@@ -676,7 +680,7 @@ function plugin_upload()
 
             // if the plugin has an autoinstall.php, install it now
             if (file_exists($plg_path . 'autoinstall.php')) {
-                if (plugin_autoinstall($plugin)) {
+                if (plugin_autoinstall($pi_name)) {
                     $retval .= COM_refresh($_CONF['site_admin_url']
                                            . '/plugins.php?msg=44');
                 } else {
@@ -787,7 +791,7 @@ function plugin_autoinstall($plugin)
 */
 function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
 {
-    global $_CONF, $_TABLES, $_USER, $_DB_dbms;
+    global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
 
     $base_path = $_CONF['path'] . 'plugins/' . $plugin . '/';
 
@@ -809,6 +813,14 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         return false;
     }
 
+    // add plugin tables, if any
+    if (! empty($inst_parms['tables'])) {
+        $tables = $inst_parms['tables'];
+        foreach ($tables as $table) {
+            $_TABLES[$table] = $_DB_table_prefix . $table;
+        }
+    }
+
     // Create the plugin's group(s), if any
     $groups = array();
     $admin_group_id = 0;
@@ -816,7 +828,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         $groups = $inst_parms['groups'];
         foreach ($groups as $name => $desc) {
             if ($verbose) {
-                COM_errorLog("Attempting to create plugin '$name' group", 1);
+                COM_errorLog("Attempting to create '$name' group", 1);
             }
 
             $grp_name = addslashes($name);
