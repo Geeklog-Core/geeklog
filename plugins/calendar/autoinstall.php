@@ -59,11 +59,18 @@ function plugin_autoinstall_calendar($pi_name)
         $pi_name . '.submit'    => array($pi_admin)
     );
 
+    $tables = array(
+        'events',
+        'eventsubmission',
+        'personal_events'
+    );
+
     $inst_parms = array(
         'info'      => $info,
         'groups'    => $groups,
         'features'  => $features,
-        'mappings'  => $mappings
+        'mappings'  => $mappings,
+        'tables'    => $tables
     );
 
     return $inst_parms;

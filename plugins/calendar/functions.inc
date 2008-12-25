@@ -57,7 +57,7 @@ if (!isset($_CA_CONF['calendarloginrequired'])) {
     $_CA_CONF = $ca_config->get_config('calendar');
 }
 
-$_CA_CONF['version'] = '1.0.2';
+$_CA_CONF['version'] = '1.1.0';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |

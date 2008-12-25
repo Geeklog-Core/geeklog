@@ -207,12 +207,18 @@ if (INST_phpOutOfDate()) {
                         $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
 
                     }
+
+                    $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
                     if ($upload_success) { 
 
-                        if (file_exists($_CONF['path'] . 'plugins/' . $pi_name . '/public_html')) {
-                            rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
+                        if (file_exists($plg_path . 'public_html')) {
+                            rename($plg_path . 'public_html',
+                                   $_CONF['path_html'] . $pi_name);
                         }
-                        rename($_CONF['path'] . 'plugins/' . $pi_name . '/admin', $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
+                        if (file_exists($plg_path . 'admin')) {
+                            rename($plg_path . 'admin', $_CONF['path_html']
+                                   . 'admin/plugins/' . $pi_name);
+                        }
 
                     }
 
@@ -248,8 +254,10 @@ if (INST_phpOutOfDate()) {
         $fd = opendir($plugins_dir);
         while (($plugin = @readdir($fd)) == TRUE) {
 
-            if (is_dir ($plugins_dir . $plugin) && ($plugin != '.') && ($plugin != '..') &&
-                    ($plugin != 'CVS') && (substr ($plugin, 0 , 1) != '.')) {
+            if (($plugin <> '.') && ($plugin <> '..') && ($plugin <> 'CVS') &&
+                    (substr($plugin, 0, 1) <> '.') &&
+                    (substr($plugin, 0, 1) <> '_') &&
+                    is_dir($plugins_dir . $plugin)) {
 
                 clearstatcache ();
 
@@ -287,8 +295,10 @@ if (INST_phpOutOfDate()) {
             $fd = opendir($plugins_dir);
             while (($plugin = @readdir($fd)) == TRUE) {
     
-                if (is_dir ($plugins_dir . $plugin) && ($plugin != '.') && ($plugin != '..') &&
-                        ($plugin != 'CVS') && (substr ($plugin, 0 , 1) != '.') && ($plugin != '__MACOSX')) {
+                if (($plugin <> '.') && ($plugin <> '..') &&
+                        ($plugin <> 'CVS') && (substr($plugin, 0, 1) <> '.') &&
+                        (substr($plugin, 0, 1) <> '_') &&
+                        is_dir($plugins_dir . $plugin)) {
     
                     clearstatcache ();
                     $plugin_dir = $plugins_dir . $plugin;
@@ -423,17 +433,13 @@ if (INST_phpOutOfDate()) {
 
                         $display .= '<tr>' . LB
                             . '<td align="center"><input type="checkbox" name="plugins[' . $plugin . '][install]"'
-                                . ($missing_public_html || $missing_admin || $missing_autoinstall ? ' disabled="true"' : ' checked="checked"') . XHTML . '>' . LB
+                                . ($missing_autoinstall ? ' disabled="disabled"' : ' checked="checked"') . XHTML . '>' . LB
                             . '</td>' . LB
                             . '<td valign="top">' . LB
                                 . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>' 
                                 . '<input type="hidden" name="plugins[' . $plugin . '][pi_url]" value="' . $pi_url . '"' . XHTML . '>'
                                 . $pi_display_name . LB
-                                . ($missing_public_html || $missing_admin 
-                                    ? '<br' . XHTML . '><br' . XHTML . '><p><small><span class="error">Warning:</span> This plugin is not fully installed. Check that the plugin has been correctly installed to:<br' . XHTML . '><br' . XHTML . '>' 
-                                        . ($missing_public_html ? '<code>' . $_CONF['path_html'] . '</code><br' . XHTML . '>' : '') 
-                                        . ($missing_admin ? '<code>' . $admin_dir . '</code><br' . XHTML . '>' : '') . '</small></p>'
-                                    : '')
+                                . ($missing_autoinstall ? '<p><small><b>Note:</b> This plugin requires manual activation from the Plugins admin panel.</small></p>' : '')
                             . '</td>' . LB
                             . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>' 
                                 . $pi_version 
