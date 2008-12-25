@@ -28,7 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
 
 /**
  * The functionality of many of these functions already exists in other
@@ -73,9 +72,11 @@ if ($LANG_DIRECTION == 'rtl') {
 }
 
 $language = 'english';
-if (isset($_REQUEST['language'])) {
-    $lng = $_REQUEST['language'];
-} else if (isset($_COOKIE['language'])) {
+if (isset($_POST['language'])) {
+    $lng = $_POST['language'];
+} elseif (isset($_GET['language'])) {
+    $lng = $_GET['language'];
+} elseif (isset($_COOKIE['language'])) {
     // Okay, so the name of the language cookie is configurable, so it may not
     // be named 'language' after all. Still worth a try ...
     $lng = $_COOKIE['language'];
@@ -542,6 +543,7 @@ function INST_dbExists($db)
  */
 function INST_urlExists($url) 
 {
+/*
     $handle = curl_init($url);
     if ($handle === false) {
         return false;
@@ -553,6 +555,8 @@ function INST_urlExists($url)
     $response = curl_exec($handle);
     curl_close($handle);
     return $response;
+*/
+    return true;
 }
 
 /**
@@ -755,6 +759,260 @@ function INST_setVersion($siteconfig_path)
         exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
     }
     fclose($siteconfig_file);
+}
+
+function INST_getPluginInfo($plugin)
+{
+    global $_CONF;
+
+    $info = false;
+
+    $autoinstall = $_CONF['path'] . 'plugins/' . $plugin . '/autoinstall.php';
+    if (! file_exists($autoinstall)) {
+        return false;
+    }
+
+    include $autoinstall;
+
+    $fn = 'plugin_autoinstall_' . $plugin;
+    if (function_exists($fn)) {
+        $inst_info = $fn($plugin);
+        if (isset($inst_info['info']) &&
+                !empty($inst_info['info']['pi_name'])) {
+            $info = $inst_info['info'];
+        }
+    }
+
+    return $info;
+}
+
+/**
+* Do the actual plugin auto install
+*
+* @param    string  $plugin     Plugin name
+* @param    array   $inst_parm  Installation parameters for the plugin
+* @param    boolean $verbose    true: enable verbose logging
+* @return   boolean             true on success, false otherwise
+*
+*/
+function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
+{
+    global $_CONF, $_TABLES, $_USER, $_DB_dbms;
+
+    $fake_uid = false;
+    if (!isset($_USER['uid'])) {
+        $_USER['uid'] = 1;
+        $fake_uid = false;
+    }
+
+    $base_path = $_CONF['path'] . 'plugins/' . $plugin . '/';
+
+    if ($verbose) {
+        COM_errorLog("Attempting to install the '$plugin' plugin", 1);
+    }
+
+    // sanity checks in $inst_parms
+    if (isset($inst_parms['info'])) {
+        $pi_name       = $inst_parms['info']['pi_name'];
+        $pi_version    = $inst_parms['info']['pi_version'];
+        $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+        $pi_homepage   = $inst_parms['info']['pi_homepage'];
+    }
+    if (empty($pi_name) || ($pi_name != $plugin) || empty($pi_version) ||
+            empty($pi_gl_version) || empty($pi_homepage)) {
+        COM_errorLog('Incomplete plugin info', 1);
+
+        return false;
+    }
+
+    // Create the plugin's group(s), if any
+    $groups = array();
+    $admin_group_id = 0;
+    if (! empty($inst_parms['groups'])) {
+        $groups = $inst_parms['groups'];
+        foreach ($groups as $name => $desc) {
+            if ($verbose) {
+                COM_errorLog("Attempting to create plugin '$name' group", 1);
+            }
+
+            $grp_name = addslashes($name);
+            $grp_desc = addslashes($desc);
+            DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
+            if (DB_error()) {
+                COM_errorLog('Error creating plugin group', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+
+            // keep the new group's ID for use in the mappings section (below)
+            $groups[$name] = DB_insertId();
+
+            // assume that the first group is the plugin's Admin group
+            if ($admin_group_id == 0) {
+                $admin_group_id = $groups[$name];
+            }
+        }
+    }
+
+    // Create the plugin's table(s)
+    $_SQL = array();
+    $DEFVALUES = array();
+    if (file_exists($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
+        require_once $base_path . 'sql/' . $_DB_dbms . '_install.php';
+    }
+
+    if (count($_SQL) > 0) {
+        $use_innodb = false;
+        if (($_DB_dbms == 'mysql') &&
+            (DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'")
+                == 'InnoDB')) {
+            $use_innodb = true;
+        }
+
+        foreach ($_SQL as $sql) {
+            $sql = str_replace('#group#', $admin_group_id, $sql);
+            if ($use_innodb) {
+                $sql = str_replace('MyISAM', 'InnoDB', $sql);
+            }
+            DB_query($sql);
+            if (DB_error()) {
+                COM_errorLog('Error creating plugin table', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+        }
+    }
+
+    // Add the plugin's features
+    if ($verbose) {
+        COM_errorLog("Attempting to add '$plugin' features", 1);
+    }
+
+    $features = array();
+    $mappings = array();
+    if (!empty($inst_parms['features'])) {
+        $features = $inst_parms['features'];
+        if (!empty($inst_parms['mappings'])) {
+            $mappings = $inst_parms['mappings'];
+        }
+
+        foreach ($features as $feature => $desc) {
+            $ft_name = addslashes($feature);
+            $ft_desc = addslashes($desc);
+            DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+                     . "VALUES ('$ft_name', '$ft_desc')", 1);
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin feature', 1);
+                PLG_uninstall($plugin);
+
+                return false;
+            }
+
+            $feat_id = DB_insertId();
+
+            if (isset($mappings[$feature])) {
+                foreach ($mappings[$feature] as $group) {
+                    if ($verbose) {
+                        COM_errorLog("Adding '$feature' feature to the '$group' group", 1);
+                    }
+
+                    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, {$groups[$group]})");
+                    if (DB_error()) {
+                        COM_errorLog('Error mapping plugin feature', 1);
+                        PLG_uninstall($plugin);
+
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Add plugin's Admin group to the Root user group 
+    // (assumes that the Root group's ID is always 1)
+    if ($admin_group_id > 1) {
+        if ($verbose) {
+            COM_errorLog("Attempting to give all users in the Root group access to the '$plugin' Admin group", 1);
+        }
+
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+                 . "($admin_group_id, NULL, 1)");
+        if (DB_error()) {
+            COM_errorLog('Error adding plugin admin group to Root group', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }
+    }
+
+    // Pre-populate tables or run any other SQL queries
+    if (count($DEFVALUES) > 0) {
+        if ($verbose) {
+            COM_errorLog('Inserting default data', 1);
+        }
+        foreach ($DEFVALUES as $sql) {
+            $sql = str_replace('#group#', $admin_group_id, $sql);
+            DB_query($sql, 1);
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin default data', 1);
+                PLG_uninstall($plugin);
+            
+                return false;
+            }
+        }
+    }
+
+    // Load the online configuration records
+    $load_config = 'plugin_load_configuration_' . $plugin;
+    if (function_exists($load_config)) {
+        if (! $load_config($plugin)) {
+            COM_errorLog('Error loading plugin configuration', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }
+    }
+
+    // Finally, register the plugin with Geeklog
+    if ($verbose) {
+        COM_errorLog("Registering '$plugin' plugin", 1);
+    }
+
+    // silently delete an existing entry
+    DB_delete($_TABLES['plugins'], 'pi_name', $plugin);
+
+    DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) VALUES "
+        . "('$plugin', '$pi_version', '$pi_gl_version', '$pi_homepage', 1)");
+
+    if (DB_error()) {
+        COM_errorLog('Failed to register plugin', 1);
+        PLG_uninstall($plugin);
+
+        return false;
+    }
+
+    // give the plugin a chance to perform any post-install operations
+    $post_install = 'plugin_postinstall_' . $plugin;
+    if (function_exists($post_install)) {
+        if (! $post_install($plugin)) {
+            COM_errorLog('Plugin postinstall failed', 1);
+            PLG_uninstall($plugin);
+
+            return false;
+        }   
+    }
+
+    if ($verbose) {
+        COM_errorLog("Successfully installed the '$plugin' plugin!", 1);
+    }
+
+    if ($fake_uid) {
+        unset($_USER['uid']);
+    }
+
+    return true;
 }
 
 ?>

@@ -551,134 +551,144 @@ function plugin_upload()
 
     $retval = '';
 
-    // Check if a plugin file was uploaded
     $upload_success = false;
-    if (isset($_FILES['plugin'])) { 
 
-        // If an error occured while uploading the file.
-        $error_msg = plugin_getUploadError($_FILES['plugin']);
-        if (!empty($error_msg)) {
+    // If an error occured while uploading the file.
+    $error_msg = plugin_getUploadError($_FILES['plugin']);
+    if (!empty($error_msg)) {
 
-            $retval .= plugin_main($error_msg);
+        $retval .= plugin_main($error_msg);
+
+    } else {
+
+        $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
+
+        if ($_FILES['plugin']['type'] == 'application/zip') {
+
+            // Zip
+            require_once 'Archive/Zip.php';  // import Archive_Zip library
+            $archive = new Archive_Zip($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Zip to extract the package
 
         } else {
 
-            $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
+            // Tarball
+            require_once 'Archive/Tar.php';  // import Archive_Tar library
+            $archive = new Archive_Tar($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Tar to extract the package
 
+        }
+        $tmp = $archive->listContent(); // Grab the contents of the tarball to see what the plugin name is
+        $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
+
+        if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
+
+            $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
+
+        } elseif (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
+
+            $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
+
+        } else {
+
+            /** 
+             * Install the plugin
+             * This doesn't work if the public_html & public_html/admin/plugins directories aren't 777
+             */
+
+            // Extract the tarball to data so we can get the $pi_name name from admin/install.php
             if ($_FILES['plugin']['type'] == 'application/zip') {
 
                 // Zip
-                require_once 'Archive/Zip.php';  // import Archive_Zip library
-                $archive = new Archive_Zip($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Zip to extract the package
+                $archive->extract(array('add_path' => $_CONF['path'] . 'data/',
+                                        'by_name' => $dirname . '/admin/install.php'));
 
             } else {
 
                 // Tarball
-                require_once 'Archive/Tar.php';  // import Archive_Tar library
-                $archive = new Archive_Tar($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Tar to extract the package
+                $archive->extractList(array($dirname . '/admin/install.php'), $_CONF['path'] . 'data/');
 
             }
-            $tmp = $archive->listContent(); // Grab the contents of the tarball to see what the plugin name is
-            $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
+            $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
+            $fdata = '';
+            $fhandle = @fopen($plugin_inst, 'r');
+            if ($fhandle) {
+                $fdata = fread($fhandle, filesize($plugin_inst));
+                fclose($fhandle);
+            }
 
-            if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
+            // Remove the plugin from data/
+            require_once 'System.php';
+            @System::rm('-rf ' . $_CONF['path'] . 'data/' . $dirname);
 
-                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
+            /**
+             * One time I wanted to install a muffler on my car and
+             * needed to match up the outside diameter of the car's
+             * exhaust pipe to the inside diameter of the muffler. 
+             * Unfortunately, when I went to the auto parts store they
+             * didn't have a coupling adapter that would perfectly
+             * match the two pipes, only a bunch of smaller adapters.
+             * I ended up using about 4 small adapters to step down 
+             * one size at a time to the size of the muffler's input.
+             *
+             * It's kind of like this regular expression:
+             *
+             */
+            $fdata = preg_replace('/\n/', '', $fdata);
+            $fdata = preg_replace('/ /', '', $fdata);
+            $pi_name = preg_replace('/^.*\$pi\_name=\'/', '', $fdata);
+            $pi_name = preg_replace('/\'.*$/', '', $pi_name);
 
-            } elseif (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
+            // Some plugins don't have $pi_name set in their install.php file,
+            // This means our regex won't work and we should just use $dirname
+            if (preg_match('/\<\?php/', $pi_name) || preg_match('/--/', $pi_name)) {
 
-                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
+                $pi_name = $dirname;
+
+            }
+
+            // Extract the uploaded archive to the plugins directory
+            if ($_FILES['plugin']['type'] == 'application/zip') {
+
+                // Zip
+                $upload_success = $archive->extract(array('add_path' => $_CONF['path'] . 'plugins/'));
 
             } else {
 
-                /** 
-                 * Install the plugin
-                 * This doesn't work if the public_html & public_html/admin/plugins directories aren't 777
-                 */
-
-                // Extract the tarball to data so we can get the $pi_name name from admin/install.php
-                if ($_FILES['plugin']['type'] == 'application/zip') {
-
-                    // Zip
-                    $archive->extract(array('add_path' => $_CONF['path'] . 'data/',
-                                            'by_name' => $dirname . '/admin/install.php'));
-
-                } else {
-
-                    // Tarball
-                    $archive->extractList(array($dirname . '/admin/install.php'), $_CONF['path'] . 'data/');
-
-                }
-                $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
-                $fhandle = fopen($plugin_inst, 'r');
-                $fdata = fread($fhandle, filesize($plugin_inst));
-                fclose($fhandle);
-
-                // Remove the plugin from data/
-                require_once 'System.php';
-                @System::rm('-rf ' . $_CONF['path'] . 'data/' . $dirname);
-
-                /**
-                 * One time I wanted to install a muffler on my car and
-                 * needed to match up the outside diameter of the car's
-                 * exhaust pipe to the inside diameter of the muffler. 
-                 * Unfortunately, when I went to the auto parts store they
-                 * didn't have a coupling adapter that would perfectly
-                 * match the two pipes, only a bunch of smaller adapters.
-                 * I ended up using about 4 small adapters to step down 
-                 * one size at a time to the size of the muffler's input.
-                 *
-                 * It's kind of like this regular expression:
-                 *
-                 */
-                $fdata = preg_replace('/\n/', '', $fdata);
-                $fdata = preg_replace('/ /', '', $fdata);
-                $pi_name = preg_replace('/^.*\$pi\_name=\'/', '', $fdata);
-                $pi_name = preg_replace('/\'.*$/', '', $pi_name);
-
-                // Some plugins don't have $pi_name set in their install.php file,
-                // This means our regex won't work and we should just use $dirname
-                if (preg_match('/\<\?php/', $pi_name) || preg_match('/--/', $pi_name)) {
-
-                    $pi_name = $dirname;
-
-                }
-
-                // Extract the uploaded archive to the plugins directory
-                if ($_FILES['plugin']['type'] == 'application/zip') {
-
-                    // Zip
-                    $upload_success = $archive->extract(array('add_path' => $_CONF['path'] . 'plugins/'));
-
-                } else {
-
-                    // Tarball
-                    $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
-
-                }
-                if ($upload_success) {
-
-                    if (file_exists($_CONF['path'] . 'plugins/' . $pi_name . '/public_html')) {
-                        rename($_CONF['path'] . 'plugins/' . $pi_name . '/public_html', $_CONF['path_html'] . $pi_name);
-                    }
-                    rename($_CONF['path'] . 'plugins/' . $pi_name . '/admin', $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
-
-                }
-
-                unset($archive); // Collect some garbage
-
-                // if the plugin has an autoinstall.php, install it now
-                if (file_exists($_CONF['path'] . 'plugins/' . $plugin
-                        . '/autoinstall.php')) {
-                    plugin_autoinstall($plugin);
-                }
-
-                $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=98');
+                // Tarball
+                $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
 
             }
-        }
 
-    } // End check if a plugin file was uploaded
+            $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
+            if ($upload_success) {
+
+                if (file_exists($plg_path . 'public_html')) {
+                    rename($plg_path . 'public_html',
+                           $_CONF['path_html'] . $pi_name);
+                }
+                if (file_exists($plg_path . 'admin')) {
+                    rename($plg_path . 'admin',
+                        $_CONF['path_html'] . 'admin/plugins/' . $pi_name);
+                }
+
+            }
+
+            unset($archive); // Collect some garbage
+
+            // if the plugin has an autoinstall.php, install it now
+            if (file_exists($plg_path . 'autoinstall.php')) {
+                if (plugin_autoinstall($plugin)) {
+                    $retval .= COM_refresh($_CONF['site_admin_url']
+                                           . '/plugins.php?msg=44');
+                } else {
+                    $retval .= COM_refresh($_CONF['site_admin_url']
+                                           . '/plugins.php?msg=72');
+                }
+            } else {
+                $retval .= COM_refresh($_CONF['site_admin_url']
+                                       . '/plugins.php?msg=98');
+            }
+        }
+    }
 
     return $retval;
 }

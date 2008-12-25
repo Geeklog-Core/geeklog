@@ -36,14 +36,15 @@ function plugin_autoinstall_calendar($pi_name)
     $pi_admin        = $pi_display_name . ' Admin';
 
     $info = array(
-        'pi_name'       => $pi_name,
-        'pi_version'    => '1.1.0',
-        'pi_gl_version' => '1.6.0',
-        'pi_homepage'   => 'http://www.geeklog.net/'
+        'pi_name'         => $pi_name,
+        'pi_display_name' => $pi_display_name,
+        'pi_version'      => '1.1.0',
+        'pi_gl_version'   => '1.6.0',
+        'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
     $groups = array(
-        $pi_admin => 'Has full access to ' . $pi_name . ' features'
+        $pi_admin => 'Has full access to ' . $pi_display_name . ' features'
     );
 
     $features = array(

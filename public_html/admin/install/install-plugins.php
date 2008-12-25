@@ -28,10 +28,7 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | You don't need to change anything in this file.                           |
-// | Please read docs/install.html which describes how to install Geeklog.     |
-// +---------------------------------------------------------------------------+
-//
+
 
 // +---------------------------------------------------------------------------+
 // | Main                                                                      |
@@ -159,10 +156,14 @@ if (INST_phpOutOfDate()) {
                         $archive->extractList(array($dirname . '/admin/install.php'), $_CONF['path'] . 'data/');
 
                     }
+
                     $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
-                    $fhandle = fopen($plugin_inst, 'r');
-                    $fdata = fread($fhandle, filesize($plugin_inst));
-                    fclose($fhandle);
+                    $fdata = '';
+                    $fhandle = @fopen($plugin_inst, 'r');
+                    if ($fhandle) {
+                        $fdata = fread($fhandle, filesize($plugin_inst));
+                        fclose($fhandle);
+                    }
 
                     // Remove the plugin from data/
                     require_once 'System.php';
@@ -296,6 +297,7 @@ if (INST_phpOutOfDate()) {
                     // If no record exists in the plugins table then it's a new plugin
                     if (DB_count($_TABLES['plugins'], 'pi_name', $plugin) == 0) {
 
+                        $pi_name            = '';
                         $pi_display_name    = '';
                         $pi_version         = 'Unknown';
                         $gl_version         = 'Unknown';
@@ -335,20 +337,37 @@ if (INST_phpOutOfDate()) {
                                       . substr ($admin_url, $pos + 1);
                         }
 
+                        $missing_autoinstall = false;
+                        $info = INST_getPluginInfo($plugin);
+                        if ($info === false) {
+                            $missing_autoinstall = true;
+                        } else {
+                            $pi_name         = $info['pi_name'];
+                            $pi_display_name = $info['pi_display_name'];
+                            $pi_version      = $info['pi_version'];
+                            $gl_version      = $info['pi_gl_version'];
+                            $pi_url          = $info['pi_homepage'];
+                        }
+
                         // If the plugin has been installed to the admin directory
-                        if (!file_exists($admin_dir . '/plugins/' . $plugin)) {
+                        if (! file_exists($admin_dir . '/plugins/' . $plugin)) {
 
                             $missing_admin = true;
 
-                        } else {
+                        }
+                        if (! $missing_admin && empty($pi_name)) {
                         
                             /**
                              * Plugins keep their config info in install.php
                              */
+                            
                             $plugin_inst = $admin_dir . '/plugins/' . $plugin . '/install.php';
-                            $fhandle = fopen($plugin_inst, 'r');
-                            $fdata = fread($fhandle, filesize($plugin_inst));
-                            fclose($fhandle);
+                            $fdata = '';
+                            $fhandle = @fopen($plugin_inst, 'r');
+                            if ($fhandle) {
+                                $fdata = fread($fhandle, filesize($plugin_inst));
+                                fclose($fhandle);
+                            }
                             $fdata = preg_replace('/\n/', '', $fdata);
                             $fdata = preg_replace('/ /', '', $fdata);
 
@@ -404,7 +423,7 @@ if (INST_phpOutOfDate()) {
 
                         $display .= '<tr>' . LB
                             . '<td align="center"><input type="checkbox" name="plugins[' . $plugin . '][install]"'
-                                . ($missing_public_html || $missing_admin ? ' disabled="true"' : ' checked="checked"') . XHTML . '>' . LB
+                                . ($missing_public_html || $missing_admin || $missing_autoinstall ? ' disabled="true"' : ' checked="checked"') . XHTML . '>' . LB
                             . '</td>' . LB
                             . '<td valign="top">' . LB
                                 . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>' 
@@ -448,71 +467,47 @@ if (INST_phpOutOfDate()) {
     case 2:
 
         $error = 0;
-/*
         foreach ($_POST['plugins'] as $plugin) {
 
             // If the plugin was selected to be installed
             if (isset($plugin['install']) && ($plugin['install'] == 'on')) {
-*/
-                /**
-                 * Install the plugin by including & executing the database queries for each plugin
-                 * Start by looking for the database install file.
-                 */
-/*
-                $plugin_sql = '';
-                if (file_exists($_CONF['path'] . 'plugins/' . $plugin['name'] . '/sql/' . $_DB_dbms . '_install.php')) {
 
-                    $plugin_sql = $_CONF['path'] . 'plugins/' . $plugin['name'] . '/sql/' . $_DB_dbms . '_install.php'; 
-                
-                } else if (file_exists($_CONF['path'] . 'plugins/' . $plugin['name'] . '/sql/install.php')) {
-                
-                    $plugin_sql = $_CONF['path'] . 'plugins/' . $plugin['name'] . '/sql/install.php';
-                
+                $pi_name = COM_applyFilter($plugin['name']);
+                $pi_name = COM_sanitizeFilename($pi_name);
+
+                $plugin_inst = $_CONF['path'] . 'plugins/' . $pi_name
+                             . '/autoinstall.php';
+                if (file_exists($plugin_inst)) {
+
+                    require_once $plugin_inst;
+
+                    $check_compatible = 'plugin_compatible_with_this_version_'
+                                      . $pi_name;
+                    if (function_exists($check_compatible)) {
+                        if (! $check_compatible($pi_name)) {
+                            continue; // with next plugin
+                        }
+                    }
+
+                    $auto_install = 'plugin_autoinstall_' . $pi_name;
+                    if (! function_exists($auto_install)) {
+                        continue; // with next plugin
+                    }
+
+                    $inst_parms = $auto_install($pi_name);
+                    if (($inst_parms === false) || empty($inst_parms)) {
+                        continue; // with next plugin
+                    }
+
+                    INST_pluginAutoinstall($pi_name, $inst_parms);
                 }
-
-                $plugin_func = $_CONF['path'] . 'plugins/' . $plugin['name'] . '/functions.inc';
-
-                if (file_exists($plugin_sql)) { // If database table and/or data exists for this plugin
-
-                    $plugin_conf = $_CONF['path'] . 'plugins/' . $plugin['name'] . '/config.php';
-                    if (file_exists($plugin_conf)) {
-
-                        require_once $plugin_conf;
-
-                    }
-
-                    $_SQL   = array();          // Initialize for each plugin, otherwise the queries for the first plugin
-                    $_DATA  = array();          // will execute twice if more than one plugin is being installed.
-                    require_once $plugin_sql;   // Include $_SQL and $_DATA for each plugin, 
-                                                // these arrays contain the DB structures and data.
-
-
-                    foreach ($_SQL as $sql) {   
-
-                        DB_query($sql);     // Create the table structures, if necessary
-                        //sanity($sql);
-
-                    }
-
-                    foreach ($_DATA as $data) {
-
-                        DB_query($data);    // Insert necessary data, if any
-                        //sanity($data);
-
-                    }
-
-                    // Enable the plugin in the plugins table
-                    // Todo: This should be checked for injection attempts or does DB_query() do that automatically?
-                    DB_query("INSERT INTO {$_TABLES['plugins']} (`pi_name`, `pi_version`, `pi_gl_version`, `pi_enabled`, `pi_homepage`) VALUES ( '{$plugin['name']}', '{$plugin['version']}', '" . VERSION . "', 1, '{$plugin['pi_url']}')");
-
-                } 
 
             }
 
         }
-*/
+
         // Done!
-//            $display .= '<p>Done doing stuff</p>' . LB;
+
         header('Location: success.php?language=' . $language);
 
         break;
