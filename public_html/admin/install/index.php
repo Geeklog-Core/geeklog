@@ -482,7 +482,13 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('language', $lng);
                         }
 
-                        // Installation is complete. Continue onto either plugin installation or success page
+                        if (! $install_plugins) {
+                            // do a default install of all available plugins
+                            INST_defaultPluginInstall();
+                        }
+
+                        // Installation is complete. Continue onto either
+                        // custom plugin installation page or success page
                         header('Location: ' . $next_link);
 
                     } else {
@@ -1472,6 +1478,52 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
     @fclose($siteconfig_file);
 
     return $result;
+}
+
+/**
+* Handle default install of available plugins
+*
+* Picks up and installs all plugins with an autoinstall.php.
+* Any errors are silently ignored ...
+*
+*/
+function INST_defaultPluginInstall()
+{
+    global $_CONF, $_TABLES;
+
+    if (! function_exists('COM_errorLog')) {
+        // "Emergency" version of COM_errorLog
+        function COM_errorLog($a, $b = '')
+        {
+            return '';
+        }
+    }
+
+    $plugins_dir = $_CONF['path'] . 'plugins/';
+    $fd = opendir($plugins_dir);
+    while (($plugin = @readdir($fd)) == TRUE) {
+
+        if (($plugin <> '.') && ($plugin <> '..') && ($plugin <> 'CVS') &&
+                (substr($plugin, 0, 1) <> '.') &&
+                (substr($plugin, 0, 1) <> '_') &&
+                is_dir($plugins_dir . $plugin)) {
+
+            clearstatcache ();
+            $plugin_dir = $plugins_dir . $plugin;
+
+            if (DB_count($_TABLES['plugins'], 'pi_name', $plugin) == 0) {
+
+                $info = INST_getPluginInfo($plugin);
+                if ($info !== false) {
+                    $fn = 'plugin_autoinstall_' . $plugin;
+                    $inst_parms = $fn($plugin);
+                    INST_pluginAutoinstall($plugin, $inst_parms);
+                }
+
+            }
+
+        }
+    }
 }
 
 
