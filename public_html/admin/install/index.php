@@ -482,6 +482,9 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('language', $lng);
                         }
 
+                        DB_change($_TABLES['vars'], 'value', VERSION,
+                                                    'name', 'database_version');
+
                         if (! $install_plugins) {
                             // do a default install of all available plugins
                             INST_defaultPluginInstall();
@@ -1375,7 +1378,8 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
             break;
 
         case '1.5.1':
-            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.1_to_1.5.2.php';
+        case '1.5.2': // TBD
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.1_to_1.6.0.php';
 
             update_ConfValues();
 
@@ -1387,7 +1391,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $use_innodb = false)
                 }
             }
 
-            $current_gl_version = '1.5.2';
+            $current_gl_version = '1.6.0';
             $_SQL = '';
             break;
 
