@@ -193,6 +193,10 @@ if (INST_phpOutOfDate()) {
 
                         $pi_name = $dirname;
 
+                    } elseif (empty($pi_name)) {
+
+                        $pi_name = $dirname;
+
                     }
 
                     // Extract the uploaded archive to the plugins directory
