@@ -797,7 +797,7 @@ function INST_getPluginInfo($plugin)
 */
 function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 {
-    global $_CONF, $_TABLES, $_USER, $_DB_dbms;
+    global $_CONF, $_TABLES, $_USER, $_DB_dbms, $_DB_table_prefix;
 
     $fake_uid = false;
     if (!isset($_USER['uid'])) {
@@ -825,6 +825,14 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         return false;
     }
 
+    // add plugin tables, if any
+    if (! empty($inst_parms['tables'])) {
+        $tables = $inst_parms['tables'];                                       
+        foreach ($tables as $table) {
+            $_TABLES[$table] = $_DB_table_prefix . $table;
+        }
+    }
+
     // Create the plugin's group(s), if any
     $groups = array();
     $admin_group_id = 0;
@@ -832,7 +840,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         $groups = $inst_parms['groups'];
         foreach ($groups as $name => $desc) {
             if ($verbose) {
-                COM_errorLog("Attempting to create plugin '$name' group", 1);
+                COM_errorLog("Attempting to create '$name' group", 1);
             }
 
             $grp_name = addslashes($name);
