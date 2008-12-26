@@ -1432,6 +1432,15 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
+    global $_TABLES, $_CA_CONF;
+
+    $version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                          "pi_name = 'calendar'");
+    if ($version == $_CA_CONF['version']) {
+        // nothing to do
+        return true;
+    }
+
     // the plugin needs these function so complain when they don't exist
     if (!function_exists('PLG_uninstall') ||
             !function_exists('COM_createLink')) {

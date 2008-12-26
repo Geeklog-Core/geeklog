@@ -1023,4 +1023,32 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
     return true;
 }
 
+/**
+* Upgrade any enabled plugins
+*
+* @note Needs a fully working Geeklog, so can only be done late in the upgrade
+*       process!
+*
+*/
+function INST_pluginUpgrades()
+{
+    global $_CONF, $_TABLES;
+
+    $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $numPlugins = DB_numRows($result);
+
+    for ($i = 0; $i < $numPlugins; $i++) {
+        list($pi_name, $pi_version) = DB_fetchArray($result);
+
+        $code_version = PLG_chkVersion($pi_name);
+        if (! empty($code_version) && ($code_version != $pi_version)) {
+            if (PLG_upgrade($pi_name) !== true) {
+                // upgrade failed - disable plugin
+                DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$pi_name'");
+                COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
+            }
+        }
+    }
+}
+
 ?>

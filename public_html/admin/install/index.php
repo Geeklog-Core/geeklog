@@ -551,9 +551,17 @@ function INST_installEngine($install_type, $install_step)
                         $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
                     }
 
+                    // disable plugins for which we don't have the source files
                     INST_checkPlugins();
 
-                    // Installation is complete. Continue onto either plugin installation or success page
+                    if (! $install_plugins) {
+                        // extra step 4: upgrade plugins
+                        $next_link = 'index.php?step=4&mode=' . $install_type
+                                   . '&language=' . $language;
+                    }
+
+                    // Installation is complete. Continue onto either plugin
+                    // installation or success page
                     header('Location: ' . $next_link);
 
                 } else {
@@ -562,6 +570,19 @@ function INST_installEngine($install_type, $install_step)
                 }
                 break;
         }
+        break;
+
+    /**
+    * Extra Step 4 - Upgrade plugins
+    */
+    case 4:
+        INST_pluginUpgrades();
+
+        $next_link = 'success.php?type=' . $install_type
+                   . '&language=' . $language;
+
+        header('Location: ' . $next_link);
+
         break;
     }
 }
@@ -1882,6 +1903,12 @@ if (INST_phpOutOfDate()) {
      */
     case 'install': // Deliberate fall-through, no "break"
     case 'upgrade':
+
+        if (($mode == 'upgrade') && ($step == 4)) {
+            // for the plugin upgrade,
+            // we need lib-common.php in the global(!) namespace
+            require_once '../../lib-common.php';
+        }
 
         // Run the installation function
         INST_installEngine($mode, $step); 
