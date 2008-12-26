@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
-// | Installation SQL                                                          |
+// | mysql_install.php                                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mysql_install.php,v 1.3 2008/05/02 12:08:07 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['events']} (
@@ -58,6 +56,7 @@ CREATE TABLE {$_TABLES['events']} (
   location varchar(128) default NULL,
   timestart time default NULL,
   timeend time default NULL,
+  in_transit tinyint(1) unsigned default '0',
   INDEX events_eid(eid),
   INDEX events_event_type(event_type),
   INDEX events_datestart(datestart),

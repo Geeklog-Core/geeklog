@@ -2,9 +2,9 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
-// | Installation SQL                                                          |
+// | mssql_install.php                                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2008 by the following authors:                         |
 // |                                                                           |
@@ -30,8 +30,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mssql_install.php,v 1.6 2008/08/12 18:13:33 mjervis Exp $
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['events']}] (
@@ -58,7 +56,8 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [event_type] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [in_transit] [tinyint] NULL
 ) ON [PRIMARY]
 ";
 

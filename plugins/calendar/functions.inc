@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -57,7 +57,6 @@ if (!isset($_CA_CONF['calendarloginrequired'])) {
     $_CA_CONF = $ca_config->get_config('calendar');
 }
 
-$_CA_CONF['version'] = '1.1.0';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -1419,9 +1418,13 @@ function plugin_user_delete_calendar ($uid)
 */
 function plugin_chkVersion_calendar()
 {
-    global $_CA_CONF;
+    global $_CONF;
 
-    return $_CA_CONF['version'];
+    require_once $_CONF['path'] . 'plugins/calendar/autoinstall.php';
+
+    $inst_parms = plugin_autoinstall_calendar('calendar');
+
+    return $inst_parms['info']['pi_version'];
 }
 
 /**
@@ -1432,24 +1435,50 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
-    global $_TABLES, $_CA_CONF;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
-    $version = DB_getItem($_TABLES['plugins'], 'pi_version',
-                          "pi_name = 'calendar'");
-    if ($version == $_CA_CONF['version']) {
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                    "pi_name = 'calendar'");
+    $code_version = plugin_chkVersion_calendar();
+    if ($installed_version == $code_version) {
         // nothing to do
         return true;
     }
 
-    // the plugin needs these function so complain when they don't exist
-    if (!function_exists('PLG_uninstall') ||
-            !function_exists('COM_createLink')) {
+    require_once $_CONF['path'] . 'plugins/calendar/autoinstall.php';
+
+    if (! plugin_compatible_with_this_version_calendar('calendar')) {
         return 3002;
     }
 
-    // upgrades are done by the install script - return a generic error
-    COM_errorLog("Plugin upgrade function not implemented");
-    return 3001;
+    $inst_parms = plugin_autoinstall_calendar('calendar');
+    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    require_once $_CONF['path'] . 'plugins/calendar/sql/'
+                                . $_DB_dbms . '_updates.php';
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '1.0.2':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            $current_version = '1.1.0';
+            break;
+
+        default:
+            $done = true;
+        }
+    }
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'calendar'");
+
+    return true;
 }
 
 /**

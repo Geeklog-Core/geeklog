@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar plugin 1.1 for Geeklog                                           |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | autoinstall.php                                                           |
 // |                                                                           |
@@ -100,12 +100,16 @@ function plugin_compatible_with_this_version_calendar($pi_name)
         // plugin on Geeklog 1.4.0 or older - sorry, but that won't work
         return false;
     }   
-    
+
     if (!function_exists('MBYTE_strpos')) {
         // the plugin requires the multi-byte functions
         return false; 
     }   
-    
+
+    if (!function_exists('COM_createLink')) {
+        return false;
+    }
+
     if (!function_exists('SEC_createToken')) {
         return false;
     }
