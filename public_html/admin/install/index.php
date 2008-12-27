@@ -554,14 +554,13 @@ function INST_installEngine($install_type, $install_step)
                     // disable plugins for which we don't have the source files
                     INST_checkPlugins();
 
-                    if (! $install_plugins) {
-                        // extra step 4: upgrade plugins
-                        $next_link = 'index.php?step=4&mode=' . $install_type
-                                   . '&language=' . $language;
+                    // extra step 4: upgrade plugins
+                    $next_link = 'index.php?step=4&mode=' . $install_type
+                               . '&language=' . $language;
+                    if ($install_plugins) {
+                        $next_link .= '&install_plugins=true';
                     }
 
-                    // Installation is complete. Continue onto either plugin
-                    // installation or success page
                     header('Location: ' . $next_link);
 
                 } else {
@@ -578,8 +577,14 @@ function INST_installEngine($install_type, $install_step)
     case 4:
         INST_pluginUpgrades();
 
-        $next_link = 'success.php?type=' . $install_type
-                   . '&language=' . $language;
+        $install_plugins = ((isset($_GET['install_plugins']) &&
+                                !empty($_GET['install_plugins'])) 
+                         ? true 
+                         : false);
+        $next_link = ($install_plugins
+                   ? 'install-plugins.php?language=' . $language
+                   : 'success.php?type=' . $install_type
+                                         . '&language=' . $language);
 
         header('Location: ' . $next_link);
 
