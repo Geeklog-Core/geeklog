@@ -11,10 +11,6 @@ function update_ConfValues()
     // new option
     $c->add('jpeg_quality',75,'text',5,23,NULL,1495,FALSE);
 
-    if (INST_pluginExists('links')) {
-        $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
-    }
-
     return true;
 }
 

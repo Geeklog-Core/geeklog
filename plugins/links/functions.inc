@@ -713,15 +713,33 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 */
 function plugin_upgrade_links()
 {
-    // the plugin needs these function so complain when they don't exist
-    if (!function_exists('PLG_uninstall') ||
-            !function_exists('COM_createLink')) {
+    global $_CONF, $_TABLES, $_LI_CONF;
+
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',         
+                                    "pi_name = 'links'");
+    $code_version = plugin_chkVersion_links();
+    if ($installed_version == $code_version) {
+        // nothing to do                                                       
+        return true; 
+    }
+
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+
+    if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;
     }
 
-    // upgrades are done by the install script - return a generic error
-    COM_errorLog("Plugin upgrade function not implemented");
-    return 3001;
+    $inst_parms = plugin_autoinstall_links('links');
+    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    if (! isset($_LI_CONF['new_window'])) {
+        $c = config::get_instance();
+        $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
+    }
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'links'");
+
+    return true;
 }
 
 /**
