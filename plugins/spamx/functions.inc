@@ -10,7 +10,6 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.37 2008/09/21 08:37:08 dhaun Exp $
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
@@ -39,7 +38,6 @@ if (!isset($_SPX_CONF['timeout'])) {
     $_SPX_CONF = $spx_config->get_config('spamx');
 }
 
-$_SPX_CONF['version'] = '1.1.1';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -146,11 +144,15 @@ function plugin_getadminoption_spamx()
  *
  * @return string    plugin version
  */
-function plugin_chkVersion_spamx ()
+function plugin_chkVersion_spamx()
 {
-    global $_SPX_CONF;
+    global $_CONF;
 
-    return $_SPX_CONF['version'];
+    require_once $_CONF['path'] . 'plugins/spamx/autoinstall.php';          
+
+    $inst_parms = plugin_autoinstall_spamx('spamx'); 
+
+    return $inst_parms['info']['pi_version'];
 }
 
 /**
@@ -161,15 +163,28 @@ function plugin_chkVersion_spamx ()
 */
 function plugin_upgrade_spamx()
 {
-    // the plugin needs these function so complain when they don't exist
-    if (!function_exists('PLG_uninstall') ||
-            !function_exists('COM_createLink')) {
+    global $_CONF, $_TABLES;
+
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                    "pi_name = 'spamx'");
+    $code_version = plugin_chkVersion_spamx();
+    if ($installed_version == $code_version) {
+        // nothing to do
+        return true;
+    }
+
+    require_once $_CONF['path'] . 'plugins/spamx/autoinstall.php';
+
+    if (! plugin_compatible_with_this_version_spamx('spamx')) {
         return 3002;
     }
 
-    // upgrades are done by the install script - return a generic error
-    COM_errorLog("Plugin upgrade function not implemented");
-    return 3001;
+    $inst_parms = plugin_autoinstall_spamx('spamx');
+    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'spamx'");
+
+    return true;
 }
 
 /**

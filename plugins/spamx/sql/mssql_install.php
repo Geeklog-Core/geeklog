@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X Plugin 1.1                                                         |
+// | Spam-X Plugin 1.2                                                         |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2006 by the following authors:                         |
+// | Copyright (C) 2004-2008 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Willett       - tomw AT pigstye DOT net                      |
 // |          Randy Kolenko     - randy AT nextide DOT ca                      |
@@ -26,8 +26,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mssql_install.php,v 1.1 2006/08/28 18:42:25 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
@@ -35,5 +33,7 @@ CREATE TABLE [dbo].[{$_TABLES['spamx']}] (
     [value] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL 
 ) ON [PRIMARY]
 ";
+
+$DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";
 
 ?>
