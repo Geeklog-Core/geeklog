@@ -2,7 +2,7 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -59,7 +59,6 @@ if (!isset($_LI_CONF['linksloginrequired'])) {
     $_LI_CONF = $li_config->get_config('links');
 }
 
-$_LI_CONF['version'] = '2.0.0';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementation                                         |
@@ -207,9 +206,13 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
 */
 function plugin_chkVersion_links ()
 {
-    global $_LI_CONF;
+    global $_CONF;
 
-    return $_LI_CONF['version'];
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+
+    $inst_parms = plugin_autoinstall_links('links'); 
+
+    return $inst_parms['info']['pi_version'];
 }
 
 /**
