@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: plugins.php,v 1.84 2008/09/18 19:09:38 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -73,11 +71,8 @@ function plugineditor ($pi_name, $confirmed = 0)
 
     $retval = '';
 
-    if (strlen ($pi_name) == 0) {
-        $retval .= COM_startBlock ($LANG32[13], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= COM_errorLog ($LANG32[12]);
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (strlen($pi_name) == 0) {
+        $retval .= COM_showMessageText($LANG32[12], $LANG32[13]);
 
         return $retval;
     }
@@ -108,13 +103,13 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $plg_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $plg_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
-    $plg_templates->set_var ('pi_icon', PLG_getIcon ($pi_name));
+    $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
     if (!empty($pi_name)) {
         $plg_templates->set_var ('delete_option', '<input type="submit" value="'
                                  . $LANG_ADMIN['delete'] . '" name="mode"' . XHTML . '>');
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
-    if (empty ($plugin_code_version)) {
+    if (empty($plugin_code_version)) {
         $code_version = 'N/A';
     } else {
         $code_version = $plugin_code_version;
@@ -130,6 +125,7 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
+    $plg_templates->set_var('pi_display_name', plugin_get_pluginname($pi_name));
     $plg_templates->set_var('lang_pluginhomepage', $LANG32[27]);
     $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
     $plg_templates->set_var('lang_pluginversion', $LANG32[28]);
@@ -298,7 +294,7 @@ function show_newplugins($token)
                         }
                         $url .= '&amp;' . CSRF_TOKEN . '=' . $token;
                         $data_arr[] = array(
-                            'pi_name'      => $dir,
+                            'pi_name'      => plugin_get_pluginname($dir),
                             'number'       => $index,
                             'install_link' => COM_createLink($LANG32[22], $url)
                         );
@@ -441,7 +437,7 @@ function listplugins ($token)
     );
 
     // this is a dummy variable so we know the form has been used if all plugins
-    //  should be disabled in order to disable the last one.
+    // should be disabled in order to disable the last one.
     $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
 
     $retval .= ADMIN_list('plugins', 'ADMIN_getListField_plugins', $header_arr,
@@ -1005,6 +1001,58 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
     }
 
     return true;
+}
+
+/**
+* See if we can figure out the plugin's real name
+*
+* @param    string  $plugin     internal name / directory name
+* @return   string              real or beautified name
+*
+*/
+function plugin_get_pluginname($plugin)
+{
+    global $_CONF;
+
+    $retval = '';
+
+    $plugins_dir = $_CONF['path'] . 'plugins/';
+    $autoinstall = $plugins_dir . $plugin . '/autoinstall.php';
+
+    // for new plugins, get the name from the autoinstall.php
+    if (file_exists($autoinstall)) {
+
+        require_once $autoinstall;
+
+        $fn = 'plugin_autoinstall_' . $plugin;
+        if (function_exists($fn)) {
+            $info = $fn($plugin);
+            if (is_array($info) && isset($info['info']) &&
+                    isset($info['info']['pi_display_name'])) {
+                $retval = $info['info']['pi_display_name'];
+            }
+        }
+
+    }
+
+    if (empty($retval)) {
+        // else try the 'getadminoption' function
+        // - may fail if we don't have the proper permissions
+        $fn = 'plugin_getadminoption_' . $plugin;
+        if (function_exists($fn)) {
+            $result = $fn();
+            if (is_array($result) && !empty($result[0])) {
+                $retval = $result[0];
+            }
+        }
+    }
+
+    if (empty($retval)) {
+        // give up and fake it
+        $retval = strtoupper($plugin{0}) . substr($plugin, 1);
+    }
+
+    return $retval;
 }
 
 

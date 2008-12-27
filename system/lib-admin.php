@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-admin.php,v 1.136 2008/09/21 08:37:11 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-admin.php') !== false) {
     die('This file can not be used on its own!');
@@ -957,14 +955,19 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
     return $retval;
 }
 
-function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $token) {
+function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $token)
+{
     global $_CONF, $LANG_ADMIN, $LANG32;
+
     $retval = '';
     
     switch($fieldname) {
-        case "edit":
+        case 'edit':
             $retval = COM_createLink($icon_arr['edit'],
                 "{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}");
+            break;
+        case 'pi_name':
+            $retval = plugin_get_pluginname($A['pi_name']);
             break;
         case 'pi_version':
             $plugin_code_version = PLG_chkVersion ($A['pi_name']);

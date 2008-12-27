@@ -18,7 +18,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright"><b>{lang_pluginname}:</b></td>
-                                        <td>{pi_name}</td>
+                                        <td>{pi_display_name}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright"><b>{lang_pluginhomepage}:</b></td>
