@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.5                                                   |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -57,7 +57,6 @@ if (!isset($_SP_CONF['allow_php'])) {
     $_SP_CONF = $sp_config->get_config('staticpages');
 }
 
-$_SP_CONF['version'] = '1.5.0';
 
 // +---------------------------------------------------------------------------+
 // | Plugin API - Services                                                     |
@@ -986,9 +985,13 @@ function plugin_user_delete_staticpages($uid)
 */
 function plugin_chkVersion_staticpages()
 {
-    global $_SP_CONF;
+    global $_CONF;
 
-    return $_SP_CONF['version'];
+    require_once $_CONF['path'] . 'plugins/staticpages/autoinstall.php';
+ 
+    $inst_parms = plugin_autoinstall_staticpages('staticpages');
+ 
+    return $inst_parms['info']['pi_version'];
 }
 
 /**
@@ -1053,15 +1056,28 @@ function plugin_geticon_staticpages ()
 */
 function plugin_upgrade_staticpages()
 {
-    // the plugin needs these function so complain when they don't exist
-    if (!function_exists('PLG_uninstall') ||
-            !function_exists('COM_createLink')) {
+    global $_CONF, $_TABLES;
+
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                    "pi_name = 'staticpages'");
+    $code_version = plugin_chkVersion_staticpages();
+    if ($installed_version == $code_version) {
+        // nothing to do
+        return true;
+    }
+
+    require_once $_CONF['path'] . 'plugins/staticpages/autoinstall.php';
+    
+    if (! plugin_compatible_with_this_version_staticpages('staticpages')) {
         return 3002;
     }
 
-    // upgrades are done by the install script - return a generic error
-    COM_errorLog("Plugin upgrade function not implemented");
-    return 3001;
+    $inst_parms = plugin_autoinstall_staticpages('staticpages');
+    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'staticpages'");
+
+    return true;
 }
 
 
