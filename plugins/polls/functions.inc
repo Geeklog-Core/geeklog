@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.0                                                          |
+// | Polls Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -57,7 +57,6 @@ if (!isset($_PO_CONF['pollsloginrequired'])) {
     $_PO_CONF = $po_config->get_config('polls');
 }
 
-$_PO_CONF['version'] = '2.0.1';
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -360,9 +359,13 @@ function plugin_user_delete_polls ($uid)
 */
 function plugin_chkVersion_polls()
 {
-    global $_PO_CONF;
+    global $_CONF;
 
-    return $_PO_CONF['version'];
+    require_once $_CONF['path'] . 'plugins/polls/autoinstall.php';          
+
+    $inst_parms = plugin_autoinstall_polls('polls'); 
+
+    return $inst_parms['info']['pi_version'];
 }
 
 /**
