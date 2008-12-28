@@ -78,7 +78,7 @@ function plugin_autoinstall_calendar($pi_name)
 
 function plugin_load_configuration_calendar($pi_name)
 {
-    global $_CONF, $base_path;
+    global $_CONF;
 
     $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 

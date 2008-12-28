@@ -78,7 +78,7 @@ function plugin_autoinstall_links($pi_name)
 
 function plugin_load_configuration_links($pi_name)
 {
-    global $_CONF, $base_path;
+    global $_CONF;
 
     $base_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
 
