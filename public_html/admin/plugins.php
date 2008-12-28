@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | plugins.php                                                               |
 // |                                                                           |
@@ -1049,7 +1049,7 @@ function plugin_get_pluginname($plugin)
 
     if (empty($retval)) {
         // give up and fake it
-        $retval = strtoupper($plugin{0}) . substr($plugin, 1);
+        $retval = ucwords(str_replace('_', ' ', $plugin));
     }
 
     return $retval;
