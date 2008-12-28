@@ -1111,15 +1111,50 @@ function plugin_getheadercode_polls()
 */
 function plugin_upgrade_polls()
 {
-    // the plugin needs these function so complain when they don't exist
-    if (!function_exists('PLG_uninstall') ||
-            !function_exists('COM_createLink')) {
+    global $_CONF, $_TABLES, $_DB_dbms;
+
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                    "pi_name = 'polls'");
+    $code_version = plugin_chkVersion_polls();
+    if ($installed_version == $code_version) {
+        // nothing to do
+        return true;
+    }
+
+    require_once $_CONF['path'] . 'plugins/polls/autoinstall.php';
+
+    if (! plugin_compatible_with_this_version_polls('polls')) {
         return 3002;
     }
 
-    // upgrades are done by the install script - return a generic error
-    COM_errorLog("Plugin upgrade function not implemented");
-    return 3001;
+    $inst_parms = plugin_autoinstall_polls('polls');
+    $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    require_once $_CONF['path'] . 'plugins/polls/sql/'
+                                . $_DB_dbms . '_updates.php';
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '2.0.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            $current_version = '2.1.0';
+            break;
+
+        default:
+            $done = true;
+        }
+    }
+
+    DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'polls'");
+
+    return true;
 }
 
 /**

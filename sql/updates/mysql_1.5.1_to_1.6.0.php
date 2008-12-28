@@ -14,26 +14,4 @@ function update_ConfValues()
     return true;
 }
 
-function upgrade_PollsPluginId()
-{
-    global $_TABLES;
-
-    $P_SQL = array();
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollanswers']} CHANGE pid pid varchar(40) NOT NULL default ''";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollquestions']} CHANGE pid pid varchar(40) NOT NULL default ''";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['polltopics']} CHANGE pid pid varchar(40) NOT NULL default ''";
-    $P_SQL[] = "ALTER TABLE {$_TABLES['pollvoters']} CHANGE pid pid varchar(40) NOT NULL default ''";
-
-    $P_SQL = INST_checkInnodbUpgrade($P_SQL);
-    foreach ($P_SQL as $sql) {
-        $rst = DB_query($sql);
-        if (DB_error()) {
-            echo "There was an error upgrading the polls, SQL: $sql<br>";
-            return false;
-        }
-    }
-
-    return true;
-}
-
 ?>
