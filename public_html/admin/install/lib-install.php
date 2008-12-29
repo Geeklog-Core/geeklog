@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-install.php                                                           |
 // |                                                                           |
@@ -11,6 +11,7 @@
 // | Copyright (C) 2008 by the following authors:                              |
 // |                                                                           |
 // | Authors: Matt West - matt.danger.west AT gmail DOT com                    |
+// |          Dirk Haun - dirk AT haun-online DOT de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -1048,6 +1049,76 @@ function INST_pluginUpgrades()
                 COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
             }
         }
+    }
+}
+
+/**
+* Do a sanity check on the paths and URLs
+*
+* This is somewhat speculative but should provide the user with a working
+* site even if, for example, a site backup was installed elsewhere.
+*
+* @param    string  $path           proper /path/to/Geeklog
+* @param    string  $path_html      path to public_html
+* @param    string  $site_url       The site's URL
+* @param    string  $site_admin_url URL to the admin directory
+*
+*/
+function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
+{
+    // no global $_CONF here!
+
+    require_once $path . 'system/classes/config.class.php';
+
+    $config = config::get_instance();
+    $config->set_configfile($path . 'db-config.php');
+    $config->load_baseconfig();
+    $config->initConfig();
+    $_CONF = $config->get_config('Core');
+
+    if (! file_exists($_CONF['path_log'] . 'error.log')) {
+        $config->set('path_log', $path . 'logs/');
+    }
+    if (! file_exists($_CONF['path_language'] . $_CONF['language'] . '.php')) {
+        $config->set('path_language', $path . 'language/');
+    }
+    if (! file_exists($_CONF['backup_path'])) {
+        $config->set('backup_path', $path . 'backups/');
+    }
+    if (! file_exists($_CONF['path_data'])) {
+        $config->set('path_data', $path . 'data/');
+    }
+    if ((! $_CONF['have_pear']) &&
+            (! file_exists($_CONF['path_pear'] . 'PEAR.php'))) {
+        $config->set('path_pear', $path . 'system/pear/');
+    }
+
+    if (! file_exists($_CONF['path_html'] . 'lib-common.php')) {
+        $config->set('path_html', $path_html);
+    }
+    if (! file_exists($_CONF['path_themes'] . $_CONF['theme']
+                                           . '/header.thtml')) {
+        $config->set('path_themes', $path_html . 'layout/');
+    }
+    if (! file_exists($_CONF['path_images'] . 'articles')) {
+        $config->set('path_images', $path_html . 'images/');
+    }
+    if (substr($_CONF['rdf_file'], strlen($path_html)) != $path_html) {
+        // this may not be correct but neither was the old value apparently ...
+        $config->set('rdf_file', $path_html . 'backend/geeklog.rss');
+    }
+
+    if (! empty($site_url) && ($_CONF['site_url'] != $site_url)) {
+        $config->set('site_url', $site_url);
+
+        // if we had to fix the site's URL, chances are that cookie domain
+        // and path are also wrong and the user won't be able to log in
+        $config->set('cookiedomain', '');
+        $config->set('cookie_path', '/');
+    }
+    if (! empty($site_admin_url) &&
+            ($_CONF['site_admin_url'] != $site_admin_url)) {
+        $config->set('site_admin_url', $site_admin_url);
     }
 }
 

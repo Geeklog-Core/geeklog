@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -36,10 +36,8 @@
 // | You don't need to change anything in this file.                           |
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.47 2008/06/15 06:41:26 mwest Exp $
 
-require_once "lib-install.php";
+require_once 'lib-install.php';
 
 
 /*
@@ -48,7 +46,7 @@ require_once "lib-install.php";
  * The guts of the installation and upgrade package.
  *
  * @param   string  $install_type   'install' or 'upgrade'
- * @param   int     $install_step   1 - 3
+ * @param   int     $install_step   1 - 4
  */
 function INST_installEngine($install_type, $install_step)
 {
@@ -549,6 +547,12 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('site_mail', urldecode($site_mail));
                         $config->set('noreply_mail', urldecode($noreply_mail));
                         $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
+                    } else {
+                        $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
+                        $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
+
+                        INST_fixPathsAndUrls($_CONF['path'], $html_path,
+                            urldecode($site_url), urldecode($site_admin_url));
                     }
 
                     // disable plugins for which we don't have the source files
