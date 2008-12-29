@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | migrate.php                                                               |
 // |                                                                           |
@@ -31,10 +31,10 @@
 // | You don't need to change anything in this file.                           |
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
-//
 
-require_once "lib-install.php";
+require_once 'lib-install.php';
 require_once '../../siteconfig.php';
+
 
 // +---------------------------------------------------------------------------+
 // | Main                                                                      |
@@ -44,7 +44,7 @@ require_once '../../siteconfig.php';
 $html_path          = str_replace('admin/install/migrate.php', '', str_replace('admin\install\migrate.php', '', str_replace('\\', '/', __FILE__)));
 $siteconfig_path    = '../../siteconfig.php';
 
-if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not beenÊdefined.
+if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been defined.
 
     // Attempt to locate Geeklog's path
     $gl_path = strtr(__FILE__, '\\', '/'); // replace all '\' with '/'
@@ -406,16 +406,29 @@ if (INST_phpOutOfDate()) {
         }
 
         // Parse the .sql file to grab the table prefix
+        $has_config = false;
+
         $sql_file = fopen($backup_dir . $backup_file, 'r');
-        $sql_data = fread($sql_file, filesize($backup_dir . $backup_file));
+        while (! feof($sql_file)) {
+            $line = @fgets($sql_file);
+            if (! empty($line)) {
+                if (preg_match('/CREATE TABLE/i', $line)) {
+                    $line = trim($line);
+                    if (strpos($line, 'access`') !== false) {
+                        $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $line));
+                    } elseif (strpos($line, 'conf_values') !== false) {
+                        $has_config = true;
+                        break;
+                    } elseif (strpos($line, 'featurecodes') !== false) {
+                        // assume there's no conf_values table in this db dump
+                        break;
+                    }
+                }
+            }
+        }
         fclose($sql_file);
-        $sql_data = preg_replace('/\n/', '', $sql_data);
-        $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $sql_data));
 
-        // Check if the backup file is version 1.5 or newer
-//        if (preg_match('/conf_values/', $sql_data)) {
-if(1){
-
+        if ($has_config) {
             // Update db-config.php with the table prefix from the backup file.
             if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
                 exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
@@ -465,6 +478,10 @@ if(1){
         $config->set('path_themes', $html_path . 'layout/');
         $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
         $config->set('path_pear', $_CONF['path_system'] . 'pear/');
+
+        // reset cookie domain and path as wrong values may prevent login
+        $config->set('cookiedomain', '');
+        $config->set('cookie_path', '/');
 
         /**
          * Check for missing plugins
