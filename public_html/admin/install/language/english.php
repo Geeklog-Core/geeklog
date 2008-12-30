@@ -145,7 +145,10 @@ $LANG_INSTALL = array(
     94 => 'Here are some hints to find the correct path:',
     95 => 'The complete path to this file (the install script) is:',
     96 => 'The installer was looking for %s in:',
-    97 => 'Set File Permissions'
+    97 => 'Set File Permissions',
+    98 => 'Advanced Users',
+    99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
+    100 => 'Invalid mode specified'
 );
 
 // +---------------------------------------------------------------------------+

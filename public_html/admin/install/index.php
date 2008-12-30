@@ -1794,8 +1794,8 @@ if (INST_phpOutOfDate()) {
                 // Also, list the auto-generated chmod command for advanced users
                 $display .= INST_printTab(3) . '<div class="file-permissions">' . LB
                     . $display_permissions . INST_printTab(3) . '</div>' . LB
-                    . INST_printTab(3) . '<h2>' . 'Advanced Users' . '</h2>' . LB
-                    . INST_printTab(3) . '<p>' . 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell: ' . '</p>' . LB
+                    . INST_printTab(3) . '<h2>' . $LANG_INSTALL[98] . '</h2>' . LB
+                    . INST_printTab(3) . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
                     . INST_printTab(3) . '<p><div class="codeblock"><code>' . $chmod_string . LB 
                     . INST_printTab(3) . '</code></div></p><br ' . XHTML . '>' . LB;
                 $step++;
@@ -1893,8 +1893,8 @@ if (INST_phpOutOfDate()) {
                 . '&display_step=' . $_REQUEST['display_step']);
             break;
         default:
-            $display .= '<p>Invalid mode specified</p>' . LB;
-        
+            $display .= '<p>' . $LANG_INSTALL[100] . '</p>' . LB;
+            break;
         }
 
         break;
@@ -1905,8 +1905,8 @@ if (INST_phpOutOfDate()) {
     case 'install': // Deliberate fall-through, no "break"
     case 'upgrade':
 
-        if (($mode == 'upgrade') && ($step == 4)) {
-            // for the plugin upgrade,
+        if ($step == 4) {
+            // for the plugin install and upgrade,
             // we need lib-common.php in the global(!) namespace
             require_once '../../lib-common.php';
         }
