@@ -69,7 +69,6 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     if (@ini_set('include_path', $_CONF['path'] . 'system/pear/'
                                  . PATH_SEPARATOR . $include_path) === false) {
 
-        
         $display .= INST_getAlertMsg("Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.");
         return false;
     }
@@ -88,29 +87,45 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
 
     }
 
+    $found_sql_file = false;
     $files = $archive->listContent();
-    $dirname = preg_replace('/\/.*$/', '', $files[0]['filename']);
-    if ($dirname == $files[0]['filename']) {
+    foreach ($files as $file) {
+        if (! $file['folder']) {
+            if (preg_match('/\.sql$/', $file['filename'])) {
+                $dirname = preg_replace('/\/.*$/', '', $file['filename']);
+                $found_sql_file = true;
+                break;
+            }
+        }
+    }
+
+    if (! $found_sql_file) {
+        $display .= INST_getAlertMsg(sprintf("The archive '%s' does not appear to contain any SQL files.", $backup_file));
+        return false;
+    }
+
+    if ($dirname == $file['filename']) {
         $dirname = ''; // no directory
     }
+    if (empty($dirname)) {
+        $unpacked_file = $file['filename'];
+    } else {
+        $unpacked_file = substr($file['filename'], strlen($dirname) + 1);
+    } 
+
     $success = false;
     if ($type == 'zip') {
         $result = $archive->extract(array('add_path' => $backup_path,
+                                          'by_name' => $unpacked_file,
                                           'remove_path' => $dirname));
         if (is_array($result)) {
             $success = true;
         }
     } else {
-        $result = $archive->extractList(array($files[0]['filename']),
+        $result = $archive->extractList(array($file['filename']),
                                         $backup_path, $dirname);
         $success = $result;
     }
-
-    if (empty($dirname)) {
-        $unpacked_file = $files[0]['filename'];
-    } else {
-        $unpacked_file = substr($files[0]['filename'], strlen($dirname) + 1);
-    } 
 
     if ((! $success) || (! file_exists($backup_path . $unpacked_file))) {
         $display .= INST_getAlertMsg(sprintf("Error extracting database backup '%s' from compressed backup file.", $unpacked_file));
@@ -504,6 +519,7 @@ if (INST_phpOutOfDate()) {
 
             // Parse the .sql file to grab the table prefix
             $has_config = false;
+            $num_create = 0;
 
             $sql_file = @fopen($backup_dir . $backup_file, 'r');
             if (! $sql_file) {
@@ -513,6 +529,7 @@ if (INST_phpOutOfDate()) {
                 $line = @fgets($sql_file);
                 if (! empty($line)) {
                     if (preg_match('/CREATE TABLE/i', $line)) {
+                        $num_create++;
                         $line = trim($line);
                         if (strpos($line, 'access`') !== false) {
                             $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $line));
@@ -528,7 +545,12 @@ if (INST_phpOutOfDate()) {
             }
             fclose($sql_file);
 
-            if ($has_config) {
+            if ($num_create <= 1) {
+
+                // this doesn't look like an SQL dump ...
+                $display .= INST_getAlertMsg(sprintf("Import aborted: The file '%s' does not appear to be an SQL dump.", $backup_file));
+
+            } elseif ($has_config) {
                 // Update db-config.php with the table prefix from the backup file.
                 if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
@@ -543,7 +565,7 @@ if (INST_phpOutOfDate()) {
 
             } else {
 
-               $display .= INST_getAlertMsg($LANG_MIGRATE[25]);
+                $display .= INST_getAlertMsg($LANG_MIGRATE[25]);
 
             }
 
