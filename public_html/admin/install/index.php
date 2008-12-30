@@ -1777,7 +1777,7 @@ if (INST_phpOutOfDate()) {
             if ($num_wrong) {
                 // If any files have incorrect permissions.
 
-                $display .= INST_printTab(2) . '<h1 class="heading">' . 'Step' . ' ' . $display_step . ' - ' . $LANG_INSTALL[14] . '</h1>' . LB;
+                $display .= INST_printTab(2) . '<h1 class="heading">' . 'Step' . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
                 $display_step++;
 
                 if (isset($_GET['install_type'])) {

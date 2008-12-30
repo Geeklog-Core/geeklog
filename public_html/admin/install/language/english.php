@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | english.php                                                               |
 // |                                                                           |
@@ -33,8 +33,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: english.php,v 1.11 2008/05/01 21:08:31 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -65,7 +63,7 @@ $LANG_INSTALL = array(
     11 => 'Permissions',
     12 => 'Change to',
     13 => 'Currently',
-    14 => 'Set File Permissions',
+    14 => '',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
@@ -146,7 +144,8 @@ $LANG_INSTALL = array(
     93 => 'Success',
     94 => 'Here are some hints to find the correct path:',
     95 => 'The complete path to this file (the install script) is:',
-    96 => 'The installer was looking for %s in:'
+    96 => 'The installer was looking for %s in:',
+    97 => 'Set File Permissions'
 );
 
 // +---------------------------------------------------------------------------+
