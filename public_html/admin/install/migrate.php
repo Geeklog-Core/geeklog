@@ -116,7 +116,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     $success = false;
     if ($type == 'zip') {
         $result = $archive->extract(array('add_path' => $backup_path,
-                                          'by_name' => $unpacked_file,
+                                          'by_name' => array($file['filename']),
                                           'remove_path' => $dirname));
         if (is_array($result)) {
             $success = true;
