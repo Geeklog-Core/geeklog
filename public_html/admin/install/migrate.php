@@ -28,13 +28,99 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | You don't need to change anything in this file.                           |
-// | Please read docs/install.html which describes how to install Geeklog.     |
-// +---------------------------------------------------------------------------+
 
 require_once 'lib-install.php';
 require_once '../../siteconfig.php';
 
+
+/**
+* Unpack a db backup file, if necessary
+*
+* Note: This requires a minimal PEAR setup (incl. Tar and Zip classes) and a
+*       way to set the PEAR include path. But if that doesn't work on your
+*       setup, then chances are you won't get Geeklog up and running anyway ...
+*
+* @param    string  $backup_path    path to the "backups" directory
+* @param    string  $backup_file    backup file name
+* @param    ref     $display        reference to HTML string (for error msg)
+* @return   mixed                   file name of unpacked file or false: error
+*
+*/
+function INST_unpackFile($backup_path, $backup_file, &$display)
+{
+    global $_CONF;
+
+    $unpacked_file = $backup_file;
+
+    $type = '';
+    if (preg_match('/\.zip$/i', $backup_file)) {
+        $type = 'zip';
+    } elseif (preg_match('/\.tar.gz$/i', $backup_file) ||
+              preg_match('/\.tgz$/i', $backup_file)) {
+        $type = 'tar';
+    }
+
+    if (empty($type)) {
+        // not packed
+        return $backup_file;
+    }
+
+    $include_path = @ini_get('include_path');
+    if (@ini_set('include_path', $_CONF['path'] . 'system/pear/'
+                                 . PATH_SEPARATOR . $include_path) === false) {
+
+        
+        $display .= INST_getAlertMsg("Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.");
+        return false;
+    }
+
+    if ($type == 'zip') {
+
+        require_once 'Archive/Zip.php';
+
+        $archive = new Archive_Zip($backup_path . $backup_file);
+
+    } else {
+
+        require_once 'Archive/Tar.php';
+
+        $archive = new Archive_Tar($backup_path . $backup_file);
+
+    }
+
+    $files = $archive->listContent();
+    $dirname = preg_replace('/\/.*$/', '', $files[0]['filename']);
+    if ($dirname == $files[0]['filename']) {
+        $dirname = ''; // no directory
+    }
+    $success = false;
+    if ($type == 'zip') {
+        $result = $archive->extract(array('add_path' => $backup_path,
+                                          'remove_path' => $dirname));
+        if (is_array($result)) {
+            $success = true;
+        }
+    } else {
+        $result = $archive->extractList(array($files[0]['filename']),
+                                        $backup_path, $dirname);
+        $success = $result;
+    }
+
+    if (empty($dirname)) {
+        $unpacked_file = $files[0]['filename'];
+    } else {
+        $unpacked_file = substr($files[0]['filename'], strlen($dirname) + 1);
+    } 
+
+    if ((! $success) || (! file_exists($backup_path . $unpacked_file))) {
+        $display .= INST_getAlertMsg(sprintf("Error extracting database backup '%s' from compressed backup file.", $unpacked_file));
+        return false;
+    }
+
+    unset($archive);
+
+    return $unpacked_file;
+}
 
 // +---------------------------------------------------------------------------+
 // | Main                                                                      |
@@ -127,7 +213,13 @@ if (INST_phpOutOfDate()) {
             . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
             . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
-        rsort($backup_files = glob($backup_dir . '*.sql')); // Identify the backup files in backups/ and order them newest to oldest
+        //rsort($backup_files = glob($backup_dir . '*.sql')); // Identify the backup files in backups/ and order them newest to oldest
+        $sql_files = glob($backup_dir . '*.sql');
+        $tar_files = glob($backup_dir . '*.tar.gz');
+        $tgz_files = glob($backup_dir . '*.tgz');
+        $zip_files = glob($backup_dir . '*.zip');
+        $backup_files = array_merge($sql_files, $tar_files, $tgz_files, $zip_files);
+        rsort($backup_files); // Identify the backup files in backups/ and order them newest to oldest
 
         $display .= INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
             . INST_printTab(4) . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
@@ -338,7 +430,7 @@ if (INST_phpOutOfDate()) {
                     // Ask the user if they want to overwrite the original 
                     // but for now save the file as a copy so it won't need
                     // to be uploaded again.
-                    $backup_file_copy = str_replace('.sql', '_copy.sql', $backup_file['name']);
+                    $backup_file_copy = str_replace('.sql', '_uploaded.sql', $backup_file['name']);
                     if (!move_uploaded_file($backup_file['tmp_name'], $backup_dir . $backup_file_copy)) { // If able to save the file
 
                         $display .= $LANG_MIGRATE[19] . $backup_file_copy . $LANG_MIGRATE[20] . $backup_dir . '.' . LB;
@@ -387,7 +479,7 @@ if (INST_phpOutOfDate()) {
 
     /**
      * Page 3 - Gets the database table prefix from the database file.
-     * Overwrites the an existing database file if requested by the user.
+     * Overwrites an existing database file if requested by the user.
      * Sends the database filename (and a few other variables) 
      * to bigdump.php, which performs the import.
      * 
@@ -401,50 +493,60 @@ if (INST_phpOutOfDate()) {
         if (isset($_REQUEST['overwrite_file'])) { 
 
             // Overwrite the old file with the new file.
-            rename($backup_dir . str_replace('.sql', '_copy.sql', $backup_file), $backup_dir . $backup_file);
+            rename($backup_dir . str_replace('.sql', '_uploaded.sql', $backup_file), $backup_dir . $backup_file);
 
         }
 
-        // Parse the .sql file to grab the table prefix
-        $has_config = false;
+        $unpacked_file = INST_unpackFile($backup_dir, $backup_file, $display);
+        if ($unpacked_file !== false) {
 
-        $sql_file = fopen($backup_dir . $backup_file, 'r');
-        while (! feof($sql_file)) {
-            $line = @fgets($sql_file);
-            if (! empty($line)) {
-                if (preg_match('/CREATE TABLE/i', $line)) {
-                    $line = trim($line);
-                    if (strpos($line, 'access`') !== false) {
-                        $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $line));
-                    } elseif (strpos($line, 'conf_values') !== false) {
-                        $has_config = true;
-                        break;
-                    } elseif (strpos($line, 'featurecodes') !== false) {
-                        // assume there's no conf_values table in this db dump
-                        break;
+            $backup_file = $unpacked_file;
+
+            // Parse the .sql file to grab the table prefix
+            $has_config = false;
+
+            $sql_file = @fopen($backup_dir . $backup_file, 'r');
+            if (! $sql_file) {
+                exit(sprintf("Backup file '%s' just vanished ...", $backup_dir . $backup_file));
+            }
+            while (! feof($sql_file)) {
+                $line = @fgets($sql_file);
+                if (! empty($line)) {
+                    if (preg_match('/CREATE TABLE/i', $line)) {
+                        $line = trim($line);
+                        if (strpos($line, 'access`') !== false) {
+                            $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $line));
+                        } elseif (strpos($line, 'conf_values') !== false) {
+                            $has_config = true;
+                            break;
+                        } elseif (strpos($line, 'featurecodes') !== false) {
+                            // assume there's no conf_values table in here
+                            break;
+                        }
                     }
                 }
             }
-        }
-        fclose($sql_file);
+            fclose($sql_file);
 
-        if ($has_config) {
-            // Update db-config.php with the table prefix from the backup file.
-            if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
-                exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
-            }
+            if ($has_config) {
+                // Update db-config.php with the table prefix from the backup file.
+                if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
+                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                }
     
-            // Send file to bigdump.php script to do the import.
-            header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
-                . '&language=' . $language
-                . '&fn=' . urlencode($backup_dir . $backup_file) 
-                . '&site_url=' . urlencode($_REQUEST['site_url'])
-                . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+                // Send file to bigdump.php script to do the import.
+                header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
+                    . '&language=' . $language
+                    . '&fn=' . urlencode($backup_dir . $backup_file) 
+                    . '&site_url=' . urlencode($_REQUEST['site_url'])
+                    . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
 
-        } else {
+            } else {
 
-           $display .= INST_getAlertMsg($LANG_MIGRATE[25]);
-        
+               $display .= INST_getAlertMsg($LANG_MIGRATE[25]);
+
+            }
+
         }
 
         break;
