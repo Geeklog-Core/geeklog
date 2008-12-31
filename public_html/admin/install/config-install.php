@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | config-install.php                                                        |
 // |                                                                           |
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: config-install.php,v 1.33 2008/09/21 08:37:09 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
     die('This file can not be used on its own!');
@@ -332,25 +330,6 @@ function install_config()
     $c->add('disable_webservices',   0, 'select', 7, 40, 0, 1840, TRUE);
     $c->add('restrict_webservices',  0, 'select', 7, 40, 0, 1850, TRUE);
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE);
-
-
-    // Add the configuration records for the default installed plugins
-    $plugin_path = $_CONF['path'] . 'plugins/';
-
-    require_once $plugin_path . 'calendar/install_defaults.php';
-    plugin_initconfig_calendar();
-
-    require_once $plugin_path . 'links/install_defaults.php';
-    plugin_initconfig_links();
-
-    require_once $plugin_path . 'polls/install_defaults.php';
-    plugin_initconfig_polls();
-
-    require_once $plugin_path . 'spamx/install_defaults.php';
-    plugin_initconfig_spamx();
-
-    require_once $plugin_path . 'staticpages/install_defaults.php';
-    plugin_initconfig_staticpages();
 }
 
 ?>
