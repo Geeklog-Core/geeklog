@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | bigdump.php                                                               |
 // |                                                                           |
@@ -29,7 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
 
 //
 // BigDump ver. 0.29b from 2008-01-19
@@ -68,7 +67,7 @@ $comment[]='#';                       // Standard comment lines are dropped by d
 $comment[]='-- ';
 // $comment[]='---';                  // Uncomment this line if using proprietary dump created by outdated mysqldump
 // $comment[]='CREATE DATABASE';      // Uncomment this line if your dump contains create database queries in order to ignore them
-// $comment[]='/*!';                  // Or add your own string to leave out other proprietary things
+$comment[]='/*!';                     // Or add your own string to leave out other proprietary things
 
 // Connection character set should be the same as the dump file character set (utf8, latin1, cp1251, koi8r etc.)
 // See http://dev.mysql.com/doc/refman/5.0/en/charset-charsets.html for the full list
