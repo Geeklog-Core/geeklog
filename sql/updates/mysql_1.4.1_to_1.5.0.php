@@ -422,12 +422,6 @@ function upgrade_PollsPlugin()
         }
     }
 
-    if (file_exists($plugin_path . 'config.php')) {
-        // Rename the existing config.php as it's not needed any more
-        $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.5.0.php');
-    }
-
     return true;
 }
 
@@ -464,12 +458,6 @@ function upgrade_StaticpagesPlugin()
             echo "There was an error upgrading the Static Pages plugin, SQL: $sql<br>";
             return false;
         }
-    }
-
-    if (file_exists($plugin_path . 'config.php')) {
-        // Rename the existing config.php as it's not needed any more
-        $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;
@@ -521,12 +509,6 @@ function upgrade_CalendarPlugin()
         }
     }
 
-    if (file_exists($plugin_path . 'config.php')) {
-        // Rename the existing config.php as it's not needed any more
-        $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.5.0.php');
-    }
-
     return true;
 }
 
@@ -556,12 +538,6 @@ function upgrade_SpamXPlugin()
     if (DB_error()) {
         echo "There was an error upgrading the Spam-X plugin";
         return false;
-    }
-
-    if (file_exists($plugin_path . 'config.php')) {
-        // Rename the existing config.php as it's not needed any more
-        $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;
@@ -655,12 +631,6 @@ function upgrade_LinksPlugin()
             echo "Error inserting categories into linkcategories table";
             return false;
         }
-    }
-
-    if (file_exists($plugin_path . 'config.php')) {
-        // Rename the existing config.php as it's not needed any more
-        $ren = @rename($plugin_path . 'config.php',
-                       $plugin_path . 'config-pre1.5.0.php');
     }
 
     return true;
