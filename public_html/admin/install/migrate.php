@@ -211,6 +211,14 @@ if (INST_phpOutOfDate()) {
                         'user' => 'username',
                         'pass' => '',
                         'prefix' => 'gl_' );
+        if (file_exists($dbconfig_path)) {
+            require_once $dbconfig_path;
+
+            $_FORM['host'] = ($_DB_host != 'localhost' ? '' : $_DB_host);
+            $_FORM['name'] = ($_DB_name != 'geeklog' ? '' : $_DB_name);
+            $_FORM['user'] = ($_DB_user != 'username' ? '' : $_DB_user);
+            $_FORM['prefix'] = $_DB_table_prefix;
+        }
 
         // Set up the URL and admin URL paths.
         $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
