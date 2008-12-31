@@ -718,11 +718,14 @@ function INST_pluginExists($plugin)
 *
 * @note Needs a fully working Geeklog, so can only be done late in the upgrade
 *       process!
+* @return   int     number of failed plugin updates (0 = everything's fine)
 *
 */
 function INST_pluginUpgrades()
 {
     global $_CONF, $_TABLES;
+
+    $failed = 0;
 
     $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $numPlugins = DB_numRows($result);
@@ -736,9 +739,12 @@ function INST_pluginUpgrades()
                 // upgrade failed - disable plugin
                 DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$pi_name'");
                 COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
+                $failed++;
             }
         }
     }
+
+    return $failed;
 }
 
 ?>

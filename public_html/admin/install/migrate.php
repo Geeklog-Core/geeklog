@@ -583,11 +583,20 @@ if (INST_phpOutOfDate()) {
         require_once $_CONF['path_system'] . 'lib-database.php';
         require_once 'lib-upgrade.php';
 
+        $upgrade_error = false;
+
         $version = INST_identifyGeeklogVersion();
         if ($version == 'empty') {
-            exit("Fatal: Database import seems to have failed?!");
+
+            // "This shouldn't happen"
+            $display .= INST_getAlertMsg("Fatal error: Database import seems to have failed. Don't know how to continue.");
+            $upgrade_error = true;
+
         } elseif (empty($version)) {
-            exit("Could not identify version. Please perform a manual update.");
+
+            $display .= INST_getAlertMsg("Could not identify database version. Please perform a manual update.");
+            $upgrade_error = true;
+
         } elseif ($version != VERSION) {
 
             $use_innodb = false;
@@ -598,8 +607,19 @@ if (INST_phpOutOfDate()) {
             }
 
             if (! INST_doDatabaseUpgrades($version)) {
-                exit("Database upgrade from version $version to version " . VERSION . " failed!");
+
+                $display .= INST_getAlertMsg("Database upgrade from version $version to version " . VERSION . " failed.");
+                $upgrade_error = true;
+
             }
+
+        }
+
+        if ($upgrade_error) {
+
+            $display .= INST_getFooter();
+            echo $display;
+            exit;
 
         }
 
@@ -671,12 +691,13 @@ if (INST_phpOutOfDate()) {
 
         }
 
+        $disabled_plugins = 0;
         if ($version != VERSION) {
 
             // We did a database upgrade above. Now that any missing plugins
             // have been disabled and we've loaded lib-common.php, perform
             // upgrades for the remaining plugins.
-            INST_pluginUpgrades();
+            $disabled_plugins = INST_pluginUpgrades();
 
         }
 
@@ -749,7 +770,8 @@ if (INST_phpOutOfDate()) {
          */
 
         // Check if there are any missing files or plugins
-        if ($missing_images || ($missing_plugins > 0)) {
+        if ($missing_images || ($missing_plugins > 0) ||
+                ($disabled_plugins > 0)) {
 
             $display .= '<h2>' . $LANG_MIGRATE[37] . '</h2>' . LB
                         . '<p>' . $LANG_MIGRATE[38] . '</p>' . LB;
@@ -758,6 +780,12 @@ if (INST_phpOutOfDate()) {
             if ($missing_plugins > 0) { 
 
                 $display .= INST_getAlertMsg($LANG_MIGRATE[32] . ' <code>' . $_CONF['path'] . 'plugins/</code> ' . $LANG_MIGRATE[33], 'notice');
+
+            }
+
+            if ($disabled_plugins > 0) {
+
+                $display .= INST_getAlertMsg("One or more plugins could not be updated and had to be disabled.");
 
             }
 

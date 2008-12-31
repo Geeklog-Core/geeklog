@@ -46,8 +46,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-install.php') !== false) {
 if (function_exists('ini_set')) {
     ini_set('display_errors', '1');
 }
-//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_NOTICE);
-error_reporting(E_ALL);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_NOTICE);
 
 if (!defined('LB')) {
     define('LB', "\n");
