@@ -11,6 +11,7 @@
 // | Copyright (C) 2008 by the following authors:                              |
 // |                                                                           |
 // | Authors: Matt West - matt AT mattdanger DOT net                           |
+// |          Dirk Haun - dirk AT haun-online DOT de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -87,10 +88,11 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
 
     }
 
+    // we're going to extract the first .sql file we find in the archive
     $found_sql_file = false;
     $files = $archive->listContent();
     foreach ($files as $file) {
-        if (! $file['folder']) {
+        if ((! isset($file['folder'])) || (! $file['folder'])) {
             if (preg_match('/\.sql$/', $file['filename'])) {
                 $dirname = preg_replace('/\/.*$/', '', $file['filename']);
                 $found_sql_file = true;
@@ -136,6 +138,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
 
     return $unpacked_file;
 }
+
 
 // +---------------------------------------------------------------------------+
 // | Main                                                                      |
@@ -550,7 +553,7 @@ if (INST_phpOutOfDate()) {
                 // this doesn't look like an SQL dump ...
                 $display .= INST_getAlertMsg(sprintf("Import aborted: The file '%s' does not appear to be an SQL dump.", $backup_file));
 
-            } elseif ($has_config) {
+            } else {
                 // Update db-config.php with the table prefix from the backup file.
                 if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
@@ -563,10 +566,6 @@ if (INST_phpOutOfDate()) {
                     . '&site_url=' . urlencode($_REQUEST['site_url'])
                     . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
 
-            } else {
-
-                $display .= INST_getAlertMsg($LANG_MIGRATE[25]);
-
             }
 
         }
@@ -575,12 +574,34 @@ if (INST_phpOutOfDate()) {
 
     /**
      * Page 4 - Post-import operations
-     * Check for missing plugins, incorrect paths, and other required Geeklog files
+     * Update the database, if necessary. Then check for missing plugins,
+     * incorrect paths, and other required Geeklog files
      */
     case 4:
     
         require_once $dbconfig_path;
         require_once $_CONF['path_system'] . 'lib-database.php';
+        require_once 'lib-upgrade.php';
+
+        $version = INST_identifyGeeklogVersion();
+        if ($version == 'empty') {
+            exit("Fatal: Database import seems to have failed?!");
+        } elseif (empty($version)) {
+            exit("Could not identify version. Please perform a manual update.");
+        } elseif ($version != VERSION) {
+
+            $use_innodb = false;
+            $db_engine = DB_getItem($_TABLES['vars'], 'value',
+                                    "name = 'database_engine'");
+            if ($db_engine == 'InnoDB') {
+                $use_innodb = true;
+            }
+
+            if (! INST_doDatabaseUpgrades($version)) {
+                exit("Database upgrade from version $version to version " . VERSION . " failed!");
+            }
+
+        }
 
         /**
          * Let's assume that the paths that were imported from the backup are 
@@ -620,7 +641,7 @@ if (INST_phpOutOfDate()) {
 
         // Query {$_TABLES['plugins']} to get a list of installed plugins
         $missing_plugins = 0;
-        $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+        $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
         $num_plugins = DB_numRows($result);
         for ($i = 0; $i < $num_plugins; $i++) { // Look in the plugins directories to ensure that those plugins exist. 
         
@@ -647,6 +668,15 @@ if (INST_phpOutOfDate()) {
         foreach ($_MISSING_PLUGINS as $m_p) {
 
             COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[27] . $m_p . $LANG_MIGRATE[28]); 
+
+        }
+
+        if ($version != VERSION) {
+
+            // We did a database upgrade above. Now that any missing plugins
+            // have been disabled and we've loaded lib-common.php, perform
+            // upgrades for the remaining plugins.
+            INST_pluginUpgrades();
 
         }
 
@@ -696,7 +726,7 @@ if (INST_phpOutOfDate()) {
 
         // Userphoto images
         $missing_userphoto_images = false;
-        $result = DB_query("SELECT `photo` FROM {$_TABLES['users']} WHERE `photo` != 'NULL' AND `photo` != ''");
+        $result = DB_query("SELECT `photo` FROM {$_TABLES['users']} WHERE `photo` != NULL AND `photo` != ''");
         $num_userphoto_images = DB_numRows($result);
         for ($i = 0; $i < $num_userphoto_images; $i++) {
         

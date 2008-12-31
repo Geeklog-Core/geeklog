@@ -46,7 +46,8 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-install.php') !== false) {
 if (function_exists('ini_set')) {
     ini_set('display_errors', '1');
 }
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_NOTICE);
+//error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_NOTICE);
+error_reporting(E_ALL);
 
 if (!defined('LB')) {
     define('LB', "\n");
@@ -58,7 +59,7 @@ if (!defined('XHTML')) {
     define('XHTML', ' /');
 }
 if (!defined('SUPPORTED_PHP_VER')) {
-    define('SUPPORTED_PHP_VER','4.1.0');
+    define('SUPPORTED_PHP_VER', '4.1.0');
 }
 
 if (empty($LANG_DIRECTION)) {
@@ -734,34 +735,14 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 
 
 /**
- * Set VERSION constant in siteconfig.php after successful upgrade
- *
- * @param   string  $siteconfig_path    path to siteconfig.php
- * @return  void
- *
- */
-function INST_setVersion($siteconfig_path)
-{
-    global $LANG_INSTALL;
-
-    $siteconfig_file = fopen($siteconfig_path, 'r');
-    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
-    fclose($siteconfig_file);
-
-    $siteconfig_data = preg_replace
-            (
-             '/define\s*\(\'VERSION\',[^;]*;/',
-             "define('VERSION', '" . VERSION . "');",
-             $siteconfig_data
-            );
-
-    $siteconfig_file = fopen($siteconfig_path, 'w');
-    if (!fwrite($siteconfig_file, $siteconfig_data)) {
-        exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
-    }
-    fclose($siteconfig_file);
-}
-
+* Get information about a plugin
+*
+* Only works for plugins that have a autoinstall.php file
+*
+* @param    string  $plugin     plugin's directory name
+* @return   mixed               array of plugin info or false: error
+*
+*/
 function INST_getPluginInfo($plugin)
 {
     global $_CONF;
@@ -1024,33 +1005,6 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
     return true;
 }
 
-/**
-* Upgrade any enabled plugins
-*
-* @note Needs a fully working Geeklog, so can only be done late in the upgrade
-*       process!
-*
-*/
-function INST_pluginUpgrades()
-{
-    global $_CONF, $_TABLES;
-
-    $result = DB_query("SELECT pi_name, pi_version FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-    $numPlugins = DB_numRows($result);
-
-    for ($i = 0; $i < $numPlugins; $i++) {
-        list($pi_name, $pi_version) = DB_fetchArray($result);
-
-        $code_version = PLG_chkVersion($pi_name);
-        if (! empty($code_version) && ($code_version != $pi_version)) {
-            if (PLG_upgrade($pi_name) !== true) {
-                // upgrade failed - disable plugin
-                DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$pi_name'");
-                COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
-            }
-        }
-    }
-}
 
 /**
 * Do a sanity check on the paths and URLs
