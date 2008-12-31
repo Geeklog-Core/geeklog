@@ -201,7 +201,7 @@ if (INST_phpOutOfDate()) {
             . INST_printTab(3) . '<ul>' . LB
             . INST_printTab(4) . '<li>' . $LANG_MIGRATE[2] . '</li>' . LB
             . INST_printTab(4) . '<li>' . $LANG_MIGRATE[3] . '</li>' . LB
-            . INST_printTab(4) . '<li>' . $LANG_MIGRATE[4] . '</li>' . LB
+            //. INST_printTab(4) . '<li>' . $LANG_MIGRATE[4] . '</li>' . LB
             . INST_printTab(4) . '<li>' . $LANG_MIGRATE[5] . '</li>' . LB
             . INST_printTab(3) . '</ul>' . LB . LB;
 

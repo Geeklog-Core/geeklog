@@ -40,7 +40,7 @@ $LANG_CHARSET = 'iso-8859-1';
 
 // +---------------------------------------------------------------------------+
 // | Array Format:                                                             |
-// | $LANG_NAME[XX]: $LANG - variable name                                    |
+// | $LANG_NAME[XX]: $LANG - variable name                                     |
 // |                 NAME  - where array is used                               |
 // |                 XX    - phrase id number                                  |
 // +---------------------------------------------------------------------------+
@@ -243,6 +243,32 @@ $LANG_MIGRATE = array(
     36 => 'You can correct these any time.',
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:'
+);
+
+// +---------------------------------------------------------------------------+
+// install-plugins.php
+
+$LANG_PLUGINS = array(
+    1 => 'Plugin Installation',
+    2 => 'Step',
+    3 => 'Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. By default, Geeklog includes a few useful plugins that you may want to install.',
+    4 => 'You can also choose to upload additional plugins.',
+    5 => 'The file you uploaded was not a GZip compressed plugin file.',
+    6 => 'The plugin you uploaded already exists!',
+    7 => 'Success!',
+    8 => 'The %s plugin was uploaded successfully.',
+    9 => 'Upload a plugin',
+    10 => 'Select plugin file',
+    11 => 'Upload',
+    12 => 'Select which plugins to install',
+    13 => 'Install?',
+    14 => 'Plugin',
+    15 => 'Version',
+    16 => 'Unknown',
+    17 => 'Note',
+    18 => 'This plugin requires manual activation from the Plugins admin panel.',
+    19 => 'Refresh',
+    20 => 'There are no new plugins to install.'
 );
 
 // +---------------------------------------------------------------------------+

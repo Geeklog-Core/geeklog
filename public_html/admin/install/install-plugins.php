@@ -67,7 +67,7 @@ $dbconfig_path      = (isset($_REQUEST['dbconfig_path'])) ? $_REQUEST['dbconfig_
 $step               = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : 1;
 
 // $display holds all the outputted HTML and content
-$display = INST_getHeader('Step' . ' 3 - Plugin Installation'); // Grab the beginning HTML for the installer theme.
+$display = INST_getHeader($LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1]); // Grab the beginning HTML for the installer theme.
 
 // Make sure the version of PHP is supported.
 if (INST_phpOutOfDate()) {
@@ -95,9 +95,9 @@ if (INST_phpOutOfDate()) {
                                 ? true
                                 : false;
 
-        $display .= '<p>Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. Plugins are different then blocks which normally do not use any of the internal Geeklog services. By default, Geeklog includes a few useful plugins that you may want to install. ' 
-            . ($upload_enabled ? 'You can also choose to upload additional plugins.' : '')
-            . '</p>' . LB;
+        $display .= '<p>' . $LANG_PLUGINS[3]
+                 . ($upload_enabled ? ' ' . $LANG_PLUGINS[4] : '')
+                 . '</p>' . LB;
 
         // Check if a plugin file was uploaded
         $upload_success = false;
@@ -130,11 +130,11 @@ if (INST_phpOutOfDate()) {
 
                 if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
 
-                    $display .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> The file you uploaded was not a GZip compressed plugin file.</div>' . LB;
+                    $display .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[5] . '</div>' . LB;
 
                 } else if (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
 
-                    $display .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> The plugin you uploaded already exists!</div>' . LB;
+                    $display .= '<div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' . $LANG_PLUGINS[6] . '</div>' . LB;
 
                 } else {
 
@@ -240,14 +240,14 @@ if (INST_phpOutOfDate()) {
             // Show the upload form
             $display .= '<br' . XHTML . '>' . LB
                 . (($upload_success) 
-                    ? '<div class="notice"><span class="success">Success!</span> The ' . $pi_name . ' plugin was uploaded successfully.</div>' 
+                    ? '<div class="notice"><span class="success">' . $LANG_PLUGINS[7] . '</span> ' . sprintf($LANG_PLUGINS[8], $pi_name) . '</div>' 
                     : '') . LB
-                . '<h2>Upload a plugin</h2>' . LB
+                . '<h2>' . $LANG_PLUGINS[9] . '</h2>' . LB
                 . '<form name="plugins_upload" action="install-plugins.php" method="POST" enctype="multipart/form-data">' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-                . '<p><label class="' . $form_label_dir . '">Select plugin file ' . INST_helpLink('plugin_upload') . '</label> ' . LB
+                . '<p><label class="' . $form_label_dir . '">' . $LANG_PLUGINS[10] . ' ' . INST_helpLink('plugin_upload') . '</label> ' . LB
                 . '<input type="file" name="plugin" size="25"' . XHTML . '></p>' . LB
-                . '<p><input type="submit" name="upload" value="Upload"' . XHTML . '></p>' . LB
+                . '<p><input type="submit" name="upload" value="' . $LANG_PLUGINS[11] . '"' . XHTML . '></p>' . LB
                 . '</form>' . LB;
 
         }
@@ -277,7 +277,7 @@ if (INST_phpOutOfDate()) {
 
         }
 
-        $display .= '<br' . XHTML . '><h2>Select which plugins to install</h2>' . LB;
+        $display .= '<br' . XHTML . '><h2>' . $LANG_PLUGINS[12] . '</h2>' . LB;
 
         // If there are new plugins
         if ($new_plugins > 0) {
@@ -288,9 +288,9 @@ if (INST_phpOutOfDate()) {
                 . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
                 . '<table width="650px">' . LB
                 . '<tr>' . LB
-                    . '<th width="60">Install?</th>' . LB
-                    . '<th>Plugin</th>' . LB
-                    . '<th width="75">Version</th>' . LB
+                    . '<th width="60">' . $LANG_PLUGINS[13] . '</th>' . LB
+                    . '<th>' . $LANG_PLUGINS[14] . '</th>' . LB
+                    . '<th width="75">' . $LANG_PLUGINS[15] . '</th>' . LB
                 . '</tr>' . LB;
 
             /**
@@ -313,8 +313,8 @@ if (INST_phpOutOfDate()) {
 
                         $pi_name            = '';
                         $pi_display_name    = '';
-                        $pi_version         = 'Unknown';
-                        $gl_version         = 'Unknown';
+                        $pi_version         = $LANG_PLUGINS[16];
+                        $gl_version         = $LANG_PLUGINS[16];
                         $pi_url             = '';
 
                         /**
@@ -443,7 +443,7 @@ if (INST_phpOutOfDate()) {
                                 . '<input type="hidden" name="plugins[' . $plugin . '][name]" value="' . $plugin . '"' . XHTML . '>' 
                                 . '<input type="hidden" name="plugins[' . $plugin . '][pi_url]" value="' . $pi_url . '"' . XHTML . '>'
                                 . $pi_display_name . LB
-                                . ($missing_autoinstall ? '<p><small><b>Note:</b> This plugin requires manual activation from the Plugins admin panel.</small></p>' : '')
+                                . ($missing_autoinstall ? '<p><small><b>' . $LANG_PLUGINS[17] . ':</b> ' . $LANG_PLUGINS[18] . '</small></p>' : '')
                             . '</td>' . LB
                             . '<td align="center"><input type="hidden" name="plugins[' . $plugin . '][version]" value="' . $pi_version . '"' . XHTML . '>' 
                                 . $pi_version 
@@ -456,15 +456,15 @@ if (INST_phpOutOfDate()) {
 
             // Form footer
             $display .= '</table><br' . XHTML . '>' . LB
-                . '<input type="button" name="refresh" value="' . 'Refresh' . '" onclick="javascript:document.location.reload()"' . XHTML . '>' . LB
+                . '<input type="button" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()"' . XHTML . '>' . LB
                 . '<input type="submit" name="submit" value="' . $LANG_INSTALL[50] . ' &gt;&gt;"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
                 
         } else {
 
-            $display .= '<p>There are no new plugins to install.</p>' . LB
+            $display .= '<p>' . $LANG_PLUGINS[20] . '</p>' . LB
                 . '<form action="install-plugins.php" method="POST">' . LB
-                . '<input type="submit" name="refresh" value="' . 'Refresh' . '"' . XHTML . '>' . LB
+                . '<input type="submit" name="refresh" value="' . $LANG_PLUGINS[19] . '"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
         
         }

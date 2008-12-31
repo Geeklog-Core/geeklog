@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | german.php                                                                |
 // |                                                                           |
@@ -33,8 +33,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: german.php,v 1.9 2008/05/28 18:46:52 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -42,7 +40,7 @@ $LANG_CHARSET = 'iso-8859-15';
 
 // +---------------------------------------------------------------------------+
 // | Array Format:                                                             |
-// | $LANG_NAME[XX]:  $LANG - variable name                                    |
+// | $LANG_NAME[XX]: $LANG - variable name                                     |
 // |                 NAME  - where array is used                               |
 // |                 XX    - phrase id number                                  |
 // +---------------------------------------------------------------------------+
@@ -146,7 +144,11 @@ $LANG_INSTALL = array(
     93 => 'Success',
     94 => 'Hier sind einige Hinweise, um den richtigen Pfad zu ermitteln:',
     95 => 'Der komplette Pfad zu dieser Datei (dem Installations-Skript) ist:',
-    96 => 'Das Installations-Skript hat nach %s in diesem Verzeichnis gesucht:'
+    96 => 'Das Installations-Skript hat nach %s in diesem Verzeichnis gesucht:',
+    97 => 'Set File Permissions',
+    98 => 'Advanced Users',
+    99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
+    100 => 'Invalid mode specified'
 );
 
 // +---------------------------------------------------------------------------+
@@ -174,7 +176,8 @@ $LANG_SUCCESS = array(
     18 => 'zurücksetzen auf',
     19 => '<strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>',
     20 => 'installiert',
-    21 => 'aktualisiert'
+    21 => 'aktualisiert',
+    22 => 'migriert'
 );
 
 // +---------------------------------------------------------------------------+
@@ -195,6 +198,132 @@ $LANG_HELP = array(
     11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.'
+);
+
+// +---------------------------------------------------------------------------+
+// migrate.php
+
+$LANG_MIGRATE = array(
+    0 => 'The migration process will overwrite any existing database information.',
+    1 => 'Before Proceding',
+    2 => 'Be sure any previously installed plugins have been copied to your new server.',
+    3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
+    4 => 'If you\'re upgrading to a new Geeklog version, then run the <a href="index.php">install script</a> in upgrade mode first.',
+    5 => 'If you\'re upgrading to a new Geeklog version, then don\'t upload your theme just yet. Use the included default theme until you can be sure your migrated site works properly.',
+    6 => 'Select an existing backup',
+    7 => 'Choose file...',
+    8 => 'From the server\'s backups directory',
+    9 => 'From your computer',
+    10 => 'Choose file...',
+    11 => 'No backup files found.',
+    12 => 'The upload limit for this server is ',
+    13 => '. If your backup file is larger than ',
+    14 => ' or if you experience a timeout, then you should upload the file to Geeklog\'s backups directory via FTP.',
+    15 => 'Your backups directory is not writable by the web server. Permissions need to be 777.',
+    16 => 'Migrate',
+    17 => 'Migrate From Backup',
+    18 => 'No backup file was selected',
+    19 => 'Could not save ',
+    20 => ' to ',
+    21 => 'The file',
+    22 => 'already exists. Would you like to replace it?',
+    23 => 'Yes',
+    24 => 'No',
+    25 => 'The version of Geeklog you chose to migrate from is out of date.',
+    26 => 'Migration notice: ',
+    27 => 'The "',
+    28 => '" plugin is missing and has been disabled. You can install and reactivate it at any time from the administration section.',
+    29 => 'The image "',
+    30 => '" listed in the "',
+    31 => '" table could not be found in ',
+    32 => 'The database file contained information for one or more plugins that the migration script could not locate in your',
+    33 => 'directory. The plugins have been deactivated. You can install and reactivate them at any time from the administration section.',
+    34 => 'The database file contained information for one or more files that the migration script could not locate in your',
+    35 => 'directory. Check <code>error.log</code> for more details.',
+    36 => 'You can correct these any time.',
+    37 => 'Migration Complete',
+    38 => 'The migration process has completed. However, the installation script found the following issues:'
+);
+
+// +---------------------------------------------------------------------------+
+// install-plugins.php
+
+$LANG_PLUGINS = array(
+    1 => 'Plugin Installation',
+    2 => 'Step',
+    3 => 'Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. By default, Geeklog includes a few useful plugins that you may want to install.',
+    4 => 'You can also choose to upload additional plugins.',
+    5 => 'The file you uploaded was not a GZip compressed plugin file.',
+    6 => 'The plugin you uploaded already exists!',
+    7 => 'Success!',
+    8 => 'The %s plugin was uploaded successfully.',
+    9 => 'Upload a plugin',
+    10 => 'Select plugin file',
+    11 => 'Upload',
+    12 => 'Select which plugins to install',
+    13 => 'Install?',
+    14 => 'Plugin',
+    15 => 'Version',
+    16 => 'Unknown',
+    17 => 'Note',
+    18 => 'This plugin requires manual activation from the Plugins admin panel.',
+    19 => 'Refresh',
+    20 => 'There are no new plugins to install.'
+);
+
+// +---------------------------------------------------------------------------+
+// bigdump.php
+
+$LANG_BIGDUMP = array(
+    0 => 'Start Import',
+    1 => ' from ',
+    2 => ' into ',
+    3 => ' at ',
+    4 => 'Can\'t seek into ',
+    5 => 'Can\'t open ',
+    6 => ' for import.',
+    7 => 'UNEXPECTED: Non-numeric values for start and foffset.',
+    8 => 'Processing file:',
+    9 => 'Can\'t set file pointer behind the end of file.',
+    10 => 'Can\'t set file pointer to offset: ',
+    11 => 'Stopped at the line ',
+    12 => '. At this place the current query is from csv file, but ',
+    13 => ' was not set.',
+    14 => 'Stopped at the line ',
+    15 => '. At this place the current query includes more than ',
+    16 => ' dump lines. That can happen if your dump file was created by some tool which doesn\'t place a semicolon followed by a linebreak at the end of each query, or if your dump contains extended inserts. Please read the BigDump FAQs for more information.',
+    17 => 'Error at the line ',
+    18 => 'Query: ',
+    19 => 'MySQL: ',
+    20 => 'Can\'t read the file pointer offset.',
+    21 => 'Not available for gzipped files',
+    22 => 'Progress',
+    23 => 'The database migration completed successfully! You will be forwarded momentarily.',
+    24 => 'Waiting ',
+    25 => ' milliseconds</b> before starting next session...',
+    26 => 'Click here',
+    27 => 'to abort the import',
+    28 => 'or wait!',
+    29 => 'An error occurred.',
+    30 => 'Start from the beginning',
+    31 => '(DROP the old tables before restarting)'
+);
+
+// +---------------------------------------------------------------------------+
+// Error messages
+
+$LANG_ERROR = array(
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    2 => 'The uploaded file was only partially uploaded.',
+    3 => 'No file was uploaded.',
+    4 => 'Missing a temporary folder.',
+    5 => 'Failed to write file to disk.',
+    6 => 'File upload stopped by extension.',
+    7 => 'The uploaded file exceeds the post_max_size directive in your php.ini. Please upload your database file using another method, such as FTP.',
+    8 => 'Error',
+    9 => 'Failed to connect to the database with the error: ',
+    10 => 'Check your database settings'
 );
 
 ?>
