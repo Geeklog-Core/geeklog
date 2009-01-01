@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,15 +31,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: user.php,v 1.209 2008/08/01 18:48:58 blaine Exp $
-
-// Set this to true to get various debug messages from this script
-$_USER_VERBOSE = false;
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
+
+// Set this to true to get various debug messages from this script
+$_USER_VERBOSE = false;
 
 $display = '';
 
@@ -957,7 +955,6 @@ function batchreminders()
             $subject = sprintf($LANG28[81], $_CONF['site_name']);
             if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
                 $mailfrom = $_CONF['noreply_mail'];
-                global $LANG_LOGIN;
                 $mailtext .= LB . LB . $LANG04[159];
             } else {
                 $mailfrom = $_CONF['site_mail'];

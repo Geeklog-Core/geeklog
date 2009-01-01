@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-user.php                                                              |
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-user.php,v 1.49 2008/09/21 08:37:12 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-user.php') !== false) {
     die('This file can not be used on its own!');
@@ -178,7 +176,6 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
     if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
         $mailfrom = $_CONF['noreply_mail'];
-        global $LANG_LOGIN;
         $mailtext .= LB . LB . $LANG04[159];
     } else {
         $mailfrom = $_CONF['site_mail'];
@@ -221,7 +218,6 @@ function USER_sendActivationEmail ($username, $useremail)
     $subject = $_CONF['site_name'] . ': ' . $LANG04[120];
     if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
         $mailfrom = $_CONF['noreply_mail'];
-        global $LANG_LOGIN;
         $mailtext .= LB . LB . $LANG04[159];
     } else {
         $mailfrom = $_CONF['site_mail'];

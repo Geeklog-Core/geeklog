@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | users.php                                                                 |
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: users.php,v 1.170 2008/09/15 18:26:17 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -407,7 +405,6 @@ function requestpassword ($username, $msg = 0)
         $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
         if ($_CONF['site_mail'] !== $_CONF['noreply_mail']) {
             $mailfrom = $_CONF['noreply_mail'];
-            global $LANG_LOGIN;
             $mailtext .= LB . LB . $LANG04[159];
         } else {
             $mailfrom = $_CONF['site_mail'];
