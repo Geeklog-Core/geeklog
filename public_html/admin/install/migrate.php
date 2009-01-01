@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Install Geeklog from a backup.                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt AT mattdanger DOT net                           |
 // |          Dirk Haun - dirk AT haun-online DOT de                           |
@@ -678,6 +678,12 @@ if (INST_phpOutOfDate()) {
                                                 . '/header.thtml')) {
             $config->set('theme', 'professional');
             $_CONF['theme'] = 'professional';
+        }
+
+        // set noreply_mail when updating from an old version
+        if (empty($_CONF['noreply_mail']) && (! empty($_CONF['site_mail']))) {
+            $_CONF['noreply_mail'] = $_CONF['site_mail'];
+            $config->set('noreply_mail', $_CONF['noreply_mail']);
         }
 
         /**
