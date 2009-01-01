@@ -8,14 +8,10 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2007-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
-// |          Tony Bibbs        - tony AT tonybibbs DOT com                    |
-// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
-// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -816,26 +812,6 @@ function INST_getDefaultLanguage($langpath, $language, $utf8 = false)
     }
 
     return $lngname;
-}
-
-
-/**
- * Check for InnoDB table support (usually as of MySQL 4.0, but may be
- * available in earlier versions, e.g. "Max" or custom builds).
- *
- * @return  boolean     true = InnoDB tables supported, false = not supported
- *
- */
-function INST_innodbSupported()
-{
-    $result = DB_query ("SHOW VARIABLES LIKE 'have_innodb'");
-    $A = DB_fetchArray ($result, true);
-
-    if (strcasecmp ($A[1], 'yes') == 0) {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 

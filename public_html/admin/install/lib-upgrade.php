@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Functions needed to perform a database update.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt.danger.west AT gmail DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -723,6 +723,26 @@ function INST_checkInnodbUpgrade($_SQL)
     }
 
     return $_SQL;
+}
+
+
+/**
+ * Check for InnoDB table support (usually as of MySQL 4.0, but may be
+ * available in earlier versions, e.g. "Max" or custom builds).
+ *
+ * @return  boolean     true = InnoDB tables supported, false = not supported
+ *
+ */
+function INST_innodbSupported()
+{
+    $result = DB_query("SHOW VARIABLES LIKE 'have_innodb'");
+    $A = DB_fetchArray($result, true);
+
+    if (strcasecmp($A[1], 'yes') == 0) {
+        return true;
+    }
+
+    return false;
 }
 
 

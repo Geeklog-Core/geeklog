@@ -613,7 +613,14 @@ if (INST_phpOutOfDate()) {
             $db_engine = DB_getItem($_TABLES['vars'], 'value',
                                     "name = 'database_engine'");
             if ($db_engine == 'InnoDB') {
-                $use_innodb = true;
+                // we've migrated, probably to a different server
+                // - so check InnoDB support again
+                if (INST_innodbSupported()) {
+                    $use_innodb = true;
+                } else {
+                    // no InnoDB support on this server
+                    DB_delete($_TABLES['vars'], 'name', 'database_engine');
+                }
             }
 
             if (! INST_doDatabaseUpgrades($version)) {
