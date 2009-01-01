@@ -579,6 +579,40 @@ function INST_identifyGeeklogVersion()
 
 
 /**
+* Change default character set to UTF-8
+*
+* @param   string   $siteconfig_path  complete path to siteconfig.php
+* @param   string   $charset          default character set to use
+* @return  boolean                    true: success; false: an error occured
+* @note    Yes, this means that we need to patch siteconfig.php a second time.
+*
+*/
+function INST_setDefaultCharset($siteconfig_path, $charset)
+{
+    $result = true;
+
+    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
+    fclose($siteconfig_file);
+
+    $siteconfig_data = preg_replace
+            (
+             '/\$_CONF\[\'default_charset\'\] = \'[^\']*\';/',
+             "\$_CONF['default_charset'] = '" . $charset . "';",
+             $siteconfig_data
+            );
+
+    $siteconfig_file = fopen($siteconfig_path, 'w');
+    if (!fwrite($siteconfig_file, $siteconfig_data)) {
+        $result = false;
+    }
+    @fclose($siteconfig_file);
+
+    return $result;
+}
+
+
+/**
  * Set VERSION constant in siteconfig.php after successful upgrade
  *
  * @param   string  $siteconfig_path    path to siteconfig.php

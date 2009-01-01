@@ -457,28 +457,6 @@ function INST_checkTableExists($table)
 }
 
 /**
- * Import a Geeklog database from a backup file
- *
- * @param   string  $file   Path to backup file on the server
- * @return  bool            True if successful, false if not
- *
- */
-/*
-function INST_importDBFromBackup($file)
-{
-    global $_DB, $_DB_name, $display, $_TABLES;
-
-    // Make sure the database is clean
-    if (!DB_query('drop database ' . $_DB_name)) 
-        die('unable to drop database ' . $_DB_name);
-    if (!DB_query('create database ' . $_DB_name)) 
-        die('unable to create database ' . $_DB_name);
-
-    return true;
-}
-*/
-
-/**
  * Can the install script connect to the database?
  *
  * @param   array   $db Database information
@@ -792,7 +770,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         COM_errorLog("Attempting to install the '$plugin' plugin", 1);
     }
 
-    // sanity checks in $inst_parms
+    // sanity checks for $inst_parms
     if (isset($inst_parms['info'])) {
         $pi_name       = $inst_parms['info']['pi_name'];
         $pi_version    = $inst_parms['info']['pi_version'];
@@ -1019,7 +997,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 */
 function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
 {
-    // no global $_CONF here!
+    // no "global $_CONF" here!
 
     require_once $path . 'system/classes/config.class.php';
 
@@ -1050,8 +1028,13 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
         $config->set('path_html', $path_html);
     }
     if (! file_exists($_CONF['path_themes'] . $_CONF['theme']
-                                           . '/header.thtml')) {
+                                            . '/header.thtml')) {
         $config->set('path_themes', $path_html . 'layout/');
+
+        if (! file_exists($path_html . 'layout/' . $_CONF['theme']
+                                                 . '/header.thtml')) {
+            $config->set('theme', 'professional');
+        }
     }
     if (! file_exists($_CONF['path_images'] . 'articles')) {
         $config->set('path_images', $path_html . 'images/');

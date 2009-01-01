@@ -551,10 +551,10 @@ function INST_installEngine($install_type, $install_step)
                     } else {
                         $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
                         $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : (isset($_GET['site_admin_url']) ? $_GET['site_admin_url'] : '') ;
-
-                        INST_fixPathsAndUrls($_CONF['path'], $html_path,
-                            urldecode($site_url), urldecode($site_admin_url));
                     }
+
+                    INST_fixPathsAndUrls($_CONF['path'], $html_path,
+                            urldecode($site_url), urldecode($site_admin_url));
 
                     // disable plugins for which we don't have the source files
                     INST_checkPlugins();
@@ -832,39 +832,6 @@ function INST_innodbSupported()
     }
 }
 
-
-/**
-* Change default character set to UTF-8
-*
-* @param   string   $siteconfig_path  complete path to siteconfig.php
-* @param   string   $charset          default character set to use
-* @return  boolean                    true: success; false: an error occured
-* @note    Yes, this means that we need to patch siteconfig.php a second time.
-*
-*/
-function INST_setDefaultCharset($siteconfig_path, $charset)
-{
-    $result = true;
-
-    $siteconfig_file = fopen($siteconfig_path, 'r');
-    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
-    fclose($siteconfig_file);
-
-    $siteconfig_data = preg_replace
-            (
-             '/\$_CONF\[\'default_charset\'\] = \'[^\']*\';/',
-             "\$_CONF['default_charset'] = '" . $charset . "';",
-             $siteconfig_data
-            );
-
-    $siteconfig_file = fopen($siteconfig_path, 'w');
-    if (!fwrite($siteconfig_file, $siteconfig_data)) {
-        $result = false;
-    }
-    @fclose($siteconfig_file);
-
-    return $result;
-}
 
 /**
 * Handle default install of available plugins
