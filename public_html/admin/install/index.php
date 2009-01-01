@@ -300,6 +300,7 @@ function INST_installEngine($install_type, $install_step)
                     <div style="margin-left: auto; margin-right: auto; width: 125px">
                         <div style="position: relative; right: 10px">
                             <form action="index.php" method="post">
+                            <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                             <input type="hidden" name="step" value="1"' . XHTML . '>
                             ' . $hidden_fields . '
                             <input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>
@@ -308,6 +309,7 @@ function INST_installEngine($install_type, $install_step)
 
                         <div style="position: relative; left: 65px; top: -27px">
                             <form action="index.php" method="post">
+                            <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                             <input type="hidden" name="step" value="3"' . XHTML . '>
                             ' . $hidden_fields . '
                             <input type="hidden" name="innodb" value="false"' . XHTML . '>
@@ -979,7 +981,7 @@ if (INST_phpOutOfDate()) {
             // or in public_html have the user enter its location.
             $form_fields .= '<p><label class="' . $form_label_dir . '"><code>db-config.php</code></label> ' . LB
                         . '<input type="text" name="dbconfig_path" value="/path/to/'
-                        . $dbconfig_file . '" size="25"' . XHTML . '></p>'  . LB;
+                        . $dbconfig_file . '" size="50"' . XHTML . '></p>'  . LB;
             $num_errors++;
         } else {
             // See whether the file/directory is located in the default place or in public_html
@@ -996,9 +998,10 @@ if (INST_phpOutOfDate()) {
             $display .= '<h2>' . $LANG_INSTALL[7] . '</h2>
                 <p>' . $LANG_INSTALL[8] . '</p>
                 <form action="index.php" method="post">
+                <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                 <input type="hidden" name="mode" value="check_permissions"' . XHTML . '>
                 ' . $form_fields . '
-                <input type="submit" name="submit" class="submit" value="Next &gt;&gt;"' . XHTML . '>
+                <input type="submit" name="submit" class="submit" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
                 </form>' . LB;
             $display .= '<p>' . $LANG_INSTALL[94] . '<p>' . LB
                      . '<ul><li>' . $LANG_INSTALL[95] . '<br' . XHTML . '>' . LB
@@ -1040,6 +1043,7 @@ if (INST_phpOutOfDate()) {
                 . INST_printTab(3) . '</p>' . LB
                 . INST_printTab(3) . '<div style="margin-left: auto; margin-right: auto; width: 1px">' . LB
                 . INST_printTab(3) . '<form action="index.php" method="post">' . LB
+                . INST_printTab(3) . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '<input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '</form>' . LB
                 . INST_printTab(3) . '</div>' . LB;
