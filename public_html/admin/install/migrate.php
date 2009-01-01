@@ -603,6 +603,8 @@ if (INST_phpOutOfDate()) {
         } elseif (empty($version)) {
 
             $display .= INST_getAlertMsg("Could not identify database version. Please perform a manual update.");
+            // TBD: add a link back to the install script, preferrably a direct
+            //      link to the upgrade screen
             $upgrade_error = true;
 
         } elseif ($version != VERSION) {
@@ -635,6 +637,10 @@ if (INST_phpOutOfDate()) {
          * Let's assume that the paths that were imported from the backup are 
          * incorrect and update them with the current paths.
          *
+         * Note: When updating the config settings in the database, we also
+         *       need to fix the $_CONF values. We can _not_ simply reload
+         *       them via get_config('Core') here yet.
+         *
          */
         require_once $_CONF['path_system'] . 'classes/config.class.php';
         $config = config::get_instance();
@@ -643,18 +649,36 @@ if (INST_phpOutOfDate()) {
         $config->set('site_url', urldecode($_REQUEST['site_url']));
         $config->set('site_admin_url', urldecode($_REQUEST['site_admin_url']));
         $config->set('path_html', $html_path);
-        $config->set('path_log', $gl_path . '/logs/');
-        $config->set('path_language', $gl_path . '/language/');
+        $_CONF['path_html'] = $html_path;
+        $config->set('path_log', $gl_path . 'logs/');
+        $_CONF['path_log'] = $gl_path . 'logs/';
+        $config->set('path_language', $gl_path . 'language/');
+        $_CONF['path_language'] = $gl_path . 'language/';
         $config->set('backup_path', $backup_dir);
-        $config->set('path_data', $gl_path . '/data/');
-        $config->set('path_images', $html_path . '/images/');
+        $_CONF['backup_path'] = $backup_dir;
+        $config->set('path_data', $gl_path . 'data/');
+        $_CONF['path_data'] = $gl_path . 'data/';
+        $config->set('path_images', $html_path . 'images/');
+        $_CONF['path_images'] = $html_path . 'images/';
         $config->set('path_themes', $html_path . 'layout/');
+        $_CONF['path_themes'] = $html_path . 'layout/';
         $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
+        $_CONF['rdf_file'] = $html_path . 'backend/geeklog.rss';
         $config->set('path_pear', $_CONF['path_system'] . 'pear/');
+        $_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
 
         // reset cookie domain and path as wrong values may prevent login
         $config->set('cookiedomain', '');
+        $_CONF['cookiedomain'] = '';
         $config->set('cookie_path', '/');
+        $_CONF['cookie_path'] = '/';
+
+        // check the default theme
+        if (! file_exists($_CONF['path_themes'] . $_CONF['theme']
+                                                . '/header.thtml')) {
+            $config->set('theme', 'professional');
+            $_CONF['theme'] = 'professional';
+        }
 
         /**
          * Check for missing plugins
