@@ -914,7 +914,7 @@ $display .= '<head>
         <div class="header-slogan">' . $LANG_INSTALL[2] . ' <br' . XHTML . '><br' . XHTML . '>' . LB;
 
 // Show the language drop down selection on the first page
-if ($mode == 'check_permissions') {
+if (empty($mode) || ($mode == 'check_permissions')) {
     $display .='<form action="index.php" method="post" style="display:inline;">' . LB;
 
     $_PATH = array('dbconfig', 'public_html');
