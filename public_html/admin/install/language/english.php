@@ -8,7 +8,7 @@
 // |                                                                           |
 // | English language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -65,6 +65,7 @@ $LANG_INSTALL = array(
     13 => 'Currently',
     14 => '',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
+    16 => 'Migrate',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'In order to operate correctly Geeklog requires that certain files and directories be writable by the web server. Below is a list of file and directory permissions that you need to modify before continuing with the your installation.',

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | German language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -65,13 +65,14 @@ $LANG_INSTALL = array(
     13 => 'Derzeit',
     14 => 'Change directory to',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
+    16 => 'Migration',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'Geeklog setzt voraus, dass bestimmte Dateien und Verzeichnisse für den Webserver schreibbar sind. Es folgt eine Liste der Dateien und Verzeichnisse, die geändert werden müssen.',
     20 => 'Warnung!',
     21 => 'Geeklog und Deine Website werden nicht funktionsfähig sein, solange diese Fehler nicht korrigiert werden. Bitte nimm die notwendigen Änderungen vor, bevor Du mit der Installation fortfährst.',
     22 => 'unbekannt',
-    23 => 'Bitte wähle eine Installationsmethode:',
+    23 => 'Bitte wähle eine Installationsmethode',
     24 => 'Neuinstallation',
     25 => 'Upgrade',
     26 => 'Unable to modify',
@@ -107,7 +108,7 @@ $LANG_INSTALL = array(
     56 => 'Could not connect to database',
     57 => 'Sorry, but the installer could not find the database you specified. Either the database does not exist or you misspelled the name. Please go back and try again.',
     58 => '. Did you make sure the file is write-able by the web server?',
-    59 => 'Hinweis:',
+    59 => 'Hinweis',
     60 => 'InnoDB tables are not supported by your version of MySQL. Would you like to continue the installation without InnoDB support?',
     61 => 'zurück',
     62 => 'weiter',
@@ -220,8 +221,8 @@ $LANG_MIGRATE = array(
     13 => '. If your backup file is larger than ',
     14 => ' or if you experience a timeout, then you should upload the file to Geeklog\'s backups directory via FTP.',
     15 => 'Your backups directory is not writable by the web server. Permissions need to be 777.',
-    16 => 'Migrate',
-    17 => 'Migrate From Backup',
+    16 => 'Migration',
+    17 => 'Migration vom Backup',
     18 => 'No backup file was selected',
     19 => 'Could not save ',
     20 => ' to ',

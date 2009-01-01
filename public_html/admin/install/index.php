@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Tony Bibbs        - tony AT tonybibbs DOT com                    |
@@ -1137,7 +1137,7 @@ if (INST_phpOutOfDate()) {
 
                     // If they did, determine which method they selected
                     switch ($install_type) {
-                    case 'Migrate': 
+                    case $LANG_INSTALL[16]:
                         $install_type = 'migrate';
                         break;
                     case $LANG_INSTALL[24]:
@@ -1166,10 +1166,11 @@ if (INST_phpOutOfDate()) {
                 . INST_printTab(3) . '<p><form action="index.php" method="GET">' . LB
                 . INST_printTab(3) . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '<input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>' . LB
+                . INST_printTab(3) . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '<input type="hidden" name="display_step" value="' . ($display_step+1) . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[24] . '"' . XHTML .'>' . LB
                 . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
-                . INST_printTab(3) . '<input type="submit" name="install_type" value="' . 'Migrate' . '"' . XHTML .'>' . LB
+                . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
                 . INST_printTab(3) . '</form> </p> <br' . XHTML . '>' . LB;
    
         }
