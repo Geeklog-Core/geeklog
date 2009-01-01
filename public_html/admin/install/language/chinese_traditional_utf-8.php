@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | chinese_traditional_utf-8.php                                             |
 // |                                                                           |
 // | Chinese language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -34,8 +34,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: chinese_traditional_utf-8.php,v 1.1 2008/05/24 19:15:01 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -181,7 +179,7 @@ $LANG_HELP = array(
     0 => '志樂安裝支助',
     1 => '你的網站名.',
     2 => '簡單的描述你的網站.',
-    3 => '志樂可用 MySQL 或 Microsoft SQL 資料庫安裝. 若你不肯定你的選擇，請問你的主機服務員.<br><br><strong>注:</strong> InnoDB 表格也許會在巨大的網站上提升效果, 但它會使資料庫備份次序更加複雜.',
+    3 => '志樂可用 MySQL 或 Microsoft SQL 資料庫安裝. 若你不肯定你的選擇，請問你的主機服務員.</p><p class="indent"><strong>注:</strong> InnoDB 表格也許會在巨大的網站上提升效果, 但它會使資料庫備份次序更加複雜.',
     4 => '你的資料庫的網路名 (或 IP 位址). 這通常是 "localhost". 若你不肯定，請問你的主機服務員.',
     5 => '你的資料庫名稱. 若你不肯定，請問你的主機服務員.',
     6 => '你的資料庫用戶名. 若你不肯定，請問你的主機服務員.',

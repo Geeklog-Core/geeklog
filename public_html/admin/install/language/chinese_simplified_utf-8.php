@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | chinese_simplified_utf-8.php                                              |
 // |                                                                           |
 // | Chinese language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -34,8 +34,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: chinese_simplified_utf-8.php,v 1.1 2008/05/24 19:15:01 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -181,7 +179,7 @@ $LANG_HELP = array(
     0 => '志乐安装支助',
     1 => '你的网站名.',
     2 => '简单的描述你的网站.',
-    3 => '志乐可用 MySQL 或 Microsoft SQL 数据库安装. 若你不肯定你的选择，请问你的主机服务员.<br><br><strong>注:</strong> InnoDB 表格也许会在巨大的网站上提升效果, 但它会使数据库备份次序更加复杂.',
+    3 => '志乐可用 MySQL 或 Microsoft SQL 数据库安装. 若你不肯定你的选择，请问你的主机服务员.</p><p class="indent"><strong>注:</strong> InnoDB 表格也许会在巨大的网站上提升效果, 但它会使数据库备份次序更加复杂.',
     4 => '你的数据库的网络名 (或 IP 地址). 这通常是 "localhost". 若你不肯定，请问你的主机服务员.',
     5 => '你的数据库名称. 若你不肯定，请问你的主机服务员.',
     6 => '你的数据库用户名. 若你不肯定，请问你的主机服务员.',

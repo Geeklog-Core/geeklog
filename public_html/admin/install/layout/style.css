@@ -59,9 +59,9 @@ a:active {
   color:#FF0000
 }
 body {
-//  width:99%;
+/*  width:99%; */
   width:800px;
-//  background:#FFFFFF;
+/*  background:#FFFFFF; */
   background:#1A3955;
   color:#000000;
   font:.8em arial,sans-serif,verdana,tahoma,helvetica;
@@ -165,7 +165,7 @@ th {
 }
 td {
   color:#000000;
-//  text-align:center;
+/*  text-align:center; */
 }
 textarea {
   color:#000000;

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | japanese_utf-8.php                                                        |
 // |                                                                           |
 // | Japanese language file for the Geeklog installation script                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -35,8 +35,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: japanese_utf-8.php,v 1.3 2008/06/05 18:48:35 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 
@@ -176,13 +174,13 @@ $LANG_SUCCESS = array(
 );
 
 // +---------------------------------------------------------------------------+
-// help.php (TBD)
+// help.php
 
 $LANG_HELP = array(
     0 => 'インストールヘルプ',
     1 => 'サイト名を入力します。後から変更することもできます。',
     2 => 'サイトのスローガンを入力します。後から変更することもできます。',
-    3 => 'データベースの種類を入力します。MySQL, MySQL(InnoDB), Microsoft SQL Serverの中から選びます。<br><br><strong>注意:</strong> 大規模なサイトでは，InnoDBテーブルを使用すれば，パフォーマンスが改善されるかもしれませんが，バックアップを行うのが難しくなります。',
+    3 => 'データベースの種類を入力します。MySQL, MySQL(InnoDB), Microsoft SQL Serverの中から選びます。</p><p class="indent"><strong>注意:</strong> 大規模なサイトでは，InnoDBテーブルを使用すれば，パフォーマンスが改善されるかもしれませんが，バックアップを行うのが難しくなります。',
     4 => 'ホスト名を入力します。',
     5 => 'データベース名を入力します。',
     6 => 'データベースのユーザ名（アカウント）を入力します。',

@@ -193,7 +193,7 @@ $LANG_HELP = array(
     0 => 'Geeklog Installation Support',
     1 => 'The name of your website.',
     2 => 'A simple description of your website.',
-    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.<br><br><strong>Hinweis:</strong> InnoDB-Tabellen können zu besserer Performance auf (sehr) großen Websites führen, machen den Backup-Prozess aber komplizierter.',
+    3 => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.</p><p class="indent"><strong>Hinweis:</strong> InnoDB-Tabellen können zu besserer Performance auf (sehr) großen Websites führen, machen den Backup-Prozess aber komplizierter.',
     4 => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
     5 => 'The name of your database. If you are not sure what this is contact your hosting provider.',
     6 => 'Your database user account. If you are not sure what this is contact your hosting provider.',
