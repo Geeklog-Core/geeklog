@@ -149,7 +149,12 @@ $LANG_INSTALL = array(
     97 => 'Set File Permissions',
     98 => 'Advanced Users',
     99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
-    100 => 'Invalid mode specified'
+    100 => 'Invalid mode specified',
+    101 => 'Step',
+    102 => 'Enter configuration information',
+    103 => 'and configure additional plugins',
+    104 => 'Incorrect Admin Directory Path',
+    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.'
 );
 
 // +---------------------------------------------------------------------------+

@@ -73,7 +73,7 @@ function INST_installEngine($install_type, $install_step)
             }
         }
 
-        $display .= '<h1 class="heading">' . 'Step' . ' ' . $_REQUEST['display_step'] . ' - Enter configuration information</h1>' . LB;
+        $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $_REQUEST['display_step'] . ' - ' . $LANG_INSTALL[102] . '</h1>' . LB;
 
 
         // Set all the form values either with their defaults or with received POST data.
@@ -186,7 +186,7 @@ function INST_installEngine($install_type, $install_step)
 
         $display .='<br' . XHTML . '>
             <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;"' . XHTML . '>
-            <input type="submit" name="install_plugins" class="submit" value="' . $buttontext . ' and configure additional plugins' . ' &gt;&gt;"' . XHTML . '>
+            <input type="submit" name="install_plugins" class="submit" value="' . $buttontext . ' ' . $LANG_INSTALL[103] . ' &gt;&gt;"' . XHTML . '>
             </form>' . LB;
 
         break;
@@ -217,8 +217,8 @@ function INST_installEngine($install_type, $install_step)
         // Check if $site_admin_url is correct
         if (!INST_urlExists($site_admin_url)) {
 
-            $display .= '<h2>' . 'Incorrect Admin Directory Path' . '</h2><p>'
-                     . 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.' . '</p>'
+            $display .= '<h2>' . $LANG_INSTALL[104] . '</h2><p>'
+                     . $LANG_INSTALL[105] . '</p>'
                      . INST_showReturnFormData($_POST) . LB;
 
         // Check if we can connect to the database
@@ -232,20 +232,24 @@ function INST_installEngine($install_type, $install_step)
         } else if (INST_mysqlOutOfDate($DB)) { 
 
             $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
-            $display .= '<p>' . $LANG_INSTALL[52] . $myv[0] . '.' . $myv[1] . '.' . $myv[2] . $LANG_INSTALL[53] . '</p>' . LB;
+            $display .= '<p>' . $LANG_INSTALL[52]
+                     . $myv[0] . '.' . $myv[1] . '.' . $myv[2]
+                     . $LANG_INSTALL[53] . '</p>' . LB;
 
         // Check if database doesn't exist
         } else if (!INST_dbExists($DB)) {
 
-            $display .= '<h2>' . $LANG_INSTALL[56] . '</h2>
-                <p>' . $LANG_INSTALL[57] . '</p>' . INST_showReturnFormData($_POST) . LB;
+            $display .= '<h2>' . $LANG_INSTALL[56] . '</h2><p>'
+                     . $LANG_INSTALL[57] . '</p>'
+                     . INST_showReturnFormData($_POST) . LB;
 
         } else {
 
             // Write the database info to db-config.php
             if (!INST_writeConfig($dbconfig_path, $DB)) {
 
-                exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                     . $LANG_INSTALL[58]);
 
             }
 
@@ -261,7 +265,9 @@ function INST_installEngine($install_type, $install_step)
             require $dbconfig_path;
             require_once $siteconfig_path;
             require_once $_CONF['path_system'] . 'lib-database.php';
-            $req_string = 'index.php?mode=' . $install_type . '&step=3&dbconfig_path=' . $dbconfig_path
+
+            $req_string = 'index.php?mode=' . $install_type
+                        . '&step=3&dbconfig_path=' . $dbconfig_path
                         . '&install_plugins=' . $install_plugins
                         . '&language=' . $language
                         . '&site_name=' . urlencode($site_name)
@@ -357,7 +363,7 @@ function INST_installEngine($install_type, $install_step)
                         }
                         $display .= '</select></p>
                             <br' . XHTML . '>
-                            <input type="submit" name="submit" class="submit" value="Upgrade &gt;&gt;"' . XHTML . '>
+                            <input type="submit" name="submit" class="submit" value="' . $LANG_INSTALL[25] . ' &gt;&gt;"' . XHTML . '>
                             </form>' . LB;
 
                         $curv = $old_versions[count($old_versions) - 1];
@@ -1104,7 +1110,7 @@ if (INST_phpOutOfDate()) {
             if ($num_wrong) {
                 // If any files have incorrect permissions.
 
-                $display .= INST_printTab(2) . '<h1 class="heading">' . 'Step' . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
+                $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
                 $display_step++;
 
                 if (isset($_GET['install_type'])) {
@@ -1162,7 +1168,7 @@ if (INST_phpOutOfDate()) {
 
             // Show the "Select your installation method" buttons
             $upgr_class = ($LANG_DIRECTION == 'rtl') ? 'upgrade-rtl' : 'upgrade' ;
-            $display .= INST_printTab(2) . '<h1 class="heading">' . 'Step' . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
+            $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
                 . INST_printTab(3) . '<p><form action="index.php" method="GET">' . LB
                 . INST_printTab(3) . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
                 . INST_printTab(3) . '<input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>' . LB

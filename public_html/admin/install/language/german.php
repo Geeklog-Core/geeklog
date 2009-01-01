@@ -69,7 +69,7 @@ $LANG_INSTALL = array(
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
     18 => 'Images in articles are disabled. The <code>articles</code> directory was not tested',
     19 => 'Geeklog setzt voraus, dass bestimmte Dateien und Verzeichnisse für den Webserver schreibbar sind. Es folgt eine Liste der Dateien und Verzeichnisse, die geändert werden müssen.',
-    20 => 'Warnung!',
+    20 => 'Warnung',
     21 => 'Geeklog und Deine Website werden nicht funktionsfähig sein, solange diese Fehler nicht korrigiert werden. Bitte nimm die notwendigen Änderungen vor, bevor Du mit der Installation fortfährst.',
     22 => 'unbekannt',
     23 => 'Bitte wähle eine Installationsmethode',
@@ -96,7 +96,7 @@ $LANG_INSTALL = array(
     44 => 'Optionale Einstellungen',
     45 => 'URL der Website',
     46 => '(ohne Slash am Ende)',
-    47 => 'Pfad für das "admin"-Verzeichnis',
+    47 => 'URL f. "admin"-Verzeichnis',
     48 => 'Website-Email-Adresse',
     49 => '"No Reply"-Email-Adresse',
     50 => 'Installieren',
@@ -149,7 +149,12 @@ $LANG_INSTALL = array(
     97 => 'Set File Permissions',
     98 => 'Advanced Users',
     99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
-    100 => 'Invalid mode specified'
+    100 => 'Invalid mode specified',
+    101 => 'Schritt',
+    102 => 'Konfigurations-Informationen eingeben',
+    103 => 'und zusätzliche Plugins konfigurieren',
+    104 => 'Incorrect Admin Directory Path',
+    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.'
 );
 
 // +---------------------------------------------------------------------------+
