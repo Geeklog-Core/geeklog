@@ -69,7 +69,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     $include_path = @ini_get('include_path');
     if (@ini_set('include_path', $_CONF['path'] . 'system/pear/'
                                  . PATH_SEPARATOR . $include_path) === false) {
-
+        // couldn't set PEAR path - can't handle compressed backups
         $display .= INST_getAlertMsg($LANG_MIGRATE[39]);
         return false;
     }
@@ -102,6 +102,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     }
 
     if (! $found_sql_file) {
+        // no .sql file found in archive
         $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[40], $backup_file));
         return false;
     }
@@ -130,6 +131,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     }
 
     if ((! $success) || (! file_exists($backup_path . $unpacked_file))) {
+        // error unpacking file
         $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[41], $unpacked_file));
         return false;
     }
@@ -214,9 +216,18 @@ if (INST_phpOutOfDate()) {
         if (file_exists($dbconfig_path)) {
             require_once $dbconfig_path;
 
+            if (($_DB_host != 'localhost') || ($_DB_name != 'geeklog') ||
+                    ($_DB_user != 'username') || ($_DB_pass != 'password')) {
+                // only display those if they all have their default values
+                $_DB_host = '';
+                $_DB_name = '';
+                $_DB_user = '';
+                $_DB_pass = '';
+            }
+
             $_FORM['host'] = ($_DB_host != 'localhost' ? '' : $_DB_host);
-            $_FORM['name'] = ($_DB_name != 'geeklog' ? '' : $_DB_name);
-            $_FORM['user'] = ($_DB_user != 'username' ? '' : $_DB_user);
+            $_FORM['name'] = ($_DB_name != 'geeklog'   ? '' : $_DB_name);
+            $_FORM['user'] = ($_DB_user != 'username'  ? '' : $_DB_user);
             $_FORM['prefix'] = $_DB_table_prefix;
         }
 
