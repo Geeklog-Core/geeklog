@@ -883,7 +883,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="hidden" name="type" value="migrate"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="" value=""' . XHTML . '>' . LB
-                . '<p><input type="submit" name="" value="' . $LANG_INSTALL[62] . '"' . XHTML . '></p>' . LB
+                . '<p><input type="submit" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '></p>' . LB
                 . '</form>'; 
 
         } else {
