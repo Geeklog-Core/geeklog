@@ -248,7 +248,17 @@ $LANG_MIGRATE = array(
     35 => 'directory. Check <code>error.log</code> for more details.',
     36 => 'You can correct these any time.',
     37 => 'Migration Complete',
-    38 => 'The migration process has completed. However, the installation script found the following issues:'
+    38 => 'The migration process has completed. However, the installation script found the following issues:',
+    39 => "Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.",
+    40 => "The archive '%s' does not appear to contain any SQL files.",
+    41 => "Error extracting database backup '%s' from compressed backup file.",
+    42 => "Backup file '%s' just vanished ...",
+    43 => "Import aborted: The file '%s' does not appear to be an SQL dump.",
+    44 => "Fatal error: Database import seems to have failed. Don't know how to continue.",
+    45 => "Could not identify database version. Please perform a manual update.",
+    46 => '', // TBD
+    47 => 'Database upgrade from version %s to version %s failed.',
+    48 => 'One or more plugins could not be updated and had to be disabled.'
 );
 
 // +---------------------------------------------------------------------------+

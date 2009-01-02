@@ -49,7 +49,7 @@ require_once '../../siteconfig.php';
 */
 function INST_unpackFile($backup_path, $backup_file, &$display)
 {
-    global $_CONF;
+    global $_CONF, $LANG_MIGRATE;
 
     $unpacked_file = $backup_file;
 
@@ -70,7 +70,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     if (@ini_set('include_path', $_CONF['path'] . 'system/pear/'
                                  . PATH_SEPARATOR . $include_path) === false) {
 
-        $display .= INST_getAlertMsg("Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.");
+        $display .= INST_getAlertMsg($LANG_MIGRATE[39]);
         return false;
     }
 
@@ -102,7 +102,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     }
 
     if (! $found_sql_file) {
-        $display .= INST_getAlertMsg(sprintf("The archive '%s' does not appear to contain any SQL files.", $backup_file));
+        $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[40], $backup_file));
         return false;
     }
 
@@ -130,7 +130,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
     }
 
     if ((! $success) || (! file_exists($backup_path . $unpacked_file))) {
-        $display .= INST_getAlertMsg(sprintf("Error extracting database backup '%s' from compressed backup file.", $unpacked_file));
+        $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[41], $unpacked_file));
         return false;
     }
 
@@ -239,13 +239,13 @@ if (INST_phpOutOfDate()) {
             . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
             . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
-        //rsort($backup_files = glob($backup_dir . '*.sql')); // Identify the backup files in backups/ and order them newest to oldest
+        // Identify the backup files in backups/ and order them newest to oldest
         $sql_files = glob($backup_dir . '*.sql');
         $tar_files = glob($backup_dir . '*.tar.gz');
         $tgz_files = glob($backup_dir . '*.tgz');
         $zip_files = glob($backup_dir . '*.zip');
         $backup_files = array_merge($sql_files, $tar_files, $tgz_files, $zip_files);
-        rsort($backup_files); // Identify the backup files in backups/ and order them newest to oldest
+        rsort($backup_files);
 
         $display .= INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
             . INST_printTab(4) . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
@@ -326,11 +326,11 @@ if (INST_phpOutOfDate()) {
             if ($is_writable) {
     
                 $display .= INST_printTab(4) . INST_getAlertMsg($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
-    
+
             } else {
-    
+
                 $display .= INST_printTab(4) . INST_getAlertMsg($LANG_MIGRATE[15]);
-    
+
             }
 
         } 
@@ -386,7 +386,7 @@ if (INST_phpOutOfDate()) {
 
             }
             break;
-        
+
         default:
             $display .= INST_getAlertMsg($LANG_MIGRATE[18]);
             $backup_file = false;
@@ -534,7 +534,8 @@ if (INST_phpOutOfDate()) {
 
             $sql_file = @fopen($backup_dir . $backup_file, 'r');
             if (! $sql_file) {
-                exit(sprintf("Backup file '%s' just vanished ...", $backup_dir . $backup_file));
+                // "This shouldn't happen" - just unpacked and now it's gone?
+                exit(sprintf($LANG_MIGRATE[42], $backup_dir . $backup_file));
             }
             while (! feof($sql_file)) {
                 $line = @fgets($sql_file);
@@ -543,7 +544,8 @@ if (INST_phpOutOfDate()) {
                         $num_create++;
                         $line = trim($line);
                         if (strpos($line, 'access`') !== false) {
-                            $DB['table_prefix'] = preg_replace('/^.*`/', '', preg_replace('/access`.*$/', '', $line));
+                            $DB['table_prefix'] = preg_replace('/^.*`/', '',
+                                    preg_replace('/access`.*$/', '', $line));
                         } elseif (strpos($line, 'conf_values') !== false) {
                             $has_config = true;
                             break;
@@ -559,14 +561,15 @@ if (INST_phpOutOfDate()) {
             if ($num_create <= 1) {
 
                 // this doesn't look like an SQL dump ...
-                $display .= INST_getAlertMsg(sprintf("Import aborted: The file '%s' does not appear to be an SQL dump.", $backup_file));
+                $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[43],
+                                                     $backup_file));
 
             } else {
                 // Update db-config.php with the table prefix from the backup file.
                 if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
                 }
-    
+
                 // Send file to bigdump.php script to do the import.
                 header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
                     . '&language=' . $language
@@ -586,7 +589,7 @@ if (INST_phpOutOfDate()) {
      * incorrect paths, and other required Geeklog files
      */
     case 4:
-    
+
         require_once $dbconfig_path;
         require_once $_CONF['path_system'] . 'lib-database.php';
         require_once 'lib-upgrade.php';
@@ -597,12 +600,12 @@ if (INST_phpOutOfDate()) {
         if ($version == 'empty') {
 
             // "This shouldn't happen"
-            $display .= INST_getAlertMsg("Fatal error: Database import seems to have failed. Don't know how to continue.");
+            $display .= INST_getAlertMsg($LANG_MIGRATE[44]);
             $upgrade_error = true;
 
         } elseif (empty($version)) {
 
-            $display .= INST_getAlertMsg("Could not identify database version. Please perform a manual update.");
+            $display .= INST_getAlertMsg($LANG_MIGRATE[45]);
             // TBD: add a link back to the install script, preferrably a direct
             //      link to the upgrade screen
             $upgrade_error = true;
@@ -625,7 +628,8 @@ if (INST_phpOutOfDate()) {
 
             if (! INST_doDatabaseUpgrades($version)) {
 
-                $display .= INST_getAlertMsg("Database upgrade from version $version to version " . VERSION . " failed.");
+                $display .= INST_getAlertMsg(sprintf($LANG_MIGRATE[47],
+                                                     $version, VERSION));
                 $upgrade_error = true;
 
             }
@@ -681,8 +685,16 @@ if (INST_phpOutOfDate()) {
         $_CONF['cookie_path'] = '/';
 
         // check the default theme
-        if (! file_exists($_CONF['path_themes'] . $_CONF['theme']
-                                                . '/header.thtml')) {
+        $theme = '';
+        if (empty($_CONF['theme'])) {
+            // no config.php involved - get from db
+            $_CONF_TMP = $config->get_config('Core');
+            $theme = $_CONF_TMP['theme'];
+        } else {
+            $theme = $_CONF['theme'];
+        }
+
+        if (! file_exists($_CONF['path_themes'] . $theme . '/header.thtml')) {
             $config->set('theme', 'professional');
             $_CONF['theme'] = 'professional';
         }
@@ -830,7 +842,7 @@ if (INST_phpOutOfDate()) {
 
             if ($disabled_plugins > 0) {
 
-                $display .= INST_getAlertMsg("One or more plugins could not be updated and had to be disabled.");
+                $display .= INST_getAlertMsg($LANG_MIGRATE[48]);
 
             }
 
