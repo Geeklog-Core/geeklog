@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -543,7 +543,7 @@ function plugin_show_uploadform($token)
 */
 function plugin_upload()
 {
-    global $_CONF;
+    global $_CONF, $_TABLES;
 
     $retval = '';
 
@@ -579,11 +579,54 @@ function plugin_upload()
 
             $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=100');
 
-        } elseif (file_exists($_CONF['path'] . 'plugins/' . $dirname)) { // If plugin directory already exists
-
-            $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
-
         } else {
+
+            $pi_did_exist   = false; // plugin directory already existed
+            $pi_had_entry   = false; // plugin had an entry in the database
+            $pi_was_enabled = false; // plugin was enabled
+
+            if (file_exists($_CONF['path'] . 'plugins/' . $dirname)) {
+                $pi_did_exist = true;
+
+                // plugin directory already exists
+                $pstatus = DB_query("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '$dirname'");
+                $A = DB_fetchArray($pstatus);
+                if (isset($A['pi_name'])) {
+                    $pi_had_entry = true;
+                    $pi_was_enabled = ($A['pi_enabled'] == 1);
+                }
+
+                if ($pi_was_enabled) {
+                    // disable temporarily while we move the files around
+                    DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$dirname'");
+                }
+
+                require_once 'System.php';
+
+                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirname;
+                if (file_exists($plugin_dir . '.previous')) {
+                    @System::rm('-rf ' . $plugin_dir . '.previous');
+                }
+                if (file_exists($plugin_dir)) {
+                    rename($plugin_dir, $plugin_dir . '.previous');
+                }
+
+                $public_dir = $_CONF['path_html'] . $dirname;
+                if (file_exists($public_dir . '.previous')) {
+                    @System::rm('-rf ' . $public_dir . '.previous');
+                }
+                if (file_exists($public_dir)) {
+                    rename($public_dir, $public_dir . '.previous');
+                }
+
+                $admin_dir = $_CONF['path_html'] . 'admin/plugins/' . $dirname;
+                if (file_exists($admin_dir . '.previous')) {
+                    @System::rm('-rf ' . $admin_dir . '.previous');
+                }
+                if (file_exists($admin_dir)) {
+                    rename($admin_dir, $admin_dir . '.previous');
+                }
+            }
 
             /** 
              * Install the plugin
@@ -674,19 +717,66 @@ function plugin_upload()
 
             unset($archive); // Collect some garbage
 
-            // if the plugin has an autoinstall.php, install it now
-            if (file_exists($plg_path . 'autoinstall.php')) {
-                if (plugin_autoinstall($pi_name)) {
-                    $retval .= COM_refresh($_CONF['site_admin_url']
-                                           . '/plugins.php?msg=44');
+            // cleanup when uploading a new version
+            if ($pi_did_exist) {
+                $plugin_dir = $_CONF['path'] . 'plugins/' . $dirname;
+                if (file_exists($plugin_dir . '.previous')) {
+                    @System::rm('-rf ' . $plugin_dir . '.previous');
+                }
+
+                $public_dir = $_CONF['path_html'] . $dirname;
+                if (file_exists($public_dir . '.previous')) {
+                    @System::rm('-rf ' . $public_dir . '.previous');
+                }
+
+                $admin_dir = $_CONF['path_html'] . 'admin/plugins/' . $dirname;
+                if (file_exists($admin_dir . '.previous')) {
+                    @System::rm('-rf ' . $admin_dir . '.previous');
+                }
+
+                if ($pi_was_enabled) {
+                    DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 1 WHERE pi_name = '$dirname'");
+                }
+            }
+
+            $msg_with_plugin_name = false;
+            if ($pi_did_exist) {
+                if ($pi_was_enabled) {
+                    // check if we have to perform an update
+                    $pi_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+                                             "pi_name = '$dirname'");
+                    $code_version = PLG_chkVersion($dirname);
+                    if (! empty($code_version) &&
+                            ($code_version != $pi_version)) {
+                        $result = PLG_upgrade($dirname);
+                        if ($result === true) {
+                            $msg = 60; // successfully updated
+                        } else {
+                            $msg_with_plugin_name = true;
+                            $msg = $result; // message provided by the plugin
+                        }
+                    } else {
+                        $msg = 98; // successfully uploaded
+                    }
                 } else {
-                    $retval .= COM_refresh($_CONF['site_admin_url']
-                                           . '/plugins.php?msg=72');
+                    $msg = 98; // successfully uploaded
+                }
+            } elseif (file_exists($plg_path . 'autoinstall.php')) {
+                // if the plugin has an autoinstall.php, install it now
+                if (plugin_autoinstall($pi_name)) {
+                    $msg = 44; // successfully installed
+                } else {
+                    $msg = 72; // an error occured while installing the plugin
                 }
             } else {
-                $retval .= COM_refresh($_CONF['site_admin_url']
-                                       . '/plugins.php?msg=98');
+                $msg = 98; // successfully uploaded
             }
+
+            $url = $_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg;
+            if ($msg_with_plugin_name) {
+                $url .= '&amp;plugin=' . $dirname;
+            }
+            $retval = COM_refresh($url);
         }
     }
 
