@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | help.php                                                                  |
 // |                                                                           |
 // | Support for Geeklog installation script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -134,6 +134,9 @@ $display .= '<head>
 
             <h2><a name="utf8">' . $LANG_INSTALL[92] . '</a></h2>
             <p class="indent">' . $LANG_HELP[13] . '</p>
+
+            <h2><a name="migrate_file">' . $LANG_MIGRATE[6] . '</a></h2>
+            <p class="indent">' . $LANG_HELP[14] . '</p>
 
         </div>
     </div>
