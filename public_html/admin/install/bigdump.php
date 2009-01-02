@@ -356,7 +356,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
         /*** Go back to Geeklog installer ***/
         echo ("<script language=\"JavaScript\" type=\"text/javascript\">window.setTimeout('location.href=\""
             . 'migrate.php?step=4'
-            . '&language=' . $_REQUEST['language']
+            . '&language=' . $language
             . '&site_url=' . $_REQUEST['site_url']
             . '&site_admin_url=' . $_REQUEST['site_admin_url'] . "\";',3000);</script>\n");
 
@@ -369,7 +369,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
         // Go to the next step
         echo '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
             . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&fn='
-            . urlencode($curfilename) . '&foffset=' . $foffset . '&totalqueries=' . $totalqueries . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delaypersession . ');</script>' . LB
+            . urlencode($curfilename) . '&foffset=' . $foffset . '&totalqueries=' . $totalqueries . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delaypersession . ');</script>' . LB
             . '<noscript>' . LB
             . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&amp;fn=' . urlencode($curfilename) . '&amp;foffset=' . $foffset . '&amp;totalqueries=' . $totalqueries . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $linenumber . '</a></p>' . LB
             . '</noscript>' . LB
