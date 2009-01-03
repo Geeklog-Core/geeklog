@@ -147,7 +147,7 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
 // +---------------------------------------------------------------------------+
 
 // Set some vars
-$html_path          = str_replace('admin/install/migrate.php', '', str_replace('admin\install\migrate.php', '', str_replace('\\', '/', __FILE__)));
+$html_path          = INST_getHtmlPath();
 $siteconfig_path    = '../../siteconfig.php';
 
 if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been defined.
@@ -232,8 +232,8 @@ if (INST_phpOutOfDate()) {
         }
 
         // Set up the URL and admin URL paths.
-        $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
-        $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']) ; 
+        $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : INST_getSiteUrl();
+        $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : INST_getSiteAdminUrl();
 
         $display .= INST_printTab(3) . '<h2>' . $LANG_INSTALL[31] . '</h2>' . LB 
             . INST_printTab(3) . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 

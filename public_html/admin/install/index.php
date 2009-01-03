@@ -120,8 +120,8 @@ function INST_installEngine($install_type, $install_step)
         $db_prefix = isset($_POST['db_prefix']) ? $_POST['db_prefix']
                    : $_DB_table_prefix;
 
-        $site_url = isset($_POST['site_url']) ? $_POST['site_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/admin.*/', '', $_SERVER['PHP_SELF']) ;
-        $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : 'http://' . $_SERVER['HTTP_HOST'] . preg_replace('/\/install.*/', '', $_SERVER['PHP_SELF']) ; 
+        $site_url = isset($_POST['site_url']) ? $_POST['site_url'] : INST_getSiteUrl();
+        $site_admin_url = isset($_POST['site_admin_url']) ? $_POST['site_admin_url'] : INST_getSiteAdminUrl();
         $host_name = explode(':', $_SERVER['HTTP_HOST']);
         $host_name = $host_name[0];
         if (empty($_CONF['site_mail'])) {
@@ -584,6 +584,7 @@ function INST_installEngine($install_type, $install_step)
     * Extra Step 4 - Upgrade plugins
     */
     case 4:
+
         INST_pluginUpgrades();
 
         $install_plugins = ((isset($_GET['install_plugins']) &&
@@ -879,7 +880,7 @@ for ($i = 0; $i < 4; $i++) {
     }
 }
 
-$html_path          = str_replace('admin/install/index.php', '', str_replace('admin\install\index.php', '', str_replace('\\', '/', __FILE__)));
+$html_path          = INST_getHtmlPath();
 $siteconfig_path    = '../../siteconfig.php';
 $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : '');
 $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
@@ -1023,7 +1024,7 @@ if (INST_phpOutOfDate()) {
         // Get the paths from the previous page
         $_PATH = array('db-config.php' => urldecode(isset($_GET['dbconfig_path'])
                                             ? $_GET['dbconfig_path'] : $_POST['dbconfig_path']),
-                        'public_html/' => str_replace('admin/install/index.php', '', str_replace('admin\install\index.php', '', __FILE__)));
+                        'public_html/' => INST_getHtmlPath());
 
         // Be fault tolerant with the path the user enters
         if (!strstr($_PATH['db-config.php'], 'db-config.php')) {
@@ -1222,7 +1223,9 @@ if (INST_phpOutOfDate()) {
         if ($step == 4) {
             // for the plugin install and upgrade,
             // we need lib-common.php in the global(!) namespace
+            $lx_inst = $language; // Hack: lib-common will overwrite $language
             require_once '../../lib-common.php';
+            $language = $lx_inst;
         }
 
         // Run the installation function

@@ -204,7 +204,8 @@ $LANG_HELP = array(
     11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.',
-    14 => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.'
+    14 => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    15 => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -270,7 +271,7 @@ $LANG_PLUGINS = array(
     2 => 'Step',
     3 => 'Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. By default, Geeklog includes a few useful plugins that you may want to install.',
     4 => 'You can also choose to upload additional plugins.',
-    5 => 'The file you uploaded was not a GZip compressed plugin file.',
+    5 => 'The file you uploaded was not a ZIP or GZip compressed plugin file.',
     6 => 'The plugin you uploaded already exists!',
     7 => 'Success!',
     8 => 'The %s plugin was uploaded successfully.',

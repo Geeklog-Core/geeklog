@@ -204,7 +204,8 @@ $LANG_HELP = array(
     11 => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     12 => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     13 => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.',
-    14 => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.'
+    14 => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    15 => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -266,26 +267,26 @@ $LANG_MIGRATE = array(
 // install-plugins.php
 
 $LANG_PLUGINS = array(
-    1 => 'Plugin Installation',
-    2 => 'Step',
-    3 => 'Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. By default, Geeklog includes a few useful plugins that you may want to install.',
-    4 => 'You can also choose to upload additional plugins.',
-    5 => 'The file you uploaded was not a GZip compressed plugin file.',
-    6 => 'The plugin you uploaded already exists!',
-    7 => 'Success!',
-    8 => 'The %s plugin was uploaded successfully.',
-    9 => 'Upload a plugin',
-    10 => 'Select plugin file',
-    11 => 'Upload',
-    12 => 'Select which plugins to install',
-    13 => 'Install?',
+    1 => 'Plugin-Installation',
+    2 => 'Schritt',
+    3 => 'Plugins sind Erweiterungen, die sich in Geeklog integrieren und neue Funktionen bereitstellen. In der Geeklog-Distribution sind bereits einige Plugins enthalten, die Du vielleicht mitinstallieren willst.',
+    4 => 'Zusätzliche Plugins können auch hier direkt hochgeladen werden.',
+    5 => 'Die hochgeladene Datei war nicht mit ZIP oder GZip komprimiert.',
+    6 => 'Das hochgeladene Plugin existiert schon!',
+    7 => 'Fertig!',
+    8 => 'Das %s-Plugin wurde erfolgreich hochgeladen.',
+    9 => 'Plugin hochladen',
+    10 => 'Wähle eine Plugin-Datei',
+    11 => 'Hochladen',
+    12 => 'Welche Plugins sollen installiert werden?',
+    13 => 'Installieren?',
     14 => 'Plugin',
     15 => 'Version',
-    16 => 'Unknown',
-    17 => 'Note',
-    18 => 'This plugin requires manual activation from the Plugins admin panel.',
-    19 => 'Refresh',
-    20 => 'There are no new plugins to install.'
+    16 => 'Nicht bekannt',
+    17 => 'Hinweis',
+    18 => 'Dieses Plugin muss im Admin-Menü unter "Plugins" manuell aktiviert werden.',
+    19 => 'Neuladen',
+    20 => 'Keine zusätzlichen Plugins vorhanden, die installiert werden könnten.'
 );
 
 // +---------------------------------------------------------------------------+

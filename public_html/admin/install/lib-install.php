@@ -1058,4 +1058,74 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
     }
 }
 
+/**
+ * Helper function: Derive 'path_html' from __FILE__
+ *
+ */
+function INST_getHtmlPath()
+{
+    $path = str_replace('\\', '/', __FILE__);
+    $path = str_replace('//', '/', $path);
+    $parts = explode('/', $path);
+    $num_parts = count($parts);
+    if (($num_parts < 3) || ($parts[$num_parts - 1] != 'lib-install.php')) {
+        die('Fatal error - can not figure out my own path');
+    }
+
+    return implode('/', array_slice($parts, 0, $num_parts - 3)) . '/';
+}
+
+/**
+ * Helper function: Derive path of the 'admin' directory from __FILE__
+ *
+ */
+function INST_getAdminPath()
+{
+    $path = str_replace('\\', '/', __FILE__);
+    $path = str_replace('//', '/', $path);
+    $parts = explode('/', $path);
+    $num_parts = count($parts);
+    if (($num_parts < 3) || ($parts[$num_parts - 1] != 'lib-install.php')) {
+        die('Fatal error - can not figure out my own path');
+    }
+
+    return implode('/', array_slice($parts, 0, $num_parts - 2)) . '/';
+}
+
+/**
+ * Helper function: Derive 'site_url' from PHP_SELF
+ *
+ */
+function INST_getSiteUrl()
+{
+    $url = str_replace('//', '/', $_SERVER['PHP_SELF']);
+    $parts = explode('/', $url);
+    $num_parts = count($parts);
+    if (($num_parts < 3) || (substr($parts[$num_parts - 1], -4) != '.php')) {
+        die('Fatal error - can not figure out my own URL');
+    }
+
+    $url = implode('/', array_slice($parts, 0, $num_parts - 3));
+
+    return 'http://' . $_SERVER['HTTP_HOST'] . $url;
+}
+
+/**
+ * Helper function: Derive 'site_admin_url' from PHP_SELF
+ *
+ */
+function INST_getSiteAdminUrl()
+{
+    $url = str_replace('//', '/', $_SERVER['PHP_SELF']);
+    $parts = explode('/', $url);
+    $num_parts = count($parts);
+    if (($num_parts < 3) || (substr($parts[$num_parts - 1], -4) != '.php')) {
+        die('Fatal error - can not figure out my own URL');
+    }
+
+    $url = implode('/', array_slice($parts, 0, $num_parts - 2));
+
+    return 'http://' . $_SERVER['HTTP_HOST'] . $url;
+}
+
 ?>

@@ -138,6 +138,9 @@ $display .= '<head>
             <h2><a name="migrate_file">' . $LANG_MIGRATE[6] . '</a></h2>
             <p class="indent">' . $LANG_HELP[14] . '</p>
 
+            <h2><a name="plugin_upload">' . $LANG_PLUGINS[10] . '</a></h2>
+            <p class="indent">' . $LANG_HELP[15] . '</p>
+
         </div>
     </div>
 

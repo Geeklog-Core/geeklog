@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | install-plugins.php                                                       |
 // |                                                                           |
 // | Install plugins.                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt AT mattdanger DOT net                           |
 // +---------------------------------------------------------------------------+
@@ -38,7 +38,7 @@ require_once '../../lib-common.php';
 require_once 'lib-install.php';
 
 // Set some vars
-$html_path          = str_replace('admin/install/install-plugins.php', '', str_replace('admin\install\install-plugins.php', '', str_replace('\\', '/', __FILE__)));
+$html_path          = INST_getHtmlPath();
 $siteconfig_path    = '../../siteconfig.php';
 
 if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been defined.
@@ -91,7 +91,7 @@ if (INST_phpOutOfDate()) {
         $upload_enabled = (ini_get('file_uploads')
                             && is_writable($_CONF['path'] . 'plugins/') 
                             && is_writable($_CONF['path_html'])
-                            && is_writable($_CONF['path_html'] . 'admin/plugins/')) 
+                            && is_writable(INST_getAdminPath() . 'plugins/')) 
                                 ? true
                                 : false;
 
@@ -220,8 +220,8 @@ if (INST_phpOutOfDate()) {
                                    $_CONF['path_html'] . $pi_name);
                         }
                         if (file_exists($plg_path . 'admin')) {
-                            rename($plg_path . 'admin', $_CONF['path_html']
-                                   . 'admin/plugins/' . $pi_name);
+                            rename($plg_path . 'admin',
+                                   INST_getAdminPath() . 'plugins/' . $pi_name);
                         }
 
                     }
@@ -348,7 +348,7 @@ if (INST_phpOutOfDate()) {
                             $admin_dir = $_CONF['site_admin_url'];
                         } else {
                             $admin_dir = $_CONF['path_html']
-                                      . substr ($admin_url, $pos + 1);
+                                       . substr ($admin_url, $pos + 1);
                         }
 
                         $missing_autoinstall = false;
@@ -405,7 +405,8 @@ if (INST_phpOutOfDate()) {
 
                             } else {
                             
-                                $pi_display_name = $pi_name;
+                                $pi_display_name = ucwords(str_replace('_', ' ',
+                                                           $pi_name));
 
                             }
 
