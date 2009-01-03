@@ -428,6 +428,15 @@ code {
 .permissions-list {
   color:#FF0000;
 }
+.highlight {
+  background-color:#CCC; 
+  color:#000;
+  width:700px;
+  padding:5px;
+  margin-top:20px;
+  margin-bottom:20px;
+  border:1px dashed black;
+}
 .notice {
   background-color:#CCC; 
   color:#000;

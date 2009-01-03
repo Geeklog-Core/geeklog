@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Additional functions for install script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt.danger.west AT gmail DOT com                    |
 // |          Dirk Haun - dirk AT haun-online DOT de                           |
@@ -354,17 +354,18 @@ function INST_formatSize($size, $dec_places = 0)
 }
 
 /**
- * Returns the HTML form to return the user's inputted data to the
- * previous page.
+ * Provide a link to the help page for an option
  *
- * @return  string  HTML form code.
+ * @param   string  $var    key of the label, used as an anchor on the help page
+ * @return  string          HTML for the link
  *
  */
 function INST_helpLink($var)
 {
     global $language;
 
-    return '(<a href="help.php?language=' . $language . '#' . $var . '" target="_blank">?</a>)';
+    return '(<a href="help.php?language=' . $language . '&amp;label=' . $var
+           . '#' . $var . '" target="_blank">?</a>)';
 }
 
 /**

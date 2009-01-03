@@ -41,7 +41,7 @@ $LANG_CHARSET = 'utf-8';
 
 // +---------------------------------------------------------------------------+
 // | Array Format:                                                             |
-// | $LANG_NAME[XX]: $LANG - variable name                                    |
+// | $LANG_NAME[XX]: $LANG - variable name                                     |
 // |                 NAME  - where array is used                               |
 // |                 XX    - phrase id number                                  |
 // +---------------------------------------------------------------------------+
@@ -66,6 +66,7 @@ $LANG_INSTALL = array(
     13 => '目前',
     14 => '改目錄為',
     15 => '輸出志樂標題功能已關閉. <code>backend</code> 目錄沒被測試',
+    16 => 'Migrate',
     17 => '用戶照片功能關閉. The <code>userphotos</code> 目錄沒被測試',
     18 => '文章圖像功能關閉. The <code>articles</code> 目錄沒被測試',
     19 => '志樂需要某些檔案和目錄能讓伺服器寫入. 以下列出必須更改的檔案和目錄.',
@@ -141,7 +142,20 @@ $LANG_INSTALL = array(
     89 => '目前版本:',
     90 => '空的資料庫?',
     91 => '看來你的資料庫是空的或你提供的資料庫資料有錯誤. 或你想重新安裝 (而不是升級)? 請回去再試.',
-    92 => '用 UTF-8'
+    92 => '用 UTF-8',
+    93 => 'Success',
+    94 => 'Here are some hints to find the correct path:',
+    95 => 'The complete path to this file (the install script) is:',
+    96 => 'The installer was looking for %s in:',
+    97 => 'Set File Permissions',
+    98 => 'Advanced Users',
+    99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
+    100 => 'Invalid mode specified',
+    101 => 'Step',
+    102 => 'Enter configuration information',
+    103 => 'and configure additional plugins',
+    104 => 'Incorrect Admin Directory Path',
+    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -173,22 +187,180 @@ $LANG_SUCCESS = array(
 );
 
 // +---------------------------------------------------------------------------+
+// migrate.php
+
+$LANG_MIGRATE = array(
+    0 => 'The migration process will overwrite any existing database information.',
+    1 => 'Before Proceding',
+    2 => 'Be sure any previously installed plugins have been copied to your new server.',
+    3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
+    4 => 'If you\'re upgrading to a new Geeklog version, then run the <a href="index.php">install script</a> in upgrade mode first.',
+    5 => 'If you\'re upgrading to a new Geeklog version, then don\'t upload your theme just yet. Use the included default theme until you can be sure your migrated site works properly.',
+    6 => 'Select an existing backup',
+    7 => 'Choose file...',
+    8 => 'From the server\'s backups directory',
+    9 => 'From your computer',
+    10 => 'Choose file...',
+    11 => 'No backup files found.',
+    12 => 'The upload limit for this server is ',
+    13 => '. If your backup file is larger than ',
+    14 => ' or if you experience a timeout, then you should upload the file to Geeklog\'s backups directory via FTP.',
+    15 => 'Your backups directory is not writable by the web server. Permissions need to be 777.',
+    16 => 'Migrate',
+    17 => 'Migrate From Backup',
+    18 => 'No backup file was selected',
+    19 => 'Could not save ',
+    20 => ' to ',
+    21 => 'The file',
+    22 => 'already exists. Would you like to replace it?',
+    23 => 'Yes',
+    24 => 'No',
+    25 => 'The version of Geeklog you chose to migrate from is out of date.',
+    26 => 'Migration notice: ',
+    27 => 'The "',
+    28 => '" plugin is missing and has been disabled. You can install and reactivate it at any time from the administration section.',
+    29 => 'The image "',
+    30 => '" listed in the "',
+    31 => '" table could not be found in ',
+    32 => 'The database file contained information for one or more plugins that the migration script could not locate in your',
+    33 => 'directory. The plugins have been deactivated. You can install and reactivate them at any time from the administration section.',
+    34 => 'The database file contained information for one or more files that the migration script could not locate in your',
+    35 => 'directory. Check <code>error.log</code> for more details.',
+    36 => 'You can correct these any time.',
+    37 => 'Migration Complete',
+    38 => 'The migration process has completed. However, the installation script found the following issues:',
+    39 => "Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.",
+    40 => "The archive '%s' does not appear to contain any SQL files.",
+    41 => "Error extracting database backup '%s' from compressed backup file.",
+    42 => "Backup file '%s' just vanished ...",
+    43 => "Import aborted: The file '%s' does not appear to be an SQL dump.",
+    44 => "Fatal error: Database import seems to have failed. Don't know how to continue.",
+    45 => "Could not identify database version. Please perform a manual update.",
+    46 => '', // TBD
+    47 => 'Database upgrade from version %s to version %s failed.',
+    48 => 'One or more plugins could not be updated and had to be disabled.'
+);
+
+// +---------------------------------------------------------------------------+
+// install-plugins.php
+
+$LANG_PLUGINS = array(
+    1 => 'Plugin Installation',
+    2 => 'Step',
+    3 => 'Geeklog plugins are addon components that provide new functionality and leverage the internal services of Geeklog. By default, Geeklog includes a few useful plugins that you may want to install.',
+    4 => 'You can also choose to upload additional plugins.',
+    5 => 'The file you uploaded was not a ZIP or GZip compressed plugin file.',
+    6 => 'The plugin you uploaded already exists!',
+    7 => 'Success!',
+    8 => 'The %s plugin was uploaded successfully.',
+    9 => 'Upload a plugin',
+    10 => 'Select plugin file',
+    11 => 'Upload',
+    12 => 'Select which plugins to install',
+    13 => 'Install?',
+    14 => 'Plugin',
+    15 => 'Version',
+    16 => 'Unknown',
+    17 => 'Note',
+    18 => 'This plugin requires manual activation from the Plugins admin panel.',
+    19 => 'Refresh',
+    20 => 'There are no new plugins to install.'
+);
+
+// +---------------------------------------------------------------------------+
+// bigdump.php
+
+$LANG_BIGDUMP = array(
+    0 => 'Start Import',
+    1 => ' from ',
+    2 => ' into ',
+    3 => ' at ',
+    4 => 'Can\'t seek into ',
+    5 => 'Can\'t open ',
+    6 => ' for import.',
+    7 => 'UNEXPECTED: Non-numeric values for start and foffset.',
+    8 => 'Processing file:',
+    9 => 'Can\'t set file pointer behind the end of file.',
+    10 => 'Can\'t set file pointer to offset: ',
+    11 => 'Stopped at the line ',
+    12 => '. At this place the current query is from csv file, but ',
+    13 => ' was not set.',
+    14 => 'Stopped at the line ',
+    15 => '. At this place the current query includes more than ',
+    16 => ' dump lines. That can happen if your dump file was created by some tool which doesn\'t place a semicolon followed by a linebreak at the end of each query, or if your dump contains extended inserts. Please read the BigDump FAQs for more information.',
+    17 => 'Error at the line ',
+    18 => 'Query: ',
+    19 => 'MySQL: ',
+    20 => 'Can\'t read the file pointer offset.',
+    21 => 'Not available for gzipped files',
+    22 => 'Progress',
+    23 => 'The database migration completed successfully! You will be forwarded momentarily.',
+    24 => 'Waiting ',
+    25 => ' milliseconds</b> before starting next session...',
+    26 => 'Click here',
+    27 => 'to abort the import',
+    28 => 'or wait!',
+    29 => 'An error occurred.',
+    30 => 'Start from the beginning',
+    31 => '(DROP the old tables before restarting)'
+);
+
+// +---------------------------------------------------------------------------+
+// Error messages
+
+$LANG_ERROR = array(
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    2 => 'The uploaded file was only partially uploaded.',
+    3 => 'No file was uploaded.',
+    4 => 'Missing a temporary folder.',
+    5 => 'Failed to write file to disk.',
+    6 => 'File upload stopped by extension.',
+    7 => 'The uploaded file exceeds the post_max_size directive in your php.ini. Please upload your database file using another method, such as FTP.',
+    8 => 'Error',
+    9 => 'Failed to connect to the database with the error: ',
+    10 => 'Check your database settings'
+);
+
+// +---------------------------------------------------------------------------+
 // help.php
 
 $LANG_HELP = array(
     0 => '志樂安裝支助',
-    1 => '你的網站名.',
-    2 => '簡單的描述你的網站.',
-    3 => '志樂可用 MySQL 或 Microsoft SQL 資料庫安裝. 若你不肯定你的選擇，請問你的主機服務員.</p><p class="indent"><strong>注:</strong> InnoDB 表格也許會在巨大的網站上提升效果, 但它會使資料庫備份次序更加複雜.',
-    4 => '你的資料庫的網路名 (或 IP 位址). 這通常是 "localhost". 若你不肯定，請問你的主機服務員.',
-    5 => '你的資料庫名稱. 若你不肯定，請問你的主機服務員.',
-    6 => '你的資料庫用戶名. 若你不肯定，請問你的主機服務員.',
-    7 => '你的資料庫用戶密碼. 若你不肯定，請問你的主機服務員.',
-    8 => '有些人想在同一個資料庫裏安裝數個志樂網站. 為了讓每一個志樂正確的運行他們必須有獨特的表格首碼 (例如： gl1_, gl2_, etc).',
-    9 => '肯定這是你的網站的正確 URL, 就是志樂的 <code>index.php</code> 檔案存在處 (沒有後面的一丿).',
-    10 => '有些主機服務者預先設定管理目錄 admin. 在這樣的情況下，你要將志樂的 admin 目錄改名，例如： "myadmin" 而且更改一下的 URL. 現暫時不必改，等到你發現進入 admin菜當是遇到問題.',
-    11 => '這是所有志樂寄出的電郵的回信位址和在辛迪加的聯絡資訊.',
-    12 => '這是系統電郵的寄信者位址用於用戶登記時等等. 這應當是跟網站電郵同樣或一個無法回信的位址避免冒名者借著網站登記來錄取你的地址. 若這電郵不跟上面一樣, 建議你加一個資訊在你寄出的電郵裏.',
-    13 => '指示你是否要用 UTF-8 為你網站的默認字形檔. 這在多言語的網站上會有幫助.'
+    'site_name' => '你的網站名.',
+    'site_slogan' => '簡單的描述你的網站.',
+    'db_type' => '志樂可用 MySQL 或 Microsoft SQL 資料庫安裝. 若你不肯定你的選擇，請問你的主機服務員.</p><p class="indent"><strong>注:</strong> InnoDB 表格也許會在巨大的網站上提升效果, 但它會使資料庫備份次序更加複雜.',
+    'db_host' => '你的資料庫的網路名 (或 IP 位址). 這通常是 "localhost". 若你不肯定，請問你的主機服務員.',
+    'db_name' => '你的資料庫名稱. 若你不肯定，請問你的主機服務員.',
+    'db_user' => '你的資料庫用戶名. 若你不肯定，請問你的主機服務員.',
+    'db_pass' => '你的資料庫用戶密碼. 若你不肯定，請問你的主機服務員.',
+    'db_prefix' => '有些人想在同一個資料庫裏安裝數個志樂網站. 為了讓每一個志樂正確的運行他們必須有獨特的表格首碼 (例如： gl1_, gl2_, etc).',
+    'site_url' => '肯定這是你的網站的正確 URL, 就是志樂的 <code>index.php</code> 檔案存在處 (沒有後面的一丿).',
+    'site_admin_url' => '有些主機服務者預先設定管理目錄 admin. 在這樣的情況下，你要將志樂的 admin 目錄改名，例如： "myadmin" 而且更改一下的 URL. 現暫時不必改，等到你發現進入 admin菜當是遇到問題.',
+    'site_mail' => '這是所有志樂寄出的電郵的回信位址和在辛迪加的聯絡資訊.',
+    'noreply_mail' => '這是系統電郵的寄信者位址用於用戶登記時等等. 這應當是跟網站電郵同樣或一個無法回信的位址避免冒名者借著網站登記來錄取你的地址. 若這電郵不跟上面一樣, 建議你加一個資訊在你寄出的電郵裏.',
+    'utf8' => '指示你是否要用 UTF-8 為你網站的默認字形檔. 這在多言語的網站上會有幫助.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
+
+// which texts to use as labels, so they don't have to be tranlated again
+$LANG_LABEL = array(
+    'site_name'      => $LANG_INSTALL[32],
+    'site_slogan'    => $LANG_INSTALL[33],
+    'db_type'        => $LANG_INSTALL[34],
+    'db_host'        => $LANG_INSTALL[39],
+    'db_name'        => $LANG_INSTALL[40],
+    'db_user'        => $LANG_INSTALL[41],
+    'db_pass'        => $LANG_INSTALL[42],
+    'db_prefix'      => $LANG_INSTALL[43],
+    'site_url'       => $LANG_INSTALL[45],
+    'site_admin_url' => $LANG_INSTALL[47],
+    'site_mail'      => $LANG_INSTALL[48],
+    'noreply_mail'   => $LANG_INSTALL[49],
+    'utf8'           => $LANG_INSTALL[92],
+    'migrate_file'   => $LANG_MIGRATE[6],
+    'plugin_upload'  => $LANG_PLUGINS[10]
+);
+
 ?>
