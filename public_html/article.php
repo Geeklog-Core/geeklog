@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | article.php                                                               |
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -31,15 +31,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: article.php,v 1.99 2008/07/27 09:11:29 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
 * may, or may not, include the comments attached
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbbs <tony@tonybibbs.com>
+* @author   Tony Bibbbs <tony AT tonybibbs DOT com>
 * @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
 */
 
@@ -283,6 +281,15 @@ if ($A['count'] > 0) {
                                                   array('type'  => $feedType,
                                                         'class' => $feedClass));
             }
+        }
+        if ($_CONF['trackback_enabled'] &&
+                ($story->displayElements('trackbackcode') >= 0) &&
+                SEC_hasRights('story.ping') &&
+                ($story->displayElements('draft_flag') == 0) &&
+                ($story->displayElements('day') < time ())) {
+            $url = $_CONF['site_admin_url']
+                 . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
+            $story_options[] = COM_createLink($LANG_TRB['send_trackback'], $url);
         }
         $related = STORY_whatsRelated($story->displayElements('related'),
                                       $story->displayElements('uid'),
