@@ -1132,18 +1132,6 @@ function plugin_get_pluginname($plugin)
     }
 
     if (empty($retval)) {
-        // else try the 'getadminoption' function
-        // - may fail if we don't have the proper permissions
-        $fn = 'plugin_getadminoption_' . $plugin;
-        if (function_exists($fn)) {
-            $result = $fn();
-            if (is_array($result) && !empty($result[0])) {
-                $retval = $result[0];
-            }
-        }
-    }
-
-    if (empty($retval)) {
         // give up and fake it
         $retval = ucwords(str_replace('_', ' ', $plugin));
     }
