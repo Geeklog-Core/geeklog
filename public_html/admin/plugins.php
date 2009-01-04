@@ -138,7 +138,12 @@ function plugineditor ($pi_name, $confirmed = 0)
     if ($A['pi_enabled'] == 1) {
         $plg_templates->set_var('enabled_checked', 'checked="checked"');
     } else {
-        $plg_templates->set_var('enabled_checked', '');
+        if (file_exists($_CONF['path'] . 'plugins/' . $pi_name
+                        . '/functions.inc')) {
+            $plg_templates->set_var('enabled_checked', '');
+        } else {
+            $plg_templates->set_var('enabled_checked', 'disabled="disabled"');
+        }
     }
     $plg_templates->set_var('gltoken', SEC_createToken());
     $plg_templates->set_var('gltoken_name', CSRF_TOKEN);

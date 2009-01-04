@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-admin.php                                                             |
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -988,14 +988,26 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
             }
             break;
         case 'enabled':
+            $not_present = false;
             if ($A['pi_enabled'] == 1) {
                 $switch = ' checked="checked"';
             } else {
                 $switch = '';
+                if (! file_exists($_CONF['path'] . 'plugins/' . $A['pi_name']
+                                  . '/functions.inc')) {
+                    $not_present = true;
+                }
             }
-            $retval = "<input type=\"checkbox\" name=\"enabledplugins[{$A['pi_name']}]\" "
-                . "onclick=\"submit()\" value=\"1\"$switch" . XHTML . ">";
-            $retval .= "<input type=\"hidden\" name=\"".CSRF_TOKEN."\" value=\"{$token}\"".XHTML.">";
+            if ($not_present) {
+                $retval = '<input type="checkbox" name="enabledplugins['
+                        . $A['pi_name'] . '] disabled="disabled"' . XHTML . '>';
+            } else {
+                $retval = '<input type="checkbox" name="enabledplugins['
+                        . $A['pi_name'] . ']" onclick="submit()" value="1"'
+                        . $switch . XHTML . '>';
+                $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" '
+                        . 'value="' . $token . '"' . XHTML . '>';
+            }
             break;
         default:
             $retval = $fieldvalue;
