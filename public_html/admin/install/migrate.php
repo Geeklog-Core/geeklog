@@ -832,6 +832,9 @@ if (INST_phpOutOfDate()) {
 
         }
 
+        // refresh "Older Stories" block to fix URLs, if necessary
+        COM_olderStuff();
+
         /** 
          * Import complete.
          *
