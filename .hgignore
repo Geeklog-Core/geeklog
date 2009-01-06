@@ -17,3 +17,6 @@ public_html/siteconfig.php
 
 syntax: glob
 backups/*.sql
+backups/*.tar.gz
+backups/*.tgz
+backups/*.zip
