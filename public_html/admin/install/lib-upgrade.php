@@ -452,8 +452,15 @@ function INST_doDatabaseUpgrades($current_gl_version)
             break;
 
         case '1.5.1':
-        case '1.5.2': // TBD
-            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.1_to_1.6.0.php';
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.1_to_1.5.2.php';
+            INST_updateDB($_SQL);
+
+            $current_gl_version = '1.5.2';
+            $_SQL = '';
+            break;
+
+        case '1.5.2':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.5.2_to_1.6.0.php';
 
             update_ConfValues();
 
@@ -504,6 +511,7 @@ function INST_identifyGeeklogVersion()
 
     case 'mysql':
         $test = array(
+            '1.5.2'  => array("SELECT value FROM {$_TABLES['vars']} WHERE name = 'database_version'", '1.5.2'),
             '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
             '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
@@ -526,6 +534,7 @@ function INST_identifyGeeklogVersion()
 
     case 'mssql':
 	    $test = array(
+            '1.5.2'  => array("SELECT value FROM {$_TABLES['vars']} WHERE name = 'database_version'", '1.5.2'),
             '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
             '1.5.0'  => array("SELECT c.name FROM syscolumns c JOIN sysobjects o ON o.id = c.id WHERE c.name='bodytext' AND o.name='{$_TABLES['storysubmission']}'",'bodytext'),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
