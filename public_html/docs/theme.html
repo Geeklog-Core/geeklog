@@ -221,7 +221,7 @@ featured and archived stories.</li>
 </ul>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.5.2</a></h2>
+<h2><a name="changes152">Theme changes in Geeklog 1.5.2</a></h2>
 
 <p>Note: Themes made for Geeklog 1.5.0 or 1.5.1 should work just fine with
 Geeklog 1.5.2. In this release, we only fixed a few problems in the themes
@@ -243,6 +243,9 @@ themes.</p>
 <li>The <code>{site_admin_url}</code> was missing from the Configuration form
     action in <tt>admin/config/configuration.thtml</tt>. This may have caused
     problems making configuration changes on some setups.</li>
+<li>Added a hidden <code>old_pid</code> input field to the polls editor template
+    file, <tt>plugins/polls/templates/admin/polleditor.thtml</tt>, to fix
+    problems when changing a poll's ID.</li>
 </ul>
 
 <h3>Other changes</h3>

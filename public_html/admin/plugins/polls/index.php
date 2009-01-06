@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Polls Plugin 2.0                                                          |
+// | Polls Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,14 +31,12 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.59 2008/06/10 17:26:50 dhaun Exp $
-
-// Set this to true if you want to log debug messages to error.log
-$_POLL_VERBOSE = false;
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
+
+// Set this to true if you want to log debug messages to error.log
+$_POLL_VERBOSE = false;
 
 $display = '';
 
@@ -558,6 +556,9 @@ if ($mode == 'edit') {
     }
     if (empty($pid) && !empty($old_pid)) {
         $pid = $old_pid;
+    }
+    if (empty($old_pid) && (! empty($pid))) {
+        $old_pid = $pid;
     }
     if (!empty($pid)) {
         $statuscode = 0;
