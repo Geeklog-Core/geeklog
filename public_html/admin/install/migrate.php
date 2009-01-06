@@ -542,6 +542,7 @@ if (INST_phpOutOfDate()) {
             // Parse the .sql file to grab the table prefix
             $has_config = false;
             $num_create = 0;
+            $DB['table_prefix'] = '';
 
             $sql_file = @fopen($backup_dir . $backup_file, 'r');
             if (! $sql_file) {
@@ -554,9 +555,14 @@ if (INST_phpOutOfDate()) {
                     if (preg_match('/CREATE TABLE/i', $line)) {
                         $num_create++;
                         $line = trim($line);
-                        if (strpos($line, 'access`') !== false) {
-                            $DB['table_prefix'] = preg_replace('/^.*`/', '',
-                                    preg_replace('/access`.*$/', '', $line));
+                        if (strpos($line, 'access') !== false) {
+                            $words = explode(' ', $line);
+                            if (count($words) >= 3) {
+                                $table = str_replace('`', '', $words[2]);
+                                if (substr($table, -6) == 'access') {
+                                    $DB['table_prefix'] = substr($table, 0, -6);
+                                }
+                            }
                         } elseif (strpos($line, 'conf_values') !== false) {
                             $has_config = true;
                             break;
