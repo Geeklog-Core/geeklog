@@ -146,6 +146,9 @@ Links plugin
 
 Polls plugin
 ------------
+- Lowered the default number of questions per poll to 5 and the number of
+  answers per question to 8 to avoid running into Suhosin's default
+  post.max_vars limit (for new installs only) [Dirk]
 - Fixed SQL error when poll questions contained single quotes (bug #0000756)
   [Dirk]
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]

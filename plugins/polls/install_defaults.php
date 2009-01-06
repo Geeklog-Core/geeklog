@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2009 by the following authors:                              |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
@@ -30,8 +30,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: install_defaults.php,v 1.8 2008/09/21 08:37:08 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
@@ -54,8 +52,8 @@ $_PO_DEFAULT['pollsloginrequired'] = 0;
 // Set to 1 to hide the "Polls" entry from the top menu:
 $_PO_DEFAULT['hidepollsmenu']      = 0;
 
-$_PO_DEFAULT['maxquestions']       = 10; // max. number of questions in a poll
-$_PO_DEFAULT['maxanswers']         = 10; // max. number of options in a question
+$_PO_DEFAULT['maxquestions']       = 5; // max. number of questions in a poll
+$_PO_DEFAULT['maxanswers']         = 8; // max. number of options in a question
 
 // 'submitorder' is the order in which answers are saved in admin/poll.php
 // 'voteorder' will list answers ordered by number of votes (highest->lowest);
