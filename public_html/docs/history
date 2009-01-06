@@ -3,19 +3,15 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.0)
 ------------
 
-- Added "Send Pings" to the Story Options block (if enabled and allowed for the
-  current user) [Dirk]
-- Admin lists allowed non-sortable columns to be sortable (reported and patch
-  provided by hiroron, bug #0000791)
+Geeklog 1.6.0 incorporates the following projects implemented during
+the 2008 Google Summer of Code:
+
++ Site migration support and easier plugin installation, by Matt West
++ (TBD) Improved search, by Sami Barakat
++ (TBD) Comment moderation and editable comments, by Jared Wenerd
+
+Other changes:
 - Implemented extended API for PLG_getItemInfo [mystral-kk, Dirk]
-- Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
-- When calling COM_getYearFormOptions with a $startoffset parameter, the list
-  of years was off by one (bug #0000783; patch provided by hiroron)
-- Fixed updating feeds after changing topic permissions (bug #0000779) [Dirk]
-- The security token was missing from the trackback editor template file
-  (reported and patch provided by hiroron, bug #0000778)
-- Removed rel="tag" from topic links in lib-story.php as that would indicate a
-  Microformat with a slightly different meaning [Dirk]
 - Fixed inconsistencies and various small mistakes when displaying "Access
   denied" messages on the admin pages [Dirk]
 - Added a print.css stylesheet to be used by the printable template files
@@ -24,13 +20,72 @@ Geeklog History/Changes:
   db-config.php [Dirk]
 - Added a note about the max. dimensions of a userphoto in the About You pane
   of a user's My Account page (feature request #0000629) [Dirk]
-- Don't include X-Originating-IP header in emails sent from the site's admin
-  area (bug #0000701) [Dirk]
 - Display a message when no topics exist and don't let the user enter the story
   editors (bug #0000738) [Dirk]
-- Improved image quality when using gdlib to rescale images. Also added a
-  configuration option to control the JPEG quality (Feature request #0000720)
+- Added a configuration option to control the JPEG quality (Feature request
+  #0000720) [Dirk]
+
+Calendar plugin
+---------------
+- Added auto installation support [Dirk]
+- Added support for PLG_getItemInfo [Dirk]
+
+Links plugin
+------------
+- Added auto installation support [Dirk]
+- Added support for PLG_getItemInfo [Dirk]
+- Introduced function LINKS_getCategorySQL and fixed visibility of link
+  categories in the Top 10 Links list and site statistics [Dirk]
+- Added an option to allow opening external links in a new window (feature
+  request #0000693). Use with care, please [Dirk]
+- Only external links are marked with class="ext-link" [Dirk]
+
+Polls plugin
+------------
+- Added auto installation support [Dirk]
+- Added support for PLG_getItemInfo [Dirk]
+- Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
+
+Spam-X
+------
+- Added auto installation support [Dirk]
+
+Static Pages plugin
+-------------------
+- Added auto installation support [Dirk]
+- Added support for PLG_getItemInfo [Dirk]
+- The printable.thtml template file uses the HTML Strict doctype and print.css
+  now [Dirk]
+- Display "successfully saved" and "successfully deleted" messages, just like
+  every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+Jan ??, 2009 (1.5.2)
+------------
+
+- Added "Send Pings" to the Story Options block (if enabled and allowed for the
+  current user) [Dirk]
+- Don't let the user enable plugins when there's no functions.inc for the
+  plugin [Dirk]
+- When the install script can't find db-config.php, that message was always
+  displayed in English, i.e. you could not change the language for that screen
   [Dirk]
+- When upgrading from a Geeklog version prior to 1.5.0, the plugin config.php
+  files are no longer renamed [Dirk]
+- Admin lists allowed non-sortable columns to be sortable (reported and patch
+  provided by hiroron, bug #0000791)
+- Fixed STORY_getItemInfo - need to check the draft flag and for a publish date
+  in the future [mystral-kk, Dirk]
+- Fixed wrong use of COM_isAnonUser in COM_getPermSQL (since 1.5.0) [Dirk]
+- When calling COM_getYearFormOptions with a $startoffset parameter, the list
+  of years was off by one (bug #0000783; patch provided by hiroron)
+- Fixed updating feeds after changing topic permissions (bug #0000779) [Dirk]
+- The security token was missing from the trackback editor template file
+  (reported and patch provided by hiroron, bug #0000778)
+- Removed rel="tag" from topic links in lib-story.php as that would indicate a
+  Microformat with a slightly different meaning [Dirk]
+- Don't include X-Originating-IP header in emails sent from the site's admin
+  area (bug #0000701) [Dirk]
 - Check if COM_errorLog exists before using it in the config class (for possible
   problems during installation, bug #0000768) [Dirk]
 - Fixed filling out the Site Email / No-Reply Email fields in the install
@@ -44,6 +99,9 @@ Geeklog History/Changes:
 - Saving a story tried to update a feed of type 'geeklog' instead of 'article'
   (reported by Tom Homer)
 - Delete a feed's file when deleting a feed (bug #0000758) [Dirk]
+- When using gdlib, use imagecopyresampled instead or imagecopyresized to scale
+  images. This should result in better image quality (part of Feature request
+  #0000720) [Dirk]
 - The {start_storylink_anchortag} variable in the story templates was missing
   a '>' (reported by Michael Brusletten) [Dirk]
 - Display a "Service" column in the Admin's list of users when remote auth is
@@ -78,45 +136,27 @@ Geeklog History/Changes:
 
 Calendar plugin
 ---------------
-- Added support for PLG_getItemInfo [Dirk]
 - Make {event_url} available in eventdetails.thtml [Dirk]
 
 Links plugin
 ------------
-- Added support for PLG_getItemInfo [Dirk]
-- Introduced function LINKS_getCategorySQL and fixed visibility of link
-  categories in the Top 10 Links list and site statistics [Dirk]
-- Added an option to allow opening external links in a new window (feature
-  request #0000693). Use with care, please [Dirk]
-- Only external links are marked with class="ext-link" [Dirk]
+- Missing parentheses my have resulted in incorrect search results [Dirk]
 - Added urlencoded versions of {link_actual_url} and {link_name} [Dirk]
 - Prevent overwriting existing links when changing the link ID [Dirk]
 
 Polls plugin
 ------------
-- Added support for PLG_getItemInfo [Dirk]
-- Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
 - Fixed SQL error when poll questions contained single quotes (bug #0000756)
   [Dirk]
 - Fixed handling of poll IDs in Polls editor (bug #0000753) [Dirk]
-
+ 
 Static Pages plugin
 -------------------
-- Added support for PLG_getItemInfo [Dirk]
 - The owner of a static page changed to the user who last edited it
   (bug #0000777) [Dirk]
-- The printable.thtml template file uses the HTML Strict doctype and print.css
-  now [Dirk]
 - Fixed call to WS_makeId when sp_id was longer than STATICPAGE_MAX_ID_LENGTH
   (found by Marc Maier) [Dirk]
-- Display "successfully saved" and "successfully deleted" messages, just like
-  every other plugin and built-in function does (bug #0000644) [Dirk]
-
-
-Jan ??, 2009 (1.5.2)
-------------
-
-(TBD)
+ 
 
 
 Sep 22, 2008 (1.5.1)

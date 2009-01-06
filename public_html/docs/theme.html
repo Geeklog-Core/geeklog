@@ -195,7 +195,7 @@ featured and archived stories.</li>
 </ol>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.5.2</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.6.0</a></h2>
 
 <ul>
 <li>New variable <tt>{photo_max_dimensions}</tt> to inform users about the
@@ -203,8 +203,10 @@ featured and archived stories.</li>
 <li>Added a <tt>print.css</tt> stylesheet to be used by the
     <tt>printable.thtml</tt> template files for articles and the static pages
     plugin.</li>
-<li>The security token was missing from the trackback editor form,
-    <tt>admin/trackback/trackbackeditor.thtml</tt></li>
+<li>The plugin editor can now show a plugin's "display name" (or a beautified
+    version of the directory name) when using the new variable
+    <code>{pi_display_name}</code> in <tt>admin/plugins/editor.thtml</tt>.
+    This is a purely cosmetic change.</li>
 </ul>
 
 <h3>Plugins</h3>
@@ -217,6 +219,47 @@ featured and archived stories.</li>
     uses <tt>print.css</tt> (see above). It also uses the HTML Strict doctype
     now.</li>
 </ul>
+
+
+<h2><a name="changes">Theme changes in Geeklog 1.5.2</a></h2>
+
+<p>Note: Themes made for Geeklog 1.5.0 or 1.5.1 should work just fine with
+Geeklog 1.5.2. In this release, we only fixed a few problems in the themes
+(detailed below) that also affected 1.5.0 and 1.5.1. The other changes listed
+here are optional.</p>
+
+<h3>Bugfixes</h3>
+
+<p>These changes are actual bugs in the template files that also exist in
+Geeklog 1.5.0 and 1.5.1. We recommend making these changes to all custom
+themes.</p>
+
+<ul>
+<li>The security token was missing from the trackback editor template file,
+    <tt>admin/trackback/trackbackeditor.thtml</tt></li>
+<li>The <code>{start_storylink_anchortag}</code> variable in the story templates
+    was missing the closing '&gt;'. This caused the story title to disappear
+    on some themes.</li>
+<li>The <code>{site_admin_url}</code> was missing from the Configuration form
+    action in <tt>admin/config/configuration.thtml</tt>. This may have caused
+    problems making configuration changes on some setups.</li>
+</ul>
+
+<h3>Other changes</h3>
+
+<p>These changes are optional. They fix cosmetic issues or issues that only
+affect some setups.</p>
+
+<ul>
+<li>Cosmetics: In the Professional theme, the last menu entry isn't different
+    from the other entries, so the
+    <code>.header-navigation-container li.last</code> rule in <tt>style.css</tt>
+    is not needed for this theme.</li>
+<li>Internationalisation: The language direction variable,
+    <code>{direction}</code>, was not available in the printer-friendly
+    templates for articles and static pages.</li>
+</ul>
+
 
 <h2><a name="changes151">Theme changes in Geeklog 1.5.1</a></h2>
 
