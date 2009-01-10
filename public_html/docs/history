@@ -63,6 +63,7 @@ Static Pages plugin
 Jan ??, 2009 (1.5.2)
 ------------
 
+- Fixed wrong use of str_replace in STORY_extractLinks (bug #0000794) [Dirk]
 - Added "Send Pings" to the Story Options block (if enabled and allowed for the
   current user) [Dirk]
 - Don't let the user enable plugins when there's no functions.inc for the
