@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: story.php,v 1.270 2008/09/13 07:26:43 mjervis Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -297,7 +295,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             return COM_refresh( $_CONF['site_admin_url'] . '/story.php' );
         }
     } elseif( $result == STORY_DUPLICATE_SID) {
-        $display .= COM_errorLog ($LANG24[24], 2);
+        $display .= COM_showMessageText($LANG24[24]);
     }
 
     // Load HTML templates
@@ -344,7 +342,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         if ($advanced_editormode AND $previewContent != '' ) {
             $story_templates->set_var('preview_content', $previewContent);
         } elseif ($previewContent != '') {
-            $display = COM_startBlock ($LANG24[26], '',
+            $display .= COM_startBlock ($LANG24[26], '',
                             COM_getBlockTemplate ('_admin_block', 'header'));
             $display .= $previewContent;
             $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
