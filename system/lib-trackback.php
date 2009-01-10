@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-trackback.php                                                         |
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2008 by the following authors:                         |
+// | Copyright (C) 2005-2009 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-trackback.php,v 1.52 2008/09/21 08:37:12 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-trackback.php') !== false) {
     die('This file can not be used on its own!');
@@ -861,7 +859,7 @@ function TRB_detectTrackbackUrl ($url)
     // no luck with the RDF? try searching for a rel="trackback" link
     if ($retval === false) {
         // remove all linefeeds first to help the regexp below
-        $page = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $page);
+        $page = str_replace(array("\015", "\012"), '', $page);
 
         preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $page, $matches );
         for ($i = 0; $i < count ($matches[0]); $i++) {

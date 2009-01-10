@@ -111,7 +111,7 @@ function UPDATE_extractLinks( $fulltext, $maxlength = 26 )
         }
 
         $rel[] = '<a href="' . $matches[1][$i] . '">'
-               . str_replace ("/(\015\012)|(\015)|(\012)/", '', $matches[2][$i])
+               . str_replace(array("\015", "\012"), '', $matches[2][$i])
                . '</a>';
     }
 

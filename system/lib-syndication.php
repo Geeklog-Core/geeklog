@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-syndication.php                                                       |
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2008 by the following authors:                         |
+// | Copyright (C) 2003-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -29,11 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-syndication.php,v 1.45 2008/09/21 08:37:12 dhaun Exp $
-
-// set to true to enable debug output in error.log
-$_SYND_DEBUG = false;
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-syndication.php') !== false) {
     die('This file can not be used on its own!');
@@ -42,6 +37,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-syndication.php') !== false) {
 if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
+
+// set to true to enable debug output in error.log
+$_SYND_DEBUG = false;
 
 /**
 * Check if a feed for all stories needs to be updated.
@@ -270,8 +268,8 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storytext = SYND_truncateSummary( $fulltext, $contentLength );
 
             $fulltext = trim( $fulltext );
-            $fulltext = preg_replace( "/(\015)/", "", $fulltext );
-            
+            $fulltext = str_replace("\015", '', $fulltext);
+
             if( $row['postmode'] == 'plaintext' ) 
             {
                 if( !empty($storytext) )
@@ -393,8 +391,8 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $fulltext = PLG_replaceTags( $fulltext );
         $storytext = SYND_truncateSummary( $fulltext, $contentLength );
         $fulltext = trim( $fulltext );
-        $fulltext = preg_replace( "/(\015)/", "", $fulltext );
-        
+        $fulltext = str_replace("\015", '', $fulltext);
+
         if( $row['postmode'] == 'plaintext' ) 
         {
             if( !empty($storytext) )
@@ -622,7 +620,7 @@ function SYND_truncateSummary( $text, $length )
     {
         $text = stripslashes( $text );
         $text = trim( $text );
-        $text = preg_replace( "/(\015)/", "", $text );
+        $text = str_replace("\015", '', $text);
         if(( $length > 3 ) && ( MBYTE_strlen( $text ) > $length ))
         {
             $text = substr( $text, 0, $length - 3 ) . '...';

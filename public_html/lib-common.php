@@ -3283,9 +3283,8 @@ function COM_olderStuff()
             {
                 if( $day != 'noday' )
                 {
-                    $daylist = COM_makeList( $oldnews, 'list-older-stories' );
-                    $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
-                                             '', $daylist );
+                    $daylist = COM_makeList($oldnews, 'list-older-stories');
+                    $daylist = str_replace(array("\015", "\012"), '', $daylist);
                     $string .= $daylist . '<br' . XHTML . '>';
                 }
 
@@ -3304,8 +3303,8 @@ function COM_olderStuff()
 
         if( !empty( $oldnews ))
         {
-            $daylist = COM_makeList( $oldnews, 'list-older-stories' );
-            $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
+            $daylist = COM_makeList($oldnews, 'list-older-stories');
+            $daylist = str_replace(array("\015", "\012"), '', $daylist);
             $string .= $daylist;
             $string = addslashes( $string );
 
@@ -3759,7 +3758,7 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 
         // build a list
         $content = COM_makeList($articles, 'list-feed');
-        $content = preg_replace("/(\015\012)|(\015)|(\012)/", '', $content);
+        $content = str_replace(array("\015", "\012"), '', $content);
 
         if (strlen($content) > 65000) {
             $content = $LANG21[68];
