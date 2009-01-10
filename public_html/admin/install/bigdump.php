@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Staggered import for large MySQL Dumps                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Alexey Ozerov - alexey AT ozerov DOT de (BigDump author)         |
 // |          Matt West     - matt.danger.west AT gmail DOT com                |
@@ -72,6 +72,9 @@ $comment[]='/*!';                     // Or add your own string to leave out oth
 // Connection character set should be the same as the dump file character set (utf8, latin1, cp1251, koi8r etc.)
 // See http://dev.mysql.com/doc/refman/5.0/en/charset-charsets.html for the full list
 $db_connection_charset = '';
+if (isset($_REQUEST['db_connection_charset'])) {
+    $db_connection_charset = preg_replace('/[^a-z0-9\-_]/', '', $_REQUEST['db_connection_charset']);
+}
 
 // *******************************************************************************************
 // If not familiar with PHP please don't change anything below this line
@@ -369,9 +372,9 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
         // Go to the next step
         echo '<script language="JavaScript" type="text/javascript">window.setTimeout(\'location.href="'
             . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&fn='
-            . urlencode($curfilename) . '&foffset=' . $foffset . '&totalqueries=' . $totalqueries . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delaypersession . ');</script>' . LB
+            . urlencode($curfilename) . '&foffset=' . $foffset . '&totalqueries=' . $totalqueries . '&db_connection_charset=' . $db_connection_charset . '&language=' . $language . '&site_url=' . $site_url . '&site_admin_url=' . $site_admin_url . '";\',500+' . $delaypersession . ');</script>' . LB
             . '<noscript>' . LB
-            . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&amp;fn=' . urlencode($curfilename) . '&amp;foffset=' . $foffset . '&amp;totalqueries=' . $totalqueries . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $linenumber . '</a></p>' . LB
+            . ' <p><a href="' . $_SERVER['PHP_SELF'] . '?start=' . $linenumber . '&amp;fn=' . urlencode($curfilename) . '&amp;foffset=' . $foffset . '&amp;totalqueries=' . $totalqueries . '&amp;db_connection_charset=' . $db_connection_charset . '&amp;language=' . $language . '&amp;site_url=' . $site_url . '&amp;site_admin_url=' . $site_admin_url . '">Continue from the line ' . $linenumber . '</a></p>' . LB
             . '</noscript>' . LB
             . '<p><b><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[26] . '</a></b> ' . $LANG_BIGDUMP[27] . ' <b>' . $LANG_BIGDUMP[28] . '</b></p>' . LB;
     }

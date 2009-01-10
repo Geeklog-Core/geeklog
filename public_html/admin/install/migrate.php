@@ -542,6 +542,7 @@ if (INST_phpOutOfDate()) {
             // Parse the .sql file to grab the table prefix
             $has_config = false;
             $num_create = 0;
+            $db_connection_charset = '';
             $DB['table_prefix'] = '';
 
             $sql_file = @fopen($backup_dir . $backup_file, 'r');
@@ -570,6 +571,10 @@ if (INST_phpOutOfDate()) {
                             // assume there's no conf_values table in here
                             break;
                         }
+                    } elseif (substr($line, 0, 3) == '/*!') {
+                        if (strpos($line, 'SET NAMES utf8') !== false) {
+                            $db_connection_charset = 'utf8';
+                        }
                     }
                 }
             }
@@ -589,6 +594,7 @@ if (INST_phpOutOfDate()) {
 
                 // Send file to bigdump.php script to do the import.
                 header('Location: bigdump.php?start=1&foffset=0&totalqueries=0'
+                    . '&db_connection_charset=' . $db_connection_charset
                     . '&language=' . $language
                     . '&fn=' . urlencode($backup_dir . $backup_file) 
                     . '&site_url=' . urlencode($_REQUEST['site_url'])
