@@ -35,6 +35,69 @@ require_once '../../siteconfig.php';
 
 
 /**
+* Fix site_url in content
+*
+* If the site's URL changed due to the migration, this function will replace
+* the old URL with the new one in text content of the given tables.
+*
+* @param    string  $old_url    the site's previous URL
+* @param    string  $new_url    the site's new URL after the migration
+* @param    array   $tablespec  (optional) list of tables to patch
+*
+* The $tablespec is an array of tablename => fieldlist pairs, where the field
+* list contains the text fields to be searched and the table's index field
+* as the first(!) entry.
+*
+*/
+function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
+{
+    global $_TABLES;
+
+    // standard tables to update if no $tablespec given
+    $tables = array(
+        'stories'           => 'sid, introtext, bodytext, related',
+        'storysubmission'   => 'sid, introtext, bodytext',
+        'comments'          => 'cid, comment',
+        'trackback'         => 'cid, excerpt',
+        'blocks'            => 'bid, content'
+    );
+
+    if (empty($tablespec) || (! is_array($tablespec))) {
+        $tablespec = $tables;
+    }
+
+    foreach ($tablespec as $table => $fieldlist) {
+        $fields = explode(',', str_replace(' ', '', $fieldlist));
+        $index = array_shift($fields);
+
+        $result = DB_query("SELECT $fieldlist FROM {$_TABLES[$table]}");
+        $numRows = DB_numRows($result);
+        for ($i = 0; $i < $numRows; $i++) {
+            $A = DB_fetchArray($result);
+            $changed = false;
+            foreach ($fields as $field) {
+                $newtxt = str_replace($old_url, $new_url, $A[$field]);
+                if ($newtxt != $A[$field]) {
+                    $A[$field] = $newtxt;
+                    $changed = true;
+                }
+            }
+
+            if ($changed) {
+                $sql = "UPDATE {$_TABLES[$table]} SET ";
+                foreach ($fields as $field) {
+                    $sql .= "$field = '" . addslashes($A[$field]) . "', ";
+                }
+                $sql = substr($sql, 0, -2);
+
+                DB_query($sql . " WHERE $index = '" . addslashes($A[$index]) . "'");
+            }
+        }
+    }
+}
+
+
+/**
 * Unpack a db backup file, if necessary
 *
 * Note: This requires a minimal PEAR setup (incl. Tar and Zip classes) and a
@@ -678,10 +741,15 @@ if (INST_phpOutOfDate()) {
          */
         require_once $_CONF['path_system'] . 'classes/config.class.php';
         $config = config::get_instance();
-
         $config->initConfig();
+
+        // save a copy of the old config
+        $_OLD_CONF = $config->get_config('Core');
+
         $config->set('site_url', urldecode($_REQUEST['site_url']));
+        $_CONF['site_url'] = urldecode($_REQUEST['site_url']);
         $config->set('site_admin_url', urldecode($_REQUEST['site_admin_url']));
+        $_CONF['site_admin_url'] = urldecode($_REQUEST['site_admin_url']);
         $config->set('path_html', $html_path);
         $_CONF['path_html'] = $html_path;
         $config->set('path_log', $gl_path . 'logs/');
@@ -710,9 +778,8 @@ if (INST_phpOutOfDate()) {
         // check the default theme
         $theme = '';
         if (empty($_CONF['theme'])) {
-            // no config.php involved - get from db
-            $_CONF_TMP = $config->get_config('Core');
-            $theme = $_CONF_TMP['theme'];
+            // try old conf value
+            $theme = $_OLD_CONF['theme'];
         } else {
             $theme = $_CONF['theme'];
         }
@@ -844,8 +911,18 @@ if (INST_phpOutOfDate()) {
 
         }
 
-        // refresh "Older Stories" block to fix URLs, if necessary
-        COM_olderStuff();
+        // did the site URL change?
+        if ((! empty($_OLD_CONF['site_url'])) & (! empty($_CONF['site_url']))
+                && ($_OLD_CONF['site_url'] != $_CONF['site_url'])) {
+
+            INST_updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
+
+        } else {
+
+            // refresh "Older Stories" block
+            COM_olderStuff();
+
+        }
 
         /** 
          * Import complete.
