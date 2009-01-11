@@ -194,7 +194,7 @@ $LANG_MIGRATE = array(
     1 => 'Before Proceding',
     2 => 'Be sure any previously installed plugins have been copied to your new server.',
     3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
-    4 => 'If you\'re upgrading to a new Geeklog version, then run the <a href="index.php">install script</a> in upgrade mode first.',
+    4 => 'If you\'re upgrading from a Geeklog version older than <strong>1.5.0</strong>, then make sure to copy over all your old <tt>config.php</tt> files so that the migration can pick up your settings.',
     5 => 'If you\'re upgrading to a new Geeklog version, then don\'t upload your theme just yet. Use the included default theme until you can be sure your migrated site works properly.',
     6 => 'Backup auswählen',
     7 => 'Datei auswählen...',
