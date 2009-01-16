@@ -72,23 +72,7 @@ if ($LANG_DIRECTION == 'rtl') {
     $perms_label_dir = 'perms-label-left';
 }
 
-$language = 'english';
-if (isset($_POST['language'])) {
-    $lng = $_POST['language'];
-} elseif (isset($_GET['language'])) {
-    $lng = $_GET['language'];
-} elseif (isset($_COOKIE['language'])) {
-    // Okay, so the name of the language cookie is configurable, so it may not
-    // be named 'language' after all. Still worth a try ...
-    $lng = $_COOKIE['language'];
-} else {
-    $lng = $language;
-}
-// sanitize value and check for file
-$lng = preg_replace('/[^a-z0-9\-_]/', '', $lng);
-if (!empty($lng) && is_file('language/' . $lng . '.php')) {
-    $language = $lng;
-}
+$language = INST_getLanguage();
 // Include the language file
 require_once 'language/' . $language . '.php'; 
 
@@ -1127,6 +1111,36 @@ function INST_getSiteAdminUrl()
     $url = implode('/', array_slice($parts, 0, $num_parts - 2));
 
     return 'http://' . $_SERVER['HTTP_HOST'] . $url;
+}
+
+/**
+ * Get name of the install language file to use
+ *
+ * @return  string      language file name (without the extension)
+ *
+ */
+function INST_getLanguage()
+{
+    $language = 'english';
+    if (isset($_POST['language'])) {
+        $lng = $_POST['language'];
+    } elseif (isset($_GET['language'])) {
+        $lng = $_GET['language'];
+    } elseif (isset($_COOKIE['language'])) {
+        // Okay, so the name of the language cookie is configurable, so it
+        // may not be named 'language' after all. Still worth a try ...
+        $lng = $_COOKIE['language'];
+    } else {
+        $lng = $language;
+    }
+
+    // sanitize value and check for file
+    $lng = preg_replace('/[^a-z0-9\-_]/', '', $lng);
+    if (!empty($lng) && is_file('language/' . $lng . '.php')) {
+        $language = $lng;
+    }
+
+    return $language;
 }
 
 ?>

@@ -831,6 +831,9 @@ if (INST_phpOutOfDate()) {
         // so we can call COM_errorLog().
         require_once $html_path . 'lib-common.php'; 
 
+        // including lib-common.php overwrites our $language variable
+        $language = INST_getLanguage();
+
         // Log any missing plugins
         foreach ($_MISSING_PLUGINS as $m_p) {
 
