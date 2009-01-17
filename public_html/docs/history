@@ -63,6 +63,8 @@ Static Pages plugin
 Jan ??, 2009 (1.5.2)
 ------------
 
+- Comments were always showing the username, even when $_CONF['show_fullname']
+  was enabled (reported and patch provided by mystral-kk, bug #0000800)
 - Fixed story preview losing the story when the sid already existed (bug
   #0000789) [Dirk]
 - Fixed wrong use of str_replace in STORY_extractLinks (bug #0000794) [Dirk]

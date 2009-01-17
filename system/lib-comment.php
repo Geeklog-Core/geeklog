@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-comment.php,v 1.69 2008/09/21 08:37:11 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-comment.php') !== false) {
     die('This file can not be used on its own!');
@@ -326,7 +324,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'end_author_anchortag', '</a>' );
             $template->set_var( 'author_link',
                 COM_createLink(
-                    $A['username'],
+                    $fullname,
                     $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
                 )
             );
