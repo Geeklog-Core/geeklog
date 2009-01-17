@@ -2,18 +2,18 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | calendar.class.php                                                        |
 // |                                                                           |
 // | Geeklog calendar library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Much of this code is from Jim Wright jdlwright@yahoo.com with minor       |
-// | customizations.                                                           |
+// | Much of this code is from Jim Wright jdlwright AT yahoo DOT com with      |
+// | minor customizations.                                                     |
 // |                                                                           |
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: calendar.class.php,v 1.8 2006/05/14 17:58:52 ospiess Exp $
 
 /**
 * This file contains the two classes used to help support the calendar pages.
@@ -41,7 +39,7 @@
 * Those files along with this class need to be reworked to be easier 
 * to maintain and support rich calendaring features
 *
-* @author   Tony Bibbs  <tony@tonybibbs.com>
+* @author   Tony Bibbs  <tony AT tonybibbs DOT com>
 */
 
 /**
@@ -87,7 +85,7 @@ class CalendarDay {
     */
     function isHoliday()
     {
-        return $this->holdiayflag;
+        return $this->holidayflag;
     }
 
     /**
