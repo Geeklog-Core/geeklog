@@ -500,11 +500,11 @@ function createuser ($username, $email, $email_conf)
             // with a custom userform first, if one exists.
             if ($_CONF['custom_registration'] &&
                     function_exists ('CUSTOM_userCheck')) {
-                $msg = CUSTOM_userCheck ($username, $email);
-                if (!empty ($msg)) {
+                $ret = CUSTOM_userCheck ($username, $email);
+                if (!empty ($ret)) {
                     // no, it's not okay with the custom userform
                     $retval = COM_siteHeader ('menu')
-                            . CUSTOM_userForm ($msg)
+                            . CUSTOM_userForm ($ret['string'])
                             . COM_siteFooter ();
 
                     return $retval;

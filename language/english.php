@@ -1202,11 +1202,13 @@ $MESSAGE = array(
     94 => 'Backup Failed: Filesize less than 1kb',
     95 => 'There was an error.',
     96 => '',
-    97 => 'Not all required fields have been passed validation - default custom membership message',
+    97 => '',
     98 => 'The plugin was successfully uploaded.',
     99 => 'The plugin already exists.',
     100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
-    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.'
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1652,7 +1654,7 @@ $LANG_confignames['Core'] = array(
     'date' => "Date Format",
     'daytime' => "Daytime Format",
     'shortdate' => "Short Date Format",
-    'dateonly' => "Date Only Format", 
+    'dateonly' => "Date Only Format",
     'timeonly' => "Time Only Format",
     'week_start' => "Week Start",
     'hour_mode' => "Hour Mode",

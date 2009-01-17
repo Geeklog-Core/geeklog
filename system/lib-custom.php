@@ -340,22 +340,24 @@ function CUSTOM_userForm ($msg = '')
 * e.g. to check if all required data has been entered.
 *
 * @param    string  $username   username that Geeklog would use for the new user* @param    string  $email      email address of that user
-* @return   mixed               Creating a new user: An error message or an empty string for "OK".
-*                               Edit user function under My Account:  the script expects a message number,
-*                                 that will map to the GLOBALS $MESSAGE define in the site language files
-*                                 By default $MESSAGE[97] will appear if a non-numeric is returned to usersettings.php - saveuser function
+* @return   mixed               Returns an empty string if no issues found validating user account form
+*                               If a validation test fails, return both a message and code
+*                                  > usercreate needs a string and usersettings saveuser() needs a message number
+*                               The message number will map to the GLOBALS $MESSAGE define in the site language files
+*                               By default $MESSAGE[400] will appear if a non-numeric is returned to usersettings.php - saveuser function
 */
 function CUSTOM_userCheck ($username, $email='')
 {
-    $msg = '';
-
+    global $MESSAGE;
+    $retval = '';
     // Example, check that the full name has been entered
     // and complain if it's missing
-    if (empty ($_POST['fullname'])) {
-        $msg = 'Please enter your full name!';
+    if (empty($_POST['fullname'])) {
+        $retval['string'] = $MESSAGE['401'];
+        $retval['number'] = 401;
     }
 
-    return $msg;
+    return $retval;
 }
 
 

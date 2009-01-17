@@ -898,12 +898,25 @@ function saveuser($A)
         } elseif ($_CONF['custom_registration'] &&
                     function_exists ('CUSTOM_userCheck')) {
             $ret = CUSTOM_userCheck ($A['username'], $A['email']);
+            if (!empty($ret)) {
+                // Need a numeric return for the default message hander
+                // - if not numeric use default message
+                if (!is_numeric($ret['number'])) {
+                    $ret['number'] = 400;
+                }
+                return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
+            }
+        }
+    } elseif ($_CONF['custom_registration'] &&
+                function_exists ('CUSTOM_userCheck')) {
+        $ret = CUSTOM_userCheck ($A['username'], $A['email']);
+        if (!empty($ret)) {
             // Need a numeric return for the default message hander
             // - if not numeric use default message
-            if (!is_numeric($ret)) {
-                $ret = 97;
+            if (!is_numeric($ret['number'])) {
+                $ret['number'] = 400;
             }
-            return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret}");
+            return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
         }
     }
 
@@ -974,7 +987,7 @@ function saveuser($A)
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?msg=56');
     } else {
-        
+
         if (!empty($A['passwd'])) {
             if (($A['passwd'] == $A['passwd_conf']) &&
                     (SEC_encryptPassword($A['old_passwd']) == $_USER['passwd'])) {
@@ -997,7 +1010,7 @@ function saveuser($A)
                                     . '/usersettings.php?msg=67');
             }
         }
-        
+
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }
