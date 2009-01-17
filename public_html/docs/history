@@ -63,6 +63,8 @@ Static Pages plugin
 Jan ??, 2009 (1.5.2)
 ------------
 
+- The comment submission form didn't show the user's full name when
+  $_CONF['show_fullname'] was enabled [Dirk]
 - Comments were always showing the username, even when $_CONF['show_fullname']
   was enabled (reported and patch provided by mystral-kk, bug #0000800)
 - Fixed story preview losing the story when the sid already existed (bug

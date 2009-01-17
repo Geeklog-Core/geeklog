@@ -638,7 +638,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 */
 function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN,
+           $LANG_ACCESS;
 
     $retval = '';
 
@@ -782,21 +783,31 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('site_admin_url', $_CONF['site_admin_url']);
             $comment_template->set_var('layout_url', $_CONF['layout_url']);
             $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
-            $comment_template->set_var('lang_username', $LANG03[5]);
+            if ($_CONF['show_fullname'] == 1) {
+                $comment_template->set_var('lang_username', $LANG_ACCESS['name']);
+            } else {
+                $comment_template->set_var('lang_username', $LANG03[5]);
+            }
             $comment_template->set_var('sid', $sid);
             $comment_template->set_var('pid', $pid);
             $comment_template->set_var('type', $type);
 
             if (!empty($_USER['username'])) {
                 $comment_template->set_var('uid', $_USER['uid']);
-                $comment_template->set_var('username', $_USER['username']);
-                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=logout');
-                $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[03]);
+                $name = COM_getDisplayName($_USER['uid'], $_USER['username'],
+                    $_USER['fullname']);
+                $comment_template->set_var('username', $name);
+                $comment_template->set_var('action_url',
+                    $_CONF['site_url'] . '/users.php?mode=logout');
+                $comment_template->set_var('lang_logoutorcreateaccount',
+                    $LANG03[03]);
             } else {
                 $comment_template->set_var('uid', 1);
                 $comment_template->set_var('username', $LANG03[24]);
-                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new');
-                $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[04]);
+                $comment_template->set_var('action_url',
+                    $_CONF['site_url'] . '/users.php?mode=new');
+                $comment_template->set_var('lang_logoutorcreateaccount',
+                    $LANG03[04]);
             }
 
             if ($postmode == 'html') {
