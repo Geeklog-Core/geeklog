@@ -45,6 +45,8 @@
 //
 // $Id: lib-custom.php,v 1.43 2008/09/21 08:37:11 dhaun Exp $
 
+// Test update
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-custom.php') !== false) {
     die('This file can not be used on its own!');
 }
