@@ -75,6 +75,8 @@ function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $update
         $limitsql = ' LIMIT 10';
     }
 
+    $sids = array ();
+
     // get list of topics that anonymous users have access to
     $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
                          . COM_getPermSQL( 'WHERE', 1 ));
@@ -89,26 +91,26 @@ function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $update
     {
         $tlist = "'" . implode( "','", $topiclist ) . "'";
         $where .= " AND (tid IN ($tlist))";
-    }
-    if ($frontpage_only) {
-        $where .= ' AND frontpage = 1';
-    }
 
-    $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
-    $nrows = DB_numRows( $result );
-
-    $sids = array ();
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $A = DB_fetchArray( $result );
-
-        if( $A['sid'] == $updated_id )
-        {
-            // no need to look any further - this feed has to be updated
-            return false;
+        if ($frontpage_only) {
+            $where .= ' AND frontpage = 1';
         }
 
-        $sids[] = $A['sid'];
+        $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+        $nrows = DB_numRows( $result );
+
+        for( $i = 0; $i < $nrows; $i++ )
+        {
+            $A = DB_fetchArray( $result );
+
+            if( $A['sid'] == $updated_id )
+            {
+                // no need to look any further - this feed has to be updated
+                return false;
+            }
+
+            $sids[] = $A['sid'];
+        }
     }
     $current = implode( ',', $sids );
 
@@ -153,7 +155,7 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
         $limitsql = ' LIMIT 10';
     }
 
-    $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid'" . COM_getTopicSQL('AND', 1) . " AND perm_anon > 0 ORDER BY date DESC $limitsql" );
     $nrows = DB_numRows( $result );
 
     $sids = array ();
@@ -331,6 +333,8 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 {
     global $_TABLES, $_CONF, $LANG01;
 
+    $link = $_CONF['site_url'];
+
     $where = '';
     if( !empty( $limit ))
     {
@@ -355,6 +359,14 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
     $tresult = DB_query( "SELECT tid,topic FROM {$_TABLES['topics']}"
                          . COM_getPermSQL( 'WHERE', 1 ));
     $tnumrows = DB_numRows( $tresult );
+
+    if ($tnumrows == 0) {
+        // no public topics
+        $update = '';
+
+        return array();
+    }
+
     $tlist = '';
     for( $i = 1; $i <= $tnumrows; $i++ )
     {
@@ -431,7 +443,6 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $content[] = $article;
     }
 
-    $link = $_CONF['site_url'];
     $update = implode( ',', $sids );
 
     return $content;
@@ -527,7 +538,7 @@ function SYND_updateFeed( $fid )
                  * at least one does, then include the trackback namespace:
                  */
                 $trackbackenabled = false;
-                foreach($content as $item)
+                foreach ($content as $item)
                 {
                     if( array_key_exists('extensions', $item) &&
                         array_key_exists('trackbacktag', $item['extensions'])

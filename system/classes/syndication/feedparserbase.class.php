@@ -137,36 +137,30 @@
       */
     function createFeed( $fileName, $limit='' )
     {
-      /* If we have no items, return false */
-      if( count( $this->articles ) == 0 )
+      /* Start the XML Feed formating */
+      $xml = $this->_feedHeader();
+
+      /* Start with a limit of the size of the array, then, if we have a
+       * specific max length use that unless it's bigger than our count */
+      $count = count( $this->articles );
+      if( $limit )
       {
-        return false;
-      } else {
-        /* Start the XML Feed formating */
-        $xml = $this->_feedHeader();
-
-        /* Start with a limit of the size of the array, then, if we have a
-         * specific max length use that unless it's bigger than our count */
-        $count = count( $this->articles );
-        if( $limit )
+        if( $limit < $count )
         {
-          if( $limit < $count )
-          {
-            $count = $limit;
-          }
+          $count = $limit;
         }
-
-        /* Put the first $count items into the xml, using formatArticle */
-        for( $i = 0; $i < $count; $i++ )
-        {
-          $xml .= $this->_formatArticle( $this->articles[$i] );
-        }
-
-        /* Close off the feed */
-        $xml .= $this->_feedFooter();
-        /* And write it to file */
-        return $this->_writeFile( $fileName, $xml );
       }
+
+      /* Put the first $count items into the xml, using formatArticle */
+      for( $i = 0; $i < $count; $i++ )
+      {
+        $xml .= $this->_formatArticle( $this->articles[$i] );
+      }
+
+      /* Close off the feed */
+      $xml .= $this->_feedFooter();
+      /* And write it to file */
+      return $this->_writeFile( $fileName, $xml );
     }
 
     function _writeFile( $fileName, $data )
