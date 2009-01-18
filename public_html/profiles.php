@@ -9,7 +9,7 @@
 // | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: profiles.php,v 1.56 2008/02/20 20:32:37 mjervis Exp $
 
 require_once 'lib-common.php';
 
@@ -126,12 +124,12 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             }
             $from = COM_formatEmailAddress ($author, $authoremail);
 
-            COM_mail ($to, $subject, $message, $from);
-            COM_updateSpeedlimit ('mail');
+            $sent = COM_mail($to, $subject, $message, $from);
+            COM_updateSpeedlimit('mail');
 
             $retval .= COM_refresh($_CONF['site_url']
                                    . '/users.php?mode=profile&amp;uid=' . $uid
-                                   . '&amp;msg=27');
+                                   . '&amp;msg=' . ($sent ? '27' : '85'));
         } else {
             $subject = strip_tags ($subject);
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
@@ -345,16 +343,16 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
     $subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
-    COM_mail ($mailto, $subject, $mailtext, $mailfrom);
+    $sent = COM_mail ($mailto, $subject, $mailtext, $mailfrom);
     COM_updateSpeedlimit ('mail');
 
     // Increment numemails counter for story
     DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
 
     if ($_CONF['url_rewrite']) {
-        $retval = COM_refresh($storyurl . '?msg=27');
+        $retval = COM_refresh($storyurl . '?msg=' . ($sent ? '27' : '85'));
     } else {
-        $retval = COM_refresh($storyurl . '&amp;msg=27');
+        $retval = COM_refresh($storyurl . '&amp;msg=' . ($sent ? '27' : '85'));
     }
 
     return $retval;
