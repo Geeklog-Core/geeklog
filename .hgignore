@@ -1,4 +1,5 @@
 system/pear/Archive
+system/pear/Auth
 system/pear/Console
 system/pear/Date
 system/pear/HTTP
@@ -14,6 +15,13 @@ system/pear/scripts
 
 db-config.php
 public_html/siteconfig.php
+
+config.php
+plugins/calendar/config.php
+plugins/links/config.php
+plugins/polls/config.php
+plugins/spamx/config.php
+plugins/staticpages/config.php
 
 syntax: glob
 backups/*.sql
