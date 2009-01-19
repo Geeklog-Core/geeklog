@@ -24,6 +24,7 @@
     }
 
     function change_editmode(obj) {
+        showhideEditorDiv("editor",1);
         if (obj.value == 'html') {
             document.getElementById('html_editor').style.display='none';
             document.getElementById('text_editor').style.display='';
@@ -76,9 +77,8 @@
 
     function swapEditorContent(curmode,instanceName) {
         var content = '';
-        var oEditor = FCKeditorAPI.GetInstance(instanceName) ;
-
-        if (curmode == 'adveditor') { // Switching from Text to HTML mode
+        var oEditor = FCKeditorAPI.GetInstance(instanceName);
+        if (curmode == 'adveditor') { // Switching from Text/HTML mode to AdvancedEditor Mode
             // Get the content from the textarea 'text' content and copy it to the editor
             if (instanceName == 'introhtml' )  {
                 content = document.getElementById('introtext').value;
@@ -90,11 +90,13 @@
                 } catch (e) {}
 
         } else {
-               content = getEditorContent(instanceName);
-              if (instanceName == 'introhtml' )  {
-                  document.getElementById('introtext').value = content;
-              } else {
-                  document.getElementById('bodytext').value = content;
+              content = getEditorContent(instanceName);
+              if (content != '') {
+                  if (instanceName == 'introhtml' )  {
+                      document.getElementById('introtext').value = content;
+                  } else {
+                      document.getElementById('bodytext').value = content;
+                  }
               }
           }
     }

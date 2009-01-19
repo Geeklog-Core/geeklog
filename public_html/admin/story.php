@@ -308,7 +308,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_var ('change_editormode', 'onchange="change_editmode(this);"');
 
         require_once $_CONF['path_system'] . 'classes/navbar.class.php';
-
         $story_templates->set_var ('show_preview', 'none');
         $story_templates->set_var ('lang_expandhelp', $LANG24[67]);
         $story_templates->set_var ('lang_reducehelp', $LANG24[68]);
@@ -367,8 +366,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             $navbar->add_menuitem($LANG24[84],'showhideEditorDiv("perms",4);return false;',true);
             $navbar->add_menuitem($LANG24[85],'showhideEditorDiv("all",5);return false;',true);
         }
-
-        $navbar->set_selected($LANG24[80]);
+        if ($mode == 'preview') {
+            $story_templates->set_var ('show_preview', '');
+            $story_templates->set_var ('show_htmleditor', 'none');
+            $story_templates->set_var ('show_texteditor', 'none');
+            $story_templates->set_var ('show_submitoptions', 'none');
+            $navbar->set_selected($LANG24[79]);
+        } else {
+            $navbar->set_selected($LANG24[80]);
+        }
         $story_templates->set_var ('navbar', $navbar->generate() );
     }
 

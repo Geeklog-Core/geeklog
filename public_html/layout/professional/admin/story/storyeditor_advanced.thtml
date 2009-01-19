@@ -212,7 +212,7 @@
                 <p>{permissions_msg}</p>
             </fieldset>
         </div>
-        <div id="se_bottom" style="width:100%; paddin:3px; margin-top:20px;">
+        <div id="se_bottom" style="width:100%; paddin:3px; margin-top:20px;display:{show_submitoptions}">
             <input type="submit" value="{lang_save}" name="mode"{xhtml}>
             <span style="padding-right:10px;padding-left:10px;"><input type="submit" value="{lang_preview}" name="mode"{xhtml}></span>
             <span style="padding-right:50px;"><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></span>
