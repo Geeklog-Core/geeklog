@@ -31,7 +31,7 @@
         // Reset the current selected navbar tab
         var navbar = document.getElementById('current');
         if (navbar) navbar.id = '';
-        // Cycle thru the navlist child elements - buiding an array of just the link items
+        // Cycle thru the navlist child elements - building an array of just the link items
         var navbar = document.getElementById('navlist');
         var menuitems = new Array(8);
         var item = 0;
@@ -42,7 +42,7 @@
             }
         }
         // Now that I have just the link items I can set the selected tab using the passed selected Item number
-        // Set the <a tag to have an id called 'current'
+        // Set the <a> tag to have an id called 'current'
         var menuitem = menuitems[selindex];
         for (var j=0 ;j < menuitem.childNodes.length ; j++ ) {
             if (menuitem.childNodes[j].nodeName.toLowerCase() == 'a')  menuitem.childNodes[j].id = 'current';
