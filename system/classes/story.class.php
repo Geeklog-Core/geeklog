@@ -806,7 +806,7 @@ class Story
     function loadSubmission()
     {
         $array = $_POST;
-        
+
         $this->_expire = time();
         $this->_date = time();
         $this->_expiredate = 0;

@@ -1,7 +1,7 @@
 <?php
 /*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2008 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2009 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -34,8 +34,6 @@ $Config['Enabled'] = true ;
 // Path to user files relative to the document root.
 // $Config['UserFilesPath'] = '/userfiles/' ;
 $Config['UserFilesPath'] = $_CONF['site_url'] . $_CONF_FCK['imagelibrary'] . '/' ;
-
-
 
 // Fill the following value it you prefer to specify the absolute path for the
 // user files directory. Useful if you are using a virtual directory, symbolic
