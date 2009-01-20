@@ -2985,7 +2985,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     else
     {
-        if ($_CONF['advanced_editor']) {
+        if ($_CONF['advanced_editor'] && is_array($_CONF['advanced_html'])) {
             $html = array_merge_recursive( $_CONF['user_html'],
                                            $_CONF['admin_html'],
                                            $_CONF['advanced_html'] );
@@ -3005,6 +3005,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     $str = $filter->Parse( $str );
     $str = str_replace('[raw2]','<!--raw--><span class="raw">', $str);
     $str = str_replace('[/raw2]','</span><!--/raw-->', $str);
+
     return $str;
 }
 
