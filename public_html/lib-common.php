@@ -2985,8 +2985,14 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     else
     {
-        $html = array_merge_recursive( $_CONF['user_html'],
-                                       $_CONF['admin_html'] );
+        if ($_CONF['advanced_editor']) {
+            $html = array_merge_recursive( $_CONF['user_html'],
+                                           $_CONF['admin_html'],
+                                           $_CONF['advanced_html'] );
+        } else {
+            $html = array_merge_recursive( $_CONF['user_html'],
+                                           $_CONF['admin_html'] );
+        }
     }
 
     foreach( $html as $tag => $attr )
