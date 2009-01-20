@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Updated FCKeditor to version 2.6.4 [Blaine]
 - Usersettings.php - can not change password when custom membership is enabled.
   Modified CUSTOM_userCheck to return both a error message string and Error code.
   Updated users.php and usersettings,php  (bug #0000776) [Blaine]
