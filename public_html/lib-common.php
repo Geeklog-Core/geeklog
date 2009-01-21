@@ -5701,19 +5701,42 @@ function COM_sanitizeFilename($filename, $allow_dots = false)
 * Detect links in a plain-ascii text and turn them into clickable links.
 * Will detect links starting with "http:", "https:", "ftp:", and "www.".
 *
-* Derived from a newsgroup posting by Andreas Schwarz in
-* news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
-*
 * @param    string    $text     the (plain-ascii) text string
 * @return   string    the same string, with links enclosed in <a>...</a> tags
 *
 */
 function COM_makeClickableLinks( $text )
 {
-   $regex = '/((ht|f)tp(s?)\:\/\/|~\/|\/)?([\w]+:\w+@)?(([a-zA-Z]{1}([\w\-]+\.)+([\w]{2,5}))(:[\d]{1,5})?((\/?\w+\/)+|\/?)([\w\-%]+(\.[\w]{3,4})?)?((\?|&|&amp;)[\w\-%]+=[\w\-%]+)*)/is';
+    // These regular expressions will work for this purpuse, but
+    // they should NOT be used for validating links.
 
-   $text = preg_replace( $regex, '<a href="\\1\\5">\\6</a>', $text );
-   return $text;
+    // matches anything starting with http:// or https:// or ftp:// or ftps://
+    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:(?:ht|f)tps?:\/{2})(?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)+)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
+    $replace[] = "COM_makeClickableLinksCallback('', '\\1')";
+
+    // matches anything containing a top level domain: xxx.com or xxx.yyy.net/stuff.php or xxx.yyy.zz
+    // list taken from: http://en.wikipedia.org/wiki/List_of_Internet_TLDs
+    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z]{2})(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
+    $replace[] = "COM_makeClickableLinksCallback('http://', '\\1')";
+
+    $text = preg_replace( $regex, $replace, $text );
+
+    return $text;
+}
+
+/**
+* Callback function to help format links in COM_makeClickableLinks
+*
+* @param    string  $http   set to 'http://' when not aleady in the url
+* @param    string  $link   the url
+* @return   string          link enclosed in <a>...</a> tags
+*
+*/
+function COM_makeClickableLinksCallback( $http, $link )
+{
+    $text = COM_truncate( $link, 50, '...', '10' );
+
+    return "<a href=\"$http$link\">$text</a>";
 }
 
 /**
@@ -6470,22 +6493,23 @@ function COM_switchLocaleSettings()
 * e.g. '...', to indicate the truncation.
 * This function is multi-byte string aware, based on a patch by Yusuke Sakata.
 *
-* @param    string  $text   the text string to truncate
-* @param    int     $maxlen max. number of characters in the truncated string
-* @param    string  $filler optional filler string, e.g. '...'
-* @return   string          truncated string
+* @param    string  $text       the text string to truncate
+* @param    int     $maxlen     max. number of characters in the truncated string
+* @param    string  $filler     optional filler string, e.g. '...'
+* @param    int     $endchars   number of characters to show after the filler
+* @return   string              truncated string
 *
 * @note The truncated string may be shorter but will never be longer than
 *       $maxlen characters, i.e. the $filler string is taken into account.
 *
 */
-function COM_truncate( $text, $maxlen, $filler = '' )
+function COM_truncate( $text, $maxlen, $filler = '', $endchars = 0 )
 {
     $newlen = $maxlen - MBYTE_strlen( $filler );
     $len = MBYTE_strlen( $text );
     if( $len > $maxlen )
     {
-        $text = MBYTE_substr( $text, 0, $newlen ) . $filler;
+        $text = MBYTE_substr( $text, 0, $newlen - $endchars ) . $filler . MBYTE_substr( $text, $len - $endchars, $endchars );
     }
 
     return $text;
