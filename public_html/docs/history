@@ -64,9 +64,11 @@ Static Pages plugin
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
 
-Jan ??, 2009 (1.5.2)
+Jan 24, 2009 (1.5.2rc1)
 ------------
-- Fix for calendar plugin - unable to add personal event [Blaine]
+
+- Fixed various issues with COM_makeClickableLinks (bug #0000767, #0000793,
+  #0000796) [Sami]
 - The comment submission form didn't show the user's full name when
   $_CONF['show_fullname'] was enabled [Dirk]
 - Comments were always showing the username, even when $_CONF['show_fullname']
@@ -147,6 +149,7 @@ Jan ??, 2009 (1.5.2)
 
 Calendar plugin
 ---------------
+- Fix for calendar plugin - unable to add personal event [Blaine]
 - Make {event_url} available in eventdetails.thtml [Dirk]
 
 Links plugin
