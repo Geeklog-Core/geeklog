@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -2061,45 +2061,31 @@ function PLG_runScheduledTask ()
 * "Generic" plugin API: Save item
 *
 * To be called (eventually) whenever Geeklog saves an item into the database.
-* Plugins can hook into this and modify the item (which is already in the
-* database but not visible on the site yet).
-*
-* Plugins can signal an error by returning an error message (otherwise, they
-* should return 'false' to signal "no errors"). In case of an error, all the
-* plugins called up to that point will be invoked through an "abort" call to
-* undo their changes.
+* Plugins can define their own 'itemsaved' function to be notified whenever
+* an item is saved or modified.
 *
 * @param    string  $id     unique ID of the item
 * @param    string  $type   type of the item, e.g. 'article'
-* @returns  mixed           Boolean false for "no error", or an error msg text
+* @param    string  $old_id (optional) old ID when the ID was changed
+* @returns  void            (actually: false, for backward compatibility)
+* @note     The behaviour of this API function changed in Geeklog 1.6.0
 *
 */
-function PLG_itemSaved($id, $type)
+function PLG_itemSaved($id, $type, $old_id = '')
 {
     global $_PLUGINS;
 
-    $error = false;
-
-    $plugins = count ($_PLUGINS);
+    $plugins = count($_PLUGINS);
     for ($save = 0; $save < $plugins; $save++) {
-        $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
-        if (function_exists($function)) {
-            $error = $function($id, $type);
-            if ($error !== false) {
-                // plugin reported a problem - abort
-
-                for ($abort = 0; $abort < $save; $abort++) {
-                    $function = 'plugin_abortsave_' . $_PLUGINS[$abort];
-                    if (function_exists($function)) {
-                        $function($id, $type);
-                    }
-                }
-                break; // out of for($save) loop
+        if ($_PLUGINS[$save] != $type) {
+            $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
+            if (function_exists($function)) {
+                $function($id, $type, $old_id);
             }
         }
     }
 
-    return $error;
+    return false; // for backward compatibility
 }
 
 /**

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | moderation.php                                                            |
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: moderation.php,v 1.124 2008/09/04 19:03:29 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -536,6 +534,7 @@ function moderation ($mid, $action, $type, $count)
                 "'{$A['sid']}',{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontpage,{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES['storysubmission'],"$id",$mid[$i]);
 
+                PLG_itemSaved($A['sid'], 'article');
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
             } else if ($type == 'draft') {
