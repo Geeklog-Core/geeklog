@@ -2,13 +2,13 @@
 
 // Reminder: always indent with 4 spaces (no tabs). 
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.5                                                   |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | services.inc.php                                                          |
 // |                                                                           |
 // | This file implements the services provided by the 'Static Pages' plugin.  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: services.inc.php,v 1.13 2008/07/28 19:35:46 dhaun Exp $
 
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
@@ -374,6 +372,12 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
+        if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
+            PLG_itemSaved($sp_id, 'staticpages');
+        } else {
+            PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
+        }
+
         $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
                             . $sp_id);
         $output .= PLG_afterSaveSwitch($_SP_CONF['aftersave'], $url,
@@ -435,6 +439,8 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     }
 
     DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_id);
+
+    PLG_itemDeleted($sp_id, 'staticpages');
 
     return PLG_RET_OK;
 }
