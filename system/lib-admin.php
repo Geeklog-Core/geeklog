@@ -263,14 +263,19 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $title = $text_arr['title'];
     }
 
+    $inline_form = false;
+    if (isset($text_arr['inline'])) {
+        $inline_form = $text_arr['inline'];
+    }
+
     # get all template fields.
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (array (
         'search' => 'searchmenu.thtml',
-        'list' => 'list.thtml',
+        'list'   => ($inline_form ? 'inline.thtml' : 'list.thtml'),
         'header' => 'header.thtml',
-        'row' => 'listitem.thtml',
-        'field' => 'field.thtml'
+        'row'    => 'listitem.thtml',
+        'field'  => 'field.thtml'
     ));
 
     # insert std. values into the template
@@ -662,14 +667,13 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
     return $retval;
 }
 
-function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
+function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
 {
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
 
     $retval = false;
 
-    if( !is_array($thisUsersGroups) )
-    {
+    if(! is_array($thisUsersGroups)) {
         $thisUsersGroups = SEC_getUserGroups();
     }
 
@@ -717,6 +721,14 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr)
                         . COM_createLink($icon_arr['edit'],
                         "{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}");
                 }
+                break;
+            case 'checkbox':
+                $retval = '<input type="checkbox" name="groups[]" value="'
+                        . $A['grp_id'] . '"';
+                if (is_array($selected) && in_array($A['grp_id'], $selected)) {
+                    $retval .= ' checked="checked"';
+                }
+                $retval .= XHTML . '>';
                 break;
             default:
                 $retval = $fieldvalue;

@@ -926,7 +926,8 @@ $LANG28 = array(
     82 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde nicht benutzt seit %s und wird innerhalb  30 .",
     83 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde seit der Einrichtung nicht benutzt \und wird gelöscht, wenn Sie nicht in Kürze einloggen.",
     84 => "Ihr Einlogname ist: %s  auf der Site: {$_CONF['site_url']}",
-    85 => 'Wenn Du das Passwort vergessen hast, benutze folgenden Link: %s'
+    85 => 'Wenn Du das Passwort vergessen hast, benutze folgenden Link: %s',
+    86 => 'Enthalten'
 );
 
 ###############################################################################

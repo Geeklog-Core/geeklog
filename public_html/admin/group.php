@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: group.php,v 1.103 2008/06/07 12:41:44 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -178,9 +176,9 @@ function editgroup($grp_id = '')
     if (!empty($grp_id)) {
         $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
         $num_groups = DB_numRows($tmp);
-        for ($x = 1; $x <= $num_groups; $x++) {
+        for ($x = 0; $x < $num_groups; $x++) {
             $G = DB_fetchArray($tmp);
-            if ($x > 1) {
+            if ($x > 0) {
                 $selected .= ' ' . $G['ug_main_grp_id'];
             } else {
                 $selected .= $G['ug_main_grp_id'];
@@ -192,8 +190,8 @@ function editgroup($grp_id = '')
         $group_templates->set_var('hide_adminoption',' style="display:none;"');
 
         if (!empty($selected)) {
-            $inclause = str_replace(' ',',',$selected);
-            $result= DB_query("SELECT grp_id,grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause) ORDER BY grp_name");
+            $inclause = str_replace(' ', ',', $selected);
+            $result = DB_query("SELECT grp_id,grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause) ORDER BY grp_name");
             $nrows = DB_numRows($result);
         } else {
             $nrows = 0;
@@ -204,14 +202,17 @@ function editgroup($grp_id = '')
             $group_templates->set_var('group_options', $LANG_ACCESS['nogroupsforcoregroup']);
         } else {
             $groupoptions = '';
-            for ($i = 1; $i <= $nrows; $i++) {
+            for ($i = 0; $i < $nrows; $i++) {
                 $GRPS = DB_fetchArray($result);
                 $groupoptions .= $GRPS['grp_name'] . '<input type="hidden" name="groups[]" value="' . $GRPS['grp_id'] . '"' . XHTML . '><br' . XHTML . '>' .LB;
             }
             $group_templates->set_var('group_options', $groupoptions);
         }
     } else {
-        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS['groupmsg']);
+        require_once $_CONF['path_system'] . 'lib-admin.php';
+
+        $group_templates->set_var('lang_securitygroupmsg',
+                                  $LANG_ACCESS['groupmsg']);
         $group_templates->set_var('hide_adminoption','');
         if ($VERBOSE) {
             COM_errorLog("SELECTED: $selected");
@@ -221,13 +222,38 @@ function editgroup($grp_id = '')
         // is a member
         $whereGroups = '(grp_id IN (' . implode (',', $thisUsersGroups) . '))';
 
-        // You can no longer give access to the Root group....
-        // it's pointless and doesn't make any sense
-        if (!empty($grp_id)) {
-            $group_templates->set_var ('group_options', COM_checkList ($_TABLES['groups'], 'grp_id,grp_name', "(grp_id <> $grp_id) AND (grp_name <> 'Root') AND " . $whereGroups, $selected));
-        } else {
-            $group_templates->set_var ('group_options', COM_checkList ($_TABLES['groups'], 'grp_id,grp_name', "(grp_name <> 'Root') AND " . $whereGroups, ''));
+        $header_arr = array(
+                        array('text' => $LANG28[86], 'field' => 'checkbox', 'sort' => false),
+                        array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
+                        array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true)
+        );
+
+        $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
+
+        $form_url = $_CONF['site_admin_url']
+                  . '/group.php?mode=edit&amp;grp_id=' . $grp_id;
+        $text_arr = array('has_menu' => false,
+                          'title' => '', 'instructions' => '',
+                          'icon' => '', 'form_url' => $form_url,
+                          'inline' => true);
+
+        $xsql = '';
+        if (! empty($grp_id)) {
+            $xsql = " AND (grp_id <> $grp_id)";
         }
+        $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE (grp_name <> 'Root')" . $xsql . ' AND ' . $whereGroups;
+        $query_arr = array('table' => 'groups',
+                           'sql' => $sql,
+                           'query_fields' => array('grp_name'),
+                           'default_filter' => '',
+                           'query' => '',
+                           'query_limit' => 0);
+
+        $options = ADMIN_list('groups', 'ADMIN_getListField_groups',
+                              $header_arr, $text_arr, $query_arr, $defsort_arr,
+                              '', explode(' ', $selected));
+        $group_templates->set_var('group_options', $options);
+
     }
     $group_templates->set_var('lang_rights', $LANG_ACCESS['rights']);
 
@@ -237,7 +263,8 @@ function editgroup($grp_id = '')
         $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS['rightsdescr']);
     }
 
-    $group_templates->set_var('rights_options', printrights($grp_id, $A['grp_gl_core']));
+    $group_templates->set_var('rights_options',
+                              printrights($grp_id, $A['grp_gl_core']));
     $group_templates->set_var('gltoken_name', CSRF_TOKEN);
     $group_templates->set_var('gltoken', SEC_createToken());
     $group_templates->parse('output','editor');
@@ -308,7 +335,7 @@ function getIndirectFeatures ($grp_id)
 * @return   string      HTML for rights
 *
 */
-function printrights ($grp_id = '', $core = 0)
+function printrights($grp_id = '', $core = 0)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
@@ -371,8 +398,8 @@ function printrights ($grp_id = '', $core = 0)
     $ftcount = 0;
     $retval = '<tr>' . LB;
     for ($i = 1; $i <= $nfeatures; $i++) {
-        if ($i > 0 AND ($i % 3 == 1)) {
-            $retval .= "</tr>\n<tr>";
+        if ($i > 0 AND (($ftcount + 1) % 3 == 1)) {
+            $retval .= '</tr>' . LB . '<tr>';
         }
         $A = DB_fetchArray($features);
 
@@ -390,7 +417,8 @@ function printrights ($grp_id = '', $core = 0)
             // either this is an indirect right OR this is a core feature
             if ((($core == 1) AND (isset ($grpftarray[$A['ft_name']]) AND (($grpftarray[$A['ft_name']] == 'indirect') OR ($grpftarray[$A['ft_name']] == 'direct')))) OR ($core != 1)) {
                 $ftcount++;
-                $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i title="'
+                $retval .= '<td><input type="checkbox" disabled="disabled" '
+                        . 'checked="checked"' . XHTML . '>(<i title="'
                         . $A['ft_descr'] . '">' .  $A['ft_name'] . '</i>)</td>';
             }
         }

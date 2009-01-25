@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Gave the Groups editor a facelift. Requires a new template file,
+  admin/lists/inline.thtml [Dirk]
 - Add new permissions plugin.install and plugin.upload for more fine-grained
   control to the plugin admin panel (bug #0000637) [Dirk]
 - Introduced new plugin API function PLG_itemDeleted [Dirk]
