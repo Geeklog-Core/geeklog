@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mssql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -57,7 +57,6 @@ CREATE TABLE [dbo].[{$_TABLES['events']}] (
     [location] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timestart] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [timeend] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [in_transit] [tinyint] NULL
 ) ON [PRIMARY]
 ";
 

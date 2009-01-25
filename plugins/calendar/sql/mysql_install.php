@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mysql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -56,7 +56,6 @@ CREATE TABLE {$_TABLES['events']} (
   location varchar(128) default NULL,
   timestart time default NULL,
   timeend time default NULL,
-  in_transit tinyint(1) unsigned default '0',
   INDEX events_eid(eid),
   INDEX events_event_type(event_type),
   INDEX events_datestart(datestart),

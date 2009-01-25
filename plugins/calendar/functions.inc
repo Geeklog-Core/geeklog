@@ -1435,7 +1435,7 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
-    global $_CONF, $_TABLES, $_DB_dbms;
+    global $_CONF, $_TABLES;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'calendar'");
@@ -1453,28 +1453,6 @@ function plugin_upgrade_calendar()
 
     $inst_parms = plugin_autoinstall_calendar('calendar');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-
-    require_once $_CONF['path'] . 'plugins/calendar/sql/'
-                                . $_DB_dbms . '_updates.php';
-
-    $current_version = $installed_version;
-    $done = false;
-    while (! $done) {
-        switch ($current_version) {
-        case '1.0.2':
-            if (isset($_UPDATES[$current_version])) {
-                $_SQL = $_UPDATES[$current_version];
-                foreach ($_SQL as $sql) {
-                    DB_query($sql);
-                }
-            }
-            $current_version = '1.1.0';
-            break;
-
-        default:
-            $done = true;
-        }
-    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'calendar'");
 
