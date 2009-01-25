@@ -48,7 +48,7 @@ if (!defined('UPLOAD_ERR_EXTENSION'))  { define('UPLOAD_ERR_EXTENSION',  8); }
 
 $display = '';
 
-if (!SEC_hasrights('plugin.edit')) {
+if (!SEC_hasRights('plugin.edit')) {
     $display .= COM_siteHeader('menu', $MESSAGE[30])
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
@@ -65,7 +65,7 @@ if (!SEC_hasrights('plugin.edit')) {
 * @return   string              HTML for plugin editor form or error message
 *
 */
-function plugineditor ($pi_name, $confirmed = 0)
+function plugineditor($pi_name, $confirmed = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG32, $LANG_ADMIN;
 
@@ -104,9 +104,11 @@ function plugineditor ($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $plg_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
-    if (!empty($pi_name)) {
-        $plg_templates->set_var ('delete_option', '<input type="submit" value="'
-                                 . $LANG_ADMIN['delete'] . '" name="mode"' . XHTML . '>');
+    if (SEC_hasRights('plugin.install')) {
+        $plg_templates->set_var('delete_option', '<input type="submit" value="'
+                . $LANG_ADMIN['delete'] . '" name="mode"' . XHTML . '>');
+    } else {
+        $plg_templates->set_var('delete_option', '');
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
     if (empty($plugin_code_version)) {
@@ -816,10 +818,13 @@ function plugin_main($message = '')
 
     $token = SEC_createToken();
     $retval .= listplugins($token);
-    $retval .= show_newplugins($token);
+    if (SEC_hasRights('plugin.install')) {
+        $retval .= show_newplugins($token);
+    }
 
     // If the web server will allow the user to upload a plugin
-    if (plugin_upload_enabled()) {
+    if (plugin_upload_enabled() &&
+            SEC_hasRights('plugin.install,plugin.upload')) {
         $retval .= plugin_show_uploadform($token);
     }
 
@@ -1164,23 +1169,28 @@ if (isset($_POST['mode'])) {
 }
 if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $pi_name = COM_applyFilter($_POST['pi_name']);
-    if (($_POST['confirmed'] == 1) && SEC_checkToken()) {
-        $msg = do_uninstall($pi_name);
-        if ($msg === false) {
-            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
-        } else {
-            echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg='
-                                                      . $msg);
+    if ((! empty($pi_name)) && SEC_hasRights('plugin.install')) {
+        if (($_POST['confirmed'] == 1) && SEC_checkToken()) {
+            $msg = do_uninstall($pi_name);
+            if ($msg === false) {
+                echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+            } else {
+                echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg='
+                                                          . $msg);
+            }
+            exit;
+        } else { // ask user for confirmation
+            $display .= COM_siteHeader('menu', $LANG32[30]);
+            $display .= COM_startBlock($LANG32[30], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+            $display .= $LANG32[31];
+            $display .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                          'footer'));
+            $display .= plugineditor($pi_name, 1);
+            $display .= COM_siteFooter();
         }
-        exit;
-    } else { // ask user for confirmation
-        $display .= COM_siteHeader('menu', $LANG32[30]);
-        $display .= COM_startBlock($LANG32[30], '',
-                            COM_getBlockTemplate('_msg_block', 'header'));
-        $display .= $LANG32[31];
-        $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        $display .= plugineditor($pi_name, 1);
-        $display .= COM_siteFooter();
+    } else {
+        $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
     }
 
 } elseif ((($mode == $LANG32[34]) && !empty($LANG32[34])) && SEC_checkToken()) { // update
@@ -1205,19 +1215,24 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
                             $enabled, COM_applyFilter($_POST['pi_homepage']));
 
 } elseif (($mode == 'autoinstall') && SEC_checkToken()) {
-    $plugin = '';
-    if (isset($_GET['plugin'])) {
-        $plugin = COM_applyFilter($_GET['plugin']);
-    }
-    if (plugin_autoinstall($plugin)) {
-        $display .= COM_refresh($_CONF['site_admin_url']
-                                . '/plugins.php?msg=44');
+    if (SEC_hasRights('plugin.install')) {
+        $plugin = '';
+        if (isset($_GET['plugin'])) {
+            $plugin = COM_applyFilter($_GET['plugin']);
+        }
+        if (plugin_autoinstall($plugin)) {
+            $display .= COM_refresh($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=44');
+        } else {
+            $display .= COM_refresh($_CONF['site_admin_url']
+                                    . '/plugins.php?msg=72');
+        }
     } else {
-        $display .= COM_refresh($_CONF['site_admin_url']
-                                . '/plugins.php?msg=72');
+        $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
     }
 
-} elseif (isset($_FILES['plugin']) && SEC_checkToken()) { 
+} elseif (isset($_FILES['plugin']) && SEC_checkToken() &&
+        SEC_hasRights('plugin.install,plugin.upload')) { 
     $display .= plugin_upload();
 
 } else { // 'cancel' or no mode at all

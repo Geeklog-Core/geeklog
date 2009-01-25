@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-??? ??, 2009 (1.6.0)
+Mar ??, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,10 +11,14 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Add new permissions plugin.install and plugin.upload for more fine-grained
+  control to the plugin admin panel (bug #0000637) [Dirk]
+- Introduced new plugin API function PLG_itemDeleted [Dirk]
+- Changed API for PLG_itemSaved to make it simpler and easier to use [Dirk]
 - Updated FCKeditor to version 2.6.4 [Blaine]
 - Usersettings.php - can not change password when custom membership is enabled.
-  Modified CUSTOM_userCheck to return both a error message string and Error code.
-  Updated users.php and usersettings,php  (bug #0000776) [Blaine]
+  Modified CUSTOM_userCheck to return both a error message string and Error
+  code. Updated users.php and usersettings,php  (bug #0000776) [Blaine]
 - Implemented extended API for PLG_getItemInfo [mystral-kk, Dirk]
 - Fixed inconsistencies and various small mistakes when displaying "Access
   denied" messages on the admin pages [Dirk]
@@ -32,12 +36,12 @@ Other changes:
 Calendar plugin
 ---------------
 - Added auto installation support [Dirk]
-- Added support for PLG_getItemInfo [Dirk]
+- Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 
 Links plugin
 ------------
 - Added auto installation support [Dirk]
-- Added support for PLG_getItemInfo [Dirk]
+- Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - Introduced function LINKS_getCategorySQL and fixed visibility of link
   categories in the Top 10 Links list and site statistics [Dirk]
 - Added an option to allow opening external links in a new window (feature
@@ -47,7 +51,7 @@ Links plugin
 Polls plugin
 ------------
 - Added auto installation support [Dirk]
-- Added support for PLG_getItemInfo [Dirk]
+- Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
 
 Spam-X
@@ -57,7 +61,7 @@ Spam-X
 Static Pages plugin
 -------------------
 - Added auto installation support [Dirk]
-- Added support for PLG_getItemInfo [Dirk]
+- Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - The printable.thtml template file uses the HTML Strict doctype and print.css
   now [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
