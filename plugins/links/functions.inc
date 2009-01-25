@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Links      |
 // | Plugins' PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -1036,6 +1036,8 @@ function plugin_save_submit_links($A)
         $result = DB_save($_TABLES['links'],
                     'lid,cid,url,description,title,date,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                     "{$A['lid']},'{$A['cid']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
+
+        PLG_itemSaved($A['lid'], 'links');
 
         if ($_LI_CONF['notification'] == 1) {
             LINKS_sendNotification($_TABLES['links'], $A);

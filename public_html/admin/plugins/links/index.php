@@ -2,13 +2,13 @@
 
 // Reminder: always indent with 4 spaces (no tabs).
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.61 2008/06/07 12:41:45 dhaun Exp $
 
 /**
  * Geeklog links administration page.
@@ -319,6 +317,13 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         DB_delete ($_TABLES['links'], 'lid', $old_lid);
 
         DB_save ($_TABLES['links'], 'lid,cid,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$cid','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+
+        if (empty($old_lid) || ($old_lid == $lid)) {
+            PLG_itemSaved($lid, 'links');
+        } else {
+            PLG_itemSaved($lid, 'links', $old_lid);
+        }
+
         // Get category for rdf check
         $category = DB_getItem ($_TABLES['linkcategories'],"category","cid='{$cid}'");
         COM_rdfUpToDateCheck ('links', $category, $lid);
@@ -460,6 +465,8 @@ function deleteLink($lid, $type = '')
         }
 
         DB_delete($_TABLES['links'], 'lid', $lid);
+
+        PLG_itemDeleted($lid, 'links');
 
         return COM_refresh($_CONF['site_admin_url']
                            . '/plugins/links/index.php?msg=3');
