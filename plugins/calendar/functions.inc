@@ -7,10 +7,10 @@
 // | functions.inc                                                             |
 // |                                                                           |
 // | This file does two things: 1) it implements the necessary Geeklog Plugin  |
-// | API method and 2) implements all the common code needed by the CAlendar   |
-// | plugin' PHP files.                                                        |
+// | API method and 2) implements all the common code needed by the Calendar   |
+// | plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -594,6 +594,8 @@ function plugin_savesubmission_calendar($A)
                      'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                      "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id,{$A['group_id']},{$A['perm_owner']},{$A['perm_group']},{$A['perm_members']},{$A['perm_anon']}");
 
+            PLG_itemSaved($A['eid'], 'calendar');
+
             if (isset($_CA_CONF['notification']) &&
                     ($_CA_CONF['notification'] == 1)) {
                 CALENDAR_sendNotification($_TABLES['events'], $A);
@@ -827,6 +829,8 @@ function CALENDAR_deleteEvent($eid, $type = '')
 
         DB_delete($_TABLES['events'], 'eid', $eid);
         DB_delete($_TABLES['personal_events'], 'eid', $eid);
+
+        PLG_itemDeleted($eid, 'calendar');
         COM_rdfUpToDateCheck('calendar');
 
         return COM_refresh($_CONF['site_admin_url'] . '/plugins/calendar/index.php?msg=18');

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog Calendar Plugin administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.38 2008/08/10 15:29:45 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -535,6 +533,8 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                        ."$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
             }
         }
+
+        PLG_itemSaved($eid, 'calendar');
         COM_rdfUpToDateCheck('calendar', $event_type, $eid);
 
         return PLG_afterSaveSwitch (
