@@ -23,6 +23,7 @@ function update_ConfValues()
 
     // new option
     $c->add('jpeg_quality',75,'text',5,23,NULL,1495,FALSE);
+    $c->add('advanced_html',array ('img' => array('width' => 1, 'height' => 1, 'src' => 1, 'align' => 1, 'valign' => 1, 'border' => 1, 'alt' => 1)),'**placeholder',7,34,NULL,1721,TRUE);
 
     return true;
 }

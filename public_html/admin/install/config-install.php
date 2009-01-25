@@ -306,6 +306,8 @@ function install_config()
     $c->add('fs_htmlfilter', NULL, 'fieldset', 7, 34, NULL, 0, TRUE);
     $c->add('user_html',array ('p' => array(), 'b' => array(), 'strong' => array(),'i' => array(), 'a' => array('href' => 1, 'title' => 1, 'rel' => 1),'em'     => array(),'br'     => array(),'tt'     => array(),'hr'     => array(),        'li'     => array(), 'ol'     => array(), 'ul'     => array(), 'code' => array(), 'pre'    => array()),'**placeholder',7,34,NULL,1710,TRUE);
     $c->add('admin_html',array ('p' => array('class' => 1, 'id' => 1, 'align' => 1), 'div' => array('class' => 1, 'id' => 1), 'span' => array('class' => 1, 'id' => 1), 'table' => array('class' => 1, 'id' => 1, 'width' => 1, 'border' => 1, 'cellspacing' => 1, 'cellpadding' => 1), 'tr' => array('class' => 1, 'id' => 1, 'align' => 1, 'valign' => 1), 'th' => array('class' => 1, 'id' => 1, 'align' => 1, 'valign' => 1, 'colspan' => 1, 'rowspan' => 1), 'td' => array('class' => 1, 'id' => 1, 'align' => 1, 'valign' => 1, 'colspan' => 1, 'rowspan' => 1)),'**placeholder',7,34,NULL,1720,TRUE);
+    $c->add('advanced_html',array ('img' => array('width' => 1, 'height' => 1, 'src' => 1, 'align' => 1, 'valign' => 1, 'border' => 1, 'alt' => 1)),'**placeholder',7,34,NULL,1721,TRUE);
+
     $c->add('skip_html_filter_for_root',0,'select',7,34,0,1730,TRUE);
     $c->add('allowed_protocols',array('http','ftp','https'),'%text',7,34,NULL,1740,TRUE);
 
