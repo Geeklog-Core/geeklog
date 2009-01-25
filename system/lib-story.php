@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-story.php                                                             |
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -1327,9 +1327,12 @@ function service_delete_story($args, &$output, &$svc_msg)
     // delete Trackbacks
     DB_query ("DELETE FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = 'article';");
 
+    // notify plugins
+    PLG_itemDeleted($sid, 'article');
+
     // update RSS feed and Older Stories block
-    COM_rdfUpToDateCheck ();
-    COM_olderStuff ();
+    COM_rdfUpToDateCheck();
+    COM_olderStuff();
 
     $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');
 

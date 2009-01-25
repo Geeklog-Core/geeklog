@@ -2089,6 +2089,33 @@ function PLG_itemSaved($id, $type, $old_id = '')
 }
 
 /**
+* "Generic" plugin API: Delete item
+*
+* To be called (eventually) whenever Geeklog removes an item from the database.
+* Plugins can define their own 'itemdeleted' function to be notified whenever
+* an item is deleted.
+*
+* @param    string  $id     ID of the item
+* @param    string  $type   type of the item, e.g. 'article'
+* @returns  void
+*
+*/
+function PLG_itemDeleted($id, $type)
+{
+    global $_PLUGINS;
+
+    $plugins = count($_PLUGINS);
+    for ($del = 0; $del < $plugins; $del++) {
+        if ($_PLUGINS[$del] != $type) {
+            $function = 'plugin_itemdeleted_' . $_PLUGINS[$del];
+            if (function_exists($function)) {
+                $function($id, $type);
+            }
+        }
+    }
+}
+
+/**
 * "Generic" plugin API: Display item
 *
 * To be called (eventually) whenever Geeklog displays an item.
