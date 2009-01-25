@@ -293,6 +293,12 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
            . "is_open, hideresults, statuscode, commentcode, owner_id, group_id, "
            . "perm_owner, perm_group, perm_members, perm_anon",$sql);
 
+    if (empty($old_pid) || ($old_pid == $pid)) {
+        PLG_itemSaved($pid, 'polls');
+    } else {
+        PLG_itemSaved($pid, 'polls', $old_pid);
+    }
+
     if ($_POLL_VERBOSE) {
         COM_errorLog ('**** Leaving savepoll() in '
                       . $_CONF['site_admin_url'] . '/plugins/polls/index.php ***');
@@ -527,6 +533,8 @@ function deletePoll ($pid)
     DB_delete ($_TABLES['pollanswers'], 'pid', $pid);
     DB_delete ($_TABLES['pollquestions'], 'pid', $pid);
     DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$pid' AND type = 'polls'");
+
+    PLG_itemDeleted($pid, 'polls');
 
     return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php?msg=20');
 }
