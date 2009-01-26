@@ -1787,6 +1787,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => "Login Speed Limit",
     'user_html' => "User HTML",
     'admin_html' => "Admin HTML",
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => "Skip HTML Filter for Root?",
     'allowed_protocols' => "Allowed Protocols",
     'disable_autolinks' => "Disable Autolinks?",
