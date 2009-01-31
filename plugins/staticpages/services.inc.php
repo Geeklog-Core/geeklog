@@ -33,6 +33,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'services.inc.php') !== false) {
+    die('This file can not be used on its own.');
+}
+
 // this must be kept in synch with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
 
@@ -49,7 +53,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
            $LANG_LOGIN, $_GROUPS, $_SP_CONF;
 
-    require_once $_CONF['path_system'] . '/lib-webservices.php';
+    if ((PHP_VERSION > 4) && (! $_CONF['disable_webservices'])) {
+        require_once $_CONF['path_system'] . '/lib-webservices.php';
+    }
 
     $output = '';
 
@@ -133,7 +139,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             if (isset($args['slug'])) {
                 $slug = $args['slug'];
             }
-            $args['sp_id'] = WS_makeId($slug, STATICPAGE_MAX_ID_LENGTH);
+            if (function_exists('WS_makeId')) {
+                $args['sp_id'] = WS_makeId($slug, STATICPAGE_MAX_ID_LENGTH);
+            } else {
+                $args['sp_id'] = COM_makeSid();
+            }
         }
     }
 

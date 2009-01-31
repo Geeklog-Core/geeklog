@@ -70,6 +70,16 @@ Static Pages plugin
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
 
+Feb ??, 2009 (1.5.2)
+------------
+
+- Updated Japanese language file, provided by the Geeklog.jp group
+
+Static Pages plugin
+-------------------
+- Fixed parse error when saving a static page (reported by greenteagod) [Dirk]
+
+
 Jan 24, 2009 (1.5.2rc1)
 ------------
 
