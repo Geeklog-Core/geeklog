@@ -1214,7 +1214,9 @@ default:
         }
     } else {
         // On failed login attempt, update speed limit
-        COM_updateSpeedlimit('login');
+        if (!empty($loginname) || !empty($passwd) || !empty($service)) {
+            COM_updateSpeedlimit('login');
+        }
 
         $display .= COM_siteHeader('menu');
 
