@@ -1253,7 +1253,7 @@ $LANG_ACCESS = array(
     'accessdenied' => 'Zugriff verweigert',
     'storydenialmsg' => "Sie haben nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise sind Sie kein registrierter User von {$_CONF['site_name']}. Bitte melden Sie sich als <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">neuer User</a> von {$_CONF['site_name']} an um vollen Zugriff auf alle Bereiche zu bekommen.",
     'nogroupsforcoregroup' => 'Diese Gruppe gehört zu keiner anderen Gruppe.',
-    'grouphasnorights' => 'Diese Gruppe hat keine Rechte für die Administration der Website',
+    'grouphasnorights' => 'Diese Gruppe hat keine Rechte für die Administration der Website.',
     'newgroup' => 'Neue Gruppe',
     'adminhome' => 'Kommandozentrale',
     'save' => 'Speichern',

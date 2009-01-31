@@ -197,12 +197,13 @@ function editgroup($grp_id = '')
         $count = 0;
         if (! empty($selected)) {
             $inclause = str_replace(' ', ',', $selected);
-            $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause)");
+            $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id IN ($inclause)");
             list($count) = DB_fetchArray($result);
         }
         if ($count == 0) {
             // this group doesn't belong to anything...give a friendly message
-            $groupoptions = $LANG_ACCESS['nogroupsforcoregroup'];
+            $groupoptions = '<p class="pluginRow1">'
+                          . $LANG_ACCESS['nogroupsforcoregroup'] . '</p>';
         }
     } else {
         $group_templates->set_var('lang_securitygroupmsg',
@@ -235,7 +236,7 @@ function editgroup($grp_id = '')
 
         if ($A['grp_gl_core'] == 1) {
             $inclause = str_replace(' ', ',', $selected);
-            $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause)";
+            $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id IN ($inclause)";
         } else {
             $xsql = '';
             if (! empty($grp_id)) {
@@ -404,9 +405,11 @@ function printrights($grp_id = '', $core = 0)
             if (($ftcount > 0) && ($ftcount % 3 == 0)) {
                 $retval .= '</tr>' . LB . '<tr>';
             }
+            $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
             $ftcount++;
 
-            $retval .= '<td><input type="checkbox" name="features[]" value="'
+            $retval .= '<td class="' . $pluginRow . '">'
+                    . '<input type="checkbox" name="features[]" value="'
                     . $A['ft_id'] . '"';
             if (!empty($grpftarray[$A['ft_name']])) {
                 if ($grpftarray[$A['ft_name']] == 'direct') {
@@ -421,9 +424,11 @@ function printrights($grp_id = '', $core = 0)
                 if (($ftcount > 0) && ($ftcount % 3 == 0)) {
                     $retval .= '</tr>' . LB . '<tr>';
                 }
+                $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
                 $ftcount++;
 
-                $retval .= '<td><input type="checkbox" name="features[]" '
+                $retval .= '<td class="' . $pluginRow . '">'
+                        . '<input type="checkbox" name="features[]" '
                         . 'value="' . $A['ft_id']
                         . '" disabled="disabled" checked="checked"' . XHTML
                         . '>(<i title="' . $A['ft_descr'] . '">' . $A['ft_name']                        . '</i>)</td>';
@@ -432,8 +437,8 @@ function printrights($grp_id = '', $core = 0)
     }
     if ($ftcount == 0) {
         // This group doesn't have rights to any features
-        $retval .= '<td colspan="3">' . $LANG_ACCESS['grouphasnorights']
-                . '</td>';
+        $retval .= '<td colspan="3" class="pluginRow1">'
+                . $LANG_ACCESS['grouphasnorights'] . '</td>';
     }
 
     $retval .= '</tr>' . LB;
@@ -826,7 +831,7 @@ function listgroups()
         $filter .= "<label for=\"chk_showall\"><input id=\"chk_showall\" type=\"checkbox\" name=\"chk_showall\" value=\"1\"$checked" . XHTML . ">";
         $query_arr = array(
             'table' => 'groups',
-            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id in (2,13))",
+            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id IN (2,13))",
             'query_fields' => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     }
