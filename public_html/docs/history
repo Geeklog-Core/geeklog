@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Let users with user.mail permissions only email groups that they are in
+  themselves [Dirk]
 - Gave the Groups and User editors a facelift. Requires a new template file,
   admin/lists/inline.thtml [Dirk]
 - Add new permissions plugin.install and plugin.upload for more fine-grained

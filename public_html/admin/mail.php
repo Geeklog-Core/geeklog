@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2008 by the following authors:                         |
+// | Copyright (C) 2001-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mail.php,v 1.37 2008/05/27 20:53:10 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -72,19 +70,17 @@ function display_mailform ()
     $mail_templates->set_var ('lang_note', $LANG31[19]);
     $mail_templates->set_var ('lang_to', $LANG31[18]);
     $mail_templates->set_var ('lang_selectgroup', $LANG31[25]);
+
+    $thisUsersGroups = SEC_getUserGroups();
+    uksort($thisUsersGroups, 'strcasecmp');
     $group_options = '';
-    $result = DB_query("SELECT grp_id, grp_name FROM {$_TABLES['groups']} WHERE grp_name <> 'All Users'");
-    $nrows = DB_numRows ($result);
-    $groups = array ();
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $groups[$A['grp_id']] = ucwords ($A['grp_name']);
+    foreach ($thisUsersGroups as $groupName => $groupID) {
+        if ($groupName != 'All Users') {
+            $group_options .= '<option value="' . $groupID . '">' . $groupName
+                           . '</option>';
+        }
     }
-    asort ($groups);
-    foreach ($groups as $groupID => $groupName) {
-        $group_options .= '<option value="' . $groupID . '">' . $groupName
-                       . '</option>';
-    }
+
     $mail_templates->set_var ('group_options', $group_options);
     $mail_templates->set_var ('lang_from', $LANG31[2]);
     $mail_templates->set_var ('site_name', $_CONF['site_name']);
