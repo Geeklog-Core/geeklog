@@ -731,10 +731,10 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
                 $retval .= XHTML . '>';
                 break;
             case 'disabled-checkbox':
-                $retval = '<input type="checkbox" name="groups[]" value="'
-                        . $A['grp_id']
-                        . '" checked="checked" disabled="disabled"'
-                        . XHTML . '>';
+                $retval = '<input type="checkbox" checked="checked" '
+                        . 'disabled="disabled"' . XHTML . '>'
+                        . '<input type="hidden" name="groups[]" value="'
+                        . $A['grp_id'] . '"' . XHTML . '>';
                 break;
             default:
                 $retval = $fieldvalue;

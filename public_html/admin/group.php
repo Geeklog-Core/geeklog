@@ -429,8 +429,11 @@ function printrights($grp_id = '', $core = 0)
 
                 $retval .= '<td class="' . $pluginRow . '">'
                         . '<input type="checkbox" checked="checked" '
-                        . 'disabled="disabled"' . XHTML . '>(<i title="'
-                        . $A['ft_descr'] . '">' . $A['ft_name'] . '</i>)</td>';
+                        . 'disabled="disabled"' . XHTML . '>'
+                        . '<input type="hidden" name="features[]" value="'
+                        . $A['ft_id'] . '"' . XHTML . '>'
+                        . '(<i title="' . $A['ft_descr'] . '">' . $A['ft_name']
+                        . '</i>)</td>';
             }
         }
     }
@@ -1033,27 +1036,22 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $grp_gl_core = COM_applyFilter($_POST['grp_gl_core'], true);
-    if ($grp_gl_core != 1) {
-        $chk_grpadmin = '';
-        if (isset($_POST['chk_grpadmin'])) {
-            $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
-        }
-        $features = array();
-        if (isset($_POST['features'])) {
-            $features = $_POST['features'];
-        }
-        $groups = array();
-        if (isset($_POST[$_TABLES['groups']])) {
-            $groups = $_POST[$_TABLES['groups']];
-        }
-        $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
-                              COM_applyFilter($_POST['grp_name']),
-                              $_POST['grp_descr'], $chk_grpadmin, $grp_gl_core,
-                              $features, $groups);
-    } else {
-        // Core groups can not be changed, period
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/group.php');
+    $chk_grpadmin = '';
+    if (isset($_POST['chk_grpadmin'])) {
+        $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
     }
+    $features = array();
+    if (isset($_POST['features'])) {
+        $features = $_POST['features'];
+    }
+    $groups = array();
+    if (isset($_POST[$_TABLES['groups']])) {
+        $groups = $_POST[$_TABLES['groups']];
+    }
+    $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
+                          COM_applyFilter($_POST['grp_name']),
+                          $_POST['grp_descr'], $chk_grpadmin, $grp_gl_core,
+                          $features, $groups);
 } else if (($mode == 'savegroupusers') && SEC_checkToken()) {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
