@@ -428,10 +428,9 @@ function printrights($grp_id = '', $core = 0)
                 $ftcount++;
 
                 $retval .= '<td class="' . $pluginRow . '">'
-                        . '<input type="checkbox" name="features[]" '
-                        . 'value="' . $A['ft_id']
-                        . '" disabled="disabled" checked="checked"' . XHTML
-                        . '>(<i title="' . $A['ft_descr'] . '">' . $A['ft_name']                        . '</i>)</td>';
+                        . '<input type="checkbox" checked="checked" '
+                        . 'disabled="disabled"' . XHTML . '>(<i title="'
+                        . $A['ft_descr'] . '">' . $A['ft_name'] . '</i>)</td>';
             }
         }
     }
