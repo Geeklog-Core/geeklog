@@ -52,75 +52,6 @@ if (!SEC_hasRights('user.edit')) {
 }
 
 /**
-* Display a list of checkboxes for the user's group assignments
-*
-* @param    string  $table      DB Table to pull data from
-* @param    string  $selection  Comma delimited list of fields to pull from table
-* @param    string  $where      Where clause of SQL statement
-* @param    string  $selected   Value to set to CHECKED
-* @return   string              HTML with Checkbox code
-* @see function COM_checkList
-*
-*/
-function GROUP_checkList($table, $selection, $where='', $selected='', $orderby='')
-{
-    global $_TABLES, $LANG_ACCESS;
-
-    $retval = '';
-
-    $sql = "SELECT $selection FROM $table";
-    if (!empty($where)) {
-        $sql .= " WHERE $where";
-    }
-    if (!empty($orderby)) {
-        $sql .= " ORDER BY $orderby";
-    }
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-
-    if (empty($selected)) {
-        $S = array();
-    } else {
-        $S = explode(' ', $selected);
-    }
-    $num_selected = count($S);
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result, true);
-
-        $readonly = false;
-        $input = '<input type="checkbox"';
-
-        for ($x = 0; $x < $num_selected; $x++) {
-            if ($A[0] == $S[$x]) {
-                $input .= ' checked="checked"';
-
-                if (($A[1] == 'All Users') || ($A[1] == 'Logged-in Users')) {
-                    $readonly = true;
-                }
-            }
-        }
-        if ($A[1] == 'Remote Users') {
-            $readonly = true;
-        }
-
-        if ($readonly) {
-            $input .= ' disabled="disabled"' . XHTML . '>'
-                   . '<input type="hidden" name="' . $table . '[]" value="'
-                   . $A[0] . '" checked="checked"' . XHTML . '>';
-            $retval .= '<span title="' . $LANG_ACCESS['readonly'] . '">'
-                    . $input . stripslashes($A[1]) . '</span><br' . XHTML . '>' . LB;
-        } else {
-            $input .= ' name="' . $table . '[]" value="' . $A[0] . '"';
-            $retval .= $input . XHTML . '>' . stripslashes($A[1])
-                    . '<br' . XHTML . '>' . LB;
-        }
-    }
-
-    return $retval;
-}
-
-/**
 * Shows the user edit form
 *
 * @param    int     $uid    User to edit
@@ -132,6 +63,8 @@ function edituser($uid = '', $msg = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $LANG_ADMIN,
            $MESSAGE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -305,44 +238,77 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
-    if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userEdit'))) {
-        if (!empty ($uid) && ($uid > 1)) {
-            $user_templates->set_var('customfields', CUSTOM_userEdit($uid) );
+    if ($_CONF['custom_registration'] AND function_exists('CUSTOM_userEdit')) {
+        if (!empty($uid) && ($uid > 1)) {
+            $user_templates->set_var('customfields', CUSTOM_userEdit($uid));
         } else {
-            $user_templates->set_var('customfields', CUSTOM_userEdit($A['uid']) );
+            $user_templates->set_var('customfields', CUSTOM_userEdit($A['uid']));
         }
     }
 
     if (SEC_hasRights('group.edit')) {
-        $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
-        $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
+        $user_templates->set_var('lang_securitygroups',
+                                 $LANG_ACCESS['securitygroups']);
+        $user_templates->set_var('lang_groupinstructions',
+                                 $LANG_ACCESS['securitygroupsmsg']);
 
-        if (!empty($uid)) {
+        if (! empty($uid)) {
             $usergroups = SEC_getUserGroups($uid);
             if (is_array($usergroups) && !empty($uid)) {
-                $selected = implode(' ',$usergroups);
+                $selected = implode(' ', $usergroups);
             } else {
                 $selected = '';
             }
         } else {
-            $selected = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'") . ' ';
-            $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
+            $selected = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'All Users'")
+                      . ' ';
+            $selected .= DB_getItem($_TABLES['groups'], 'grp_id',
+                                    "grp_name = 'Logged-in Users'");
         }
-        $thisUsersGroups = SEC_getUserGroups ();
-        $remoteGroup = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                   "grp_name='Remote Users'");
-        if (!empty ($remoteGroup)) {
+        $thisUsersGroups = SEC_getUserGroups();
+        $remoteGroup = DB_getItem($_TABLES['groups'], 'grp_id',
+                                  "grp_name = 'Remote Users'");
+        if (! empty($remoteGroup)) {
             $thisUsersGroups[] = $remoteGroup;
         }
-        $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
-        $user_templates->set_var ('group_options',
-                GROUP_checkList ($_TABLES['groups'], 'grp_id,grp_name',
-                                 $where, $selected, 'grp_name'));
+        $whereGroups = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
+
+        $header_arr = array(
+                        array('text' => $LANG28[86], 'field' => 'checkbox', 'sort' => false),
+                        array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
+                        array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true)
+        );
+        $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
+
+        $form_url = $_CONF['site_admin_url']
+                  . '/user.php?mode=edit&amp;uid=' . $uid;
+        $text_arr = array('has_menu' => false,
+                          'title' => '', 'instructions' => '',
+                          'icon' => '', 'form_url' => $form_url,
+                          'inline' => true
+        );
+
+        $sql = "SELECT grp_id, grp_name, grp_descr FROM {$_TABLES['groups']} WHERE " . $whereGroups;
+        $query_arr = array('table' => 'groups',
+                           'sql' => $sql,
+                           'query_fields' => array('grp_name'),
+                           'default_filter' => '',
+                           'query' => '',
+                           'query_limit' => 0
+        );
+
+        $groupoptions = ADMIN_list('usergroups',
+                                   'ADMIN_getListField_usergroups',
+                                   $header_arr, $text_arr, $query_arr,
+                                   $defsort_arr, '', explode(' ', $selected));
+
+        $user_templates->set_var('group_options', $groupoptions);
         $user_templates->parse('group_edit', 'groupedit', true);
     } else {
         // user doesn't have the rights to edit a user's groups so set to -1
         // so we know not to handle the groups array when we save
-        $user_templates->set_var ('group_edit',
+        $user_templates->set_var('group_edit',
                 '<input type="hidden" name="groups" value="-1"' . XHTML . '>');
     }
     $user_templates->set_var('gltoken_name', CSRF_TOKEN);

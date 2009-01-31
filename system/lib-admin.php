@@ -1112,4 +1112,44 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
     return $retval;
 }
 
+function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
+{
+    global $thisUsersGroups;
+
+    $retval = false;
+
+    if(! is_array($thisUsersGroups)) {
+        $thisUsersGroups = SEC_getUserGroups();
+    }
+
+    if (in_array($A['grp_id'], $thisUsersGroups ) ||
+          SEC_groupIsRemoteUserAndHaveAccess($A['grp_id'], $thisUsersGroups)) {
+        switch($fieldname) {
+        case 'checkbox':
+            $checked = '';
+            if (is_array($selected) && in_array($A['grp_id'], $selected)) {
+                $checked = ' checked="checked"';
+            }
+            if (($A['grp_name'] == 'All Users') ||
+                ($A['grp_name'] == 'Logged-in Users') ||
+                ($A['grp_name'] == 'Remote Users')) {
+                $retval = '<input type="checkbox" disabled="disabled"'
+                        . $checked . XHTML . '>'
+                        . '<input type="hidden" name="groups[]" value="'
+                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
+            } else {
+                $retval = '<input type="checkbox" name="groups[]" value="'
+                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
+            }
+            break;
+
+        default:
+            $retval = $fieldvalue;
+            break;
+        }
+    }
+
+    return $retval;
+}
+
 ?>
