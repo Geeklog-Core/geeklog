@@ -112,8 +112,8 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
     $group_templates->set_var('xhtml', XHTML);
     $showall = 0;
-    if (isset($_GET['chk_showall'])) {
-        $showall =  COM_applyFilter($_GET['chk_showall'], true);
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+        $showall = 1;
     }
     $group_templates->set_var('show_all', $showall);
 
@@ -589,8 +589,8 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
         } else {
             PLG_groupChanged ($grp_id, 'edit');
         }
-        if ($_POST['chk_showall'] == 1) {
-            echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&showall=1');
+        if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+            echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
         } else {
             echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
         }
@@ -693,7 +693,7 @@ function listusers ($grp_id)
     );
 
     $form_url = $_CONF['site_admin_url'] . '/group.php?mode=listusers&amp;grp_id='.$grp_id;
-    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $form_url .= '&amp;chk_showall=1';
     }
 
@@ -702,7 +702,7 @@ function listusers ($grp_id)
     $headline = sprintf ($LANG_ACCESS['usersingroup'], $groupname);
 
     $url = $_CONF['site_admin_url'] . '/group.php';
-    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $url .= '?chk_showall=1';
     }
     $menu_arr = array (
@@ -755,7 +755,14 @@ function listusers ($grp_id)
     return $retval;
 }
 
-function listgroups()
+/**
+* Display a list of (all) groups
+*
+* @param    boolean     $show_all_groups    include admin groups if true
+* @return   string                          HTML of the group list
+*
+*/
+function listgroups($show_all_groups = false)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_ACCESS, $LANG28, $_IMAGE_TYPE;
 
@@ -774,7 +781,7 @@ function listgroups()
     $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
 
     $form_url = $_CONF['site_admin_url'] . '/group.php';
-    if (isset ($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+    if ($show_all_groups) {
         $form_url .= '?chk_showall=1';
     }
 
@@ -801,18 +808,9 @@ function listgroups()
 
     $filter = '<span style="padding-right:20px;">';
 
-    // Extra test required to handle that different ways this option is passed and need to be able to
-    // over-ride the option using the posted form when the URL contains the variable as well
-    $show_all_groups = false;
     $checked ='';
-    if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
-        if ($_POST['chk_showall'] == 1) {
-            $show_all_groups = true;
-            $checked = ' checked';
-        }
-    } else if (isset ($_GET['chk_showall']) && ($_GET['chk_showall'] == 1)) {
-        $show_all_groups = true;
-        $checked = ' checked';
+    if ($show_all_groups) {
+        $checked = ' checked="checked"';
     }
 
     if (SEC_inGroup('Root')) {
@@ -830,7 +828,7 @@ function listgroups()
             'query_fields' => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     } else {
-        $filter .= "<label for=\"chk_showall\"><input id=\"chk_showall\" type=\"checkbox\" name=\"chk_showall\" value=\"1\"$checked" . XHTML . ">";
+        $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1"' . $checked . XHTML . '>';
         $query_arr = array(
             'table' => 'groups',
             'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id IN (2,13))",
@@ -972,8 +970,8 @@ function savegroupusers ($groupid, $groupmembers)
         $adduser[$i] = COM_applyFilter($adduser[$i], true);
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
     }
-    if ($_POST['chk_showall'] == 1) {
-        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&showall=1');
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
     } else {
         echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
     }
@@ -1010,8 +1008,8 @@ function deleteGroup ($grp_id)
     DB_delete ($_TABLES['groups'], 'grp_id', $grp_id);
 
     PLG_groupChanged ($grp_id, 'delete');
-    if ($_POST['chk_showall'] == 1) {
-        return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50&showall=1');
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
+        return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50&chk_showall=1');
     } else {
         return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
     }
@@ -1074,9 +1072,19 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= editusers ($grp_id);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
+    $show_all_groups = false;
+    if (isset($_POST['q'])) {
+        // check $_POST only, as $_GET['chk_showall'] may also be set
+        if (isset($_POST['chk_showall']) && ($_POST['chk_showall'] == 1)) {
+            $show_all_groups = true;
+        }
+    } elseif (isset($_REQUEST['chk_showall']) &&
+            ($_REQUEST['chk_showall'] == 1)) {
+        $show_all_groups = true;
+    }
     $display .= COM_siteHeader('menu', $LANG28[38]);
     $display .= COM_showMessageFromParameter();
-    $display .= listgroups();
+    $display .= listgroups($show_all_groups);
     $display .= COM_siteFooter();
 }
 

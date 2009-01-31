@@ -677,14 +677,8 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
         $thisUsersGroups = SEC_getUserGroups();
     }
 
-    // Extra test required to handle that different ways this option is passed and need to be able to
-    // over-ride the option using the posted form when the URL contains the variable as well
     $show_all_groups = false;
-    if (isset($_POST['q'])) {   // Form has been posted - test actual option in this form
-        if ($_POST['chk_showall'] == 1) {
-            $show_all_groups = true;
-        }
-    } else if (isset ($_GET['showall']) && ($_GET['showall'] == 1)) {
+    if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $show_all_groups = true;
     }
 
