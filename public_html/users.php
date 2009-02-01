@@ -374,11 +374,10 @@ function emailpassword ($username, $msg = 0)
 * User request for a new password - send email with a link and request id
 *
 * @param username string   name of user who requested the new password
-* @param msg      int      index of message to display (if any)
 * @return         string   form or meta redirect
 *
 */
-function requestpassword ($username, $msg = 0)
+function requestpassword($username)
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -409,13 +408,13 @@ function requestpassword ($username, $msg = 0)
         } else {
             $mailfrom = $_CONF['site_mail'];
         }
-        COM_mail ($A['email'], $subject, $mailtext, $mailfrom);
-
-        if ($msg) {
-            $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
+        if (COM_mail ($A['email'], $subject, $mailtext, $mailfrom)) {
+            $msg = 55; // message sent
         } else {
-            $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            $msg = 85; // problem sending the email
         }
+
+        $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
         COM_updateSpeedlimit ('password');
     } else {
         $retval .= COM_siteHeader ('menu', $LANG04[17])
@@ -1004,7 +1003,7 @@ case 'emailpasswd':
                                     "email = '$email' AND ((remoteservice IS NULL) OR (remoteservice = ''))");
         }
         if (!empty ($username)) {
-            $display .= requestpassword ($username, 55);
+            $display .= requestpassword($username);
         } else {
             $display = COM_refresh ($_CONF['site_url']
                                     . '/users.php?mode=getpassword');
