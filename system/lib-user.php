@@ -345,6 +345,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 * @param email    string      Email address of the new user
 * @param uid      int         User id of the new user
 * @param mode     string      Mode user was added at.
+* @return         bool        true = success, false = an error occured
 *
 */
 function USER_sendNotification ($username, $email, $uid, $mode='inactive')
@@ -367,7 +368,8 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
     $mailbody .= "\n------------------------------\n";
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+
+    return COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**
