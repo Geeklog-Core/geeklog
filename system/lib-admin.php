@@ -745,6 +745,9 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
                         . '<input type="hidden" name="groups[]" value="'
                         . $A['grp_id'] . '"' . XHTML . '>';
                 break;
+            case 'grp_name':
+                $retval = ucwords($fieldvalue);
+                break;
             default:
                 $retval = $fieldvalue;
                 break;
@@ -1184,6 +1187,10 @@ function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $
                 $retval = '<input type="checkbox" name="groups[]" value="'
                         . $A['grp_id'] . '"' . $checked . XHTML . '>';
             }
+            break;
+
+        case 'grp_name':
+            $retval = ucwords($fieldvalue);
             break;
 
         default:

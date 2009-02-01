@@ -76,8 +76,8 @@ function display_mailform ()
     $group_options = '';
     foreach ($thisUsersGroups as $groupName => $groupID) {
         if ($groupName != 'All Users') {
-            $group_options .= '<option value="' . $groupID . '">' . $groupName
-                           . '</option>';
+            $group_options .= '<option value="' . $groupID . '">'
+                           . ucwords($groupName) . '</option>';
         }
     }
 

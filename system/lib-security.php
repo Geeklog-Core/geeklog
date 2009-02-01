@@ -1031,7 +1031,7 @@ function SEC_getGroupDropdown ($group_id, $access)
             if ($group_id == $ug_id) {
                 $groupdd .= ' selected="selected"';
             }
-            $groupdd .= '>' . $ug_name . '</option>' . LB;
+            $groupdd .= '>' . ucwords($ug_name) . '</option>' . LB;
         }
         $groupdd .= '</select>' . LB;
     } else {
