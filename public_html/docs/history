@@ -77,6 +77,8 @@ Static Pages plugin
 Feb ??, 2009 (1.5.2)
 ------------
 
+- Display a message when sending the email to report an abusive comment failed
+  [Dirk]
 - Display a message when sending the email for a new password failed [Dirk]
 
 - Updated Japanese language file, provided by the Geeklog.jp group

@@ -1268,10 +1268,14 @@ function CMT_sendReport ($cid, $type)
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[27];
 
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+    if (COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody)) {
+        $msg = 27; // message sent
+    } else {
+        $msg = 85; // problem sending the email
+    }
     COM_updateSpeedlimit ('mail');
 
-    return COM_refresh ($_CONF['site_url'] . '/index.php?msg=27');
+    return COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
 }
 
 ?>
