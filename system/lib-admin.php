@@ -602,6 +602,17 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '') {
 }
 
 
+/**
+ * The following functions are helper functions used as $fieldfunction with
+ * ADMIN_list and ADMIN_simpleList (see above)
+ *
+ */
+
+
+/**
+ * used for the list of blocks in admin/block.php
+ *
+ */
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
@@ -667,6 +678,10 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
     return $retval;
 }
 
+/**
+ * used for the list of groups and in the group editor in admin/group.php
+ *
+ */
 function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
 {
     global $_CONF, $LANG_ACCESS, $LANG_ADMIN, $thisUsersGroups;
@@ -739,6 +754,10 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
     return $retval;
 }
 
+/**
+ * used for the list of users in admin/user.php
+ *
+ */
 function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG04, $LANG28, $_IMAGE_TYPE;
@@ -818,6 +837,10 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
+/**
+ * used for the list of stories in admin/story.php
+ *
+ */
 function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_IMAGE_TYPE;
@@ -912,6 +935,10 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
+/**
+ * used for the list of feeds in admin/syndication.php
+ *
+ */
 function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
@@ -967,6 +994,10 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
     return $retval;
 }
 
+/**
+ * used for the list of plugins in admin/plugins.php
+ *
+ */
 function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_ADMIN, $LANG32;
@@ -1028,6 +1059,10 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
     return $retval;
 }
 
+/**
+ * used for the lists of submissions and draft stories in admin/moderation.php
+ *
+ */
 function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN;
@@ -1069,6 +1104,10 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
     return $retval;
 }
 
+/**
+ * used for the list of ping services in admin/trackback.php
+ *
+ */
 function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
     global $_CONF, $LANG_TRB;
@@ -1112,6 +1151,10 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
     return $retval;
 }
 
+/**
+ * used in the user editor in admin/user.php
+ *
+ */
 function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
 {
     global $thisUsersGroups;
