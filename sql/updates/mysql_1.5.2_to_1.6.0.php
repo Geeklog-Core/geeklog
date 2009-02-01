@@ -49,4 +49,18 @@ function upgrade_addPluginPermissions()
     }
 }
 
+/**
+ * Add ISO 8601-ish date/time format
+ *
+ */
+function upgrade_addIsoFormat()
+{
+    global $_TABLES;
+
+    $maxid = DB_getItem($_TABLES['dateformats'], 'MAX(dfid)');
+    $maxid++;
+    DB_save($_TABLES['dateformats'], 'dfid,format,description',
+            "$maxid,'%Y-%m-%d %H:%M','1999-03-21 22:00'");
+}
+
 ?>

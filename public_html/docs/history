@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added an ISO 8601-ish format to the gl_dateformats table [Dirk]
 - Let users with user.mail permissions only email groups that they are in
   themselves [Dirk]
 - Gave the Groups and User editors a facelift. Requires a new template file,
