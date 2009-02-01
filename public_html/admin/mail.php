@@ -114,23 +114,31 @@ function display_mailform ()
 * @return   string          HTML with success or error message
 *
 */
-function send_messages ($vars)
+function send_messages($vars)
 {
     global $_CONF, $_TABLES, $LANG31;
 
-    require_once($_CONF['path_system'] . 'lib-user.php');
+    require_once $_CONF['path_system'] . 'lib-user.php';
 
     $retval = '';
 
-    if (empty ($vars['fra']) OR empty ($vars['fraepost']) OR
-            empty ($vars['subject']) OR empty ($vars['message']) OR
-            empty ($vars['to_group'])) {
-        $retval .= COM_startBlock ($LANG31[1], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG31[26];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (empty($vars['fra']) OR empty($vars['fraepost']) OR
+            empty($vars['subject']) OR empty($vars['message']) OR
+            empty($vars['to_group'])) {
+        $retval .= COM_showMessageText($LANG31[26]);
 
         return $retval;
+    }
+
+    $to_group = COM_applyFilter($vars['to_group'], true);
+    if ($to_group > 0) {
+        $group_name = DB_getItem($_TABLES['groups'], 'grp_name',
+                                 "grp_id = $to_group");
+        if (! SEC_inGroup($group_name)) {
+            return COM_refresh($_CONF['site_admin_url'] . '/mail.php');
+        }
+    } else {
+        return COM_refresh($_CONF['site_admin_url'] . '/mail.php');
     }
 
     // Urgent message!
@@ -147,16 +155,16 @@ function send_messages ($vars)
         $html = false;
     }
 
-    $groupList = implode (',', USER_getChildGroups($vars['to_group']));
+    $groupList = implode(',', USER_getChildGroups($to_group));
 
     // and now mail it
     if (isset ($vars['overstyr'])) {
         $sql = "SELECT DISTINCT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
+        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email IS NOT NULL) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id IN ({$groupList})";
     } else {
         $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
+        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email IS NOT NULL) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
         $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id IN ({$groupList})";
     }
