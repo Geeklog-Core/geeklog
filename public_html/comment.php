@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: comment.php,v 1.116 2008/08/12 19:15:36 mjervis Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -250,7 +248,7 @@ function handleView($view = true)
             break;
     }
 
-    return COM_siteHeader() . $display . COM_siteFooter();
+    return COM_siteHeader('menu', $title) . $display . COM_siteFooter();
 }
 
 // MAIN
