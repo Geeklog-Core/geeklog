@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | directory.php                                                             |
 // |                                                                           |
 // | Directory of all the stories on a Geeklog site.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2008 by the following authors:                         |
+// | Copyright (C) 2004-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -28,10 +28,8 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: directory.php,v 1.19 2008/06/20 19:12:56 dhaun Exp $
 
-require_once ('lib-common.php');
+require_once 'lib-common.php';
 
 // configuration option:
 // List stories for the current month on top of the overview page
@@ -487,8 +485,14 @@ if (($year != 0) && ($month != 0)) {
     $display .= DIR_displayYear ($topic, $year, true);
     $display .= DIR_navBar ($topic, $year);
 } else {
-    $display .= COM_siteHeader ('menu', $LANG_DIR['title']);
-    $display .= DIR_displayAll ($topic, $conf_list_current_month);
+    $title = $LANG_DIR['title'];
+    if ($topic != 'all') {
+        $topicName = DB_getItem($_TABLES['topics'], 'topic',
+                                "tid = '" . addslashes($topic) . "'");
+        $title .= ': ' . $topicName;
+    }
+    $display .= COM_siteHeader('menu', $title);
+    $display .= DIR_displayAll($topic, $conf_list_current_month);
 }
 
 $display .= COM_siteFooter (true);
