@@ -5759,10 +5759,11 @@ function COM_undoClickableLinks( $text )
 *
 * @param    string  $text   the text
 * @param    string  $query  the search query
+* @param    string  $class  html class to use to highlight
 * @return   string          the text with highlighted search words
 *
 */
-function COM_highlightQuery( $text, $query )
+function COM_highlightQuery( $text, $query, $class = 'highlight' )
 {
     $query = str_replace( '+', ' ', $query );
 
@@ -5783,7 +5784,7 @@ function COM_highlightQuery( $text, $query )
         {
             $searchword = preg_quote( str_replace( "'", "\'", $searchword ));
             $searchword = str_replace('/', '\\/', $searchword);
-            $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">\\\\0</span>','\\0')", '<!-- x -->' . $text . '<!-- x -->' );
+            $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"$class\">\\\\0</span>','\\0')", '<!-- x -->' . $text . '<!-- x -->' );
         }
     }
 

@@ -263,9 +263,57 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <th style="width:29%">Default Value</th>
     <th style="width:63%">Description</th></tr>
 <tr>
+  <td valign="top"><a name="desc_search_style">search_style</a></td>
+  <td valign="top">'google'</td>
+  <td valign="top">Sets the style of the results page. Can be either 'google' or 'table'</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_limits">search_limits</a></td>
+  <td valign="top">10,15,25,30</td>
+  <td valign="top">The result limits a user can select. Each value <b>must</b> be seperated with a comma.</td></tr>
+<tr>
   <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
-  <td valign="top">10</td>
-  <td valign="top">Number of search results per page (and per type).</td></tr>
+  <td valign="top">30</td>
+  <td valign="top">The default number of results per page. Should be a value from 'search_limits' above.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_limit">search_show_limit</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the page limits selection box.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_sort">search_show_sort</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the 'Sort By' selection box. (When using the table style it will enable/disable column sorting)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_num">search_show_num</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the result number.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_type">search_show_type</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the plugin name the result came from.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_user">search_show_user</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the author of a result.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_show_hits">search_show_hits</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Shows (= true) or hides (= false) the number of hits a result has received.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_no_data">search_no_data</a></td>
+  <td valign="top">&lt;i&gt;Not available...&lt;/i&gt;</td>
+  <td valign="top">When there is an incompatibility between plugin and Geeklog display this string.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_separator">search_separator</a></td>
+  <td valign="top"> &amp;gt; (Space before and after character)</td>
+  <td valign="top">The character to display between result type sub groups.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_search_def_keytype">search_def_keytype</a></td>
+  <td valign="top">'phrase'</td>
+  <td valign="top">Default to one of these search methods:<ul>
+    <li>'all': results must contain all of the search terms.</li>
+    <li>'any': results may contain any of the search terms.</li>
+    <li>'phrase': search for the exact phrase as entered. (default)</li>
+    </ul></td></tr>
 </table>
 
 

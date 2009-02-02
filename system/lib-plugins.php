@@ -718,38 +718,55 @@ function PLG_supportsExpandedSearch($type)
 * @param    string  $type       Type of items they are searching, or 'all'
 * @param    int     $author     UID...only return results for this person
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-* @param    int     $page       page number of current search
-* @param    int     $perpage    number of results per page
+* @param    int     $page       page number of current search (deprecated)
+* @param    int     $perpage    number of results per page (deprecated)
 * @return   array               Returns search results
 *
 */
 function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all', $page = 1, $perpage = 10)
 {
     global $_PLUGINS;
+    /*
+        The API, as of 1.6.0, does not use $page, $perpage
+        $type is now only used in the core and should not be passed to the plugin
+    */
 
     $search_results = array();
 
-    $nrows_plugins = 0;
-    $total_plugins = 0;
+    // Search a single plugin if needed
+    if ($type != 'all') {
+        $function = 'plugin_dopluginsearch_' . $type;
+        if (function_exists($function)) {
+            $result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
+            if (is_array($result)) {
+                $search_results = array_merge($search_results, $result);
+            } else {
+                $search_results[] = $result;
+            }
+        }
+
+        return $search_results;
+    }
+
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {
-            $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
-            $nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
-            $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
-            $search_results[] = $plugin_result;
-        } // no else because implementation of this API function not required
+            $result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
+            if (is_array($result)) {
+                $search_results = array_merge($search_results, $result);
+            } else {
+                $search_results[] = $result;
+            }
+        }
+        // no else because implementation of this API function not required
     }
 
     $function = 'custom_dopluginsearch';
     if (function_exists($function)) {
-        $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
-        $nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
-        $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
-        $search_results[] = $plugin_result;
+        $search_results[] = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
     }
 
-    return array($nrows_plugins, $total_plugins, $search_results);
+    return $search_results;
 }
 
 /**

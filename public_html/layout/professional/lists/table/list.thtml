@@ -1,0 +1,16 @@
+                            {list_top}
+                            <div class="admin-list-search">
+                                <select name="page_limit" style="{show_limit}">
+                                    {page_limit}
+                                </select>
+                            </div>
+                            <table class="admin-list-table" style="{show_sort}">
+                                <tr style="background:#FFFFFF;">
+                                    {page_sort}
+                                </tr>
+                                {item_row}
+                            </table>
+                            <p class="aligncenter" style="{show_message}"><b>{message}</b></p>
+                            <br{xhtml}>
+                            {google_paging}
+                            {list_bottom}
