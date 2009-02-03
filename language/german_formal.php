@@ -506,7 +506,14 @@ $LANG09 = array(
     58 => 'Weitere Ergebnisse &gt;&gt;',
     59 => 'Ergebnisse',
     60 => 'pro Seite',
-    61 => 'Suche korrigieren'
+    61 => 'Suche korrigieren',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -1809,7 +1816,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => 'Grundeinstellung Kategorierechte',
     'atom_max_stories' => 'Max. Artikel im Webservices-Feed',
     'disable_webservices' => 'Webservices ausschalten?',
-    'restrict_webservices' => 'Webservices beschränken?'
+    'restrict_webservices' => 'Webservices beschränken?',
+    'search_style' => "Results List Style",
+    'search_limits' => "Page Limits",
+    'search_show_num' => "Show Result Number?",
+    'search_show_type' => "Show Result Type?",
+    'search_show_user' => "Show Author?",
+    'search_show_hits' => "Show Number of Hits?",
+    'search_show_sort' => "Allow User to Sort Results?",
+    'search_show_limit' => "Show Page Limits?",
+    'search_no_data' => "If No Data is Avaliable, Display",
+    'search_separator' => "Group Separator",
+    'search_def_keytype' => "Default Search Method"
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1886,7 +1904,9 @@ $LANG_configselects['Core'] = array(
     15 => array('Nummerisch' => 'sortnum', 'Alphabetisch' => 'alpha'),
     16 => array('Kein Login benötigt' => 0, 'Nur erweiterte Suche' => 1, 'Einfache und erweiterte Suche' => 2),
     17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1),
-    18 => array('Aus' => 0, 'Ein (Exakte Übereinstimmung)' => 1, 'Ein (Wortanfang)' => 2, 'Ein (Teilwort)' => 3)
+    18 => array('Aus' => 0, 'Ein (Exakte Übereinstimmung)' => 1, 'Ein (Wortanfang)' => 2, 'Ein (Teilwort)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

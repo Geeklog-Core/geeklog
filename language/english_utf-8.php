@@ -502,7 +502,14 @@ $LANG09 = array(
     58 => 'More results &gt;&gt;',
     59 => 'Results',
     60 => 'per page',
-    61 => 'Refine search'
+    61 => 'Refine search',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -1148,8 +1155,8 @@ $MESSAGE = array(
     39 => '',
     40 => 'System Message',
     41 => '',
-    42 => 'Your word has been successfully saved.',
-    43 => 'The word has been successfully deleted.',
+    42 => '',
+    43 => '',
     44 => 'The plugin was successfully installed!',
     45 => 'The plugin was successfully deleted.',
     46 => '',
@@ -1210,7 +1217,6 @@ $MESSAGE = array(
     101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname'
-
 );
 
 ###############################################################################
@@ -1802,7 +1808,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => "Topic Default Permissions",
     'atom_max_stories' => "Max. Stories in Webservices Feed",
     'disable_webservices' => 'Disable Webservices?',
-    'restrict_webservices' => 'Restrict Webservices?'
+    'restrict_webservices' => 'Restrict Webservices?',
+    'search_style' => "Results List Style",
+    'search_limits' => "Page Limits",
+    'search_show_num' => "Show Result Number?",
+    'search_show_type' => "Show Result Type?",
+    'search_show_user' => "Show Author?",
+    'search_show_hits' => "Show Number of Hits?",
+    'search_show_sort' => "Allow User to Sort Results?",
+    'search_show_limit' => "Show Page Limits?",
+    'search_no_data' => "If No Data is Avaliable, Display",
+    'search_separator' => "Group Separator",
+    'search_def_keytype' => "Default Search Method"
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1886,7 +1903,9 @@ $LANG_configselects['Core'] = array(
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>
