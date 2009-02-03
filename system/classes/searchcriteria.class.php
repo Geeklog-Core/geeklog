@@ -44,7 +44,6 @@ class SearchCriteria {
     {
         $this->_pluginName = $pluginName;
         $this->_pluginLabel = $pluginLabel;
-        $this->_rank = $rank;
         $this->_url_rewrite = false;
         $this->_rank = 3;
     }
@@ -103,7 +102,7 @@ class SearchCriteria {
 
     function UrlRewriteEnable()
     {
-        return $this->_url_rewite;
+        return $this->_url_rewrite;
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )
