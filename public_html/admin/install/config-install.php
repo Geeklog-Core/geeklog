@@ -82,20 +82,21 @@ function install_config()
     $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE);
 
+    // squeeze search options between 640 (lastlogin) and 680 (loginrequired)
     $c->add('fs_search', NULL, 'fieldset', 0, 6, NULL, 0, TRUE);
-    $c->add('search_style','google','select',0,6,19,650,TRUE);
-    $c->add('search_limits','10,15,25,30','text',0,6,NULL,660,TRUE);
-    $c->add('num_search_results',30,'text',0,6,NULL,670,TRUE);
-    $c->add('search_show_limit',TRUE,'select',0,6,1,680,TRUE);
-    $c->add('search_show_sort',TRUE,'select',0,6,1,690,TRUE);
-    $c->add('search_show_num',TRUE,'select',0,6,1,700,TRUE);
-    $c->add('search_show_type',TRUE,'select',0,6,1,710,TRUE);
-    $c->add('search_show_user',TRUE,'select',0,6,1,720,TRUE);
-    $c->add('search_show_hits',TRUE,'select',0,6,1,730,TRUE);
-    $c->add('search_no_data','<i>Not available...</i>','text',0,6,NULL,740,TRUE);
-    $c->add('search_separator',' &gt; ','text',0,6,NULL,750,TRUE);
-    $c->add('search_def_keytype','phrase','select',0,6,20,760,TRUE);
-    $c->add('search_use_fulltext',FALSE,'hidden',0,6);
+    $c->add('search_style','google','select',0,6,19,642,TRUE);
+    $c->add('search_limits','10,15,25,30','text',0,6,NULL,645,TRUE);
+    $c->add('num_search_results',30,'text',0,6,NULL,648,TRUE);
+    $c->add('search_show_limit',TRUE,'select',0,6,1,651,TRUE);
+    $c->add('search_show_sort',TRUE,'select',0,6,1,654,TRUE);
+    $c->add('search_show_num',TRUE,'select',0,6,1,657,TRUE);
+    $c->add('search_show_type',TRUE,'select',0,6,1,660,TRUE);
+    $c->add('search_show_user',TRUE,'select',0,6,1,663,TRUE);
+    $c->add('search_show_hits',TRUE,'select',0,6,1,666,TRUE);
+    $c->add('search_no_data','<i>Not available...</i>','text',0,6,NULL,669,TRUE);
+    $c->add('search_separator',' &gt; ','text',0,6,NULL,672,TRUE);
+    $c->add('search_def_keytype','phrase','select',0,6,20,675,TRUE);
+    $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 678
 
     // Subgroup: Stories and Trackback
     $c->add('sg_stories', NULL, 'subgroup', 1, 0, NULL, 0, TRUE);
@@ -302,7 +303,7 @@ function install_config()
     $c->add('cookiesecure',FALSE,'select',7,30,1,630,TRUE);
 
     $c->add('fs_misc', NULL, 'fieldset', 7, 31, NULL, 0, TRUE);
-    $c->add('pdf_enabled',0,'select',7,31,0,660,TRUE);
+    $c->add('pdf_enabled',0,'select',7,31,0,795,TRUE);
     $c->add('notification',array(),'%text',7,31,NULL,800,TRUE);
     $c->add('cron_schedule_interval',86400,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
