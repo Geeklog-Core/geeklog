@@ -621,8 +621,8 @@ class Search {
                                 'uid' =>          $col_user == -1 ? '&nbsp;' : $old_row[$col_user],
                                 'hits' =>         $col_hits == -1 ? '0' : str_replace(',', '', $old_row[$col_hits])
                             );
-                    preg_match('/href="([^"]+)"/i', $api_results['title'], $result);
-                    $api_results['url'] = empty($result) ? '#' : $result[1];
+                    preg_match('/href="([^"]+)"/i', $api_results['title'], $links);
+                    $api_results['url'] = empty($links) ? '#' : $links[1];
 
                     $obj->addResult($api_results);
                 }
