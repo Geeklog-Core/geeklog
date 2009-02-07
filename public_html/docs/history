@@ -77,6 +77,8 @@ Static Pages plugin
 Feb 8, 2009 (1.5.2)
 -----------
 
+- The default replacement text for censored text was supposed to read
+  "censored", not "censormode" [Dirk]
 - Fixed problem with extra backslashes appearing in a story's title during the
   story preview when magic_quotes_gpc = On (bug #0000790) [Mike, Dirk]
 - Added missing page title when viewing a single comment [Dirk]
