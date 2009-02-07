@@ -262,8 +262,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     $story = new Story();
-    if($mode == 'preview')
-    {
+    if ($mode == 'preview') {
+        // Handle Magic GPC Garbage:
+        while (list($key, $value) = each($_POST)) {
+            if (!is_array($value)) {
+                $_POST[$key] = COM_stripslashes($value);
+            } else {
+                while (list($subkey, $subvalue) = each($value)) {
+                    $value[$subkey] = COM_stripslashes($subvalue);
+                }
+            }
+        }
         $result = $story->loadFromArgsArray($_POST);
     } else {
         $result = $story->loadFromDatabase($sid, $mode);
