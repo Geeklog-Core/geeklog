@@ -74,9 +74,11 @@ Static Pages plugin
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
 
-Feb ??, 2009 (1.5.2)
-------------
+Feb 8, 2009 (1.5.2)
+-----------
 
+- Fixed problem with extra backslashes appearing in a story's title during the
+  story preview when magic_quotes_gpc = On (bug #0000790) [Mike, Dirk]
 - Added missing page title when viewing a single comment [Dirk]
 - Sort groups in the group dropdowns non-case sensitive [Dirk]
 - Display a message when sending the email to report an abusive comment failed
@@ -87,7 +89,8 @@ Feb ??, 2009 (1.5.2)
 
 Static Pages plugin
 -------------------
-- Fixed parse error when saving a static page (reported by greenteagod) [Dirk]
+- Fixed parse error when saving a static page (reported by greenteagod). This
+  problem was only introduced in 1.5.2rc1 [Dirk]
 
 
 Jan 24, 2009 (1.5.2rc1)
