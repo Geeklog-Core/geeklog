@@ -373,13 +373,21 @@ class config {
         global $_USER;
 
         if (empty($_USER['theme'])) {
-            $theme = $this->config_array['Core']['theme'];
+            if (! empty($this->config_array['Core']['theme'])) {
+                $theme = $this->config_array['Core']['theme'];
+            }
         } else {
             $theme = $_USER['theme'];
         }
 
-        $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
-        $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
+        if (! empty($theme)) {
+            if (! empty($this->config_array['Core']['path_themes'])) {
+                $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
+            }
+            if (! empty($this->config_array['Core']['site_url'])) {
+                $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
+            }
+        }
     }
 
     function _get_groups()
