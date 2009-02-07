@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
 // |                                                                           |
@@ -506,22 +506,37 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     $story_templates->set_var('expire_date_explanation', $LANG24[46]);
     $story_templates->set_var('story_unixstamp', $story->EditElements('expirestamp'));
+
+    $atopic = DB_getItem($_TABLES['topics'], 'tid', "archive_flag = 1");
+    $have_archive_topic = (empty($atopic) ? false : true);
+
     if ($story->EditElements('statuscode') == STORY_ARCHIVE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked3', 'checked="checked"');
         $story_templates->set_var('showarchivedisabled', 'false');
+        $have_archive_topic = true; // force display of auto archive option
     } elseif ($story->EditElements('statuscode') == STORY_DELETE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked4', 'checked="checked"');
+        if (! $have_archive_topic) {
+            $story_templates->set_var('is_checked3', 'style="display:none;"');
+        }
         $story_templates->set_var('showarchivedisabled', 'false');
     } else {
+        if (! $have_archive_topic) {
+            $story_templates->set_var('is_checked3', 'style="display:none;"');
+        }
         $story_templates->set_var('showarchivedisabled', 'true');
     }
     $story_templates->set_var('lang_archivetitle', $LANG24[58]);
     $story_templates->set_var('lang_option', $LANG24[59]);
     $story_templates->set_var('lang_enabled', $LANG_ADMIN['enabled']);
     $story_templates->set_var('lang_story_stats', $LANG24[87]);
-    $story_templates->set_var('lang_optionarchive', $LANG24[61]);
+    if ($have_archive_topic) {
+        $story_templates->set_var('lang_optionarchive', $LANG24[61]);
+    } else {
+        $story_templates->set_var('lang_optionarchive', '');
+    }
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     $story_templates->set_var('story_title', $story->EditElements('title'));
