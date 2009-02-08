@@ -1578,146 +1578,62 @@ function plugin_searchtypes_calendar()
 * @param    date    $datestart  Start date to get results for
 * @param    date    $dateend    End date to get results for
 * @param    string  $topic      The topic they were searching in
-* @param    string  $type       Type of items they are searching, or 'all'
+* @param    string  $type       Type of items they are searching, or 'all' (deprecated)
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-* @param    int     $page       page number of current search
-* @param    int     $perpage    number of results per page
+* @param    int     $page       page number of current search (deprecated)
+* @param    int     $perpage    number of results per page (deprecated)
 * @return   object              search result object
 *
 */
 function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_CONF, $_TABLES, $LANG09, $LANG_CAL_1, $_LANG_CAL_SEARCH;
+    global $_TABLES, $LANG_CAL_1;
 
-    if (empty ($type)) {
-        $type = 'all';
-    }
+    // Make sure the query is SQL safe
+    $query = trim(addslashes($query));
 
-    // Bail if we aren't supppose to do our search
-    if ($type <> 'all' AND $type <> 'calendar') {
-        $event_results = new Plugin();
-        $event_results->plugin_name = 'calendar';
-        $event_results->num_itemssearched = 0;
-        $event_results->searchlabel = $_LANG_CAL_SEARCH['results'];
+    $sql_e = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, hits, CONCAT('/calendar/event.php?eid=',eid) AS url ";
+    $sql_e .= "FROM {$_TABLES['events']} WHERE 1=1 ";
 
-        return $event_results;
-    }
+    $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, '0' AS hits, CONCAT('/calendar/event.php?eid=',eid) AS url ";
+    $sql_p .= "FROM {$_TABLES['personal_events']} WHERE 1=1 ";
 
-    $select = "SELECT eid,title,location,event_type,datestart,dateend,timestart,timeend,allday,UNIX_TIMESTAMP(datestart) AS day";
-    $sql = " FROM {$_TABLES['events']} WHERE ";
+    $sql = COM_getPermSQL('AND') . ' ';
 
-    if($keyType == 'phrase') {
-        // do an exact phrase search (default)
-        $mywords[] = $query;
-        $mysearchterm = addslashes ($query);
-        $sql .= "(location LIKE '%$mysearchterm%'  ";
-        $sql .= "OR description LIKE '%$mysearchterm%' ";
-        $sql .= "OR title LIKE '%$mysearchterm%') ";
-    } else if ($keyType == 'all') {
-        //must contain ALL of the keywords
-        $mywords = explode(' ', $query);
-        $tmp = '';
-        foreach ($mywords AS $mysearchterm) {
-            $mysearchterm = addslashes (trim ($mysearchterm));
-            $tmp .= "(location LIKE '%$mysearchterm%' OR ";
-            $tmp .= "description LIKE '%$mysearchterm%' OR ";
-            $tmp .= "title LIKE '%$mysearchterm%') AND ";
-        }
-        $tmp = substr($tmp, 0, strlen($tmp) - 4);
-        $sql .= $tmp;
-    } else if ($keyType == 'any') {
-        //must contain ANY of the keywords
-        $mywords = explode(' ', $query);
-        $tmp = '';
-        foreach ($mywords AS $mysearchterm) {
-            $mysearchterm = addslashes (trim ($mysearchterm));
-            $tmp .= "(location LIKE '%$mysearchterm%' OR ";
-            $tmp .= "description LIKE '%$mysearchterm%' OR ";
-            $tmp .= "title LIKE '%$mysearchterm%') OR ";
-        }
-        $tmp = substr($tmp, 0, strlen($tmp) - 3);
-        $sql .= "($tmp)";
-    } else {
-        $mywords[] = $query;
-        $mysearchterm = addslashes ($query);
-        $sql .= "(location LIKE '%$mysearchterm%' ";
-        $sql .= "OR description LIKE '%$mysearchterm%' ";
-        $sql .= "OR title LIKE '%$mysearchterm%') ";
-    }
-
-    if (!empty($datestart) AND !empty($dateend)) {
+    if (!empty($datestart) && !empty($dateend))
+    {
         $delim = substr($datestart, 4, 1);
-        if (!empty($delim)) {
+        if (!empty($delim))
+        {
             $DS = explode($delim, $datestart);
             $DE = explode($delim, $dateend);
-            $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
-            $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
+            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
             $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
         }
     }
-    if (!empty($author)) {
-        $sql .= "AND (owner_id = '$author')";
-    }
-    $sql .= COM_getPermSQL ('AND');
-    $sql .= ' GROUP BY datestart, eid, title, description, location, dateend, timestart, timeend, allday, event_type ORDER BY datestart DESC ';
-    $l = ($perpage * $page) - $perpage;
-    $sql .= 'LIMIT ' . $l . ',' . $perpage;
-
-    $result_events = DB_query ($select . $sql);
-    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
-    $B = DB_fetchArray ($result_count, true);
-
-    $event_results = new Plugin();
-    $event_results->searchresults = array();
-    $event_results->searchlabel = $_LANG_CAL_SEARCH['results'];
-    $event_results->addSearchHeading ($_LANG_CAL_SEARCH['title']);
-    $event_results->addSearchHeading ($_LANG_CAL_SEARCH['date_time']);
-    if (empty ($_LANG_CAL_SEARCH['event_type'])) {
-        $event_results->addSearchHeading ($LANG_CAL_1[37]);
-    } else {
-        $event_results->addSearchHeading ($_LANG_CAL_SEARCH['event_type']);
-    }
-    $event_results->num_searchresults = 0;
-    $event_results->num_itemssearched = $B[0];
-    $event_results->supports_paging = true;
-
-    // NOTE if any of your data items need to be events then add them
-    // here! Make sure data elements are in an array and in the same
-    // order as your headings above!
-    while ($A = DB_fetchArray ($result_events)) {
-        if ($A['allday'] == 0) {
-            if ($A['datestart'] == $A['dateend']) {
-                $fulldate = $A['datestart'] . ' ' . $A['timestart'];
-                if ($A['timestart'] != $A['timeend']) {
-                    $fulldate .= ' - ' . $A['timeend'];
-                }
-            } else {
-                $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
-                            . $A['dateend'] . ' ' . $A['timeend'];
-            }
-        } else {
-            if ($A['datestart'] <> $A['dateend']) {
-                $fulldate = $A['datestart'] . ' - ' . $A['dateend']
-                                  . ' ' . $LANG09[35];
-            } else {
-                $fulldate = $A['datestart'] . ' ' . $LANG09[35];
-            }
-        }
-        $thetime = COM_getUserDateTimeFormat ($A['day']);
-        $A['title'] = stripslashes ($A['title']);
-        $A['title'] = str_replace ('$', '&#36;', $A['title']);
-        $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $A['eid'];
-        if (!empty($query)) {
-            $url .= '&amp;query=' . urlencode($query);
-        }
-        $link = COM_createLink($A['title'], $url);
-        $row = array ($link, $fulldate, stripslashes ($A['event_type']));
-        $event_results->addSearchResult($row);
-        $event_results->num_searchresults++;
+    if (!empty ($author)) {
+        $sql .= "AND (owner_id = '$author') ";
     }
 
-    return $event_results;
+    // Search the public events
+    $search_e = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[24]));
+    $columns = array('location','description','title');
+    list($sql_tmp,$ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
+    $search_e->setSQL($sql_tmp);
+    $search_e->setFTSQL($ftsql_tmp);
+    $search_e->setRank(2);
+
+    // Search personal events
+    $search_p = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[23]));
+    $columns = array('location','description','title');
+    list($sql_tmp,$ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
+    $search_p->setSQL($sql_tmp);
+    $search_p->setFTSQL($ftsql_tmp);
+    $search_p->setRank(2);
+
+    return array($search_e,$search_p);
 }
 
 
