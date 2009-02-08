@@ -566,135 +566,49 @@ function plugin_searchtypes_staticpages()
 * @param    date    $datestart  Start date to get results for
 * @param    date    $dateend    End date to get results for
 * @param    string  $topic      The topic they were searching in
-* @param    string  $type       Type of items they are searching, or 'all'
+* @param    string  $type       Type of items they are searching, or 'all' (deprecated)
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-* @param    int     $page       page number of current search
-* @param    int     $perpage    number of results per page
+* @param    int     $page       page number of current search (deprecated)
+* @param    int     $perpage    number of results per page (deprecated)
 *
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_CONF, $_TABLES, $LANG_STATIC;
+    global $_TABLES, $LANG_STATIC;
 
-    if (empty ($type)) {
-        $type = 'all';
-    }
+    // Make sure the query is SQL safe
+    $query = trim(addslashes($query));
 
-    // Bail if we aren't supppose to do our search
-    if ($type <> 'all' AND $type <> 'staticpages') {
-        $plugin_results = new Plugin();
-        $plugin_results->plugin_name = 'staticpages';
-        $plugin_results->searchlabel = $LANG_STATIC['results'];
+    $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, UNIX_TIMESTAMP(sp.sp_date) AS date, sp.sp_uid AS uid, sp.sp_hits AS hits, CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
+    $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
+    $sql .= "WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1) ";
+    $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
-        return $plugin_results;
-    }
-
-    // Build search SQL - exclude static PHP pages from search.
-    $select = "SELECT u.username,u.fullname,sp.sp_id,sp.sp_title,sp.sp_hits,sp.sp_uid,UNIX_TIMESTAMP(sp.sp_date) AS day";
-    $sql = " FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1)" . COM_getPermSQL ('AND') . COM_getLangSql ('sp_id', 'AND', 'sp');
-
-    if (!empty ($query)) {
-        if ($keyType == 'phrase') {
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
-                 . " OR (sp_title LIKE '%$mysearchterm%'))";
-        } else if ($keyType == 'all') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
-                         . " OR (sp_title LIKE '%$mysearchterm%') AND ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
-            $sql .= $tmp . ')';
-        } else if ($keyType == 'any') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
-                         . " OR (sp_title LIKE '%$mysearchterm%') OR ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
-            $sql .= $tmp . ')';
-        } else {
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
-                 . " OR (sp_title LIKE '%$mysearchterm%'))";
+    if (!empty($datestart) && !empty($dateend))
+    {
+        $delim = substr($datestart, 4, 1);
+        if (!empty($delim))
+        {
+            $DS = explode($delim, $datestart);
+            $DE = explode($delim, $dateend);
+            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+            $sql .= "AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate') ";
         }
     }
-
-    if (!empty ($datestart) && !empty ($dateend)) {
-        $delim = substr ($datestart, 4, 1);
-        if (!empty($delim)) {
-            $DS = explode ($delim, $datestart);
-            $DE = explode ($delim, $dateend);
-            $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
-            $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
-            $sql .= " AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate')";
-        }
-    }
-
     if (!empty ($author)) {
-        $sql .= "AND (sp_uid = '$author')";
-    }
-    $sql    .= " GROUP BY sp_date, u.username, u.fullname, sp.sp_id, sp.sp_title, sp.sp_hits, sp.sp_uid ORDER BY sp_date DESC ";
-    $l = ($perpage * $page) - $perpage;
-    $sql .= 'LIMIT ' . $l . ',' . $perpage;
-
-    // Perform search
-    $result = DB_query ($select . $sql);
-    $mycount = DB_numRows ($result);
-    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
-    $B = DB_fetchArray ($result_count, true);
-
-    // OK, now return table header labels
-    $plugin_results = new Plugin();
-    $plugin_results->plugin_name = 'staticpages';
-    $plugin_results->searchlabel = $LANG_STATIC['results'];
-    $plugin_results->addSearchHeading ($LANG_STATIC['title']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['date']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['author']);
-    $plugin_results->addSearchHeading ($LANG_STATIC['hits']);
-    $plugin_results->num_searchresults = 0;
-    $plugin_results->num_itemssearched = $B[0];
-    $plugin_results->supports_paging = true;
-
-    // NOTE if any of your data items need to be links then add them here!
-    // make sure data elements are in an array and in the same order as your
-    // headings above!
-    for ($i = 0; $i < $mycount; $i++) {
-        $A = DB_fetchArray ($result);
-
-        $thetime = COM_getUserDateTimeFormat ($A['day']);
-        $A['sp_title'] = stripslashes ($A['sp_title']);
-        $pageurl = COM_buildURL ($_CONF['site_url']
-                        . '/staticpages/index.php?page=' . $A['sp_id']);
-        if (isset ($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1) &&
-                !empty ($A['fullname'])) {
-            $author = $A['fullname'];
-        } else {
-            $author = $A['username'];
-        }
-        $profile = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                 . $A['sp_uid'];
-        $row = array (COM_createLink($A['sp_title'], $pageurl),
-                      $thetime[0],
-                      COM_createLink($author, $profile),
-                      COM_NumberFormat ($A['sp_hits']));
-        $plugin_results->addSearchResult ($row);
-        $plugin_results->num_searchresults++;
+        $sql .= "AND (sp_uid = '$author') ";
     }
 
-    return $plugin_results;
+    $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
+    $columns = array('sp_content','sp_title');
+    list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+    $search->setSQL($sql);
+    $search->setFTSQL($ftsql);
+    $search->setRank(3);
+
+    return $search;
 }
 
 
