@@ -337,137 +337,49 @@ function plugin_searchtypes_links()
 * @param    date    $datestart  Start date to get results for
 * @param    date    $dateend    End date to get results for
 * @param    string  $topic      The topic they were searching in
-* @param    string  $type       Type of items they are searching, or 'all'
+* @param    string  $type       Type of items they are searching, or 'all' (deprecated)
 * @param    int     $author     Get all results by this author
 * @param    string  $keyType    search key type: 'all', 'phrase', 'any'
-* @param    int     $page       page number of current search
-* @param    int     $perpage    number of results per page
+* @param    int     $page       page number of current search (deprecated)
+* @param    int     $perpage    number of results per page (deprecated)
 * @return   object              search result object
 *
 */
 function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_CONF, $_TABLES, $LANG_LINKS_SEARCH;
+    global $_TABLES, $LANG_LINKS;
 
-    if (empty ($type)) {
-        $type = 'all';
-    }
+    // Make sure the query is SQL safe
+    $query = trim(addslashes($query));
 
-    // Bail if we aren't supppose to do our search
-    if ($type <> 'all' AND $type <> 'links') {
-        $plugin_results = new Plugin();
-        $plugin_results->plugin_name = 'links';
-        $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
+    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, url ";
+    $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
+    $sql .= COM_getPermSQL('AND') . ' ';
 
-        return $plugin_results;
-    }
-
-    // link search
-    $select = 'SELECT lid,title,url,owner_id,hits,UNIX_TIMESTAMP(date) AS day';
-    $sql = " FROM {$_TABLES['links']} WHERE date <> 1";
-
-    if (!empty ($query)) {
-        if ($keyType == 'phrase') {
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((description LIKE '%$mysearchterm%')"
-                 . " OR (title LIKE '%$mysearchterm%'))";
-        } else if ($keyType == 'all') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "((description LIKE '%$mysearchterm%')"
-                         . " OR (title LIKE '%$mysearchterm%')) AND ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
-            $sql .= $tmp . ')';
-        } else if ($keyType == 'any') {
-            $mywords = explode (' ', $query);
-            $sql .= ' AND (';
-            $tmp = '';
-            foreach ($mywords AS $mysearchterm) {
-                $mysearchterm = addslashes (trim ($mysearchterm));
-                if (!empty ($mysearchterm)) {
-                    $tmp .= "((description LIKE '%$mysearchterm%')"
-                         . " OR (title LIKE '%$mysearchterm%')) OR ";
-                }
-            }
-            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
-            $sql .= $tmp . ')';
-        } else {  // quick search
-            $mysearchterm = addslashes ($query);
-            $sql .= " AND ((description LIKE '%$mysearchterm%')"
-                 . " OR (title LIKE '%$mysearchterm%'))";
+    if (!empty($datestart) && !empty($dateend))
+    {
+        $delim = substr($datestart, 4, 1);
+        if (!empty($delim))
+        {
+            $DS = explode($delim, $datestart);
+            $DE = explode($delim, $dateend);
+            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+            $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
         }
     }
-
-    if (!empty ($datestart) && !empty ($dateend)) {
-        $delim = substr ($datestart, 4, 1);
-        if (!empty($delim)) {
-            $DS = explode ($delim, $datestart);
-            $DE = explode ($delim, $dateend);
-            $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
-            $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
-            $sql .= " AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate')";
-        }
-    }
-
     if (!empty ($author)) {
-        $sql .= " AND (owner_id = '$author')";
-    }
-    $sql .= COM_getPermSQL('AND') . LINKS_getCategorySQL('AND');
-    $sql .= ' GROUP BY date, lid, cid, url, description, title, hits, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon ORDER BY date DESC';
-    $l = ($perpage * $page) - $perpage;
-    $sql .= ' LIMIT ' . $l . ',' . $perpage;
-
-    // Perform search
-    $result = DB_query ($select . $sql);
-    $mycount = DB_numRows ($result);
-    $result_count = DB_query ('SELECT COUNT(*)' . $sql);
-    $B = DB_fetchArray ($result_count, true);
-
-    $plugin_results = new Plugin();
-    $plugin_results->plugin_name = 'links';
-    $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
-    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['title']);
-    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['date']);
-    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['author']);
-    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['hits']);
-    $plugin_results->num_searchresults = 0;
-    $plugin_results->num_itemssearched = $B[0];
-    $plugin_results->supports_paging = true;
-
-    // NOTE if any of your data items need to be links then add them here!
-    // make sure data elements are in an array and in the same order as your
-    // headings above!
-    for ($i = 0; $i < $mycount; $i++) {
-        $A = DB_fetchArray ($result);
-
-        $thetime = COM_getUserDateTimeFormat ($A['day']);
-        $A['title'] = stripslashes ($A['title']);
-        $submitter = COM_getDisplayName ($A['owner_id']);
-        if ($A['owner_id'] > 1) {
-            $profile_url = $_CONF['site_url']
-                     . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-            $profile = COM_createLink($submitter, $profile_url);
-        } else {
-            $profile = $submitter;
-        }
-        $linkUrl = COM_buildUrl($_CONF['site_url']
-                                . '/links/portal.php?what=link&amp;item='
-                                . $A['lid']);
-        $anchor = COM_createLink($A['title'], $linkUrl,
-                                 array('title' => $A['url']));
-        $row = array ($anchor, $thetime[0], $profile,
-                      COM_NumberFormat ($A['hits']));
-        $plugin_results->addSearchResult ($row);
-        $plugin_results->num_searchresults++;
+        $sql .= "AND (owner_id = '$author') ";
     }
 
-    return $plugin_results;
+    $search = new SearchCriteria('links', $LANG_LINKS[14]);
+    $columns = array('description','title');
+    list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+    $search->setSQL($sql);
+    $search->setFTSQL($ftsql);
+    $search->setRank(3);
+
+    return $search;
 }
 
 
