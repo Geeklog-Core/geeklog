@@ -89,6 +89,7 @@ Feb 8, 2009 (1.5.2)
   [Dirk]
 - Display a message when sending the email for a new password failed [Dirk]
 
+- Updated Estonian language file for the Calendar plugin, provided by Artur Räpp
 - Updated Japanese language file, provided by the Geeklog.jp group
 
 Static Pages plugin
