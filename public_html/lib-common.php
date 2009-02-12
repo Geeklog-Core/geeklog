@@ -3674,8 +3674,8 @@ function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 /**
 * Syndication import function. Imports headline data to a portal block.
 *
-* Rewritten December 19th 2004 by Michael Jervis (mike@*censored*ingbrit.com). Now
-* utilises a Factory Pattern to open a URL and automaticaly retreive a feed
+* Rewritten December 19th 2004 by Michael Jervis (mike AT fuckingbrit DOT com).
+* Now utilises a Factory Pattern to open a URL and automaticaly retreive a feed
 * object populated with feed data. Then import it into the portal block.
 *
 * @param    string  $bid            Block ID
