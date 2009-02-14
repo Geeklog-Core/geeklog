@@ -143,7 +143,7 @@ if (isset($_REQUEST['msg'])) {
     $msg = COM_applyFilter($_REQUEST['msg'], true);
 }
 
-if (isset($pid)) {
+if (! empty($pid)) {
     $questions_sql = "SELECT question,qid FROM {$_TABLES['pollquestions']} "
     . "WHERE pid='$pid' ORDER BY qid";
     $questions = DB_query($questions_sql);
@@ -160,8 +160,9 @@ if (empty($pid)) {
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
     $display .= COM_siteHeader() . POLLS_pollsave($pid, $aid);
-} else if (isset($pid)) {
-    $display .= COM_siteHeader();
+} elseif (! empty($pid)) {
+    $topic = DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'");
+    $display .= COM_siteHeader('menu', $topic);
     if ($msg > 0) {
         $display .= COM_showMessage($msg, 'polls');
     }
@@ -169,8 +170,7 @@ if (empty($pid)) {
         $display .= COM_startBlock (
                 $LANG_POLLS['not_saved'], '',
                 COM_getBlockTemplate ('_msg_block', 'header'))
-            . $LANG_POLLS['answer_all'] . ' "'
-            . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"'
+            . $LANG_POLLS['answer_all'] . ' "' . $topic . '"'
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
     if (DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '$pid'") != 1) {

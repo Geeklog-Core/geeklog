@@ -58,6 +58,7 @@ Links plugin
 
 Polls plugin
 ------------
+- Set the page title when viewing a poll [Dirk]
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - Extended length of poll IDs to 40 characters (feature request #0000754) [Dirk]
