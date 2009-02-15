@@ -116,35 +116,32 @@ function liststories()
         $current_topic = $LANG09[9];
     }
 
-    if ($current_topic == $LANG09[9]) {
+    if ($current_topic == $LANG09[9]) { // "All"
         $excludetopics = '';
         $seltopics = '';
-        $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
-        $tresult = DB_query( $topicsql );
-        $trows = DB_numRows( $tresult );
-        if( $trows > 0 )
-        {
-            $excludetopics .= ' (';
-            for( $i = 1; $i <= $trows; $i++ )  {
-                $T = DB_fetchArray ($tresult);
-                if ($i > 1)  {
-                    $excludetopics .= ' OR ';
-                }
-                $excludetopics .= "tid = '{$T['tid']}'";
-                $seltopics .= '<option value="' .$T['tid']. '"';
-                if ($current_topic == "{$T['tid']}") {
+        $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}"
+                  . COM_getPermSQL ();
+        $tresult = DB_query($topicsql);
+        $trows = DB_numRows($tresult);
+        if ($trows > 0) {
+            $exclude = array();
+            for ($i = 0; $i < $trows; $i++)  {
+                $T = DB_fetchArray($tresult);
+                $exclude[] = $T['tid'];
+                $seltopics .= '<option value="' . $T['tid'] . '"';
+                if ($current_topic == $T['tid']) {
                     $seltopics .= ' selected="selected"';
                 }
                 $seltopics .= '>' . $T['topic'] . '</option>' . LB;
             }
-            $excludetopics .= ') ';
+            $excludetopics = " (tid IN ('" . implode( "','", $exclude ) . "')) ";
         } else {
             $retval .= COM_showMessage(101);
             return $retval;
         }
     } else {
         $excludetopics = " tid = '$current_topic' ";
-        $seltopics = COM_topicList ('tid,topic', $current_topic, 1, true);
+        $seltopics = COM_topicList('tid,topic', $current_topic, 1, true);
         if (empty($seltopics)) {
             $retval .= COM_showMessage(101);
             return $retval;
