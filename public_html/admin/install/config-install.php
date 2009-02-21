@@ -81,6 +81,7 @@ function install_config()
     $c->add('allow_mysqldump',1,'select',0,5,0,170,TRUE);
     $c->add('mysqldump_path','/usr/bin/mysqldump','text',0,5,NULL,175,TRUE);
     $c->add('mysqldump_options','-Q','text',0,5,NULL,180,TRUE);
+    $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE);
 
     // squeeze search options between 640 (lastlogin) and 680 (loginrequired)
     $c->add('fs_search', NULL, 'fieldset', 0, 6, NULL, 0, TRUE);

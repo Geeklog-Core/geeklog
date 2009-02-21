@@ -254,6 +254,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <td valign="top">Here you can include additional options for the <a
         href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call
         that Geeklog uses to create a backup from your database.</td></tr>
+<tr><td valign="top"><a name="desc_mysqldump_filename_mask">mysqldump_filename_mask</a></td>
+    <td valign="top">geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql</td>
+    <td valign="top">Mask to use for the names of the backup files. See <a
+        href="#date_formats">date formats</a> below for details of the date and
+        time in the file name.</td></tr>
 </table>
 
 <h3><a name="site_search">Site: Search</a></h3>

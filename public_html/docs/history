@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added a filename mask config option for the names of the database backups
+  [Dirk]
 - Removed $_CONF['pagetitle'] hack. Use COM_siteHeader('menu', $pagetitle)
   instead [Dirk]
 - Added canonical link for articles [Dirk]

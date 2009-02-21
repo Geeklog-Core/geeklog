@@ -49,6 +49,9 @@ function update_ConfValues()
     $c->add('search_def_keytype','phrase','select',0,6,20,675,TRUE);
     $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 678
 
+    // filename mask for db backup files
+    $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE);
+
     return true;
 }
 

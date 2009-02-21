@@ -1642,6 +1642,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => "Allow MySQL Dump",
     'mysqldump_path' => 'Path of Executable',
     'mysqldump_options' => "MySQL Dump Options",
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => "Theme",
     'menu_elements' => "Menu Elements",
     'path_themes' => "Themes Path",

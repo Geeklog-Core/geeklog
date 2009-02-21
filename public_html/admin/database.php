@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
 // |                                                                           |
 // | Geeklog database backup administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Blaine Lang        - langmail AT sympatico DOT ca                |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: database.php,v 1.51 2008/08/30 06:50:22 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -182,8 +180,13 @@ function dobackup()
     $retval = '';
 
     if (is_dir($_CONF['backup_path'])) {
-        $curdatetime = date('Y_m_d_H_i_s');
-        $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
+        if (!empty($_CONF['mysqldump_filename_mask'])) {
+            $filename_mask = strftime($_CONF['mysqldump_filename_mask']);
+        } else {
+            $curdatetime = date('Y_m_d_H_i_s');
+            $filename_mask = "geeklog_db_backup_{$curdatetime}.sql";
+        }
+        $backupfile = $_CONF['backup_path'] . $filename_mask;
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user";
         if (!empty($_DB_pass)) {
             $command .= " -p$_DB_pass";
