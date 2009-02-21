@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Moved hard-coded "Reminders" column title to the language file (bug #0000817)
 - Hide archive option radiobutton from the story editor when no archive topic
   is defined (feature request #0000807) [Dirk]
 - Display group names with an uppercase first letter everywhere [Dirk]

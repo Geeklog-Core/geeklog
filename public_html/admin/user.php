@@ -757,7 +757,7 @@ function batchdelete()
     }
 
     $header_arr[] = array('text' => $LANG28[7], 'field' => 'email', 'sort' => true);
-    $header_arr[] = array('text' => 'Reminders', 'field' => 'num_reminders', 'sort' => true);
+    $header_arr[] = array('text' => $LANG28[87], 'field' => 'num_reminders', 'sort' => true);
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'] . '/user.php',
                           'text' => $LANG28[11]),
