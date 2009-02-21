@@ -951,8 +951,8 @@ $display .= '
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1 class="heading">' . $LANG_INSTALL[4] . '</h1>' . LB;
-    $display .= '<p>' . $LANG_INSTALL[5] . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1 class="heading">' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[4]) . '</h1>' . LB;
+    $display .= '<p>' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[5]) . phpversion() . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 

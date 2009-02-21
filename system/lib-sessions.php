@@ -236,7 +236,6 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         COM_errorLog("*************inside new_session*****************",1);
         COM_errorLog("Args to new_session: userid = $userid, remote_ip = $remote_ip, lifespan = $lifespan, md5_based = $md5_based",1);
     }
-    mt_srand((double)microtime()*1000000);
     $sessid = mt_rand();
 
     // For added security we are adding the option to build a IP-based

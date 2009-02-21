@@ -58,7 +58,7 @@ if (!defined('XHTML')) {
     define('XHTML', ' /');
 }
 if (!defined('SUPPORTED_PHP_VER')) {
-    define('SUPPORTED_PHP_VER', '4.1.0');
+    define('SUPPORTED_PHP_VER', '4.3.0');
 }
 
 if (empty($LANG_DIRECTION)) {
@@ -237,6 +237,7 @@ function INST_getFooter()
 function php_v()
 {
     $phpv = explode('.', phpversion());
+
     return array($phpv[0], $phpv[1], (int) $phpv[2]);
 }
 
@@ -248,12 +249,16 @@ function php_v()
  */
 function INST_phpOutOfDate()
 {
+    $minv = explode('.', SUPPORTED_PHP_VER);
+
     $phpv = php_v();
-    if (($phpv[0] < 4) || (($phpv[0] == 4) && ($phpv[1] < 1))) {
+    if (($phpv[0] <  $minv[0]) ||
+       (($phpv[0] == $minv[0]) && ($phpv[1] <  $minv[1])) ||
+       (($phpv[0] == $minv[0]) && ($phpv[1] == $minv[1]) && ($phpv[2] < $minv[2]))) {
         return true;    
-    } else {
-        return false;
     }
+
+    return false;
 }
 
 /**

@@ -140,7 +140,6 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    srand ((double) microtime () * 1000000);
     $passwd = rand ();
     $passwd = md5 ($passwd);
     $passwd = substr ($passwd, 1, 8);

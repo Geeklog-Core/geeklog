@@ -137,39 +137,18 @@ if( !empty( $_CONF['timezone'] ) && !ini_get( 'safe_mode' ) &&
 * If needed, add our PEAR path to the list of include paths
 *
 */
-if( !$_CONF['have_pear'] )
-{
-    $curPHPIncludePath = ini_get( 'include_path' );
-    if( defined( 'PATH_SEPARATOR' ))
-    {
-        $separator = PATH_SEPARATOR;
-    }
-    else
-    {
-        // prior to PHP 4.3.0, we have to guess the correct separator ...
-        $separator = ';';
-        if( strpos( $curPHPIncludePath, $separator ) === false )
-        {
-            $separator = ':';
-        }
-    }
-    if( ini_set( 'include_path', $_CONF['path_pear'] . $separator
-                                 . $curPHPIncludePath ) === false )
-    {
-        COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
-    }
-}
+if (! $_CONF['have_pear']) {
+    $curPHPIncludePath = get_include_path();
+    if (empty($curPHPIncludePath)) {
+        $curPHPIncludePath = $_CONF['path_pear'];
+    } else {
+        $curPHPIncludePath = $_CONF['path_pear'] . PATH_SEPARATOR
+                           . $curPHPIncludePath;
+    } 
 
-
-/**
-* This is necessary to ensure compatibility with PHP 4.1.x
-*
-*/
-if( !function_exists( 'is_a' ))
-{
-    require_once( 'PHP/Compat.php' );
-
-    PHP_Compat::loadFunction( 'is_a' );
+    if (set_include_path($curPHPIncludePath) === false) {
+        COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
+    }
 }
 
 
@@ -372,7 +351,6 @@ if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
     do
     {
         // Build a useless sess_id (needed for insert to work properly)
-        mt_srand(( double )microtime() * 1000000 );
         $sess_id = mt_rand();
         $curtime = time();
 
@@ -3044,7 +3022,6 @@ function COM_undoSpecialChars( $string )
 function COM_makesid()
 {
     $sid = date( 'YmdHis' );
-    srand(( double ) microtime() * 1000000 );
     $sid .= rand( 0, 999 );
 
     return $sid;

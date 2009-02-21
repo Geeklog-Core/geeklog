@@ -488,7 +488,6 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty ($uid)) {
             if (empty ($passwd)) {
                 // no password? create one ...
-                srand ((double) microtime () * 1000000);
                 $passwd = rand ();
                 $passwd = md5 ($passwd);
                 $passwd = substr ($passwd, 1, 8);

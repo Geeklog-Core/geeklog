@@ -7,10 +7,12 @@ Geeklog 1.6.0 incorporates the following projects implemented during
 the 2008 Google Summer of Code:
 
 + Site migration support and easier plugin installation, by Matt West
-+ (TBD) Improved search, by Sami Barakat
++ Improved search, by Sami Barakat
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Raised minimum required PHP version to PHP 4.3.0 and removed all workarounds
+  that ensured compatibility with PHP 4.1.0 [Dirk]
 - Added a filename mask config option for the names of the database backups
   [Dirk]
 - Removed $_CONF['pagetitle'] hack. Use COM_siteHeader('menu', $pagetitle)

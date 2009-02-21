@@ -1868,27 +1868,4 @@ class Story
 /**************************************************************************/
 }
 
-if (!function_exists('html_entity_decode')) {
-    /**
-     * html_entity_decode()
-     *
-     * Convert all HTML entities to their applicable characters
-     * This function is a fallback if html_entity_decode isn't defined
-     * in the PHP version used (i.e. PHP < 4.3.0).
-     * Please note that this function doesn't support all parameters
-     * of the original html_entity_decode function.
-     *
-     * Function borrowed from postnuke, under the GPL.
-     *
-     * @param  string $string the this function converts all HTML entities to their applicable characters from string.
-     * @return the converted string
-     * @link http://php.net/html_entity_decode The documentation of html_entity_decode
-     **/
-    function html_entity_decode($string)
-    {
-        $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-        $trans_tbl = array_flip($trans_tbl);
-        return (strtr($string, $trans_tbl));
-    }
-}
 ?>
