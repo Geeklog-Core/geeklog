@@ -464,7 +464,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             INST_updateDB($_SQL);
 
             update_ConfValues();
-            upgrade_addPluginPermissions();
+            upgrade_addNewPermissions();
             upgrade_addIsoFormat();
 
             $current_gl_version = '1.6.0';

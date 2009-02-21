@@ -246,7 +246,7 @@ function edituser($uid = '', $msg = '')
         }
     }
 
-    if (SEC_hasRights('group.edit')) {
+    if (SEC_hasRights('group.assign')) {
         $user_templates->set_var('lang_securitygroups',
                                  $LANG_ACCESS['securitygroups']);
         $user_templates->set_var('lang_groupinstructions',
@@ -543,23 +543,23 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             $userChanged = true;
         }
 
-        // if groups is -1 then this user isn't allowed to change any groups so ignore
-        if (is_array ($groups) && SEC_inGroup ('Group Admin')) {
-            if (!SEC_inGroup ('Root')) {
-                $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                       "grp_name = 'Root'");
-                if (in_array ($rootgrp, $groups)) {
-                    COM_accessLog ("User {$_USER['username']} ({$_USER['uid']}) just tried to give Root permissions to user $username.");
-                    echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        // check that the user is allowed to change group assignments
+        if (is_array($groups) && SEC_hasRights('group.assign')) {
+            if (! SEC_inGroup('Root')) {
+                $rootgrp = DB_getItem($_TABLES['groups'], 'grp_id',
+                                      "grp_name = 'Root'");
+                if (in_array($rootgrp, $groups)) {
+                    COM_accessLog("User {$_USER['username']} ({$_USER['uid']}) just tried to give Root permissions to user $username.");
+                    echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
                     exit;
                 }
             }
 
             // make sure the Remote Users group is in $groups
-            if (SEC_inGroup ('Remote Users', $uid)) {
-                $remUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                        "grp_name = 'Remote Users'");
-                if (!in_array ($remUsers, $groups)) {
+            if (SEC_inGroup('Remote Users', $uid)) {
+                $remUsers = DB_getItem($_TABLES['groups'], 'grp_id',
+                                       "grp_name = 'Remote Users'");
+                if (! in_array($remUsers, $groups)) {
                     $groups[] = $remUsers;
                 }
             }
@@ -569,31 +569,31 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             }
 
             // remove user from all groups that the User Admin is a member of
-            $UserAdminGroups = SEC_getUserGroups ();
+            $UserAdminGroups = SEC_getUserGroups();
             $whereGroup = 'ug_main_grp_id IN ('
                         . implode (',', $UserAdminGroups) . ')';
             DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
 
             // make sure to add user to All Users and Logged-in Users groups
-            $allUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                    "grp_name = 'All Users'");
-            if (!in_array ($allUsers, $groups)) {
+            $allUsers = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'All Users'");
+            if (! in_array($allUsers, $groups)) {
                 $groups[] = $allUsers;
             }
-            $logUsers = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                    "grp_name = 'Logged-in Users'");
-            if (!in_array ($logUsers, $groups)) {
+            $logUsers = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Logged-in Users'");
+            if (! in_array($logUsers, $groups)) {
                 $groups[] = $logUsers;
             }
 
             foreach ($groups as $userGroup) {
-                if (in_array ($userGroup, $UserAdminGroups)) {
+                if (in_array($userGroup, $UserAdminGroups)) {
                     if ($_USER_VERBOSE) {
-                        COM_errorLog ("adding group_assignment " . $userGroup
-                                      . " for $username", 1);
+                        COM_errorLog("adding group_assignment " . $userGroup
+                                     . " for $username", 1);
                     }
                     $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($userGroup, $uid)";
-                    DB_query ($sql);
+                    DB_query($sql);
                 }
             }
         }
