@@ -466,8 +466,8 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
     $retval = '';
-    if (!empty ($grp_name) && !empty ($grp_descr)) {
-        $GroupAdminGroups = SEC_getUserGroups ();
+    if (!empty($grp_name) && !empty($grp_descr)) {
+        $GroupAdminGroups = SEC_getUserGroups();
         if (!empty ($grp_id) &&
             ($grp_id > 0) &&
             !in_array ($grp_id, $GroupAdminGroups) &&
@@ -537,19 +537,18 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
         }
 
         // now save the features
-        DB_delete ($_TABLES['access'], 'acc_grp_id', $grp_id);
-        if (SEC_inGroup ('Root')) {
-            for ($i = 1; $i <= sizeof ($features); $i++) {
-                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current ($features) . ",$grp_id)");
-                next ($features);
+        DB_delete($_TABLES['access'], 'acc_grp_id', $grp_id);
+        $num_features = count($features);
+        if (SEC_inGroup('Root')) {
+            foreach ($features as $f) {
+                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES ($f,$grp_id)");
             }
         } else {
-            $GroupAdminFeatures = SEC_getUserPermissions ();
-            $availableFeatures = explode (',', $GroupAdminFeatures);
-            for ($i = 1; $i <= sizeof($features); $i++) {
-                if (in_array (current ($features), $availableFeatures)) {
-                    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
-                    next($features);
+            $GroupAdminFeatures = SEC_getUserPermissions();
+            $availableFeatures = explode(',', $GroupAdminFeatures);
+            foreach ($features as $f) {
+                if (in_array($f, $availableFeatures)) {
+                    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES ($f,$grp_id)");
                 }
             }
         }
@@ -558,15 +557,14 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
             COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
         }
 
-        DB_delete ($_TABLES['group_assignments'], 'ug_grp_id', $grp_id);
-        if (!empty ($groups)) {
-            for ($i = 1; $i <= sizeof ($groups); $i++) {
-                if (in_array ($grp_id, $GroupAdminGroups)) {
-                    if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
-                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
+        DB_delete($_TABLES['group_assignments'], 'ug_grp_id', $grp_id);
+        if (! empty($groups)) {
+            foreach ($groups as $g) {
+                if (in_array($g, $GroupAdminGroups)) {
+                    if ($VERBOSE) COM_errorLog("adding group_assignment $g for $grp_name",1);
+                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($g,$grp_id)";
                     DB_query($sql);
                 }
-                next($groups);
             }
         }
 
