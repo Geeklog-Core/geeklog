@@ -73,6 +73,7 @@ Spam-X
 
 Static Pages plugin
 -------------------
+- Added canonical link [Dirk]
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - The printable.thtml template file uses the HTML Strict doctype and print.css

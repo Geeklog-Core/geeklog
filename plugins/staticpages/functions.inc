@@ -272,11 +272,16 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
     $retval = '';
 
+    $sp_url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
+                           . $page);
+    $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>'
+                . LB;
+
     if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-        $retval .= COM_siteHeader('menu', $A['sp_title']);
+        $retval .= COM_siteHeader('menu', $A['sp_title'], $headercode);
     } else {
         if ($A['sp_format'] <> 'blankpage') {
-            $retval .= COM_siteHeader('none', $A['sp_title']);
+            $retval .= COM_siteHeader('none', $A['sp_title'], $headercode);
         }
     }
     if ($msg > 0) {
