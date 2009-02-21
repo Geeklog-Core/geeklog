@@ -197,21 +197,23 @@ if ($A['count'] > 0) {
         // Set page title
         $pagetitle = $story->DisplayElements('title');
 
-        $rdf = '';
+        $headercode = '';
+        $permalink = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                  . $story->getSid());
+        $headercode .= '<link rel="canonical" href="' . $permalink . '"'
+                    . XHTML . '>';
         if ($story->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {
-                $permalink = COM_buildUrl ($_CONF['site_url']
-                                           . '/article.php?story=' . $story->getSid());
-                $trackbackurl = TRB_makeTrackbackUrl ($story->getSid());
-                $rdf = '<!--' . LB
-                     . TRB_trackbackRdf ($permalink, $pagetitle, $trackbackurl)
+                $trackbackurl = TRB_makeTrackbackUrl($story->getSid());
+                $headercode .= LB . '<!--' . LB
+                     . TRB_trackbackRdf($permalink, $pagetitle, $trackbackurl)
                      . LB . '-->' . LB;
             }
             if ($_CONF['pingback_enabled']) {
-                header ('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
+                header('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
             }
         }
-        $display .= COM_siteHeader ('menu', $pagetitle, $rdf);
+        $display .= COM_siteHeader('menu', $pagetitle, $headercode);
 
         if (isset($_GET['msg'])) {
             $msg = COM_applyFilter($_GET['msg'], true);
