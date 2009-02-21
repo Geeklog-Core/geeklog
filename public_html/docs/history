@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Removed $_CONF['pagetitle'] hack. Use COM_siteHeader('menu', $pagetitle)
+  instead [Dirk]
 - Added canonical link for articles [Dirk]
 - Moved hard-coded "Reminders" column title to the language file (bug #0000817)
 - Hide archive option radiobutton from the story editor when no archive topic

@@ -273,10 +273,10 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
     $retval = '';
 
     if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_siteHeader('menu', $A['sp_title']);
     } else {
         if ($A['sp_format'] <> 'blankpage') {
-            $retval .= COM_siteHeader ('none');
+            $retval .= COM_siteHeader('none', $A['sp_title']);
         }
     }
     if ($msg > 0) {

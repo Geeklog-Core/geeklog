@@ -546,9 +546,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
         if (!($error)) {
             $output = DB_fetchArray ($result, false);
-            // WE ASSUME $output doesn't have any confidential fields 
 
-            $_CONF['pagetitle'] = stripslashes ($output['sp_title']);
+            // WE ASSUME $output doesn't have any confidential fields 
 
         } else { // an error occured (page not found, access denied, ...)
             if (empty ($page)) {

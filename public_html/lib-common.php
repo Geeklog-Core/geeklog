@@ -973,10 +973,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     // TBD: add a plugin API and a lib-custom.php function
     $header->set_var( 'rel_links', implode( LB, $relLinks ));
 
-    if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
-    {
-        $pagetitle = $_CONF['pagetitle'];
-    }
     if( empty( $pagetitle ))
     {
         if( empty( $topic ))

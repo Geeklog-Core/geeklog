@@ -89,10 +89,6 @@ if( $microsummary )
     if ( $A = DB_fetchArray( $result ) ) {
         $pagetitle = $_CONF['microsummary_short'].$A['title'];
     } else {
-        if(isset( $_CONF['pagetitle'] ))
-        {
-            $pagetitle = $_CONF['pagetitle'];
-        }
         if( empty( $pagetitle ))
         {
             if( empty( $topic ))
