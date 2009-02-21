@@ -338,31 +338,9 @@ if (INST_phpOutOfDate()) {
             // List each of the backup files in the backups directory
             foreach ($backup_files as $file_path) { 
 
-                $file_path  = ereg_replace('../../../backups/', '', $file_path);
-                $filename   = ereg_replace($backup_dir, '', $file_path);
-                $tmp_file   = explode('_', $filename);
-
-                // Check if backup file is formatted the same way Geeklog's admin/backup.php script does
-                // ie: geeklog_db_backup_2008_06_29_15_54_06.sql
-                if (count($tmp_file) >= 9) { 
-
-                    $backup_file = $tmp_file[4] . '/' . $tmp_file[5] . '/' . $tmp_file[3] . ' at ' .
-                                    $tmp_file[6] . ':' . $tmp_file[7] . ':' . str_replace('.sql', '', $tmp_file[8]);
-                    
-                    // Check if multiple versions of the backup file exist
-                    if (count($tmp_file) === 10) { 
-
-                        // If so, append (1), (2), etc.    
-                        $file_copy_num = substr($tmp_file[9], 0, 1);
-                        $backup_file .= " (" . $file_copy_num . ")";
-    
-                    }
-    
-                } else { 
-                
-                    $backup_file = ereg_replace($backup_dir, '', $file_path);
-
-                }
+                $file_path   = str_replace('../../../backups/', '', $file_path);
+                $filename    = str_replace($backup_dir, '', $file_path);
+                $backup_file = str_replace($backup_dir, '', $file_path);
 
                 $display .= INST_printTab(6) . '<option value="' . $filename .'">' . $backup_file . ' (' . INST_formatSize(filesize($file_path)) . ')</option>' . LB;
 
