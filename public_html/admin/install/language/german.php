@@ -63,7 +63,7 @@ $LANG_INSTALL = array(
     11 => 'Zugriffsrechte',
     12 => 'Ändern auf',
     13 => 'Derzeit',
-    14 => 'Change directory to',
+    14 => '',
     15 => 'Export of Geeklog headlines is switched off. The <code>backend</code> directory was not tested',
     16 => 'Migration',
     17 => 'User photos are disabled. The <code>userphotos</code> directory was not tested',
@@ -87,7 +87,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL mit Support für InnoDB-Tabellen',
     37 => 'Microsoft SQL',
-    38 => '',
+    38 => 'Error',
     39 => 'Datenbank-Server',
     40 => 'Name der Datenbank',
     41 => 'Datenbank-Username',
@@ -116,7 +116,7 @@ $LANG_INSTALL = array(
     64 => 'Delete the tables from the existing database. Or simply drop the database and recreate it. Then click "Retry" below.',
     65 => 'Perform an upgrade on your database (to a newer Geeklog version) by selecting the "Upgrade" option below.',
     66 => 'Retry',
-    67 => 'Error Setting up the Geeklog Database', 
+    67 => 'Error Setting up the Geeklog Database',
     68 => 'The database is not empty. Please drop all tables in the database and start again.',
     69 => 'Upgrading Geeklog',
     70 => 'Before we get started it is important that you back up your database current Geeklog files. This installation script will alter your Geeklog database so if something goes wrong and you need to restart the upgrade process, you will need a backup of your original database. YOU HAVE BEEN WARNED!',
@@ -230,13 +230,13 @@ $LANG_MIGRATE = array(
     37 => 'Migration abgeschlossen',
     38 => 'Die Datenbank-Migration wurde erfolgreich abgeschlossen. Es wurden allerdings die folgenden Probleme gefunden:',
     39 => 'Der Pfad für PEAR konnte nicht gesetzt werden. Ohne PEAR können leider keine komprimierten Datenbank-Backups importiert werden.',
-    40 => "Das Archiv '%s' scheint keine SQL-Dateien zu enthalten.",
-    41 => "Fehler beim extrahieren des Datenbank-Backups '%s' aus dem Archiv.",
-    42 => "Backup-Datei '%s' nicht (mehr) auffindbar ...",
-    43 => "Import abgebrochen: Die Datei '%s' scheint kein Datenbank-Backup zu sein.",
+    40 => 'Das Archiv \'%s\' scheint keine SQL-Dateien zu enthalten.',
+    41 => 'Fehler beim extrahieren des Datenbank-Backups \'%s\' aus dem Archiv.',
+    42 => 'Backup-Datei \'%s\' nicht (mehr) auffindbar ...',
+    43 => 'Import abgebrochen: Die Datei \'%s\' scheint kein Datenbank-Backup zu sein.',
     44 => 'Schwerer Fehler: Datenbank-Import fehlgeschlagen. Keine weitere Aktion ohne manuellen Eingriff möglich.',
     45 => 'Version des Datenbank-Backups konnte nicht ermittelt werden. Bitte ein manuelles Update durchführen.',
-    46 => '', // TBD
+    46 => '',
     47 => 'Update von Version %s auf Version %s fehlgeschlagen.',
     48 => 'Ein oder mehrere Plugins konnten nicht aktualisiert werden und wurden deaktiviert.'
 );
@@ -306,11 +306,11 @@ $LANG_BIGDUMP = array(
 );
 
 // +---------------------------------------------------------------------------+
-// Error messages
+// Error Messages
 
 $LANG_ERROR = array(
-    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
-    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini. Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form. Please upload your backup file using another method, such as FTP.',
     2 => 'The uploaded file was only partially uploaded.',
     3 => 'No file was uploaded.',
     4 => 'Missing a temporary folder.',
@@ -344,7 +344,7 @@ $LANG_HELP = array(
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
-// which texts to use as labels, so they don't have to be tranlated again
+// which texts to use as labels, so they don't have to be translated again
 $LANG_LABEL = array(
     'site_name'      => $LANG_INSTALL[32],
     'site_slogan'    => $LANG_INSTALL[33],

@@ -236,7 +236,8 @@ $LANG_confignames['links'] = array(
     'show_category_descriptions' => 'Kategoriebeschreibung anzeigen?',
     'new_window' => 'Externe Links in neuem Fenster öffnen?',
     'root' => 'ID der Oberkategorie',
-    'default_permissions' => 'Grundeinstellung Rechte'
+    'default_permissions' => 'Grundeinstellung Rechte',
+    'category_permissions' => 'Category Default Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -246,7 +247,8 @@ $LANG_configsubgroups['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'Einstellungen öffentliche Links',
     'fs_admin' => 'Admin Einstellungen',
-    'fs_permissions' => 'Grundeinstellungen Rechte'
+    'fs_permissions' => 'Grundeinstellungen Rechte',
+    'fs_cpermissions' => 'Category Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

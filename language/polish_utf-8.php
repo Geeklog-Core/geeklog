@@ -363,7 +363,10 @@ $LANG04 = array(
     156 => 'Usuń Konto',
     157 => 'Delete Option',
     158 => 'Strefa Czasowa',
-    159 => 'Ta wiadomość została wygenerowana automatycznie. Proszę nie odpowiadać.'
+    159 => 'Ta wiadomość została wygenerowana automatycznie. Proszę nie odpowiadać.',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -498,7 +501,14 @@ $LANG09 = array(
     58 => 'WIęcej wyników &gt;&gt;',
     59 => 'Wyniki',
     60 => 'na stronę',
-    61 => 'Zmień zapytanie'
+    61 => 'Zmień zapytanie',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -919,7 +929,9 @@ $LANG28 = array(
     82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
     83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
     84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
-    85 => 'If you have forgotten the password use the following link: %s'
+    85 => 'If you have forgotten the password use the following link: %s',
+    86 => 'Include',
+    87 => 'Reminders'
 );
 
 ###############################################################################
@@ -1021,7 +1033,20 @@ $LANG32 = array(
     35 => 'Edit',
     36 => 'Code',
     37 => 'Data',
-    38 => 'Update!'
+    38 => 'Update!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+    99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1112,24 +1137,24 @@ $MESSAGE = array(
     26 => '',
     27 => 'Wiadomość wysłano.',
     28 => 'Plugin został zapisany',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Odmowa Dostępu',
-    31 => 'Sorry, nie masz dostępu do strony administrującej artykułami.  Wszelkie nieautoryzowane próby wejścia są logowane',
-    32 => 'Sorry, nie masz dostępu do strony administrującej sekcjami.  Wszelkie nieautoryzowane próby wejścia są logowane',
-    33 => 'Sorry, nie masz dostępu do strony administrującej blokami.  Wszelkie nieautoryzowane próby wejścia są logowane',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => 'Sorry, nie masz dostępu do strony administrującej użytkownikami.  Wszelkie nieautoryzowane próby wejścia są logowane',
-    38 => 'Sorry, nie masz dostępu do strony administrującej pluginami.  Wszelkie nieautoryzowane próby wejścia są logowane',
-    39 => 'Sorry, nie masz dostępu do strony administrującej mailem.  Wszelkie nieautoryzowane próby wejścia są logowane',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => 'Komunikat Systemowy',
-    41 => 'Sorry, nie masz dostępu do strony edycyjnej zamienników słów.  Wszelkie nieautoryzowane próby wejścia są logowane',
-    42 => 'Słowo zostało zapisane.',
-    43 => 'Słowo zostało wykasowane.',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => 'Plugin został zainstalowany!',
     45 => 'Plugin został wykasowany.',
-    46 => 'Sorry, nie masz dostępu do opcji archiwizowania bazy danych.  Pamiętaj, że Wszelkie nieautoryzowane próby wejścia są logowane',
+    46 => '',
     47 => 'Ta opcja działa tylko pod systemem *nixowym. Jeśli masz właśnie taki system operacyjny to cache został wyczyszczony. Pod Windozą, musisz poszukać plików adodb_*.php i usunąć je ręcznie.',
     48 => "Dziekujemy za zainteresowanie członkowstwem w {$_CONF['site_name']}. Zweryfikujemy twoje zgłoszenie i po zatwierdzeniu zostanie wysłane hasło pod podany adres e-mail.",
     49 => 'Twoja grupa została zapisana.',
@@ -1179,8 +1204,14 @@ $MESSAGE = array(
     93 => 'Database back up was successful.',
     94 => 'Backup Failed: Filesize less than 1kb',
     95 => 'There was an error.',
-    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    96 => '',
+    97 => '',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation',
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1583,7 +1614,8 @@ $LANG_CONFIG = array(
     'reset_form' => 'Resetuj zmiany',
     'changes_made' => 'Changes were successfully made to',
     'title' => 'Menadżer ustawień',
-    'disable' => 'Kliknij aby wyłączyć tą opcję'
+    'disable' => 'Kliknij aby wyłączyć tą opcję',
+    'enable' => 'Enable'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1611,6 +1643,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'Zezwalaj na zrzut MySQL',
     'mysqldump_path' => 'Ścieżka do plików wykonawczych',
     'mysqldump_options' => 'Opcje zrzutu MySQL',
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Layout',
     'menu_elements' => 'Elementy Menu',
     'path_themes' => 'Ścieżka do katalogu z layoutami',
@@ -1741,6 +1774,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debug Image Uploading?',
     'keep_unscaled_image' => 'Keep Unscaled Image?',
     'allow_user_scaling' => 'Allow User Scaling?',
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => 'Max Image Width?',
     'max_image_height' => 'Max Image Height?',
     'max_image_size' => 'Max Image Size?',
@@ -1763,6 +1797,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'Login Speed Limit',
     'user_html' => 'User HTML',
     'admin_html' => 'Admin HTML',
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => 'Skip HTML Filter for Root?',
     'allowed_protocols' => 'Allowed Protocols',
     'disable_autolinks' => 'Disable Autolinks?',
@@ -1776,7 +1811,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => 'Topic Default Permissions',
     'atom_max_stories' => 'Max. Stories in Webservices Feed',
     'disable_webservices' => 'Disable Webservices?',
-    'restrict_webservices' => 'Restrict Webservices?'
+    'restrict_webservices' => 'Restrict Webservices?',
+    'search_style' => 'Results List Style',
+    'search_limits' => 'Page Limits',
+    'search_show_num' => 'Show Result Number?',
+    'search_show_type' => 'Show Result Type?',
+    'search_show_user' => 'Show Author?',
+    'search_show_hits' => 'Show Number of Hits?',
+    'search_show_sort' => 'Allow User to Sort Results?',
+    'search_show_limit' => 'Show Page Limits?',
+    'search_no_data' => 'If No Data is Avaliable, Display',
+    'search_separator' => 'Group Separator',
+    'search_def_keytype' => 'Default Search Method'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1853,7 +1899,9 @@ $LANG_configselects['Core'] = array(
     15 => array('Liczbowo' => 'sortnum', 'Alfabetycznie' => 'alpha'),
     16 => array('Login nie wymagany' => 0, 'Tylko wyszukiwanie zaawansowane' => 1, 'Wyszukiwanie proste + zaawansowane' => 2),
     17 => array('Komentarze włączone' => 0, 'Komentarze wyłączone' => -1),
-    18 => array('Wyłączone' => 0, 'Włączone (Dokładne trafienie)' => 1, 'Włączone (Początek słowa)' => 2, 'Włączone (Fragment słowa)' => 3)
+    18 => array('Wyłączone' => 0, 'Włączone (Dokładne trafienie)' => 1, 'Włączone (Początek słowa)' => 2, 'Włączone (Fragment słowa)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

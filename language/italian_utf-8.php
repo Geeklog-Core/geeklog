@@ -136,7 +136,7 @@ $LANG01 = array(
     92 => 'secondi',
     93 => 'Copyright',
     94 => 'Tutti i marchi e copyrights su questa pagina appartengono ai rispettivi proprietari.',
-    95 => 'Powered By',
+    95 => 'Powered by',
     96 => 'Gruppi',
     97 => 'Lista parole',
     98 => 'Plug-in',
@@ -364,7 +364,10 @@ $LANG04 = array(
     156 => 'Delete Account',
     157 => 'Delete Option',
     158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.'
+    159 => 'This email was generated automatically. Please do not reply to this email.',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -499,7 +502,14 @@ $LANG09 = array(
     58 => 'More results &gt;&gt;',
     59 => 'Results',
     60 => 'per page',
-    61 => 'Refine search'
+    61 => 'Refine search',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -920,7 +930,9 @@ $LANG28 = array(
     82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
     83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
     84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
-    85 => 'If you have forgotten the password use the following link: %s'
+    85 => 'If you have forgotten the password use the following link: %s',
+    86 => 'Include',
+    87 => 'Reminders'
 );
 
 ###############################################################################
@@ -1022,7 +1034,20 @@ $LANG32 = array(
     35 => 'Edit',
     36 => 'Code',
     37 => 'Data',
-    38 => 'Update!'
+    38 => 'Update!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+    99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1113,24 +1138,24 @@ $MESSAGE = array(
     26 => '',
     27 => 'Il Messaggio &egrave; stato inviato correttamente.',
     28 => 'Il plug-in &egrave; stato registrato correttamente',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Accesso negato',
-    31 => 'Spiacenti, non hai i permessi per accedere alla pagina amministrazione articoli.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
-    32 => 'Spiacenti, non hai i permessi per accedere alla pagina amministrazione argomenti.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
-    33 => 'Spiacenti, non hai i permessi per accedere alla pagina amminitrazione blocchi.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => 'Spiacenti, non hai i permessi per accedere alla pagina amministrazione utenti.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
-    38 => 'Spiacenti, non hai i permessi per accedere alla pagina amministrazione plug-in.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
-    39 => 'Spiacenti, non hai i permessi per accedere alla pagina amministrazione mail.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => 'Messaggio di Sistema',
-    41 => 'Spiacenti, non hai i permessi per accedere alla pagina sostituzione parole.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
-    42 => 'La tua parola &egrave; stata registrata correttamente.',
-    43 => 'La parola &egrave; stata eliminata correttamente.',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => 'Il plug-in &egrave; stato installato correttamente!',
     45 => 'Il plug-in &egrave; stato eliminato correttamente.',
-    46 => 'Spiacenti, non hai i permessi per accedere all\'utility database backup.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.',
+    46 => '',
     47 => 'Questa funzionalit&agrave; funziona solo sotto *nix. Se Geeklog sta girando sotto un sistema operativo *nix la tua cache verr&agrave; regolarmente azzerata. Se sei su Windows, dovrai necessariamente cercare i files con nome adodb_*.php ed eliminarli manualmente.',
     48 => "Grazie per la tua richiesta di registrazione a {$_CONF['site_name']}. Il nostro Team valuter&agrave; la tua richiesta. Se approvata ti verr&agrave; inviata via posta elettronica la password alla casella e-mail da te specificata.",
     49 => 'Il tuo gruppo &egrave; stato registrato correttamente.',
@@ -1180,8 +1205,14 @@ $MESSAGE = array(
     93 => 'Database back up was successful.',
     94 => 'Backup Failed: Filesize less than 1kb',
     95 => 'There was an error.',
-    96 => 'Sorry, you do not have access to the configuration administration page.  Please note that all attempts to access unauthorized features are logged.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    96 => '',
+    97 => '',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation',
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1584,7 +1615,8 @@ $LANG_CONFIG = array(
     'reset_form' => 'Reset Form',
     'changes_made' => 'Changes were successfully made to',
     'title' => 'Configuration Manager',
-    'disable' => 'Click to disable this option'
+    'disable' => 'Click to disable this option',
+    'enable' => 'Enable'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1612,6 +1644,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'Allow MySQL Dump',
     'mysqldump_path' => 'Path of Executable',
     'mysqldump_options' => 'MySQL Dump Options',
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Theme',
     'menu_elements' => 'Menu Elements',
     'path_themes' => 'Themes Path',
@@ -1742,6 +1775,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debug Image Uploading?',
     'keep_unscaled_image' => 'Keep Unscaled Image?',
     'allow_user_scaling' => 'Allow User Scaling?',
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => 'Max Image Width?',
     'max_image_height' => 'Max Image Height?',
     'max_image_size' => 'Max Image Size?',
@@ -1764,6 +1798,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'Login Speed Limit',
     'user_html' => 'User HTML',
     'admin_html' => 'Admin HTML',
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => 'Skip HTML Filter for Root?',
     'allowed_protocols' => 'Allowed Protocols',
     'disable_autolinks' => 'Disable Autolinks?',
@@ -1777,7 +1812,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => 'Topic Default Permissions',
     'atom_max_stories' => 'Max. Stories in Webservices Feed',
     'disable_webservices' => 'Disable Webservices?',
-    'restrict_webservices' => 'Restrict Webservices?'
+    'restrict_webservices' => 'Restrict Webservices?',
+    'search_style' => 'Results List Style',
+    'search_limits' => 'Page Limits',
+    'search_show_num' => 'Show Result Number?',
+    'search_show_type' => 'Show Result Type?',
+    'search_show_user' => 'Show Author?',
+    'search_show_hits' => 'Show Number of Hits?',
+    'search_show_sort' => 'Allow User to Sort Results?',
+    'search_show_limit' => 'Show Page Limits?',
+    'search_no_data' => 'If No Data is Avaliable, Display',
+    'search_separator' => 'Group Separator',
+    'search_def_keytype' => 'Default Search Method'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1854,7 +1900,9 @@ $LANG_configselects['Core'] = array(
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

@@ -344,7 +344,7 @@ $LANG_HELP = array(
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
-// which texts to use as labels, so they don't have to be tranlated again
+// which texts to use as labels, so they don't have to be translated again
 $LANG_LABEL = array(
     'site_name'      => $LANG_INSTALL[32],
     'site_slogan'    => $LANG_INSTALL[33],

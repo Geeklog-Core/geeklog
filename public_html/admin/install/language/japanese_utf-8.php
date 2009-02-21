@@ -65,7 +65,7 @@ $LANG_INSTALL = array(
     11 => 'パーミッション',
     12 => '推奨値',
     13 => '現在',
-    14 => 'ディレクトリの変更先',
+    14 => '',
     15 => 'Geeklogのヘッドライン(RSS)が無効になっています。<code>backend</code>ディレクトリのテストを行いませんでした。',
     16 => 'Migrate',
     17 => 'ユーザ写真が無効になっています。<code>userphotos</code>ディレクトリのテストを行いませんでした。',
@@ -89,7 +89,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL（InnoDBテーブルをサポート）',
     37 => 'Microsoft SQL',
-    38 => '',
+    38 => 'Error',
     39 => 'データベースのホスト名',
     40 => 'データベース名',
     41 => 'データベースのユーザ名',
@@ -118,7 +118,7 @@ $LANG_INSTALL = array(
     64 => '1. 既存のデータベースからテーブルを削除する。2. データベースを削除してから作成し直す。その後，下の"再試行"をクリックしてください。',
     65 => '下の"アップグレード"オプションを選択することで，(Geeklogの新バージョンへ)データベースのアップグレードを行います。',
     66 => '再試行',
-    67 => 'Geeklogのデータベースを設定中にエラーが発生しました', 
+    67 => 'Geeklogのデータベースを設定中にエラーが発生しました',
     68 => 'データベースが空ではありません。データベース中のテーブルを全て削除してから，やり直してください。',
     69 => 'Geeklogをアップグレード',
     70 => '始める前に現在のGeeklogのデータベースのバックアップを行ってください。インストール・スクリプトはGeeklogのデータベースを変更するので，失敗してアップグレードをやり直すには，オリジナルのデータベースのバックアップが必要になります。警告しましたよ!',
@@ -177,14 +177,15 @@ $LANG_SUCCESS = array(
     11 => '次の',
     12 => 'つのことを忘れずに行ってください:',
     13 => 'installディレクトリを削除ないし，リネームする: ',
-    14 => '',
+    14 => 'Change the',
     15 => 'アカウントのパスワードを変更する',
-    16 => '',
+    16 => 'Set permissions on',
     17 => 'と',
     18 => 'のパーミッションを次のものに変更する: ',
     19 => '<strong>情報:</strong> セキュリティモデルを変更したので，新しいサイトの管理を行うのに必要な権限を持ったアカウントを作成しました。ユーザ名は <strong>NewAdmin</strong> で，パスワードは <strong>password</strong> です。',
     20 => 'インストールされました',
-    21 => 'アップグレードされました'
+    21 => 'アップグレードされました',
+    22 => 'migrated'
 );
 
 // +---------------------------------------------------------------------------+
@@ -230,14 +231,14 @@ $LANG_MIGRATE = array(
     36 => 'You can correct these any time.',
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:',
-    39 => "Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.",
-    40 => "The archive '%s' does not appear to contain any SQL files.",
-    41 => "Error extracting database backup '%s' from compressed backup file.",
-    42 => "Backup file '%s' just vanished ...",
-    43 => "Import aborted: The file '%s' does not appear to be an SQL dump.",
-    44 => "Fatal error: Database import seems to have failed. Don't know how to continue.",
-    45 => "Could not identify database version. Please perform a manual update.",
-    46 => '', // TBD
+    39 => 'Failed to set PEAR include path. Sorry, can\'t handle compressed database backups without PEAR.',
+    40 => 'The archive \'%s\' does not appear to contain any SQL files.',
+    41 => 'Error extracting database backup \'%s\' from compressed backup file.',
+    42 => 'Backup file \'%s\' just vanished ...',
+    43 => 'Import aborted: The file \'%s\' does not appear to be an SQL dump.',
+    44 => 'Fatal error: Database import seems to have failed. Don\'t know how to continue.',
+    45 => 'Could not identify database version. Please perform a manual update.',
+    46 => '',
     47 => 'Database upgrade from version %s to version %s failed.',
     48 => 'One or more plugins could not be updated and had to be disabled.'
 );
@@ -307,11 +308,11 @@ $LANG_BIGDUMP = array(
 );
 
 // +---------------------------------------------------------------------------+
-// Error messages
+// Error Messages
 
 $LANG_ERROR = array(
-    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
-    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini. Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form. Please upload your backup file using another method, such as FTP.',
     2 => 'The uploaded file was only partially uploaded.',
     3 => 'No file was uploaded.',
     4 => 'Missing a temporary folder.',
@@ -345,7 +346,7 @@ $LANG_HELP = array(
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
-// which texts to use as labels, so they don't have to be tranlated again
+// which texts to use as labels, so they don't have to be translated again
 $LANG_LABEL = array(
     'site_name'      => $LANG_INSTALL[32],
     'site_slogan'    => $LANG_INSTALL[33],

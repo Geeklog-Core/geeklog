@@ -19,7 +19,7 @@
 
 global $LANG32;
 
-$LANG_SX00 = array (
+$LANG_SX00 = array(
     'inst1' => '<p>これを行うと、他の人も ',
     'inst2' => 'あなたのパーソナルブラックリストを閲覧・インポートすることができ、さらに効果的な',
     'inst3' => 'データベースを作ることができます。</p><p>Webサイトを登録した後で、やはりリストから削除するには、',
@@ -43,9 +43,9 @@ $LANG_SX00 = array (
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードが作成されました',
-    'add1' => '',
+    'add1' => 'Added ',
     'add2' => ' 個のエントリを ',
-    'add3' => "さんのブラックリストから追加しました。",
+    'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',
     'mblack' => 'マイブラックリスト:',
     'rlinks' => '関連リンク:',
@@ -89,22 +89,22 @@ $LANG_SX00 = array (
     'warning' => '注意! プラグインがまだ有効です',
     'enabled' => 'アンインストールする前に無効にしてください。',
     'readme' => 'ちょっと待って! インストールの前にインストールドキュメントをお読みください。',
-    'installdoc' => '',
+    'installdoc' => 'Install Document.',
     'spamdeleted' => 'スパム投稿削除',
     'foundspam' => 'マッチするスパム投稿が見つかりました：',
     'foundspam2' => ' 投稿ユーザ：',
     'foundspam3' => ' IP：',
     'deletespam' => 'スパム削除',
     'numtocheck' => 'チェックするコメント数',
-    'note1'     => '<p>注：一括削除機能は、コメントスパムが投稿されたにもかかわらず、',
-    'note2'     => 'Spam-Xが検出できなかった場合の助けになるものです。</p><ul><li>ます最初に、このコメントスパムのリンクや識別子を見つけて',
-    'note3'     => 'パーソナルブラックリストに追加します。</li><li>',
-    'note4'     => '次に、ここに戻り、Spam-Xにスパムに対応する最新のコメントをチェックさせます。</li></ul><p>コメントが',
-    'note5'     => '新しいものから古いものへとチェックされます。チェックするコメントの数が増えれば増えるほど、',
-    'note6'     => 'より時間がかかります。</p>',
-    'masshead'  => '<hr' . XHTML . '><h1 align="center">スパムコメントを一括削除</h1>',
+    'note1' => '<p>注：一括削除機能は、コメントスパムが投稿されたにもかかわらず、',
+    'note2' => 'Spam-Xが検出できなかった場合の助けになるものです。</p><ul><li>ます最初に、このコメントスパムのリンクや識別子を見つけて',
+    'note3' => 'パーソナルブラックリストに追加します。</li><li>',
+    'note4' => '次に、ここに戻り、Spam-Xにスパムに対応する最新のコメントをチェックさせます。</li></ul><p>コメントが',
+    'note5' => '新しいものから古いものへとチェックされます。チェックするコメントの数が増えれば増えるほど、',
+    'note6' => 'より時間がかかります。</p>',
+    'masshead' => '<hr' . XHTML . '><h1 align="center">スパムコメントを一括削除</h1>',
     'masstb' => '<hr' . XHTML . '><h1 align="center">トラックバックスパムを一括削除</h1>',
-    'comdel'    => 'コメントが削除されました。',
+    'comdel' => 'コメントが削除されました。',
     'initial_Pimport' => '<p>パーソナルブラックリストのインポート"',
     'initial_import' => 'MT-ブラックリストの初期インポート',
     'import_success' => '<p> %d 個のブラックリストエントリがインポートされました。',
@@ -117,7 +117,6 @@ $LANG_SX00 = array (
     'ipofurlblack' => 'Spam-X URLのIPブラックリスト',
     'headerblack' => 'Spam-X HTTPヘッダブラックリスト',
     'headers' => 'リクエストヘッダ:',
-
     'stats_headline' => 'Spam-X 統計',
     'stats_page_title' => 'ブラックリスト',
     'stats_entries' => 'エントリ',
@@ -127,20 +126,17 @@ $LANG_SX00 = array (
     'stats_ipofurl' => 'URLのIPによってブロックされました',
     'stats_header' => 'HTTPヘッダ',
     'stats_deleted' => 'スパム投稿削除数',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLVホワイトリスト'
 );
 
-
-/* Define Messages that are shown when Spam-X module action is taken */
+// Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'スパムを検出。投稿は削除されました。';
-$PLG_spamx_MESSAGE8   = 'スパムを検出。メールが管理者に送られました。';
+$PLG_spamx_MESSAGE8 = 'スパムを検出。メールが管理者に送られました。';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['spamx'] = array(
@@ -151,7 +147,7 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'Spam-X の動作',
     'notification_email' => 'メールで通知する',
-    'admin_override' => "管理者の投稿はフィルタしない",
+    'admin_override' => '管理者の投稿はフィルタしない',
     'logging' => 'ログを有効にする',
     'timeout' => 'タイムアウト'
 );
@@ -164,9 +160,10 @@ $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-Xの設定'
 );
 
+// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE)
+    1 => array('はい' => true, 'いいえ' => false)
 );
 
 ?>

@@ -148,7 +148,7 @@ $LANG_configselects['polls'] = array(
     1 => array('Jah' => true, 'Ei' => false),
     2 => array('Nagu sisestatud' => 'submitorder', 'Häälte järgi' => 'voteorder'),
     9 => array('Suuna küsitluste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita administreerimislehte' => 'admin'),
-        12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );
 
 ?>

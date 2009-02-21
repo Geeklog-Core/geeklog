@@ -94,8 +94,7 @@ $LANG_SX00 = array(
     'numtocheck' => 'kontrollitavate kommentaaride arv',
     'note1' => '<p>Märkus: Masskustutamine on mõeldud juhuks kui  lehte on tabanud ',
     'note2' => ' spamkommentaarid ja  Spam-X ei saa nendega hakkama.</p><ul><li>Algul  leia ling(id) või teised ',
-    'note3' => 'spamkommentaaride tunnused  ja lisa need isiklikku blacklisti.
-    </li><li>Seejärel ',
+    'note3' => "spamkommentaaride tunnused  ja lisa need isiklikku blacklisti.\n    </li><li>Seejärel ",
     'note4' => 'tule siia tagasi ja lase Spam-X-l viimaseid kommentaare kontrollida .</li></ul><p>Kommentaare ',
     'note5' => 'kontrollitakse alates uuematest. Suurema arvu kommentaaride kontrollimine ',
     'note6' => 'nõuab kontrollimiselt rohkem aega.</p>',

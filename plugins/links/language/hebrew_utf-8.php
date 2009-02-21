@@ -24,38 +24,16 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.32 2008/06/22 08:24:12 dhaun Exp $
-
-/**
- * This is the english language page for the Geeklog links Plug-in!
- *
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 2.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93 AT gmail DOT com>
- * @author Tony Bibbs <tony AT tonybibbs DOT com>
- * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
- *
- */
 
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:    $LANG - variable name
-#                 XX - file id number
-#                 YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-/**
-* the link plugin's lang array
-*
-* @global array $LANG_LINKS
-*/
 $LANG_LINKS = array(
     10 => 'הגשות',
     14 => 'קישורים',
@@ -73,16 +51,12 @@ $LANG_LINKS = array(
     124 => 'עיברו',
     125 => 'קטגוריות',
     126 => 'אתם כאן:',
-    'root' => 'ראשי' // title used for top level category
+    'root' => 'ראשי'
 );
 
 ###############################################################################
 # for stats
-/**
-* the link plugin's lang stats array
-*
-* @global array $LANG_LINKS_STATS
-*/
+
 $LANG_LINKS_STATS = array(
     'links' => 'קישורים (לחיצות) במערכת',
     'stats_headline' => 'עשרת הקישורים הגדולים',
@@ -93,26 +67,18 @@ $LANG_LINKS_STATS = array(
 
 ###############################################################################
 # for the search
-/**
-* the link plugin's lang search array
-*
-* @global array $LANG_LINKS_SEARCH
-*/
+
 $LANG_LINKS_SEARCH = array(
- 'results' => 'תוצאות קישורים',
- 'title' => 'כותרת',
- 'date' => 'תאריך הוספה',
- 'author' => 'הוגש על ידי',
- 'hits' => 'לחיצות'
+    'results' => 'תוצאות קישורים',
+    'title' => 'כותרת',
+    'date' => 'תאריך הוספה',
+    'author' => 'הוגש על ידי',
+    'hits' => 'לחיצות'
 );
 
 ###############################################################################
 # for the submission form
-/**
-* the link plugin's lang submit form array
-*
-* @global array $LANG_LINKS_SUBMIT
-*/
+
 $LANG_LINKS_SUBMIT = array(
     1 => 'הוספת קישור',
     2 => 'קישור',
@@ -151,12 +117,8 @@ $PLG_links_MESSAGE3001 = 'אין תמיכה בשדרוג ה-plugin.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
-# admin/link.php
-/**
-* the link plugin's lang admin array
-*
-* @global array $LANG_LINKS_ADMIN
-*/
+# admin/plugins/links/index.php
+
 $LANG_LINKS_ADMIN = array(
     1 => 'עריכת קישורים',
     2 => 'קוד זיהוי קישור',
@@ -207,6 +169,7 @@ $LANG_LINKS_ADMIN = array(
     59 => '<p>כדי לוודא את כל הקישורים המוצגים, אנא ליחצו על הקישור "ודאו עכשיו" שלהלן. אנא שימו לב שזה עלול לקחת קצת זמן בהתאם לכמות הקישורים המוצגים.</p>',
     60 => 'המשתמש %s ניסה לערוך ללא רשות את הקטגוריה %s.'
 );
+
 
 $LANG_LINKS_STATUS = array(
     100 => 'המשך',
@@ -271,8 +234,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'מחיקת הקישורים עם שולחיהם?',
     'aftersave' => 'אחרי שמירת הקישור',
     'show_category_descriptions' => 'הצגת תיאור הקטגוריה?',
+    'new_window' => 'Open external links in new window?',
     'root' => 'קוד הזיהוי של הקטגוריה הראשית',
-    'default_permissions' => 'הרשאות ברירת המחדל של קישורים'
+    'default_permissions' => 'הרשאות ברירת המחדל של קישורים',
+    'category_permissions' => 'Category Default Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -282,13 +247,14 @@ $LANG_configsubgroups['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'הגדרות רשימת קישורים פומביים',
     'fs_admin' => 'הגדרות ניהול קישורים',
-    'fs_permissions' => 'הרשאות ברירת המחדל'
+    'fs_permissions' => 'הרשאות ברירת המחדל',
+    'fs_cpermissions' => 'Category Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => TRUE, 'False' => FALSE),
+    1 => array('True' => true, 'False' => false),
     9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );

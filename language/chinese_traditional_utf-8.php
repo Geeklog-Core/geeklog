@@ -366,7 +366,10 @@ $LANG04 = array(
     156 => '刪除用戶',
     157 => '刪除選項',
     158 => '時區',
-    159 => '這電郵是自動產生的。請不要回信。'
+    159 => '這電郵是自動產生的。請不要回信。',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -501,7 +504,14 @@ $LANG09 = array(
     58 => '更多的結果 &gt;&gt;',
     59 => '結果',
     60 => '每頁',
-    61 => '改進搜尋'
+    61 => '改進搜尋',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -922,7 +932,9 @@ $LANG28 = array(
     82 => "你的帳戶於 {$_CONF['site_name']} 自從 %s 就未曾運用，如果此帳戶在三十天內不再運用，它會變成無效。",
     83 => "你的帳戶於 {$_CONF['site_name']} 自從登記時就未曾運用。若不繼續運用，它將變成無效。",
     84 => "你的用戶名是: %s 我們的網站是: {$_CONF['site_url']}",
-    85 => '若你忘記你的密碼請跟從這個連結: %s'
+    85 => '若你忘記你的密碼請跟從這個連結: %s',
+    86 => 'Include',
+    87 => 'Reminders'
 );
 
 ###############################################################################
@@ -1024,7 +1036,20 @@ $LANG32 = array(
     35 => '編輯',
     36 => '代碼',
     37 => '數據',
-    38 => '更新!'
+    38 => '更新!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+    99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1115,24 +1140,24 @@ $MESSAGE = array(
     26 => '',
     27 => '資訊已發送。',
     28 => '插件已被保存了。',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => '存取被拒絕',
-    31 => '抱歉，你不能進入文章管理的首頁。請注意你的企圖已被記錄。',
-    32 => '抱歉，你不能進入主題管理的首頁。請注意你的企圖已被記錄。',
-    33 => '抱歉，你不能進入組件管理的首頁。請注意你的企圖已被記錄。',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => '抱歉，你不能進入用戶管理的首頁。請注意你的企圖已被記錄。',
-    38 => '抱歉，你不能進入 Plug-in 管理的首頁。請注意你的企圖已被記錄。',
-    39 => '抱歉，你不能進入電郵管理的首頁。請注意你的企圖已被記錄。',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => '系統訊息',
-    41 => '抱歉，你不能進入字詞替換的首頁。請注意你的企圖已被記錄。',
-    42 => '你的字詞已被保存了。',
-    43 => '你的字詞已被刪除了。',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => '插件已被安裝了。',
     45 => '插件已被刪除了。',
-    46 => '抱歉，你不能進入資料庫備份程式。請注意你的企圖已被記錄。',
+    46 => '',
     47 => '這只適用於 *nix 如果你的作業系統是 *nix，那麽你的緩衝器已被清除了。如果你的作業系統是 Windows，你要手動尋找檔命名為 adodb _ *.php 的檔案並把它們除去。',
     48 => "感謝你申請成為 {$_CONF['site_name']} 的會員。只要經過我們員工的核對，我們會把密碼寄到你所登記的電郵中。",
     49 => '你的小組已被保存了。',
@@ -1182,8 +1207,14 @@ $MESSAGE = array(
     93 => '資料庫備份成功。',
     94 => '備份失敗: 文件小於 1kb',
     95 => '有錯誤。',
-    96 => '對不起, 你沒權進入設定管理區。 請注意所有登入企圖都被記錄。',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    96 => '',
+    97 => '',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation',
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1586,7 +1617,8 @@ $LANG_CONFIG = array(
     'reset_form' => '恢復表格原狀',
     'changes_made' => '更改已成功地安置於',
     'title' => '設定管理',
-    'disable' => 'Click to disable this option'
+    'disable' => 'Click to disable this option',
+    'enable' => 'Enable'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1614,6 +1646,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => '准許 MySQL Dump',
     'mysqldump_path' => 'Executable 路徑',
     'mysqldump_options' => 'MySQL Dump 選項',
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => '畫面主題',
     'menu_elements' => '才當成分',
     'path_themes' => '畫面主題的路徑',
@@ -1744,6 +1777,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => '調試圖像上載?',
     'keep_unscaled_image' => '保存未修改過的圖像?',
     'allow_user_scaling' => '准許用戶修改?',
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => '圖像寬度限定?',
     'max_image_height' => '圖像高度限定?',
     'max_image_size' => '圖像大小限定?',
@@ -1766,6 +1800,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => '登入速度限定',
     'user_html' => '用戶 HTML',
     'admin_html' => '管理員 HTML',
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => '根用戶跳過 HTML 過濾?',
     'allowed_protocols' => '許可 Protocols',
     'disable_autolinks' => '關閉 Autolinks?',
@@ -1779,7 +1814,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => '主題默認許可設定',
     'atom_max_stories' => 'Webservices Feed裏的文章數定',
     'disable_webservices' => '關閉 Webservices?',
-    'restrict_webservices' => '限制 Webservices?'
+    'restrict_webservices' => '限制 Webservices?',
+    'search_style' => 'Results List Style',
+    'search_limits' => 'Page Limits',
+    'search_show_num' => 'Show Result Number?',
+    'search_show_type' => 'Show Result Type?',
+    'search_show_user' => 'Show Author?',
+    'search_show_hits' => 'Show Number of Hits?',
+    'search_show_sort' => 'Allow User to Sort Results?',
+    'search_show_limit' => 'Show Page Limits?',
+    'search_no_data' => 'If No Data is Avaliable, Display',
+    'search_separator' => 'Group Separator',
+    'search_def_keytype' => 'Default Search Method'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1856,7 +1902,9 @@ $LANG_configselects['Core'] = array(
     15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
     16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
-    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3)
+    18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

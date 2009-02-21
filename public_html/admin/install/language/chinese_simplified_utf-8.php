@@ -64,7 +64,7 @@ $LANG_INSTALL = array(
     11 => '许可设定',
     12 => '改为',
     13 => '目前',
-    14 => '改目录为',
+    14 => '',
     15 => '输出志乐标题功能已关闭. <code>backend</code> 目录没被测试',
     16 => 'Migrate',
     17 => '用户照片功能关闭. The <code>userphotos</code> 目录没被测试',
@@ -88,7 +88,7 @@ $LANG_INSTALL = array(
     35 => 'MySQL',
     36 => 'MySQL 和InnoDB Table 支助',
     37 => 'Microsoft SQL',
-    38 => '',
+    38 => 'Error',
     39 => '数据库主机名',
     40 => '数据库名',
     41 => '数据库用户名',
@@ -117,7 +117,7 @@ $LANG_INSTALL = array(
     64 => '删除数据库的表格. 或删除整个数据库而从新建立一个新的数据库. 然后选择以下的 "重试".',
     65 => '要执行数据库升级 (到一个新的志乐版本) 选择一下的 "升级".',
     66 => '重试',
-    67 => '志乐数据库设定有错误', 
+    67 => '志乐数据库设定有错误',
     68 => '数据库不是空的. 请删除数据库的表格后再试.',
     69 => '升级志乐',
     70 => '开始前请做目前志乐的数据库备份. 此安装系统会改变你的志乐数据库，故万一出了差错你需要原有的数据库来恢复网站。你已被警告!',
@@ -183,7 +183,8 @@ $LANG_SUCCESS = array(
     18 => '回到',
     19 => '<strong>注意:</strong> 因为安全模式已改变, 我们已建立了新的账户让你管理你的新网站.  这新的账户名是 <b>NewAdmin</b> 和密码是 <b>password</b>',
     20 => '安装',
-    21 => '升级'
+    21 => '升级',
+    22 => 'migrated'
 );
 
 // +---------------------------------------------------------------------------+
@@ -229,14 +230,14 @@ $LANG_MIGRATE = array(
     36 => 'You can correct these any time.',
     37 => 'Migration Complete',
     38 => 'The migration process has completed. However, the installation script found the following issues:',
-    39 => "Failed to set PEAR include path. Sorry, can't handle compressed database backups without PEAR.",
-    40 => "The archive '%s' does not appear to contain any SQL files.",
-    41 => "Error extracting database backup '%s' from compressed backup file.",
-    42 => "Backup file '%s' just vanished ...",
-    43 => "Import aborted: The file '%s' does not appear to be an SQL dump.",
-    44 => "Fatal error: Database import seems to have failed. Don't know how to continue.",
-    45 => "Could not identify database version. Please perform a manual update.",
-    46 => '', // TBD
+    39 => 'Failed to set PEAR include path. Sorry, can\'t handle compressed database backups without PEAR.',
+    40 => 'The archive \'%s\' does not appear to contain any SQL files.',
+    41 => 'Error extracting database backup \'%s\' from compressed backup file.',
+    42 => 'Backup file \'%s\' just vanished ...',
+    43 => 'Import aborted: The file \'%s\' does not appear to be an SQL dump.',
+    44 => 'Fatal error: Database import seems to have failed. Don\'t know how to continue.',
+    45 => 'Could not identify database version. Please perform a manual update.',
+    46 => '',
     47 => 'Database upgrade from version %s to version %s failed.',
     48 => 'One or more plugins could not be updated and had to be disabled.'
 );
@@ -306,11 +307,11 @@ $LANG_BIGDUMP = array(
 );
 
 // +---------------------------------------------------------------------------+
-// Error messages
+// Error Messages
 
 $LANG_ERROR = array(
-    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.' . ' Please upload your backup file using another method, such as FTP.',
-    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.' . ' Please upload your backup file using another method, such as FTP.',
+    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini. Please upload your backup file using another method, such as FTP.',
+    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form. Please upload your backup file using another method, such as FTP.',
     2 => 'The uploaded file was only partially uploaded.',
     3 => 'No file was uploaded.',
     4 => 'Missing a temporary folder.',
@@ -344,7 +345,7 @@ $LANG_HELP = array(
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
-// which texts to use as labels, so they don't have to be tranlated again
+// which texts to use as labels, so they don't have to be translated again
 $LANG_LABEL = array(
     'site_name'      => $LANG_INSTALL[32],
     'site_slogan'    => $LANG_INSTALL[33],

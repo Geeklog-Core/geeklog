@@ -366,7 +366,10 @@ $LANG04 = array(
     156 => 'Izbriši račun',
     157 => 'Briši opcijo',
     158 => 'Časovni pas',
-    159 => 'Ta pošta je poslana samodejno. Prosim ne odgovarjaj najo.'
+    159 => 'Ta pošta je poslana samodejno. Prosim ne odgovarjaj najo.',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -501,7 +504,14 @@ $LANG09 = array(
     58 => 'Več  rezultatov &gt;&gt;',
     59 => 'Rezultati',
     60 => 'na stran',
-    61 => 'Podrobnejše iskanje'
+    61 => 'Podrobnejše iskanje',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %d - %d of %d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -922,7 +932,9 @@ $LANG28 = array(
     82 => "Vaš račun na {$_CONF['site_name']} ni bil uporabljen od %s in bo onemogočen, če ga ne uporabite v 30 dneh.",
     83 => "Vaš račun na {$_CONF['site_name']} ni bil uporabljen odkar je bil ustvarjen in bo pobrisak kmalu, če ga ne uporabite.",
     84 => "Vaše uporabniško ime je: %s  za internetno stran: {$_CONF['site_url']}",
-    85 => 'če ste pozabili geslo, uporabite tole povezavo: %s'
+    85 => 'če ste pozabili geslo, uporabite tole povezavo: %s',
+    86 => 'Include',
+    87 => 'Reminders'
 );
 
 ###############################################################################
@@ -1024,7 +1036,20 @@ $LANG32 = array(
     35 => 'Uredi',
     36 => 'Koda',
     37 => 'Podatki',
-    38 => 'Posodobi!'
+    38 => 'Posodobi!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+    99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1115,24 +1140,24 @@ $MESSAGE = array(
     26 => '',
     27 => 'Sporočilo je bilo uspešno poslano.',
     28 => 'Vtičnik je bil uspešno shranjen',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Dostop zavrnjen',
-    31 => 'Žal nimaš dostopa do skrbništva člankov. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
-    32 => 'Žal nimaš dostopa do skrbništva tematskih področij. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
-    33 => 'Žal nimaš dostopa do skrbništva blokov. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => 'Žal nimaš dostopa do skrbništva uporabnikov. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
-    38 => 'Žal nimaš dostopa do skrbništva vtičnikov. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
-    39 => 'Žal nimaš dostopa do skrbništva elektronske pošte. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => 'Sistemsko sporočilo',
-    41 => 'Žal nimaš dostopa do strani za menjavo besed. Vsi poskusi dostopa do nepooblaščenih funkcij se beležijo.',
-    42 => 'Beseda je uspešno shranjena.',
-    43 => 'Beseda je uspešno izbrisana.',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => 'Vtičnik je uspešno nameščen.',
     45 => 'Vtičnik je uspešno odstranjen.',
-    46 => 'Žal nimaš dostopa do varnostnih kopij baze. Vsak poskus nedovoljenega dostopa se beleži.',
+    46 => '',
     47 => 'To deluje samo v operacijskem sistemu *nix.  Če uporabljaš operacijski sistem, potem *nix , je bil cache uspešno izpraznjen. Če uporabljaš Windows OS, boš moral poiskati datoteke po imenu adodb_*.php in jih odstraniti ročno.',
     48 => "Hvala, da si zaprosil za članstvo v {$_CONF['site_name']}. Pregledali bomo tvojo prošnjo. Če bo odobrena, boš dobil geslo na e-naslov, ki si ga ravnokar vnesel.",
     49 => 'Skupina je uspešno shranjena.',
@@ -1182,8 +1207,14 @@ $MESSAGE = array(
     93 => 'Varnostna kopija baze podatkov, je bila uspešno narejena.',
     94 => 'Varnostna kopija baze podatkov NI uspela: Datoteka je manjša kot 1kb',
     95 => 'Prišlo je do napake.',
-    96 => 'Žal, nimaš dostopa do strani z nastavitvami!   Vedi da so vsi poskusi za dostop do zaščitenih lastnosti strani zabeleženi.',
-    97 => 'Not all required fields have been passed validation - default custom membership message'
+    96 => '',
+    97 => '',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation',
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1261,11 +1292,8 @@ $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Zadnjih 10 varnostnih kopij',
     'do_backup' => 'Naredi varnostno kopijo',
     'backup_successful' => 'Varnostno shranjevanje baze podatkov je bilo uspešno.',
-    'db_explanation' => 'Če hočeš ustvariti novo varnostno kopijo baze podatkov sistema Geeklog , klikni "Ustvari" zgoraj.',    
-    'not_found' => "Napačna pot ali pa orodje mysqldump ni izvršljivo.<br" 
-        . XHTML . ">Preveri definicijo <strong>\$_DB_mysqldump_path</strong> v Nastavitvah.<br" 
-        . XHTML . '> Preveri <a href="http://www.php.net/ manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a> nastavitev v PHP nastavitvah.<br'
-        . XHTML . ">Pot je trenutno definirana kot: <var>{$_DB_mysqldump_path}</var>",
+    'db_explanation' => 'Če hočeš ustvariti novo varnostno kopijo baze podatkov sistema Geeklog , klikni "Ustvari" zgoraj.',
+    'not_found' => "Napačna pot ali pa orodje mysqldump ni izvršljivo.<br" . XHTML . ">Preveri definicijo <strong>\$_DB_mysqldump_path</strong> v Nastavitvah.<br" . XHTML . "> Preveri <a href=\"http://www.php.net/ manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a> nastavitev v PHP nastavitvah.<br" . XHTML . ">Pot je trenutno definirana kot: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Varnostno kopiranje neuspešno: Velikost datoteke je 0 bajtov',
     'path_not_found' => "{$_CONF['backup_path']} ne obstaja ali pa ni direktorij",
     'no_access' => "NAPAKA: Direktorij {$_CONF['backup_path']} ni dosegljiv.",
@@ -1618,6 +1646,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'Dovoli MySQL Dump',
     'mysqldump_path' => 'Pot do programov',
     'mysqldump_options' => 'MySQL Dump možnosti',
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Postavitev',
     'menu_elements' => 'Elementi menija',
     'path_themes' => 'Pot do tem',
@@ -1748,6 +1777,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debug Image Uploading?',
     'keep_unscaled_image' => 'Shrani originalne slike?',
     'allow_user_scaling' => 'Dovoli uporabniku spremembo velikosti?',
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => 'Največja širina slike?',
     'max_image_height' => 'Največja višina slike?',
     'max_image_size' => 'Največja velikost slike?',
@@ -1770,6 +1800,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'Zahtevani čas med prijavami',
     'user_html' => 'Uporabnikov HTML',
     'admin_html' => 'Adminov HTML',
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => 'Preskoči HTML Filtriranje za Root-a?',
     'allowed_protocols' => 'Dovoljeni Protokoli',
     'disable_autolinks' => 'Onemogoči samodejne povezave (Autolinks)?',
@@ -1783,7 +1814,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => 'Prednastavljena dovoljenja rubrike',
     'atom_max_stories' => 'Največje število člankov v Webservices Feed',
     'disable_webservices' => 'Onemogoči Webservices?',
-    'restrict_webservices' => 'Omeji Webservices?'
+    'restrict_webservices' => 'Omeji Webservices?',
+    'search_style' => 'Results List Style',
+    'search_limits' => 'Page Limits',
+    'search_show_num' => 'Show Result Number?',
+    'search_show_type' => 'Show Result Type?',
+    'search_show_user' => 'Show Author?',
+    'search_show_hits' => 'Show Number of Hits?',
+    'search_show_sort' => 'Allow User to Sort Results?',
+    'search_show_limit' => 'Show Page Limits?',
+    'search_no_data' => 'If No Data is Avaliable, Display',
+    'search_separator' => 'Group Separator',
+    'search_def_keytype' => 'Default Search Method'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1860,7 +1902,9 @@ $LANG_configselects['Core'] = array(
     15 => array('Po zaporednih številkah' => 'sortnum', 'Po abecedi' => 'alpha'),
     16 => array('Prijava ni potrebna' => 0, 'Samo napredno iskanje' => 1, 'Preprosto in napredno iskanje' => 2),
     17 => array('Komentarji omogočeni' => 0, 'Komentarji onemogočeni' => -1),
-    18 => array('Onemogočeno' => 0, 'Omogočeno (Popolno ujemanje)' => 1, 'Omogočeno (Začetek besede)' => 2, 'Omogočeno (Del besede)' => 3)
+    18 => array('Onemogočeno' => 0, 'Omogočeno (Popolno ujemanje)' => 1, 'Omogočeno (Začetek besede)' => 2, 'Omogočeno (Del besede)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

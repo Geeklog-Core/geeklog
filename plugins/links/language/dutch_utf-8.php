@@ -234,8 +234,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'Delete Links with Owner?',
     'aftersave' => 'After Saving Link',
     'show_category_descriptions' => 'Show Category Description?',
+    'new_window' => 'Open external links in new window?',
     'root' => 'ID of Root Category',
-    'default_permissions' => 'Link Default Permissions'
+    'default_permissions' => 'Link Default Permissions',
+    'category_permissions' => 'Category Default Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -245,7 +247,8 @@ $LANG_configsubgroups['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'Public Links List Settings',
     'fs_admin' => 'Links Admin Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_permissions' => 'Default Permissions',
+    'fs_cpermissions' => 'Category Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

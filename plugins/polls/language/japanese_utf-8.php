@@ -33,29 +33,36 @@
 
 global $LANG32;
 
+###############################################################################
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
+###############################################################################
+
 $LANG_POLLS = array(
-    'polls'             => 'アンケート',
-    'results'           => '結果',
-    'pollresults'       => '投票結果',
-    'votes'             => '投票',
-    'vote'              => '投票する',
-    'pastpolls'         => 'アンケートの一覧',
-    'savedvotetitle'    => '投票ありがとうございました',
-    'savedvotemsg'      => 'テーマ：',
-    'pollstitle'        => 'アンケート一覧',
-    'polltopics'        => '他のアンケートを見る',
-    'stats_top10'       => 'アンケート（上位10件）',
-    'stats_topics'      => 'アンケートの質問',
-    'stats_votes'       => '投票',
-    'stats_none'        => 'このサイトにはアンケートがないか、まだ誰も投票していないようです。',
-    'stats_summary'     => 'アンケート数(投票数)',
-    'open_poll'         => '投票可否',
-    'answer_all'        => '残りのすべての質問にお答えください',
-    'not_saved'         => '結果は保存されませんでした',
-    'upgrade1'          => 'アンケートプラグインの新しいバージョンがインストールされました。',
-    'upgrade2'          => 'アップグレードしてください。',
-    'editinstructions'  => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
-    'start_poll'        => '投稿する'
+    'polls' => 'アンケート',
+    'results' => '結果',
+    'pollresults' => '投票結果',
+    'votes' => '投票',
+    'vote' => '投票する',
+    'pastpolls' => 'アンケートの一覧',
+    'savedvotetitle' => '投票ありがとうございました',
+    'savedvotemsg' => 'テーマ：',
+    'pollstitle' => 'アンケート一覧',
+    'polltopics' => '他のアンケートを見る',
+    'stats_top10' => 'アンケート（上位10件）',
+    'stats_topics' => 'アンケートの質問',
+    'stats_votes' => '投票',
+    'stats_none' => 'このサイトにはアンケートがないか、まだ誰も投票していないようです。',
+    'stats_summary' => 'アンケート数(投票数)',
+    'open_poll' => '投票可否',
+    'answer_all' => '残りのすべての質問にお答えください',
+    'not_saved' => '結果は保存されませんでした',
+    'upgrade1' => 'アンケートプラグインの新しいバージョンがインストールされました。',
+    'upgrade2' => 'アップグレードしてください。',
+    'editinstructions' => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
+    'start_poll' => '投稿する'
 );
 
 ###############################################################################
@@ -65,15 +72,15 @@ $LANG25 = array(
     1 => 'モード',
     2 => 'テーマと質問と少なくとも1つの回答を入力してください。',
     3 => '作成日時',
-    4 => "アンケート（ %s ）が保存されました",
+    4 => 'アンケート（ %s ）が保存されました',
     5 => 'アンケートの編集',
     6 => 'アンケートID',
     7 => '(スペースを含まないこと)',
     8 => 'ホームページに表示する',
     9 => 'テーマ',
     10 => '回答 / 投票数',
-    11 => "アンケート( %s )の選択肢にエラーがありました",
-    12 => "アンケート( %s )の質問項目にエラーがありました",
+    11 => 'アンケート( %s )の選択肢にエラーがありました',
+    12 => 'アンケート( %s )の質問項目にエラーがありました',
     13 => 'アンケートの作成',
     14 => '保存',
     15 => '中止',
@@ -111,12 +118,11 @@ $PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
 $PLG_polls_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
-
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
     'label' => 'アンケート',
     'title' => 'アンケートの設定'
-);  
+);
 
 $LANG_confignames['polls'] = array(
     'pollsloginrequired' => 'ログインを要求する',
@@ -143,7 +149,7 @@ $LANG_fs['polls'] = array(
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
     9 => array('作成したアンケートを表示する' => 'item', 'アンケート管理を表示する' => 'list', 'アンケート一覧を表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
