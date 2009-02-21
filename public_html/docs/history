@@ -52,6 +52,7 @@ Calendar plugin
 
 Links plugin
 ------------
+- Added category default permissions [Dirk]
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 - Introduced function LINKS_getCategorySQL and fixed visibility of link

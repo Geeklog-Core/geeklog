@@ -155,6 +155,17 @@ $_LI_DEFAULT['root'] = 'site';
  */
 $_LI_DEFAULT['default_permissions'] = array (3, 2, 2, 2);
 
+/**
+ * Define default permissions for new link categories.
+ * Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+ * order). Possible values:<br>
+ * - 3 = read + write permissions (perm_owner and perm_group only)
+ * - 2 = read-only
+ * - 0 = neither read nor write permissions
+ * (a value of 1, ie. write-only, does not make sense and is not allowed)
+ */
+$_LI_DEFAULT['category_permissions'] = array (3, 2, 2, 2);
+
 
 /**
 * Initialize Links plugin configuration
@@ -212,6 +223,10 @@ function plugin_initconfig_links()
         $c->add('fs_permissions', NULL, 'fieldset', 0, 2, NULL, 0, true, 'links');
         $c->add('default_permissions', $_LI_DEFAULT['default_permissions'],
                 '@select', 0, 2, 12, 140, true, 'links');
+
+        $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
+        $c->add('category_permissions', $_LI_DEFAULT['category_permissions'],
+                '@select', 0, 3, 12, 150, true, 'links');
 
     }
 

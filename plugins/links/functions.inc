@@ -649,6 +649,13 @@ function plugin_upgrade_links()
         $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
     }
 
+    if (! isset($_LI_CONF['category_permissions'])) {
+        $c = config::get_instance();
+        $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
+        $c->add('category_permissions', array (3, 2, 2, 2),
+                '@select', 0, 3, 12, 150, true, 'links');
+    }
+
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'links'");
 
     return true;

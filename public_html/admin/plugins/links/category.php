@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | category.php                                                              |
 // |                                                                           |
 // | Geeklog links category administration page.                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users.sourceforge DOT net        |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: category.php,v 1.19 2008/06/22 08:55:01 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -179,7 +177,7 @@ function links_edit_category($cid, $pid)
         // nothing, so making a new top-level category
         // get default access rights
         $A['group_id'] = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name='Links Admin'");
-        SEC_setDefaultPermissions($A, $_LI_CONF['default_permissions']);
+        SEC_setDefaultPermissions($A, $_LI_CONF['category_permissions']);
         $A['owner_id'] = $_USER['uid'];
         $A['pid']      = $_LI_CONF['root'];
     }
