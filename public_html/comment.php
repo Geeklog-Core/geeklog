@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
@@ -347,7 +347,9 @@ default:  // New Comment
                 $title = str_replace ( '&lt;', '<', $title );
                 $title = str_replace ( '&gt;', '>', $title );
             }
-            $display .= COM_siteHeader('menu', $LANG03[1])
+            $noindex = '<meta name="robots" content="noindex"' . XHTML . '>'
+                     . LB;
+            $display .= COM_siteHeader('menu', $LANG03[1], $noindex)
                      . CMT_commentForm ($title, '', $sid,
                             COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
                             $postmode)
