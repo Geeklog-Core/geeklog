@@ -72,7 +72,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">{permissions_msg}</td>
+                                        <td colspan="2">{lang_permissions_msg}</td>
                                     </tr>
                                     <tr><td>&nbsp;</td></tr>
                                     <tr>

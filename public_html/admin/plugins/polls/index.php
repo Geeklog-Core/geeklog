@@ -441,6 +441,7 @@ function editpoll ($pid = '')
                              SEC_getGroupDropdown ($T['group_id'], $access));
     $poll_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $poll_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
+    $poll_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($T['perm_owner'],$T['perm_group'],$T['perm_members'],$T['perm_anon']));
     $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $poll_templates->set_var('lang_answersvotes', $LANG25[10]);

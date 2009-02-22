@@ -144,7 +144,7 @@
                                         <td colspan="2"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">{lang_permissionskey}</td>
+                                        <td colspan="2">{lang_perm_key}</td>
                                     </tr>
                                     <tr>
                                         <td colspan="2">

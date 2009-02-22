@@ -322,7 +322,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
                               SEC_getGroupDropdown ($A['group_id'], $access));
     $event_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $event_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
+    $event_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    $event_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $event_templates->set_var('gltoken_name', CSRF_TOKEN);
     $event_templates->set_var('gltoken', SEC_createToken());
     $event_templates->parse('output', 'editor');

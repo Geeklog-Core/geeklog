@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.5                                           |
+// | Static Pages Geeklog Plugin 1.6                                           |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Phill Gillespie  - phill AT mediaaustralia DOT com DOT au        |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.94 2008/06/22 14:49:06 dhaun Exp $
 
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
@@ -154,6 +152,7 @@ function form ($A, $error = false)
         $sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
         $sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
         $sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+        $sp_template->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor',

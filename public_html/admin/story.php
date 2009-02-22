@@ -423,6 +423,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story->EditElements('perm_owner'),$story->EditElements('perm_group'),
         $story->EditElements('perm_members'),$story->EditElements('perm_anon')));
     $story_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+    $story_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $curtime = COM_getUserDateTimeFormat($story->EditElements('date'));
     $story_templates->set_var('lang_date', $LANG24[15]);
 

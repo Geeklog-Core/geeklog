@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | block.php                                                                 |
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -32,8 +32,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: block.php,v 1.124 2008/06/07 12:41:44 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -163,6 +161,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $block_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+    $block_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->set_var('max_url_length', 255);
     $block_templates->set_var('gltoken_name', CSRF_TOKEN);
     $block_templates->set_var('gltoken', SEC_createToken());

@@ -199,7 +199,9 @@ function editlink ($mode, $lid = '')
                              SEC_getGroupDropdown ($A['group_id'], $access));
     $link_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $link_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
+    $link_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $link_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    $link_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $link_templates->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
     $link_templates->set_var('gltoken_name', CSRF_TOKEN);
     $link_templates->set_var('gltoken', SEC_createToken());

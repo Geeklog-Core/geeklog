@@ -223,6 +223,20 @@ featured and archived stories.</li>
     now.</li>
 </ul>
 
+<h3>Permissions Editor</h3>
+
+<p>The various instances of the Permissions Editor (where you can set the Read
+/ Edit permissions for Owner, Group, Members, Anonymous) were using slightly
+different template variable names. From now on, the following names are defined
+everywhere:</p>
+<ul>
+<li><tt>{lang_permissions}</tt> (headline)</li>
+<li><tt>{lang_perm_key}</tt> (legend: R = read, ...)</li>
+<li><tt>{permissions_editor}</tt> (the actual checkboxes)</li>
+<li><tt>{lang_permissions_msg}</tt> ("Note: members is all logged in member ...)</li>
+</ul>
+<p>Template files using the alternative names will continue to work, but new
+files should use the above names from now on.</p>
 
 <h2><a name="changes152">Theme changes in Geeklog 1.5.2</a></h2>
 

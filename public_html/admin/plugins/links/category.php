@@ -262,8 +262,10 @@ function links_edit_category($cid, $pid)
     $T->set_var('group_dropdown', SEC_getGroupDropdown($A['group_id'], $access));
     $T->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $T->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
+    $T->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $T->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']));
+    $T->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $T->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
     $T->set_var('gltoken_name', CSRF_TOKEN);
     $T->set_var('gltoken', SEC_createToken());

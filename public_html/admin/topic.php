@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: topic.php,v 1.80 2008/05/18 16:58:51 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -140,6 +138,9 @@ function edittopic ($tid = '')
                               SEC_getGroupDropdown ($A['group_id'], $access));
     $topic_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $topic_templates->set_var('lang_permissions_key', $LANG_ACCESS['permissionskey']);
+    $topic_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
+    $topic_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
+    $topic_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $topic_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
 
     // show sort order only if they specified sortnum as the sort method
