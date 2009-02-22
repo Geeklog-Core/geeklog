@@ -129,9 +129,9 @@ function INST_unpackFile($backup_path, $backup_file, &$display)
         return $backup_file;
     }
 
-    $include_path = @ini_get('include_path');
-    if (@ini_set('include_path', $_CONF['path'] . 'system/pear/'
-                                 . PATH_SEPARATOR . $include_path) === false) {
+    $include_path = get_include_path();
+    if (set_include_path($_CONF['path'] . 'system/pear/' . PATH_SEPARATOR
+                         . $include_path) === false) {
         // couldn't set PEAR path - can't handle compressed backups
         $display .= INST_getAlertMsg($LANG_MIGRATE[39]);
         return false;
