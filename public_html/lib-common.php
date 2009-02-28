@@ -165,8 +165,6 @@ $_PAGE_TIMER->startTimer();
 * Include URL class
 *
 * This provides optional URL rewriting functionality.
-* Please note this code is still experimental and is only currently used by the
-* staticpages plugin.
 */
 
 require_once( $_CONF['path_system'] . 'classes/url.class.php' );
