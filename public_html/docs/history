@@ -53,6 +53,7 @@ Other changes:
 - Added a configuration option to control the JPEG quality (Feature request
   #0000720) [Dirk]
 
+- Updated Hebrew language file for the install script, provided by LWC
 - New Serbian (Latin) language files, provided by Aleksandar Scepanovic
 
 Calendar plugin
