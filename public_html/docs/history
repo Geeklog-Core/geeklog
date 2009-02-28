@@ -53,6 +53,8 @@ Other changes:
 - Added a configuration option to control the JPEG quality (Feature request
   #0000720) [Dirk]
 
+- New Serbian (Latin) language files, provided by Aleksandar Scepanovic
+
 Calendar plugin
 ---------------
 - Added auto installation support [Dirk]
