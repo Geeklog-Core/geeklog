@@ -210,7 +210,7 @@ function PLG_uninstall ($type)
         // removing variables
         for ($i = 0; $i < count($remvars['vars']); $i++) {
             COM_errorLog ("Removing variable {$remvars['vars'][$i]}", 1);
-            DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$remvars['vars'][$i]}'");
+            DB_delete($_TABLES['vars'], 'name', $remvars['vars'][$i]);
             COM_errorLog ('...success', 1);
         }
 
@@ -220,10 +220,10 @@ function PLG_uninstall ($type)
                                   "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty ($grp_id)) {
                 COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group", 1);
-                DB_query ("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+                DB_delete($_TABLES['groups'], 'grp_id', $grp_id);
                 COM_errorLog ('...success', 1);
                 COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group from all groups.", 1);
-                DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+                DB_delete($_TABLES['group_assignments'], 'ug_main_grp_id', $grp_id);
                 COM_errorLog ('...success', 1);
             }
         }
@@ -234,10 +234,10 @@ function PLG_uninstall ($type)
                                     "ft_name = '{$remvars['features'][$i]}'");
             if (!empty ($access_id)) {
                 COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
-                DB_query ("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $access_id");
+                DB_delete($_TABLES['access'], 'acc_ft_id', $access_id);
                 COM_errorLog ('...success', 1);
                 COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
-                DB_query ("DELETE FROM {$_TABLES['features']} WHERE ft_name = '{$remvars['features'][$i]}'");
+                DB_delete($_TABLES['features'], 'ft_name', $remvars['features'][$i]);
                 COM_errorLog ('...success', 1);
             }
         }
@@ -263,29 +263,29 @@ function PLG_uninstall ($type)
             COM_errorLog ('...success', 1);
             // Remove Links Feeds from syndiaction table
             COM_errorLog ('removing links feeds from table', 1);
-            DB_query ("DELETE FROM {$_TABLES['syndication']} WHERE `type` = '$type'");
+            DB_delete($_TABLES['syndication'], 'type', $type);
             COM_errorLog ('...success', 1);
         }
 
         // remove comments for this plugin
         COM_errorLog ("Attempting to remove comments for $type", 1);
-        DB_query ("DELETE FROM {$_TABLES['comments']} WHERE type = '$type'");
+        DB_delete($_TABLES['comments'], 'type', $type);
         COM_errorLog ('...success', 1);
 
         // uninstall php-blocks
-        for ($i=0; $i <  count($remvars['php_blocks']); $i++) {
-            DB_delete ($_TABLES['blocks'], array ('type',     'phpblockfn'),
-                                           array ('phpblock', $remvars['php_blocks'][$i]));
+        for ($i = 0; $i < count($remvars['php_blocks']); $i++) {
+            DB_delete($_TABLES['blocks'], array('type',     'phpblockfn'),
+                                          array('phpblock', $remvars['php_blocks'][$i]));
         }
 
         // remove config table data for this plugin
         COM_errorLog ("Attempting to remove config table records for group_name: $type", 1);
-        DB_query ("DELETE FROM {$_TABLES['conf_values']} WHERE group_name = '$type'");
+        DB_delete($_TABLES['conf_values'], 'group_name', $type);
         COM_errorLog ('...success', 1);
 
         // uninstall the plugin
         COM_errorLog ("Attempting to unregister the $type plugin from Geeklog", 1);
-        DB_query ("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = '$type'");
+        DB_delete($_TABLES['plugins'], 'pi_name', $type);
         COM_errorLog ('...success',1);
 
         COM_errorLog ("Finished uninstalling the $type plugin.", 1);

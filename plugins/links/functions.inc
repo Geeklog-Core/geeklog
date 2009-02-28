@@ -441,7 +441,7 @@ function plugin_user_delete_links ($uid)
 
     if ($_LI_CONF['delete_links'] == 1) {
         // delete the links
-        DB_query ("DELETE FROM {$_TABLES['links']} WHERE owner_id = $uid");
+        DB_delete($_TABLES['links'], 'owner_id', $uid);
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',

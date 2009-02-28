@@ -336,12 +336,13 @@ function plugin_user_delete_polls ($uid)
         $result = DB_query ("SELECT pid FROM {$_TABLES['polltopics']} WHERE owner_id = $uid");
         $numPolls = DB_numRows ($result);
         for ($i = 0; $i < $numPolls; $i++) {
-            list($pid) = DB_fetchArray ($result);
-            DB_delete ($_TABLES['pollanswers'], 'pid', $pid);
-            DB_delete ($_TABLES['pollvoters'], 'pid', $pid);
-            DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$pid' AND type = 'polls'");
+            list($pid) = DB_fetchArray($result);
+            DB_delete($_TABLES['pollanswers'], 'pid', $pid);
+            DB_delete($_TABLES['pollvoters'], 'pid', $pid);
+            DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                            array($pid, 'polls'));
         }
-        DB_delete ($_TABLES['polltopics'], 'owner_id', $uid);
+        DB_delete($_TABLES['polltopics'], 'owner_id', $uid);
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',

@@ -1171,8 +1171,7 @@ function SEC_checkToken()
             }
            
             // It's a one time token. So eat it.
-            $sql = "DELETE FROM {$_TABLES['tokens']} WHERE token='$token'";
-            DB_query($sql);
+            DB_delete($_TABLES['tokens'], 'token', $token);
         }
     } else {
         $return = false; // no token.
