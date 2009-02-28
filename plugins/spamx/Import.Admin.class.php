@@ -6,7 +6,7 @@
  *
  * Updates Sites MT Blacklist via Master MT Blacklist rss feed
  *
- * Copyright (C) 2004-2007 by the following authors:
+ * Copyright (C) 2004-2009 by the following authors:
  * Author      Tom Willett     tomw AT pigstye DOT net
  * Author      Dirk Haun       dirk AT haun-online DOT de
  *
@@ -15,7 +15,6 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
- * $Id: Import.Admin.class.php,v 1.15 2008/09/21 08:37:08 dhaun Exp $
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false) {
@@ -102,7 +101,8 @@ class Import extends BaseAdmin {
                 $result = DB_query("SELECT name FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist' AND value = '$dbentry'");
                 $nrows = DB_numRows($result);
                 if ($nrows >= 1) {
-                    DB_query("DELETE FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist' AND value = '$dbentry'");
+                    DB_delete($_TABLES['spamx'], array('name', 'value'),
+                                                 array('MTBlacklist', $dbentry));
                     $to_delete[] = $entry;
                 }
             }

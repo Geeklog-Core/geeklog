@@ -253,7 +253,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     $expirytime = (string) (time() - $lifespan);
     if (!isset($_COOKIE[$_CONF['cookie_session']])) {
         // ok, delete any old sessons for this user
-        DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = $userid");
+        DB_delete($_TABLES['sessions'], 'uid', $userid);
     } else {
         $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < $expirytime)";
         $delresult = DB_query($deleteSQL);
@@ -268,7 +268,8 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         }
     }
     // Remove the anonymous sesssion for this user
-    DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND remote_ip = '$remote_ip'");
+    DB_delete($_TABLES['sessions'], array('uid', 'remote_ip'),
+                                    array(1, $remote_ip));
 
     // Create new session
     if (empty ($md5_sessid)) {
@@ -417,8 +418,7 @@ function SESS_endUserSession($userid)
 {
     global $_TABLES;
 
-    $sql = "DELETE FROM {$_TABLES['sessions']} WHERE (uid = $userid)";
-    $result = DB_query($sql);
+    DB_delete($_TABLES['sessions'], 'uid', $userid);
 
     return 1;
 }

@@ -4,14 +4,13 @@
 * File: EditHeader.Admin.class.php
 * This is the Edit HTTP Header Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005-2008 by the following authors:
+* Copyright (C) 2005-2009 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.11 2008/09/21 08:37:08 dhaun Exp $
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditHeader.Admin.class.php') !== false) {
@@ -43,7 +42,8 @@ class EditHeader extends BaseAdmin {
             $entry = $_GET['entry'];
             if (!empty($entry)) {
                 $dbentry = addslashes($entry);
-                $result = DB_query("DELETE FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' AND value='$dbentry'");
+                DB_delete($_TABLES['spamx'], array('name', 'value'),
+                                             array('HTTPHeader', $dbentry));
             }
         } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
             $entry = '';

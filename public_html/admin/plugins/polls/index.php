@@ -530,10 +530,11 @@ function deletePoll ($pid)
         return COM_refresh ($_CONF['site_admin_url'] . '/plugins/polls/index.php');
     }
 
-    DB_delete ($_TABLES['polltopics'], 'pid', $pid);
-    DB_delete ($_TABLES['pollanswers'], 'pid', $pid);
-    DB_delete ($_TABLES['pollquestions'], 'pid', $pid);
-    DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$pid' AND type = 'polls'");
+    DB_delete($_TABLES['polltopics'], 'pid', $pid);
+    DB_delete($_TABLES['pollanswers'], 'pid', $pid);
+    DB_delete($_TABLES['pollquestions'], 'pid', $pid);
+    DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                    array($pid,  'polls'));
 
     PLG_itemDeleted($pid, 'polls');
 

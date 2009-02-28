@@ -422,18 +422,20 @@ function deleteTopic ($tid)
 
     // delete comments, trackbacks, images associated with stories in this topic
     $result = DB_query ("SELECT sid FROM {$_TABLES['stories']} WHERE tid = '$tid'");
-    $numStories = DB_numRows ($result);
+    $numStories = DB_numRows($result);
     for ($i = 0; $i < $numStories; $i++) {
-        $A = DB_fetchArray ($result);
-        STORY_deleteImages ($A['sid']);
-        DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '{$A['sid']}' AND type = 'article'");
-        DB_query("DELETE FROM {$_TABLES['trackback']} WHERE sid = '{$A['sid']}' AND type = 'article'");
+        $A = DB_fetchArray($result);
+        STORY_deleteImages($A['sid']);
+        DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                        array($A['sid'], 'article'));
+        DB_delete($_TABLES['trackback'], array('sid', 'type'),
+                                         array($A['sid'], 'article'));
     }
 
     // delete these
-    DB_delete ($_TABLES['stories'], 'tid', $tid);
-    DB_delete ($_TABLES['storysubmission'], 'tid', $tid);
-    DB_delete ($_TABLES['topics'], 'tid', $tid);
+    DB_delete($_TABLES['stories'], 'tid', $tid);
+    DB_delete($_TABLES['storysubmission'], 'tid', $tid);
+    DB_delete($_TABLES['topics'], 'tid', $tid);
 
     // update feed(s) and Older Stories block
     COM_rdfUpToDateCheck('article');
