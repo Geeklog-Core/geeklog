@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mysql.class.php,v 1.28 2008/09/11 19:07:42 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -329,11 +327,12 @@ class database {
         $sql = "DELETE FROM $table";
 
         if (is_array($id) || is_array($value)) {
-            if (is_array($id) && is_array($value) && count($id) == count($value)) {
+            $num_ids = count($id);
+            if (is_array($id) && is_array($value) && $num_ids == count($value)) {
                 // they are arrays, traverse them and build sql
                 $sql .= ' WHERE ';
-                for ($i = 1; $i <= count($id); $i++) {
-                    if ($i == count($id)) {
+                for ($i = 1; $i <= $num_ids; $i++) {
+                    if ($i == $num_ids) {
                         $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
                         $sql .= current($id) . " = '" . current($value) . "' AND ";
@@ -390,11 +389,12 @@ class database {
         } 
 
         if (is_array($id) || is_array($value)) {
-            if (is_array($id) && is_array($value) && count($id) == count($value)) {
+            $num_ids = count($id);
+            if (is_array($id) && is_array($value) && $num_ids == count($value)) {
                 // they are arrays, traverse them and build sql
                 $sql .= ' WHERE ';
-                for ($i = 1; $i <= count($id); $i++) {
-                    if ($i == count($id)) {
+                for ($i = 1; $i <= $num_ids; $i++) {
+                    if ($i == $num_ids) {
                         $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
                         $sql .= current($id) . " = '" . current($value) . "' AND ";
@@ -447,11 +447,12 @@ class database {
         $sql = "SELECT COUNT(*) FROM $table";
 
         if (is_array($id) || is_array($value)) {
-            if (is_array($id) && is_array($value) && count($id) == count($value)) {
+            $num_ids = count($id);
+            if (is_array($id) && is_array($value) && $num_ids == count($value)) {
                 // they are arrays, traverse them and build sql
                 $sql .= ' WHERE ';
-                for ($i = 1; $i <= count($id); $i++) {
-                    if ($i == count($id)) {
+                for ($i = 1; $i <= $num_ids; $i++) {
+                    if ($i == $num_ids) {
                         $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
                         $sql .= current($id) . " = '" . current($value) . "' AND ";
@@ -508,11 +509,12 @@ class database {
         $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
 
         if (is_array($id) || is_array($value)) {
-            if (is_array($id) && is_array($value) && count($id) == count($value)) {
+            $num_ids = count($id);
+            if (is_array($id) && is_array($value) && $num_ids == count($value)) {
                 // they are arrays, traverse them and build sql
                 $sql .= ' WHERE ';
-                for ($i = 1; $i <= count($id); $i++) {
-                    if ($i == count($id)) {
+                for ($i = 1; $i <= $num_ids; $i++) {
+                    if ($i == $num_ids) {
                         $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
                         $sql .= current($id) . " = '" . current($value) . "' AND ";
