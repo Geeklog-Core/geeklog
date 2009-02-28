@@ -1842,7 +1842,7 @@ function COM_featuredCheck()
 
     $curdate = date( "Y-m-d H:i:s", time() );
 
-    if( DB_getItem( $_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'" ) > 1 )
+    if( DB_getItem( $_TABLES['stories'], 'COUNT(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'" ) > 1 )
     {
         // OK, we have two featured stories, fix that
 
@@ -2495,7 +2495,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             }
             else
             {
-                $nresult = DB_query( "SELECT COUNT(*) AS count from {$_TABLES['stories']} WHERE" . $topicsql . COM_getPermSql( 'AND' ));
+                $nresult = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE" . $topicsql . COM_getPermSql( 'AND' ));
                 $N = DB_fetchArray( $nresult );
                 $numstories = $N['count'];
             }

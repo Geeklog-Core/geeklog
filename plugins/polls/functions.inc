@@ -220,7 +220,7 @@ function plugin_showstats_polls ($showsitestats)
 
     $retval = '';
 
-    $result = DB_query ("SELECT pid,topic,voters from {$_TABLES['polltopics']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
+    $result = DB_query ("SELECT pid,topic,voters FROM {$_TABLES['polltopics']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
     $nrows  = DB_numRows ($result);
 
     if ($nrows > 0) {
@@ -638,7 +638,7 @@ function POLLS_showPoll($size, $pid='', $showall = false )
 
     $retval = '';
 
-    DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}");
+    DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < UNIX_TIMESTAMP() - {$_PO_CONF['polladdresstime']}");
 
     if(!empty($pid)) {
         if(!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
@@ -647,7 +647,7 @@ function POLLS_showPoll($size, $pid='', $showall = false )
             $retval .= POLLS_pollResults($pid, $size);
         }
     } else {
-        $result = DB_query("SELECT pid,topic,is_open from {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
+        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
         $nrows = DB_numRows($result );
 
         $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");

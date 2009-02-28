@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -644,7 +644,7 @@ function plugin_getadminoption_staticpages()
     global $_CONF, $_TABLES, $LANG_STATIC;
 
     if (SEC_hasRights ('staticpages.edit,staticpages.delete', 'OR')) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ('WHERE', 0, 3));
+        $result = DB_query ("SELECT COUNT(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ('WHERE', 0, 3));
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         return array ($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);

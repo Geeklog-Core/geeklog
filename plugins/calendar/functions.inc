@@ -1295,7 +1295,7 @@ function plugin_showstats_calendar ($showsitestats)
     $display = '';
 
     // Top Ten Events
-    $result = DB_query("SELECT eid,title,hits from {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+    $result = DB_query("SELECT eid,title,hits FROM {$_TABLES['events']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
     $nrows  = DB_numRows($result);
     if ($nrows > 0) {
         $header_arr = array(
