@@ -5,7 +5,7 @@
  * This module examines comments for entries on the MT-Blacklist
  * for the Geeklog Spam-X plugin
  * 
- * Copyright (C) 2004-2006 by the following authors:
+ * Copyright (C) 2004-2009 by the following authors:
  * Author   Tom Willett     tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
@@ -13,7 +13,6 @@
  * The MT-Blacklist was maintained by Jay Allen
  * http://www.jayallen.org/comment_spam/
  *
- * $Id: MTBlackList.Examine.class.php,v 1.12 2008/09/21 08:37:08 dhaun Exp $
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'MTBlackList.Examine.class.php') !== false) {
@@ -51,7 +50,7 @@ class MTBlackList extends BaseCommand {
         /**
          * Include Blacklist Data
          */
-        $result = DB_Query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'", 1);
+        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'", 1);
         $nrows = DB_numRows ($result);
 
         // named entities

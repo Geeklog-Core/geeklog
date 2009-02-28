@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-database.php                                                          |
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-database.php,v 1.54 2008/09/21 08:37:11 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -137,7 +135,7 @@ $_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
 // +---------------------------------------------------------------------------+
 // | These are the library functions.  In all cases they turn around and make  |
 // | calls to the DBMS specific functions.  These ARE to be used directly in   |
-// | the code...do NOT use the $_DB methods directly
+// | the code...do NOT use the $_DB methods directly                           |
 // +---------------------------------------------------------------------------+
 
 /**
@@ -154,7 +152,7 @@ $_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
 * @param        boolean     $flag       true or false
 *
 */
-function DB_setdebug($flag)
+function DB_setDebug($flag)
 {
     global $_DB;
 
@@ -556,7 +554,7 @@ function DB_checkTableExists($table)
             $exists = true;
         }
     } elseif ($_DB_dbms == 'mssql') {
-        $result = DB_Query("SELECT 1 FROM sysobjects WHERE name='{$_TABLES[$table]}' AND xtype='U'");
+        $result = DB_query("SELECT 1 FROM sysobjects WHERE name='{$_TABLES[$table]}' AND xtype='U'");
         if (DB_numRows ($result) > 0) {
             $exists = true;
         }

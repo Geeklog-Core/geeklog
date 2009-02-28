@@ -69,7 +69,7 @@ function create_ConfValues()
         ON [PRIMARY]
         ");
         
-    DB_Query ("
+    DB_query ("
         ALTER function [DESCRIBE](@d as varchar(100)='', @c as varchar(100)=null)
         RETURNS table AS
 

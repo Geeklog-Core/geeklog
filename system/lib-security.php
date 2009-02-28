@@ -174,7 +174,7 @@ function SEC_groupIsRemoteUserAndHaveAccess($groupid, $groups)
     global $_TABLES, $_CONF;
     if(!isset($_CONF['remote_users_group_id']))
     {
-        $result = DB_Query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name='Remote Users'");
+        $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name='Remote Users'");
         if( $result )
         {
             $row = DB_fetchArray( $result );
@@ -1097,17 +1097,17 @@ function SEC_createToken($ttl = 1200)
         $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
            . " AND (ttl > 0)";
     }
-    DB_Query($sql);
+    DB_query($sql);
     
     /* Destroy tokens for this user/url combination */
     $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id={$_USER['uid']} AND urlfor='$pageURL'";
-    DB_Query($sql);
+    DB_query($sql);
     
     /* Create a token for this user/url combination */
     /* NOTE: TTL mapping for PageURL not yet implemented */
     $sql = "INSERT INTO {$_TABLES['tokens']} (token, created, owner_id, urlfor, ttl) "
            . "VALUES ('$token', NOW(), {$_USER['uid']}, '$pageURL', $ttl)";
-    DB_Query($sql);
+    DB_query($sql);
            
     $last_token = $token;
 
@@ -1149,7 +1149,7 @@ function SEC_checkToken()
                       END
                     FROM {$_TABLES['tokens']} WHERE token='$token'";
         }
-        $tokens = DB_Query($sql);
+        $tokens = DB_query($sql);
         $numberOfTokens = DB_numRows($tokens);
         if($numberOfTokens != 1) {
             $return = false; // none, or multiple tokens. Both are invalid. (token is unique key...)
@@ -1172,7 +1172,7 @@ function SEC_checkToken()
            
             // It's a one time token. So eat it.
             $sql = "DELETE FROM {$_TABLES['tokens']} WHERE token='$token'";
-            DB_Query($sql);
+            DB_query($sql);
         }
     } else {
         $return = false; // no token.

@@ -617,7 +617,7 @@ function moderateusers ($uid, $action, $count)
                 if ($nrows == 1) {
                     $A = DB_fetchArray($result);
                     $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
-                    DB_Query($sql);
+                    DB_query($sql);
                     USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
                 }
                 break;
