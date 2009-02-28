@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Auto-deleting a story didn't delete trackbacks for that story [Dirk]
 - Ensure consistent template variable names for the Permission Editor [Dirk]
 - Added new permission 'group.assign', now required to be able to assign a user
   to a group. Part of the Group Admin (not User Admin) permissions by default

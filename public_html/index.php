@@ -215,14 +215,12 @@ $expiresql = DB_query ($asql);
 while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
         if (!empty ($archivetid) ) {
-            COM_errorLOG("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
+            COM_errorLog("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
             DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid', frontpage = '0', featured = '0' WHERE sid='{$sid}'");
         }
     } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
-        COM_errorLOG("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");
-        STORY_deleteImages ($sid);
-        DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}' AND type = 'article'");
-        DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
+        COM_errorLog("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");
+        STORY_doDeleteThisStoryNow($sid);
     }
 }
 

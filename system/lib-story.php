@@ -874,6 +874,34 @@ function STORY_deleteStory($sid)
 }
 
 /**
+* Delete a story and related data immediately.
+*
+* Note: For internal use only! To delete a story, use STORY_deleteStory (see
+*       above), which will do permission checks and eventually end up here.
+*
+* @param    string  $sid    ID of the story to delete
+*
+*/
+function STORY_doDeleteThisStoryNow($sid)
+{
+    global $_TABLES;
+
+    STORY_deleteImages($sid);
+    DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                    array($sid, 'article'));
+    DB_delete($_TABLES['trackback'], array('sid', 'type'),
+                                     array($sid, 'article'));
+    DB_delete($_TABLES['stories'], 'sid', $sid);
+
+    // notify plugins
+    PLG_itemDeleted($sid, 'article');
+
+    // update RSS feed and Older Stories block
+    COM_rdfUpToDateCheck();
+    COM_olderStuff();
+}
+
+/**
  * Return true since this component supports webservices
  *
  * @return  bool	True, if webservices are supported
@@ -1320,21 +1348,9 @@ function service_delete_story($args, &$output, &$svc_msg)
         }
     }
 
-    STORY_deleteImages ($sid);
-    DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = 'article'");
-    DB_delete ($_TABLES['stories'], 'sid', $sid);
+    STORY_doDeleteStoryNow($sid);
 
-    // delete Trackbacks
-    DB_query ("DELETE FROM {$_TABLES['trackback']} WHERE sid = '$sid' AND type = 'article';");
-
-    // notify plugins
-    PLG_itemDeleted($sid, 'article');
-
-    // update RSS feed and Older Stories block
-    COM_rdfUpToDateCheck();
-    COM_olderStuff();
-
-    $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');
+    $output = COM_refresh($_CONF['site_admin_url'] . '/story.php?msg=10');
 
     return PLG_RET_OK;
 }
