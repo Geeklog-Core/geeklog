@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed duplicate plugin entries when a plugin has more than one entry for the
+  admin or user menu (bug #0000820)
 - {contributedby_user} and {contributedby_fullname} weren't set in the story
   templates (bug #0000821) [Dirk]
 - Reinstated old definitions of the {start_contributedby_anchortag},

@@ -825,19 +825,18 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 {
     global $_PLUGINS;
 
-    $plgresults = array ();
+    $plgresults = array();
 
-    $counter = 0;
+    $num_var_names = count($var_names);
     foreach ($_PLUGINS as $pi_name) {
         $function = $function_name . $pi_name;
-        if (function_exists ($function)) {
+        if (function_exists($function)) {
             $plg_array = $function();
-            if (($plg_array !== false) && (count ($plg_array) > 0)) {
+            if (($plg_array !== false) && (count($plg_array) > 0)) {
                 // Check if plugin is returning a single record array or multiple records
-                $entries = count ($plg_array[0]);
-                if ($entries == 0) {
-                    $sets_array = array ();
-                } else if ($entries == 1) {
+                $sets_array = array();
+                $entries = count($plg_array[0]);
+                if ($entries == 1) {
                     // Single record - so we need to prepare the sets_array;
                     $sets_array[0] = $plg_array;
                 } else {
@@ -847,19 +846,19 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
                 foreach ($sets_array as $val) {
                     $plugin = new Plugin();
                     $good_array = true;
-                    for ($n = 0; $n < count($var_names); $n++) {
-                        if (isset ($val[$n])) {
+                    for ($n = 0; $n < $num_var_names; $n++) {
+                        if (isset($val[$n])) {
                             $plugin->$var_names[$n] = $val[$n];
                         } else {
                             $plugin->$var_names[$n] = '';
                         }
-                        if (empty ($plugin->$var_names[$n]) && $required_names[$n]) {
+                        if (empty($plugin->$var_names[$n]) && $required_names[$n]) {
                             $good_array = false;
                         }
                     }
-                    $counter++;
+
                     if ($good_array) {
-                        $plgresults[$counter] = $plugin;
+                        $plgresults[] = $plugin;
                     }
                 }
             }
