@@ -122,6 +122,8 @@ if ($A['count'] > 0) {
                 $story->{$varname} = $output[$fieldname];
             }
         }
+        $story->_username = $output['username'];
+        $story->_fullname = $output['fullname'];
     }
 
     if ($output == STORY_PERMISSION_DENIED) {

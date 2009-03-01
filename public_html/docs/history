@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- {contributedby_user} and {contributedby_fullname} weren't set in the story
+  templates (bug #0000821) [Dirk]
 - Reinstated old definitions of the {start_contributedby_anchortag},
   {end_contributedby_anchortag}, and {contributedby_author} variables, i.e. the
   two anchortag variables are set again and _author contains the name only (bug
