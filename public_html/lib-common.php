@@ -144,7 +144,7 @@ if (! $_CONF['have_pear']) {
     } else {
         $curPHPIncludePath = $_CONF['path_pear'] . PATH_SEPARATOR
                            . $curPHPIncludePath;
-    } 
+    }
 
     if (set_include_path($curPHPIncludePath) === false) {
         COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
@@ -528,8 +528,6 @@ function COM_getThemes( $all = false )
 
     $themes = array();
 
-    $fd = opendir( $_CONF['path_themes'] );
-
     // If users aren't allowed to change their theme then only return the default theme
 
     if(( $_CONF['allow_user_themes'] == 0 ) && !$all )
@@ -538,6 +536,8 @@ function COM_getThemes( $all = false )
     }
     else
     {
+        $fd = opendir( $_CONF['path_themes'] );
+
         while(( $dir = @readdir( $fd )) == TRUE )
         {
             if( is_dir( $_CONF['path_themes'] . $dir) && $dir <> '.' && $dir <> '..' && $dir <> 'CVS' && substr( $dir, 0 , 1 ) <> '.' )
