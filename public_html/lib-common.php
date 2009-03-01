@@ -340,7 +340,8 @@ else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
 // Handle Who's Online block
 if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
     // The following code handles anonymous users so they show up properly
-    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1" );
+    DB_delete($_TABLES['sessions'], array('remote_ip', 'uid'),
+                                    array($_SERVER['REMOTE_ADDR'], 1));
 
     $tries = 0;
     do
@@ -5202,7 +5203,8 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     }
     $property = addslashes($property);
 
-    DB_query("DELETE FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property')");
+    DB_delete($_TABLES['speedlimit'], array('type', 'ipaddress'),
+                                      array($type, $property));
 }
 
 /**
