@@ -251,9 +251,6 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
 // Set theme
-// Need to modify this code to check if theme was cached in user cookie.  That
-// way if user logged in and set theme and then logged out we would still know
-// which theme to show them.
 
 $usetheme = '';
 if( isset( $_POST['usetheme'] ))
