@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Made url rewriting work on setups that only set $_SERVER['ORIG_PATH_INFO']
+  (bug #0000816)
 - Fixed duplicate plugin entries when a plugin has more than one entry for the
   admin or user menu (bug #0000820)
 - {contributedby_user} and {contributedby_fullname} weren't set in the story

@@ -2,16 +2,15 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | url.class.php                                                             |
 // |                                                                           |
 // | class to allow for spider friendly URL's                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |                                                                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: url.class.php,v 1.11 2006/09/09 12:52:06 dhaun Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -76,23 +73,23 @@ class url {
     */
     function _getArguments()
     {
-        if (isset ($_SERVER['PATH_INFO'])) {
-            if ($_SERVER['PATH_INFO'] == '')
-            {
-                if (isset ($_ENV['ORIG_PATH_INFO']))
-                {
+        if (isset($_SERVER['PATH_INFO'])) {
+            if ($_SERVER['PATH_INFO'] == '') {
+                if (isset($_ENV['ORIG_PATH_INFO'])) {
                     $this->_arguments = explode('/', $_ENV['ORIG_PATH_INFO']);
                 } else {
                     $this->_arguments = array();
                 }
             } else {
-                $this->_arguments = explode ('/', $_SERVER['PATH_INFO']);
+                $this->_arguments = explode('/', $_SERVER['PATH_INFO']);
             }
-            array_shift ($this->_arguments);
-        } else if (isset ($_ENV['ORIG_PATH_INFO'])) {
-            $this->_arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'],1));
+            array_shift($this->_arguments);
+        } elseif (isset($_ENV['ORIG_PATH_INFO'])) {
+            $this->_arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
+        } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
+            $this->_arguments = explode('/', substr($_SERVER['ORIG_PATH_INFO'], 1));
         } else {
-            $this->_arguments = array ();
+            $this->_arguments = array();
         }
     }
 
@@ -200,7 +197,7 @@ class url {
         if (!$this->isEnabled()) {
             return $url;
         }
-        
+
         $pos = strpos($url,'?');
         $query_string = substr($url,$pos+1);
         $finalList = array();
