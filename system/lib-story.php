@@ -125,18 +125,21 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         } else {
             $article->set_var( 'contributedby_fullname',$story->DisplayElements('fullname') );
         }
-        $authorname = COM_getDisplayName( $story->DisplayElements('uid'), $story->DisplayElements('username'), $fullname );
 
-        $article->set_var( 'author', $authorname );
-        $profileUrl = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-            . $story->DisplayElements('uid');
+        $authorname = COM_getDisplayName($story->DisplayElements('uid'),
+                            $story->DisplayElements('username'), $fullname);
+        $article->set_var('contributedby_author', $authorname);
+        $article->set_var('author', $authorname);
 
-        if( $story->DisplayElements('uid') > 1 )
-        {
-            $article->set_var( 'contributedby_url', $profileUrl );
-            $authorname = COM_createLink($authorname, $profileUrl, array('class' => 'storybyline'));
+        if ($story->DisplayElements('uid') > 1) {
+            $profileUrl = $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid='
+                        . $story->DisplayElements('uid');
+            $article->set_var('start_contributedby_anchortag',
+                    '<a class="storybyline" href="' . $profileUrl . '">');
+            $article->set_var('end_contributedby_anchortag', '</a>');
+            $article->set_var('contributedby_url', $profileUrl);
         }
-        $article->set_var( 'contributedby_author', $authorname );
 
         $photo = '';
         if ($_CONF['allow_user_photo'] == 1) {

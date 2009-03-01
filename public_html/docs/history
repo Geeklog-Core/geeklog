@@ -11,6 +11,10 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Reinstated old definitions of the {start_contributedby_anchortag},
+  {end_contributedby_anchortag}, and {contributedby_author} variables, i.e. the
+  two anchortag variables are set again and _author contains the name only (bug
+  #0000821) [Dirk]
 - Auto-deleting a story didn't delete trackbacks for that story [Dirk]
 - Ensure consistent template variable names for the Permission Editor [Dirk]
 - Added new permission 'group.assign', now required to be able to assign a user
