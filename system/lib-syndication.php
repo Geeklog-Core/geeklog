@@ -270,7 +270,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storytext = SYND_truncateSummary( $fulltext, $contentLength );
 
             $fulltext = trim( $fulltext );
-            $fulltext = str_replace("\015", '', $fulltext);
+            $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
             if( $row['postmode'] == 'plaintext' ) 
             {
@@ -403,7 +403,8 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $fulltext = PLG_replaceTags( $fulltext );
         $storytext = SYND_truncateSummary( $fulltext, $contentLength );
         $fulltext = trim( $fulltext );
-        $fulltext = str_replace("\015", '', $fulltext);
+COM_errorLog($fulltext);
+        $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
         if( $row['postmode'] == 'plaintext' ) 
         {
@@ -631,7 +632,7 @@ function SYND_truncateSummary( $text, $length )
     {
         $text = stripslashes( $text );
         $text = trim( $text );
-        $text = str_replace("\015", '', $text);
+        $text = str_replace(array("\015\012", "\015"), "\012", $text);
         if(( $length > 3 ) && ( MBYTE_strlen( $text ) > $length ))
         {
             $text = substr( $text, 0, $length - 3 ) . '...';
