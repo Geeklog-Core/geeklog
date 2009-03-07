@@ -149,7 +149,7 @@ $LANG01 = array(
     108 => 'Limpia la copia de visitas (Caché)',
     109 => 'Denuncia los abusos',
     110 => 'Denuncia este mensaje al administrador de este sitio',
-    111 => 'Ver la versión PDF',
+    111 => '',
     112 => 'Usuarios inscritos',
     113 => 'Documentación',
     114 => 'TRACKBACKS',
@@ -554,7 +554,7 @@ $LANG11 = array(
     2 => 'Envíalo a un(a) amigo(a)',
     3 => 'Versión para imprimir',
     4 => 'Opciones de la Noticia',
-    5 => 'Formato de noticia en PDF',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1335,26 +1335,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'La función PDF está inhabilitada',
-    2 => 'El document facilitado no se ha reproducido. Se ha recibidido el documento pero no se ha procesado. Por favor, asegúrate que sólo se envíen documentos formateados en html con el estandar xHTML. Por favor, toma nota que los documentos muy complejos en html es posible que no se reproduzcan correctamente o que no aparezcan. El documento resultante de tu intento tiene 0 bytes de extensión, y ha sido borrado. Si no estas seguro(a) que tu documento se reproduzca bien, por favor, vuelve a enviarlo.',
-    3 => 'Error desconocido durante la generación de PDF',
-    4 => "No has dado datos de la página o quieres utilizar la herramienta de generación ad-hoc de PDF. Si crees que estas recibiendo esta página\n          por error entonces por favor contacta con el administrador del sistema.  De otro modo, puedes utilizar el formulario que hay abajo para generar PDFs.",
-    5 => 'Cargando tu documento.',
-    6 => 'Por favor, espera mientras se carga tu documento.',
-    7 => 'Puedes pulsar a la derecha el botón de abajo y elegir \'save target...\' o \'save link location...\' para guardar una copia de tu documento.',
-    8 => "La ruta dada por el archivo de configuración al HTMLDoc binario no es válida o este sistema no lo puede ejecutar.  Por favor contacta con el administrador del sistema si este problema\n          continúa.",
-    9 => 'Creador de PDF',
-    10 => "Esta es la herramienta ad-hoc de creación de PDF. Intentará convertir cualquier URL que le dés en un PDF.  Por favor, toma nota que algunas páginas de la red (Web) no se generarán correctamente con esta función.  Este\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
-    11 => 'URL',
-    12 => '¡Crea un PDF!',
-    13 => 'La configuración PHP en este servidor no permite que los URL se utilicen con la instrucción fopen.  El administrador del sistema tiene que editar el archivo php.ini y que esté conectado allow_url_fopen',
-    14 => 'El PDF que has solicitado o no existe o has intentado acceder a un archivo ilegalmente.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1688,7 +1668,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Record Last Login?',
-    'pdf_enabled' => 'PDF Enabled?',
     'num_search_results' => 'Number of Search Results',
     'loginrequired' => 'Login Required?',
     'submitloginrequired' => 'Submit Login Required?',

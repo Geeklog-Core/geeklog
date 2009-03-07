@@ -155,7 +155,7 @@ $LANG01 = array(
     108 => 'Radera buffert',
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
+    111 => '',
     112 => 'Registered Users',
     113 => 'Documentation',
     114 => 'TRACKBACKS',
@@ -560,7 +560,7 @@ $LANG11 = array(
     2 => 'Eposta artikel till någon',
     3 => 'Skriv ut artikel',
     4 => 'Artikelalternativ',
-    5 => 'Artikel i PDF-format',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1341,26 +1341,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'PDF-funktionen är avstängd',
-    2 => 'Dokumentet kunde inte renderas.  Dokumentet kunde hämtas, men kunde inte renderas.  Var noga med att bara skicka in html-formatterade dokument som är skrivna enligt xHTML.  Notera att komplexa dokument kanske inte kan renderas korrekt, eller över huvud taget.  Ditt renderade dokumentet var 0 byte stort och har raderats.  Om du är övertygad om att ditt dokument borde kunna renderas, så bör du skicka in det igen.',
-    3 => 'Okänt fel vid PDF-generering',
-    4 => 'Inget siddata gavs, eller så vill du använda ad-hoc PDF-genereringsverktyget nedan.  Om du anser att du inte borde få detta felmeddelande så bör du kontakta systemadministratören.  Annars kan du prova att använda formuläret nedan för att generera PDF-filer med mer handpåläggning.',
-    5 => 'Laddar ditt dokument.',
-    6 => 'Vänta medan ditt dokument laddas.',
-    7 => 'Du kan högerklicka på knappen nedan och välja \'spara mål...\' eller \'spara länk...\' för att spara en kopia av ditt dokument.',
-    8 => 'Den angivna sökvägen till HTMLDoc-binären är felaktig, eller så kan det här systemet inte exekvera den.  Kontakta systemadministratören om detta fel kvarstår.',
-    9 => 'PDF-generator',
-    10 => 'Detta är Ad-hoc PDF-generering.  Verktyget kommer att försöka konvertera valfri URL till en PDF.  Tänk på att vissa sidor inte renderas ordentligt med den här funktionen, men detta är en begränsning av HTMLDoc PDF-genereringsverktyget, och dessa felmeddelanden bör inte rapporteras till systemadministratörerna på denna sajt',
-    11 => 'URL',
-    12 => 'Generera PDF!',
-    13 => 'PHP-konfigurationen på den här servern tillåter inte öppning av URL:er med fopen()-kommandot.  Systemadministratören måste redigera php.ini-filen och aktivera allow_url_fopen',
-    14 => 'PDF-filen du begärde existerar inte, eller så försökte du hämta en fil som du inte har tillgång till.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1694,7 +1674,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Record Last Login?',
-    'pdf_enabled' => 'PDF Enabled?',
     'num_search_results' => 'Number of Search Results',
     'loginrequired' => 'Login Required?',
     'submitloginrequired' => 'Submit Login Required?',

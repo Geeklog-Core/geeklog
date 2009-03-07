@@ -154,7 +154,7 @@ $LANG01 = array(
     108 => 'Izprazni cache',
     109 => 'Prijavi zlorabo',
     110 => 'Prijavi ta prispevek skrbniku strani',
-    111 => 'Različica PDF',
+    111 => '',
     112 => 'Prijavljeni uporabniki',
     113 => 'Dokumentacija',
     114 => 'TRACKBACKS',
@@ -559,7 +559,7 @@ $LANG11 = array(
     2 => 'Pošlji članek prijatelju po e-pošti',
     3 => 'Za tisk prijazna stran',
     4 => 'Dodatne možnosti',
-    5 => 'Članek v formatu PDF',
+    5 => '',
     6 => 'Obvesti me o komentarjih na \'%s\''
 );
 
@@ -1340,26 +1340,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'Funkcija PDF je onemogočena',
-    2 => 'Priskrbljeni dokument ni bil renderiran. Bil je prejet, ampak ga ni bilo mogoče procesirati. Pepričaj se, da oddajaš samo dokumente v obliki html, ki so bili napisani po standardu xHTML. Izjemno kompleksni dokumenti se lahko renderirajo nepravilno ali pa sploh ne. Dokument, ki je nastal v poskusu renderiranja, je imel 0 bajtov in je bil izbrisan. Če si prepričan/a, da bi se ta dokument moral pravilno renderirati, ga pošlji ponovno.',
-    3 => 'Neznana napaka med izdelavo dokumenta PDF',
-    4 => 'Podatki o strani niso bili podani ali pa hočeš uporabiti orodje za ad-hoc izdelavo dokumentov PDF spodaj. Če misliš, da si to stran dobil/a pomotoma, prosim sporoči to skrbniku sistema. V nasprotnem primeru lahko uporabiš spodnji obrazec in ustvariš dokumente PDF na način ad-hoc.',
-    5 => 'Nalagam dokument.',
-    6 => 'Prosim počakaj, dokument se nalaga.',
-    7 => 'Spodnji gumb lahko desnokliknete in izberete \'shrani ciljni dokument ...\' ali \'shrani mesto povezave ...\', da shranite kopijo dokumenta.',
-    8 => 'Pot do izvršilne datoteke HTMLDoc, ki je zapisana v nastavitvah, je napačna, zato je sistem ne more zagnati. Če se težava ponavlja, to prosim sporočite skrbniku strani.',
-    9 => 'Izdelovalnik PDF',
-    10 => 'To je orodje za ad-hoc izdelavo dokumentov PDF. Orodje bo poskusilo predelati vse URL-je  v PDF-ju. Prosim zavedaj se, da se nekatere spletne strani s tem načinom ne bodo pravilno renderirale.  To je omejitev orodja HTMLDoc za izdelavo dokumentov PDF, zato teh napak ni treba prijavljati skrbniku strani.',
-    11 => 'URL',
-    12 => 'Izdelaj PDF!',
-    13 => 'PHP konfiguracija na tem strežniku ne dovoli odpiranja URL-jev z ukazom fopen(). Skrbnik strani mora popraviti datoteko php.ini, tako da v njej prestavi allow_url_fopen na On.',
-    14 => 'Zahtevani PDF ne obstaja ali pa si poskusil/a do datoteke dostopiti nedovoljeno.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1693,7 +1673,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Domena piškotka',
     'cookiesecure' => 'Varni piškotek',
     'lastlogin' => 'Zapomni si zadnjo prijavo?',
-    'pdf_enabled' => 'PDF omogočen?',
     'num_search_results' => 'Število rezultatov iskanja',
     'loginrequired' => 'Zahtevana prijava?',
     'submitloginrequired' => 'Zahtevana prijava za pošiljanja?',

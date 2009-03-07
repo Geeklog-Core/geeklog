@@ -157,7 +157,7 @@ $LANG01 = array(
     108 => 'Leeg Cache',
     109 => 'Rapporteer misbruik',
     110 => 'Rapporteer dit bericht aan de sitebeheerder',
-    111 => 'Bekijk de PDF-versie',
+    111 => '',
     112 => 'Geregistreerde gebruikers',
     113 => 'Documentatie',
     114 => 'TRACKBACKS',
@@ -562,7 +562,7 @@ $LANG11 = array(
     2 => 'Email artikel naar collega',
     3 => 'Afdrukversie artikel',
     4 => 'Artikel opties',
-    5 => 'PDF formaat',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1343,26 +1343,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'De PDF-optie is geblokkeerd',
-    2 => 'Het aangeleverde document is niet verwerkt. Het document is wel ontvangen, maar kon niet worden omgezet. Verzend alleen html-documenten die zijn geschreven volgens de xHTML standaard. Besef a.u.b. dat al te complexe html-documenten niet goed  - of zelfs helemaal niet -  worden verwerkt. Het document dat na uw poging is aangemaakt was 0 bytes in grootte en is verwijderd. Als u er zeker van bent dat uw document goed verwerkt zou moeten worden, probeert u het dan opnieuw te verzenden.',
-    3 => 'Onbekende fout tijdens de aanmaak van het PDF document',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Uw document wordt geladen.',
-    6 => 'Wacht a.u.b. terwijl uw document wordt geladen.',
-    7 => 'U kunt de rechts-klikken op de onderstaande knop en kiezen voor \'opslaan doel...\' of \'opslaan link lokatie...\' om een copy van uw document te bewaren.',
-    8 => "Het pad naar de HTMLDoc binary in het configuratiebestand is ongeldig of kan niet worden uitgevoerd.  Neem a.u.b. contact op met de beheerder als het probleem\n         zich blijft voordoen.",
-    9 => 'PDF Generator',
-    10 => "Dit is de Ad-hoc PDF Generation tool. Deze zal proberen om uw bestand te converteren.  Besef a.u.b. dat sommige webpaginas niet goed verwerkt kunnen worden.  Dit\n           is een beperking van de HTMLDoc PDF generation tool en zulke fouten kunnen worden gemeld aan de beheerder van deze site",
-    11 => 'URL',
-    12 => 'Genereer PDF!',
-    13 => 'De PHP configuratie op deze server staat het gebruik van URLs met het fopen() commando niet toe.  De systeembeheerder moet het php.ini bestand aanpassen en het allow_url_fopen zetten op: On',
-    14 => 'De PDF die u heeft opgevraagd bestaat niet of u heeft geen toegang tot dit bestand.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1696,7 +1676,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Record Last Login?',
-    'pdf_enabled' => 'PDF Enabled?',
     'num_search_results' => 'Number of Search Results',
     'loginrequired' => 'Login Required?',
     'submitloginrequired' => 'Submit Login Required?',

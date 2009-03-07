@@ -156,7 +156,7 @@ $LANG01 = array(
     108 => 'Obriši Cache',
     109 => 'Prijavi zloupotrebu',
     110 => 'Prijavi ovaj tekst administratoru',
-    111 => 'Pogledaj PDF Verziju',
+    111 => '',
     112 => 'Registrovani Korisnici',
     113 => 'Dokumentacija',
     114 => 'TRACKBACKS',
@@ -368,7 +368,10 @@ $LANG04 = array(
     156 => 'Obriši Nalog',
     157 => 'Obirši Opciju',
     158 => 'Vremenska Zona',
-    159 => 'Ovaj email je automatski generisan. Molimo nemojte odgovarati na njega.'
+    159 => 'Ovaj email je automatski generisan. Molimo nemojte odgovarati na njega.',
+    160 => '(max. %d x %d pixels, %d bytes; %s)',
+    161 => 'will be scaled down',
+    162 => 'will not be scaled'
 );
 
 ###############################################################################
@@ -503,7 +506,14 @@ $LANG09 = array(
     58 => 'Još rezultata &gt;&gt;',
     59 => 'Rezultati',
     60 => 'po strani',
-    61 => 'Napredna pretraga'
+    61 => 'Napredna pretraga',
+    62 => '#',
+    63 => 'Description',
+    64 => 'Showing %1$d - %2$d of %3$d results',
+    65 => 'Story',
+    66 => 'Comment',
+    67 => 'Show %d Results',
+    68 => 'Sort By'
 );
 
 ###############################################################################
@@ -512,7 +522,7 @@ $LANG09 = array(
 $LANG10 = array(
     1 => 'Statistika web stranice',
     2 => 'Ukupno poseta na sve strane',
-    3 => 'Tekstova(Komentara) na stranama', //prvih 10 rezultata
+    3 => 'Tekstova(Komentara) na stranama',
     4 => '',
     5 => '',
     6 => '',
@@ -551,7 +561,7 @@ $LANG11 = array(
     2 => 'Pošalji tekst emailom',
     3 => 'Vezija za štampu',
     4 => 'Opcije teksta',
-    5 => 'PDF Verzija',
+    5 => '',
     6 => 'Prijavi se za \'%s\''
 );
 
@@ -925,7 +935,8 @@ $LANG28 = array(
     83 => "Vaš nalog na {$_CONF['site_name']} nije korišćen od dana kada je kreiran i biće obrisan uskoro ako se preko njega ne pristupi.",
     84 => "Vaše korisničko ime je: %s  za naš sajt: {$_CONF['site_url']}",
     85 => 'Ako ste zaboravili lozinku korsitite sledeći link: %s',
-    86 => 'Podsetnici'
+    86 => 'Podsetnici',
+    87 => 'Reminders'
 );
 
 ###############################################################################
@@ -1027,7 +1038,20 @@ $LANG32 = array(
     35 => 'Izmeni',
     36 => 'Kod',
     37 => 'Podaci',
-    38 => 'Ažuriraj!'
+    38 => 'Ažuriraj!',
+    39 => 'Upload a plugin',
+    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
+    41 => 'Upload',
+    99 => 'An unknown error occured',
+    100 => 'Ok.',
+    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
+    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
+    103 => 'The uploaded file was only partially uploaded.',
+    104 => 'No file was uploaded.',
+    105 => '(undefined error)',
+    106 => 'Missing a temporary folder.',
+    107 => 'Failed to write file to disk.',
+    108 => 'File upload stopped by extension.'
 );
 
 ###############################################################################
@@ -1118,24 +1142,24 @@ $MESSAGE = array(
     26 => '',
     27 => 'Poruka je uspešno poslata.',
     28 => 'Plugin je uspešno sačuvan',
-    29 => '',
+    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
     30 => 'Pristup zabranjen',
-    31 => 'Žao nam je, nemate pristup administratorskoj stranici za Tekstove. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
-    32 => 'Žao nam je, nemate pristup administratorskoj stranici za Kategorije. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
-    33 => 'Žao nam je, nemate pristup administratorskoj stranici za Blokove. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
+    31 => '',
+    32 => '',
+    33 => '',
     34 => '',
     35 => '',
     36 => '',
-    37 => 'Žao nam je, nemate pristup administratorskoj stranici za Korisnike. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
-    38 => 'Žao nam je, nemate pristup administratorskoj stranici za Pluginove. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
-    39 => 'Žao nam je, nemate pristup administratorskoj stranici za Mailove. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
+    37 => '',
+    38 => '',
+    39 => '',
     40 => 'Sistemska Poruka',
-    41 => 'Žao nam je, nemate pristup stranici za promenu zamene reči. Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
-    42 => 'Vaša reč je uspešno sačuvana.',
-    43 => 'Reč uspešno obirsana.',
+    41 => '',
+    42 => '',
+    43 => '',
     44 => 'Plugin uspešno instaliran!',
     45 => 'Plugin uspešno ozbrisan.',
-    46 => 'Žao nam je, nemate pristup alatki za backup baze podataka.  Molimo zapamtite da su svi pokušaji pristupa zabranjenim delovima sajta zabeleženi',
+    46 => '',
     47 => 'Ove funkcije rade samo pod *nix. Ako koristite *nix kao operativni sistem onda je vaš cache uspešno očišćen. Ako koristite Windows, nađite fajlove po imenu adodb_*.php i uklonite ih manuelno.',
     48 => "Zahvaljujemo Vam što ste postali član {$_CONF['site_name']}. Naš tim će pregledati i oceniti vaš zahtev. Ako bude prihvaćen vaša lozinka će Vam biti poslata na email.",
     49 => 'Vaša grupa je uspešno sačuvana.',
@@ -1185,8 +1209,14 @@ $MESSAGE = array(
     93 => 'Backup baze je uspešan!.',
     94 => 'Backup Nije Uspeo: Veličina fajla je manja od 1kb',
     95 => 'Pojavila se Greška.',
-    96 => 'Žao nam je, nemate prava za pristup administartorskoj konfiguraciji.  Molimo zapamtite da se svi pokušaji pristupa zabranjenim delovima beleže.',
-    97 => 'Sva zahtevana polja nisa prošla validaciju - podrazumevana članska poruka'
+    96 => '',
+    97 => '',
+    98 => 'The plugin was successfully uploaded.',
+    99 => 'The plugin already exists.',
+    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
+    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    400 => 'Not all required fields have been passed validation',
+    401 => 'Please enter Fullname'
 );
 
 ###############################################################################
@@ -1312,26 +1342,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'Generisanje PDF-a je trenutno blokirano',
-    2 => 'Traženi dokument nije generisan. Zahtev je primljen ali ga nije moguće procesirati.  Molimo uverite se da šaljete isključivo HTML formatirane dokumente koji su kreirani poštovanjem xHTML standarda. Imajte u vidu da previše kompleksne html dokumente nije moguće generisati. Dokument koji je nastao usled vašeg pokušaja je velik 0 bytes, pa je zbog toga obrisan. U slučaju da ste sigurni da se vaš dokument može generisati ispravno, molimo pošaljite ga ponovo.',
-    3 => 'Nepoznata greška prilikom generacije PDF-a',
-    4 => "Podaci o stranici nisu prosleđeni ili pokušavate da koristite ad-hoc PDF alatku za generisanje.  Ako mislite da greškom dobijate\n          ovu stranicu molimo vas da kontaktirate sistem administratora.  U suprotnom, možete koristiti formu prikazanu ispod da generisete PDF-ove i u ad-hoc stilu.",
-    5 => 'Učitavam vaš dokument.',
-    6 => 'Molimo sačekajte dok se vaš dokument učita.',
-    7 => 'Mozete kliknuti desnim klikom ispod i izabrati opciju \'save target...\' ili \'save link location...\' kako bi sačuvali kopiju vašeg dokumenta.',
-    8 => "Putanja u configuration do HTMLDoc binary nije validna ili je pod ovim sistemom nije moguće izvršiti.  Molimo kontaktirajte administratora sajta.",
-    9 => 'PDF Generator',
-    10 => "Ovo je alatka za Ad-hoc PDF Generisanje. Ona će pokušati da konvertuje bilo koji URL koji joj zadate u PDF.  Molimo, imajte u vidu da se neke web stranice neće generisati pravilno korišćenjem ove opcije. \n           Ovo je ograničenje HTMLDoc PDF alatke za generisanje i takve greške netreba prijavljivati administratoru sajta",
-    11 => 'URL',
-    12 => 'Generiši PDF!',
-    13 => 'PHP Konfiguracija na ovom serveru ne dozvoljava da URL-ovi budu pozvani korišćenjem fopen() funkcije.  Administrator sistema mora izmeniti php.ini fajl i postaviti varijablu allow_url_fopen na On',
-    14 => 'PDF koji ste tražili ne postoji ili ste pokušali neovlašćeno da pristupite fajlu.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1407,11 +1417,11 @@ $LANG_TRB = array(
     'trackbacks' => 'Trackbacks',
     'editor_intro' => 'Pripremite vaš trackback komentar za <a href="%s">%s</a>.',
     'editor_intro_none' => 'Pripremite vaš trackback komentar.',
-    'trackback_note' => 'Da pošaljete trackback komentar za tekst, idite na listu tekstova i kliknite na "' . $LANG24[21] . '" za tekst. Da pošaljte trackback koji nije povezan sa tekstom, <a href="%s">kliknite ovde</a>.',
+    'trackback_note' => 'Da pošaljete trackback komentar za tekst, idite na listu tekstova i kliknite na "Pošalji Ping" za tekst. Da pošaljte trackback koji nije povezan sa tekstom, <a href="%s">kliknite ovde</a>.',
     'pingback_explain' => 'Unesite URL kojem šaljete Pingback. Pingback će "udarati" na vašu naslovnu stranu.',
     'pingback_url' => 'Pingback URL',
     'site_url' => 'URL Ovoga Sajta',
-    'pingback_note' => 'Da pošaljete pingback komentar za tekst, idite na listu tekstova i kliknite na "' . $LANG24[21] . '" za tekst. Da pošaljte pingback koji nije povezan sa tekstom, <a href="%s">kliknite ovde</a>.',
+    'pingback_note' => 'Da pošaljete pingback komentar za tekst, idite na listu tekstova i kliknite na "Pošalji Ping" za tekst. Da pošaljte pingback koji nije povezan sa tekstom, <a href="%s">kliknite ovde</a>.',
     'pbtarget_missing' => 'Nema Pingback URL-a',
     'pbtarget_required' => 'Molimo unesite pingback URL',
     'pb_error_details' => 'Greška prilikom slanja pingback-a:',
@@ -1529,8 +1539,6 @@ $LANG_commentcodes = array(
     1 => 'Komentari Zatvoreni'
 );
 
-//o ovim vaijablama bi neko mogao da razmisli kako ih prevesti
-//na najboli moguci nacin posto meni licno ovaj moj prevod nema previse smisla :)
 $LANG_commentmodes = array(
     'flat' => 'Paušalan',
     'nested' => 'Uklopljen',
@@ -1591,7 +1599,8 @@ $LANG_CONFIG = array(
     'reset_form' => 'Resetuj Formu',
     'changes_made' => 'Promene su uspešne za',
     'title' => 'Konfiguracioni Menadžer',
-    'disable' => 'Klikni da onemogućiš ovu opciju'
+    'disable' => 'Klikni da onemogućiš ovu opciju',
+    'enable' => 'Enable'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1619,6 +1628,7 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'Dozvoli MySQL Dump',
     'mysqldump_path' => 'Putanja Do Izvršnog Fajla',
     'mysqldump_options' => 'MySQL Dump Opcije',
+    'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Tema',
     'menu_elements' => 'Elementi Menija',
     'path_themes' => 'Putanja Za Teme',
@@ -1665,7 +1675,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Domen Kolačića',
     'cookiesecure' => 'Bezbednost Kolačića',
     'lastlogin' => 'Pamti Poslednju Prijavu?',
-    'pdf_enabled' => 'PDF Omogućen',
     'num_search_results' => 'Broj Rezultata U Pretrazi',
     'loginrequired' => 'Prijava Obavezna?',
     'submitloginrequired' => 'Doprinosi - Prijava Obavezna?',
@@ -1749,6 +1758,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debug Image Uploading?',
     'keep_unscaled_image' => 'Zadrži Orginalnu Sliku?',
     'allow_user_scaling' => 'Omogući Korisničko Skaliranje?',
+    'jpeg_quality' => 'JPEG Quality?',
     'max_image_width' => 'Max Širina Slike?',
     'max_image_height' => 'Max Visina Slike?',
     'max_image_size' => 'Max Veličina Slike?',
@@ -1771,6 +1781,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'Ograničenje Brzine Prijave',
     'user_html' => 'Korisnički HTML',
     'admin_html' => 'Admin HTML',
+    'advanced_html' => 'Additional HTML for Adv. Editor',
     'skip_html_filter_for_root' => 'Izostavi HTML Filter za Root-a?',
     'allowed_protocols' => 'Dozvoljeni Protokoli',
     'disable_autolinks' => 'Onemogući Autolikove?',
@@ -1784,7 +1795,18 @@ $LANG_confignames['Core'] = array(
     'default_permissions_topic' => 'Kategorija Podrazumevane Dozvole',
     'atom_max_stories' => 'Max. Tekstova u Webservis Feed-u',
     'disable_webservices' => 'Onemogući Webservise?',
-    'restrict_webservices' => 'Zabrani Webservise?'
+    'restrict_webservices' => 'Zabrani Webservise?',
+    'search_style' => 'Results List Style',
+    'search_limits' => 'Page Limits',
+    'search_show_num' => 'Show Result Number?',
+    'search_show_type' => 'Show Result Type?',
+    'search_show_user' => 'Show Author?',
+    'search_show_hits' => 'Show Number of Hits?',
+    'search_show_sort' => 'Allow User to Sort Results?',
+    'search_show_limit' => 'Show Page Limits?',
+    'search_no_data' => 'If No Data is Avaliable, Display',
+    'search_separator' => 'Group Separator',
+    'search_def_keytype' => 'Default Search Method'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1861,7 +1883,9 @@ $LANG_configselects['Core'] = array(
     15 => array('Po Rednom Broju' => 'sortnum', 'Leksikografski' => 'alpha'),
     16 => array('Prijava Nije Obavezna' => 0, 'Samo Napredna Pretraga' => 1, 'Jednostavna + Napredna Pretraga' => 2),
     17 => array('Komentari Omogućeni' => 0, 'Komentari Onemogućeni' => -1),
-    18 => array('Onemogući' => 0, 'Omogući (Identično)' => 1, 'Omogući (Početak Reči)' => 2, 'Omogući (Deo Reči)' => 3)
+    18 => array('Onemogući' => 0, 'Omogući (Identično)' => 1, 'Omogući (Početak Reči)' => 2, 'Omogući (Deo Reči)' => 3),
+    19 => array('Google' => 'google', 'Table' => 'table'),
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
 );
 
 ?>

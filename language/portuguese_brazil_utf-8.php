@@ -155,7 +155,7 @@ $LANG01 = array(
     108 => 'Limpa Cachê',
     109 => 'Reporta abuso',
     110 => 'Reporta este envio para a administração do site',
-    111 => 'Vê Versão PDF',
+    111 => '',
     112 => 'Usuários Registrados',
     113 => 'Documentação',
     114 => 'TRACKBACKS',
@@ -560,7 +560,7 @@ $LANG11 = array(
     2 => 'Enviar para um Amigo',
     3 => 'Versão para Impressão',
     4 => 'Opções da Publicação',
-    5 => 'Formato de Publicação PDF',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1341,26 +1341,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'O recurso de PDF está desabilitado',
-    2 => 'O documento fornecido não foi processado no formato PDF. O documento foi recebido, mas não pode ser processado. Por favor verifique se foram submetidos documentos formatados contendo somente comandos html que foram escritos para o padrão xHTML. Por favor note que documentos html muito complexos podem não processar corretamente ou simplesmente nem processarem (processo chamado de renderização). O documento resultante de sua tentativa ficou com 0 bytes de tamanho - e foi apagado. Se você tem certeza que o documento pode ser processado - renderizado - resubmeta o mesmo.',
-    3 => 'Erro desconhecido na geração do PDF',
-    4 => "Não foi fornecida uma página com dados ou você que usar a ferramenta de geração de PDF ad-hoc, abaixo.  Se você pensa que está tendo erro nesta página\n          por favor contate o administrador do sistema.  Ou então você pode usar o formulário abaixo para gerar o PDF com um aspecto ad-hoc.",
-    5 => 'Carregando seu documento.',
-    6 => 'Por favor aguarde enquanto seu documento é carregado.',
-    7 => 'Você pode dar um clique com o botão direito do mouse no botão abaixo e escolher\'Salva em...\' ou \'Salva num link...\' para salvar a copia do seu documento.',
-    8 => 'O path (caminho) fornecido no arquivo de configuração (para o arquivo binário HTMLDoc) é inválido ou o sistema não pode executá-lo. Por favor contate o administrador do site se este problema persistir.',
-    9 => 'Gerador de PDF',
-    10 => "Esta é ferramenta de Geração de PDF Ad-hoc. Ela tentará converter qualquer URL fornecida num documento PDF. Por favor fique ciente que algumas páginas não irão renderizar perfeitamente com este recurso.  Esta\n           é uma limitação da ferramenta e os erros desta natureza não devem ser reportados para o administrador do site",
-    11 => 'URL',
-    12 => 'Gerar PDF!',
-    13 => 'A configuração PHP deste servidor não permite que URLs sejam usadas com o comando  fopen().  O administrador do sistema deve editar o arquivo php.ini file e definir o parâmetro allow_url_fopen como On',
-    14 => 'O PDF que você requisitou ou não existe ou você tentou acessar este arquivo de forma ilegal.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1694,7 +1674,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Record Last Login?',
-    'pdf_enabled' => 'PDF Enabled?',
     'num_search_results' => 'Number of Search Results',
     'loginrequired' => 'Login Required?',
     'submitloginrequired' => 'Submit Login Required?',

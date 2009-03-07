@@ -151,7 +151,7 @@ $LANG01 = array(
     108 => 'Opró¿nij Cache',
     109 => 'Zg³o¶ nadu¿ycie',
     110 => 'Powiadom administratora o tym wpisie',
-    111 => 'Wersja PDF',
+    111 => '',
     112 => 'Zarejestrowani U¿ytkownicy',
     113 => 'Dokumentacja',
     114 => 'POWIADOMIENIA ZWROTNE',
@@ -556,7 +556,7 @@ $LANG11 = array(
     2 => 'Wy¶lij Znajomemu',
     3 => 'Wersja Do Wydruku',
     4 => 'Opcje Artyku³u',
-    5 => 'Format PDF',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1337,26 +1337,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'Opcja PDF zosta³a wy³±czona',
-    2 => 'Dany dokument nie zosta³ wygenerowany. Dokument zosta³ otrzymany ale nie móg³ byæ przetworzony.  Upewnij siê, ¿e przes³ane dokumenty html zosta³y zapisane w standardowym xHTML. Proszê mieæ na uwadze, ¿e skomplikowane dokumenty html-owe mog± zostaæ przetworzone z b³êdem lub w ogóle. Dokument, który próbowa³a¶/e¶ wygenrowaæ mia³ rozmiar 0 bajtów i zosta³ usuniêty. Je¶li uwa¿asz, ¿e Twój dokument powinien zostaæ wygenerowany prawid³owo, prze¶lij go raz jeszcze.',
-    3 => 'Nieznany b³±d podczas generowania pliku PDF',
-    4 => "Nie okre¶lono ¿adnej strony albo chcesz u¿yæ poni¿szego narzêdzia do generowania PDF-a ad-hoc.  Je¶li uwa¿asz, ¿e strona to b³±d\n          skontaktuj siê z administratorem systemu.  W przeciwnym razie, u¿yj poni¿szego formularza aby wygenerowaæ PDF-a metod± ad-hoc.",
-    5 => '£adowanie dokumentu.',
-    6 => 'Proszê poczekaæ na za³adowanie dokumentu.',
-    7 => 'Kliknij prawym przyciskiem myszy i wybierz \'zapisz element docelowy jako...\' lub \'zapisz link...\' aby zachowaæ kopiê dokumentu na Twoim komputerze.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'Generator PDF',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
-    11 => 'URL',
-    12 => 'Generuj PDF!',
-    13 => 'Konfiguracja PHP na tym serwerze nie pozwala na u¿ycie URL z komend± fopen().  Administrator systemu musi edytowaæ plik php.ini i ustawiæ allow_url_fopen na On',
-    14 => '¯±dany PDF albo nie istnieje albo nie masz do niego uprawnieñ.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1690,7 +1670,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Domena ciasteczek',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Zarejestrowaæ ostatnie logowanie?',
-    'pdf_enabled' => 'PDF w³±czony?',
     'num_search_results' => 'Liczba wyników z wyszukiwarki',
     'loginrequired' => 'Wymagane zalogowanie?',
     'submitloginrequired' => 'Wymagane zalogowanie do przes³ania materia³ów?',

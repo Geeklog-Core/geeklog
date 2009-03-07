@@ -154,7 +154,7 @@ $LANG01 = array(
     108 => 'Vider la cache',
     109 => 'Rapportez un abus',
     110 => 'D&eacute;noncez ce message &agrave; l\'administrateur',
-    111 => 'Version PDF',
+    111 => '',
     112 => 'Utilisateurs enregistr&eacute;s',
     113 => 'Documentation',
     114 => 'PISTELS',
@@ -559,7 +559,7 @@ $LANG11 = array(
     2 => 'Envoyer cet article &agrave; un ami',
     3 => 'Version imprimable',
     4 => 'Option des articles',
-    5 => 'Article en format PDF',
+    5 => '',
     6 => 'Subscribe to \'%s\''
 );
 
@@ -1340,26 +1340,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'La fonction PDF a &eacute;t&eacute; d&eacute;sactiv&eacute;e',
-    2 => 'Le document fourni a &eacute;t&eacute; re&ccedil;u mais n\'a pu être trait&eacute;. Merci de ne soumettre que des documents HTML trait&eacute;s selon les standards xHTML. Prenez note que les documents trop complexes peuvent g&eacute;n&eacute;rer des erreurs ou ne pas être trait&eacute;s. Un document produit par vos soins mesurait 0 bytes et &agrave; &eacute;t&eacute; effac&eacute;. Si vous êtes certain de la qualit&eacute; de votre document, vous pouvez essayer de le soumettre de nouveau.',
-    3 => 'Erreur inconnue lors de la conversion PDF',
-    4 => "Aucune page soumise, ou alors vous pr&eacute;f&eacute;rez utiliser l\'outil PDF ci-dessous. Si vous pensez qu\'une erreur est survenue et que cette page\n          s\'affiche sans raison, contactez l\'administrateur du site.   Siinon, vous êtes pri&eacute; d\'utiliser l\'outil PDF ci-dessous.",
-    5 => 'Chargement du document.',
-    6 => 'Merci de patienter lors du chargement.',
-    7 => 'Vous pouvez cliquer avec le bouton de droite et choisir \'sauvegarde...\' ou \'sauvegarde du lien...\' pour sauvegarder une copie de votre document.',
-    8 => "Le chemin d\'acc&egrave;s fourni au moment de configurer le fichier au format binaire est non-valide, ou le syst&egrave;me ne peut l\'ex&eacute;cuter. Contactez l\'administrateur du site si le probl&egrave;me\n          persiste.",
-    9 => 'G&eacute;n&eacute;rateur PDF',
-    10 => "Voici l\'outil de conversion PDF. Il est programm&eacute; pour convertir un URL en un fichier PDF. Notez que certaines pages mal programm&eacute;es ne donnent pas de bons r&eacute;sultats. Ceci\n           repr&eacute;sente une limite inh&eacute;rente &agrave; cet outil de conversion PDF et ne constitue pas une erreur du syst&egrave;me en soi",
-    11 => 'URL',
-    12 => 'Convertir en PDF!',
-    13 => 'La configuration PHP sur ce serveur ne permet pas l\'utilisation de la commande fopen(). L\'administrateur du site doit modifier le fichier php.ini et permettre allow_url_fopen &agrave; On',
-    14 => 'Soit le fichier PDF demand&eacute; n\'existe pas, soit vous avez essay&eacute; d\'y acc&eacute;der de fa&ccedil;on ill&eacute;gale.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1693,7 +1673,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Record Last Login?',
-    'pdf_enabled' => 'PDF Enabled?',
     'num_search_results' => 'Number of Search Results',
     'loginrequired' => 'Login Required?',
     'submitloginrequired' => 'Submit Login Required?',
