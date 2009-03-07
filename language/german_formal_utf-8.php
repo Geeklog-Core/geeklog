@@ -156,7 +156,7 @@ $LANG01 = array(
     108 => 'Cache löschen',
     109 => 'Beitrag melden',
     110 => 'Site-Admin auf diesen Beitrag hinweisen',
-    111 => 'Als PDF anzeigen',
+    111 => '',
     112 => 'Registrierte User',
     113 => 'Dokumentation',
     114 => 'TRACKBACKS',
@@ -561,7 +561,7 @@ $LANG11 = array(
     2 => 'An einen Freund schicken',
     3 => 'Druckfähige Version',
     4 => 'Optionen',
-    5 => 'Als PDF',
+    5 => '',
     6 => 'Feed \'%s\' abonnieren'
 );
 
@@ -1342,26 +1342,6 @@ $LANG_LOGIN = array(
 );
 
 ###############################################################################
-# pdfgenerator.php
-
-$LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
-    11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
-);
-
-###############################################################################
 # trackback.php
 
 $LANG_TRB = array(
@@ -1695,7 +1675,6 @@ $LANG_confignames['Core'] = array(
     'cookiedomain' => 'Cookie Domain',
     'cookiesecure' => 'Cookie Secure',
     'lastlogin' => 'Letzten Login aufzeichnen?',
-    'pdf_enabled' => 'PDF einschalten?',
     'num_search_results' => 'Anzahl Suchergebnisse',
     'loginrequired' => 'Anmelden generell nötig?',
     'submitloginrequired' => 'Anmelden für Beiträge?',

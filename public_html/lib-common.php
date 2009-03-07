@@ -2362,7 +2362,7 @@ function COM_userMenu( $help='', $title='', $position='' )
 
 function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF,
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE,
            $_DB_dbms, $config;
 
     $retval = '';
@@ -2665,19 +2665,6 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $menu_item = $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
             $link_array[$LANG01[103]] = $menu_item;
-        }
-
-        // Add PDF Generator Link if the feature is enabled
-        if(( $_CONF['pdf_enabled'] == 1 ) AND SEC_inGroup( 'Root' ))
-        {
-            $url = $_CONF['site_url'] . '/pdfgenerator.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG_PDF[9] );
-            $adminmenu->set_var( 'option_count', 'N/A' );
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG_PDF[9]] = $menu_item;
         }
 
         if( $_CONF['link_documentation'] == 1 )

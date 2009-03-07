@@ -260,14 +260,6 @@ if ($A['count'] > 0) {
             $story_template->set_var ('lang_print_story', $LANG11[3]);
             $story_template->set_var ('lang_print_story_alt', $LANG01[65]);
         }
-        if ($_CONF['pdf_enabled'] == 1) {
-            $pdfUrl = $_CONF['site_url']
-                    . '/pdfgenerator.php?pageType=2&amp;pageData='
-                    . urlencode ($printUrl);
-            $story_options[] = COM_createLink($LANG11[5], $pdfUrl);
-            $story_template->set_var ('pdf_story_url', $printUrl);
-            $story_template->set_var ('lang_pdf_story', $LANG11[5]);
-        }
         if ($_CONF['backend'] == 1) {
             $tid = $story->displayElements('tid');
             $result = DB_query("SELECT filename, title, format FROM {$_TABLES['syndication']} WHERE type = 'article' AND topic = '$tid' AND is_enabled = 1");

@@ -20,8 +20,9 @@ function update_ConfValues()
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
-    // move pdf_enabled option to make room for new search options
-    DB_query("UPDATE {$_TABLES['conf_values']} SET sort_order = 795 WHERE sort_order = 660");
+    // remove pdf_enabled option; this also makes room for new search options
+    DB_delete($_TABLES['conf_values'], 'name', 'pdf_enabled');
+
     // move num_search_results options
     DB_query("UPDATE {$_TABLES['conf_values']} SET sort_order = 648 WHERE sort_order = 670");
     // change default for num_search_results

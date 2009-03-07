@@ -477,24 +477,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var( 'lang_print_story', $LANG11[3] );
             $article->set_var( 'lang_print_story_alt', $LANG01[65] );
         }
-        if( $_CONF['pdf_enabled'] == 1 )
-        {
-            $pdfUrl = $_CONF['site_url'] . '/pdfgenerator.php?pageType=2&amp;'
-                    . 'pageData=' . urlencode( $printUrl );
-            $pdficon = '<img src="'. $_CONF['layout_url'] . '/images/pdf.'
-                         . $_IMAGE_TYPE . '" alt="'. $LANG01[111]
-                         .'" title="'. $LANG11[5] .'"' . XHTML . '>';
-            $article->set_var( 'pdf_icon',
-                COM_createLink($pdficon, $pdfUrl)
-            );
-            $article->set_var( 'pdf_story_url', $pdfUrl );
-            $article->set_var( 'lang_pdf_story', $LANG11[5] );
-            $article->set_var( 'lang_pdf_story_alt', $LANG01[111] );
-        }
-        else
-        {
-            $article->set_var( 'pdf_icon', '' );
-        }
         $article->set_var( 'story_display', 'index' );
 
         $storycounter++;

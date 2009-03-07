@@ -119,8 +119,7 @@ $arGlIgnores = array(
     $packagedir . '/public_html/calendar/',
     $packagedir . '/public_html/polls/',
     $packagedir . '/public_html/links/',
-    $packagedir . '/public_html/staticpages/',
-    $packagedir . '/pdfs/',
+    $packagedir . '/public_html/staticpages/'
 );
 
 /*foreach ($arIncludes as $arSubpackageIgnores) {
