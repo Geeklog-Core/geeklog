@@ -42,7 +42,7 @@
  * @version 0.1
  * @since GL 1.4.2
  * @copyright Copyright &copy; 2006
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @author Michael Jervis <mike AT fuckingbrit DOT com>
  *
  */

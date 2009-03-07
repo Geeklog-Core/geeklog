@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mysql_install.php,v 1.8 2008/04/12 13:21:34 dhaun Exp $
 
 /**
  * Links plugin Installation SQL
@@ -40,7 +38,7 @@
  * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>

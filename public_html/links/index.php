@@ -33,8 +33,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.40 2008/07/13 15:03:52 dhaun Exp $
 
 /**
  * This is the links page
@@ -45,7 +43,7 @@
  * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
  * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>

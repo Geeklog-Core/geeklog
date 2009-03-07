@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: portal.php,v 1.9 2008/05/24 08:57:35 dhaun Exp $
 
 /** 
  * Geeklog portal page that tracks link click throughs. 
@@ -43,7 +41,7 @@
  * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License 
  * @author Trinity Bays <trinity93 AT gmail.com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
