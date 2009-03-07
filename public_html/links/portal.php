@@ -32,8 +32,6 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-require_once '../lib-common.php';
-
 /** 
  * Geeklog portal page that tracks link click throughs. 
  * 
@@ -43,7 +41,7 @@ require_once '../lib-common.php';
  * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
- * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License 
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Trinity Bays <trinity93 AT gmail.com>
  * @author Tony Bibbs <tony AT tonybibbs DOT com>
  * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
@@ -51,6 +49,11 @@ require_once '../lib-common.php';
  * @author Dirk Haun <dirk AT haun-online DOT de>
  * 
  */
+
+/**
+* Geeklog common function library 
+*/
+require_once '../lib-common.php';
 
 if (!in_array('links', $_PLUGINS)) {
     echo COM_refresh($_CONF['site_url'] . '/index.php');

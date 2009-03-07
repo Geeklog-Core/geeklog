@@ -33,6 +33,26 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+ * Geeklog links categories administration page.
+ *
+ * @package Links
+ * @subpackage admin
+ * @filesource
+ * @version 2.1
+ * @since GL 1.5.0
+ * @copyright Copyright &copy; 2000-2009
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @author Tony Bibbs, tony AT tonybibbs DOT com
+ * @author Mark Limburg, mlimburg AT users.sourceforge DOT net
+ * @author Jason Whittenburg, jwhitten AT securitygeeks DOT com
+ * @author Dirk Haun, dirk AT haun-online DOT de
+ * @author Euan McKay, info AT heatherengineering DOT com
+ */
+
+/** 
+* Geeklog common function library and Admin authentication
+*/
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 

@@ -32,9 +32,6 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-require_once '../../../lib-common.php';
-require_once '../../auth.inc.php';
-
 /**
  * Geeklog links administration page.
  *
@@ -44,13 +41,19 @@ require_once '../../auth.inc.php';
  * @version 2.0
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2007
- * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
  * @author Tom Willett <twillett@users.sourceforge.net>
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
  */
+
+/** 
+* Geeklog common function library and Admin authentication
+*/
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
 
 // Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
