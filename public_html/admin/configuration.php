@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: configuration.php,v 1.13 2008/05/03 15:09:13 mjervis Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -41,9 +39,9 @@ $config =& config::get_instance();
 /**
 * Helper function: Provide language dropdown
 *
-* @return   Array   Array of (filename, displayname) pairs
+* NOTE:     Note that key/value are being swapped!
 *
-* @note     Note that key/value are being swapped!
+* @return   Array   Array of (filename, displayname) pairs
 *
 */
 function configmanager_select_language_helper()
@@ -56,9 +54,9 @@ function configmanager_select_language_helper()
 /**
 * Helper function: Provide themes dropdown
 *
-* @return   Array   Array of (filename, displayname) pairs
+* NOTE:     Beautifying code duplicated from usersettings.php
 *
-* @note     Beautifying code duplicated from usersettings.php
+* @return   Array   Array of (filename, displayname) pairs
 *
 */
 function configmanager_select_theme_helper()

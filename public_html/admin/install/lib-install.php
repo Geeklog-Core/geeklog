@@ -328,10 +328,12 @@ function INST_printTab($num)
 /**
  * Written to aid in install script development 
  *
+ * NOTE:    This code is a modified copy from PHP.net
+ *
  * @param   int $size       Filesize
  * @param   int $dec_places Number of decimal places
  * @return  string          Filesize string
- * @note    This code is a modified copy from PHP.net
+ *
  */
 function INST_formatSize($size, $dec_places = 0) 
 {
@@ -360,9 +362,10 @@ function INST_helpLink($var)
 /**
  * Make a nice display name from the language filename
  *
+ * NOTE:     This code is a straight copy from MBYTE_languageList()
+ *
  * @param    string  $file   filename without the extension
  * @return   string          language name to display to the user
- * @note     This code is a straight copy from MBYTE_languageList()
  *
  */
 function INST_prettifyLanguageName($filename)
@@ -505,9 +508,10 @@ function INST_dbExists($db)
 /**
  * Check if URL exists
  *
+ * NOTE:    This code is a modified copy from marufit at gmail dot com
+ *
  * @param   string  $url    URL
  * @return  bool            True if URL exists, false if not
- * @note    This code is a modified copy from marufit at gmail dot com
  *
  */
 function INST_urlExists($url) 
@@ -633,10 +637,11 @@ function INST_getAlertMsg($mMessage, $mType = 'notice')
  * If we're doing an upgrade from 1.5.0 or later and we have the necessary
  * DB credentials, skip the forms and upgrade directly.
  *
+ * NOTE:    Will not return if upgrading from 1.5.0 or later.
+ *
  * @param   string  $dbconfig_path      path to db-config.php
  * @param   string  $siteconfig_path    path to siteconfig.php
  * @return  string                      database version, if possible
- * @note    Will not return if upgrading from 1.5.0 or later.
  *
  */
 function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)

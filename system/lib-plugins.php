@@ -1790,6 +1790,10 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
 * This is called from COM_rdfUpToDateCheck() every time Geeklog's index.php
 * is displayed - it should try to be as efficient as possible ...
 *
+* NOTE: The presence of non-empty $updated_XXX parameters indicates that an
+*       existing entry has been changed. The plugin may therefore apply a
+*       different method to check if its feed has to be updated.
+*
 * @param    string  plugin          plugin name
 * @param    int     feed            feed id
 * @param    string  topic           "topic" of the feed - plugin specific
@@ -1798,10 +1802,6 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
 * @param    string  updated_topic   (optional) topic to update
 * @param    string  updated_id      (optional) entry id to update
 * @return   bool                    false = feed has to be updated, true = ok
-*
-* @note The presence of non-empty $updated_XXX parameters indicates that an
-*       existing entry has been changed. The plugin may therefore apply a
-*       different method to check if its feed has to be updated.
 *
 */
 function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
@@ -2080,11 +2080,12 @@ function PLG_runScheduledTask ()
 * Plugins can define their own 'itemsaved' function to be notified whenever
 * an item is saved or modified.
 *
+* NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
+*
 * @param    string  $id     unique ID of the item
 * @param    string  $type   type of the item, e.g. 'article'
 * @param    string  $old_id (optional) old ID when the ID was changed
 * @returns  void            (actually: false, for backward compatibility)
-* @note     The behaviour of this API function changed in Geeklog 1.6.0
 *
 */
 function PLG_itemSaved($id, $type, $old_id = '')

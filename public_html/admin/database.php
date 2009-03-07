@@ -239,9 +239,10 @@ function dobackup()
 /**
 * Download a backup file
 *
+* NOTE:     Filename should have been sanitized and checked before calling this.
+*
 * @param    string  $file   Filename (without the path)
 * @return   void
-* @note     Filename should have been sanitized and checked before calling this.
 *
 */
 function downloadbackup($file)

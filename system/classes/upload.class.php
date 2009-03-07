@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: upload.class.php,v 1.50 2007/11/25 06:59:56 ospiess Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -870,10 +868,11 @@ class upload
     /**
     * Set JPEG quality
     *
+    * NOTE:     The 'quality' is an arbitrary value used by the IJG library.
+    *           It is not a percent value! The default (and a good value) is 75.
+    *
     * @param    int       $quality  JPEG quality (0-100)
     * @return   boolean   true if we set values OK, otherwise false
-    * @note     The 'quality' is an arbitrary value used by the IJG library.
-    *           It is not a percent value! The default (and a good value) is 75.
     *
     */
     function setJpegQuality($quality)

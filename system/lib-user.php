@@ -374,13 +374,13 @@ function USER_sendNotification ($username, $email, $uid, $mode='inactive')
 /**
 * Get a user's photo, either uploaded or from an external service
 *
+* NOTE:     All parameters are optional and can be passed as 0 / empty string.
+*
 * @param    int     $uid    User ID
 * @param    string  $photo  name of the user's uploaded image
 * @param    string  $email  user's email address (for gravatar.com)
 * @param    int     $width  preferred image width
 * @return   string          <img> tag or empty string if no image available
-*
-* @note     All parameters are optional and can be passed as 0 / empty string.
 *
 */
 function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
@@ -466,11 +466,11 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 /**
 * Delete a user's photo (i.e. the actual file)
 *
+* NOTE:     Will silently ignore non-existing files.
+*
 * @param    string  $photo          name of the photo (without the path)
 * @param    bool    $abortonerror   true: abort script on error, false: don't
 * @return   void
-*
-* @note     Will silently ignore non-existing files.
 *
 */
 function USER_deletePhoto ($photo, $abortonerror = true)

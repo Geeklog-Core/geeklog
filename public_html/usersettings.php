@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: usersettings.php,v 1.179 2008/09/15 18:29:39 mjervis Exp $
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
@@ -703,10 +701,12 @@ function editpreferences()
 /**
 * Check if an email address already exists in the database
 *
+* NOTE:    Allows remote accounts to have duplicate email addresses
+*
 * @param   email   string   email address to check
 * @param   uid     int      user id of current user
 * @return          bool     true = exists, false = does not exist
-* @note    Allows remote accounts to have duplicate email addresses
+*
 */
 function emailAddressExists ($email, $uid)
 {

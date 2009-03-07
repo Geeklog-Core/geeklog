@@ -726,9 +726,10 @@ function SEC_authenticate($username, $password, &$uid)
 /**
 * Return the current user status for a user.
 *
+* NOTE:     May not return for banned/non-approved users.
+*
 * @param    int  $userid   Valid uid value.
 * @return   int            user status, 0-3
-* @note     May not return for banned/non-approved users.
 *
 */
 function SEC_checkUserStatus($userid)

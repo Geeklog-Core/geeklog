@@ -593,10 +593,11 @@ function INST_identifyGeeklogVersion()
 /**
 * Change default character set to UTF-8
 *
+* NOTE:    Yes, this means that we need to patch siteconfig.php a second time.
+*
 * @param   string   $siteconfig_path  complete path to siteconfig.php
 * @param   string   $charset          default character set to use
 * @return  boolean                    true: success; false: an error occured
-* @note    Yes, this means that we need to patch siteconfig.php a second time.
 *
 */
 function INST_setDefaultCharset($siteconfig_path, $charset)
@@ -782,8 +783,9 @@ function INST_pluginExists($plugin)
 /**
 * Upgrade any enabled plugins
 *
-* @note Needs a fully working Geeklog, so can only be done late in the upgrade
+* NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
 *       process!
+*
 * @return   int     number of failed plugin updates (0 = everything's fine)
 *
 */

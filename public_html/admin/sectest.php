@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: sectest.php,v 1.13 2007/12/09 18:05:39 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -193,9 +191,9 @@ function doTest ($baseurl, $urltocheck, $what)
 /**
 * Check for the existence of the install directory
 *
-* @return   string      text explaining the result of the test
+* NOTE: This test used to be part of the "Get Bent" block in lib-custom.php
 *
-* @note This test used to be part of the "Get Bent" block in lib-custom.php
+* @return   string      text explaining the result of the test
 *
 */
 function checkInstallDir ()
@@ -233,10 +231,10 @@ function checkInstallDir ()
 /**
 * Check for accounts that still use the default password
 *
-* @return   string      text explaining the result of the test
-*
-* @note If one of our users is also using "password" as their password, this
+* NOTE: If one of our users is also using "password" as their password, this
 *       test will also detect that, as it checks all accounts.
+*
+* @return   string      text explaining the result of the test
 *
 */
 function checkDefaultPassword ()

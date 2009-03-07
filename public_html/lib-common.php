@@ -1772,13 +1772,13 @@ function COM_debug( $A )
 * of an article with a future publish date reaching it's
 * publish time and if so updates the RDF file.
 *
+* NOTE: When called without parameters, this will only check for new entries to
+*       include in the feeds. Pass the $updated_XXX parameters when the content
+*       of an existing entry has changed.
+*
 * @param    string  $updated_type   (optional) feed type to update
 * @param    string  $updated_topic  (optional) feed topic to update
 * @param    string  $updated_id     (optional) feed id to update
-*
-* @note When called without parameters, this will only check for new entries to
-*       include in the feeds. Pass the $updated_XXX parameters when the content
-*       of an existing entry has changed.
 *
 * @see file lib-syndication.php
 *
@@ -2718,10 +2718,11 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 * This function does a redirect using a meta refresh. This is (or at least
 * used to be) more compatible than using a HTTP Location: header.
 *
+* NOTE:     This does not need to be XHTML compliant. It may also be used
+*           in situations where the XHTML constant is not defined yet ...
+*
 * @param    string  $url    URL to send user to
 * @return   string          HTML meta redirect
-* @note     This does not need to be XHTML compliant. It may also be used
-*           in situations where the XHTML constant is not defined yet ...
 *
 */
 function COM_refresh($url)
@@ -2731,11 +2732,14 @@ function COM_refresh($url)
 
 /**
  * DEPRECIATED -- see CMT_userComments in lib-comment.php
+ * @deprecated since Geeklog 1.4.0
  */
-function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false ) {
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false )
+{
     global $_CONF;
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
+
     return CMT_userComments( $sid, $title, $type, $order, $mode, $pid, $page, $cid, $delete_option );
 }
 
@@ -3001,7 +3005,6 @@ function COM_undoSpecialChars( $string )
 * @return   string  $sid  Story ID
 *
 */
-
 function COM_makesid()
 {
     $sid = date( 'YmdHis' );
@@ -3102,6 +3105,9 @@ function COM_formatEmailAddress( $name, $address )
 *
 * All emails sent by Geeklog are sent through this function now.
 *
+* NOTE: Please note that using the $cc parameter will expose the email addresses
+*       of all recipients. Use with care.
+*
 * @param    string      $to         recipients name and email address
 * @param    string      $subject    subject of the email
 * @param    string      $message    the text of the email
@@ -3110,9 +3116,6 @@ function COM_formatEmailAddress( $name, $address )
 * @param    int         $priority   (optional) add X-Priority header, if > 0
 * @param    string      $cc         (optional) other recipients (name + email)
 * @return   boolean                 true if successful,  otherwise false
-*
-* @note Please note that using the $cc parameter will expose the email addresses
-*       of all recipients. Use with care.
 *
 */
 function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '' )
@@ -5489,6 +5492,7 @@ function COM_stripslashes( $text )
 * @param    string    $parameter   the parameter to test
 * @param    boolean   $isnumeric   true if $parameter is supposed to be numeric
 * @return   string    the filtered parameter (may now be empty or 0)
+* @see COM_applyBasicFilter
 *
 */
 function COM_applyFilter( $parameter, $isnumeric = false )
@@ -5501,12 +5505,13 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 /**
 * Filter parameters
 *
+* NOTE:     Use this function instead of COM_applyFilter for parameters
+*           _not_ coming in through a GET or POST request.
+*
 * @param    string    $parameter   the parameter to test
 * @param    boolean   $isnumeric   true if $parameter is supposed to be numeric
 * @return   string    the filtered parameter (may now be empty or 0)
-*
-* @note     Use this function instead of COM_applyFilter for parameters
-*           _not_ coming in through a GET or POST request.
+* @see COM_applyFilter
 *
 */
 function COM_applyBasicFilter( $parameter, $isnumeric = false )
@@ -5635,11 +5640,12 @@ function COM_sanitizeID( $id, $new_id = true )
 /**
 * Sanitize a filename.
 *
+* NOTE:     This function is pretty strict in what it allows. Meant to be used
+*           for files to be included where part of the filename is dynamic.
+*
 * @param    string  $filename   the filename to clean up
 * @param    boolean $allow_dots whether to allow dots in the filename or not
 * @return   string              sanitized filename
-* @note     This function is pretty strict in what it allows. Meant to be used
-*           for files to be included where part of the filename is dynamic.
 *
 */
 function COM_sanitizeFilename($filename, $allow_dots = false)
@@ -5968,6 +5974,7 @@ function COM_onFrontpage()
 * the inverted return values, it has been deprecated and is only provided for
 * backward compatibility - use COM_onFrontpage() instead.
 *
+* @deprecated since Geeklog 1.4.1
 * @see COM_onFrontpage
 *
 */
@@ -5976,11 +5983,13 @@ function COM_isFrontpage()
     return !COM_onFrontpage();
 }
 
-/** Converts a number for output into a formatted number with thousands-
-*         separator, comma-separator and fixed decimals if necessary
+/**
+* Converts a number for output into a formatted number with thousands-
+* separator, comma-separator and fixed decimals if necessary
 *
-*        @param        float        $number        Number that will be formatted
-*        @return        string                        formatted number
+* @param        float        $number        Number that will be formatted
+* @return        string                        formatted number
+*
 */
 function COM_numberFormat( $number )
 {
@@ -6083,12 +6092,12 @@ function COM_getImgSizeAttributes( $file )
 /**
 * Display a message and abort
 *
+* NOTE: Displays the message and aborts the script.
+*
 * @param    int     $msg            message number
 * @param    string  $plugin         plugin name, if applicable
 * @param    int     $http_status    HTTP status code to send with the message
 * @param    string  $http_text      Textual version of the HTTP status code
-*
-* @note Displays the message and aborts the script.
 *
 */
 function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $http_text = 'OK')
@@ -6451,14 +6460,14 @@ function COM_switchLocaleSettings()
 * e.g. '...', to indicate the truncation.
 * This function is multi-byte string aware, based on a patch by Yusuke Sakata.
 *
+* NOTE: The truncated string may be shorter but will never be longer than
+*       $maxlen characters, i.e. the $filler string is taken into account.
+*
 * @param    string  $text       the text string to truncate
 * @param    int     $maxlen     max. number of characters in the truncated string
 * @param    string  $filler     optional filler string, e.g. '...'
 * @param    int     $endchars   number of characters to show after the filler
 * @return   string              truncated string
-*
-* @note The truncated string may be shorter but will never be longer than
-*       $maxlen characters, i.e. the $filler string is taken into account.
 *
 */
 function COM_truncate( $text, $maxlen, $filler = '', $endchars = 0 )
@@ -6718,9 +6727,10 @@ function COM_renderWikiText($wikitext)
 /**
 * Set the {lang_id} and {lang_attribute} variables for a template
 *
+* NOTE:     {lang_attribute} is only set in multi-language environments.
+*
 * @param    ref     $template   template to use
 * @return   void
-* @note     {lang_attribute} is only set in multi-language environments.
 *
 */
 function COM_setLangIdAndAttribute(&$template)
