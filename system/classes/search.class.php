@@ -530,7 +530,7 @@ class Search {
 
         // Start search timer
         $searchtimer = new timerobject();
-        $searchtimer->setPercision(4);
+        $searchtimer->setPrecision(4);
         $searchtimer->startTimer();
 
         // Have plugins do their searches

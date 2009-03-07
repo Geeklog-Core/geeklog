@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | timer.class.php                                                           |
 // |                                                                           |
 // | Geeklog timer class.  Use this to do performance testing.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -28,17 +28,15 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: timer.class.php,v 1.8 2008/05/23 07:35:11 dhaun Exp $
 
 /* EXAMPLE  USAGE
 
     // Instantiate new timer object
     $mytimer = new timerobject();
 
-    // Set percision of the results to 4 significan't digits
+    // Set precision of the results to 4 significan't digits
     // NOTE: this call is optional, code defaults to 2 
-    $mytimer->setPercision(4);
+    $mytimer->setPrecision(4);
 
     // Start the timer
     $mytimer->startTimer();
@@ -74,7 +72,7 @@ class timerobject {
     /**
     * @access private
     */
-    var $_percision = 2;
+    var $_precision = 2;
 
     // PUBLIC METHODS
 
@@ -82,7 +80,7 @@ class timerobject {
     * Constructor
     *
     * This initializes the timerobject and sets the default
-    * percision of results to two decimal places
+    * precision of results to two decimal places
     *
     */
     function timerobject()
@@ -90,7 +88,7 @@ class timerobject {
     }
 
     /**
-    * Set percision on timer results
+    * Set precision on timer results
     *
     * This sets how many significant digits get
     * sent back when elapsedTime is called
@@ -98,10 +96,22 @@ class timerobject {
     * @param    int     $num_dec_places     Number of significant digits
     *
     */
+    function setPrecision($num_dec_places)
+    {
+        $this->_precision = $num_dec_places;
+    }
+
+    /**
+    * Deprecated - use setPrecision instead
+    *
+    * @deprecated since Geeklog 1.6.0
+    * @see setPrecision
+    */
     function setPercision($num_dec_places)
     {
-        $this->_percision = $num_dec_places;
+        $this->_precision = $num_dec_places;
     }
+
 
     /**
     * Starts the timer
@@ -118,7 +128,7 @@ class timerobject {
     /**
     * Stops the timer
     *
-    * @return   float   elapsed time to degree of percision specified
+    * @return   float   elapsed time to degree of precision specified
     *
     */
     function stopTimer()
@@ -154,12 +164,12 @@ class timerobject {
     * This returns the elapsed time with the proper number of 
     * significant digits
     *
-    * @return   float   Elasped time in seconds formatted to degree of percision specified
+    * @return   float   Elasped time in seconds formatted to degree of precision specified
     *
     */
     function getElapsedTime()
     {
-        return sprintf("%.{$this->_percision}f", $this->_elapsedtime);
+        return sprintf("%.{$this->_precision}f", $this->_elapsedtime);
     }
 
     // PRIVATE METHODS
