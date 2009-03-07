@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -29,6 +29,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* @package Spam-X
+*/
+
+/**
+* Plugin autoinstall function
+*
+* @param    string  $pi_name    Plugin name
+* @return   array               Plugin information
+*
+*/
 function plugin_autoinstall_spamx($pi_name)
 {
     $pi_name         = 'spamx';
@@ -72,6 +83,14 @@ function plugin_autoinstall_spamx($pi_name)
     return $inst_parms;
 }
 
+/**
+* Load plugin configuration from database
+*
+* @param    string  $pi_name    Plugin name
+* @return   boolean             true on success, otherwise false
+* @see      plugin_initconfig_spamx
+*
+*/
 function plugin_load_configuration_spamx($pi_name)
 {
     global $_CONF;
@@ -84,11 +103,13 @@ function plugin_load_configuration_spamx($pi_name)
     return plugin_initconfig_spamx();
 }
 
-function plugin_postinstall_spamx($pi_name)
-{
-    return true;
-}
-
+/**
+* Check if the plugin is compatible with this Geeklog version
+*
+* @param    string  $pi_name    Plugin name
+* @return   boolean             true: plugin compatible; false: not compatible
+*
+*/
 function plugin_compatible_with_this_version_spamx($pi_name)
 {
     if (! function_exists('PLG_spamAction')) {

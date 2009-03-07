@@ -12,7 +12,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelTrackback.Admin.class.php,v 1.11 2008/09/21 08:37:08 dhaun Exp $
+* @package Spam-X
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'MassDelTrackback.Admin.class.php') !== false) {

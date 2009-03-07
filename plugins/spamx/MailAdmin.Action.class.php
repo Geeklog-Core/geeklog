@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: MailAdmin.Action.class.php,v 1.15 2008/09/21 08:37:08 dhaun Exp $
+ * @package Spam-X
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'MailAdmin.Action.class.php') !== false) {

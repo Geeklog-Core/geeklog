@@ -11,6 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
+* @package Spam-X
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditHeader.Admin.class.php') !== false) {

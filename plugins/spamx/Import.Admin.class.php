@@ -15,6 +15,7 @@
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
+ * @package Spam-X
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false) {

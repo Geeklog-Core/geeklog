@@ -9,7 +9,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: SLV.Examine.class.php,v 1.2 2008/09/21 08:37:08 dhaun Exp $
+* @package Spam-X
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLV.Examine.class.php') !== false) {

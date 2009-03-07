@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Spam-X plugin 1.1                                                         |
+// | Spam-X plugin 1.2                                                         |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
@@ -30,14 +30,16 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: install_defaults.php,v 1.6 2008/09/21 08:37:08 dhaun Exp $
+
+/**
+* @package Spam-X
+*/
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/*
+/**
  * Spam-X default settings
  *
  * Initial Installation Defaults used when loading the online configuration
@@ -73,6 +75,7 @@ $_SPX_DEFAULT['timeout'] = 5; // in seconds
 * an old config.php), uses $_SPX_DEFAULT otherwise.
 *
 * @return   boolean     true: success; false: an error occurred
+* @see      plugin_load_configuration_spamx
 *
 */
 function plugin_initconfig_spamx()

@@ -11,7 +11,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: Header.Examine.class.php,v 1.6 2008/09/21 08:37:08 dhaun Exp $
+* @package Spam-X
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'Header.Examine.class.php') !== false) {

@@ -33,8 +33,10 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: ProjectHoneyPot.Examine.class.php,v 1.4 2008/09/21 08:37:08 dhaun Exp $
+
+/**
+* @package Spam-X
+*/
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'ProjectHoneyPot.Examine.class.php') !== false) {
     die('This file can not be used on its own!');

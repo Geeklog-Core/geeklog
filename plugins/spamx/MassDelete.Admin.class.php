@@ -10,7 +10,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: MassDelete.Admin.class.php,v 1.22 2008/09/21 08:37:08 dhaun Exp $
+* @package Spam-X
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'MassDelete.Admin.class.php') !== false) {

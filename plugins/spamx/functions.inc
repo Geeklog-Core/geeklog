@@ -4,12 +4,13 @@
  * File: functions.inc
  * This is the functions.inc for the Geeklog Spam-X plugin
  *
- * Copyright (C) 2004-2008 by the following authors:
+ * Copyright (C) 2004-2009 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
  *              Dirk Haun       dirk AT haun-online DOT de
  *
  * Licensed under GNU General Public License
  *
+ * @package Spam-X
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
@@ -44,13 +45,15 @@ if (!isset($_SPX_CONF['timeout'])) {
 // +---------------------------------------------------------------------------+
 
 /**
- * Shows the statistics for the plugin on stats.php.  If
- * $showsitestats is 1 then we are to only print the overall stats in the 'site
- * statistics' box otherwise we show the detailed stats for the plugin
- *
- * @param   int     $showsitestats  Flag to let us know which stats to get
- * @return  string  returns formatted HTML to insert in stats page
- */
+* Shows the statistics for the plugin on stats.php.  If $showsitestats is 1
+* then we are to only print the overall stats in the 'site statistics' box
+* otherwise we show the detailed stats for the plugin
+*
+* @param    int     $showsitestats  Flag to let us know which stats to get
+* @return   string  returns formatted HTML to insert in stats page
+* @see      plugin_statssummary_spamx
+*
+*/
 function plugin_showstats_spamx($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_SX00;
@@ -90,6 +93,7 @@ function plugin_showstats_spamx($showsitestats)
 * New stats plugin API function for proper integration with the site stats
 *
 * @return   array(item text, item count);
+* @see      plugin_showstats_spamx
 *
 */
 function plugin_statssummary_spamx ()
@@ -331,13 +335,13 @@ function plugin_geticon_spamx ()
 /**
 * Automatic uninstall function for plugins
 *
-* @return   array
-*
 * This code is automatically uninstalling the plugin.
 * It passes an array to the core code function that removes
 * tables, groups, features and php blocks from the tables.
 * Additionally, this code can perform special actions that cannot be
 * foreseen by the core code (interactions with other plugins for example)
+*
+* @return   array   Plugin information
 *
 */
 function plugin_autouninstall_spamx ()

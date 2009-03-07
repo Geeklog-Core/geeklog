@@ -5,17 +5,21 @@
  * 
  * @author Tom Willett	tomw AT pigstye DOT net 
  *
- * $Id: BaseCommand.class.php,v 1.3 2005/04/10 10:02:43 dhaun Exp $
+ * @package Spam-X
  */
 
+/**
+* @abstract
+*/
 class BaseCommand {
     /**
      * 
      * @access public 
      */
 
-    var $result = null; //Result of execute command
+    var $result = null; // Result of execute command
     var $num = 0; // Action Number	
+
     /**
      * Constructor
      * 
@@ -36,6 +40,7 @@ class BaseCommand {
 
         return $result;
     } 
+
     function number()
     {
         global $num;
