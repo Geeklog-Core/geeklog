@@ -472,13 +472,13 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 *
 * @author Tony Bibbs <tony@geeklog.net>
 * @access public
-* @param integer $uid User ID
-* @param string $title Comment title
-* @param string $sid Story ID (not always a story, remember!)
-* @param integer $pid Parent comment ID
-* @param string $type Type of comment
-* @param string $postmode HTML or text
-* @return an error otherwise false if no errors were encountered
+* @param  integer   $uid User ID
+* @param  string    $title Comment title
+* @param  string    $sid Story ID (not always a story, remember!)
+* @param  integer   $pid Parent comment ID
+* @param  string    $type Type of comment
+* @param  string    $postmode HTML or text
+* @return mixed     an error otherwise false if no errors were encountered
 *
 */
 function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postmode)
@@ -1055,10 +1055,10 @@ function PLG_showSubmitForm($type)
 * It will be display before any news and after any defined staticpage content.
 * The plugin is responsible to format the output correctly.
 *
-* @param   where   int      1 = top, 2 = after feat. story, 3 = bottom of page
-* @param   page    int      page number (1, ...)
-* @param   topic   string   topic ID or empty string == front page
-* @return  Formatted center block content
+* @param   int      $where  1 = top, 2 = after feat. story, 3 = bottom of page
+* @param   int      $page   page number (1, ...)
+* @param   string   $topic  topic ID or empty string == front page
+* @return  string           Formatted center block content
 *
 */
 function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
@@ -2346,7 +2346,7 @@ function PLG_wsEnabled($type)
 *
 * @param  string  $item_url   the url of the item saved
 * @param  string  $plugin     the name of the plugin that saved the item
-* @return the url where the user will be forwarded to
+* @return string              the url where the user will be forwarded to
 *
 */
 function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
