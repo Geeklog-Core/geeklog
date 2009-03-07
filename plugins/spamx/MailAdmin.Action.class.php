@@ -25,6 +25,9 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
  * Action Class which emails the spam post to the site admin
  * 
  * @author Tom Willett  tomw@pigstye.net 
+ *
+ * @package Spam-X
+ *
  */
 class MailAdmin extends BaseCommand {
     /**

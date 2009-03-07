@@ -31,8 +31,9 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'SLVbase.class.php';
 * this class ensures that SLV sees spam detected by other Spam-X modules, too.
 *
 * @author Dirk Haun     dirk AT haun-online DOT de
-*
 * based on the works of Tom Willet (Spam-X) and Russ Jones (SLV)
+* @package Spam-X
+*
 */
 class SLVreport extends BaseCommand {
     /**

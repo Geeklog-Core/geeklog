@@ -100,8 +100,9 @@ define('HTTP_BL_TEST_IP',              '127.1.1.1');
 * special Project Honey Pot access key. See this plugins config.php for use.
 *
 * @author Mike Jervis <mike AT fuckingbrit DOT com>
+* @package Spam-X
+*
 */
-
 class ProjectHoneyPot extends BaseCommand {
     /**
      * Here we do the work

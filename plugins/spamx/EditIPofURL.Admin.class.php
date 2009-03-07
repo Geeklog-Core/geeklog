@@ -18,11 +18,16 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditIPofURL.Admin.class.php') !== 
 }
 
 /**
-* IP of URL Black List Editor
+* Include Abstract Base Class
 */
-
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* IP of URL Black List Editor
+*
+* @package Spam-X
+*
+*/
 class EditIPofUrl extends BaseAdmin {
     /**
      * Constructor

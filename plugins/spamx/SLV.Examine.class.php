@@ -26,10 +26,10 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'SLVbase.class.php';
 * Sends posts to SLV (linksleeve.org) for examination
 *
 * @author Dirk Haun     dirk AT haun-online DOT de
-*
 * based on the works of Tom Willet (Spam-X) and Russ Jones (SLV)
+* @package Spam-X
+*
 */
-
 class SLV extends BaseCommand {
     /**
      * No Constructor Use BaseCommand constructor

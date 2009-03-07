@@ -19,11 +19,16 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditHeader.Admin.class.php') !== f
 }
 
 /**
-* HTTP Header Editor
+* Include Abstract Base Class
 */
-
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* HTTP Header Editor
+*
+* @package Spam-X
+*
+*/
 class EditHeader extends BaseAdmin {
     /**
      * Constructor

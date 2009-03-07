@@ -18,11 +18,16 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLVwhitelist.Admin.class.php') !==
 }
 
 /**
-* SLV Whitelist Editor
+* Include Abstract Base Class
 */
-
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* SLV Whitelist Editor
+*
+* @package Spam-X
+*
+*/
 class SLVwhitelist extends BaseAdmin {
     /**
      * Constructor

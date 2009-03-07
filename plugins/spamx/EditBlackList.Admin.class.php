@@ -18,11 +18,16 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditBlackList.Admin.class.php') !=
 }
 
 /**
- * Personal Black List Editor
- */
-
+* Include Abstract Base Class
+*/
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+ * Personal Black List Editor
+ *
+ * @package Spam-X
+ *
+ */
 class EditBlackList extends BaseAdmin {
     /**
      * Constructor

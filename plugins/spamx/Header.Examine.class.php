@@ -27,8 +27,10 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 * Examines Post according to HTTP Headers
 *
 * @author Dirk Haun <dirk AT haun-online DOT de>
+*
+* @package Spam-X
+*
 */
-
 class Header extends BaseCommand {
     /**
      * No Constructor Use BaseCommand constructor

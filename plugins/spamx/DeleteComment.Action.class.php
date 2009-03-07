@@ -25,6 +25,8 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
  * Action Class which just discards comment
  * 
  * @author Tom Willett  tomw@pigstye.net 
+ * @package Spam-X
+ *
  */
 class DeleteComment extends BaseCommand {
     /**

@@ -22,8 +22,17 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false
     die('This file can not be used on its own!');
 }
 
+/**
+* Include Abstract Base Class
+*/
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* MTBlacklist Import
+*
+* @package Spam-X
+*
+*/
 class Import extends BaseAdmin {
     /**
      * Constructor

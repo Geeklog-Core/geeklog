@@ -17,9 +17,18 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'MassDelete.Admin.class.php') !== f
     die('This file can not be used on its own!');
 }
 
+/**
+* Include Abstract Base Class and comment library
+*/
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 require_once $_CONF['path_system'] . 'lib-comment.php';
 
+/**
+* MassDelete class: Mass-delete comments
+*
+* @package Spam-X
+*
+*/
 class MassDelete extends BaseAdmin {
     /**
     * Constructor

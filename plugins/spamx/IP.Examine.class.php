@@ -25,8 +25,10 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 * Examines Comment according to Personal BLacklist
 *
 * @author Tom Willett tomw AT pigstye DOT net
+*
+* @package Spam-X
+*
 */
-
 class IP extends BaseCommand {
     /**
      * No Constructor Use BaseCommand constructor

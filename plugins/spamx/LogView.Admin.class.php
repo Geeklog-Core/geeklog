@@ -16,8 +16,17 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'LogView.Admin.class.php') !== fals
     die('This file can not be used on its own!');
 }
 
+/**
+* Include Abstract Base Class
+*/
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* LogView class
+*
+* @package Spam-X
+*
+*/
 class LogView extends BaseAdmin {
     /**
      * Constructor

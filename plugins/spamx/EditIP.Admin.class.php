@@ -18,11 +18,16 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditIP.Admin.class.php') !== false
 }
 
 /**
-* IP Black List Editor
+* Include Abstract Base Class
 */
-
 require_once $_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php';
 
+/**
+* IP Black List Editor
+*
+* @package Spam-X
+*
+*/
 class EditIP extends BaseAdmin {
     /**
      * Constructor
