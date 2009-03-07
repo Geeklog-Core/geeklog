@@ -34,6 +34,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+require_once '../lib-common.php';
+
 /**
  * This is the links page
  *
@@ -52,8 +54,6 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  *
  */
-
-require_once '../lib-common.php';
 
 if (!in_array('links', $_PLUGINS)) {
     echo COM_refresh($_CONF['site_url'] . '/index.php');

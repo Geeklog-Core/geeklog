@@ -32,6 +32,8 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+require_once '../lib-common.php';
+
 /** 
  * Geeklog portal page that tracks link click throughs. 
  * 
@@ -49,8 +51,6 @@
  * @author Dirk Haun <dirk AT haun-online DOT de>
  * 
  */
-
-require_once '../lib-common.php';
 
 if (!in_array('links', $_PLUGINS)) {
     echo COM_refresh($_CONF['site_url'] . '/index.php');

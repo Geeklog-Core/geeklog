@@ -87,10 +87,8 @@ if (!defined('CSRF_TOKEN')) {
 *       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
 *       used through out the page.
 *
-* @return array Array of group ID's user belongs to
-*
 * @param        int     $uid            User ID to get information for. If empty current user.
-* @return	array	Associative Array grp_name -> ug_main_grp_id
+* @return	array	Associative Array grp_name -> ug_main_grp_id of group ID's user belongs to
 *
 */
 function SEC_getUserGroups($uid='')

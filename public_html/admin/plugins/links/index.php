@@ -32,6 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+require_once '../../../lib-common.php';
+require_once '../../auth.inc.php';
+
 /**
  * Geeklog links administration page.
  *
@@ -48,9 +51,6 @@
  * @author Blaine Lang <langmail@sympatico.ca>
  * @author Dirk Haun <dirk@haun-online.de>
  */
-
-require_once '../../../lib-common.php';
-require_once '../../auth.inc.php';
 
 // Uncomment the lines below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

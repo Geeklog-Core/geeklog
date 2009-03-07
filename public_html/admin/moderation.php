@@ -72,7 +72,7 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 /**
 * Prints the command & control block at the top
 *
-* TODO: The moderation items should be displayed with the help of <ul><li>
+* TODO: The moderation items should be displayed with the help of ul/li
 * instead of div's. 
 *
 */
