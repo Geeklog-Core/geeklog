@@ -60,8 +60,8 @@ function plugin_autoinstall_spamx($pi_name)
     );
 
     $features = array(
-        $pi_name . '.admint'    => 'Full access to ' . $pi_display_name
-                                    .' plugin'
+        $pi_name . '.admin'    => 'Full access to ' . $pi_display_name
+                                  . ' plugin'
     );
 
     $mappings = array(
