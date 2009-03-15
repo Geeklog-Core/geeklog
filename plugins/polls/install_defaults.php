@@ -31,11 +31,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Install data and defaults for the Polls plugin configuration
+*
+* @package Polls
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/*
+/**
  * Polls default settings
  *
  * Initial Installation Defaults used when loading the online configuration

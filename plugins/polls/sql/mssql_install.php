@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mssql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,6 +30,12 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+
+/**
+* MS SQL install data and tables
+*
+* @package Polls
+*/
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
