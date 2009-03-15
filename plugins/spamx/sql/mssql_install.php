@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2008 by the following authors:                         |
+// | Copyright (C) 2004-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Willett       - tomw AT pigstye DOT net                      |
 // |          Randy Kolenko     - randy AT nextide DOT ca                      |
@@ -26,6 +26,10 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+
+/**
+* @package Spam-X
+*/
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['spamx']}] (

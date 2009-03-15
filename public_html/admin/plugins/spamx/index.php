@@ -1,13 +1,13 @@
 <?php
 
 // +---------------------------------------------------------------------------+
-// | Spam-X plugin 1.0.2                                                       |
+// | Spam-X plugin 1.2                                                         |
 // +---------------------------------------------------------------------------+
 // | admin/index.php                                                           |
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2004 by the following authors:                         |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
 // | Author:                                                                   |
 // | Constructed with the Universal Plugin                                     |
@@ -34,6 +34,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Spam-X administration page
+*
+* @package Spam-X
+* @subpackage admin
+*/
+
+/**
+* Geeklog common function library and Admin authentication
+*/
 require_once '../../../lib-common.php';
 require_once '../../auth.inc.php';
 
