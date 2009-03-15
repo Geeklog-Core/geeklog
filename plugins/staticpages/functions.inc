@@ -34,6 +34,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Implementation of the Plugin API for the Static Pages plugin
+*
+* @package StaticPages
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
     die('This file can not be used on its own.');
 }

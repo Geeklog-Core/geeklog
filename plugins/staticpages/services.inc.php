@@ -33,11 +33,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Functions related to the webservices and the internal plugin API
+*
+* @package StaticPages
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'services.inc.php') !== false) {
     die('This file can not be used on its own.');
 }
 
-// this must be kept in synch with the actual size of 'sp_id' in the db ...
+// this must be kept in sync with the actual size of 'sp_id' in the db ...
 define('STATICPAGE_MAX_ID_LENGTH', 40);
 
 /**

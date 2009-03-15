@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.5                                                   |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | install_defaults.php                                                      |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Blaine Lang      - blaine AT portalparts DOT com                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -31,14 +31,18 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: install_defaults.php,v 1.9 2008/09/21 08:37:08 dhaun Exp $
+
+/**
+* Install data and defaults for the Static Pages plugin configuration
+*
+* @package StaticPages
+*/
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'install_defaults.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-/*
+/**
  * Static Pages default settings
  *
  * Initial Installation Defaults used when loading the online configuration

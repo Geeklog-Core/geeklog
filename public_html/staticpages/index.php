@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog Static Pages Plugin 1.5                                           |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | This is the main page for the Geeklog Static Pages Plugin                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -30,8 +30,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.48 2008/06/20 15:12:36 dhaun Exp $
+
+/**
+* Display a Static Page
+*
+* @package StaticPages
+* @subpackage public_html
+*/
 
 require_once '../lib-common.php';
 
