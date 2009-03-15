@@ -10,6 +10,7 @@
 * Licensed under the GNU General Public License
 *
 * @package Spam-X
+* @subpackage Modules
 */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLVreport.Action.class.php') !== false) {

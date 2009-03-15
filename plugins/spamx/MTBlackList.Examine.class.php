@@ -14,6 +14,7 @@
  * http://www.jayallen.org/comment_spam/
  *
  * @package Spam-X
+ * @subpackage Modules
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'MTBlackList.Examine.class.php') !== false) {

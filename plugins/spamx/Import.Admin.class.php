@@ -16,6 +16,7 @@
  * Cheah Chu Yeow (http://blog.codefront.net/)
  *
  * @package Spam-X
+ * @subpackage Modules
  */
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false) {

@@ -6,6 +6,7 @@
  * @author Tom Willett	tomw AT pigstye DOT net 
  *
  * @package Spam-X
+ * @subpackage Modules
  * @abstract
  *
  */
