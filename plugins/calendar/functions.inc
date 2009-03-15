@@ -259,7 +259,7 @@ function phpblock_calendar( $help='', $title='' )
                             $newevent_url .= 'mode=personal&amp;';
                         }
 
-                        $newevent_url .= 'eid=' . $theEvent['eid'] . '"';
+                        $newevent_url .= 'eid=' . $theEvent['eid'];
                         $attr = array();
                         if( $todaysEvent ) {
                             $attr = array('class' => $todaysClassName);

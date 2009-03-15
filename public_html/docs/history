@@ -72,6 +72,7 @@ Other changes:
 
 Calendar plugin
 ---------------
+- Removed extra double quote from upcoming events block (bug #0000827)
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 
