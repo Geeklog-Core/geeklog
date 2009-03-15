@@ -100,7 +100,7 @@ define('HTTP_BL_TEST_IP',              '127.1.1.1');
 * ProjectHoneyPot.org. This involves performing a special DNS query using a
 * special Project Honey Pot access key. See this plugins config.php for use.
 *
-* @author Mike Jervis <mike AT fuckingbrit DOT com>
+* @author Mike Jervis, mike AT fuckingbrit DOT com
 * @package Spam-X
 *
 */

@@ -887,7 +887,7 @@ function SEC_collectRemoteAuthenticationModules()
   * Rather self explanitory shortcut function
   * Is this the right place for this, Dirk?
   *
-  * @author Trinity L Bays <trinity93 AT gmail DOT com>
+  * @author Trinity L Bays, trinity93 AT gmail DOT com
   *
   * @param  string  $uid Their user id
   * @param  string  $gname The group name

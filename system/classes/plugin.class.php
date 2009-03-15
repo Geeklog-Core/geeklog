@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | plugin.class.php                                                          |
 // |                                                                           |
 // | Geeklog plugin class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -28,14 +28,12 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: plugin.class.php,v 1.10 2006/07/09 13:45:54 dhaun Exp $
 
 /**
 * This is a poorly thought out class that is used pretty much as a structure
 * when we need to pass plugin data back and forth
 *
-* @author   Tony Bibbs <tony AT tonybibbs DOT com>
+* @author   Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
 class Plugin {
@@ -146,7 +144,7 @@ class Plugin {
     * Sets whether or not the plugin supports expanded search
     * results
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     * @param boolean $switch True if expanded search is supported otherwise false
     *
@@ -163,7 +161,7 @@ class Plugin {
     /**
     * Returns if plugin supports expanded searches
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     * @return boolean True if expanded search is supported otherwise false
     *

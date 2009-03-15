@@ -4,7 +4,7 @@
 * File: Header.Examine.class.php
 * This is the HTTP Header Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2005-2006 by the following authors:
+* Copyright (C) 2005-2009 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
 *
 * based on the works of Tom Willett <tomw AT pigstye DOT net>
@@ -27,7 +27,7 @@ require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 /**
 * Examines Post according to HTTP Headers
 *
-* @author Dirk Haun <dirk AT haun-online DOT de>
+* @author Dirk Haun, dirk AT haun-online DOT de
 *
 * @package Spam-X
 *

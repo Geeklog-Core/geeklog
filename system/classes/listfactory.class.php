@@ -125,7 +125,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
 /**
 * Geeklog List Factory Class
 *
-* @author Sami Barakat <s.m.barakat AT gmail DOT com>
+* @author Sami Barakat, s.m.barakat AT gmail DOT com
 *
 */
 class ListFactory {

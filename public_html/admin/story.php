@@ -36,7 +36,7 @@
 * This is the Geeklog story administration page.
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbs <tony AT tonybibbs DOT com>
+* @author   Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
 

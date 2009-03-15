@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | getimage.php                                                              |
 // |                                                                           |
 // | Shows images outside of the webtree                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2008 by the following authors:                         |
+// | Copyright (C) 2004-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -29,15 +29,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: getimage.php,v 1.8 2007/11/25 06:55:07 ospiess Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
 * serve the images from outside of the webtree to a place that the webserver
 * user can actually write too
 *
-* @author   Tony Bibbs <tony AT tonybibbs DOT com>
+* @author   Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
 

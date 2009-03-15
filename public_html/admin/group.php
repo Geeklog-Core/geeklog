@@ -35,7 +35,7 @@
 /**
 * This file is the Geeklog Group administration page
 *
-* @author   Tony Bibbs  <tony AT tonybibbs DOT com>
+* @author   Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
 

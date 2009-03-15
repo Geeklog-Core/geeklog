@@ -42,7 +42,7 @@ require_once $_CONF['path_system'] . 'classes/listfactory.class.php';
 /**
 * Geeklog Search Class
 *
-* @author Tony Bibbs <tony AT geeklog DOT net>
+* @author Tony Bibbs, tony AT geeklog DOT net
 * @package net.geeklog.search
 *
 */
@@ -66,7 +66,7 @@ class Search {
     *
     * Sets up private search variables
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     *
     */
@@ -110,7 +110,7 @@ class Search {
     * This is called when anonymous users attempt to access search
     * functionality that has been locked down by the Geeklog admin.
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access private
     * @return string HTML output for error message
     *
@@ -144,7 +144,7 @@ class Search {
     * the access anonymous users have to the search engine.
     * This performs those checks
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access private
     * @return boolean True if search is allowed, otherwise false
     *
@@ -176,7 +176,7 @@ class Search {
     * the access anonymous users have to the search engine.
     * This performs those checks
     *
-    * @author Dirk Haun <Dirk AT haun-online DOT de>
+    * @author Dirk Haun, dirk AT haun-online DOT de
     * @access private
     * @return boolean True if form usage is allowed, otherwise false
     *
@@ -197,7 +197,7 @@ class Search {
     *
     * Shows advanced search page
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     * @return string HTML output for form
     *
@@ -336,8 +336,8 @@ class Search {
     /**
     * Performs search on all stories
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
-    *         Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Tony Bibbs, tony AT geeklog DOT net
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @return object plugin object
     *
@@ -387,8 +387,8 @@ class Search {
     /**
     * Performs search on all comments
     *
-    * @author Tony Bibbs <tony AT geeklog DOT net>
-    *         Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Tony Bibbs, tony AT geeklog DOT net
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @return object plugin object
     *
@@ -452,7 +452,7 @@ class Search {
     * in this function to allow legacy support to plugins using
     * the old API calls defined versions prior to Geeklog 1.5.1
     *
-    * @author Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @return string HTML output for search results
     *
@@ -682,7 +682,7 @@ class Search {
     * each row accordingly for example pulling usernames from the
     * users table and displaying a link to their profile.
     *
-    * @author Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @param array $row An array of plain data to format
     * @return array A reformatted version of the input array
@@ -747,7 +747,7 @@ class Search {
     * version depending where the text was cut. Works on a
     * word basis, so long words wont get cut.
     *
-    * @author Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $keyword The word to centre around
     * @param string $text The complete text string
@@ -817,7 +817,7 @@ class Search {
     * number of similar heading names. Used for backwards
     * compatibility in the doSearch() function.
     *
-    * @author Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param array $headings All the headings
     * @param array $find An array of alternative headings to find
@@ -845,7 +845,7 @@ class Search {
     /**
     * Converts the MySQL CONCAT function to the MSSQL equivalent
     *
-    * @author Sami Barakat <s.m.barakat AT gmail DOT com>
+    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $sql The SQL to convert
     * @return string MSSQL friendly SQL

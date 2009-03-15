@@ -378,7 +378,7 @@ function PLG_getMenuItems()
 /**
  * Get view URL and name of unique identifier
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param   string  $type   Plugin to delete comment
  * @return  array   string of URL of view page, name of unique identifier
  */
@@ -400,7 +400,7 @@ function PLG_getCommentUrlId($type)
 /**
  * Plugin should delete a comment
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param   string  $type   Plugin to delete comment
  * @param   int     $cid    Comment to be deleted
  * @param   string  $id     Item id to which $cid belongs
@@ -417,7 +417,7 @@ function PLG_commentDelete($type, $cid, $id)
 /**
  * Plugin should save a comment
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param   string  $type   Plugin to delete comment
  * @param   string  $title  comment title
  * @param   string  $comment comment text
@@ -440,7 +440,7 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
 /**
  * Plugin should display [a] comment[s]
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param   string  $type   Plugin to display comment
  * @param   string  $id     Unique idenifier for item comment belongs to
  * @param   int     $cid    Comment id to display (possibly including sub-comments)
@@ -470,7 +470,7 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 * This is a first-come-first-serve affair so if a plugin returns an error, other
 * plugins wishing to handle comment preprocessing won't get called
 *
-* @author Tony Bibbs <tony@geeklog.net>
+* @author Tony Bibbs, tony AT tonybibbs DOT com
 * @access public
 * @param  integer   $uid User ID
 * @param  string    $title Comment title
@@ -515,7 +515,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
 * This is a first-come-first-serve affair so if a plugin returns an error, other
 * plugins wishing to handle comment preprocessing won't get called
 *
-* @author Mark Evans <mevans@ecsnet.com>
+* @author Mark Evans, mevans AT ecsnet DOT com
 * @access public
 * @param string $type Type of item, i.e.; registration, contact ...
 * @param string $content item specific content
@@ -684,7 +684,7 @@ function PLG_getSearchTypes()
 * Determines if a specific plugin supports Geeklog's
 * expanded search results feature
 *
-* @author Tony Bibbs <tony AT geeklog DOT net>
+* @author Tony Bibbs, tony AT tonybibbs DOT com
 * @access public
 * @param string $type Plugin name
 * @return boolean True if it is supported, otherwise false

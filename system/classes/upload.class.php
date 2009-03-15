@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | upload.class.php                                                          |
 // |                                                                           |
 // | Geeklog file upload class library.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2008 by the following authors:                         |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -35,7 +35,7 @@
 * submitted via POST method.  Please read documentation as there are a number of
 * security related features that will come in handy for you.
 *
-* @author       Tony Bibbs <tony AT tonybibbs DOT com>
+* @author       Tony Bibbs, tony AT tonybibbs DOT com
 *
 */
 class upload

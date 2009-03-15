@@ -37,8 +37,8 @@
 * may, or may not, include the comments attached
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbbs <tony AT tonybibbs DOT com>
-* @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+* @author   Tony Bibbbs, tony AT tonybibbs DOT com
+* @author   Vincent Furia, vinny01 AT users DOT sourceforge DOT net
 */
 
 /**

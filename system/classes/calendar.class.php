@@ -39,7 +39,7 @@
 * Those files along with this class need to be reworked to be easier 
 * to maintain and support rich calendaring features
 *
-* @author   Tony Bibbs  <tony AT tonybibbs DOT com>
+* @author   Tony Bibbs, tony AT tonybibbs DOT com
 */
 
 /**

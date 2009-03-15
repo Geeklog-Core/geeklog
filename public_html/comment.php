@@ -38,8 +38,8 @@
 * comments to the DB.  All comment display stuff is in lib-common.php
 *
 * @author   Jason Whittenburg
-* @author   Tony Bibbs    <tonyAT tonybibbs DOT com>
-* @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+* @author   Tony Bibbs, tonyAT tonybibbs DOT com
+* @author   Vincent Furia, vinny01 AT users DOT sourceforge DOT net
 *
 */
 
@@ -62,7 +62,7 @@ require_once $_CONF['path_system'] . 'lib-comment.php';
  * Handles a comment submission
  *
  * @copyright Vincent Furia 2005
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @return string HTML (possibly a refresh)
  */
 function handleSubmit()
@@ -117,7 +117,7 @@ function handleSubmit()
  * Handles a comment submission
  *
  * @copyright Vincent Furia 2005
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @return string HTML (possibly a refresh)
  */
 function handleDelete()
@@ -166,7 +166,7 @@ function handleDelete()
  * Handles a comment view request
  *
  * @copyright Vincent Furia 2005
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @param boolean $view View or display (true for view)
  * @return string HTML (possibly a refresh)
  */

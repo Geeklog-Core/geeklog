@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -44,12 +44,12 @@
  * @since GL 1.4.0
  * @copyright Copyright &copy; 2005-2008
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- * @author Tony Bibbs <tony AT tonybibbs DOT com>
- * @author Mark Limburg <mlimburg AT users DOT sourceforge DOT net>
- * @author Jason Whittenburg <jwhitten AT securitygeeks DOT com>
- * @author Tom Willett <tomw AT pigstye DOT net>
- * @author Trinity Bays <trinity93 AT gmail DOT com>
- * @author Dirk Haun <dirk AT haun-online DOT de>
+ * @author Tony Bibbs, tony AT tonybibbs DOT com
+ * @author Mark Limburg, mlimburg AT users DOT sourceforge DOT net
+ * @author Jason Whittenburg, jwhitten AT securitygeeks DOT com
+ * @author Tom Willett, tomw AT pigstye DOT net
+ * @author Trinity Bays, trinity93 AT gmail DOT com
+ * @author Dirk Haun, dirk AT haun-online DOT de
  *
  */
 

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | configinfo.php                                                            |
 // |                                                                           |
 // | Display current configuration settings                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2008 by the following authors:                         |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
 // |          Dirk Haun            - dirk AT haun-online DOT de                |
@@ -29,15 +29,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: configinfo.php,v 1.7 2008/05/11 07:25:08 dhaun Exp $
 
 /**
 * This script will display file and permission information based on settings in
 * the configuration.  This is meant to be used as a support tool when asked
 * questions in #geeklog.
 *
-* @author   Jeffrey Schoolcraft <dream AT dr3amscap3 DOT com>
+* @author   Jeffrey Schoolcraft, dream AT dr3amscap3 DOT com
 *
 */
 
