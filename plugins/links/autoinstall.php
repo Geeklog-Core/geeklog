@@ -30,6 +30,8 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Autoinstall API functions for the Links plugin
+*
 * @package Links
 */
 

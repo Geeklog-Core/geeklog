@@ -30,6 +30,8 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Autoinstall API functions for the Spam-X plugin
+*
 * @package Spam-X
 */
 

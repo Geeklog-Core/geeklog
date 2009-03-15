@@ -37,6 +37,8 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Install data and defaults for the Links plugin configuration
+*
 * @package Links
 */
 

@@ -37,6 +37,8 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Implementation of the Plugin API for the Links plugin
+*
 * @package Links
 */
 

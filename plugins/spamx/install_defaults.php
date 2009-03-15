@@ -32,6 +32,8 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Install data and defaults for the Spam-X plugin configuration
+*
 * @package Spam-X
 */
 
