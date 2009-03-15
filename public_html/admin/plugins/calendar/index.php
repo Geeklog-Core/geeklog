@@ -48,7 +48,7 @@ if (!SEC_hasRights('calendar.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
 
-    // Log attempt to error.log
+    // Log attempt to access.log
     COM_accessLog("User {$_USER['username']} tried to illegally access the event administration screen.");
 
     echo $display;
