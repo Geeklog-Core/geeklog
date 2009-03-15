@@ -766,9 +766,9 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
         return $LANG_TRB['error_socket'];
     }
 
-    $toSend = 'url=' . rawurlencode ($url) . '&amp;title=' . rawurlencode ($title)
-            . '&amp;blog_name=' . rawurlencode ($blog) . '&amp;excerpt='
-            . rawurlencode ($excerpt);
+    $toSend = 'url=' . rawurlencode($url) . '&title=' . rawurlencode($title)
+            . '&blog_name=' . rawurlencode($blog) . '&excerpt='
+            . rawurlencode($excerpt);
     $charset = COM_getCharset ();
 
     fputs ($sock, 'POST ' . $target['path'] . $target['query'] . " HTTP/1.0\r\n");

@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed wrong use of '&amp;' when sending a trackback (bug #0000825)
 - Removed incomplete PDF generator (never enabled in any shipped version) [Dirk]
 - Fixed a problem with words being merged together in newsfeeds when the article
   was written with CR as the line separator [Dirk]
