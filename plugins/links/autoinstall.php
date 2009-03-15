@@ -29,6 +29,17 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* @package Links
+*/
+
+/**
+* Plugin autoinstall function
+*
+* @param    string  $pi_name    Plugin name
+* @return   array               Plugin information
+*
+*/
 function plugin_autoinstall_links($pi_name)
 {
     $pi_name         = 'links';
@@ -76,6 +87,14 @@ function plugin_autoinstall_links($pi_name)
     return $inst_parms;
 }
 
+/**
+* Load plugin configuration from database
+*
+* @param    string  $pi_name    Plugin name
+* @return   boolean             true on success, otherwise false
+* @see      plugin_initconfig_links
+*
+*/
 function plugin_load_configuration_links($pi_name)
 {
     global $_CONF;
@@ -133,6 +152,13 @@ function plugin_postinstall_links($pi_name)
     return true;
 }
 
+/**
+* Check if the plugin is compatible with this Geeklog version
+*
+* @param    string  $pi_name    Plugin name
+* @return   boolean             true: plugin compatible; false: not compatible
+*
+*/
 function plugin_compatible_with_this_version_links($pi_name)
 {
     if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
