@@ -847,7 +847,10 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         'leftblocks'    => 'leftblocks.thtml',
         'rightblocks'   => 'rightblocks.thtml'
         ));
-    $header->set_var( 'xhtml', XHTML );
+    $header->set_var('xhtml', XHTML);
+    if (XHTML != '') {
+        $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+    }
 
     // get topic if not on home page
     if( !isset( $_GET['topic'] ))
@@ -6770,7 +6773,7 @@ function COM_setLangIdAndAttribute(&$template)
     $template->set_var('lang_id', $langId);
 
     if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
-        $template->set_var('lang_attribute', $langAttr);
+        $template->set_var('lang_attribute', ' ' . $langAttr);
     } else {
         $template->set_var('lang_attribute', '');
     }

@@ -300,6 +300,9 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
     $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
     $spage->set_var('xhtml', XHTML);
+    if (XHTML != '') {
+        $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+    }
     $spage->set_var('site_url', $_CONF['site_url']);
     $spage->set_var('layout_url', $_CONF['layout_url']);
     $spage->set_var('site_admin_url', $_CONF['site_admin_url']);

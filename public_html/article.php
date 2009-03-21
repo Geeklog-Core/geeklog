@@ -139,6 +139,10 @@ if ($A['count'] > 0) {
         $story_template = new Template($_CONF['path_layout'] . 'article');
         $story_template->set_file('article', 'printable.thtml');
         $story_template->set_var('xhtml', XHTML);
+        if (XHTML != '') {
+            $story_template->set_var('xmlns',
+                                     ' xmlns="http://www.w3.org/1999/xhtml"');
+        }
         $story_template->set_var('direction', $LANG_DIRECTION);
         $story_template->set_var('page_title',
                 $_CONF['site_name'] . ': ' . $story->displayElements('title'));
@@ -156,10 +160,27 @@ if ($A['count'] > 0) {
                                      $story->DisplayElements('username'));
         }
 
-        $story_template->set_var('story_introtext',
-                                 $story->DisplayElements('introtext'));
-        $story_template->set_var('story_bodytext',
-                                 $story->DisplayElements('bodytext'));
+        $introtext = $story->DisplayElements('introtext');
+        $bodytext  = $story->DisplayElements('bodytext');
+        if (empty($bodytext)) {
+            $fulltext = $introtext;
+            $fulltext_no_br = $introtext;
+        } else {
+            $fulltext = $introtext . '<br' . XHTML . '><br' . XHTML . '/>'
+                      . $bodytext;
+            $fulltext_no_br = $introtext . ' ' . $bodytext;
+        }
+        if ($story->DisplayElements('postmode') == 'plaintext') {
+            $introtext = '<p>' . $introtext . '</p>';
+            $bodytext = '<p>' . $bodytext . '</p>';
+            $fulltext = '<p>' . $fulltext . '</p>';
+            $fulltext_no_br = '<p>' . $fulltext_no_br . '</p>';
+        }
+
+        $story_template->set_var('story_introtext', $introtext);
+        $story_template->set_var('story_bodytext',  $bodytext);
+        $story_template->set_var('story_text', $fulltext);
+        $story_template->set_var('story_text_no_br', $fulltext_no_br);
 
         $story_template->set_var('site_url', $_CONF['site_url']);
         $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);

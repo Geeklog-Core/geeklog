@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html {lang_attribute}>
+<html{lang_attribute}{xmlns}>
 <head>
   <title>{page_title}</title>
   <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
@@ -8,11 +8,9 @@
 <body dir="{direction}">
     <h1>{story_title}</h1>
     <h3>{story_date}</h3>
-    <b>{lang_contributedby} {story_author}</b>
+    <p><b>{lang_contributedby} {story_author}</b></p>
 
-    <p>{story_introtext}</p>
-
-    <p>{story_bodytext}</p>
+    {story_text_no_br}
 
     <p>{comments_with_count}</p>
 
