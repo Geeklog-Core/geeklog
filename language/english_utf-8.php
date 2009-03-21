@@ -1627,6 +1627,7 @@ $LANG_confignames['Core'] = array(
     'mysqldump_options' => "MySQL Dump Options",
     'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => "Theme",
+    'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => "Menu Elements",
     'path_themes' => "Themes Path",
     'disable_new_user_registration' => "Disable New Registrations",
@@ -1889,7 +1890,8 @@ $LANG_configselects['Core'] = array(
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', '(hard-coded in theme)' => '')
 );
 
 ?>

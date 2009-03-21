@@ -198,6 +198,12 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.0</a></h2>
 
 <ul>
+<li>Themes can now opt to use a <tt>{doctype}</tt> variable in their
+    <tt>header.thtml</tt> instead of using a hard-coded DOCTYPE declaration.
+    The DOCTYPE will then be set from the configuration (currently available:
+    HTML 4.01 Strict and Transitional, XHTML 1.0 Strict and Transitional). Such
+    a theme should <em>not</em> set the <code>XHTML</code> constant in its
+    <tt>functions.php</tt> file!</li>
 <li>When using <a href="#xhtml">XHTML</a>, the variable <tt>{xmlns}</tt> now
     contains <tt>xmlns="http://www.w3.org/1999/xhtml"</tt> for XHTML compliance
     (to be used in the <tt>&lt;html&gt;</tt> element).</li>

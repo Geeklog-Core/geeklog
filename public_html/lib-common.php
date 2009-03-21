@@ -302,7 +302,16 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
 // ensure XHTML constant is defined to avoid problems elsewhere
 
 if (!defined('XHTML')) {
-    define('XHTML', '');
+    switch ($_CONF['doctype']) {
+    case 'xhtml10transitional':
+    case 'xhtml10strict':
+        define('XHTML', ' /');
+        break;
+
+    default:
+        define('XHTML', '');
+        break;
+    }
 }
 
 // themes can now specify the default image type
@@ -832,11 +841,33 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         return $function( $what, $pagetitle, $headercode );
     }
 
-    // send out the charset header
-    header( 'Content-Type: text/html; charset=' . COM_getCharset());
-
     // If we reach here then either we have the default theme OR
     // the current theme only needs the default variable substitutions
+
+    switch ($_CONF['doctype']) {
+    case 'html401transitional':
+        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+        break;
+
+    case 'html401strict':
+        $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">';
+        break;
+
+    case 'xhtml10transitional':
+        $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+        break;
+
+    case 'xhtml10strict':
+        $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+        break;
+
+    default: // fallback: HTML 4.01 Transitional w/o system identifier
+        $doctype = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">';
+        break;
+    }
+
+    // send out the charset header
+    header('Content-Type: text/html; charset=' . COM_getCharset());
 
     $header = new Template( $_CONF['path_layout'] );
     $header->set_file( array(
@@ -847,8 +878,11 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         'leftblocks'    => 'leftblocks.thtml',
         'rightblocks'   => 'rightblocks.thtml'
         ));
+    $header->set_var('doctype', $doctype);
     $header->set_var('xhtml', XHTML);
-    if (XHTML != '') {
+    if (XHTML == '') {
+        $header->set_var('xmlns', '');
+    } else {
         $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
     }
 
@@ -2153,7 +2187,7 @@ function COM_showTopics( $topic='' )
         {
             $imageurl = COM_getTopicImageUrl( $A['imageurl'] );
             $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
-                        . '" title="' . $topicname . '" border="0"' . XHTML . '>';
+                        . '" title="' . $topicname . '"' . XHTML . '>';
         }
         $sections->set_var( 'topic_image', $topicimage );
 
@@ -4734,8 +4768,9 @@ function phpblock_whosonline()
 
             if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1)
             {
-                $usrimg = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.'
-                    . $_IMAGE_TYPE . '" border="0" alt=""' . XHTML . '>';
+                $usrimg = '<img src="' . $_CONF['layout_url']
+                        . '/images/smallcamera.' . $_IMAGE_TYPE
+                        . '" alt=""' . XHTML . '>';
                 $retval .= '&nbsp;' . COM_createLink($usrimg, $url);
             }
             $retval .= '<br' . XHTML . '>';

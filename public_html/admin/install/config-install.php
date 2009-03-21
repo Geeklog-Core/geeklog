@@ -139,6 +139,7 @@ function install_config()
 
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE);
     $c->add('theme','professional','select',2,10,NULL,190,TRUE);
+    $c->add('doctype','html401strict','select',2,10,21,195,TRUE);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,10,NULL,200,TRUE);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE);
 

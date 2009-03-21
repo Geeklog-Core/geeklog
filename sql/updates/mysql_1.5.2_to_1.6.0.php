@@ -54,6 +54,9 @@ function update_ConfValues()
     // filename mask for db backup files
     $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE);
 
+    // DOCTYPE declaration, for {doctype} in header.thtml
+    $c->add('doctype','html401strict','select',2,10,21,195,TRUE);
+
     return true;
 }
 

@@ -7,10 +7,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 
 $_IMAGE_TYPE = 'png';
 
-if (!defined('XHTML')) {
-    define('XHTML', ''); // change this to ' /' for XHTML
-}
-
 /*
  * For left/right block support there is no longer any need for the theme to
  * put code into functions.php to set specific templates for the left/right

@@ -11,6 +11,9 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Allow switching the DOCTYPE from the Configuration. Requires a theme that
+  uses {doctype} instead of a hard-coded DOCTYPE declaration (feature request
+  #0000745) [Dirk]
 - The notification email about new user submissions didn't include information
   about the remote service used (if any) [Dirk]
 - Define {xmlns} when using XHTML for XHTML compliance. Updated header.thtml
