@@ -175,10 +175,12 @@ function changePluginStatus($pi_name_arr)
         $P = DB_fetchArray($rst);
         if (isset($pi_name_arr[$P['pi_name']]) && ($P['pi_enabled'] == 0)) { // enable it
             PLG_enableStateChange($P['pi_name'], true);
-            DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 1 WHERE pi_name = '{$P['pi_name']}'");
+            DB_change($_TABLES['plugins'], 'pi_enabled', 1,
+                                           'pi_name', $P['pi_name']);
         } elseif (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
             PLG_enableStateChange($P['pi_name'], false);
-            DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '{$P['pi_name']}'");
+            DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                           'pi_name', $P['pi_name']);
         }
     }
 }
@@ -611,7 +613,8 @@ function plugin_upload()
 
                 if ($pi_was_enabled) {
                     // disable temporarily while we move the files around
-                    DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$dirname'");
+                    DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                                   'pi_name', $dirname);
                 }
 
                 require_once 'System.php';
@@ -748,7 +751,8 @@ function plugin_upload()
                 }
 
                 if ($pi_was_enabled) {
-                    DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 1 WHERE pi_name = '$dirname'");
+                    DB_change($_TABLES['plugins'], 'pi_enabled', 1,
+                                                   'pi_name', $dirname);
                 }
             }
 
