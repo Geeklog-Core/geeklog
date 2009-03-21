@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- The notification email about new user submissions didn't include information
+  about the remote service used (if any) [Dirk]
 - Define {xmlns} when using XHTML for XHTML compliance. Updated header.thtml
   and article/printable.thtml template files to include that variable [Dirk]
 - Fixed wrong use of '&amp;' when sending a trackback (bug #0000825)

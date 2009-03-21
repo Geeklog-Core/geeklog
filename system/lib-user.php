@@ -331,7 +331,9 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
         } else {
             $mode = 'active';
         }
-        USER_sendNotification ($username, $email, $uid, $mode);
+        $username = COM_getDisplayName($uid, $username, $fullname,
+                                       $remoteusername, $service);
+        USER_sendNotification($username, $email, $uid, $mode);
     }
 
     return $uid;
