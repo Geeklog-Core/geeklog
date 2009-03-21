@@ -431,6 +431,9 @@ function SP_printPage($page, $A)
     $print->set_var('sp_content',
             SP_render_content(stripslashes($A['sp_content']), $A['sp_php']));
     $print->set_var('sp_hits', COM_numberFormat($A['sp_hits']));
+    $printable = COM_buildURL($_CONF['site_url']
+               . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
+    $print->set_var('printable_url', $printable);
     if ($A['commentcode'] >= 0) {
         $commentsUrl = $sp_url . '#comments';
         $comments = DB_count($_TABLES['comments'],
