@@ -4,6 +4,7 @@
   <title>{page_title}</title>
   <link rel="stylesheet" type="text/css" href="{layout_url}/print.css"{xhtml}>
   <link rel="stylesheet" type="text/css" media="print" href="{layout_url}/print.css"{xhtml}>
+  <link rel="canonical" href="{printable_url}"{xhtml}>
 </head>
 <body dir="{direction}">
     <h1>{story_title}</h1>

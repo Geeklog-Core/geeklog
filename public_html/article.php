@@ -209,8 +209,11 @@ if ($A['count'] > 0) {
             $story_template->set_var('comments_with_count',
                                      $comments_with_count);
         }
-        $story_template->set_var ('lang_full_article', $LANG08[33]);
-        $story_template->set_var ('article_url', $articleUrl);
+        $story_template->set_var('lang_full_article', $LANG08[33]);
+        $story_template->set_var('article_url', $articleUrl);
+        $printable = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                  . $story->getSid() . '&amp;mode=print');
+        $story_template->set_var('printable_url', $printable);
 
         COM_setLangIdAndAttribute($story_template);
 
