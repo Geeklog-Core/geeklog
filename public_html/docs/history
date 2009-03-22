@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- The Wiki-style format broke national special characters, e.g. Japanese and
+  German umlauts (bug #0000823) [Dirk]
 - Introduced new plugin API function PLG_migrate [Dirk]
 - Allow switching the DOCTYPE from the Configuration. Requires a theme that
   uses {doctype} instead of a hard-coded DOCTYPE declaration (feature request
