@@ -786,10 +786,11 @@ function INST_pluginExists($plugin)
 * NOTE: Needs a fully working Geeklog, so can only be done late in the upgrade
 *       process!
 *
+* @param    boolean $migration  whether the upgrade is part of a site migration
 * @return   int     number of failed plugin updates (0 = everything's fine)
 *
 */
-function INST_pluginUpgrades()
+function INST_pluginUpgrades($migration = false, $old_conf = array())
 {
     global $_CONF, $_TABLES;
 
@@ -803,9 +804,20 @@ function INST_pluginUpgrades()
 
         $code_version = PLG_chkVersion($pi_name);
         if (! empty($code_version) && ($code_version != $pi_version)) {
-            if (PLG_upgrade($pi_name) !== true) {
+            $success = true;
+
+            if ($migration) {
+                $success = PLG_migrate($pi_name, $old_conf);
+            }
+
+            if ($success === true) {
+                $success = PLG_upgrade($pi_name);
+            }
+
+            if ($success !== true) {
                 // upgrade failed - disable plugin
-                DB_query("UPDATE {$_TABLES['plugins']} SET pi_enabled = 0 WHERE pi_name = '$pi_name'");
+                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                               'pi_name', $pi_name);
                 COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
                 $failed++;
             }

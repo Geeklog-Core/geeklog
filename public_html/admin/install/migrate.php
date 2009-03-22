@@ -48,6 +48,9 @@ require_once '../../siteconfig.php';
 * list contains the text fields to be searched and the table's index field
 * as the first(!) entry.
 *
+* NOTE: This function may be used by plugins during PLG_migrate. Changes should
+*       ensure backward compatibility.
+*
 */
 function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
 {
@@ -64,6 +67,14 @@ function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
 
     if (empty($tablespec) || (! is_array($tablespec))) {
         $tablespec = $tables;
+    }
+
+    if (empty($old_url) || empty($new_url)) {
+        return;
+    }
+
+    if ($old_url == $new_url) {
+        return;
     }
 
     foreach ($tablespec as $table => $fieldlist) {
@@ -825,7 +836,7 @@ if (INST_phpOutOfDate()) {
             // We did a database upgrade above. Now that any missing plugins
             // have been disabled and we've loaded lib-common.php, perform
             // upgrades for the remaining plugins.
-            $disabled_plugins = INST_pluginUpgrades();
+            $disabled_plugins = INST_pluginUpgrades(true, $_OLD_CONF);
 
         }
 

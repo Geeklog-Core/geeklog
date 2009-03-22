@@ -154,13 +154,33 @@ function PLG_install($type)
 /**
 * Upgrades a plugin. Tells a plugin to upgrade itself.
 *
-* @param        string      $type       Plugin name
-* @return       boolean     Returns true on success otherwise false
+* @param    string  $type   Plugin name
+* @return   mixed           true on success, false or error number on failure
 *
 */
 function PLG_upgrade($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
+}
+
+/**
+* Called during site migration - let plugin handle changed URLs or paths
+*
+* @param    string  $type       Plugin name
+* @param    array   $old_conf   contents of $_CONF before the migration
+* @return   boolean             true on success, otherwise false
+*
+*/
+function PLG_migrate($type, $old_conf)
+{
+    if (! function_exists('plugin_migrate_' . $type)) {
+        // since PLG_callFunctionForOnePlugin would return false ...
+        return true;
+    }
+
+    $args[1] = $old_conf;
+
+    return PLG_callFunctionForOnePlugin('plugin_migrate_' . $type, $args);
 }
 
 /**

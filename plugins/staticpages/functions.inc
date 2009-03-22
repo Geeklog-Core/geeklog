@@ -1011,6 +1011,27 @@ function plugin_upgrade_staticpages()
     return true;
 }
 
+/**
+* Called during site migration - handle changed URLs or paths
+*
+* @param    array   $old_conf   contents of the $_CONF array on the old site
+* @param    boolean             true on success, otherwise false
+*
+*/
+function plugin_migrate_staticpages($old_conf)
+{
+    global $_CONF;
+
+    $tables = array(
+        'staticpage'    => 'sp_id, sp_content'
+    );
+
+    if ($old_conf['site_url'] != $_CONF['site_url']) {
+        INST_updateSiteUrl($old_conf['site_url'], $_CONF['site_url'], $tables);
+    }
+
+    return true;
+}
 
 /**
 * Automatic uninstall function for plugins

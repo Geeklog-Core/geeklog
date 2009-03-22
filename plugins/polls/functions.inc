@@ -1165,6 +1165,30 @@ function plugin_upgrade_polls()
 }
 
 /**
+* Called during site migration - handle changed URLs or paths
+*
+* @param    array   $old_conf   contents of the $_CONF array on the old site
+* @param    boolean             true on success, otherwise false
+*
+*/
+function plugin_migrate_polls($old_conf)
+{
+    global $_CONF;
+
+    $tables = array(
+        'pollanswers'   => 'aid, answer',
+        'pollquestions' => 'qid, question',
+        'polltopics'    => 'pid, topic'
+    );
+
+    if ($old_conf['site_url'] != $_CONF['site_url']) {
+        INST_updateSiteUrl($old_conf['site_url'], $_CONF['site_url'], $tables);
+    }
+
+    return true;
+}
+
+/**
 * Return information for a poll
 *
 * @param    string  $pid        poll ID or '*'

@@ -1464,6 +1464,30 @@ function plugin_upgrade_calendar()
 }
 
 /**
+* Called during site migration - handle changed URLs or paths
+*
+* @param    array   $old_conf   contents of the $_CONF array on the old site
+* @param    boolean             true on success, otherwise false
+*
+*/
+function plugin_migrate_calendar($old_conf)
+{
+    global $_CONF;
+
+    $tables = array(
+        'events'            => 'eid, description, url',
+        'eventsubmission'   => 'eid, description, url',
+        'personal_events'   => 'eid, description, url'
+    );
+
+    if ($old_conf['site_url'] != $_CONF['site_url']) {
+        INST_updateSiteUrl($old_conf['site_url'], $_CONF['site_url'], $tables);
+    }
+
+    return true;
+}
+
+/**
 * Geeklog informs us that we're about to be enabled or disabled
 *
 * @param    boolean     $enabled    true = we're being enabled, false = disabled

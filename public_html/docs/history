@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Introduced new plugin API function PLG_migrate [Dirk]
 - Allow switching the DOCTYPE from the Configuration. Requires a theme that
   uses {doctype} instead of a hard-coded DOCTYPE declaration (feature request
   #0000745) [Dirk]
@@ -80,12 +81,14 @@ Other changes:
 
 Calendar plugin
 ---------------
+- Added migration support [Dirk]
 - Removed extra double quote from upcoming events block (bug #0000827)
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
 
 Links plugin
 ------------
+- Added migration support [Dirk]
 - Added category default permissions [Dirk]
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
@@ -97,6 +100,7 @@ Links plugin
 
 Polls plugin
 ------------
+- Added migration support [Dirk]
 - Set the page title when viewing a poll [Dirk]
 - Added auto installation support [Dirk]
 - Added support for PLG_getItemInfo, PLG_itemSaved, PLG_itemDeleted [Dirk]
@@ -104,10 +108,12 @@ Polls plugin
 
 Spam-X
 ------
+- Added migration support [Dirk]
 - Added auto installation support [Dirk]
 
 Static Pages plugin
 -------------------
+- Added migration support [Dirk]
 - The printable.thtml template file now uses the {xmlns} variable [Dirk]
 - Added canonical link [Dirk]
 - Added auto installation support [Dirk]

@@ -192,6 +192,34 @@ function plugin_upgrade_spamx()
 }
 
 /**
+* Called during site migration - handle changed URLs or paths
+*
+* @param    array   $old_conf   contents of the $_CONF array on the old site
+* @param    boolean             true on success, otherwise false
+*
+*/
+function plugin_migrate_spamx($old_conf)
+{
+    global $_CONF, $_TABLES;
+
+    // only update the SLV whitelist, so we don't use INST_updateSiteUrl
+    $old_url = addslashes($old_conf['site_url']);
+    $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist' AND value LIKE '{$old_url}%'");
+    $num = DB_numRows($result);
+
+    for ($i = 0; $i < $num; $i++) {
+        list($name, $value) = DB_fetchArray($result);
+        $new_value = addslashes(str_replace($old_conf['site_url'],
+                                            $_CONF['site_url'], $value));
+        $old_value = addslashes($value);
+
+        DB_query("UPDATE {$_TABLES['spamx']} SET value = '$new_value' WHERE name = 'SLVwhitelist' AND value = '$old_value'");
+    }
+
+    return true;
+}
+
+/**
  * Actual Plugin Functions here.
  */
 
