@@ -1891,7 +1891,7 @@ $LANG_configselects['Core'] = array(
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', '(hard-coded in theme)' => '')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
 );
 
 ?>
