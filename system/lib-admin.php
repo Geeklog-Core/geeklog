@@ -848,91 +848,107 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_IMAGE_TYPE;
 
-    static $topics;
+    static $topics, $topic_access;
 
-    if (!isset ($topics)) {
-        $topics = array ();
+    if (!isset($topics)) {
+        $topics = array();
+    }
+    if (!isset($topic_access)) {
+        $topic_access = array();
     }
 
     $retval = '';
 
-    switch($fieldname) {
-        case "unixdate":
-            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
-            $retval = strftime($_CONF['daytime'], $curtime[1]);
-            break;
-        case "title":
-            $A['title'] = str_replace('$', '&#36;', $A['title']);
-            $article_url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                  . $A['sid']);
-            $retval = COM_createLink(stripslashes($A['title']), $article_url);
-            break;
-        case "draft_flag":
-            if ($A['draft_flag'] == 1) {
-                $retval = $LANG24[35];
-            } else {
-                $retval = $LANG24[36];
+    switch ($fieldname) {
+    case 'unixdate':
+        $curtime = COM_getUserDateTimeFormat($A['unixdate']);
+        $retval = strftime($_CONF['daytime'], $curtime[1]);
+        break;
+
+    case 'title':
+        $A['title'] = str_replace('$', '&#36;', $A['title']);
+        $article_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                    . $A['sid']);
+        $retval = COM_createLink(stripslashes($A['title']), $article_url);
+        break;
+
+    case 'draft_flag':
+        if ($A['draft_flag'] == 1) {
+            $retval = $LANG24[35];
+        } else {
+            $retval = $LANG24[36];
+        }
+        break;
+
+    case 'access':
+    case 'edit':
+    case 'edit_adv':
+        $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
+                                $A['perm_owner'], $A['perm_group'],
+                                $A['perm_members'], $A['perm_anon']);
+        if ($access == 3) {
+            if (!isset($topic_access[$A['tid']])) {
+                $topic_access[$A['tid']] = SEC_hasTopicAccess($A['tid']);
             }
-            break;
-        case "access":
-        case "edit":
-        case "edit_adv":
-            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
-                                     $A['perm_owner'], $A['perm_group'],
-                                     $A['perm_members'], $A['perm_anon']);
-            if ($access == 3) {
-                if (SEC_hasTopicAccess ($A['tid']) == 3) {
-                    $access = $LANG_ACCESS['edit'];
-                } else {
-                    $access = $LANG_ACCESS['readonly'];
-                }
+            if ($topic_access[$A['tid']] == 3) {
+                $access = $LANG_ACCESS['edit'];
             } else {
                 $access = $LANG_ACCESS['readonly'];
             }
-            if ($fieldname == 'access') {
-                $retval = $access;
-            } else if ($access == $LANG_ACCESS['edit']) {
-                if ($fieldname == 'edit_adv') {
-                    $retval = COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=adv&amp;sid={$A['sid']}");
-                } else if ($fieldname == 'edit') {
-                    $retval = COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/story.php?mode=edit&amp;editor=std&amp;sid={$A['sid']}");
-                }
+        } else {
+            $access = $LANG_ACCESS['readonly'];
+        }
+        if ($fieldname == 'access') {
+            $retval = $access;
+        } elseif ($access == $LANG_ACCESS['edit']) {
+            if ($fieldname == 'edit_adv') {
+                $editmode = 'adv';
+            } elseif ($fieldname == 'edit') {
+                $editmode = 'std';
             }
-            break;
-        case "featured":
-            if ($A['featured'] == 1) {
-                $retval = $LANG24[35];
-            } else {
-                $retval = $LANG24[36];
-            }
-            break;
-        case "ping":
-            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-                     . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
-                     . $LANG24[21] . '"' . XHTML . '>';
-            if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
-                $url = $_CONF['site_admin_url']
-                     . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
-                $retval = COM_createLink($pingico, $url);
-            } else {
-                $retval = '';
-            }
-            break;
-        case 'tid':
-            if (!isset ($topics[$A['tid']])) {
-                $topics[$A['tid']] = DB_getItem ($_TABLES['topics'], 'topic',
-                                                 "tid = '{$A['tid']}'");
-            }
-            $retval = $topics[$A['tid']];
-            break;
-        case 'username':
-            $retval = COM_getDisplayName ($A['uid'], $A['username'], $A['fullname']);
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+            $editurl = $_CONF['site_admin_url']
+                     . '/story.php?mode=edit&amp;editor=' . $editmode
+                     . '&amp;sid=' . $A['sid'];
+            $retval = COM_createLink($icon_arr['edit'], $editurl);
+        }
+        break;
+
+    case 'featured':
+        if ($A['featured'] == 1) {
+            $retval = $LANG24[35];
+        } else {
+            $retval = $LANG24[36];
+        }
+        break;
+
+    case 'ping':
+        $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                 . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
+                 . $LANG24[21] . '"' . XHTML . '>';
+        if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
+            $url = $_CONF['site_admin_url']
+                 . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
+            $retval = COM_createLink($pingico, $url);
+        } else {
+            $retval = '';
+        }
+        break;
+
+    case 'tid':
+        if (!isset($topics[$A['tid']])) {
+            $topics[$A['tid']] = DB_getItem($_TABLES['topics'], 'topic',
+                                            "tid = '{$A['tid']}'");
+        }
+        $retval = $topics[$A['tid']];
+        break;
+
+    case 'username':
+        $retval = COM_getDisplayName($A['uid'], $A['username'], $A['fullname']);
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
 
     return $retval;
