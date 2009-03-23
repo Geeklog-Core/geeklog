@@ -156,6 +156,10 @@ class upload
     * @access private
     */
     var $_imageIndex = 0;                 // Integer
+    /**
+    * @access private
+    */
+    var $_ignoreMimeTest = false;       // Boolean
 
     /**
     * @access private
@@ -992,6 +996,22 @@ class upload
     }
 
     /**
+    * If enabled will ignore the MIME checks on file uploads
+    *
+    * @param    boolean     $switch     flag, true or false
+    *
+    */
+    function setIgnoreMimeCheck($switch)
+    {
+        if ($switch) {
+            $this->_ignoreMimeTest = true;
+        } else {
+            $this->_ignoreMimeTest = false;
+        }
+    }
+
+
+    /**
     * This function will print any errors out.  This is useful in debugging
     *
     * @param    boolean     $verbose    whether or not to print immediately or return only a string
@@ -1093,6 +1113,10 @@ class upload
     */
     function checkMimeType()
     {
+        if ($this->_ignoreMimeTest) {
+            return true;
+        }
+
         $sc = strpos ($this->_currentFile['type'], ';');
         if ($sc > 0) {
             $this->_currentFile['type'] = substr ($this->_currentFile['type'], 0, $sc);
@@ -1100,7 +1124,12 @@ class upload
         $mimeTypes = $this->getAllowedMimeTypes ();
         foreach ($mimeTypes as $mimeT => $extList) {
             if ($mimeT == $this->_currentFile['type']) {
-                $extensions = explode (',', $extList);
+                // Each defined Mime Type can have multiple possible extesions - need to test each
+                if (is_array($extList)) {   // Used if allowedMimeTypes is being defined using the Online Config Manager
+                    $extensions = array_keys($extList);
+                } else {
+                    $extensions = explode (',', $extList);
+                }
                 $fileName = $this->_currentFile['name'];
                 foreach ($extensions as $ext) {
                     $ext = trim($ext);
@@ -1256,7 +1285,7 @@ class upload
         }
 
         // Verify allowed mime types exist
-        if (!$this->_allowedMimeTypes) {
+        if (!$this->_ignoreMimeTest AND !$this->_allowedMimeTypes) {
             $this->_addError('No allowed mime types specified, use setAllowedMimeTypes() method');
         }
 

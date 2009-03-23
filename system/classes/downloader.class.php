@@ -521,7 +521,12 @@ class downloader
         // OK, file is valid, get file extension
         $pos = strrpos($fileName,'.') + 1;
         $fextension = substr($fileName, $pos);
-        
+
+        // If application has not set the allowedExtensions then initialize to the default
+        if(sizeof($this->_allowedExtensions) == 0) {
+            $this->_allowedExtensions = array_flip($this->_availableExtensions);
+        }
+
         // Send headers.
         if ($this->checkExtension($fextension)) {
             // Display file inside browser.
