@@ -1,7 +1,6 @@
-<?php
-/*
+﻿/*
  * FCKeditor - The text editor for Internet - http://www.fckeditor.net
- * Copyright (C) 2003-2008 Frederico Caldeira Knabben
+ * Copyright (C) 2003-2009 Frederico Caldeira Knabben
  *
  * == BEGIN LICENSE ==
  *
@@ -19,13 +18,14 @@
  *
  * == END LICENSE ==
  *
- * This is the integration file for PHP (All versions).
- *
- * It loads the correct integration file based on the PHP version (avoiding
- * strict error messages with PHP 5).
+ * Debug window control and operations (empty for the compressed files - #2043).
  */
 
-if ( !function_exists('version_compare') || version_compare( phpversion(), '5', '<' ) )
-	include_once( 'fckeditor_php4.php' ) ;
-else
-	include_once( 'fckeditor_php5.php' ) ;
+var FCKDebug =
+{
+	Output : function()
+	{},
+
+	OutputObject : function()
+	{}
+} ;
