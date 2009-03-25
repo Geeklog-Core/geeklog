@@ -461,8 +461,6 @@ class Search {
     {
         global $_CONF, $LANG01, $LANG09, $LANG31;
 
-        $debug_info = '';
-
         // Verify current user can perform requested search
         if (!$this->_isSearchAllowed())
         {
@@ -556,22 +554,23 @@ class Search {
         {
             if (is_a($result, 'SearchCriteria'))
             {
-                $debug_info .= $result->getName() . " using APIv2, ";
+                $debug_info = $result->getName() . " using APIv2 with ";
 
                 if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '')
                 {
-                    $debug_info .= "search using FULLTEXT\n";
+                    $debug_info .= "FULLTEXT. ";
                     $sql = $result->getFTSQL();
                 }
                 else
                 {
-                    $debug_info .= "search using LIKE\n";
+                    $debug_info .= "LIKE. ";
                     $sql = $result->getSQL();
                 }
 
                 $sql = $this->_convertsql($sql);
 
-                $debug_info .= "\tSQL = " . print_r($sql,1) . "\n";
+                $debug_info .= "SQL = " . print_r($sql,1);
+                COM_errorLog($debug_info);
 
                 $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable() ? true : false;
@@ -580,11 +579,13 @@ class Search {
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
             {
                 // Some backwards compatibility
-                $debug_info .= $result->plugin_name . " using APIv1, search using backwards compatibility\n";
+                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility\n";
+                $debug_info .= print_r($result,1);
+                COM_errorLog($debug_info);
 
                 // Find the column heading names that closely match what we are looking for
                 // There may be issues here on different languages, but this _should_ capture most of the data
-                $col_title = $this->_findColumn($result->searchheading, array($LANG09[16],$LANG31[4],'Question'));//Title,Subject
+                $col_title = $this->_findColumn($result->searchheading, array($LANG09[16],$LANG31[4],'Question', 'Site Page'));//Title,Subject
                 $col_desc = $this->_findColumn($result->searchheading, array($LANG09[63],'Answer'));
                 $col_date = $this->_findColumn($result->searchheading, array($LANG09[17]));//'Date','Date Added','Last Updated','Date & Time'
                 $col_user = $this->_findColumn($result->searchheading, array($LANG09[18],'Submited by'));
@@ -631,7 +632,7 @@ class Search {
         }
 
         // Find out how many plugins are on the old/new system
-        $debug_info .= "\nAPIv1: $old_api\nAPIv2: $new_api";
+        COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
 
         // Execute the queries
         $results = $obj->ExecuteQueries();
@@ -669,8 +670,6 @@ class Search {
             $retval = '<p>' . $retval . '</p>' . LB;
             $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '', $_CONF['search_show_sort'], $_CONF['search_show_limit']);
         }
-
-        //echo '<pre>'.$debug_info.'</pre>';
 
         return $retval;
     }
