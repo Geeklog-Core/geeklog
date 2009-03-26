@@ -307,6 +307,8 @@ class ListFactory {
     {
         $order = range(0, count($totals)-1);
         array_multisort($totals, $order);
+        $fin = array('total' => 0, 'offset' => 0, 'limit' => 0);
+        $fin = array_fill(0, count($totals), $fin);
 
         for ($p = 0; $p < $this->_page; $p++)
         {
@@ -417,7 +419,7 @@ class ListFactory {
 
                 foreach ($this->_fields as $field)
                 {
-                    if (!is_numeric($field['name'])) {
+                    if (!is_numeric($field['name']) && $field['name'][0] != '_') {
                         $col[ $field['name'] ] = $A[ $field['name'] ];
                     }
                 }
@@ -493,7 +495,7 @@ class ListFactory {
             // No results to show so quickly print a message and exit
             $retval = '';
             if (!empty($title)) {
-                $retval .= COM_startBlock($title, $help_url, COM_getBlockTemplate('_admin_block', 'header'));
+                $retval .= COM_startBlock($title, '', COM_getBlockTemplate('_admin_block', 'header'));
             }
             $retval .= $list_templates->finish($list_templates->get_var('output'));
             if (!empty($title)) {
@@ -636,7 +638,7 @@ class ListFactory {
         $retval = '';
 
         if (!empty($title)) {
-            $retval .= COM_startBlock($title, $help_url, COM_getBlockTemplate('_admin_block', 'header'));
+            $retval .= COM_startBlock($title, '', COM_getBlockTemplate('_admin_block', 'header'));
         }
 
         $retval .= $list_templates->finish($list_templates->get_var('output'));

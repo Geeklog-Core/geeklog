@@ -758,7 +758,8 @@ class Search {
     {
         $text = strip_tags($text);
         $words = explode(' ', $text);
-        if (count($words) <= $num_words) {
+        $word_count = count($words);
+        if ($word_count <= $num_words) {
             return COM_highlightQuery($text, $keyword, 'b');
         }
 
@@ -770,7 +771,7 @@ class Search {
             if (empty($pos_space))
             {
                 // Keyword at the end of text
-                $key = count($words);
+                $key = $word_count - 1;
                 $start = 0 - $num_words;
                 $end = 0;
                 $rt = '<b>...</b> ';
@@ -779,7 +780,7 @@ class Search {
             {
                 $str = substr($text, $pos, $pos_space - $pos);
                 $key = array_search($str, $words);
-                $m = ($num_words - 1) / 2;
+                $m = (int) (($num_words - 1) / 2);
                 if ($key <= $m)
                 {
                     // Keyword at the start of text
@@ -790,7 +791,7 @@ class Search {
                 {
                     // Keyword in the middle of text
                     $start = 0 - $m;
-                    $end = $m;
+                    $end = (($key + $m <= $word_count - 1) ? $m : $word_count - $key - 1);
                     $rt = '<b>...</b> ';
                 }
             }
