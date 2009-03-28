@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-webservices.php                                                       |
 // |                                                                           |
 // | WS-related functions needed in more than one place.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2008 by the following authors:                         |
+// | Copyright (C) 2007-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer        - rri AT silentyak DOT com                 |
 // |          Dirk Haun             - dirk AT haun-online DOT de               |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-webservices.php,v 1.44 2008/09/21 08:37:12 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-webservices.php') !== false) {
     die('This file can not be used on its own!');
@@ -454,7 +452,7 @@ function WS_delete()
  * @param   array      &$args       the array to which the content is to be appended
  * @param   object      $atom_doc   current DOMDocument
  * @param   object      $node       the 'content' node
- * @bugs    I guess we could at least support 'text/plain', 'text/html', etc.
+ * @todo    I guess we could at least support 'text/plain', 'text/html', etc.
  */
 function WS_getContent(&$args, $atom_doc, $node)
 {

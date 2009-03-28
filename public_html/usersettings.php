@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -853,7 +853,8 @@ function handlePhotoUpload ($delete_photo = '')
 /**
 * Saves the user's information back to the database
 *
-* @A        array       User's data
+* @param    array   $A  User's data
+* @return   string      HTML error message or meta redirect
 *
 */
 function saveuser($A)
@@ -899,7 +900,7 @@ function saveuser($A)
                     function_exists ('CUSTOM_userCheck')) {
             $ret = CUSTOM_userCheck ($A['username'], $A['email']);
             if (!empty($ret)) {
-                // Need a numeric return for the default message hander
+                // Need a numeric return for the default message handler
                 // - if not numeric use default message
                 if (!is_numeric($ret['number'])) {
                     $ret['number'] = 400;
@@ -911,7 +912,7 @@ function saveuser($A)
                 function_exists ('CUSTOM_userCheck')) {
         $ret = CUSTOM_userCheck ($A['username'], $A['email']);
         if (!empty($ret)) {
-            // Need a numeric return for the default message hander
+            // Need a numeric return for the default message handler
             // - if not numeric use default message
             if (!is_numeric($ret['number'])) {
                 $ret['number'] = 400;
@@ -1323,7 +1324,8 @@ function userprofile ($user, $msg = 0)
 /**
 * Saves user's preferences back to the database
 *
-* @A        array       User's data to save
+* @param    array   $A  User's data to save
+* @return   void
 *
 */
 function savepreferences($A)

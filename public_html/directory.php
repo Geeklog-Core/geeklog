@@ -68,7 +68,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
 * @param    int     $month  Month
 * @param    int     $year   Year
 * @return   int             Number of days in that month
-* @bugs     Will fail from 2038 onwards ...
+* @todo     Bug: Will fail from 2038 onwards ...
 *
 * "The last day of any given month can be expressed as the "0" day
 * of the next month", http://www.php.net/manual/en/function.mktime.php

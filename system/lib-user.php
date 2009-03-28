@@ -609,7 +609,7 @@ function USER_emailMatches ($email, $domain_list)
 *
 * @param    string  $username   initial username
 * @return   string              unique username
-* @bugs     Race conditions apply ...
+* @todo     Bugs: Race conditions apply ...
 *
 */
 function USER_uniqueUsername($username)

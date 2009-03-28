@@ -843,7 +843,8 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
 *
 * This is used to delete a story from the list of stories.
 *
-* @sid      string      ID of the story to delete
+* @param    string  $sid    ID of the story to delete
+* @return   string          HTML, e.g. a meta redirect
 *
 */
 function STORY_deleteStory($sid)
@@ -866,6 +867,7 @@ function STORY_deleteStory($sid)
 *       above), which will do permission checks and eventually end up here.
 *
 * @param    string  $sid    ID of the story to delete
+* @internal For internal use only!
 *
 */
 function STORY_doDeleteThisStoryNow($sid)

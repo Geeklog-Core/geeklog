@@ -440,11 +440,13 @@ function liststaticpages()
 /**
 * Displays the Static Page Editor
 *
-* @sp_id        string      ID of static page to edit
-* @mode         string      Mode
+* @param    string  $sp_id      ID of static page to edit
+* @param    string  $mode       Mode
+* @param    string  $editor     Editor mode? (unused?)
+* @return   string              HTML for static pages editor
 *
 */
-function staticpageeditor ($sp_id, $mode = '', $editor = '')
+function staticpageeditor($sp_id, $mode = '', $editor = '')
 {
     global $_CONF, $_TABLES, $_USER;
 

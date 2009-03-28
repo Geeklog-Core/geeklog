@@ -468,7 +468,7 @@ function TRB_containsBacklink ($body, $urlToCheck)
 *
 * @param    string  $sid        ID of entry that got pinged
 * @param    string  $type       type of that entry ('article' for stories, etc.)
-* @para     string  $urlToGet   URL of the page that supposedly links to us
+* @param    string  $urlToGet   URL of the page that supposedly links to us
 * @return   bool                true = links to us, false = doesn't
 *
 */

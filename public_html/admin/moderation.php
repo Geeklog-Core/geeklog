@@ -72,7 +72,9 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 /**
 * Prints the command & control block at the top
 *
-* TODO: The moderation items should be displayed with the help of ul/li
+* @param    string  $token  CSRF token
+* @return   string          HTML for the C&C block
+* @todo The moderation items should be displayed with the help of ul/li
 * instead of div's. 
 *
 */
@@ -233,7 +235,9 @@ function commandcontrol($token)
 *
 * Displays the moderation list of items from the submission tables
 *
-* @type     string      Type of object to build list for
+* @param    string  $type   Type of object to build list for
+* @param    string  $token  CSRF token
+* @return   string          HTML for the list of items
 *
 */
 function itemlist($type, $token)
@@ -333,8 +337,11 @@ function itemlist($type, $token)
 * site membership. When approving an application, an email containing the
 * password is sent out immediately.
 *
+* @param    string  $token  CSRF token
+* @return   string          HTML for the list of users
+*
 */
-function userlist ($token)
+function userlist($token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
@@ -396,8 +403,11 @@ function userlist ($token)
 * 'draft'. Approving a story from this list will clear the draft flag and
 * thus publish the story.
 *
+* @param    string  $token  CSRF token
+* @return   string          HTML for the list of draft stories
+*
 */
-function draftlist ($token)
+function draftlist($token)
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
@@ -643,8 +653,9 @@ function moderateusers ($uid, $action, $count)
 /**
 * Display a reminder to execute the security check script
 *
+* @return   string      HTML for security reminder (or empty string)
 */
-function security_check_reminder ()
+function security_check_reminder()
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE, $MESSAGE;
 
