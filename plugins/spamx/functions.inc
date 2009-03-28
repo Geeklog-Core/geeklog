@@ -29,7 +29,7 @@ if (file_exists($langfile)) {
     include_once $plugin_path . 'language/english.php';
 }
 
-/*
+/**
 * Check and see if we need to load the plugin configuration
 */
 if (!isset($_SPX_CONF['timeout'])) {

@@ -38,6 +38,9 @@
 * @subpackage public_html
 */
 
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
 
 if (!in_array('staticpages', $_PLUGINS)) {

@@ -45,15 +45,18 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
 }
 
 $plugin_path = $_CONF['path'] . 'plugins/polls/';
-$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 
+/**
+* Language file include
+*/
+$langfile = $plugin_path . 'language/' . $_CONF['language'] . '.php';
 if (file_exists($langfile)) {
     require_once $langfile;
 } else {
     require_once $plugin_path . 'language/english.php';
 }
 
-/*
+/**
 * Check and see if we need to load the plugin configuration
 */ 
 if (!isset($_PO_CONF['pollsloginrequired'])) {

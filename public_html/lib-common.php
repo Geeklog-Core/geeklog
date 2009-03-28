@@ -80,11 +80,14 @@ if( function_exists('set_error_handler') )
     }
 }
 
-/*
+/**
 * Configuration Include:
 * You do NOT need to modify anything here any more!
 */
 require_once 'siteconfig.php' ;
+/**
+* Configuration class
+*/
 require_once $_CONF['path_system'] . 'classes/config.class.php';
 
 $config =& config::get_instance();
@@ -172,7 +175,7 @@ $_URL = new url( $_CONF['url_rewrite'] );
 
 /**
 * This is our HTML template class.  It is the same one found in PHPLib and is
-* licensed under the LGPL.  See that file for details
+* licensed under the LGPL.  See that file for details.
 *
 */
 
@@ -214,8 +217,9 @@ $_CONF['right_blocks_in_footer'] = 1;  // use right blocks in footer
 * This is the custom library.
 *
 * It is the sandbox for every Geeklog Admin to play in.
-* We will never modify this file.  This should hold all custom
-* hacks to make upgrading easier.
+* The lib-custom.php as shipped will never contain required code,
+* so it's safe to always use your own copy.
+* This should hold all custom hacks to make upgrading easier.
 *
 */
 
@@ -299,8 +303,9 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once $_CONF['path_layout'] . 'functions.php';
 }
 
-// ensure XHTML constant is defined to avoid problems elsewhere
-
+/**
+* ensure XHTML constant is defined to avoid problems elsewhere
+*/
 if (!defined('XHTML')) {
     switch ($_CONF['doctype']) {
     case 'xhtml10transitional':
@@ -6816,7 +6821,9 @@ function COM_setLangIdAndAttribute(&$template)
     }
 }
 
-// Now include all plugin functions
+/**
+* Now include all plugin functions
+*/
 foreach ($_PLUGINS as $pi_name) {
     require_once $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc';
 }
