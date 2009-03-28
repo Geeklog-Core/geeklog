@@ -111,9 +111,9 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
 /**
  * Written to aid in install script debugging, will be removed later
  *
- * @param   any   $var      The variable you want to print, can be any datatype
- * @param   bool  $stop_exec Either echo $var or die $var 
- * @return  string          The datatype and value of $var
+ * @param  any     $var       The variable you want to print, can be any datatype
+ * @param  boolean $die_after Either echo $var or die $var 
+ * @return string             The datatype and value of $var
  *
  */
 function sanity($var = 'test', $die_after = false)

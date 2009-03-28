@@ -44,12 +44,12 @@ $_SYND_DEBUG = false;
 /**
 * Check if a feed for all stories needs to be updated.
 *
-* @param    bool    $frontpage_only true: only articles shown on the frontpage
+* @param    boolean $frontpage_only true: only articles shown on the frontpage
 * @param    string  $update_info    list of story ids
 * @param    string  $limit          number of entries or number of hours
 * @param    string  $updated_topic  (optional) topic to be updated
 * @param    string  $updated_id     (optional) entry id to be updated
-* @return   bool                    false = feed needs to be updated
+* @return   boolean                 false = feed needs to be updated
 *
 */
 function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $updated_topic = '', $updated_id = '' )
@@ -129,7 +129,7 @@ function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $update
 * @param    string  $limit          number of entries or number of hours
 * @param    string  $updated_topic  (optional) topic to be updated
 * @param    string  $updated_id     (optional) entry id to be updated
-* @return   bool                    false = feed needs to be updated
+* @return   boolean                 false = feed needs to be updated
 *
 */
 function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic = '', $updated_id = '' )
@@ -187,7 +187,7 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
 * @param    string  limit           number of entries or number of hours
 * @param    string  updated_topic   (optional) specific topic to update
 * @param    string  updated_id      (optional) specific id to update
-* @return   bool                    false = feed has to be updated, true = ok
+* @return   boolean                 false = feed has to be updated, true = ok
 *
 */
 function SYND_feedUpdateCheck($topic, $update_data, $limit, $updated_topic = '', $updated_id = '')
@@ -320,7 +320,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
 /**
 * Get content for a feed that holds all stories.
 *
-* @param    bool     $frontpage_only true: only articles shown on the frontpage
+* @param    boolean  $frontpage_only true: only articles shown on the frontpage
 * @param    string   $limit    number of entries or number of stories
 * @param    string   $link     link to homepage
 * @param    string   $update   list of story ids

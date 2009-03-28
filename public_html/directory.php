@@ -29,6 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Geeklog common function library
+*/
 require_once 'lib-common.php';
 
 // configuration option:
@@ -93,7 +96,7 @@ function DIR_lastDayOfMonth ($month, $year)
 * @param    string  $topic          current topic
 * @param    int     $year           current year
 * @param    int     $month          current month
-* @param    bool    $standalone     true: don't display form inline
+* @param    boolean $standalone     true: don't display form inline
 *
 */
 function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = false)
@@ -241,7 +244,7 @@ function DIR_navBar ($topic, $year, $month = 0)
 * @param    string  $topic  current topic
 * @param    int     $year   year to display
 * @param    int     $month  month to display
-* @param    bool    $main   true: display view on its own page
+* @param    boolean $main   true: display view on its own page
 * @return   string          list of articles for the given month
 *
 */
@@ -316,7 +319,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
 *
 * @param    string  $topic  current topic
 * @param    int     $year   year to display
-* @param    bool    $main   true: display view on its own page
+* @param    boolean $main   true: display view on its own page
 * @return   string          list of months (+ number of stories) for given year
 *
 */
@@ -405,7 +408,7 @@ function DIR_displayYear ($topic, $year, $main = false)
 * the stories for the current month at the top of the page.
 *
 * @param    string  $topic                  current topic
-* @param    bool    $list_current_month     true = list stories f. current month
+* @param    boolean $list_current_month     true = list stories f. current month
 * @return   string                          list of all the years in the db
 *
 */

@@ -891,7 +891,7 @@ function SEC_collectRemoteAuthenticationModules()
   *
   * @param  string  $uid Their user id
   * @param  string  $gname The group name
-  * @return bool    status, true or false.
+  * @return boolean status, true or false.
   */
 function SEC_addUserToGroup($uid, $gname)
 {
@@ -970,7 +970,7 @@ function SEC_buildAccessSql ($clause = 'AND')
 * This function can be used by plugins during uninstall.
 *
 * @param    string  $feature_name   name of the feature, e.g. 'foo.edit'
-* @param    bool    $logging        whether to log progress in error.log
+* @param    boolean $logging        whether to log progress in error.log
 * @return   void
 *
 */
@@ -1120,7 +1120,7 @@ function SEC_createToken($ttl = 1200)
   * Checks the POST and GET data for a security token, if one exists, validates that it's for this
   * user and URL.
   *
-  * @return bool    true iff the token is valid and for this user.
+  * @return boolean     true if the token is valid and for this user.
   */
 function SEC_checkToken()
 {

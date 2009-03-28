@@ -133,7 +133,7 @@ function USER_deleteAccount ($uid)
 *
 * @param    string  $username   user's login name
 * @param    string  $useremail  user's email address
-* @return   bool                true = success, false = an error occured
+* @return   boolean             true = success, false = an error occured
 *
 */
 function USER_createAndSendPassword ($username, $useremail, $uid)
@@ -188,7 +188,7 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
 *
 * @param    string  $username   user's login name
 * @param    string  $useremail  user's email address
-* @return   bool                true = success, false = an error occured
+* @return   boolean             true = success, false = an error occured
 *
 */
 function USER_sendActivationEmail ($username, $useremail)
@@ -346,7 +346,7 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 * @param email    string      Email address of the new user
 * @param uid      int         User id of the new user
 * @param mode     string      Mode user was added at.
-* @return         bool        true = success, false = an error occured
+* @return         boolean     true = success, false = an error occured
 *
 */
 function USER_sendNotification ($username, $email, $uid, $mode='inactive')
@@ -471,7 +471,7 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
 * NOTE:     Will silently ignore non-existing files.
 *
 * @param    string  $photo          name of the photo (without the path)
-* @param    bool    $abortonerror   true: abort script on error, false: don't
+* @param    boolean $abortonerror   true: abort script on error, false: don't
 * @return   void
 *
 */

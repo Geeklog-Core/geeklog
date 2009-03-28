@@ -525,7 +525,7 @@ function COM_getBlockTemplate( $blockname, $which, $position='' )
 * Returns a list of all the directory names in $_CONF['path_themes'], i.e.
 * a list of all the theme names.
 *
-* @param    bool    $all    if true, return all themes even if users aren't allowed to change their default themes
+* @param    boolean $all    if true, return all themes even if users aren't allowed to change their default themes
 * @return   array           All installed themes
 *
 */
@@ -3511,7 +3511,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 * COM_showBlocks OR from plugin code
 *
 * @param        array     $A          Block Record
-* @param        bool      $noboxes    Set to true if userpref is no blocks
+* @param        boolean   $noboxes    Set to true if userpref is no blocks
 * @return       string    HTML Formated block
 *
 */
@@ -4525,7 +4525,7 @@ function COM_showMessageFromParameter()
 * @param        int         $curpage        current page we are on
 * @param        int         $num_pages      Total number of pages
 * @param        string      $page_str       page-variable name AND '='
-* @param        bool        $do_rewrite     if true, url-rewriting is respected
+* @param        boolean     $do_rewrite     if true, url-rewriting is respected
 * @param        string      $msg            to be displayed with the navigation
 * @param        string      $open_ended     replace next/last links with this
 * @return   string   HTML formatted widget
@@ -5974,7 +5974,7 @@ function COM_getCurrentURL()
 *
 * See if we're on the main index page (first page, no topics selected).
 *
-* @return   bool    true = we're on the frontpage, false = we're not
+* @return   boolean     true = we're on the frontpage, false = we're not
 *
 */
 function COM_onFrontpage()
