@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed layout of Batch Add and Batch Admin options of the User Manager [Dirk]
 - On a login failure, the user registration form showed up even when new user
   registration was disabled (bug #0000843)
 - The Wiki-style format broke national special characters, e.g. Japanese and

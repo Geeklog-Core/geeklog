@@ -649,9 +649,10 @@ function batchdelete()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG01, $LANG28, $_IMAGE_TYPE;
 
-    $display = '';
-    if (!$_CONF['lastlogin']) {
-        $retval = '<br' . XHTML . '>'. $_LANG28[55];
+    $retval = '';
+
+    if (! $_CONF['lastlogin']) {
+        $retval .= '<p>'. $_LANG28[55] . '</p>';
         return $retval;
     }
 
@@ -668,10 +669,11 @@ function batchdelete()
     if (isset($_REQUEST['usr_time'])) {
         $usr_time_arr = $_REQUEST['usr_time'];
     } else {
-        $usr_time_arr['phantom'] = 2;
-        $usr_time_arr['short'] = 6;
-        $usr_time_arr['old'] = 24;
-        $usr_time_arr['recent'] = 1;
+        // default values, in months
+        $usr_time_arr['phantom'] =  2;
+        $usr_time_arr['short']   =  6;
+        $usr_time_arr['old']     = 24;
+        $usr_time_arr['recent']  =  1;
     }
     $usr_time = $usr_time_arr[$usr_type];
 
@@ -771,8 +773,8 @@ function batchdelete()
 
     $text_arr = array('has_menu'     => true,
                       'has_extras'   => true,
-                      'title'        => $LANG28[54],
-                      'instructions' => "$desc",
+                      'title'        => '',
+                      'instructions' => $desc,
                       'icon'         => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE,
                       'form_url'     => $_CONF['site_admin_url'] . "/user.php?mode=batchdelete&amp;usr_type=$usr_type&amp;usr_time=$usr_time",
                       'help_url'     => ''
@@ -804,7 +806,10 @@ function batchdelete()
               'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $display .= ADMIN_createMenu(
+    $retval .= COM_startBlock($LANG28[54], '',
+                           COM_getBlockTemplate('_admin_block', 'header'));
+
+    $retval .= ADMIN_createMenu(
         $menu_arr,
         $desc,
         $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE
@@ -818,13 +823,12 @@ function batchdelete()
     $token = SEC_createToken();
     $form_arr['bottom'] = "<input type=\"hidden\" name=\"" . CSRF_TOKEN
                         . "\" value=\"{$token}\"" . XHTML . ">";
-    $display .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
-                           $text_arr, $query_arr, $defsort_arr, '', '',
-                           $listoptions, $form_arr);
+    $retval .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
+                          $text_arr, $query_arr, $defsort_arr, '', '',
+                          $listoptions, $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
-    // $display .= "<input type=\"hidden\" name=\"mode\" value=\"batchdeleteexec\"" . XHTML . "></form>" . LB;
-
-    return $display;
+    return $retval;
 }
 
 /**
