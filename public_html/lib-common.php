@@ -6756,6 +6756,7 @@ function COM_renderWikiText($wikitext)
 
     $wiki = new Text_Wiki();
     $wiki->setFormatConf('Xhtml', 'translate', HTML_SPECIALCHARS);
+    $wiki->setRenderConf('Xhtml', 'charset', COM_getCharset());
     $wiki->disableRule('wikilink');
     $wiki->disableRule('freelink');
     $wiki->disableRule('interwiki');
