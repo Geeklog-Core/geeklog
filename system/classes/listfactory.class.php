@@ -154,7 +154,7 @@ class ListFactory {
     * @access public
     * @param string $url The URL of the page the table appears on
     * @param array $limits The avaliable page limits
-    * @param integer $per_page The default number or rows per page
+    * @param int $per_page The default number or rows per page
     *
     */
     function ListFactory( $url, $limits = '10,15,20,25,30,35', $per_page = 20 )
@@ -217,7 +217,7 @@ class ListFactory {
     * @param string $title The text that's displayed to the user
     * @param string $name The local name given to the query
     * @param string $sql The SQL string without the ORDER BY or LIMIT clauses
-    * @param integer $rank The rating that determins how many results will be returned
+    * @param int $rank The rating that determins how many results will be returned
     *
     */
     function setQuery( $title, $name, $sql, $rank )
@@ -270,7 +270,7 @@ class ListFactory {
     *
     * @access private
     * @param string $sql The query
-    * @return integer Total number of rows
+    * @return int Total number of rows
     *
     */
     function _numRows( $sql )

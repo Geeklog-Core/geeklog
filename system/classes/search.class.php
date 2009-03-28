@@ -750,7 +750,7 @@ class Search {
     * @access private
     * @param string $keyword The word to centre around
     * @param string $text The complete text string
-    * @param integer $num_words The number of words to display, best to use an odd number
+    * @param int $num_words The number of words to display, best to use an odd number
     * @return string A short version of the text
     *
     */
@@ -821,7 +821,7 @@ class Search {
     * @access private
     * @param array $headings All the headings
     * @param array $find An array of alternative headings to find
-    * @return integer The index of the alternative heading
+    * @return int The index of the alternative heading
     *
     */
     function _findColumn( $headings, $find )

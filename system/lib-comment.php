@@ -1000,10 +1000,10 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
 *
 * @param    $title      string      comment title
 * @param    $comment    string      text of the comment
-* @param    $uid        integer     user id
+* @param    $uid        int         user id
 * @param    $ipaddress  string      poster's IP address
 * @param    $type       string      type of comment ('article', 'poll', ...)
-* @param    $cid        integer     comment id
+* @param    $cid        int         comment id
 *
 */
 function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)

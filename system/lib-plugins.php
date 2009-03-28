@@ -508,10 +508,10 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 *
 * @author Tony Bibbs, tony AT tonybibbs DOT com
 * @access public
-* @param  integer   $uid User ID
+* @param  int       $uid User ID
 * @param  string    $title Comment title
 * @param  string    $sid Story ID (not always a story, remember!)
-* @param  integer   $pid Parent comment ID
+* @param  int       $pid Parent comment ID
 * @param  string    $type Type of comment
 * @param  string    $postmode HTML or text
 * @return mixed     an error otherwise false if no errors were encountered
@@ -1971,8 +1971,8 @@ function PLG_getWhatsNew()
 * will also send an HTTP status code 403 with the message.
 *
 * @param    string  $content    Text to be filtered or checked for spam
-* @param    integer $action     what to do if spam found
-* @return   integer             > 0: spam detected, == 0: no spam detected
+* @param    int     $action     what to do if spam found
+* @return   int                 > 0: spam detected, == 0: no spam detected
 * @link     http://wiki.geeklog.net/index.php/Filtering_Spam_with_Spam-X
 *
 */
@@ -2016,8 +2016,8 @@ function PLG_checkforSpam($content, $action = -1)
 * spam action explicitly.
 *
 * @param    string  $content    Text to be filtered or checked for spam
-* @param    integer $action     what to do if spam found
-* @return   integer             > 0: spam detected, == 0: no spam detected
+* @param    int     $action     what to do if spam found
+* @return   int                 > 0: spam detected, == 0: no spam detected
 * @see      PLG_checkforSpam
 *
 */

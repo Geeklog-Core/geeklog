@@ -5003,7 +5003,7 @@ function COM_getHourFormOptions( $selected = '', $mode = 12 )
 * Gets the <option> values for clock minutes
 *
 * @param    string      $selected   Selected minutes
-* @param    integer     $step       number of minutes between options, e.g. 15
+* @param    int         $step       number of minutes between options, e.g. 15
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getHourFormOptions

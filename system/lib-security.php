@@ -592,7 +592,7 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
 * to prepare the permissions to be save to the database
 *
 * @param        array       $perm_x     Array of permission values
-* @return       int         integer representation of a permission array 2 = read 3 = edit/read
+* @return       int         int representation of a permission array 2 = read 3 = edit/read
 * @see SEC_getPermissionValues
 *
 */
@@ -1067,7 +1067,7 @@ function SEC_encryptPassword($password)
   * added to forms and urls in the admin section as a non-cookie double-check
   * that the admin user really wanted to do that...
   *
-  * @param $ttl integer Time to live for token in seconds. Default is 20 minutes.
+  * @param $ttl int Time to live for token in seconds. Default is 20 minutes.
   *
   * @return string  Generated token, it'll be an MD5 hash (32chars)
   */
