@@ -1103,6 +1103,8 @@ function display_batchAddform()
     $menu_arr = array(
         array('url'  => $_CONF['site_admin_url'] . '/user.php',
               'text' => $LANG28[11]),
+        array('url'  => $_CONF['site_admin_url'] . '/user.php?mode=batchdelete',
+              'text' => $LANG28[54]),
         array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
