@@ -32,6 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
@@ -1084,10 +1087,27 @@ function importusers()
 */
 function display_batchAddform()
 {
-    global $_CONF, $LANG28;
+    global $_CONF, $LANG28, $LANG_ADMIN, $_IMAGE_TYPE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $token = SEC_createToken();
-    $retval = '<form action="' . $_CONF['site_admin_url']
+    $retval .= COM_siteHeader('menu', $LANG28[24]);
+    $retval .= COM_startBlock ($LANG28[24], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'] . '/user.php',
+              'text' => $LANG28[11]),
+        array('url'  => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $desc = '<p>' . $LANG28[25] . '</p>';
+    $icon = $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE;
+    $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
+
+    $retval .= '<form action="' . $_CONF['site_admin_url']
             . '/user.php" method="post" enctype="multipart/form-data"><div>'
             . $LANG28[29]
             . ': <input type="file" dir="ltr" name="importfile" size="40"'
@@ -1095,7 +1115,10 @@ function display_batchAddform()
             . '<input type="hidden" name="mode" value="import"' . XHTML . '>'
             . '<input type="submit" name="submit" value="' . $LANG28[30]
             . '"' . XHTML . '><input type="hidden" name="' . CSRF_TOKEN
-            . "\" value=\"{$token}\"" . XHTML . '></div></form>';
+            . "\" value=\"{$token}\"" . XHTML . '></div></form>' . LB;
+
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_siteFooter();
 
     return $retval;
 }
@@ -1194,13 +1217,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
 } elseif (($mode == 'import') && SEC_checkToken()) {
     $display .= importusers();
 } elseif ($mode == 'importform') {
-    $display .= COM_siteHeader('menu', $LANG28[24]);
-    $display .= COM_startBlock ($LANG28[24], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
-    $display .= $LANG28[25] . '<br' . XHTML . '><br' . XHTML . '>';
     $display .= display_batchAddform();
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $display .= COM_siteFooter();
 } elseif ($mode == 'batchdelete') {
     $display .= COM_siteHeader ('menu', $LANG28[54]);
     $display .= batchdelete();
