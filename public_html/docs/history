@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + (TBD) Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- On a login failure, the user registration form showed up even when new user
+  registration was disabled (bug #0000843)
 - The Wiki-style format broke national special characters, e.g. Japanese and
   German umlauts (bug #0000823) [Dirk]
 - Introduced new plugin API function PLG_migrate [Dirk]

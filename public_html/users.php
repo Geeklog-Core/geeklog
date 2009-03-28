@@ -775,24 +775,23 @@ function getpasswordform()
 * @return   string  HTML for form
 *
 */
-function defaultform ($msg)
+function defaultform($msg)
 {
-    global $LANG04;
+    global $_CONF, $LANG04;
 
     $retval = '';
 
-    if (!empty ($msg)) {
-        $retval .= COM_startBlock ($LANG04[21], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . $msg
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (! empty($msg)) {
+        $retval .= COM_showMessageText($msg, $LANG04[21]);
     }
 
-    $retval .= loginform (true);
+    $retval .= loginform(true);
 
-    $retval .= newuserform ();
+    if (! $_CONF['disable_new_user_registration']) {
+        $retval .= newuserform();
+    }
 
-    $retval .= getpasswordform ();
+    $retval .= getpasswordform();
 
     return $retval;
 }
