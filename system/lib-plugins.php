@@ -77,6 +77,7 @@ while ($A = DB_fetchArray($result)) {
 * @param    string  $function_name  holds name of function to call
 * @return   void
 * @internal not to be used by plugins
+* @todo     only supports functions without any parameters
 *
 */
 function PLG_callFunctionForAllPlugins($function_name)
@@ -2492,6 +2493,35 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
     }
 
     return COM_refresh($url);
+}
+
+/**
+* Inform plugins of configuration changes
+*
+* NOTE: Plugins will only be notified of 'Core' changes and changes in their
+*       own configuration. Changes in other plugins will not be sent.
+*
+* @param    string  $group      plugin name or 'Core' for $_CONF changes
+* @param    array   $changes    names of config values that changed
+* @return   void
+* @link     http://wiki.geeklog.net/index.php/PLG_configChange
+*
+*/
+function PLG_configChange($group, $changes)
+{
+    global $_PLUGINS;
+
+    $args[1] = $group;
+    $args[2] = $changes;
+
+    if ($group == 'Core') {
+        foreach ($_PLUGINS as $pi_name) {
+            PLG_callFunctionForOnePlugin('plugin_configchange_' . $pi_name,
+                                         $args);
+        }
+    } else {
+        PLG_callFunctionForOnePlugin('plugin_configchange_' . $group, $args);
+    }
 }
 
 ?>
