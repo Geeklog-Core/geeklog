@@ -30,10 +30,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Implementation of the Webservices functions for the Atom Publishing Protocol
+* (AtomPub).
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-webservices.php') !== false) {
     die('This file can not be used on its own!');
 }
 
+/**
+* Namespaces
+*/
 define('WS_ATOM_NS', 'http://www.w3.org/2005/Atom');
 define('WS_APP_NS',  'http://www.w3.org/2007/app');
 define('WS_APP_NS2', 'http://purl.org/atom/app#');
@@ -54,7 +62,7 @@ if (PHP_VERSION < 5) {
 /**
  * Displays an error message with the appropriate HTTP error-code
  *
- * @param   string  $error_name     the name of the error
+ * @param   string  $error_code     the name of the error
  * @param   string  $error_desc     a short description of the actual error (optional)
  */
 function WS_error($error_code, $error_desc = '')
@@ -107,7 +115,7 @@ function WS_error($error_code, $error_desc = '')
 /**
  * Dissects the URI and obtains parameters
  *
- * @param   array   $args       the array to store any input parameters
+ * @param   array   &$args       the array to store any input parameters
  */
 function WS_dissectURI(&$args)
 {
@@ -643,8 +651,10 @@ function WS_xmlToArgs(&$args)
 /**
  * Converts an array into an XML entry node
  *
- * @param   DOMDocument &$atom_doc  the Atom document to which the entry should be appended
  * @param   array       $arr        the array which is to be converted into XML
+ * @param   array       $extn_elements Geeklog-specific extension elements
+ * @param   object      &$entry_elem   entry to append to
+ * @param   DOMDocument &$atom_doc  the Atom document to which the entry should be appended
  */
 function WS_arrayToEntryXML($arr, $extn_elements, &$entry_elem, &$atom_doc)
 {
@@ -974,16 +984,17 @@ function WS_writeSync()
     echo $WS_TEXT;
 }
 
-/*
-* Create a new ID, preferrably from a provided 'Slug:' header
-*
-* @param    string  $slug           Content of the 'Slug:' header
-* @param    int     $max_length     max. length of the created ID
-* @return   string                  new ID
-* 
-* For more information on the 'Slug:' header, see RFC 5023, section 9.7
-*
-*/
+/**
+ * Create a new ID, preferrably from a provided 'Slug:' header
+ *
+ * For more information on the 'Slug:' header, see RFC 5023, section 9.7
+ *
+ * @param    string  $slug           Content of the 'Slug:' header
+ * @param    int     $max_length     max. length of the created ID
+ * @return   string                  new ID
+ * @link     http://tools.ietf.org/html/rfc5023#section-9.7
+ * 
+ */
 function WS_makeId($slug = '', $max_length = 40)
 {
     $sid = COM_makeSid();
