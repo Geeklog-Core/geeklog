@@ -33,6 +33,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* This file contains functions used in the admin panels (mostly for the
+* various lists of stories, users, etc.).
+*
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-admin.php') !== false) {
     die('This file can not be used on its own!');
 }
@@ -45,6 +51,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-admin.php') !== false) {
 * @param    array   $text_arr       array with different text strings
 * @param    array   $data_arr       array with sql query data - array of list records
 * @param    array   $options        array of options - intially just used for the Check-All feature
+* @param    array   $form_arr       optional extra forms at top or bottom
 * @return   string                  HTML output of function
 *
 */
@@ -198,6 +205,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 * @param    array   $defsort_arr    default sorting values
 * @param    string  $filter         additional drop-down filters
 * @param    string  $extra          additional values passed to fieldfunction
+* @param    array   $options        array of options - intially just used for the Check-All feature
+* @param    array   $form_arr       optional extra forms at top or bottom
 * @return   string                  HTML output of function
 *
 */
@@ -218,14 +227,16 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     $query = '';
-    if (isset ($_REQUEST['q'])) { # get query (text-search)
-        $query = $_REQUEST['q'];
+    if (isset ($_REQUEST['q'])) { // get query (text-search)
+COM_errorLog($_REQUEST['q']);
+        $query = strip_tags(COM_stripslashes($_REQUEST['q']));
+COM_errorLog($query);
     }
 
-    $query_limit = "";
-    if (isset($_REQUEST['query_limit'])) { # get query-limit (list-length)
-        $query_limit = COM_applyFilter ($_REQUEST['query_limit'], true);
-        if($query_limit == 0) {
+    $query_limit = '';
+    if (isset($_REQUEST['query_limit'])) { // get query-limit (list-length)
+        $query_limit = COM_applyFilter($_REQUEST['query_limit'], true);
+        if ($query_limit == 0) {
             $query_limit = 50;
         }
     }
@@ -242,11 +253,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if ($curpage <= 0) {
         $curpage = 1; #current page has to be larger 0
     }
-
-    #$unfiltered='';
-    #if (!empty($query_arr['unfiltered'])) {
-    #    $unfiltered = $query_arr['unfiltered'];
-    #}
 
     $help_url = ''; # do we have a help url for the block-header?
     if (!empty ($text_arr['help_url'])) {
@@ -319,13 +325,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if ($has_extras) { // show search
         $admin_templates->set_var('lang_search', $LANG_ADMIN['search']);
         $admin_templates->set_var('lang_submit', $LANG_ADMIN['submit']);
-        $admin_templates->set_var('lang_limit_results', $LANG_ADMIN['limit_results']);
-        $admin_templates->set_var('last_query', COM_applyFilter($query));
+        $admin_templates->set_var('lang_limit_results',
+                                  $LANG_ADMIN['limit_results']);
+        $admin_templates->set_var('last_query', htmlspecialchars($query));
         $admin_templates->set_var('filter', $filter);
     }
 
-    $sql_query = addslashes ($query); # replace quotes etc for security
-    $sql = $query_arr['sql']; # get sql from array that builds data
+    $sql_query = addslashes($query); // replace quotes etc for security
+    $sql = $query_arr['sql']; // get sql from array that builds data
 
     $order_var = ''; # number that is displayed in URL
     $order = '';     # field that is used in SQL
@@ -374,6 +381,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
+COM_errorLog("order_sql: $order_sql");
     }
     $th_subtags = ''; // other tags in the th, such as onclick and mouseover
     $header_text = ''; // title as displayed to the user
@@ -395,15 +403,15 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             } else {
                 $separator = '?';
             }
-            $th_subtags .= " onclick=\"window.location.href='$form_url$separator" #onclick action
+            $th_subtags .= " onclick=\"window.location.href='$form_url$separator" // onclick action
                     ."order=$order_var&amp;prevorder=$order&amp;direction=$direction";
-            if (!empty ($page)) {
+            if (!empty($page)) {
                 $th_subtags .= '&amp;' . $component . 'listpage=' . $page;
             }
-            if (!empty ($query)) {
-                $th_subtags .= '&amp;q=' . $query;
+            if (!empty($query)) {
+                $th_subtags .= '&amp;q=' . urlencode($query);
             }
-            if (!empty ($query_limit)) {
+            if (!empty($query_limit)) {
                 $th_subtags .= '&amp;query_limit=' . $query_limit;
             }
             $th_subtags .= "';\"";
@@ -570,8 +578,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 * @return   string                  HTML output of function
 *
 */
-function ADMIN_createMenu($menu_arr, $text, $icon = '') {
+function ADMIN_createMenu($menu_arr, $text, $icon = '')
+{
     global $_CONF;
+
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (
         array ('top_menu' => 'topmenu.thtml')
