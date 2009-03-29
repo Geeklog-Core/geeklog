@@ -1446,15 +1446,15 @@ function PLG_templateSetVars($templatename, &$template)
 {
     global $_PLUGINS;
 
-    if (function_exists ('CUSTOM_templateSetVars')) {
-        CUSTOM_templatesetvars($templatename, $template);
-    }
-
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
         if (function_exists($function)) {
             $function ($templatename, $template);
         }
+    }
+
+    if (function_exists('CUSTOM_templateSetVars')) {
+        CUSTOM_templatesetvars($templatename, $template);
     }
 }
 
@@ -2142,14 +2142,15 @@ function PLG_runScheduledTask ()
 {
     global $_PLUGINS;
 
-    if (function_exists ('CUSTOM_runScheduledTask')) {
-        CUSTOM_runScheduledTask();
-    }
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_runScheduledTask_' . $pi_name;
         if (function_exists ($function)) {
             $function ();
         }
+    }
+
+    if (function_exists('CUSTOM_runScheduledTask')) {
+        CUSTOM_runScheduledTask();
     }
 }
 
@@ -2183,6 +2184,10 @@ function PLG_itemSaved($id, $type, $old_id = '')
         }
     }
 
+    if (function_exists('CUSTOM_itemsaved')) {
+        CUSTOM_itemsaved($id, $type, $old_id);
+    }
+
     return false; // for backward compatibility
 }
 
@@ -2211,6 +2216,10 @@ function PLG_itemDeleted($id, $type)
                 $function($id, $type);
             }
         }
+    }
+
+    if (function_exists('CUSTOM_itemdeleted')) {
+        CUSTOM_itemdeleted($id, $type);
     }
 }
 
