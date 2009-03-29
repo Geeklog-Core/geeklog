@@ -90,7 +90,7 @@ function PLG_callFunctionForAllPlugins($function_name)
             $function();
         }
     }
-    $function = 'custom_' . $function_name;
+    $function = 'CUSTOM_' . $function_name;
     if (function_exists($function)) {
         $function();
     }
@@ -534,7 +534,7 @@ function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postm
         }
     }
 
-    $function = 'custom_commentPreSave';
+    $function = 'CUSTOM_commentPreSave';
     if (function_exists($function)) {
         $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
         if ($someError) {
@@ -575,7 +575,7 @@ function PLG_itemPreSave($type, $content)
         }
     }
 
-    $function = 'custom_itemPreSave';
+    $function = 'CUSTOM_itemPreSave';
     if (function_exists ($function)) {
         $msgError = $function ($type, $content);
         if (!empty ($msgError)) {
@@ -639,7 +639,7 @@ function PLG_getPluginStats ($showsitestats)
                     $retval[$pi_name] = $summary;
                 }
             }
-        } else if ($showsitestats == 1) {
+        } elseif ($showsitestats == 1) {
             $function1 = 'plugin_showstats_' . $pi_name;
             $function2 = 'plugin_statssummary_' . $pi_name;
             if (!function_exists ($function2)) {
@@ -647,7 +647,7 @@ function PLG_getPluginStats ($showsitestats)
                     $retval .= $function1 ($showsitestats);
                 }
             }
-        } else if ($showsitestats == 2) {
+        } elseif ($showsitestats == 2) {
             $function = 'plugin_showstats_' . $pi_name;
             if (function_exists ($function)) {
                 $retval .= $function ($showsitestats);
@@ -656,23 +656,23 @@ function PLG_getPluginStats ($showsitestats)
     }
 
     if ($showsitestats == 3) {
-        $function = 'custom_statssummary';
+        $function = 'CUSTOM_statssummary';
         if (function_exists ($function)) {
             $summary = $function ();
             if (is_array ($summary)) {
                 $retval['Custom'] = $summary;
             }
         }
-    } else if ($showsitestats == 1) {
-        $function1 = 'custom_showstats';
-        $function2 = 'custom_statssummary';
+    } elseif ($showsitestats == 1) {
+        $function1 = 'CUSTOM_showstats';
+        $function2 = 'CUSTOM_statssummary';
         if (!function_exists ($function2)) {
             if (function_exists ($function1)) {
                 $retval .= $function1 ($showsitestats);
             }
         }
-    } else if ($showsitestats == 2) {
-        $function = 'custom_showstats';
+    } elseif ($showsitestats == 2) {
+        $function = 'CUSTOM_showstats';
         if (function_exists ($function)) {
             $retval .= $function ($showsitestats);
         }
@@ -706,7 +706,7 @@ function PLG_getSearchTypes()
         } // no else because this is not a required API function
     }
 
-    $function = 'custom_searchtypes';
+    $function = 'CUSTOM_searchtypes';
     if (function_exists ($function)) {
         $cur_types = $function ();
         if (is_array ($cur_types) && (count ($cur_types) > 0)) {
@@ -799,7 +799,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
         // no else because implementation of this API function not required
     }
 
-    $function = 'custom_dopluginsearch';
+    $function = 'CUSTOM_dopluginsearch';
     if (function_exists($function)) {
         $search_results[] = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
     }
@@ -1139,7 +1139,7 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
             break;
         }
     }
-    $function = 'custom_centerblock';
+    $function = 'CUSTOM_centerblock';
     if (function_exists($function)) {
         $retval .= $function($where, $page, $topic);
     }
@@ -1165,7 +1165,7 @@ function PLG_createUser($uid)
         }
     }
 
-    $function = 'custom_user_create';
+    $function = 'CUSTOM_user_create';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1189,7 +1189,7 @@ function PLG_deleteUser($uid)
         }
     }
 
-    $function = 'custom_user_delete';
+    $function = 'CUSTOM_user_delete';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1217,7 +1217,7 @@ function PLG_loginUser($uid)
         }
     }
 
-    $function = 'custom_user_login';
+    $function = 'CUSTOM_user_login';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1243,7 +1243,7 @@ function PLG_logoutUser($uid)
         }
     }
 
-    $function = 'custom_user_logout';
+    $function = 'CUSTOM_user_logout';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1268,7 +1268,7 @@ function PLG_userInfoChanged($uid)
         }
     }
 
-    $function = 'custom_user_changed';
+    $function = 'CUSTOM_user_changed';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1294,7 +1294,7 @@ function PLG_groupChanged($grp_id, $mode)
         }
     }
 
-    $function = 'custom_group_changed';
+    $function = 'CUSTOM_group_changed';
     if (function_exists($function)) {
         $function($uid);
     }
@@ -1320,7 +1320,7 @@ function PLG_profileVariablesEdit($uid, &$template)
         }
     }
 
-    $function = 'custom_profilevariablesedit';
+    $function = 'CUSTOM_profilevariablesedit';
     if (function_exists($function)) {
         $function($uid, $template);
     }
@@ -1347,7 +1347,7 @@ function PLG_profileBlocksEdit ($uid)
         }
     }
 
-    $function = 'custom_profileblocksedit';
+    $function = 'CUSTOM_profileblocksedit';
     if (function_exists($function)) {
         $retval .= $function($uid);
     }
@@ -1375,7 +1375,7 @@ function PLG_profileVariablesDisplay($uid, &$template)
         }
     }
 
-    $function = 'custom_profilevariablesdisplay';
+    $function = 'CUSTOM_profilevariablesdisplay';
     if (function_exists($function)) {
         $function($uid, $template);
     }
@@ -1402,7 +1402,7 @@ function PLG_profileBlocksDisplay ($uid)
         }
     }
 
-    $function = 'custom_profileblocksdisplay';
+    $function = 'CUSTOM_profileblocksdisplay';
     if (function_exists($function)) {
         $retval .= $function($uid);
     }
@@ -1480,7 +1480,7 @@ function PLG_getHeaderCode()
         }
     }
 
-    $function = 'custom_getheadercode';
+    $function = 'CUSTOM_getheadercode';
     if (function_exists($function)) {
         $headercode .= $function();
     }
@@ -1630,7 +1630,7 @@ function PLG_replaceTags($content, $plugin = '')
                     $content = str_replace ($autotag['tagstr'], $filelink,
                                             $content);
                 }
-            } else if (function_exists ($function) AND
+            } elseif (function_exists ($function) AND
                     (empty ($plugin) OR ($plugin == $autotag['module']))) {
                 $content = $function ('parse', $content, $autotag);
             }
@@ -1665,7 +1665,7 @@ function PLG_supportingFeeds()
         }
     }
 
-    $function = 'custom_getfeednames';
+    $function = 'CUSTOM_getfeednames';
     if (function_exists($function)) {
         $feeds = $function();
         if (is_array($feeds) && (sizeof($feeds) > 0)) {
@@ -1693,7 +1693,7 @@ function PLG_getFeedNames($plugin)
 
     if ($plugin == 'custom')
     {
-        $function = 'custom_getfeednames';
+        $function = 'CUSTOM_getfeednames';
         if (function_exists($function)) {
             $feeds = $function();
         }
@@ -1734,7 +1734,7 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
     $content = array ();
 
     if ($plugin == 'custom') {
-        $function = 'custom_getfeedcontent';
+        $function = 'CUSTOM_getfeedcontent';
         if (function_exists($function)) {
             $content = $function($feed, $link, $update_data, $feedType, $feedVersion);
         }
@@ -1778,7 +1778,7 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
         }
     }
 
-    $function = 'custom_feedElementExtensions';
+    $function = 'CUSTOM_feedElementExtensions';
     if (function_exists($function))
     {
         $extensions = array_merge($extensions, $function($contentType, $contentID, $feedType, $feedVersion, $topic, $fid));
@@ -1814,7 +1814,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
         }
     }
 
-    $function = 'custom_feedNSExtensions';
+    $function = 'CUSTOM_feedNSExtensions';
     if (function_exists($function))
     {
         $namespaces = array_merge($namespaces, $function($contentType, $feedType, $feedVersion, $topic, $fid));
@@ -1849,7 +1849,7 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
         }
     }
 
-    $function = 'custom_feedExtensionTags';
+    $function = 'CUSTOM_feedExtensionTags';
     if (function_exists($function))
     {
         $tags = array_merge($tags, $function($contentType, $feedType, $feedVersion, $topic, $fid));
@@ -1884,7 +1884,7 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
     $is_current = true;
 
     if ($plugin == 'custom') {
-        $function = 'custom_feedupdatecheck';
+        $function = 'CUSTOM_feedupdatecheck';
         if (function_exists($function)) {
             $is_current = $function ($feed, $topic, $update_data, $limit,
                             $updated_type, $updated_topic, $updated_id);
@@ -1934,13 +1934,13 @@ function PLG_getWhatsNew()
         }
     }
 
-    $fn_head = 'custom_whatsnewsupported';
+    $fn_head = 'CUSTOM_whatsnewsupported';
     if (function_exists($fn_head)) {
         $supported = $fn_head();
         if (is_array($supported)) {
             list($headline, $byline) = $supported;
 
-            $fn_new = 'custom_getwhatsnew';
+            $fn_new = 'CUSTOM_getwhatsnew';
             if (function_exists($fn_new)) {
                 $whatsnew = $fn_new ();
                 $newcontent[] = $whatsnew;
@@ -1997,7 +1997,7 @@ function PLG_checkforSpam($content, $action = -1)
         }
     }
 
-    $function = 'custom_checkforSpam';
+    $function = 'CUSTOM_checkforSpam';
     if (function_exists($function)) {
         $result = $function($content, $action);
         if ($result > 0) { // Plugin found a match for spam
@@ -2040,7 +2040,7 @@ function PLG_spamAction($content, $action = -1)
         }
     }
 
-    $function = 'custom_spamaction';
+    $function = 'CUSTOM_spamaction';
     if (function_exists($function)) {
         $res = $function($content, $action);
         $result = max($result, $res);
@@ -2253,7 +2253,7 @@ function PLG_itemDisplay($id, $type)
         }
     }
 
-    $function = 'custom_itemdisplay';
+    $function = 'CUSTOM_itemdisplay';
     if (function_exists ($function)) {
         $result = $function ($id, $type);
         if ($result[0] == false) {
@@ -2524,6 +2524,11 @@ function PLG_configChange($group, $changes)
         foreach ($_PLUGINS as $pi_name) {
             PLG_callFunctionForOnePlugin('plugin_configchange_' . $pi_name,
                                          $args);
+        }
+
+        $function = 'CUSTOM_configchange';
+        if (function_exists($function)) {
+            $function('Core', $changes);
         }
     } else {
         PLG_callFunctionForOnePlugin('plugin_configchange_' . $group, $args);
