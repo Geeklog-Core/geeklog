@@ -53,28 +53,32 @@ error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
 * Turn this on to get various debug messages from the code in this library
 * @global Boolean $_COM_VERBOSE
 */
-
 $_COM_VERBOSE = false;
 
 /**
-  * Here, we shall establish an error handler. This will mean that whenever a
-  * php level error is encountered, our own code handles it. This will hopefuly
-  * go someway towards preventing nasties like path exposures from ever being
-  * possible. That is, unless someone has overridden our error handler with one
-  * with a path exposure issue...
-  *
-  * Must make sure that the function hasn't been disabled before calling it.
-  *
-  */
-if( function_exists('set_error_handler') )
-{
-    if( PHP_VERSION >= 5 )
-    {
+* Prevent getting any surprise values. But we should really stop
+* using $_REQUEST altogether.
+*/
+$_REQUEST = array_merge($_GET, $_POST);
+
+/**
+* Here, we shall establish an error handler. This will mean that whenever a
+* php level error is encountered, our own code handles it. This will hopefuly
+* go someway towards preventing nasties like path exposures from ever being
+* possible. That is, unless someone has overridden our error handler with one
+* with a path exposure issue...
+*
+* Must make sure that the function hasn't been disabled before calling it.
+*
+*/
+if (function_exists('set_error_handler')) {
+    if (PHP_VERSION >= 5) {
         /* Tell the error handler to use the default error reporting options.
-         * you may like to change this to use it in more/less cases, if so,
+         * You may like to change this to use it in more/less cases, if so,
          * just use the syntax used in the call to error_reporting() above.
          */
-        $defaultErrorHandler = set_error_handler('COM_handleError', error_reporting());
+        $defaultErrorHandler = set_error_handler('COM_handleError',
+                                                 error_reporting());
     } else {
         $defaultErrorHandler = set_error_handler('COM_handleError');
     }
@@ -85,6 +89,7 @@ if( function_exists('set_error_handler') )
 * You do NOT need to modify anything here any more!
 */
 require_once 'siteconfig.php' ;
+
 /**
 * Configuration class
 */
@@ -570,7 +575,7 @@ function COM_getThemes( $all = false )
 * Create the menu, i.e. replace {menu_elements} in the site header with the
 * actual menu entries.
 *
-* @param    Template    $header     reference to the header template
+* @param    Template    &$header        reference to the header template
 * @param    array       $plugin_menu    array of plugin menu entries, if any
 *
 */
@@ -798,21 +803,23 @@ function COM_renderMenu( &$header, $plugin_menu )
 * and the footer.  You use them like a sandwich.  Thus the following code will
 * display a Geeklog page with both right and left blocks displayed.
 *
-* -------------------------------------------------------------------------------------
+* <code>
 * <?php
-* require_once('lib-common.php');
-* $display .= COM_siteHeader(); //Change to COM_siteHeader('none') to not display left blocks
+* require_once 'lib-common.php';
+* // Change to COM_siteHeader('none') to not display left blocks
+* $display .= COM_siteHeader();
 * $display .= "Here is your html for display";
-* $display .= COM_siteFooter(true);  // Change to COM_siteFooter() to not display right blocks
+* // Change to COM_siteFooter() to not display right blocks
+* $display .= COM_siteFooter(true);
 * echo $display;
 * ? >
-* ---------------------------------------------------------------------------------------
+* </code>
 *
 * Note that the default for the header is to display the left blocks and the
 * default of the footer is to not display the right blocks.
 *
 * This sandwich produces code like this (greatly simplified)
-*
+* <code>
 * // COM_siteHeader
 * <table><tr><td colspan="3">Header</td></tr>
 * <tr><td>Left Blocks</td><td>
@@ -823,6 +830,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 * // COM_siteFooter
 * </td><td>Right Blocks</td></tr>
 * <tr><td colspan="3">Footer</td></table>
+* </code>
 *
 * @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @param    string  $pagetitle  optional content for the page's <title>
@@ -831,7 +839,6 @@ function COM_renderMenu( &$header, $plugin_menu )
 * @see function COM_siteFooter
 *
 */
-
 function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
@@ -1450,13 +1457,12 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 * but anything that uses that format, e.g. Stats page.  They are used like
 * COM_siteHeader and COM_siteFooter but for internal page elements.
 *
-*
-* @param        string      $title      Value to set block title to
-* @param        string      $helpfile   Help file, if one exists
-* @param        string      $template   HTML template file to use to format the block
+* @param    string  $title      Value to set block title to
+* @param    string  $helpfile   Help file, if one exists
+* @param    string  $template   HTML template file to use to format the block
+* @return   string              Formatted HTML containing block header
 * @see COM_endBlock
-* @see COM_siteHeader  For similiar construct
-* @return   string  Formatted HTML containing block header
+* @see COM_siteHeader
 *
 */
 
@@ -1899,7 +1905,7 @@ function COM_featuredCheck()
 * or both.
 *
 * @param        string      $logentry       Text to log to error log
-* @param        int         $actionid       1 = write to log file, 2 = write to screen (default) both
+* @param        int         $actionid       where 1 = write to log file, 2 = write to screen (default) both
 * @see function COM_accessLog
 * @return   string  If $actionid = 2 or '' then HTML formatted string (wrapped in block) else nothing
 *
@@ -1982,7 +1988,7 @@ function COM_errorLog( $logentry, $actionid = '' )
 *
 * This will print a message to the Geeklog access log
 *
-* @param        string      $string         Message to write to access log
+* @param        string      $logentry       Message to write to access log
 * @see COM_errorLog
 *
 */
@@ -2775,6 +2781,7 @@ function COM_refresh($url)
 /**
  * DEPRECIATED -- see CMT_userComments in lib-comment.php
  * @deprecated since Geeklog 1.4.0
+ * @see CMT_userComments
  */
 function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false )
 {
@@ -3388,7 +3395,7 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
 * Shows Geeklog blocks
 *
 * Returns HTML for blocks on a given side and, potentially, for
-* a given topic. Currentlly only used by static pages.
+* a given topic. Currently only used by static pages.
 *
 * @param        string      $side       Side to get blocks for (right or left for now)
 * @param        string      $topic      Only get blocks for this topic
@@ -3910,10 +3917,11 @@ function COM_getPassword( $loginname )
 * Allows the siteAdmin to determine if loginname (username) or fullname
 * should be displayed.
 *
-* @param    int  $uid  site member id
+* @param    int     $uid        site member id
 * @param    string  $username   Username, if this is set no lookup is done.
 * @param    string  $fullname   Users full name.
-* @param    string  $service    Remote login service.
+* @param    string  $remoteusername  Username on remote service
+* @param    string  $remoteservice   Remote login service.
 * @return   string  Username, fullname or username@Service
 *
 */
@@ -4433,6 +4441,8 @@ function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
 * @param    string  $message    Message text; may contain HTML
 * @param    string  $title      (optional) alternative block title
 * @return   string              HTML block with message
+* @see      COM_showMessage
+* @see      COM_showMessageFromParameter
 *
 */
 function COM_showMessageText($message, $title = '')
@@ -4460,12 +4470,15 @@ function COM_showMessageText($message, $title = '')
 /**
 * Displays a message on the webpage
 *
-* Pulls $msg off the URL string and gets the corresponding message and returns
-* it for display on the calling page
-*
+* Display one of the predefined messages from the $MESSAGE array. If a plugin
+* name is provided, display that plugin's message instead.
+* 
 * @param    int     $msg        ID of message to show
-* @param    string  $plugin     Optional Name of plugin to lookup plugin defined message
+* @param    string  $plugin     Optional name of plugin to lookup plugin defined message
 * @return   string              HTML block with message
+* @see      COM_showMessageFromParameter
+* @see      COM_showMessageText
+*
 */
 function COM_showMessage($msg, $plugin = '')
 {
@@ -4503,6 +4516,8 @@ function COM_showMessage($msg, $plugin = '')
 * everywhere anyway.
 *
 * @return   string  HTML block with message
+* @see      COM_showMessage
+* @see      COM_showMessageText
 *
 */
 function COM_showMessageFromParameter()
@@ -5050,9 +5065,9 @@ function COM_getMinuteFormOptions( $selected = '', $step = 1 )
 }
 
 /**
-* for backward compatibility only
-* - this function should always have been called COM_getMinuteFormOptions
-*
+* For backward compatibility only.
+* This function should always have been called COM_getMinuteFormOptions
+* @see COM_getMinuteFormOptions
 */
 function COM_getMinuteOptions( $selected = '', $step = 1 )
 {
@@ -5107,6 +5122,7 @@ function COM_getAmPmFormSelection( $name, $selected = '' )
 * and listitem.thtml templates.
 *
 * @param    array   $listofitems    Items to list out
+* @param    string  $classname      optional CSS class name for the list
 * @return   string                  HTML unordered list of array items
 */
 function COM_makeList($listofitems, $classname = '')
@@ -5733,7 +5749,7 @@ function COM_makeClickableLinks( $text )
 /**
 * Callback function to help format links in COM_makeClickableLinks
 *
-* @param    string  $http   set to 'http://' when not aleady in the url
+* @param    string  $http   set to 'http://' when not already in the url
 * @param    string  $link   the url
 * @return   string          link enclosed in <a>...</a> tags
 *
@@ -5749,8 +5765,8 @@ function COM_makeClickableLinksCallback( $http, $link )
 * Undo the conversion of URLs to clickable links (in plain text posts),
 * e.g. so that we can present the user with the post as they entered them.
 *
-* @param    string  $txt    story text
-* @param    string          story text without links
+* @param    string  $text   story text
+* @return   string          story text without links
 *
 */
 function COM_undoClickableLinks( $text )
@@ -5807,7 +5823,7 @@ function COM_highlightQuery( $text, $query, $class = 'highlight' )
 * automatically do the date diff on the more recent of the two dates (e.g. the
 * order of the two dates given doesn't matter).
 *
-* @author Tony Bibbs <tony.bibbs@iowa.gov
+* @author Tony Bibbs, tony DOT bibbs AT iowa DOT gov
 * @access public
 * @param string $interval Can be:
 * y = year
@@ -6259,12 +6275,11 @@ function COM_createImage($url, $alt = "", $attr = array())
 * "Accept-Language" header sent by their browser (assuming they bothered
 * to select a preferred language there).
 *
-* @return   string  name of the language file to use or an empty string
-*
-* Bugs: Does not take the quantity ('q') parameter into account, but only
-*       looks at the order of language codes.
-*
 * Sample header: Accept-Language: en-us,en;q=0.7,de-de;q=0.3
+*
+* @return   string  name of the language file to use or an empty string
+* @todo     Bugs: Does not take the quantity ('q') parameter into account,
+*           but only looks at the order of language codes.
 *
 */
 function COM_getLanguageFromBrowser()
@@ -6397,9 +6412,14 @@ function COM_getLangSQL( $field, $type = 'WHERE', $table = '' )
 }
 
 /**
+* Provide a block to switch languages
+*
 * Provides a drop-down menu (or simple link, if you only have two languages)
 * to switch languages. This can be used as a PHP block or called from within
-* your theme's header.thtml: <?php print phpblock_switch_language(); ?>
+* your theme's header.thtml:
+* <code>
+* <?php print phpblock_switch_language(); ?>
+* </code>
 *
 * @return   string  HTML for drop-down or link to switch languages
 *
@@ -6528,12 +6548,12 @@ function COM_truncate( $text, $maxlen, $filler = '', $endchars = 0 )
 /**
 * Get the current character set
 *
-* @return   string      character set, e.g. 'utf-8'
-*
 * Uses (if available, and in this order)
 * - $LANG_CHARSET (from the current language file)
 * - $_CONF['default_charset'] (from siteconfig.php)
 * - 'iso-8859-1' (hard-coded fallback)
+*
+* @return   string      character set, e.g. 'utf-8'
 *
 */
 function COM_getCharset()
@@ -6692,15 +6712,16 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
   * debug in production should have done to them, and why making this change
   * defeats the point of the entire root debug feature go here.]
   *
-  * @param $array   Array of state info (Recursive array).
-  * @return Cleaned array
+  * @param  array    $array  Array of state info (Recursive array).
+  * @param  boolean  $blank  override (wouldn't that blank out everything?)
+  * @return array            Cleaned array
   */
 function COM_rootDebugClean($array, $blank=false)
 {
     $blankField = false;
     while(list($key, $value) = each($array)) {
         $lkey = strtolower($key);
-        if((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie')!== false)) {
+        if((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie') !== false)) {
             $blankField = true;
         } else {
             $blankField = $blank;
@@ -6774,7 +6795,7 @@ function COM_renderWikiText($wikitext)
 *
 * NOTE:     {lang_attribute} is only set in multi-language environments.
 *
-* @param    ref     $template   template to use
+* @param    ref     &$template  template to use
 * @return   void
 *
 */
