@@ -39,7 +39,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-comment.php') !== false) {
 
 if( $_CONF['allow_user_photo'] )
 {
-    // only needed for the USER_getPhoto function
+    /**
+    * only needed for the USER_getPhoto function
+    */
     require_once $_CONF['path_system'] . 'lib-user.php';
 }
 
@@ -56,7 +58,6 @@ if( $_CONF['allow_user_photo'] )
 * @param    int     $ccode  Comment code: -1=no comments, 0=allowed, 1=closed
 * @return   string          HTML Formated comment bar
 * @see CMT_userComments
-* @see CMT_commentChildren
 *
 */
 function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
@@ -474,8 +475,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 * @param    boolean     $delete_option   if current user can delete comments
 * @param    int         $ccode     Comment code: -1=no comments, 0=allowed, 1=closed
 * @return   string  HTML Formated Comments
-* @see function CMT_commentBar
-* @see function CMT_commentChildren
+* @see CMT_commentBar
 *
 */
 function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false, $ccode = 0 )
