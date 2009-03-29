@@ -185,6 +185,7 @@ function PLG_upgrade($type)
 * @param    array   $old_conf   contents of $_CONF before the migration
 * @return   boolean             true on success, otherwise false
 * @link     http://wiki.geeklog.net/index.php/PLG_migrate
+* @since    Geeklog 1.6.0
 *
 */
 function PLG_migrate($type, $old_conf)
@@ -1463,6 +1464,8 @@ function PLG_templateSetVars($templatename, &$template)
 * or extra Metatags
 *
 * @return   string      returns a concatenated string of all plugins extra header code
+* @since    Geeklog 1.3.8
+*
 */
 function PLG_getHeaderCode()
 {
@@ -2020,6 +2023,7 @@ function PLG_checkforSpam($content, $action = -1)
 * @param    int     $action     what to do if spam found
 * @return   int                 > 0: spam detected, == 0: no spam detected
 * @see      PLG_checkforSpam
+* @since    Geeklog 1.4.1
 *
 */
 function PLG_spamAction($content, $action = -1)
@@ -2192,6 +2196,7 @@ function PLG_itemSaved($id, $type, $old_id = '')
 * @param    string  $id     ID of the item
 * @param    string  $type   type of the item, e.g. 'article'
 * @return   void
+* @since    Geeklog 1.6.0
 *
 */
 function PLG_itemDeleted($id, $type)
@@ -2505,6 +2510,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 * @param    array   $changes    names of config values that changed
 * @return   void
 * @link     http://wiki.geeklog.net/index.php/PLG_configChange
+* @since    Geeklog 1.6.0
 *
 */
 function PLG_configChange($group, $changes)
