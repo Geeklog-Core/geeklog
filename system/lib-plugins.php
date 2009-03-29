@@ -2107,17 +2107,18 @@ function PLG_getItemInfo($type, $id, $what, $uid = 0, $options = array())
 * for the plugin but since it doesn't know about the plugin's access control,
 * it has to ask the plugin to approve / reject such an operation.
 *
+* $operation can be one of the following:
+* - 'acceptByID':  accept a trackback comment on item with ID $id
+*                  returns: true for accept, false for reject
+* - 'acceptByURI': accept a pingback comment on item at URL $id
+*                  returns: the item's ID for accept, false for reject
+* - 'delete':      is the current user allowed to delete item with ID $id?
+*                  returns: true for accept, false for reject
+*
 * @param    string  $type       plugin type
 * @param    string  $id         an ID or URL, depending on the operation
 * @param    string  $operation  operation to perform
-*
-* $operation can be one of the following:
-* 'acceptByID'  - accept a trackback comment on item with ID $id
-*                 returns: true for accept, false for reject
-* 'acceptByURI' - accept a pingback comment on item at URL $id
-*                 returns: the item's ID for accept, false for reject
-* 'delete'      - is the current user allowed to delete item with ID $id?
-*                 returns: true for accept, false for reject
+* @return   mixed               depends on $operation
 *
 */
 function PLG_handlePingComment ($type, $id, $operation)
@@ -2174,9 +2175,12 @@ function PLG_itemSaved($id, $type, $old_id = '')
 {
     global $_PLUGINS;
 
+    $t = explode('.', $type);
+    $plg_type = $t[0];
+
     $plugins = count($_PLUGINS);
     for ($save = 0; $save < $plugins; $save++) {
-        if ($_PLUGINS[$save] != $type) {
+        if ($_PLUGINS[$save] != $plg_type) {
             $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
             if (function_exists($function)) {
                 $function($id, $type, $old_id);
@@ -2208,9 +2212,12 @@ function PLG_itemDeleted($id, $type)
 {
     global $_PLUGINS;
 
+    $t = explode('.', $type);
+    $plg_type = $t[0];
+
     $plugins = count($_PLUGINS);
     for ($del = 0; $del < $plugins; $del++) {
-        if ($_PLUGINS[$del] != $type) {
+        if ($_PLUGINS[$del] != $plg_type) {
             $function = 'plugin_itemdeleted_' . $_PLUGINS[$del];
             if (function_exists($function)) {
                 $function($id, $type);

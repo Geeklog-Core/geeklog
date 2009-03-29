@@ -40,7 +40,7 @@
  * @subpackage admin
  * @filesource
  * @version 2.1
- * @since GL 1.5.0
+ * @since Geeklog 1.5.0
  * @copyright Copyright &copy; 2000-2009
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Tony Bibbs, tony AT tonybibbs DOT com
@@ -102,18 +102,19 @@ function links_list_categories($root)
 
     $defsort_arr = array('field' => 'category', 'direction' => 'asc');
 
+    $links_url = $_CONF['site_admin_url'] . '/plugins/links';
     $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php',
+        array('url'  => $links_url . '/index.php',
               'text' => $LANG_LINKS_ADMIN[53]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?mode=edit',
+        array('url'  => $links_url . '/index.php?mode=edit',
               'text' => $LANG_LINKS_ADMIN[51]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/index.php?validate=enabled',
+        array('url'  => $links_url . '/index.php?validate=enabled',
               'text' => $LANG_LINKS_ADMIN[26]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php',
+        array('url'  => $links_url . '/category.php',
               'text' => $LANG_LINKS_ADMIN[50]),
-        array('url' => $_CONF['site_admin_url'] . '/plugins/links/category.php?mode=edit',
+        array('url'  => $links_url . '/category.php?mode=edit',
               'text' => $LANG_LINKS_ADMIN[52]),
-        array('url' => $_CONF['site_admin_url'],
+        array('url'  => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
     );
 
@@ -431,6 +432,12 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
                     '{$perm_group}','{$perm_members}','{$perm_anon}')";
             $result = DB_query($sql);
         }
+
+        if (($update == 'existing') && ($cid != $old_cid)) {
+            PLG_itemSaved($cid, 'links.category', $old_cid);
+        } else {
+            PLG_itemSaved($cid, 'links.category');
+        }
     }
 
     return 10; // success message
@@ -464,6 +471,7 @@ function links_delete_category($cid)
             if (($sf == 0) && ($sl == 0)) {
                 // No subfolder/links so OK to delete
                 DB_delete($_TABLES['linkcategories'], 'cid', $cid);
+                PLG_itemDeleted($cid, 'links.category');
                 return 13;
             } else {
                 // Subfolders and/or sublinks exist so return a message
