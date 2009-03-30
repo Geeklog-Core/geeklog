@@ -354,7 +354,11 @@ class ListFactory {
     {
         // Get the details for sorting the list
         $this->_sort_arr['field'] = isset($_REQUEST['order']) ? COM_applyFilter($_REQUEST['order']) : $this->_def_sort_arr['field'];
-        $this->_sort_arr['direction'] = isset($_REQUEST['direction']) ? COM_applyFilter($_REQUEST['direction']) : $this->_def_sort_arr['direction'];
+        if (isset($_REQUEST['direction']))
+            $this->_sort_arr['direction'] = $_REQUEST['direction'] == 'asc' ? 'asc' : 'desc';
+        else
+            $this->_sort_arr['direction'] = $this->_def_sort_arr['direction'];
+
         if (is_numeric($this->_sort_arr['field']))
         {
             $ord = $this->_def_sort_arr['field'];
@@ -364,7 +368,7 @@ class ListFactory {
         {
             $ord = $this->_sort_arr['field'];
         }
-        $order_sql = ' ORDER BY ' . $ord . ' ' . strtoupper($this->_sort_arr['direction']);
+        $order_sql = ' ORDER BY "' . addslashes($ord) . '" ' . strtoupper($this->_sort_arr['direction']);
 
         $this->_page = isset($_REQUEST['page']) ? COM_applyFilter($_REQUEST['page'], true) : 1;
         if (isset($_REQUEST['results'])) {
