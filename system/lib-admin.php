@@ -228,9 +228,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
 
     $query = '';
     if (isset ($_REQUEST['q'])) { // get query (text-search)
-COM_errorLog($_REQUEST['q']);
         $query = strip_tags(COM_stripslashes($_REQUEST['q']));
-COM_errorLog($query);
     }
 
     $query_limit = '';
@@ -381,7 +379,6 @@ COM_errorLog($query);
 
     if (!empty ($order_for_query)) { # concat order string
         $order_sql = "ORDER BY $order_for_query $direction";
-COM_errorLog("order_sql: $order_sql");
     }
     $th_subtags = ''; // other tags in the th, such as onclick and mouseover
     $header_text = ''; // title as displayed to the user
@@ -460,7 +457,6 @@ COM_errorLog("order_sql: $order_sql");
             $filter_str .= ")";
         }
         $num_pages_sql = $sql . $filter_str;
-        // COM_errorLog($num_pages_sql);
         $num_pages_result = DB_query($num_pages_sql);
         $num_rows = DB_numRows($num_pages_result);
         $num_pages = ceil ($num_rows / $limit);
