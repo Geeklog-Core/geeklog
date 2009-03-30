@@ -756,7 +756,7 @@ class upload
     }
 
     /**
-    * Sets the path to where the mogrify ImageMagic function is
+    * Sets the path to where the mogrify ImageMagick function is
     *
     * @param     string    $path_to_mogrify    Absolute path to mogrify
     * @return    boolean   True if set, false otherwise
@@ -932,7 +932,7 @@ class upload
     /**
     * Sets log file
     *
-    * @param    string  $fileName   fully qualified path to log files
+    * @param    string  $logFile    fully qualified path to log files
     * @return   boolean returns true if we set the log file, otherwise false
     *
     */
@@ -1053,7 +1053,7 @@ class upload
     }
 
     /**
-    * This function will print any debmug messages out.
+    * This function will print any debug messages out.
     *
     */
     function printDebugMsgs()

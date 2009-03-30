@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | downloader.class.php                                                      |
 // |                                                                           |
 // | Geeklog file download class library.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2008 by the following authors:                         |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: downloader.class.php,v 1.15 2008/08/11 14:11:21 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many
@@ -104,7 +102,6 @@ class downloader
         $this->_limitByIP = false;
 
         $this->_setAvailableExtensions ();
-
     }
 
     // PRIVATE METHODS
@@ -232,11 +229,11 @@ class downloader
     // Public Methods
 
     /**
-    * Extra security option that forces all attempts to upload a file to be done
-    * so from a set of VERY specific IP's.  This is only good for those who are
-    * paranoid
+    * Extra security option that forces all attempts to download a file to be
+    * done so from a set of VERY specific IP's.  This is only good for those
+    * who are paranoid
     *
-    * @param    $array      $validIPS   Array of valid IP addresses to allow file uploads from
+    * @param    array       $validIPS   Array of valid IP addresses to allow file uploads from
     * @return   boolean     returns true on success otherwise false
     *
     */
@@ -255,8 +252,8 @@ class downloader
     /**
     * Sets log file
     *
-    * @param        string      $fileName       fully qualified path to log files
-    * @return       boolean     true on success otherwise false
+    * @param        string      $logFile    fully qualified path to log files
+    * @return       boolean                 true on success otherwise false
     *
     */
     function setLogFile($logFile = '')
@@ -360,7 +357,7 @@ class downloader
     }
 
     /**
-    * This function will print any debmug messages out.
+    * This function will print any debug messages out.
     *
     */
     function printDebugMsgs()
@@ -393,7 +390,7 @@ class downloader
     /**
     * Sets allowed mime types for this instance
     *
-    * @param    array       $allowedMimeTypes   Array of allowed mime types
+    * @param  array  $validExtensions  Array of allowed extensions and mime types
     *
     */
     function setAllowedExtensions($validExtensions = array())
@@ -476,7 +473,7 @@ class downloader
     /**
     * Attempts to dowload a file
     *
-    * @param    $string     $fileName       file to download without path
+    * @param    string      $fileName       file to download without path
     * @return   boolean     true on success otherwise false
     *
     */

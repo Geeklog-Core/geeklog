@@ -2218,7 +2218,7 @@ function COM_showTopics( $topic='' )
 /**
 * Shows the user their menu options
 *
-* This shows the average joe use their menu options. This is the user block on right side
+* This shows the average Joe User their menu options. This is the user block on the left side
 *
 * @param        string      $help       Help file to show
 * @param        string      $title      Title of Menu
@@ -2226,7 +2226,6 @@ function COM_showTopics( $topic='' )
 * @see function COM_adminMenu
 *
 */
-
 function COM_userMenu( $help='', $title='', $position='' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE;
@@ -2399,7 +2398,7 @@ function COM_userMenu( $help='', $title='', $position='' )
 * Prints administration menu
 *
 * This will return the administration menu items that the user has
-* sufficient rights to -- Admin Block on right side.
+* sufficient rights to -- Admin Block on the left side.
 *
 * @param        string      $help       Help file to show
 * @param        string      $title      Menu Title
@@ -2407,7 +2406,6 @@ function COM_userMenu( $help='', $title='', $position='' )
 * @see function COM_userMenu
 *
 */
-
 function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE,
