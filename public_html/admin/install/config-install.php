@@ -92,8 +92,6 @@ function install_config()
     $c->add('search_show_sort',TRUE,'select',0,6,1,654,TRUE);
     $c->add('search_show_num',TRUE,'select',0,6,1,657,TRUE);
     $c->add('search_show_type',TRUE,'select',0,6,1,660,TRUE);
-    $c->add('search_show_user',TRUE,'select',0,6,1,663,TRUE);
-    $c->add('search_show_hits',TRUE,'select',0,6,1,666,TRUE);
     $c->add('search_no_data','<i>Not available...</i>','text',0,6,NULL,669,TRUE);
     $c->add('search_separator',' &gt; ','text',0,6,NULL,672,TRUE);
     $c->add('search_def_keytype','phrase','select',0,6,20,675,TRUE);

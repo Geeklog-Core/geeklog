@@ -493,8 +493,8 @@ class Search {
 
         $show_num  = $_CONF['search_show_num'];
         $show_type = $_CONF['search_show_type'];
-        $show_user = $_CONF['search_show_user'];
-        $show_hits = $_CONF['search_show_hits'];
+        $show_user = $_CONF['contributedbyline'];
+        $show_hits = !$_CONF['hideviewscount'];
         $style = isset($_CONF['search_style']) ? $_CONF['search_style'] : 'google';
 
         if ($style == 'table')
