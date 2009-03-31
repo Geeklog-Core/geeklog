@@ -129,6 +129,15 @@ Static Pages plugin
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
+ 
+Mar 30, 2009 (1.5.2sr1)
+------------
+
+This release addresses the following security issue:
+
+Fernando Munoz reported a possible XSS in the query form on most admin panels
+that we are fixing with this release (bug #0000841).
+
 
 Feb 8, 2009 (1.5.2)
 -----------
