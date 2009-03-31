@@ -75,20 +75,20 @@ class Search {
         global $_CONF, $_TABLES;
 
         // Set search criteria
-        if (isset ($_REQUEST['query'])) {
-            $this->_query = strip_tags (COM_stripslashes ($_REQUEST['query']));
+        if (isset ($_GET['query'])) {
+            $this->_query = strip_tags (COM_stripslashes ($_GET['query']));
         }
-        if (isset ($_REQUEST['topic'])) {
-            $this->_topic = COM_applyFilter ($_REQUEST['topic']);
+        if (isset ($_GET['topic'])) {
+            $this->_topic = COM_applyFilter ($_GET['topic']);
         }
-        if (isset ($_REQUEST['datestart'])) {
-            $this->_dateStart = COM_applyFilter ($_REQUEST['datestart']);
+        if (isset ($_GET['datestart'])) {
+            $this->_dateStart = COM_applyFilter ($_GET['datestart']);
         }
-        if (isset ($_REQUEST['dateend'])) {
-            $this->_dateEnd = COM_applyFilter ($_REQUEST['dateend']);
+        if (isset ($_GET['dateend'])) {
+            $this->_dateEnd = COM_applyFilter ($_GET['dateend']);
         }
-        if (isset ($_REQUEST['author'])) {
-            $this->_author = COM_applyFilter($_REQUEST['author']);
+        if (isset ($_GET['author'])) {
+            $this->_author = COM_applyFilter($_GET['author']);
 
             // In case we got a username instead of uid, convert it.  This should
             // make custom themes for search page easier.
@@ -100,8 +100,8 @@ class Search {
                 $this->_author = '';
             }
         }
-        $this->_type = isset($_REQUEST['type']) ? COM_applyFilter($_REQUEST['type']) : 'all';
-        $this->_keyType = isset($_REQUEST['keyType']) ? COM_applyFilter($_REQUEST['keyType']) : $_CONF['search_def_keytype'];
+        $this->_type = isset($_GET['type']) ? COM_applyFilter($_GET['type']) : 'all';
+        $this->_keyType = isset($_GET['keyType']) ? COM_applyFilter($_GET['keyType']) : $_CONF['search_def_keytype'];
     }
 
     /**
@@ -532,7 +532,7 @@ class Search {
         $searchtimer->startTimer();
 
         // Have plugins do their searches
-        $page = isset($_REQUEST['page']) ? COM_applyFilter($_REQUEST['page'], true) : 1;
+        $page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
         $result_plugins = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $page, 5);
 
         // Add core searches

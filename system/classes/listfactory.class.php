@@ -353,9 +353,9 @@ class ListFactory {
     function ExecuteQueries()
     {
         // Get the details for sorting the list
-        $this->_sort_arr['field'] = isset($_REQUEST['order']) ? COM_applyFilter($_REQUEST['order']) : $this->_def_sort_arr['field'];
-        if (isset($_REQUEST['direction']))
-            $this->_sort_arr['direction'] = $_REQUEST['direction'] == 'asc' ? 'asc' : 'desc';
+        $this->_sort_arr['field'] = isset($_GET['order']) ? COM_applyFilter($_GET['order']) : $this->_def_sort_arr['field'];
+        if (isset($_GET['direction']))
+            $this->_sort_arr['direction'] = $_GET['direction'] == 'asc' ? 'asc' : 'desc';
         else
             $this->_sort_arr['direction'] = $this->_def_sort_arr['direction'];
 
@@ -370,9 +370,9 @@ class ListFactory {
         }
         $order_sql = ' ORDER BY "' . addslashes($ord) . '" ' . strtoupper($this->_sort_arr['direction']);
 
-        $this->_page = isset($_REQUEST['page']) ? COM_applyFilter($_REQUEST['page'], true) : 1;
-        if (isset($_REQUEST['results'])) {
-            $this->_per_page = COM_applyFilter($_REQUEST['results'], true);
+        $this->_page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
+        if (isset($_GET['results'])) {
+            $this->_per_page = COM_applyFilter($_GET['results'], true);
         }
 
         // Calculate the limits for each query
