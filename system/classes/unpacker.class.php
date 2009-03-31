@@ -45,7 +45,17 @@ class unpacker {
     
     // mime types ( these are not very reliable, varies browser to browser )
     // for the best results, pass the real filename as well as the mime type
-    var $mime_def = array('application/zip' => 'zip', 'application/x-zip' => 'zip', 'application/x-zip-compressed' => 'zip', 'multipart/x-zip' => 'zip', 'application/gzip' => 'tar', 'application/tar' => 'tar', 'application/x-tar' => 'tar', 'application/x-gzip' => 'tar', 'application/octet-stream' => 'tar', 'application/x-compress' => 'tar', 'application/x-compressed' => 'tar');
+    var $mime_def = array('application/zip'              => 'zip',
+    					  'application/x-zip'            => 'zip',
+    					  'application/x-zip-compressed' => 'zip',
+    					  'multipart/x-zip'              => 'zip',
+    					  'application/gzip'             => 'tar',
+    					  'application/tar'              => 'tar',
+    					  'application/x-tar'            => 'tar',
+    					  'application/x-gzip'           => 'tar',
+    					  'application/octet-stream'     => 'tar',
+    					  'application/x-compress'       => 'tar',
+    					  'application/x-compressed'     => 'tar');
     
     var $file = null; // archive name 
     var $filesize = null; // archive size (in bytes)
@@ -193,7 +203,7 @@ class unpacker {
             // use Pear Archive_Zip     
             require_once 'Archive/Zip.php';
             $this->archive = new Archive_Zip($this->file);
-            // unfortunaty, we can't tell if it succeeded
+            // unfortunately, we can't tell if it succeeded
         
 
         }
@@ -213,7 +223,7 @@ class unpacker {
         require_once 'Archive/Tar.php';
         $this->archive = new Archive_Tar($this->file, $this->comp);
         
-        // unfortunaty, we can't tell if it succeeded
+        // unfortunately, we can't tell if it succeeded
         return ($this->archive);
     
     }
