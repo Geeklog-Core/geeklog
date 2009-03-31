@@ -140,7 +140,6 @@ class ListFactory {
     var $_per_page = 0;
     var $_page_limits = array();
     var $_function = '';
-    var $_class_instance = null;
     var $_preset_rows = array();
     var $_page_url = '';
     var $_style = 'table';
@@ -230,14 +229,12 @@ class ListFactory {
     * Sets the callback function that gets called when formatting a row
     *
     * @access public
-    * @param string $function The name given to a call back function that can format the results
-    * @param object $inst The instance of the class that contains the function
+    * @param callback $function Any callable function, method or lambda
     *
     */
-    function setRowFunction( $function, $inst = null )
+    function setRowFunction( $callback )
     {
-        $this->_function = $function;
-        $this->_class_instance = $inst;
+        $this->_function = $callback;
     }
 
     /**
@@ -430,14 +427,8 @@ class ListFactory {
 
                 // Need to call the format function before and after
                 // sorting the results.
-                $function = $this->_function;
-                if ($function != '')
-                {
-                    if (function_exists($function)) {
-                        $col = $function(true, $col);
-                    } else if ($this->_class_instance != null) {
-                        $col = $this->_class_instance->$function(true, $col);
-                    }
+                if (is_callable($this->_function)) {
+                    $col = call_user_func_array($this->_function, array(true, $col));
                 }
 
                 $rows_arr[] = $col;
@@ -587,14 +578,8 @@ class ListFactory {
         $r = 1;
         foreach ($rows_arr as $row)
         {
-            $function = $this->_function;
-            if ($function != '')
-            {
-                if (function_exists($function)) {
-                    $row = $function(false, $row);
-                } else if ($this->_class_instance != null) {
-                    $row = $this->_class_instance->$function(false, $row);
-                }
+            if (is_callable($this->_function)) {
+                $row = call_user_func_array($this->_function, array(false, $row));
             }
 
             foreach ($this->_fields as $field)

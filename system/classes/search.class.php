@@ -487,7 +487,7 @@ class Search {
 
         $url = "{$this->_searchURL}&amp;type={$this->_type}&amp;mode=";
         $obj = new ListFactory($url.'search', $_CONF['search_limits'], $_CONF['num_search_results']);
-        $obj->setRowFunction('searchFormatCallBack', $this);
+        $obj->setRowFunction(array($this, 'searchFormatCallBack'));
         $obj->setField('ID', 'id', false);
         $obj->setField('URL', 'url', false);
 
