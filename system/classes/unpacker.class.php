@@ -75,7 +75,7 @@ class unpacker {
      * Constructor
      * 
      * @param string $file full path to archive
-     * @param string $optional_type mime type ( application/zip, /tar, etc )
+     * @param string $mime_type mime type ( optional, application/zip, /tar, etc )
      * @return bool $success result of loading archive passed
      */
     function unpacker($file, $mime_type = null) {
@@ -232,7 +232,7 @@ class unpacker {
     /**
      * return contents of archive (wrapper)
      * 
-     * @return array(array('filename','size','etc')) archive contents
+     * @return array array(array('filename','size','etc')) archive contents
      */
     function getlist() {
 
@@ -255,7 +255,7 @@ class unpacker {
     /**
      * return contents of zip archive
      * 
-     * @return array(array('filename','size','etc')) archive contents
+     * @return array array(array('filename','size','etc')) archive contents
      */
     function list_zip() {
 
@@ -298,7 +298,7 @@ class unpacker {
     /**
      * return contents of tar archive
      * 
-     * @return array(array('filename','size','etc')) archive contents
+     * @return array array(array('filename','size','etc')) archive contents
      */
     function list_tar() {
 
@@ -413,9 +413,7 @@ class unpacker {
     /**
      * return the first directory name in the archive 
      * 
-     * @param string $target_path destination 
-     * @param array $item_array array of specific path/file(s)
-     * @return mixed result
+     * @return mixed string directory name, or bool false
      */
     function getdir() {
 
@@ -432,11 +430,9 @@ class unpacker {
     /**
      * return the total unpacked size of the archive 
      * 
-     * @param string $target_path destination 
-     * @param array $item_array array of specific path/file(s)
-     * @return bool result
+     * @return mixed (size in bytes or false on error)
      */
-    function getunpackedsize($optional_calibration = null) {
+    function getunpackedsize() {
 
         if (is_null($this->u_size) === false) {
             return $this->u_size;
@@ -457,6 +453,15 @@ class unpacker {
         }
     }
 
+     /**
+     * sets an error number and string to report if asked 
+     * acts as a wrapper for return false, to set an error
+     * at the same time
+     * 
+     * @param string $errorno error number ( anything goes )
+     * @param string $error error text ( anything goes ) 
+     * @return bool, always false
+     */
     function setError($errorno, $error) {
 
         $this->errorno = $errorno;
