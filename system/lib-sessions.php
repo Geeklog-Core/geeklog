@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-sessions.php                                                          |
 // |                                                                           |
 // | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-sessions.php,v 1.47 2008/09/21 08:37:12 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -397,7 +395,7 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
     if ($md5_based == 1) {
         $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
     } else {
-        $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (sess_id = $sessid)";
+        $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (sess_id = '$sessid')";
     }
 
     $result = DB_query($sql);

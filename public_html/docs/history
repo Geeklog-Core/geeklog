@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Mar ??, 2009 (1.6.0)
+Apr ??, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -130,6 +130,16 @@ Static Pages plugin
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
  
+Apr 4, 2009 (1.5.2sr2)
+-----------
+
+This release addresses the following security issue:
+
+Bookoo of the Nine Situations Group posted an SQL injection exploit for glFusion
+that also works with Geeklog. This issue allowed an attacker to extract the
+password hash for any account and is fixed with this release.
+
+
 Mar 30, 2009 (1.5.2sr1)
 ------------
 
