@@ -1336,7 +1336,7 @@ function service_delete_story($args, &$output, &$svc_msg)
         }
     }
 
-    STORY_doDeleteStoryNow($sid);
+    STORY_doDeleteThisStoryNow($sid);
 
     $output = COM_refresh($_CONF['site_admin_url'] . '/story.php?msg=10');
 
