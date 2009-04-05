@@ -382,9 +382,15 @@ class unpacker {
         } else {
             
             if (is_array($item_array) === true) {
-                return $this->archive->extract(array('add_path' => $target_path, 'by_name' => $item_array));
+                $result = $this->archive->extract(array('add_path' => $target_path, 'by_name' => $item_array));
             } else {
-                return $this->archive->extract(array('add_path' => $target_path));
+                $result = $this->archive->extract(array('add_path' => $target_path));
+            }
+            // extract() returns an array on success and 0 on failure
+            if ($result === 0) {
+                return false;
+            } else {
+                return true;
             }
         
         }
