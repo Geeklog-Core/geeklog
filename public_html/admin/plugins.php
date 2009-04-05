@@ -33,6 +33,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* This is the plugin administration page. Here you can install, uninstall,
+* enable, disable, and upload plugins.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
 
@@ -158,9 +167,9 @@ function plugineditor($pi_name, $confirmed = 0)
 }
 
 /**
-* Toggle status of a plugin from enabled to disabled and back
+* Toggle plugin status from enabled to disabled and back
 *
-* @param    string  $pi_name    name of the plugin
+* @param    array   $pi_name_arr    array of plugin states
 * @return   void
 *
 */
@@ -239,7 +248,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 /**
 * Creates list of uninstalled plugins (if any) and offers install link to them.
 *
-* @param    strint  $token  security token to use in list
+* @param    string  $token  Security token to use in list
 * @return   string          HTML containing list of uninstalled plugins
 *
 */
@@ -329,8 +338,8 @@ function show_newplugins($token)
 /**
 * Updates a plugin (call its upgrade function).
 *
-* @param    pi_name   string   name of the plugin to uninstall
-* @return             string   HTML for error or success message
+* @param    string  $pi_name    name of the plugin to uninstall
+* @return   string              HTML for error or success message
 *
 */
 function do_update($pi_name)
@@ -366,8 +375,8 @@ function do_update($pi_name)
 /**
 * Uninstall a plugin (call its uninstall function).
 *
-* @param    pi_name   string   name of the plugin to uninstall
-* @return             string   HTML for error or success message
+* @param    string  $pi_name    name of the plugin to uninstall
+* @return   string              HTML for error or success message
 *
 */
 function do_uninstall($pi_name)
@@ -398,10 +407,11 @@ function do_uninstall($pi_name)
 /**
 * List available plugins
 *
-* @return   string                  formatted list of plugins
+* @param    string  $token  Security token
+* @return   string          formatted list of plugins
 *
 */
-function listplugins ($token)
+function listplugins($token)
 {
     global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
 
@@ -519,7 +529,8 @@ function plugin_upload_enabled()
 /**
 * Display upload form
 *
-* @return   string      HTML for the upload form
+* @param    string  $token  Security token
+* @return   string          HTML for the upload form
 *
 */
 function plugin_show_uploadform($token)
@@ -572,22 +583,13 @@ function plugin_upload()
 
     } else {
 
+        require_once $_CONF['path_system'] . 'classes/unpacker.class.php';
+
         $plugin_file = $_CONF['path_data'] . $_FILES['plugin']['name']; // Name the plugin file
 
-        if ($_FILES['plugin']['type'] == 'application/zip') {
-
-            // Zip
-            require_once 'Archive/Zip.php';  // import Archive_Zip library
-            $archive = new Archive_Zip($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Zip to extract the package
-
-        } else {
-
-            // Tarball
-            require_once 'Archive/Tar.php';  // import Archive_Tar library
-            $archive = new Archive_Tar($_FILES['plugin']['tmp_name']); // Use PEAR's Archive_Tar to extract the package
-
-        }
-        $tmp = $archive->listContent(); // Grab the contents of the tarball to see what the plugin name is
+        $archive = new unpacker($_FILES['plugin']['tmp_name'],
+                                $_FILES['plugin']['type']);
+        $tmp = $archive->getlist(); // Grab the contents of the tarball to see what the plugin name is
         $dirname = preg_replace('/\/.*$/', '', $tmp[0]['filename']);
 
         if (empty($dirname)) { // If $dirname is blank it's probably because the user uploaded a non Tarball file.
@@ -650,18 +652,8 @@ function plugin_upload()
              */
 
             // Extract the tarball to data so we can get the $pi_name name from admin/install.php
-            if ($_FILES['plugin']['type'] == 'application/zip') {
-
-                // Zip
-                $archive->extract(array('add_path' => $_CONF['path'] . 'data/',
-                                        'by_name' => $dirname . '/admin/install.php'));
-
-            } else {
-
-                // Tarball
-                $archive->extractList(array($dirname . '/admin/install.php'), $_CONF['path'] . 'data/');
-
-            }
+            $archive->unpack($_CONF['path'] . 'data/',
+                             array($dirname . '/admin/install.php'));
             $plugin_inst = $_CONF['path'] . 'data/' . $dirname . '/admin/install.php';
             $fdata = '';
             $fhandle = @fopen($plugin_inst, 'r');
@@ -705,17 +697,7 @@ function plugin_upload()
             }
 
             // Extract the uploaded archive to the plugins directory
-            if ($_FILES['plugin']['type'] == 'application/zip') {
-
-                // Zip
-                $upload_success = $archive->extract(array('add_path' => $_CONF['path'] . 'plugins/'));
-
-            } else {
-
-                // Tarball
-                $upload_success = $archive->extract($_CONF['path'] . 'plugins/');
-
-            }
+            $upload_success = $archive->unpack($_CONF['path'] . 'plugins/');
 
             $plg_path = $_CONF['path'] . 'plugins/' . $pi_name . '/';
             if ($upload_success) {
@@ -890,7 +872,7 @@ function plugin_autoinstall($plugin)
 * Do the actual plugin auto install
 *
 * @param    string  $plugin     Plugin name
-* @param    array   $inst_parm  Installation parameters for the plugin
+* @param    array   $inst_parms Installation parameters for the plugin
 * @param    boolean $verbose    true: enable verbose logging
 * @return   boolean             true on success, false otherwise
 *
