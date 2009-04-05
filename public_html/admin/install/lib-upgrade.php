@@ -491,7 +491,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
 /**
  * Get the current installed version of Geeklog
  *
- * @return Geeklog version in x.x.x format
+ * @return  string  Geeklog version in x.x.x format
  *
  */
 function INST_identifyGeeklogVersion()
@@ -499,6 +499,25 @@ function INST_identifyGeeklogVersion()
     global $_TABLES, $_DB, $_DB_dbms;
 
     $_DB->setDisplayError(true);
+
+    $version = '';
+
+    /**
+    * First check for 'database_version' in gl_vars. If that exists, assume
+    * it's the correct version. Else, try some heuristics (below).
+    * Note: Need to handle 'sr1' etc. appendices.
+    */
+    $db_v = DB_getItem($_TABLES['vars'], 'value', "name = 'database_version'");
+    if (! empty($db_v)) {
+        $v = explode('.', $db_v);
+        if (count($v) == 3) {
+            $v[2] = (int) $v[2];
+            $version = implode('.', $v);
+
+            return $version;
+        }
+    }
+
 
     // simple tests for the version of the database:
     // "DESCRIBE sometable somefield", ''
@@ -509,13 +528,11 @@ function INST_identifyGeeklogVersion()
     // Should always include a test for the current version so that we can
     // warn the user if they try to run the update again.
 
-
     switch ($_DB_dbms) {
 
     case 'mysql':
         $test = array(
-            '1.5.2'  => array("SELECT value FROM {$_TABLES['vars']} WHERE name = 'database_version'", '1.5.2'),
-            '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
+            // as of 1.5.1, we should have the 'database_version' entry
             '1.5.0'  => array("DESCRIBE {$_TABLES['storysubmission']} bodytext",''),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit'),
             '1.4.0'  => array("DESCRIBE {$_TABLES['users']} remoteusername",''),
@@ -537,8 +554,7 @@ function INST_identifyGeeklogVersion()
 
     case 'mssql':
 	    $test = array(
-            '1.5.2'  => array("SELECT value FROM {$_TABLES['vars']} WHERE name = 'database_version'", '1.5.2'),
-            '1.5.1'  => array("SELECT name FROM {$_TABLES['vars']} WHERE name = 'database_version'", 'database_version'),
+            // as of 1.5.1, we should have the 'database_version' entry
             '1.5.0'  => array("SELECT c.name FROM syscolumns c JOIN sysobjects o ON o.id = c.id WHERE c.name='bodytext' AND o.name='{$_TABLES['storysubmission']}'",'bodytext'),
             '1.4.1'  => array("SELECT ft_name FROM {$_TABLES['features']} WHERE ft_name = 'syndication.edit'", 'syndication.edit')
             // 1.4.1 was the first version with MS SQL support
@@ -553,8 +569,6 @@ function INST_identifyGeeklogVersion()
         break;
 
     }
-
-    $version = '';
 
     foreach ($test as $v => $qarray) {
         $result = DB_query($qarray[0], 1);
@@ -660,11 +674,12 @@ function INST_setVersion($siteconfig_path)
 *
 * Note: Needed for upgrades from old versions - don't remove.
 *
-* @return   0 = not installed,
-*           1 = original plugin,
-*           2 = version by Phill or Tom,
-*           3 = v1.3 (center block, etc.),
-*           4 = v1.4 ('in block' flag)
+* @return int indicates which version of the plugin we're dealing with:
+*             - 0 = not installed,
+*             - 1 = original plugin,
+*             - 2 = version by Phill or Tom,
+*             - 3 = v1.3 (center block, etc.),
+*             - 4 = v1.4 ('in block' flag)
 *
 */
 function get_SP_ver()
@@ -699,7 +714,7 @@ function get_SP_ver()
 /**
  * Run all the database queries from the update file.
  *
- * @param   array $_SQL   Array of queries
+ * @param   array $_SQL   Array of queries to perform
  *
  */
 function INST_updateDB($_SQL)
@@ -787,6 +802,7 @@ function INST_pluginExists($plugin)
 *       process!
 *
 * @param    boolean $migration  whether the upgrade is part of a site migration
+* @param    array   $old_conf   old $_CONF values before the migration
 * @return   int     number of failed plugin updates (0 = everything's fine)
 *
 */
