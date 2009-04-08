@@ -107,7 +107,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
                      . COM_accessLog($LANG20[3] . ' ' . $_POST['loginname']);
         }
 
-        $display .= '<form action="' . $_SERVER['PHP_SELF'] . '" method="post">'
+        $display .= '<form action="' . $_CONF['site_admin_url'] . '/moderation.php" method="post">'
             .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
             .'<tr><td align="right">'.$LANG20[4].'&nbsp;</td>'.LB
             .'<td><input type="text" name="loginname" size="16" maxlength="16"' . XHTML . '></td>'.LB
