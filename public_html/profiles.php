@@ -300,7 +300,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         return $retval;
     }
 
-    $sql = "SELECT uid,title,introtext,bodytext,commentcode,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
+    $sql = "SELECT uid,title,introtext,bodytext,commentcode,UNIX_TIMESTAMP(date) AS day,postmode FROM {$_TABLES['stories']} WHERE sid = '$sid'";
     $result = DB_query ($sql);
     $A = DB_fetchArray ($result);
     $shortmsg = COM_stripslashes ($shortmsg);
@@ -325,10 +325,17 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         $author = COM_getDisplayName ($A['uid']);
         $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
-    $mailtext .= LB
-        . COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
-        . COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
-        . '------------------------------------------------------------'.LB;
+    if($A['postmode']==='wikitext'){
+        $mailtext .= LB
+            . COM_undoSpecialChars(stripslashes(strip_tags(COM_renderWikiText($A['introtext'])))).LB.LB
+            . COM_undoSpecialChars(stripslashes(strip_tags(COM_renderWikiText($A['bodytext'])))).LB.LB
+            . '------------------------------------------------------------'.LB;
+    } else {
+        $mailtext .= LB
+            . COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
+            . COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
+            . '------------------------------------------------------------'.LB;
+    }
     if ($A['commentcode'] == 0) { // comments allowed
         $mailtext .= $LANG08[24] . LB
                   . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='

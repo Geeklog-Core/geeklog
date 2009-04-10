@@ -4022,9 +4022,9 @@ function COM_emailUserTopics()
         $U = DB_fetchArray( $users );
 
         $storysql = array();
-        $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,bodytext";
+        $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
 
-        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
+        $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,postmode";
 
         $commonsql = " FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
 
@@ -4100,7 +4100,11 @@ function COM_emailUserTopics()
 
             if( $_CONF['emailstorieslength'] > 0 )
             {
-                $storytext = COM_undoSpecialChars( strip_tags( PLG_replaceTags( stripslashes( $S['introtext'] ))));
+                if($S['postmode']==='wikitext'){
+                    $storytext = COM_undoSpecialChars( strip_tags( COM_renderWikiText ( stripslashes( $S['introtext'] ))));
+                } else {
+                    $storytext = COM_undoSpecialChars( strip_tags( PLG_replaceTags( stripslashes( $S['introtext'] ))));
+                }
 
                 if( $_CONF['emailstorieslength'] > 1 )
                 {
