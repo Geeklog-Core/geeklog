@@ -19,7 +19,7 @@ CREATE TABLE {$_TABLES['commentedits']} (
   uid mediumint(8) NOT NULL,
   time datetime NOT NULL,
   PRIMARY KEY (cid)
-) TYPE=MYISAM
+) TYPE=MyISAM
 ";
 $_SQL[] = "
 CREATE TABLE {$_TABLES['commentnotifications']} (
@@ -28,7 +28,7 @@ CREATE TABLE {$_TABLES['commentnotifications']} (
   deletehash varchar(32) NOT NULL,
   mid int(10) default NULL,
   PRIMARY KEY  (deletehash)
-) ENGINE=MyISAM 
+) TYPE=MyISAM 
 ";
 $_SQL[] = "
 CREATE TABLE {$_TABLES['commentsubmissions']} (
@@ -43,14 +43,14 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   pid int(10) NOT NULL default '0',
   ipaddress varchar(15) NOT NULL,
   PRIMARY KEY  (cid)
-) ENGINE=MyISAM
+) TYPE=MyISAM
 ";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD comment_expire datetime NOT NULL default '0000-00-00 00:00:00' AFTER comments";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD name varchar(32) default NULL AFTER indent";
 */
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Admin', 'Can moderate comments', 1)";
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Submitters', 'Can submit comments', 0);";
-$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate',  'Ability to moderate comments', 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate', 'Ability to moderate comments', 1)";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.submit', 'Comments are automatically published', 1)";
 
 /**

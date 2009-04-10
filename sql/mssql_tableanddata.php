@@ -73,12 +73,35 @@ CREATE TABLE [dbo].[{$_TABLES['commentcodes']}] (
 ) ON [PRIMARY]
 ";
 
+/* FIXME - MySQL syntax
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentedits']} (
+  cid int(10) NOT NULL,
+  uid mediumint(8) NOT NULL,
+  time datetime NOT NULL,
+  PRIMARY KEY (cid)
+) TYPE=MyISAM
+";
+*/
+
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['commentmodes']}] (
     [mode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [name] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
+
+/* FIXME - MySQL syntax
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentnotifications']} (
+  cid int(10) default NULL,
+  uid mediumint(8) NOT NULL,
+  deletehash varchar(32) NOT NULL,
+  mid int(10) default NULL,
+  PRIMARY KEY  (deletehash)
+) TYPE=MyISAM 
+";
+*/
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['comments']}] (
@@ -94,10 +117,29 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [lft] [numeric](10, 0) NULL ,
     [rht] [numeric](10, 0) NULL ,
     [indent] [numeric](10, 0) NULL ,
+    [name] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [uid] [int] NULL ,
     [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
+
+/* FIXME - MySQL syntax
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentsubmissions']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL default 'article',
+  sid varchar(40) NOT NULL,
+  date datetime default NULL,
+  title varchar(128) default NULL,
+  comment text,
+  uid mediumint(8) NOT NULL default '1',
+  name varchar(32) default NULL,
+  pid int(10) NOT NULL default '0',
+  ipaddress varchar(15) NOT NULL,
+  PRIMARY KEY  (cid)
+) TYPE=MyISAM
+";
+*/
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['conf_values']}] (
@@ -249,6 +291,7 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [hits] [numeric](8, 0) NOT NULL ,
     [numemails] [numeric](8, 0) NOT NULL ,
     [comments] [numeric](8, 0) NOT NULL ,
+    [comment_expire] [datetime] NULL ,
     [trackbacks] [numeric](8, 0) NOT NULL ,
     [related] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [featured] [tinyint] NOT NULL ,
@@ -1265,6 +1308,8 @@ INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (17,'plugin.install','Can install/uninstall plugins',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (18,'plugin.upload','Can upload new plugins',1)
 INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (19,'group.assign','Ability to assign users to groups',1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (20, 'comment.moderate', 'Ability to moderate comments', 1)
+INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (21, 'comment.submit', 'Comments are automatically published', 1)
 
 set identity_insert {$_TABLES['features']} off
 ";
@@ -1322,6 +1367,8 @@ INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALU
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (11,'Group Admin','Is a User Admin with access to groups, too',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (12,'Mail Admin','Can use Mail Utility',1)
 INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All registered members',1)
+INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (14, 'Comment Admin', 'Can moderate comments', 1)
+INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (15, 'Comment Submitters', 'Can submit comments', 0)
 
 set identity_insert {$_TABLES['groups']} off
 ";

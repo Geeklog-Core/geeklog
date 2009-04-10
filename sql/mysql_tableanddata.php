@@ -66,7 +66,7 @@ CREATE TABLE {$_TABLES['commentedits']} (
   uid mediumint(8) NOT NULL,
   time datetime NOT NULL,
   PRIMARY KEY (cid)
-) TYPE=MYISAM
+) TYPE=MyISAM
 ";
 
 $_SQL[] = "
@@ -84,7 +84,7 @@ CREATE TABLE {$_TABLES['commentnotifications']} (
   deletehash varchar(32) NOT NULL,
   mid int(10) default NULL,
   PRIMARY KEY  (deletehash)
-) ENGINE=MyISAM 
+) TYPE=MyISAM 
 ";
 
 $_SQL[] = "
@@ -126,7 +126,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   pid int(10) NOT NULL default '0',
   ipaddress varchar(15) NOT NULL,
   PRIMARY KEY  (cid)
-) ENGINE=MyISAM
+) TYPE=MyISAM
 ";
 
 $_SQL[] = "
@@ -616,7 +616,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (17,'plugin.install','Can install/uninstall plugins',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (18,'plugin.upload','Can upload new plugins',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (19,'group.assign','Ability to assign users to groups',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (20, 'comment.moderate',  'Ability to moderate comments', 1)";
+$_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (20, 'comment.moderate', 'Ability to moderate comments', 1)";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (21, 'comment.submit', 'Comments are automatically published', 1)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (0,'Show Only in Topic') ";
