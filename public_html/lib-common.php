@@ -2475,40 +2475,39 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
         }
 
         $modnum = 0;
-        if( SEC_hasRights( 'story.edit,story.moderate', 'OR' ) || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
-        {
+        if (SEC_hasRights('story.edit,story.moderate', 'OR') ||
+                (($_CONF['commentsubmission'] == 1) &&
+                    SEC_hasRights('comment.moderate')) ||
+                (($_CONF['usersubmission'] == 1) &&
+                    SEC_hasRights('user.edit,user.delete'))) {
 
-            if( SEC_hasRights( 'story.moderate' ))
-            {
-                if( empty( $topicsql ))
-                {
-                    $modnum += DB_count( $_TABLES['storysubmission'] );
-                }
-                else
-                {
-                    $sresult = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['storysubmission']} WHERE" . $topicsql );
-                    $S = DB_fetchArray( $sresult );
+            if (SEC_hasRights('story.moderate')) {
+                if (empty($topicsql)) {
+                    $modnum += DB_count($_TABLES['storysubmission']);
+                } else {
+                    $sresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['storysubmission']} WHERE" . $topicsql);
+                    $S = DB_fetchArray($sresult);
                     $modnum += $S['count'];
                 }
             }
 
-            if(( $_CONF['listdraftstories'] == 1 ) && SEC_hasRights( 'story.edit' ))
-            {
+            if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
                 $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 1)";
-                if( !empty( $topicsql ))
-                {
+                if (!empty($topicsql)) {
                     $sql .= ' AND' . $topicsql;
                 }
-                $result = DB_query( $sql . COM_getPermSQL( 'AND', 0, 3 ));
-                $A = DB_fetchArray( $result );
+                $result = DB_query($sql . COM_getPermSQL('AND', 0, 3));
+                $A = DB_fetchArray($result);
                 $modnum += $A['count'];
             }
 
-            if( $_CONF['usersubmission'] == 1 )
-            {
-                if( SEC_hasRights( 'user.edit' ) && SEC_hasRights( 'user.delete' ))
-                {
-                    $modnum += DB_count( $_TABLES['users'], 'status', '2' );
+            if (($_CONF['commentsubmission'] == 1) && SEC_hasRights('comment.moderate')) {
+                $modnum += DB_count($_TABLES['commentsubmissions']);
+            }
+
+            if ($_CONF['usersubmission'] == 1) {
+                if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
+                    $modnum += DB_count($_TABLES['users'], 'status', '2');
                 }
             }
         }

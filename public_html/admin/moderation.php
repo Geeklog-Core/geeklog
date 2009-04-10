@@ -215,18 +215,20 @@ function commandcontrol($token)
         $retval .= itemlist('story', $token);
     }
 
-    if (SEC_hasRights('story.edit')) {
-        if ($_CONF['listdraftstories'] == 1) {
+    if ($_CONF['listdraftstories'] == 1) {
+        if (SEC_hasRights('story.edit')) {
             $retval .= draftlist ($token);
         }
     }
     
-    if (SEC_hasRights('comment.moderate')) {
-        $retval .= itemlist('comment', $token);
+    if ($_CONF['commentsubmission'] == 1) {
+        if (SEC_hasRights('comment.moderate')) {
+            $retval .= itemlist('comment', $token);
+        }
     }
 
     if ($_CONF['usersubmission'] == 1) {
-        if (SEC_hasRights ('user.edit') && SEC_hasRights ('user.delete')) {
+        if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
             $retval .= userlist ($token);
         }
     }
