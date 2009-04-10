@@ -217,8 +217,7 @@ $LANG03 = array(
     37 => 'New Comment Reply',
     38 => 'Someone has replied to your comment.',
     39 => 'You may view the comment thread at the following address: ',
-    40 => 'If you wish to receive no further notifications of replies, visit the
- following link: '
+    40 => 'If you wish to receive no further notifications of replies, visit the following link: '
 );
 
 ###############################################################################
