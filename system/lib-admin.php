@@ -1095,35 +1095,67 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
     $retval = '';
 
     $type = '';
-    if (isset ($A['_moderation_type'])) {
+    if (isset($A['_moderation_type'])) {
         $type = $A['_moderation_type'];
     }
     switch ($fieldname) {
-        case 'edit':
-            $retval = COM_createLink($icon_arr['edit'], $A['edit']);
-            break;
-        case 'delete':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\"" . XHTML . ">";
-            break;
-        case 'approve':
-            $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\"" . XHTML . ">"
-                     ."<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
-            break;
-        case 'day':
-            $retval = strftime ($_CONF['daytime'], $A['day']);
-            break;
-        case 'tid':
-            $retval = DB_getItem ($_TABLES['topics'], 'topic',
-                                  "tid = '{$A['tid']}'");
-            break;
-        default:
-            if (($fieldname == 3) && ($type == 'story')) {
-                $retval = DB_getItem ($_TABLES['topics'], 'topic',
-                                      "tid = '{$A[3]}'");
-            } else {
-                $retval = COM_makeClickableLinks (stripslashes ($fieldvalue));
-            }
-            break;
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'], $A['edit']);
+        break;
+
+    case 'delete':
+        $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"delete\"" . XHTML . ">";
+        break;
+
+    case 'approve':
+        $retval = "<input type=\"radio\" name=\"action[{$A['row']}]\" value=\"approve\"" . XHTML . ">"
+                 ."<input type=\"hidden\" name=\"id[{$A['row']}]\" value=\"{$A[0]}\"" . XHTML . ">";
+        break;
+
+    case 'day':
+        $retval = strftime($_CONF['daytime'], $A['day']);
+        break;
+
+    case 'tid':
+        $retval = DB_getItem($_TABLES['topics'], 'topic',
+                             "tid = '{$A['tid']}'");
+        break;
+
+    case 'uid':
+        $name = '';
+        if ($A['uid'] == 1) {
+            $name = htmlspecialchars(COM_stripslashes(DB_getItem($_TABLES['commentsubmissions'], 'name', "cid = '{$A['id']}'")));
+        }
+        if (empty($name)) {
+            $name = DB_getItem($_TABLES['users'], 'username',
+                               "uid = '{$A['uid']}'");
+        }
+        if ($A['uid'] == 1) {
+            $retval = $name;
+        } else {
+            $retval = COM_createLink($name, $_CONF['site_url']
+                            . '/users.php?mode=profile&amp;uid=' . $A['uid']);
+        }
+        break;
+
+    case 'publishfuture':
+        if (!SEC_inGroup('Comment Submitters', $A['uid']) && ($A['uid'] > 1)) {
+            $retval = "<input type=\"checkbox\" name=\"publishfuture[]\" value=\"{$A['uid']}\"" . XHTML . ">";
+        } else {
+            $retval = $LANG_ADMIN['na'];
+        }
+        break;
+
+    default:
+        if (($fieldname == 3) && ($type == 'story')) {
+            $retval = DB_getItem($_TABLES['topics'], 'topic',
+                                  "tid = '{$A[3]}'");
+        } elseif (($fieldname == 2) && ($type == 'comment')) {
+            $retval = COM_truncate(strip_tags($A['comment']), 40, '...');
+        } else {
+            $retval = COM_makeClickableLinks(stripslashes($fieldvalue));
+        }
+        break;
     }
 
     return $retval;

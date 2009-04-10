@@ -15,7 +15,7 @@
     </div>
     <div class="story-footer">
         <p>{page_selector}</p>
-        <p>{readmore_link} {post_comment_link} {subscribe_link}</p>
+        <p>{readmore_link} {post_comment_link}</p>
         <p>{plugin_itemdisplay}{comments_with_count} {trackbacks_with_count}</p>
     </div>
 </div>

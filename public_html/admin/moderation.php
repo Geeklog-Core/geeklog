@@ -272,16 +272,16 @@ function itemlist($type, $token)
         }
     } elseif ( $type == 'story') { // story submission
         $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
-        $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
+        $H =  array($LANG29[10], $LANG29[14], $LANG29[15]);
         $section_title = $LANG29[35];
         $section_help = 'ccstorysubmission.html';
     } elseif ($type == 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid "
               . "FROM {$_TABLES['commentsubmissions']} "
               . "ORDER BY cid ASC";
-        $H = array($LANG29[10],$LANG29[36], $LANG29[37]);
+        $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
-        $section_help = 'i do not know';
+        $section_help = 'ccstorysubmission.html'; // FIXME
     }
 
     // run SQL but this time ignore any errors
@@ -299,7 +299,7 @@ function itemlist($type, $token)
     $data_arr = array();
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        if ($isplugin)  {
+        if ($isplugin) {
             $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
         } elseif ($type == 'comment') {
@@ -331,11 +331,11 @@ function itemlist($type, $token)
         $header_arr[7]['field'] = 'publishfuture';
     }
 
-    $text_arr = array('has_menu'    => false,
-                      'title'       => $section_title,
-                      'help_url'    => $section_help,
-                      'no_data'   => $LANG29[39],
-                      'form_url'  => "{$_CONF['site_admin_url']}/moderation.php"
+    $text_arr = array('has_menu' => false,
+                      'title'    => $section_title,
+                      'help_url' => $section_help,
+                      'no_data'  => $LANG29[39],
+                      'form_url' => "{$_CONF['site_admin_url']}/moderation.php"
     );
     $form_arr = array("bottom" => '', "top" => '');
     if ($nrows > 0) {

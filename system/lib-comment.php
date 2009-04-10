@@ -38,8 +38,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-comment.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-if( $_CONF['allow_user_photo'] )
-{
+if ($_CONF['allow_user_photo']) {
     /**
     * only needed for the USER_getPhoto function
     */
@@ -282,7 +281,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $row = 1;
     do {
         //check for comment edit
-        $commentedit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) as time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
+        $commentedit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) AS time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
         $B = DB_fetchArray($commentedit);
         if ($B) { //comment edit present
             //get correct editor name
@@ -424,35 +423,36 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $edit = COM_createLink( $LANG01[4], $editlink) . ' | ';
         }
 
-        // If deletion is allowed, displays delete link
-        if( $delete_option ) {
+        // if deletion is allowed, displays delete link
+        if ($delete_option) {
             $deloption = '';
-            if ( SEC_hasRights('comment.moderate')) {
-                if( !empty( $A['ipaddress'] ) ) {
-                    if( empty( $_CONF['ip_lookup'] )) {
-                        $deloption = $A['ipaddress'] . '  | ';
-                    } else {
-                        $iplookup = str_replace( '*', $A['ipaddress'], $_CONF['ip_lookup'] );
-                        $deloption = COM_createLink($A['ipaddress'], $iplookup) . ' | ';
-                    }
-                    //insert re-que link here
-                }
+
+            // always place edit option first, if available
+            if (! empty($edit)) {
+                $deloption .= $edit;
             }
+
+            // actual delete option
             $dellink = $_CONF['site_url'] . '/comment.php?mode=delete&amp;cid='
                 . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
                 . '&amp;' . CSRF_TOKEN . '=' . $token;
             $delattr = array('onclick' => "return confirm('{$MESSAGE[76]}');");
-            $deloption = COM_createLink( $LANG01[28], $dellink, $delattr) . ' | ';
-            if( !empty( $A['ipaddress'] )) {
-                if( empty( $_CONF['ip_lookup'] )) {
+            $deloption .= COM_createLink($LANG01[28], $dellink, $delattr) . ' | ';
+
+            if (!empty($A['ipaddress'])) {
+                if (empty($_CONF['ip_lookup'])) {
                     $deloption .= $A['ipaddress'] . '  | ';
                 } else {
-                    $iplookup = str_replace( '*', $A['ipaddress'], $_CONF['ip_lookup'] );
+                    $iplookup = str_replace('*', $A['ipaddress'],
+                                            $_CONF['ip_lookup']);
                     $deloption .= COM_createLink($A['ipaddress'], $iplookup) . ' | ';
                 }
             }
-            $template->set_var( 'delete_option', $deloption );
-        } else if( !empty( $_USER['username'] )) {
+
+            $template->set_var('delete_option', $deloption);
+        } elseif ($edit_option) {
+            $template->set_var('delete_option', $edit);
+        } elseif (!empty( $_USER['username'])) {
             $reportthis_link = $_CONF['site_url']
                 . '/comment.php?mode=report&amp;cid=' . $A['cid']
                 . '&amp;type=' . $type;
@@ -945,27 +945,30 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             if ($mode == 'edit' || $mode == $LANG03[28]) {
                 //editing comment or preview changes
                 $comment_template->set_var('lang_preview', $LANG03[28]); 
-            } elseif ($mode == 'editsubmission' || $mode == $LANG03[34] ) {
+            } elseif ($mode == 'editsubmission' || $mode == $LANG03[34]) {
                 $comment_template->set_var('lang_preview', $LANG03[34]);
             } else {
             	//new comment
                 $comment_template->set_var('lang_preview', $LANG03[14]);
             }
 
-            if ( $mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1) ) { 
+            if ($mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1)) { 
                 //for editing
                 PLG_templateSetVars ('comment', $comment_template); 
-                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="'
-                    . $LANG03[29] . '"' . XHTML . '>');
-            } elseif ($mode == $LANG03[34] || ($mode == 'editsubmission' && $_CONF['skip_preview'] == 1) )  {
+                $comment_template->set_var('save_option',
+                    '<input type="submit" name="mode" value="' . $LANG03[29]
+                    . '"' . XHTML . '>');
+            } elseif ($mode == $LANG03[34] || ($mode == 'editsubmission' && $_CONF['skip_preview'] == 1))  {
                 //editing submission comment
                 PLG_templateSetVars ('comment', $comment_template);
-                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="'
-                    . $LANG03[35] . '"' . XHTML . '>');
-            } elseif (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14]) ) {
+                $comment_template->set_var('save_option',
+                    '<input type="submit" name="mode" value="' . $LANG03[35]
+                    . '"' . XHTML . '>');
+            } elseif (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 PLG_templateSetVars ('comment', $comment_template);
-                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="'
-                    . $LANG03[11] . '"' . XHTML . '>');
+                $comment_template->set_var('save_option',
+                    '<input type="submit" name="mode" value="' . $LANG03[11]
+                    . '"' . XHTML . '>');
 
             }
             
@@ -973,10 +976,11 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     ($mode == '' || $mode == $LANG03[14] || $mode == 'error')) {
                 $checked = '';
                 if (isset($_POST['notify'])) {
-                    $checked = ' checked';
+                    $checked = ' checked="checked"';
                 }
-                $comment_template->set_var('notification', '<p><input type=checkbox'
-                                     .   ' name="notify"' . $checked . '>' . $LANG03[36] . '</p>');
+                $comment_template->set_var('notification',
+                    '<p><input type="checkbox"' . ' name="notify"' . $checked
+                    . '>' . $LANG03[36] . '</p>');
             }
             
             $comment_template->set_var('end_block', COM_endBlock());
@@ -1448,7 +1452,7 @@ function CMT_sendReport ($cid, $type)
  * Handles a comment edit submission
  *
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @return string HTML (possibly a refresh)
  */
 function CMT_handleEditSubmit($mode = null)
@@ -1524,15 +1528,15 @@ function CMT_handleEditSubmit($mode = null)
  * Filters comment text and appends necessary tags (sig and/or edit)
  *
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @param string  $comment   comment text
  * @param string  $postmode ('html', 'plaintext',..)
  * @param bool    $edit     if true append edit tag
  * @param int     $cid      commentid if editing comment (for proper sig)
  * @return string of comment text
-*/
-function CMT_prepareText($comment, $postmode, $edit = false, $cid = null) {
-    
+ */
+function CMT_prepareText($comment, $postmode, $edit = false, $cid = null)
+{
     global $_USER, $_TABLES, $LANG03, $_CONF; 
     
     if ($postmode == 'html') {
@@ -1585,11 +1589,11 @@ function CMT_prepareText($comment, $postmode, $edit = false, $cid = null) {
  *
  * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
-**/
-function CMT_updateCommentcodes() {
-    global $_CONF; 
-    global $_TABLES;
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ */
+function CMT_updateCommentcodes()
+{
+    global $_CONF, $_TABLES;
     
     if ($_CONF['comment_close_rec_stories'] > 0) {
         $results = DB_query("SELECT sid FROM {$_TABLES['stories']} ORDER BY date DESC LIMIT {$_CONF['comment_close_rec_stories']}");
@@ -1611,10 +1615,10 @@ function CMT_updateCommentcodes() {
  * Rebuilds hierarchical data of comments after moderation using recursion.
  *
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
-**/
-
-function CMT_rebuildTree($sid, $pid = 0, $left = 0) {
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ */
+function CMT_rebuildTree($sid, $pid = 0, $left = 0)
+{
     global $_TABLES;
     
     $right = $left + 1;
@@ -1634,11 +1638,11 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0) {
  * 
  * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @return string of story id 
-**/
-
-function CMT_approveModeration($cid) {
+ */
+function CMT_approveModeration($cid)
+{
     global $_TABLES;
     
     $result = DB_query ("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress"
@@ -1684,9 +1688,10 @@ function CMT_approveModeration($cid) {
  * 
  * @param   array   contains cid, uid, and deletekey
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
-**/
-function CMT_sendReplyNotification($A) {
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ */
+function CMT_sendReplyNotification($A)
+{
     global $_CONF, $_TABLES, $LANG03;
     
     $mailsubject = $_CONF['site_name'] . ': ' . $LANG03[37];

@@ -260,10 +260,12 @@ function handleView($view = true)
  * Handles a comment edit submission
  *
  * @copyright Jared Wenerd 2008
- * @author Jared Wenerd <wenerd87 AT gmail DOT com>
+ * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ * @param  string $mode 'edit' or 'editsubmission'
  * @return string HTML (possibly a refresh)
  */
-function handleEdit($mode) {
+function handleEdit($mode)
+{
     global $_TABLES; $LANG03;
     
     //get needed data
@@ -311,10 +313,12 @@ function handleEdit($mode) {
     }
             
     return COM_siteHeader('menu', $LANG03[1])
-           . CMT_commentForm ($title, $commenttext, $sid,
-                  COM_applyFilter ($_REQUEST['pid'], true), $type, $mode, $postmode)
+           . CMT_commentForm($title, $commenttext, $sid,
+                COM_applyFilter($_REQUEST['pid'], true), $type, $mode, $postmode)
            . COM_siteFooter();
 }
+
+
 // MAIN
 CMT_updateCommentcodes();
 $display = '';

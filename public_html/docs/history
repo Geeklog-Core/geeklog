@@ -8,7 +8,7 @@ the 2008 Google Summer of Code:
 
 + Site migration support and easier plugin installation, by Matt West
 + Improved search, by Sami Barakat
-+ (TBD) Comment moderation and editable comments, by Jared Wenerd
++ Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
 - New plugin API function PLG_configChange (feature request #0000694) [Dirk]

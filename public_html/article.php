@@ -313,13 +313,14 @@ if ($A['count'] > 0) {
                  . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
             $story_options[] = COM_createLink($LANG_TRB['send_trackback'], $url);
         }
-		
+    /*
         if (true) { // can subscribe
             $commentSubscribeURL = '';
             $story_options[] = COM_createLink('Nubbies', $commentSubscribeURL, array('rel' => 'nofollow'));
             $story_template->set_var ('comment_subscribe_url', $commentSubscribeURL);
             $story_template->set_var ('lang_comment_subscribe', 'Nubbies');
         }
+    */
         $related = STORY_whatsRelated($story->displayElements('related'),
                                       $story->displayElements('uid'),
                                       $story->displayElements('tid'));

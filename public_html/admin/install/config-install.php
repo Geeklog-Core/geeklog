@@ -227,6 +227,12 @@ function install_config()
     $c->add('comment_limit',100,'text',4,21,NULL,1650,TRUE);
     $c->add('comment_mode','threaded','select',4,21,11,1660,TRUE);
     $c->add('comment_code',0,'select',4,21,17,1670,TRUE);
+    $c->add('comment_edit',0,'select',4,21,0,1680,TRUE);
+    $c->add('commentsubmission',0,'select',4,21,0, 1682, TRUE);
+    $c->add('comment_edittime',1800,'text',4,21,NULL,1684,TRUE);
+    $c->add('article_comment_close_days',30,'text',4,21,NULL,1686,TRUE);
+    $c->add('comment_close_rec_stories',0,'text',4,21,NULL,1688,TRUE);
+    $c->add('allow_reply_notifications',0,'select',4,21,0, 1689, TRUE);
 
     // Subgroup: Images
     $c->add('sg_images', NULL, 'subgroup', 5, 0, NULL, 0, TRUE);

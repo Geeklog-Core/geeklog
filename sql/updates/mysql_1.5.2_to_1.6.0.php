@@ -8,7 +8,15 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} DROP COLUMN in_transit";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('plugin.install','Can install/uninstall plugins',1)";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('plugin.upload','Can upload new plugins',1)";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_descr = 'Can change plugin status' WHERE ft_name = 'plugin.edit'";
+
+// new group.assign permission
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('group.assign','Ability to assign users to groups',1)";
+
+// new comment groups and permissions
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Admin', 'Can moderate comments', 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Submitters', 'Can submit comments', 0);";
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate',  'Ability to moderate comments', 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.submit', 'Comments are automatically published', 1)";
 
 /**
  * Add new config options
@@ -85,6 +93,29 @@ function upgrade_addNewPermissions()
 
     if (($grp_id > 0) && ($assign_id > 0)) {
         DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($assign_id, $grp_id)");
+    }
+
+    // comment groups and permissions
+    $cmt_mod_id = DB_getItem($_TABLES['features'], 'ft_id',
+                             "ft_name = 'comment.moderate'");
+    $cmt_sub_id = DB_getItem($_TABLES['features'], 'ft_id',
+                             "ft_name = 'comment.submit'");
+    $cmd_admin = DB_getItem($_TABLES['groups'], 'grp_id',
+                            "grp_name = 'Comment Admin'");
+    $cmd_submitter = DB_getItem($_TABLES['groups'], 'grp_id',
+                                "grp_name = 'Comment Submitter'");
+
+    if (($cmt_mod_id > 0) && ($cmt_admin > 0)) {
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($cmt_mod_id, $cmt_admin)");
+    }
+    if (($cmt_sub_id > 0) && ($cmd_submitter > 0)) {
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($cmt_sub_id, $cmd_submitter)");
+    }
+    if ($cmt_admin > 0) {
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($cmt_admin,NULL,1)");
+    }
+    if ($cmd_submitter > 0) {
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($cmd_submitter,NULL,1)");
     }
 }
 
