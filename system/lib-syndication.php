@@ -403,7 +403,6 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $fulltext = PLG_replaceTags( $fulltext );
         $storytext = SYND_truncateSummary( $fulltext, $contentLength );
         $fulltext = trim( $fulltext );
-COM_errorLog($fulltext);
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
         if( $row['postmode'] == 'plaintext' ) 
