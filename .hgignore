@@ -15,6 +15,7 @@ system/pear/scripts
 
 db-config.php
 public_html/siteconfig.php
+system/lib-custom.php
 
 config.php
 plugins/calendar/config.php
