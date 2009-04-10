@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-comment.php                                                           |
 // |                                                                           |
@@ -302,11 +302,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
 
         // comment variables
-        $template->set_var( 'indent', $indent );
-        $template->set_var( 'author_name', $A['username'] );
-        $template->set_var( 'author_id', $A['uid'] );
-        $template->set_var( 'cid', $A['cid'] );
-        $template->set_var( 'cssid', $row % 2 );
+        $template->set_var('indent', $indent);
+        $template->set_var('author_name', strip_tags($A['username']));
+        $template->set_var('author_id', $A['uid']);
+        $template->set_var('cid', $A['cid']);
+        $template->set_var('cssid', $row % 2);
 
         if( $A['uid'] > 1 ) {
             $fullname = COM_getDisplayName( $A['uid'], $A['username'],
@@ -351,7 +351,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         } else {
             //comment is from anonymous user
             if (isset($A['name'])) {
-                $A['username'] = $A['name'];
+                $A['username'] = strip_tags($A['name']);
             }
             $template->set_var( 'author', $A['username'] );
             $template->set_var( 'author_fullname', $A['username'] );
@@ -1060,12 +1060,13 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     }
 
     $comment = addslashes(CMT_prepareText($comment, $postmode));
-    $title = addslashes(COM_checkWords (strip_tags ($title)));
-    if (isset($_POST['username']) && strcmp($_POST['username'],$LANG03[24]) != 0 
-         && $uid == 1 ) {
-        $name = COM_checkWords(strip_tags(addslashes($_POST['username'])));
+    $title = addslashes(COM_checkWords(strip_tags($title)));
+    if (isset($_POST['username']) && strcmp($_POST['username'],$LANG03[24]) != 0
+            && $uid == 1) {
+        $name = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
         setcookie('anon-name', $name);
-    } 
+        $name = addslashes($name);
+    }
 
     // check for non-int pid's
     // this should just create a top level comment that is a reply to the original item
