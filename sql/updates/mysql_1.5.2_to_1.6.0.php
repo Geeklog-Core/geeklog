@@ -12,7 +12,39 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_descr = 'Can change plugin statu
 // new group.assign permission
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('group.assign','Ability to assign users to groups',1)";
 
-// new comment groups and permissions
+// new comment tables, groups, and permissions
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentedits']} (
+  cid int(10) NOT NULL,
+  uid mediumint(8) NOT NULL,
+  time datetime NOT NULL,
+  PRIMARY KEY (cid)
+) TYPE=MYISAM
+";
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentnotifications']} (
+  cid int(10) default NULL,
+  uid mediumint(8) NOT NULL,
+  deletehash varchar(32) NOT NULL,
+  mid int(10) default NULL,
+  PRIMARY KEY  (deletehash)
+) ENGINE=MyISAM 
+";
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentsubmissions']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL default 'article',
+  sid varchar(40) NOT NULL,
+  date datetime default NULL,
+  title varchar(128) default NULL,
+  comment text,
+  uid mediumint(8) NOT NULL default '1',
+  name varchar(32) default NULL,
+  pid int(10) NOT NULL default '0',
+  ipaddress varchar(15) NOT NULL,
+  PRIMARY KEY  (cid)
+) ENGINE=MyISAM
+";
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Admin', 'Can moderate comments', 1)";
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Submitters', 'Can submit comments', 0);";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate',  'Ability to moderate comments', 1)";
@@ -63,6 +95,14 @@ function update_ConfValues()
     // DOCTYPE declaration, for {doctype} in header.thtml
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE);
 
+    // new comment options
+    $c->add('comment_edit',0,'select',4,21,0,1680,TRUE);
+    $c->add('commentsubmission',0,'select',4,21,0, 1682, TRUE);
+    $c->add('comment_edittime',1800,'text',4,21,NULL,1684,TRUE);
+    $c->add('article_comment_close_days',30,'text',4,21,NULL,1686,TRUE);
+    $c->add('comment_close_rec_stories',0,'text',4,21,NULL,1688,TRUE);
+    $c->add('allow_reply_notifications',0,'select',4,21,0, 1689, TRUE);
+
     return true;
 }
 
@@ -100,22 +140,22 @@ function upgrade_addNewPermissions()
                              "ft_name = 'comment.moderate'");
     $cmt_sub_id = DB_getItem($_TABLES['features'], 'ft_id',
                              "ft_name = 'comment.submit'");
-    $cmd_admin = DB_getItem($_TABLES['groups'], 'grp_id',
+    $cmt_admin = DB_getItem($_TABLES['groups'], 'grp_id',
                             "grp_name = 'Comment Admin'");
-    $cmd_submitter = DB_getItem($_TABLES['groups'], 'grp_id',
-                                "grp_name = 'Comment Submitter'");
+    $cmt_submitter = DB_getItem($_TABLES['groups'], 'grp_id',
+                                "grp_name = 'Comment Submitters'");
 
     if (($cmt_mod_id > 0) && ($cmt_admin > 0)) {
         DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($cmt_mod_id, $cmt_admin)");
     }
-    if (($cmt_sub_id > 0) && ($cmd_submitter > 0)) {
-        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($cmt_sub_id, $cmd_submitter)");
+    if (($cmt_sub_id > 0) && ($cmt_submitter > 0)) {
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($cmt_sub_id, $cmt_submitter)");
     }
     if ($cmt_admin > 0) {
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($cmt_admin,NULL,1)");
     }
-    if ($cmd_submitter > 0) {
-        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($cmd_submitter,NULL,1)");
+    if ($cmt_submitter > 0) {
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES ($cmt_submitter,NULL,1)");
     }
 }
 

@@ -53,22 +53,6 @@ CREATE TABLE {$_TABLES['blocks']} (
 ";
 
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentsubmissions']} (
-  cid int(10) unsigned NOT NULL auto_increment,
-  type varchar(30) NOT NULL default 'article',
-  sid varchar(40) NOT NULL,
-  date datetime default NULL,
-  title varchar(128) default NULL,
-  comment text,
-  uid mediumint(8) NOT NULL default '1',
-  name varchar(32) default NULL,
-  pid int(10) NOT NULL default '0',
-  ipaddress varchar(15) NOT NULL,
-  PRIMARY KEY  (cid)
-) ENGINE=MyISAM
-";
-
-$_SQL[] = "
 CREATE TABLE {$_TABLES['commentcodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
@@ -127,6 +111,22 @@ CREATE TABLE {$_TABLES['comments']} (
   INDEX comments_date(date),
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentsubmissions']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL default 'article',
+  sid varchar(40) NOT NULL,
+  date datetime default NULL,
+  title varchar(128) default NULL,
+  comment text,
+  uid mediumint(8) NOT NULL default '1',
+  name varchar(32) default NULL,
+  pid int(10) NOT NULL default '0',
+  ipaddress varchar(15) NOT NULL,
+  PRIMARY KEY  (cid)
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
