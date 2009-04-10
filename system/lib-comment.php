@@ -1640,50 +1640,56 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
  * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ * @param  string $cid comment id
  * @return string of story id 
  */
 function CMT_approveModeration($cid)
 {
     global $_TABLES;
     
-    $result = DB_query ("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress"
-                       . " FROM {$_TABLES['commentsubmissions']} WHERE cid = '$cid'");
-    $A = DB_fetchArray ($result);
+    $result = DB_query("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress FROM {$_TABLES['commentsubmissions']} WHERE cid = '$cid'");
+    $A = DB_fetchArray($result);
     
     if ($A['pid'] > 0) {
-        //get indent+1 of parent 
-        $indent = DB_getItem ( $_TABLES['comments'],'indent+1', "cid = '{$A['pid']}'");
+        // get indent+1 of parent 
+        $indent = DB_getItem($_TABLES['comments'], 'indent+1',
+                             "cid = '{$A['pid']}'");
     } else {
         $indent = 0;
     }
+
+    $A['title'] = addslashes($A['title']);
+    $A['comment'] = addslashes($A['comment']);
+
     if (isset($A['name'])) {
-        //insert data
-        DB_save ($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,ipaddress,indent',
+        // insert data
+        $A['name'] = addslashes($A['name']);
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,ipaddress,indent',
                         "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}',".
                         "'{$A['name']}','{$A['pid']}','{$A['ipaddress']}',$indent");
     } else {
-        //insert data, null automatically goes into name column
-        DB_save ($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,ipaddress,indent',
+        // insert data, null automatically goes into name column
+        DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,pid,ipaddress,indent',
                         "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}',".
                         "'{$A['pid']}','{$A['ipaddress']}',$indent");
     }
     $newcid = DB_insertId();
-    DB_delete($_TABLES['commentsubmissions'],'cid',$cid);
+    DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
     
-    DB_query("UPDATE {$_TABLES['commentnotifications']} SET cid = $newcid WHERE mid = $cid");
+    DB_change($_TABLES['commentnotifications'], 'cid', $newcid, 'mid', $cid);
         
-    //notify of new published comment
+    // notify of new published comment
     if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 1) {
-        $result = DB_query ("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE "
-                           . "cid = {$A['pid']}");
+        $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = {$A['pid']}");
         $B = DB_fetchArray($result);
         if ($B <> false) {
             CMT_sendReplyNotification($B);
         }
     }
-    
+
     return $A['sid'];
 }
+
 /**
  * Sends a notification of new comment reply
  * 
