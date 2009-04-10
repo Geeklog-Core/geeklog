@@ -53,6 +53,22 @@ CREATE TABLE {$_TABLES['blocks']} (
 ";
 
 $_SQL[] = "
+CREATE TABLE {$_TABLES['commentsubmissions']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL default 'article',
+  sid varchar(40) NOT NULL,
+  date datetime default NULL,
+  title varchar(128) default NULL,
+  comment text,
+  uid mediumint(8) NOT NULL default '1',
+  name varchar(32) default NULL,
+  pid int(10) NOT NULL default '0',
+  ipaddress varchar(15) NOT NULL,
+  PRIMARY KEY  (cid)
+) ENGINE=MyISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['commentcodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
@@ -61,11 +77,30 @@ CREATE TABLE {$_TABLES['commentcodes']} (
 ";
 
 $_SQL[] = "
+CREATE TABLE {$_TABLES['commentedits']} (
+  cid int(10) NOT NULL,
+  uid mediumint(8) NOT NULL,
+  time datetime NOT NULL,
+  PRIMARY KEY (cid)
+) TYPE=MYISAM
+";
+
+$_SQL[] = "
 CREATE TABLE {$_TABLES['commentmodes']} (
   mode varchar(10) NOT NULL default '',
   name varchar(32) default NULL,
   PRIMARY KEY  (mode)
 ) TYPE=MyISAM
+";
+
+$_SQL[] = "
+CREATE TABLE {$_TABLES['commentnotifications']} (
+  cid int(10) default NULL,
+  uid mediumint(8) NOT NULL,
+  deletehash varchar(32) NOT NULL,
+  mid int(10) default NULL,
+  PRIMARY KEY  (deletehash)
+) ENGINE=MyISAM 
 ";
 
 $_SQL[] = "
@@ -82,6 +117,7 @@ CREATE TABLE {$_TABLES['comments']} (
   lft mediumint(10) unsigned NOT NULL default '0',
   rht mediumint(10) unsigned NOT NULL default '0',
   indent mediumint(10) unsigned NOT NULL default '0',
+  name varchar(32) default NULL,
   uid mediumint(8) NOT NULL default '1',
   ipaddress varchar(15) NOT NULL default '',
   INDEX comments_sid(sid),
@@ -269,6 +305,7 @@ CREATE TABLE {$_TABLES['stories']} (
   hits mediumint(8) unsigned NOT NULL default '0',
   numemails mediumint(8) unsigned NOT NULL default '0',
   comments mediumint(8) unsigned NOT NULL default '0',
+  comment_expire datetime NOT NULL default '0000-00-00 00:00:00',
   trackbacks mediumint(8) unsigned NOT NULL default '0',
   related text,
   featured tinyint(3) unsigned NOT NULL default '0',
@@ -577,6 +614,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (17,'plugin.install','Can install/uninstall plugins',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (18,'plugin.upload','Can upload new plugins',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (19,'group.assign','Ability to assign users to groups',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (27, 'comment.moderate',  'Ability to moderate comments', 1)";
+$_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (28, 'comment.submit', 'Comments are automatically published', 1)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (0,'Show Only in Topic') ";
 $_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (1,'Show on Front Page') ";
@@ -625,6 +664,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (11,'Group Admin','Is a User Admin with access to groups, too',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (12,'Mail Admin','Can use Mail Utility',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All registered members',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (19, 'Comment Admin', 'Can moderate comments', 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (20, 'Comment Submitters', 'Can submit comments', 0);";
 
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";

@@ -383,6 +383,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                 $article->set_var( 'post_comment_link',
                         COM_createLink($LANG01[60], $postCommentUrl,
                                        array('rel' => 'nofollow')));
+                $article->set_var( 'subscribe_link',
+                        COM_createLink('Nubbies', '', array('rel' => 'nofollow'))
+                                 );
                 $article->set_var( 'lang_post_comment', $LANG01[60] );
                 $article->set_var( 'start_post_comment_anchortag',
                                    '<a href="' . $postCommentUrl

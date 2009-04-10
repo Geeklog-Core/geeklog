@@ -572,7 +572,54 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var ('trackback_options',
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $story->EditElements('trackbackcode')));
+    // comment expire 
+    $story_templates->set_var ('lang_cmt_disable', $LANG24[63]);
+    if ($story->EditElements('cmt_close') ) {
+        $story_templates->set_var('is_checked5', 'checked="checked"'); //check box if enabled
+        $story_templates->set_var('showcmtclosedisabled', 'false');
+    } else {
+        $story_templates->set_var('showcmtclosedisabled', 'true');
+    }
 
+    $month_options = COM_getMonthFormOptions($story->EditElements('cmt_close_month'));
+    $story_templates->set_var('cmt_close_month_options', $month_options);
+    
+    $day_options = COM_getDayFormOptions($story->EditElements('cmt_close_day'));
+    $story_templates->set_var('cmt_close_day_options', $day_options);
+    
+    $year_options = COM_getYearFormOptions($story->EditElements('cmt_close_year'));
+    $story_templates->set_var('cmt_close_year_options', $year_options);
+    
+    $cmt_close_ampm = '';
+    $cmt_close_hour = $story->EditElements('cmt_close_hour');
+    //correct hour
+    if ($cmt_close_hour >= 12) {
+        if ($cmt_close_hour > 12) {
+            $cmt_close_hour = $cmt_close_hour - 12;
+        }
+        $ampm = 'pm';
+    } else {
+        $ampm = 'am';
+    }
+    $ampm_select = COM_getAmPmFormSelection ('cmt_close_ampm', $ampm);
+    if (empty ($ampm_select)) {
+        // have a hidden field to 24 hour mode to prevent JavaScript errors
+        $ampm_select = '<input type="hidden" name="cmt_close_ampm" value=""' . XHTML . '>';
+    }
+    $story_templates->set_var ('cmt_close_ampm_selection', $ampm_select);
+    
+    if ($_CONF['hour_mode'] == 24) {
+        $hour_options = COM_getHourFormOptions ($story->EditElements('cmt_close_hour'), 24);
+    } else {
+        $hour_options = COM_getHourFormOptions ($cmt_close_hour);
+    }
+    $story_templates->set_var('cmt_close_hour_options', $hour_options);
+    
+    $minute_options = COM_getMinuteFormOptions($story->EditElements('cmt_close_minute'));
+    $story_templates->set_var('cmt_close_minute_options', $minute_options);
+    
+    $story_templates->set_var('cmt_close_second', $story->EditElements('cmt_close_second'));
+    
     if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)) {
         $featured_options = "<select name=\"featured\">" . LB

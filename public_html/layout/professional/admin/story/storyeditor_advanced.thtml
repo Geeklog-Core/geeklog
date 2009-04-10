@@ -149,6 +149,34 @@
                                     {trackback_options}
                                 </select>
                             </td>
+                         </tr>
+                         <tr>
+                            <td>{lang_cmt_disable}:</td>
+                                        <td class="alignleft" style="vertical-align:top;" colspan="1">{lang_enabled}:<input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
+                                            <span dir="ltr">
+                                                <select name="cmt_close_month">
+                                                    {cmt_close_month_options}
+                                                 </select>
+                                                 /
+                                                 <select name="cmt_close_day">
+                                                    {cmt_close_day_options}
+                                                 </select>
+                                                 /
+                                                 <select name="cmt_close_year">
+                                                    {cmt_close_year_options}
+                                                 </select>&nbsp;&nbsp;
+                                                 <select name="cmt_close_hour">
+                                                     {cmt_close_hour_options}
+                                                 </select>
+                                                 :
+                                                 <select name="cmt_close_minute">
+                                                     {cmt_close_minute_options}
+                                                 </select>
+                                                     {cmt_close_ampm_selection}
+                                                  <input type="hidden" name="cmt_close_second" value="{cmt_close_second}"{xhtml}>
+                                                      </span><br{xhtml}>
+                                        </td>
+
                         </tr>
                     </table>
                 </fieldset>
@@ -241,6 +269,15 @@
             document.frmstory.storycode10.disabled=true;
             document.frmstory.storycode11.disabled=true;
 
+        }
+        var jstest2 = {showcmtclosedisabled};
+        if (jstest2) {
+            document.frmstory.cmt_close_month.disabled=true;
+            document.frmstory.cmt_close_day.disabled=true;
+            document.frmstory.cmt_close_year.disabled=true;
+            document.frmstory.cmt_close_hour.disabled=true;
+            document.frmstory.cmt_close_minute.disabled=true;
+            document.frmstory.cmt_close_ampm.disabled=true;
         }
     </script>
 </div>

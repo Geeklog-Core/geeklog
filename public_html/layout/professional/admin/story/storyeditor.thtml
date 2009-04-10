@@ -15,6 +15,19 @@ function enablearchive(obj) {
     f.elements["expire_minute"].disabled=!disable;
     f.elements["expire_ampm"].disabled=!disable;
 }
+    
+    function enablecmtclose(obj) {
+    var f = obj.form;           // all elements have their parent form in "form"
+    var disable = obj.checked;  // Disable when checked
+
+    f.elements["cmt_close_month"].disabled=!disable;
+    f.elements["cmt_close_day"].disabled=!disable;
+    f.elements["cmt_close_year"].disabled=!disable;
+    f.elements["cmt_close_hour"].disabled=!disable;
+    f.elements["cmt_close_minute"].disabled=!disable;
+    f.elements["cmt_close_ampm"].disabled=!disable;
+    
+}
 //]]>
 </script>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
@@ -138,6 +151,33 @@ function enablearchive(obj) {
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="alignright" style="vertical-align:top;">{lang_cmt_disable}:</td>
+                                        <td class="alignleft" style="vertical-align:top;" colspan="1">{lang_enabled}:<input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
+                                            <span dir="ltr">
+                                                <select name="cmt_close_month">
+                                                    {cmt_close_month_options}
+                                                 </select>
+                                                 /
+                                                 <select name="cmt_close_day">
+                                                    {cmt_close_day_options}
+                                                 </select>
+                                                 /
+                                                 <select name="cmt_close_year">
+                                                    {cmt_close_year_options}
+                                                 </select>&nbsp;&nbsp;
+                                                 <select name="cmt_close_hour">
+                                                     {cmt_close_hour_options}
+                                                 </select>
+                                                 :
+                                                 <select name="cmt_close_minute">
+                                                     {cmt_close_minute_options}
+                                                 </select>
+                                                     {cmt_close_ampm_selection}
+                                                  <input type="hidden" name="cmt_close_second" value="{cmt_close_second}"{xhtml}>
+                                                      </span><br{xhtml}>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
                                         <td><input type="text" dir="ltr" size="40" maxlength="40" name="sid" value="{story_id}"{xhtml}></td>
                                     </tr>
@@ -237,6 +277,7 @@ function enablearchive(obj) {
 <script type="text/javascript">
 <!-- This code will only be executed by a browser that supports Javascript -->
 var jstest = {showarchivedisabled};
+var jstest2 = {showcmtclosedisabled};
 if (jstest) {
     document.frmstory.expire_month.disabled=true;
     document.frmstory.expire_day.disabled=true;
@@ -246,5 +287,13 @@ if (jstest) {
     document.frmstory.expire_ampm.disabled=true;
     document.frmstory.storycode10.disabled=true;
     document.frmstory.storycode11.disabled=true;
+}
+if (jstest2) {
+    document.frmstory.cmt_close_month.disabled=true;
+    document.frmstory.cmt_close_day.disabled=true;
+    document.frmstory.cmt_close_year.disabled=true;
+    document.frmstory.cmt_close_hour.disabled=true;
+    document.frmstory.cmt_close_minute.disabled=true;
+    document.frmstory.cmt_close_ampm.disabled=true;
 }
 </script>

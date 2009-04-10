@@ -5,14 +5,16 @@
 <script type="text/JavaScript" src="{site_url}/javascript/submitcomment_fckeditor.js"></script>
 
                                 {start_block_postacomment}
-                                            <form action="{site_url}/comment.php" method="post" onsubmit='set_postcontent();'>
+                                            <form action="{form_url}" method="post" onsubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" width="100%">
                                                     <tr>
                                                         <td class="alignright"><b>{lang_username}:</b></td>
                                                         <td>
+                                                            {cid}
                                                             <input type="hidden" name="sid" value="{sid}"{xhtml}>
                                                             <input type="hidden" name="pid" value="{pid}"{xhtml}>
                                                             <input type="hidden" name="type" value="{type}"{xhtml}>
+                                                            <input type="hidden" name="_glsectoken" value="{CSRF_TOKEN}"{xhtml}>
                                                             <input type="hidden" name="comment" value=""{xhtml}>
                                                             <input type="hidden" name="uid" value="{uid}"{xhtml}>{username} [ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]
                                                         </td>
@@ -53,7 +55,7 @@
                                                             <li>{lang_instr_line4}</li>
                                                             <li>{lang_instr_line5}</li></ul>
                                                             <input type="submit" name="mode" value="{lang_preview}"{xhtml}>
-                                                            {save_option}
+                                                            {save_option} {notification}
                                                         </td>
                                                     </tr>
                                                 </table>

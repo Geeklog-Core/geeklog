@@ -36,6 +36,7 @@ require_once '../lib-common.php';
 require_once 'auth.inc.php';
 require_once $_CONF['path_system'] . 'lib-user.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-comment.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -219,6 +220,11 @@ function commandcontrol($token)
             $retval .= draftlist ($token);
         }
     }
+    
+    if (SEC_hasRights('comment.moderate')) {
+        $retval .= itemlist('comment', $token);
+    }
+
     if ($_CONF['usersubmission'] == 1) {
         if (SEC_hasRights ('user.edit') && SEC_hasRights ('user.delete')) {
             $retval .= userlist ($token);
@@ -249,7 +255,7 @@ function itemlist($type, $token)
     $retval = '';
     $isplugin = false;
 
-    if ((strlen ($type) > 0) && ($type <> 'story')) {
+    if ((strlen ($type) > 0) && ($type <> 'story') && ($type <> 'comment')) {
         $function = 'plugin_itemlist_' . $type;
         if (function_exists ($function)) {
             // Great, we found the plugin, now call its itemlist method
@@ -264,11 +270,18 @@ function itemlist($type, $token)
                 $isplugin = true;
             }
         }
-    } else { // story submission
+    } elseif ( $type == 'story') { // story submission
         $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
         $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
         $section_title = $LANG29[35];
         $section_help = 'ccstorysubmission.html';
+    } elseif ($type == 'comment') {
+        $sql = "SELECT cid AS id,title,comment,date,uid "
+              . "FROM {$_TABLES['commentsubmissions']} "
+              . "ORDER BY cid ASC";
+        $H = array($LANG29[10],$LANG29[36], $LANG29[37]);
+        $section_title = $LANG29[41];
+        $section_help = 'i do not know';
     }
 
     // run SQL but this time ignore any errors
@@ -289,6 +302,10 @@ function itemlist($type, $token)
         if ($isplugin)  {
             $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
+        } elseif ($type == 'comment') {
+            $A['edit'] = $_CONF['site_url'] . '/comment.php'
+                    . '?mode=editsubmission&amp;cid=' . $A[0] .
+                    '&' . CSRF_TOKEN . '=' . $token;
         } else {
             $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
                      . '.php?mode=editsubmission&amp;id=' . $A[0];
@@ -298,6 +315,7 @@ function itemlist($type, $token)
         $data_arr[$i] = $A;
     }
 
+
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $H[0], 'field' => 1),
@@ -305,6 +323,13 @@ function itemlist($type, $token)
         array('text' => $H[2], 'field' => 3),
         array('text' => $LANG29[2], 'field' => 'delete'),
         array('text' => $LANG29[1], 'field' => 'approve'));
+    if ($type == 'comment') {
+        //data for comment submission headers
+        $header_arr[6]['text'] = $LANG29[42];
+        $header_arr[6]['field'] = 'uid';
+        $header_arr[7]['text'] = $LANG29[43];
+        $header_arr[7]['field'] = 'publishfuture';
+    }
 
     $text_arr = array('has_menu'    => false,
                       'title'       => $section_title,
@@ -485,6 +510,11 @@ function moderation ($mid, $action, $type, $count)
         $submissiontable = $_TABLES['storysubmission'];
         $fields = 'sid,uid,tid,title,introtext,date,postmode';
         break;
+    case 'comment':
+        $id = 'cid';
+        $submissiontable = $_TABLES['commentsubmissions'];
+        $sidArray[] = '';
+        break;
     default:
         if (strlen($type) <= 0) {
             // something is terribly wrong, bail
@@ -552,6 +582,11 @@ function moderation ($mid, $action, $type, $count)
 
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
+            } else if ($type == 'comment') {
+                $sid = CMT_approveModeration($mid[$i]);
+                if ( !in_array($sid, $sidArray) ) {
+                    $sidArray[$i] = $sid; 
+                }
             } else {
                 // This is called in case this is a plugin. There may be some
                 // plugin specific processing that needs to happen.
@@ -559,6 +594,26 @@ function moderation ($mid, $action, $type, $count)
                 $retval .= PLG_approveSubmission($type,$mid[$i]);
             }
             break;
+        }
+    }
+    
+    // after loop update comment tree and count for each story
+    if (isset($sidArray)) {
+        foreach($sidArray as $sid) {
+            CMT_rebuildTree($sid);
+            //update comment count of stories;
+            $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+            DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+        }
+    }
+    
+    //Add new comment users to group comment.submit group
+    if (isset($_POST['publishfuture']) ) {
+        for ($i = 0; $i < count($_POST['publishfuture']); $i++ ) {
+            $uid =  COM_applyFilter($_POST['publishfuture'][$i], true);
+            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid) ) {
+                SEC_addUserToGroup($uid, 'Comment Submitters');
+            }
         }
     }
 

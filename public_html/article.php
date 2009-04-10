@@ -46,6 +46,7 @@
 */
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
+require_once $_CONF['path_system'] . 'lib-comment.php';
 if ($_CONF['trackback_enabled']) {
     require_once $_CONF['path_system'] . 'lib-trackback.php';
 }
@@ -57,6 +58,7 @@ if ($_CONF['trackback_enabled']) {
 // echo COM_debug($_POST);
 
 // MAIN
+CMT_updateCommentcodes();
 $display = '';
 
 $order = '';
@@ -310,6 +312,13 @@ if ($A['count'] > 0) {
             $url = $_CONF['site_admin_url']
                  . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
             $story_options[] = COM_createLink($LANG_TRB['send_trackback'], $url);
+        }
+		
+        if (true) { // can subscribe
+            $commentSubscribeURL = '';
+            $story_options[] = COM_createLink('Nubbies', $commentSubscribeURL, array('rel' => 'nofollow'));
+            $story_template->set_var ('comment_subscribe_url', $commentSubscribeURL);
+            $story_template->set_var ('lang_comment_subscribe', 'Nubbies');
         }
         $related = STORY_whatsRelated($story->displayElements('related'),
                                       $story->displayElements('uid'),

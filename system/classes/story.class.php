@@ -115,6 +115,7 @@ class Story
     var $_date;
     var $_hits;
     var $_numemails;
+    var $_comment_expire;
     var $_comments;
     var $_trackbacks;
     var $_related;
@@ -186,6 +187,7 @@ class Story
            'featured' => 1,
            'show_topic_icon' => 1,
            'commentcode' => 1,
+           'comment_expire' => 1,
            'trackbackcode' => 1,
            'statuscode' => 1,
            'expire' => 1,
@@ -245,6 +247,11 @@ class Story
               (
                 STORY_AL_NUMERIC,
                 '_frontpage'
+              ),
+            'comment_expire' => array
+              (
+                STORY_AL_NUMERIC,
+                '_comment_expire'
               ),
            'commentcode' => array
               (
@@ -379,6 +386,7 @@ class Story
         } else {
             $this->_expire = '0';
         }
+        $this->_comment_expire = $story['cmt_expire_unix'];
 
         // Store the original SID
         $this->_originalSid = $this->_sid;
@@ -405,11 +413,11 @@ class Story
             $sql = array();
 
             $sql['mysql']
-            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, "
+            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
 
             $sql['mssql'] =
-                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
         } elseif (!empty($sid) && ($mode == 'editsubmission')) {
             $sql = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
@@ -638,8 +646,8 @@ class Story
 
         // Get the related URLs
         $this->_related = implode("\n", STORY_extractLinks("{$this->_introtext} {$this->_bodytext}"));
-        $values = '';
-        $fields = '';
+        $sql = 'REPLACE INTO ' . $_TABLES['stories'] . ' (';
+        $values = ' VALUES (';
         reset($this->_dbFields);
 
         /* This uses the database field array to generate a SQL Statement. This
@@ -649,8 +657,8 @@ class Story
         while (list($fieldname, $save) = each($this->_dbFields)) {
             if ($save === 1) {
                 $varname = '_' . $fieldname;
-                $fields .= $fieldname . ', ';
-                if (($fieldname == 'date') || ($fieldname == 'expire')) {
+                $sql .= $fieldname . ', ';
+                if (($fieldname == 'date') || ($fieldname == 'expire') || ($fieldname == 'comment_expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
                     $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
                 } else {
@@ -659,10 +667,11 @@ class Story
             }
         }
 
-        // Fields and values has a trailing ', ' remove them:
-        $fields = substr($fields, 0, strlen($fields) - 2);
+        $sql = substr($sql, 0, strlen($sql) - 2);
         $values = substr($values, 0, strlen($values) - 2);
-        DB_Save($_TABLES['stories'], $fields, $values);
+        $sql .= ') ' . $values . ')';
+
+        DB_query($sql);
 
         /* Clean up the old story */
         if ($oldArticleExists) {
@@ -1249,6 +1258,7 @@ class Story
      */
     function EditElements($item = 'title')
     {
+        global $_CONF;
         switch (strtolower($item))
         {
         case 'unixdate':
@@ -1323,6 +1333,46 @@ class Story
 
         case 'expire_year':
             $return = date('Y', $this->_expire);
+
+            break;
+        case 'cmt_close':
+            if (isset($this->_comment_expire) && $this->_comment_expire != 0) {
+                $return = true;
+            } else {
+                $return = false;
+                //return default expire time to form
+                $this->_comment_expire = $this->_date + ($_CONF['article_comment_close_days']*86400);
+            }
+            
+            break;
+            
+        case 'cmt_close_second':
+            $return = date('s', $this->_comment_expire);
+
+            break;
+
+        case 'cmt_close_minute':
+            $return = date('i', $this->_comment_expire);
+
+            break;
+
+        case 'cmt_close_hour':
+            $return = date('H', $this->_comment_expire);
+
+            break;
+
+        case 'cmt_close_day':
+            $return = date('d', $this->_comment_expire);
+
+            break;
+
+        case 'cmt_close_month':
+            $return = date('m', $this->_comment_expire);
+
+            break;
+
+        case 'cmt_close_year':
+            $return = date('Y', $this->_comment_expire);
 
             break;
 
@@ -1453,6 +1503,17 @@ class Story
                 $return = $this->_expire;
             }
 
+            break;
+            
+        case 'commentcode':
+            //check to see if comment_time has past
+            if ($this->_comment_expire != 0 && (time() > $this->_comment_expire) && $this->_commentcode == 0 ) {
+                $return = 1;
+                //if comment code is not 1, change it to 1
+                DB_query("UPDATE {$_TABLES['stories']} SET commentcode = '1' WHERE sid = '$this->_sid'"); //die('changed cc');
+            } else {
+                $return = $this->_commentcode;
+            }
             break;
 
         default:
@@ -1764,6 +1825,33 @@ class Story
         }
 
         $this->_expire = $expiredate;
+        
+        //comment expire time
+        if (isset($array['cmt_close_flag'])) {
+            $cmt_close_ampm = COM_applyFilter($array['cmt_close_ampm']);
+            $cmt_close_hour = COM_applyFilter($array['cmt_close_hour'], true);
+            $cmt_close_minute = COM_applyFilter($array['cmt_close_minute'], true);
+            $cmt_close_second = COM_applyFilter($array['cmt_close_second'], true);
+            $cmt_close_year = COM_applyFilter($array['cmt_close_year'], true);
+            $cmt_close_month = COM_applyFilter($array['cmt_close_month'], true);
+            $cmt_close_day = COM_applyFilter($array['cmt_close_day'], true);
+            
+            if ($cmt_close_ampm == 'pm') {
+                if ($cmt_close_hour < 12) {
+                    $cmt_close_hour = $cmt_close_hour + 12;
+                }
+            }
+
+            if ($cmt_close_ampm == 'am' AND $cmt_close_hour == 12) {
+                $cmt_close_hour = '00';
+            }
+            
+            $cmt_close_date
+            = strtotime("$cmt_close_month/$cmt_close_day/$cmt_close_year $cmt_close_hour:$cmt_close_minute:$cmt_close_second");
+            
+            $this->_comment_expire = $cmt_close_date;
+        }
+
 
         /* Then grab the permissions */
 

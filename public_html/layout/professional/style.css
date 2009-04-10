@@ -409,6 +409,9 @@ select {
   font-size:smaller;
   padding:3px 0px 3px 10px;
 }
+.comment-edit {
+  font-style: italic;
+}
 /******************************************************************************/
 .edit-perm-down {
   text-align:center;
