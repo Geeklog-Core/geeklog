@@ -90,8 +90,10 @@ function handleSubmit()
                 'article', COM_applyFilter ($_POST['postmode']));
 
             if ($ret == -1) {
-                $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
-                    . "/article.php?story=$sid&msg=15"));    
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                    . $sid);
+                $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
+                $display = COM_refresh($url);
             } elseif ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
                 $display .= COM_siteHeader ('menu', $LANG03[1])
                          . CMT_commentForm ($_POST['title'], $_POST['comment'],
