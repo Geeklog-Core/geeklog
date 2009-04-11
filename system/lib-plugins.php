@@ -2519,8 +2519,9 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 /**
 * Inform plugins of configuration changes
 *
-* NOTE: Plugins will only be notified of 'Core' changes and changes in their
-*       own configuration. Changes in other plugins will not be sent.
+* NOTE: Plugins will only be notified of details of changes in 'Core' and in
+*       their own configuration. For other plugins, they will only be notified
+*       of the fact that something in the other plugin's config changed.
 *
 * @param    string  $group      plugin name or 'Core' for $_CONF changes
 * @param    array   $changes    names of config values that changed
@@ -2533,21 +2534,24 @@ function PLG_configChange($group, $changes)
 {
     global $_PLUGINS;
 
-    $args[1] = $group;
-    $args[2] = $changes;
+    foreach ($_PLUGINS as $pi_name) {
+        $args = array();
+        $args[1] = $group;
 
-    if ($group == 'Core') {
-        foreach ($_PLUGINS as $pi_name) {
-            PLG_callFunctionForOnePlugin('plugin_configchange_' . $pi_name,
-                                         $args);
+        if (($group == 'Core') || ($group == $pi_name)) {
+            $args[2] = $changes;
         }
 
-        $function = 'CUSTOM_configchange';
-        if (function_exists($function)) {
-            $function('Core', $changes);
+        PLG_callFunctionForOnePlugin('plugin_configchange_' . $pi_name, $args);
+    }
+
+    $function = 'CUSTOM_configchange';
+    if (function_exists($function)) {
+        if ($group == 'Core') {
+            $function($group, $changes);
+        } else {
+            $function($group);
         }
-    } else {
-        PLG_callFunctionForOnePlugin('plugin_configchange_' . $group, $args);
     }
 }
 
