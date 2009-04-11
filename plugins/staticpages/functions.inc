@@ -1327,4 +1327,29 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     return $retval;
 }
 
+/**
+* Provide URL of a documentation file
+*
+* @param    string  $file   documentation file being requested, e.g. 'config'
+* @return   mixed           URL or false when not available
+*
+*/
+function plugin_getdocumentationurl_staticpages($file)
+{
+    global $_CONF;
+
+    switch ($file) {
+    case 'index':
+    // TBD: case 'config':
+        $retval = $_CONF['site_url'] . '/docs/staticpages.html';
+        break;
+
+    default:
+        $retval = false;
+        break;
+    }
+
+    return $retval;
+}
+
 ?>

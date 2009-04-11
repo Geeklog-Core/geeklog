@@ -2362,7 +2362,7 @@ function PLG_getIcon($type)
                   . $type . '.gif';
             $fh = @fopen ($icon, 'r');
             if ($fh === false) {
-                // give up and us a generic icon
+                // give up and use a generic icon
                 $retval = $_CONF['site_url'] . '/images/icons/plugins.gif';
             } else {
                 $retval = $icon;
@@ -2380,12 +2380,12 @@ function PLG_getIcon($type)
 /**
  * Invoke a service
  *
- * @param   string  type    The plugin type whose service is to be called
- * @param   string  action  The service action to be performed
- * @param   array   args    The arguments to be passed to the service invoked
- * @param   array   output  The output variable that will contain the output after invocation
- * @param   array   svc_msg The output variable that will contain the service messages
- * @return  int             The result of the invocation
+ * @param   string  $type    The plugin type whose service is to be called
+ * @param   string  $action  The service action to be performed
+ * @param   array   $args    The arguments to be passed to the service invoked
+ * @param   array   $output  The output variable that will contain the output after invocation
+ * @param   array   $svc_msg The output variable that will contain the service messages
+ * @return  int              The result of the invocation
  * @link    http://wiki.geeklog.net/index.php/Webservices_API
  *
  */
@@ -2553,6 +2553,23 @@ function PLG_configChange($group, $changes)
             $function($group);
         }
     }
+}
+
+/**
+* Ask plugin for the URL to its documentation
+*
+* @param    string  $type   plugin name
+* @param    string  $file   documentation file being requested, e.g. 'config'
+* @return   mixed           URL or false / empty string when not available
+* @since    Geeklog 1.6.0
+*
+*/
+function PLG_getDocumentationUrl($type, $file)
+{
+    $args[1] = $file;
+    $function = 'plugin_getdocumentationurl_' . $type;
+
+    return PLG_callFunctionForOnePlugin($function, $args);
 }
 
 ?>

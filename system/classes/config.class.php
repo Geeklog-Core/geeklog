@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | config.class.php                                                          |
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2008 by the following authors:                         |
+// | Copyright (C) 2007-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: config.class.php,v 1.50 2008/08/31 19:17:39 dhaun Exp $
 
 class config {
     var $dbconfig_file;
@@ -640,18 +638,23 @@ class config {
                 $on = $name;
             }
             if (! is_numeric($on)) {
-                if (!empty($GLOBALS['_CONF']['site_url'])) {
-                    $baseUrl = $GLOBALS['_CONF']['site_url'];
-                } else {
-                    $baseUrl = 'http://www.geeklog.net';
-                }
                 if ($group == 'Core') {
+                    if (!empty($GLOBALS['_CONF']['site_url'])) {
+                        $baseUrl = $GLOBALS['_CONF']['site_url'];
+                    } else {
+                        $baseUrl = 'http://www.geeklog.net';
+                    }
                     $descUrl = $baseUrl . '/docs/config.html#desc_' . $o;
+                } else {
+                    $descUrl = PLG_getDocumentationUrl($group, 'config');
+                    if (! empty($descUrl)) {
+                        $descUrl .= '#desc_' . $o;
+                    }
+                }
+                if (! empty($descUrl)) {
                     $t->set_var('doc_url', $descUrl);
                     $t->set_var('doc_link',
                             '(<a href="' . $descUrl . '" target="help">?</a>)');
-                } else {
-                    // TBD: link to description of plugin option
                 }
             }
         }

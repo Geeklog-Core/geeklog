@@ -1899,4 +1899,29 @@ function plugin_getiteminfo_calendar($eid, $what, $uid = 0, $options = array())
     return $retval;
 }
 
+/**
+* Provide URL of a documentation file
+*
+* @param    string  $file   documentation file being requested, e.g. 'config'
+* @return   mixed           URL or false when not available
+*
+*/
+function plugin_getdocumentationurl_calendar($file)
+{
+    global $_CONF;
+
+    switch ($file) {
+    case 'index':
+    case 'config':
+        $retval = $_CONF['site_url'] . '/docs/calendar.html';
+        break;
+
+    default:
+        $retval = false;
+        break;
+    }
+
+    return $retval;
+}
+
 ?>

@@ -1321,4 +1321,29 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     return $retval;
 }
 
+/**
+* Provide URL of a documentation file
+*
+* @param    string  $file   documentation file being requested, e.g. 'config'
+* @return   mixed           URL or false when not available
+*
+*/
+function plugin_getdocumentationurl_polls($file)
+{
+    global $_CONF;
+
+    switch ($file) {
+    case 'index':
+    case 'config':
+        $retval = $_CONF['site_url'] . '/docs/polls.html';
+        break;
+
+    default:
+        $retval = false;
+        break;
+    }
+
+    return $retval;
+}
+
 ?>

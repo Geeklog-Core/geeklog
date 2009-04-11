@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- New plugin API function PLG_getDocumentationUrl (feature request #0000848)
+  [Dirk]
 - Fresh installs + MySQL only: Changed some tinyint fields that are only used
   as flags to tinyint(1) from tinyint(3) (bug #0000857)
 - Fixed one of the predefined date format strings (bug #0000854)
