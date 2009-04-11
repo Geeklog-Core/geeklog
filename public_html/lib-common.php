@@ -1226,7 +1226,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     // prove useful at times ...
     // Don't use PHP in templates if you can live without it!
 
-    $tmp = $header->parse( 'index_header', 'header' );
+    $tmp = $header->finish($header->parse('index_header', 'header'));
 
     $xml_declaration = '';
     if ( get_cfg_var('short_open_tag') == '1' )
