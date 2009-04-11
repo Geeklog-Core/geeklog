@@ -2561,6 +2561,7 @@ function PLG_configChange($group, $changes)
 * @param    string  $type   plugin name
 * @param    string  $file   documentation file being requested, e.g. 'config'
 * @return   mixed           URL or false / empty string when not available
+* @link     http://wiki.geeklog.net/index.php/PLG_getDocumentationUrl
 * @since    Geeklog 1.6.0
 *
 */

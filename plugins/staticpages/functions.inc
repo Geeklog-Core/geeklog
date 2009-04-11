@@ -1340,7 +1340,7 @@ function plugin_getdocumentationurl_staticpages($file)
 
     switch ($file) {
     case 'index':
-    // TBD: case 'config':
+    case 'config':
         $retval = $_CONF['site_url'] . '/docs/staticpages.html';
         break;
 

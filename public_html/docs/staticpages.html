@@ -141,6 +141,92 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>In the Configuration admin panel for the static pages plugin, you can set the "Delete Pages with Owner?" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
 
+<h2><a name="config.php">Configuration</a></h2>
+
+<p>The configuration options for the Static Pages plugin can be changed from
+the Configuration admin panel:</p>
+
+<h3><a name="main">Static Pages Main Settings</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_allow_php">allow_php</a></td>
+  <td><code>true</code></td>
+  <td>Allows you to globally allow or disallow the <a href="#php">use of PHP</a>
+    in static pages, i.e. it overrides the setting on individual pages.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_sort_by">sort_by</a></td>
+  <td><tt>'id'</tt></td>
+  <td>Define sort order when more than one static page is displayed in
+    centerblocks. Allows sorting by page ID, page title, and date of last
+    change.</td>
+</tr>
+<tr>
+  <td><a name="desc_sort_menu_by">sort_menu_by</a></td>
+  <td><tt>'label'</tt></td>
+  <td>Define sort order for static pages in the site's menu. Allows sorting by
+    page label, page ID, page title, and date of last change.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_pages">delete_pages</a></td>
+  <td><tt>false</tt></td>
+  <td>Specify what should happen to a static page when its owner (i.e. the user
+    who created the page) is deleted. 'True' would delete the page, 'False'
+    will assign it to a user in the "Root" group (usually the user with the
+    lowest user ID).</td>
+</tr>
+<tr>
+  <td><a name="desc_in_block">in_block</a></td>
+  <td><tt>true</tt></td>
+  <td>Whether to display the content of static pages inside a block template or
+    not. This is the default setting and can be overridden per page.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_show_hits">show_hits</a></td>
+  <td><tt>true</tt></td>
+  <td>Whether to show the number of hits for a static page.</td>
+<tr>
+<tr>
+  <td><a name="desc_show_date">show_date</a></td>
+  <td><tt>true</tt></td>
+  <td>Whether to show the date and time of the last change to a static page.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_filter_html">filter_html</a></td>
+  <td><tt>false</tt></td>
+  <td>Whether HTML in static pages should be run through Geeklog's HTML filter
+    option.</td>
+</tr>
+<tr>
+  <td><a name="desc_censor">censor</a></td>
+  <td><tt>false</tt></td>
+  <td>Whether the content of the static page should be run through Geeklog's
+    "bad words" filter.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_aftersave">aftersave</a></td>
+  <td><tt>'list'</tt></td>
+  <td>Which page to go to after a static page has been saved:
+    <ul>
+    <li>'item': display the page</li>
+    <li>'list': show admin's list of static pages (default)</li>
+    <li>'home': display the site's homepage</li>
+    <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
+    </ul></td>
+</tr>
+<tr>
+  <td><a name="desc_atom_max_items">atom_max_items</a></td>
+  <td>10</td>
+  <td>Max. number of static pages returned when an Atom feed is requested
+    through the webservices API.</td>
+</tr>
+</table>
+
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
