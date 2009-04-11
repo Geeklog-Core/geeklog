@@ -401,10 +401,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'sid', $A['sid'] );
         $template->set_var( 'type', $A['type'] );
 
-        //COMMENT edit rights
-        if ( $_USER['uid'] == $A['uid'] && $_CONF['comment_edit'] == 1 
-                && (time() - $A['nice_date']) < $_CONF['comment_edittime'] && 
-                DB_getItem($_TABLES['comments'], 'COUNT(*)', "pid = {$A['cid']}") == 0) {
+        // COMMENT edit rights
+        if (isset($A['uid']) && isset($_USER['uid'])
+                && ($_USER['uid'] == $A['uid']) && ($_CONF['comment_edit'] == 1)
+                && ((time() - $A['nice_date']) < $_CONF['comment_edittime'])
+                && (DB_getItem($_TABLES['comments'], 'COUNT(*)',
+                               "pid = {$A['cid']}") == 0)) {
             $edit_option = true;
             if ( empty($token)) {
                 $token = SEC_createToken();
@@ -900,15 +902,16 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('lang_logoutorcreateaccount',
                     $LANG03[03]);
             } else {
-                //Anonymous user
+                // Anonymous user
                 $comment_template->set_var('uid', 1);
-                if ( isset($A['username']) ) {
-                    $name = $A['username']; //for preview
-                } elseif (isset($_COOKIE['anon-name'])) {
+                if (isset($A['username'])) {
+                    $name = $A['username']; // for preview
+                } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
+                    //stored as cookie, name used before
                     $name = htmlspecialchars(COM_checkWords(strip_tags(
-                                    COM_stripslashes($_COOKIE['anon-name'])))); //stored as cookie, name used before
+                        COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']]))));
                 } else {
-                    $name = $LANG03[24]; //anonymous user
+                    $name = $LANG03[24]; // anonymous user
                 }
                 $usernameblock = '<input type="text" name="username" size="16" value="' . 
                                  $name . '" maxlength="32"' . XHTML . '>';
@@ -1064,7 +1067,9 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     if (isset($_POST['username']) && strcmp($_POST['username'],$LANG03[24]) != 0
             && $uid == 1) {
         $name = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
-        setcookie('anon-name', $name);
+        setcookie($_CONF['cookie_anon_name'], $name, time() + 31536000,
+                  $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                  $_CONF['cookiesecure']);
         $name = addslashes($name);
     }
 

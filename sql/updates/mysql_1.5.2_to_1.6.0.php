@@ -108,6 +108,9 @@ function update_ConfValues()
     $c->add('comment_close_rec_stories',0,'text',4,21,NULL,1688,TRUE);
     $c->add('allow_reply_notifications',0,'select',4,21,0, 1689, TRUE);
 
+    // cookie to store name of anonymous commenters
+    $c->add('cookie_anon_name','anon_name','text',7,30,NULL,577,TRUE);
+
     return true;
 }
 

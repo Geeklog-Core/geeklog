@@ -1683,6 +1683,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => "Theme Cookie Name",
     'cookie_language' => "Language Cookie Name",
     'cookie_tzid' => "Timezone Cookie Name",
+    'cookie_anon_name' => 'Anon. Username Cookie Name',
     'cookie_ip' => "Cookies embed IP?",
     'default_perm_cookie_timeout' => "Permanent Timeout",
     'session_cookie_timeout' => "Session Timeout",
