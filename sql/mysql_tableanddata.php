@@ -33,7 +33,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   rdf_last_modified varchar(40) default NULL,
   rdf_etag varchar(40) default NULL,
   rdflimit smallint(5) unsigned NOT NULL default '0',
-  onleft tinyint(3) unsigned NOT NULL default '1',
+  onleft tinyint(1) unsigned NOT NULL default '1',
   phpblockfn varchar(128) default '',
   help varchar(255) default '',
   owner_id mediumint(8) unsigned NOT NULL default '1',
@@ -235,7 +235,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_name varchar(30) NOT NULL default '',
   pi_version varchar(20) NOT NULL default '',
   pi_gl_version varchar(20) NOT NULL default '',
-  pi_enabled tinyint(3) unsigned NOT NULL default '1',
+  pi_enabled tinyint(1) unsigned NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
   INDEX plugins_enabled(pi_enabled),
   PRIMARY KEY  (pi_name)
@@ -296,7 +296,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['stories']} (
   sid varchar(40) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
-  draft_flag tinyint(3) unsigned default '0',
+  draft_flag tinyint(1) unsigned default '0',
   tid varchar(20) NOT NULL default 'General',
   date datetime default NULL,
   title varchar(128) default NULL,
@@ -308,7 +308,7 @@ CREATE TABLE {$_TABLES['stories']} (
   comment_expire datetime NOT NULL default '0000-00-00 00:00:00',
   trackbacks mediumint(8) unsigned NOT NULL default '0',
   related text,
-  featured tinyint(3) unsigned NOT NULL default '0',
+  featured tinyint(1) unsigned NOT NULL default '0',
   show_topic_icon tinyint(1) unsigned NOT NULL default '1',
   commentcode tinyint(4) NOT NULL default '0',
   trackbackcode tinyint(4) NOT NULL default '0',
@@ -316,7 +316,7 @@ CREATE TABLE {$_TABLES['stories']} (
   expire DATETIME NOT NULL default '0000-00-00 00:00:00',
   postmode varchar(10) NOT NULL default 'html',
   advanced_editor_mode tinyint(1) unsigned default '0',
-  frontpage tinyint(3) unsigned default '1',
+  frontpage tinyint(1) unsigned default '1',
   owner_id mediumint(8) NOT NULL default '1',
   group_id mediumint(8) NOT NULL default '2',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
@@ -477,7 +477,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['userprefs']} (
   uid mediumint(8) NOT NULL default '1',
-  noicons tinyint(3) unsigned NOT NULL default '0',
+  noicons tinyint(1) unsigned NOT NULL default '0',
   willing tinyint(3) unsigned NOT NULL default '1',
   dfid tinyint(3) unsigned NOT NULL default '0',
   tzid varchar(125) NOT NULL default '',

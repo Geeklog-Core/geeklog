@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Apr ??, 2009 (1.6.0)
+Apr 20, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fresh installs + MySQL only: Changed some tinyint fields that are only used
+  as flags to tinyint(1) from tinyint(3) (bug #0000857)
 - Fixed one of the predefined date format strings (bug #0000854)
 - Replace Wiki-style formatting in the Daily Digest and when emailing a story
   to a friend (bug #0000837, patch provided by Pawel Szczur)
