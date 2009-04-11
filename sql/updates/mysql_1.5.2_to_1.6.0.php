@@ -52,6 +52,9 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate', 'Ability to moderate comments', 1)";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.submit', 'Comments are automatically published', 1)";
 
+// fix date format string
+$_SQL[] = "UPDATE {$_TABLES['dateformats']} SET format = '%I:%M%p  %B %e, %Y', description = '10:00PM  March 21, 1999' WHERE dfid = 13";
+
 /**
  * Add new config options
  *
