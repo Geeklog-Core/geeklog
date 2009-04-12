@@ -335,8 +335,8 @@ if (!empty ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
 switch ($mode) {
-case $LANG03[28]: //Preview Changes (for edit)
-case $LANG03[34]: //Preview Submission changes (for edit)
+case $LANG03[28]: // Preview Changes (for edit)
+case $LANG03[34]: // Preview Submission changes (for edit)
 case $LANG03[14]: // Preview
     $display .= COM_siteHeader('menu', $LANG03[14])
              . CMT_commentForm (strip_tags ($_POST['title']), $_POST['comment'],
@@ -346,8 +346,9 @@ case $LANG03[14]: // Preview
                     COM_applyFilter ($_POST['postmode']))
              . COM_siteFooter(); 
     break;
-case $LANG03[35]: //Submit Changes to Moderation table
-case $LANG03[29]: //Submit Changes
+
+case $LANG03[35]: // Submit Changes to Moderation table
+case $LANG03[29]: // Submit Changes
     if (SEC_checkToken()) {
         $display .= CMT_handleEditSubmit($mode);
     } else {
@@ -390,10 +391,12 @@ case 'sendreport':
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
     break;
+
 case 'editsubmission':
     if (!SEC_hasRights('comment.moderate')) { 
         break; 
     }
+    // deliberate fall-through
 case 'edit':
     if (SEC_checkToken()) {
         $display .= handleEdit($mode);
@@ -401,10 +404,16 @@ case 'edit':
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
     break;
+
 case 'unsubscribe':
-    DB_delete($_TABLES['commentnotifications'],'deletehash',
-                $_GET['key'],$_CONF['site_url'] . '/index.php?msg=16');
+    $key = COM_applyFilter($_GET['key']);
+    if (! empty($key)) {
+        $key = addslashes($key);
+        DB_delete($_TABLES['commentnotifications'], 'deletehash',
+                  $key, $_CONF['site_url'] . '/index.php?msg=16');
+    }
     break;
+
 default:  // New Comment
     $abort = false;
     $sid = COM_applyFilter ($_REQUEST['sid']);
