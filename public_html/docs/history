@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Re-introduced function get_SPX_Ver in the install script, which is still
+  needed when upgrading from old Geeklog releases (reported by Sheila) [Dirk]
 - New plugin API function PLG_getDocumentationUrl (feature request #0000848)
   [Dirk]
 - Fresh installs + MySQL only: Changed some tinyint fields that are only used

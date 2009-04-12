@@ -710,6 +710,26 @@ function get_SP_ver()
     return $retval;
 }
 
+/**
+* Check if the Spam-X plugin is already installed
+*
+* Note: Needed for upgrades from old versions - don't remove.
+*
+* @return   int     1 = is installed, 0 = not installed
+*
+*/
+function get_SPX_Ver()
+{
+    global $_TABLES;
+
+    $retval = 0;
+
+    if (DB_count($_TABLES['plugins'], 'pi_name', 'spamx') == 1) {
+        $retval = 1;
+    }
+
+    return $retval;
+}
 
 /**
  * Run all the database queries from the update file.
