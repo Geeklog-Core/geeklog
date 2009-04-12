@@ -61,7 +61,7 @@ function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
         'stories'           => 'sid, introtext, bodytext, related',
         'storysubmission'   => 'sid, introtext, bodytext',
         'comments'          => 'cid, comment',
-        'trackback'         => 'cid, excerpt',
+        'trackback'         => 'cid, excerpt, url',
         'blocks'            => 'bid, content'
     );
 
