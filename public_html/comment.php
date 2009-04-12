@@ -268,7 +268,7 @@ function handleView($view = true)
  */
 function handleEdit($mode)
 {
-    global $_TABLES; $LANG03;
+    global $_TABLES, $LANG03;
     
     //get needed data
     $cid = COM_applyFilter ($_REQUEST['cid']);
@@ -315,8 +315,8 @@ function handleEdit($mode)
     }
             
     return COM_siteHeader('menu', $LANG03[1])
-           . CMT_commentForm($title, $commenttext, $sid,
-                COM_applyFilter($_REQUEST['pid'], true), $type, $mode, $postmode)
+           . CMT_commentForm($title, $commenttext, $sid, $cid, $type, $mode,
+                             $postmode)
            . COM_siteFooter();
 }
 

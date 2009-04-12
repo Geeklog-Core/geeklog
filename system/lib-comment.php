@@ -243,23 +243,30 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     }
 
     // Make sure we have a default value for comment indentation
-    if( !isset( $_CONF['comment_indent'] )) {
+    if (!isset($_CONF['comment_indent'])) {
         $_CONF['comment_indent'] = 25;
     }
 
-    if( $preview ) {
+    if ($preview) {
         $A = $comments;
-        if( empty( $A['nice_date'] )) {
+        if (empty( $A['nice_date'])) {
             $A['nice_date'] = time();
         }
-        if( !isset( $A['cid'] )) {
+        if (!isset($A['cid'])) {
             $A['cid'] = 0;
         }
-        if( !isset( $A['photo'] )) {
-            if( isset( $_USER['photo'] )) {
+        if (!isset($A['photo'])) {
+            if (isset($_USER['photo'])) {
                 $A['photo'] = $_USER['photo'];
             } else {
                 $A['photo'] = '';
+            }
+        }
+        if (! isset($A['email'])) {
+            if (isset($_USER['email'])) {
+                $A['email'] = $_USER['email'];
+            } else {
+                $A['email'] = '';
             }
         }
         $mode = 'flat';
@@ -267,7 +274,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A = DB_fetchArray( $comments );
     }
 
-    if( empty( $A ) ) {
+    if (empty($A)) {
         return '';
     }
 
@@ -275,29 +282,31 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     if ($delete_option && !$preview) {
         $token = SEC_createToken();
     }
-    
-    //check for comment edit
-        
+
+    // check for comment edit
+
     $row = 1;
     do {
-        //check for comment edit
+        // check for comment edit
         $commentedit = DB_query("SELECT cid,uid,UNIX_TIMESTAMP(time) AS time FROM {$_TABLES['commentedits']} WHERE cid = {$A['cid']}");
         $B = DB_fetchArray($commentedit);
         if ($B) { //comment edit present
-            //get correct editor name
+            // get correct editor name
             if ($A['uid'] == $B['uid']) {
                 $editname = $A['username'];
             } else {
-                $editname = DB_getItem($_TABLES['users'], 'username', "uid={$B['cid']}");
+                $editname = DB_getItem($_TABLES['users'], 'username',
+                                       "uid={$B['uid']}");
             }
-            //add edit info to text
-            $A['comment'] .= LB . '<span class="comment-edit">' . $LANG03[30] . ' '
-                              . strftime($_CONF['date'],$B['time']) . ' ' . $LANG03[31] . ' '
-                              . $editname . '</span><!-- /COMMENTEDIT -->';
+            // add edit info to text
+            $A['comment'] .= LB . '<span class="comment-edit">' . $LANG03[30]
+                          . ' ' . strftime($_CONF['date'], $B['time']) . ' '
+                          . $LANG03[31] . ' ' . $editname
+                          . '</span><!-- /COMMENTEDIT -->';
         }
-        
+
         // determines indentation for current comment
-        if( $mode == 'threaded' || $mode == 'nested' ) {
+        if ($mode == 'threaded' || $mode == 'nested') {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
 
@@ -308,19 +317,23 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var('cid', $A['cid']);
         $template->set_var('cssid', $row % 2);
 
-        if( $A['uid'] > 1 ) {
-            $fullname = COM_getDisplayName( $A['uid'], $A['username'],
-                                            $A['fullname'] );
-            $template->set_var( 'author_fullname', $fullname );
-            $template->set_var( 'author', $fullname );
+        if ($A['uid'] > 1) {
+            $fullname = '';
+            if (! empty($A['fullname'])) {
+                $fullname = $A['fullname'];
+            }
+            $fullname = COM_getDisplayName($A['uid'], $A['username'],
+                                           $fullname);
+            $template->set_var('author_fullname', $fullname);
+            $template->set_var('author', $fullname);
             $alttext = $fullname;
 
             $photo = '';
-            if( $_CONF['allow_user_photo'] ) {
-                if (isset ($A['photo']) && empty ($A['photo'])) {
+            if ($_CONF['allow_user_photo']) {
+                if (isset ($A['photo']) && empty($A['photo'])) {
                     $A['photo'] = '(none)';
                 }
-                $photo = USER_getPhoto( $A['uid'], $A['photo'], $A['email'] );
+                $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email']);
             }
             if( !empty( $photo )) {
                 $template->set_var( 'author_photo', $photo );
@@ -715,7 +728,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
     $commentuid = $uid;
     $table = $_TABLES['comments'];
-    if ( ($mode == 'edit' || $mode == $LANG03[28]) && isset($_REQUEST['cid']) ) {
+    if (($mode == 'edit' || $mode == $LANG03[28]) && isset($_REQUEST['cid'])) {
         $cid = COM_applyFilter ($_REQUEST['cid']);
         $commentuid = DB_getItem ($_TABLES['comments'], 'uid', "cid = '$cid'");
     } elseif ($mode == 'editsubmission' || $mode == $LANG03[34]) {
@@ -724,8 +737,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
         $table = $_TABLES['commentsubmissions'];
     }
 
-    if (empty($_USER['username']) &&
-        (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+    if (COM_isAnonUser() &&
+            (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template($_CONF['path_layout'] . 'submit');
@@ -743,12 +756,13 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
     } else {
         COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
         
+        $last = 0;
         if ($mode != 'edit' && $mode != 'editsubmission' 
-            && $mode != $LANG03[28] && $mode != $LANG03[34]) {
-            //not edit mode or preview changes
+                && $mode != $LANG03[28] && $mode != $LANG03[34]) {
+            // not edit mode or preview changes
             $last = COM_checkSpeedlimit ('comment');
         }
-        
+
         if ($last > 0) {
             $retval .= COM_startBlock ($LANG12[26], '',
                                COM_getBlockTemplate ('_msg_block', 'header'))
@@ -828,13 +842,13 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     }
                 }
 
-                //correct time and username for edit preview
-                if ($mode == $LANG03[28] || $mode == $LANG03[34]) { 
-                    $A['nice_date'] = DB_getItem ($table, 
-                                        'UNIX_TIMESTAMP(date)', "cid = '$cid'");
+                // correct time and username for edit preview
+                if (($mode == $LANG03[28]) || ($mode == $LANG03[34])) { 
+                    $A['nice_date'] = DB_getItem($table, 'UNIX_TIMESTAMP(date)',
+                                                 "cid = '$cid'");
                     if ($_USER['uid'] != $commentuid) {
-                        $A['username'] = DB_getItem ($_TABLES['users'],
-                                              'username', "uid = $commentuid");
+                        $uresult = DB_query("SELECT username, fullname, email, photo FROM {$_TABLES['users']} WHERE uid = $commentuid");
+                        $A = array_merge($A, DB_fetchArray($uresult));
                     }
                 } 
                 if (empty ($A['username'])) {
@@ -875,39 +889,30 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('sid', $sid);
             $comment_template->set_var('pid', $pid);
             $comment_template->set_var('type', $type);
-            
+
             $formurl = $_CONF['site_url'] . '/comment.php';
             if ($mode == 'edit' || $mode == $LANG03[28]) { //edit modes
-            	$comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[32]));
+            	$comment_template->set_var('start_block_postacomment',
+                                           COM_startBlock($LANG03[32]));
             	$comment_template->set_var('cid', '<input type="hidden" name="cid" value="' . $cid . '"' . XHTML . '>');
             } else if ($mode == 'editsubmission' || $mode == $LANG03[34]) {
-                $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[33]));
-                //$formurl = $_CONF['site_admin_url'] . '/comment.php';
+                $comment_template->set_var('start_block_postacomment',
+                                           COM_startBlock($LANG03[33]));
                 $comment_template->set_var('cid', '<input type="hidden" name="cid" value="' . $cid . '"' . XHTML . '>');
             } else {
-                $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
+                $comment_template->set_var('start_block_postacomment',
+                                           COM_startBlock($LANG03[1]));
             	$comment_template->set_var('cid', '');
             }
             $comment_template->set_var('form_url', $formurl);
 
-
-            if (!empty($_USER['username'])) {
-            	$comment_template->set_var('CSRF_TOKEN', SEC_createToken());
-                $comment_template->set_var('uid', $_USER['uid']);
-                $name = COM_getDisplayName($_USER['uid'], $_USER['username'],
-                    $_USER['fullname']);
-                $comment_template->set_var('username', $name);
-                $comment_template->set_var('action_url',
-                    $_CONF['site_url'] . '/users.php?mode=logout');
-                $comment_template->set_var('lang_logoutorcreateaccount',
-                    $LANG03[03]);
-            } else {
+            if (COM_isAnonUser()) {
                 // Anonymous user
                 $comment_template->set_var('uid', 1);
                 if (isset($A['username'])) {
                     $name = $A['username']; // for preview
                 } elseif (isset($_COOKIE[$_CONF['cookie_anon_name']])) {
-                    //stored as cookie, name used before
+                    // stored as cookie, name used before
                     $name = htmlspecialchars(COM_checkWords(strip_tags(
                         COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']]))));
                 } else {
@@ -921,6 +926,22 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $_CONF['site_url'] . '/users.php?mode=new');
                 $comment_template->set_var('lang_logoutorcreateaccount',
                     $LANG03[04]);
+            } else {
+                if ($commentuid != $_USER['uid']) {
+                    $uresult = DB_query("SELECT username, fullname FROM {$_TABLES['users']} WHERE uid = $commentuid");
+                    list($username, $fullname) = DB_fetchArray($uresult);
+                } else {
+                    $username = $_USER['username'];
+                    $fullname = $_USER['fullname'];
+                }
+            	$comment_template->set_var('CSRF_TOKEN', SEC_createToken());
+                $comment_template->set_var('uid', $commentuid);
+                $name = COM_getDisplayName($commentuid, $username, $fullname);
+                $comment_template->set_var('username', $name);
+                $comment_template->set_var('action_url',
+                    $_CONF['site_url'] . '/users.php?mode=logout');
+                $comment_template->set_var('lang_logoutorcreateaccount',
+                    $LANG03[03]);
             }
 
             if ($postmode == 'html') {
@@ -1659,7 +1680,7 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
  */
 function CMT_approveModeration($cid)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
     
     $result = DB_query("SELECT type, sid, date, title, comment, uid, name, pid, ipaddress FROM {$_TABLES['commentsubmissions']} WHERE cid = '$cid'");
     $A = DB_fetchArray($result);
