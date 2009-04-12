@@ -344,9 +344,17 @@ class Story
      */
     function hasContent()
     {
-        $test = $this->_title . $this->_introtext . $this->_bodytext;
-        $test = trim($test);
-        return ($test != '');
+        if (trim($this->_title) != '') {
+            return true;
+        }
+        if (trim($this->_introtext) != '') {
+            return true;
+        }
+        if (trim($this->_bodytext) != '') {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -386,7 +394,11 @@ class Story
         } else {
             $this->_expire = '0';
         }
-        $this->_comment_expire = $story['cmt_expire_unix'];
+        if (!empty($story['cmt_expire_unix'])) {
+            $this->_comment_expire = $story['cmt_expire_unix'];
+        } else {
+            $this->_comment_expire = '0';
+        }
 
         // Store the original SID
         $this->_originalSid = $this->_sid;
