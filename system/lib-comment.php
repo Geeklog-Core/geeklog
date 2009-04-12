@@ -1459,6 +1459,7 @@ function CMT_sendReport ($cid, $type)
  *
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ * @param  string $mode whether to store edited comment in the queue
  * @return string HTML (possibly a refresh)
  */
 function CMT_handleEditSubmit($mode = null)
@@ -1589,11 +1590,11 @@ function CMT_prepareText($comment, $postmode, $edit = false, $cid = null)
     
     return $comment;
 }
+
 /**
  * Disables comments for all stories where current time is past comment expire time and 
  * enables comments for certain number of most recent stories.
  *
- * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  */
@@ -1617,11 +1618,18 @@ function CMT_updateCommentcodes()
     $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
     DB_query($sql);
 }
+
 /**
  * Rebuilds hierarchical data of comments after moderation using recursion.
  *
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
+ * @param  string $sid   id of object comment belongs to
+ * @param  int    $pid   id of parent comment
+ * @param  int    $left  id of left-hand successor
+ * @return int           id of right-hand successor
+ * @see    CMT_deleteComment
+ *
  */
 function CMT_rebuildTree($sid, $pid = 0, $left = 0)
 {
@@ -1639,6 +1647,7 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
     
     return $right+1;
 }
+
 /**
  * Moves comment from submission table to comments table
  * 
