@@ -375,7 +375,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
 
                 $tmp_path = $_CONF['path']; // We'll need this to remember what the correct path is.
                                             // Including config.php will overwrite all our $_CONF values.
-                require($tmp_path . 'config.php');
+                require $tmp_path . 'config.php';
+
                 // Load some important values from config.php into conf_values
                 foreach ($_CONF as $key => $val) {
                     $config->set($key, $val);
@@ -466,6 +467,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
             update_ConfValues();
             upgrade_addNewPermissions();
             upgrade_addIsoFormat();
+
+            INST_fixOptionalConfig();
 
             $current_gl_version = '1.6.0';
             $_SQL = '';
@@ -861,6 +864,39 @@ function INST_pluginUpgrades($migration = false, $old_conf = array())
     }
 
     return $failed;
+}
+
+/**
+* Make sure optional config options can be disabled
+*
+* Back when Geeklog used a config.php file, some of the comment options were
+* commented out, i.e. they were optional. Make sure those options can still be
+* disabled from the Configuration admin panel.
+*
+* @return void
+*
+*/
+function INST_fixOptionalConfig()
+{
+    global $_TABLES;
+
+    // list of optional config options
+    $optional_config = array(
+        'copyrightyear', 'debug_image_upload', 'default_photo',
+        'force_photo_width', 'gravatar_rating', 'ip_lookup', 'language_files',
+        'languages', 'path_to_mogrify', 'path_to_netpbm'
+    );
+
+    foreach ($optional_config as $name) {
+        $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = '$name'");
+        list($value, $default_value) = DB_fetchArray($result);
+        if ($value != 'unset') {
+            if (substr($default_value, 0, 6) != 'unset:') {
+                $unset = addslashes('unset:' . $default_value);
+                DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = '$name'");
+            }
+        }
+    }
 }
 
 ?>
