@@ -1161,12 +1161,11 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     $cid = DB_insertId();
     DB_unlockTable($_TABLES['comments']);
 
-    //notify of new comment 
+    // notify of new comment 
     if ($_CONF['allow_reply_notifications'] == 1 && $pid > 1 && $ret == 0) {
-        $result = DB_query ("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE "
-                           . "cid = $pid");
+        $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
         $A = DB_fetchArray($result);
-        if ($A <> false) {
+        if ($A !== false) {
             CMT_sendReplyNotification($A);
         }
     }
@@ -1718,7 +1717,7 @@ function CMT_approveModeration($cid)
     if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 1) {
         $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = {$A['pid']}");
         $B = DB_fetchArray($result);
-        if ($B <> false) {
+        if ($B !== false) {
             CMT_sendReplyNotification($B);
         }
     }
@@ -1729,27 +1728,32 @@ function CMT_approveModeration($cid)
 /**
  * Sends a notification of new comment reply
  * 
- * @param   array   contains cid, uid, and deletekey
+ * @param  array    $A          contains cid, uid, and deletekey
+ * @param  boolean  $send_self  send notification when replying to self?
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  */
-function CMT_sendReplyNotification($A)
+function CMT_sendReplyNotification($A, $send_self = false)
 {
-    global $_CONF, $_TABLES, $LANG03;
-    
-    $mailsubject = $_CONF['site_name'] . ': ' . $LANG03[37];
-    
-    $mailbody  = $LANG03[38] . LB . LB;
-    $mailbody .= $LANG03[39] . LB . $_CONF['site_url'] . '/comment.php?mode=view&cid=' 
-              . $A['cid'] . '&format=nested' . LB . LB;
-    $mailbody .= $LANG03[40] . LB . $_CONF['site_url'] . '/comment.php?mode=unsubscribe&'
-              . 'key=' . $A['deletehash'];
-    
-    $email = DB_getItem($_TABLES['users'], 'email', "uid = {$A['uid']}");
-    if (!empty($email)) {
-        COM_mail ($email, $mailsubject, $mailbody);
+    global $_CONF, $_TABLES, $_USER, $LANG03;
+
+    if (($_USER['uid'] != $A['uid']) || $send_self) {
+
+        $mailsubject = $_CONF['site_name'] . ': ' . $LANG03[37];
+
+        $mailbody  = $LANG03[38] . LB . LB;
+        $mailbody .= $LANG03[39] . LB . $_CONF['site_url']
+                  . '/comment.php?mode=view&cid=' . $A['cid'] . '&format=nested'
+                  . LB . LB;
+        $mailbody .= $LANG03[40] . LB . $_CONF['site_url']
+                  . '/comment.php?mode=unsubscribe&key=' . $A['deletehash'];
+
+        $email = DB_getItem($_TABLES['users'], 'email', "uid = {$A['uid']}");
+        if (!empty($email)) {
+            COM_mail($email, $mailsubject, $mailbody);
+        }
+
     }
-    
 }
 
 ?>
