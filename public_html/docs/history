@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Slightly faster template class (feature request #0000760, patches provided
+  by dengen and mystral-kk)
 - Use a more efficient implementation of Story::hasContent (bug #0000858, patch
   provided by Maciej Cupial)
 - Make sure formerly optional config items can be disabled (bug #0000846) [Dirk]
