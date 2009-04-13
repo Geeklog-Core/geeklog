@@ -38,7 +38,7 @@
                                             <select id="sel_editmode" name="postmode" {change_editormode}>
                                                 {story_postmode_options}
                                             </select>
-                                            <br{xhtml}><span class="warningsmall">{allowed_html}</span>
+                                            <br{xhtml}>{allowed_html}
                                         </td>
                                     </tr>
                                     {captcha}

@@ -30,7 +30,7 @@
                                             <select name="postmode">
                                                 {story_postmode_options}
                                             </select>
-                                            <br{xhtml}><span class="warningsmall">{allowed_html}</span>
+                                            <br{xhtml}>{allowed_html}
                                         </td>
                                     </tr>
                                     {captcha}

@@ -40,7 +40,7 @@
                                                             <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
                                                                 {postmode_options}
                                                             </select><br{xhtml}>
-                                                            <span class="warningsmall">{allowed_html}</span>
+                                                            {allowed_html}
                                                         </td>
                                                     </tr>
                                                     {captcha}

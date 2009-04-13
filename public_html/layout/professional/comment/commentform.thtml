@@ -26,7 +26,7 @@
                                                             <select name="postmode">
                                                                 {postmode_options}
                                                             </select><br{xhtml}>
-                                                            <span class="warningsmall">{allowed_html}</span>
+                                                            {allowed_html}
                                                         </td>
                                                     </tr>
                                                     {captcha}
