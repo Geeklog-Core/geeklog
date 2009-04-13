@@ -1739,14 +1739,18 @@ function CMT_sendReplyNotification($A, $send_self = false)
 
     if (($_USER['uid'] != $A['uid']) || $send_self) {
 
+        $name = COM_getDisplayName($A['uid']);
+        $title = DB_getItem($_TABLES['comments'], 'title', "cid = {$A['cid']}");
+        $commenturl = $_CONF['site_url'] . '/comment.php';
+
         $mailsubject = $_CONF['site_name'] . ': ' . $LANG03[37];
 
-        $mailbody  = $LANG03[38] . LB . LB;
-        $mailbody .= $LANG03[39] . LB . $_CONF['site_url']
-                  . '/comment.php?mode=view&cid=' . $A['cid'] . '&format=nested'
-                  . LB . LB;
-        $mailbody .= $LANG03[40] . LB . $_CONF['site_url']
-                  . '/comment.php?mode=unsubscribe&key=' . $A['deletehash'];
+        $mailbody  = sprintf($LANG03[41], $name) . LB . LB;
+        $mailbody .= sprintf($LANG03[38], $title) . LB . LB;
+        $mailbody .= $LANG03[39] . LB . '<' . $commenturl . '?mode=view&cid='
+                  . $A['cid'] . '&format=nested' . '>' . LB . LB;
+        $mailbody .= $LANG03[40] . LB . '<' . $commenturl
+                  . '?mode=unsubscribe&key=' . $A['deletehash'] . '>' . LB;
 
         $email = DB_getItem($_TABLES['users'], 'email', "uid = {$A['uid']}");
         if (!empty($email)) {
