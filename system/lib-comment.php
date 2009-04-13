@@ -415,27 +415,43 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'type', $A['type'] );
 
         // COMMENT edit rights
+        $edit_option = false;
         if (isset($A['uid']) && isset($_USER['uid'])
                 && ($_USER['uid'] == $A['uid']) && ($_CONF['comment_edit'] == 1)
                 && ((time() - $A['nice_date']) < $_CONF['comment_edittime'])
                 && (DB_getItem($_TABLES['comments'], 'COUNT(*)',
                                "pid = {$A['cid']}") == 0)) {
             $edit_option = true;
-            if ( empty($token)) {
+            if (empty($token)) {
                 $token = SEC_createToken();
             }
-        } else if ( SEC_hasRights( 'comment.moderate' )) { 
+        } elseif (SEC_hasRights('comment.moderate')) { 
             $edit_option = true;
-        } else {
-            $edit_option = false;
         }
         
-        //edit link
+        // edit link
+        $edit = '';
         if ($edit_option) {
             $editlink = $_CONF['site_url'] . '/comment.php?mode=edit&amp;cid='
                 . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
                 . '&amp;' . CSRF_TOKEN . '=' . $token;
-            $edit = COM_createLink( $LANG01[4], $editlink) . ' | ';
+            $edit = COM_createLink($LANG01[4], $editlink) . ' | ';
+        }
+
+        // unsubscribe link
+        $unsubscribe = '';
+        if (($_CONF['allow_reply_notifications'] == 1) && !COM_isAnonUser()
+                && isset($A['uid']) && isset($_USER['uid'])
+                && ($_USER['uid'] == $A['uid'])) {
+            $hash = DB_getItem($_TABLES['commentnotifications'], 'deletehash',
+                               "cid = {$A['cid']} AND uid = {$_USER['uid']}");
+            if (! empty($hash)) {
+                $unsublink = $_CONF['site_url']
+                           . '/comment.php?mode=unsubscribe&amp;key=' . $hash;
+                $unsubattr = array('title' => $LANG03[43]);
+                $unsubscribe = COM_createLink($LANG03[42], $unsublink,
+                                              $unsubattr) . ' | ';
+            }
         }
 
         // if deletion is allowed, displays delete link
@@ -464,18 +480,26 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 }
             }
 
+            if (! empty($unsubscribe)) {
+                $deloption .= $unsubscribe;
+            }
+
             $template->set_var('delete_option', $deloption);
         } elseif ($edit_option) {
-            $template->set_var('delete_option', $edit);
-        } elseif (!empty( $_USER['username'])) {
-            $reportthis_link = $_CONF['site_url']
-                . '/comment.php?mode=report&amp;cid=' . $A['cid']
-                . '&amp;type=' . $type;
-            $report_attr = array('title' => $LANG01[110]);
-            $reportthis = COM_createLink($LANG01[109], $reportthis_link, $report_attr) . ' | ';
-            $template->set_var( 'delete_option', $reportthis );
+            $template->set_var('delete_option', $edit . $unsubscribe);
+        } elseif (! COM_isAnonUser()) {
+            $reportthis = '';
+            if ($A['uid'] != $_USER['uid']) {
+                $reportthis_link = $_CONF['site_url']
+                    . '/comment.php?mode=report&amp;cid=' . $A['cid']
+                    . '&amp;type=' . $type;
+                $report_attr = array('title' => $LANG01[110]);
+                $reportthis = COM_createLink($LANG01[109], $reportthis_link,
+                                             $report_attr) . ' | ';
+            }
+            $template->set_var('delete_option', $reportthis . $unsubscribe);
         } else {
-            $template->set_var( 'delete_option', '' );
+            $template->set_var('delete_option', '');
         }
         
         //and finally: format the actual text of the comment, but check only the text, not sig or edit

@@ -218,7 +218,9 @@ $LANG03 = array(
     38 => "A reply has been made to your comment '%s'.",
     39 => 'You may view the comment thread at the following address:',
     40 => 'If you wish to receive no further notifications of replies, visit the following link:',
-    41 => 'Hello %s,'
+    41 => 'Hello %s,',
+    42 => 'Unsubscribe',
+    43 => 'Unsubscribe from reply notifications'
 );
 
 ###############################################################################
@@ -1147,7 +1149,7 @@ $MESSAGE = array(
     13 => 'Your topic has been successfully saved.',
     14 => 'The topic and all its stories and blocks have been successfully deleted.',
     15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
-    16 => 'You have been unsubscribed. You will no longer be notified of new replies',
+    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
     17 => '',
     18 => '',
     19 => '',

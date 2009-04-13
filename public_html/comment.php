@@ -255,7 +255,10 @@ function handleView($view = true)
             break;
     }
 
-    return COM_siteHeader('menu', $title) . $display . COM_siteFooter();
+    return COM_siteHeader('menu', $title)
+           . COM_showMessageFromParameter()
+           . $display
+           . COM_siteFooter();
 }
 
 /**
@@ -406,12 +409,22 @@ case 'edit':
     break;
 
 case 'unsubscribe':
+    $cid = 0;
     $key = COM_applyFilter($_GET['key']);
     if (! empty($key)) {
         $key = addslashes($key);
-        DB_delete($_TABLES['commentnotifications'], 'deletehash',
-                  $key, $_CONF['site_url'] . '/index.php?msg=16');
+        $cid = DB_getItem($_TABLES['commentnotifications'], 'cid',
+                          "deletehash = '$key'");
+        if (! empty($cid)) {
+            $redirecturl = $_CONF['site_url']
+                         . '/comment.php?mode=view&amp;cid=' . $cid
+                         . '&amp;format=nested&amp;msg=16';
+            DB_delete($_TABLES['commentnotifications'], 'deletehash', $key,
+                      $redirecturl);
+            exit;
+        }
     }
+    $display = COM_refresh($_CONF['site_url'] . '/index.php');
     break;
 
 default:  // New Comment
