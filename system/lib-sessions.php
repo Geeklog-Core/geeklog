@@ -130,12 +130,13 @@ function SESS_sessionCheck()
                     $userid = COM_applyFilter ($userid, true);
                     $cookie_password = '';
                     $userpass = '';
-                    if ($userid > 1) {
+                    if (($userid > 1) &&
+                            isset($_COOKIE[$_CONF['cookie_password']])) {
                         $cookie_password = $_COOKIE[$_CONF['cookie_password']];
-                        $userpass = DB_getItem ($_TABLES['users'], 'passwd',
-                                                "uid = $userid");
+                        $userpass = DB_getItem($_TABLES['users'], 'passwd',
+                                               "uid = $userid");
                     }
-                    if (empty ($cookie_password) || ($cookie_password <> $userpass)) {
+                    if (empty($cookie_password) || ($cookie_password <> $userpass)) {
                         // User may have modified their UID in cookie, ignore them
                     } else if ($userid > 1) {
                         // Check user status
@@ -175,12 +176,12 @@ function SESS_sessionCheck()
                 $userid = COM_applyFilter ($userid, true);
                 $cookie_password = '';
                 $userpass = '';
-                if ($userid > 1) {
-                    $userpass = DB_getItem ($_TABLES['users'], 'passwd',
-                                            "uid = $userid");
+                if (($userid > 1) && isset($_COOKIE[$_CONF['cookie_password']])) {
+                    $userpass = DB_getItem($_TABLES['users'], 'passwd',
+                                           "uid = $userid");
                     $cookie_password = $_COOKIE[$_CONF['cookie_password']];
                 }
-                if (empty ($cookie_password) || ($cookie_password <> $userpass)) {
+                if (empty($cookie_password) || ($cookie_password <> $userpass)) {
                     // User could have modified UID in cookie, don't do shit
                 } else if ($userid > 1) {
                     // Check user status
