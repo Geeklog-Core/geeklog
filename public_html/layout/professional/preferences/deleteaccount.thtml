@@ -5,7 +5,7 @@
        </div>
         <table class="inputTable" style="margin-top:20px;">
             <tr>
-                <td width="150px"><label for="old_passwd" class="warningsmall">{lang_deleteoption}:</label></td>
+                <td style="width:150px;"><label for="old_passwd" class="warningsmall">{lang_deleteoption}:</label></td>
                 <td>
                       <input type="submit" name="btnsubmit" value="{lang_button_delete}"{xhtml}>
                       <input type="hidden" name="mode" value="{delete_mode}"{xhtml}>
