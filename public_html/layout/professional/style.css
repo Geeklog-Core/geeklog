@@ -411,6 +411,11 @@ select {
 }
 .comment-edit {
   font-style: italic;
+  padding-top:1ex;
+}
+.comment-sig {
+  color:#666666;
+  padding-top:1ex;
 }
 /******************************************************************************/
 .edit-perm-down {

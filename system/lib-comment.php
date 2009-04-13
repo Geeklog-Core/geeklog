@@ -299,10 +299,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                                        "uid={$B['uid']}");
             }
             // add edit info to text
-            $A['comment'] .= LB . '<span class="comment-edit">' . $LANG03[30]
-                          . ' ' . strftime($_CONF['date'], $B['time']) . ' '
+            $A['comment'] .= '<div class="comment-edit">' . $LANG03[30] . ' '
+                          . strftime($_CONF['date'], $B['time']) . ' '
                           . $LANG03[31] . ' ' . $editname
-                          . '</span><!-- /COMMENTEDIT -->';
+                          . '</div><!-- /COMMENTEDIT -->';
         }
 
         // determines indentation for current comment
@@ -503,10 +503,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
         
         //and finally: format the actual text of the comment, but check only the text, not sig or edit
-        $text = str_replace('<!-- COMMENTSIG --><span class="comment-sig">', '', $A['comment']);
-        $text = str_replace('</span><!-- /COMMENTSIG -->', '', $text);
-        $text = str_replace('<span class="comment-edit">', '', $text);
-        $text = str_replace('</span><!-- /COMMENTEDIT -->', '', $text);
+        $text = str_replace('<!-- COMMENTSIG --><div class="comment-sig">', '',
+                            $A['comment']);
+        $text = str_replace('</div><!-- /COMMENTSIG -->', '', $text);
+        $text = str_replace('<div class="comment-edit">', '', $text);
+        $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);
         if( preg_match( '/<.*>/', $text ) == 0 ) {
             $A['comment'] = nl2br( $A['comment'] );
         }
@@ -1602,9 +1603,9 @@ function CMT_prepareText($comment, $postmode, $edit = false, $cid = null)
     }
     
     if ($edit) {
-        $comment .= LB . '<span class="comment-edit">' . $LANG03[30] . ' '
-                 . strftime( $_CONF['date'], time() ) . ' ' .$LANG03[31] .' ' 
-                 . $_USER['username'] . '</span><!-- /COMMENTEDIT -->';
+        $comment .= '<div class="comment-edit">' . $LANG03[30] . ' '
+                 . strftime($_CONF['date'], time()) . ' ' .$LANG03[31] .' ' 
+                 . $_USER['username'] . '</div><!-- /COMMENTEDIT -->';
         $text = $comment;
         
     }
@@ -1622,13 +1623,13 @@ function CMT_prepareText($comment, $postmode, $edit = false, $cid = null)
     if ($uid > 1) {
         $sig = DB_getItem ($_TABLES['users'], 'sig', "uid = '$uid'");
         if (!empty ($sig)) {
-            $comment .= '<!-- COMMENTSIG --><span class="comment-sig">';
+            $comment .= '<!-- COMMENTSIG --><div class="comment-sig">';
             if ( $postmode == 'html') {
-                $comment .= '<p>---<br' . XHTML . '>' . nl2br ($sig);
+                $comment .= '---<br' . XHTML . '>' . nl2br($sig);
             } else {
-                $comment .=  LB . LB . '---' . LB . $sig;
+                $comment .=  '---' . LB . $sig;
             }
-        $comment .= '</span><!-- /COMMENTSIG -->';
+        $comment .= '</div><!-- /COMMENTSIG -->';
         }
     }
     
