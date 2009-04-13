@@ -16,8 +16,6 @@ Other changes:
 - Use a more efficient implementation of Story::hasContent (bug #0000858, patch
   provided by Maciej Cupial)
 - Make sure formerly optional config items can be disabled (bug #0000846) [Dirk]
-- Re-introduced function get_SPX_Ver in the install script, which is still
-  needed when upgrading from old Geeklog releases (reported by Sheila) [Dirk]
 - New plugin API function PLG_getDocumentationUrl (feature request #0000848)
   [Dirk]
 - Fresh installs + MySQL only: Changed some tinyint fields that are only used
@@ -142,6 +140,21 @@ Static Pages plugin
   now [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+Apr 13, 2009 (1.5.2sr3)
+------------
+
+This release addresses the following security issue:
+
+Bookoo of the Nine Situations Group posted another SQL injection exploit, this
+time targetting the webservices API. As with the previous issue, this allowed
+an attacker to extract the password hash for any account and is fixed with this
+release.
+
+Not security-related:
+- Re-introduced function get_SPX_Ver in the install script, which is still
+  needed when upgrading from old Geeklog releases (reported by Sheila) [Dirk]
 
  
 Apr 4, 2009 (1.5.2sr2)
