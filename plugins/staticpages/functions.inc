@@ -943,25 +943,29 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
     } else if ($op == 'parse') {
         if ($autotag['tag'] == 'staticpage' ) {
             $sp_id = COM_applyFilter($autotag['parm1']);
-            $url = COM_buildUrl($_CONF['site_url']
+            if (! empty($sp_is)) {
+                $url = COM_buildUrl($_CONF['site_url']
                                 . '/staticpages/index.php?page=' . $sp_id);
-            if (empty($autotag['parm2'])) {
-                $linktext = stripslashes(DB_getItem ($_TABLES['staticpage'],
-                                         'sp_title', "sp_id = '$sp_id'"));
-            } else {
-                $linktext = $autotag['parm2'];
+                if (empty($autotag['parm2'])) {
+                    $linktext = stripslashes(DB_getItem($_TABLES['staticpage'],
+                                             'sp_title', "sp_id = '$sp_id'"));
+                } else {
+                    $linktext = $autotag['parm2'];
+                }
+                $link = COM_createLink($linktext, $url);
+                $content = str_replace($autotag['tagstr'], $link, $content);
             }
-            $link = COM_createLink($linktext, $url);
-            $content = str_replace($autotag['tagstr'], $link, $content);
         } else if ($autotag['tag'] == 'staticpage_content') {
             $sp_id = COM_applyFilter($autotag['parm1']);
-            if (isset($recursive[$sp_id])) {
-                $content = '';
-            } else {
-                $recursive[$sp_id] = true;
-                $sp_content = SP_returnStaticpage($sp_id, 'autotag');
-                $content = str_replace($autotag['tagstr'], $sp_content,
-                                       $content);
+            if (! empty($sp_id)) {
+                if (isset($recursive[$sp_id])) {
+                    $content = '';
+                } else {
+                    $recursive[$sp_id] = true;
+                    $sp_content = SP_returnStaticpage($sp_id, 'autotag');
+                    $content = str_replace($autotag['tagstr'], $sp_content,
+                                           $content);
+                }
             }
         }
 

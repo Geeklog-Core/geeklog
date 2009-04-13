@@ -1618,10 +1618,12 @@ function PLG_replaceTags($content, $plugin = '')
                 $linktext = $autotag['parm2'];
                 if ($autotag['tag'] == 'story') {
                     $autotag['parm1'] = COM_applyFilter ($autotag['parm1']);
-                    $url = COM_buildUrl ($_CONF['site_url']
-                         . '/article.php?story=' . $autotag['parm1']);
-                    if (empty ($linktext)) {
-                        $linktext = stripslashes (DB_getItem ($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
+                    if (! empty($autotag['parm1'])) {
+                        $url = COM_buildUrl ($_CONF['site_url']
+                             . '/article.php?story=' . $autotag['parm1']);
+                        if (empty ($linktext)) {
+                            $linktext = stripslashes (DB_getItem ($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
+                        }
                     }
                 }
 

@@ -181,25 +181,27 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
         return 'link';
     } else if ($op == 'parse') {
         $lid = COM_applyFilter($autotag['parm1']);
-        $url = COM_buildUrl($_CONF['site_url']
+        if (! empty($lid)) {
+            $url = COM_buildUrl($_CONF['site_url']
                             . '/links/portal.php?what=link&amp;item=' . $lid);
-        if (empty($autotag['parm2'])) {
-            $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
-            list($siteurl, $linktext) = DB_fetchArray($result);
-        } else {
-            $linktext = $autotag['parm2'];
-            $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
+            if (empty($autotag['parm2'])) {
+                $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
+                list($siteurl, $linktext) = DB_fetchArray($result);
+            } else {
+                $linktext = $autotag['parm2'];
+                $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
+            }
+            $class = 'ext-link';
+            if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
+                $class .= '-rtl';
+            }
+            $attr = array(
+                        'title' => $siteurl,
+                        'class' => $class
+                         );
+            $link = COM_createLink($linktext, $url, $attr);
+            $content = str_replace($autotag['tagstr'], $link, $content);
         }
-        $class = 'ext-link';
-        if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
-            $class .= '-rtl';
-        }
-        $attr = array(
-                    'title' => $siteurl,
-                    'class' => $class
-                     );
-        $link = COM_createLink($linktext, $url, $attr);
-        $content = str_replace($autotag['tagstr'], $link, $content);
 
         return $content;
     }

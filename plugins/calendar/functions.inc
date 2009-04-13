@@ -1104,16 +1104,18 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
     if ($op == 'tagname' ) {
         return 'event';
     } else if ($op == 'parse') {
-        $eid = COM_applyFilter ($autotag['parm1']);
-        $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid;
-        if (empty ($autotag['parm2'])) {
-            $linktext = stripslashes (DB_getItem ($_TABLES['events'],
-                                      'title', "eid = '$eid'"));
-        } else {
-            $linktext = $autotag['parm2'];
+        $eid = COM_applyFilter($autotag['parm1']);
+        if (! empty($eid)) {
+            $url = $_CONF['site_url'] . '/calendar/event.php?eid=' . $eid;
+            if (empty ($autotag['parm2'])) {
+                $linktext = stripslashes (DB_getItem ($_TABLES['events'],
+                                          'title', "eid = '$eid'"));
+            } else {
+                $linktext = $autotag['parm2'];
+            }
+            $link = COM_createLink($linktext, $url);
+            $content = str_replace ($autotag['tagstr'], $link, $content);
         }
-        $link = COM_createLink($linktext, $url);
-        $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
     }
