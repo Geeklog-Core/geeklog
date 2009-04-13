@@ -75,6 +75,9 @@ function update_ConfValues()
     $thirty = addslashes(serialize(30));
     DB_query("UPDATE {$_TABLES['conf_values']} SET value = '$thirty', default_value = '$thirty' WHERE name = 'num_search_results'");
 
+    // fix censormode dropdown
+    DB_query("UPDATE {$_TABLES['conf_values']} SET selectionArray = 18 WHERE name = 'censormode'");
+
     $c = config::get_instance();
 
     // new options
