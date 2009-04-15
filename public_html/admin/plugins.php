@@ -35,7 +35,7 @@
 
 /**
 * This is the plugin administration page. Here you can install, uninstall,
-* enable, disable, and upload plugins.
+* upgrade, enable, disable, and upload plugins.
 *
 */
 
@@ -186,10 +186,12 @@ function changePluginStatus($pi_name_arr)
             PLG_enableStateChange($P['pi_name'], true);
             DB_change($_TABLES['plugins'], 'pi_enabled', 1,
                                            'pi_name', $P['pi_name']);
+            PLG_pluginStateChange($P['pi_name'], 'enabled');
         } elseif (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
             PLG_enableStateChange($P['pi_name'], false);
             DB_change($_TABLES['plugins'], 'pi_enabled', 0,
                                            'pi_name', $P['pi_name']);
+            PLG_pluginStateChange($P['pi_name'], 'disabled');
         }
     }
 }
@@ -223,13 +225,18 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
         $pi_gl_version = addslashes ($pi_gl_version);
         $pi_homepage = addslashes ($pi_homepage);
 
-        $currentState = DB_getItem ($_TABLES['plugins'], 'pi_enabled',
-                                    "pi_name= '{$pi_name}' LIMIT 1");
+        $currentState = DB_getItem($_TABLES['plugins'], 'pi_enabled',
+                                   "pi_name= '{$pi_name}' LIMIT 1");
         if ($currentState != $enabled) {
-            PLG_enableStateChange ($pi_name, ($enabled == 1) ? true : false);
+            PLG_enableStateChange($pi_name, ($enabled == 1) ? true : false);
         }
 
-        DB_save ($_TABLES['plugins'], 'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage', "'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'");
+        DB_save($_TABLES['plugins'], 'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage', "'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'");
+
+        if ($currentState != $enabled) {
+            PLG_pluginStateChange($pi_name,
+                                  ($enabled == 1) ? 'enabled' : 'disabled');
+        }
 
         $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=28');
     } else {
@@ -357,6 +364,7 @@ function do_update($pi_name)
     $result = PLG_upgrade($pi_name);
     if ($result > 0 ) {
         if ($result === TRUE) { // Catch returns that are just true/false
+            PLG_pluginStateChange($pi_name, 'upgraded');
             $retval .= COM_refresh($_CONF['site_admin_url']
                     . '/plugins.php?msg=60');
         } else {  // Plugin returned a message number
@@ -396,6 +404,8 @@ function do_uninstall($pi_name)
     }
 
     if (PLG_uninstall($pi_name)) {
+        PLG_pluginStateChange($pi_name, 'uninstalled');
+
         $retval = 45; // success msg
     } else {
         $retval = 95; // error msg
@@ -749,6 +759,7 @@ function plugin_upload()
                             ($code_version != $pi_version)) {
                         $result = PLG_upgrade($dirname);
                         if ($result === true) {
+                            PLG_pluginStateChange($dirname, 'upgraded');
                             $msg = 60; // successfully updated
                         } else {
                             $msg_with_plugin_name = true;
@@ -763,6 +774,7 @@ function plugin_upload()
             } elseif (file_exists($plg_path . 'autoinstall.php')) {
                 // if the plugin has an autoinstall.php, install it now
                 if (plugin_autoinstall($pi_name)) {
+                    PLG_pluginStateChange($pi_name, 'installed');
                     $msg = 44; // successfully installed
                 } else {
                     $msg = 72; // an error occured while installing the plugin
@@ -1207,6 +1219,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
             $plugin = COM_applyFilter($_GET['plugin']);
         }
         if (plugin_autoinstall($plugin)) {
+            PLG_pluginStateChange($plugin, 'installed');
             $display .= COM_refresh($_CONF['site_admin_url']
                                     . '/plugins.php?msg=44');
         } else {

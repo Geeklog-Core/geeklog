@@ -353,6 +353,7 @@ function PLG_uninstall ($type)
 * @param    string      $type       Plugin name
 * @param    boolean     $enable     true if enabling, false if disabling
 * @return   boolean     Returns true on success otherwise false
+* @see      PLG_pluginStateChange
 *
 */
 function PLG_enableStateChange ($type, $enable)
@@ -2573,6 +2574,42 @@ function PLG_getDocumentationUrl($type, $file)
     $function = 'plugin_getdocumentationurl_' . $type;
 
     return PLG_callFunctionForOnePlugin($function, $args);
+}
+
+/**
+* Inform plugins when another plugin's state changed
+*
+* Unlike PLG_enableStateChange, this function is called after the state
+* change.
+*
+* NOTE: You can not rely on being informed of state changes for 'installed',
+* 'uninstalled', and 'upgraded', as these may happen in the plugin's install
+* script, outside of Geeklog's control.
+*
+* @param    string  $type   plugin name
+* @param    string  $status new status: 'enabled', 'disabled', 'installed', 'uninstalled', 'upgraded'
+* @return   void
+* @see      PLG_enableStateChange
+* @since    Geeklog 1.6.0
+*
+*/
+function PLG_pluginStateChange($type, $status)
+{
+    global $_PLUGINS;
+
+    $args[1] = $type;
+    $args[2] = $status;
+    foreach ($_PLUGINS as $pi_name) {
+        if ($pi_name != $type) {
+            $function = 'plugin_pluginstatechange_' . $pi_name;
+            PLG_callFunctionForOnePlugin($function, $args);
+        }
+    }
+
+    $function = 'CUSTOM_pluginstatechange';
+    if (function_exists($function)) {
+        $function($type, $status);
+    }
 }
 
 ?>
