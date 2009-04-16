@@ -12,42 +12,55 @@ $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_descr = 'Can change plugin statu
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('group.assign','Ability to assign users to groups',1)";
 
 // new comment tables, groups, and permissions
-/* FIXME: MySQL syntax ...
+
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentedits']} (
-  cid int(10) NOT NULL,
-  uid mediumint(8) NOT NULL,
-  time datetime NOT NULL,
-  PRIMARY KEY (cid)
-) TYPE=MyISAM
+CREATE TABLE [dbo].[{$_TABLES['commentedits']}] (
+  [cid] [int] NOT NULL,
+  [uid] [int] NOT NULL,
+  [time] [datetime] NOT NULL,
+) ON [PRIMARY]
 ";
+
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentnotifications']} (
-  cid int(10) default NULL,
-  uid mediumint(8) NOT NULL,
-  deletehash varchar(32) NOT NULL,
-  mid int(10) default NULL,
-  PRIMARY KEY  (deletehash)
-) TYPE=MyISAM 
+ALTER TABLE [dbo].[{$_TABLES['commentedits']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentedits']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
 ";
+
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentsubmissions']} (
-  cid int(10) unsigned NOT NULL auto_increment,
-  type varchar(30) NOT NULL default 'article',
-  sid varchar(40) NOT NULL,
-  date datetime default NULL,
-  title varchar(128) default NULL,
-  comment text,
-  uid mediumint(8) NOT NULL default '1',
-  name varchar(32) default NULL,
-  pid int(10) NOT NULL default '0',
-  ipaddress varchar(15) NOT NULL,
-  PRIMARY KEY  (cid)
-) TYPE=MyISAM
+CREATE TABLE [dbo].[{$_TABLES['commentnotifications']}](
+  [cid] [INT] NOT NULL,
+  [uid] [INT] NOT NULL,
+  [deletehash] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [mid] [INT] DEFAULT NULL
+) ON [PRIMARY]
 ";
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD comment_expire datetime NOT NULL default '0000-00-00 00:00:00' AFTER comments";
-$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD name varchar(32) default NULL AFTER indent";
-*/
+
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['commentnotifications']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentnotifications']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
+";
+
+$_SQL[] = "
+CREATE TABLE [dbo].[{$_TABLES['commentsubmissions']}] (
+  [cid] [int] IDENTITY (1,1) NOT NULL,
+  [type] [varchar] (30) NOT NULL default 'article',
+  [sid] [varchar](40) NOT NULL,
+  [date] [datetime] default NULL,
+  [title] [varchar] (128) default NULL,
+  [comment] [NTEXT],
+  [uid] [INT] NOT NULL default '1',
+  [name] [varchar] (32) default NULL,
+  [pid] [INT] NOT NULL default '0',
+  [ipaddress] [varchar](15) NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['commentsubmissions']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentsubmissions']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
+";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD comment_expire datetime NOT NULL default '1901-01-01 00:00:00.000'";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD name varchar(32) default NULL ";
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Admin', 'Can moderate comments', 1)";
 $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Comment Submitters', 'Can submit comments', 0);";
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('comment.moderate', 'Ability to moderate comments', 1)";
