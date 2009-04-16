@@ -73,16 +73,18 @@ CREATE TABLE [dbo].[{$_TABLES['commentcodes']}] (
 ) ON [PRIMARY]
 ";
 
-/* FIXME - MySQL syntax
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentedits']} (
-  cid int(10) NOT NULL,
-  uid mediumint(8) NOT NULL,
-  time datetime NOT NULL,
-  PRIMARY KEY (cid)
-) TYPE=MyISAM
+CREATE TABLE [dbo].[{$_TABLES['commentedits']}] (
+  [cid] [int] NOT NULL,
+  [uid] [int] NOT NULL,
+  [time] [datetime] NOT NULL,
+) ON [PRIMARY]
 ";
-*/
+
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['commentedits']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentedits']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
+";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['commentmodes']}] (
@@ -91,17 +93,20 @@ CREATE TABLE [dbo].[{$_TABLES['commentmodes']}] (
 ) ON [PRIMARY]
 ";
 
-/* FIXME - MySQL syntax
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentnotifications']} (
-  cid int(10) default NULL,
-  uid mediumint(8) NOT NULL,
-  deletehash varchar(32) NOT NULL,
-  mid int(10) default NULL,
-  PRIMARY KEY  (deletehash)
-) TYPE=MyISAM 
+CREATE TABLE [dbo].[{$_TABLES['commentnotifications']}](
+  [cid] [INT] NOT NULL,
+  [uid] [INT] NOT NULL,
+  [deletehash] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [mid] [INT] DEFAULT NULL
+) ON [PRIMARY]
 ";
-*/
+
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['commentnotifications']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentnotifications']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
+";
+
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['comments']}] (
@@ -123,23 +128,25 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
 ) ON [PRIMARY]
 ";
 
-/* FIXME - MySQL syntax
 $_SQL[] = "
-CREATE TABLE {$_TABLES['commentsubmissions']} (
-  cid int(10) unsigned NOT NULL auto_increment,
-  type varchar(30) NOT NULL default 'article',
-  sid varchar(40) NOT NULL,
-  date datetime default NULL,
-  title varchar(128) default NULL,
-  comment text,
-  uid mediumint(8) NOT NULL default '1',
-  name varchar(32) default NULL,
-  pid int(10) NOT NULL default '0',
-  ipaddress varchar(15) NOT NULL,
-  PRIMARY KEY  (cid)
-) TYPE=MyISAM
+CREATE TABLE [dbo].[{$_TABLES['commentsubmissions']}] (
+  [cid] [int] IDENTITY (1,1) NOT NULL,
+  [type] [varchar] (30) NOT NULL default 'article',
+  [sid] [varchar](40) NOT NULL,
+  [date] [datetime] default NULL,
+  [title] [varchar] (128) default NULL,
+  [comment] [NTEXT],
+  [uid] [INT] NOT NULL default '1',
+  [name] [varchar] (32) default NULL,
+  [pid] [INT] NOT NULL default '0',
+  [ipaddress] [varchar](15) NOT NULL
+) ON [PRIMARY]
 ";
-*/
+
+$_SQL[] = "
+ALTER TABLE [dbo].[{$_TABLES['commentsubmissions']}] ADD CONSTRAINT
+[PK_{$_TABLES['commentsubmissions']}] PRIMARY KEY CLUSTERED ([cid]) ON [PRIMARY]
+";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['conf_values']}] (
