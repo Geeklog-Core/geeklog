@@ -64,6 +64,7 @@ $display = '';
 $order = '';
 $query = '';
 $reply = '';
+$page = 0;
 if (isset ($_POST['mode'])) {
     $sid = COM_applyFilter ($_POST['story']);
     $mode = COM_applyFilter ($_POST['mode']);
@@ -75,6 +76,9 @@ if (isset ($_POST['mode'])) {
     }
     if (isset ($_POST['reply'])) {
         $reply = COM_applyFilter ($_POST['reply']);
+    }
+    if (isset ($_POST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
     }
 } else {
     COM_setArgNames (array ('story', 'mode'));
@@ -88,6 +92,9 @@ if (isset ($_POST['mode'])) {
     }
     if (isset ($_GET['reply'])) {
         $reply = COM_applyFilter ($_GET['reply']);
+    }
+    if (isset ($_GET['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
     }
 }
 
