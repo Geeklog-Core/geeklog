@@ -1372,23 +1372,33 @@ function savepreferences($A)
         }
     }
 
-    $TIDS  = @array_values($A[$_TABLES['topics']]);
-    $AIDS  = @array_values($A['selauthors']);
-    $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
-    $ETIDS = @array_values($A['etids']);
+    $TIDS  = @array_values($A[$_TABLES['topics']]);     // array of strings
+    $AIDS  = @array_values($A['selauthors']);           // array of integers
+    $BOXES = @array_values($A["{$_TABLES['blocks']}"]); // array of integers
+    $ETIDS = @array_values($A['etids']);                // array of strings
+    $AETIDS = USER_getAllowedTopics();                  // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
 
     $tids = '';
     if (sizeof ($TIDS) > 0) {
-        $tids = addslashes (implode (' ', $TIDS));
+        // the array_intersect mitigates the need to scrub the TIDS input
+        $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS));
     }
 
     $aids = '';
     if (sizeof ($AIDS) > 0) {
+        // Scrub the AIDS array to prevent SQL injection and bad values
+        foreach ($AIDS as $key => $val) {
+            $AIDS[$key] = COM_applyFilter($val, true);
+        }
         $aids = addslashes (implode (' ', $AIDS));
     }
 
     $selectedblocks = '';
     if (count ($BOXES) > 0) {
+        // Scrub the BOXES array to prevent SQL injection and bad values
+        foreach ($BOXES as $key => $val) {
+            $BOXES[$key] = COM_applyFilter($val, true);
+        }
         $boxes = addslashes (implode (',', $BOXES));
 
         $blockresult = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($boxes)");
@@ -1406,7 +1416,7 @@ function savepreferences($A)
 
     $etids = '';
     if (sizeof ($ETIDS) > 0) {
-        $AETIDS = USER_getAllowedTopics();
+        // the array_intersect mitigates the need to scrub the ETIDS input
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
 
