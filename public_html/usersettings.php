@@ -1381,7 +1381,7 @@ function savepreferences($A)
     $tids = '';
     if (sizeof ($TIDS) > 0) {
         // the array_intersect mitigates the need to scrub the TIDS input
-        $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS));
+        $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS)));
     }
 
     $aids = '';
