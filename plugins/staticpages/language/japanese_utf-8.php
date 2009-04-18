@@ -107,7 +107,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
     'printable_format' => '印刷用フォーマット',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',

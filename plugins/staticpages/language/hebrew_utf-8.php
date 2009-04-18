@@ -103,7 +103,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'אל תבצע PHP',
     'select_php_return' => 'בצע PHP (return)',
     'select_php_free' => 'בצע PHP',
-    'php_not_activated' => "השימוש ב-PHP בעמודים סטטיים לא מופעל. אנא ראו את <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">הדוקומנטציה</a> בשביל פרטים.",
+    'php_not_activated' => "השימוש ב-PHP בעמודים סטטיים לא מופעל. אנא ראו את <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">הדוקומנטציה</a> בשביל פרטים.",
     'printable_format' => 'פורמט להדפסה',
     'copy' => 'העתקה',
     'limit_results' => 'הגבלת תוצאות',

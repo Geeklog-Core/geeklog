@@ -102,7 +102,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'не виконувати PHP',
     'select_php_return' => 'виконувати PHP (return)',
     'select_php_free' => 'виконувати PHP',
-    'php_not_activated' => "Використання PHP у статичних сторінках не активоване. Будь ласка, подивіться в <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">документацію</a> щодо деталей.",
+    'php_not_activated' => "Використання PHP у статичних сторінках не активоване. Будь ласка, подивіться в <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">документацію</a> щодо деталей.",
     'printable_format' => 'Формат для друку',
     'copy' => 'Копіювати',
     'limit_results' => 'Обмежити результати',

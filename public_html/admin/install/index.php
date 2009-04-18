@@ -29,8 +29,8 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | You don't need to change anything in this file.                           |
-// | Please read docs/install.html which describes how to install Geeklog.     |
+// | You don't need to change anything in this file.  Please read              |
+// | docs/english/install.html which describes how to install Geeklog.         |
 // +---------------------------------------------------------------------------+
 
 require_once 'lib-install.php';

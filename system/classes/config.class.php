@@ -638,19 +638,7 @@ class config {
                 $on = $name;
             }
             if (! is_numeric($on)) {
-                if ($group == 'Core') {
-                    if (!empty($GLOBALS['_CONF']['site_url'])) {
-                        $baseUrl = $GLOBALS['_CONF']['site_url'];
-                    } else {
-                        $baseUrl = 'http://www.geeklog.net';
-                    }
-                    $descUrl = $baseUrl . '/docs/config.html#desc_' . $o;
-                } else {
-                    $descUrl = PLG_getDocumentationUrl($group, 'config');
-                    if (! empty($descUrl)) {
-                        $descUrl .= '#desc_' . $o;
-                    }
-                }
+                $descUrl = $this->_get_ConfigHelp($group, $o);
                 if (! empty($descUrl)) {
                     $t->set_var('doc_url', $descUrl);
                     $t->set_var('doc_link',
@@ -693,8 +681,8 @@ class config {
                 $t->parse('myoptions', 'select-options', true);
             }
             return $t->parse('output', 'select-element');
-        } elseif (strpos($type, "@") === 0) {
-            $result = "";
+        } elseif (strpos($type, '@') === 0) {
+            $result = '';
             foreach ($val as $valkey => $valval) {
                 $result .= config::_UI_get_conf_element($group,
                                 $name . '[' . $valkey . ']',
@@ -889,6 +877,49 @@ class config {
         } else {
             DB_query($sql);
         }
+    }
+
+    /**
+    * Helper function: Get the URL to the help section for a config option
+    *
+    * @param    string  $group      'Core' or plugin name
+    * @param    string  $option     name of the config option
+    * @return   string              full URL to help or empty string
+    *
+    */
+    function _get_ConfigHelp($group, $option)
+    {
+        static $coreUrl;
+
+        $retval = '';
+
+        $descUrl = '';
+        if ($group == 'Core') {
+            if (isset($coreUrl)) {
+                $descUrl = $coreUrl;
+            } elseif (!empty($GLOBALS['_CONF']['site_url']) &&
+                    !empty($GLOBALS['_CONF']['path_html'])) {
+                $baseUrl = $GLOBALS['_CONF']['site_url'];
+                $doclang = COM_getLanguageName();
+                $cfg = 'docs/' . $doclang . '/config.html';
+                if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
+                    $descUrl = $baseUrl . '/' . $cfg;
+                } else {
+                    $descUrl = $baseUrl . '/docs/english/config.html';
+                }
+                $coreUrl = $descUrl;
+            } else {
+                $descUrl = 'http://www.geeklog.net/docs/english/config.html';
+            }
+        } else {
+            $descUrl = PLG_getDocumentationUrl($group, 'config');
+        }
+
+        if (! empty($descUrl)) {
+            $retval = $descUrl . '#desc_' . $option;
+        }
+
+        return $retval;
     }
 }
 

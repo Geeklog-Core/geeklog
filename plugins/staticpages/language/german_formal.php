@@ -106,7 +106,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'PHP nicht ausführen',
     'select_php_return' => 'PHP ausführen (mit return)',
     'select_php_free' => 'PHP ausführen',
-    'php_not_activated' => "Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">Dokumentation</a>.",
+    'php_not_activated' => "Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">Dokumentation</a>.",
     'printable_format' => 'Druckfähige Version',
     'copy' => 'Kopieren',
     'limit_results' => 'Ergebnisse einschränken',

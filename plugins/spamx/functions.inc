@@ -401,10 +401,23 @@ function plugin_getdocumentationurl_spamx($file)
 {
     global $_CONF;
 
+    static $docurl;
+
     switch ($file) {
     case 'index':
     case 'config':
-        $retval = $_CONF['site_url'] . '/docs/spamx.html';
+        if (isset($docurl)) {
+            $retval = $docurl;
+        } else {
+            $doclang = COM_getLanguageName();
+            $docs = 'docs/' . $doclang . '/spamx.html';
+            if (file_exists($_CONF['path_html'] . $docs)) {
+                $retval = $_CONF['site_url'] . '/' . $docs;
+            } else {
+                $retval = $_CONF['site_url'] . '/docs/english/spamx.html';
+            }
+            $docurl = $retval;
+        }
         break;
 
     default:

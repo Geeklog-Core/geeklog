@@ -1332,10 +1332,23 @@ function plugin_getdocumentationurl_polls($file)
 {
     global $_CONF;
 
+    static $docurl;
+
     switch ($file) {
     case 'index':
     case 'config':
-        $retval = $_CONF['site_url'] . '/docs/polls.html';
+        if (isset($docurl)) {
+            $retval = $docurl;
+        } else {
+            $doclang = COM_getLanguageName();
+            $docs = 'docs/' . $doclang . '/polls.html';
+            if (file_exists($_CONF['path_html'] . $docs)) {
+                $retval = $_CONF['site_url'] . '/' . $docs;
+            } else {
+                $retval = $_CONF['site_url'] . '/docs/english/polls.html';
+            }
+            $docurl = $retval;
+        }
         break;
 
     default:

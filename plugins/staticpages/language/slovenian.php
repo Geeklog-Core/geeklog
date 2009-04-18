@@ -104,7 +104,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'ne izvedi PHP',
     'select_php_return' => 'izvedi PHP (return)',
     'select_php_free' => 'izvedi PHP',
-    'php_not_activated' => "Uporaba PHP-ja na statiènih straneh ni vkljuèena. Za podrobnosti glej <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">dokumentacijo</a>.",
+    'php_not_activated' => "Uporaba PHP-ja na statiènih straneh ni vkljuèena. Za podrobnosti glej <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">dokumentacijo</a>.",
     'printable_format' => 'Oblika za natis',
     'copy' => 'Kopiraj',
     'limit_results' => 'Omeji rezultate',

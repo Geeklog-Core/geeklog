@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | sectest.php                                                               |
 // |                                                                           |
 // | Does a quick security check of the Geeklog install                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2008 by the following authors:                         |
+// | Copyright (C) 2002-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun            - dirk AT haun-online DOT de                |
 // |          Jeffrey Schoolcraft  - dream AT dr3amscap3 DOT com               |
@@ -281,7 +281,7 @@ if (!empty ($url)) {
     if (strpos ($_SERVER['PHP_SELF'], 'public_html') !== false) {
         $display .= '<li>"public_html" should never be part of your site\'s URL.'
             ." Please read the part about public_html in the "
-            . COM_createLink('installation instructions', "../docs/install.html#public_html")
+            . COM_createLink('installation instructions', "../docs/english/install.html#public_html")
             . ' again and change your setup accordingly before you proceed.</li>';
         $failed_tests++;
     }

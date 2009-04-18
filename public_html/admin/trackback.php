@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2008 by the following authors:                         |
+// | Copyright (C) 2005-2009 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -28,9 +28,10 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: trackback.php,v 1.54 2008/06/07 12:41:44 dhaun Exp $
 
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
 
 /**
@@ -107,9 +108,9 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $title = htmlspecialchars ($title);
     $excerpt = htmlspecialchars ($excerpt, ENT_NOQUOTES);
 
-    $retval .= COM_startBlock ($LANG_TRB['editor_title'], $_CONF['site_url']
-                               . '/docs/trackback.html#trackback',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_TRB['editor_title'],
+                              getHelpUrl() . '#trackback',
+                              COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'trackbackeditor.thtml'));
@@ -284,9 +285,8 @@ function pingbackForm ($targetUrl = '')
     global $_CONF, $LANG_TRB;
 
     $retval = '';
-    $retval .= COM_startBlock ($LANG_TRB['pingback_button'],
-                               $_CONF['site_url'] . '/docs/trackback.html',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_TRB['pingback_button'], getHelpUrl(),
+                              COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pingbackform.thtml'));
@@ -495,7 +495,7 @@ function listServices()
     $text_arr = array(
         'has_extras' => true,
         'form_url'   => $_CONF['site_admin_url'] . '/trackback.php',
-        'help_url'   => $_CONF['site_url'] . '/docs/trackback.html#ping'
+        'help_url'   => getHelpUrl() . '#ping'
     );
 
     $query_arr = array(
@@ -574,9 +574,8 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $retval .= showTrackbackMessage ('Error', $msg);
     }
 
-    $retval .= COM_startBlock ($LANG_TRB['edit_service'], $_CONF['site_url']
-                               . '/docs/trackback.html#ping',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_TRB['edit_service'], getHelpUrl() . '#ping',
+                              COM_getBlockTemplate('_admin_block', 'header'));
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'serviceeditor.thtml'));
@@ -755,11 +754,10 @@ function freshTrackback ()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=fresh';
 
-    $retval .= COM_startBlock ($LANG_TRB['trackback'],
-                               $_CONF['site_url'] . '/docs/trackback.html',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= COM_startBlock($LANG_TRB['trackback'], getHelpUrl(),
+                              COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= sprintf ($LANG_TRB['trackback_note'], $freshurl);
-    $retval .= COM_endBlock ();
+    $retval .= COM_endBlock();
 
     return $retval;
 }
@@ -776,11 +774,33 @@ function freshPingback ()
 
     $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=freepb';
 
-    $retval .= COM_startBlock ($LANG_TRB['pingback'],
-                               $_CONF['site_url'] . '/docs/trackback.html',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-    $retval .= sprintf ($LANG_TRB['pingback_note'], $freshurl);
-    $retval .= COM_endBlock ();
+    $retval .= COM_startBlock($LANG_TRB['pingback'], getHelpUrl(),
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= sprintf($LANG_TRB['pingback_note'], $freshurl);
+    $retval .= COM_endBlock();
+
+    return $retval;
+}
+
+/**
+* Get URL of the help file (trackback.html)
+*
+* @return   string  full URL of trackback.html
+*
+*/
+function getHelpUrl()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    $doclang = COM_getLanguageName();
+    $docs = 'docs/' . $doclang . '/trackback.html';
+    if (file_exists($_CONF['path_html'] . $docs)) {
+        $retval = $_CONF['site_url'] . '/' . $docs;
+    } else {
+        $retval = $_CONF['site_url'] . '/docs/english/trackback.html';
+    }
 
     return $retval;
 }
@@ -1070,12 +1090,12 @@ if (($mode == 'delete') && SEC_checkToken()) {
 
     $fulltext = PLG_getItemInfo($type, $id, 'description');
 
-    $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
-              . COM_startBlock ($LANG_TRB['select_url'], $_CONF['site_url']
-                                . '/docs/trackback.html#trackback')
-              . prepareAutodetect ($type, $id, $fulltext)
-              . COM_endBlock ()
-              . COM_siteFooter ();
+    $display .= COM_siteHeader('menu', $LANG_TRB['trackback'])
+             . COM_startBlock($LANG_TRB['select_url'],
+                               getHelpUrl() . '#trackback')
+             . prepareAutodetect($type, $id, $fulltext)
+             . COM_endBlock()
+             . COM_siteFooter();
 } else if ($mode == 'autodetect') {
     $id = COM_applyFilter ($_REQUEST['id']);
     $url = $_REQUEST['url'];

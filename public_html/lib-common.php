@@ -2712,13 +2712,19 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $link_array[$LANG01[103]] = $menu_item;
         }
 
-        if( $_CONF['link_documentation'] == 1 )
-        {
-            $adminmenu->set_var( 'option_url',
-                                 $_CONF['site_url'] . '/docs/index.html' );
-            $adminmenu->set_var( 'option_label', $LANG01[113] );
-            $adminmenu->set_var( 'option_count', 'N/A' );
-            $menu_item = $adminmenu->parse( 'item', 'option' );
+        if ($_CONF['link_documentation'] == 1) {
+            $doclang = COM_getLanguageName();
+            $docs = 'docs/' . $doclang . '/index.html';
+            if (file_exists($_CONF['path_html'] . $docs)) {
+                $adminmenu->set_var('option_url', $_CONF['site_url']
+                                    . '/' . $docs);
+            } else {
+                $adminmenu->set_var('option_url', $_CONF['site_url']
+                                    . '/docs/english/index.html');
+            }
+            $adminmenu->set_var('option_label', $LANG01[113]);
+            $adminmenu->set_var('option_count', 'N/A');
+            $menu_item = $adminmenu->parse('item', 'option');
             $link_array[$LANG01[113]] = $menu_item;
         }
 
@@ -6515,6 +6521,30 @@ function COM_switchLocaleSettings()
             }
         }
     }
+}
+
+/**
+* Get the name of the current language, minus the character set
+*
+* Strips the character set from $_CONF['language'].
+*
+* @return   string  language name
+*
+*/
+function COM_getLanguageName()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    $charset = '_' . strtolower(COM_getCharset());
+    if (substr($_CONF['language'], -strlen($charset)) == $charset) {
+        $retval = substr($_CONF['language'], 0, -strlen($charset));
+    } else {
+        $retval = $_CONF['language'];
+    }
+
+    return $retval;
 }
 
 /**

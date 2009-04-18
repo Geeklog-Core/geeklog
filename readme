@@ -1,5 +1,5 @@
                                 Geeklog Readme
-                              September 15, 2007
+                                April 18, 2009
 
 Table of Contents
 ================
@@ -37,11 +37,13 @@ Source / Free Software project. The template code Geeklog uses is from
 PHPLib, however, which is under the LGPL.
 
 Geeklog was originally created by Jason Whittenburg, but like all good open
-source projects, depends on the community. Geeklog 1.5 is currently maintained
-by Dirk Haun whilst Tony Bibbs focusses on Geeklog 2. Thanks for your continued
-support, and let us know what we can do to make Geeklog better. 
+source projects, depends on the community. Geeklog is currently maintained
+by Dirk Haun whilst Tony Bibbs focusses on AptitudeCMS. Thanks for your
+continued support, and let us know what we can do to make Geeklog better. 
 
-For the installation instructions please see public_html/docs/install.html
+For the installation instructions please see
+
+    public_html/docs/english/install.html
 
 To get the latest Geeklog source, read the latest Geeklog news, and 
 participate in Geeklog discussions, visit the Geeklog site:
@@ -129,8 +131,8 @@ http://project.geeklog.net/tracking/
 
 4) System Requirements and Installation
 =======================================
-See public_html/docs/install.html or the Geeklog.net site:
-http://www.geeklog.net/docs/install.html
+See public_html/docs/english/install.html or the Geeklog.net site:
+http://www.geeklog.net/docs/english/install.html
 
 5) Security Issues
 ==================
@@ -192,9 +194,8 @@ See also:
 
 Appendix A - readme history
 ===========================
-Version control information:
-$Id: readme,v 1.19 2008/03/16 18:32:25 dhaun Exp $
 
+2009-04-18 - docs URL changed (dhaun)
 2007-09-15 - readme re-write (mjervis)
 2007-09-09 - Fixed mailing list URL (dhaun)
 2007-08-05 - GeekLog to Geeklog (dhaun)

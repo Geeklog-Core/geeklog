@@ -104,7 +104,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'ära käivita PHP',
     'select_php_return' => 'käivita PHP (return)',
     'select_php_free' => 'käivita PHP',
-    'php_not_activated' => "Staatilistel lehtedel pole PHP kasutamine sisse lülitatud. Täpsemat infot palun vaata <a href=\"{$_CONF['site_url']}/docs/staticpages.html#php\">dokumentatsioonist.</a>",
+    'php_not_activated' => "Staatilistel lehtedel pole PHP kasutamine sisse lülitatud. Täpsemat infot palun vaata <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">dokumentatsioonist.</a>",
     'printable_format' => 'Prinditaval kujul',
     'copy' => 'Koopia',
     'limit_results' => 'Piira tulemused',

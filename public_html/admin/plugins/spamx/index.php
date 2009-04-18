@@ -99,7 +99,7 @@ foreach ($files as $file) {
              . '/plugins/spamx/index.php?command=' . $file) . '</li>';
 }
 $display .= '<li>' . COM_createLink($LANG_SX00['documentation'],
-            $_CONF['site_url'] . '/docs/spamx.html') . '</li>';
+                        plugin_getdocumentationurl_spamx('index')) . '</li>';
 $display .= '</ul>';
 
 if (isset ($_REQUEST['command'])) {

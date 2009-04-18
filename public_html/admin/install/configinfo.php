@@ -50,9 +50,9 @@ $highlight_off    = '#D9D9D9';
 
 if (isset($_CONF['site_url']) &&
         strpos($_CONF['site_url'], 'example.com') === false) {
-    $docs = $_CONF['site_url'] . '/docs/config.html#desc_';
+    $docs = $_CONF['site_url'] . '/docs/english/config.html#desc_';
 } else {
-    $docs = '../../docs/config.html#desc_';
+    $docs = '../../docs/english/config.html#desc_';
 }
 
 if (isset($_CONF['mail_settings']['password'])) {

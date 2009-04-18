@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Moved documentation to docs/english so that it can be translated
+  (feature request #0000770) [Dirk]
 - New plugin API function PLG_pluginStateChange [Dirk]
 - Fixed dropdown for the "censor mode", which has more than the two options
   offered previously (bug #0000692) [Mike, Maciej Cupial]

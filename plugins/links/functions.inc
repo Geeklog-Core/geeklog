@@ -1639,10 +1639,23 @@ function plugin_getdocumentationurl_links($file)
 {
     global $_CONF;
 
+    static $docurl;
+
     switch ($file) {
     case 'index':
     case 'config':
-        $retval = $_CONF['site_url'] . '/docs/links.html';
+        if (isset($docurl)) {
+            $retval = $docurl;
+        } else {
+            $doclang = COM_getLanguageName();
+            $docs = 'docs/' . $doclang . '/links.html';
+            if (file_exists($_CONF['path_html'] . $docs)) {
+                $retval = $_CONF['site_url'] . '/' . $docs;
+            } else {
+                $retval = $_CONF['site_url'] . '/docs/english/links.html';
+            }
+            $docurl = $retval;
+        }
         break;
 
     default:
