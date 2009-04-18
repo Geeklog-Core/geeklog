@@ -145,6 +145,17 @@ Static Pages plugin
   every other plugin and built-in function does (bug #0000644) [Dirk]
 
 
+Apr 18, 2009 (1.5.2sr4)
+------------
+
+This release addresses the following security issue:
+
+Bookoo of the Nine Situations Group posted another SQL injection exploit,
+targetting an old bug in usersettings.php. As with the previous issues, this
+allowed an attacker to extract the password hash for any account and is fixed
+with this release.
+
+
 Apr 13, 2009 (1.5.2sr3)
 ------------
 
