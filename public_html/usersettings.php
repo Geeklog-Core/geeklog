@@ -1416,7 +1416,7 @@ function savepreferences($A)
     }
 
     $etids = '';
-    if (sizeof ($ETIDS) > 0) {
+    if (($_CONF['emailstories'] == 1) && (sizeof($ETIDS) > 0)) {
         // the array_intersect mitigates the need to scrub the ETIDS input
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
