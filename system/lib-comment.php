@@ -52,7 +52,7 @@ if ($_CONF['allow_user_photo']) {
 *
 * @param    string  $sid    ID of item in question
 * @param    string  $title  Title of item
-* @param    string  $type   Type of item (i.e. story, photo, etc)
+* @param    string  $type   Type of item (i.e. article, photo, etc)
 * @param    string  $order  Order that comments are displayed in
 * @param    string  $mode   Mode (nested, flat, etc.)
 * @param    int     $ccode  Comment code: -1=no comments, 0=allowed, 1=closed
@@ -813,9 +813,10 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             $fakepostmode = $postmode;
             if ($postmode == 'html') {
-                $comment = COM_checkWords (COM_checkHTML  (COM_stripslashes ($comment)));
+                $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";
+                $comment = COM_checkWords(COM_checkHTML(COM_stripslashes($comment), $html_perm));
             } else {
-                $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+                $comment = htmlspecialchars(COM_checkWords(COM_stripslashes($comment)));
                 $newcomment = COM_makeClickableLinks ($comment);
                 if (strcmp ($comment, $newcomment) != 0) {
                     $comment = nl2br ($newcomment);
@@ -832,12 +833,12 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             $_POST['title'] = $title;
             $newcomment = $comment;
-            if ($mode == $LANG03[28] ) { //for preview
-                $newcomment = CMT_prepareText($comment, $postmode, true, $cid);
+            if ($mode == $LANG03[28] ) { // for preview
+                $newcomment = CMT_prepareText($comment, $postmode, $type, true, $cid);
             } elseif ($mode == $LANG03[34]) {
-                $newcomment = CMT_prepareText($comment, $postmode, true);            
+                $newcomment = CMT_prepareText($comment, $postmode, $type, true);
             } else {
-                $newcomment = CMT_prepareText($comment, $postmode);
+                $newcomment = CMT_prepareText($comment, $postmode, $type);
             }
             $_POST['comment'] = $newcomment;
 
@@ -982,8 +983,11 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('lang_comment', $LANG03[9]);
             $comment_template->set_var('comment', $commenttext);
             $comment_template->set_var('lang_postmode', $LANG03[2]);
-            $comment_template->set_var('postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$postmode));
-            $comment_template->set_var('allowed_html', COM_allowedHTML());
+            $comment_template->set_var('postmode_options',
+                COM_optionList($_TABLES['postmodes'], 'code,name', $postmode));
+            $comment_template->set_var('allowed_html',
+                COM_allowedHTML($type == 'article'
+                                ? 'story.edit' : "$type.edit"));
             $comment_template->set_var('lang_importantstuff', $LANG03[18]);
             $comment_template->set_var('lang_instr_line1', $LANG03[19]);
             $comment_template->set_var('lang_instr_line2', $LANG03[20]);
@@ -1108,7 +1112,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         return $someError;
     }
 
-    $comment = addslashes(CMT_prepareText($comment, $postmode));
+    $comment = addslashes(CMT_prepareText($comment, $postmode, $type));
     $title = addslashes(COM_checkWords(strip_tags($title)));
     if (isset($_POST['username']) && strcmp($_POST['username'],$LANG03[24]) != 0
             && $uid == 1) {
@@ -1513,10 +1517,10 @@ function CMT_handleEditSubmit($mode = null)
 
     $display = '';
 
-    $type = COM_applyFilter ($_POST['type']);
-    $sid = COM_applyFilter ($_POST['sid']);
-    $cid = COM_applyFilter ($_POST['cid']);
-    $postmode = COM_applyFilter ($_POST['postmode']);
+    $type = COM_applyFilter($_POST['type']);
+    $sid = COM_applyFilter($_POST['sid']);
+    $cid = COM_applyFilter($_POST['cid']);
+    $postmode = COM_applyFilter($_POST['postmode']);
     
     $commentuid = DB_getItem ($_TABLES['comments'], 'uid', "cid = '$cid'");
     if ( empty($_USER['uid'])) {
@@ -1525,11 +1529,10 @@ function CMT_handleEditSubmit($mode = null)
         $uid = $_USER['uid'];
     }
         
-    //check for bad input
-    if (empty ($sid) || empty ($_POST['title']) || empty ($_POST['comment']) || !is_numeric ($cid) 
-            || $cid < 1 ) {
-        COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
-                   . 'to edit a comment with one or more missing values.');
+    // check for bad input
+    if (empty($sid) || empty($_POST['title']) || empty($_POST['comment']) ||
+            !is_numeric($cid) || ($cid < 1)) {
+        COM_errorLog("CMT_handleEditSubmit(): {{$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried to edit a comment with one or more missing values.");
         return COM_refresh($_CONF['site_url'] . '/index.php');
     } elseif ( $uid != $commentuid && !SEC_hasRights( 'comment.moderate' ) ) {
         //check permissions
@@ -1538,7 +1541,7 @@ function CMT_handleEditSubmit($mode = null)
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
-    $comment = CMT_prepareText($_POST['comment'], $postmode);
+    $comment = CMT_prepareText($_POST['comment'], $postmode, $type);
     $title = COM_checkWords (strip_tags (COM_stripslashes ($_POST['title'])));
     
     if ($mode == $LANG03[35]) {
@@ -1573,7 +1576,9 @@ function CMT_handleEditSubmit($mode = null)
                    . 'to submit a comment with invalid $title and/or $comment.');
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
-    return COM_refresh (COM_buildUrl ($_CONF['site_url'] . "/article.php?story=$sid"));
+
+    return COM_refresh(COM_buildUrl($_CONF['site_url']
+                                    . "/article.php?story=$sid"));
 }
 
 /**
@@ -1581,21 +1586,24 @@ function CMT_handleEditSubmit($mode = null)
  *
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
- * @param string  $comment   comment text
- * @param string  $postmode ('html', 'plaintext',..)
+ * @param string  $comment  comment text
+ * @param string  $postmode ('html', 'plaintext', ...)
+ * @param string  $type     Type of item (article, poll, etc.)
  * @param bool    $edit     if true append edit tag
  * @param int     $cid      commentid if editing comment (for proper sig)
  * @return string of comment text
  */
-function CMT_prepareText($comment, $postmode, $edit = false, $cid = null)
+function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 {
     global $_USER, $_TABLES, $LANG03, $_CONF; 
     
     if ($postmode == 'html') {
-        $comment = COM_checkWords (COM_checkHTML (COM_stripslashes ($comment)));
+        $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";
+        $comment = COM_checkWords(COM_checkHTML(COM_stripslashes($comment),
+                                                $html_perm));
     } else {
-    	//plaintext
-        $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+    	// plaintext
+        $comment = htmlspecialchars(COM_checkWords(COM_stripslashes($comment)));
         $newcomment = COM_makeClickableLinks ($comment);
         if (strcmp ($comment, $newcomment) != 0) {
             $comment = nl2br ($newcomment);

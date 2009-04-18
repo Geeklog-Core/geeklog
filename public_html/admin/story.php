@@ -660,7 +660,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         }
     }
     $story_templates->set_var('post_options',$post_options );
-    $story_templates->set_var('lang_allowed_html', COM_allowedHTML());
+    $story_templates->set_var('lang_allowed_html',
+                              COM_allowedHTML('story.edit'));
     $fileinputs = '';
     $saved_images = '';
     if ($_CONF['maximagesperarticle'] > 0) {

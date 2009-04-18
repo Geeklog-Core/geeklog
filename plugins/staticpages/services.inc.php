@@ -353,7 +353,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $sp_title = COM_checkWords ($sp_title);
         }
         if ($_SP_CONF['filter_html'] == 1) {
-            $sp_content = COM_checkHTML ($sp_content);
+            $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
         $sp_title = strip_tags ($sp_title);
         $sp_label = strip_tags ($sp_label);

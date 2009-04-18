@@ -316,8 +316,10 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     }
 
     // clean 'em up
-    $description = addslashes(COM_checkHTML(COM_checkWords($description)));
-    $category    = addslashes(COM_checkHTML(COM_checkWords($category)));
+    $description = addslashes(COM_checkHTML(COM_checkWords($description),
+                              'links.edit'));
+    $category    = addslashes(COM_checkHTML(COM_checkWords($category),
+                              'links.edit'));
     $pid         = addslashes(strip_tags($pid));
     $cid         = addslashes(strip_tags($cid));
     $old_cid     = addslashes(strip_tags($old_cid));

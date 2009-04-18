@@ -362,9 +362,11 @@ function form ($A, $error = false)
         }
         $sp_template->set_var('sp_content', $content);
         if ($_SP_CONF['filter_html'] == 1) {
-            $sp_template->set_var('lang_allowedhtml', COM_allowedHTML());
+            $sp_template->set_var('lang_allowedhtml',
+                                  COM_allowedHTML('staticpages.edit'));
         } else {
-            $sp_template->set_var('lang_allowedhtml', $LANG_STATIC['all_html_allowed']);
+            $sp_template->set_var('lang_allowedhtml',
+                                  $LANG_STATIC['all_html_allowed']);
         }
         $sp_template->set_var ('lang_hits', $LANG_STATIC['hits']);
         if (empty ($A['sp_hits'])) {
@@ -476,7 +478,8 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         if (empty ($A['unixdate'])) {
             $A['unixdate'] = time ();
         }
-        $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
+        $A['sp_content'] = COM_checkHTML(COM_checkWords($A['sp_content']),
+                                         'staticpages.edit');
     }
     if (isset ($A['sp_title'])) {
         $A['sp_title'] = strip_tags ($A['sp_title']);

@@ -11,6 +11,10 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed wrong use of COM_allowedHTML and COM_checkHTML in plugins: Functions
+  were called without specific permissions, so they defaulted to 'story.edit'.
+  I.e. as a Story Admin, you could use the admin_html set in events, but as a
+  Calendar admin, you could not ... (bug #0000785) [Dirk]
 - Added missing finish() calls for some templates, e.g. header.thtml
   (bug #0000855) [Dirk]
 - Moved documentation to docs/english so that it can be translated

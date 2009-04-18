@@ -254,9 +254,10 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
     }
 
     // clean 'em up
-    $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
-    $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
-    $cid = addslashes ($cid);
+    $description = addslashes(COM_checkHTML(COM_checkWords($description),
+                              'links.edit'));
+    $title = addslashes(strip_tags(COM_checkWords($title)));
+    $cid = addslashes($cid);
 
     if (empty ($owner_id)) {
         // this is new link from admin, set default values

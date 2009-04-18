@@ -87,7 +87,8 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
-    $event_templates->set_var('lang_allowed_html', COM_allowedHTML());
+    $event_templates->set_var('lang_allowed_html',
+                              COM_allowedHTML('calendar.edit'));
     $event_templates->set_var('lang_postmode', $LANG_CAL_ADMIN[3]);
 
     if ($mode <> 'editsubmission' AND !empty($A['eid'])) {
@@ -463,20 +464,22 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
 
     // clean 'em up
     if ($postmode == 'html') {
-        $description = COM_checkHTML (COM_checkWords ($description));
+        $description = COM_checkHTML(COM_checkWords($description),
+                                     'calendar.edit');
     } else {
         $postmode = 'plaintext';
-        $description = htmlspecialchars (COM_checkWords ($description));
+        $description = htmlspecialchars(COM_checkWords($description));
     }
-    $description = addslashes ($description);
-    $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
-    $location = addslashes (COM_checkHTML (COM_checkWords ($location)));
-    $address1 = addslashes (COM_checkHTML (COM_checkWords ($address1)));
-    $address2 = addslashes (COM_checkHTML (COM_checkWords ($address2)));
-    $city = addslashes (COM_checkHTML (COM_checkWords ($city)));
-    $zipcode =  addslashes (COM_checkHTML (COM_checkWords ($zipcode)));
-    $event_type = addslashes (strip_tags (COM_checkWords ($event_type)));
-    $url = addslashes (strip_tags ($url));
+    $description = addslashes($description);
+    $title = addslashes(strip_tags(COM_checkWords($title)));
+    $location = addslashes(COM_checkHTML(COM_checkWords($location),
+                                         'calendar.edit'));
+    $address1 = addslashes(strip_tags(COM_checkWords($address1)));
+    $address2 = addslashes(strip_tags(COM_checkWords($address2)));
+    $city = addslashes(strip_tags(COM_checkWords($city)));
+    $zipcode =  addslashes(strip_tags(COM_checkWords($zipcode)));
+    $event_type = addslashes(strip_tags(COM_checkWords($event_type)));
+    $url = addslashes(strip_tags($url));
 
     if ($allday == 0) {
         // Add 12 to make time on 24 hour clock if needed

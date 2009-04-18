@@ -1908,8 +1908,8 @@ class Story
         }
 
         $this->_title = htmlspecialchars(strip_tags(COM_checkWords($title)));
-        $this->_introtext = COM_checkHTML(COM_checkWords($intro));
-        $this->_bodytext = COM_checkHTML(COM_checkWords($body));
+        $this->_introtext = COM_checkHTML(COM_checkWords($intro), 'story.edit');
+        $this->_bodytext = COM_checkHTML(COM_checkWords($body), 'story.edit');
     }
 
 
