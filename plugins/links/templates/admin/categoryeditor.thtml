@@ -3,23 +3,23 @@
     <form action="{site_admin_url}/plugins/links/category.php" method="post">
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr>
-                <td align="right" width="150">{lang_parent}</td>
+                <td align="right" width="150">{lang_parent}:</td>
                 <td><select name="pid">{category_options}</select></td>
             </tr>
             <tr>
-                <td align="right">{lang_category}</td>
+                <td align="right">{lang_category}:</td>
                 <td><input type="text" name="category" size="32" maxlength="32" value="{category_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_cid}</td>
+                <td align="right">{lang_cid}:</td>
                 <td><input type="text" name="cid" size="32" maxlength="32" value="{cid_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_description}</td>
+                <td align="right">{lang_description}:</td>
                 <td><input type="text" name="description" size="50" maxlength="255" value="{description_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_topic}</td>
+                <td align="right">{lang_topic}:</td>
                 <td>{topic_selection}<td>
             </tr>
             <tr>
