@@ -2313,8 +2313,8 @@ function COM_userMenu( $help='', $title='', $position='' )
         $usermenu->set_var( 'option_label', $LANG01[19] );
         $usermenu->set_var( 'option_count', '' );
         $usermenu->set_var( 'option_url', $url );
-        $retval .= $usermenu->parse( 'item', 'option' );
-        $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer', $position ));
+        $retval .= $usermenu->finish($usermenu->parse('item', 'option'));
+        $retval .=  COM_endBlock(COM_getBlockTemplate('user_block', 'footer', $position));
     }
     else
     {
@@ -2387,8 +2387,8 @@ function COM_userMenu( $help='', $title='', $position='' )
             $login->set_var('openid_login', '');
         }
 
-        $retval .= $login->parse( 'output', 'form' );
-        $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer', $position ));
+        $retval .= $login->finish($login->parse('output', 'form'));
+        $retval .= COM_endBlock( COM_getBlockTemplate('user_block', 'footer', $position));
     }
 
     return $retval;
@@ -2745,12 +2745,12 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
         }
 
         $url = $_CONF['site_admin_url'] . '/moderation.php';
-        $adminmenu->set_var( 'option_url', $url );
-        $adminmenu->set_var( 'option_label', $LANG01[10] );
-        $adminmenu->set_var( 'option_count', COM_numberFormat( $modnum ));
-        $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-        $link_array = array( $menu_item ) + $link_array;
+        $adminmenu->set_var('option_url', $url);
+        $adminmenu->set_var('option_label', $LANG01[10]);
+        $adminmenu->set_var('option_count', COM_numberFormat($modnum));
+        $menu_item = $adminmenu->finish($adminmenu->parse('item',
+                        ($thisUrl == $url) ? 'current' : 'option'));
+        $link_array = array($menu_item) + $link_array;
 
         foreach( $link_array as $link )
         {

@@ -33,10 +33,25 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* User administration: Manage users (create, delete, import) and their
+* group membership.
+*
+*/
+
+/**
 * Geeklog common function library
 */
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
+
 require_once 'auth.inc.php';
+
+/**
+* User-related functions
+*/
 require_once $_CONF['path_system'] . 'lib-user.php';
 
 // Set this to true to get various debug messages from this script
@@ -819,7 +834,7 @@ function batchdelete()
     $user_templates->set_var('action_reminder', $LANG28[78]);
     $user_templates->parse('test', 'reminder');
 
-    $form_arr['top'] = $user_templates->get_var('test');
+    $form_arr['top'] = $user_templates->finish($user_templates->get_var('test'));
     $token = SEC_createToken();
     $form_arr['bottom'] = "<input type=\"hidden\" name=\"" . CSRF_TOKEN
                         . "\" value=\"{$token}\"" . XHTML . ">";
@@ -911,8 +926,8 @@ function batchreminders()
                 $template->set_var ('name', COM_getDisplayName ($uid));
                 $template->set_var ('lastlogin', $lasttime[0]);
 
-                $template->parse ('output', 'mail');
-                $mailtext = $template->get_var ('output');
+                $template->parse('output', 'mail');
+                $mailtext = $template->finish($template->get_var('output'));
             } else {
                 if ($lastlogin == 0) {
                     $mailtext = $LANG28[83] . "\n\n";
@@ -1094,6 +1109,8 @@ function display_batchAddform()
     global $_CONF, $LANG28, $LANG_ADMIN, $_IMAGE_TYPE;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    $retval = '';
 
     $token = SEC_createToken();
     $retval .= COM_siteHeader('menu', $LANG28[24]);

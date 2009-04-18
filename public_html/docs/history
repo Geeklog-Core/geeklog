@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added missing finish() calls for some templates, e.g. header.thtml
+  (bug #0000855) [Dirk]
 - Moved documentation to docs/english so that it can be translated
   (feature request #0000770) [Dirk]
 - New plugin API function PLG_pluginStateChange [Dirk]

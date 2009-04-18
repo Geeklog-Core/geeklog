@@ -43,6 +43,10 @@
 * Geeklog common function library
 */
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -161,7 +165,7 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
-    $retval .= $plg_templates->parse('output', 'editor');
+    $retval .= $plg_templates->finish($plg_templates->parse('output', 'editor'));
 
     return $retval;
 }

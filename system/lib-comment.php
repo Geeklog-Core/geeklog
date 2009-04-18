@@ -712,13 +712,13 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                                         $delete_option, false, $ccode );
 
         // Pagination
-        $tot_pages =  ceil( $count / $limit );
+        $tot_pages =  ceil($count / $limit);
         $pLink = $_CONF['site_url'] . "/article.php?story=$sid&amp;type=$type&amp;order=$order&amp;mode=$mode";
-        $template->set_var( 'pagenav',
-                         COM_printPageNavigation($pLink, $page, $tot_pages));
+        $template->set_var('pagenav',
+                           COM_printPageNavigation($pLink, $page, $tot_pages));
 
-        $template->set_var( 'comments', $thecomments );
-        $retval = $template->parse( 'output', 'commentarea' );
+        $template->set_var('comments', $thecomments);
+        $retval = $template->finish($template->parse('output', 'commentarea'));
     }
 
     return $retval;
