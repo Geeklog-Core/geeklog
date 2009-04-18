@@ -590,7 +590,8 @@ function editpreferences()
     // excluded items block
     $permissions = COM_getPermSQL ('');
     $preferences->set_var ('exclude_topic_checklist',
-        COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']));
+        COM_checkList($_TABLES['topics'], 'tid,topic', $permissions, $A['tids'],
+                      'topics'));
 
     if (($_CONF['contributedbyline'] == 1) &&
         ($_CONF['hide_author_exclusion'] == 0)) {
@@ -639,13 +640,13 @@ function editpreferences()
         } elseif ($user_etids == '-') { // this means "no topics"
             $user_etids = '';
         }
-        $tmp = COM_checkList ($_TABLES['topics'], 'tid,topic', $permissions,
-                              $user_etids);
-        $preferences->set_var ('email_topic_checklist',
-                str_replace ($_TABLES['topics'], 'etids', $tmp));
-        $preferences->parse ('digest_block', 'digest', true);
+        $tmp = COM_checkList($_TABLES['topics'], 'tid,topic', $permissions,
+                             $user_etids, 'topics');
+        $preferences->set_var('email_topic_checklist',
+                str_replace($_TABLES['topics'], 'etids', $tmp));
+        $preferences->parse('digest_block', 'digest', true);
     } else {
-        $preferences->set_var ('digest_block', '');
+        $preferences->set_var('digest_block', '');
     }
 
     // boxes block
@@ -1372,11 +1373,11 @@ function savepreferences($A)
         }
     }
 
-    $TIDS  = @array_values($A[$_TABLES['topics']]);     // array of strings
-    $AIDS  = @array_values($A['selauthors']);           // array of integers
-    $BOXES = @array_values($A["{$_TABLES['blocks']}"]); // array of integers
-    $ETIDS = @array_values($A['etids']);                // array of strings
-    $AETIDS = USER_getAllowedTopics();                  // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
+    $TIDS  = @array_values($A['topics']);       // array of strings
+    $AIDS  = @array_values($A['selauthors']);   // array of integers
+    $BOXES = @array_values($A['blocks']);       // array of integers
+    $ETIDS = @array_values($A['etids']);        // array of strings
+    $AETIDS = USER_getAllowedTopics();          // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
 
     $tids = '';
     if (sizeof ($TIDS) > 0) {

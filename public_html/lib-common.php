@@ -88,7 +88,7 @@ if (function_exists('set_error_handler')) {
 * Configuration Include:
 * You do NOT need to modify anything here any more!
 */
-require_once 'siteconfig.php' ;
+require_once 'siteconfig.php';
 
 /**
 * Configuration class
@@ -1703,16 +1703,16 @@ function COM_topicArray($selection, $sortcol = 0, $ignorelang = false)
 *
 * Creates a group of checkbox form fields with given arguments
 *
-* @param        string      $table      DB Table to pull data from
-* @param        string      $selection  Comma delimited list of fields to pull from table
-* @param        string      $where      Where clause of SQL statement
-* @param        string      $selected   Value to set to CHECKED
-* @see function COM_optionList
-* @return   string  HTML with Checkbox code
+* @param    string  $table      DB Table to pull data from
+* @param    string  $selection  Comma delimited list of fields to pull from table
+* @param    string  $where      Where clause of SQL statement
+* @param    string  $selected   Value to set to CHECKED
+* @param    string  $fieldname  Name to use for the checkbox array
+* @return   string              HTML with Checkbox code
+* @see      COM_optionList
 *
 */
-
-function COM_checkList( $table, $selection, $where='', $selected='' )
+function COM_checkList($table, $selection, $where = '', $selected = '', $fieldname = '')
 {
     global $_TABLES, $_COM_VERBOSE;
 
@@ -1755,9 +1755,15 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
             $access = false;
         }
 
+        if (empty($fieldname)) {
+            // Not a good idea, as that will expose our table name and prefix!
+            // Make sure you pass a distinct field name!
+            $fieldname = $table;
+        }
+
         if( $access )
         {
-            $retval .= '<li><input type="checkbox" name="' . $table . '[]" value="' . $A[0] . '"';
+            $retval .= '<li><input type="checkbox" name="' . $fieldname . '[]" value="' . $A[0] . '"';
 
             $sizeS = sizeof( $S );
             for( $x = 0; $x < $sizeS; $x++ )
