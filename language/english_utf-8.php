@@ -1835,6 +1835,7 @@ $LANG_confignames['Core'] = array(
     'skip_html_filter_for_root' => "Skip HTML Filter for Root?",
     'allowed_protocols' => "Allowed Protocols",
     'disable_autolinks' => "Disable Autolinks?",
+    'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
     'censormode' => "Censor Mode?",
     'censorreplace' => "Censor Replace Text",
