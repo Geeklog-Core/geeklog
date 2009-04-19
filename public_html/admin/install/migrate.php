@@ -272,14 +272,14 @@ if (INST_phpOutOfDate()) {
      */
     case 1:
 
-        $display .= INST_printTab(3) . INST_getAlertMsg($LANG_MIGRATE[0], 'warning') . LB
-            . INST_printTab(3)  . '<h2>' . $LANG_MIGRATE[1] . '</h2>' . LB
-            . INST_printTab(3) . '<ul>' . LB
-            . INST_printTab(4) . '<li>' . $LANG_MIGRATE[2] . '</li>' . LB
-            . INST_printTab(4) . '<li>' . $LANG_MIGRATE[3] . '</li>' . LB
-            . INST_printTab(4) . '<li>' . $LANG_MIGRATE[5] . '</li>' . LB
-            . INST_printTab(4) . '<li>' . $LANG_MIGRATE[4] . '</li>' . LB
-            . INST_printTab(3) . '</ul>' . LB . LB;
+        $display .= INST_getAlertMsg($LANG_MIGRATE[0], 'warning') . LB
+            . '<h2>' . $LANG_MIGRATE[1] . '</h2>' . LB
+            . '<ul>' . LB
+            . '<li>' . $LANG_MIGRATE[2] . '</li>' . LB
+            . '<li>' . $LANG_MIGRATE[3] . '</li>' . LB
+            . '<li>' . $LANG_MIGRATE[5] . '</li>' . LB
+            . '<li>' . $LANG_MIGRATE[4] . '</li>' . LB
+            . '</ul>' . LB . LB;
 
         // Default form values
         $_FORM = array( 'host' => 'localhost',
@@ -309,20 +309,20 @@ if (INST_phpOutOfDate()) {
         $site_url = isset($_REQUEST['site_url']) ? $_REQUEST['site_url'] : INST_getSiteUrl();
         $site_admin_url = isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_url'] : INST_getSiteAdminUrl();
 
-        $display .= INST_printTab(3) . '<h2>' . $LANG_INSTALL[31] . '</h2>' . LB 
-            . INST_printTab(3) . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 
-            . INST_printTab(3) . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
-            . INST_printTab(3) . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-            . INST_printTab(3) . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB 
-                . INST_printTab(4) . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB 
-            . INST_printTab(3) . '</select></p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db[host]" value="' . $_FORM['host'] .'" size="20"' . XHTML . '></p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"' . XHTML . '></p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"' . XHTML . '></p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"' . XHTML . '></p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
-            . INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
+        $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>' . LB 
+            . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 
+            . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
+            . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
+            . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB 
+                . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB 
+            . '</select></p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db[host]" value="' . $_FORM['host'] .'" size="20"' . XHTML . '></p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"' . XHTML . '></p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"' . XHTML . '></p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"' . XHTML . '></p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
         // Identify the backup files in backups/ and order them newest to oldest
         $sql_files = glob($backup_dir . '*.sql');
@@ -332,19 +332,19 @@ if (INST_phpOutOfDate()) {
         $backup_files = array_merge($sql_files, $tar_files, $tgz_files, $zip_files);
         rsort($backup_files);
 
-        $display .= INST_printTab(3) . '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
-            . INST_printTab(4) . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
-            . INST_printTab(5) . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . LB
-            . INST_printTab(5) . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . LB
-            . INST_printTab(5) . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . LB
-            . INST_printTab(4) . '</select> ' . LB
-            . INST_printTab(4) . '<span id="migration-select">' . LB;
+        $display .= '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
+            . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
+            . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . LB
+            . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . LB
+            . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . LB
+            . '</select> ' . LB
+            . '<span id="migration-select">' . LB;
 
         // Check if there are any files in the backups directory
         if (count($backup_files) > 0) { 
             
-            $display .= INST_printTab(5) . '<select name="backup_file">' . LB
-                . INST_printTab(6) . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . LB;
+            $display .= '<select name="backup_file">' . LB
+                . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . LB;
 
             // List each of the backup files in the backups directory
             foreach ($backup_files as $file_path) { 
@@ -353,20 +353,20 @@ if (INST_phpOutOfDate()) {
                 $filename    = str_replace($backup_dir, '', $file_path);
                 $backup_file = str_replace($backup_dir, '', $file_path);
 
-                $display .= INST_printTab(6) . '<option value="' . $filename .'">' . $backup_file . ' (' . INST_formatSize(filesize($file_path)) . ')</option>' . LB;
+                $display .= '<option value="' . $filename .'">' . $backup_file . ' (' . INST_formatSize(filesize($file_path)) . ')</option>' . LB;
 
             }
             
-            $display .= INST_printTab(5) . '</select>' . LB;
+            $display .= '</select>' . LB;
 
         } else { 
 
-            $display .= INST_printTab(5) . $LANG_MIGRATE[11] . LB; 
+            $display .= $LANG_MIGRATE[11] . LB; 
 
         }
 
-        $display .= INST_printTab(4) . '</span>' . LB
-            . INST_printTab(4) . '<span id="migration-upload">' . LB ;
+        $display .= '</span>' . LB
+            . '<span id="migration-upload">' . LB ;
                 
         // Check if the user's PHP configuration has 'file_uploads' enabled
         $file_uploads = ini_get('file_uploads') ? true : false;
@@ -376,34 +376,34 @@ if (INST_phpOutOfDate()) {
 
         if ($file_uploads && $is_writable) {
 
-            $display .= INST_printTab(5) . '<input class="input_file" type="file" name="backup_file"' . XHTML . '><br' . XHTML . '>' . LB;
+            $display .= '<input class="input_file" type="file" name="backup_file"' . XHTML . '><br' . XHTML . '>' . LB;
         
         }
 
-        $display .= INST_printTab(4) . '</span>' . LB
-            . INST_printTab(3) . '</p>' . LB
-            . INST_printTab(3) . '<div id="migration-upload-warning">' . LB;
+        $display .= '</span>' . LB
+            . '</p>' . LB
+            . '<div id="migration-upload-warning">' . LB;
 
         if ($file_uploads) { 
 
             if ($is_writable) {
     
-                $display .= INST_printTab(4) . INST_getAlertMsg($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
+                $display .= INST_getAlertMsg($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
 
             } else {
 
-                $display .= INST_printTab(4) . INST_getAlertMsg($LANG_MIGRATE[15]);
+                $display .= INST_getAlertMsg($LANG_MIGRATE[15]);
 
             }
 
         } 
 
-        $display .= INST_printTab(3) . '</div><br' . XHTML . '>' . LB
-            . INST_printTab(3) . '<p>' 
+        $display .= '</div><br' . XHTML . '>' . LB
+            . '<p>' 
             // Todo: Add "Refresh" button to refresh the list of files in the backups directory
             // . '<input type="button" name="refresh" class="submit" value="' . 'Refresh' . '" onclick="INST_refreshBackupList()"' . XHTML . '>' 
-            . '<input type="submit" name="submit" class="submit" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"' . XHTML . '></p>' . LB
-            . INST_printTab(3) . '</form>' . LB;
+            . '<input type="submit" name="submit" class="submit button" value="' . $LANG_MIGRATE[16] . ' &gt;&gt;"' . XHTML . '></p>' . LB
+            . '</form>' . LB;
 
         break;
 
@@ -534,7 +534,7 @@ if (INST_phpOutOfDate()) {
                             . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="backup_file" value="' . $backup_file['name'] . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-                            . '<input type="submit" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '"' . XHTML .'>' . LB
+                            . '<input type="submit" class="button big-button" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '"' . XHTML .'>' . LB
                             . '<input type="button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'migrate.php\'"' . XHTML .'>' . LB
                             . '</p></form>' . LB;
 
@@ -967,7 +967,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="hidden" name="type" value="migrate"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="" value=""' . XHTML . '>' . LB
-                . '<p><input type="submit" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '></p>' . LB
+                . '<p><input type="submit" class="button big-button" name="" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '></p>' . LB
                 . '</form>'; 
 
         } else {

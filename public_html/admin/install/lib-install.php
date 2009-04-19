@@ -109,38 +109,6 @@ if (isset($_SERVER['CONTENT_LENGTH'])) {
 // +---------------------------------------------------------------------------+
 
 /**
- * Written to aid in install script debugging, will be removed later
- *
- * @param  any     $var       The variable you want to print, can be any datatype
- * @param  boolean $die_after Either echo $var or die $var 
- * @return string             The datatype and value of $var
- *
- */
-function sanity($var = 'test', $die_after = false)
-{
-    $retval = '<div style="background-color: #FFF">';
-    switch (gettype($var)) {
-    case "array":
-        $retval .= "Array:<br>";
-        foreach ($var as $k=>$i) {
-            $retval .= "$k => $i <br>";
-        }
-        break;
-    case "boolean" || "integer" || "double" || "string":
-        $retval .= gettype($var) . ": $var <br>";
-        break;
-    
-    default:
-        $retval .= gettype($var);
-    }
-    echo $retval . "</div>";
-    if ($die_after) {
-        die;
-    }
-}
-
-
-/**
  * Returns the beginning HTML for the installer theme.
  *
  * @param   $mHeading   Heading
@@ -219,9 +187,9 @@ function INST_selectMigrationType()
  */
 function INST_getFooter()
 {
-    return INST_printTab(3) . '<br' . XHTML . '><br' . XHTML . '>' . LB
-        . INST_printTab(2) . '</div>' . LB
-        . INST_printTab(1) . '</div>' . LB
+    return '<br' . XHTML . '><br' . XHTML . '>' . LB
+        . '</div>' . LB
+        . '</div>' . LB
         . '</body>' . LB 
         . '</html>';
 }
@@ -307,22 +275,6 @@ function INST_mysqlOutOfDate($db)
         }
         return false;
     }
-}
-
-/**
- * Print tabs so the source code looks presentable 
- *
- * @param   string  $num    Number of tabs to return
- * @return  string          The number of tabs in HTML form.
- *
- */
-function INST_printTab($num) 
-{
-    $retval = '';
-    for ($i = 0; $i < $num; $i++) {
-        $retval .= "    ";
-    }
-    return $retval;
 }
 
 /**
