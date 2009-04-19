@@ -114,8 +114,11 @@ function update_ConfValues()
     // cookie to store name of anonymous commenters
     $c->add('cookie_anon_name','anon_name','text',7,30,NULL,577,TRUE);
 
+    // enable/disable clickable links
+    $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);
+
     // experimental: compress output before sending it to the browser
-    $c->add('compressed_output',0,'select',7,31,1,1755,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1757,TRUE);
 
     return true;
 }

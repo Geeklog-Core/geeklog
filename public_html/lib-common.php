@@ -5742,6 +5742,12 @@ function COM_sanitizeFilename($filename, $allow_dots = false)
 */
 function COM_makeClickableLinks( $text )
 {
+    global $_CONF;
+
+    if (! $_CONF['clickable_links']) {
+        return $text;
+    }
+
     // These regular expressions will work for this purpuse, but
     // they should NOT be used for validating links.
 
