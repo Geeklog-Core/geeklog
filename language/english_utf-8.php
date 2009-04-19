@@ -1464,6 +1464,31 @@ $LANG_DIR = array (
     'no_articles'      => 'No articles.'
 );
 
+###############################################################################
+# admin/sectest.php
+
+$LANG_SECTEST = array(
+    'sectest'       => 'Geeklog Security Check',
+    'results'       => 'Results of the Security Check',
+    'okay'          => 'Everything seems to be in order.',
+    'please_fix'    => 'Please fix the above issues before using your site!',
+    'please_note'   => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
+    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
+    'public_html'   => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
+    'installation'  => 'installation instructions',
+    'directory'     => 'directory',
+    'failed_bak'    => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'fix_it'        => 'This is a security risk and should be fixed!',
+    'reachable'     => 'Your %s is reachable from the web.',
+    'not_reachable' => 'Good! Your %s is not reachable from the web.',
+    'not_sure'      => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
+    'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.', 
+    'remove_inst2'  => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
+    'inst_removed'  => 'Good! You seem to have removed the install directory already.',
+    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'password_okay' => 'Good! You seem to have changed the default account password already.'
+);
+
 ################################################################################
 # "What's New" Time Strings
 

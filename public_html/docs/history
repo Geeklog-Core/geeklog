@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Moved hard-coded texts from admin/sectest.php to the language files (bug
+  #0000716) [Dirk]
 - Added an option to send a copy of the email to a user to self (feature request
   #0000771, based on a patch by Roshan Singh)
 - COM_checkList would use the table name for the name of the checkbox array in
