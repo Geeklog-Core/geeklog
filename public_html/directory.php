@@ -51,7 +51,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-    $login->set_var ( 'xhtml', XHTML );
+    $login->set_var ('xhtml', XHTML);
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('layout_url', $_CONF['layout_url']);
     $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -449,6 +449,35 @@ function DIR_displayAll ($topic, $list_current_month = false)
     return $retval;
 }
 
+/**
+* Return a canonical link
+*
+* @param    string  $topic  current topic or 'all'
+* @param    int     $year   current year
+* @param    int     $month  current month
+* @return   string          <link rel="canonical"> tag
+*
+*/
+function DIR_canonicalLink($topic, $year = 0, $month = 0)
+{
+    global $_CONF;
+
+    $script = $_CONF['site_url'] . '/' . THIS_SCRIPT;
+
+    $tp = '?topic=' . urlencode($topic);
+    $parts = '';
+    if (($year != 0) && ($month != 0)) {
+        $parts .= "&amp;year=$year&amp;month=$month";
+    } elseif ($year != 0) {
+        $parts .= "&amp;year=$year";
+    } elseif ($topic == 'all') {
+        $tp = '';
+    }
+    $url = COM_buildUrl($script . $tp . $parts);
+
+    return '<link rel="canonical" href="' . $url . '"' . XHTML . '>' . LB;
+}
+
 // MAIN
 $display = '';
 
@@ -487,7 +516,8 @@ if (($year != 0) && ($month != 0)) {
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader ('menu', $title);
+    $display .= COM_siteHeader('menu', $title,
+                               DIR_canonicalLink($topic, $year, $month));
     $display .= DIR_displayMonth ($topic, $year, $month, true);
     $display .= DIR_navBar ($topic, $year, $month);
 } else if ($year != 0) {
@@ -495,15 +525,15 @@ if (($year != 0) && ($month != 0)) {
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader ('menu', $title);
-    $display .= DIR_displayYear ($topic, $year, true);
-    $display .= DIR_navBar ($topic, $year);
+    $display .= COM_siteHeader('menu', $title, DIR_canonicalLink($topic, $year));
+    $display .= DIR_displayYear($topic, $year, true);
+    $display .= DIR_navBar($topic, $year);
 } else {
     $title = $LANG_DIR['title'];
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader('menu', $title);
+    $display .= COM_siteHeader('menu', $title, DIR_canonicalLink($topic));
     $display .= DIR_displayAll($topic, $conf_list_current_month);
 }
 
