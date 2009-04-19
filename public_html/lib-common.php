@@ -6880,6 +6880,50 @@ function COM_setLangIdAndAttribute(&$template)
 }
 
 /**
+* Sends compressed output to browser.
+*
+* Assumes that $display contains the _entire_ output for a request - no
+* echoes are allowed before or after this function.
+* Currently only supports gzip compression. Checks if zlib compression is
+* enabled in PHP and does uncompressed output if it is.
+*
+* @param    string  $display    Content to send to browser
+* @return   void
+*
+*/
+function COM_output($display)
+{
+    global $_CONF;
+
+    if (empty($display)) {
+        return;
+    }
+
+    if ($_CONF['compressed_output']) {
+        $gzip_accepted = false;
+        if (isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
+            $enc = str_replace(' ', '', $_SERVER['HTTP_ACCEPT_ENCODING']);
+            $accept = explode(',', strtolower($enc));
+            $gzip_accepted = in_array('gzip', $accept);
+        }
+
+        if ($gzip_accepted && function_exists('gzencode')) {
+
+            $zlib_comp = ini_get('zlib.output_compression');
+            if (empty($zlib_comp) || (strcasecmp($zlib_comp, 'off') == 0)) {
+
+                header('Content-encoding: gzip');
+                echo gzencode($display);
+                return;
+
+            }
+        }
+    }
+
+    echo $display;
+}
+
+/**
 * Now include all plugin functions
 */
 foreach ($_PLUGINS as $pi_name) {

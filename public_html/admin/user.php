@@ -65,7 +65,7 @@ if (!SEC_hasRights('user.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the user administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -645,7 +645,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             $retval .= edituser();
         }
         $retval .= COM_siteFooter();
-        echo $retval;
+        COM_output($retval);
         exit;
     }
 
@@ -1264,6 +1264,6 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

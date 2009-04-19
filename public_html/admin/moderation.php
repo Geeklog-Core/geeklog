@@ -765,6 +765,6 @@ if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation') && SEC_checkToken
 
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

@@ -41,7 +41,7 @@ if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the mail administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -237,6 +237,6 @@ if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
 
 $display .= COM_siteFooter ();
 
-echo $display;
+COM_output($display);
 
 ?>

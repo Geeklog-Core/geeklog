@@ -87,6 +87,6 @@ if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());
 }
 
-echo $retval;
+COM_output($retval);
 
 ?>

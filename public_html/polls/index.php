@@ -205,6 +205,6 @@ if (empty($pid)) {
 }
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

@@ -62,7 +62,7 @@ if (!SEC_hasRights('story.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the story administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -826,7 +826,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= storyeditor (COM_applyFilter ($_POST['sid']), 'preview', '', '',
                              $editor);
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG24[5]);
     $sid = '';
@@ -843,12 +843,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= storyeditor ($sid, $mode, '', $topic, $editor);
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
 } else if ($mode == 'editsubmission') {
     $display .= COM_siteHeader('menu', $LANG24[5]);
     $display .= storyeditor (COM_applyFilter ($_GET['id']), $mode);
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
     submitstory ();
 } else { // 'cancel' or no mode at all
@@ -865,7 +865,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $display .= liststories();
         $display .= COM_siteFooter();
     }
-    echo $display;
+    COM_output($display);
 }
 
 ?>

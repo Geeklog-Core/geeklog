@@ -1319,6 +1319,16 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">0</td>
   <td valign="top">If set to 1, disables the autolinks. I.e. links using the
     [story:] etc. syntax are not interpreted any more.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_compressed_output">disable_compressed_output</a></td>
+  <td valign="top">false</td>
+  <td valign="top">If enabled and supported by both the browser and the
+    webserver, HTML output will be compressed before sending it to the browser.
+    This will typically result in much smaller amounts of data to be sent
+    (usually between 20% and 25%, compared to the uncompressed output). It may,
+    however, result in slightly more load on the webserver.<br>
+    For now, this feature should be considered <strong>experimental</strong> and
+    hasn't been implemented for all HTML output yet.</td>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>

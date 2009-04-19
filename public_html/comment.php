@@ -478,6 +478,6 @@ default:  // New Comment
     break;
 }
 
-echo $display;
+COM_output($display);
 
 ?>

@@ -54,7 +54,7 @@ if (!SEC_inGroup('Root')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the security check.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -385,6 +385,6 @@ $display .= '<p>' . sprintf($LANG_SECTEST['stay_informed'], $ml, $versioncheck)
 $display .= COM_endBlock();
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

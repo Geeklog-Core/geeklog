@@ -778,7 +778,7 @@ function handlePhotoUpload ($delete_photo = '')
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                         'footer'));
         $display .= COM_siteFooter ();
-        echo $display;
+        COM_output($display);
         exit; // don't return
     }
 
@@ -841,7 +841,7 @@ function handlePhotoUpload ($delete_photo = '')
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                             'footer'));
             $display .= COM_siteFooter ();
-            echo $display;
+            COM_output($display);
             exit; // don't return
         }
     } else if (!$delete_photo && !empty ($curphoto)) {
@@ -965,7 +965,7 @@ function saveuser($A)
              . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['email'] = COM_applyFilter ($A['email']);
@@ -1563,6 +1563,6 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     $display .= COM_siteFooter ();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

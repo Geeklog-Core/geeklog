@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | syndication.php                                                           |
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2008 by the following authors:                         |
+// | Copyright (C) 2003-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: syndication.php,v 1.57 2008/07/27 09:11:30 dhaun Exp $
 
 require_once '../lib-common.php';
 require_once 'auth.inc.php';
@@ -42,7 +40,7 @@ if (!SEC_hasRights('syndication.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -596,6 +594,6 @@ else
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

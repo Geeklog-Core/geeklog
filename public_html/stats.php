@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | stats.php                                                                 |
 // |                                                                           |
 // | Geeklog system statistics page.                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,11 +31,9 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: stats.php,v 1.53 2008/02/20 20:07:58 mjervis Exp $
 
-require_once('lib-common.php');
-require_once( $_CONF['path_system'] . 'lib-admin.php' );
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'lib-admin.php';
 
 $display = '';
 
@@ -57,7 +55,7 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -249,6 +247,6 @@ if ($nrows > 0) {
 $display .= PLG_getPluginStats(2);
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

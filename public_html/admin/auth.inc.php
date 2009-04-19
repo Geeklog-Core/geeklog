@@ -39,7 +39,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'auth.inc.php') !== false) {
 // MAIN
 COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
 if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
-    COM_displayMessageAndAbort($LANG04[112], '', 403, 'Access denied');
+    COM_outputMessageAndAbort($LANG04[112], '', 403, 'Access denied');
 }
 
 $uid = '';
@@ -123,7 +123,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 
     $display .= COM_endBlock()
              . COM_siteFooter();
-    echo $display;
+    COM_output($display);
     exit;
 }
 

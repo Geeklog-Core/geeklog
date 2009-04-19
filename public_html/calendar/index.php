@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog calendar plugin                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.27 2008/07/06 20:15:10 dhaun Exp $
 
 require_once '../lib-common.php';
 
@@ -63,7 +61,7 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -404,7 +402,7 @@ if ($mode == 'personal' AND $_CA_CONF['personalcalendars'] == 0) {
     // turned on.
     $display .= $LANG_CAL_2[37];
     $display .= COM_siteFooter();
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -1082,6 +1080,6 @@ break;
 
 } // end switch
 
-echo $display;
+COM_output($display);
 
 ?>

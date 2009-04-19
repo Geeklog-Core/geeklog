@@ -119,6 +119,6 @@ if (array_key_exists('form_submit', $_POST) && $tokenstate) {
                                             ?  $_POST['subgroup'] : null);
 }
 
-echo $display;
+COM_output($display);
 
 ?>

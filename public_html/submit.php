@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
@@ -31,8 +31,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: submit.php,v 1.123 2008/07/07 18:24:00 dhaun Exp $
 
 require_once 'lib-common.php';
 require_once $_CONF['path_system'] . 'lib-story.php';
@@ -99,7 +97,7 @@ function submissionform($type='story', $mode = '', $topic = '')
                 $formresult = PLG_showSubmitForm($type);
                 if ($formresult == false) {
                     COM_errorLog("Someone tried to submit an item to the $type-plugin, which cannot be found.", 1);
-                    COM_displayMessageAndAbort (79, '', 410, 'Gone');
+                    COM_outputMessageAndAbort (79, '', 410, 'Gone');
                 } else {
                     $retval .= $formresult;
                 }
@@ -294,7 +292,7 @@ function savestory ($A)
     if ($result > 0)
     {
         COM_updateSpeedlimit ('submit');
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     COM_updateSpeedlimit ('submit');
@@ -416,7 +414,7 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
                          . COM_errorLog ($msg, 2)
                          . submitstory ($topic)
                          . COM_siteFooter();
-                echo $display;
+                COM_output($display);
                 exit;
             }
         }
@@ -457,6 +455,6 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

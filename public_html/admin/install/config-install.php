@@ -313,6 +313,7 @@ function install_config()
     $c->add('notification',array(),'%text',7,31,NULL,800,TRUE);
     $c->add('cron_schedule_interval',86400,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1755,TRUE);
 
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE);
     $c->add('rootdebug',FALSE,'select',7,32,1,520,TRUE);

@@ -43,7 +43,7 @@ if (!SEC_hasRights('topic.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -493,7 +493,7 @@ function handleIconUpload($tid)
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                         'footer'));
         $display .= COM_siteFooter ();
-        echo $display;
+        COM_output($display);
         exit; // don't return
     }
 
@@ -534,7 +534,7 @@ function handleIconUpload($tid)
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                             'footer'));
             $display .= COM_siteFooter ();
-            echo $display;
+            COM_output($display);
             exit; // don't return
         }
         $filename = '/images/topics/' . $filename;
@@ -602,6 +602,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

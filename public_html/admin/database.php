@@ -43,7 +43,7 @@ if (!SEC_inGroup('Root') OR ($_CONF['allow_mysqldump'] == 0)) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -322,6 +322,6 @@ $display .= listbackups();
 
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

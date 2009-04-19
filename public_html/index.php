@@ -121,7 +121,7 @@ if (!$newstories && !$displayall) {
     // give plugins a chance to replace this page entirely
     $newcontent = PLG_showCenterblock (0, $page, $topic);
     if (!empty ($newcontent)) {
-        echo $newcontent;
+        COM_output($newcontent);
         exit;
     }
 }
@@ -348,6 +348,6 @@ if ( $A = DB_fetchArray( $result ) ) {
 $display .= COM_siteFooter (true); // The true value enables right hand blocks.
 
 // Output page
-echo $display;
+COM_output($display);
 
 ?>

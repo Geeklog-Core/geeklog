@@ -56,7 +56,7 @@ if (!SEC_hasRights('spamx.admin')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -112,6 +112,6 @@ if (isset($_REQUEST['command'])) {
 }
 $display .= COM_siteFooter(true);
 
-echo $display;
+COM_output($display);
 
 ?>

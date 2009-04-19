@@ -62,7 +62,7 @@ if (!SEC_hasRights('group.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the group administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -1086,6 +1086,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>

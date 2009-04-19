@@ -61,7 +61,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
     $display .= $login->finish ($login->get_var ('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -539,6 +539,6 @@ if (($year != 0) && ($month != 0)) {
 
 $display .= COM_siteFooter (true);
 
-echo $display;
+COM_output($display);
 
 ?>

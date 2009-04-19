@@ -52,7 +52,7 @@ if (!SEC_hasRights('story.ping')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the trackback administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -1242,6 +1242,6 @@ if (($mode == 'delete') && SEC_checkToken()) {
     $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
 }
 
-echo $display;
+COM_output($display);
 
 ?>

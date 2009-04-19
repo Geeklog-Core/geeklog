@@ -40,9 +40,9 @@
  * @package Links
  * @subpackage public_html
  * @filesource
- * @version 2.0
+ * @version 2.1
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2008
+ * @copyright Copyright &copy; 2005-2009
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Tony Bibbs, tony AT tonybibbs DOT com
  * @author Mark Limburg, mlimburg AT users DOT sourceforge DOT net
@@ -120,7 +120,7 @@ function links_list($message)
             $display .= COM_siteHeader ('menu', $page_title);
             $display .= COM_showMessage (5, 'links');
             $display .= COM_siteFooter ();
-            echo $display;
+            COM_output($display);
             exit;
         }
     }
@@ -454,6 +454,6 @@ if (empty ($_USER['username']) &&
 
 $display .= COM_siteFooter ();
 
-echo $display;
+COM_output($display);
 
 ?>

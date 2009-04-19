@@ -51,7 +51,7 @@ if (!SEC_hasRights('calendar.edit')) {
     // Log attempt to access.log
     COM_accessLog("User {$_USER['username']} tried to illegally access the event administration screen.");
 
-    echo $display;
+    COM_output($display);
 
     exit;
 }
@@ -684,6 +684,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= CALENDAR_listevents();
     $display .= COM_siteFooter ();
 }
-echo $display;
+
+COM_output($display);
 
 ?>

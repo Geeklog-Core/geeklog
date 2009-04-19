@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Experimental: Compress HTML output before sending it to the browser (disabled
+  by default; has to be supported by both the browser and the webserver) [Dirk]
 - Moved hard-coded texts from admin/sectest.php to the language files (bug
   #0000716) [Dirk]
 - Added an option to send a copy of the email to a user to self (feature request

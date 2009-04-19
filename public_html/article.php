@@ -417,6 +417,6 @@ if ($A['count'] > 0) {
     $display .= COM_refresh($_CONF['site_url'] . '/index.php');
 }
 
-echo $display;
+COM_output($display);
 
 ?>

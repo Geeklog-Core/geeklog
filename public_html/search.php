@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | search.php                                                                |
 // |                                                                           |
 // | Geeklog search tool.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2005 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -30,11 +30,9 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: search.php,v 1.57 2005/11/14 11:36:41 dhaun Exp $
 
-require_once('lib-common.php');
-require_once($_CONF['path_system'] . 'classes/search.class.php');
+require_once 'lib-common.php';
+require_once $_CONF['path_system'] . 'classes/search.class.php';
 
 $searchObj = new Search();
 
@@ -48,6 +46,6 @@ if (isset ($_GET['mode']) && ($_GET['mode'] == 'search')) {
 
 $display .= COM_siteFooter();
 
-echo $display;
+COM_output($display);
 
 ?>

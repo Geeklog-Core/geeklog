@@ -68,7 +68,7 @@ if (!SEC_hasRights('links.edit')) {
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
     COM_accessLog("User {$_USER['username']} tried to illegally access the links administration screen.");
-    echo $display;
+    COM_output($display);
     exit;
 }
 
@@ -309,7 +309,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
                  . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
                  . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
-        echo $display;
+        COM_output($display);
         exit;
     } elseif (!empty($title) && !empty($description) && !empty($url)) {
 
@@ -551,6 +551,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteFooter();
 }
 
-echo $display;
+COM_output($display);
 
 ?>
