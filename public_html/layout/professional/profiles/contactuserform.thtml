@@ -12,6 +12,10 @@
             <td><input type="text" name="authoremail" size="32" value="{useremail}" maxlength="96"{xhtml}></td>
         </tr>
         <tr>
+            <td>{lang_cc}</td>
+            <td><input type="checkbox" name="cc" checked="checked"{xhtml}>&nbsp;{lang_cc_description}</td>
+        </tr>
+        <tr>
             <td>{lang_subject}</td>
             <td><input type="text" name="subject" size="32" maxlength="96" value="{subject}"{xhtml}></td>
         </tr>

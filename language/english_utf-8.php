@@ -451,7 +451,10 @@ $LANG08 = array(
     32 => 'Date',
     33 => 'Read the full article at',
     34 => 'End of Message',
-    35 => 'Sorry, this user prefers not to receive any emails.'
+    35 => 'Sorry, this user prefers not to receive any emails.',
+    36 => 'Copy:',
+    37 => 'Send me a copy of this email',
+    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################

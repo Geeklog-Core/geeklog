@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added an option to send a copy of the email to a user to self (feature request
+  #0000771, based on a patch by Roshan Singh)
 - COM_checkList would use the table name for the name of the checkbox array in
   the HTML(!) - added a new parameter for the name (pointed out by Bookoo in
   the exploit for usersettings.php, cf. Geeklog 1.5.2sr4) [Dirk]
