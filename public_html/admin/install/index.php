@@ -181,8 +181,8 @@ function INST_installEngine($install_type, $install_step)
 
 
         $display .='<br' . XHTML . '>
-            <input type="submit" name="submit" class="submit" value="' . $buttontext . ' &gt;&gt;"' . XHTML . '>
-            <input type="submit" name="install_plugins" class="submit" value="' . $buttontext . ' ' . $LANG_INSTALL[103] . ' &gt;&gt;"' . XHTML . '>
+            <input type="submit" name="submit" class="submit button big-button" value="' . $buttontext . ' &gt;&gt;"' . XHTML . '>
+            <input type="submit" name="install_plugins" class="submit button big-button" value="' . $buttontext . ' ' . $LANG_INSTALL[103] . ' &gt;&gt;"' . XHTML . '>
             </form>' . LB;
 
         break;
@@ -303,7 +303,7 @@ function INST_installEngine($install_type, $install_step)
                             <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                             <input type="hidden" name="step" value="1"' . XHTML . '>
                             ' . $hidden_fields . '
-                            <input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>
+                            <input type="submit" class="button big-button" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>
                             </form>
                         </div>
 
@@ -313,7 +313,7 @@ function INST_installEngine($install_type, $install_step)
                             <input type="hidden" name="step" value="3"' . XHTML . '>
                             ' . $hidden_fields . '
                             <input type="hidden" name="innodb" value="false"' . XHTML . '>
-                            <input type="submit" name="submit" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
+                            <input type="submit" class="button big-button" name="submit" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
                             </form>
                         </div>
                     </div>' . LB;
@@ -361,7 +361,7 @@ function INST_installEngine($install_type, $install_step)
                         }
                         $display .= '</select></p>
                             <br' . XHTML . '>
-                            <input type="submit" name="submit" class="submit" value="' . $LANG_INSTALL[25] . ' &gt;&gt;"' . XHTML . '>
+                            <input type="submit" name="submit" class="submit button big-button" value="' . $LANG_INSTALL[25] . ' &gt;&gt;"' . XHTML . '>
                             </form>' . LB;
 
                         $curv = $old_versions[count($old_versions) - 1];
@@ -425,11 +425,11 @@ function INST_installEngine($install_type, $install_step)
                                 <form action="index.php" method="post">
                                 <input type="hidden" name="mode" value="install"' . XHTML . '>
                                 <input type="hidden" name="step" value="3"' . XHTML . '>
-                                <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
+                                <input type="hidden" value="' . $language . '"' . XHTML . '>
                                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
                                 <input type="hidden" name="innodb" value="' . (($use_innodb) ? 'true' : 'false') . '"' . XHTML . '>
                                 <input type="hidden" name="install_plugins" value="' . $install_plugins . '"' . XHTML . '>
-                                <input type="submit" value="' . $LANG_INSTALL[66] . '"' . XHTML . '>
+                                <input type="submit" class="button big-button" value="' . $LANG_INSTALL[66] . '"' . XHTML . '>
                                 </form>
                             </div>
 
@@ -438,7 +438,7 @@ function INST_installEngine($install_type, $install_step)
                                 <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                 <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                                 <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
-                                <input type="submit" value="' . $LANG_INSTALL[25] . '"' . XHTML . '>
+                                <input type="submit" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML . '>
                                 </form>
                             </div>
                         </div>
@@ -697,7 +697,7 @@ function INST_showReturnFormData($post_data)
         <input type="hidden" name="site_admin_url" value="' . $post_data['site_admin_url'] . '"' . XHTML . '>
         <input type="hidden" name="site_mail" value="' . $post_data['site_mail'] . '"' . XHTML . '>
         <input type="hidden" name="noreply_mail" value="' . $post_data['noreply_mail'] . '"' . XHTML . '>
-        <p align="center"><input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '></p>
+        <p align="center"><input type="submit" class="button big-button" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '></p>
         </form>';
 
     return $display;
@@ -938,7 +938,7 @@ if (empty($mode) || ($mode == 'check_permissions')) {
     }
 
     $display .= '</select>
-                    <input type="submit" value="' . $LANG_INSTALL[80] . '"' . XHTML . '>
+                    <input type="submit" class="language-button button" value="' . $LANG_INSTALL[80] . '"' . XHTML . '>
             </form>';
 }
 $display .= '
@@ -975,7 +975,7 @@ if (INST_phpOutOfDate()) {
         $dbconfig_path  = '';
         $dbconfig_file  = 'db-config.php';
 
-        $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[3] . '</h1>' . LB;
+        $display .= '<h1 class="heading">' . $LANG_INSTALL[3] . '</h1>' . LB;
 
         if (!file_exists($gl_path . $dbconfig_file) && !file_exists($gl_path . 'public_html/' . $dbconfig_file)) {
             // If the file/directory is not located in the default location
@@ -1002,7 +1002,7 @@ if (INST_phpOutOfDate()) {
                 <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
                 <input type="hidden" name="mode" value="check_permissions"' . XHTML . '>
                 ' . $form_fields . '
-                <input type="submit" name="submit" class="submit" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
+                <input type="submit" name="submit" class="submit button big-button" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
                 </form>' . LB;
             $display .= '<p>' . $LANG_INSTALL[94] . '<p>' . LB
                      . '<ul><li>' . $LANG_INSTALL[95] . '<br' . XHTML . '>' . LB
@@ -1038,16 +1038,16 @@ if (INST_phpOutOfDate()) {
         // The path to db-config.php is what we'll use to generate our /path/to/geeklog so
         // we want to make sure it's valid and exists before we continue and create problems.
         if (!file_exists($_PATH['db-config.php'])) {
-            $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[3] . '</h1>' . LB
-                . INST_printTab(3) . '<p><span class="error">' . $LANG_INSTALL[38] . '</span>' . LB
-                . INST_printTab(3) . $LANG_INSTALL[84] . '<code>' . $_PATH['db-config.php'] . '</code>' . $LANG_INSTALL[85] . LB
-                . INST_printTab(3) . '</p>' . LB
-                . INST_printTab(3) . '<div style="margin-left: auto; margin-right: auto; width: 1px">' . LB
-                . INST_printTab(3) . '<form action="index.php" method="post">' . LB
-                . INST_printTab(3) . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '<input type="submit" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '</form>' . LB
-                . INST_printTab(3) . '</div>' . LB;
+            $display .= '<h1 class="heading">' . $LANG_INSTALL[3] . '</h1>' . LB
+                . '<p><span class="error">' . $LANG_INSTALL[38] . '</span>' . LB
+                . $LANG_INSTALL[84] . '<code>' . $_PATH['db-config.php'] . '</code>' . $LANG_INSTALL[85] . LB
+                . '</p>' . LB
+                . '<div style="margin-left: auto; margin-right: auto; width: 1px">' . LB
+                . '<form action="index.php" method="post">' . LB
+                . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
+                . '<input type="submit" class="button big-button" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '>' . LB
+                . '</form>' . LB
+                . '</div>' . LB;
         } else {
 
             require_once $_PATH['db-config.php'];  // We need db-config.php the current DB information
@@ -1055,8 +1055,8 @@ if (INST_phpOutOfDate()) {
 
             $gl_path = str_replace('db-config.php', '', $_PATH['db-config.php']);
             $num_wrong = 0; // number of files with wrong permissions
-            $display_permissions = INST_printTab(4) . '<p><label class="' . $perms_label_dir . '"><b>' . $LANG_INSTALL[10] . '</b></label> ' . LB
-                                 . INST_printTab(5) . '<b>' . $LANG_INSTALL[11] . '</b></p>' . LB;
+            $display_permissions = '<p><label class="' . $perms_label_dir . '"><b>' . $LANG_INSTALL[10] . '</b></label> ' . LB
+                                 . '<b>' . $LANG_INSTALL[11] . '</b></p>' . LB;
             $chmod_string = 'chmod -R 777 ';
             // Files to check if writable
             $file_list = array( $_PATH['db-config.php'],
@@ -1075,8 +1075,8 @@ if (INST_phpOutOfDate()) {
             foreach ($file_list as $file) {
                 if (!is_writable($file)) {
                     $permission = sprintf("%3o", @fileperms($file) & 0777);
-                    $display_permissions    .= INST_printTab(4) . '<p><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
-                                            . INST_printTab(5) . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' 777</span> ('
+                    $display_permissions    .= '<p><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
+                                            . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' 777</span> ('
                                             . $LANG_INSTALL[13] . ' ' . $permission . ')</p>' . LB ;
                     $chmod_string .= $file . ' ' ;
                     $num_wrong++;
@@ -1091,27 +1091,27 @@ if (INST_phpOutOfDate()) {
             if ($num_wrong) {
                 // If any files have incorrect permissions.
 
-                $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
+                $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
                 $display_step++;
 
                 if (isset($_GET['install_type'])) {
                     // If the user tried to start an installation before setting file permissions
-                    $display .= INST_printTab(3) . '<p><div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' 
+                    $display .= '<p><div class="notice"><span class="error">' . $LANG_INSTALL[38] . '</span> ' 
                                 . $LANG_INSTALL[21] . '</div></p>' . LB;
                 } else {
                     // The first page that is displayed during the "check_permissions" step
-                    $display .= INST_printTab(3) . '<p>' . $LANG_INSTALL[9] . '</p>' . LB
-                                . INST_printTab(3) . '<p>' . $LANG_INSTALL[19] . '</p>' . LB;
+                    $display .= '<p>' . $LANG_INSTALL[9] . '</p>' . LB
+                                . '<p>' . $LANG_INSTALL[19] . '</p>' . LB;
                 }
 
                 // List the files that have incorrect permissions and also what the permissions should be
                 // Also, list the auto-generated chmod command for advanced users
-                $display .= INST_printTab(3) . '<div class="file-permissions">' . LB
-                    . $display_permissions . INST_printTab(3) . '</div>' . LB
-                    . INST_printTab(3) . '<h2>' . $LANG_INSTALL[98] . '</h2>' . LB
-                    . INST_printTab(3) . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
-                    . INST_printTab(3) . '<p><div class="codeblock"><code>' . $chmod_string . LB 
-                    . INST_printTab(3) . '</code></div></p><br ' . XHTML . '>' . LB;
+                $display .= '<div class="file-permissions">' . LB
+                    . $display_permissions . '</div>' . LB
+                    . '<h2>' . $LANG_INSTALL[98] . '</h2>' . LB
+                    . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
+                    . '<p><div class="codeblock"><code>' . $chmod_string . LB 
+                    . '</code></div></p><br ' . XHTML . '>' . LB;
                 $step++;
 
             } else {
@@ -1149,16 +1149,16 @@ if (INST_phpOutOfDate()) {
 
             // Show the "Select your installation method" buttons
             $upgr_class = ($LANG_DIRECTION == 'rtl') ? 'upgrade-rtl' : 'upgrade' ;
-            $display .= INST_printTab(2) . '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
-                . INST_printTab(3) . '<p><form action="index.php" method="GET">' . LB
-                . INST_printTab(3) . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '<input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '<input type="hidden" name="display_step" value="' . ($display_step+1) . '"' . XHTML . '>' . LB
-                . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[24] . '"' . XHTML .'>' . LB
-                . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
-                . INST_printTab(3) . '<input type="submit" name="install_type" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
-                . INST_printTab(3) . '</form> </p> <br' . XHTML . '>' . LB;
+            $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
+                . '<p><form action="index.php" method="GET">' . LB
+                . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="display_step" value="' . ($display_step+1) . '"' . XHTML . '>' . LB
+                . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[24] . '"' . XHTML .'>' . LB
+                . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
+                . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
+                . '</form> </p> <br' . XHTML . '>' . LB;
    
         }
         break;
@@ -1236,9 +1236,9 @@ if (INST_phpOutOfDate()) {
 
 } // end if (php_v())
 
-$display .= INST_printTab(3) . '<br' . XHTML . '><br' . XHTML . '>' . LB
-    . INST_printTab(2) . '</div>' . LB
-    . INST_printTab(1) . '</div>' . LB
+$display .= '<br' . XHTML . '><br' . XHTML . '>' . LB
+    . '</div>' . LB
+    . '</div>' . LB
     . '</body>' . LB 
     . '</html>';
 

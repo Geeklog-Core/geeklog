@@ -247,7 +247,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<p><label class="' . $form_label_dir . '">' . $LANG_PLUGINS[10] . ' ' . INST_helpLink('plugin_upload') . '</label> ' . LB
                 . '<input type="file" name="plugin" size="25"' . XHTML . '></p>' . LB
-                . '<p><input type="submit" name="upload" value="' . $LANG_PLUGINS[11] . '"' . XHTML . '></p>' . LB
+                . '<p><input type="submit" class="button big-button" name="upload" value="' . $LANG_PLUGINS[11] . '"' . XHTML . '></p>' . LB
                 . '</form>' . LB;
 
         }
@@ -457,15 +457,15 @@ if (INST_phpOutOfDate()) {
 
             // Form footer
             $display .= '</table><br' . XHTML . '>' . LB
-                . '<input type="button" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()"' . XHTML . '>' . LB
-                . '<input type="submit" name="submit" value="' . $LANG_INSTALL[50] . ' &gt;&gt;"' . XHTML . '>' . LB
+                . '<input type="button" class="button big-button" name="refresh" value="' . $LANG_PLUGINS[19] . '" onclick="javascript:document.location.reload()"' . XHTML . '>' . LB
+                . '<input type="submit" class="button big-button" name="submit" value="' . $LANG_INSTALL[50] . ' &gt;&gt;"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
                 
         } else {
 
             $display .= '<p>' . $LANG_PLUGINS[20] . '</p>' . LB
                 . '<form action="install-plugins.php" method="POST">' . LB
-                . '<input type="submit" name="refresh" value="' . $LANG_PLUGINS[19] . '"' . XHTML . '>' . LB
+                . '<input type="submit" class="button big-button" name="refresh" value="' . $LANG_PLUGINS[19] . '"' . XHTML . '>' . LB
                 . '</form></p>' . LB;
         
         }

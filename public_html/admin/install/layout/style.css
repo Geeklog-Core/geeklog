@@ -59,9 +59,7 @@ a:active {
   color:#FF0000
 }
 body {
-/*  width:99%; */
   width:800px;
-/*  background:#FFFFFF; */
   background:#1A3955;
   color:#000000;
   font:.8em arial,sans-serif,verdana,tahoma,helvetica;
@@ -468,4 +466,29 @@ code {
 .indent {
   margin-left:1em;
   margin-right:1em;
+}
+
+.button {
+  background-color: #1A3955;
+  border: 0px;
+  color: white;
+  text-align: center;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.button:hover {
+  background-color: #295a86;
+}
+
+.big-button {
+  font-size:14px;
+  margin: 2px;
+  padding: 5px;
+}
+
+.language-button {
+  font-size: 13px;
+  margin: 2px;
+  padding: 2px;
 }
