@@ -154,7 +154,7 @@ function install_config()
     $c->add('link_versionchecker',1,'select',3,12,0,1160,TRUE);
 
     $c->add('fs_topics_block', NULL, 'fieldset', 3, 13, NULL, 0, TRUE);
-    $c->add('sortmethod','sortnum','select',3,13,15,870,TRUE);
+    $c->add('sortmethod','alpha','select',3,13,15,870,TRUE);
     $c->add('showstorycount',1,'select',3,13,0,880,TRUE);
     $c->add('showsubmissioncount',1,'select',3,13,0,890,TRUE);
     $c->add('hide_home_link',0,'select',3,13,0,900,TRUE);
@@ -225,7 +225,7 @@ function install_config()
     $c->add('fs_comments', NULL, 'fieldset', 4, 21, NULL, 0, TRUE);
     $c->add('commentspeedlimit',45,'text',4,21,NULL,1640,TRUE);
     $c->add('comment_limit',100,'text',4,21,NULL,1650,TRUE);
-    $c->add('comment_mode','threaded','select',4,21,11,1660,TRUE);
+    $c->add('comment_mode','nested','select',4,21,11,1660,TRUE);
     $c->add('comment_code',0,'select',4,21,17,1670,TRUE);
     $c->add('comment_edit',0,'select',4,21,0,1680,TRUE);
     $c->add('commentsubmission',0,'select',4,21,0, 1682, TRUE);
@@ -311,7 +311,7 @@ function install_config()
 
     $c->add('fs_misc', NULL, 'fieldset', 7, 31, NULL, 0, TRUE);
     $c->add('notification',array(),'%text',7,31,NULL,800,TRUE);
-    $c->add('cron_schedule_interval',86400,'text',7,31,NULL,860,TRUE);
+    $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
     $c->add('compressed_output',0,'select',7,31,1,1755,TRUE);
 
@@ -349,7 +349,7 @@ function install_config()
     $c->add('default_permissions_block',array(3, 2, 2, 2),'@select',7,39,12,1810,TRUE);
 
     $c->add('fs_webservices', NULL, 'fieldset', 7, 40, NULL, 0, TRUE);
-    $c->add('disable_webservices',   0, 'select', 7, 40, 0, 1840, TRUE);
+    $c->add('disable_webservices',   1, 'select', 7, 40, 0, 1840, TRUE);
     $c->add('restrict_webservices',  0, 'select', 7, 40, 0, 1850, TRUE);
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE);
 }

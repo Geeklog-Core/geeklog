@@ -583,8 +583,9 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <th style="width:63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_sortmethod">sortmethod</a></td>
-  <td valign="top">sortnum</td>
-  <td valign="top">alpha = Sort topics in topic list alphabetically<br>sortnum = Sort topics in topic list by sort number</td></tr>
+  <td valign="top">alpha</td>
+  <td valign="top">alpha = Sort topics in topic list alphabetically<br>
+    sortnum = Sort topics in topic list by the given sort number</td></tr>
 <tr>
   <td valign="top"><a name="desc_showstorycount">showstorycount</a></td>
   <td valign="top">1</td>
@@ -916,7 +917,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Most number of comments to show at any one time</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_mode">comment_mode</a></td>
-  <td valign="top">threaded</td>
+  <td valign="top">nested</td>
   <td valign="top">How to display comments (threaded, nested, flat or nocomments)</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_code">comment_code</a></td>
@@ -1304,12 +1305,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     comments.</td>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">cron_schedule_interval</a></td>
-  <td valign="top">86400</td>
+  <td valign="top">0</td>
   <td valign="top">Geeklog can emulate a <a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>, i.e. trigger a certain action at a given time. The code
     to be executed can be provided by a plugin or through the
     <code>CUSTOM_runScheduledTask</code> function in your
     <tt>lib-custom.php</tt>. The value given is in seconds and specifies the
-    interval in which the code should be executed.<br>
+    interval in which the code should be executed (e.g. 86400 for daily
+    activation).<br>
     Please note that to trigger this action, you will need to have someone
     visit your site at around the specified time. On a site with few visitors,
     the code may only be executed with considerable delay.<br>
@@ -1328,7 +1330,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     (usually between 20% and 25%, compared to the uncompressed output). It may,
     however, result in slightly more load on the webserver.<br>
     For now, this feature should be considered <strong>experimental</strong> and
-    hasn't been implemented for all HTML output yet.</td>
+    hasn't been implemented for all HTML output yet.</td></tr>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
