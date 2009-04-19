@@ -455,28 +455,33 @@ function SESS_getUserData($username)
 *
 * Gets user's data based on their user id
 *
-* @param        int     $userid     User ID of user to get data for
-* @return       array   returns user'd data in an array
+* @param    int     $userid     User ID of user to get data for
+* @return   array               returns user's data in an array
 *
 */
 function SESS_getUserDataFromId($userid)
 {
     global $_TABLES;
 
-    $sql = "SELECT *,format FROM {$_TABLES['dateformats']},{$_TABLES["users"]},{$_TABLES['userprefs']} "
+    $sql = "SELECT *,format FROM {$_TABLES['dateformats']},{$_TABLES['users']},{$_TABLES['userprefs']} "
      . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
      . "{$_TABLES['userprefs']}.uid = $userid AND {$_TABLES['users']}.uid = $userid";
 
-    if(!$result = DB_query($sql)) {
-        $userdata = array("error" => "1");
-        return ($userdata);
+    if (!$result = DB_query($sql)) {
+        $userdata = array('error' => '1');
+        return $userdata;
     }
 
-    if(!$myrow = DB_fetchArray($result)) {
-        $userdata = array("error" => "1");
-        return ($userdata);
+    if (!$myrow = DB_fetchArray($result, false)) {
+        $userdata = array('error' => '1');
+        return $userdata;
     }
-    return($myrow);
+
+    if (isset($myrow['passwd'])) {
+        unset($myrow['passwd']);
+    }
+
+    return $myrow;
 }
 
 ?>
