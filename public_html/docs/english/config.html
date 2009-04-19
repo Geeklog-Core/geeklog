@@ -923,6 +923,37 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_comment_code">comment_code</a></td>
   <td valign="top">0</td>
   <td valign="top">Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_edit">comment_edit</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether to allow users and admins to edit comments.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_commentsubmission">commentsubmission</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Enable (1) or disable (0) comment submission queue.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_edittime">comment_edittime</a></td>
+  <td valign="top">1800</td>
+  <td valign="top">How long (in seconds) a comment is editable for the user who
+    submitted it. Requires that comments are editable (see <a href="desc_comment_edit">above</a>). Anonymous users (those that did not register an account) can
+    never edit their comments while admins can always edit comments.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
+  <td valign="top">30</td>
+  <td valign="top">Number of days after which a story is automatically closed
+    for comments, i.e. no new comments can be posted after that many days.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_comment_close_rec_stories">comment_close_rec_stories</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Number of most recent stories for which comment posting is
+    allowed. Posting a new story will automatically close comments for the
+    oldest of these stories.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allow_reply_notifications">allow_reply_notifications</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Allow (1) or disallow (0) subscribing to comment
+    notifications. Registered users can get an email notifying them of direct
+    replies to comments they left.</td></tr>
 </table>
 
 
