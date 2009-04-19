@@ -811,18 +811,6 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             $commenttext = htmlspecialchars (COM_stripslashes ($comment));
 
-            $fakepostmode = $postmode;
-            if ($postmode == 'html') {
-                $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";
-                $comment = COM_checkWords(COM_checkHTML(COM_stripslashes($comment), $html_perm));
-            } else {
-                $comment = htmlspecialchars(COM_checkWords(COM_stripslashes($comment)));
-                $newcomment = COM_makeClickableLinks ($comment);
-                if (strcmp ($comment, $newcomment) != 0) {
-                    $comment = nl2br ($newcomment);
-                    $fakepostmode = 'html';
-                }
-            }
             // Replace $, {, and } with special HTML equivalents
             $commenttext = str_replace('$','&#36;',$commenttext);
             $commenttext = str_replace('{','&#123;',$commenttext);
