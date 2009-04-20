@@ -765,7 +765,7 @@ class Search {
         }
 
         $rt = '';
-        $pos = stripos($text, $keyword);
+        $pos = $this->_stripos($text, $keyword);
         if ($pos !== false)
         {
             $pos_space = strpos($text, ' ', $pos);
@@ -867,6 +867,23 @@ class Search {
             }
         }
         return $sql;
+    }
+
+    /**
+    * Helper function: Simulate stripos on PHP 4
+    *
+    * @param   string  $haystack  string to search in
+    * @param   string  $needle    string to search for
+    * @return  mixed              first pos of $needle in $haystack, or false 
+    *
+    */
+    function _stripos($haystack, $needle)
+    {
+        if (function_exists('stripos')) {
+            return stripos($haystack, $needle);
+        } else {
+            return strpos(strtolower($haystack), strtolower($needle));
+        }
     }
 }
 
