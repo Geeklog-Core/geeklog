@@ -716,7 +716,8 @@ class Search {
             if ($row['url'] != '#')
             {
                 $row['url'] = ($row['url'][0] == '/' ? $_CONF['site_url'] : '') . $row['url'];
-                if ($this->_url_rewrite[$row[SQL_NAME]]) {
+                if (isset($this->_url_rewrite[$row[SQL_NAME]]) &&
+                        $this->_url_rewrite[$row[SQL_NAME]]) {
                     $row['url'] = COM_buildUrl($row['url']);
                 }
                 $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
