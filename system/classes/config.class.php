@@ -386,6 +386,16 @@ class config {
                 $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
             }
         }
+
+        if (!$this->config_array['Core']['user_login_method']['standard'] &&
+            !$this->config_array['Core']['user_login_method']['openid'] &&
+            !$this->config_array['Core']['user_login_method']['3rdparty']) {
+            // just to make sure people don't lock themselves out of their site
+            $this->config_array['Core']['user_login_method']['standard'] = true;
+
+            // TBD: ensure that we have a Root user able to log in with the
+            //      enabled login method(s)
+        }
     }
 
     function _get_groups()
