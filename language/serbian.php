@@ -50,10 +50,10 @@ $LANG01 = array(
     2 => 'detaljnije',
     3 => 'komentar(a)',
     4 => 'Izmeni',
-    5 => 'Anketa',
-    6 => 'Rezultati',
+    5 => '',
+    6 => '',
     7 => '',
-    8 => 'glasova',
+    8 => '',
     9 => 'Za Administratora:',
     10 => 'Zahtevi',
     11 => 'Tekst(a)',
@@ -208,7 +208,23 @@ $LANG03 = array(
     24 => 'Anonimni korisnik',
     25 => 'Sigurno zelite da prijavite ovaj komentar administratoru?',
     26 => '%s prijavljena zloupotreba u sledecem komentaru:',
-    27 => 'Prijavi zloupotrebu'
+    27 => 'Prijavi zloupotrebu',
+    28 => 'Preview Changes',
+    29 => 'Submit Changes',
+    30 => 'Edited on',
+    31 => 'by',
+    32 => 'Editing a Comment',
+    33 => 'Editing a Comment Submission',
+    34 => 'Preview Submission Changes',
+    35 => 'Save Changes to Queue',
+    36 => 'Notify me of new replies',
+    37 => 'New Comment Reply',
+    38 => 'A reply has been made to your comment \'%s\'.',
+    39 => 'You may view the comment thread at the following address:',
+    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
+    41 => 'Hello %s,',
+    42 => 'Unsubscribe',
+    43 => 'Unsubscribe from reply notifications'
 );
 
 ###############################################################################
@@ -439,7 +455,10 @@ $LANG08 = array(
     32 => 'Datum',
     33 => 'Procitaj kompletan tekst na',
     34 => 'Kraj poruke',
-    35 => 'Zao mi je, korisnik ne dozvoljava prijem poruka.'
+    35 => 'Zao mi je, korisnik ne dozvoljava prijem poruka.',
+    36 => 'Copy:',
+    37 => 'Send me a copy of this email',
+    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -783,7 +802,7 @@ $LANG24 = array(
     60 => '',
     61 => 'Automatsko Arhiviranje',
     62 => 'Automatsko Brisanje',
-    63 => '',
+    63 => 'Disable Comments',
     64 => '',
     65 => '',
     66 => '',
@@ -958,11 +977,14 @@ $LANG29 = array(
     18 => 'Email',
     34 => 'Komande i Kontrola',
     35 => 'Zahtev za postavljanje teksta',
-    36 => '',
+    36 => 'Comment',
     37 => '',
     38 => 'Potvrdi',
     39 => 'Trenutno nema tekstova (korisnickih doprinosa) za administraciju',
-    40 => 'Korisnicki Tekstovi (Poslati Materijali)'
+    40 => 'Korisnicki Tekstovi (Poslati Materijali)',
+    41 => 'Comment Submissions',
+    42 => 'User Name',
+    43 => 'Auto-publish Comments?'
 );
 
 ###############################################################################
@@ -1128,8 +1150,8 @@ $MESSAGE = array(
     12 => 'Blok je uspesno obrisan.',
     13 => 'Vasa kategorija tekstova je uspesno sacuvana.',
     14 => 'Kategorija i svi tekstovi u njoj su uspesno obrisani.',
-    15 => '',
-    16 => '',
+    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
+    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
     17 => '',
     18 => '',
     19 => '',
@@ -1440,6 +1462,31 @@ $LANG_DIR = array(
 );
 
 ###############################################################################
+# admin/sectest.php
+
+$LANG_SECTEST = array(
+    'sectest' => 'Geeklog Security Check',
+    'results' => 'Results of the Security Check',
+    'okay' => 'Everything seems to be in order.',
+    'please_fix' => 'Please fix the above issues before using your site!',
+    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
+    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
+    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
+    'installation' => 'installation instructions',
+    'directory' => 'directory',
+    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'fix_it' => 'This is a security risk and should be fixed!',
+    'reachable' => 'Your %s is reachable from the web.',
+    'not_reachable' => 'Good! Your %s is not reachable from the web.',
+    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
+    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
+    'inst_removed' => 'Good! You seem to have removed the install directory already.',
+    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'password_okay' => 'Good! You seem to have changed the default account password already.'
+);
+
+###############################################################################
 # "What's New" Time Strings
 # 
 # For the first two strings, you can use the following placeholders.
@@ -1526,7 +1573,8 @@ $LANG_ADMIN = array(
     'records_found' => 'Pranadjenih rezultata',
     'addchild' => 'Dodaj dete',
     'list' => 'prikazi',
-    'list_all' => 'Prikazi sve'
+    'list_all' => 'Prikazi sve',
+    'na' => 'N/A'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1630,6 +1678,7 @@ $LANG_confignames['Core'] = array(
     'mysqldump_options' => 'MySQL Dump Opcije',
     'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Tema',
+    'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => 'Elementi Menija',
     'path_themes' => 'Putanja Za Teme',
     'disable_new_user_registration' => 'Onemoguci Nove Registracije',
@@ -1668,6 +1717,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => 'Naziv Kolacica teme',
     'cookie_language' => 'Naziv Jecickog Kolacica',
     'cookie_tzid' => 'Naiv Kolacica Vremenske Zone',
+    'cookie_anon_name' => 'Anon. Username Cookie Name',
     'cookie_ip' => 'Kolacici Sadrze IP?',
     'default_perm_cookie_timeout' => 'Permanent Timeout',
     'session_cookie_timeout' => 'Timeout Sesije',
@@ -1776,6 +1826,9 @@ $LANG_confignames['Core'] = array(
     'comment_limit' => 'Ogranicenje Komentara',
     'comment_mode' => 'Rezim Komentara',
     'comment_code' => 'Komentari Podrazumevano',
+    'comment_edit' => 'Allow Comment Edit?',
+    'comment_edittime' => 'Comment Edit Time (seconds)',
+    'commentsubmission' => 'Queue Comment Submissions',
     'passwordspeedlimit' => 'Ogranicenje Brzine Lozinke',
     'login_attempts' => 'Max. Broj Pokusaja Prijave',
     'login_speedlimit' => 'Ogranicenje Brzine Prijave',
@@ -1785,6 +1838,8 @@ $LANG_confignames['Core'] = array(
     'skip_html_filter_for_root' => 'Izostavi HTML Filter za Root-a?',
     'allowed_protocols' => 'Dozvoljeni Protokoli',
     'disable_autolinks' => 'Onemoguci Autolikove?',
+    'clickable_links' => 'Make URLs clickable?',
+    'compressed_output' => 'Send compressed output?',
     'censormode' => 'Rezim Cenzure?',
     'censorreplace' => 'Cenzurisana Zamena Teksta',
     'censorlist' => 'Cenzurisana Lista',
@@ -1796,12 +1851,13 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => 'Max. Tekstova u Webservis Feed-u',
     'disable_webservices' => 'Onemoguci Webservise?',
     'restrict_webservices' => 'Zabrani Webservise?',
+    'article_comment_close_days' => 'Days to close comments (default)',
+    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
+    'allow_reply_notifications' => 'Allow comment reply notifications?',
     'search_style' => 'Results List Style',
     'search_limits' => 'Page Limits',
     'search_show_num' => 'Show Result Number?',
     'search_show_type' => 'Show Result Type?',
-    'search_show_user' => 'Show Author?',
-    'search_show_hits' => 'Show Number of Hits?',
     'search_show_sort' => 'Allow User to Sort Results?',
     'search_show_limit' => 'Show Page Limits?',
     'search_no_data' => 'If No Data is Avaliable, Display',
@@ -1885,7 +1941,8 @@ $LANG_configselects['Core'] = array(
     17 => array('Komentari Omoguceni' => 0, 'Komentari Onemoguceni' => -1),
     18 => array('Onemoguci' => 0, 'Omoguci (Identicno)' => 1, 'Omoguci (Pocetak Reci)' => 2, 'Omoguci (Deo Reci)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
 );
 
 ?>

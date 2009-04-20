@@ -49,10 +49,10 @@ $LANG01 = array(
     2 => 'читати далі',
     3 => 'коментарі',
     4 => 'Редагувати',
-    5 => 'Голосувати',
-    6 => 'Результати',
+    5 => '',
+    6 => '',
     7 => '',
-    8 => 'голос(и,ів)',
+    8 => '',
     9 => 'Функції адміністратора:',
     10 => 'Редактор сайту',
     11 => 'Статті',
@@ -207,7 +207,23 @@ $LANG03 = array(
     24 => 'Анонімний користувач',
     25 => 'Ви впевнені, що хочете доповісти про цей пост адміністратору?',
     26 => '%s доповів про наступний образливий коментар:',
-    27 => 'Доповідь про образу'
+    27 => 'Доповідь про образу',
+    28 => 'Preview Changes',
+    29 => 'Submit Changes',
+    30 => 'Edited on',
+    31 => 'by',
+    32 => 'Editing a Comment',
+    33 => 'Editing a Comment Submission',
+    34 => 'Preview Submission Changes',
+    35 => 'Save Changes to Queue',
+    36 => 'Notify me of new replies',
+    37 => 'New Comment Reply',
+    38 => 'A reply has been made to your comment \'%s\'.',
+    39 => 'You may view the comment thread at the following address:',
+    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
+    41 => 'Hello %s,',
+    42 => 'Unsubscribe',
+    43 => 'Unsubscribe from reply notifications'
 );
 
 ###############################################################################
@@ -438,7 +454,10 @@ $LANG08 = array(
     32 => 'Дата',
     33 => 'Прочитати статтю повністю на',
     34 => 'Кінець повідомлення',
-    35 => 'Вибачте, але цей користувач не бажає отримувати пошту.'
+    35 => 'Вибачте, але цей користувач не бажає отримувати пошту.',
+    36 => 'Copy:',
+    37 => 'Send me a copy of this email',
+    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -782,7 +801,7 @@ $LANG24 = array(
     60 => '',
     61 => 'Автоматично архівувати',
     62 => 'Автоматично вилучити',
-    63 => '',
+    63 => 'Disable Comments',
     64 => '',
     65 => '',
     66 => '',
@@ -957,11 +976,14 @@ $LANG29 = array(
     18 => 'Електронна адреса',
     34 => 'Управління',
     35 => 'Статті для ухвалення',
-    36 => '',
+    36 => 'Comment',
     37 => '',
     38 => 'Виконати',
     39 => 'На даний момент модерувати нічого',
-    40 => 'Користувачі для ухвалення'
+    40 => 'Користувачі для ухвалення',
+    41 => 'Comment Submissions',
+    42 => 'User Name',
+    43 => 'Auto-publish Comments?'
 );
 
 ###############################################################################
@@ -1127,8 +1149,8 @@ $MESSAGE = array(
     12 => 'Блок успішно вилучено.',
     13 => 'Тему успішно збережено.',
     14 => 'Тему, всі блоки і статті, які відносяться до неї, успішно вилучено.',
-    15 => '',
-    16 => '',
+    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
+    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
     17 => '',
     18 => '',
     19 => '',
@@ -1439,6 +1461,31 @@ $LANG_DIR = array(
 );
 
 ###############################################################################
+# admin/sectest.php
+
+$LANG_SECTEST = array(
+    'sectest' => 'Geeklog Security Check',
+    'results' => 'Results of the Security Check',
+    'okay' => 'Everything seems to be in order.',
+    'please_fix' => 'Please fix the above issues before using your site!',
+    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
+    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
+    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
+    'installation' => 'installation instructions',
+    'directory' => 'directory',
+    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'fix_it' => 'This is a security risk and should be fixed!',
+    'reachable' => 'Your %s is reachable from the web.',
+    'not_reachable' => 'Good! Your %s is not reachable from the web.',
+    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
+    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
+    'inst_removed' => 'Good! You seem to have removed the install directory already.',
+    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'password_okay' => 'Good! You seem to have changed the default account password already.'
+);
+
+###############################################################################
 # "What's New" Time Strings
 # 
 # For the first two strings, you can use the following placeholders.
@@ -1525,7 +1572,8 @@ $LANG_ADMIN = array(
     'records_found' => 'Знайдено записи',
     'addchild' => 'Add child',
     'list' => 'list',
-    'list_all' => 'List all'
+    'list_all' => 'List all',
+    'na' => 'N/A'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1629,6 +1677,7 @@ $LANG_confignames['Core'] = array(
     'mysqldump_options' => 'MySQL Dump Options',
     'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => 'Theme',
+    'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => 'Menu Elements',
     'path_themes' => 'Themes Path',
     'disable_new_user_registration' => 'Disable New Registrations',
@@ -1667,6 +1716,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => 'Theme Cookie Name',
     'cookie_language' => 'Language Cookie Name',
     'cookie_tzid' => 'Timezone Cookie Name',
+    'cookie_anon_name' => 'Anon. Username Cookie Name',
     'cookie_ip' => 'Cookies embed IP?',
     'default_perm_cookie_timeout' => 'Permanent Timeout',
     'session_cookie_timeout' => 'Session Timeout',
@@ -1775,6 +1825,9 @@ $LANG_confignames['Core'] = array(
     'comment_limit' => 'Comment Limit',
     'comment_mode' => 'Comment Mode',
     'comment_code' => 'Comment Default',
+    'comment_edit' => 'Allow Comment Edit?',
+    'comment_edittime' => 'Comment Edit Time (seconds)',
+    'commentsubmission' => 'Queue Comment Submissions',
     'passwordspeedlimit' => 'Password Speed Limit',
     'login_attempts' => 'Max. Login Attempts',
     'login_speedlimit' => 'Login Speed Limit',
@@ -1784,6 +1837,8 @@ $LANG_confignames['Core'] = array(
     'skip_html_filter_for_root' => 'Skip HTML Filter for Root?',
     'allowed_protocols' => 'Allowed Protocols',
     'disable_autolinks' => 'Disable Autolinks?',
+    'clickable_links' => 'Make URLs clickable?',
+    'compressed_output' => 'Send compressed output?',
     'censormode' => 'Censor Mode?',
     'censorreplace' => 'Censor Replace Text',
     'censorlist' => 'Censor List',
@@ -1795,12 +1850,13 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => 'Max. Stories in Webservices Feed',
     'disable_webservices' => 'Disable Webservices?',
     'restrict_webservices' => 'Restrict Webservices?',
+    'article_comment_close_days' => 'Days to close comments (default)',
+    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
+    'allow_reply_notifications' => 'Allow comment reply notifications?',
     'search_style' => 'Results List Style',
     'search_limits' => 'Page Limits',
     'search_show_num' => 'Show Result Number?',
     'search_show_type' => 'Show Result Type?',
-    'search_show_user' => 'Show Author?',
-    'search_show_hits' => 'Show Number of Hits?',
     'search_show_sort' => 'Allow User to Sort Results?',
     'search_show_limit' => 'Show Page Limits?',
     'search_no_data' => 'If No Data is Avaliable, Display',
@@ -1884,7 +1940,8 @@ $LANG_configselects['Core'] = array(
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
 );
 
 ?>

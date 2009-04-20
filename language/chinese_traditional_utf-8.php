@@ -48,10 +48,10 @@ $LANG01 = array(
     2 => '讀整文',
     3 => '個評論',
     4 => '編輯',
-    5 => '投票',
-    6 => '結果',
+    5 => '',
+    6 => '',
     7 => '',
-    8 => '投票',
+    8 => '',
     9 => '管理者功能︰',
     10 => '提交物',
     11 => '文章',
@@ -206,7 +206,23 @@ $LANG03 = array(
     24 => '匿名用戶',
     25 => '你肯定想要報告此濫登文給網站管理員否?',
     26 => '%s 報告以下濫登的評論:',
-    27 => '濫用報告'
+    27 => '濫用報告',
+    28 => 'Preview Changes',
+    29 => 'Submit Changes',
+    30 => 'Edited on',
+    31 => 'by',
+    32 => 'Editing a Comment',
+    33 => 'Editing a Comment Submission',
+    34 => 'Preview Submission Changes',
+    35 => 'Save Changes to Queue',
+    36 => 'Notify me of new replies',
+    37 => 'New Comment Reply',
+    38 => 'A reply has been made to your comment \'%s\'.',
+    39 => 'You may view the comment thread at the following address:',
+    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
+    41 => 'Hello %s,',
+    42 => 'Unsubscribe',
+    43 => 'Unsubscribe from reply notifications'
 );
 
 ###############################################################################
@@ -437,7 +453,10 @@ $LANG08 = array(
     32 => '日期',
     33 => '完整的文章在：',
     34 => '電郵結束',
-    35 => '對不起，此用戶不願意收電信.'
+    35 => '對不起，此用戶不願意收電信.',
+    36 => 'Copy:',
+    37 => 'Send me a copy of this email',
+    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -781,7 +800,7 @@ $LANG24 = array(
     60 => '',
     61 => '過期後自動封存',
     62 => '過期後自動刪除',
-    63 => '',
+    63 => 'Disable Comments',
     64 => '',
     65 => '',
     66 => '',
@@ -956,11 +975,14 @@ $LANG29 = array(
     18 => '電子郵件',
     34 => '命令和控制',
     35 => '已遞交的文章',
-    36 => '',
+    36 => 'Comment',
     37 => '',
     38 => '遞交',
     39 => '此時沒有遞交的東西',
-    40 => '申請的用戶'
+    40 => '申請的用戶',
+    41 => 'Comment Submissions',
+    42 => 'User Name',
+    43 => 'Auto-publish Comments?'
 );
 
 ###############################################################################
@@ -1126,8 +1148,8 @@ $MESSAGE = array(
     12 => '你的組件已被刪除了。',
     13 => '你的主題已被保存了。',
     14 => '你的主題和所有相關的文章已被刪除了。',
-    15 => '',
-    16 => '',
+    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
+    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
     17 => '',
     18 => '',
     19 => '',
@@ -1438,6 +1460,31 @@ $LANG_DIR = array(
 );
 
 ###############################################################################
+# admin/sectest.php
+
+$LANG_SECTEST = array(
+    'sectest' => 'Geeklog Security Check',
+    'results' => 'Results of the Security Check',
+    'okay' => 'Everything seems to be in order.',
+    'please_fix' => 'Please fix the above issues before using your site!',
+    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
+    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
+    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
+    'installation' => 'installation instructions',
+    'directory' => 'directory',
+    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'fix_it' => 'This is a security risk and should be fixed!',
+    'reachable' => 'Your %s is reachable from the web.',
+    'not_reachable' => 'Good! Your %s is not reachable from the web.',
+    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
+    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
+    'inst_removed' => 'Good! You seem to have removed the install directory already.',
+    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'password_okay' => 'Good! You seem to have changed the default account password already.'
+);
+
+###############################################################################
 # "What's New" Time Strings
 # 
 # For the first two strings, you can use the following placeholders.
@@ -1524,7 +1571,8 @@ $LANG_ADMIN = array(
     'records_found' => '已找到的資料',
     'addchild' => '加入子單',
     'list' => '列',
-    'list_all' => '列所有'
+    'list_all' => '列所有',
+    'na' => 'N/A'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1628,6 +1676,7 @@ $LANG_confignames['Core'] = array(
     'mysqldump_options' => 'MySQL Dump 選項',
     'mysqldump_filename_mask' => 'Backup File Name Mask',
     'theme' => '畫面主題',
+    'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => '才當成分',
     'path_themes' => '畫面主題的路徑',
     'disable_new_user_registration' => '關閉新登記',
@@ -1666,6 +1715,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => '版面主題 Cookie 名',
     'cookie_language' => '語言 Cookie 名',
     'cookie_tzid' => '時區 Cookie 名',
+    'cookie_anon_name' => 'Anon. Username Cookie Name',
     'cookie_ip' => 'Cookies 嵌入IP?',
     'default_perm_cookie_timeout' => '永恆休息',
     'session_cookie_timeout' => '短期休息',
@@ -1774,6 +1824,9 @@ $LANG_confignames['Core'] = array(
     'comment_limit' => '評論限定',
     'comment_mode' => '評論方式',
     'comment_code' => '評論默認',
+    'comment_edit' => 'Allow Comment Edit?',
+    'comment_edittime' => 'Comment Edit Time (seconds)',
+    'commentsubmission' => 'Queue Comment Submissions',
     'passwordspeedlimit' => '密碼速度限定',
     'login_attempts' => '最多登入企圖次數',
     'login_speedlimit' => '登入速度限定',
@@ -1783,6 +1836,8 @@ $LANG_confignames['Core'] = array(
     'skip_html_filter_for_root' => '根用戶跳過 HTML 過濾?',
     'allowed_protocols' => '許可 Protocols',
     'disable_autolinks' => '關閉 Autolinks?',
+    'clickable_links' => 'Make URLs clickable?',
+    'compressed_output' => 'Send compressed output?',
     'censormode' => '檢查方式?',
     'censorreplace' => '檢查代替文字',
     'censorlist' => '檢查列',
@@ -1794,12 +1849,13 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => 'Webservices Feed裏的文章數定',
     'disable_webservices' => '關閉 Webservices?',
     'restrict_webservices' => '限制 Webservices?',
+    'article_comment_close_days' => 'Days to close comments (default)',
+    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
+    'allow_reply_notifications' => 'Allow comment reply notifications?',
     'search_style' => 'Results List Style',
     'search_limits' => 'Page Limits',
     'search_show_num' => 'Show Result Number?',
     'search_show_type' => 'Show Result Type?',
-    'search_show_user' => 'Show Author?',
-    'search_show_hits' => 'Show Number of Hits?',
     'search_show_sort' => 'Allow User to Sort Results?',
     'search_show_limit' => 'Show Page Limits?',
     'search_no_data' => 'If No Data is Avaliable, Display',
@@ -1883,7 +1939,8 @@ $LANG_configselects['Core'] = array(
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any')
+    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
 );
 
 ?>
