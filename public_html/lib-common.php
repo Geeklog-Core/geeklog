@@ -2666,16 +2666,16 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $link_array[$LANG01[116]] = $menu_item;
         }
 
-        if( SEC_hasRights( 'plugin.edit' ))
-        {
+        if (SEC_hasRights('plugin.edit')) {
             $url = $_CONF['site_admin_url'] . '/plugins.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[77] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['plugins'] )));
+            $adminmenu->set_var('option_url', $url);
+            $adminmenu->set_var('option_label', $LANG01[77]);
+            $adminmenu->set_var('option_count',
+                    COM_numberFormat(DB_count($_TABLES['plugins'],
+                                              'pi_enabled', 1)));
 
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
+            $menu_item = $adminmenu->parse('item',
+                    ($thisUrl == $url) ? 'current' : 'option');
             $link_array[$LANG01[77]] = $menu_item;
         }
 
