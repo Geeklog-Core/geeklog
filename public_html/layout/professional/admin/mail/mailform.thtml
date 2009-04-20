@@ -1,11 +1,4 @@
 <form action="{php_self}" method="post">
-    {startblock_email}
-    <table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
-        <tr>
-            <td><img src="{layout_url}/images/icons/mail.png" alt=""{xhtml}></td>
-            <td>{lang_note}</td>
-        </tr>
-    </table>
     <table cellpadding="2" cellspacing="0">
         <tr>
             <td class="alignright">{lang_to}:</td>
@@ -55,5 +48,4 @@
             </td>
         </tr>
     </table>
-    {end_block}
 </form>

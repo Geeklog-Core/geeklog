@@ -30,7 +30,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Simple email form that lets you send emails to certain groups of users.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 $display = '';
@@ -54,22 +66,36 @@ if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
 */
 function display_mailform ()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG31;
+    global $_CONF, $LANG31, $LANG_ADMIN, $_IMAGE_TYPE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
-    $mail_templates = new Template ($_CONF['path_layout'] . 'admin/mail');
-    $mail_templates->set_file (array ('form' => 'mailform.thtml'));
-    $mail_templates->set_var ('site_url', $_CONF['site_url']);
-    $mail_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $mail_templates->set_var ('layout_url', $_CONF['layout_url']);
-    $mail_templates->set_var ('startblock_email', COM_startBlock ($LANG31[1],
-            '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $mail_templates->set_var ('php_self', $_CONF['site_admin_url']
-                                          . '/mail.php');
-    $mail_templates->set_var ('lang_note', $LANG31[19]);
-    $mail_templates->set_var ('lang_to', $LANG31[18]);
-    $mail_templates->set_var ('lang_selectgroup', $LANG31[25]);
+    $retval .= COM_startBlock($LANG31[1], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $desc = '<p>' . $LANG31[19] . '</p>';
+    $icon = $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE;
+    $retval .= ADMIN_createMenu($menu_arr, $desc, $icon);
+
+    $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
+    $mail_templates->set_file(array('form' => 'mailform.thtml'));
+    $mail_templates->set_var('site_url', $_CONF['site_url']);
+    $mail_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $mail_templates->set_var('layout_url', $_CONF['layout_url']);
+    $mail_templates->set_var('startblock_email', COM_startBlock($LANG31[1],
+            '', COM_getBlockTemplate('_admin_block', 'header')));
+    $mail_templates->set_var('php_self', $_CONF['site_admin_url']
+                                         . '/mail.php');
+    $mail_templates->set_var('lang_note', $LANG31[19]);
+    $mail_templates->set_var('lang_to', $LANG31[18]);
+    $mail_templates->set_var('lang_selectgroup', $LANG31[25]);
 
     $thisUsersGroups = SEC_getUserGroups();
     uksort($thisUsersGroups, 'strcasecmp');
@@ -81,28 +107,31 @@ function display_mailform ()
         }
     }
 
-    $mail_templates->set_var ('group_options', $group_options);
-    $mail_templates->set_var ('lang_from', $LANG31[2]);
-    $mail_templates->set_var ('site_name', $_CONF['site_name']);
-    $mail_templates->set_var ('lang_replyto', $LANG31[3]);
-    $mail_templates->set_var ('site_mail', $_CONF['site_mail']);
-    $mail_templates->set_var ('lang_subject', $LANG31[4]);
-    $mail_templates->set_var ('lang_body', $LANG31[5]);
-    $mail_templates->set_var ('lang_sendto', $LANG31[6]);
-    $mail_templates->set_var ('lang_allusers', $LANG31[7]);
-    $mail_templates->set_var ('lang_admin', $LANG31[8]);
-    $mail_templates->set_var ('lang_options', $LANG31[9]);
-    $mail_templates->set_var ('lang_HTML', $LANG31[10]);
-    $mail_templates->set_var ('lang_urgent', $LANG31[11]);
-    $mail_templates->set_var ('lang_ignoreusersettings', $LANG31[14]);
-    $mail_templates->set_var ('lang_send', $LANG31[12]);
-    $mail_templates->set_var ('end_block', COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
-    $mail_templates->set_var ('xhtml', XHTML);
+    $mail_templates->set_var('group_options', $group_options);
+    $mail_templates->set_var('lang_from', $LANG31[2]);
+    $mail_templates->set_var('site_name', $_CONF['site_name']);
+    $mail_templates->set_var('lang_replyto', $LANG31[3]);
+    $mail_templates->set_var('site_mail', $_CONF['site_mail']);
+    $mail_templates->set_var('lang_subject', $LANG31[4]);
+    $mail_templates->set_var('lang_body', $LANG31[5]);
+    $mail_templates->set_var('lang_sendto', $LANG31[6]);
+    $mail_templates->set_var('lang_allusers', $LANG31[7]);
+    $mail_templates->set_var('lang_admin', $LANG31[8]);
+    $mail_templates->set_var('lang_options', $LANG31[9]);
+    $mail_templates->set_var('lang_HTML', $LANG31[10]);
+    $mail_templates->set_var('lang_urgent', $LANG31[11]);
+    $mail_templates->set_var('lang_ignoreusersettings', $LANG31[14]);
+    $mail_templates->set_var('lang_send', $LANG31[12]);
+    $mail_templates->set_var('end_block',
+            COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
+    $mail_templates->set_var('xhtml', XHTML);
     $mail_templates->set_var('gltoken_name', CSRF_TOKEN);
     $mail_templates->set_var('gltoken', SEC_createToken());
 
-    $mail_templates->parse ('output', 'form');
-    $retval = $mail_templates->finish ($mail_templates->get_var ('output'));
+    $mail_templates->parse('output', 'form');
+    $retval .= $mail_templates->finish($mail_templates->get_var('output'));
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
