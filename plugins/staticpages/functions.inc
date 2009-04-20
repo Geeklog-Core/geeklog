@@ -627,6 +627,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
     $search->setRank(3);
+    $search->setURLRewrite(true);
 
     return $search;
 }
