@@ -592,12 +592,16 @@ class Search {
                 $col_hits = $this->_findColumn($result->searchheading, array($LANG09[50],$LANG09[23],'Downloads','Clicks'));//'Hits','Views'
 
                 $label = str_replace($LANG09[59], '', $result->searchlabel);
-
                 $num_results += $result->num_itemssearched;
 
                 // Extract the results
-                foreach ($result->searchresults as $old_row)
+                for ($i = 0; $i < 5; $i++)
                 {
+                    $j = ($i + ($page * 5)) - 5;
+                    if ($j >= count($result->searchresults))
+                        break;
+
+                    $old_row = $result->searchresults[$j];
                     if ($col_date != -1)
                     {
                         // Convert the date back to a timestamp
