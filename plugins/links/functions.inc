@@ -384,7 +384,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     }
 
     $search = new SearchCriteria('links', $LANG_LINKS[14]);
-    $columns = array('description','title');
+    $columns = array('description', 'title' => 'title');
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);

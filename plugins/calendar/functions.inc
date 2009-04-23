@@ -1645,7 +1645,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     // Search the public events
     $search_e = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[24]));
-    $columns = array('location','description','title');
+    $columns = array('location', 'description', 'title' => 'title');
     list($sql_tmp,$ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
     $search_e->setSQL($sql_tmp);
     $search_e->setFTSQL($ftsql_tmp);
@@ -1653,7 +1653,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     // Search personal events
     $search_p = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[23]));
-    $columns = array('location','description','title');
+    $columns = array('location', 'description','title' => 'title');
     list($sql_tmp,$ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
     $search_p->setSQL($sql_tmp);
     $search_p->setFTSQL($ftsql_tmp);

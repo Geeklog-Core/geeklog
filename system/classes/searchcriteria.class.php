@@ -139,7 +139,14 @@ class SearchCriteria {
             $ftwords['mssql'] = '"' . $query . '"';
         }
 
-        $strcol = implode(',',$columns);
+        $titles = (isset($_GET['title']) && isset($columns['title'])) ? true : false;
+
+        if ($titles) {
+            $strcol = $columns['title'];
+        } else {
+            $strcol = implode(',', $columns);
+        }
+
         $ftsql['mysql'] = $sql . "AND MATCH($strcol) AGAINST ('{$ftwords['mysql']}' IN BOOLEAN MODE)";
         $ftsql['mssql'] = $sql . "AND CONTAINS(($strcol), '{$ftwords['mssql']}')";
 
@@ -148,11 +155,15 @@ class SearchCriteria {
         {
             $word = trim($word);
             $tmp .= '(';
-            foreach ($columns AS $col) {
-                $tmp .= "$col LIKE '%$word%' OR ";
+            
+            if ($titles) {
+                $tmp .= $columns['title'] . " LIKE '%$word%' OR ";
+            } else {
+                foreach ($columns AS $col) {
+                    $tmp .= "$col LIKE '%$word%' OR ";
+                }
             }
-
-            $tmp = substr($tmp,0,-4) . ") $sep ";
+            $tmp = substr($tmp, 0, -4) . ") $sep ";
         }
         $sql .= substr($tmp, 0, -5) . ') ';
 

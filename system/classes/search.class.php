@@ -237,6 +237,7 @@ class Search {
         $searchform->set_var('lang_exact_phrase', $LANG09[43]);
         $searchform->set_var('lang_all_words', $LANG09[44]);
         $searchform->set_var('lang_any_word', $LANG09[45]);
+        $searchform->set_var('lang_titles', $LANG09[69]);
 
         $searchform->set_var ('query', htmlspecialchars ($this->_query));
         $searchform->set_var ('datestart', $this->_dateStart);
@@ -374,8 +375,8 @@ class Search {
         }
 
         $search = new SearchCriteria('stories', $LANG09[65]);
-        $columns = array('introtext','bodytext','title');
-        list( $sql, $ftsql ) = $search->buildSearchSQL( $this->_keyType, $query, $columns, $sql );
+        $columns = array('introtext', 'bodytext', 'title' => 'title');
+        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
         $search->setSQL($sql);
         $search->setFTSQL($ftsql);
         $search->setRank(5);
@@ -434,8 +435,8 @@ class Search {
         }
 
         $search = new SearchCriteria('comments', $LANG09[66]);
-        $columns = array('comment','c.title');
-        list( $sql, $ftsql ) = $search->buildSearchSQL( $this->_keyType, $query, $columns, $sql );
+        $columns = array('comment', 'title' => 'c.title');
+        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
         $search->setSQL($sql);
         $search->setFTSQL($ftsql);
         $search->setRank(2);

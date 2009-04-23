@@ -622,7 +622,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
-    $columns = array('sp_content','sp_title');
+    $columns = array('sp_content', 'title' => 'sp_title');
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);

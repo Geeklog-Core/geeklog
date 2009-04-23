@@ -3,12 +3,15 @@
                                 <table cellspacing="0" cellpadding="3">
                                     <tr>
                                         <td class="alignright">{lang_keywords}:</td>
-                                        <td><input type="text" name="query" size="35" maxlength="35" value="{query}"{xhtml}>
-                                        <select name="keyType">
-                                            <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
-                                            <option value="all" {key_all_selected}>{lang_all_words}</option>
-                                            <option value="any" {key_any_selected}>{lang_any_word}</option>
-                                        </select></td>
+                                        <td>
+                                            <input type="text" name="query" size="35" maxlength="35" value="{query}"{xhtml}>
+                                            <select name="keyType">
+                                                <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
+                                                <option value="all" {key_all_selected}>{lang_all_words}</option>
+                                                <option value="any" {key_any_selected}>{lang_any_word}</option>
+                                            </select>
+                                            <input type="checkbox" value="true" name="title"/>{lang_titles}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_date}:</td>
