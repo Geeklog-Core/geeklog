@@ -119,7 +119,7 @@ function CUSTOM_loginErrorHandler($msg='') {
 * - 'footer' (site footer)
 * - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
 * - 'story' (story submission)
-* - 'comment' (comments)
+* - 'comment' (comment submission form)
 * - 'registration' (user registration form)
 * - 'contact' (email user form)
 * - 'emailstory' (email story to a friend)
