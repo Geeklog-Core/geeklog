@@ -1155,7 +1155,11 @@ function plugin_get_pluginname($plugin)
 // MAIN
 $display = '';
 if (isset($_POST['pluginenabler']) && SEC_checkToken()) {
-    changePluginStatus($_POST['enabledplugins']);
+    if (isset($_POST['enabledplugins'])) {
+        changePluginStatus($_POST['enabledplugins']);
+    } else {
+        changePluginStatus(array());
+    }
 
     // force a refresh so that the information of the plugin that was just
     // enabled / disabled (menu entries, etc.) is displayed properly
