@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Document where CUSTOM_templateSetVars is actually called from (bug #0000862)
+  [Dirk]
 - Added option to search by titles only (feature request #0000840) [Sami]
 - Added a config option to enable/disable automatically turning URLs in text
   postings into clickable URLs [Dirk]

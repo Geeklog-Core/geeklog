@@ -113,14 +113,41 @@ function CUSTOM_loginErrorHandler($msg='') {
 
 /**
 * Include any code in this function to add custom template variables.
-* Initially, this function is only called in the COM_siteHeader function to set
-* header.thtml variables
+*
+* Called from within Geeklog for:
+* - 'header' (site header)
+* - 'footer' (site footer)
+* - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
+* - 'story' (story submission)
+* - 'comment' (comments)
+* - 'registration' (user registration form)
+* - 'contact' (email user form)
+* - 'emailstory' (email story to a friend)
+*
+* This function is called whenever PLG_templateSetVars is called, i.e. in
+* addition to the templates listed here, it may also be called from plugins.
+*
+* @param    string  $templatename   name of the template, e.g. 'header'
+* @param    ref    &$template       reference to the template
+* @return   void
+* @see      PLG_templateSetVars
+*
 */
-function CUSTOM_templateSetVars ($templatename, &$template)
+function CUSTOM_templateSetVars($templatename, &$template)
 {
-    if ($templatename == 'header') {
-        // define a {hello_world} variable which displays "Hello, world!"
-        $template->set_var ('hello_world', 'Hello, world!');
+    // define a {hello_world} variable available in header.thtml and
+    // a {hello_again} variable available in the story templates
+
+    switch ($templatename) {
+    case 'header':
+        $template->set_var('hello_world', 'Hello, world!');
+        break;
+
+    case 'storytext':
+    case 'featuredstorytext':
+    case 'archivestorytext':
+        $template->set_var('hello_again', 'Hello (again)!');
+        break;
     }
 }
 

@@ -1434,13 +1434,15 @@ function PLG_profileExtrasSave($plugin = '')
 /**
 * This function can be called to check if an plugin wants to set a template
 * variable
+*
 * Example in COM_siteHeader, the API call is now added
-* A plugin can now check for templatename == 'header' and then set additional
+* A plugin can check for $templatename == 'header' and then set additional
 * template variables
 *
-* @param   string   $templatename     Name of calling template - used as test in plugin function
-* @param   ref      $template         reference for the Template
-* @return  void
+* @param    string   $templatename  Name of calling template
+* @param    ref     &$template      reference for the Template
+* @return   void
+* @see      CUSTOM_templateSetVars
 *
 */
 function PLG_templateSetVars($templatename, &$template)
