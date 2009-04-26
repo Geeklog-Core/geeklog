@@ -1,4 +1,4 @@
                                 <div>
                                     {item_field}
                                 </div>
-                                <br>
+                                <br{xhtml}>
