@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Apr 20, 2009 (1.6.0)
+Apr ??, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added option to search by titles only (feature request #0000840) [Sami]
 - Added a config option to enable/disable automatically turning URLs in text
   postings into clickable URLs [Dirk]
 - Changed some default settings [Dirk]:
