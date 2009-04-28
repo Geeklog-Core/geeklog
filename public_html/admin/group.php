@@ -892,27 +892,27 @@ function grp_selectUsers ($group_id, $allusers = false)
 */
 function editusers($group)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_ADMIN, $LANG28,
+           $_IMAGE_TYPE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
-    $thisUsersGroups = SEC_getUserGroups ();
-    $groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
-    if (!empty ($group) &&
-       ($group > 0) &&
-       !in_array ($group, $thisUsersGroups) &&
-       !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups)
-       ) {
-        $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'],
+    $thisUsersGroups = SEC_getUserGroups();
+    $groupName = DB_getItem($_TABLES['groups'], 'grp_name', "grp_id='$group'");
+    if (!empty($group) && ($group > 0) && !in_array($group, $thisUsersGroups) &&
+           !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups)) {
+        $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'], '',
+                                  COM_getBlockTemplate('_msg_block', 'header'));
+        if (!SEC_inGroup('Root') && (DB_getItem($_TABLES['groups'],
                 'grp_name', "grp_id = $group") == 'Root')) {
             $retval .= $LANG_ACCESS['canteditroot'];
-            COM_accessLog ("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
+            COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
         } else {
             $retval .= $LANG_ACCESS['canteditgroup'];
         }
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
 
         return $retval;
     }
@@ -924,8 +924,19 @@ function editusers($group)
         $showall = 1;
     }
 
-    $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'] . " - $groupName" , '',
-                       COM_getBlockTemplate('_admin_block', 'header'));
+    $menu_arr = array(
+                    array('url'  => $group_listing_url,
+                          'text' => $LANG28[38]),
+                    array('url'  => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home'])
+                );
+
+    $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'] . " - $groupName",
+                        '', COM_getBlockTemplate('_admin_block', 'header'));
+
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_ACCESS['editgroupmsg'],
+                $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE);
+
     $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
     $groupmembers->set_file(array('groupmembers'=>'groupmembers.thtml'));
     $groupmembers->set_var('site_url', $_CONF['site_url']);
@@ -951,28 +962,42 @@ function editusers($group)
     $groupmembers->set_var('gltoken', SEC_createToken());
     $groupmembers->parse('output', 'groupmembers');
     $retval .= $groupmembers->finish($groupmembers->get_var('output'));
+
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
 
-function savegroupusers ($groupid, $groupmembers)
+/**
+* Save changes from the form to add/remove users to/from groups
+*
+* @param    int     $groupid        id of the group being changed
+* @param    string  $groupmembers   list of group members
+* @return   string                  HTML redirect
+*
+*/
+function savegroupusers($groupid, $groupmembers)
 {
     global $_CONF, $_TABLES;
+
+    $retval = '';
 
     // Delete all the current buddy records for this user and add all the selected ones
     $sql = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid IS NOT NULL";
     DB_query($sql);
-    $adduser = explode("|",$groupmembers);
-    for( $i = 0; $i < count($adduser); $i++ )    {
+    $adduser = explode('|', $groupmembers);
+    for ($i = 0; $i < count($adduser); $i++) {
         $adduser[$i] = COM_applyFilter($adduser[$i], true);
         DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
     }
+
     if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
-        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
+        $retval = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
     } else {
-        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
+        $retval = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
     }
+
+    return $retval;
 }
 
 /**
@@ -1048,10 +1073,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                           COM_applyFilter($_POST['grp_name']),
                           $_POST['grp_descr'], $chk_grpadmin, $grp_gl_core,
                           $features, $groups);
-} else if (($mode == 'savegroupusers') && SEC_checkToken()) {
-    $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $display .= savegroupusers ($grp_id, $_POST['groupmembers']);
-} else if ($mode == 'edit') {
+} elseif (($mode == 'savegroupusers') && SEC_checkToken()) {
+    $grp_id = COM_applyFilter($_REQUEST['grp_id'], true);
+    $display .= savegroupusers($grp_id, $_POST['groupmembers']);
+} elseif ($mode == 'edit') {
     $grp_id = 0;
     if (isset ($_REQUEST['grp_id'])) {
         $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
@@ -1059,12 +1084,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
     $display .= editgroup ($grp_id);
     $display .= COM_siteFooter ();
-} else if ($mode == 'listusers') {
+} elseif ($mode == 'listusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupmembers']);
     $display .= listusers ($grp_id);
     $display .= COM_siteFooter ();
-} else if ($mode == 'editusers') {
+} elseif ($mode == 'editusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= COM_siteHeader ('menu', $LANG_ACCESS['usergroupadmin']);
     $display .= editusers ($grp_id);

@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Cosmetic changes to the form to add/remove users to/from groups, for
+  consistency with the other admin panels [Dirk]
 - Document where CUSTOM_templateSetVars is actually called from (bug #0000862)
   [Dirk]
 - Added option to search by titles only (feature request #0000840) [Sami]
