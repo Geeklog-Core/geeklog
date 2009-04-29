@@ -899,14 +899,18 @@ function editusers($group)
 
     $retval = '';
 
+    $grp_name = DB_getItem($_TABLES['groups'], 'grp_name', "grp_id = $group");
+
     $thisUsersGroups = SEC_getUserGroups();
     $groupName = DB_getItem($_TABLES['groups'], 'grp_name', "grp_id='$group'");
-    if (!empty($group) && ($group > 0) && !in_array($group, $thisUsersGroups) &&
-           !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups)) {
+    if ((!empty($group) && ($group > 0) &&
+                !in_array($group, $thisUsersGroups) &&
+                !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups))
+            || (($grp_name == 'All Users') ||
+                ($grp_name == 'Logged-in Users'))) {
         $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'], '',
                                   COM_getBlockTemplate('_msg_block', 'header'));
-        if (!SEC_inGroup('Root') && (DB_getItem($_TABLES['groups'],
-                'grp_name', "grp_id = $group") == 'Root')) {
+        if (!SEC_inGroup('Root') && ($grp_name == 'Root')) {
             $retval .= $LANG_ACCESS['canteditroot'];
             COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
         } else {

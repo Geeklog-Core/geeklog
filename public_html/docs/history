@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Don't allow to add/remove users to/from the All Users and Logged-in Users
+  groups via the group editor (bugs #0000863 and #0000864) [Dirk]
 - Cosmetic changes to the form to add/remove users to/from groups, for
   consistency with the other admin panels [Dirk]
 - Document where CUSTOM_templateSetVars is actually called from (bug #0000862)
