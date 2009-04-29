@@ -829,7 +829,7 @@ function listgroups($show_all_groups = false)
         $filter .= '<label for="chk_showall"><input id="chk_showall" type="checkbox" name="chk_showall" value="1"' . $checked . XHTML . '>';
         $query_arr = array(
             'table' => 'groups',
-            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_id IN (2,13))",
+            'sql' => "SELECT * FROM {$_TABLES['groups']} WHERE (grp_gl_core = 0 OR grp_name IN ('All Users','Logged-in Users'))",
             'query_fields' => array('grp_name', 'grp_descr'),
             'default_filter' => $grpFilter);
     }
