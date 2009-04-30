@@ -363,7 +363,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
-    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, url ";
+    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
     $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
     $sql .= COM_getPermSQL('AND') . ' ';
 
