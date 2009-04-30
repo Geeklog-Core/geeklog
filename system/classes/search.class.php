@@ -580,8 +580,9 @@ class Search {
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
             {
                 // Some backwards compatibility
-                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility\n";
-                $debug_info .= print_r($result,1);
+                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
+                $debug_info .= " Count: " . $result->num_searchresults;
+                $debug_info .= " Headings: " . implode(",", $result->searchheading);
                 COM_errorLog($debug_info);
 
                 // Find the column heading names that closely match what we are looking for
@@ -598,6 +599,7 @@ class Search {
                 // Extract the results
                 for ($i = 0; $i < 5; $i++)
                 {
+                    // If the plugin does not repect the $perpage perameter force it here.
                     $j = ($i + ($page * 5)) - 5;
                     if ($j >= count($result->searchresults))
                         break;

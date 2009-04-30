@@ -372,8 +372,14 @@ class ListFactory {
             $this->_per_page = COM_applyFilter($_GET['results'], true);
         }
 
-        // Calculate the limits for each query
+        $rows_arr = $this->_preset_rows;
         $this->_total_found = count($this->_preset_rows);
+
+        // When the preset rows exceed per_page bail early
+        if ($this->_total_found > $this->_per_page)
+            return array_slice($rows_arr, 0, $this->_per_page);
+
+        // Calculate the limits for each query
         $num_query_results = $this->_per_page - $this->_total_found;
         $pp_total = $this->_total_found;
         $limits = array();
@@ -392,10 +398,9 @@ class ListFactory {
         $limits = $this->_getLimits($limits);
 
         // Execute each query in turn
-        $rows_arr = $this->_preset_rows;
         for ($i = 0; $i < count($this->_query_arr); $i++)
         {
-            if ($limits[$i]['limit'] == 0) {
+            if ($limits[$i]['limit'] <= 0) {
                 continue;
             }
             $limit_sql = " LIMIT {$limits[$i]['offset']},{$limits[$i]['limit']}";
