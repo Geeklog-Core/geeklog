@@ -608,11 +608,11 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
 /**
 * Get a list (actually an array) of all groups this group belongs to.
 *
-* @param   basegroup   int     id of group
-* @return              array   array of all groups 'basegroup' belongs to
+* @param    int     $basegroup  id of group
+* @return   array               array of all groups $basegroup belongs to
 *
 */
-function getGroupList ($basegroup)
+function getGroupList($basegroup)
 {
     global $_TABLES;
 
@@ -644,8 +644,8 @@ function getGroupList ($basegroup)
 /**
 * Display a list of all users in a given group.
 *
-* @param   grp_id   int      group id
-* @return           string   HTML for user listing
+* @param   int      $grp_id     group id
+* @return  string               HTML for user listing
 *
 */
 function listusers ($grp_id)
@@ -842,7 +842,18 @@ function listgroups($show_all_groups = false)
     return $retval;
 }
 
-function grp_selectUsers ($group_id, $allusers = false)
+/**
+* Get list of users in a given group
+*
+* Effectively, this function is used twice: To get a list of all users currently
+* in the given group and to get all list of all users NOT in that group.
+*
+* @param    int     $group_id   group id
+* @param    boolean $allusers   true: return users not in the group
+* @return   string              option list containing uids and user names
+*
+*/
+function grp_selectUsers($group_id, $allusers = false)
 {
     global $_TABLES, $_USER;
 
@@ -952,8 +963,8 @@ function editusers($group)
     $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']);
     $groupmembers->set_var('LANG_sitemembers',$LANG_ACCESS['availmembers']);
     $groupmembers->set_var('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
-    $groupmembers->set_var('sitemembers', grp_selectUsers($group,true) );
-    $groupmembers->set_var('group_list', grp_selectUsers($group) );
+    $groupmembers->set_var('sitemembers', grp_selectUsers($group, true));
+    $groupmembers->set_var('group_list', grp_selectUsers($group));
     $groupmembers->set_var('LANG_add',$LANG_ACCESS['add']);
     $groupmembers->set_var('LANG_remove',$LANG_ACCESS['remove']);
     $groupmembers->set_var('lang_save', $LANG_ADMIN['save']);
