@@ -58,6 +58,7 @@ class Search {
     var $_keyType = '';
     var $_names = array();
     var $_url_rewrite = array();
+    var $_append_query = array();
     var $_searchURL = '';
     var $_wordlength;
 
@@ -574,7 +575,8 @@ class Search {
                 COM_errorLog($debug_info);
 
                 $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
-                $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable() ? true : false;
+                $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
+                $this->_append_query[ $result->getName() ] = $result->AppendQueryEnable();
                 $new_api++;
             }
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
@@ -727,7 +729,10 @@ class Search {
                         $this->_url_rewrite[$row[SQL_NAME]]) {
                     $row['url'] = COM_buildUrl($row['url']);
                 }
-                $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                if (isset($this->_append_query[$row[SQL_NAME]]) &&
+                        $this->_append_query[$row[SQL_NAME]]) {
+                    $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                }
             }
 
             $row['title'] = $this->_shortenText($this->_query, $row['title'], 6);
