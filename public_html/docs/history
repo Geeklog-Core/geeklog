@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-Apr ??, 2009 (1.6.0)
-------------
+May 1, 2009 (1.6.0b1)
+-----------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
 the 2008 Google Summer of Code:
@@ -25,6 +25,7 @@ Other changes:
   * Cronjob emulation is off
   * Default sort for topics is alphabetically
   * Default comment mode is nested
+  These settings are _not_ changed when upgrading from an earlier version.
 - Experimental: Compress HTML output before sending it to the browser (disabled
   by default; has to be supported by both the browser and the webserver) [Dirk]
 - Moved hard-coded texts from admin/sectest.php to the language files (bug
@@ -32,7 +33,7 @@ Other changes:
 - Added an option to send a copy of the email to a user to self (feature request
   #0000771, based on a patch by Roshan Singh)
 - COM_checkList would use the table name for the name of the checkbox array in
-  the HTML(!) - added a new parameter for the name (pointed out by Bookoo in
+  the HTML(!). Added a new parameter for the name (pointed out by Bookoo in
   the exploit for usersettings.php, cf. Geeklog 1.5.2sr4) [Dirk]
 - Fixed wrong use of COM_allowedHTML and COM_checkHTML in plugins: Functions
   were called without specific permissions, so they defaulted to 'story.edit'.
@@ -411,7 +412,7 @@ Sep 7, 2008 (1.5.1rc1)
 - Re-introduced function get_SP_Ver in the install script, which is still needed
   when upgrading from old Geeklog releases (reported by libexec) [Dirk]
 - Fixed issue where you can post a comment to an unpublished story (bug
-  #0000705) [Mystral_KK/Mike]
+  #0000705) [mystral-kk/Mike]
 - Fixed make clickable links with quotes (bug #0000691) plus truncated long
   urls. [Sami]
 - Fixed table prefix issues with constraints (bug #0000702) [Mike/Sami]
@@ -421,7 +422,7 @@ Sep 7, 2008 (1.5.1rc1)
 - Moved remove() (config JavaScript) to gl_cfg_remove (bug #0000681) [Mike]
 - Change for CUSTOM_usercreate to support passing in $batchimport, 
   set true if called via the Admin->Users Batch_Add [Blaine]
-- Fix for date formatting in RSS fields (bug #0000696) [mystral_kk]
+- Fix for date formatting in RSS fields (bug #0000696) [mystral-kk]
 - A small tweak to the Professional theme's commentbar to make the "Post a
   comment" option easier to find [Dirk]
 - Renamed the syndication feed type "geeklog" to "article" since that's what
@@ -721,7 +722,7 @@ May 5, 2008 (1.5.0b1)
 - Avoid division by zero error when $_CONF['limitnews'] == 0
   (reported by Samuel M. Stone) [Dirk]
 - Bugfix: Atom always assumes 0.3 and doesn't handle article dates. (Reported by
-  mystral kk on the forums). [Mike]
+  mystral-kk on the forums). [Mike]
 - Added OpenID 1.1 support, provided by Choplair
 - Pass site_name into story templates so advanced linking to items like digg.com
   can be templated cross-site. [Mike]
