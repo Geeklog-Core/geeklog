@@ -118,6 +118,7 @@ function plugin_compatible_with_this_version_xmlsitemap($pi_name)
 * @param    string  $pi_name    Plugin name
 * @return   boolean             TRUE: plugin compatible; FALSE: not compatible
 */
+/*
 function plugin_postinstall_xmlsitemap($pi_name)
 {
     global $_CONF, $_XMLSMAP_CONF;
@@ -127,5 +128,5 @@ function plugin_postinstall_xmlsitemap($pi_name)
     // Create an XML sitemap for the first time
     return XMLSMAP_update();
 }
-
+*/
 ?>
