@@ -52,7 +52,11 @@ if (!defined('LB')) {
     define('LB', "\n");
 }
 if (!defined('VERSION')) {
-    define('VERSION', '1.6.0');
+    /**
+    * This constant defines Geeklog's version number. It will be written to
+    * siteconfig.php and the database (in the latter case minus any suffix).
+    */
+    define('VERSION', '1.6.0b1');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
@@ -1103,6 +1107,46 @@ function INST_getLanguage()
     }
 
     return $language;
+}
+
+/**
+* Set Geeklog version number in siteconfig.php and in the database
+*
+* @param   string  $siteconfig_path    path to siteconfig.php
+* @return  void
+*
+*/
+function INST_setVersion($siteconfig_path)
+{
+    global $_TABLES, $LANG_INSTALL;
+
+    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
+    fclose($siteconfig_file);
+
+    $siteconfig_data = preg_replace
+            (
+             '/define\s*\(\'VERSION\',[^;]*;/',
+             "define('VERSION', '" . VERSION . "');",
+             $siteconfig_data
+            );
+
+    $siteconfig_file = @fopen($siteconfig_path, 'w');
+    if (! fwrite($siteconfig_file, $siteconfig_data)) {
+        exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
+    }
+    fclose($siteconfig_file);
+
+    // for the database version, get rid of any appendices ('sr1' etc.)
+    $version = VERSION;
+    $v = explode('.', VERSION);
+    if (count($v) == 3) {
+        $v[2] = (int) $v[2];
+        $version = implode('.', $v);
+    }
+    $version = addslashes($version);
+
+    DB_change($_TABLES['vars'], 'value', $version, 'name', 'database_version');
 }
 
 ?>

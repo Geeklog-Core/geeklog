@@ -485,8 +485,6 @@ function INST_doDatabaseUpgrades($current_gl_version)
     // to run admin/sectest.php again
     DB_delete($_TABLES['vars'], 'name', 'security_check');
 
-    DB_change($_TABLES['vars'], 'value', VERSION, 'name', 'database_version');
-
     return true;
 }
 
@@ -641,35 +639,6 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
     return $result;
 }
 
-
-/**
- * Set VERSION constant in siteconfig.php after successful upgrade
- *
- * @param   string  $siteconfig_path    path to siteconfig.php
- * @return  void
- *
- */
-function INST_setVersion($siteconfig_path)
-{
-    global $LANG_INSTALL;
-
-    $siteconfig_file = fopen($siteconfig_path, 'r');
-    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
-    fclose($siteconfig_file);
-
-    $siteconfig_data = preg_replace
-            (
-             '/define\s*\(\'VERSION\',[^;]*;/',
-             "define('VERSION', '" . VERSION . "');",
-             $siteconfig_data
-            );
-
-    $siteconfig_file = fopen($siteconfig_path, 'w');
-    if (!fwrite($siteconfig_file, $siteconfig_data)) {
-        exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
-    }
-    fclose($siteconfig_file);
-}
 
 
 /**

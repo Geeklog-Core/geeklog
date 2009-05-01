@@ -485,8 +485,7 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('language', $lng);
                         }
 
-                        DB_change($_TABLES['vars'], 'value', VERSION,
-                                                    'name', 'database_version');
+                        INST_setVersion($siteconfig_path);
 
                         if (! $install_plugins) {
                             // do a default install of all available plugins
