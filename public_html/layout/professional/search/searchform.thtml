@@ -44,10 +44,7 @@
                                         <td class="alignright">{lang_results}:</td>
                                         <td>
                                         <select name="results">
-                                            <option value="10" {10_selected}>10</option>
-                                            <option value="15" {15_selected}>15</option>
-                                            <option value="25" {25_selected}>25</option>
-                                            <option value="50" {50_selected}>50</option>
+                                            {search_limits}
                                         </select>&nbsp; {lang_per_page}</td>
                                     </tr>
                                     <tr>
