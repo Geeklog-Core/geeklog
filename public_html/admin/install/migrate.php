@@ -840,6 +840,9 @@ if (INST_phpOutOfDate()) {
 
         }
 
+        // finally, check for any new plugins and install them
+        INST_autoinstallNewPlugins();
+
         /**
          * Check for other missing files
          * e.g. images/articles, images/topics, images/userphotos

@@ -591,6 +591,12 @@ function INST_installEngine($install_type, $install_step)
                                 !empty($_GET['install_plugins'])) 
                          ? true 
                          : false);
+
+        if (! $install_plugins) {
+            // if we don't do the manual selection, install all new plugins now
+            INST_autoinstallNewPlugins();
+        }
+
         $next_link = ($install_plugins
                    ? 'install-plugins.php?language=' . $language
                    : 'success.php?type=' . $install_type
