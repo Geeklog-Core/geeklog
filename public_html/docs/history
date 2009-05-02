@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Added a verbose logging option to the search class and make it default to off
+  [Dirk]
 - Fixed a typo that prevented the [staticpage:] autotag from working [Dirk]
 
 

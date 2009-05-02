@@ -61,6 +61,7 @@ class Search {
     var $_append_query = array();
     var $_searchURL = '';
     var $_wordlength;
+    var $_verbose = false; // verbose logging
 
     /**
     * Constructor
@@ -572,7 +573,9 @@ class Search {
                 $sql = $this->_convertsql($sql);
 
                 $debug_info .= "SQL = " . print_r($sql,1);
-                COM_errorLog($debug_info);
+                if ($this->_verbose) {
+                    COM_errorLog($debug_info);
+                }
 
                 $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
@@ -585,7 +588,9 @@ class Search {
                 $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
                 $debug_info .= " Count: " . $result->num_searchresults;
                 $debug_info .= " Headings: " . implode(",", $result->searchheading);
-                COM_errorLog($debug_info);
+                if ($this->_verbose) {
+                    COM_errorLog($debug_info);
+                }
 
                 // Find the column heading names that closely match what we are looking for
                 // There may be issues here on different languages, but this _should_ capture most of the data
@@ -641,7 +646,9 @@ class Search {
         }
 
         // Find out how many plugins are on the old/new system
-        COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
+        if ($this->_verbose) {
+            COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
+        }
 
         // Execute the queries
         $results = $obj->ExecuteQueries();
