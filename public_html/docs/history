@@ -13,7 +13,15 @@ the 2008 Google Summer of Code:
 Other changes:
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
+
+Static Pages plugin
+-------------------
 - Fixed a typo that prevented the [staticpage:] autotag from working [Dirk]
+
+XMLSitemap plugin
+-----------------
+- Fixed "missing argument 2" error when changing config options (reported by
+  Markus Wollschläger) [Dirk]
 
 
 May 1, 2009 (1.6.0b1)

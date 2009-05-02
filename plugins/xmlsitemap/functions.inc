@@ -428,7 +428,7 @@ function XMLSITEMAP_changeFile($key, $varname)
 * @param  group    string          - 'Core' or 'xmlsitemap'
 * @param  changes  array of string - config var key
 */
-function plugin_configchange_xmlsitemap($group, $changes)
+function plugin_configchange_xmlsitemap($group, $changes = array())
 {
     global $_XMLSMAP_CONF;
 	
