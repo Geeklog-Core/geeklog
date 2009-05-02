@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-May 1, 2009 (1.6.0b1)
------------
+May ??, 2009 (1.6.0b2)
+------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
 the 2008 Google Summer of Code:
@@ -11,6 +11,12 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed a typo that prevented the [staticpage:] autotag from working [Dirk]
+
+
+May 1, 2009 (1.6.0b1)
+-----------
+
 - New XMLSitemap plugin that creates a XML sitemaps file as supported by all
   major search engines, provided by mystral-kk
 - Don't allow to add/remove users to/from the All Users and Logged-in Users
