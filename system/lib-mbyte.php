@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-mbyte.php                                                             |
 // |                                                                           |
 // | function collection to handle mutli-byte related issues                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: lib-mbyte.php,v 1.21 2008/09/21 08:37:11 dhaun Exp $
 
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-mbyte.php') !== false) {
     die('This file can not be used on its own!');
@@ -161,6 +159,26 @@ function MBYTE_strpos($hay, $needle, $offset = NULL)
     return $result;
 }
 
+function MBYTE_strrpos($hay, $needle, $offset = NULL)
+{
+    static $mb_enabled;
+
+    if (!isset($mb_enabled)) {
+        $mb_enabled = MBYTE_checkEnabled();
+    }
+    if ($mb_enabled) {
+        if ($offset === NULL) {
+            $result = mb_strrpos($hay, $needle);
+        } else {
+            $result = mb_strrpos($hay, $needle, $offset);
+        }
+    } else {
+        $result = strrpos($hay, $needle, $offset);
+    }
+
+    return $result;
+}
+
 function MBYTE_strtolower($str)
 {
     static $mb_enabled;
@@ -238,22 +256,6 @@ function MBYTE_strtoupper($str)
         $result = mb_strtoupper($str, 'utf-8');
     } else {
         $result = strtoupper($str);
-    }
-
-    return $result;
-}
-
-function MBYTE_strrpos($hay, $needle, $offset='')
-{
-    static $mb_enabled;
-
-    if (!isset($mb_enabled)) {
-        $mb_enabled = MBYTE_checkEnabled();
-    }
-    if ($mb_enabled) {
-        $result = mb_strrpos($hay, $needle, $offset, 'utf-8');
-    } else {
-        $result = strrpos($hay, $needle, $offset);
     }
 
     return $result;

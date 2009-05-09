@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed handling of multi-byte encoded texts when limiting the content of feed
+  entries to a certain amount of characters (reported by alank) [Dirk]
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
 
