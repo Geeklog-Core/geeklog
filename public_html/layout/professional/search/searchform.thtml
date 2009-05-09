@@ -32,9 +32,6 @@
                                         <td class="alignright">{lang_type}:</td>
                                         <td>
                                             <select name="type">
-                                                <option value="all" {type_all_selected}>{lang_all}</option>
-                                                <option value="stories" {stories_selected}>{lang_stories}</option>
-                                                <option value="comments" {comments_selected}>{lang_comments}</option>
                                                 {plugin_types}
                                             </select>
                                         </td>

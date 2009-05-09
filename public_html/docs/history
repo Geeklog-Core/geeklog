@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed empty entries in the "Type" dropdown on the Advanced Search page.
+  Requires an updated search/searchform.thtml template (part of bug #0000874)
 - Ensure PLG_templateSetVars (and therefore CUSTOM_templateSetVars) is called
   properly when the "Skip Preview" option is disabled (bug #0000880) [Dirk]
 - Fixed handling of multi-byte encoded texts when limiting the content of feed
