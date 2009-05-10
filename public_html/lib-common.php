@@ -6275,7 +6275,7 @@ function COM_createImage($url, $alt = "", $attr = array())
 
     $retval = '';
 
-    if (strpos($url, 'http://') !== 0) {
+    if (preg_match("/^(https?):/", $url) !== 1) {
         $url = $_CONF['layout_url'] . $url;
     }
     $attr_str = 'src="' . $url . '"';
