@@ -470,15 +470,15 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 /**
 * Gets everything a user has permissions to within the system
 *
-* This is part of the Geeklog security implmentation.  This function
-* will get all the permissions the current user has call itself recursively.
+* This is part of the Geeklog security implementation.  This function
+* will get all the permissions the current user has. Calls itself recursively.
 *
-* @param    int     $grp_id     DO NOT USE (Used for reccursion) Current group function is working on
+* @param    int     $grp_id     DO NOT USE (Used for recursion) Current group function is working on
 * @param    int     $uid        User to check, if empty current user.
 * @return   string  returns comma delimited list of features the user has access to
 *
 */
-function SEC_getUserPermissions($grp_id='',$uid='')
+function SEC_getUserPermissions($grp_id='', $uid='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
@@ -504,6 +504,11 @@ function SEC_getUserPermissions($grp_id='',$uid='')
         $groups = $_GROUPS;
     } else {
         $groups = SEC_getUserGroups ($uid);
+    }
+
+    if (empty($groups)) {
+        // this shouldn't happen - make a graceful exit to avoid an SQL error
+        return '';
     }
 
     $glist = join(',', $groups);
