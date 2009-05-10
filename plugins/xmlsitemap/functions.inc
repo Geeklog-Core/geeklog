@@ -257,32 +257,6 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id)
 }
 
 /**
-* Add a meta tag representing the location of a sitemap
-*/
-function plugin_getheadercode_xmlsitemap()
-{
-	global $_CONF, $_XMLSMAP_CONF;
-	
-	$retval = '';
-	
-	if ($_XMLSMAP_CONF['sitemap_file'] != '') {
-		$retval .= '<link rel="alternate" type="application/rss+xml" href="'
-				.  basename($_XMLSMAP_CONF['sitemap_file']) . '"' . XHTML . '>' . LB;
-	}
-	
-	if (! empty($_XMLSMAP_CONF['mobile_sitemap_file'])) {
-		$retval .= '<link rel="alternate" type="application/rss+xml" href="'
-				.  basename($_XMLSMAP_CONF['mobile_sitemap_file']) . '"' . XHTML . '>' . LB;
-	}
-	
-	if ($retval != '') {
-		$retval = LB . $retval;
-	}
-	
-	return $retval;
-}
-
-/**
 * Callback function when an item was deleted
 */
 function plugin_itemdeleted_xmlsitemap($id, $type)
