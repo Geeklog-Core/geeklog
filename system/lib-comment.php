@@ -948,7 +948,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $username = $_USER['username'];
                     $fullname = $_USER['fullname'];
                 }
-            	$comment_template->set_var('CSRF_TOKEN', SEC_createToken());
+                $comment_template->set_var('gltoken_name', CSRF_TOKEN);
+                $comment_template->set_var('gltoken', SEC_createToken());
                 $comment_template->set_var('uid', $commentuid);
                 $name = COM_getDisplayName($commentuid, $username, $fullname);
                 $comment_template->set_var('username', $name);
