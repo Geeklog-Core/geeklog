@@ -485,8 +485,7 @@ function INST_installEngine($install_type, $install_step)
                             $config->set('language', $lng);
                         }
 
-                        DB_change($_TABLES['vars'], 'value', VERSION,
-                                                    'name', 'database_version');
+                        INST_setVersion($siteconfig_path);
 
                         if (! $install_plugins) {
                             // do a default install of all available plugins
@@ -591,6 +590,12 @@ function INST_installEngine($install_type, $install_step)
                                 !empty($_GET['install_plugins'])) 
                          ? true 
                          : false);
+
+        if (! $install_plugins) {
+            // if we don't do the manual selection, install all new plugins now
+            INST_autoinstallNewPlugins();
+        }
+
         $next_link = ($install_plugins
                    ? 'install-plugins.php?language=' . $language
                    : 'success.php?type=' . $install_type

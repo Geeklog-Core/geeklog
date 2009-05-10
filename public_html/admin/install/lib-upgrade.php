@@ -485,8 +485,6 @@ function INST_doDatabaseUpgrades($current_gl_version)
     // to run admin/sectest.php again
     DB_delete($_TABLES['vars'], 'name', 'security_check');
 
-    DB_change($_TABLES['vars'], 'value', VERSION, 'name', 'database_version');
-
     return true;
 }
 
@@ -641,35 +639,6 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
     return $result;
 }
 
-
-/**
- * Set VERSION constant in siteconfig.php after successful upgrade
- *
- * @param   string  $siteconfig_path    path to siteconfig.php
- * @return  void
- *
- */
-function INST_setVersion($siteconfig_path)
-{
-    global $LANG_INSTALL;
-
-    $siteconfig_file = fopen($siteconfig_path, 'r');
-    $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
-    fclose($siteconfig_file);
-
-    $siteconfig_data = preg_replace
-            (
-             '/define\s*\(\'VERSION\',[^;]*;/',
-             "define('VERSION', '" . VERSION . "');",
-             $siteconfig_data
-            );
-
-    $siteconfig_file = fopen($siteconfig_path, 'w');
-    if (!fwrite($siteconfig_file, $siteconfig_data)) {
-        exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
-    }
-    fclose($siteconfig_file);
-}
 
 
 /**
@@ -864,6 +833,71 @@ function INST_pluginUpgrades($migration = false, $old_conf = array())
     }
 
     return $failed;
+}
+
+/**
+* Pick up and install any new plugins
+*
+* Search for plugins that exist in the filesystem but are not registered with
+* Geeklog. If they support auto install, install them now.
+*
+* @return void
+*
+*/
+function INST_autoinstallNewPlugins()
+{
+    global $_CONF, $_TABLES;
+
+    $newplugins = array();
+
+    clearstatcache ();
+    $plugins_dir = $_CONF['path'] . 'plugins/';
+    $fd = opendir($plugins_dir);
+    while (($plugin = @readdir($fd)) == TRUE) {
+
+        if (($plugin <> '.') && ($plugin <> '..') && ($plugin <> 'CVS') &&
+                (substr($plugin, 0, 1) <> '.') &&
+                (substr($plugin, 0, 1) <> '_') &&
+                is_dir($plugins_dir . $plugin)) {
+
+            if (DB_count($_TABLES['plugins'], 'pi_name', $plugin) == 0) {
+
+                // found a new plugin: remember name, keep on searching
+                $newplugins[] = $plugin;
+
+            }
+        }
+    }
+
+    // automatically install all new plugins that come with a autoinstall.php
+    foreach ($newplugins as $pi_name) {
+        $plugin_inst = $_CONF['path'] . 'plugins/' . $pi_name
+                     . '/autoinstall.php';
+        if (file_exists($plugin_inst)) {
+
+            require_once $plugin_inst;
+
+            $check_compatible = 'plugin_compatible_with_this_version_'
+                              . $pi_name;
+            if (function_exists($check_compatible)) {
+                if (! $check_compatible($pi_name)) {
+                    continue; // with next plugin
+                }
+            }
+
+            $auto_install = 'plugin_autoinstall_' . $pi_name;
+            if (! function_exists($auto_install)) {
+                continue; // with next plugin
+            }
+
+            $inst_parms = $auto_install($pi_name);
+            if (($inst_parms === false) || empty($inst_parms)) {
+                continue; // with next plugin
+            }
+
+            INST_pluginAutoinstall($pi_name, $inst_parms);
+        }
+    }
 }
 
 /**

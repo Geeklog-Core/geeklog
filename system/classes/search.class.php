@@ -58,8 +58,10 @@ class Search {
     var $_keyType = '';
     var $_names = array();
     var $_url_rewrite = array();
+    var $_append_query = array();
     var $_searchURL = '';
     var $_wordlength;
+    var $_verbose = false; // verbose logging
 
     /**
     * Constructor
@@ -571,18 +573,24 @@ class Search {
                 $sql = $this->_convertsql($sql);
 
                 $debug_info .= "SQL = " . print_r($sql,1);
-                COM_errorLog($debug_info);
+                if ($this->_verbose) {
+                    COM_errorLog($debug_info);
+                }
 
                 $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
-                $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable() ? true : false;
+                $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
+                $this->_append_query[ $result->getName() ] = $result->AppendQueryEnable();
                 $new_api++;
             }
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
             {
                 // Some backwards compatibility
-                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility\n";
-                $debug_info .= print_r($result,1);
-                COM_errorLog($debug_info);
+                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
+                $debug_info .= " Count: " . $result->num_searchresults;
+                $debug_info .= " Headings: " . implode(",", $result->searchheading);
+                if ($this->_verbose) {
+                    COM_errorLog($debug_info);
+                }
 
                 // Find the column heading names that closely match what we are looking for
                 // There may be issues here on different languages, but this _should_ capture most of the data
@@ -598,6 +606,7 @@ class Search {
                 // Extract the results
                 for ($i = 0; $i < 5; $i++)
                 {
+                    // If the plugin does not repect the $perpage perameter force it here.
                     $j = ($i + ($page * 5)) - 5;
                     if ($j >= count($result->searchresults))
                         break;
@@ -637,7 +646,9 @@ class Search {
         }
 
         // Find out how many plugins are on the old/new system
-        COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
+        if ($this->_verbose) {
+            COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
+        }
 
         // Execute the queries
         $results = $obj->ExecuteQueries();
@@ -725,7 +736,10 @@ class Search {
                         $this->_url_rewrite[$row[SQL_NAME]]) {
                     $row['url'] = COM_buildUrl($row['url']);
                 }
-                $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                if (isset($this->_append_query[$row[SQL_NAME]]) &&
+                        $this->_append_query[$row[SQL_NAME]]) {
+                    $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                }
             }
 
             $row['title'] = $this->_shortenText($this->_query, $row['title'], 6);

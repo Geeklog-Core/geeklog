@@ -703,60 +703,66 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
         $show_all_groups = true;
     }
 
-    if (in_array ($A['grp_id'], $thisUsersGroups ) ||
-        SEC_groupIsRemoteUserAndHaveAccess( $A['grp_id'], $thisUsersGroups )) {
+    if (in_array($A['grp_id'], $thisUsersGroups) ||
+          SEC_groupIsRemoteUserAndHaveAccess($A['grp_id'], $thisUsersGroups)) {
         switch($fieldname) {
-            case 'edit':
-                if ($show_all_groups) {
-                    $retval = COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}&amp;chk_showall=1");
-                } else {
-                    $retval = COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=edit&amp;grp_id={$A['grp_id']}");
-                }
-                break;
-            case 'grp_gl_core':
-                if ($A['grp_gl_core'] == 1) {
-                    $retval = $LANG_ACCESS['yes'];
-                } else {
-                    $retval = $LANG_ACCESS['no'];
-                }
-                break;
-            case 'list':
-                if ($show_all_groups) {
-                    $retval = COM_createLink($icon_arr['list'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1")
-                        ."&nbsp;&nbsp;"
-                        . COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}&amp;chk_showall=1");
-                } else {
-                    $retval = COM_createLink($icon_arr['list'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=listusers&amp;grp_id={$A['grp_id']}")
-                        ."&nbsp;&nbsp;"
-                        . COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/group.php?mode=editusers&amp;grp_id={$A['grp_id']}");
-                }
-                break;
-            case 'checkbox':
-                $retval = '<input type="checkbox" name="groups[]" value="'
-                        . $A['grp_id'] . '"';
-                if (is_array($selected) && in_array($A['grp_id'], $selected)) {
-                    $retval .= ' checked="checked"';
-                }
-                $retval .= XHTML . '>';
-                break;
-            case 'disabled-checkbox':
-                $retval = '<input type="checkbox" checked="checked" '
-                        . 'disabled="disabled"' . XHTML . '>'
-                        . '<input type="hidden" name="groups[]" value="'
-                        . $A['grp_id'] . '"' . XHTML . '>';
-                break;
-            case 'grp_name':
-                $retval = ucwords($fieldvalue);
-                break;
-            default:
-                $retval = $fieldvalue;
-                break;
+        case 'edit':
+            $url = $_CONF['site_admin_url'] . '/group.php?mode=edit&amp;grp_id='
+                 . $A['grp_id'];
+            if ($show_all_groups) {
+                $url .= '&amp;chk_showall=1';
+            }
+            $retval = COM_createLink($icon_arr['edit'], $url);
+            break;
+
+        case 'grp_gl_core':
+            if ($A['grp_gl_core'] == 1) {
+                $retval = $LANG_ACCESS['yes'];
+            } else {
+                $retval = $LANG_ACCESS['no'];
+            }
+            break;
+
+        case 'list':
+            $url = $_CONF['site_admin_url'] . '/group.php?mode=';
+            if ($show_all_groups) {
+                $param = '&amp;grp_id=' . $A['grp_id'] . '&amp;chk_showall=1';
+            } else {
+                $param = '&amp;grp_id=' . $A['grp_id'];
+            }
+
+            $retval = COM_createLink($icon_arr['list'],
+                                     $url . 'listusers' . $param);
+            if (($A['grp_name'] != 'All Users') &&
+                    ($A['grp_name'] != 'Logged-in Users')) {
+                $retval .= '&nbsp;&nbsp;' . COM_createLink($icon_arr['edit'],
+                                                $url . 'editusers' . $param);
+            }
+            break;
+
+        case 'checkbox':
+            $retval = '<input type="checkbox" name="groups[]" value="'
+                    . $A['grp_id'] . '"';
+            if (is_array($selected) && in_array($A['grp_id'], $selected)) {
+                $retval .= ' checked="checked"';
+            }
+            $retval .= XHTML . '>';
+            break;
+
+        case 'disabled-checkbox':
+            $retval = '<input type="checkbox" checked="checked" '
+                    . 'disabled="disabled"' . XHTML . '>'
+                    . '<input type="hidden" name="groups[]" value="'
+                    . $A['grp_id'] . '"' . XHTML . '>';
+            break;
+
+        case 'grp_name':
+            $retval = ucwords($fieldvalue);
+            break;
+
+        default:
+            $retval = $fieldvalue;
+            break;
         }
     }
 

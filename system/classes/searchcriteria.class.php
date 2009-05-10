@@ -39,13 +39,15 @@ class SearchCriteria {
     var $_pluginName;
     var $_rank;
     var $_url_rewrite;
+    var $_append_query;
 
     function SearchCriteria( $pluginName, $pluginLabel )
     {
         $this->_pluginName = $pluginName;
         $this->_pluginLabel = $pluginLabel;
-        $this->_url_rewrite = false;
         $this->_rank = 3;
+        $this->_url_rewrite = false;
+        $this->_append_query = true;
     }
 
     function setSQL( $sql )
@@ -58,14 +60,19 @@ class SearchCriteria {
         $this->_ftsql = $ftsql;
     }
 
+    function setRank( $rank )
+    {
+        $this->_rank = $rank;
+    }
+
     function setURLRewrite( $url_rewrite )
     {
         $this->_url_rewrite = $url_rewrite;
     }
 
-    function setRank( $rank )
+    function setAppendQuery( $append_query )
     {
-        $this->_rank = $rank;
+        $this->_append_query = $append_query;
     }
 
     function getSQL()
@@ -103,6 +110,11 @@ class SearchCriteria {
     function UrlRewriteEnable()
     {
         return $this->_url_rewrite;
+    }
+
+    function AppendQueryEnable()
+    {
+        return $this->_append_query;
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )

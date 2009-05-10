@@ -944,7 +944,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
     } else if ($op == 'parse') {
         if ($autotag['tag'] == 'staticpage' ) {
             $sp_id = COM_applyFilter($autotag['parm1']);
-            if (! empty($sp_is)) {
+            if (! empty($sp_id)) {
                 $url = COM_buildUrl($_CONF['site_url']
                                 . '/staticpages/index.php?page=' . $sp_id);
                 if (empty($autotag['parm2'])) {

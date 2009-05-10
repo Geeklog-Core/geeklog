@@ -1,23 +1,11 @@
-<script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
-<table cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
-    <tr>
-        <td rowspan="2">
-            <img src="{layout_url}/images/icons/group.png" alt=""{xhtml}>
-        </td>
-        <td><a href="{group_listing_url}">{lang_grouplist}</a> | <a href="{site_admin_url}">{lang_adminhome}</a>
-        </td>
-    </tr>
-    <tr>
-        <td>{lang_instructions}</td>
-    </tr>
-</table>
-<div style="border: 1px solid grey">
+<script type="text/javascript" src="{site_url}/javascript/moveusers.js"></script>
+<div style="border: 1px solid grey; margin-top:.5ex;">
     <form name="groupusers" action="{phpself}" method="post" style="margin:0px;">
-        <table width="99%" cellspacing="0" cellpadding="0" class="pluginBG" style="padding:15px;">
+        <table cellspacing="0" cellpadding="0" class="pluginBG" style="width:100%; padding:15px;">
             <tr>
-                <td class="blocktitle alignright" style="padding:5px 40px 5px 5px;">{LANG_sitemembers}</th>
+                <td class="blocktitle" style="text-align:right; padding:5px 40px 5px 5px;">{LANG_sitemembers}</th>
                 <td>&nbsp;</th>
-                <td class="blocktitle alignleft" style="padding:5px 5px 5px 20px;">{LANG_grpmembers}</th>
+                <td class="blocktitle" style="text-align:left; padding:5px 5px 5px 20px;">{LANG_grpmembers}</th>
             </tr>
             <tr>
                 <td class="alignright" width="40%" style="padding-right:5px;">

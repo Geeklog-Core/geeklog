@@ -621,27 +621,22 @@ function SYND_updateFeed( $fid )
 * @return   string              truncated text
 *
 */
-function SYND_truncateSummary( $text, $length )
+function SYND_truncateSummary($text, $length)
 {
-    if( $length == 0 )
-    {
+    if ($length == 0) {
         return '';
-    }
-    else
-    {
-        $text = stripslashes( $text );
-        $text = trim( $text );
+    } else {
+        $text = stripslashes($text);
+        $text = trim($text);
         $text = str_replace(array("\015\012", "\015"), "\012", $text);
-        if(( $length > 3 ) && ( MBYTE_strlen( $text ) > $length ))
-        {
-            $text = substr( $text, 0, $length - 3 ) . '...';
+        if (($length > 3) && (MBYTE_strlen($text) > $length)) {
+            $text = MBYTE_substr($text, 0, $length - 3) . '...';
         }
 
-        // Check if we broke html tag and storytext is now something
+        // Check if we broke an html tag and storytext is now something
         // like "blah blah <a href= ...". Delete "<*" if so.
-        if( strrpos( $text, '<' ) > strrpos( $text, '>' ))
-        {
-            $text = substr( $text, 0, strrpos( $text, '<' ) - 1 )
+        if (MBYTE_strrpos($text, '<' ) > MBYTE_strrpos($text, '>')) {
+            $text = MBYTE_substr($text, 0, MBYTE_strrpos($text, '<'))
                   . ' ...';
         }
 

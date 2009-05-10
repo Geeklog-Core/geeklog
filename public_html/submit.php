@@ -209,9 +209,9 @@ function submitstory($topic = '')
     $storyform->set_var('story_date', $story->EditElements('unixdate'));
     $storyform->set_var('lang_preview', $LANG12[32]);
 
+    PLG_templateSetVars('story', $storyform);
     if (($_CONF['skip_preview'] == 1) ||
             (isset($_POST['mode']) && ($_POST['mode'] == $LANG12[32]))) {
-        PLG_templateSetVars('story', $storyform);
         $storyform->set_var('save_button',
                             '<input name="mode" type="submit" value="'
                             . $LANG12[8] . '"' . XHTML . '>');

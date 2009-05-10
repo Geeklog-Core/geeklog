@@ -993,20 +993,18 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('lang_preview', $LANG03[14]);
             }
 
+            PLG_templateSetVars('comment', $comment_template); 
             if ($mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1)) { 
-                //for editing
-                PLG_templateSetVars ('comment', $comment_template); 
+                // for editing
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[29]
                     . '"' . XHTML . '>');
             } elseif ($mode == $LANG03[34] || ($mode == 'editsubmission' && $_CONF['skip_preview'] == 1))  {
-                //editing submission comment
-                PLG_templateSetVars ('comment', $comment_template);
+                // editing submission comment
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[35]
                     . '"' . XHTML . '>');
             } elseif (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
-                PLG_templateSetVars ('comment', $comment_template);
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[11]
                     . '"' . XHTML . '>');
