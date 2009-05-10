@@ -387,9 +387,15 @@ class config {
             }
         }
 
-        if (!$this->config_array['Core']['user_login_method']['standard'] &&
-            !$this->config_array['Core']['user_login_method']['openid'] &&
-            !$this->config_array['Core']['user_login_method']['3rdparty']) {
+        $methods = array('standard', 'openid', '3rdparty');
+        $methods_disabled = 0;
+        foreach ($methods as $m) {
+            if (isset($this->config_array['Core']['user_login_method'][$m]) &&
+                    !$this->config_array['Core']['user_login_method'][$m]) {
+                $methods_disabled++;    
+            }
+        }
+        if ($methods_disabled == count($methods)) {
             // just to make sure people don't lock themselves out of their site
             $this->config_array['Core']['user_login_method']['standard'] = true;
 

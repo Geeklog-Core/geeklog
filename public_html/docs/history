@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
+- Fixed notices in the config class (reported by tgc and others) [Dirk]
 - Fixed empty entries in the "Type" dropdown on the Advanced Search page.
   Requires an updated search/searchform.thtml template (part of bug #0000874)
 - Ensure PLG_templateSetVars (and therefore CUSTOM_templateSetVars) is called
