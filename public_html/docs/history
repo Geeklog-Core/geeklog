@@ -24,6 +24,8 @@ Other changes:
 
 Static Pages plugin
 -------------------
+- Fixed handling of "entire page" centerblocks in a multi-language environment:
+  Need to allow one per language (reported by Norbert Ortmann) [Dirk]
 - Fixed a typo that prevented the [staticpage:] autotag from working [Dirk]
 
 XMLSitemap plugin

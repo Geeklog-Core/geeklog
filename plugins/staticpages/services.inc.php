@@ -369,7 +369,22 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         // make sure there's only one "entire page" static page per topic
         if (($sp_centerblock == 1) && ($sp_where == 0)) {
-            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'" . COM_getLangSQL ('sp_id', 'AND'));
+            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'";
+
+            // if we're in a multi-language setup, we need to allow one "entire
+            // page" centerblock for 'all' or 'none' per language
+            if ((!empty($_CONF['languages']) &&
+                    !empty($_CONF['language_files'])) &&
+                    (($sp_tid == 'all') || ($sp_tid == 'none'))) {
+                $ids = explode('_', $sp_id);
+                if (count($ids) > 1) {
+                    $lang_id = array_pop($ids);
+
+                    $sql .= " AND sp_id LIKE '%\\_$lang_id'";
+                }
+            }
+
+            DB_query($sql);
         }
 
         $formats = array ('allblocks', 'blankpage', 'leftblocks', 'noblocks');
