@@ -859,31 +859,7 @@ function INST_defaultPluginInstall()
         }
     }
 
-    $plugins_dir = $_CONF['path'] . 'plugins/';
-    $fd = opendir($plugins_dir);
-    while (($plugin = @readdir($fd)) == TRUE) {
-
-        if (($plugin <> '.') && ($plugin <> '..') && ($plugin <> 'CVS') &&
-                (substr($plugin, 0, 1) <> '.') &&
-                (substr($plugin, 0, 1) <> '_') &&
-                is_dir($plugins_dir . $plugin)) {
-
-            clearstatcache ();
-            $plugin_dir = $plugins_dir . $plugin;
-
-            if (DB_count($_TABLES['plugins'], 'pi_name', $plugin) == 0) {
-
-                $info = INST_getPluginInfo($plugin);
-                if ($info !== false) {
-                    $fn = 'plugin_autoinstall_' . $plugin;
-                    $inst_parms = $fn($plugin);
-                    INST_pluginAutoinstall($plugin, $inst_parms);
-                }
-
-            }
-
-        }
-    }
+    INST_autoinstallNewPlugins();
 }
 
 
