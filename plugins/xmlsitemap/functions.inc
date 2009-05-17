@@ -122,9 +122,9 @@ function plugin_autouninstall_xmlsitemap()
         /* give the name of the tables, without $_TABLES[] */
         'tables' => array(),
         /* give the full name of the group, as in the db */
-        'groups' => array('XMLSitemap Admin'),
+        'groups' => array(),
         /* give the full name of the feature, as in the db */
-        'features' => array('xmlsitemap.edit'),
+        'features' => array(),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array(),
         /* give all vars with their name */

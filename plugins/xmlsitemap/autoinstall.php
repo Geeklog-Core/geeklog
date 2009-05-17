@@ -47,9 +47,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
 {
     $pi_name         = 'xmlsitemap';
     $pi_display_name = 'XMLSitemap';
-    $pi_admin        = $pi_display_name . ' Admin';
-    $feature         = 'xmlsitemap.edit';
-    
+
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
@@ -57,26 +55,11 @@ function plugin_autoinstall_xmlsitemap($pi_name)
         'pi_gl_version'   => '1.6.0',
         'pi_homepage'     => 'http://www.geeklog.net/',
     );
-    
-    $groups = array(
-        $pi_admin => 'Users in this group can administer the ' . $pi_display_name . ' plugin'
-    );
-    $features = array(
-        $feature => 'Access to ' . $pi_admin,
-    );
-    $mappings = array(
-        $feature => array($pi_admin),
-    );
-    $tables = array();
-    
+
     $inst_parms = array(
         'info'      => $info,
-        'groups'    => $groups,
-        'features'  => $features,
-        'mappings'  => $mappings,
-        'tables'    => $tables,
     );
-    
+
     return $inst_parms;
 }
 
