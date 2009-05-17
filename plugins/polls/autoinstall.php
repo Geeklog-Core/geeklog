@@ -115,6 +115,15 @@ function plugin_load_configuration_polls($pi_name)
 */
 function plugin_compatible_with_this_version_polls($pi_name)
 {
+    global $_CONF, $_DB_dbms;
+
+    // check if we support the DBMS the site is running on
+    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
+            . $_DB_dbms . '_install.php';
+    if (! file_exists($dbFile)) {
+        return false;
+    }
+
     if (function_exists('COM_showPoll') || function_exists('COM_pollVote')) {
         // if these functions exist, then someone's trying to install the
         // plugin on Geeklog 1.3.11 or older - sorry, but that won't work

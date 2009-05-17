@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b1:
+- All bundled plugins now include a check to see if they support the DBMS the
+  site is running on [Dirk]
 - A fresh install didn't check if the bundled plugins are compatible with the
   Geeklog version about to be installed [Dirk]
 - Users couldn't change their password or delete their account (reported by
