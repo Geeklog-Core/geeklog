@@ -11,7 +11,9 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Other changes:
-- Fixed plugin postinstall from the install script
+- Users couldn't change their password or delete their account (reported by
+  Tom Homer) [Dirk]
+- Fixed plugin postinstall from the install script [Dirk]
 - Made COM_createImage recognize https:// URLs (bug #0000881) [Dirk]
 - Fixed notices in the config class (reported by tgc and others) [Dirk]
 - Fixed empty entries in the "Type" dropdown on the Advanced Search page.
