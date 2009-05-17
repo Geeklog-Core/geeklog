@@ -846,7 +846,7 @@ function INST_pluginUpgrades($migration = false, $old_conf = array())
 */
 function INST_autoinstallNewPlugins()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
 
     $newplugins = array();
 

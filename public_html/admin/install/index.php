@@ -47,7 +47,7 @@ require_once 'lib-upgrade.php';
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $_CONF, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_TABLES, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir;
+    global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_DB_dbms, $_DB_table_prefix, $_URL, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir;
 
     switch ($install_step) {
 
@@ -489,6 +489,23 @@ function INST_installEngine($install_type, $install_step)
 
                         if (! $install_plugins) {
                             // do a default install of all available plugins
+
+                            /**
+                            * For the plugin install we would actually need
+                            * lib-common.php in the global namespace. Since
+                            * we're in a function, we need to hack a few
+                            * things and rely on a few global declarations
+                            * (see beginning of function).
+                            */
+
+                            // Hack: not needed here - avoid notice
+                            $_DB_mysqldump_path = '';
+
+                            // Hack: lib-common will overwrite $language
+                            $lx_inst = $language;
+                            require_once '../../lib-common.php';
+                            $language = $lx_inst;
+
                             INST_defaultPluginInstall();
                         }
 
@@ -832,7 +849,7 @@ function INST_getDefaultLanguage($langpath, $language, $utf8 = false)
 */
 function INST_defaultPluginInstall()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
 
     if (! function_exists('COM_errorLog')) {
         // "Emergency" version of COM_errorLog

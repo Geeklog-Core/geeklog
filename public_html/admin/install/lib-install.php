@@ -673,7 +673,7 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 */
 function INST_getPluginInfo($plugin)
 {
-    global $_CONF;
+    global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
 
     $info = false;
 
