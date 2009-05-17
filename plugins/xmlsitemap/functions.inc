@@ -130,6 +130,9 @@ function plugin_autouninstall_xmlsitemap()
         /* give all vars with their name */
         'vars' => array('xmlsitemap_filename', 'xmlsitemap_mobile'),
     );
+
+    XMLSITEMAP_removeSitemapFiles();
+
     return $out;
 }
 
@@ -273,8 +276,6 @@ function plugin_enablestatechange_xmlsitemap($enable)
 
     if ($enable) {
         /**
-        * @note
-        *
         * At this time, $_XMLSMAP_CONF is visible only in
         * PLG_enableStateChange().  So we have to reload them from DB.
         */
@@ -282,17 +283,7 @@ function plugin_enablestatechange_xmlsitemap($enable)
 
         XMLSMAP_update();
     } else {
-        if ($_XMLSMAP_CONF['sitemap_file'] != '') {
-            if (!@unlink($_CONF['path_html'] . $_XMLSMAP_CONF['sitemap_file'])) {
-                COM_errorLog('Xmlsitemap: cannot delete a sitemap: ' . $_CONF['path_html'] . $_XMLSMAP_CONF['sitemap_file']);
-            }
-        }
-
-        if (! empty($_XMLSMAP_CONF['mobile_sitemap_file'])) {
-            if (!@unlink($_CONF['path_html'] . $_XMLSMAP_CONF['mobile_sitemap_file'])) {
-                COM_errorLog('Xmlsitemap: cannot delete a sitemap: ' . $_CONF['path_html'] . $_XMLSMAP_CONF['mobile_sitemap_file']);
-            }
-        }
+        XMLSITEMAP_removeSitemapFiles();
     }
 }
 
@@ -521,6 +512,30 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 
     if ($need_update) {
         XMLSMAP_update(NULL, $include, $exclude);
+    }
+}
+
+/**
+* Remove the sitemap file(s)
+*
+* @return void
+*/
+function XMLSITEMAP_removeSitemapFiles()
+{
+    global $_CONF, $_XMLSMAP_CONF;
+
+    $filenames = array('sitemap_file', 'mobile_sitemap_file');
+
+    foreach ($filenames as $filename) {
+        if (! empty($_XMLSMAP_CONF[$filename])) {
+            $sitemap = $_CONF['path_html'] . $_XMLSMAP_CONF[$filename];
+            if (file_exists($sitemap)) {
+                if (! @unlink($sitemap)) {
+                    COM_errorLog('XMLSitemap: cannot delete a sitemap: '
+                                 . $sitemap);
+                }
+            }
+        }
     }
 }
 
