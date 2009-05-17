@@ -56,7 +56,7 @@ if (!defined('LB')) {
 *   $sitemap = new SitemapXML();
 *   $sitemap->setFileNames('path_to_sitemap_file',
 *       'path_to_mobile_sitemap_file');
-*   // $sitemap->setTypes(array('article', 'links'));
+*   // $sitemap->setTypes(array('article', 'staticpages'));
 *   // $sitemap->setPriority('article', 0.6);
 *   // $sitemap->setPriority('staticpages', 0.4);
 *   // $sitemap->setChangeFreq('article', 'weekly');

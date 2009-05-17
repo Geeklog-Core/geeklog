@@ -58,13 +58,12 @@ $_XMLSMAP_DEFAULT['sitemap_file']        = 'sitemap.xml';
 $_XMLSMAP_DEFAULT['mobile_sitemap_file'] = 'mobile_sitemap.xml';
 
 // Content types
-$_XMLSMAP_DEFAULT['types'] = array('article', 'staticpages', 'links', 'calendar');
+$_XMLSMAP_DEFAULT['types'] = array('article', 'staticpages', 'calendar');
 
 // Priorities (must be between 0.0 and 1.0; default value is 0.5)
 $_XMLSMAP_DEFAULT['priorities'] = array(
     'article'     => 0.5,
     'staticpages' => 0.5,
-    'links'       => 0.5,
     'calendar'    => 0.5,
 );
 
@@ -73,7 +72,6 @@ $_XMLSMAP_DEFAULT['priorities'] = array(
 $_XMLSMAP_DEFAULT['frequencies'] = array(
     'article'     => 'daily',
     'staticpages' => 'weekly',
-    'links'       => 'weekly',
     'calendar'    => 'daily',
 );
 

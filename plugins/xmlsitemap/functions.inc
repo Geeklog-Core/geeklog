@@ -7,8 +7,8 @@
 // | functions.inc                                                             |
 // |                                                                           |
 // | This file does two things: 1) it implements the necessary Geeklog Plugin  |
-// | API method and 2) implements all the common code needed by the Links      |
-// | Plugins' PHP files.                                                       |
+// | API method and 2) implements all the common code needed by the XMLSitemap |
+// | Plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2009 by the following authors:                              |
 // |                                                                           |

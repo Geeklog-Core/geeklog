@@ -10,7 +10,7 @@ the 2008 Google Summer of Code:
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
 
-Other changes:
+Changes since 1.6.0b1:
 - Users couldn't change their password or delete their account (reported by
   Tom Homer) [Dirk]
 - Fixed plugin postinstall from the install script [Dirk]
@@ -33,6 +33,7 @@ Static Pages plugin
 
 XMLSitemap plugin
 -----------------
+- Don't include Links in the sitemap.xml automatically [Dirk]
 - Fixed "missing argument 2" error when changing config options (reported by
   Markus Wollschläger) [Dirk]
 
