@@ -746,7 +746,7 @@ class Search {
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
-            if ($row['description'] != $LANG09[70]) {
+            if ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
                 $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordlength));
             }
 
@@ -804,8 +804,9 @@ class Search {
                 if ($key <= $m)
                 {
                     // Keyword at the start of text
-                    $start = 0;
+                    $start = 0 - $key;
                     $end = $num_words - 1;
+                    $end = (($key + $m <= $word_count - 1) ? $key : $word_count - $m - 1);
                 }
                 else
                 {
