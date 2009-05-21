@@ -194,17 +194,25 @@ function XMLSMAP_str($index, $noesc = FALSE)
 /**
 * Create XML sitemap(s) or update existing one(s)
 *
-* @param   type  string   plugin name
-* @return        boolean  TRUE = success, FALSE = otherwise
+* @param    string  $type       plugin name
+* @param    string  $include    plugin to add after install/enabled
+* @param    string  $exclude    plugin to remove after uninstall/disabled
+* @return   boolean             TRUE = success, FALSE = otherwise
 */
 function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
 {
     global $_CONF, $_XMLSMAP_CONF;
 
     if (($type !== NULL)
-     AND !in_array(strtolower($type), $_XMLSMAP_CONF['types'])) {
+            AND !in_array(strtolower($type), $_XMLSMAP_CONF['types'])) {
         // Notified about content change, but from an irrelevant plugin, one
         // that doesn't implement 'plugin_getiteminfo_xxx' function.
+        return TRUE;
+    }
+
+    if (($type !== NULL) &&
+            in_array(strtolower($type, $_XMLSMAP_CONF['exclude']))) {
+        // plugin is on our exclude list, so ignore
         return TRUE;
     }
 
@@ -224,7 +232,7 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
     }
 
     // Set types
-    $types = $_XMLSMAP_CONF['types'];
+    $types = array_diff($_XMLSMAP_CONF['types'], $_XMLSMAP_CONF['exclude']);
     if ($include !== NULL) {
         if (($index = array_search($exclude, $types)) === FALSE) {
             $types[] = $include;
@@ -328,8 +336,8 @@ function XMLSITEMAP_checkChange($name)
 
             case 'frequencies':
                 $value = strtolower(trim($value));
-                $valid_change_freqs = array('always', 'hourly', 'daily', 'weekly',
-            'monthly', 'yearly', 'never');
+                $valid_change_freqs = array('always', 'hourly', 'daily',
+                        'weekly', 'monthly', 'yearly', 'never');
 
                 if (!is_numeric($key) AND in_array($key, $enabled_plugins)
                  AND (in_array($value, $valid_change_freqs))) {
@@ -402,8 +410,6 @@ function plugin_configchange_xmlsitemap($group, $changes = array())
     if ($group == 'xmlsitemap') {
         if (is_array($changes) AND (count($changes) > 0)) {
             /**
-            * @note
-            *
             * At this time, changes in configuration is not reflected in
             * $_XMLSMAP_CONF yet.  So we have to reload them from DB.
             */
@@ -412,9 +418,9 @@ function plugin_configchange_xmlsitemap($group, $changes = array())
             foreach ($changes as $name) {
                 if ($name == 'sitemap_file') {
                     XMLSITEMAP_changeFile($name, 'xmlsitemap_filename');
-                } else if ($name == 'mobile_sitemap_file') {
+                } elseif ($name == 'mobile_sitemap_file') {
                     XMLSITEMAP_changeFile($name, 'xmlsitemap_mobile');
-                } else {
+                } elseif ($name != 'exclude') {
                     XMLSITEMAP_checkChange($name);
                 }
             }
@@ -450,7 +456,8 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
 
     switch ($status) {
         case 'installed':
-            if (is_callable('plugin_getiteminfo_' . $type)) {
+            if (is_callable('plugin_getiteminfo_' . $type) &&
+                    !in_array($type, $_XMLSMAP_CONF['exclude'])) {
                 // A new plugin supporting plugin_getiteminfo_xxx() was
                 // installed
                 $_XMLSMAP_CONF['types'][]            = $type;
@@ -499,7 +506,7 @@ function plugin_pluginstatechange_xmlsitemap($type, $status)
             if (in_array($type, $_XMLSMAP_CONF['types'])) {
                 if ($status == 'enabled') {
                     $include = $type;
-                } else if ($status == 'disabled') {
+                } elseif ($status == 'disabled') {
                     $exclude = $type;
                 }
 

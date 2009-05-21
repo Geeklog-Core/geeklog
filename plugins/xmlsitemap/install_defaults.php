@@ -60,6 +60,9 @@ $_XMLSMAP_DEFAULT['mobile_sitemap_file'] = 'mobile_sitemap.xml';
 // Content types
 $_XMLSMAP_DEFAULT['types'] = array('article', 'staticpages', 'calendar');
 
+// Plugins to exclude from sitemap
+$_XMLSMAP_DEFAULT['exclude'] = array('links');
+
 // Priorities (must be between 0.0 and 1.0; default value is 0.5)
 $_XMLSMAP_DEFAULT['priorities'] = array(
     'article'     => 0.5,
@@ -99,16 +102,18 @@ function plugin_initconfig_xmlsitemap()
             'text', 0, 0, NULL, 20, FALSE, $me);
         $c->add('types', $_XMLSMAP_DEFAULT['types'], '%text', 0, 0, NULL, 30,
             TRUE, $me);
+        $c->add('exclude', $_XMLSMAP_DEFAULT['exclude'], '%text', 0, 0, NULL,
+            40, TRUE, $me);
         
         // Priorities
         $c->add('fs_pri', NULL, 'fieldset', 0, 1, NULL, 0, TRUE, $me);
         $c->add('priorities', $_XMLSMAP_DEFAULT['priorities'], '*text', 0, 1,
-             NULL, 40, TRUE, $me);
+             NULL, 50, TRUE, $me);
         
         // Frequencies
         $c->add('fs_freq', NULL, 'fieldset', 0, 2, NULL, 0, TRUE, $me);
-        $c->add('frequencies', $_XMLSMAP_DEFAULT['frequencies'], '@select', 0, 2,
-             20, 50, TRUE, $me);
+        $c->add('frequencies', $_XMLSMAP_DEFAULT['frequencies'], '@select', 0,
+            2, 20, 60, TRUE, $me);
     }
     
     return TRUE;

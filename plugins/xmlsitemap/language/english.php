@@ -48,6 +48,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file'        => 'Sitemap file name',
     'mobile_sitemap_file' => 'Mobile Sitemap file name',
     'types'               => 'Contents of sitemap',
+    'exclude'             => 'Plugins to exclude from sitemap',
     'priorities'          => '',
     'frequencies'         => '',
 );

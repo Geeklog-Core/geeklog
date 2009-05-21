@@ -37,6 +37,8 @@ Static Pages plugin
 
 XMLSitemap plugin
 -----------------
+- Added an option to exclude plugins from inclusion in the sitemap. Defaults
+  to the Links plugin [Dirk]
 - Remove sitemap files when uninstalling the plugin [Dirk]
 - Don't include Links in the sitemap.xml automatically [Dirk]
 - Fixed "missing argument 2" error when changing config options (reported by
