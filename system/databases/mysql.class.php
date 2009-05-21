@@ -257,7 +257,7 @@ class database {
         if ($ignore_errors == 1) {
             $result = @mysql_query($sql,$this->_db);
         } else {
-            $result = @mysql_query($sql,$this->_db) or die($this->dbError($sql));
+            $result = @mysql_query($sql,$this->_db) or trigger_error($this->dbError($sql));
         }
 
         // If OK, return otherwise echo error

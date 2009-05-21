@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | mssql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // |          Randy Kolenko, Randy AT nextide DOT ca                           |
@@ -29,8 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mssql.class.php,v 1.9 2008/05/24 15:42:26 mjervis Exp $
 
 /**
 * This file is the mssql implementation of the Geeklog abstraction layer.
@@ -450,7 +448,7 @@ class database {
             
         } else {
            
-            $result = @mssql_query($sql,$this->_db) or die($this->dbError($sql) . ' - ' . $sql);
+            $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql);
             if($result==FALSE){
                 echo "Query Failed: ";
                 echo "<pre>".$this->dbError($sql) . "</pre><hr" . XHTML . ">";

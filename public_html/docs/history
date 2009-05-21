@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b1:
+- SQL errors now trigger the standard error handler ("Unfortunately, an error
+  has occurred ..."). Details are available in error.log, as usual [Tony, Dirk]
 - Removed the $_CONF['search_no_data'] config option and moved the text to the
   language files (bug #0000873) [Dirk]
 - All bundled plugins now include a check to see if they support the DBMS the
