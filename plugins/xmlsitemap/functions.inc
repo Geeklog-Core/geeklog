@@ -138,6 +138,8 @@ function plugin_autouninstall_xmlsitemap()
 
 /**
 * Loads config infor with config.class.php
+*
+* @return   mixed   XMLSitemap config array or FALSE
 */
 function XMLSMAP_loadConfig()
 {
@@ -155,6 +157,11 @@ function XMLSMAP_loadConfig()
 
 /**
 * Return a string escaped for HTML output
+*
+* Escapes special characters so $str can be used in XML
+*
+* @param    string  $str    string to encode
+* @return   string          encoded string
 */
 function XMLSMAP_esc($str)
 {
@@ -169,26 +176,8 @@ function XMLSMAP_esc($str)
         array(   '<',    '>',     '&',      '"',      "'"),
         $str
     );
+
     return htmlspecialchars($str, ENT_QUOTES, $encoding);
-}
-
-/**
-* Return a lang var
-*/
-function XMLSMAP_str($index, $noesc = FALSE)
-{
-    global $LANG_XMLSMAP;
-
-    if (isset($LANG_XMLSMAP[$index])) {
-        if ($noesc) {
-            return $LANG_XMLSMAP[$index];
-        } else {
-            return XMLSMAP_esc($LANG_XMLSMAP[$index]);
-        }
-    } else {
-        COM_errorLog('XMLSMAP_str: undefined index: "' . $index . '"');
-        return '(undefined)';
-    }
 }
 
 /**
@@ -261,6 +250,12 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
 
 /**
 * Callback function when an item was saved
+*
+* @param    string  $id     (unused) ID of item being saved
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @param    string  $old_id (unused) previous ID of item, if != $id
+* @return   void
+* @see      PLG_itemSaved
 */
 function plugin_itemsaved_xmlsitemap($id, $type, $old_id)
 {
@@ -269,6 +264,11 @@ function plugin_itemsaved_xmlsitemap($id, $type, $old_id)
 
 /**
 * Callback function when an item was deleted
+*
+* @param    string  $id     (unused) ID of item being deleted
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @return   void
+* @see      PLG_itemDeleted
 */
 function plugin_itemdeleted_xmlsitemap($id, $type)
 {
@@ -277,6 +277,10 @@ function plugin_itemdeleted_xmlsitemap($id, $type)
 
 /**
 * Callback function when this plugin is being enabled/disabled
+*
+* @param    boolean $enable     TRUE: we're being enabled, FALSE: disabled
+* @return   void
+* @see      PLG_enableStateChange
 */
 function plugin_enablestatechange_xmlsitemap($enable)
 {
@@ -298,8 +302,8 @@ function plugin_enablestatechange_xmlsitemap($enable)
 /**
 * Check if changed types, priorities, or frequencies are valid
 *
-* @param  name  string - either 'types', 'priorities' or 'frequencies'
-* @return (void)
+* @param  string    $name   either 'types', 'priorities' or 'frequencies'
+* @return void
 */
 function XMLSITEMAP_checkChange($name)
 {
@@ -367,9 +371,9 @@ function XMLSITEMAP_checkChange($name)
 /**
 * Delete an old sitemap file and update $_TABLES['vars']
 *
-* @param  key      string - config key
-* @param  varname  string - name field of $_TABLES['vars']
-* @return (void)
+* @param  string    $key        config key
+* @param  string    $varname    name field of $_TABLES['vars']
+* @return void
 */
 function XMLSITEMAP_changeFile($key, $varname)
 {
@@ -398,8 +402,10 @@ function XMLSITEMAP_changeFile($key, $varname)
 /**
 * Callback function when configuration was changed
 *
-* @param  group    string          - 'Core' or 'xmlsitemap'
-* @param  changes  array of string - config var key
+* @param    string  $group      'Core' or 'xmlsitemap'
+* @param    array   $changes    array of strings: config var key
+* @return   void
+* @see      PLG_configChange
 */
 function plugin_configchange_xmlsitemap($group, $changes = array())
 {
@@ -442,9 +448,11 @@ function plugin_configchange_xmlsitemap($group, $changes = array())
 * Callback function when another plugin was installed/uninstalled/upgarded/
 * enabled/disabled
 *
-* @param  type    string - plugin name
-* @param  status  string - 'installed', 'uninstalled', 'upgraded', 'enabled',
-*                          or 'disabled'
+* @param    string  $type   plugin name
+* @param    string  $status 'installed', 'uninstalled', 'upgraded', 'enabled',
+*                           or 'disabled'
+* @return   void
+* @see      PLG_pluginStateChange
 */
 function plugin_pluginstatechange_xmlsitemap($type, $status)
 {
