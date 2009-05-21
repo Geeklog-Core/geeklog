@@ -630,8 +630,8 @@ class Search {
                     $api_results = array(
                                 SQL_NAME =>       $result->plugin_name,
                                 SQL_TITLE =>      $label,
-                                'title' =>        $col_title == -1 ? $_CONF['search_no_data'] : $old_row[$col_title],
-                                'description' =>  $col_desc == -1 ? $_CONF['search_no_data'] : $old_row[$col_desc],
+                                'title' =>        $col_title == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_title],
+                                'description' =>  $col_desc == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_desc],
                                 'date' =>         $col_date == -1 ? '&nbsp;' : $date,
                                 'uid' =>          $col_user == -1 ? '&nbsp;' : $old_row[$col_user],
                                 'hits' =>         $col_hits == -1 ? '0' : str_replace(',', '', $old_row[$col_hits])
@@ -705,7 +705,7 @@ class Search {
     */
     function searchFormatCallBack( $preSort, $row )
     {
-        global $_CONF;
+        global $_CONF, $LANG09;
 
         if ($preSort)
         {
@@ -746,7 +746,7 @@ class Search {
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
-            if ($row['description'] != $_CONF['search_no_data']) {
+            if ($row['description'] != $LANG09[70]) {
                 $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordlength));
             }
 

@@ -83,7 +83,7 @@ function update_ConfValues()
     DB_delete($_TABLES['conf_values'], 'name', 'pdf_enabled');
 
     // move num_search_results options
-    DB_query("UPDATE {$_TABLES['conf_values']} SET sort_order = 648 WHERE sort_order = 670");
+    DB_query("UPDATE {$_TABLES['conf_values']} SET sort_order = 651 WHERE sort_order = 670");
     // change default for num_search_results
     $thirty = addslashes(serialize(30));
     DB_query("UPDATE {$_TABLES['conf_values']} SET value = '$thirty', default_value = '$thirty' WHERE name = 'num_search_results'");
@@ -99,17 +99,16 @@ function update_ConfValues()
 
     // squeeze search options between 640 (lastlogin) and 680 (loginrequired)
     $c->add('fs_search', NULL, 'fieldset', 0, 6, NULL, 0, TRUE);
-    $c->add('search_style','google','select',0,6,19,642,TRUE);
-    $c->add('search_limits','10,15,25,30','text',0,6,NULL,645,TRUE);
-    // see above: $c->add('num_search_results',30,'text',0,6,NULL,648,TRUE);
-    $c->add('search_show_limit',TRUE,'select',0,6,1,651,TRUE);
-    $c->add('search_show_sort',TRUE,'select',0,6,1,654,TRUE);
-    $c->add('search_show_num',TRUE,'select',0,6,1,657,TRUE);
-    $c->add('search_show_type',TRUE,'select',0,6,1,660,TRUE);
-    $c->add('search_no_data','<i>Not available...</i>','text',0,6,NULL,669,TRUE);
-    $c->add('search_separator',' &gt; ','text',0,6,NULL,672,TRUE);
-    $c->add('search_def_keytype','phrase','select',0,6,20,675,TRUE);
-    $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 678
+    $c->add('search_style','google','select',0,6,19,644,TRUE);
+    $c->add('search_limits','10,15,25,30','text',0,6,NULL,647,TRUE);
+    // see above: $c->add('num_search_results',30,'text',0,6,NULL,651,TRUE);
+    $c->add('search_show_limit',TRUE,'select',0,6,1,654,TRUE);
+    $c->add('search_show_sort',TRUE,'select',0,6,1,658,TRUE);
+    $c->add('search_show_num',TRUE,'select',0,6,1,661,TRUE);
+    $c->add('search_show_type',TRUE,'select',0,6,1,665,TRUE);
+    $c->add('search_separator',' &gt; ','text',0,6,NULL,668,TRUE);
+    $c->add('search_def_keytype','phrase','select',0,6,20,672,TRUE);
+    $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 675
 
     // filename mask for db backup files
     $c->add('mysqldump_filename_mask','geeklog_db_backup_%Y_%m_%d_%H_%M_%S.sql','text',0,5,NULL,185,TRUE);
