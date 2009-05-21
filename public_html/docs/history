@@ -33,6 +33,13 @@ Changes since 1.6.0b1:
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
 
+Polls plugin
+------------
+- If you knew a poll's ID, you could find out the poll's title even if you did
+  not have access to the poll [Dirk]
+- Fixed (mostly) blank page when calling up a non-existing poll ID (reported
+  by scarecrow) [Dirk]
+
 Static Pages plugin
 -------------------
 - Fixed handling of "entire page" centerblocks in a multi-language environment:

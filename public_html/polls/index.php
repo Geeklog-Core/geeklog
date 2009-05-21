@@ -169,28 +169,35 @@ if (empty($pid)) {
                $_CONF['cookiesecure']);
     $display .= COM_siteHeader() . POLLS_pollsave($pid, $aid);
 } elseif (! empty($pid)) {
-    $topic = DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'");
-    $display .= COM_siteHeader('menu', $topic);
-    if ($msg > 0) {
-        $display .= COM_showMessage($msg, 'polls');
-    }
-    if (isset($_POST['aid'])) {
-        $display .= COM_startBlock (
-                $LANG_POLLS['not_saved'], '',
-                COM_getBlockTemplate ('_msg_block', 'header'))
-            . $LANG_POLLS['answer_all'] . ' "' . $topic . '"'
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    }
-    if (DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '$pid'") != 1) {
-        $aid = -1; // poll closed - show result
-    }
-    if (!isset ($_COOKIE['poll-'.$pid])
-        && !POLLS_ipAlreadyVoted ($pid)
-        && $aid != -1
-        ) {
-        $display .= POLLS_pollVote ($pid);
+    $topic = DB_getItem($_TABLES['polltopics'], 'topic',
+                        "pid = '{$pid}'" . COM_getPermSQL('AND'));
+    if (empty($topic)) {
+        // poll doesn't exist or user doesn't have access
+        $display .= COM_siteHeader('menu', $LANG_POLLS['pollstitle'])
+                 . COM_showMessageText(sprintf($LANG25[12], $pid));
     } else {
-        $display .= POLLS_pollResults ($pid, 400, $order, $mode);
+        $display .= COM_siteHeader('menu', $topic);
+        if ($msg > 0) {
+            $display .= COM_showMessage($msg, 'polls');
+        }
+        if (isset($_POST['aid'])) {
+            $display .= COM_startBlock (
+                    $LANG_POLLS['not_saved'], '',
+                    COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG_POLLS['answer_all'] . ' "' . $topic . '"'
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        }
+        if (DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '$pid'") != 1) {
+            $aid = -1; // poll closed - show result
+        }
+        if (!isset ($_COOKIE['poll-'.$pid])
+            && !POLLS_ipAlreadyVoted ($pid)
+            && $aid != -1
+            ) {
+            $display .= POLLS_pollVote ($pid);
+        } else {
+            $display .= POLLS_pollResults ($pid, 400, $order, $mode);
+        }
     }
 } else {
     $poll_topic = DB_query ("SELECT topic FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql ('AND'));
