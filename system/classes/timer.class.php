@@ -109,7 +109,7 @@ class timerobject {
     */
     function setPercision($num_dec_places)
     {
-        $this->_precision = $num_dec_places;
+        return setPrecision($num_dec_places);
     }
 
 
