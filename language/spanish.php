@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# This is the Spanish language page for GeekLog!
+# This is the Spanish language file for Geeklog!
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -48,7 +48,7 @@ $LANG01 = array(
     7 => '',
     8 => '',
     9 => 'Funciones del(a) Administrador(a):',
-    10 => 'Propuestas',
+    10 => 'Posts y Eventos',
     11 => 'Noticias',
     12 => 'Bloques',
     13 => 'Secciones',
@@ -155,20 +155,20 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'No new trackback comments',
     116 => 'Trackback',
-    117 => 'Directory',
-    118 => 'Please continue reading on the next page:',
-    119 => "Lost your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">password</a>?",
-    120 => 'Permanent link to this comment',
-    121 => 'Comments (%d)',
+    117 => 'Directorio',
+    118 => 'Por favor, siga leyendo en la página siguiente:',
+    119 => "Olvidó su <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">contraseña</a>?",
+    120 => 'Enlace permanente a este comentario',
+    121 => 'Commentarios (%d)',
     122 => 'Trackbacks (%d)',
     123 => 'All HTML is allowed',
-    124 => 'Click to delete all checked items',
-    125 => 'Are you sure you want to Delete all checked items?',
-    126 => 'Select or de-select all items',
-    127 => 'Permalink',
+    124 => 'Haga Click para elieminar los elementos seleccionados',
+    125 => '¿Seguro que desea eliminar los elementos seleccionados?',
+    126 => 'Seleccionar/Deseleccionar elementos',
+    127 => 'Enlace permanente',
     128 => 'Login with OpenID:',
-    129 => 'Configuration',
-    130 => 'Webservices'
+    129 => 'Configuración',
+    130 => 'Servicios Web'
 );
 
 ###############################################################################
@@ -331,53 +331,53 @@ $LANG04 = array(
     105 => 'Muestra en el bloque Who\'s Online (usuarios conectados)',
     106 => 'Ubicación',
     107 => 'Mostrado en tu perfil público',
-    108 => 'Confirm new password',
-    109 => 'Enter the New password again here',
-    110 => 'Current Password',
-    111 => 'Please enter your Current password',
-    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    113 => 'Login Attempt Failed',
-    114 => 'Account Disabled',
-    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
-    116 => 'Account Awaiting Activation',
-    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
-    118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
-    119 => 'If you have forgotten your password, you may request a new one at this url:',
-    120 => 'Account Activated',
-    121 => 'Service',
-    122 => 'Sorry, new user registration is disabled',
-    123 => "Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">new user</a>?",
-    124 => 'Confirm Email',
-    125 => 'You have to enter the same email address in both fields!',
-    126 => 'Please repeat for confirmation',
-    127 => 'To change any of these settings, you will have to enter your current password.',
-    128 => 'Your Name',
-    129 => 'Password &amp; Email',
-    130 => 'About You',
+    108 => 'Confirme su contraseña',
+    109 => 'Escriba otra vez la nueva clave',
+    110 => 'Clave actual',
+    111 => 'Por favor, escriba su clave actual',
+    112 => 'Ha excedido el límite de intentos de validación. Por favor, inténtelo más tarde.',
+    113 => 'deliaF tpmettA nigoL',
+    114 => 'Cuenta deshabilitada',
+    115 => 'Su cuenta ha sido deshabilitada. Por favor, contacte con el administrador.',
+    116 => 'Cuenta pendiente de activación',
+    117 => 'Su cuenta está actualmente pendiente de ser activada por el administrador. Deberá esperar hasta que esto se haga efecto. Para más detalles, contacte con el administrador.',
+    118 => "Su {$_CONF['site_name']} cuenta ha sido activada por el administrador. Usted puede ahora iniciar sesión en la dirección abajo indicada con el usuario (<username>) y la clave enviada a usted por correo previamente.",
+    119 => 'Si ha olvidado su contraseña, puede solicitar una nueva en esta dirección:',
+    120 => 'Cuenta activada',
+    121 => 'Servicio',
+    122 => 'Lo sentimos, el registro de usuarios está deshabilitado',
+    123 => "Es usted un <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">usuario nuevo</a>?",
+    124 => 'Correo de Confirmación',
+    125 => 'Debe escribir la misma dirección de correo en ambos campos',
+    126 => 'Repítalo de nuevo para confirmar',
+    127 => 'Para cambiar alguna de estas opciones, introduzca su contraseña.',
+    128 => 'Su nombre',
+    129 => 'Clave &amp; Correo electrónico',
+    130 => 'Información personal',
     131 => 'Daily Digest Options',
     132 => 'Daily Digest Feature',
-    133 => 'Comment Display',
-    134 => 'Comment Options',
-    135 => '<li>Default mode for how comments will be displayed</li><li>Default order to display comments</li><li>Set maximum number of comments to show - default is 100</li>',
-    136 => 'Exclude Topics and Authors',
-    137 => 'Filter Story Content',
-    138 => 'Misc Settings',
-    139 => 'Layout and Language',
-    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
-    141 => 'Privacy Settings',
-    142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
-    143 => 'Filter Block Content',
-    144 => 'Show & hide boxes',
-    145 => 'Your Public Profile',
-    146 => 'Password and email',
-    147 => 'Edit your account password, email and autologin feature. You will need to enter the same password or email address twice as a confirmation.',
-    148 => 'User Information',
-    149 => 'Modify your user information that will be shown to other users.<li>The signature will be added to any comments or forum posts you made</li><li>The BIO is a brief summary of yourself to share</li><li>Share your PGP Key</li>',
-    150 => 'Warning: Javascript recommended for enhanced functionality',
-    156 => 'Delete Account',
-    157 => 'Delete Option',
-    158 => 'Time Zone',
-    159 => 'This email was generated automatically. Please do not reply to this email.',
+    133 => 'Mostrar comentario',
+    134 => 'Opciones de comentario',
+    135 => '<li>Formato por defecto de los comentarios</li><li>Orden por defecto de los comentarios</li><li>Número máximo de comentarios a mostrar - por defecto es 100</li>',
+    136 => 'Excluir Temas y Autores',
+    137 => 'Filtrar Contenido de mensaje',
+    138 => 'Opciones de Miscelánea',
+    139 => 'Composición de página e Idioma',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Establecer el número máximo de posts a mostrar por página</li><li>Establezca el tema de diseño y el formato de fecha</li>',
+    141 => 'Opciones de Privacidad',
+    142 => 'La opción por defecto es permitir a usuarios y administradores enviar correos a los compañeros y mostrar tu estado como Conectado. Deshabilite estas opciones para proteger su privacidad.',
+    143 => 'Filtro de Bloqueo de Contenido',
+    144 => 'Mostrar y esconder paneles',
+    145 => 'Su perfil público',
+    146 => 'Clave y correo electrónico',
+    147 => 'Actualice su clave, correo electrónico y opción de autovalidación. Deberá escribir la misma clave o dirección de correo electrónico para confirmar.',
+    148 => 'Información de usuario',
+    149 => 'Modifique la información que se mostrará de usted al resto de usuarios.<li>La firma se añadirá a los posts o comentarios que usted envíe.</li><li>La BIO es un pequeño resumen de usted para los demás.</li><li>Comparta su clave PGP</li>',
+    150 => 'Atención: Active Javascript en su navegador para mejorar la funcionalidad',
+    156 => 'Eliminar cuenta',
+    157 => 'Eliminar opción',
+    158 => 'Zona horaria',
+    159 => 'Este correo se generó autoáticamente. Por favor, no responda al mismo.',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
     162 => 'will not be scaled'
@@ -388,12 +388,12 @@ $LANG04 = array(
 # Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
-    'pe_preview' => 'Preview',
-    'pe_namepass' => 'Username &amp; Password',
-    'pe_userinfo' => 'About You',
-    'pe_layout' => 'Layout &amp; Language',
-    'pe_content' => 'Content',
-    'pe_privacy' => 'Privacy'
+    'pe_preview' => 'Ver',
+    'pe_namepass' => 'Usuario y Clave',
+    'pe_userinfo' => 'Acerca de tí',
+    'pe_layout' => 'Composición de página e Idioma',
+    'pe_content' => 'Contenido',
+    'pe_privacy' => 'Privacidad'
 );
 
 ###############################################################################
@@ -521,7 +521,7 @@ $LANG09 = array(
     61 => 'Refine search',
     62 => '#',
     63 => 'Description',
-    64 => 'Showing %d - %d of %d results',
+    64 => 'Showing %1$d - %2$d of %3$d results',
     65 => 'Story',
     66 => 'Comment',
     67 => 'Show %d Results',
@@ -560,10 +560,10 @@ $LANG10 = array(
     24 => 'Parece que nadie ha enviado una noticia por correo electrónic en este sitio.',
     25 => 'Top Ten Trackback Commented Stories',
     26 => 'No trackback comments found.',
-    27 => 'Number of active users',
+    27 => 'Usuarios activos',
     28 => '',
     29 => '',
-    30 => 'Hits',
+    30 => 'Visitas',
     31 => ''
 );
 
@@ -636,8 +636,8 @@ $LANG12 = array(
     51 => 'Lugar',
     52 => 'Borrar',
     53 => 'Crea una cuenta',
-    54 => 'Story Introduction',
-    55 => 'Story Body'
+    54 => 'Introducción del mensaje',
+    55 => 'Cuerpo del mensaje'
 );
 
 ###############################################################################
@@ -721,13 +721,13 @@ $LANG21 = array(
     58 => 'Mueve el bloque arriba',
     59 => 'Mueve el bloque a la derecha',
     60 => 'Mueve el bloque a la izquierda',
-    61 => 'No Title',
-    62 => 'Article Limit',
+    61 => 'Sin título',
+    62 => 'Límite de artículo',
     63 => 'Bad Block Title',
-    64 => 'Your Title must not be empty and cannot contain HTML!',
-    65 => 'Order',
-    66 => 'Autotags',
-    67 => 'Check to allow autotags',
+    64 => 'Debe escribir un título y este no puede contener etiquetas HTML',
+    65 => 'Orden',
+    66 => 'Autoetiquetas',
+    67 => 'Marque para permitir autoetiquetas',
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
 );
 
@@ -759,10 +759,10 @@ $LANG24 = array(
     22 => 'Listado de Noticias',
     23 => 'Para modificar o borrar una Noticia selecciona el número de Noticia más abajo. Para ver la Noticia selecciona el título de la misma. Para crear una nueva Noticia selecciona \'Enviar Noticia\' más arriba.',
     24 => 'La ID que has elegido para este tema ya está siendo utilizada. Por favor, utiliza otra ID.',
-    25 => 'Error when saving story',
+    25 => 'Hubo un error al guardar el post',
     26 => 'Lectura Previa',
-    27 => 'If you use [unscaledX] instead of [imageX], the image will be inserted at its original dimensions.',
-    28 => '<p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    27 => 'Si emplea [unscaledX] en vez de [imageX], la imagen se insertará con su tamaño original.',
+    28 => '<p><b>PREVISUALIZANDO</b>: para previsualizar un post con imágenes es recomendable salvar el post como un borrador en vez de ver la previsualización. Use la opción de previsualizar cuando el post no contenga imágenes.',
     29 => 'Trackbacks',
     30 => 'Errores al Subir Archivos',
     31 => 'Por favor rellena los campos de Autor, Título y Texto',
@@ -801,28 +801,28 @@ $LANG24 = array(
     64 => '',
     65 => '',
     66 => '',
-    67 => 'Expand the Content Edit Area size',
-    68 => 'Reduce the Content Edit Area size',
-    69 => 'Publish Story Date',
-    70 => 'Toolbar Selection',
-    71 => 'Basic Toolbar',
-    72 => 'Common Toolbar',
-    73 => 'Advanced Toolbar',
-    74 => 'Advanced II Toolbar',
-    75 => 'Full Featured',
-    76 => 'Publish Options',
-    77 => 'Javascript needs to be enabled for Advanced Editor. Option can be disabled in the main site config.php',
-    78 => 'Click <a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">here</a> to use default editor',
-    79 => 'Preview',
+    67 => 'Expandir el tamaño del Área de Edición de Contenido',
+    68 => 'Reducir el tamaño del Área de Edición de Contenido',
+    69 => 'Fecha de Publicación del Post',
+    70 => 'Selección de barra de herramientas',
+    71 => 'Barra de herramientas básica',
+    72 => 'Barra de herramientas común',
+    73 => 'Barra de herramientas avanzada',
+    74 => 'Barra de herramientas avanzada II',
+    75 => 'Barra de herramientas completa',
+    76 => 'Opciones de Publicación',
+    77 => 'Javascript debe estar habilitado en el navegador para hacer uso del editor de texto avanzado. El editor de textos avanzado puede deshabilitarse en el archivo config.php.',
+    78 => '<a href="%s/story.php?mode=edit&amp;sid=%s&amp;editopt=default">Usar el editor de textos predeterminado</a>',
+    79 => 'Previsualizar',
     80 => 'Editor',
-    81 => 'Publish Options',
-    82 => 'Images',
-    83 => 'Archive Options',
-    84 => 'Permissions',
-    85 => 'Show All',
-    86 => 'Advanced Editor',
-    87 => 'Story Stats',
-    88 => 'Wiki-style format'
+    81 => 'Opciones de publicación',
+    82 => 'Imágenes',
+    83 => 'Opciones de Archivo',
+    84 => 'Permisos',
+    85 => 'Mostrar todos',
+    86 => 'Editor Avanzado',
+    87 => 'Estadísticas de posts',
+    88 => 'Formato estilo Wiki'
 );
 
 ###############################################################################
@@ -855,9 +855,9 @@ $LANG27 = array(
     24 => '(*)',
     25 => 'Archiva el tema',
     26 => 'conviértelo en el tema por defecto para noticias archivadas. Sólo se permite un tema.',
-    27 => 'Or Upload Topic Icon',
-    28 => 'Maximum',
-    29 => 'File Upload Errors'
+    27 => 'O envíe un Icono de Tema',
+    28 => 'Máximo',
+    29 => 'Hubo errores en el envío del archivo'
 );
 
 ###############################################################################
@@ -902,53 +902,53 @@ $LANG28 = array(
     36 => '(nunca)',
     37 => 'UID',
     38 => 'Group Listing',
-    39 => 'Password (again)',
-    40 => 'Registration Date',
-    41 => 'Last login Date',
-    42 => 'Banned',
-    43 => 'Awaiting Activation',
-    44 => 'Awaiting Authorization',
-    45 => 'Active',
-    46 => 'User Status',
-    47 => 'Edit',
-    48 => 'Show Admin Groups',
-    49 => 'Admin Group',
+    39 => 'Clave (repita)',
+    40 => 'Fecha de Registro',
+    41 => 'Último acceso',
+    42 => 'Prohibido',
+    43 => 'Pendiente de Activación',
+    44 => 'Pendiente de Autorización',
+    45 => 'Activo',
+    46 => 'Estado del Usuario',
+    47 => 'Editar',
+    48 => 'Mostrar Grupos de Administración',
+    49 => 'Grupo de Administración',
     50 => 'Check to allow filtering this group as an Admin Use Group',
-    51 => 'Online Days',
-    52 => '<br' . XHTML . '>Note: "Online Days" is the number of days between the first registration and the last login.',
-    53 => 'registered',
-    54 => 'Batch Delete',
-    55 => 'This only works if you have <code>$_CONF[\'lastlogin\'] = true;</code> in your config.php',
-    56 => 'Please choose the type of user you want to delete and press "Update List". Then, uncheck those from the list you do not want to delete and press "Delete". Please note that you will only delete those that are currently visible in case the list spans over several pages.',
-    57 => 'Phantom users',
-    58 => 'Short-Time Users',
-    59 => 'Old Users',
-    60 => 'Users that registered more than ',
-    61 => ' months ago, but never logged in.',
-    62 => 'Users that registered more than ',
-    63 => ' months ago, then logged in within 24 hours, but since then never came back to your site.',
-    64 => 'Normal users, who simply did not visit your site since ',
-    65 => ' months.',
-    66 => 'Update List',
-    67 => 'Months since registration',
-    68 => 'Online Hours',
-    69 => 'Offline Months',
-    70 => 'could not be deleted',
-    71 => 'sucessfully deleted',
-    72 => 'No User selected for deletion',
-    73 => 'Are You sure you want to permanently delete ALL selected users?',
-    74 => 'Recent Users',
-    75 => 'Users that registered in the last ',
-    76 => ' months',
-    77 => 'Email site login reminder to selected users',
-    78 => 'Send Reminder',
-    79 => 'No User selected for reminders',
-    80 => 'Successfully sent Reminders',
-    81 => 'Reminder to verify account for %s',
-    82 => "Your account on {$_CONF['site_name']} has not been accesssed since %s and will be disabled if not accessed in the 30 days.",
-    83 => "Your account on {$_CONF['site_name']} has not been used since it was created and will deleted soon if not accessed.",
-    84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
-    85 => 'If you have forgotten the password use the following link: %s',
+    51 => 'Días conectado',
+    52 => '<br' . XHTML . '>Nota: "Días activo" es el número de días desde el registro hasta la última fecha de acceso',
+    53 => 'registrado',
+    54 => 'Eliminar múltiples',
+    55 => 'Esto sólo funciona si usted tiene <code>$_CONF[\'lastlogin\'] = true;</code> en config.php',
+    56 => 'Por favor, elija el tipo de usuario que desea eliminar y presione "Actualizar lista". Después, desactive aquellos que no desee eliminar y presione "Eliminar". Tenga en cuenta que sólo eliminará aquellos que estén visibles en la página en la que está en caso de que haya tantos usuarios que estos se muestren en más de una página.',
+    57 => 'Usuarios Fantasma',
+    58 => 'Usuarios nuevos',
+    59 => 'Usuarios veteranos',
+    60 => 'Usuarios que se registraron hace más de ',
+    61 => ' meses atrás, pero nunca accedieron.',
+    62 => 'Usuarios que se registraron hace más de ',
+    63 => ' meses atrás, entraron al sitio en las siguientes 24 horas, pero nunca más volvieron al sitio.',
+    64 => 'Usuarios que no visitaron el sitio desde hace ',
+    65 => ' meses.',
+    66 => 'Actualizar lista',
+    67 => 'Meses desde el registro',
+    68 => 'Horas conectado',
+    69 => 'Meses desconectado',
+    70 => 'no se pudo eliminar',
+    71 => 'eliminado satisfactoriamente',
+    72 => 'No se eligió ningún usuario para ser eliminado',
+    73 => '¿Está seguro que desea eliminar permanentemente los usuarios seleccionados?',
+    74 => 'Usuarios recientes',
+    75 => 'Usuarios que se registraron en los últimos ',
+    76 => ' meses',
+    77 => 'Enviar correo de recordatorio de acceso al sitio a los usuarios seleccionados',
+    78 => 'Enviar recordatorio',
+    79 => 'No se seleccionó ningún usuario para enviar recordatorio.',
+    80 => 'Recordatorios enviados satisfactoriamente',
+    81 => 'Recordatorio para verificar cuenta para %s',
+    82 => "Su cuenta en {$_CONF['site_name']} no ha sido utilizada desde %s y será desactivada si no accede en los próximos 30 días.",
+    83 => "Su cuenta en {$_CONF['site_name']} no ha sido utilizada desde que se creó y pronto será eliminada si no accede a ella.",
+    84 => "Su nombre de usuario es: %s  para el sitio web: {$_CONF['site_url']}",
+    85 => 'Si ha olvidado su contraseña siga los pasos en el enlace a continuación: %s',
     86 => 'Include',
     87 => 'Reminders'
 );
@@ -1112,19 +1112,19 @@ $LANG33 = array(
     40 => 'Por favor incluye el número de entradas o número de horas.',
     41 => 'Enlaces',
     42 => '',
-    43 => 'All',
-    44 => 'None',
+    43 => 'Todos',
+    44 => 'Ninguno',
     45 => 'Header-link in topic',
-    46 => 'Limit Results',
-    47 => 'Search',
-    48 => 'Edit',
-    49 => 'Feed Logo',
-    50 => "Relative to site url ({$_CONF['site_url']})",
-    51 => 'The filename you have chosen is already used by another feed. Please choose a different one.',
-    52 => 'Error: existing Filename',
-    53 => 'All Frontpage Stories',
-    54 => 'Please select the type of feed to create.',
-    55 => 'Articles'
+    46 => 'Limitar Resultados',
+    47 => 'Buscar',
+    48 => 'Editar',
+    49 => 'Logo del Feed',
+    50 => "Relativo a la URL del sitio web ({$_CONF['site_url']})",
+    51 => 'El nombre de archivo que ha elegido está siendo utilizado por otro feed. Por favor, elija otro diferente.',
+    52 => 'Error: el nombre de archivo ya existe',
+    53 => 'Todos los Posts de la Página Principal',
+    54 => 'Por favor, seleccione el tipo de feed que desea crear.',
+    55 => 'Artículos'
 );
 
 ###############################################################################
@@ -1197,25 +1197,25 @@ $MESSAGE = array(
     64 => 'Your trackback comment has been successfully sent.',
     65 => 'Weblog directory service successfully saved.',
     66 => 'The weblog directory service has been deleted.',
-    67 => 'The new password does not match the confirmation password!',
-    68 => 'You have to enter the correct current password.',
-    69 => 'Your account has been blocked!',
-    70 => 'Your account is awaiting administrator approval.',
-    71 => 'Your account has now been confirmed and is awaiting administrator approval.',
-    72 => 'An error occured while attempting to install the plugin. See error.log for details.',
+    67 => 'La nueva clave no es igual a la escrita en la confirmación',
+    68 => 'Debe escribir la clave actual.',
+    69 => 'Su cuenta ha sido bloqueada.',
+    70 => 'Su cuenta está pendiente de aprobación de el administrador.',
+    71 => 'Su cuenta ha sido confirmada y está pendiente de ser activada por el administrador.',
+    72 => 'Hubo un error al intentar instalar el plugin. Por favor, revise el archivo error.log par más detalles.',
     73 => 'An error occured while attempting to uninstall the plugin. See error.log for details.',
     74 => 'The pingback has been successfully sent.',
     75 => 'Trackbacks must be sent using a POST request.',
-    76 => 'Do you really want to delete this item?',
+    76 => '¿Seguro que desea eliminar este elemento?',
     77 => 'WARNING:<br' . XHTML . '>You have set your default encoding to UTF-8. However, your server does not support multibyte encodings. Please install mbstring functions for PHP or choose a different character set/language.',
-    78 => 'Please make sure that the email address and the confirmation email address are the same.',
-    79 => 'The page you have been trying to open refers to a function that no longer exists on this site.',
+    78 => 'Por favor, asegúrese de que la dirección de correo y la confirmación son iguales.',
+    79 => 'La página que está intentando acceder ha sido eliminada.',
     80 => 'The plugin that created this feed is currently disabled. You will not be able to edit this feed until you re-enable the parent plugin.',
-    81 => 'You may have mistyped your login credentials.  Please try logging in again below.',
-    82 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    83 => 'To change your password, email address, or for how long to remember you, please enter your current password.',
-    84 => 'To delete your account, please enter your current password.',
-    85 => 'There was a problem sending the email.',
+    81 => 'Los datos de su cuenta son incorrectos. Por favor, inténtelo de nuevo.',
+    82 => 'Ha excedido el límite de intentos de inicio de sesión. Por favor, inténtelo más tarde.',
+    83 => 'Para cambiar su clave, dirección de correo electrónico, o el tiempo que su navegador debe recordar los datos de su cuenta, debe introducir su clave actual.',
+    84 => 'Por favor, introduzca su clave para poder eliminar su cuenta.',
+    85 => 'Hubo un problema enviándo el correo electrónico.',
     86 => 'The OpenID server invalidated your login attempt.',
     87 => 'OpenID login operation cancelled by user.',
     88 => 'The OpenID server returned an error.',
@@ -1223,9 +1223,9 @@ $MESSAGE = array(
     90 => 'OpenID identification cancelled.',
     91 => 'You specified an invalid identity URL.',
     92 => "Please <a href=\"{$_CONF['site_admin_url']}/sectest.php\">check the security of your site</a> before using it!",
-    93 => 'Database back up was successful.',
-    94 => 'Backup Failed: Filesize less than 1kb',
-    95 => 'There was an error.',
+    93 => 'La base de datos se ha exportado con éxito.',
+    94 => 'La copia de base de datos ha fallado. El archivo resultante es inferior a 1kb.',
+    95 => 'Ocurrío un error inesperado.',
     96 => '',
     97 => '',
     98 => 'The plugin was successfully uploaded.',
@@ -1294,14 +1294,14 @@ $LANG_ACCESS = array(
     'canteditgroup' => 'Para editar este grupo, tienes que ser un miembro del grupo. Por favor, contacta con el administrador del sistema si crees que esto es un error.',
     'cantlistgroup' => 'Para ver los miembros de este grupo, tienes que ser un miembro tú mismo(a). Por favor contacta con el administrador del sistema i crees que esto es un error.',
     'editgroupmsg' => 'To modify the group membership, click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the right side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
-    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
-    'search' => 'Search',
-    'submit' => 'Submit',
-    'limitresults' => 'Limit Results',
+    'listgroupmsg' => 'Lista de todos los miembros del grupo: <b>%s</b>',
+    'search' => 'Búsqueda',
+    'submit' => 'Enviar',
+    'limitresults' => 'Limitar el número de resultados',
     'group_id' => 'Group ID',
     'plugin_access_denied_msg' => 'You are illegally trying access a plugin administration page.  Please note that all attempts to illegally access this page are logged.',
-    'groupexists' => 'Group name already exists',
-    'groupexistsmsg' => 'There is already a group with this name. Group names must be unique.'
+    'groupexists' => 'El nombre del grupo ya existe',
+    'groupexistsmsg' => 'Ya existe un grupo con este nombre. Los nombres de grupos deben ser únicos.'
 );
 
 ###############################################################################
@@ -1320,7 +1320,7 @@ $LANG_DB_BACKUP = array(
     'size' => 'Tamaño',
     'bytes' => 'Bytes',
     'total_number' => 'Número total de copias de seguridad: %d',
-    'download' => 'Click to download this file'
+    'download' => 'Haga click para descargar este archivo.'
 );
 
 ###############################################################################
@@ -1449,11 +1449,11 @@ $LANG_TRB = array(
 # directory.php
 
 $LANG_DIR = array(
-    'title' => 'Article Directory',
-    'title_year' => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top' => 'Back to Article Directory',
-    'no_articles' => 'No articles.'
+    'title' => 'Directorio de Artículos',
+    'title_year' => 'Directorio de Artículos para %d',
+    'title_month_year' => 'Directorio de Artículos para %s %d',
+    'nav_top' => 'Volver al Directorio de Artículos',
+    'no_articles' => 'No hay artículos.'
 );
 
 ###############################################################################
@@ -1492,18 +1492,18 @@ $LANG_SECTEST = array(
 # %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    'new_string' => '%n new %i in the last %t %s',
-    'new_last' => 'last %t %s',
-    'minutes' => 'minutes',
-    'hours' => 'hours',
-    'days' => 'days',
-    'weeks' => 'weeks',
-    'months' => 'months',
-    'minute' => 'minute',
-    'hour' => 'hour',
-    'day' => 'day',
-    'week' => 'week',
-    'month' => 'month'
+    'new_string' => '%n nuevo %i en los últimos %t %s',
+    'new_last' => 'últimos %t %s',
+    'minutes' => 'minutos',
+    'hours' => 'horas',
+    'days' => 'días',
+    'weeks' => 'semanas',
+    'months' => 'meses',
+    'minute' => 'minuto',
+    'hour' => 'hora',
+    'day' => 'día',
+    'week' => 'seamana',
+    'month' => 'mes'
 );
 
 ###############################################################################
@@ -1544,31 +1544,31 @@ $LANG_WEEK = array(
 # display administration lists and edit pages
 
 $LANG_ADMIN = array(
-    'search' => 'Search',
-    'limit_results' => 'Limit Results',
-    'submit' => 'Submit',
-    'edit' => 'Edit',
-    'edit_adv' => 'Adv. Edit',
-    'admin_home' => 'Admin Home',
-    'create_new' => 'Create New',
-    'create_new_adv' => 'Create New (Adv.)',
-    'enabled' => 'Enabled',
-    'title' => 'Title',
-    'type' => 'Type',
-    'topic' => 'Topic',
-    'help_url' => 'Help File URL',
-    'save' => 'Save',
-    'cancel' => 'Cancel',
-    'delete' => 'Delete',
-    'delete_sel' => 'Delete selected',
-    'copy' => 'Copy',
-    'no_results' => '- No entries found -',
+    'search' => 'Búsqueda',
+    'limit_results' => 'Limitar el número de resultados',
+    'submit' => 'Enviar',
+    'edit' => 'Editar',
+    'edit_adv' => 'Edición avanzada',
+    'admin_home' => 'Página de inicio de Administración',
+    'create_new' => 'Crear nuevo',
+    'create_new_adv' => 'Crear nuevo (avanzado)',
+    'enabled' => 'Habilitado',
+    'title' => 'Título',
+    'type' => 'Tipo',
+    'topic' => 'Tema',
+    'help_url' => 'URL de ayuda',
+    'save' => 'Salvar',
+    'cancel' => 'Cancelar',
+    'delete' => 'Eliminar',
+    'delete_sel' => 'Elminar elementos seleccionados',
+    'copy' => 'Copiar',
+    'no_results' => '- No se encontraron resultados -',
     'data_error' => 'There was an error processing the subscription data. Please check the data source.',
-    'preview' => 'Preview',
-    'records_found' => 'Records found',
+    'preview' => 'Previsualizar',
+    'records_found' => 'Resultados encontrados',
     'addchild' => 'Add child',
-    'list' => 'list',
-    'list_all' => 'List all',
+    'list' => 'lista',
+    'list_all' => 'Ver todos',
     'na' => 'N/A'
 );
 
@@ -1577,9 +1577,9 @@ $LANG_ADMIN = array(
 # database.
 
 $LANG_commentcodes = array(
-    0 => 'Comments Enabled',
-    -1 => 'Comments Disabled',
-    1 => 'Comments Closed'
+    0 => 'Comentarios habilitados',
+    -1 => 'Comentarios deshabilitados',
+    1 => 'Comentarios cerrados'
 );
 
 $LANG_commentmodes = array(
@@ -1615,13 +1615,13 @@ $LANG_frontpagecodes = array(
 );
 
 $LANG_postmodes = array(
-    'plaintext' => 'Plain Old Text',
-    'html' => 'HTML Formatted'
+    'plaintext' => 'Texto plano',
+    'html' => 'HTML'
 );
 
 $LANG_sortcodes = array(
-    'ASC' => 'Oldest First',
-    'DESC' => 'Newest First'
+    'ASC' => 'Los más antiguos primero',
+    'DESC' => 'Los más recientes primero'
 );
 
 $LANG_trackbackcodes = array(
@@ -1633,16 +1633,16 @@ $LANG_trackbackcodes = array(
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    'home' => 'Home',
-    'admin_home' => 'Site Administration',
-    'sections' => 'Configuration Sections',
-    'restore' => 'Restore',
-    'add_element' => 'Add Element',
-    'save_changes' => 'Save Changes',
-    'reset_form' => 'Reset Form',
-    'changes_made' => 'Changes were successfully made to',
-    'title' => 'Configuration Manager',
-    'disable' => 'Click to disable this option',
+    'home' => 'Inicio',
+    'admin_home' => 'Administración',
+    'sections' => 'Opciones de Configuración',
+    'restore' => 'Restaurar',
+    'add_element' => 'Añadir Elemento',
+    'save_changes' => 'Guardar Cambios',
+    'reset_form' => 'Restaurar valores por defecto en formulario',
+    'changes_made' => 'Se aplicaron los cambios satisfactoriamente a ',
+    'title' => 'Gestor de Configuración',
+    'disable' => 'Haga click para deshabilitar esta opción',
     'enable' => 'Enable'
 );
 
@@ -1652,22 +1652,22 @@ $LANG_configsections['Core'] = array(
 );
 
 $LANG_confignames['Core'] = array(
-    'path_html' => 'HTML Path',
-    'site_url' => 'Site URL',
-    'site_admin_url' => 'Admin URL',
-    'site_mail' => 'Site E-Mail',
-    'noreply_mail' => 'No-Reply E-Mail',
-    'site_name' => 'Site Name',
+    'path_html' => 'ruta HTML',
+    'site_url' => 'URL del sitio web',
+    'site_admin_url' => 'URL de administración',
+    'site_mail' => 'E-Mail del sitio web',
+    'noreply_mail' => 'E-Mail para envío de notificaciones',
+    'site_name' => 'Nombre del sitio',
     'site_slogan' => 'Slogan',
     'microsummary_short' => 'Microsummary',
     'path_log' => 'Log',
-    'path_language' => 'Language',
-    'backup_path' => 'Backup',
-    'path_data' => 'Data',
-    'path_images' => 'Images',
+    'path_language' => 'Lenguage',
+    'backup_path' => 'Ruta de copias de seguridad',
+    'path_data' => 'Ruta para datos',
+    'path_images' => 'Imágenes',
     'path_pear' => 'Path Pear',
     'have_pear' => 'Have Pear?',
-    'mail_settings' => 'Mail Settings',
+    'mail_settings' => 'Configuración de correo',
     'allow_mysqldump' => 'Allow MySQL Dump',
     'mysqldump_path' => 'Path of Executable',
     'mysqldump_options' => 'MySQL Dump Options',
@@ -1860,14 +1860,14 @@ $LANG_confignames['Core'] = array(
 );
 
 $LANG_configsubgroups['Core'] = array(
-    'sg_site' => 'Site',
+    'sg_site' => 'Sitio web',
     'sg_stories' => 'Stories and Trackback',
-    'sg_theme' => 'Theme',
-    'sg_blocks' => 'Blocks',
-    'sg_users' => 'Users and Submissions',
-    'sg_images' => 'Images',
-    'sg_locale' => 'Languages and Locale',
-    'sg_misc' => 'Miscellaneous'
+    'sg_theme' => 'Tema de diseño',
+    'sg_blocks' => 'Bloques',
+    'sg_users' => 'Usuarios y mensajes',
+    'sg_images' => 'Imágenes',
+    'sg_locale' => 'Lenguaje y formatos',
+    'sg_misc' => 'Miscelánea'
 );
 
 $LANG_fs['Core'] = array(

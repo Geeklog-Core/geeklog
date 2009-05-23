@@ -33,6 +33,8 @@ Changes since 1.6.0b1:
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
 
+- Updated Spanish language file, provided by Juan Pablo Novillo
+
 Polls plugin
 ------------
 - If you knew a poll's ID, you could find out the poll's title even if you did
