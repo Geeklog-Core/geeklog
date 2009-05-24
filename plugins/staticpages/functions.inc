@@ -511,35 +511,43 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
 function plugin_showstats_staticpages($showsitestats)
 {
     global $_CONF, $_TABLES, $LANG_STATIC;
+
     $retval = '';
 
-    $perms = SP_getPerms ();
-    if (!empty ($perms)) {
+    $perms = SP_getPerms();
+    if (!empty($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
-    $nrows  = DB_numRows ($result);
+    $result = DB_query("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
+    $nrows  = DB_numRows($result);
     if ($nrows > 0) {
-        require_once( $_CONF['path_system'] . 'lib-admin.php' );
+        require_once $_CONF['path_system'] . 'lib-admin.php';
+
         $header_arr = array(
-            array('text' => $LANG_STATIC['stats_page_title'], 'field' => 'sid', 'header_class' => 'stats-header-title'),
-            array('text' => $LANG_STATIC['stats_hits'], 'field' => 'sp_hits', 'header_class' => 'stats-header-count', 'field_class' => 'stats-list-count'),
+            array('text'         => $LANG_STATIC['stats_page_title'],
+                  'field'        => 'sid',
+                  'header_class' => 'stats-header-title'),
+            array('text'         => $LANG_STATIC['stats_hits'],
+                  'field'        => 'sp_hits',
+                  'header_class' => 'stats-header-count',
+                  'field_class'  => 'stats-list-count'),
         );
         $data_arr = array();
-        $text_arr = array('has_menu'     => false,
-                          'title'        => $LANG_STATIC['stats_headline'],
+        $text_arr = array('has_menu' => false,
+                          'title'    => $LANG_STATIC['stats_headline']
         );
         for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray ($result);
-            $A['sp_title'] = stripslashes ($A['sp_title']);
-            $A['sid'] = COM_createLink($A['sp_title'], COM_buildUrl ($_CONF['site_url']
-                      . "/staticpages/index.php?page={$A['sp_id']}"));
-            $A['sp_hits'] = COM_NumberFormat ($A['sp_hits']);
+            $A = DB_fetchArray($result);
+            $A['sp_title'] = stripslashes($A['sp_title']);
+            $A['sid'] = COM_createLink($A['sp_title'],
+                            COM_buildUrl($_CONF['site_url']
+                                . "/staticpages/index.php?page={$A['sp_id']}"));
+            $A['sp_hits'] = COM_NumberFormat($A['sp_hits']);
             $data_arr[$i] = $A;
         }
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
+        $retval .= COM_startBlock($LANG_STATIC['stats_headline']);
         $retval .= $LANG_STATIC['stats_no_hits'];
         $retval .= COM_endBlock();
     }
@@ -553,13 +561,13 @@ function plugin_showstats_staticpages($showsitestats)
 * @return   array(item text, item count);
 *
 */
-function plugin_statssummary_staticpages ()
+function plugin_statssummary_staticpages()
 {
-    global $_TABLES, $LANG_STATIC;
+    global $LANG_STATIC;
 
-    $total_pages = SP_countVisiblePages ();
+    $total_pages = SP_countVisiblePages();
 
-    return array ($LANG_STATIC['staticpages'], COM_numberFormat ($total_pages));
+    return array($LANG_STATIC['staticpages'], COM_numberFormat($total_pages));
 }
 
 /**
