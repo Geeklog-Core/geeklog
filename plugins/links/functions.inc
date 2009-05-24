@@ -100,17 +100,17 @@ function plugin_getmenuitems_links()
 /**
 * Return headlines for New Links section in the What's New block, if enabled
 *
-* @return   mixed       array(headline, byline), or boolean false is disabled
+* @return   mixed       array(headline, byline), or boolean false if disabled
 *
 */
 function plugin_whatsnewsupported_links()
 {
-    global $_TABLES, $_LI_CONF, $LANG_LINKS, $LANG_WHATSNEW;
+    global $_LI_CONF, $LANG_LINKS, $LANG_WHATSNEW;
 
-    if ( $_LI_CONF['hidenewlinks'] == 0 ) {
-        $retval = array( $LANG_LINKS[84],
-                         COM_formatTimeString( $LANG_WHATSNEW['new_last'],
-                                               $_LI_CONF['newlinksinterval'] )
+    if ($_LI_CONF['hidenewlinks'] == 0) {
+        $retval = array($LANG_LINKS[84],
+                        COM_formatTimeString($LANG_WHATSNEW['new_last'],
+                                             $_LI_CONF['newlinksinterval'])
                        );
     } else {
         $retval = false;
