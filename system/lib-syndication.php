@@ -183,10 +183,11 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
 /**
 * Check if the contents of Geeklog's built-in feeds need to be updated.
 *
-* @param    string  topic           indicator of the feed's "topic"
-* @param    string  limit           number of entries or number of hours
-* @param    string  updated_topic   (optional) specific topic to update
-* @param    string  updated_id      (optional) specific id to update
+* @param    string  $topic          indicator of the feed's "topic"
+* @param    string  $update_data    comma-sep. list of updated ids
+* @param    string  $limit          number of entries or number of hours
+* @param    string  $updated_topic  (optional) specific topic to update
+* @param    string  $updated_id     (optional) specific id to update
 * @return   boolean                 false = feed has to be updated, true = ok
 *
 */
