@@ -426,7 +426,11 @@ class ListFactory {
                 foreach ($this->_fields as $field)
                 {
                     if (!is_numeric($field['name']) && $field['name'][0] != '_') {
-                        $col[ $field['name'] ] = $A[ $field['name'] ];
+                        if (empty($A[ $field['name'] ])) {
+                            $col[ $field['name'] ] = 'LF_NULL';
+                        } else {
+                            $col[ $field['name'] ] = $A[ $field['name'] ];
+                        }
                     }
                 }
 
@@ -444,7 +448,8 @@ class ListFactory {
         $direction = $this->_sort_arr['direction'] == 'asc' ? SORT_ASC : SORT_DESC;
         $column = array();
         foreach ($rows_arr as $sortarray) {
-            $column[] = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
+            $tmp = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
+            $column[] = ($tmp == 'LF_NULL' ? 0 : $tmp);
         }
         array_multisort($column, $direction, $rows_arr);
 
@@ -598,11 +603,13 @@ class ListFactory {
                         $fieldvalue = $row[ $field['name'] ];
                     }
 
-                    $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
+                    if ($fieldvalue != 'LF_NULL') {
+                        $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
 
-                    // Write field
-                    $list_templates->set_var('field_text', $fieldvalue);
-                    $list_templates->parse('item_field', 'field', true);
+                        // Write field
+                        $list_templates->set_var('field_text', $fieldvalue);
+                        $list_templates->parse('item_field', 'field', true);
+                    }
                 }
             }
 

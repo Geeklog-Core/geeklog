@@ -750,8 +750,13 @@ class Search {
                 $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordlength));
             }
 
-            $row['date'] = strftime($_CONF['daytime'], intval($row['date']));
-            $row['hits'] = COM_NumberFormat($row['hits']) . ' '; // simple solution to a silly problem!
+            if ($row['date'] != 'LF_NULL') {
+                $row['date'] = strftime($_CONF['daytime'], intval($row['date']));
+            }
+
+            if ($row['hits'] != 'LF_NULL') {
+                $row['hits'] = COM_NumberFormat($row['hits']) . ' '; // simple solution to a silly problem!
+            }
         }
 
         return $row;
@@ -894,7 +899,7 @@ class Search {
     *
     * @param   string  $haystack  string to search in
     * @param   string  $needle    string to search for
-    * @return  mixed              first pos of $needle in $haystack, or false 
+    * @return  mixed              first pos of $needle in $haystack, or false
     *
     */
     function _stripos($haystack, $needle)
