@@ -219,9 +219,9 @@ function plugin_chkVersion_links ()
 {
     global $_CONF;
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
 
-    $inst_parms = plugin_autoinstall_links('links'); 
+    $inst_parms = plugin_autoinstall_links('links');
 
     return $inst_parms['info']['pi_version'];
 }
@@ -363,7 +363,8 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
-    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
+    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, ";
+    $sql .= "CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
     $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
     $sql .= COM_getPermSQL('AND') . ' ';
 
@@ -384,7 +385,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     }
 
     $search = new SearchCriteria('links', $LANG_LINKS[14]);
-    $columns = array('description', 'title' => 'title');
+    $columns = array('title' => 'title', 'description');
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
@@ -639,15 +640,15 @@ function plugin_upgrade_links()
 {
     global $_CONF, $_TABLES, $_LI_CONF;
 
-    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',         
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'links'");
     $code_version = plugin_chkVersion_links();
     if ($installed_version == $code_version) {
-        // nothing to do                                                       
-        return true; 
+        // nothing to do
+        return true;
     }
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
 
     if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;

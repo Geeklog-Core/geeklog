@@ -608,7 +608,9 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
-    $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, UNIX_TIMESTAMP(sp.sp_date) AS date, sp.sp_uid AS uid, sp.sp_hits AS hits, CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
+    $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, ";
+    $sql .= "UNIX_TIMESTAMP(sp.sp_date) AS date, sp.sp_uid AS uid, sp.sp_hits AS hits, ";
+    $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
     $sql .= "WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1) ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
@@ -630,7 +632,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
-    $columns = array('sp_content', 'title' => 'sp_title');
+    $columns = array('title' => 'sp_title', 'sp_content');
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
@@ -931,9 +933,9 @@ function plugin_chkVersion_staticpages()
     global $_CONF;
 
     require_once $_CONF['path'] . 'plugins/staticpages/autoinstall.php';
- 
+
     $inst_parms = plugin_autoinstall_staticpages('staticpages');
- 
+
     return $inst_parms['info']['pi_version'];
 }
 
@@ -1014,7 +1016,7 @@ function plugin_upgrade_staticpages()
     }
 
     require_once $_CONF['path'] . 'plugins/staticpages/autoinstall.php';
-    
+
     if (! plugin_compatible_with_this_version_staticpages('staticpages')) {
         return 3002;
     }
