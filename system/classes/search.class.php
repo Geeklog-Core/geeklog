@@ -663,17 +663,20 @@ class Search {
         if ($this->_keyType == 'any')
         {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = "'<b>$searchQuery</b>'";
         }
         else if ($this->_keyType == 'all')
         {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = "'<b>$searchQuery</b>'";
         }
         else
         {
             $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";
         }
+
+        // Clean the query string so that sprintf works as expected
+        $searchQuery = str_replace("%", "%%", $searchQuery);
 
         $retval = "{$LANG09[25]} $searchQuery. ";
         if (count($results) == 0)
@@ -685,7 +688,8 @@ class Search {
         }
         else
         {
-            $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). " . COM_createLink($LANG09[61], $url.'refine');
+            $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). ";
+            $retval .= str_replace("%", "%%", COM_createLink($LANG09[61], $url.'refine'));
             $retval = '<p>' . $retval . '</p>' . LB;
             $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '', $_CONF['search_show_sort'], $_CONF['search_show_limit']);
         }
