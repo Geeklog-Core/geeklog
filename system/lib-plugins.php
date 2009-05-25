@@ -1784,7 +1784,7 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
   * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
   * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
   * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fethed.
+  * @param  string  $fid            The ID of the feed being fetched.
   * @return array                   list of extension tags
   *
   */
@@ -1820,7 +1820,7 @@ function PLG_getFeedElementExtensions($contentType, $contentID, $feedType, $feed
   * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
   * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
   * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fethed.
+  * @param  string  $fid            The ID of the feed being fetched.
   * @return array                   list of extension namespaces
   *
   */
@@ -1855,7 +1855,7 @@ function PLG_getFeedNSExtensions($contentType, $feedType, $feedVersion, $topic, 
   * @param  string  $feedType       Type of feed format (RSS/Atom/etc)
   * @param  string  $feedVersion    Type of feed version (RSS 1.0 etc)
   * @param  string  $topic          The topic for the feed.
-  * @param  string  $fid            The ID of the feed being fethed.
+  * @param  string  $fid            The ID of the feed being fetched.
   * @return array                   list of meta tag extensions
   *
   */
