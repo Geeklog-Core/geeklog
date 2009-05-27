@@ -32,6 +32,7 @@ Changes since 1.6.0b1:
   entries to a certain amount of characters (reported by alank) [Dirk]
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
+- lib-custom.php was missing from the 1.6.0b1 tarball
 
 - Updated Spanish language file, provided by Juan Pablo Novillo
 
@@ -70,6 +71,8 @@ May 1, 2009 (1.6.0b1)
 - Document where CUSTOM_templateSetVars is actually called from (bug #0000862)
   [Dirk]
 - Added option to search by titles only (feature request #0000840) [Sami]
+- The "Plugins" entry in the Admins Block now displays the number of enabled
+  plugins (previously included the disabled plugins) [Dirk]
 - Added a config option to enable/disable automatically turning URLs in text
   postings into clickable URLs [Dirk]
 - Changed some default settings [Dirk]:
@@ -80,6 +83,7 @@ May 1, 2009 (1.6.0b1)
   These settings are _not_ changed when upgrading from an earlier version.
 - Experimental: Compress HTML output before sending it to the browser (disabled
   by default; has to be supported by both the browser and the webserver) [Dirk]
+- Added canonical link for article directory [Dirk]
 - Moved hard-coded texts from admin/sectest.php to the language files (bug
   #0000716) [Dirk]
 - Added an option to send a copy of the email to a user to self (feature request
