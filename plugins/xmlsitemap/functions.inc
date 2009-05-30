@@ -200,7 +200,7 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
     }
 
     if (($type !== NULL) &&
-            in_array(strtolower($type, $_XMLSMAP_CONF['exclude']))) {
+            in_array(strtolower($type), $_XMLSMAP_CONF['exclude'])) {
         // plugin is on our exclude list, so ignore
         return TRUE;
     }
