@@ -105,6 +105,7 @@ $LANG25 = array(
     40 => 'See all answers to this poll'
 );
 
+$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_polls_MESSAGE19 = 'Your poll has been successfully saved.';
 $PLG_polls_MESSAGE20 = 'Your poll has been successfully deleted.';
 

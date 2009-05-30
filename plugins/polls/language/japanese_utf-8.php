@@ -111,6 +111,7 @@ $LANG25 = array(
     40 => 'アンケートの結果を見る'
 );
 
+$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
 $PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
 

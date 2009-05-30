@@ -40,6 +40,7 @@ Changes since 1.6.0b1:
 
 Polls plugin
 ------------
+- Display a message when a plugin comment is queued [Dirk]
 - If you knew a poll's ID, you could find out the poll's title even if you did
   not have access to the poll [Dirk]
 - Fixed (mostly) blank page when calling up a non-existing poll ID (reported

@@ -124,21 +124,26 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    $commentcode = DB_getItem ($_TABLES['polltopics'], 'commentcode',
-                               "pid = '$id'");
+    $commentcode = DB_getItem($_TABLES['polltopics'], 'commentcode',
+                              "pid = '$id'");
     if ($commentcode != 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
+        return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
-    $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
+    $ret = CMT_saveComment($title, $comment, $id, $pid, 'polls', $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= COM_siteHeader('menu', $LANG03[1])
-                . CMT_commentForm ($title, $comment, $id, $pid, 'polls',
-                                   $LANG03[14], $postmode)
+                . CMT_commentForm($title, $comment, $id, $pid, 'polls',
+                                  $LANG03[14], $postmode)
                 . COM_siteFooter();
     } else { // success
-        $retval = COM_refresh ($_CONF['site_url']
-                                . "/polls/index.php?pid=$id&amp;aid=-1");
+        $msg = '';
+        if (($_CONF['commentsubmission'] == 1) &&
+                !SEC_hasRights('comment.submit')) {
+            $msg = '&msg=15';
+        }
+        $retval = COM_refresh($_CONF['site_url']
+                              . "/polls/index.php?pid=$id&amp;aid=-1$msg");
     }
 
     return $retval;
