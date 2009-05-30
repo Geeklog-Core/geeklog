@@ -4507,7 +4507,7 @@ function COM_showMessage($msg, $plugin = '')
                 $message = $$var;
             } else {
                 $message = sprintf($MESSAGE[61], $plugin);
-                COM_errorLog($MESSAGE[61] . ": " . $var, 1);
+                COM_errorLog($message . ": " . $var, 1);
             }
         } else {
             $message = $MESSAGE[$msg];
