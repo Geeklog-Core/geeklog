@@ -247,9 +247,16 @@ function handleView($view = true)
             break;
 
         default: // assume plugin
+            $order = '';
+            if (isset($_REQUEST['order'])) {
+                $order = COM_applyFilter($_REQUEST['order']);
+            }
+            $page = 0;
+            if (isset($_REQUEST['page'])) {
+                $page = COM_applyFilter($_REQUEST['page'], true);
+            }
             if ( !($display = PLG_displayComment($type, $sid, $cid, $title,
-                                  COM_applyFilter ($_REQUEST['order']), $format, 
-                                  COM_applyFilter ($_REQUEST['page'], true), $view)) ) {
+                                  $order, $format, $page, $view)) ) {
                 return COM_refresh($_CONF['site_url'] . '/index.php');
             }
             break;
