@@ -1452,10 +1452,9 @@ function plugin_getiteminfo_links($lid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            if ($lid == '*') {
-                // in this case, we need the lid to build the URL
-                $fields[] = 'lid';
-            }
+            // needed for $lid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'lid';
             break;
         default:
             // nothing to do

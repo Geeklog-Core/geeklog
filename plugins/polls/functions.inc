@@ -1224,10 +1224,9 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
             $fields[] = 'topic';
             break;
         case 'url':
-            if ($pid == '*') {
-                // in this case, we need the pid to build the URL
-                $fields[] = 'pid';
-            }
+            // needed for $pid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'pid';
             break;
         default:
             // nothing to do
@@ -1261,7 +1260,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     if ($pid != '*') {
         $sql .= ' LIMIT 1';
     }
-
+COM_errorLog($sql);
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 

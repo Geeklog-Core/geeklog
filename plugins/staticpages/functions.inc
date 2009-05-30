@@ -1242,10 +1242,9 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
             $fields[] = 'sp_title';
             break;
         case 'url':
-            if ($sp_id == '*') {
-                // in this case, we need the sp_id to build the URL
-                $fields[] = 'sp_id';
-            }
+            // needed for $sp_id == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'sp_id';
             break;
         default:
             // nothing to do

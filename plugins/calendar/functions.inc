@@ -1803,10 +1803,9 @@ function plugin_getiteminfo_calendar($eid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            if ($eid == '*') {
-                // in this case, we need the eid to build the URL
-                $fields[] = 'eid';
-            }
+            // needed for $eid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'eid';
             break;
         default:
             // nothing to do
