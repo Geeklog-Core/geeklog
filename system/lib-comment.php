@@ -1120,16 +1120,19 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
         $ret = 5;
-    } elseif ( $_CONF['commentsubmission'] == 1 && !SEC_hasRights('comment.submit') ) {
-        //comment into comment submission table enabled
+    } elseif (($_CONF['commentsubmission'] == 1) &&
+            !SEC_hasRights('comment.submit')) {
+        // comment into comment submission table enabled
         if (isset($name)) {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,name,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['commentsubmissions'],
+                    'sid,uid,name,comment,date,title,pid,ipaddress,type',
+                    "'$sid',$uid,'$name','$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
         } else {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['commentsubmissions'],
+                    'sid,uid,comment,date,title,pid,ipaddress,type',
+                    "'$sid',$uid,'$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
         }
-        
+
         $ret = -1;
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
