@@ -11,6 +11,9 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b1:
+- The list of Comment Submissions now tries to provide a link to a comment's
+  parent object (article, poll, ...). If not available, it displays an excerpt
+  from the comment [Dirk]
 - Plugin comments lost their type when being saved in the comment submission
   queue (they were treated as comments on stories) [Dirk]
 - SQL errors now trigger the standard error handler ("Unfortunately, an error
