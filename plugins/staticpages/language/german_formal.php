@@ -114,6 +114,7 @@ $LANG_STATIC = array(
     'submit' => 'Absenden'
 );
 
+$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Seite wurde gespeichert.';
 $PLG_staticpages_MESSAGE20 = 'Seite wurde gelöscht';
 

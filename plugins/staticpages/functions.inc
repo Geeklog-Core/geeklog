@@ -176,7 +176,6 @@ function plugin_displaycomment_staticpages ($id, $cid, $title, $order, $format, 
 /**
  * Static Page saves a comment
  *
- * @param   string  $type   Plugin to save comment
  * @param   string  $title  comment title
  * @param   string  $comment comment text
  * @param   string  $id     Item id to which $cid belongs
@@ -190,21 +189,26 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
 
     $retval = '';
 
-    $commentcode = DB_getItem ($_TABLES['staticpage'], 'commentcode',
-                               "sp_id = '$id'");
+    $commentcode = DB_getItem($_TABLES['staticpage'], 'commentcode',
+                              "sp_id = '$id'");
     if ($commentcode != 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
+        return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
-    $ret = CMT_saveComment ($title, $comment, $id, $pid, 'staticpages', $postmode);
+    $ret = CMT_saveComment($title, $comment, $id, $pid, 'staticpages', $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= COM_siteHeader('menu', $LANG03[1])
-                . CMT_commentForm ($title, $comment, $id, $pid, 'staticpages',
-                                   $LANG03[14], $postmode)
+                . CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
+                                  $LANG03[14], $postmode)
                 . COM_siteFooter();
     } else { // success
+        $msg = '';
+        if (($_CONF['commentsubmission'] == 1) &&
+                !SEC_hasRights('comment.submit')) {
+            $msg = '&msg=15';
+        }
         $retval = COM_refresh ($_CONF['site_url']
-                                . "/staticpages/index.php?page=$id");
+                                . "/staticpages/index.php?page=$id$msg");
     }
 
     return $retval;

@@ -115,6 +115,7 @@ $LANG_STATIC = array(
     'submit' => '登録'
 );
 
+$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
 
