@@ -1691,7 +1691,6 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
 /**
  * Moves comment from submission table to comments table
  * 
- * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @param  string $cid comment id

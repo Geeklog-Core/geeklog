@@ -111,7 +111,6 @@ function plugin_commentsupport_polls()
 /**
  * Poll saves a comment
  *
- * @param   string  $type   Plugin to save comment
  * @param   string  $title  comment title
  * @param   string  $comment comment text
  * @param   string  $id     Item id to which $cid belongs
