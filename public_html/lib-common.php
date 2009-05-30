@@ -3455,7 +3455,8 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( !empty( $topic ))
     {
-        $commonsql .= " AND (tid = '$topic' OR tid = 'all')";
+        $tp = addslashes($topic);
+        $commonsql .= " AND (tid = '$tp' OR tid = 'all')";
     }
     else
     {
