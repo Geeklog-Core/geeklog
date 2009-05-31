@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May ??, 2009 (1.6.0b2)
+May 31, 2009 (1.6.0b2)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b1:
+- Various fixes to the new search (work in progress) [Sami]
 - The list of Comment Submissions now tries to provide a link to a comment's
   parent object (article, poll, ...). If not available, it displays an excerpt
   from the comment [Dirk]
