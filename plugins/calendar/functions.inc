@@ -68,13 +68,13 @@ if (!isset($_CA_CONF['calendarloginrequired'])) {
 * NOTE: this MUST return the url/value pairs in the following format
 * $<arrayname>[<label>] = <url>
 *
+* @return   mixed   menu entry, or boolean false if disabled / hidden
 */
-function plugin_getmenuitems_calendar ()
+function plugin_getmenuitems_calendar()
 {
-    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1;
 
-    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if (($_CA_CONF['hidecalendarmenu'] == 1) || ($anon &&
+    if (($_CA_CONF['hidecalendarmenu'] == 1) || (COM_isAnonUser() &&
             ($_CONF['loginrequired'] || $_CA_CONF['calendarloginrequired']))) {
         return false;
     }

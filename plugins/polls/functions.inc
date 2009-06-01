@@ -77,13 +77,13 @@ if (!isset($_PO_CONF['pollsloginrequired'])) {
 * NOTE: this MUST return the url/value pairs in the following format
 * $<arrayname>[<label>] = <url>
 *
+* @return   mixed   menu entry, or boolean false if disabled / hidden
 */
 function plugin_getmenuitems_polls ()
 {
-    global $_CONF, $_USER, $_PO_CONF, $LANG_POLLS;
+    global $_CONF, $_PO_CONF, $LANG_POLLS;
 
-    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if (($_PO_CONF['hidepollsmenu'] == 1) || ($anon &&
+    if (($_PO_CONF['hidepollsmenu'] == 1) || (COM_isAnonUser() &&
                 ($_CONF['loginrequired'] || $_PO_CONF['pollsloginrequired']))) {
         return false;
     }
