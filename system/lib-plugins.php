@@ -242,21 +242,26 @@ function PLG_uninstall($type)
         }
 
         // removing tables
-        for ($i=0; $i < count($remvars['tables']); $i++) {
-            COM_errorLog ("Dropping table {$_TABLES[$remvars['tables'][$i]]}", 1);
-            DB_query ("DROP TABLE {$_TABLES[$remvars['tables'][$i]]}", 1    );
-            COM_errorLog ('...success', 1);
+        $num_tables = count($remvars['tables']);
+        for ($i = 0; $i < $num_tables; $i++) {
+            if (isset($_TABLES[$remvars['tables'][$i]])) {
+                COM_errorLog("Dropping table {$_TABLES[$remvars['tables'][$i]]}", 1);
+                DB_query("DROP TABLE {$_TABLES[$remvars['tables'][$i]]}", 1);
+                COM_errorLog('...success', 1);
+            }
         }
 
         // removing variables
-        for ($i = 0; $i < count($remvars['vars']); $i++) {
+        $num_vars = count($remvars['vars']);
+        for ($i = 0; $i < $num_vars; $i++) {
             COM_errorLog ("Removing variable {$remvars['vars'][$i]}", 1);
             DB_delete($_TABLES['vars'], 'name', $remvars['vars'][$i]);
             COM_errorLog ('...success', 1);
         }
 
         // removing groups
-        for ($i = 0; $i < count($remvars['groups']); $i++) {
+        $num_groups = count($remvars['groups']);
+        for ($i = 0; $i < $num_groups; $i++) {
             $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                                   "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty($grp_id)) {
@@ -270,7 +275,8 @@ function PLG_uninstall($type)
         }
 
         // removing features
-        for ($i = 0; $i < count($remvars['features']); $i++) {
+        $num_features = count($remvars['features']);
+        for ($i = 0; $i < $num_features; $i++) {
             $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
                                     "ft_name = '{$remvars['features'][$i]}'");
             if (!empty($access_id)) {
@@ -314,7 +320,8 @@ function PLG_uninstall($type)
         COM_errorLog ('...success', 1);
 
         // uninstall php-blocks
-        for ($i = 0; $i < count($remvars['php_blocks']); $i++) {
+        $num_blocks = count($remvars['php_blocks']);
+        for ($i = 0; $i < $num_blocks; $i++) {
             DB_delete($_TABLES['blocks'], array('type',     'phpblockfn'),
                                           array('phpblock', $remvars['php_blocks'][$i]));
         }
