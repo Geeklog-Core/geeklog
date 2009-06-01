@@ -84,10 +84,9 @@ if (!isset($_LI_CONF['linksloginrequired'])) {
 */
 function plugin_getmenuitems_links()
 {
-    global $_CONF, $_USER, $_LI_CONF, $LANG_LINKS;
+    global $_CONF, $_LI_CONF, $LANG_LINKS;
 
-    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if (($_LI_CONF['hidelinksmenu'] == 1) || ($anon &&
+    if (($_LI_CONF['hidelinksmenu'] == 1) || (COM_isAnonUser() &&
                 ($_CONF['loginrequired'] || $_LI_CONF['linksloginrequired']))) {
         return false;
     }
