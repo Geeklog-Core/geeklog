@@ -1275,15 +1275,6 @@ function plugin_feedupdatecheck_calendar ($feed, $topic, $update_data, $limit,
 
 
 /**
-* Calendar will not use comments
-*/
-function plugin_commentsupport_calendar()
-{
-    return false;
-}
-
-
-/**
 * Shows the statistics for the Calendar plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats

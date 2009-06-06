@@ -233,11 +233,6 @@ functions.inc file:</p>
     <th valign="top">Description of Function</th>
   </tr>
   <tr>
-    <td valign="top" class="codeheader">plugin_commentsupport_&lt;plugin name&gt;</td>
-    <td valign="top" class="code">
-    This function does not take any parameters but simply returns true if this plugin supports comments. This call is made in Geeklog code (example: article.php) to determine if it should redirect handling to the plugin.</td>
-  </tr>
-  <tr>
     <td valign="top" class="codeheader">plugin_handlecomment_&lt;plugin name&gt;</td>
     <td valign="top" class="code">
     This function expects the comment id (primary index in the comment table) and and type of operation (either 'save' or 'delete') to perform on the comment. It will update the plugin record with the total number of comments for this plugin item. It then handles the refresh or redirection of the user back to the plugin instead of the main site page.</td>
