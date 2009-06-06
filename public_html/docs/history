@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May 31, 2009 (1.6.0b2)
+Jun ??, 2009 (1.6.0rc1)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -9,6 +9,18 @@ the 2008 Google Summer of Code:
 + Site migration support and easier plugin installation, by Matt West
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
+
+Changes since 1.6.0b2:
+- Removed old plugin API function plugin_commentsupport from the Calendar,
+  Polls, and Static Pages plugins.
+
+Static Pages plugin
+-------------------
+- When deleting a static page, also delete its comments (bug #0000901) [Dirk]
+
+
+May 31, 2009 (1.6.0b2)
+------------
 
 Changes since 1.6.0b1:
 - Various fixes to the new search (work in progress) [Sami]
@@ -171,6 +183,8 @@ May 1, 2009 (1.6.0b1)
   themselves [Dirk]
 - Gave the Groups and User editors a facelift. Requires a new template file,
   admin/lists/inline.thtml [Dirk]
+- Introduced list of "advanced HTML" tags that are allowed when FCKeditor is
+  enabled. Needed for images (bug #0000757) [Blaine]
 - Add new permissions plugin.install and plugin.upload for more fine-grained
   control to the plugin admin panel (bug #0000637) [Dirk]
 - Introduced new plugin API function PLG_itemDeleted [Dirk]
