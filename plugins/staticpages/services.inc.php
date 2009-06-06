@@ -409,6 +409,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
             PLG_itemSaved($sp_id, 'staticpages');
         } else {
+            DB_change($_TABLES['comments'], 'sid', addslashes($sp_id),
+                      array('sid', 'type'),
+                      array(addslashes($sp_old_id), 'staticpages'));
             PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
         }
 
