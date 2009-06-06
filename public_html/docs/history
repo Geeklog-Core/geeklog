@@ -14,6 +14,11 @@ Changes since 1.6.0b2:
 - Removed old plugin API function plugin_commentsupport from the Calendar,
   Polls, and Static Pages plugins.
 
+Polls plugin
+------------
+- Update polls comments when changing a poll's ID so the comments don't get
+  orphaned (part of bug #0000901) [Dirk]
+
 Static Pages plugin
 -------------------
 - When deleting a static page, also delete its comments (bug #0000901) [Dirk]

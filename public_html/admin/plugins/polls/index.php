@@ -306,6 +306,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
     } else {
+        DB_change($_TABLES['comments'], 'sid', addslashes($pid),
+                  array('sid', 'type'), array(addslashes($old_pid), 'polls'));
         PLG_itemSaved($pid, 'polls', $old_pid);
     }
 
