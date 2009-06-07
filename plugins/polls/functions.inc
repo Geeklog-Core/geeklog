@@ -1245,7 +1245,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     if ($pid != '*') {
         $sql .= ' LIMIT 1';
     }
-COM_errorLog($sql);
+
     $result = DB_query($sql);
     $numRows = DB_numRows($result);
 
