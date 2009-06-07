@@ -213,26 +213,26 @@ $LANG03 = array(
     25 => '投稿をサイト管理者に通知してよいですか?',
     26 => '%s さんが以下の投稿を迷惑だと指摘しています:',
     27 => '迷惑通知',
-    28 => 'Preview Changes',
-    29 => 'Submit Changes',
-    30 => 'Edited on',
+    28 => 'プレビューする',
+    29 => '投稿する',
+    30 => '編集：',
     31 => 'by',
-    32 => 'Editing a Comment',
-    33 => 'Editing a Comment Submission',
-    34 => 'Preview Submission Changes',
-    35 => 'Save Changes to Queue',
-    36 => 'Notify me of new replies',
-    37 => 'New Comment Reply',
-    38 => 'A reply has been made to your comment \'%s\'.',
-    39 => 'You may view the comment thread at the following address:',
-    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
-    41 => 'Hello %s,',
-    42 => 'Unsubscribe',
-    43 => 'Unsubscribe from reply notifications'
+    32 => 'コメント編集',
+    33 => 'コメント投稿編集',
+    34 => '投稿プレビュー',
+    35 => '変更をキューに保存',
+    36 => '新規レス通知',
+    37 => '新規コメント',
+    38 => 'コメントにレスが付きました \'%s\'.',
+    39 => 'コメントスレッドアドレス:',
+    40 => '詳細通知内容はこちら:',
+    41 => 'こんにちは %s,',
+    42 => '拒否',
+    43 => '通知拒否'
 );
 
 ###############################################################################
-# users.php
+# usersettings.php
 
 $LANG04 = array(
     1 => 'アカウント情報',
@@ -389,14 +389,13 @@ $LANG04 = array(
     157 => 'アカウント削除オプション',
     158 => 'タイムゾーン',
     159 => 'このメールは自動送信されたものです。返信しないでください。',
-    160 => '(max. %d x %d pixels, %d bytes; %s)',
-    161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    160 => '(最大. %d X %d ピクセル, %d バイト; %s)',
+    161 => 'リサイズ',
+    162 => 'リサイズなし'
 );
 
 ###############################################################################
-# Customize if need to modify the Tabbed navbar MyAccount panels used.
-# Array index key matches preference div id
+# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -460,9 +459,9 @@ $LANG08 = array(
     33 => '以下の場所で記事全体を読むことができます。',
     34 => 'メッセージは以上です',
     35 => '残念ながらこのユーザはメールを受け付けておりません。',
-    36 => 'Copy:',
-    37 => 'Send me a copy of this email',
-    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
+    36 => 'コピー:',
+    37 => '送信済みメール',
+    38 => "送信済みメール あて先：%s <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -531,14 +530,14 @@ $LANG09 = array(
     60 => '件',
     61 => '検索条件の修正',
     62 => '#',
-    63 => 'Description',
-    64 => 'Showing %1$d - %2$d of %3$d results',
-    65 => 'Story',
-    66 => 'Comment',
-    67 => 'Show %d Results',
-    68 => 'Sort By',
-    69 => 'Titles Only',
-    70 => 'Not available ...'
+    63 => '詳細',
+    64 => '検索結果 %1$d - %2$d ／ %3$d 件',
+    65 => '記事',
+    66 => 'コメント',
+    67 => '検索結果 %d 件',
+    68 => 'ソート',
+    69 => 'タイトルのみ',
+    70 => 'ありません ...'
 );
 
 ###############################################################################
@@ -706,7 +705,7 @@ $LANG21 = array(
     32 => 'エラー。未入力の項目があります',
     33 => 'ポータルブロックのフィードURLを入力してください',
     34 => 'PHPブロックにはタイトルと関数名を入力してください',
-    35 => '普通のブロックにはタイトルと内容を入力してください',
+    35 => 'ノーマルブロックにはタイトルと内容を入力してください',
     36 => 'レイアウト用ブロックには内容を入力してください',
     37 => 'PHPブロックの関数名が不適切です',
     38 => 'PHPブロックの関数名は、接頭子\'phpblock_\' (例 phpblock_themetester)が必要です。セキュリティ対策のため必要となっています。',
@@ -739,7 +738,7 @@ $LANG21 = array(
     65 => '順番',
     66 => '自動タグ',
     67 => '自動タグ使用許可',
-    68 => 'このポータルブロックのフィードは表示するには長すぎます。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。'
+    68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。'
 );
 
 ###############################################################################
@@ -808,7 +807,7 @@ $LANG24 = array(
     60 => '',
     61 => '自動アーカイブ',
     62 => '自動削除',
-    63 => 'Disable Comments',
+    63 => 'コメント不可',
     64 => '',
     65 => '',
     66 => '',
@@ -833,7 +832,7 @@ $LANG24 = array(
     85 => 'すべて表示',
     86 => 'アドバンストエディタ',
     87 => '記事の情報',
-    88 => 'ウィキスタイル'
+    88 => 'Wikiスタイル'
 );
 
 ###############################################################################
@@ -865,7 +864,7 @@ $LANG27 = array(
     23 => 'この話題を新規記事投稿の際のデフォルトにします。',
     24 => '(*)',
     25 => 'アーカイブ',
-    26 => '話題をアーカイブにします。デフォルトに設定できるのはひとつだけです。',
+    26 => 'この話題をアーカイブ記事用の話題にします。アーカイブ記事用の話題に設定できるのはひとつだけです。',
     27 => '話題アイコンアップロード',
     28 => '最大',
     29 => 'ファイルアップロード時にエラー'
@@ -899,7 +898,7 @@ $LANG28 = array(
     22 => 'エラー',
     23 => '一括登録',
     24 => 'ユーザの一括登録',
-    25 => 'ユーザをGeeklogに一括登録できます（重複チェック付き）。一括登録するファイルはユーザは一行あたり一人ずつで、各ユーザのデータはタブ区切りで「氏名、ユーザ名、メールアドレス」のフィールド順です。ユーザのパスワードは無作為に決定されます。ファイルはかならず本サイトと同じ文字コードのテキスト形式で保存してください。',
+    25 => 'ユーザをGeeklogに一括登録できます（重複チェック付き）。一括登録するファイルはユーザは1行あたり1人ずつで、各ユーザのデータはタブ区切りで「氏名、ユーザ名、メールアドレス」のフィールド順です。ユーザのパスワードは無作為に決定されます。ファイルはかならず本サイトと同じ文字コードのテキスト形式で保存してください。',
     26 => '',
     27 => '',
     28 => '画像を削除する場合チェックする',
@@ -934,9 +933,9 @@ $LANG28 = array(
     57 => '幽霊ユーザ',
     58 => '一時的ユーザ',
     59 => '過去のユーザ',
-    60 => 'Users that registered more than ',
+    60 => 'より多くの登録ユーザ ',
     61 => 'ヶ月前に登録したが、一度もログインしていないユーザ。',
-    62 => 'Users that registered more than ',
+    62 => 'より多くの登録ユーザ ',
     63 => 'ヶ月前に登録して、それから24時間以内にログインしたが、それ以来一度も戻ってきてログインしていないユーザ。',
     64 => '単に ',
     65 => 'ヶ月間、サイトを訪問していない普通のユーザ。',
@@ -960,8 +959,8 @@ $LANG28 = array(
     83 => "あなたの{$_CONF['site_name']}のアカウントは作成後使用されていません。このままアクセスが無ければ近日中に削除されますのでご注意ください。",
     84 => "あなたのログイン名 : %s  サイト名 : {$_CONF['site_url']}",
     85 => 'パスワードを紛失した場合には、以下のリンクをクリックしてください : %s',
-    86 => 'Include',
-    87 => 'Reminders'
+    86 => '含む',
+    87 => 'リマインダー'
 );
 
 ###############################################################################
@@ -983,14 +982,14 @@ $LANG29 = array(
     18 => 'メールアドレス',
     34 => '投稿管理',
     35 => '記事の投稿申請',
-    36 => 'Parent or Comment',
+    36 => 'コメントの親',
     37 => '',
     38 => '実行',
     39 => '現在のところ申請はありません',
     40 => 'ユーザの登録申請',
-    41 => 'Comment Submissions',
-    42 => 'User Name',
-    43 => 'Auto-publish Comments?'
+    41 => 'コメント投稿',
+    42 => 'ユーザ名',
+    43 => '自動公開コメント?'
 );
 
 ###############################################################################
@@ -1067,19 +1066,19 @@ $LANG32 = array(
     36 => 'コード',
     37 => 'データ',
     38 => '更新されています',
-    39 => 'Upload a plugin',
-    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
-    41 => 'Upload',
-    99 => 'An unknown error occured',
+    39 => 'プラグインアップロード',
+    40 => 'プラグインの圧縮ファイル (.tar.gz, .tgz, .zip) を直接ここにアップロードできます:',
+    41 => 'アップロード',
+    99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
-    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
-    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
-    103 => 'The uploaded file was only partially uploaded.',
-    104 => 'No file was uploaded.',
-    105 => '(undefined error)',
-    106 => 'Missing a temporary folder.',
-    107 => 'Failed to write file to disk.',
-    108 => 'File upload stopped by extension.'
+    101 => 'php.iniの設定を超える容量のファイルがアップロードされました。',
+    102 => 'アップロードファイルがHTMLフォームから MAX_FILE_SIZE を容量のファイルがアップロードされました。',
+    103 => 'ファイルの一部だけをアップロードしました。',
+    104 => 'アップロードされませんでした。',
+    105 => '(未定義エラー)',
+    106 => '一時ディレクトリエラー',
+    107 => 'ファイル書き込みエラー',
+    108 => 'ファイルアップロード制限エラー'
 );
 
 ###############################################################################
@@ -1108,7 +1107,7 @@ $LANG33 = array(
     25 => 'フィードのタイトル',
     26 => '配信最大件数',
     27 => 'エントリの長さ',
-    28 => '(0 = 本文なし, 1 = 本文すべて, other = 指定した文字数に制限。)',
+    28 => '(0 = 本文なし、1 = 本文すべて、その他 = 指定した文字数に制限)',
     29 => '詳細',
     30 => '更新',
     31 => '文字コード',
@@ -1156,8 +1155,8 @@ $MESSAGE = array(
     12 => 'ブロックを削除しました。',
     13 => '話題を変更しました。',
     14 => '話題とその話題に属するすべての記事とブロックを削除しました',
-    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
-    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
+    15 => '投稿されました。管理者の承認をお待ちください。',
+    16 => '返信が通知されます。',
     17 => '',
     18 => '',
     19 => '',
@@ -1170,7 +1169,7 @@ $MESSAGE = array(
     26 => '',
     27 => 'メッセージを送信しました。',
     28 => 'プラグインを保存しました',
-    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
+    29 => '管理者用ページにアクセスできません。',
     30 => 'アクセスが拒否されました',
     31 => '',
     32 => '',
@@ -1235,16 +1234,16 @@ $MESSAGE = array(
     91 => '無効なURLが指定されました。',
     92 => "使用する前に<a href=\"{$_CONF['site_admin_url']}/sectest.php\">セキュリティチェックを行ってください</a>!",
     93 => 'データベースのバックアップに成功しました。',
-    94 => 'バックアップ失敗: ファイルサイズが1KByte未満です。',
+    94 => 'バックアップ失敗: ファイルサイズが1Kバイト未満です。',
     95 => 'エラーが発生しました。',
     96 => '',
     97 => '',
-    98 => 'The plugin was successfully uploaded.',
-    99 => 'The plugin already exists.',
-    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
-    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
-    400 => 'Not all required fields have been passed validation',
-    401 => 'Please enter Fullname'
+    98 => 'プラグインのアップロードが完了しました。',
+    99 => 'プラグインがすでにあります。',
+    100 => 'アップロードしたプラグイン圧縮ファイルは GZip または Zip 形式ではありません。',
+    101 => 'アクセスすべき話題がありません。投稿するには少なくとも１つ以上の話題を作成してください。',
+    400 => 'すべての必須フィールドの検証に合格している',
+    401 => 'フルネームを入力してください。'
 );
 
 ###############################################################################
@@ -1253,7 +1252,7 @@ $LANG_ACCESS = array(
     'access' => 'アクセス',
     'ownerroot' => '所有者/Root',
     'group' => 'グループ',
-    'readonly' => '読みとり専用',
+    'readonly' => '読み取り専用',
     'accessrights' => 'アクセス権限',
     'owner' => '所有者',
     'grantgrouplabel' => '上記のグループに編集権限を与える',
@@ -1273,10 +1272,10 @@ $LANG_ACCESS = array(
     'coregroup' => 'コアグループ',
     'yes' => 'はい',
     'no' => 'いいえ',
-    'corerightsdescr' => "このグループは、{$_CONF['site_name']}の「コア（中核）グループ」です。そのため、本グループの権限を編集することはできないため、下記の権限リストは読みとり専用となっています。",
+    'corerightsdescr' => "このグループは、{$_CONF['site_name']}の「コア（中核）グループ」です。そのため、本グループの権限を編集することはできないため、下記の権限リストは読み取り専用となっています。",
     'groupmsg' => '本サイトのセキュリティグループは階層的になっています。本グループを下記のグループに追加する場合、そのグループの持つ権限と同じ権限を本グループにも与えることになります。可能であれば、本グループに権限を与える場合、下記のグループの権限を継承させることが望ましい方法です。本グループに個別に権限を与える場合は、下記の「権限」部分から様々な機能に関する権限を選択することができます。本グループを追加する場合は、下記のグループの横にあるボックスをチェックするだけです。',
-    'coregroupmsg' => "本グループは{$_CONF['site_name']}の「コア（中核）グループ」です。そのため、本グループの所属するグループは編集できません。下記のリストは読みとり専用となっています。",
-    'rightsdescr' => 'グループのアクセス権は下記の権限で与えられているか、グループが所属するグループ全体の権限を継承しています。下記のうち、チェックのない権限は、本グループの所属するグループから継承した権限です。チェックのある権限は本グループ自体が直接与えられている権限です。',
+    'coregroupmsg' => "本グループは{$_CONF['site_name']}の「コア（中核）グループ」です。そのため、本グループの所属するグループは編集できません。下記のリストは読み取り専用となっています。",
+    'rightsdescr' => 'グループのアクセス権は下記の権限で与えられているか、グループが所属するグループ全体の権限を継承しています。下記のうち、チェックのない権限は、本グループの所属するグループから継承した権限です。チェックのある権限は本グループが直接与えられている権限です。',
     'lock' => 'ロック',
     'members' => 'メンバー　',
     'anonymous' => 'ゲストユーザ',
@@ -1285,7 +1284,7 @@ $LANG_ACCESS = array(
     'edit' => '編集',
     'none' => 'なし',
     'accessdenied' => 'アクセスが拒否されました',
-    'storydenialmsg' => "この記事を閲覧する権限がありません。これは、あなたが{$_CONF['site_name']}のメンバーがないためだと思われます。{$_CONF['site_name']} の<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">メンバーになること</a>で閲覧が可能になります。",
+    'storydenialmsg' => "この記事を閲覧する権限がありません。これは、あなたが{$_CONF['site_name']}のメンバーでないためだと思われます。{$_CONF['site_name']} の<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">メンバーになること</a>で閲覧が可能になります。",
     'nogroupsforcoregroup' => 'このグループは他のどのグループにも所属していません',
     'grouphasnorights' => 'このグループは管理権限を一切所有していません。',
     'newgroup' => '新規',
@@ -1323,8 +1322,8 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップが完了しました。',
     'db_explanation' => 'Geeklogをバックアップするには、下のボタンをクリックしてください。',
-    'not_found' => "パスの指定が間違っているか、mysqldumpが実行可能になっていないか、PHPのopen_basedirの制限に引っかかっています。<br" . XHTML . "><strong>mysqldump_path</strong>の設定をコンフィギュレーションでチェックしてください。<br" . XHTML . ">現在の設定は、\n<var>{$_DB_mysqldump_path}</var>です。",
-    'zero_size' => 'バックアップが失敗しました。ファイルの大きさが0バイトです。',
+    'not_found' => "パスの指定が間違っているか、mysqldumpが実行可能になっていないか、PHPのopen_basedirの制限に引っかかっているかのどれかが原因で失敗しました。<br" . XHTML . "><strong>mysqldump_path</strong>の設定をコンフィギュレーションでチェックしてください。<br" . XHTML . ">現在の設定は、\n<var>{$_DB_mysqldump_path}</var>です。",
+    'zero_size' => 'バックアップに失敗しました。ファイルの大きさが0バイトです。',
     'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
     'no_access' => "エラー： {$_CONF['backup_path']} ディレクトリにアクセスできません。",
     'backup_file' => 'バックアップファイル',
@@ -1471,25 +1470,25 @@ $LANG_DIR = array(
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest' => 'Geeklog Security Check',
-    'results' => 'Results of the Security Check',
-    'okay' => 'Everything seems to be in order.',
-    'please_fix' => 'Please fix the above issues before using your site!',
-    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
-    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
-    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
-    'installation' => 'installation instructions',
-    'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
-    'fix_it' => 'This is a security risk and should be fixed!',
-    'reachable' => 'Your %s is reachable from the web.',
-    'not_reachable' => 'Good! Your %s is not reachable from the web.',
+    'sectest' => 'Geeklog セキュリティチェック',
+    'results' => 'セキュリティチェック結果',
+    'okay' => '正常。',
+    'please_fix' => 'サイトを公開する前に、以下の問題を解決してください!',
+    'please_note' => '100% セキュアなサイトはありません。このスクリプトは主な問題を解決するためのものです。',
+    'stay_informed' => 'Geeklogリリース情報やセキュリティ情報を常に追うには、(投稿頻度の低い) %s メーリングリストの購読をお勧めします。情報を時々チェックするには管理メニューの %s オプションを使用してください。',
+    'public_html' => '"public_html"はあなたのサイトURLの一部に含まれないようにしてください。再度 %s 内のpublic_htmlに関する部分を読んで、設定を変更してから次に進んでください。',
+    'installation' => 'インストール手順',
+    'directory' => 'ディレクトリ',
+    'failed_bak' => 'dataディレクトリに一時ファイルを作成できませんでした。パーミッションを確認してください!',
+    'fix_it' => 'セキュリティリスクが解決しました!',
+    'reachable' => 'あなたの %s はWEBからアクセス可能です。',
+    'not_reachable' => 'Good! あなたの %s はWEBからアクセスできません。',
     'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
-    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
-    'inst_removed' => 'Good! You seem to have removed the install directory already.',
-    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
-    'password_okay' => 'Good! You seem to have changed the default account password already.'
+    'remove_inst' => 'インストールディレクトリ %s を削除して、エラーの無い状態で運用してください。',
+    'remove_inst2' => 'そのままにしておくと、悪意のあるユーザがあなたのインストールを破壊したり、サイトをのっとったり、重要な情報を盗んだりする恐れが生じます。',
+    'inst_removed' => 'Good! インストールディレクトリはすでに削除されています。',
+    'fix_password' => ' %s Root ユーザアカウントの <strong>デフォルトパスワード</strong> が、"password" です。',
+    'password_okay' => 'Good! デフォルトユーザのパスワードをすでに変更しています。.'
 );
 
 ###############################################################################
@@ -1840,12 +1839,12 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'ログイン試行間隔制限',
     'user_html' => 'ユーザHTML',
     'admin_html' => '管理者HTML',
-    'advanced_html' => 'Additional HTML for Adv. Editor',
+    'advanced_html' => 'アドバンストエディタ用追加HTML',
     'skip_html_filter_for_root' => 'RootユーザはHTMLフィルタを無効にする',
     'allowed_protocols' => '許可されたプロトコル',
     'disable_autolinks' => '自動リンクを無効にする',
-    'clickable_links' => 'Make URLs clickable?',
-    'compressed_output' => 'Send compressed output?',
+    'clickable_links' => 'URL クリッカブルにする?',
+    'compressed_output' => '圧縮ファイルを出力する?',
     'censormode' => 'チェックする',
     'censorreplace' => '置き換え',
     'censorlist' => 'バッドワード',
@@ -1857,17 +1856,17 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => 'フィードの最大記事数',
     'disable_webservices' => '無効にする',
     'restrict_webservices' => '制限する',
-    'article_comment_close_days' => 'Days to close comments (default)',
-    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
-    'allow_reply_notifications' => 'Allow comment reply notifications?',
-    'search_style' => 'Results List Style',
-    'search_limits' => 'Page Limits',
-    'search_show_num' => 'Show Result Number?',
-    'search_show_type' => 'Show Result Type?',
-    'search_show_sort' => 'Allow User to Sort Results?',
-    'search_show_limit' => 'Show Page Limits?',
-    'search_separator' => 'Group Separator',
-    'search_def_keytype' => 'Default Search Method'
+    'article_comment_close_days' => 'コメントクローズする日数 (デフォルト)',
+    'comment_close_rec_stories' => 'コメント可能な最新記事数',
+    'allow_reply_notifications' => 'コメント通知を許可する?',
+    'search_style' => 'リストスタイル',
+    'search_limits' => 'ページ制限',
+    'search_show_num' => '検索数を表示する?',
+    'search_show_type' => 'タイプを表示する?',
+    'search_show_sort' => 'ユーザーにソートを許可する?',
+    'search_show_limit' => 'ページ制限を表示する?',
+    'search_separator' => 'グループセパレータ',
+    'search_def_keytype' => '検索方法のデフォルト'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1946,7 +1945,7 @@ $LANG_configselects['Core'] = array(
     17 => array('許可する' => 0, '許可しない' => -1),
     18 => array('チェックしない' => 0, 'チェックする（完全一致）' => 1, 'チェックする（前方一致）' => 2, 'チェックする（部分一致）' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    20 => array('正確なフレーズ' => 'phrase', 'すべてのキーワードを含む' => 'all', 'いずれかのキーワードを含む' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
 );
 
