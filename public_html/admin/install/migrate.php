@@ -246,8 +246,9 @@ if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been
 
 }
 
-$dbconfig_path      = (isset($_REQUEST['dbconfig_path'])) ? $_REQUEST['dbconfig_path'] : $gl_path . '/db-config.php';
-$step               = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : 1;
+$dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : $gl_path . '/db-config.php');
+$dbconfig_path      = INST_sanitizePath($dbconfig_path);
+$step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $backup_dir         = $_CONF['path'] . 'backups/';
 
 // $display holds all the outputted HTML and content
@@ -313,7 +314,7 @@ if (INST_phpOutOfDate()) {
             . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 
             . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-            . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB 
                 . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB 
             . '</select></p>' . LB
@@ -321,8 +322,8 @@ if (INST_phpOutOfDate()) {
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"' . XHTML . '></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"' . XHTML . '></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"' . XHTML . '></p>' . LB
-            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
-            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
         // Identify the backup files in backups/ and order them newest to oldest
         $sql_files = glob($backup_dir . '*.sql');
@@ -492,12 +493,12 @@ if (INST_phpOutOfDate()) {
             if (isset($_REQUEST['db'])) {
 
                 // Write the database info to db-config.php
-                if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
+                if (!INST_writeConfig(INST_sanitizePath($dbconfig_path), $DB)) {
 
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
 
                 }
-            } 
+            }
 
             require_once $dbconfig_path; // Not sure if this needs to be included..
             switch ($_REQUEST['migration_type']) {
@@ -529,7 +530,7 @@ if (INST_phpOutOfDate()) {
                         $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backup_file['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br' . XHTML . '>' . LB
                             . '<form action="migrate.php" method="post"><p align="center">' . LB
                             . '<input type="hidden" name="step" value="3"' . XHTML . '>' . LB
-                            . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+                            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="site_url" value="' . urlencode($_REQUEST['site_url']) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="backup_file" value="' . $backup_file['name'] . '"' . XHTML . '>' . LB
@@ -640,7 +641,7 @@ if (INST_phpOutOfDate()) {
 
             } else {
                 // Update db-config.php with the table prefix from the backup file.
-                if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
+                if (!INST_writeConfig($dbconfig_path, $DB)) {
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
                 }
 

@@ -65,6 +65,8 @@ if (!defined('SUPPORTED_PHP_VER')) {
     define('SUPPORTED_PHP_VER', '4.3.0');
 }
 
+$_REQUEST = array_merge($_GET, $_POST);
+
 if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
@@ -1147,6 +1149,22 @@ function INST_setVersion($siteconfig_path)
     $version = addslashes($version);
 
     DB_change($_TABLES['vars'], 'value', $version, 'name', 'database_version');
+}
+
+/**
+* Filter path value for junk and injections
+*
+* @param    string  $path   a path on the file system
+* @return   string          filtered path value
+*
+*/
+function INST_sanitizePath($path)
+{
+    $path = strip_tags($path);
+    $path = str_replace(array('"', "'"), '', $path);
+    $path = str_replace('..', '', $path);
+
+    return $path;
 }
 
 ?>

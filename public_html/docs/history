@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Prevent XSS in the install script (reported independently by Nemesis and MaXe)
+  [Dirk]
 - Removed old plugin API function plugin_commentsupport from the Calendar,
   Polls, and Static Pages plugins.
 
