@@ -31,6 +31,7 @@ Static Pages plugin
 
 XMLSitemap plugin
 -----------------
+- Add the Polls plugin to the sitemap by default (part of bug #0000898) [Dirk]
 - When manually adding or removing plugins, automatically add/remove
   corresponding entries for priority and frequency (part of bug #0000898) [Dirk]
 
