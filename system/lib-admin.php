@@ -1074,7 +1074,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
             }
             if ($not_present) {
                 $retval = '<input type="checkbox" name="enabledplugins['
-                        . $A['pi_name'] . '] disabled="disabled"' . XHTML . '>';
+                        . $A['pi_name'] . ']" disabled="disabled"' . XHTML . '>';
             } else {
                 $retval = '<input type="checkbox" name="enabledplugins['
                         . $A['pi_name'] . ']" onclick="submit()" value="1"'
