@@ -344,13 +344,14 @@ function XMLSITEMAP_checkChange($name)
                         'weekly', 'monthly', 'yearly', 'never');
 
                 if (!is_numeric($key) AND in_array($key, $enabled_plugins)
-                 AND (in_array($value, $valid_change_freqs))) {
-                     $valids[$key] = $value;
+                        AND in_array($value, $valid_change_freqs)) {
+                    $valids[$key] = $value;
                 }
                 break;
 
             default:
-                trigger_error('XMLSITEMAP_checkChange: "' . $name . '" not implemented');
+                trigger_error('XMLSITEMAP_checkChange: "' . $name
+                              . '" not implemented');
                 break;
         }
     }
@@ -365,6 +366,38 @@ function XMLSITEMAP_checkChange($name)
         require_once $_CONF['path_system'] . 'classes/config.class.php';
         $config = config::get_instance();
         $config->set($name, $valids, 'xmlsitemap');
+    }
+
+    if ($name == 'types') {
+        /**
+        * The list of plugins in the sitemap changed. Make sure we have
+        * priorities and frequencies for all active plugins and remove
+        * those for inactive plugins.
+        */
+        $priorities  = array();
+        $frequencies = array();
+        foreach ($enabled_plugins as $plugin) {
+            if (in_array($plugin, $_XMLSMAP_CONF['types'])) {
+                // plugin is active: ensure we have prio. + freq. entries
+                if (isset($_XMLSMAP_CONF['priorities'][$plugin])) {
+                    $priorities[$plugin] = $_XMLSMAP_CONF['priorities'][$plugin];
+                } else {
+                    $priorities[$plugin] = 0.5;
+                }
+                if (isset($_XMLSMAP_CONF['frequencies'][$plugin])) {
+                    $frequencies[$plugin] = $_XMLSMAP_CONF['frequencies'][$plugin];
+                } else {
+                    $frequencies[$plugin] = 'daily';
+                }
+            }
+        }
+
+        require_once $_CONF['path_system'] . 'classes/config.class.php';
+        $config = config::get_instance();
+        ksort($priorities);
+        $config->set('priorities',  $priorities, 'xmlsitemap');
+        ksort($frequencies);
+        $config->set('frequencies', $frequencies, 'xmlsitemap');
     }
 }
 

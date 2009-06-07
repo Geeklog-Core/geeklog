@@ -29,6 +29,11 @@ Static Pages plugin
   become orphaned (part of bug #0000901) [Dirk]
 - When deleting a static page, also delete its comments (bug #0000901) [Dirk]
 
+XMLSitemap plugin
+-----------------
+- When manually adding or removing plugins, automatically add/remove
+  corresponding entries for priority and frequency (part of bug #0000898) [Dirk]
+
 
 May 31, 2009 (1.6.0b2)
 ------------
