@@ -821,12 +821,20 @@ class Search {
                     $start = 0 - $key;
                     $end = $num_words - 1;
                     $end = (($key + $m <= $word_count - 1) ? $key : $word_count - $m - 1);
+                    $abs_length = abs($start) + abs($end) + 1;
+                    if ($abs_length < $num_words) {
+                        $end += ($num_words - $abs_length);
+                    }
                 }
                 else
                 {
                     // Keyword in the middle of text
                     $start = 0 - $m;
                     $end = (($key + $m <= $word_count - 1) ? $m : $word_count - $key - 1);
+                    $abs_length = abs($start) + abs($end) + 1;
+                    if ($abs_length < $num_words) {
+                        $start -= ($num_words - $abs_length);
+                    }
                     $rt = '<b>...</b> ';
                 }
             }
@@ -838,11 +846,14 @@ class Search {
             $end = $num_words - 1;
         }
 
-        for ($i = $start; $i <= $end; $i++)
+        for ($i = $start; $i <= $end; $i++) {
             $rt .= $words[$key + $i] . ' ';
-        $rt .= ' <b>...</b>';
+        }
+        if ($key + $i != $word_count) {
+            $rt .= ' <b>...</b>';
+        }
 
-        return COM_highlightQuery( $rt, $keyword, 'b' );
+        return COM_highlightQuery($rt, $keyword, 'b');
     }
 
     /**
