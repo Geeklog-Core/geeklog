@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Fixed an error that occured after deleting a trackback [Dirk]
 - Replace autotags in search results (bug #0000887) [Dirk]
 - Don't insist on an email adress when editing a Remote User (bug #0000885)
   [Dirk]
