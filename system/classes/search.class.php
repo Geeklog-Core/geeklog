@@ -789,6 +789,8 @@ class Search {
     function _shortenText( $keyword, $text, $num_words = 7 )
     {
         $text = strip_tags($text);
+        $text = str_replace(array("\011", "\012", "\015"), ' ', trim($text));
+        $text = preg_replace('/\s\s+/', ' ', $text);
         $words = explode(' ', $text);
         $word_count = count($words);
         if ($word_count <= $num_words) {
