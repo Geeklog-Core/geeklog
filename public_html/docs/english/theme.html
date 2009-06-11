@@ -209,6 +209,13 @@ featured and archived stories.</li>
     (to be used in the <tt>&lt;html&gt;</tt> element).</li>
 <li>Added a space between a story's intro text and body text when using the
     <tt>{story_text_no_br}</tt> variable.</li>
+<li>The story templates in the Professional theme now use
+    <tt>{story_text_no_br}</tt> instead of <tt>{story_introtext}</tt>, i.e.
+    there are no <tt>&lt;br&gt;</tt> tags between a story's intro text and
+    body text any more. This allows for greater flexibility in formatting a
+    story (e.g. when using the intro text for teasers) but may result in older
+    stories being displayed differently now (no visible separation between intro
+    text and body text).</li>
 <li>Bugfix: The variables <tt>{contributedby_user}</tt> and
     <tt>{contributedby_fullname}</tt> were always empty.</li>
 <li>The two variables <tt>{start_contributedby_anchortag}</tt> and
