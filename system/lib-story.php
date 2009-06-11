@@ -717,7 +717,7 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            // needed for $sp_id == '*', but also in case we're only requesting
+            // needed for $sid == '*', but also in case we're only requesting
             // the URL (so that $fields isn't emtpy)
             $fields[] = 'sid';
             break;
