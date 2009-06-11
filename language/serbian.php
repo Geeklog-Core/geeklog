@@ -1842,6 +1842,7 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => 'Onemoguci Autolikove?',
     'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
+    'frame_options' => 'Protection against "clickjacking"',
     'censormode' => 'Rezim Cenzure?',
     'censorreplace' => 'Cenzurisana Zamena Teksta',
     'censorlist' => 'Cenzurisana Lista',
@@ -1943,7 +1944,8 @@ $LANG_configselects['Core'] = array(
     18 => array('Onemoguci' => 0, 'Omoguci (Identicno)' => 1, 'Omoguci (Pocetak Reci)' => 2, 'Omoguci (Deo Reci)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
 );
 
 ?>
