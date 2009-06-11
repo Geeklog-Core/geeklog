@@ -881,6 +881,10 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     // send out the charset header
     header('Content-Type: text/html; charset=' . COM_getCharset());
 
+    if (!empty($_CONF['frame_options'])) {
+        header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
+    }
+
     $header = new Template( $_CONF['path_layout'] );
     $header->set_file( array(
         'header'        => 'header.thtml',

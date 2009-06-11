@@ -313,7 +313,8 @@ function install_config()
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);
-    $c->add('compressed_output',0,'select',7,31,1,1757,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1756,TRUE);
+    $c->add('frame_options','DENY','select',7,31,22,1758,TRUE);
 
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE);
     $c->add('rootdebug',FALSE,'select',7,32,1,520,TRUE);

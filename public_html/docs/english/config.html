@@ -1368,6 +1368,17 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     however, result in slightly more load on the webserver.<br>
     For now, this feature should be considered <strong>experimental</strong> and
     hasn't been implemented for all HTML output yet.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_frame_options">frame_options</a></td>
+  <td valign="top">DENY</td>
+  <td valign="top">Protection against <a
+    href="http://en.wikipedia.org/wiki/Clickjacking">Clickjacking</a>: This
+    option indicates that the site's content should not be displayed in a frame.
+    This only works, however, when the visitor's browser respects the
+    <tt>X-FRAME-OPTIONS</tt> HTTP header. Options are to disallow all framing
+    (Strict), only allow framing from within the same site (Same Origin), or to
+    allow all framing (disabled). We strongly suggest <em>not</em> to disable
+    this option.</td></tr>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>

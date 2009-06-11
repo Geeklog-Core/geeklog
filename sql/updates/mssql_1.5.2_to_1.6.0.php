@@ -131,7 +131,10 @@ function update_ConfValues()
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);
 
     // experimental: compress output before sending it to the browser
-    $c->add('compressed_output',0,'select',7,31,1,1757,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1756,TRUE);
+
+    // for the X-FRAME-OPTIONS header (Clickjacking protection)
+    $c->add('frame_options','DENY','select',7,31,22,1758,TRUE);
 
     return true;
 }
