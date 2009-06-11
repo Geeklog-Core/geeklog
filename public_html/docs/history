@@ -18,7 +18,8 @@ Changes since 1.6.0b2:
 - Removed old plugin API function plugin_commentsupport from the Calendar,
   Polls, and Static Pages plugins.
 
-- Updated Japanese language files, provided by the Geeklog.jp group
+- Updated Japanese language files and Japanese documentation,
+  provided by the Geeklog.jp group
 
 Polls plugin
 ------------

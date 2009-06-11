@@ -136,12 +136,12 @@ $LANG_confignames['staticpages'] = array(
     'delete_pages' => '所有者の削除と共に削除する',
     'in_block' => 'ページをブロックで囲む',
     'show_hits' => 'ヒット数を表示する',
-    'show_date' => '日付を表示する',
-    'filter_html' => 'HTMLをフィルターする',
+    'show_date' => '日時を表示する',
+    'filter_html' => 'HTMLフィルターを適用する',
     'censor' => '内容を検閲する',
     'default_permissions' => 'パーミッション',
     'aftersave' => 'ページ保存後の画面遷移',
-    'atom_max_items' => 'フィードに使用するページの最大数'
+    'atom_max_items' => 'フィードに書き出す最大ページ数'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -159,7 +159,7 @@ $LANG_configselects['staticpages'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
-    9 => array('作成した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );
 

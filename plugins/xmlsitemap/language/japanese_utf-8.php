@@ -35,7 +35,7 @@ global $LANG32;
 
 $LANG_XMLSMAP = array (
     'plugin'            => 'XMLSitemap',
-    'admin'		        => 'XMLSitemap管理',
+    'admin'             => 'XMLSitemap管理',
 );
 
 // Localization of the Admin Configuration UI
@@ -48,8 +48,8 @@ $LANG_confignames['xmlsitemap'] = array(
     'sitemap_file'        => 'サイトマップファイル名',
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
     'types'               => 'サイトマップの内容',
-    'exclude'             => 'Plugins to exclude from sitemap',
-    'priorities'          => '',
+    'exclude'             => '除外するプラグイン',
+    'priorities'          => '優先度',
     'frequencies'         => '',
 );
 
