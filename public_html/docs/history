@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Don't insist on an email adress when editing a Remote User (bug #0000885)
+  [Dirk]
 - Added a config option to send an X-FRAME-OPTIONS HTTP header to prevent
   "clickjacking" (requires browser support) [Dirk]
 - Prevent XSS in the install script (reported independently by Nemesis and MaXe)

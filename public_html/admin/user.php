@@ -447,13 +447,28 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
 
     if ($passwd != $passwd_conf) { // passwords don't match
-        return edituser ($uid, 67);
+        return edituser($uid, 67);
     }
 
-    if (!empty ($username) && !empty ($email)) {
+    $nameAndEmailOkay = true;
+    if (empty($username)) {
+        $nameAndEmailOkay = false;
+    } elseif (empty($email)) {
+        if (empty($uid)) {
+            $nameAndEmailOkay = false; // new users need an email address
+        } else {
+            $service = DB_getItem($_TABLES['users'], 'remoteservice',
+                                  "uid = $uid");
+            if (empty($service)) {
+                $nameAndEmailOkay = false; // not a remote user - needs email
+            }
+        }
+    }
 
-        if (!COM_isEmail ($email)) {
-            return edituser ($uid, 52);
+    if ($nameAndEmailOkay) {
+
+        if (!empty($email) && !COM_isEmail($email)) {
+            return edituser($uid, 52);
         }
 
         $uname = addslashes ($username);
@@ -638,8 +653,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         }
     } else {
         $retval = COM_siteHeader('menu', $LANG28[1]);
-        $retval .= COM_errorLog($LANG28[10]);
-        if (DB_count($_TABLES['users'],'uid',$uid) > 0) {
+        $retval .= COM_showMessageText($LANG28[10]);
+        if (DB_count($_TABLES['users'], 'uid', $uid) > 0) {
             $retval .= edituser($uid);
         } else {
             $retval .= edituser();
