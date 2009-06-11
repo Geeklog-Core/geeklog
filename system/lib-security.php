@@ -219,13 +219,14 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
         }
     }
 
-    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
-        if (empty ($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups ($uid);
+    if ((empty($_USER['uid']) && ($uid == 1)) ||
+            (isset($_USER['uid']) && ($uid == $_USER['uid']))) {
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $groups = $_GROUPS;
     } else {
-        $groups = SEC_getUserGroups ($uid);
+        $groups = SEC_getUserGroups($uid);
     }
 
     if (is_numeric($grp_to_verify)) {
