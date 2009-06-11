@@ -754,7 +754,7 @@ class Search {
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
             if ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
-                $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordlength));
+                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordlength));
             }
 
             if ($row['date'] != 'LF_NULL') {
