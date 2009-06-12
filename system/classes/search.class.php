@@ -749,7 +749,7 @@ class Search {
                 }
             }
 
-            $row['title'] = $this->_shortenText($this->_query, $row['title'], 6);
+            $row['title'] = $this->_shortenText($this->_query, $row['title'], 8);
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
@@ -786,10 +786,11 @@ class Search {
     * @return string A short version of the text
     *
     */
-    function _shortenText( $keyword, $text, $num_words = 7 )
+    function _shortenText($keyword, $text, $num_words = 7)
     {
         $text = strip_tags($text);
         $text = str_replace(array("\011", "\012", "\015"), ' ', trim($text));
+        $text = str_replace('&nbsp;', ' ', $text);
         $text = preg_replace('/\s\s+/', ' ', $text);
         $words = explode(' ', $text);
         $word_count = count($words);
@@ -813,24 +814,28 @@ class Search {
             else
             {
                 $str = substr($text, $pos, $pos_space - $pos);
-                $key = array_search($str, $words);
                 $m = (int) (($num_words - 1) / 2);
-                if ($key <= $m)
-                {
+                $key = $this->_arraySearch($keyword, $words);
+                if ($key === false) {
+                    // Keyword(s) not found - show start of text
+                    $key = 0;
+                    $start = 0;
+                    $end = $num_words - 1;
+                } elseif ($key <= $m) {
                     // Keyword at the start of text
                     $start = 0 - $key;
                     $end = $num_words - 1;
-                    $end = (($key + $m <= $word_count - 1) ? $key : $word_count - $m - 1);
+                    $end = ($key + $m <= $word_count - 1)
+                         ? $key : $word_count - $m - 1;
                     $abs_length = abs($start) + abs($end) + 1;
                     if ($abs_length < $num_words) {
                         $end += ($num_words - $abs_length);
                     }
-                }
-                else
-                {
+                } else {
                     // Keyword in the middle of text
                     $start = 0 - $m;
-                    $end = (($key + $m <= $word_count - 1) ? $m : $word_count - $key - 1);
+                    $end = ($key + $m <= $word_count - 1)
+                         ? $m : $word_count - $key - 1;
                     $abs_length = abs($start) + abs($end) + 1;
                     if ($abs_length < $num_words) {
                         $start -= ($num_words - $abs_length);
@@ -854,6 +859,42 @@ class Search {
         }
 
         return COM_highlightQuery($rt, $keyword, 'b');
+    }
+
+    /**
+    * Search array of words for keyword(s)
+    *
+    * @param   string  $needle    keyword(s), separated by spaces
+    * @param   array   $haystack  array of words to search through
+    * @return  mixed              index in $haystack or false when not found
+    * @access  private
+    *
+    */
+    function _arraySearch($needle, $haystack)
+    {
+        $keywords = explode(' ', $needle);
+        $num_keywords = count($keywords);
+
+        foreach ($haystack as $key => $value) {
+            if ($this->_stripos($value, $keywords[0]) !== false) {
+                if ($num_keywords == 1) {
+                    return $key;
+                } else {
+                    $matched_all = true;
+                    for ($i = 1; $i < $num_keywords; $i++) {
+                        if ($this->_stripos($haystack[$key + $i], $keywords[$i]) === false) {
+                            $matched_all = false;
+                            break;
+                        }
+                    }
+                    if ($matched_all) {
+                        return $key;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
