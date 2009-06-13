@@ -1347,4 +1347,22 @@ function plugin_getdocumentationurl_polls($file)
     return $retval;
 }
 
+/**
+* Provide URL and ID for the link to a comment's parent
+*
+* @return   array   array consisting of the base URL and the ID name
+*
+*/
+function plugin_getcommenturlid_polls()
+{
+    global $_CONF;
+
+    $tmp = array(
+        $_CONF['site_url'] . '/polls/index.php',
+        'pid'
+    );
+
+    return $tmp;
+}
+
 ?>

@@ -37,6 +37,7 @@ Calendar plugin
 
 Polls plugin
 ------------
+- Implemented PLG_getCommentUrlId [Dirk]
 - Update polls comments when changing a poll's ID so the comments don't become
   orphaned (part of bug #0000901) [Dirk]
 
