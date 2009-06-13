@@ -864,7 +864,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='')
                     if ($scale < 120) {
                         $poll->parse('poll_votes', 'votes_num', true );
                     } else {
-                        $width = $percent * $scale;
+                        $width = (int)($percent * $scale);
                         $poll->set_var('bar_width', $width);
                         $poll->parse('poll_votes', 'votes_bar', true);
                     }
