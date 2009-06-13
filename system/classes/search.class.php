@@ -745,7 +745,7 @@ class Search {
                 }
                 if (isset($this->_append_query[$row[SQL_NAME]]) &&
                         $this->_append_query[$row[SQL_NAME]]) {
-                    $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                    $row['url'] .= (strpos($row['url'],'?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
                 }
             }
 
