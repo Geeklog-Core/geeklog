@@ -1635,8 +1635,8 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 }
 
 /**
- * Disables comments for all stories where current time is past comment expire time and 
- * enables comments for certain number of most recent stories.
+ * Disables comments for all stories where current time is past comment expire
+ * time and enables comments for certain number of most recent stories.
  *
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
@@ -1644,20 +1644,23 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 function CMT_updateCommentcodes()
 {
     global $_CONF, $_TABLES;
-    
+
     if ($_CONF['comment_close_rec_stories'] > 0) {
-        $results = DB_query("SELECT sid FROM {$_TABLES['stories']} ORDER BY date DESC LIMIT {$_CONF['comment_close_rec_stories']}");
-        while($A = DB_fetchArray($results))  {
+        $results = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0) ORDER BY date DESC LIMIT {$_CONF['comment_close_rec_stories']}");
+        while ($A = DB_fetchArray($results)) {
             $allowedcomments[] = $A['sid'];
         }
-        //update comment codes. 
-        $sql = '';
-        foreach ($allowedcomments as $sid) {
-            $sql .= "AND sid <> '$sid' ";
+        // update comment codes
+        $sql = ' AND ';
+        if (count($allowedcomments) > 1) {
+            $sql .= "sid NOT IN ('" . implode("','", $allowedcomments) . "')";
+        } else {
+            $sql .= "sid <> '$sid'";
         }
-        $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE commentcode = 0 " . $sql;
+        $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE (commentcode = 0) AND (date < NOW()) AND (draft_flag = 0)" . $sql;
         DB_query($sql);
     }
+
     $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
     DB_query($sql);
 }

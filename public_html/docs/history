@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jun ??, 2009 (1.6.0b3)
+Jun 1?, 2009 (1.6.0b3)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,19 +11,25 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Fixed handling of $_CONF['comment_close_rec_stories'] (bug #0000899) [Dirk]
+- Improved selection of text portion displayed in search results [Dirk]
 - Fixed an error that occured after deleting a trackback [Dirk]
 - Replace autotags in search results (bug #0000887) [Dirk]
-- Don't insist on an email adress when editing a Remote User (bug #0000885)
+- Don't insist on an email address when editing a Remote User (bug #0000885)
   [Dirk]
 - Added a config option to send an X-FRAME-OPTIONS HTTP header to prevent
   "clickjacking" (requires browser support) [Dirk]
 - Prevent XSS in the install script (reported independently by Nemesis and MaXe)
   [Dirk]
 - Removed old plugin API function plugin_commentsupport from the Calendar,
-  Polls, and Static Pages plugins.
+  Polls, and Static Pages plugins [Dirk]
 
 - Updated Japanese language files and Japanese documentation,
   provided by the Geeklog.jp group
+
+Calendar plugin
+---------------
+- Fixed leap year check [Sean Clark]
 
 Polls plugin
 ------------
