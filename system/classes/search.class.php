@@ -475,7 +475,7 @@ class Search {
 
         // Make sure there is a query string
         // Full text searches have a minimum word length of 3 by default
-        if ((empty($this->_query) && empty($this->_author)) || ($_CONF['search_use_fulltext'] && strlen($this->_query) < 3))
+        if ((empty($this->_query) && empty($this->_author) && empty($this->_topic)) || ($_CONF['search_use_fulltext'] && strlen($this->_query) < 3))
         {
             $retval = '<p>' . $LANG09[41] . '</p>' . LB;
             $retval .= $this->showForm();

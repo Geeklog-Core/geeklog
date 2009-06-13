@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Allow searching by topic (without a query string) again (reported by Markus
+  Wollschläger) [Dirk]
 - Fixed handling of $_CONF['comment_close_rec_stories'] (bug #0000899) [Dirk]
 - Improved selection of text portion displayed in search results [Dirk]
 - Fixed an error that occured after deleting a trackback [Dirk]
