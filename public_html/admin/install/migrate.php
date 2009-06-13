@@ -785,6 +785,12 @@ if (INST_phpOutOfDate()) {
             $config->set('noreply_mail', $_CONF['noreply_mail']);
         }
 
+        if (! empty($_OLD_CONF['ip_lookup'])) {
+            $_CONF['ip_lookup'] = str_replace($_OLD_CONF['site_url'],
+                $_CONF['site_url'], $_OLD_CONF['ip_lookup']);
+            $config->set('ip_lookup', $_CONF['ip_lookup']);
+        }
+
         /**
          * Check for missing plugins
          */
