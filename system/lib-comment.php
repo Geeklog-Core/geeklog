@@ -93,33 +93,33 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
     $cmt_title = stripslashes($title);
     $commentbar->set_var('story_title', $cmt_title);
     // Article's are pre-escaped.
-    if( $type != 'article' ) {
+    if ($type != 'article') {
         $cmt_title = htmlspecialchars($cmt_title);
     }
     $commentbar->set_var('comment_title', $cmt_title);
 
-    if( $type == 'article' ) {
-        $articleUrl = COM_buildUrl( $_CONF['site_url']
-                                    . "/article.php?story=$sid" );
-        $commentbar->set_var( 'story_link', $articleUrl );
-        $commentbar->set_var( 'article_url', $articleUrl );
-
-        if( $page == 'comment.php' ) {
-            $commentbar->set_var('story_link',
-                COM_createLink(
-                    stripslashes( $title ),
-                    $articleUrl,
-                    array('class'=>'non-ul b')
-                )
-            );
-            $commentbar->set_var( 'start_storylink_anchortag', '<a href="'
-                . $articleUrl . '" class="non-ul">' );
-            $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
-        }
+    if ($type == 'article') {
+        $articleUrl = COM_buildUrl($_CONF['site_url']
+                                   . "/article.php?story=$sid");
     } else { // for a plugin
-        // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
+        /**
+        * Link to plugin defined link or lacking that a generic link
+        * that the plugin should support (hopefully)
+        */
         list($plgurl, $plgid) = PLG_getCommentUrlId($type);
-        $commentbar->set_var( 'story_link', "$plgurl?$plgid=$sid" );
+        $articleUrl = "$plgurl?$plgid=$sid";
+    }
+
+    $commentbar->set_var('article_url', $articleUrl);
+    if ($page == 'comment.php') {
+        $link = COM_createLink($cmt_title, $articleUrl,
+                               array('class' => 'non-ul b'));
+        $commentbar->set_var('story_link', $link);
+        $commentbar->set_var('start_storylink_anchortag',
+                             '<a href="' . $articleUrl . '" class="non-ul">');
+        $commentbar->set_var('end_storylink_anchortag', '</a>');
+    } else {
+        $commentbar->set_var('story_link', $articleUrl);
     }
 
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {

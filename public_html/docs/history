@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Made the link to a comment's parent object from the comment bar work properly
+  for plugins [Dirk]
 - Allow searching by topic (without a query string) again (reported by Markus
   Wollschläger) [Dirk]
 - Fixed handling of $_CONF['comment_close_rec_stories'] (bug #0000899) [Dirk]
