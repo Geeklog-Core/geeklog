@@ -42,6 +42,7 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- Implemented PLG_getCommentUrlId [Dirk]
 - Update static pages comments when changing a page's ID so the comments don't
   become orphaned (part of bug #0000901) [Dirk]
 - When deleting a static page, also delete its comments (bug #0000901) [Dirk]

@@ -1368,4 +1368,25 @@ function plugin_getdocumentationurl_staticpages($file)
     return $retval;
 }
 
+/**
+* Provide URL and ID for the link to a comment's parent
+*
+* NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,
+*       so we'll end up with a non-rewritten URL ...
+*
+* @return   array   array consisting of the base URL and the ID name
+*
+*/
+function plugin_getcommenturlid_staticpages()
+{
+    global $_CONF;
+
+    $tmp = array(
+        $_CONF['site_url'] . '/staticpages/index.php',
+        'page'
+    );
+
+    return $tmp;
+}
+
 ?>
