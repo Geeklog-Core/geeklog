@@ -1149,7 +1149,7 @@ if (INST_phpOutOfDate()) {
             // Show the "Select your installation method" buttons
             $upgr_class = ($LANG_DIRECTION == 'rtl') ? 'upgrade-rtl' : 'upgrade' ;
             $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
-                . '<p><form action="index.php" method="GET">' . LB
+                . '<div><form action="index.php" method="get">' . LB
                 . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="mode" value="' . htmlspecialchars($mode) . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
@@ -1157,7 +1157,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[24] . '"' . XHTML .'>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
-                . '</form> </p> <br' . XHTML . '>' . LB;
+                . '</form> </div> <br' . XHTML . '>' . LB;
    
         }
         break;

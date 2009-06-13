@@ -967,7 +967,7 @@ if (INST_phpOutOfDate()) {
             }
 
             $display .= '<p>' . $LANG_MIGRATE[36] . '</p>' . LB
-                .'<form action="success.php" method="GET">' . LB
+                .'<form action="success.php" method="get">' . LB
                 . '<input type="hidden" name="type" value="migrate"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="" value=""' . XHTML . '>' . LB
