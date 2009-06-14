@@ -1475,6 +1475,7 @@ function service_get_story($args, &$output, &$svc_msg)
         $max_items = $_CONF['atom_max_stories'] + 1;
 
         $limit = " LIMIT $offset, $max_items";
+        $limit_pgsql = " LIMIT $max_items OFFSET $offset";
         $order = " ORDER BY unixdate DESC";
 
         $sql['mysql']
@@ -1484,6 +1485,7 @@ function service_get_story($args, &$output, &$svc_msg)
         $sql['mssql'] =
             "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid)" . COM_getPermSQL('AND', $_USER['uid'], 2, 's') . $order . $limit;
 
+        $sql['pgsql'] = "SELECT  s.*, date_part('epoch', s.date) AS unixdate, date_part('epoch', s.expire) as expireunix, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl  FROM stories s, users u, topics t WHERE (s.uid = u.uid) AND (s.tid = t.tid) FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid)" . COM_getPermSQL('AND', $_USER['uid'], 2, 's') . $order . $limit_pgsql;
         $result = DB_query($sql);
 
         $count = 0;

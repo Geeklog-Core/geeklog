@@ -341,6 +341,8 @@ class DataBase
             $this->_errorlog("\n***inside database->dbQuery***");
             $this->_errorlog("\n*** sql to execute is $sql ***");
         }
+        /* Replace some non ANSI keywords */
+        $sql = str_replace('UNIX_TIMESTAMP()','date_part(\'epoch\',now())',$sql);
 
         // Run query
         if ($ignore_errors == 1) {

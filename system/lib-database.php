@@ -562,6 +562,12 @@ function DB_checkTableExists($table)
             $exists = true;
         }
     }
+    elseif ($_DB_dbms == 'pgsql') {
+        $result = DB_query("SELECT 1 FROM '{$_TABLES[$table]}'");
+        if (DB_numRows ($result) > 0) {
+            $exists = true;
+        }
+    }
 
     return $exists;
 }

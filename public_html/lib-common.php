@@ -71,7 +71,7 @@ $_REQUEST = array_merge($_GET, $_POST);
 * Must make sure that the function hasn't been disabled before calling it.
 *
 */
-if (function_exists('set_error_handler')) {
+if (function_exists('motherfucker_set_error_handler')) {
     if (PHP_VERSION >= 5) {
         /* Tell the error handler to use the default error reporting options.
          * You may like to change this to use it in more/less cases, if so,
@@ -385,7 +385,7 @@ DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE start_time < " . ( time() - 
 *
 */
 
-require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
+require_once 'C:\wamp\www\geeklog\public_html\admin\install\language\english.php';
 
 if (empty($LANG_DIRECTION)) {
     // default to left-to-right
@@ -3441,6 +3441,8 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
     $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    $blocksql['pgsql'] = 'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
+
 
     $commonsql = "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
 
@@ -3455,8 +3457,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( !empty( $topic ))
     {
-        $tp = addslashes($topic);
-        $commonsql .= " AND (tid = '$tp' OR tid = 'all')";
+        $commonsql .= " AND (tid = '$topic' OR tid = 'all')";
     }
     else
     {
@@ -3481,6 +3482,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     $blocksql['mysql'] .= $commonsql;
     $blocksql['mssql'] .= $commonsql;
+    $blocksql['pgsql'] .= $commonsql;
     $result = DB_query( $blocksql );
     $nrows = DB_numRows( $result );
 
@@ -3551,12 +3553,14 @@ function COM_formatBlock( $A, $noboxes = false )
         $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
         $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-
+        $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date';
+        
         $commonsql = "FROM {$_TABLES['blocks']} WHERE name = '"
                    . $A['name'] . '_' . $lang . "'";
 
         $blocksql['mysql'] .= $commonsql;
         $blocksql['mssql'] .= $commonsql;
+        $blocksql['pgsql'] .= $commonsql;
         $result = DB_query( $blocksql );
 
         if (DB_numRows($result) == 1) {
@@ -4036,6 +4040,7 @@ function COM_emailUserTopics()
 
         $storysql = array();
         $storysql['mysql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
+        $storysql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
 
         $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,postmode";
 
@@ -4075,6 +4080,7 @@ function COM_emailUserTopics()
 
         $storysql['mysql'] .= $commonsql;
         $storysql['mssql'] .= $commonsql;
+        $storysql['pgsql'] .= $commonsql;
 
         $stories = DB_query( $storysql );
         $nsrows = DB_numRows( $stories );
@@ -4508,7 +4514,7 @@ function COM_showMessage($msg, $plugin = '')
                 $message = $$var;
             } else {
                 $message = sprintf($MESSAGE[61], $plugin);
-                COM_errorLog($message . ": " . $var, 1);
+                COM_errorLog($MESSAGE[61] . ": " . $var, 1);
             }
         } else {
             $message = $MESSAGE[$msg];
@@ -5807,28 +5813,32 @@ function COM_undoClickableLinks( $text )
 */
 function COM_highlightQuery( $text, $query, $class = 'highlight' )
 {
-    // escape PCRE special characters
-    $query = preg_quote($query, '/');
+    $query = str_replace( '+', ' ', $query );
 
-    $mywords = explode(' ', $query);
-    foreach ($mywords as $searchword)
+    // escape all the other PCRE special characters
+    $query = preg_quote( $query );
+
+    // ugly workaround:
+    // Using the /e modifier in preg_replace will cause all double quotes to
+    // be returned as \" - so we replace all \" in the result with unescaped
+    // double quotes. Any actual \" in the original text therefore have to be
+    // turned into \\" first ...
+    $text = str_replace( '\\"', '\\\\"', $text );
+
+    $mywords = explode( ' ', $query );
+    foreach( $mywords as $searchword )
     {
-        if (!empty($searchword))
+        if( !empty( $searchword ))
         {
-            $before = "/(?!(?:[^<]+>|[^>]+<\/a>))\b";
-            $after = "\b/i";
-            if ($searchword <> utf8_encode($searchword)) {
-                 if (@preg_match('/^\pL$/u', urldecode('%C3%B1'))) { // Unicode property support
-                      $before = "/(?<!\p{L})";
-                      $after = "(?!\p{L})/u";
-                 } else {
-                      $before = "/";
-                      $after = "/u";
-                 }
-            }
-            $text = preg_replace($before . $searchword . $after, "<span class=\"$class\">\\0</span>", '<!-- x -->' . $text . '<!-- x -->' );
+            $searchword = preg_quote( str_replace( "'", "\'", $searchword ));
+            $searchword = str_replace('/', '\\/', $searchword);
+            $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"$class\">\\\\0</span>','\\0')", '<!-- x -->' . $text . '<!-- x -->' );
         }
     }
+
+    // ugly workaround, part 2
+    $text = str_replace( '\\"', '"', $text );
+
     return $text;
 }
 
