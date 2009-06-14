@@ -753,7 +753,9 @@ class Search {
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
-            if ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
+            if ($row['description'] == 'LF_NULL') {
+                $row['description'] = '<i>' . $LANG09[70] . '</i>';
+            } elseif ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
                 $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordlength));
             }
 
