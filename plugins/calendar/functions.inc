@@ -1605,7 +1605,7 @@ function plugin_searchtypes_calendar()
 */
 function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $LANG_CAL_1;
+    global $_TABLES, $_USER, $LANG_CAL_1;
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
@@ -1615,8 +1615,8 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     $sql_e .= "FROM {$_TABLES['events']} WHERE 1=1 ";
 
     $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, ";
-    $sql_p .= "CONCAT('/calendar/event.php?eid=',eid) AS url ";
-    $sql_p .= "FROM {$_TABLES['personal_events']} WHERE 1=1 ";
+    $sql_p .= "CONCAT('/calendar/event.php?mode=personal&eid=',eid) AS url ";
+    $sql_p .= "FROM {$_TABLES['personal_events']} WHERE  (uid = {$_USER['uid']}) ";
 
     $sql = COM_getPermSQL('AND') . ' ';
 
