@@ -1360,7 +1360,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     } else {
         $displayRightBlocks = false;
     }
-    
+
     if ($displayRightBlocks)
     {
         /* Check if an array has been passed that includes the name of a plugin
@@ -1379,7 +1379,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
         } else {
             $rblocks = COM_showBlocks( 'right', $topic );
         }
-        
+
         if( empty( $rblocks ))
         {
             $footer->set_var( 'geeklog_blocks', '');
@@ -3177,10 +3177,11 @@ function COM_formatEmailAddress( $name, $address )
 * @param    boolean     $html       (optional) true if to be sent as HTML email
 * @param    int         $priority   (optional) add X-Priority header, if > 0
 * @param    string      $cc         (optional) other recipients (name + email)
+* @param    string      $bcc        (optional) Blind Copy recipients
 * @return   boolean                 true if successful,  otherwise false
 *
 */
-function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '' )
+function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '', $bcc = '' )
 {
     global $_CONF;
 
@@ -3193,6 +3194,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     $to = substr( $to, 0, strcspn( $to, "\r\n" ));
     $cc = substr( $cc, 0, strcspn( $cc, "\r\n" ));
+    $bcc = substr( $bcc, 0, strcspn( $bcc, "\r\n" ));
     $from = substr( $from, 0, strcspn( $from, "\r\n" ));
     $subject = substr( $subject, 0, strcspn( $subject, "\r\n" ));
     $subject = COM_emailEscape( $subject );
@@ -3231,6 +3233,10 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     if( !empty( $cc ))
     {
         $headers['Cc'] = $cc;
+    }
+    if( !empty( $bcc ))
+    {
+        $headers['Bcc'] = $bcc;
     }
     $headers['Date'] = date( 'r' ); // RFC822 formatted date
     if( $method == 'smtp' )
@@ -3568,7 +3574,7 @@ function COM_formatBlock( $A, $noboxes = false )
             $A = DB_fetchArray($result);
         }
     }
-    
+
     if( array_key_exists( 'onleft', $A ) )
     {
         if( $A['onleft'] == 1 )
@@ -4490,7 +4496,7 @@ function COM_showMessageText($message, $title = '')
 *
 * Display one of the predefined messages from the $MESSAGE array. If a plugin
 * name is provided, display that plugin's message instead.
-* 
+*
 * @param    int     $msg        ID of message to show
 * @param    string  $plugin     Optional name of plugin to lookup plugin defined message
 * @return   string              HTML block with message
