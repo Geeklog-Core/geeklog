@@ -510,20 +510,17 @@ class ListFactory {
             return $retval;
         }
 
-        $subtag = " onmouseover=\"this.style.cursor='pointer';\"" .
-                    " onclick=\"window.location.href='{$this->_page_url}";
-
         // Draw the page limit select box
         if ($show_limit)
         {
             foreach ($this->_page_limits as $key => $val)
             {
                 $text = is_numeric($key) ? sprintf($LANG09[67], $val) : $key;
-                $subtags = $subtag."results=$val';\"";
+                $href = $this->_page_url . "results=$val";
                 $selected = $this->_per_page == $val ? ' selected="selected"' : '';
 
                 $list_templates->set_var('limit_text', $text);
-                $list_templates->set_var('limit_subtags', $subtags);
+                $list_templates->set_var('limit_href', $href);
                 $list_templates->set_var('limit_selected', $selected);
                 $list_templates->parse('page_limit', 'limit', true);
             }
@@ -556,25 +553,28 @@ class ListFactory {
             if ($field['display'] == true && $field['title'] != '')
             {
                 $text = $sort_text . $field['title'];
-                $subtags = '';
+                $href = '';
                 $selected = '';
                 if ($show_sort && $field['sort'] != false)
                 {
                     $direction = $this->_def_sort_arr['direction'];
 
                     // Show the sort arrow
-                    if ($this->_sort_arr['field'] === $field['name'])
-                    {
+                    if ($this->_sort_arr['field'] === $field['name']) {
                         $selected = $sort_selected;
                         $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
                     }
 
-                    $subtags = $subtag."order={$field['name']}&amp;direction=$direction';\"";
+                    $href = $this->_page_url . "order={$field['name']}&amp;direction=$direction";
+
+                    if ($this->_style == 'table') {
+                        $text = "<a href=\"$href\">$text</a>";
+                    }
                 }
 
                 // Write field
                 $list_templates->set_var('sort_text', $text);
-                $list_templates->set_var('sort_subtags', $subtags);
+                $list_templates->set_var('sort_href', $href);
                 $list_templates->set_var('sort_selected', $selected);
                 $list_templates->parse('page_sort', 'sort', true);
             }
