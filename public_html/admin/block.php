@@ -196,6 +196,8 @@ function editblock ($bid = '')
         $sql['mssql'] .= "rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id,group_id, ";
         $sql['mssql'] .= "perm_owner, perm_group, perm_members, perm_anon, allow_autotags FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
 
+        $sql['pgsql'] = "SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'";
+        
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
