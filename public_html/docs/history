@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jun 1?, 2009 (1.6.0b3)
+Jun 2?, 2009 (1.6.0b3)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,6 +11,10 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b2:
+- Fixed IE6 and Safari compatibility issue with sort and limit combo boxes in
+  search results (part of bug #0000874) [Sami]
+- Fixed HTML in the Configuration (bug #0000907) [Dirk]
+- Added a more prominent reminder to remove the install script [Dirk]
 - Made the link to a comment's parent object from the comment bar work properly
   for plugins [Dirk]
 - Allow searching by topic (without a query string) again (reported by Markus
