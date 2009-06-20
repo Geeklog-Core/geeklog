@@ -276,6 +276,9 @@ class ListFactory {
         {
             $sql['mysql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mysql']);
             $sql['mssql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mssql']);
+            $sql['pgsql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['pgsql']);
+
+            
         }
         else
         {
@@ -426,11 +429,7 @@ class ListFactory {
                 foreach ($this->_fields as $field)
                 {
                     if (!is_numeric($field['name']) && $field['name'][0] != '_') {
-                        if (empty($A[ $field['name'] ])) {
-                            $col[ $field['name'] ] = 'LF_NULL';
-                        } else {
-                            $col[ $field['name'] ] = $A[ $field['name'] ];
-                        }
+                        $col[ $field['name'] ] = $A[ $field['name'] ];
                     }
                 }
 
@@ -448,8 +447,7 @@ class ListFactory {
         $direction = $this->_sort_arr['direction'] == 'asc' ? SORT_ASC : SORT_DESC;
         $column = array();
         foreach ($rows_arr as $sortarray) {
-            $tmp = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
-            $column[] = ($tmp == 'LF_NULL' ? 0 : $tmp);
+            $column[] = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
         }
         array_multisort($column, $direction, $rows_arr);
 
@@ -603,13 +601,11 @@ class ListFactory {
                         $fieldvalue = $row[ $field['name'] ];
                     }
 
-                    if ($fieldvalue != 'LF_NULL') {
-                        $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
+                    $fieldvalue = sprintf($field['format'], $fieldvalue, $field['title']);
 
-                        // Write field
-                        $list_templates->set_var('field_text', $fieldvalue);
-                        $list_templates->parse('item_field', 'field', true);
-                    }
+                    // Write field
+                    $list_templates->set_var('field_text', $fieldvalue);
+                    $list_templates->parse('item_field', 'field', true);
                 }
             }
 

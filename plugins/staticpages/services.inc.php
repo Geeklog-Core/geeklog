@@ -561,6 +561,11 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
+        $sql['pgsql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
+                      . "commentcode,owner_id,group_id,perm_owner,perm_group,"
+                      . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
+                      . "sp_inblock FROM {$_TABLES['staticpage']} "
+                      . "WHERE (sp_id = '$page')" . $perms;
         $result = DB_query ($sql);
         $count = DB_numRows ($result);
 
