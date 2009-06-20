@@ -241,7 +241,10 @@ class Search {
         $searchform->set_var('lang_any_word', $LANG09[45]);
         $searchform->set_var('lang_titles', $LANG09[69]);
 
-        $searchform->set_var ('query', htmlspecialchars ($this->_query));
+        $escquery = htmlspecialchars($this->_query);
+        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                                $escquery);
+        $searchform->set_var ('query', $escquery);
         $searchform->set_var ('datestart', $this->_dateStart);
         $searchform->set_var ('dateend', $this->_dateEnd);
 
