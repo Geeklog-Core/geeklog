@@ -660,6 +660,8 @@ class Search {
         $searchtime = $searchtimer->stopTimer();
 
         $escquery = htmlspecialchars($this->_query);
+        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                                $escquery);
         if ($this->_keyType == 'any')
         {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
