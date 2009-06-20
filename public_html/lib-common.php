@@ -3199,7 +3199,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     if( function_exists( 'CUSTOM_mail' ))
     {
-        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority, $cc, $bcc );
+        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority, $cc );
     }
 
     include_once( 'Mail.php' );
