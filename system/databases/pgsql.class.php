@@ -249,9 +249,9 @@ class DataBase
         if ($both) {
             $result_type = PGSQL_BOTH;
         } else {
-            $result_type = PGSQL_ASSOC;
+            $result_type = PGSQL_ASSOC;                     
         }
-        return @pg_fetch_array($recordset, $result_type);
+        return pg_fetch_array($recordset, NULL, $result_type);
     }
     
     /**
