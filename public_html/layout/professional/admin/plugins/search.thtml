@@ -1,0 +1,37 @@
+                           {start_block_editor}
+                            <form action="{site_admin_url}/plugins.php" method="post">
+                                <table cellspacing="0" cellpadding="3">
+                                    <tr>
+                                        <td><img src="{pi_icon}" alt=""{xhtml}></td>
+                                        <td>
+                                            <input type="submit" value="{lang_search}" name="search"{xhtml}>
+                                            <input type="button" onclick="window.location = 'plugins.php';" value="{lang_cancel}" name="search"{xhtml}>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_306}</b></td>
+                                        <td></td>
+                                    </tr>				    
+                                    <tr>
+                                        <td class="alignright"></td>
+                                        <td></td>
+                                    </tr>	
+				    <tr>
+                                        <td class="alignright"><b>{lang_307}</b></td>
+                                        <td><input type="text" value="" name="plugin_name"{xhtml}></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="alignright"><b>{lang_308}</b></td>
+                                        <td><input type="text" value="" name="plugin_version"{xhtml}></td>
+                                    </tr>
+                                     <tr>
+                                        <td class="alignright"><b>{lang_309}</b></td>
+                                        <td><select name="plugin_repo">
+					    <option value="all" selected="selected">{lang_310}</option>
+					    {value_0}
+					</td>
+                                    </tr>
+
+                                   </table>
+                            </form>
+                            {end_block}

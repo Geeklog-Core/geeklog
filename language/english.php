@@ -1076,7 +1076,26 @@ $LANG32 = array(
     105 => '(undefined error)',
     106 => 'Missing a temporary folder.',
     107 => 'Failed to write file to disk.',
-    108 => 'File upload stopped by extension.'
+    108 => 'File upload stopped by extension.',
+    
+    //
+    // Repository Updates
+    // 
+    300 => 'Search for a plugin',
+    301 => 'Check for Updates',
+    302 => 'List Repositories',
+    303 => 'Add Repository',
+    304 => 'Update Plugin List',
+    305 => 'Search Plugin',
+    306 => 'Filter Results',
+    307 => 'Plugin Name',
+    308 => 'Version',
+    309 => 'Repository',
+    310 => 'All Repositories',
+    311 => 'Install',
+    312 => 'Download',
+    313 => 'State'
+    
 );
 
 ###############################################################################
@@ -1241,7 +1260,9 @@ $MESSAGE = array(
     100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
     101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
-    401 => 'Please enter Fullname'
+    401 => 'Please enter Fullname',
+    // Error codes in the 500 range reserved for Repository Plugin Management
+    500 => 'Repository Update Successful'
 );
 
 ###############################################################################
@@ -1861,7 +1882,8 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => "Allow User to Sort Results?",
     'search_show_limit' => "Show Page Limits?",
     'search_separator' => "Group Separator",
-    'search_def_keytype' => "Default Search Method"
+    'search_def_keytype' => "Default Search Method",
+    'rmanager_moderated ' => "Plugins and Patches must be approved"
 );
 
 $LANG_configsubgroups['Core'] = array(

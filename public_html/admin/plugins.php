@@ -15,6 +15,7 @@
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Matt West         - matt AT mattdanger DOT net                   |
+// |          Tim Patrick       - timpatrick12 AT gmail DOT com                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -419,6 +420,55 @@ function do_uninstall($pi_name)
 }
 
 /**
+* Bring up plugin search 
+*
+*/
+
+function pluginsearch()
+{
+    global $_CONF, $_TABLES, $_USER, $LANG32, $LANG_ADMIN;
+
+    $retval = '';
+    
+    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates->set_file('search', 'search.thtml');
+    $plg_templates->set_var('xhtml', XHTML);
+    $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $plg_templates->set_var('layout_url', $_CONF['layout_url']);
+    $plg_templates->set_var('start_block_editor', COM_startBlock ($LANG32[305],
+            '', COM_getBlockTemplate ('_admin_block', 'header')));
+    $plg_templates->set_var('lang_search', $LANG_ADMIN['search']);
+    $plg_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
+    $plg_templates->set_var('lang_306', $LANG32[306]);
+    $plg_templates->set_var('lang_307', $LANG32[307]);
+    $plg_templates->set_var('lang_308', $LANG32[308]);
+    $plg_templates->set_var('lang_309', $LANG32[309]);
+    $plg_templates->set_var('lang_310', $LANG32[310]);
+    
+    // Get DB info about current repositories
+    $result = DB_query("SELECT * FROM {$_TABLES['plugin_repository']};");
+    $d2 = "";
+    
+    while ( ($result2 = DB_fetchArray($result)) !== FALSE) {
+        $d2 .= <<<EOO
+<option value="{$result2['repository_url']}">{$result2['repository_url']}</option>
+EOO;
+    }
+    
+    $plg_templates->set_var('value_0', $d2);
+    
+    $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
+    $plg_templates->set_var('end_block',
+            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+
+    $retval .= $plg_templates->finish($plg_templates->parse('output', 'search'));
+
+    return $retval;
+
+}
+
+/**
 * List available plugins
 *
 * @param    string  $token  Security token
@@ -444,7 +494,92 @@ function listplugins($token)
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']));
+                          'text' => $LANG_ADMIN['admin_home']),
+                    array('url' => 'plugins.php?mode=splugin',
+                          'text' => $LANG32[300]),
+                    array('url' => 'plugins.php?mode=chkupdates',
+                          'text' => $LANG32[301]),
+                    array('url' => 'plugins.php?mode=lstrepo',
+                          'text' => $LANG32[302]),
+                    array('url' => 'plugins.php?mode=updatelist',
+                          'text' => $LANG32[304]),
+                    array('url' => 'plugins.php?mode=addrepo',
+                          'text' => $LANG32[303])
+                                                );
+
+    $retval .= COM_startBlock($LANG32[5], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+
+    $retval .= ADMIN_createMenu(
+        $menu_arr,
+        $LANG32[11],
+        $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE
+    );
+
+    $text_arr = array(
+        'has_extras'   => true,
+        'instructions' => $LANG32[11],
+        'form_url'     => $_CONF['site_admin_url'] . '/plugins.php'
+    );
+
+    $query_arr = array(
+        'table' => 'plugins',
+        'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
+                ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
+        'query_fields' => array('pi_name'),
+        'default_filter' => ''
+    );
+
+    // this is a dummy variable so we know the form has been used if all plugins
+    // should be disabled in order to disable the last one.
+    $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
+
+    $retval .= ADMIN_list('plugins', 'ADMIN_getListField_plugins', $header_arr,
+                $text_arr, $query_arr, $defsort_arr, '', $token, '', $form_arr);
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
+    return $retval;
+}
+
+/**
+* List search results
+*
+* @param    string  $token  Security token
+* @return   string          formatted list of plugins
+*
+*/
+function listsearchedplugins($token)
+{
+    global $_CONF, $_TABLES, $LANG32, $LANG_ADMIN, $_IMAGE_TYPE;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    $retval = '';
+    $header_arr = array(      # display 'text' and use table field 'field'
+        array('text' => $LANG32[311], 'field' => 'install', 'sort' => false),
+        array('text' => $LANG32[312], 'field' => 'download', 'sort' => false),
+        array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
+        array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
+	array('text' => $LANG32[313], 'field' => 'state', 'sort' => true),
+
+    );
+
+    $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
+
+    $menu_arr = array (
+                    array('url' => $_CONF['site_admin_url'],
+                          'text' => $LANG_ADMIN['admin_home']),
+                    array('url' => 'plugins.php?mode=splugin',
+                          'text' => $LANG32[300]),
+                    array('url' => 'plugins.php?mode=chkupdates',
+                          'text' => $LANG32[301]),
+                    array('url' => 'plugins.php?mode=lstrepo',
+                          'text' => $LANG32[302]),
+                    array('url' => 'plugins.php?mode=updatelist',
+                          'text' => $LANG32[304]),
+                    array('url' => 'plugins.php?mode=addrepo',
+                          'text' => $LANG32[303])
+                                                );
 
     $retval .= COM_startBlock($LANG32[5], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
@@ -961,7 +1096,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
     if (file_exists($base_path . 'sql/' . $_DB_dbms . '_install.php')) {
         require_once $base_path . 'sql/' . $_DB_dbms . '_install.php';
     }
-
+    
     if (count($_SQL) > 0) {
         $use_innodb = false;
         if (($_DB_dbms == 'mysql') &&
@@ -1156,6 +1291,106 @@ function plugin_get_pluginname($plugin)
 }
 
 
+/**
+* Check for updates to repository (reload)
+*
+*/
+function updaterepositorylist()
+{
+    global $_CONF, $_TABLES, $_USER, $LANG32, $LANG_ADMIN;
+    
+    // For each repository listing
+    $query = "SELECT * FROM {$_TABLES['plugin_repository']} WHERE enabled = 1;";
+    DB_query($query);
+    
+    // Truncate Table
+    DB_query("TRUNCATE {$_TABLES['plugin_repository_list']};");
+    
+    // Loop through listings
+    while ( ($result2 = DB_fetchArray($result)) !== FALSE) {
+        // XML Pull
+        $reader = new XMLReader();
+
+        $reader->open($result2['repository_url']);
+        $plugin = false;
+        $array_of_values = array();
+        $array_of_key_gen = array(
+            'id' => false,
+            'name' => false,
+            'version' => false, 
+            'db' => false, 
+            'dependencies' => false, 
+            'soft_dep' => false, 
+            'short_des' => false, 
+            'long_des' => false, 
+            'credits' => false, 
+            'vett' => false, 
+            'downloads' => false, 
+            'install' => false, 
+            'state' => false, 
+            'ext' => false
+
+        );
+
+        while ($reader->read()) {
+              // Process 
+              if($reader->name == "plugin") {
+                  // New plugin section
+                  if($plugin == false) {
+                      $plugin = true;
+            
+                  }
+                  else {  
+                      $plugin = false; 
+                      
+		      // Insert into the repository listing database the values
+		      $query = <<<OFF
+INSERT INTO {$_TABLES['plugin_repository_list']} (plugin_id, name, repository_name, version, db, dependencies, soft_dep, short_des, long_des, credits, vett, downloads, install, state, ext) VALUES('{$array_of_values['id']}','{$array_of_values['name']}','{$array_of_values['version']}','{$array_of_values['db']}','{$array_of_values['dependencies']}','{$array_of_values['soft_dep']}','{$array_of_values['short_des']}','{$array_of_values['long_des']}','{$array_of_values['credits']}','{$array_of_values['vett']}','{$array_of_values['downloads']}','{$array_of_values['install']}','{$array_of_values['state']}','{$array_of_values['ext']}');
+OFF;
+                      // Insert into database
+		      DB_query($query);
+		      
+                      foreach ($array_of_key_gen as $key => $value) {
+                          $array_of_key_gen[$key] = false;  
+                      }
+              
+                  }
+              }
+
+              switch ($reader->name) {
+                  case "id":
+                  case "name":
+                  case "version":
+                  case "db":
+                  case "dependencies":
+                  case "soft_dep":
+                  case "short_des":
+                  case "long_des":
+                  case "credits":
+                  case "vett":
+                  case "downloads":
+                  case "install":
+                  case "state":
+                  case "ext":
+                      $name = $reader->name;
+                      if ($array_of_key_gen[$name] == false) {
+                          $reader->read();
+                          $array_of_values[$name] = $reader->value;
+                          $array_of_key_gen[$name] = true;
+                      }
+                      break;
+                  default:
+
+                      break;
+              }
+
+        }
+
+        $reader->close();
+
+    }
+}
+
 // MAIN
 $display = '';
 if (isset($_POST['pluginenabler']) && SEC_checkToken()) {
@@ -1214,7 +1449,19 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $display .= plugineditor(COM_applyFilter($_GET['pi_name']));
     $display .= COM_siteFooter();
 
-} elseif ((($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) && SEC_checkToken()) {
+} elseif ($mode == 'updatelist') {
+    // Call do update list
+    updaterepositorylist();
+    
+    // Say msg
+    $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=500');
+    
+} elseif ($mode == 'splugin') {
+    $display .= COM_siteHeader('menu', $LANG32[304]);
+    $display .= pluginsearch();
+    $display .= COM_siteFooter();
+
+}  elseif ((($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) && SEC_checkToken()) {
     $enabled = '';
     if (isset($_POST['enabled'])) {
         $enabled = COM_applyFilter($_POST['enabled']);
@@ -1245,6 +1492,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
 } elseif (isset($_FILES['plugin']) && SEC_checkToken() &&
         SEC_hasRights('plugin.install,plugin.upload')) { 
     $display .= plugin_upload();
+
+} elseif (isset($_POST['search'])) {
 
 } else { // 'cancel' or no mode at all
     $display .= plugin_main();
