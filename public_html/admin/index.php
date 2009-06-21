@@ -30,7 +30,6 @@ require_once('../lib-common.php');
 if (isset ($_GET['mode']) && ($_GET['mode'] == 'logout')) {
     print COM_refresh($_CONF['site_url'] . '/users.php?mode=logout');
 }
-
 print COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
 
 ?>

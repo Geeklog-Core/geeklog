@@ -79,6 +79,7 @@ function INST_installEngine($install_type, $install_step)
         $site_slogan = (isset($_POST['site_slogan'])) ? str_replace('\\', '', $_POST['site_slogan']) : $LANG_INSTALL[30];
         $mysql_innodb_selected = '';
         $mysql_selected = '';
+        $pgsql_selected = '';
         $mssql_selected = '';
         if (isset($_POST['db_type'])) {
             switch ($_POST['db_type']) {
@@ -88,6 +89,9 @@ function INST_installEngine($install_type, $install_step)
                 case 'mssql':
                     $mssql_selected = ' selected="selected"';
                     break;
+                case 'pgsql':
+                    $pgsql_selected = ' selected="selected"';
+                    break;
                 default:
                     $mysql_selected = ' selected="selected"';
                     break;
@@ -95,6 +99,9 @@ function INST_installEngine($install_type, $install_step)
         } else {
             switch ($_DB_dbms) {
                 case 'mssql':
+                    $mssql_selected = ' selected="selected"';
+                    break;
+                case 'pgsql':
                     $mssql_selected = ' selected="selected"';
                     break;
                 default:
@@ -159,7 +166,7 @@ function INST_installEngine($install_type, $install_step)
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
                 <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
-                ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
+                ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option><option value="pgsql"' . $pgsql_selected . '>' . $LANG_INSTALL[360] . '</option>': '') . '
                 <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . '</p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
@@ -219,7 +226,6 @@ function INST_installEngine($install_type, $install_step)
 
         // Check if we can connect to the database
         } else if (!INST_dbConnect($DB)) { 
-
             $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'
                      . $LANG_INSTALL[55] . '</p>'
                      . INST_showReturnFormData($_POST) . LB;
@@ -764,6 +770,11 @@ function INST_createDatabaseStructures ($use_innodb = false)
                 $_DB->dbQuery($sql, 0, 1);
             }
             break;
+        case 'pgsql':
+            foreach ($_SQL as $sql) {
+                $_DB->dbQuery($sql, 0, 1);
+            }
+            break;
     }
 
     // Now insert mandatory data and a small subset of initial data
@@ -787,7 +798,7 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
 {
     global $_TABLES, $_DB_dbms;
 
-    if (($_DB_dbms == 'mysql') || ($_DB_dbms == 'mssql')) {
+    if (($_DB_dbms == 'mysql') || ($_DB_dbms == 'mssql' || $_DB_dbms== 'pgsql')) {
 
         // let's try and personalize the Admin account a bit ...
 

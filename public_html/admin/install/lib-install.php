@@ -56,7 +56,7 @@ if (!defined('VERSION')) {
     * This constant defines Geeklog's version number. It will be written to
     * siteconfig.php and the database (in the latter case minus any suffix).
     */
-    define('VERSION', '1.6.0b2');
+    define('VERSION', '1.6.0b1');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
@@ -431,6 +431,11 @@ function INST_dbConnect($db)
             return $db_handle;
         }
         break;
+    case 'pgsql':
+        if ($db_handle = @pg_connect('host='.$db['host'].' dbname='.$db['name'].' user='.$db['user'].' password='.$db['pass'])) {
+            return $db_handle;
+        }
+        break;
     }
     return $db_handle;
 }
@@ -457,6 +462,10 @@ function INST_dbExists($db)
             return true;
         }
         break;
+    case 'pgsql':
+        $result = @pg_query('select count(*) from pg_catalog.pg_database where datname = \''.$db['name'].'\' ;');
+        $ifExists = pg_fetch_row($result);
+        return $ifExists[0]?true:false;
     }
     return false;
 }

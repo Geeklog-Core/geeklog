@@ -86,6 +86,7 @@ $LANG_INSTALL = array(
     34 => 'Database Type',
     35 => 'MySQL',
     36 => 'MySQL with InnoDB Table support',
+    360=>'PgSQL',
     37 => 'Microsoft SQL',
     38 => 'Error',
     39 => 'Database Hostname',
