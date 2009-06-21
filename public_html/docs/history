@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jun 2?, 2009 (1.6.0b3)
+Jun 21, 2009 (1.6.0b3)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -47,6 +47,8 @@ Polls plugin
 
 Static Pages plugin
 -------------------
+- Another attempt to fix a compatibility issue with PHP 4 (parse error)
+  [Ben, Dirk]
 - Implemented PLG_getCommentUrlId [Dirk]
 - Update static pages comments when changing a page's ID so the comments don't
   become orphaned (part of bug #0000901) [Dirk]
