@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta name="description" content="Geeklog Readme" />
+	<title>Geeklog Readme</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet" />
+	<meta name="keywords" content="Geeklog, Readme" />
+</head>
+
+<body>
+
+<h1>Geeklog Readme (September 15, 2007)</h1>
+
+<h2>Table of Contents</h2>
+<ol>
+	<li><a href="#what_is_geeklog">What is Geeklog?</a></li>
+	<li><a href="#features">Features</a><br>
+		<ol>
+			<li><a href="#blog_cms_features">Blog/CMS Features</a></li>
+			<li><a href="#administration_features">Administration Features</a></li>
+			<li><a href="#security_features">Security Features</a></li>
+			<li><a href="#developer_features">Developer Features</a></li>
+		</ol></li>
+	<li><a href="#support">Support</a><br>
+		<ol>
+			<li><a href="#mailing_lists">Mailing Lists</a></li>
+			<li><a href="#irc_channel">IRC Channel</a></li>
+			<li><a href="#known_issues">Known Issues</a></li>
+		</ol></li>
+	<li><a href="#system_requirements_and_installation">System Requirements and Installation</a></li>
+	<li><a href="#security_issues">Security Issues</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#special_thanks">Special Thanks</a></li>
+	<li><a href="#further_documentation">Further Documentation</a></li>
+</ol>
+
+<h2><a id="what_is_geeklog">What is Geeklog?</a></h2>
+<p>Geeklog is a PHP/MySQL based application for managing dynamic web content.</p>
+
+<p>"Out of the box", it is a blog engine, or a CMS with support for comments, trackbacks, multiple syndication formats, spam protection, and all the other vital features of such a system.</p>
+
+<p>The core Geeklog distribution can easily be extended by the many community developed plugins to radically alter its functionality. Available plugins include forums, image galleries, and many more.</p>
+
+<p>Geeklog was originally used to run SecurityGeeks and NewsGeeks, and has since been released under the GNU General Public License. It is a bona fide Open Source / Free Software project. The template code Geeklog uses is from PHPLib, however, which is under the LGPL.</p>
+
+<p>Geeklog was originally created by Jason Whittenburg, but like all good open source projects, depends on the community. Geeklog 1.5 is currently maintained by Dirk Haun whilst Tony Bibbs focusses on Geeklog 2. Thanks for your continued support, and let us know what we can do to make Geeklog better.</p>
+
+<p>For the installation instructions please see <a href="install.html">install.html</a>.</p>
+
+<p>To get the latest Geeklog source, read the latest Geeklog news, and participate in Geeklog discussions, visit the Geeklog site: <a href="http://www.geeklog.net">http://www.geeklog.net</a></p>
+
+<h2><a id="features">Features</a></h2>
+
+<p>Geeklog is an extremely extensible system, however a summary of Geeklog's features are as follows:</p>
+
+<h3><a id="blog_cms_features">Blog/CMS Features</a></h3>
+<ul>
+	<li>Create, Schedule, Post and Edit articles in multiple topics</li>
+	<li>Save story drafts until they are ready for publishing.</li>
+	<li>Control over formatting used in articles (HTML whitelists)</li>
+	<li>Control over acceptable content (filtering of offensive language)</li>
+	<li>Embed images or other content in articles</li>
+	<li>Multiple Authors can post</li>
+	<li>Submissions from users</li>
+	<li>Support for comments, trackbacks and pingbacks</li>
+	<li>Export and import in all common syndication formats (RSS/RDF/Atom etc)</li>
+	<li>Spam detection and rejection</li>
+	<li>Robust calendar feature with support for personalized calendars.</li>
+	<li>Support for OpenID and other remote authentication methods.</li>
+	<li>Extendible via numerous Open Source plugins.</li>
+</ul>
+
+<h3><a id="administration_features">Administration Features</a></h3>
+<ul>
+	<li>Easy to install with a new automated installer in 1.5</li>
+	<li>Fully support for internationalization and localization</li>
+	<li>Easy to use admin interface</li>
+	<li>Admin interface has complete configurability for all Geeklog Functions.</li>
+	<li>User-specified theming engine for custom look and feel.</li>
+</ul>
+
+<h3><a id="security_features">Security Features</a></h3>
+<ul>
+	<li>User accounts and access controls.</li>
+	<li>Robust *nix-like security model for all objects which can be extended for use in plugins</li>
+	<li>Access can be defined for each article, topic etc</li>
+	<li>All passwords are stored encrypted.</li>
+	<li>All admin access is logged.</li>
+	<li>All errors are logged.</li>
+	<li>Complete error logging on all forms and SQL calls.</li>
+</ul>
+
+<h3><a id="developer_features">Developer Features</a></h3>
+<ul>
+	<li>Plugin support with API for developers.</li>
+	<li>A fully configurable block system, with php-in-block support.</li>
+	<li>Well organized codebase, use of PHP's Object-Oriented features.</li>
+	<li>Thin database abstraction layer allowing Geeklog to be ported to DBMS's other than the defaults (MySQL and MSSQL supported directly).</li>
+</ul>
+
+<h2><a id="support">Support</a></h2>
+
+<h3><a id="mailing_lists">Mailing Lists</a></h3>
+<p>The best support channel is a mailing list located at: <a href="http://lists.geeklog.net/mailman/listinfo/geeklog-users">http://lists.geeklog.net/mailman/listinfo/geeklog-users</a><br>
+
+Additionally the Geeklog home page is a good source of information at: <a href="http://www.geeklog.net">http://www.geeklog.net</a></p>
+
+<h3><a id="irc_channel">IRC Channel</a></h3>
+
+<p>There is also a IRC channel, where we have live Geeklog chat.  Once you have  IRC client such as mIRC (www.mirc.co.uk), or BitchX the you can log on:</p>
+<ul>
+	<li>Server: irc.freenode.net</li>
+	<li>Channel: #Geeklog</li>
+</ul>
+
+<h2><a id="known_issues">Known Issues</a></h2>
+
+<p>All known issues are tracked in our bug tracker. If you identify a bug please let us know by filling out a bug report at: <a href="http://project.geeklog.net/tracking/">http://project.geeklog.net/tracking/</a><br>
+
+<h2><a id="system_requirements_and_installation">System Requirements and Installation</a></h2>
+
+<p>See <a href="install.html">public_html/docs/install.html</a> or the Geeklog.net site: <a href="http://www.geeklog.net/docs/install.html">http://www.geeklog.net/docs/install.html</a></p>
+
+<h2><a id="security_issues">Security Issues</a></h2>
+
+<p>Geeklog is a security focussed CMS. We have focussed on making the code secure and the application secure, and have been rewarded with a comparatively low level of exploits having been identified and published by third parties.</p>
+
+<p>We have provided a set of API's and coding guidlines to ensure third party plugin developers do not compromise the security of a Geeklog installation, however, we can not garentee that our work or theirs is secure.</p>
+
+<p>It is up to you to properly secure your database, web server and host settings.  If you are looking for information in securing your system some starting points we can recommend are:</p>
+
+<ul>
+	<li><a href="http://www.php.net">http://www.php.net</a></li>
+	<li><a href="http://www.mysql.com">http://www.mysql.com</a></li>
+	<li><a href="http://www.apache.org">http://www.apache.org</a></li>
+	<li><a href="http://www.devshed.com">http://www.devshed.com</a></li>
+	<li><a href="http://www.securityfocus.com">http://www.securityfocus.com</a></li>
+	<li><a href="http://www.linux.com">http://www.linux.com</a></li>
+</ul>
+
+<h2><a id="license">License</a></h2>
+
+<p>Geeklog is licensed under the GPL. There should be an included LICENSE file - if it really interests you (or you having trouble sleeping) go ahead and read it.</p>
+
+<p>In a nice gesture you could provide a link back to us: <a href="http://www.geeklog.net">http://www.geeklog.net</a></p>
+
+<p>There is also a button that is in the release that we would appreciate you use (in public_html/images/buttons).</p>
+
+<h2><a id="special_thanks">Special Thanks</a></h2>
+
+<p>I want to send out thanks to:</p>
+<ul>
+	<li>Jason Whittenburg - He is the original Geeklog developer!</li>
+	<li>PHPWebLog Project - Some of the functions in Geeklog came from them!</li>
+	<li>PHPSlash Project - Some of the functions in Geeklog came from them!</li>
+	<li>thatphpware Project - Some of the functions in Geeklog came from them!</li>
+	<li>PHPBB Project - Some of the functions in Geeklog came from them!</li>
+	<li>PHPLib Project - Thanks for the great template engine!</li>
+</ul>
+
+<p>And of course, all the members of the Geeklog mailing lists and IRC channel.</p>
+
+<h2><a id="further_documentation">Further Documentation</a></h2>
+
+<p>Read the documents in the public_html/docs directory for more information, etc.</p>
+
+<p>See also:</p>
+<ul>
+	<li>FAQ: <a href="http://www.geeklog.net/faqman/">http://www.geeklog.net/faqman/</a></li>
+	<li>Support Forum: <a href="http://www.geeklog.net/forum/">http://www.geeklog.net/forum/</a></li>
+	<li>Wiki: <a href="http://wiki.geeklog.net/">http://wiki.geeklog.net/</a></li>
+	<li>Plugin Developers Guide: <a href="http://gplugs.sourceforge.net/pluginman/">http://gplugs.sourceforge.net/pluginman/</a></li>
+</ul>
+
+<h2>Appendix A - readme history</h2>
+
+<p>Version control information:<br>
+$Id: readme,v 1.19 2008/03/16 18:32:25 dhaun Exp $</p>
+<ul>
+	<li>2007-09-15 - readme re-write (mjervis)</li>
+	<li>2007-09-09 - Fixed mailing list URL (dhaun)</li>
+	<li>2007-08-05 - GeekLog to Geeklog (dhaun)</li>
+	<li>2004-08-13 - Documentation path updates (dhaun)</li>
+	<li>2003-12-22 - Minor updates (dhaun)</li>
+	<li>2002-12-28 - URL updates (dhaun)</li>
+	<li>2002-08-14 - IRC Channel updates (dhaun)</li>
+	<li>2002-08-11 - Minor updates (dhaun)</li>
+	<li>[various]</li>
+	<li>2001-08-18 - First readme file.</li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>リンクプラグイン | Geeklogドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - リンクプラグイン</div>
+
+<h1>リンクプラグイン</h1>
+
+<p>リンクセクションはかつてGeeklogのコアコードの一部でしたが、Geeklog 1.4.0よりプラグインとして分離されました。</p>
+
+<h2><a name="config.php">設定</a></h2>
+
+<p>リンクプラグインの設定は、「管理者用メニュー - コンフィギュレーション - リンク」から変更できます。</p>
+
+<h3><a name="public">リンクの表示に関する設定</a></h3>
+
+<table>
+<tr><th style="width:25%">項目</th>
+    <th style="width:25%">初期値</th>
+    <th style="width:50%">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_linksloginrequired">ログインを要求する(linksloginrequired)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、登録ユーザしかリンクセクションにアクセスできなくなる。<br>
+    この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されることに注意。「すべてにログインを要求する」をはい(1)にすると、リンクプラグインでログインを要求していなくても、ゲストユーザはリンクセクションにアクセスできなくなる。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_linkcols">カテゴリの表示カラム数(linkcols)</a></td>
+  <td>3</td>
+  <td>1カラム（列）ごとに表示するリンクカテゴリの数。</td>
+</tr>
+<tr>
+  <td><a name="desc_linksperpage">ページあたりのリンク数(linksperpage)</a></td>
+  <td>10</td>
+  <td>1ページごとに表示するリンクの数。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_show_top10">トップ10を表示する(show_top10)</a></td>
+  <td><code>はい(true)</code></td>
+  <td>「カテゴリの表示カラム数(linkcols)」と「ページあたりのリンク数(linksperpage)」がともに 0 で<strong>ない</strong>とき、リンクプラグインはそのトップページに最もクリックされたリンクの上位10位を自動的に表示する。表示したくなければ、この設定をいいえ(<code>false</code>)にする。</td>
+</tr>
+<tr>
+  <td><a name="desc_show_category_descriptions">カテゴリの説明を表示する(show_category_descriptions)</a></td>
+  <td><code>はい(true)</code></td>
+  <td>はい(true)にすると、カテゴリを表示するときにサブカテゴリの説明を表示する。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_new_window">新規ウィンドウ</a></td>
+  <td><code>false</code></td>
+  <td>外部サイトへのリンクを新規ウィンドウで開くかどうか。<br>
+  <strong>注意:</strong> このオプションは注意してください。ユーザが<a
+    href="http://diveintoaccessibility.org/day_16_not_opening_new_windows.html">操作</a>時に混同したり、いらいらさせることがあります。</td>
+</tr>
+</table>
+
+<h3><a name="admin">リンクの管理(Links Admin Settings)</a></h3>
+
+<table>
+<tr><th style="width:25%">項目</th>
+    <th style="width:25%">初期値</th>
+    <th style="width:50%">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_hidenewlinks">新着情報ブロックに表示しない(hidenewlinks)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、新規リンクが新着情報ブロックに表示されなくなる。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_newlinksinterval">新規リンクと見なす期間(newlinksinterval)</a></td>
+  <td>1209600（秒）</td>
+  <td>リンクが登録されてどれくらいの間、新着とみなされ、サイトの新着情報ブロックに表示されるかを決める期間（単位：秒）。初期値は1,209,600秒、つまり2週間。</td>
+</tr>
+<tr>
+  <td><a name="desc_hidelinksmenu">メニューに表示しない(hidelinksmenu)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、サイトのメニューに「リンク」メニューを表示しない。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_linksubmission">リンクの投稿を管理者が承認する(linksubmission)</a></td>
+  <td>はい(1)</td>
+  <td>はい(1)にすると、ユーザが投稿したリンクは管理者の承認待ちの状態になり、いいえ(0)にすると、即座に登録・表示される。</td>
+</tr>
+<tr>
+  <td><a name="desc_notification">メールで通知する(notification)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、新規リンクが投稿されたときに、管理者にEメールで通知する。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_links">所有者の削除と共に削除する(delete_links)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、リンク所有者のアカウントが削除されたときに、所有していたすべてのリンクが削除され、いいえ(0)にすると、Rootグループに属するユーザ（たとえば、サイトの管理者）に引き継がれる。</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">リンク保存後の画面遷移(aftersave)</a></td>
+  <td>リンク管理を表示する(list)</td>
+  <td>リンクを保存した後にどのページへ移動するかを設定する。
+    <ul>
+    <li>リンク先サイトを表示する(item): リンク先サイトへ移動する(!)</li>
+    <li>リンク管理を表示する(list): 管理者用のリンクのリストを表示する（初期値）</li>
+    <li>公開リンクリストを表示する(plugin): 公開されているリンク一覧を表示する</li>
+    <li>Homeを表示する(home): サイトのHomeページ（トップページ）を表示する</li>
+    <li>管理画面TOPを表示する(admin): 管理画面を表示する</li>
+    </ul></td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_root">トップカテゴリのID(root)</a></td>
+  <td>site</td>
+  <td>最上位のリンクカテゴリに使用するリンクID</td>
+</tr>
+</table>
+
+
+<h2><a name="layout">リンクプラグインのインデックスページのレイアウト</a></h2>
+
+<p>リンクプラグインのインデックスページ（トップページ）のレイアウト全般は、上述の「カテゴリの表示カラム数(linkcols)」と「ページあたりのリンク数(linksperpage)」で決定されます。</p>
+
+<p>すべてのリンクを1列に並べたい場合は、この2つに 0 を設定してください。リンクの数が少ない場合は、これが最も合理的です。「ページあたりのリンク数(linksperpage)」だけを 0 にすると、現在のカテゴリがすべて1ページで表示されます。「カテゴリの表示カラム数(linkcols)」だけを 0 に設定すると、複数ページにわたってすべてのリンクが表示されます（カテゴリは表示されません）。</p>
+
+
+<h3><a name="templates">テンプレートファイル</a></h3>
+
+<p>リンクセクションのレイアウトをさらに変更したい場合は、テンプレートファイルを変更してください。現在ではプラグインのディレクトリ、つまり、</p>
+<p style="margin-left:4em;"><tt>/path/to/geeklog/plugins/links/templates/</tt></p><p>にあります。</p>
+<p>旧バージョン(1.4.0よりも前)のGeeklog用に作成されたテーマを使用している場合は、テーマのディレクトリに "links" ディレクトリがあるかもしれませんが、ここはもはや使用されていないので、安全のために削除してください。</p>
+
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

@@ -85,17 +85,16 @@ function install_config()
 
     // squeeze search options between 640 (lastlogin) and 680 (loginrequired)
     $c->add('fs_search', NULL, 'fieldset', 0, 6, NULL, 0, TRUE);
-    $c->add('search_style','google','select',0,6,19,642,TRUE);
-    $c->add('search_limits','10,15,25,30','text',0,6,NULL,645,TRUE);
-    $c->add('num_search_results',30,'text',0,6,NULL,648,TRUE);
-    $c->add('search_show_limit',TRUE,'select',0,6,1,651,TRUE);
-    $c->add('search_show_sort',TRUE,'select',0,6,1,654,TRUE);
-    $c->add('search_show_num',TRUE,'select',0,6,1,657,TRUE);
-    $c->add('search_show_type',TRUE,'select',0,6,1,660,TRUE);
-    $c->add('search_no_data','<i>Not available...</i>','text',0,6,NULL,669,TRUE);
-    $c->add('search_separator',' &gt; ','text',0,6,NULL,672,TRUE);
-    $c->add('search_def_keytype','phrase','select',0,6,20,675,TRUE);
-    $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 678
+    $c->add('search_style','google','select',0,6,19,644,TRUE);
+    $c->add('search_limits','10,15,25,30','text',0,6,NULL,647,TRUE);
+    $c->add('num_search_results',30,'text',0,6,NULL,651,TRUE);
+    $c->add('search_show_limit',TRUE,'select',0,6,1,654,TRUE);
+    $c->add('search_show_sort',TRUE,'select',0,6,1,658,TRUE);
+    $c->add('search_show_num',TRUE,'select',0,6,1,661,TRUE);
+    $c->add('search_show_type',TRUE,'select',0,6,1,665,TRUE);
+    $c->add('search_separator',' &gt; ','text',0,6,NULL,668,TRUE);
+    $c->add('search_def_keytype','phrase','select',0,6,20,672,TRUE);
+    $c->add('search_use_fulltext',FALSE,'hidden',0,6); // 675
 
     // Subgroup: Stories and Trackback
     $c->add('sg_stories', NULL, 'subgroup', 1, 0, NULL, 0, TRUE);
@@ -314,7 +313,8 @@ function install_config()
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);
-    $c->add('compressed_output',0,'select',7,31,1,1757,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1756,TRUE);
+    $c->add('frame_options','DENY','select',7,31,22,1758,TRUE);
 
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE);
     $c->add('rootdebug',FALSE,'select',7,32,1,520,TRUE);

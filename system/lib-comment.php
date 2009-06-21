@@ -93,33 +93,33 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
     $cmt_title = stripslashes($title);
     $commentbar->set_var('story_title', $cmt_title);
     // Article's are pre-escaped.
-    if( $type != 'article' ) {
+    if ($type != 'article') {
         $cmt_title = htmlspecialchars($cmt_title);
     }
     $commentbar->set_var('comment_title', $cmt_title);
 
-    if( $type == 'article' ) {
-        $articleUrl = COM_buildUrl( $_CONF['site_url']
-                                    . "/article.php?story=$sid" );
-        $commentbar->set_var( 'story_link', $articleUrl );
-        $commentbar->set_var( 'article_url', $articleUrl );
-
-        if( $page == 'comment.php' ) {
-            $commentbar->set_var('story_link',
-                COM_createLink(
-                    stripslashes( $title ),
-                    $articleUrl,
-                    array('class'=>'non-ul b')
-                )
-            );
-            $commentbar->set_var( 'start_storylink_anchortag', '<a href="'
-                . $articleUrl . '" class="non-ul">' );
-            $commentbar->set_var( 'end_storylink_anchortag', '</a>' );
-        }
+    if ($type == 'article') {
+        $articleUrl = COM_buildUrl($_CONF['site_url']
+                                   . "/article.php?story=$sid");
     } else { // for a plugin
-        // Link to plugin defined link or lacking that a generic link that the plugin should support (hopefully)
+        /**
+        * Link to plugin defined link or lacking that a generic link
+        * that the plugin should support (hopefully)
+        */
         list($plgurl, $plgid) = PLG_getCommentUrlId($type);
-        $commentbar->set_var( 'story_link', "$plgurl?$plgid=$sid" );
+        $articleUrl = "$plgurl?$plgid=$sid";
+    }
+
+    $commentbar->set_var('article_url', $articleUrl);
+    if ($page == 'comment.php') {
+        $link = COM_createLink($cmt_title, $articleUrl,
+                               array('class' => 'non-ul b'));
+        $commentbar->set_var('story_link', $link);
+        $commentbar->set_var('start_storylink_anchortag',
+                             '<a href="' . $articleUrl . '" class="non-ul">');
+        $commentbar->set_var('end_storylink_anchortag', '</a>');
+    } else {
+        $commentbar->set_var('story_link', $articleUrl);
     }
 
     if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {
@@ -1120,16 +1120,19 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
         $ret = 5;
-    } elseif ( $_CONF['commentsubmission'] == 1 && !SEC_hasRights('comment.submit') ) {
-        //comment into comment submission table enabled
+    } elseif (($_CONF['commentsubmission'] == 1) &&
+            !SEC_hasRights('comment.submit')) {
+        // comment into comment submission table enabled
         if (isset($name)) {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,name,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['commentsubmissions'],
+                    'sid,uid,name,comment,date,title,pid,ipaddress,type',
+                    "'$sid',$uid,'$name','$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
         } else {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_save($_TABLES['commentsubmissions'],
+                    'sid,uid,comment,date,title,pid,ipaddress,type',
+                    "'$sid',$uid,'$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
         }
-        
+
         $ret = -1;
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
@@ -1632,8 +1635,8 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 }
 
 /**
- * Disables comments for all stories where current time is past comment expire time and 
- * enables comments for certain number of most recent stories.
+ * Disables comments for all stories where current time is past comment expire
+ * time and enables comments for certain number of most recent stories.
  *
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
@@ -1641,20 +1644,23 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 function CMT_updateCommentcodes()
 {
     global $_CONF, $_TABLES;
-    
+
     if ($_CONF['comment_close_rec_stories'] > 0) {
-        $results = DB_query("SELECT sid FROM {$_TABLES['stories']} ORDER BY date DESC LIMIT {$_CONF['comment_close_rec_stories']}");
-        while($A = DB_fetchArray($results))  {
+        $results = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0) ORDER BY date DESC LIMIT {$_CONF['comment_close_rec_stories']}");
+        while ($A = DB_fetchArray($results)) {
             $allowedcomments[] = $A['sid'];
         }
-        //update comment codes. 
-        $sql = '';
-        foreach ($allowedcomments as $sid) {
-            $sql .= "AND sid <> '$sid' ";
+        // update comment codes
+        $sql = ' AND ';
+        if (count($allowedcomments) > 1) {
+            $sql .= "sid NOT IN ('" . implode("','", $allowedcomments) . "')";
+        } else {
+            $sql .= "sid <> '$sid'";
         }
-        $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE commentcode = 0 " . $sql;
+        $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE (commentcode = 0) AND (date < NOW()) AND (draft_flag = 0)" . $sql;
         DB_query($sql);
     }
+
     $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
     DB_query($sql);
 }
@@ -1691,7 +1697,6 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
 /**
  * Moves comment from submission table to comments table
  * 
- * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @param  string $cid comment id

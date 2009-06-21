@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>アンケートプラグイン | Geeklogドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - アンケート(Polls)プラグイン</div>
+
+<h1>アンケート(Polls)プラグイン</h1>
+
+<p>アンケート機能はかつてGeeklogのコアコードの一部でしたが、Geeklog 1.4.0よりプラグインとして分離されました。</p>
+
+<h2><a name="config.php">設定</a></h2>
+
+<p>アンケートプラグインの設定は、「管理者用メニュー - コンフィギュレーション - アンケート」から変更できます。</p>
+
+<h3><a name="general">アンケートのメイン設定</a></h3>
+
+<table>
+<tr><th style="width:25%">項目</th>
+    <th style="width:25%">初期値</th>
+    <th style="width:50%">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_pollsloginrequired">ログインを要求する(pollsloginrequired)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、登録ユーザしか最近のアンケートにアクセスできなくなる。<br>
+    この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されることに注意。「すべてにログインを要求する」をはい(1)にすると、アンケートプラグインでログインを要求していなくても、ゲストユーザはアンケートにアクセスできなくなる。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_hidepollsmenu">メニューに表示しない(hidepollsmenu)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、サイトのメニューに「アンケート」メニューを表示しない。</td>
+</tr>
+<tr>
+  <td><a name="desc_maxquestions">アンケート毎の質問の最大数(maxquestions)</a></td>
+  <td>10</td>
+  <td>アンケート毎の質問の最大数。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_maxanswers">質問毎の選択肢の最大数(maxanswers)</a></td>
+  <td>10</td>
+  <td>質問毎の選択肢の最大数。</td>
+</tr>
+<tr>
+  <td><a name="desc_answerorder">アンケート結果の表示順(answerorder)</a></td>
+  <td>登録順(submitorder)</td>
+  <td>アンケート結果を「得票順(voteorder)」に並び替えるか、アンケートの「登録順(submitorder)」で並び替えるかを指定する。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_pollcookietime">投票者のクッキーの有効期間(pollcookietime)</a></td>
+  <td>86400（秒）</td>
+  <td>投票者のクッキーの有効期間を秒数で指定する。いったん投票すると、この期間は同じ質問に投票できない。初期値は86,400秒（＝24時間）。</td>
+</tr>
+<tr>
+  <td><a name="desc_polladdresstime">投票者のIPアドレスの有効期間(polladdresstime)</a></td>
+  <td>604800</td>
+  <td>投票者のIPアドレスの有効期間を秒数で指定する。いったん投票すると、この期間は同じIPから投票できない。初期値は604,800秒（＝7日間）。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_polls">所有者の削除と共に削除する(delete_polls)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、アンケート所有者のアカウントが削除されたときに、所有していたすべてのアンケートが全コメントと共に削除され、いいえ(0)にすると、Rootグループに属するユーザ（たとえば、サイトの管理者）に引き継がれる。</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">アンケート保存後の画面遷移(aftersave)</a></td>
+  <td>アンケート管理を表示する(list)</td>
+  <td>アンケートを保存した後にどのページへ移動するかを設定する。
+    <ul>
+    <li>作成したアンケートを表示する(item): 作成したアンケートを表示する</li>
+    <li>アンケート管理一覧を表示する(list): 管理者用のアンケートのリストを表示する（初期値）</li>
+    <li>アンケート一覧を表示する(plugin): 公開されているアンケート一覧を表示する</li>
+    <li>Homeを表示する(home): サイトのHomeページ（トップページ）を表示する</li>
+    <li>管理画面TOPを表示する(admin): 管理画面を表示する</li>
+    </ul></td>
+</tr>
+</table>
+
+<h2>アンケートの仕組み</h2>
+
+<p><small>(<a href="http://www.geeklog.net/faqman/">Geeklog
+FAQ</a>より転載)</small></p>
+
+<p>アンケートの操作を防ぐ（少なくとも困難にする）ために、Geeklogは投票時に次の2つのことを行います。</p>
+
+<ol>
+  <li>クッキーを保存する</li>
+  <li>投票者のIPアドレスを記録する</li>
+</ol>
+
+<p>クッキーとIPアドレスは一定期間有効で（下記参照）、その期間中は同じアンケートに答えることはできません。</p>
+
+<p>クッキーとIPアドレスの有効期間は「管理者用メニュー - コンフィギュレーション - アンケート」で変更できます（上記参照）。</p>
+
+<pre>$_PO_CONF['<a href="#desc_pollcookietime">pollcookietime</a>']    = 86400;
+$_PO_CONF['<a href="#desc_polladdresstime">polladdresstime</a>']   = 604800;</pre>
+
+<p>単位は共に秒で、上記の例ではクッキーの有効期間は24時間であり、IPアドレスは1週間記録されることになります。</p>
+
+<p>複数の人間が同一コンピュータや同一IPアドレスを使用する状況では、いずれか（または両方の）数値を <code>1</code> に設定するとよいでしょう。</p>
+
+<p><strong>どんな</strong>アンケートでも操作される可能性があることを忘れないでください。したがって結果をあまり重大に受け止めない方がよいでしょう。</p>
+
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

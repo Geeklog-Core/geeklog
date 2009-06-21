@@ -56,7 +56,7 @@ if (!defined('VERSION')) {
     * This constant defines Geeklog's version number. It will be written to
     * siteconfig.php and the database (in the latter case minus any suffix).
     */
-    define('VERSION', '1.6.0b1');
+    define('VERSION', '1.6.0b2');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
@@ -64,6 +64,8 @@ if (!defined('XHTML')) {
 if (!defined('SUPPORTED_PHP_VER')) {
     define('SUPPORTED_PHP_VER', '4.3.0');
 }
+
+$_REQUEST = array_merge($_GET, $_POST);
 
 if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
@@ -673,7 +675,7 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 */
 function INST_getPluginInfo($plugin)
 {
-    global $_CONF;
+    global $_CONF, $_TABLES, $_DB_dbms, $_DB_table_prefix;
 
     $info = false;
 
@@ -1147,6 +1149,22 @@ function INST_setVersion($siteconfig_path)
     $version = addslashes($version);
 
     DB_change($_TABLES['vars'], 'value', $version, 'name', 'database_version');
+}
+
+/**
+* Filter path value for junk and injections
+*
+* @param    string  $path   a path on the file system
+* @return   string          filtered path value
+*
+*/
+function INST_sanitizePath($path)
+{
+    $path = strip_tags($path);
+    $path = str_replace(array('"', "'"), '', $path);
+    $path = str_replace('..', '', $path);
+
+    return $path;
 }
 
 ?>

@@ -1108,6 +1108,10 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         COM_errorLog("Successfully installed the '$plugin' plugin!", 1);
     }
 
+    // load plugin here already, for any plugins wanting to act on
+    // PLG_pluginStateChange($plugin, 'installed') when we return from here
+    require_once $_CONF['path'] . 'plugins/' . $plugin . '/functions.inc';
+
     return true;
 }
 

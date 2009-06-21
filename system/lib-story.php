@@ -717,10 +717,9 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            if ($sid == '*') {
-                // in this case, we need the sid to build the URL
-                $fields[] = 'sid';
-            }
+            // needed for $sid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'sid';
             break;
         default:
             // nothing to do
@@ -877,7 +876,9 @@ function STORY_deleteStory($sid)
 */
 function STORY_doDeleteThisStoryNow($sid)
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'lib-comment.php';
 
     STORY_deleteImages($sid);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
@@ -892,6 +893,7 @@ function STORY_doDeleteThisStoryNow($sid)
     // update RSS feed and Older Stories block
     COM_rdfUpToDateCheck();
     COM_olderStuff();
+    CMT_updateCommentcodes();
 }
 
 /**
@@ -928,6 +930,8 @@ function service_submit_story($args, &$output, &$svc_msg)
 
         return PLG_RET_AUTH_FAILED;
     }
+
+    require_once $_CONF['path_system'] . 'lib-comment.php';
 
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
@@ -1288,7 +1292,8 @@ function service_submit_story($args, &$output, &$svc_msg)
 
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck('article', $story->DisplayElements('tid'), $sid);
-        COM_olderStuff ();
+        COM_olderStuff();
+        CMT_updateCommentcodes();
 
         if ($story->type == 'submission') {
             $output = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php?msg=9');

@@ -528,12 +528,13 @@ $LANG09 = array(
     61 => 'Suche korrigieren',
     62 => '#',
     63 => 'Description',
-    64 => 'Showing %d - %d of %d results',
+    64 => 'Showing %1$d - %2$d of %3$d results',
     65 => 'Story',
     66 => 'Comment',
     67 => 'Show %d Results',
     68 => 'Sort By',
-    69 => 'Titles Only'
+    69 => 'Titles Only',
+    70 => 'Not available ...'
 );
 
 ###############################################################################
@@ -926,7 +927,7 @@ $LANG28 = array(
     54 => 'User löschen',
     55 => 'Dies funktioniert nur, wenn die Funktion \'Record Last Login\' im Configuration admin panel aktiviert wurde.',
     56 => 'Bitte den Typ User wählen, der gelöscht werden soll und "Liste aktualisieren" drücken. Dann die aus der Liste abhaken, di enicht gelöscht werden sollen und "Delete" drücken. Es werden nur die gelöscht, die gegenwärtig sichtbar sind. Dieser Hinweis für den Fall, dass die Liste sich über mehrere Seiten erstreckt.',
-    57 => 'Phantom-ser',
+    57 => 'Phantom-User',
     58 => 'Einmal-User',
     59 => 'Alte User',
     60 => 'User, angemeldet vor mehr als ',
@@ -978,7 +979,7 @@ $LANG29 = array(
     18 => 'E-Mail',
     34 => 'Kommandozentrale',
     35 => 'Beiträge: Artikel',
-    36 => 'Comment',
+    36 => 'Parent or Comment',
     37 => '',
     38 => 'Abschicken',
     39 => 'Derzeit gibt es keine Beiträge zu moderieren.',
@@ -1841,6 +1842,7 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => 'Autolinks ausschalten?',
     'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
+    'frame_options' => 'Protection against "clickjacking"',
     'censormode' => 'Zensur-Modus?',
     'censorreplace' => 'Zensurwort wird ersetzt mit',
     'censorlist' => 'Liste zensierter Wörter',
@@ -1861,7 +1863,6 @@ $LANG_confignames['Core'] = array(
     'search_show_type' => 'Show Result Type?',
     'search_show_sort' => 'Allow User to Sort Results?',
     'search_show_limit' => 'Show Page Limits?',
-    'search_no_data' => 'If No Data is Avaliable, Display',
     'search_separator' => 'Group Separator',
     'search_def_keytype' => 'Default Search Method'
 );
@@ -1943,7 +1944,8 @@ $LANG_configselects['Core'] = array(
     18 => array('Aus' => 0, 'Ein (Exakte Übereinstimmung)' => 1, 'Ein (Wortanfang)' => 2, 'Ein (Teilwort)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
 );
 
 ?>

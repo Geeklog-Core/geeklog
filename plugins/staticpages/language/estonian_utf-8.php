@@ -112,6 +112,7 @@ $LANG_STATIC = array(
     'submit' => 'Sisesta'
 );
 
+$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
 $PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
 

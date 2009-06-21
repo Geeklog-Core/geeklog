@@ -68,13 +68,13 @@ if (!isset($_CA_CONF['calendarloginrequired'])) {
 * NOTE: this MUST return the url/value pairs in the following format
 * $<arrayname>[<label>] = <url>
 *
+* @return   mixed   menu entry, or boolean false if disabled / hidden
 */
-function plugin_getmenuitems_calendar ()
+function plugin_getmenuitems_calendar()
 {
-    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1;
 
-    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
-    if (($_CA_CONF['hidecalendarmenu'] == 1) || ($anon &&
+    if (($_CA_CONF['hidecalendarmenu'] == 1) || (COM_isAnonUser() &&
             ($_CONF['loginrequired'] || $_CA_CONF['calendarloginrequired']))) {
         return false;
     }
@@ -119,10 +119,10 @@ function phpblock_calendar( $help='', $title='' )
         if($_DB_dbms == 'mssql') {
             $eventSql .= "WHERE dateend >= DATEADD(hh, 24, NOW()) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
         } else {
-            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";            
+            $eventSql .= "WHERE dateend >= (NOW() - INTERVAL 24 HOUR) AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) ";
         }
         $eventSql .= 'ORDER BY datestart,timestart';
-        
+
         if(( $_CA_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] )) {
             $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['personal_events']} ";
@@ -1275,15 +1275,6 @@ function plugin_feedupdatecheck_calendar ($feed, $topic, $update_data, $limit,
 
 
 /**
-* Calendar will not use comments
-*/
-function plugin_commentsupport_calendar()
-{
-    return false;
-}
-
-
-/**
 * Shows the statistics for the Calendar plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
@@ -1614,16 +1605,24 @@ function plugin_searchtypes_calendar()
 */
 function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $LANG_CAL_1;
+    global $_TABLES, $_USER, $LANG_CAL_1;
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
-    $sql_e = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, hits, CONCAT('/calendar/event.php?eid=',eid) AS url ";
+    if (COM_isAnonUser()) {
+        $uid = 1;
+    } else {
+        $uid = $_USER['uid'];
+    }
+
+    $sql_e = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, hits, ";
+    $sql_e .= "CONCAT('/calendar/event.php?eid=',eid) AS url ";
     $sql_e .= "FROM {$_TABLES['events']} WHERE 1=1 ";
 
-    $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, '0' AS hits, CONCAT('/calendar/event.php?eid=',eid) AS url ";
-    $sql_p .= "FROM {$_TABLES['personal_events']} WHERE 1=1 ";
+    $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, ";
+    $sql_p .= "CONCAT('/calendar/event.php?mode=personal&eid=',eid) AS url ";
+    $sql_p .= "FROM {$_TABLES['personal_events']} WHERE (uid = $uid) ";
 
     $sql = COM_getPermSQL('AND') . ' ';
 
@@ -1645,15 +1644,19 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     // Search the public events
     $search_e = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[24]));
-    $columns = array('location', 'description', 'title' => 'title');
+    $columns = array('title' => 'title', 'location', 'description');
     list($sql_tmp,$ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
     $search_e->setSQL($sql_tmp);
     $search_e->setFTSQL($ftsql_tmp);
     $search_e->setRank(2);
 
+    if (COM_isAnonUser()) {
+        return $search_e;
+    }
+
     // Search personal events
     $search_p = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[23]));
-    $columns = array('location', 'description','title' => 'title');
+    $columns = array('title' => 'title', 'location', 'description');
     list($sql_tmp,$ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
     $search_p->setSQL($sql_tmp);
     $search_p->setFTSQL($ftsql_tmp);
@@ -1801,10 +1804,9 @@ function plugin_getiteminfo_calendar($eid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            if ($eid == '*') {
-                // in this case, we need the eid to build the URL
-                $fields[] = 'eid';
-            }
+            // needed for $eid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'eid';
             break;
         default:
             // nothing to do

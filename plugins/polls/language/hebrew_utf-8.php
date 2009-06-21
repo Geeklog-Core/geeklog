@@ -106,6 +106,7 @@ $LANG25 = array(
     40 => 'צפו בכל התשובות של סקר זה'
 );
 
+$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_polls_MESSAGE19 = 'הסקר שלכם נשמר בהצלחה.';
 $PLG_polls_MESSAGE20 = 'הסקר שלכם נמחק בהצלחה.';
 

@@ -296,10 +296,6 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">true</td>
   <td valign="top">Shows (= true) or hides (= false) the plugin name the result came from.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_search_no_data">search_no_data</a></td>
-  <td valign="top">&lt;i&gt;Not available...&lt;/i&gt;</td>
-  <td valign="top">When there is an incompatibility between plugin and Geeklog display this string.</td></tr>
-<tr>
   <td valign="top"><a name="desc_search_separator">search_separator</a></td>
   <td valign="top"> &amp;gt; (Space before and after character)</td>
   <td valign="top">The character to display between result type sub groups.</td></tr>
@@ -941,8 +937,12 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
   <td valign="top">30</td>
-  <td valign="top">Number of days after which a story is automatically closed
-    for comments, i.e. no new comments can be posted after that many days.</td></tr>
+  <td valign="top">Number of days after which a story is to be automatically
+    closed for comments, i.e. no new comments can be posted after that many
+    days.<br>
+    Note that this is only the default value to which the "Disable Comments"
+    option is set when creating a new story. It will not take effect unless it
+    has also been enabled for the story.</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_close_rec_stories">comment_close_rec_stories</a></td>
   <td valign="top">0</td>
@@ -1368,6 +1368,17 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     however, result in slightly more load on the webserver.<br>
     For now, this feature should be considered <strong>experimental</strong> and
     hasn't been implemented for all HTML output yet.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_frame_options">frame_options</a></td>
+  <td valign="top">DENY</td>
+  <td valign="top">Protection against <a
+    href="http://en.wikipedia.org/wiki/Clickjacking">Clickjacking</a>: This
+    option indicates that the site's content should not be displayed in a frame.
+    This only works, however, when the visitor's browser respects the
+    <tt>X-FRAME-OPTIONS</tt> HTTP header. Options are to disallow all framing
+    (Strict), only allow framing from within the same site (Same Origin), or to
+    allow all framing (disabled). We strongly suggest <em>not</em> to disable
+    this option.</td></tr>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>

@@ -22,7 +22,7 @@
 <td>
 <select name="{name}" class="opt">
   <!-- BEGIN select-options -->
-    <option {selected}  value="{opt_value}">{opt_name}
+    <option {selected} value="{opt_value}">{opt_name}</option>
   <!-- END select-options -->
 </select></td></tr>
 <!-- END select-element -->

@@ -47,9 +47,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
 {
     $pi_name         = 'xmlsitemap';
     $pi_display_name = 'XMLSitemap';
-    $pi_admin        = $pi_display_name . ' Admin';
-    $feature         = 'xmlsitemap.edit';
-    
+
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
@@ -57,26 +55,11 @@ function plugin_autoinstall_xmlsitemap($pi_name)
         'pi_gl_version'   => '1.6.0',
         'pi_homepage'     => 'http://www.geeklog.net/',
     );
-    
-    $groups = array(
-        $pi_admin => 'Users in this group can administer the ' . $pi_display_name . ' plugin'
-    );
-    $features = array(
-        $feature => 'Access to ' . $pi_admin,
-    );
-    $mappings = array(
-        $feature => array($pi_admin),
-    );
-    $tables = array();
-    
+
     $inst_parms = array(
         'info'      => $info,
-        'groups'    => $groups,
-        'features'  => $features,
-        'mappings'  => $mappings,
-        'tables'    => $tables,
     );
-    
+
     return $inst_parms;
 }
 
@@ -109,6 +92,15 @@ function plugin_load_configuration_xmlsitemap($pi_name)
 */
 function plugin_compatible_with_this_version_xmlsitemap($pi_name)
 {
+    global $_CONF, $_DB_dbms;
+
+    // check if we support the DBMS the site is running on
+    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
+            . $_DB_dbms . '_install.php';
+    if (! file_exists($dbFile)) {
+        return false;
+    }
+
     return function_exists('PLG_itemDeleted');
 }
 
@@ -118,7 +110,6 @@ function plugin_compatible_with_this_version_xmlsitemap($pi_name)
 * @param    string  $pi_name    Plugin name
 * @return   boolean             TRUE: plugin compatible; FALSE: not compatible
 */
-/*
 function plugin_postinstall_xmlsitemap($pi_name)
 {
     global $_CONF, $_XMLSMAP_CONF;
@@ -128,5 +119,5 @@ function plugin_postinstall_xmlsitemap($pi_name)
     // Create an XML sitemap for the first time
     return XMLSMAP_update();
 }
-*/
+
 ?>

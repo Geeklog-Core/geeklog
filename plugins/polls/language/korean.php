@@ -106,6 +106,7 @@ $LANG25 = array(
     40 => 'See all answers to this poll'
 );
 
+$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_polls_MESSAGE19 = '앙케이트가 등록 되었습니다.';
 $PLG_polls_MESSAGE20 = '앙케이트가 삭제 되었습니다.';
 

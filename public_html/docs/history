@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May ??, 2009 (1.6.0b2)
+Jun 2?, 2009 (1.6.0b3)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -10,7 +10,76 @@ the 2008 Google Summer of Code:
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
 
-Other changes:
+Changes since 1.6.0b2:
+- Fixed IE6 and Safari compatibility issue with sort and limit combo boxes in
+  search results (part of bug #0000874) [Sami]
+- Fixed HTML in the Configuration (bug #0000907) [Dirk]
+- Added a more prominent reminder to remove the install script [Dirk]
+- Made the link to a comment's parent object from the comment bar work properly
+  for plugins [Dirk]
+- Allow searching by topic (without a query string) again (reported by Markus
+  Wollschläger) [Dirk]
+- Fixed handling of $_CONF['comment_close_rec_stories'] (bug #0000899) [Dirk]
+- Improved selection of text portion displayed in search results [Dirk]
+- Fixed an error that occured after deleting a trackback [Dirk]
+- Replace autotags in search results (bug #0000887) [Dirk]
+- Don't insist on an email address when editing a Remote User (bug #0000885)
+  [Dirk]
+- Added a config option to send an X-FRAME-OPTIONS HTTP header to prevent
+  "clickjacking" (requires browser support) [Dirk]
+- Prevent XSS in the install script (reported independently by Nemesis and MaXe)
+  [Dirk]
+- Removed old plugin API function plugin_commentsupport from the Calendar,
+  Polls, and Static Pages plugins [Dirk]
+
+- Updated Japanese language files and Japanese documentation,
+  provided by the Geeklog.jp group
+
+Calendar plugin
+---------------
+- Fixed leap year check [Sean Clark]
+
+Polls plugin
+------------
+- Implemented PLG_getCommentUrlId [Dirk]
+- Update polls comments when changing a poll's ID so the comments don't become
+  orphaned (part of bug #0000901) [Dirk]
+
+Static Pages plugin
+-------------------
+- Implemented PLG_getCommentUrlId [Dirk]
+- Update static pages comments when changing a page's ID so the comments don't
+  become orphaned (part of bug #0000901) [Dirk]
+- When deleting a static page, also delete its comments (bug #0000901) [Dirk]
+
+XMLSitemap plugin
+-----------------
+- Add the Polls plugin to the sitemap by default (part of bug #0000898) [Dirk]
+- When manually adding or removing plugins, automatically add/remove
+  corresponding entries for priority and frequency (part of bug #0000898) [Dirk]
+
+
+May 31, 2009 (1.6.0b2)
+------------
+
+Changes since 1.6.0b1:
+- Various fixes to the new search (work in progress) [Sami]
+- The list of Comment Submissions now tries to provide a link to a comment's
+  parent object (article, poll, ...). If not available, it displays an excerpt
+  from the comment [Dirk]
+- Plugin comments lost their type when being saved in the comment submission
+  queue (they were treated as comments on stories) [Dirk]
+- SQL errors now trigger the standard error handler ("Unfortunately, an error
+  has occurred ..."). Details are available in error.log, as usual [Tony, Dirk]
+- Removed the $_CONF['search_no_data'] config option and moved the text to the
+  language files (bug #0000873) [Dirk]
+- All bundled plugins now include a check to see if they support the DBMS the
+  site is running on [Dirk]
+- A fresh install didn't check if the bundled plugins are compatible with the
+  Geeklog version about to be installed [Dirk]
+- Users couldn't change their password or delete their account (reported by
+  Tom Homer) [Dirk]
+- Fixed plugin postinstall from the install script [Dirk]
 - Made COM_createImage recognize https:// URLs (bug #0000881) [Dirk]
 - Fixed notices in the config class (reported by tgc and others) [Dirk]
 - Fixed empty entries in the "Type" dropdown on the Advanced Search page.
@@ -21,15 +90,31 @@ Other changes:
   entries to a certain amount of characters (reported by alank) [Dirk]
 - Added a verbose logging option to the search class and make it default to off
   [Dirk]
+- lib-custom.php was missing from the 1.6.0b1 tarball
+
+- Updated Spanish language file, provided by Juan Pablo Novillo
+
+Polls plugin
+------------
+- Display a message when a plugin comment is queued [Dirk]
+- If you knew a poll's ID, you could find out the poll's title even if you did
+  not have access to the poll [Dirk]
+- Fixed (mostly) blank page when calling up a non-existing poll ID (reported
+  by scarecrow) [Dirk]
 
 Static Pages plugin
 -------------------
+- Display a message when a plugin comment is queued [Dirk]
 - Fixed handling of "entire page" centerblocks in a multi-language environment:
   Need to allow one per language (reported by Norbert Ortmann) [Dirk]
 - Fixed a typo that prevented the [staticpage:] autotag from working [Dirk]
 
 XMLSitemap plugin
 -----------------
+- Added an option to exclude plugins from inclusion in the sitemap. Defaults
+  to the Links plugin [Dirk]
+- Remove sitemap files when uninstalling the plugin [Dirk]
+- Don't include Links in the sitemap.xml automatically [Dirk]
 - Fixed "missing argument 2" error when changing config options (reported by
   Markus Wollschläger) [Dirk]
 
@@ -46,6 +131,8 @@ May 1, 2009 (1.6.0b1)
 - Document where CUSTOM_templateSetVars is actually called from (bug #0000862)
   [Dirk]
 - Added option to search by titles only (feature request #0000840) [Sami]
+- The "Plugins" entry in the Admins Block now displays the number of enabled
+  plugins (previously included the disabled plugins) [Dirk]
 - Added a config option to enable/disable automatically turning URLs in text
   postings into clickable URLs [Dirk]
 - Changed some default settings [Dirk]:
@@ -56,6 +143,7 @@ May 1, 2009 (1.6.0b1)
   These settings are _not_ changed when upgrading from an earlier version.
 - Experimental: Compress HTML output before sending it to the browser (disabled
   by default; has to be supported by both the browser and the webserver) [Dirk]
+- Added canonical link for article directory [Dirk]
 - Moved hard-coded texts from admin/sectest.php to the language files (bug
   #0000716) [Dirk]
 - Added an option to send a copy of the email to a user to self (feature request
@@ -135,6 +223,8 @@ May 1, 2009 (1.6.0b1)
   themselves [Dirk]
 - Gave the Groups and User editors a facelift. Requires a new template file,
   admin/lists/inline.thtml [Dirk]
+- Introduced list of "advanced HTML" tags that are allowed when FCKeditor is
+  enabled. Needed for images (bug #0000757) [Blaine]
 - Add new permissions plugin.install and plugin.upload for more fine-grained
   control to the plugin admin panel (bug #0000637) [Dirk]
 - Introduced new plugin API function PLG_itemDeleted [Dirk]

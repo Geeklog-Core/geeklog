@@ -163,6 +163,15 @@ function plugin_postinstall_links($pi_name)
 */
 function plugin_compatible_with_this_version_links($pi_name)
 {
+    global $_CONF, $_DB_dbms;
+
+    // check if we support the DBMS the site is running on
+    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/'
+            . $_DB_dbms . '_install.php';
+    if (! file_exists($dbFile)) {
+        return false;
+    }
+
     if (!function_exists('COM_truncate') || !function_exists('MBYTE_strpos')) {
         return false;
     }

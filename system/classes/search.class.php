@@ -241,7 +241,10 @@ class Search {
         $searchform->set_var('lang_any_word', $LANG09[45]);
         $searchform->set_var('lang_titles', $LANG09[69]);
 
-        $searchform->set_var ('query', htmlspecialchars ($this->_query));
+        $escquery = htmlspecialchars($this->_query);
+        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                                $escquery);
+        $searchform->set_var ('query', $escquery);
         $searchform->set_var ('datestart', $this->_dateStart);
         $searchform->set_var ('dateend', $this->_dateEnd);
 
@@ -352,7 +355,9 @@ class Search {
         // Make sure the query is SQL safe
         $query = trim(addslashes($this->_query));
 
-        $sql = "SELECT s.sid AS id, s.title AS title, s.introtext AS description, UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, CONCAT('/article.php?story=',s.sid) AS url ";
+        $sql = "SELECT s.sid AS id, s.title AS title, s.introtext AS description, ";
+        $sql .= "UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ";
+        $sql .= "CONCAT('/article.php?story=',s.sid) AS url ";
         $sql .= "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u ";
         $sql .= "WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ";
         $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
@@ -377,7 +382,7 @@ class Search {
         }
 
         $search = new SearchCriteria('stories', $LANG09[65]);
-        $columns = array('introtext', 'bodytext', 'title' => 'title');
+        $columns = array('title' => 'title', 'introtext', 'bodytext');
         list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
         $search->setSQL($sql);
         $search->setFTSQL($ftsql);
@@ -403,7 +408,8 @@ class Search {
         // Make sure the query is SQL safe
         $query = trim(addslashes($this->_query));
 
-        $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, '0' AS hits, ";
+        $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
+        $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
 
         // MSSQL has a problem when concatenating numeric values
         if ($_DB_dbms == 'mssql') {
@@ -437,7 +443,7 @@ class Search {
         }
 
         $search = new SearchCriteria('comments', $LANG09[66]);
-        $columns = array('comment', 'title' => 'c.title');
+        $columns = array('title' => 'c.title', 'comment');
         list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
         $search->setSQL($sql);
         $search->setFTSQL($ftsql);
@@ -472,7 +478,7 @@ class Search {
 
         // Make sure there is a query string
         // Full text searches have a minimum word length of 3 by default
-        if ((empty($this->_query) && empty($this->_author)) || ($_CONF['search_use_fulltext'] && strlen($this->_query) < 3))
+        if ((empty($this->_query) && empty($this->_author) && empty($this->_topic)) || ($_CONF['search_use_fulltext'] && strlen($this->_query) < 3))
         {
             $retval = '<p>' . $LANG09[41] . '</p>' . LB;
             $retval .= $this->showForm();
@@ -630,11 +636,11 @@ class Search {
                     $api_results = array(
                                 SQL_NAME =>       $result->plugin_name,
                                 SQL_TITLE =>      $label,
-                                'title' =>        $col_title == -1 ? $_CONF['search_no_data'] : $old_row[$col_title],
-                                'description' =>  $col_desc == -1 ? $_CONF['search_no_data'] : $old_row[$col_desc],
-                                'date' =>         $col_date == -1 ? '&nbsp;' : $date,
-                                'uid' =>          $col_user == -1 ? '&nbsp;' : $old_row[$col_user],
-                                'hits' =>         $col_hits == -1 ? '0' : str_replace(',', '', $old_row[$col_hits])
+                                'title' =>        $col_title == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_title],
+                                'description' =>  $col_desc == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_desc],
+                                'date' =>         $col_date == -1 ? 'LF_NULL' : $date,
+                                'uid' =>          $col_user == -1 ? 'LF_NULL' : $old_row[$col_user],
+                                'hits' =>         $col_hits == -1 ? 'LF_NULL' : str_replace(',', '', $old_row[$col_hits])
                             );
                     preg_match('/href="([^"]+)"/i', $api_results['title'], $links);
                     $api_results['url'] = empty($links) ? '#' : $links[1];
@@ -657,20 +663,25 @@ class Search {
         $searchtime = $searchtimer->stopTimer();
 
         $escquery = htmlspecialchars($this->_query);
+        $escquery = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                                $escquery);
         if ($this->_keyType == 'any')
         {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = "'<b>$searchQuery</b>'";
         }
         else if ($this->_keyType == 'all')
         {
             $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>", $escquery);
-            $searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = "'<b>$searchQuery</b>'";
         }
         else
         {
             $searchQuery = $LANG09[55] . " '<b>$escquery</b>'";
         }
+
+        // Clean the query string so that sprintf works as expected
+        $searchQuery = str_replace("%", "%%", $searchQuery);
 
         $retval = "{$LANG09[25]} $searchQuery. ";
         if (count($results) == 0)
@@ -682,7 +693,8 @@ class Search {
         }
         else
         {
-            $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). " . COM_createLink($LANG09[61], $url.'refine');
+            $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). ";
+            $retval .= str_replace("%", "%%", COM_createLink($LANG09[61], $url.'refine'));
             $retval = '<p>' . $retval . '</p>' . LB;
             $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '', $_CONF['search_show_sort'], $_CONF['search_show_limit']);
         }
@@ -705,7 +717,7 @@ class Search {
     */
     function searchFormatCallBack( $preSort, $row )
     {
-        global $_CONF;
+        global $_CONF, $LANG09;
 
         if ($preSort)
         {
@@ -738,20 +750,27 @@ class Search {
                 }
                 if (isset($this->_append_query[$row[SQL_NAME]]) &&
                         $this->_append_query[$row[SQL_NAME]]) {
-                    $row['url'] .= (strpos($row['url'],'?') ? '&' : '?') . 'query=' . urlencode($this->_query);
+                    $row['url'] .= (strpos($row['url'],'?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
                 }
             }
 
-            $row['title'] = $this->_shortenText($this->_query, $row['title'], 6);
+            $row['title'] = $this->_shortenText($this->_query, $row['title'], 8);
             $row['title'] = stripslashes(str_replace('$', '&#36;', $row['title']));
             $row['title'] = COM_createLink($row['title'], $row['url']);
 
-            if ($row['description'] != $_CONF['search_no_data']) {
-                $row['description'] = stripslashes($this->_shortenText($this->_query, $row['description'], $this->_wordlength));
+            if ($row['description'] == 'LF_NULL') {
+                $row['description'] = '<i>' . $LANG09[70] . '</i>';
+            } elseif ($row['description'] != '<i>' . $LANG09[70] . '</i>') {
+                $row['description'] = stripslashes($this->_shortenText($this->_query, PLG_replaceTags($row['description']), $this->_wordlength));
             }
 
-            $row['date'] = strftime($_CONF['daytime'], intval($row['date']));
-            $row['hits'] = COM_NumberFormat($row['hits']) . ' '; // simple solution to a silly problem!
+            if ($row['date'] != 'LF_NULL') {
+                $row['date'] = strftime($_CONF['daytime'], intval($row['date']));
+            }
+
+            if ($row['hits'] != 'LF_NULL') {
+                $row['hits'] = COM_NumberFormat($row['hits']) . ' '; // simple solution to a silly problem!
+            }
         }
 
         return $row;
@@ -774,9 +793,12 @@ class Search {
     * @return string A short version of the text
     *
     */
-    function _shortenText( $keyword, $text, $num_words = 7 )
+    function _shortenText($keyword, $text, $num_words = 7)
     {
         $text = strip_tags($text);
+        $text = str_replace(array("\011", "\012", "\015"), ' ', trim($text));
+        $text = str_replace('&nbsp;', ' ', $text);
+        $text = preg_replace('/\s\s+/', ' ', $text);
         $words = explode(' ', $text);
         $word_count = count($words);
         if ($word_count <= $num_words) {
@@ -799,19 +821,32 @@ class Search {
             else
             {
                 $str = substr($text, $pos, $pos_space - $pos);
-                $key = array_search($str, $words);
                 $m = (int) (($num_words - 1) / 2);
-                if ($key <= $m)
-                {
-                    // Keyword at the start of text
+                $key = $this->_arraySearch($keyword, $words);
+                if ($key === false) {
+                    // Keyword(s) not found - show start of text
+                    $key = 0;
                     $start = 0;
                     $end = $num_words - 1;
-                }
-                else
-                {
+                } elseif ($key <= $m) {
+                    // Keyword at the start of text
+                    $start = 0 - $key;
+                    $end = $num_words - 1;
+                    $end = ($key + $m <= $word_count - 1)
+                         ? $key : $word_count - $m - 1;
+                    $abs_length = abs($start) + abs($end) + 1;
+                    if ($abs_length < $num_words) {
+                        $end += ($num_words - $abs_length);
+                    }
+                } else {
                     // Keyword in the middle of text
                     $start = 0 - $m;
-                    $end = (($key + $m <= $word_count - 1) ? $m : $word_count - $key - 1);
+                    $end = ($key + $m <= $word_count - 1)
+                         ? $m : $word_count - $key - 1;
+                    $abs_length = abs($start) + abs($end) + 1;
+                    if ($abs_length < $num_words) {
+                        $start -= ($num_words - $abs_length);
+                    }
                     $rt = '<b>...</b> ';
                 }
             }
@@ -823,11 +858,50 @@ class Search {
             $end = $num_words - 1;
         }
 
-        for ($i = $start; $i <= $end; $i++)
+        for ($i = $start; $i <= $end; $i++) {
             $rt .= $words[$key + $i] . ' ';
-        $rt .= ' <b>...</b>';
+        }
+        if ($key + $i != $word_count) {
+            $rt .= ' <b>...</b>';
+        }
 
-        return COM_highlightQuery( $rt, $keyword, 'b' );
+        return COM_highlightQuery($rt, $keyword, 'b');
+    }
+
+    /**
+    * Search array of words for keyword(s)
+    *
+    * @param   string  $needle    keyword(s), separated by spaces
+    * @param   array   $haystack  array of words to search through
+    * @return  mixed              index in $haystack or false when not found
+    * @access  private
+    *
+    */
+    function _arraySearch($needle, $haystack)
+    {
+        $keywords = explode(' ', $needle);
+        $num_keywords = count($keywords);
+
+        foreach ($haystack as $key => $value) {
+            if ($this->_stripos($value, $keywords[0]) !== false) {
+                if ($num_keywords == 1) {
+                    return $key;
+                } else {
+                    $matched_all = true;
+                    for ($i = 1; $i < $num_keywords; $i++) {
+                        if ($this->_stripos($haystack[$key + $i], $keywords[$i]) === false) {
+                            $matched_all = false;
+                            break;
+                        }
+                    }
+                    if ($matched_all) {
+                        return $key;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -893,7 +967,7 @@ class Search {
     *
     * @param   string  $haystack  string to search in
     * @param   string  $needle    string to search for
-    * @return  mixed              first pos of $needle in $haystack, or false 
+    * @return  mixed              first pos of $needle in $haystack, or false
     *
     */
     function _stripos($haystack, $needle)

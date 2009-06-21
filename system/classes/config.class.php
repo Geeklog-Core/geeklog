@@ -299,7 +299,9 @@ class config {
 
         $this->_DB_escapedQuery($sql);
 
-        $this->config_array[$group][$param_name] = $default_value;
+        if ($set) {
+            $this->config_array[$group][$param_name] = $default_value;
+        }
     }
 
     /**

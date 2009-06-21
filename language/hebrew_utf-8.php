@@ -525,12 +525,13 @@ $LANG09 = array(
     61 => 'הגדירו מחדש את החיפוש',
     62 => '#',
     63 => 'Description',
-    64 => 'Showing %d - %d of %d results',
+    64 => 'Showing %1$d - %2$d of %3$d results',
     65 => 'Story',
     66 => 'Comment',
     67 => 'Show %d Results',
     68 => 'Sort By',
-    69 => 'Titles Only'
+    69 => 'Titles Only',
+    70 => 'Not available ...'
 );
 
 ###############################################################################
@@ -975,7 +976,7 @@ $LANG29 = array(
     18 => 'כתובת אימייל',
     34 => 'שליטה ובקרה',
     35 => 'הגשות מאמרים',
-    36 => 'Comment',
+    36 => 'Parent or Comment',
     37 => '',
     38 => 'אישור',
     39 => 'אין הגשות שדורשות פיקוח בזמן זה',
@@ -1838,6 +1839,7 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => 'ביטול Autolinks?',
     'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
+    'frame_options' => 'Protection against "clickjacking"',
     'censormode' => 'הפעלת צנזורה?',
     'censorreplace' => 'צנזורת החלפת טקסט',
     'censorlist' => 'רשימת צנזורה',
@@ -1858,7 +1860,6 @@ $LANG_confignames['Core'] = array(
     'search_show_type' => 'Show Result Type?',
     'search_show_sort' => 'Allow User to Sort Results?',
     'search_show_limit' => 'Show Page Limits?',
-    'search_no_data' => 'If No Data is Avaliable, Display',
     'search_separator' => 'Group Separator',
     'search_def_keytype' => 'Default Search Method'
 );
@@ -1940,7 +1941,8 @@ $LANG_configselects['Core'] = array(
     18 => array('ניטרול' => 0, 'הפעלה (התאמה מדויקת)' => 1, 'הפעלה (לפי התחלת המילה)' => 2, 'הפעלה (לפי חלקי מילה)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
 );
 
 ?>
