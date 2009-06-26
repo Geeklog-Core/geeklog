@@ -251,6 +251,10 @@ class DataBase
         } else {
             $result_type = PGSQL_ASSOC;                     
         }
+             /*   $fp = fopen('traces.txt','r');
+        $debug = var_dump(debug_backtrace());
+        fwrite($fp,$debug);
+        fclose($fp);  */
         return pg_fetch_array($recordset, NULL, $result_type);
     }
     
@@ -346,9 +350,10 @@ class DataBase
 
         // Run query
         if ($ignore_errors == 1) {
-            $result = @pg_query($this->_db,$sql);
+            echo $sql;
+            $result = pg_query($this->_db,$sql);
         } else {
-            $result = @pg_query($this->_db,$sql) or trigger_error($this->dbError($sql));
+            $result = pg_query($this->_db,$sql) or trigger_error($this->dbError($sql));
         }
 
         // If OK, return otherwise echo error
@@ -568,13 +573,12 @@ class DataBase
 
         // return only if recordset exists, otherwise 0
         if ($recordset) {
-           $rows=0; 
-            while ($row = pg_fetch_row($recordset)) { $rows++;}
+            $rows=0; 
+            $rows = pg_num_rows($recordset);
             if ($this->isVerbose()) {
                 $this->_errorlog('got ' . $rows . ' rows');
                 $this->_errorlog("\n*** Inside database->dbNumRows ***");
             }
-            unset($row);
             return $rows;
         } else {
             if ($this->isVerbose()) {
@@ -800,7 +804,4 @@ class DataBase
         return $this->_verbose;
     }
 } //end db
-
-$test = new DataBase('localhost','postgres','postgres','gagne1');
-
 ?>

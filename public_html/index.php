@@ -85,10 +85,10 @@ if( $microsummary )
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
          . $sql . "ORDER BY featured DESC, date DESC LIMIT 0, 1";
          
-    $msql['pgsql']="SELECT s.title "
+      $msql['pgsql']="SELECT s.title "
      . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-     . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid)"
-     . $sql . "ORDER BY featured DESC, date DESC LIMIT 1, OFFSET 0";
+     . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
+     . $sql . "ORDER BY featured DESC, date DESC LIMIT 1 OFFSET 0";
          
     $result = DB_query ($msql);
 
@@ -287,13 +287,12 @@ $msql['mssql']="SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, 
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
          . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
-         
-$msql['pgsql']="SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
-         . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
+$msql['pgsql']="SELECT s.*, date_part('epoch',s.date) AS unixdate, "
+         . 'date_part(\'epoch\',s.expire) as expireunix, '
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) "
-         . $sql . "ORDER BY featured DESC, date DESC LIMIT $limit, OFFSET $offset";
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND "
+         . $sql . "ORDER BY featured DESC, date DESC LIMIT $limit OFFSET $offset";
 
 $result = DB_query ($msql);
 
@@ -304,7 +303,7 @@ $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
 if ( $A = DB_fetchArray( $result ) ) {
-
+    $varme= 'inside fetcha rray';
     $story = new Story();
     $story->loadFromArray($A);
     if ( $_CONF['showfirstasfeatured'] == 1 ) {
@@ -343,6 +342,7 @@ if ( $A = DB_fetchArray( $result ) ) {
         $display .= COM_printPageNavigation ($base_url, $page, $num_pages);
     }
 } else { // no stories to display
+    $varme = 'not in fetch array!';
     if (!isset ($_CONF['hide_no_news_msg']) ||
             ($_CONF['hide_no_news_msg'] == 0)) {
         $display .= COM_startBlock ($LANG05[1], '',

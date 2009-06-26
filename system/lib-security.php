@@ -116,29 +116,26 @@ function SEC_getUserGroups($uid='')
         return $groups;
     }
 
+    $A = DB_fetchArray($result); 
     $nrows = DB_numRows($result);
-
     if ($_SEC_VERBOSE) {
         COM_errorLog("got $nrows rows",1);
     }
 
     while ($nrows > 0) {
         $cgroups = array();
-
         for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray($result);
-
             if ($_SEC_VERBOSE) {
                 COM_errorLog('user is in group ' . $A['grp_name'],1);
             }
-            if (!in_array($A['ug_main_grp_id'], $groups)) {
-                array_push($cgroups, $A['ug_main_grp_id']);
+            if (!in_array($A['ug_main_grp_id'][$i-1], $groups)) {
+                array_push($cgroups, $A['ug_main_grp_id'][$i-1]);
                 $groups[$A['grp_name']] = $A['ug_main_grp_id'];
             }
         }
 
         if (sizeof ($cgroups) > 0) {
-            $glist = join(',', $cgroups);
+            $glist = implode(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                     . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
             $nrows = DB_numRows($result);
@@ -1092,12 +1089,17 @@ function SEC_createToken($ttl = 1200)
     /* Generate the token */
     $token = md5($_USER['uid'].$pageURL.uniqid (rand (), 1));
     $pageURL = addslashes($pageURL);
-
+    
     /* Destroy exired tokens: */
-    $sql['mssql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW()) AND (ttl > 0)";
-    $sql['mysql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND (ttl > 0)";
+    if($_DB_dbms == 'mssql') {
+        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW())"
+           . " AND (ttl > 0)";
+    } else {
+        $sql = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
+           . " AND (ttl > 0)";
+    }
     DB_query($sql);
-
+    
     /* Destroy tokens for this user/url combination */
     $sql = "DELETE FROM {$_TABLES['tokens']} WHERE owner_id={$_USER['uid']} AND urlfor='$pageURL'";
     DB_query($sql);
@@ -1135,17 +1137,20 @@ function SEC_checkToken()
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
     
-    if (trim($token) != '') {
-        $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM {$_TABLES['tokens']} WHERE token='$token'";
-        $sql['mssql'] = "SELECT owner_id, urlfor, expired = 
+    if(trim($token) != '') {
+        if($_DB_dbms != 'mssql') {
+            $sql = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
+               . "{$_TABLES['tokens']} WHERE token='$token'";
+        } else {
+            $sql = "SELECT owner_id, urlfor, expired = 
                       CASE 
                          WHEN (DATEADD(s,ttl,created) < getUTCDate()) AND (ttl>0) THEN 1
                 
                          ELSE 0
                       END
                     FROM {$_TABLES['tokens']} WHERE token='$token'";
+        }
         $tokens = DB_query($sql);
-
         $numberOfTokens = DB_numRows($tokens);
         if($numberOfTokens != 1) {
             $return = false; // none, or multiple tokens. Both are invalid. (token is unique key...)

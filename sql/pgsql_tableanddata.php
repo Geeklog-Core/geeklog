@@ -596,7 +596,7 @@ CREATE TABLE {$_TABLES['users']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
-  value varchar(128) default NULL,
+  value int default NULL,
   PRIMARY KEY  (name)
 )
 ";
@@ -795,19 +795,4 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_versi
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (-1,'Trackback Disabled') ";
-
-// connect to a database named "mary" on "localhost" at port "5432"
-
-$dbconn3 = pg_connect("host=localhost port=5432 dbname=geeklog user=postgres password=gagne1");
-
-foreach($_SQL as $query)
-{
-pg_query($dbconn3, $query);
-}
-
-foreach($_DATA as $data)
-{
-    pg_query($dbconn3,$data);
-}
-
 ?>
