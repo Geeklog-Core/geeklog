@@ -576,6 +576,8 @@ if (INST_phpOutOfDate()) {
      */
     case 3:
 
+        require_once 'lib-upgrade.php';
+
         // Get the backup filename
         $backup_file = $_REQUEST['backup_file'];
 
@@ -642,7 +644,15 @@ if (INST_phpOutOfDate()) {
             } else {
                 // Update db-config.php with the table prefix from the backup file.
                 if (!INST_writeConfig($dbconfig_path, $DB)) {
-                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                if (!INST_setDefaultCharset($siteconfig_path,
+                        ($db_connection_charset == 'utf8'
+                                                ? 'utf-8' : $LANG_CHARSET))) {
+                    exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                         . $LANG_INSTALL[58]);
                 }
 
                 // Send file to bigdump.php script to do the import.
