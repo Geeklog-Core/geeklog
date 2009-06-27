@@ -982,7 +982,7 @@ if (INST_phpOutOfDate()) {
             // or in public_html have the user enter its location.
             $form_fields .= '<p><label class="' . $form_label_dir . '"><code>db-config.php</code></label> ' . LB
                         . '<input type="text" name="dbconfig_path" value="/path/to/'
-                        . htmlspecialchar($dbconfig_file) . '" size="50"' . XHTML . '></p>'  . LB;
+                        . htmlspecialchars($dbconfig_file) . '" size="50"' . XHTML . '></p>'  . LB;
             $num_errors++;
         } else {
             // See whether the file/directory is located in the default place or in public_html

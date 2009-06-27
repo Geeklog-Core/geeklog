@@ -65,7 +65,7 @@ if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been
 
 $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : $gl_path . '/db-config.php');
 $dbconfig_path      = INST_sanitizePath($dbconfig_path);
-tep               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
+$step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 
 // $display holds all the outputted HTML and content
 $display = INST_getHeader($LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1]); // Grab the beginning HTML for the installer theme.

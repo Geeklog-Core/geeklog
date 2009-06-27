@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jun 21, 2009 (1.6.0b3)
+Jun ??, 2009 (1.6.0rc1)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -9,6 +9,13 @@ the 2008 Google Summer of Code:
 + Site migration support and easier plugin installation, by Matt West
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
+
+Changes since 1.6.0b3:
+- Fixed typos in the install script (bugs #0000913 and #0000914) [Dirk]
+
+
+Jun 21, 2009 (1.6.0b3)
+------------
 
 Changes since 1.6.0b2:
 - Fixed IE6 and Safari compatibility issue with sort and limit combo boxes in
