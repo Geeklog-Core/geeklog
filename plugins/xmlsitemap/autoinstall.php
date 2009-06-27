@@ -68,7 +68,7 @@ function plugin_autoinstall_xmlsitemap($pi_name)
 *
 * @param    string  $pi_name    Plugin name
 * @return   boolean             TRUE on success, otherwise FALSE
-* @see      plugin_initconfig_glsitemap
+* @see      plugin_initconfig_xmlsitemap
 *
 */
 function plugin_load_configuration_xmlsitemap($pi_name)
