@@ -143,7 +143,7 @@ function MBYTE_substr($str, $start, $length = NULL)
     return $result;
 }
 
-function MBYTE_strpos($hay, $needle, $offset = NULL)
+function MBYTE_strpos($haystack, $needle, $offset = NULL)
 {
     static $mb_enabled;
 
@@ -151,15 +151,15 @@ function MBYTE_strpos($hay, $needle, $offset = NULL)
         $mb_enabled = MBYTE_checkEnabled();
     }
     if ($mb_enabled) {
-        $result = mb_strpos($hay, $needle, $offset);
+        $result = mb_strpos($haystack, $needle, $offset);
     } else {
-        $result = strpos($hay, $needle, $offset);
+        $result = strpos($haystack, $needle, $offset);
     }
 
     return $result;
 }
 
-function MBYTE_strrpos($hay, $needle, $offset = NULL)
+function MBYTE_strrpos($haystack, $needle, $offset = NULL)
 {
     static $mb_enabled;
 
@@ -168,15 +168,15 @@ function MBYTE_strrpos($hay, $needle, $offset = NULL)
     }
     if ($mb_enabled) {
         if ($offset === NULL) {
-            $result = mb_strrpos($hay, $needle);
+            $result = mb_strrpos($haystack, $needle);
         } else {
-            $result = mb_strrpos($hay, $needle, $offset);
+            $result = mb_strrpos($haystack, $needle, $offset);
         }
     } else {
         if ($offset === NULL) {
-            $result = strrpos($hay, $needle);
+            $result = strrpos($haystack, $needle);
         } else {
-            $result = strrpos($hay, $needle, $offset);
+            $result = strrpos($haystack, $needle, $offset);
         }
     }
 
@@ -233,7 +233,7 @@ function MBYTE_eregi_replace($pattern, $replace, $str)
 
 /** those are currently not needed in GL, left here if needed later
 
-function MBYTE_substr_count($hay, $needle)
+function MBYTE_substr_count($haystack, $needle)
 {
     static $mb_enabled;
 
@@ -241,9 +241,9 @@ function MBYTE_substr_count($hay, $needle)
         $mb_enabled = MBYTE_checkEnabled();
     }
     if ($mb_enabled) {
-        $result = mb_substr_count($hay, $needle, 'utf-8');
+        $result = mb_substr_count($haystack, $needle, 'utf-8');
     } else {
-        $result = substr_count($hay, $needle);
+        $result = substr_count($haystack, $needle);
     }
 
     return $result;
