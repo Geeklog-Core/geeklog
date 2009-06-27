@@ -173,7 +173,11 @@ function MBYTE_strrpos($hay, $needle, $offset = NULL)
             $result = mb_strrpos($hay, $needle, $offset);
         }
     } else {
-        $result = strrpos($hay, $needle, $offset);
+        if ($offset === NULL) {
+            $result = strrpos($hay, $needle);
+        } else {
+            $result = strrpos($hay, $needle, $offset);
+        }
     }
 
     return $result;
