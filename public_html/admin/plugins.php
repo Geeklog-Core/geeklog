@@ -1073,6 +1073,10 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
 
             return false;
         }
+
+        require_once $_CONF['path'] . 'system/classes/config.class.php';
+        $config =& config::get_instance();
+        $config->initConfig(); // force re-reading, including new plugin conf
     }
 
     // Finally, register the plugin with Geeklog
