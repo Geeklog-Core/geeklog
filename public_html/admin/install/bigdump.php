@@ -44,8 +44,9 @@
 // THIS SCRIPT IS PROVIDED AS IS, WITHOUT ANY WARRANTY OR GUARANTEE OF ANY KIND
 //
 
+require_once '../../siteconfig.php';
 // Database configuration
-require_once '../../../db-config.php';
+require_once $_CONF['path'] . 'db-config.php';
 require_once 'lib-install.php';
 $db_server   = $_DB_host;
 $db_name     = $_DB_name;
