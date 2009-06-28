@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0b3:
+- Improved detection of UTF-8 database dumps in migration (bug #0000916) [Dirk]
 - Fixed typos in the install script (bugs #0000913 and #0000914) [Dirk]
 
 

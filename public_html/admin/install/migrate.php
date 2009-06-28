@@ -630,6 +630,11 @@ if (INST_phpOutOfDate()) {
                         if (strpos($line, 'SET NAMES utf8') !== false) {
                             $db_connection_charset = 'utf8';
                         }
+                    } elseif (empty($db_connection_charset) &&
+                            strpos($line, 'ENGINE=') !== false) {
+                        if (strpos($line, 'DEFAULT CHARSET=utf8') !== false) {
+                            $db_connection_charset = 'utf8';
+                        }
                     }
                 }
             }
