@@ -1209,8 +1209,12 @@ function userprofile ($user, $msg = 0)
 
     // list of last 10 stories by this user
     if (sizeof ($tids) > 0) {
-        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
-        $sql .= " ORDER BY unixdate DESC LIMIT 10";
+        $sql['mysql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
+        $sql['mssql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
+        $sql['pgsql'] = "SELECT sid,title,date_part('epoch',date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
+        $sql['mysql'] .= " ORDER BY unixdate DESC LIMIT 10";
+        $sql['mssql'] .= " ORDER BY unixdate DESC LIMIT 10";
+        $sql['pgsql'] .= " ORDER BY unixdate DESC LIMIT 10";
         $result = DB_query ($sql);
         $nrows = DB_numRows ($result);
     } else {
@@ -1253,23 +1257,31 @@ function userprofile ($user, $msg = 0)
             $sidArray[] = $S['sid'];
         }
     }
-
+     unset($sql);
+    $sql = array();
     $sidList = implode("', '",$sidArray);
     $sidList = "'$sidList'";
 
     // then, find all comments by the user in those stories
-    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
-
+    $sql['mysql'] = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
+    $sql['mssql'] = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
+    $sql['pgsql'] = "SELECT sid,title,cid,date_part('epoch',date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,date_part('epoch',date)";
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
     // field is part of the select
     // if (!empty ($sidList)) {
     //     $sql .= " AND (sid in ($sidList))";
     // }
     if (!empty ($sidList)) {
-        $sql .= " HAVING sid in ($sidList)";
-    }
-    $sql .= " ORDER BY unixdate DESC LIMIT 10";
+        $sql['mysql'] .= " HAVING sid in ($sidList)";
+        $sql['pgsql'] .= " HAVING sid in ($sidList)";
+        $sql['mssql'] .= " HAVING sid in ($sidList)";
 
+    }
+    $sql['mysql'] .= " ORDER BY unixdate DESC LIMIT 10";
+    $sql['mssql'] .= " ORDER BY unixdate DESC LIMIT 10";
+    $sql['pgsql'] .= " ORDER BY unixdate DESC LIMIT 10";
+
+     
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {

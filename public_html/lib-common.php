@@ -68,7 +68,7 @@ $_COM_VERBOSE = false;
   * Must make sure that the function hasn't been disabled before calling it.
   *
   */
-if( function_exists('fuckset_error_handler') )
+if( function_exists('set_error_handler') )
 {
     if( PHP_VERSION >= 5 )
     {
@@ -3261,7 +3261,10 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $sql = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql['mysql'] = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql['mssql'] = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql['pgsql'] = "SELECT sid,tid,title,comments,date_part('epoch',date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
@@ -5197,15 +5200,16 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
 */
 function COM_updateSpeedlimit($type = 'submit', $property = '')
 {
-    global $_TABLES;
+    global $_TABLES,$_DB_dbms;
 
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
     $property = addslashes($property);
+    $time = mktime();
 
-    DB_save($_TABLES['speedlimit'], 'ipaddress,date,type',
-            "'$property',UNIX_TIMESTAMP(),'$type'");
+    $sql = "UPDATE {$_TABLES['speedlimit']} SET ipaddress = '$property', date = '$time', type = '$type'";
+    DB_query($sql);
 }
 
 /**
@@ -5223,7 +5227,8 @@ function COM_clearSpeedlimit($speedlimit = 60, $type = '')
     if (!empty($type)) {
         $sql .= "(type = '$type') AND ";
     }
-    $sql .= "(date < UNIX_TIMESTAMP() - $speedlimit)";
+    $time = mktime();
+    $sql .= "(date < $time - $speedlimit)";
     DB_query($sql);
 }
 
@@ -6871,7 +6876,8 @@ foreach ($_PLUGINS as $pi_name) {
 if ($_CONF['cron_schedule_interval'] > 0) {
     if ((DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'")
             + $_CONF['cron_schedule_interval']) <= time()) {
-        DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
+        $time = ($_DB_dbms=='pgsql')? 'date_part(\'epoch\',NOW())':'UNIX_TIMESTAMP()';
+        DB_query("UPDATE {$_TABLES['vars']} SET value=$time WHERE name='last_scheduled_run'");
         PLG_runScheduledTask();
     }
 }

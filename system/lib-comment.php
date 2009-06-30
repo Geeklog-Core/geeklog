@@ -1120,19 +1120,16 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
         $ret = 5;
-    } elseif (($_CONF['commentsubmission'] == 1) &&
-            !SEC_hasRights('comment.submit')) {
-        // comment into comment submission table enabled
+    } elseif ( $_CONF['commentsubmission'] == 1 && !SEC_hasRights('comment.submit') ) {
+        //comment into comment submission table enabled
         if (isset($name)) {
-            DB_save($_TABLES['commentsubmissions'],
-                    'sid,uid,name,comment,date,title,pid,ipaddress,type',
-                    "'$sid',$uid,'$name','$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
+            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,name,comment,date,title,pid,ipaddress',
+                "'$sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
         } else {
-            DB_save($_TABLES['commentsubmissions'],
-                    'sid,uid,comment,date,title,pid,ipaddress,type',
-                    "'$sid',$uid,'$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
+            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,comment,date,title,pid,ipaddress',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
         }
-
+        
         $ret = -1;
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
@@ -1658,7 +1655,10 @@ function CMT_updateCommentcodes()
         $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE commentcode = 0 " . $sql;
         DB_query($sql);
     }
-    $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
+    
+    $sql['mysql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
+    $sql['mssql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
+    $sql['pgsql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE date_part('epoch',comment_expire) < '".mktime()."' AND date_part('epoch',comment_expire) <> 0";
     DB_query($sql);
 }
 
@@ -1694,6 +1694,7 @@ function CMT_rebuildTree($sid, $pid = 0, $left = 0)
 /**
  * Moves comment from submission table to comments table
  * 
+ * @param   int   cid  comment id
  * @copyright Jared Wenerd 2008
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @param  string $cid comment id

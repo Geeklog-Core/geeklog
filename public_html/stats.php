@@ -79,8 +79,11 @@ $data_arr[] = array('title' => $LANG10[2], 'stats' => COM_NumberFormat ($totalhi
 
 if ($_CONF['lastlogin']) {
     // if we keep track of the last login date, count the number of users
-    // that have logged in during the last 4 weeks
-    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))");
+    // that have logged in during the last 4 weeks 
+    $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin::int4 >= date_part('epoch', INTERVAL '28 DAY'))";
+    $sql['mysql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))";
+    $sql['mssql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['users']} AS u,{$_TABLES['userinfo']} AS i WHERE (u.uid > 1) AND (u.uid = i.uid) AND (lastlogin <> '') AND (lastlogin >= UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 28 DAY)))";
+    $result = DB_query ($sql);
     list($active_users) = DB_fetchArray ($result);
 } else {
     // otherwise, just count all users with status 'active'
