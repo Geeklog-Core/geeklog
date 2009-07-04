@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jun 28, 2009 (1.6.0rc1)
+Jul ??, 2009 (1.6.0rc2)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -9,6 +9,14 @@ the 2008 Google Summer of Code:
 + Site migration support and easier plugin installation, by Matt West
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
+
+Changes since 1.6.0rc1:
+- Updated Japanese language files and documentation, provided by the
+  Geeklog.jp group
+
+
+Jun 28, 2009 (1.6.0rc1)
+------------
 
 Changes since 1.6.0b3:
 - Fixed include path for db-config.php in bigdump.php (bug #0000915) [Dirk]

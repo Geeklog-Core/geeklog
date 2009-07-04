@@ -49,7 +49,7 @@ $LANG_confignames['xmlsitemap'] = array(
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
     'types'               => 'サイトマップの内容',
     'exclude'             => '除外するプラグイン',
-    'priorities'          => '優先度',
+    'priorities'          => '',
     'frequencies'         => '',
 );
 

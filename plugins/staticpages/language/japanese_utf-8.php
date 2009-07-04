@@ -107,7 +107,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/japanese/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
     'printable_format' => '印刷用フォーマット',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
@@ -156,7 +156,7 @@ $LANG_fs['staticpages'] = array(
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),

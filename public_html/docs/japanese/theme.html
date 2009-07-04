@@ -4,6 +4,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
   <title>テーマ作成 | Geeklogドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
   <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
 </head>
 
@@ -132,6 +133,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>テンプレートファイル<tt>admin/mail/mailform.thtml</tt>の表示上の変更：<code>{startblock_email}</code>と<code>{endblock_email}</code>およびトップのテーブルが削除されました。これらの要素は自動的にメールフォームに追加されます。</li>
 <li>検索用テンプレートファイル<tt>search/searchform.thtml</tt>に、タイトルだけを検索するためのあらたなチェックボックスが追加されました。</li>
 <li>テンプレートファイル<tt>admin/group/groupmembers.thtml</tt>の表示上の変更：ヘッダ（アイコンやリンクその他各種構成を含む）はGeeklogに実装されています。テンプレートファイルからこれらの要素を含んだ<tt>&lt;table&gt;</tt>を取り除きました。</li>
+<li>コンフィギュレーション: <tt>config_element.thtml</tt>で<code>&lt;/option&gt;</code>タグの閉じ忘れ、および<tt>configuration.thtml</tt>で<code>&lt;col&gt;</code>のXHTML処理忘れに対応しました。</li>
 </ul>
 
 <h3>検索</h3>
