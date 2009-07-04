@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language file for the Geeklog Static Page plugin
 #
-# Copyright (C) 2008
+# Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.4#1
+# Version 1.6#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -111,9 +111,9 @@ $LANG_STATIC = array(
     'submit' => 'שליחה'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
+$PLG_staticpages_MESSAGE19 = 'העמוד שלכם נשמר בהצלחה.';
+$PLG_staticpages_MESSAGE20 = 'העמוד שלכם נמחק בהצלחה.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'אין תמיכה בשידרוג ה-plugin.';

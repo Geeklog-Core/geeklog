@@ -3,9 +3,9 @@
 /**
 * File: hebrew_utf-8.php
  * This is the Hebrew language file for the Geeklog Spam-X plugin
-* Copyright (C) 2008
+* Copyright (C) 2009
  * http://lior.weissbrod.com
- * Version 1.5#1
+ * Version 1.6#1
  * 
  * Licensed under GNU General Public License
  *
@@ -157,8 +157,8 @@ $LANG_fs['spamx'] = array(
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false)
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false)
 );
 
 ?>
