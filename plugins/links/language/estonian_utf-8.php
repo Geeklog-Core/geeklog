@@ -236,10 +236,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'Kustuta lingid, omanikuks?',
     'aftersave' => 'Pärast linkide salvestamist',
     'show_category_descriptions' => 'Näita kategooriate kirjeldust?',
-    'new_window' => 'Open external links in new window?',
+    'new_window' => 'Ava välised lingid uues aknas?',
     'root' => 'Peakategooria ID',
     'default_permissions' => 'Linkide vaikimisi õigused',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'Kategooria vaikimisi õigused'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -250,7 +250,7 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Avalike linkide loetelu häälestused',
     'fs_admin' => 'Linkide Admin häälestused',
     'fs_permissions' => 'Vaikimisi õigused',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_cpermissions' => 'Kategooria õigused'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

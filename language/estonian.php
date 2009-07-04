@@ -205,22 +205,22 @@ $LANG03 = array(
     25 => 'Kas oled kindel, et soovid teatada sellest postitusest lehe administraatorile?',
     26 => '%s teatas järgmisest kuritahtlikust postitusest:',
     27 => 'Kuritahtlikkusest teatamine',
-    28 => 'Preview Changes',
-    29 => 'Submit Changes',
-    30 => 'Edited on',
-    31 => 'by',
-    32 => 'Editing a Comment',
-    33 => 'Editing a Comment Submission',
-    34 => 'Preview Submission Changes',
-    35 => 'Save Changes to Queue',
-    36 => 'Notify me of new replies',
-    37 => 'New Comment Reply',
-    38 => 'A reply has been made to your comment \'%s\'.',
-    39 => 'You may view the comment thread at the following address:',
-    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
-    41 => 'Hello %s,',
-    42 => 'Unsubscribe',
-    43 => 'Unsubscribe from reply notifications'
+    28 => 'Muudatuste eelvaade',
+    29 => 'Sisesta muutused',
+    30 => 'Muudetud',
+    31 => 'muutja',
+    32 => 'Kommentaari toimetamine',
+    33 => 'Sisestatud kommentaari muutmine',
+    34 => 'Sisestuste muutuste eelvaade',
+    35 => 'Salvesta muutused puhvrisse',
+    36 => 'Teavita mind vastustest',
+    37 => 'Uus vastus kommentaarile',
+    38 => 'Sinu kommentaarile on vastatud \'%s\'.',
+    39 => 'Sa võid vaadata kommentaari lõime järgneval aadressil:',
+    40 => 'Kui sa ei soovi enam saada  teaviusi vastuste kohta, külasta järgnevat aadressit:',
+    41 => 'Tere %s,',
+    42 => 'Loobu tellimisest',
+    43 => 'Loobu vastuste teavitustest.'
 );
 
 ###############################################################################
@@ -381,9 +381,9 @@ $LANG04 = array(
     157 => 'Kustutamisvalik',
     158 => 'Ajavöönd',
     159 => 'See E-kiri on automaatselt genereeritud . Ära vasta  sellele.',
-    160 => '(max. %d x %d pixels, %d bytes; %s)',
-    161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    160 => '(maks. %d x %d pikslit, %d baiti; %s)',
+    161 => 'Vähendatakse',
+    162 => 'Ei vähendata'
 );
 
 ###############################################################################
@@ -452,9 +452,9 @@ $LANG08 = array(
     33 => 'Loe kogu artiklit aadressil',
     34 => 'Sõnumi lõpp',
     35 => 'Kahjuks see kasutaja ei soovi kirju saada.',
-    36 => 'Copy:',
-    37 => 'Send me a copy of this email',
-    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
+    36 => 'Koopia:',
+    37 => 'Saada mulle selle kirja koopia',
+    38 => "See on koopia kirjast, mille saatsid %s-le lehelt aadressiga <{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -523,14 +523,14 @@ $LANG09 = array(
     60 => 'lehel',
     61 => ' täpsusta otsingut',
     62 => '#',
-    63 => 'Description',
-    64 => 'Showing %1$d - %2$d of %3$d results',
-    65 => 'Story',
-    66 => 'Comment',
-    67 => 'Show %d Results',
-    68 => 'Sort By',
-    69 => 'Titles Only',
-    70 => 'Not available ...'
+    63 => 'Kirjeldus',
+    64 => 'Näitan %1$d - %2$d, kokku %3$d leitust',
+    65 => 'Lugu',
+    66 => 'Kommentaar',
+    67 => 'Näita %d tulemust',
+    68 => 'Sorteerimisalus',
+    69 => 'Ainult pealkirjad',
+    70 => 'Pole saadaval ...'
 );
 
 ###############################################################################
@@ -952,8 +952,8 @@ $LANG28 = array(
     83 => "Sinu kontot {$_CONF['site_name']} lehel pole selle tegemisest alates kasutatud ja see kustutatakse peatselt, kui seda kohe ei kasutata.",
     84 => "Meie lehel: {$_CONF['site_url']} on sinu kasutajanimi  : %s",
     85 => 'Kui unustasid oma salasõna, kasuta järgmist linki: %s',
-    86 => 'Include',
-    87 => 'Reminders'
+    86 => 'Lisa',
+    87 => 'Meeldetuletused'
 );
 
 ###############################################################################
@@ -980,9 +980,9 @@ $LANG29 = array(
     38 => 'Sisesta',
     39 => 'Hetkel pole ülevaatamist (modereerimist) vajavaid sisestusi.',
     40 => 'Kasutajate sisestused',
-    41 => 'Comment Submissions',
-    42 => 'User Name',
-    43 => 'Auto-publish Comments?'
+    41 => 'Kommentaaride sisestused',
+    42 => 'Kasutaja nimi',
+    43 => 'Auto-publitseeri kommentaarid?'
 );
 
 ###############################################################################
@@ -1059,19 +1059,19 @@ $LANG32 = array(
     36 => 'Kood',
     37 => 'andmed',
     38 => 'Uuenda!',
-    39 => 'Upload a plugin',
-    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
-    41 => 'Upload',
-    99 => 'An unknown error occured',
-    100 => 'Ok.',
-    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
-    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
-    103 => 'The uploaded file was only partially uploaded.',
-    104 => 'No file was uploaded.',
-    105 => '(undefined error)',
-    106 => 'Missing a temporary folder.',
-    107 => 'Failed to write file to disk.',
-    108 => 'File upload stopped by extension.'
+    39 => 'Lae plugin',
+    40 => 'Sa võid otse siin laadida plugina arhiivi (.tar.gz, .tgz, .zip):',
+    41 => 'Lae ülesse',
+    99 => 'Oli tundmatu viga',
+    100 => 'OK.',
+    101 => 'Ülesse laetud faili suurus ületab php.ini failis oleva upload_max_filesize direktiivi.',
+    102 => 'Ülesse laetud faili suurus ületab HTML vormis määratud MAX_FILE_SIZE direktiivi.',
+    103 => 'Ülesse laetud fail laeti ülesse vaid osaliselt.',
+    104 => 'Faili ei laetud ülesse.',
+    105 => '(defineerimata viga)',
+    106 => 'Puudub temp kaust.',
+    107 => 'Faili kettale kirjutamine ebaõnnestus.',
+    108 => 'Faili üleslaadimine peatatud laienduse poolt.'
 );
 
 ###############################################################################
@@ -1231,12 +1231,12 @@ $MESSAGE = array(
     95 => 'Oli viga.',
     96 => '',
     97 => '',
-    98 => 'The plugin was successfully uploaded.',
-    99 => 'The plugin already exists.',
-    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
-    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
-    400 => 'Not all required fields have been passed validation',
-    401 => 'Please enter Fullname'
+    98 => 'Plugina ülesse laadimine oli edukas.',
+    99 => 'Plugin on juba olemas.',
+    100 => 'Laetud plugina fail pole GZip või Zip formaadis tihendatud arhiiv.',
+    101 => 'Pole ühtegi rubriiki, millele sul oleks ligipääsu. Sul peab olema vähemalt üks rubriik, et saaksid lugusid sisestada.',
+    400 => 'Kõik väljad ei läbinud kontrolli',
+    401 => 'Palun sisesta täisnimi'
 );
 
 ###############################################################################
@@ -1463,25 +1463,25 @@ $LANG_DIR = array(
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest' => 'Geeklog Security Check',
-    'results' => 'Results of the Security Check',
-    'okay' => 'Everything seems to be in order.',
-    'please_fix' => 'Please fix the above issues before using your site!',
-    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
-    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
-    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
-    'installation' => 'installation instructions',
-    'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
-    'fix_it' => 'This is a security risk and should be fixed!',
-    'reachable' => 'Your %s is reachable from the web.',
-    'not_reachable' => 'Good! Your %s is not reachable from the web.',
-    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
-    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
-    'inst_removed' => 'Good! You seem to have removed the install directory already.',
-    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
-    'password_okay' => 'Good! You seem to have changed the default account password already.'
+    'sectest' => 'Geeklogi turvalisuse kontroll',
+    'results' => 'Turvalisuse kontrolli tulemused',
+    'okay' => 'Kõik näib korras olevat.',
+    'please_fix' => 'Palun paranda ülal toodud probleemid, enne kui võtad oma saidi kasutusele!',
+    'please_note' => 'Palun pane tähele, et sait ei ole kunagi 100 protsenti turvaline. See skript testib ainult ilmseid turvaprobleeme.',
+    'stay_informed' => 'Et olla informeeritud Geeklogi uutest versioonidest ja võimalikest turvaprobleemidest, soovitame me  et sa liituksid (väikese liiklusega) %s meililistiga ja/või kasutad %s, mis asub lehe Admin menüüs, et aeg-ajalt kontrollida uue versiooni olemasolu.',
+    'public_html' => '"public_html" ei tohiks kunagi olla osa  sinu saidi URList.  Palun loe public_html kohta käivat osa %s uuesti ja muuda enne jätkamist vastavalt lehe seadistust.',
+    'installation' => 'Installeerimisjuhised',
+    'directory' => 'Kaust',
+    'failed_bak' => 'Ebaõnnestus data kausta ajutiste failide kausta loomine. Kontrolli kausta õigusi!',
+    'fix_it' => 'See on turvarisk ja see tuleb parandada!',
+    'reachable' => 'Sinu %s on veebist kättesaadav.',
+    'not_reachable' => 'Hea! Sinu %s pole veebist kättesaadav.',
+    'not_sure' => 'Sain HTTP vastuskoodi %s, kui proovisin testida %s. Ma ei tea, mida sellega teha ...',
+    'remove_inst' => 'Sa peaksid tõesti eemaldama pärast lehe veavabalt töölesaamist installkausta %s.',
+    'remove_inst2' => 'Selle alles jätmine jätab pahatahtlikel kasutajatel võimaluse hävitada sinu praegune install, võtta sinu leht üle või hankida tundlikku infot.',
+    'inst_removed' => 'Hea! Näib,  et oled juba install kausta eemaldanud.',
+    'fix_password' => 'Sa ei ole veel muutnud <strong>vaike salasõna</strong> "password" %s root kontol r (del).',
+    'password_okay' => 'Hea! Näib, et sa oled juba muutnud Root konto vaikesalasõna.'
 );
 
 ###############################################################################
@@ -1662,8 +1662,8 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => 'mitte-vastatav E-post',
     'site_name' => 'Lehe Nimi',
     'site_slogan' => 'Deviis',
-    'microsummary_short' => 'Microsummary',
-    'path_log' => 'Log',
+    'microsummary_short' => 'Mikrokokkuvõtte',
+    'path_log' => 'Logi',
     'path_language' => 'Keel',
     'backup_path' => 'Varundus',
     'path_data' => 'Andmed',
@@ -1674,9 +1674,9 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'Luba MySQL Dump',
     'mysqldump_path' => 'programmi asukoht',
     'mysqldump_options' => 'MySQL Dump valikud',
-    'mysqldump_filename_mask' => 'Backup File Name Mask',
+    'mysqldump_filename_mask' => 'Bakkup faili nime mall',
     'theme' => 'Skeem',
-    'doctype' => 'DOCTYPE Declaration',
+    'doctype' => 'DOCTYPE Deklaratsioon',
     'menu_elements' => 'Menüü elemendid',
     'path_themes' => 'Skeemide asukoht',
     'disable_new_user_registration' => 'Keela uue kasutaja registreerimine',
@@ -1715,7 +1715,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => 'Skeemiküpsise nimi',
     'cookie_language' => 'Keeleküpsise nimi',
     'cookie_tzid' => 'Ajavööndiküpsise nimi',
-    'cookie_anon_name' => 'Anon. Username Cookie Name',
+    'cookie_anon_name' => 'Anon. kasutajanime küpsise nimi',
     'cookie_ip' => 'Küpsistes on IP?',
     'default_perm_cookie_timeout' => 'Püsiv kehtivusaeg',
     'session_cookie_timeout' => 'Sessiooni kehtivusaeg',
@@ -1769,7 +1769,7 @@ $LANG_confignames['Core'] = array(
     'multiple_trackbacks' => 'Multi-Trackback',
     'trackbackspeedlimit' => 'Trackbacki kiirusepiirang',
     'check_trackback_link' => 'Kontrolli Trackbacke',
-    'pingback_self' => 'Pingback ennast?',
+    'pingback_self' => 'Pingbacki ennast?',
     'pingback_excerpt' => 'Loo Pingbacki väljavõte?',
     'link_documentation' => 'Link dokumentatsioonile?',
     'link_versionchecker' => 'Link versioonikontrollijale?',
@@ -1806,7 +1806,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'Debugi piltide üleslaadimist?',
     'keep_unscaled_image' => 'Säilita originaalsuuruses pilt?',
     'allow_user_scaling' => 'Luba kasutajal suurendamine?',
-    'jpeg_quality' => 'JPEG Quality?',
+    'jpeg_quality' => 'JPEG kvaliteet?',
     'max_image_width' => 'maks. pildi laius?',
     'max_image_height' => 'Maks. pildi kõrgus?',
     'max_image_size' => 'Maks. pildi suurus?',
@@ -1824,9 +1824,9 @@ $LANG_confignames['Core'] = array(
     'comment_limit' => 'Kommentaaride piir',
     'comment_mode' => 'Kommentaaride viis',
     'comment_code' => 'Vaikimisi kommenteerimine',
-    'comment_edit' => 'Allow Comment Edit?',
-    'comment_edittime' => 'Comment Edit Time (seconds)',
-    'commentsubmission' => 'Queue Comment Submissions',
+    'comment_edit' => 'Luba kommentaaride muutmine?',
+    'comment_edittime' => 'Kommentaaride muutmise aeg (sekundid)',
+    'commentsubmission' => 'Puhverda kommentaaride sisestamine',
     'passwordspeedlimit' => 'Salasõna kiirusepiirang',
     'login_attempts' => 'Maks. sisselogimiskatseid',
     'login_speedlimit' => 'sisselogimise kiirusepiirang',
@@ -1836,9 +1836,8 @@ $LANG_confignames['Core'] = array(
     'skip_html_filter_for_root' => 'Jäta HTML filter root jaoks vahele?',
     'allowed_protocols' => 'Lubatud protokollid',
     'disable_autolinks' => 'Keela autolingid?',
-    'clickable_links' => 'Make URLs clickable?',
-    'compressed_output' => 'Send compressed output?',
-    'frame_options' => 'Protection against "clickjacking"',
+    'clickable_links' => 'Tee URL-id klikitavaks?',
+    'compressed_output' => 'Saada väljund tihendatult?',
     'censormode' => 'Tsensuurireþiim?',
     'censorreplace' => 'Tsensuuri asendustekst',
     'censorlist' => 'Tsenseerimisloetelu',
@@ -1850,17 +1849,18 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => 'Maks. lugusid veebiteenuste lõimedes',
     'disable_webservices' => 'Keela veebiteenused?',
     'restrict_webservices' => 'Piira veebiteenused?',
-    'article_comment_close_days' => 'Days to close comments (default)',
-    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
-    'allow_reply_notifications' => 'Allow comment reply notifications?',
-    'search_style' => 'Results List Style',
-    'search_limits' => 'Page Limits',
-    'search_show_num' => 'Show Result Number?',
-    'search_show_type' => 'Show Result Type?',
-    'search_show_sort' => 'Allow User to Sort Results?',
-    'search_show_limit' => 'Show Page Limits?',
-    'search_separator' => 'Group Separator',
-    'search_def_keytype' => 'Default Search Method'
+    'article_comment_close_days' => 'Sulge kommenteerimine päevaga (vaikimisi)',
+    'comment_close_rec_stories' => 'Uusimate lugude arv, mida on lubatud kommenteerida',
+    'allow_reply_notifications' => 'Luba kommentaarile vastamisest teavitamine?',
+    'search_style' => 'Tulemuste loetelu stiil',
+    'search_limits' => 'Lehe limiit',
+    'search_show_num' => 'Näitatulemuste arvu?',
+    'search_show_type' => 'Näita tulemuse tüüpi?',
+    'search_show_sort' => 'Luba kasutajal tulemusi sorteerida?',
+    'search_show_limit' => 'Näita lehe limiiti?',
+    'search_separator' => 'Grupi eraldaja',
+    'search_def_keytype' => 'Vaikimisi otsimisviis',
+    'frame_options' => 'Kaitse "clickjacking" vastu'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1928,7 +1928,7 @@ $LANG_configselects['Core'] = array(
     6 => array('12' => 12, '24' => 24),
     7 => array('Viimane leht' => 'last', 'Esimene leht' => 'first', 'Iga leht' => 'all'),
     8 => array('Parem' => 'right', 'Vasak' => 'left'),
-    9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
+    9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
     10 => array('Mitte midagi' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
     11 => array('lihtne' => 'flat', 'Üksteise sees' => 'nested', 'Lõimedena' => 'threaded', 'pole kommentaare' => 'nocomment'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
@@ -1938,10 +1938,12 @@ $LANG_configselects['Core'] = array(
     16 => array('Sisselogimine pole tarvilik' => 0, 'Täpsem otsing' => 1, 'Lihtne ja täpsem otsing' => 2),
     17 => array('Kommenteerimine lubatud' => 0, 'Kommenteerimine keelatud' => -1),
     18 => array('Keelatud' => 0, 'Lubatud (täpne kattumine)' => 1, 'Lubatud (sõna algus)' => 2, 'Lubatud (sõna osa)' => 3),
-    19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
+    19 => array('Google' => 'google', 'Tabel' => 'table'),
+    20 => array('Täpne fraas' => 'phrase', 'Kõik sõnad' => 'all', 'Mõni sõnadest' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+        22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN',
+'(väljas)' => '')
+
 );
 
 ?>

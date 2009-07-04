@@ -226,7 +226,7 @@ $LANG_configselects['calendar'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Suuna sündmuste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita kalendrit' => 'plugin', 'Näiga avalehte' => 'home', 'Näita admini lehte' => 'admin'),
+    9 => array('Suuna sündmuste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita kalendrit' => 'plugin', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );
 
