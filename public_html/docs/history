@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0rc1:
+- When an error occurs in bigdump.php (during migration) send the user back to
+  migrate.php (bug #0000919) [Dirk]
 - Fixed warning in migration script when no backups are available (bug #0000918,
   patch provided by hiroron)
 

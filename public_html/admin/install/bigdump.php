@@ -386,7 +386,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
 }
 
 if ($error) {
-  echo '<p><a href="' . $_SERVER['PHP_SELF'] . '">' . $LANG_BIGDUMP[30] . '</a> ' . $LANG_BIGDUMP[31] . '</p>' . LB;
+  echo '<p><a href="migrate.php">' . $LANG_BIGDUMP[30] . '</a> ' . $LANG_BIGDUMP[31] . '</p>' . LB;
 }
 
 if ($dbconnection) mysql_close();
