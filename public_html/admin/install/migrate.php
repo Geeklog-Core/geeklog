@@ -326,11 +326,13 @@ if (INST_phpOutOfDate()) {
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
         // Identify the backup files in backups/ and order them newest to oldest
-        $sql_files = glob($backup_dir . '*.sql');
-        $tar_files = glob($backup_dir . '*.tar.gz');
-        $tgz_files = glob($backup_dir . '*.tgz');
-        $zip_files = glob($backup_dir . '*.zip');
-        $backup_files = array_merge($sql_files, $tar_files, $tgz_files, $zip_files);
+        $backup_files = array();
+        foreach (array('*.sql', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
+            $files = glob($backup_dir . $pattern);
+            if (is_array($files)) {
+                $backup_files = array_merge($backup_files, $files);
+            }
+        }
         rsort($backup_files);
 
         $display .= '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
