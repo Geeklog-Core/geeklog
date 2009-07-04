@@ -538,7 +538,7 @@ if (INST_phpOutOfDate()) {
                             . '<input type="hidden" name="backup_file" value="' . $backup_file['name'] . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                             . '<input type="submit" class="button big-button" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '"' . XHTML .'>' . LB
-                            . '<input type="button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'migrate.php\'"' . XHTML .'>' . LB
+                            . '<input type="submit" class="button big-button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'migrate.php\'"' . XHTML .'>' . LB
                             . '</p></form>' . LB;
 
                     }
