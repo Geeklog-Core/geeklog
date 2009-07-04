@@ -11,6 +11,8 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0rc1:
+- Fixed auto-detection of table prefix during migration when the SQL dump
+  contained CREATE TABLE IF NOT EXISTS requests (bug #0000922) [Dirk]
 - When an error occurs in bigdump.php (during migration) send the user back to
   migrate.php (bug #0000919) [Dirk]
 - Fixed warning in migration script when no backups are available (bug #0000918,

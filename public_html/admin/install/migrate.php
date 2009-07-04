@@ -614,6 +614,7 @@ if (INST_phpOutOfDate()) {
                         $num_create++;
                         $line = trim($line);
                         if (strpos($line, 'access') !== false) {
+                            $line = str_replace('IF NOT EXISTS ', '', $line);
                             $words = explode(' ', $line);
                             if (count($words) >= 3) {
                                 $table = str_replace('`', '', $words[2]);
