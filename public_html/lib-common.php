@@ -4829,7 +4829,8 @@ function phpblock_whosonline()
         // note that we're overwriting the contents of $retval here
         if( $num_reg > 0 )
         {
-            $retval = $LANG01[112] . ': ' . $num_reg . '<br' . XHTML . '>';
+            $retval = $LANG01[112] . ': ' . COM_numberFormat($num_reg)
+                    . '<br' . XHTML . '>';
         }
         else
         {
@@ -4839,7 +4840,8 @@ function phpblock_whosonline()
 
     if( $num_anon > 0 )
     {
-        $retval .= $LANG01[41] . ': ' . $num_anon . '<br' . XHTML . '>';
+        $retval .= $LANG01[41] . ': ' . COM_numberFormat($num_anon)
+                . '<br' . XHTML . '>';
     }
 
     return $retval;
