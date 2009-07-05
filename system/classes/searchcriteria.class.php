@@ -127,6 +127,8 @@ class SearchCriteria {
 
             $ftwords['mysql'] = '+' . str_replace(' ', ' +', $query);
             $ftwords['mssql'] = '"' . str_replace(' ', '" AND "', $query) . '"';
+            $ftwords['pgsql'] = '"' . str_replace(' ', '" AND "', $query) . '"';
+
         }
         else if ($keyType == 'any')
         {
@@ -134,6 +136,7 @@ class SearchCriteria {
             $words = explode(' ', $query);
             $sep = 'OR ';
             $ftwords['mysql'] = $query;
+            $ftwords['pgsql'] = $query;
             $ftwords['mssql'] = '"' . str_replace(' ', '" OR "', $query) . '"';
         }
         else
@@ -149,6 +152,7 @@ class SearchCriteria {
                 $ftwords['mysql'] = $query;
             }
             $ftwords['mssql'] = '"' . $query . '"';
+            $ftwords['pgsql'] = '"' . $query . '"';
         }
 
         $titles = (isset($_GET['title']) && isset($columns['title'])) ? true : false;

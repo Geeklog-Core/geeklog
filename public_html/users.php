@@ -258,13 +258,14 @@ function userprofile($user, $msg = 0, $plugin = '')
             $sidArray[] = $S['sid'];
         }
     }
-
+    unset($sql);
+    $sql = array();
     $sidList = implode("', '",$sidArray);
     $sidList = "'$sidList'";
 
     // then, find all comments by the user in those stories
     $sql['mysql'] = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
-    $sql['pgsql'] = "SELECT sid,title,cid,date_part('epoch',date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,date_poart('epoch',date)";
+    $sql['pgsql'] = "SELECT sid,title,cid,date_part('epoch',date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,date_part('epoch',date)";
     $sql['mssql'] = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
 
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
@@ -273,7 +274,10 @@ function userprofile($user, $msg = 0, $plugin = '')
     //     $sql .= " AND (sid in ($sidList))";
     // }
     if (!empty ($sidList)) {
-        $sql .= " HAVING sid in ($sidList)";
+        $sql['mysql'] .= " HAVING sid in ($sidList)";
+        $sql['mssql'] .= " HAVING sid in ($sidList)";
+        $sql['pgsql'] .= " HAVING sid in ($sidList)";
+
     }
     $sql['mysql'] .= " ORDER BY unixdate DESC LIMIT 10";
     $sql['pgsql'] .= " ORDER BY unixdate DESC LIMIT 10";
