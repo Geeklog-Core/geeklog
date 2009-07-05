@@ -155,7 +155,7 @@ function edituser($uid = '', $msg = '')
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
     if (empty ($A['uid'])) {
-        $user_templates->set_var ('user_id', 'n/a');
+        $user_templates->set_var ('user_id', $LANG_ADMIN['na']);
     } else {
         $user_templates->set_var ('user_id', $A['uid']);
     }

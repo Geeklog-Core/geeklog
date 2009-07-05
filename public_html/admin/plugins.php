@@ -125,7 +125,7 @@ function plugineditor($pi_name, $confirmed = 0)
     }
     $plugin_code_version = PLG_chkVersion($pi_name);
     if (empty($plugin_code_version)) {
-        $code_version = 'N/A';
+        $code_version = $LANG_ADMIN['na'];
     } else {
         $code_version = $plugin_code_version;
     }

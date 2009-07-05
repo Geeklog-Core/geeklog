@@ -819,7 +819,7 @@ function ADMIN_getListField_users($fieldname, $fieldvalue, $A, $icon_arr)
         case 'online_days':
             if ($fieldvalue < 0){
                 // users that never logged in, would have a negative online days
-                $retval = "N/A";
+                $retval = $LANG_ADMIN['na'];
             } else {
                 $retval = $fieldvalue;
             }
@@ -1046,7 +1046,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
         case 'pi_version':
             $plugin_code_version = PLG_chkVersion ($A['pi_name']);
             if (empty ($plugin_code_version)) {
-                $code_version = 'N/A';
+                $code_version = $LANG_ADMIN['na'];
             } else {
                 $code_version = $plugin_code_version;
             }
