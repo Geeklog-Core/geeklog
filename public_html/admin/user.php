@@ -175,6 +175,15 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('username', '');
     }
 
+    $remoteservice = '';
+    if ($_CONF['show_servicename'] && ($_CONF['user_login_method']['3rdparty']
+            || $_CONF['user_login_method']['openid'])) {
+        if (! empty($A['remoteservice'])) {
+            $remoteservice = '@' . $A['remoteservice'];
+        }
+    }
+    $user_templates->set_var('remoteservice', $remoteservice);
+
     if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto ($A['uid'], $A['photo'], $A['email'], -1);
         $user_templates->set_var ('user_photo', $photo);
