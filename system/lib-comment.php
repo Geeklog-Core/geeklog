@@ -222,7 +222,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'comment' => 'comment.thtml',
-                                'thread'  => 'thread.thtml'  ));
+                               'thread'  => 'thread.thtml'  ));
 
     // generic template variables
     $template->set_var( 'xhtml', XHTML );
@@ -555,7 +555,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $retval .= $template->parse( 'output', 'comment' );
         }
         $row++;
-    } while( $A = DB_fetchArray( $comments ));
+    } while( $A = ($preview)?0:DB_fetchArray( $comments ));
 
     return $retval;
 }
@@ -1123,11 +1123,11 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
     } elseif ( $_CONF['commentsubmission'] == 1 && !SEC_hasRights('comment.submit') ) {
         //comment into comment submission table enabled
         if (isset($name)) {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,name,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_query ( "INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,date,title,pid,ipaddress) VALUES
+                ($sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         } else {
-            DB_save ( $_TABLES['commentsubmissions'], 'sid,uid,comment,date,title,pid,ipaddress',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}'");
+            DB_query ( "INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,date,title,pid,ipaddress) VALUES
+                ($sid',$uid,$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         }
         
         $ret = -1;
@@ -1174,7 +1174,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         
     }
 
-    $cid = DB_insertId();
+    $cid = DB_insertId('','comments_cid_seq');
     DB_unlockTable($_TABLES['comments']);
 
     // notify of new comment 
@@ -1730,7 +1730,7 @@ function CMT_approveModeration($cid)
                         "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}',".
                         "'{$A['pid']}','{$A['ipaddress']}',$indent");
     }
-    $newcid = DB_insertId();
+    $newcid = DB_insertId('','comments_cid_seq');
 
     DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
 
