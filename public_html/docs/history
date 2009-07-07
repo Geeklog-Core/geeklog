@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 Changes since 1.6.0rc1:
+- Updated FCKeditor to version 2.6.4.1 [Dirk]
 - Fixed advanced search not using start and end dates (bug #0000924, patch
   provided by dengen)
 - Fixed auto-detection of table prefix during migration when the SQL dump
