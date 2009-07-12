@@ -35,7 +35,6 @@ CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default ''); 
   CREATE INDEX spamx_name ON {$_TABLES['spamx']}(name);
-)
 ";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";

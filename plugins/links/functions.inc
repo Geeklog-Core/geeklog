@@ -84,9 +84,10 @@ if (!isset($_LI_CONF['linksloginrequired'])) {
 */
 function plugin_getmenuitems_links()
 {
-    global $_CONF, $_LI_CONF, $LANG_LINKS;
+    global $_CONF, $_USER, $_LI_CONF, $LANG_LINKS;
 
-    if (($_LI_CONF['hidelinksmenu'] == 1) || (COM_isAnonUser() &&
+    $anon = (empty ($_USER['uid']) || ($_USER['uid'] <= 1)) ? true : false;
+    if (($_LI_CONF['hidelinksmenu'] == 1) || ($anon &&
                 ($_CONF['loginrequired'] || $_LI_CONF['linksloginrequired']))) {
         return false;
     }
@@ -126,12 +127,19 @@ function plugin_whatsnewsupported_links()
 */
 function plugin_getwhatsnew_links()
 {
-    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS;
+    global $_CONF, $_TABLES, $_USER, $_LI_CONF, $LANG_LINKS,$_DB_dbms;
 
     $retval = '';
 
     // Get newest links
-    $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';
+    if($_DB_dbms=='pgsql')
+    {
+        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (NOW() - INTERVAL '{$_LI_CONF['newlinksinterval']} SECONDS'))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';   
+    }
+    else
+    {
+        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (DATE_SUB(NOW(), INTERVAL {$_LI_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL('AND') . LINKS_getCategorySQL('AND') . ' ORDER BY date DESC LIMIT 15';
+    }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -218,9 +226,9 @@ function plugin_chkVersion_links ()
 {
     global $_CONF;
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
 
-    $inst_parms = plugin_autoinstall_links('links');
+    $inst_parms = plugin_autoinstall_links('links'); 
 
     return $inst_parms['info']['pi_version'];
 }
@@ -362,8 +370,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
-    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, ";
-    $sql .= "CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
+    $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
     $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
     $sql .= COM_getPermSQL('AND') . ' ';
 
@@ -384,7 +391,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     }
 
     $search = new SearchCriteria('links', $LANG_LINKS[14]);
-    $columns = array('title' => 'title', 'description');
+    $columns = array('description', 'title' => 'title');
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
@@ -551,6 +558,7 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
 */
 function links_buildSql($cid, $limits)
 {
+    global $_DB_dbms;
     $where = '';
     if ($cid != 'all') {
         $where = "cid='" . addslashes($cid) . "'";
@@ -564,7 +572,8 @@ function links_buildSql($cid, $limits)
             if (!empty ($where)) {
                 $where .= ' AND ';
             }
-            $where .= "date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+            if($_DB_dbms=='pgsql') {$where .= "date >= (NOW() - INTERVAL '$hours HOURS')"; } else
+            {$where .= "date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)"; }
         } else {
             $limitsql = ' LIMIT ' . $limits;
         }
@@ -639,15 +648,15 @@ function plugin_upgrade_links()
 {
     global $_CONF, $_TABLES, $_LI_CONF;
 
-    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',         
                                     "pi_name = 'links'");
     $code_version = plugin_chkVersion_links();
     if ($installed_version == $code_version) {
-        // nothing to do
-        return true;
+        // nothing to do                                                       
+        return true; 
     }
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
 
     if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;
@@ -1451,9 +1460,10 @@ function plugin_getiteminfo_links($lid, $what, $uid = 0, $options = array())
             $fields[] = 'title';
             break;
         case 'url':
-            // needed for $lid == '*', but also in case we're only requesting
-            // the URL (so that $fields isn't emtpy)
-            $fields[] = 'lid';
+            if ($lid == '*') {
+                // in this case, we need the lid to build the URL
+                $fields[] = 'lid';
+            }
             break;
         default:
             // nothing to do
