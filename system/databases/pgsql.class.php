@@ -99,8 +99,8 @@ class DataBase
     }
     
     /**
-    * Creates a connection string, the way pgSQL likes it
-    * Doesn't show the port because it isnt being provided in class default assumed'
+    * Creates a connection string for pg_connect
+    * Doesn't show the port because it isnt being provided in class default assumed
     * 
     */
     function buildString()
@@ -251,11 +251,8 @@ class DataBase
         } else {
             $result_type = PGSQL_ASSOC;                     
         }
-             /*   $fp = fopen('traces.txt','r');
-        $debug = var_dump(debug_backtrace());
-        fwrite($fp,$debug);
-        fclose($fp);  */
         return pg_fetch_array($recordset, NULL, $result_type);
+        
     }
     
     /**
@@ -346,11 +343,16 @@ class DataBase
             $this->_errorlog("\n*** sql to execute is $sql ***");
         }
         /* Replace some non ANSI keywords */
-        $sql = str_replace('UNIX_TIMESTAMP()','date_part(\'epoch\',now())',$sql);
-
+        if(preg_match('#LIMIT ([0-9]+),([\\s])?([0-9]+)#',$sql,$matches))
+        {
+            $sql = str_replace($matches[0],'LIMIT '.$matches[3].' OFFSET '.$matches[1],$sql); 
+            echo $sql;    
+        }
         // Run query
         if ($ignore_errors == 1) {
             echo $sql;
+                    print_r(debug_backtrace());
+
             $result = pg_query($this->_db,$sql);
         } else {
             $result = pg_query($this->_db,$sql) or trigger_error($this->dbError($sql));
@@ -400,7 +402,9 @@ class DataBase
         }
         else
         {
-            if(count($fields)==count($values))
+            $fields = explode(',',$fields);              
+            $values = explode(',',$values);
+            if(count($fields)==count($values) && count($fields)>0)
             {
                 $things='';
                 $counter = count($fields);
@@ -408,11 +412,11 @@ class DataBase
                 {
                     if(($i+1)==$counter)
                     {
-                        $things.=$fields[$x].'='.$values[$x];
+                        $things .= $fields[$i].'='.$values[$i];
                     }
                     else
                     {
-                        $things.=$fields[$x].'='.$values[$x].', ';   
+                        $things .= $fields[$i].'='.$values[$i].', ';   
                     }  
                 }
                 $sql='UPDATE '.$table.' SET '.$things;
@@ -420,7 +424,7 @@ class DataBase
             else
             {
                 if ($this->isVerbose()) {
-                $this->_errorlog("\n*** Field count doesnt match value count ***");
+                $this->_errorlog("\n*** Field count doesnt match value count or empty ***");
                 }   
             }  
         }
@@ -431,8 +435,6 @@ class DataBase
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbSave ***");
         }
-        unset($row);
-        unset($result);
     }
     
         /**
@@ -508,6 +510,7 @@ class DataBase
     */
     function dbChange($table,$item_to_set,$value_to_set,$id,$value, $supress_quotes=false)
     {
+
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside dbChange ***");
         }
@@ -660,13 +663,13 @@ class DataBase
     */
     function dbInsertId($link_identifier = '',$sequence='')
     {
-        if($sequence !='')
+        if(!empty($sequence))
         {
-            $result = dbQuery('SELECT CURRVAL(\''.$sequence.'\'); ');    
+            $result = pg_query('SELECT NEXTVAL(\''.$sequence.'\'); ');    
         }
         else
         {
-            $result = dbQuery('SELECT lastval();');    
+            $result = pg_query('SELECT lastval();');    
         }
         $row = pg_fetch_row($result);
         unset($result);

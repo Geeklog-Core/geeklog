@@ -728,7 +728,7 @@ function POLLS_pollsave($pid, $aid)
     }
 
     // This always does an insert so no need to provide key_field and key_value args
-    DB_save($_TABLES['pollvoters'],'ipaddress,date,pid',"'{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$pid'");
+    DB_query("INSERT INTO {$_TABLES['pollvoters']} (ipaddress,date,pid) VALUES ('{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$pid')");
     $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG_POLLS['savedvotemsg'] . ' "'
