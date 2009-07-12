@@ -48,7 +48,7 @@ $LANG_POLLS = array(
     'vote'              => '投票する',
     'pastpolls'         => 'アンケートの一覧',
     'savedvotetitle'    => '投票ありがとうございました',
-    'savedvotemsg'      => 'テーマ：',
+    'savedvotemsg'      => 'テーマ:',
     'pollstitle'        => 'アンケート一覧',
     'polltopics'        => '他のアンケートを見る',
     'stats_top10'       => 'アンケート（上位10件）',
@@ -61,7 +61,7 @@ $LANG_POLLS = array(
     'not_saved'         => '結果は保存されませんでした',
     'upgrade1'          => 'アンケートプラグインの新しいバージョンがインストールされました。',
     'upgrade2'          => 'アップグレードしてください。',
-    'editinstructions'  =>'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
+    'editinstructions'  => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
     'start_poll'        => '投稿する'
 );
 
@@ -78,7 +78,7 @@ $LANG25 = array(
     7 => '(スペースを含まないこと)',
     8 => 'ホームページに表示する',
     9 => 'テーマ',
-    10 => '回答 / 投票数',
+    10 => '回答 / 投票数 / 備考',
     11 => 'アンケート( %s )の選択肢にエラーがありました',
     12 => 'アンケート( %s )の質問項目にエラーがありました',
     13 => 'アンケートの作成',
@@ -111,7 +111,7 @@ $LANG25 = array(
     40 => 'アンケートの結果を見る'
 );
 
-$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_polls_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
 $PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
 
