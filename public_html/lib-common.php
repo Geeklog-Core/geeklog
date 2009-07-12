@@ -3980,7 +3980,13 @@ function COM_hit()
 {
     global $_TABLES;
 
-    DB_change($_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true);
+    //DB_change($_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true);
+    $sql = array();
+    $sql['mysql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
+    $sql['mssql'] = "UPDATE {$_TABLES['vars']} SET value=value+1 WHERE name = 'totalhits'";
+    $sql['pgsql'] = "UPDATE {$_TABLES['vars']} SET value=value::int4+1 WHERE name = 'totalhits'";
+    DB_query($sql);
+
 }
 
 /**
@@ -6498,6 +6504,30 @@ function COM_switchLocaleSettings()
             }
         }
     }
+}
+
+/**
+* Get the name of the current language, minus the character set
+*
+* Strips the character set from $_CONF['language'].
+*
+* @return   string  language name
+*
+*/
+function COM_getLanguageName()
+{
+    global $_CONF;
+
+    $retval = '';
+
+    $charset = '_' . strtolower(COM_getCharset());
+    if (substr($_CONF['language'], -strlen($charset)) == $charset) {
+        $retval = substr($_CONF['language'], 0, -strlen($charset));
+    } else {
+        $retval = $_CONF['language'];
+    }
+
+    return $retval;
 }
 
 /**

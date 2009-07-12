@@ -69,7 +69,7 @@ if (!SEC_hasRights('plugin.edit')) {
     COM_output($display);
     exit;
 }
-
+       
 /**
 * Shows the plugin editor form
 *
@@ -937,7 +937,14 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
 
             $grp_name = addslashes($name);
             $grp_desc = addslashes($desc);
-            DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
+            if($_DB_dbms=='pgsql')
+            {
+                DB_query("INSERT INTO {$_TABLES['groups']} (grp_id,grp_name, grp_descr) VALUES ((SELECT NEXTVAL('groups_grp_id_seq')),'$grp_name', '$grp_desc')", 1);
+            }
+            else
+            {
+                DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
+            }
             if (DB_error()) {
                 COM_errorLog('Error creating plugin group', 1);
                 PLG_uninstall($plugin);
@@ -1001,8 +1008,15 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         foreach ($features as $feature => $desc) {
             $ft_name = addslashes($feature);
             $ft_desc = addslashes($desc);
+            if($_DB_dbms=='pgsql')
+            {
+             DB_query("INSERT INTO {$_TABLES['features']} (ft_id,ft_name, ft_descr) "
+                     . "VALUES ((SELECT nextval('ft_id_seq'))'$ft_name', '$ft_desc')", 1);   
+            }
+            else {
             DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
                      . "VALUES ('$ft_name', '$ft_desc')", 1);
+            }
             if (DB_error()) {
                 COM_errorLog('Error adding plugin feature', 1);
                 PLG_uninstall($plugin);
