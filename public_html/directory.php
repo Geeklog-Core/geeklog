@@ -189,8 +189,7 @@ function DIR_navBar ($topic, $year, $month = 0)
         }
     }
 
-    if($_DB_dbms=='pgsql'){$result = DB_query ("SELECT EXTRACT(Year from date) AS year FROM {$_TABLES['stories']}");}
-    else{$result = DB_query ("SELECT MIN(YEAR(date)) AS year FROM {$_TABLES['stories']}"); }
+    $result = DB_query ("SELECT EXTRACT(Year from date) AS year FROM {$_TABLES['stories']}");
     $A = DB_fetchArray ($result);
     if ($prevyear < $A['year']) {
         $prevyear = 0;

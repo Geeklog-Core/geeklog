@@ -416,6 +416,22 @@ function INST_installEngine($install_type, $install_step)
                 require_once $dbconfig_path;
                 require_once $siteconfig_path;
                 require_once $_CONF['path_system'] . 'lib-database.php';
+                
+                //Create a func to check for table existance
+                DB_query("CREATE OR REPLACE FUNCTION check_table(varchar, varchar) 
+                    RETURNS boolean AS $$ 
+                     DECLARE 
+                       v_cnt integer; 
+                       v_tbl boolean; 
+                     BEGIN 
+                       SELECT count(1) INTO v_cnt FROM pg_tables where tablename = $1 and 
+                    schemaname = $2; 
+                        IF v_cnt > 0 THEN 
+                         v_tbl = 'true'; 
+                        END IF; 
+                    return v_tbl; 
+                    END; 
+                    $$ LANGUAGE 'plpgsql'");
 
                 // Check if GL is already installed
                 if (INST_checkTableExists('vars')) {
