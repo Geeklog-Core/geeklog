@@ -365,13 +365,15 @@ function plugin_searchtypes_links()
 */
 function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $LANG_LINKS;
+    global $_TABLES, $LANG_LINKS,$_DB_dbms;
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
 
     $sql = "SELECT lid AS id, title, description, UNIX_TIMESTAMP(date) AS date, owner_id AS uid, hits, CONCAT('/links/portal.php?what=link&amp;item=', lid) AS url ";
-    $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
+    $sql .= "FROM {$_TABLES['links']} WHERE date";
+    if($_DB_dbms=='pgsql'){$sql .='<> NULL ';}
+    else{$sql .=" <> 1 "; }
     $sql .= COM_getPermSQL('AND') . ' ';
 
     if (!empty($datestart) && !empty($dateend))
