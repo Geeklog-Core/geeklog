@@ -417,7 +417,17 @@ function INST_installEngine($install_type, $install_step)
                 require_once $siteconfig_path;
                 require_once $_CONF['path_system'] . 'lib-database.php';
                 
-                //Create a func to check for table existance
+                //Create a func to check if plpgsql is already installed
+                DB_query("CREATE OR REPLACE FUNCTION make_plpgsql() 
+                RETURNS VOID LANGUAGE SQL AS $$
+                CREATE LANGUAGE plpgsql;
+                $$;
+                SELECT
+                    CASE
+                    WHEN EXISTS( SELECT 1 FROM pg_catalog.pg_language WHERE lanname='plpgsql')
+                    THEN NULL
+                    ELSE make_plpgsql() END;");
+                //Create a function to check if table exists
                 DB_query("CREATE OR REPLACE FUNCTION check_table(varchar, varchar) 
                     RETURNS boolean AS $$ 
                      DECLARE 

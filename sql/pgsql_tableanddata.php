@@ -1,80 +1,5 @@
 <?php
 
-$_DB_table_prefix='';
-
-$_TABLES['access']              = $_DB_table_prefix . 'access';
-$_TABLES['article_images']      = $_DB_table_prefix . 'article_images';
-$_TABLES['blocks']              = $_DB_table_prefix . 'blocks';
-$_TABLES['commentcodes']        = $_DB_table_prefix . 'commentcodes';
-$_TABLES['commentedits']        = $_DB_table_prefix . 'commentedits';
-$_TABLES['commentmodes']        = $_DB_table_prefix . 'commentmodes';
-$_TABLES['commentnotifications']= $_DB_table_prefix . 'commentnotifications';
-$_TABLES['comments']            = $_DB_table_prefix . 'comments';
-$_TABLES['commentsubmissions']  = $_DB_table_prefix . 'commentsubmissions';
-$_TABLES['conf_values']         = $_DB_table_prefix . 'conf_values';
-$_TABLES['cookiecodes']         = $_DB_table_prefix . 'cookiecodes';
-$_TABLES['dateformats']         = $_DB_table_prefix . 'dateformats';
-$_TABLES['featurecodes']        = $_DB_table_prefix . 'featurecodes';
-$_TABLES['features']            = $_DB_table_prefix . 'features';
-$_TABLES['frontpagecodes']      = $_DB_table_prefix . 'frontpagecodes';
-$_TABLES['group_assignments']   = $_DB_table_prefix . 'group_assignments';
-$_TABLES['groups']              = $_DB_table_prefix . 'groups';
-$_TABLES['maillist']            = $_DB_table_prefix . 'maillist';
-$_TABLES['pingservice']         = $_DB_table_prefix . 'pingservice';
-$_TABLES['plugins']             = $_DB_table_prefix . 'plugins';
-$_TABLES['postmodes']           = $_DB_table_prefix . 'postmodes';
-$_TABLES['sessions']            = $_DB_table_prefix . 'sessions';
-$_TABLES['sortcodes']           = $_DB_table_prefix . 'sortcodes';
-$_TABLES['speedlimit']          = $_DB_table_prefix . 'speedlimit';
-$_TABLES['statuscodes']         = $_DB_table_prefix . 'statuscodes';
-$_TABLES['stories']             = $_DB_table_prefix . 'stories';
-$_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
-$_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
-$_TABLES['tokens']              = $_DB_table_prefix . 'tokens';
-$_TABLES['topics']              = $_DB_table_prefix . 'topics';
-$_TABLES['trackback']           = $_DB_table_prefix . 'trackback';
-$_TABLES['trackbackcodes']      = $_DB_table_prefix . 'trackbackcodes';
-$_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
-$_TABLES['userindex']           = $_DB_table_prefix . 'userindex';
-$_TABLES['userinfo']            = $_DB_table_prefix . 'userinfo';
-$_TABLES['userprefs']           = $_DB_table_prefix . 'userprefs';
-$_TABLES['users']               = $_DB_table_prefix . 'users';
-$_TABLES['vars']                = $_DB_table_prefix . 'vars';
-
-
-// Tables used by the bundled plugins
-
-// Calendar plugin
-$_TABLES['events']              = $_DB_table_prefix . 'events';
-$_TABLES['eventsubmission']     = $_DB_table_prefix . 'eventsubmission';
-$_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
-
-// Links plugin
-$_TABLES['linkcategories']      = $_DB_table_prefix . 'linkcategories';
-$_TABLES['links']               = $_DB_table_prefix . 'links';
-$_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
-
-// Polls plugin
-$_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
-$_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
-$_TABLES['polltopics']          = $_DB_table_prefix . 'polltopics';
-$_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
-
-// Spam-X plugin
-$_TABLES['spamx']               = $_DB_table_prefix . 'spamx';
-
-// Static Pages plugin
-$_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
-
-
-// These tables aren't used by Geeklog any more, but the table names are still
-// needed when upgrading from old versions
-$_TABLES['commentspeedlimit']   = $_DB_table_prefix . 'commentspeedlimit';
-$_TABLES['submitspeedlimit']    = $_DB_table_prefix . 'submitspeedlimit';
-$_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
-$_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
-
-
 $_SQL[] = "
 CREATE TABLE {$_TABLES['access']} (
   acc_ft_id smallint NOT NULL default '0',
@@ -743,21 +668,21 @@ $_DATA[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid,
 $_DATA[] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (15,NULL,1) ";
 
 // Traditionally, grp_id 1 = Root, 2 = All Users, 13 = Logged-In Users
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Root','Has full access to the site',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'All Users','Group that a typical user is added to',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Story Admin','Has full access to story features',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Block Admin','Has full access to block features',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Syndication Admin', 'Can create and modify web feeds for the site',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Topic Admin','Has full access to topic features',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Webservices Users', 'Can use the Webservices API (if restricted)',0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'User Admin','Has full access to user features',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Plugin Admin','Has full access to plugin features',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Group Admin','Is a User Admin with access to groups, too',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Mail Admin','Can use Mail Utility',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')),'Logged-in Users','All registered members',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')), 'Comment Admin', 'Can moderate comments', 1)";
-$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('groups_grp_id_seq')), 'Comment Submitters', 'Can submit comments', 0);";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Root','Has full access to the site',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'All Users','Group that a typical user is added to',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Story Admin','Has full access to story features',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Block Admin','Has full access to block features',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Syndication Admin', 'Can create and modify web feeds for the site',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Topic Admin','Has full access to topic features',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Webservices Users', 'Can use the Webservices API (if restricted)',0) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'User Admin','Has full access to user features',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Plugin Admin','Has full access to plugin features',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Group Admin','Is a User Admin with access to groups, too',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Mail Admin','Can use Mail Utility',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')),'Logged-in Users','All registered members',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')), 'Comment Admin', 'Can moderate comments', 1)";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ((SELECT nextval('{$_TABLES['groups']}_grp_id_seq')), 'Comment Submitters', 'Can submit comments', 0);";
 
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
