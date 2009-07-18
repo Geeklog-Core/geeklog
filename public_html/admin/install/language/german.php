@@ -122,13 +122,13 @@ $LANG_INSTALL = array(
     70 => 'Before we get started it is important that you back up your database current Geeklog files. This installation script will alter your Geeklog database so if something goes wrong and you need to restart the upgrade process, you will need a backup of your original database. YOU HAVE BEEN WARNED!',
     71 => 'Please make sure to select the correct Geeklog version you are coming from below. This script will do incremental upgrades after this version (i.e. you can upgrade directly from any old version to ',
     72 => ').',
-    73 => 'Please note this script will not upgrade any beta or release candidate versions of Geeklog.',
-    74 => 'Database already up to date!',
-    75 => 'It looks like your database is already up to date. You probably ran the upgrade before. If you need to run the upgrade again, please re-install your database backup and try again.',
-    76 => 'Select Your Current Geeklog Version',
-    77 => 'The installer was unable to determine your current version of Geeklog, please select it from the list below:',
-    78 => 'Upgrade Error',
-    79 => 'An error occured while upgrading your Geeklog installation.',
+    73 => 'Beachte bitte, dass dieses Skript keine Beta- oder Release Candidate-Versionen von Geeklog aktualisieren kann.',
+    74 => 'Datenbank schon aktuell',
+    75 => 'Die Datenbank ist offenbar schon aktuell. Du hast das Update wahrscheinlich schon einmal vorgenommen. Wenn Du es tatsächlich noch einmal durchführen willst, installiere bitte zuerst die Datenbank von einem Backup und probiere es dann noch einmal.',
+    76 => 'Geeklog-Version auswählen',
+    77 => 'Das Installations-Skript konnte die bisher verwendete Geeklog-Version nicht ermitteln. Bitte wähle die korrekte Version aus dieser Liste aus:',
+    78 => 'Update-Fehler',
+    79 => 'Beim Update Deiner Geeklog-Installation trat ein Fehler auf.',
     80 => 'Ändern',
     81 => 'Stop!',
     82 => 'Es ist unbedingt nötig, die Zugriffsrechte der unten aufgeführten Dateien zu ändern. Andernfalls wirst Du Geeklog nicht installieren können.',
@@ -137,10 +137,10 @@ $LANG_INSTALL = array(
     85 => '" scheint nicht korrekt zu sein. Bitte gib den Pfad noch einmal ein.',
     86 => 'Sprache',
     87 => 'http://geeklog.info/forum/index.php?forum=1',
-    88 => 'Change directory and containing files to',
+    88 => 'Ändere das Verzeichnis und die Dateien darin zu',
     89 => 'Aktuelle Version:',
     90 => 'Leere Datenbank?',
-    91 => 'It appears that either your database is empty or the database credentials you entered are incorrect. Or maybe you wanted to perform a New Install (instead of an Upgrade)? Please go back and try again.',
+    91 => 'Entweder ist die Datenbank leer oder die Zugangsdaten für die Datenbank sind nicht korrekt. Oder wolltest Du eigentlich eine Neuinstallation durchführen (statt eines Updates)? Bitte noch einmal probieren.',
     92 => 'Benutze UTF-8',
     93 => 'Fertig',
     94 => 'Hier sind einige Hinweise, um den richtigen Pfad zu ermitteln:',
@@ -153,8 +153,8 @@ $LANG_INSTALL = array(
     101 => 'Schritt',
     102 => 'Konfigurations-Informationen eingeben',
     103 => 'und zusätzliche Plugins konfigurieren',
-    104 => 'Incorrect Admin Directory Path',
-    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.'
+    104 => 'Der Pfad für das Admin-Verzeichnis ist nicht korrekt',
+    105 => 'Der Pfad, den Du für das Admin-Verzeichnis eingegeben hast, scheint nicht korrekt zu sein. Bitte überprüfe Deine Eingabe und versuche es dann noch einmal.'
 );
 
 // +---------------------------------------------------------------------------+
@@ -190,12 +190,12 @@ $LANG_SUCCESS = array(
 // migrate.php
 
 $LANG_MIGRATE = array(
-    0 => 'The migration process will overwrite any existing database information.',
-    1 => 'Before Proceding',
-    2 => 'Be sure any previously installed plugins have been copied to your new server.',
-    3 => 'Be sure any images from <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, and <code>public_html/images/userphotos/</code>, have been copied to your new server.',
-    4 => 'If you\'re upgrading from a Geeklog version older than <strong>1.5.0</strong>, then make sure to copy over all your old <tt>config.php</tt> files so that the migration can pick up your settings.',
-    5 => 'If you\'re upgrading to a new Geeklog version, then don\'t upload your theme just yet. Use the included default theme until you can be sure your migrated site works properly.',
+    0 => 'Bei der Migration werden ggfs. Datenbank-Einträge überschrieben.',
+    1 => 'Vorbereitende Schritte',
+    2 => 'Stelle sicher, dass alle bereits installierten Plugins auf den neuen Server kopiert wurden.',
+    3 => 'Stelle sicher, dass alle Bilder aus <code>public_html/images/articles/</code>, <code>public_html/images/topics/</code>, und <code>public_html/images/userphotos/</code> auf den neuen Server kopiert wurden.',
+    4 => 'Wenn Du von einer Geeklog-Version älter als <strong>1.5.0</strong> aktualisierst solltest Du sicherstellen, dass alle alten <tt>config.php</tt>-Dateien (von Geeklog und von den Plugins) auf den neuen Server kopiert wurden, damit die alten Einstellungen übernommen werden können.',
+    5 => 'Wenn Du von einer älteren Geeklog-Version aktualisierst, dann solltest Du Dein Theme noch <em>nicht</em> hochladen. Benutze zuerst das mitgelieferte Theme bis sicher ist, dass die Migration erfolgreich war.',
     6 => 'Backup auswählen',
     7 => 'Datei auswählen...',
     8 => 'Vom backups-Verzeichnis des Webservers',
@@ -309,17 +309,17 @@ $LANG_BIGDUMP = array(
 // Error Messages
 
 $LANG_ERROR = array(
-    0 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini. Please upload your backup file using another method, such as FTP.',
-    1 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form. Please upload your backup file using another method, such as FTP.',
-    2 => 'The uploaded file was only partially uploaded.',
-    3 => 'No file was uploaded.',
-    4 => 'Missing a temporary folder.',
-    5 => 'Failed to write file to disk.',
-    6 => 'File upload stopped by extension.',
-    7 => 'The uploaded file exceeds the post_max_size directive in your php.ini. Please upload your database file using another method, such as FTP.',
-    8 => 'Error',
-    9 => 'Failed to connect to the database with the error: ',
-    10 => 'Check your database settings'
+    0 => 'Die hochgeladene Datei ist größer als der max. erlaubte Wert (siehe upload_max_filesize in der php.ini). Lade die Datei stattdessen auf einem anderen Weg hoch, z.B. per FTP.',
+    1 => 'Die hochgeladene Datei ist größer als der max. erlaubte Werte (siehe MAX_FILE_SIZE im HTML-Formular). Lade die Datei stattdessen auf einem anderen Weg hoch, z.B. per FTP.',
+    2 => 'Die hochgeladene Datei wurde nur teilweise übertragen.',
+    3 => 'Es wurde keine Datei hochgeladen.',
+    4 => 'Verzeichnis für temporäre Dateien nicht gefunden.',
+    5 => 'Konnte die Datei nicht abspeichern.',
+    6 => 'Hochladen wegen nicht erlaubten Date-Extension abgebrochen.',
+    7 => 'Die hochgeladene Datei ist größer als der max. erlaubte Wert (siehe post_max_size in der php.ini). Lade die Datei stattdessen auf einem anderen Weg hoch, z.B. per FTP.',
+    8 => 'Fehler',
+    9 => 'Konnte keine Verbindung zur Datenbank herstellen. Fehler: ',
+    10 => 'Überprüfe die Datenbank-Einstellungen bzw. Zugangsdaten'
 );
 
 // +---------------------------------------------------------------------------+
