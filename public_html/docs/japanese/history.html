@@ -13,17 +13,40 @@
 <body>
 <h1>Geeklog History/Changes:</h1>
 
+<h2>July 19, 2009 (1.6.0)</h2>
 
-<h2>Jun 28, 2009 (1.6.0rc1)</h2>
-
-Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成果が取り込まれている:
+<p>Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成果が取り込まれている:</p>  
 
 <ul>
-  <li>サイト移行サポートとプラグインインストールのサポート。（Matt
-    Westの開発による）</li>
-  <li>検索プログラムの機能アップ。（Sami Barakatの開発による）</li>
-  <li>コメント操作と編集の機能アップ。（Jared Wenerdの開発による）</li>
+  <li>サイト移行サポートとプラグインインストールのサポート。(Matt  
+    Westの開発による)</li>
+  <li>検索プログラムの機能アップ(Sami Barakatの開発による)</li>  
+  <li>コメント操作と編集の機能アップ(Jared Wenerdの開発による)</li>  
 </ul>
+
+<ul>
+  <li>提供のドイツ語フォーマル言語ファイルのアップデート((Markus Wollschläger提供)</li>
+  <li>日本語言語ファイル更新(Geeklog.jp group提供)</li>
+</ul>
+
+
+<h2>July 12, 2009 (1.6.0rc2)</h2>
+
+<h3>1.6.0rc1からの変更:</h3>
+
+<ul>
+  <li>FCKeditorをversion 2.6.4.1にバージョンアップ [Dirk]  </li>
+  <li>詳細検索の検索期間が無効になるバグに対応 (bug #0000924, patch provided by dengen)  </li>
+  <li>SQLダンプがCREATE TABLE IF NOT EXISTSを要求する場合，移行作業の間，接頭子を自動検出させる (bug #0000922) [Dirk]  </li>
+  <li>bigdump.phpでエラーが発生したとき (移行時) migrate.phpに戻すように変更 (bug #0000919) [Dirk]  </li>
+  <li>移行時にバックアップがない場合のワーニングを削除 (bug #0000918, patch provided by hiroron)  </li>
+  <li>エストニア言語ファイル更新(Artur Räpp提供)  </li>
+  <li>ヘブライ語言語ファイル更新(LWC提供)  </li>
+  <li>日本語言語ファイルおよびドキュメント更新(Geeklog.jp group提供)</li>
+</ul>
+
+
+<h2>Jun 28, 2009 (1.6.0rc1)</h2>  
 
 <h3>1.6.0b3からの変更:</h3>
 
@@ -46,9 +69,9 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     [Dirk]</li>
   <li>スクリプトのインストールを削除するためのリマインダを追加
     [Dirk]</li>
-  <li>コメントバーから親オブジェクト（記事と静的ページ）のプラグイン群へ適切にリンクするようにした。
+  <li>コメントバーから親オブジェクト(記事と静的ページ)のプラグイン群へ適切にリンクするようにした。
     [Dirk]</li>
-  <li>話題での検索（検索文字列無しで）を再度できるようにした。(Markus
+  <li>話題での検索(検索文字列無しで)を再度できるようにした。(Markus
     Wollschlägerの報告による) [Dirk]</li>
   <li>$_CONF['comment_close_rec_stories']の扱いを修正 (バグ#0000899)
     [Dirk]
@@ -63,7 +86,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     (Nemesis と MaXeからの報告による) [Dirk]</li>
   <li>カレンダー・アンケート・静的ページの各プラグインの古いプラグイン関数plugin_commentsupportを削除
     [Dirk]</li>
-  <li>日本語言語ファイルと日本語ドキュメントをアップデート。Geeklog.jpグループ提供</li>
+  <li>日本語言語ファイルと日本語ドキュメントをアップデート。(Geeklog.jp group提供)</li>
 </ul>
 
 <h3>カレンダープラグイン</h3>
@@ -99,10 +122,10 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
 
 <h3>1.6.0b1からの変更:</h3>
 <ul>
-  <li>検索機能アップ（訳者註：タイトルのみの検索チェックボックス追加他）[Sami]</li>
-  <li>コメント投稿のリストは、コメントの親（記事やアンケートなど）へリンクしています。もし表示しなければ、コメントからリンクを表示しません。
+  <li>検索機能アップ(訳者註：タイトルのみの検索チェックボックス追加他)[Sami]</li>
+  <li>コメント投稿のリストは、コメントの親(記事やアンケートなど)へリンクしています。もし表示しなければ、コメントからリンクを表示しません。
     [Dirk]</li>
-  <li>プラグインのコメントのタイプは、コメント投稿キューが保存されたときに失われます（それらは記事のコメントで扱われるものです）。[Dirk]</li>
+  <li>プラグインのコメントのタイプは、コメント投稿キューが保存されたときに失われます(それらは記事のコメントで扱われるものです)。[Dirk]</li>
   <li>SQL errors(&quot;Unfortunately, an error has occurred ...&quot;)がerror.logにも書き出されるようになりました。
     [Tony, Dirk]</li>
   <li>$_CONF['search_no_data']がconfig optionから削除され、言語ファイルに移動しました。[Dirk]</li>
@@ -111,8 +134,8 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>ユーザはパスワードの変更もアカウントの削除もできませんでした。(reported
     by Tom Homer) [Dirk]</li>
   <li>インストーラからのプラグインインストールをフィックスしました。[Dirk]</li>
-  <li>画像のSSLサイトにおけるURL生成のバグに対応しました。（訳者註：これはGeeklog
-    Japaneseサポート掲示板からの指摘。）</li>
+  <li>画像のSSLサイトにおけるURL生成のバグに対応しました。(訳者註：これはGeeklog
+    Japaneseサポート掲示板からの指摘。)</li>
   <li>config classにおける通知をフィックスしました。(tgc他からの報告による)
     [Dirk]</li>
   <li>アドバンスサーチの「タイプ」ドロップダウンでの空検索をfixしました。search/searchform.thtmlテンプレートのアップデートが必要です。(バグ#0000874の一部)</li>
@@ -123,7 +146,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     [Dirk]</li>
   <li>search classへの冗長なロギングのオプションを追加し、デフォルトではoffにした[Dirk]</li>
   <li>lib-custom.phpが1.6.0b1 tarball同梱漏れを回復。</li>
-  <li>スペイン語の言語ファイル（Juan Pablo Novillo提供）を更新した。</li>
+  <li>スペイン語の言語ファイルを更新(Juan Pablo Novillo提供)</li>
 </ul>
 
 <h3>アンケートプラグイン</h3>
@@ -158,10 +181,10 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
 
 <p>1.6.0b1からの変更:</p>
 <ul>
-  <li>検索機能アップ（訳者註：タイトルのみの検索チェックボックス追加他）[Sami]</li>
-  <li>コメント投稿のリストは、コメントの親（記事やアンケートなど）へリンクしています。もし表示しなければ、コメントからリンクを表示しません。
+  <li>検索機能アップ(訳者註：タイトルのみの検索チェックボックス追加他)[Sami]</li>
+  <li>コメント投稿のリストは、コメントの親(記事やアンケートなど)へリンクしています。もし表示しなければ、コメントからリンクを表示しません。
     [Dirk]</li>
-  <li>プラグインのコメントのタイプは、コメント投稿キューが保存されたときに失われます（それらは記事のコメントで扱われるものです）。[Dirk]</li>
+  <li>プラグインのコメントのタイプは、コメント投稿キューが保存されたときに失われます(それらは記事のコメントで扱われるものです)。[Dirk]</li>
   <li>SQL errors(&quot;Unfortunately, an error has occurred ...&quot;)がerror.logにも書き出されるようになりました。
     [Tony, Dirk]</li>
   <li>$_CONF['search_no_data']がconfig optionから削除され、言語ファイルに移動しました。[Dirk]</li>
@@ -170,8 +193,8 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>ユーザはパスワードの変更もアカウントの削除もできませんでした。(reported
     by Tom Homer) [Dirk]</li>
   <li>インストーラからのプラグインインストールをフィックスしました。[Dirk]</li>
-  <li>画像のSSLサイトにおけるURL生成のバグに対応しました。（訳者註：これはGeeklog
-    Japaneseサポート掲示板からの指摘。）</li>
+  <li>画像のSSLサイトにおけるURL生成のバグに対応しました。(訳者註：これはGeeklog
+    Japaneseサポート掲示板からの指摘。)</li>
   <li>config classにおける通知をフィックスしました。(tgc他からの報告による)
     [Dirk]</li>
   <li>アドバンスサーチの「タイプ」ドロップダウンでの空検索をfixしました。search/searchform.thtmlテンプレートのアップデートが必要です。(バグ#0000874の一部)</li>
@@ -182,7 +205,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     [Dirk]</li>
   <li>search classへの冗長なロギングのオプションを追加し、デフォルトではoffにした[Dirk]</li>
   <li>lib-custom.phpが1.6.0b1 tarball同梱漏れを回復。</li>
-  <li>スペイン語の言語ファイル（Juan Pablo Novillo提供）を更新した。</li>
+  <li>スペイン語の言語ファイル更新(Juan Pablo Novillo提供)</li>
 </ul>
 <h3>アンケートプラグイン</h3>
 <ul>
@@ -212,11 +235,11 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>すべての主な検索エンジンでサポートされているXMLサイトマップファイルを生成する新プラグインXMLSitemap。(mystral-kk提供)</li>
   <li>グループ管理画面からAllUsersグループとログイン中Userグループにユーザー追加、或いはこれらグループからの削除をできないようにした(バグ#0000863
     &amp; #0000864) [Dirk]</li>
-  <li>グループ管理画面のユーザー追加・削除フォームの外観変更。他の管理画面と共通の（連続性のある？）外観にした。[Dirk]</li>
+  <li>グループ管理画面のユーザー追加・削除フォームの外観変更。他の管理画面と共通の(連続性のある？)外観にした。[Dirk]</li>
   <li>CUSTOM_templateSetVarsが実際に呼ばれているドキュメントのバグ(バグ#0000862)[Dirk]</li>
   <li>タイトルだけで検索するオプションの追加(機能要望#0000840)
     [Sami]</li>
-  <li>管理者専用メニューの「プラグイン」管理画面で、有効なプラグインの数を表示（今までは無効なプラグインの数も含めて表示していた）[Dirk]</li>
+  <li>管理者専用メニューの「プラグイン」管理画面で、有効なプラグインの数を表示(今までは無効なプラグインの数も含めて表示していた)[Dirk]</li>
   <li>コンフィギュレーションのオプションに「URLのテキストを自動的にクリッカブルURLにする」を追加[Dirk]</li>
   <li>一部デフォルト設定の変更[Dirk]</li>
 </ul>
@@ -236,13 +259,13 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   </dd>
 </dl>
 <ul>
-  <li>実験：ブラウザへの送信の前に圧縮HTMLを出力（デフォルトでは無効;ブラウザとウェブサーバー双方がサポートしている必要がある）[Dirk]</li>
-  <li>記事一覧でカノニカルリンクを追加[Dirk]（訳者註：参照　<a href="http://www.sem-r.com/09/20090213153711.htmlï¼" class="external free" title="http://www.sem-r.com/09/20090213153711.html）" rel="nofollow">http://www.sem-r.com/09/20090213153711.html）</a></li>
+  <li>実験：ブラウザへの送信の前に圧縮HTMLを出力(デフォルトでは無効;ブラウザとウェブサーバー双方がサポートしている必要がある)[Dirk]</li>
+  <li>記事一覧でカノニカルリンクを追加[Dirk](訳者註：参照　<a href="http://www.sem-r.com/09/20090213153711.htmlï¼" class="external free" title="http://www.sem-r.com/09/20090213153711.html)" rel="nofollow">http://www.sem-r.com/09/20090213153711.html)</a></li>
   <li>admin/sectest.phpからハードコード文字列を言語ファイルに移動(バグ#0000716)
     [Dirk]</li>
   <li>ユーザーへのメール送信の際に自分にコピーを送るオプションを追加(機能要望#0000771,Roshan
     Singh提供のパッチがベース)</li>
-  <li>COM_checkListがHTML内のcheckbox配列の名前をテーブルの名前を使ってしまう!その名前の新しいパラメータを追加(Geeklog1.5.2sr4のusersettings.phpへの多大な貢献をしたBookooによる指摘)</li>
+  <li>COM_checkListがHTML内のcheckbox配列の名前をテーブルの名前を使ってしまう! その名前の新しいパラメータを追加(Geeklog1.5.2sr4のusersettings.phpへの多大な貢献をしたBookooによる指摘)</li>
   <li>プラグインでのCOM_allowedHTML and COM_checkHTMLの間違った使い方をfix：パーミッションを特定しないで関数が呼ばれていたので'story.edit'がデフォルトになっ
     ていた。つまり、あるイベントでStoryAdminとしてadmin_htmlを使っていてもCalendarAdminとしてはそうしていなかったと
     いうバグ(バグ#0000785) [Dirk]</li>
@@ -252,7 +275,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     [Dirk]</li>
   <li>新らしいAPI関数PLG_pluginStateChangeの導入[Dirk]</li>
   <li>バッドワードチェックのドロップダウンをfix。今まで「チェックする、しない」の2つのオプションしかなかったものを増やした。ちぇっくしない、ちぇっ
-    くする（完全一致、前方一致、後方一致）の４つになった。(バグ#0000692)
+    くする(完全一致、前方一致、後方一致)の４つになった。(バグ#0000692)
     [Mike, Maciej Cupial]</li>
   <li>少々速度の速いテンプレートクラス(機能要望#0000760,
     dengen &amp; mystral-kkによるパッチ提供)</li>
@@ -270,7 +293,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>ユーザー管理画面の一括登録と一括削除のオプションのレイアウトをフィックスした。
     [Dirk]</li>
   <li>ログイン失敗の際、ユーザー登録無効設定でもユーザー登録フォームが表示される(バグ#0000843)に対応した。</li>
-  <li>wikiスタイルフォーマットで複数の言語（日本語とドイツ語のウムラウト）利用時に文字化けしていたのに対応した。(バグ#0000823)
+  <li>wikiスタイルフォーマットで複数の言語(日本語とドイツ語のウムラウト)利用時に文字化けしていたのに対応した。(バグ#0000823)
     [Dirk]</li>
   <li>新API関数PLG_migrateの導入 [Dirk]</li>
   <li>コンフィギュレーションからDOCTYPE変更を可能にした。テーマにはハードコードされたDOCTYPEの代わりに{doctype}が必要になる(feature
@@ -278,7 +301,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>新ユーザー登録の通知メールにリモートサービスを使っているかについての情報がなかったことに対応した。[Dirk]</li>
   <li>XTMLを使っている際XHTML適合のために｛xmlns｝を定義した。headr.thtmlとarticle/printable.thtmlテンプレートにこの変数を入れた。</li>
   <li>トラックバック送信での'&amp;'の誤変換を修正した。(バグ#0000825)</li>
-  <li>未完成のpdfジェネレータを廃止した（過去発表したバージョンでいつも使えなかった）
+  <li>未完成のpdfジェネレータを廃止した(過去発表したバージョンでいつも使えなかった)
     [Dirk]</li>
   <li>記事が行分けのためにCRで書かれているとニュースフィードで単語がくっついてしまう問題を修正
     [Dirk]</li>
@@ -290,10 +313,10 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
     (バグ0000821) [Dirk]</li>
   <li>自動記事削除が記事のトラックバックを削除していなかった[Dirk]</li>
   <li>パーミッション管理エディターでのテンプレート変数名が確実に引き継がれるようにした[Dirk]</li>
-  <li>新パーミッション'group.assign'追加。今後ユーザーはグループに所属させる必要がある。グループ管理（ユーザー管理でなく）の一部のパーミッションパーミッションは既定値とする。(feature
+  <li>新パーミッション'group.assign'追加。今後ユーザーはグループに所属させる必要がある。グループ管理(ユーザー管理でなく)の一部のパーミッションパーミッションは既定値とする。(feature
     request #0000190) [Dirk]</li>
   <li>php要件をphp 4.3.0に上げ、php 4.1.0互換のみで動作する環境を廃止除した。[Dirk]</li>
-  <li>データベースバックアップファイル名を設定するためのマスク（ファイル名の付け方を定義）を追加[Dirk]</li>
+  <li>データベースバックアップファイル名を設定するためのマスク(ファイル名の付け方を定義)を追加[Dirk]</li>
   <li>$_CONF['pagetitle'] ハックを廃止。代わりにCOM_siteHeader('menu',
     $pagetitle)を使う[Dirk]</li>
   <li>カノニカルリンクを記事に追加[Dirk]</li>
@@ -328,7 +351,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
   <li>JPEG品質制御するコンフィギュレーションオプションを追加(機能追加
     #0000720) [Dirk]</li>
   <li>インストールスクリプトのヘブライ言語ファイルをアップデート。(LWC提供)</li>
-  <li>新セルビア語（ラテン文字）言語ファイルを新たに追加(Aleksandar
+  <li>新セルビア語(ラテン文字)言語ファイルを新たに追加(Aleksandar
     Scepanovic提供)</li>
 </ul>
 <h3>カレンダープラグイン</h3>
@@ -384,7 +407,7 @@ Geeklog 1.6.0には、以下のGoogle Summer of Code 2008における開発成�
 
 <p>このリリースでは以下のセキュリティ問題をお知らせします。</p>
 <p>Nine Situations GroupのBookooがusersettings.phpの古いバグをねらった新たなSQL
-injection被害（の可能性）について報告しています。最近対策された問題と同じく、サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き
+injection被害(の可能性)について報告しています。最近対策された問題と同じく、サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き
 取ることができましたが、このリリースで解決しました。</p>
 
 
@@ -393,7 +416,7 @@ injection被害（の可能性）について報告しています。最近対�
 
 <p>このリリースでは以下のセキュリティ問題をお知らせします。</p>
 <p>Nine Situation GroupのBookooが今回はwebservices APIを狙った新たなSQL
-injection被害（の可能性）について報告しています。最近対策された問題と同じく、サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き
+injection被害(の可能性)について報告しています。最近対策された問題と同じく、サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き
 取ることができましたが、このリリースで解決しました。</p>
 <p>セキュリティには無関係な問題</p>
 <p>再度導入されることとなったインストールスクリプトの関数get_SPX_Verですが、Geeklogを古いバージョンからアップグレードする場合にはやはり必要です。(Sheilaの報告による)
@@ -404,14 +427,14 @@ injection被害（の可能性）について報告しています。最近対�
 
 <p>このリリースでは以下のセキュリティ問題をお知らせします。</p>
 <p>Nine Situation GroupのBookooがGeeklog上で動作するglFusionでのSQL
-injection被害（の可能性）について報告しています。サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き取ることができましたが、この
+injection被害(の可能性)について報告しています。サイト攻撃者がすべてのアカウントのパスワードハッシュを抜き取ることができましたが、この
 リリースで解決しました。</p>
 
 
 <h2>Mar 30, 2009 (1.5.2sr1)</h2>
 
 <p>このリリースでは以下のセキュリティ問題をお知らせします。</p>
-<p>ほとんどの管理者画面でのqueryフォームでのXSS（クロスサイトすく李プティング）の可能性についてFernando
+<p>ほとんどの管理者画面でのqueryフォームでのXSS(クロスサイトすく李プティング)の可能性についてFernando
 Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 
 <h2>Feb 8, 2009 (1.5.2)</h2>
@@ -425,14 +448,14 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
   <li>グループドロップダウンメニューでのグループ表示で大文字小文字をくべつしないようにした[Dirk]</li>
   <li>コメントがスパムとして拒否された場合に報告メールを管理者に送った旨のメッセージを表示するようにした[Dirk]</li>
   <li>新しいパスワードでログインに失敗した場合に報告メールを管理者に送った旨のメッセージを表示するようにした[Dirk]</li>
-  <li>カレンダープラグイン用エストニア語言語ファイルをアップデート。Artur
-    Räpp提供</li>
-  <li>日本語言語ファイルをアップデート。geeklog.jpグループ提供。</li>
+  <li>カレンダープラグイン用エストニア語言語ファイルをアップデート。(Artur
+    Räpp提供)</li>
+  <li>日本語言語ファイルをアップデート。(Geeklog.jp group提供)</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
 <ul>
-  <li>静的ページを保存するときのパースエラーをfix（greenteagodの報告による）。1.5.2rc1のみで起る問題
+  <li>静的ページを保存するときのパースエラーをfix(greenteagodの報告による)。1.5.2rc1のみで起る問題
     [Dirk]</li>
 </ul>
 
@@ -474,7 +497,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
     (バグ #0000759) [Dirk]</li>
   <li>記事と静的ページの印刷画面テンプレートに言語指示を設定した。結果、言語ファイルにはこの定義がなくなったので$LANG_DIRECTIONを'ltr'に設定した。
     (バグ#0000762) [Dirk]</li>
-  <li>バッドワードチェックの誤動作の原因になっていたバッドワードリストの中央の要素（訳者追加：？）を削除した。
+  <li>バッドワードチェックの誤動作の原因になっていたバッドワードリストの中央の要素(訳者追加：？)を削除した。
     (バグ #0000763) [Dirk]</li>
   <li>記事の保存のときに「記事」タイプでなく「geeklog」タイプでフィードの更新を行うのを修正した(Tom
     Homerの報告による)</li>
@@ -502,11 +525,10 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
   <li>プラグインのアンインストール後に強制的にリフレッシュするようにし、管理者専用ブロックからそのプラグインのエントリーが消えるようにした。
     [Dirk]</li>
   <li>php4/window環境での記事の有効期限の問題を修正(zebの報告による)</li>
-  <li>スパム-Xプラグインとインストールスクリプトのヘブライ言語ファイルのアップデート。LWC提供。</li>
-  <li>日本語言語ファイルのアップデート。Geeklog.jpグループ提供。</li>
-  <li>Updated Polish language files, provided by Robert Stadnik*
-    ポーランド語言語ファイルをアップデート。Robert Stadnik提供。</li>
-  <li>リンクプラグインのスロベニア語言語ファイルをアップデート。gape提供。</li>
+  <li>スパム-Xプラグインとインストールスクリプトのヘブライ言語ファイルのアップデート。(LWC提供)</li>
+  <li>日本語言語ファイルのアップデート。(Geeklog.jp group提供)</li>
+  <li>ポーランド語言語ファイルをアップデート。(Robert Stadnik提供)</li>
+  <li>リンクプラグインのスロベニア語言語ファイルをアップデート。(gape提供)</li>
 </ul>
 
 <h3>カレンダープラグイン</h3>
@@ -523,7 +545,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 </ul>
 <h3>アンケートプラグイン</h3>
 <ul>
-  <li>デフォルト設定数を減らした。一つのアンケートでの質問数のデフォルト設定を５、一つの質問に対する答えの数を８とした。これによりSuhosinデフォルトのpost.max_vars制限に遭遇することを避ける。（新規インストールのみが対象）[Dirk]</li>
+  <li>デフォルト設定数を減らした。一つのアンケートでの質問数のデフォルト設定を５、一つの質問に対する答えの数を８とした。これによりSuhosinデフォルトのpost.max_vars制限に遭遇することを避ける。(新規インストールのみが対象)[Dirk]</li>
   <li>アンケートの質問にシングルクォート(&quot;)が含まれていた場合のSQLを修正(バグ
     #0000756)[Dirk]</li>
   <li>アンケート管理画面の投稿画面でIDのバグを修正。 (bug
@@ -564,10 +586,10 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
     [Mike]</li>
   <li>文字セットが大文字で書かれている場合に、MySQLがUTF-8をを認識しない問題を修正
     (バグ #0000731) [Dirk]</li>
-  <li>ヘブライ語言語ファイルをアップデート。LWC提供。</li>
-  <li>エストニア語言語ファイルをアップデート。Artur R辰pp提供</li>
-  <li>日本語言語ファイルをアップデート。Geeklog.jpグループ提供</li>
-  <li>スロバキア語言語ファイルアップデート。gape提供。</li>
+  <li>ヘブライ語言語ファイルをアップデート。(LWC提供)</li>
+  <li>エストニア語言語ファイルをアップデート。(Artur Räpp提供)</li>
+  <li>日本語言語ファイルをアップデート。(Geeklog.jpグループ提供)</li>
+  <li>スロバキア語言語ファイルアップデート。(gape提供)</li>
 </ul>
 
 <h2>Sep 7, 2008 (1.5.1rc1)</h2>
@@ -607,7 +629,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
       [Dirk]</li>
     <li>未公開の記事にコメントできる問題を修正 (バグ#0000705)
       [Mystral_KK/Mike]</li>
-    <li>クォート記号を含むクリッカブルリンク（バグ#0000691）と省略されたURLの問題を修正
+    <li>クォート記号を含むクリッカブルリンク(バグ#0000691)と省略されたURLの問題を修正
       [Sami]</li>
     <li>テーブルのプリフィックスの問題を強制的に修正した
       (バグ #0000702) [Mike/Sami]</li>
@@ -637,7 +659,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
       (機能要望 #0000652) [Dirk]</li>
     <li>ある話題に対するフィードが存在する場合、「・・・が購読する」のオプションが可能になった。その話題の各記事のオプションブロックから選択可能(機能要望#0000154)
       [Dirk]</li>
-    <li>bug #0000671の当面の修正: 文字列の方向が'rtl'の場合、外部リンクのアイコンを表示しない（ヘブライ語）
+    <li>bug #0000671の当面の修正: 文字列の方向が'rtl'の場合、外部リンクのアイコンを表示しない(ヘブライ語)
       [Dirk, Mike]</li>
     <li>検索文字列をハイライトする場合に文字をそのままにする
       (Sami Barakat提供のパッチによる)</li>
@@ -687,7 +709,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
     <li>許可されたhtmlタグリストで、htmlタグ周辺のltr divをハードコードした。加えてhtml準拠問題を少し直した。</li>
     <li>フィードのプレーンテキストの記事にnl2brを適用してフィードリーダーに正しいフォーマットを提供するようにした。
       [バグ0000662] [Mike]</li>
-    <li>SEC_creatTokenを変更しページごとにtokenを一つだけ返すようにした（結果として個々にtokenが出来るようになる）。トラックバックのある記事でコメントを削除できない問題をこれで改善[Mike,
+    <li>SEC_creatTokenを変更しページごとにtokenを一つだけ返すようにした(結果として個々にtokenが出来るようになる)。トラックバックのある記事でコメントを削除できない問題をこれで改善[Mike,
       Dirk]</li>
     <li>Adminの記事編集画面の投稿キューで、記事のコピーを残して記事投稿が出来るようにした。この場合、記事IDも変えること。
       [Dirk, Mark Evans]</li>
@@ -748,18 +770,18 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 <ul>
   <li>デフォルトテーマ以外のテーマを使っていたユーザーがコンフィギュレーションを変更すると一時的にデフォルトテーマが見える。バグ#0000648の副作用
     [Dirk]</li>
-  <li>利便性とセキュリティを秤にかけた結果、セキュリティを優先することにした。インストールスクリプトで、データベース認証要素（db名やパスワードのこと
-    か？）をdb-config.phpから呼び出し表示することはしないことにした。デメリットは、データベースのアップグレードやgeeklogのインス
+  <li>利便性とセキュリティを秤にかけた結果、セキュリティを優先することにした。インストールスクリプトで、データベース認証要素(db名やパスワードのこと
+    か？)をdb-config.phpから呼び出し表示することはしないことにした。デメリットは、データベースのアップグレードやgeeklogのインス
     トールを再度実行する際にデータベース認証要素を再度入力しなければいけなくなった。</li>
   <li>Links plugin: The word &quot;Root&quot; wasn't taken from the language
     file for the pagetitle of the public list of links (reported by Markus
-    Wollschl辰ger) [Dirk]</li>
+    Wollschläger) [Dirk]</li>
   <li>リンクプラグイン：リンクの公開リストのページタイトルの言語ファイルから&quot;root&quot;が呼び出されていなかった。(Markus
-    Wollschl辰gerのレポートによる) [Dirk]</li>
+    Wollschlägerのレポートによる) [Dirk]</li>
   <li>管理者画面のレイアウト不整合で残っていた問題を修正。イベントのカレンダーリストとアンケートプラグイン
     (バグ#0000650) [Dirk]</li>
   <li>LWC提供によるヘブライ言語ファイルのアップデート</li>
-  <li>Markus Wollschl辰ger提供によるドイツ語言語ファイルのアップデート</li>
+  <li>Markus Wollschläger提供によるドイツ語言語ファイルのアップデート</li>
   <li>幾つかの韓国語言語ファイルの罫線にCR/LFとLFが混在していた。</li>
 </ul>
 
@@ -767,7 +789,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 
 <h3>1.5.0rc1からの変更</h3>
 <ul>
-  <li>ブランクページ（全画面表示？）ページフォーマットでの静的ページでの|線を隠した。(Tetsuko
+  <li>ブランクページ(全画面表示？)ページフォーマットでの静的ページでの|線を隠した。(Tetsuko
     Kommaの報告による) [Dirk]</li>
   <li>カレンダープラグインの日付選択とテンプレートのURL入力フィールドにdir=&quot;ltr&quot;をハードコードした
     (LWCの報告による) [Dirk]</li>
@@ -837,7 +859,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
     時々サイトイベントの投稿キューが個人イベントで投稿されるバグ[Dirk]</li>
   <li>Fixed &quot;Delete old entries&quot; option (delete checkboxes were
     missing) [Dirk]</li>
-  <li>「古いイベントの削除」オプションを修正（削除チェックボックスがなくなっていた）
+  <li>「古いイベントの削除」オプションを修正(削除チェックボックスがなくなっていた)
     [Dirk]</li>
 </ul>
 
@@ -852,9 +874,9 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
   <li>記事作成編集画面の日付時間選択部分といくつかのフィールドで文字列方向を'ltr'でハードコード指定
     (バグ#0000150)。また、Professionalテーマのhtml bodyスタイルシートから&quot;text-align:left&quot;を除去。本文文章の文字列方向変更機能に悪影響があるため。
     (LWCの報告による) [Dirk]</li>
-  <li>config.phpの情報をgeeklogドキュメント（いくつかのREADMEとソースファイル）から削除した。
+  <li>config.phpの情報をgeeklogドキュメント(いくつかのREADMEとソースファイル)から削除した。
     (バグ#0000627) [Dirk]</li>
-  <li>$_CONF配列に（内部）'subgroup'と'fieldset'エントリーをインクルードしないこと
+  <li>$_CONF配列に(内部)'subgroup'と'fieldset'エントリーをインクルードしないこと
     [Dirk]</li>
   <li>COM_numberFormatが小数点以下の桁を正しく扱っていなかった
     (バグ#0000624) [Dirk]</li>
@@ -944,7 +966,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
   <li>OpenID 1.1サポートを追加。Choplair提供。</li>
   <li>site_nameを記事テンプレートに渡すようにした。digg.comなどにアドバンスリンクを提供するcross-siteなテンプレートにできるようになった
     [Mike]</li>
-  <li>DB Backupsオプションを少々修正。全てのバックアップ（全ての.sqlファイル）をリスト化し、そこからダウンロードとファイル削除が出来るようにした
+  <li>DB Backupsオプションを少々修正。全てのバックアップ(全ての.sqlファイル)をリスト化し、そこからダウンロードとファイル削除が出来るようにした
     [Dirk]</li>
   <li>ピングとピングバック送信時のエラーチェックを修正
     [Mike, Dirk]</li>
@@ -973,7 +995,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 <ul>
   <li>ピングバック送信の際、リンク先のサイトがX-Pingbackヘッダを送っていなければ&lt;link
     rel=&quot;pingback&quot;&gt;を探す。[Dirk]</li>
-  <li>ピングバックを送る際、対象の記事で同一のリンクテキストで複数のURLを持っている場合、最後のリンクだけにピングバックを送信していた（それを改善した）[Dirk]</li>
+  <li>ピングバックを送る際、対象の記事で同一のリンクテキストで複数のURLを持っている場合、最後のリンクだけにピングバックを送信していた(それを改善した)[Dirk]</li>
   <li>プラグインの自動アンインストールを新たに導入した。プラグインのすべての要素を除去するgeeklogコア関数に特定の配列を渡す関数をプラグイン自身が動作させる。このプラグイン内蔵関数はコアコードでは不可能な追加の除去を処理することが出来る。[Oliver]</li>
   <li>カレンダの日付検索を修正(Jeffrey Hare提供のパッチによる)</li>
   <li>自動タグがノーマルブロックのみで有効にした (バグ#653)
@@ -984,7 +1006,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
     [Oliver]</li>
   <li>コメントを締め切ることが出来るようにした。つまり、現存するコメントを表示しつつも新コメントは受入れない、ということ。
     [Dirk]</li>
-  <li>現在使われている文字セットを返すCOM_getCharsetを導入（コードのダブりを回避する）。ほとんどの場合、単純に$LANG_CHARSETを使って保存するだけだが。
+  <li>現在使われている文字セットを返すCOM_getCharsetを導入(コードのダブりを回避する)。ほとんどの場合、単純に$LANG_CHARSETを使って保存するだけだが。
     [Dirk]</li>
   <li>記事にwikiテキスト投稿オプションを追加 [Oliver]</li>
   <li>スパマーがサイトに登録しているadminのemailアドレスを取得することが出来ないよう、config.phpにnoreply-emailアドレスオプションを追加
@@ -1057,7 +1079,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 </ul>
 <h3>Spam-Xプラグイン(1.1.1)</h3>
 <ul>
-  <li>編集モジュールがフランス語言語ファイルで動作していない問題を修正（Joeのレポートによる)[Dirk]</li>
+  <li>編集モジュールがフランス語言語ファイルで動作していない問題を修正(Joeのレポートによる)[Dirk]</li>
   <li>自動アンインストールの導入[Oliver]</li>
   <li>$_CONF['site_url']が空の時のSLVモジュールのエラーを修正(AA6QNの報告による)[Dirk]</li>
   <li>ブロックするIPを範囲で指定するサポートの追加。CIDRまたはx.x.x.x.-y.y.y.yで指定する。[Dirk]</li>
@@ -1071,7 +1093,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
   <li>静的ページ用の新自動タグ：staticpage_content。静的ページへのリンクの代わりに静的ページの内容を返す。[Oliver]</li>
   <li>静的ページ表示にはテンプレートを使うようにした[Oliver]</li>
   <li>自動アンインストールを導入[Oliver]</li>
-  <li>静的ページエディター（編集画面）がアドバンスエディターのテンプレートを間違った場所で探していた。初期化されていない変数が原因(k74の報告による)[Dirk]</li>
+  <li>静的ページエディター(編集画面)がアドバンスエディターのテンプレートを間違った場所で探していた。初期化されていない変数が原因(k74の報告による)[Dirk]</li>
   <li>phpで作られたコンテンツにおいても静的ページでタグの置換えが出来るようにした
     [Oliver]</li>
   <li>ページ保存後に表示する内容のオプションをコンフィギュレーションで選択できるようにした[Oliver]</li>
@@ -1087,7 +1109,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 	<li>Fixed page title after a successful batch import of users (which read "Error") [Dirk]</li>
 	<li>Back in Geeklog 1.4.0, a counter was added to the Spam-X plugin to count all deleted spam posts. The counter was only added in fresh installs of 1.4.0, though, but not when upgrading from an earlier version. Fixed that [Dirk]</li>
 	<li>In lists created from the Links and Calendar plugins, use "links-new-plugin" as the CSS class name [Oliver]</li>
-	<li>Updated Estonian language file, provided by Artur R&auml;pp</li>
+	<li>Updated Estonian language file, provided by Artur Räpp</li>
 	<li>Updated Russian language file, provided by Alexander Yurchenko</li>
 	<li>New Russian language file for the Calendar plugin, provided by Alexander Yurchenko</li>
 	<li>Updated Turkish language file, provided by Kemal Cellat</li>
@@ -1167,7 +1189,7 @@ Munozの報告がありこれを解決しました(バグ#0000841)。</p>
 	<li>Fixed SQL error with some older MySQL versions when calling up the Batch User Delete option [Oliver]</li>
 	<li>Comments always displayed the comment author's full name, even when $_CONF['show_fullname'] was set to 0 [Dirk]</li>
 	<li>Fixed 404 (caused by a request for a file named '(none)') in the user profile display when a user doesn't have a userphoto [Dirk]</li>
-	<li>New Estonian language files for Geeklog and most of the plugins, provided by Artur R&auml;pp</li>
+	<li>New Estonian language files for Geeklog and most of the plugins, provided by Artur Räpp</li>
 	<li>Updated Hebrew language file, provided by LWC</li>
 	<li>Updated Japanese language files for Geeklog and all the plugins, provided by the Geeklog Japanese group</li>
 	<li>New Russian language files for the Spam-X plugin, provided by Pavel Kovalenko</li>
@@ -1418,7 +1440,7 @@ Bugfixes:</p>
 	<li>Fixed another bug in google pagination of admin-lists [Oliver]</li>
 	<li>Fixed "wrap static page in a block" and "exit type" options in the static page editor. Also link to the "rewritten" URL from the list of static pages when URL rewriting is on [Dirk]</li>
 	<li>Fixed JavaScript error in the Admin's story editor (bug #479) [Dirk]</li>
-	<li>Fixed hard-coded paths in the check.php script and added tests for missing directories (reported by Markus Wollschlaeger) [Dirk]</li>
+	<li>Fixed hard-coded paths in the check.php script and added tests for missing directories (reported by Markus Wollschläger) [Dirk]</li>
 	<li>A humble attempt to add some semantics [Dirk]
 	<ul>
   	<li>Added rel="category tag" to a story's topic link</li>
