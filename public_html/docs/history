@@ -10,6 +10,12 @@ the 2008 Google Summer of Code:
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
 
+- Updated language file for formal German, provided by Markus Wollschläger
+
+
+Jul 12, 2009 (1.6.0rc2)
+------------
+
 Changes since 1.6.0rc1:
 - Updated FCKeditor to version 2.6.4.1 [Dirk]
 - Fixed advanced search not using start and end dates (bug #0000924, patch
