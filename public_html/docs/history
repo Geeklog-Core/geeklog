@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Jul 12, 2009 (1.6.0rc2)
+Jul 19, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -11,6 +11,7 @@ the 2008 Google Summer of Code:
 + Comment moderation and editable comments, by Jared Wenerd
 
 - Updated language file for formal German, provided by Markus Wollschläger
+- Updated Japanese language file, provided by the Geeklog.jp group
 
 
 Jul 12, 2009 (1.6.0rc2)
