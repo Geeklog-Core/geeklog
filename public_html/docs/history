@@ -10,6 +10,7 @@ the 2008 Google Summer of Code:
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
 
+Changes since 1.6.0rc2:
 - Updated language file for formal German, provided by Markus Wollschläger
 - Updated Japanese language file and documentation, provided by the
   Geeklog.jp group
