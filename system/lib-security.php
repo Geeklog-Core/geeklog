@@ -1143,7 +1143,7 @@ function SEC_checkToken()
         if($_DB_dbms != 'mssql') {
             $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
-            $sql['pgsql'] = "SELECT ((ROUND(EXTRACT(EPOCH FROM ABSTIME(created))) + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1)) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW()))) AND ttl > 0) as expired, owner_id, urlfor FROM "
+            $sql['pgsql'] = "SELECT ((UNIX_TIMESTAMP(created) + ttl) < UNIX_TIMESTAMP() AND ttl > 0)::int4 as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
         } else {
             $sql['mssql'] = "SELECT owner_id, urlfor, expired = 
