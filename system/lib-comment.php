@@ -555,7 +555,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $retval .= $template->parse( 'output', 'comment' );
         }
         $row++;
-    } while( $A = ($preview)?0:DB_fetchArray( $comments ));
+    } while( !$preview && ($A = DB_fetchArray( $comments )));
 
     return $retval;
 }
