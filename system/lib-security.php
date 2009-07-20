@@ -1098,7 +1098,7 @@ function SEC_createToken($ttl = 1200)
            . " AND (ttl > 0)";
     $sql['mysql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATE_ADD(created, INTERVAL ttl SECOND) < NOW())"
            . " AND (ttl > 0)";
-    $sql['pgsql'] = "DELETE FROM {$_TABLES['tokens']} WHERE ROUND(EXTRACT(EPOCH FROM ABSTIME(created)))::int4 + (SELECT ttl from tokens LIMIT 1) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4"
+    $sql['pgsql'] = "DELETE FROM {$_TABLES['tokens']} WHERE ROUND(EXTRACT(EPOCH FROM ABSTIME(created)))::int4 + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4"
            . " AND (ttl > 0)";                           
     DB_query($sql);
     
@@ -1143,7 +1143,7 @@ function SEC_checkToken()
         if($_DB_dbms != 'mssql') {
             $sql['mysql'] = "SELECT ((DATE_ADD(created, INTERVAL ttl SECOND) < NOW()) AND ttl > 0) as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
-            $sql['pgsql'] = "SELECT ((ROUND(EXTRACT(EPOCH FROM ABSTIME(created))) + (SELECT ttl from tokens LIMIT 1)) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW()))) AND ttl > 0) as expired, owner_id, urlfor FROM "
+            $sql['pgsql'] = "SELECT ((ROUND(EXTRACT(EPOCH FROM ABSTIME(created))) + (SELECT ttl from {$_TABLES['tokens']} LIMIT 1)) < ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW()))) AND ttl > 0) as expired, owner_id, urlfor FROM "
                . "{$_TABLES['tokens']} WHERE token='$token'";
         } else {
             $sql['mssql'] = "SELECT owner_id, urlfor, expired = 
