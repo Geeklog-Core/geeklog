@@ -170,9 +170,9 @@ CREATE TABLE {$_TABLES['featurecodes']} (
 ";
 
 $_SQL[] = "
-CREATE SEQUENCE ft_id_seq MINVALUE 0;
+CREATE SEQUENCE ft_id_seq MINVALUE 1;
 CREATE TABLE {$_TABLES['features']} (
-  ft_id smallint default nextval('ft_id_seq'),
+  ft_id smallint default nextval('ft_id_seq') ,
   ft_name varchar(20) NOT NULL default '',
   ft_descr varchar(255) NOT NULL default '',
   ft_gl_core smallint NOT NULL default '0',
