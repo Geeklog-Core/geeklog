@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Polls Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
-// | mysql_install.php                                                         |
+// | pgsql_install.php                                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
@@ -95,7 +95,7 @@ CREATE TABLE {$_TABLES['pollvoters']} (
 )
 ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('bid_seq')),1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
 
 
 // default poll
