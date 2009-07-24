@@ -604,7 +604,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             
              $sql['pgsql'] = "INSERT INTO {$_TABLES['blocks']} "
              .'(bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled,allow_autotags) '
-             ."VALUES ((SELECT NEXTVAL('bid_seq')),'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags)";
+             ."VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled,$allow_autotags)";
              
              DB_query($sql);
              $bid = DB_insertId();

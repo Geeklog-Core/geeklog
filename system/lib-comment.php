@@ -556,6 +556,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
         $row++;
     } while( !$preview && ($A = DB_fetchArray( $comments )));
+    
+
 
     return $retval;
 }
@@ -1174,7 +1176,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         
     }
 
-    $cid = DB_insertId('','comments_cid_seq');
+    $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
     DB_unlockTable($_TABLES['comments']);
 
     // notify of new comment 
