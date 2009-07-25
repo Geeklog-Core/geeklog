@@ -56,6 +56,7 @@ class Plugin {
     /**
     * @access private
     * @var boolean
+    * @deprecated no longer used
     */
     var $_expandedSearchSupport = false;
 
@@ -147,6 +148,7 @@ class Plugin {
     * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     * @param boolean $switch True if expanded search is supported otherwise false
+    * @deprecated no longer used
     *
     */
     function setExpandedSearchSupport($switch)
@@ -164,6 +166,7 @@ class Plugin {
     * @author Tony Bibbs, tony AT geeklog DOT net
     * @access public
     * @return boolean True if expanded search is supported otherwise false
+    * @deprecated no longer used
     *
     */
     function supportsExpandedSearch()
