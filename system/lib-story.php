@@ -325,7 +325,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = COM_numberFormat (sizeof( explode( ' ', strip_tags( $bodytext ))));
+            $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link',
