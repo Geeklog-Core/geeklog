@@ -1,5 +1,14 @@
 Geeklog History/Changes:
 
+??? ??, 2009 (1.6.1)
+------------
+
+- Use COM_numberFormat to format the number of registered and anonymous users
+  displayed in the Who's Online block [Dirk]
+- Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
+- For Remote Users, display their service name in the User Editor [Dirk]
+
+
 Jul 19, 2009 (1.6.0)
 ------------
 
