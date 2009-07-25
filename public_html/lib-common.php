@@ -6954,11 +6954,11 @@ function COM_getTextContent($text)
     // only now remove all HTML tags
     $text = strip_tags($text);
 
-    // replace all tabs, newlines,  and carrriage returns with spaces
+    // replace all tabs, newlines, and carrriage returns with spaces
     $text = str_replace(array("\011", "\012", "\015"), ' ', $text);
 
     // replace entities with plain spaces
-    $text = str_replace(array('&#20;', '&#160', '&nbsp;'), ' ', $text);
+    $text = str_replace(array('&#20;', '&#160;', '&nbsp;'), ' ', $text);
 
     // collapse whitespace
     $text = preg_replace('/\s\s+/', ' ', $text);
