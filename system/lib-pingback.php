@@ -270,9 +270,6 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
         }
     }
 
-    $bspace = (MBYTE_substr($before, -1) == ' ' ? true : false);
-    $aspace = (MBYTE_substr($after, 0, 1) == ' ' ? true : false);
-
     $before = trim($before);
     $after = trim($after);
 
@@ -335,11 +332,11 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
         }
 
         // actual link text
-        if (!empty($before) && $bspace) {
+        if (!empty($before)) {
             $retval .= ' ';
         }
         $retval .= $linktext;
-        if (!empty($after) && $aspace) {
+        if (!empty($after)) {
             $retval .= ' ';
         }
 
