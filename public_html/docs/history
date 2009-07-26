@@ -3,6 +3,11 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- When creating Pingback excerpts, convert the other site's content to our
+  site's character set, when necessary [Dirk]
+- New function COM_getTextContent converts HTML into continuous text. Used for
+  a more accurate "read more" count for articles and to improve the text
+  excerpts for search results and pingbacks [Dirk]
 - Use COM_numberFormat to format the number of registered and anonymous users
   displayed in the Who's Online block [Dirk]
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
