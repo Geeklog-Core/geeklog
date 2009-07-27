@@ -100,7 +100,7 @@ function userprofile($user, $msg = 0, $plugin = '')
     $A = DB_fetchArray ($result);
 
     if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights ('user.edit')) {
-        COM_outputMessageAndAbort (30, '', 403, 'Forbidden');
+        COM_displayMessageAndAbort (30, '', 403, 'Forbidden');
     }
 
     $display_name = htmlspecialchars(COM_getDisplayName($user, $A['username'],

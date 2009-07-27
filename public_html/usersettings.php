@@ -969,7 +969,7 @@ function saveuser($A)
              . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
-        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['email'] = COM_applyFilter ($A['email']);

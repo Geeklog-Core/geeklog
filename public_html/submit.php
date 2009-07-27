@@ -97,7 +97,7 @@ function submissionform($type='story', $mode = '', $topic = '')
                 $formresult = PLG_showSubmitForm($type);
                 if ($formresult == false) {
                     COM_errorLog("Someone tried to submit an item to the $type-plugin, which cannot be found.", 1);
-                    COM_outputMessageAndAbort (79, '', 410, 'Gone');
+                    COM_displayMessageAndAbort (79, '', 410, 'Gone');
                 } else {
                     $retval .= $formresult;
                 }
@@ -292,7 +292,7 @@ function savestory ($A)
     if ($result > 0)
     {
         COM_updateSpeedlimit ('submit');
-        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     COM_updateSpeedlimit ('submit');

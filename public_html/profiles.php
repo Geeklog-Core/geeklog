@@ -104,7 +104,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
             if ($result > 0) {
                 COM_updateSpeedlimit ('mail');
-                COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+                COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
             }
 
             $msg = PLG_itemPreSave ('contact', $message);
@@ -327,7 +327,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     $result = PLG_checkforSpam ($mailtext, $_CONF['spamx']);
     if ($result > 0) {
         COM_updateSpeedlimit ('mail');
-        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $mailtext .= '------------------------------------------------------------'
