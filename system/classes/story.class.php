@@ -1957,6 +1957,8 @@ class Story
      */
     function _sanitizeData()
     {
+        global $_CONF;
+
         if (empty($this->_hits)) {
             $this->_hits = 0;
         }
@@ -1983,6 +1985,11 @@ class Story
             $this->_show_topic_icon = 1;
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
+        }
+
+        if (empty($this->_comment_expire)) {
+            $this->_comment_expire = $this->_date
+                            + ($_CONF['article_comment_close_days'] * 86400);
         }
     }
 // End Private Methods.
