@@ -390,10 +390,11 @@ $display = '';
 
 // note that 'type' _may_ come in through $_GET even when the
 // other parameters are in $_POST
-if (isset ($_POST['type'])) {
-    $type = COM_applyFilter ($_POST['type']);
-} else {
-    $type = COM_applyFilter ($_GET['type']);
+$type = '';
+if (isset($_POST['type'])) {
+    $type = COM_applyFilter($_POST['type']);
+} elseif (isset($_GET['type'])) {
+    $type = COM_applyFilter($_GET['type']);
 }
 
 $mode = '';

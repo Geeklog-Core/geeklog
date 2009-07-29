@@ -949,7 +949,11 @@ class Story
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_statuscode = 0;
             $this->_show_topic_icon = $_CONF['show_topic_icon'];
-            $this->_owner_id = $_USER['uid'];
+            if (isset($_USER['uid'])) {
+                $this->_owner_id = $_USER['uid'];
+            } else {
+                $this->_owner_id = 1;
+            }
             $this->_group_id = $T['group_id'];
             $this->_perm_owner = $T['perm_owner'];
             $this->_perm_group = $T['perm_group'];
