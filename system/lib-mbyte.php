@@ -45,7 +45,7 @@ function MBYTE_languageList ($charset = 'utf-8')
 
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
-
+	
     while (($file = @readdir ($fd)) !== false) {
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
@@ -77,12 +77,14 @@ function MBYTE_languageList ($charset = 'utf-8')
         }
     }
     asort ($language);
-
-    return $language;
+	
+    return $language;	
 }
 
+
 // replacement functions for UTF-8 functions
-function MBYTE_checkEnabled()
+// $test, $enabled parameters only relevant for the PHPUnit test suite
+function MBYTE_checkEnabled($test = '', $enabled = true)
 {
     global $LANG_CHARSET;
 
@@ -90,21 +92,30 @@ function MBYTE_checkEnabled()
 
     if (!isset($mb_enabled)) {
         $mb_enabled = false;
-        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {
-            if (function_exists('mb_eregi_replace')) {
-                $mb_enabled = mb_internal_encoding('UTF-8');
-            }
+        if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {			
+			if($test == '') {
+			// Normal situation in live environment
+            	if (function_exists('mb_eregi_replace')) {
+                	$mb_enabled = mb_internal_encoding('UTF-8');
+				}
+				
+            } elseif($test == 'test') {
+				// Just for tests, true if we want function to exist
+				if($enabled) {
+					$mb_enabled = mb_internal_encoding('UTF-8');
+				}
+			}
         }
     }
-
+	
     return $mb_enabled;
-}
+}	
 
 
 function MBYTE_strlen($str)
 {
     static $mb_enabled;
-
+	
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
