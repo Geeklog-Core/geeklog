@@ -245,7 +245,7 @@ function contactform ($uid, $subject = '', $message = '')
             $mail_template->set_var('lang_subject', $LANG08[13]);
             $mail_template->set_var('subject', $subject);
             $mail_template->set_var('lang_message', $LANG08[14]);
-            $mail_template->set_var('message', $message);
+            $mail_template->set_var('message', htmlspecialchars($message));
             $mail_template->set_var('lang_nohtml', $LANG08[15]);
             $mail_template->set_var('lang_submit', $LANG08[16]);
             $mail_template->set_var('uid', $uid);
@@ -442,7 +442,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
     $mail_template->set_var('toemail', $toemail);
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
-    $mail_template->set_var('shortmsg', $shortmsg);
+    $mail_template->set_var('shortmsg', htmlspecialchars($shortmsg));
     $mail_template->set_var('lang_warning', $LANG08[22]);
     $mail_template->set_var('lang_sendmessage', $LANG08[16]);
     $mail_template->set_var('story_id',$sid);
