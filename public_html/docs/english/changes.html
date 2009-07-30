@@ -16,6 +16,25 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes160sr1">Geeklog 1.6.0sr1</a></h2>
+
+<p>This release addresses the following security issues:</p>
+<ol>
+<li>Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+    email a story to a friend.</li>
+<li>The "Mail Story to a Friend" function didn't check story permissions, so
+    that it was possible to email a story even if you didn't have the
+    permissions to view it on the site.</li>
+</ol>
+
+<p>Other fixes:</p>
+<ul>
+<li>Fixed an SQL error when submitting a story and the story submission queue
+    was off.</li>
+<li>Fixed calls to a nonexistent function <code>COM_outputMessageAndAbort</code>.</li>
+</ul>
+
+
 <h2><a name="changes160">Geeklog 1.6.0</a></h2>
 
 <h3>Results from the Summer of Code</h3>
@@ -51,6 +70,18 @@ looking into upgrading to PHP 5 anyway.</li>
 <p>This release also includes a number of patches and improvements made by
 students applying for participation in the Google Summer of Code 2009. Thank
 you!</p>
+
+
+<h2><a name="changes152sr5">Geeklog 1.5.2sr5</a></h2>
+
+<p>This release addresses the following security issues:</p>
+<ol>
+<li>Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+    email a story to a friend.</li>
+<li>The "Mail Story to a Friend" function didn't check story permissions, so
+    that it was possible to email a story even if you didn't have the
+    permissions to view it on the site.</li>
+</ol>
 
 
 <h2><a name="changes152sr4">Geeklog 1.5.2sr4</a></h2>

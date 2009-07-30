@@ -14,6 +14,23 @@ Geeklog History/Changes:
 - For Remote Users, display their service name in the User Editor [Dirk]
 
 
+Jul 30, 2009 (1.6.0sr1)
+------------
+
+This release addresses the following security issues:
+- Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+  email a story to a friend.
+- The "Mail Story to a Friend" function didn't check story permissions, so that
+  it was possible to email a story even if you didn't have the permissions to
+  view it on the site.
+
+Not security-related:
+- Fixed an SQL error (due to a non-initialized variable; not exploitable) when
+  the story submission queue was off (reported by Dieter Thomas) [Dirk]
+- Fixed calls to a nonexistent function COM_outputMessageAndAbort (should have
+  been COM_displayMessageAndAbort) [Dirk]
+
+
 Jul 19, 2009 (1.6.0)
 ------------
 
@@ -347,6 +364,17 @@ Static Pages plugin
   now [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+Jul 30, 2009 (1.5.2sr5)
+------------
+
+This release addresses the following security issues:
+- Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+  email a story to a friend.
+- The "Mail Story to a Friend" function didn't check story permissions, so that
+  it was possible to email a story even if you didn't have the permissions to
+  view it on the site.
 
 
 Apr 18, 2009 (1.5.2sr4)
