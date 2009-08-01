@@ -70,7 +70,7 @@ $_REQUEST = array_merge($_GET, $_POST);
 *
 * Must make sure that the function hasn't been disabled before calling it.
 *
-*/
+*/ 
 if (function_exists('set_error_handler')) {
     if (PHP_VERSION >= 5) {
         /* Tell the error handler to use the default error reporting options.
@@ -159,6 +159,14 @@ if (! $_CONF['have_pear']) {
     }
 }
 
+/**
+* Include plugin class.
+* This is a poorly implemented class that was not very well thought out.
+* Still very necessary
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib-plugins.php' );
 
 /**
 * Include page time -- used to time how fast each page was created
@@ -185,15 +193,6 @@ $_URL = new url( $_CONF['url_rewrite'] );
 */
 
 require_once( $_CONF['path_system'] . 'classes/template.class.php' );
-
-/**
-* This is the database library.
-*
-* Including this gives you a working connection to the database
-*
-*/
-
-require_once( $_CONF['path_system'] . 'lib-database.php' );
 
 /**
 * This is the security library used for application security
@@ -229,15 +228,6 @@ $_CONF['right_blocks_in_footer'] = 1;  // use right blocks in footer
 */
 
 require_once( $_CONF['path_system'] . 'lib-custom.php' );
-
-/**
-* Include plugin class.
-* This is a poorly implemented class that was not very well thought out.
-* Still very necessary
-*
-*/
-
-require_once( $_CONF['path_system'] . 'lib-plugins.php' );
 
 /**
 * Session management library
@@ -1801,25 +1791,21 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
 * under the GPL.  This is not used very much in the code but you can use it
 * if you see fit
 *
-* @param        array       $A      Array to loop through and print values for
-* @return   string  Formated HTML List
+* @param    array   $array    Array to loop through and print values for
+* @return   string  $retval    Formatted HTML List
 *
 */
 
-function COM_debug( $A )
+function COM_debug($array)
 {
-    if( !empty( $A ))
-    {
-        $retval .= LB . '<pre><p>---- DEBUG ----</p>';
-
-        for( reset( $A ); $k = key( $A ); next( $A ))
-        {
-            $retval .= sprintf( "<li>%13s [%s]</li>\n", $k, $A[$k] );
+    $retval = '';    
+    if(!empty($array)) {
+        $retval = '<ul><pre><p>---- DEBUG ----</p>';
+        foreach($array as $k => $v) { 
+            $retval .= sprintf("<li>%13s [%s]</li>\n", $k, $v);
         }
-
-        $retval .= '<p>---------------</p></pre>' . LB;
-    }
-
+        $retval .= '<p>---------------</p></pre></ul>';
+    }    
     return $retval;
 }
 
