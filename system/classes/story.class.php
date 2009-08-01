@@ -1458,7 +1458,7 @@ class Story
      */
     function DisplayElements($item = 'title')
     {
-        global $_CONF;
+        global $_CONF, $_TABLES;
 
         $return = '';
 
@@ -1533,7 +1533,7 @@ class Story
             break;
             
         case 'commentcode':
-            //check to see if comment_time has past
+            //check to see if comment_time has passed
             if ($this->_comment_expire != 0 && (time() > $this->_comment_expire) && $this->_commentcode == 0 ) {
                 $return = 1;
                 //if comment code is not 1, change it to 1
