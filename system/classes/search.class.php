@@ -765,7 +765,8 @@ class Search {
             }
 
             if ($row['date'] != 'LF_NULL') {
-                $row['date'] = strftime($_CONF['daytime'], intval($row['date']));
+                $dt = COM_getUserDateTimeFormat(intval($row['date']));
+                $row['date'] = $dt[0];
             }
 
             if ($row['hits'] != 'LF_NULL') {
