@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- Moved leftover hard-coded text from admin/sectest.php to the language files
+  [Dirk]
 - When creating Pingback excerpts, convert the other site's content to our
   site's character set, when necessary [Dirk]
 - New function COM_getTextContent converts HTML into continuous text. Used for

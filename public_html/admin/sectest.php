@@ -335,7 +335,8 @@ if (!empty($url)) {
                                'backups ' . $LANG_SECTEST['directory']);
             @unlink($_CONF['backup_path'] . 'test.txt');
         } else {
-            $display .= '<li>Failed to create a temporary file in your backups directory. Check your directory permissions!</li>';
+            $display .= '<li>' . sprintf($LANG_SECTEST['failed_tmp'], 'backups')
+                     . '</li>';
         }
     }
 
@@ -343,7 +344,8 @@ if (!empty($url)) {
         $display .= doTest($url, 'data/test.txt', 'data directory');
         @unlink($_CONF['path_data'] . 'test.txt');
     } else {
-        $display .= '<li>' . $LANG_SECTEST['failed_bak'] . '</li>';
+        $display .= '<li>' . sprintf($LANG_SECTEST['failed_tmp'], 'data')
+                 . '</li>';
     }
 
     $display .= checkDefaultPassword();
