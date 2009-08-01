@@ -45,6 +45,23 @@ if (!SEC_hasRights('syndication.edit')) {
 }
 
 /**
+* Delete a feed's file
+*
+* @param    string  filename (without the path) of the feed
+* @return   void
+*
+*/
+function deleteFeedFile($filename)
+{
+    if (! empty($filename)) {
+        $feedfile = SYND_getFeedPath($filename);
+        if (file_exists($feedfile)) {
+            @unlink($feedfile);
+        }
+    }
+}
+
+/**
 * Toggle status of a feed from enabled to disabled and back
 *
 * @param    int     $fid    ID of the feed
@@ -55,15 +72,27 @@ function changeFeedStatus($fid_arr)
 {
     global $_TABLES;
 
+    $changes = false;
+
     // first disable all
-    DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '0'");
+    DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 0");
     if (isset($fid_arr)) {
         foreach ($fid_arr as $fid) {
-            $feed_id = addslashes (COM_applyFilter ($fid, true));
-            if (!empty ($fid)) {
+            $feed_id = addslashes(COM_applyFilter($fid, true));
+            if (!empty($fid)) {
                 // now enable those in the array
-                DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '1' WHERE fid = '$fid'");
+                DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 1 WHERE fid = '$fid'");
+                $changes = true;
             }
+        }
+    }
+
+    if ($changes) {
+        $result = DB_query("SELECT filename FROM {$_TABLES['syndication']} WHERE is_enabled = 0");
+        $num_feeds_off = DB_numRows($result);
+        for ($i = 0; $i < $num_feeds_off; $i++) {
+            list($feedfile) = DB_fetchArray($result);
+            deleteFeedFile($feedfile);
         }
     }
 }
@@ -92,7 +121,7 @@ function find_feedFormats ()
 /**
 * Return list of types available for article feeds
 *
-* @return   string   an array with id/name pairs for every feed
+* @return   array   an array with id/name pairs for every feed
 *
 */
 function get_articleFeeds()
@@ -123,6 +152,12 @@ function get_articleFeeds()
     return $options;
 }
 
+/**
+* List all feeds
+*
+* @return   string  HTML with the list of all feeds
+*
+*/
 function listfeeds()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
@@ -508,15 +543,19 @@ function savefeed ($A)
         $A[$name] = addslashes ($value);
     }
 
-    DB_save ($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
+    DB_save($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
         "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['feedlogo']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
 
     if ($A['fid'] == 0) {
-        $A['fid'] = DB_insertId ();
+        $A['fid'] = DB_insertId();
     }
-    SYND_updateFeed ($A['fid']);
+    if ($A['is_enabled'] == 1) {
+        SYND_updateFeed($A['fid']);
+    } else {
+        deleteFeedFile($A['filename']);
+    }
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/syndication.php?msg=58');
+    return COM_refresh($_CONF['site_admin_url'] . '/syndication.php?msg=58');
 }
 
 /**
@@ -533,9 +572,7 @@ function deletefeed($fid)
     if ($fid > 0) {
         $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
                                "fid = $fid");
-        if (!empty($feedfile)) {
-            @unlink(SYND_getFeedPath($feedfile));
-        }
+        deleteFeedFile($feedfile);
         DB_delete($_TABLES['syndication'], 'fid', $fid);
 
         return COM_refresh($_CONF['site_admin_url']
@@ -569,7 +606,7 @@ if ($mode == 'edit') {
                  . COM_siteFooter ();
     }
 }
-else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
+elseif (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= COM_siteHeader ('menu', $LANG33[24])
              . editfeed (0, COM_applyFilter($_REQUEST['type']))

@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- When disabling a feed, delete the feed file [Dirk]
+- Fixed an SQL error when the commentcode field was auto-updated (reported by
+  Jokke_K) [Dirk]
 - Moved leftover hard-coded text from admin/sectest.php to the language files
   [Dirk]
 - When creating Pingback excerpts, convert the other site's content to our
