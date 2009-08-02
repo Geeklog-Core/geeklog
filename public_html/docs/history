@@ -22,6 +22,8 @@ Geeklog History/Changes:
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
+- Updated Hebrew language files, provided by LWC
+
 Calendar Plugin
 ---------------
 - Avoid triggering a false spam report when submitting an event with the default
