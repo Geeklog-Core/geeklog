@@ -471,15 +471,26 @@ function plugin_savesubmission_calendar($A)
     $A['description'] = (isset($A['description']) ? $A['description'] : '');
     $A['event_type']  = (isset($A['event_type']) ? $A['event_type'] : '');
 
+    if ($A['url'] == 'http://') {
+        // remove default entry now to avoid false spam reports
+        $A['url'] = '';
+    }
+
     // pseudo-formatted event description for the spam check
-    $spamcheck = COM_createLink($A['title'], $A['url']) . '<br' . XHTML . '>'
-               . $A['location'] . '<br' . XHTML . '>' . $A['address1'] . '<br' . XHTML . '>'
-               . $A['address2'] . '<br' . XHTML . '>' . $A['city'] . ', ' . $A['zipcode']
+    $spamcheck = '';
+    if (empty($A['url'])) {
+        $spamcheck .= $title;
+    } else {
+        $spamcheck .= COM_createLink($A['title'], $A['url']);
+    }
+    $spamcheck .= '<br' . XHTML . '>' . $A['location'] . '<br' . XHTML . '>'
+               . $A['address1'] . '<br' . XHTML . '>' . $A['address2']
+               . '<br' . XHTML . '>' . $A['city'] . ', ' . $A['zipcode']
                . '<br' . XHTML . '>' . $A['description'] . '</p>';
-    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
-        COM_updateSpeedlimit ('submit');
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_updateSpeedlimit('submit');
+        COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
@@ -492,10 +503,7 @@ function plugin_savesubmission_calendar($A)
     $A['event_type'] = addslashes (strip_tags (COM_checkWords ($A['event_type'])));
     $A['title'] = addslashes ($A['title']);
 
-    $A['url'] = addslashes (COM_sanitizeUrl ($A['url']));
-    if ($A['url'] == 'http://') {
-        $A['url'] = '';
-    }
+    $A['url'] = addslashes(COM_sanitizeUrl($A['url']));
 
     if (!empty ($A['eid'])) {
         $A['eid'] = addslashes (COM_applyFilter ($A['eid']));

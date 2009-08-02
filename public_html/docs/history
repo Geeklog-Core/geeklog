@@ -20,6 +20,11 @@ Geeklog History/Changes:
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
+Calendar Plugin
+---------------
+- Avoid triggering a false spam report when submitting an event with the default
+  "http://" entry for the link still in place (bug #0000946) [Dirk]
+
 
 Jul 30, 2009 (1.6.0sr1)
 ------------
