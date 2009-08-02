@@ -386,7 +386,12 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
 }
 
 if ($error) {
-  echo '<p><a href="migrate.php">' . $LANG_BIGDUMP[30] . '</a> ' . $LANG_BIGDUMP[31] . '</p>' . LB;
+    $backurl = 'migrate.php';
+    if (! empty($language)) {
+        $backurl .= '?language=' . $language;
+    }
+    echo '<p><a href="' . $backurl . '">' . $LANG_BIGDUMP[30] . '</a> '
+         . $LANG_BIGDUMP[31] . '</p>' . LB;
 }
 
 if ($dbconnection) mysql_close();

@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- When an error occurs in bigdump.php (during migration) keep the language when
+  sending the user back to migrate.php (bug #0000943) [Dirk]
 - Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
   displaying the date and time in search results [Dirk]
 - When disabling a feed, delete the feed file [Dirk]
