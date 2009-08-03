@@ -1144,6 +1144,7 @@ class database {
     
     //thanks to php.net for this
 function array_push_associative(&$arr) {
+  $ret = 0;
   $args = func_get_args();
   foreach ($args as $arg) {
       if (is_array($arg)) {
