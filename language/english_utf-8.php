@@ -825,7 +825,9 @@ $LANG24 = array(
     85 => 'Show All',
     86 => 'Advanced Editor',
     87 => 'Story Stats',
-    88 => 'Wiki-style format'
+    88 => 'Wiki-style format',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 
@@ -1573,6 +1575,8 @@ $LANG_ADMIN = array (
     'addchild'      => 'Add child',
     'list'          => 'list',
     'list_all'      => 'List all',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',        
     'na'            => 'N/A'
 );
 
@@ -1845,6 +1849,9 @@ $LANG_confignames['Core'] = array(
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
+    'meta_tags' => "Meta Tags",
+    'meta_description' => "Default Meta Description",
+    'meta_keywords' => "Default Meta Keywords",
     'default_permissions_block' => "Block Default Permissions",
     'default_permissions_story' => "Story Default Permissions",
     'default_permissions_topic' => "Topic Default Permissions",
@@ -1949,7 +1956,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

@@ -237,6 +237,14 @@ if ($A['count'] > 0) {
                                   . $story->getSid());
         $headercode .= '<link rel="canonical" href="' . $permalink . '"'
                     . XHTML . '>';
+
+        // Meta Tags
+        If ($_CONF['meta_tags'] > 0) {
+            $meta_description  = $story->DisplayElements('meta_description');
+            $meta_keywords  = $story->DisplayElements('meta_keywords');        
+            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+        }
+
         if ($story->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {
                 $trackbackurl = TRB_makeTrackbackUrl($story->getSid());
@@ -248,6 +256,7 @@ if ($A['count'] > 0) {
                 header('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
             }
         }
+        
         $display .= COM_siteHeader('menu', $pagetitle, $headercode);
 
         if (isset($_GET['msg'])) {

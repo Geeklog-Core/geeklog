@@ -995,6 +995,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         if( empty( $topic ))
         {
             $pagetitle = $_CONF['site_slogan'];
+            $pagetitle_siteslogan = true;
         }
         else
         {
@@ -1013,7 +1014,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'page_title', $pagetitle );
     $header->set_var( 'site_name', $_CONF['site_name']);
 
-    if (COM_onFrontpage()) {
+    if (COM_onFrontpage() OR $pagetitle_siteslogan) {
         $title_and_name = $_CONF['site_name'];
         if (!empty($pagetitle)) {
             $title_and_name .= ' - ' . $pagetitle;
@@ -1213,7 +1214,69 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
-    $header->set_var( 'plg_headercode', $headercode . PLG_getHeaderCode() );
+    $headercode .= PLG_getHeaderCode();
+    
+    // Meta Tags
+    // 0 = Disabled, 1 = Enabled, 2 = Enabled but default just for homepage
+    if ($_CONF['meta_tags'] > 0) {
+        $meta_description = '';
+        $meta_keywords = '';
+        $no_meta_description = 1;
+        $no_meta_keywords = 1;
+        
+        //Find out if the meta tag description or keywords already exist in the headercode
+        if ($headercode != '') { 
+            $pattern = '/<meta ([^>]*)name="([^"\'>]*)"([^>]*)/im'; 
+            if (preg_match_all($pattern, $headercode, $matches, PREG_SET_ORDER)) {
+                // Loop through all meta tags looking for description and keywords
+                for ($i = 0; $i<count($matches) && (($no_meta_description == 1) || ($no_meta_keywords == 1)); $i++) { 
+                    $str_matches = strtolower($matches[$i][0]); 
+                    $pos = strpos($str_matches,'name='); 
+                    if (!(is_bool($pos) && !$pos)) { 
+                        $name = trim(substr($str_matches,$pos+5),'"'); 
+                        $pos = strpos($name,'"'); 
+                        $name = substr($name,0,$pos); 
+
+                        if (strcasecmp("description",$name) == 0) { 
+                            $pos = strpos($str_matches,'content='); 
+                            if (!(is_bool($pos) && !$pos)) {
+                                $no_meta_description = 0;
+                            }
+                        }
+                        if (strcasecmp("keywords",$name) == 0) { 
+                            $pos = strpos($str_matches,'content='); 
+                            if (!(is_bool($pos) && !$pos)) {
+                                $no_meta_keywords = 0;
+                            }
+                        }
+                        
+                    }
+                }
+            } 
+        }
+        
+        If (COM_onFrontpage() && $_CONF['meta_tags'] == 2) { // Display default meta tags only on home page
+            If ($no_meta_description) {
+                $meta_description = $_CONF['meta_description'];
+            }
+            If ($no_meta_keywords) {
+                $meta_keywords = $_CONF['meta_keywords'];
+            }
+        } else if ( $_CONF['meta_tags'] == 1 ) { // Display default meta tags anywhere there are no tags
+            If ($no_meta_description) {
+                $meta_description = $_CONF['meta_description'];
+            }
+            If ($no_meta_keywords) {
+                $meta_keywords = $_CONF['meta_keywords'];
+            }            
+        }
+        
+        If ($no_meta_description OR $no_meta_keywords) {
+            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+        }
+    }
+    
+    $header->set_var( 'plg_headercode', $headercode );
 
     // The following lines allow users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
@@ -6794,6 +6857,34 @@ function COM_isAnonUser($uid = '')
         return true;
     }
 }
+
+/**
+* Create Meta Tags to be used by COM_siteHeader in the headercode variable
+*
+* @param    string  $meta_description   the text for the meta description of the page being displayed
+* @param    string  $meta_keywords        the text for the meta keywords of the page being displayed
+* @return   string                         XHTML formatted text
+*
+*/
+function COM_createMetaTags($meta_description, $meta_keywords)
+{
+    global $_CONF;
+
+    $headercode ='';
+    
+    If ($_CONF['meta_tags'] > 0) {
+        if ($meta_description != '') {
+            $headercode .= LB . '<meta name="description" content="' . $meta_description . '"' . XHTML . '>';
+        }
+        if ($meta_keywords != '') {
+            $headercode .= LB . '<meta name="keywords" content="' . $meta_keywords . '"' . XHTML . '>';
+        }
+    }    
+
+    return $headercode;
+}
+
+
 
 /**
 * Convert wiki-formatted text to (X)HTML

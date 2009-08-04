@@ -314,6 +314,10 @@ function form ($A, $error = false)
             $title = htmlspecialchars (stripslashes ($A['sp_title']));
         }
         $sp_template->set_var('sp_title', $title);
+        $sp_template->set_var('lang_metadescription', $LANG_STATIC['meta_description']);
+        $sp_template->set_var('lang_metakeywords', $LANG_STATIC['meta_keywords']);
+        $sp_template->set_var('meta_description',$A['meta_description']);
+        $sp_template->set_var('meta_keywords',$A['meta_keywords']);        
         $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
         if (isset ($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
             $sp_template->set_var('onmenu_checked', 'checked="checked"');
@@ -484,6 +488,13 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
     if (isset ($A['sp_title'])) {
         $A['sp_title'] = strip_tags ($A['sp_title']);
     }
+    if (isset ($A['meta_description'])) {
+        $A['meta_description'] = strip_tags ($A['meta_description']);
+    }
+    if (isset ($A['meta_keywords'])) {
+        $A['meta_keywords'] = strip_tags ($A['meta_keywords']);
+    }    
+    
     $A['editor'] = $editor;
 
     return form ($A);
@@ -521,7 +532,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
                            $owner_id, $group_id, $perm_owner, $perm_group,
                            $perm_members, $perm_anon, $sp_php, $sp_nf,
                            $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
-                           $sp_where, $sp_inblock, $postmode)
+                           $sp_where, $sp_inblock, $postmode, $meta_description, $meta_keywords)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 
@@ -537,6 +548,8 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
                 'sp_onmenu' => $sp_onmenu,
                 'sp_label' => $sp_label,
                 'commentcode' => $commentcode,
+                'meta_description' => $meta_description,
+                'meta_keywords' => $meta_keywords,                
                 'owner_id' => $owner_id,
                 'group_id' => $group_id,
                 'perm_owner' => $perm_owner,
@@ -636,7 +649,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']) && SEC_ch
             COM_applyFilter ($_POST['sp_old_id']), $_POST['sp_centerblock'],
             $sp_help, COM_applyFilter ($_POST['sp_tid']),
             COM_applyFilter ($_POST['sp_where'], true), $_POST['sp_inblock'],
-            COM_applyFilter ($_POST['postmode']));
+            COM_applyFilter ($_POST['postmode']), 
+            $_POST['meta_description'], $_POST['meta_keywords']); 
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }

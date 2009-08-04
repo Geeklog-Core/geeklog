@@ -80,6 +80,7 @@ define('STORY_NO_ACCESS_TOPIC', -8);
 define('STORY_AL_ALPHANUM', 0);
 define('STORY_AL_NUMERIC', 1);
 define('STORY_AL_CHECKBOX', 2);
+define('STORY_AL_ANYTHING', 3);
 
 class Story
 {
@@ -106,6 +107,8 @@ class Story
      */
     var $_sid;
     var $_title;
+    var $_meta_description;
+    var $_meta_keywords;    
     var $_introtext;
     var $_bodytext;
     var $_postmode;
@@ -177,6 +180,8 @@ class Story
            'tid' => 1,
            'date' => 1,
            'title' => 1,
+           'meta_description' => 1,
+           'meta_keywords' => 1,           
            'introtext' => 1,
            'bodytext' => 1,
            'hits' => 1,
@@ -222,6 +227,16 @@ class Story
               (
                 STORY_AL_ALPHANUM,
                 '_tid'
+              ),
+           'meta_description' => array
+              (
+                STORY_AL_ANYTHING,
+                '_meta_description'
+              ),
+           'meta_keywords' => array
+              (
+                STORY_AL_ANYTHING,
+                '_meta_keywords'
               ),
            'show_topic_icon' => array
               (
@@ -459,6 +474,8 @@ class Story
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_title = '';
+            $this->_meta_description = '';
+            $this->_meta_keywords = '';            
             $this->_introtext = '';
             $this->_bodytext = '';
 
@@ -1407,7 +1424,17 @@ class Story
             $return = $this->_title; //htmlspecialchars($this->_title);
 
             break;
+            
+        case 'meta_description':
+            $return = $this->_meta_description;
 
+            break;
+
+        case 'meta_keywords':
+            $return = $this->_meta_keywords;
+
+            break;
+                    
         case 'draft_flag':
             if (isset($this->_draft_flag) && ($this->_draft_flag == 1)) {
                 $return = true;
@@ -1493,6 +1520,16 @@ class Story
 
             break;
 
+        case 'meta_description':
+            $return = $this->_meta_description;
+
+            break;
+
+        case 'meta_keywords':
+            $return = $this->_meta_keywords;
+
+            break;
+            
         case 'shortdate':
             $return = strftime($_CONF['shortdate'], $this->_date);
 
@@ -1741,6 +1778,8 @@ class Story
                 // And it's alphanumeric or numeric, filter it and use it.
                 if (($vartype == STORY_AL_ALPHANUM) || ($vartype == STORY_AL_NUMERIC)) {
                     $this->{$varname} = COM_applyFilter($array[$key], $vartype);
+                } elseif ($vartype == STORY_AL_ANYTHING) {
+                    $this->{$varname} = $array[$key];                
                 } elseif (($array[$key] === 'on') || ($array[$key] === 1)) {
                     // If it's a checkbox that is on
                     $this->{$varname} = 1;

@@ -260,6 +260,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     if (!empty($args['sp_label'])) {
         $sp_label = $args['sp_label'];
     }
+    $meta_description = $args['meta_description'];
+    $meta_keywords = $args['meta_keywords'];    
     $commentcode = $args['commentcode'];
     $owner_id = $args['owner_id'];
     $group_id = $args['group_id'];
@@ -359,9 +361,14 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $sp_title = strip_tags ($sp_title);
         $sp_label = strip_tags ($sp_label);
 
+        $meta_description = strip_tags ($meta_description);
+        $meta_keywords = strip_tags ($meta_keywords);
+
         $sp_content = addslashes ($sp_content);
         $sp_title = addslashes ($sp_title);
         $sp_label = addslashes ($sp_label);
+        $meta_description = addslashes ($meta_description);
+        $meta_keywords = addslashes ($meta_keywords);        
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
@@ -397,9 +404,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
 
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,owner_id,group_id,'
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode',$owner_id,$group_id,"
+                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
@@ -556,7 +563,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         }
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
-                      . "commentcode,owner_id,group_id,perm_owner,perm_group,"
+                      . "commentcode,meta_description,meta_keywords,owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
@@ -658,11 +665,11 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY sp_date DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,meta_description,meta_keywords,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-                ."sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,"
+                ."sp_date,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
         $result = DB_query ($sql);

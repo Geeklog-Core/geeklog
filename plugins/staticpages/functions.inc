@@ -272,8 +272,14 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
     $sp_url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
                            . $page);
-    $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>'
-                . LB;
+    $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>';
+
+    // Meta Tags
+    If ($_SP_CONF['meta_tags'] > 0) {
+        $meta_description  = stripslashes ($A['meta_description']);
+        $meta_keywords  = stripslashes ($A['meta_keywords']);
+        $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+    }
 
     if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
         $retval .= COM_siteHeader('menu', $A['sp_title'], $headercode);
@@ -994,7 +1000,7 @@ function plugin_geticon_staticpages ()
 */
 function plugin_upgrade_staticpages()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'staticpages'");
@@ -1012,6 +1018,31 @@ function plugin_upgrade_staticpages()
 
     $inst_parms = plugin_autoinstall_staticpages('staticpages');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+    
+    require_once $_CONF['path'] . 'plugins/staticpages/sql/'
+                                . $_DB_dbms . '_updates.php';
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '1.6.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            
+            update_ConfValues_1_6_0();            
+            
+            $current_version = '1.6.1';
+            break;
+
+        default:
+            $done = true;
+        }
+    }    
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'staticpages'");
 

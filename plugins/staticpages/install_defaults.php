@@ -109,6 +109,8 @@ $_SP_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 // The maximum number of items displayed when an Atom feed is requested
 $_SP_DEFAULT['atom_max_items'] = 10;
 
+// Display Meta Tags for static pages (1 = show, 0 = don't) 
+ $_SP_DEFAULT['meta_tags'] = 0;
 
 /**
 * Initialize Static Pages plugin configuration
@@ -157,7 +159,9 @@ function plugin_initconfig_staticpages()
                 0, 0, 9, 100, true, 'staticpages');
         $c->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text',
                 0, 0, null, 110, true, 'staticpages');
-
+        $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select',
+                0, 0, 0, 120, true, 'staticpages');
+        
         $c->add('fs_permissions', NULL, 'fieldset',
                 0, 1, NULL, 0, true, 'staticpages');
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],

@@ -182,6 +182,14 @@ function enablearchive(obj) {
                                         <td><input type="text" dir="ltr" size="40" maxlength="40" name="sid" value="{story_id}"{xhtml}></td>
                                     </tr>
                                     <tr>
+                                        <td valign="top" align="right">{lang_metadescription}:</td>
+                                        <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right">{lang_metakeywords}:</td>
+                                        <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+                                    </tr>                                        
+                                    <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_introtext}:</td>
                                         <td><textarea name="introtext" cols="45" rows="12" style="width:100%">{story_introtext}</textarea></td>
                                     </tr>

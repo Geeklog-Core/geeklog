@@ -53,6 +53,14 @@
             <td style="text-align:right;padding-bottom:15px;">{lang_url}:</td>
             <td style="padding-bottom:15px;">{example_url}</td>
           </tr>
+          <tr>
+              <td valign="top" align="right">{lang_metadescription}:</td>
+            <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+          </tr>
+          <tr>
+            <td valign="top" align="right">{lang_metakeywords}:</td>
+            <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+          </tr>              
            <tr>
                <td colspan="2" style="vertical-align:top;padding-top:10px;">
                     <span id="sel_toolbar" style="padding-left:15px;display:{show_adveditor};">{lang_toolbar}:&nbsp;

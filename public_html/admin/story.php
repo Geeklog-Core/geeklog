@@ -538,6 +538,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     $story_templates->set_var('story_title', $story->EditElements('title'));
+    $story_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $story_templates->set_var('meta_description', $story->EditElements('meta_description'));
+    $story_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
+    $story_templates->set_var('meta_keywords', $story->EditElements('meta_keywords'));    
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
     if(empty($currenttopic) && ($story->EditElements('tid') == '')) {
         $story->setTid(DB_getItem($_TABLES['topics'], 'tid',

@@ -310,6 +310,8 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [advanced_editor_mode] [tinyint] NOT NULL ,
     [frontpage] [tinyint] NULL ,
+    [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [owner_id] [int] NOT NULL ,
     [group_id] [int] NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,

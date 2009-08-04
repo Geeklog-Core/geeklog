@@ -12,7 +12,6 @@
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
 // |          Blaine Lang      - langmail AT sympatico DOT ca                  |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
-// |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -29,48 +28,33 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mssql_install.php,v 1.5 2008/08/12 18:13:35 mjervis Exp $
 
+/**
+* MySQL updates
+*
+* @package Staticpage
+*/
 
+$_UPDATES = array(
 
-$_SQL[] = "
-CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
-    [sp_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_uid] [int] NOT NULL ,
-    [sp_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_hits] [numeric](8, 0) NOT NULL ,
-    [sp_date] [datetime] NOT NULL ,
-    [sp_format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_onmenu] [tinyint] NOT NULL ,
-    [sp_label] [varchar] (64) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [commentcode] [numeric](4, 0) NOT NULL,
-    [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [owner_id] [numeric](8, 0) NOT NULL ,
-    [group_id] [numeric](8, 0) NOT NULL ,
-    [perm_owner] [tinyint] NOT NULL ,
-    [perm_group] [tinyint] NOT NULL ,
-    [perm_members] [tinyint] NOT NULL ,
-    [perm_anon] [tinyint] NOT NULL ,
-    [sp_centerblock] [tinyint] NOT NULL ,
-    [sp_help] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sp_where] [tinyint] NOT NULL ,
-    [sp_php] [tinyint] NOT NULL ,
-    [sp_nf] [tinyint] NULL ,
-    [sp_inblock] [tinyint] NULL  ,
-    [postmode] [varchar] (16) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-) ON [PRIMARY] 
-";
+    '1.6.0' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description TEXT NULL AFTER commentcode, ADD meta_keywords TEXT NULL AFTER meta_description"
+    )
 
-$_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
-    CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
-	CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
-	(
-		[sp_id]
-	)  ON [PRIMARY]
-";
+);
+
+function update_ConfValues_1_6_0()
+{
+    global $_CONF, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+    
+    // meta tag config options.
+    $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select', 0, 0, 0, 120, true, 'staticpages');
+
+    return true;
+}
 
 ?>
