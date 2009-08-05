@@ -526,14 +526,14 @@ $LANG09 = array(
     60 => 'pro Seite',
     61 => 'Suche korrigieren',
     62 => '#',
-    63 => 'Description',
-    64 => 'Showing %1$d - %2$d of %3$d results',
-    65 => 'Story',
-    66 => 'Comment',
-    67 => 'Show %d Results',
-    68 => 'Sort By',
-    69 => 'Titles Only',
-    70 => 'Not available ...'
+    63 => 'Beschreibung',
+    64 => 'Gezeigt werden %1$d - %2$d von %3$d Ergebnissen',
+    65 => 'Artikel',
+    66 => 'Kommentar',
+    67 => 'Zeige %d Suchergebnisse',
+    68 => 'Sortieren nach',
+    69 => 'Nur Titel durchsuchen',
+    70 => 'Nicht verfügbar ...'
 );
 
 ###############################################################################
@@ -642,8 +642,8 @@ $LANG12 = array(
     51 => 'Ort',
     52 => 'Löschen',
     53 => 'Account anlegen',
-    54 => 'Story Introduction',
-    55 => 'Story Body'
+    54 => 'Einleitung Artikel',
+    55 => 'Hauptteil Artikel'
 );
 
 ###############################################################################
