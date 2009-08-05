@@ -26,6 +26,8 @@ Geeklog History/Changes:
 
 Calendar Plugin
 ---------------
+- The number of hits for an event was reset when editing the event [Dirk]
+- When cloning an event, the number of hits for the clone should be 0 [Dirk]
 - Avoid triggering a false spam report when submitting an event with the default
   "http://" entry for the link still in place (bug #0000946) [Dirk]
 
