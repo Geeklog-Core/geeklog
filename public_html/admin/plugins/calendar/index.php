@@ -164,6 +164,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $A['allday'] = 0;
     }
 
+    $event_templates->set_var('lang_eventid', $LANG_CAL_ADMIN[34]);
     $event_templates->set_var('event_id', $A['eid']);
     $event_templates->set_var('lang_eventtitle', $LANG_ADMIN['title']);
     $A['title'] = str_replace('{','&#123;',$A['title']);
