@@ -74,13 +74,18 @@ function adduserevent ($eid)
         $cal_template->set_var('lang_event', $LANG_CAL_1[12]);
         $event_title = stripslashes($A['title']);
 
-        if (!empty ($A['url']) && ($A['url'] != 'http://')) {
-            $cal_template->set_var ('event_url', $A['url']);
+        if (!empty($A['url']) && ($A['url'] != 'http://')) {
             $event_title = COM_createLink($event_title, $A['url']);
+            $cal_template->set_var('event_url', $A['url']);
+            $cal_template->set_var('event_begin_anchortag',
+                                   '<a href="' . $A['url'] . '">');
+            $cal_template->set_var('event_end_anchortag', '</a>');
         } else {
-            $cal_template->set_var ('event_url', '');
+            $cal_template->set_var('event_url', '');
+            $cal_template->set_var('event_begin_anchortag', '');
+            $cal_template->set_var('event_end_anchortag', '');
         }
-        $cal_template->set_var ('event_title', $event_title);
+        $cal_template->set_var('event_title', $event_title);
         $cal_template->set_var('lang_starts', $LANG_CAL_1[13]);
         $cal_template->set_var('lang_ends', $LANG_CAL_1[14]);
 
@@ -553,6 +558,12 @@ default:
                 if (!empty($A['url'])) {
                     $event_title = COM_createLink($event_title, $A['url']);
                     $cal_templates->set_var('event_url', $A['url']);
+                    $cal_templates->set_var('event_begin_anchortag',
+                                            '<a href="' . $A['url'] . '">');
+                    $cal_templates->set_var('event_end_anchortag', '</a>');
+                } else {
+                    $cal_templates->set_var('event_begin_anchortag', '');
+                    $cal_templates->set_var('event_end_anchortag', '');
                 }
                 $cal_templates->set_var('event_title', $event_title);
 
