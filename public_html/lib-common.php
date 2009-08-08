@@ -3903,24 +3903,25 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         {
             $html = array_merge_recursive( $_CONF['user_html'],
                                            $_CONF['admin_html'] );
-            if( $_CONF['allow_page_breaks'] == 1 )
-            {
-                $perms = explode( ',', $permissions );
-                foreach( $perms as $p )
-                {
-                    if( substr( $p, 0, 6 ) == 'story.' )
-                    {
-                        $allow_page_break = true;
-                        break;
-                    }
-                }
-            }
         }
 
         $retval .= '<div dir="ltr" class="warningsmall">';
         foreach( $html as $tag => $attr )
         {
             $retval .= '&lt;' . $tag . '&gt;, ';
+        }
+    }
+
+    if( $_CONF['allow_page_breaks'] == 1 )
+    {
+        $perms = explode( ',', $permissions );
+        foreach( $perms as $p )
+        {
+            if( substr( $p, 0, 6 ) == 'story.' )
+            {
+                $allow_page_break = true;
+                break;
+            }
         }
     }
 
