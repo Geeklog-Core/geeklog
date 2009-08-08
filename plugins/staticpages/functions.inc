@@ -1026,6 +1026,11 @@ function plugin_upgrade_staticpages()
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.5.1':
+            // no db changes
+            $current_version = '1.6.0';
+            break;
+
         case '1.6.0':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
