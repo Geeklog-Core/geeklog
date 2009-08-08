@@ -51,7 +51,8 @@
               <td valign="top" align="right">{lang_content}:</td>
               <td>
                   <textarea name="sp_content" style="width:100%" cols="45" rows="24">{sp_content}</textarea>
-                  <br{xhtml}><span class="warningsmall">{lang_allowedhtml}</span><br{xhtml}><br{xhtml}>
+                  <br{xhtml}>
+                  {lang_allowed_html}
               </td>
           </tr>
           <tr>

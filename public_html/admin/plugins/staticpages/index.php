@@ -370,11 +370,19 @@ function form ($A, $error = false)
         }
         $sp_template->set_var('sp_content', $content);
         if ($_SP_CONF['filter_html'] == 1) {
-            $sp_template->set_var('lang_allowedhtml',
-                                  COM_allowedHTML('staticpages.edit'));
+            $allowed = COM_allowedHTML('staticpages.edit');
+            $sp_template->set_var('lang_allowedhtml', $allowed);
+            $sp_template->set_var('lang_allowed_html', $allowed);
         } else {
             $sp_template->set_var('lang_allowedhtml',
                                   $LANG_STATIC['all_html_allowed']);
+            $allowed = '<span class="warningsmall">'
+                     . $LANG_STATIC['all_html_allowed'] . ',</span>' . LB
+                     . '<div dir="ltr" class="warningsmall">';
+            $autotags = array_keys(PLG_collectTags());
+            $allowed .= '[' . implode(':], [', $autotags) . ':]';
+            $allowed .= '</div>';
+            $sp_template->set_var('lang_allowed_html', $allowed);
         }
         $sp_template->set_var ('lang_hits', $LANG_STATIC['hits']);
         if (empty ($A['sp_hits'])) {

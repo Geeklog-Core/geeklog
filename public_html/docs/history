@@ -41,6 +41,7 @@ Polls Plugin
 
 Static Pages Plugin
 -------------------
+- List available autotags in the static pages editor [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer
 
 
