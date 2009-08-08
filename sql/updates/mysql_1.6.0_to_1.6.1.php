@@ -7,11 +7,13 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD meta_description TEXT NULL AFTE
  * Add new config options
  *
  */
-function update_ConfValues()
+function update_ConfValuesFor161()
 {
     global $_CONF, $_TABLES;
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
 
     // meta tag config options.
     $c->add('meta_tags',0,'select',0,0,23,2000,TRUE);

@@ -478,7 +478,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.6.0_to_1.6.1.php';
             INST_updateDB($_SQL);
 
-            update_ConfValues();
+            update_ConfValuesFor161();
 
             $current_gl_version = '1.6.1';
             $_SQL = '';
