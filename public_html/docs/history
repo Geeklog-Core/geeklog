@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- Added support for meta tags and meta keywords, provided by Tom Homer
 - When an error occurs in bigdump.php (during migration) keep the language when
   sending the user back to migrate.php (bug #0000943) [Dirk]
 - Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
@@ -22,7 +23,7 @@ Geeklog History/Changes:
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
-- Updated Hebrew language files, provided by LWC
+- Updated Hebrew language file, provided by LWC
 
 Calendar Plugin
 ---------------
@@ -32,6 +33,15 @@ Calendar Plugin
 - When cloning an event, the number of hits for the clone should be 0 [Dirk]
 - Avoid triggering a false spam report when submitting an event with the default
   "http://" entry for the link still in place (bug #0000946) [Dirk]
+
+Polls Plugin
+------------
+- Introduced [poll:], [poll_vote:], and [poll_result:] autotags, allowing to
+  embed polls where autotags are allowed, provided by Tom Homer
+
+Static Pages Plugin
+-------------------
+- Added support for meta tags and meta keywords, provided by Tom Homer
 
 
 Jul 30, 2009 (1.6.0sr1)
