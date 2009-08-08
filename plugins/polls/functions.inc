@@ -1389,7 +1389,7 @@ function plugin_getcommenturlid_polls()
 */
 function plugin_autotags_polls ($op, $content = '', $autotag = '')
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
     
     if ($op == 'tagname' ) {
         return array('poll-vote','poll-result','poll');
