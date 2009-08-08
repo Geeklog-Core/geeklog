@@ -316,8 +316,12 @@ function form ($A, $error = false)
         $sp_template->set_var('sp_title', $title);
         $sp_template->set_var('lang_metadescription', $LANG_STATIC['meta_description']);
         $sp_template->set_var('lang_metakeywords', $LANG_STATIC['meta_keywords']);
-        $sp_template->set_var('meta_description',$A['meta_description']);
-        $sp_template->set_var('meta_keywords',$A['meta_keywords']);        
+        if (!empty($A['meta_description'])) {
+            $sp_template->set_var('meta_description', $A['meta_description']);
+        }
+        if (!empty($A['meta_keywords'])) {
+            $sp_template->set_var('meta_keywords', $A['meta_keywords']);        
+        }
         $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
         if (isset ($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
             $sp_template->set_var('onmenu_checked', 'checked="checked"');
@@ -386,7 +390,8 @@ function form ($A, $error = false)
         $sp_template->set_var( 'xhtml', XHTML );
         $sp_template->set_var( 'gltoken_name', CSRF_TOKEN );
         $sp_template->set_var( 'gltoken', SEC_createToken() );
-        $retval .= $sp_template->parse('output','form');
+        $sp_template->parse('output', 'form');
+        $retval .= $sp_template->finish($sp_template->get_var('output'));
     }
 
     return $retval;
