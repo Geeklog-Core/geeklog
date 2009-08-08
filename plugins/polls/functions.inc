@@ -1387,60 +1387,61 @@ function plugin_getcommenturlid_polls()
 * [poll-result: pid class:poll-autotag] - Width and showall not required. Class specifies the css class
 *
 */
-function plugin_autotags_polls ($op, $content = '', $autotag = '')
+function plugin_autotags_polls($op, $content = '', $autotag = '')
 {
     global $_CONF, $_TABLES;
-    
-    if ($op == 'tagname' ) {
-        return array('poll_vote','poll_result','poll');
-    } else if ($op == 'parse') {
-        $pid = COM_applyFilter ($autotag['parm1']);
-        $width = "300";
-        $showall= false;
-        
-        switch( $autotag['tag'] ) {
-            case 'poll' :
-                if (!empty ($autotag['parm2'])) { 
-                    $title = COM_applyFilter($autotag['parm2']);
-                } else {
-                    $title = DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '$pid'");
-                } 
 
-                $retval = COM_createLink($title, $_CONF['site_url'] . '/polls/index.php?pid=' . $pid . '&amp;aid=-1');
-                break;
-            case 'poll_vote' :
-            case 'poll_result' :
-                $px = explode (' ', trim ($autotag['parm2']));
-                $css_class = "poll-autotag";
-                
-                if (is_array ($px)) {
-                    foreach ($px as $part) {
-                        if (substr ($part, 0, 6) == 'class:') {
-                            $a = explode (':', $part);
-                            $css_class = $a[1];
-                        } elseif (substr ($part, 0, 8) == 'showall:') {
-                            $a = explode (':', $part);
-                            $val = $a[1];
-                            if ($val == 1) {
-                                $showall = true;
-                            }
-                        } else {
-                            break;
+    if ($op == 'tagname' ) {
+        return array('poll_vote', 'poll_result', 'poll');
+    } elseif ($op == 'parse') {
+        $pid = COM_applyFilter($autotag['parm1']);
+        $showall = false;
+
+        switch ($autotag['tag']) {
+        case 'poll':
+            if (!empty($autotag['parm2'])) {
+                $title = COM_applyFilter($autotag['parm2']);
+            } else {
+                $title = DB_getItem($_TABLES['polltopics'], 'topic',
+                                    "pid = '$pid'");
+            }
+
+            $retval = COM_createLink($title, $_CONF['site_url']
+                            . '/polls/index.php?pid=' . $pid . '&amp;aid=-1');
+            break;
+
+        case 'poll_vote':
+        case 'poll_result':
+            $px = explode(' ', trim($autotag['parm2']));
+            $css_class = "poll-autotag";
+
+            if (is_array($px)) {
+                foreach ($px as $part) {
+                    if (substr($part, 0, 6) == 'class:') {
+                        $a = explode(':', $part);
+                        $css_class = $a[1];
+                    } elseif (substr($part, 0, 8) == 'showall:') {
+                        $a = explode(':', $part);
+                        $val = $a[1];
+                        if ($val == 1) {
+                            $showall = true;
                         }
+                    } else {
+                        break;
                     }
                 }
-                
-                if ($autotag['tag'] == 'poll_vote') {
-                    $retval = POLLS_showPoll(0, $pid, $showall, 2);
-                } else {
-                    $retval = POLLS_pollResults($pid, 0,'', '', 2);
-                }
-                $retval = '<div class="'.$css_class.'">'.$retval.'</div>';
-                break;
+            }
+
+            if ($autotag['tag'] == 'poll_vote') {
+                $retval = POLLS_showPoll(0, $pid, $showall, 2);
+            } else {
+                $retval = POLLS_pollResults($pid, 0,'', '', 2);
+            }
+            $retval = '<div class="' . $css_class . '">' . $retval . '</div>';
+            break;
         }
-        
-        
-        $content = str_replace ($autotag['tagstr'], $retval, $content);
+
+        $content = str_replace($autotag['tagstr'], $retval, $content);
     }
 
     return $content;
