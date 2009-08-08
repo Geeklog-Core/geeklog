@@ -3876,7 +3876,6 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
 
     $retval = '';
 
-    $allow_page_break = false;
     if( isset( $_CONF['skip_html_filter_for_root'] ) &&
              ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
             SEC_inGroup( 'Root' ))
@@ -3912,32 +3911,28 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         }
     }
 
-    if( $_CONF['allow_page_breaks'] == 1 )
+    $with_story_perms = false;
+    $perms = explode( ',', $permissions );
+    foreach( $perms as $p )
     {
-        $perms = explode( ',', $permissions );
-        foreach( $perms as $p )
+        if( substr( $p, 0, 6 ) == 'story.' )
         {
-            if( substr( $p, 0, 6 ) == 'story.' )
-            {
-                $allow_page_break = true;
-                break;
-            }
+            $with_story_perms = true;
+            break;
         }
     }
 
-    $retval .= '[code], [raw]';
+    if ($with_story_perms) {
+        $retval .= '[code], [raw], ';
 
-    if( $allow_page_break )
-    {
-        $retval .= ', [page_break]';
+        if ($_CONF['allow_page_breaks'] == 1) {
+            $retval .= '[page_break], ';
+        }
     }
 
     // list autolink tags
-    $autotags = PLG_collectTags();
-    foreach( $autotags as $tag => $module )
-    {
-        $retval .= ', [' . $tag . ':]';
-    }
+    $autotags = array_keys(PLG_collectTags());
+    $retval .= '[' . implode(':], [', $autotags) . ':]';
     $retval .= '</div>';
 
     return $retval;
