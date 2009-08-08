@@ -2,16 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.2                                                 |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
-// | Installation SQL                                                          |
+// | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2009 by the following authors:                              |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
-// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
-// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
-// |          Dirk Haun        - dirk AT haun-online DOT de                    |
+// | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -41,7 +38,6 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER commentcode, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
     )
 
-
 );
 
 function update_ConfValues_1_6_0()
@@ -51,7 +47,7 @@ function update_ConfValues_1_6_0()
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
     $c = config::get_instance();
-    
+
     // meta tag config options.
     $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select', 0, 0, 0, 120, true, 'staticpages');
 
