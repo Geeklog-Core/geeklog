@@ -3867,56 +3867,53 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 *
 * @param    string  $permissions    comma-separated list of rights which identify the current user as an "Admin"
 * @param    boolean $list_only      true = return only the list of HTML tags
-* @return   string  HTML <span> enclosed string
-* @see function COM_checkHTML
+* @return   string                  HTML <div>/<span> enclosed string
+* @see      function COM_checkHTML
+* @todo     Bugs: The list always includes the [code], [raw], and [page_break]
+*           tags when story.* permissions are required, even when those tags
+*           are not actually available (e.g. in comments on stories).
+*
 */
-function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
+function COM_allowedHTML($permissions = 'story.edit', $list_only = false)
 {
     global $_CONF, $LANG01;
 
     $retval = '';
 
-    if( isset( $_CONF['skip_html_filter_for_root'] ) &&
-             ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
-            SEC_inGroup( 'Root' ))
-    {
-        if( !$list_only )
-        {
-            $retval .= '<span class="warningsmall">' . $LANG01[123] . ',</span> ';
+    if (isset($_CONF['skip_html_filter_for_root']) &&
+             ($_CONF['skip_html_filter_for_root'] == 1) &&
+            SEC_inGroup('Root')) {
+
+        if (!$list_only) {
+            $retval .= '<span class="warningsmall">' . $LANG01[123]
+                    . ',</span> ';
         }
         $retval .= '<div dir="ltr" class="warningsmall">';
-    }
-    else
-    {
-        if( !$list_only )
-        {
+
+    } else {
+
+        if (! $list_only) {
             $retval .= '<span class="warningsmall">' . $LANG01[31] . '</span> ';
         }
 
-        if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
-                empty( $_CONF['admin_html'] ))
-        {
+        if (empty($permissions) || !SEC_hasRights($permissions) ||
+                empty($_CONF['admin_html'])) {
             $html = $_CONF['user_html'];
-        }
-        else
-        {
-            $html = array_merge_recursive( $_CONF['user_html'],
-                                           $_CONF['admin_html'] );
+        } else {
+            $html = array_merge_recursive($_CONF['user_html'],
+                                          $_CONF['admin_html']);
         }
 
         $retval .= '<div dir="ltr" class="warningsmall">';
-        foreach( $html as $tag => $attr )
-        {
+        foreach ($html as $tag => $attr) {
             $retval .= '&lt;' . $tag . '&gt;, ';
         }
     }
 
     $with_story_perms = false;
-    $perms = explode( ',', $permissions );
-    foreach( $perms as $p )
-    {
-        if( substr( $p, 0, 6 ) == 'story.' )
-        {
+    $perms = explode(',', $permissions);
+    foreach ($perms as $p) {
+        if (substr($p, 0, 6) == 'story.') {
             $with_story_perms = true;
             break;
         }
@@ -3930,7 +3927,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         }
     }
 
-    // list autolink tags
+    // list autotags
     $autotags = array_keys(PLG_collectTags());
     $retval .= '[' . implode(':], [', $autotags) . ':]';
     $retval .= '</div>';

@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- Only list [code], [raw] tags when story.* permissions are required [Dirk]
+- [page_break] was not listed when all HTML was allowed for Root users [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer
 - When an error occurs in bigdump.php (during migration) keep the language when
   sending the user back to migrate.php (bug #0000943) [Dirk]
