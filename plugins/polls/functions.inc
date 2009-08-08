@@ -1392,7 +1392,7 @@ function plugin_autotags_polls ($op, $content = '', $autotag = '')
     global $_CONF, $_TABLES;
     
     if ($op == 'tagname' ) {
-        return array('poll-vote','poll-result','poll');
+        return array('poll_vote','poll_result','poll');
     } else if ($op == 'parse') {
         $pid = COM_applyFilter ($autotag['parm1']);
         $width = "300";
@@ -1408,8 +1408,8 @@ function plugin_autotags_polls ($op, $content = '', $autotag = '')
 
                 $retval = COM_createLink($title, $_CONF['site_url'] . '/polls/index.php?pid=' . $pid . '&amp;aid=-1');
                 break;
-            case 'poll-vote' :
-            case 'poll-result' :
+            case 'poll_vote' :
+            case 'poll_result' :
                 $px = explode (' ', trim ($autotag['parm2']));
                 $css_class = "poll-autotag";
                 
@@ -1430,7 +1430,7 @@ function plugin_autotags_polls ($op, $content = '', $autotag = '')
                     }
                 }
                 
-                if ($autotag['tag'] == 'poll-vote') {
+                if ($autotag['tag'] == 'poll_vote') {
                     $retval = POLLS_showPoll(0, $pid, $showall, 2);
                 } else {
                     $retval = POLLS_pollResults($pid, 0,'', '', 2);
