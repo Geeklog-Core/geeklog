@@ -64,6 +64,10 @@
               <td>{sp_formateddate}</td>
           </tr>
           <tr>
+              <td align="right">{lang_hits}:</td>
+              <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
+          </tr>
+          <tr>
               <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
@@ -126,13 +130,6 @@
           </tr>
           <tr>
               <td colspan="2">{lang_permissions_msg}</td>
-          </tr>
-          <tr>
-              <td colspan="2"><hr{xhtml}></td>
-          </tr>
-          <tr>
-              <td align="right">{lang_hits}:</td>
-              <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
           </tr>
           <tr><td>&nbsp;</td></tr>
           <tr>
