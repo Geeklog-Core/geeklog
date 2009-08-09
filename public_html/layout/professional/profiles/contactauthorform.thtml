@@ -2,6 +2,10 @@
 <form action="{site_url}/profiles.php" method="post" name="contact">
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
+            <td class="alignright"><b>{lang_title}:</b></td>
+            <td>{story_link}</td>
+        </tr>
+        <tr>
             <td class="alignright"><b>{lang_fromname}:</b></td>
             <td><input type="text" name="from" size="40" maxlength="96" value="{name}"{xhtml}></td>
         </tr>

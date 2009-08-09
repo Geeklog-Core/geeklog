@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- Added a link back to the story to the "Mail Story to a Friend" form [Dirk]
 - Only list [code], [raw] tags when story.* permissions are required [Dirk]
 - [page_break] was not listed when all HTML was allowed for Root users [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer

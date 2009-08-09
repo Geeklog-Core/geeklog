@@ -456,8 +456,14 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('site_url', $_CONF['site_url']);
     $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
     $mail_template->set_var('layout_url', $_CONF['layout_url']);
-    $mail_template->set_var('start_block_mailstory2friend', COM_startBlock($LANG08[17]));
+    $mail_template->set_var('start_block_mailstory2friend',
+                            COM_startBlock($LANG08[17]));
+    $mail_template->set_var('lang_title', $LANG08[31]);
     $mail_template->set_var('story_title', $story->displayElements('title'));
+    $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
+    $mail_template->set_var('story_url', $url);
+    $link = COM_createLink($story->displayElements('title'), $url);
+    $mail_template->set_var('story_link', $link);
     $mail_template->set_var('lang_fromname', $LANG08[20]);
     $mail_template->set_var('name', $from);
     $mail_template->set_var('lang_fromemailaddress', $LANG08[21]);
@@ -471,8 +477,8 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('lang_warning', $LANG08[22]);
     $mail_template->set_var('lang_sendmessage', $LANG08[16]);
     $mail_template->set_var('story_id',$sid);
-    PLG_templateSetVars ('emailstory', $mail_template);
     $mail_template->set_var('end_block', COM_endBlock());
+    PLG_templateSetVars('emailstory', $mail_template);
     $mail_template->parse('output', 'form');
     $retval .= $mail_template->finish($mail_template->get_var('output'));
 
