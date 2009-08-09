@@ -144,7 +144,7 @@ if (isset ($_GET['msg'])) {
     $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true), $plugin);
 }
 
-if (SEC_inGroup('Root')) {
+if (SEC_inGroup('Root') && ($page == 1)) {
     $done = DB_getItem($_TABLES['vars'], 'value', "name = 'security_check'");
     if ($done != 1) {
         /**
