@@ -120,7 +120,7 @@ function form ($A, $error = false)
             $sp_template->set_var ('toolbar5', $LANG24[75]);
             $sp_template->set_var('lang_nojavascript',$LANG24[77]);
             $sp_template->set_var('lang_postmode', $LANG24[4]);
-            if ($A['postmode'] == 'adveditor') {
+            if (isset($A['postmode']) && ($A['postmode'] == 'adveditor')) {
                 $sp_template->set_var('show_adveditor','');
                 $sp_template->set_var('show_htmleditor','none');
             } else {
@@ -128,7 +128,7 @@ function form ($A, $error = false)
                 $sp_template->set_var('show_htmleditor','');
             }
             $post_options = '<option value="html" selected="selected">'.$LANG_postmodes['html'].'</option>';
-            if ($A['postmode'] == 'adveditor') {
+            if (isset($A['postmode']) && ($A['postmode'] == 'adveditor')) {
                 $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
             } else {
                 $post_options .= '<option value="adveditor">'.$LANG24[86].'</option>';
