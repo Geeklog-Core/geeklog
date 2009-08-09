@@ -118,8 +118,12 @@ function urlToCheck()
         $p = explode('/', $u2);
         if (count($p) > 1) {
             $cut = strlen($p[count($p) - 1]) + 1;
-            $url = substr($u, 0, -$cut) . '/';
+            $url = substr($u, 0, -$cut);
         }
+    }
+
+    if (!empty($url) && (substr($url, -1) == '/')) {
+        $url = substr($url, 0, -1);
     }
 
     return $url;
@@ -192,7 +196,7 @@ function doTest($baseurl, $urltocheck, $what)
     $retval = '';
 
     $retval .= '<li>';
-    $retcode = doHeadRequest($baseurl . $urltocheck, $errmsg);
+    $retcode = doHeadRequest($baseurl  . '/' . $urltocheck, $errmsg);
     if ($retcode == 777) {
         $retval .= $errmsg;
         $failed_tests++;
@@ -304,8 +308,9 @@ if (!empty($url)) {
             $instUrl = $_CONF['site_url'] . '/docs/english/install.html';
         }
         $instUrl .= '#public_html';
-        $display .= sprintf($LANG_SECTEST['public_html'],
-                      COM_createLink($LANG_SECTEST['installation'], $instUrl));
+        $display .= '<li>' . sprintf($LANG_SECTEST['public_html'],
+                      COM_createLink($LANG_SECTEST['installation'], $instUrl))
+                 . '</li>' . LB;
         $failed_tests++;
     }
 
