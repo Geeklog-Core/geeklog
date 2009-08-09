@@ -348,10 +348,6 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $introtext = $story->DisplayElements('introtext');
     $bodytext  = $story->DisplayElements('bodytext');
-    if ($story->DisplayElements('postmode') === 'wikitext') {
-        $introtext = COM_renderWikiText($introtext);
-        $bodytext  = COM_renderWikiText($bodytext);
-    }
     $introtext = COM_undoSpecialChars(strip_tags($introtext));
     $bodytext  = COM_undoSpecialChars(strip_tags($bodytext));
 
