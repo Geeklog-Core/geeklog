@@ -290,6 +290,8 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG08;
 
+    require_once $_CONF['path_system'] . 'lib-story.php';
+
     $storyurl = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $sid);
     if ($_CONF['url_rewrite']) {
         $retval = COM_refresh($storyurl . '?msg=85');
@@ -314,12 +316,12 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         return $retval;
     }
 
-    $sql = "SELECT uid,title,introtext,bodytext,commentcode,UNIX_TIMESTAMP(date) AS day,postmode FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getTopicSql('AND') . COM_getPermSql('AND');
-    $result = DB_query($sql);
-    if (DB_numRows($result) == 0) {
+    $story = new Story();
+    $result = $story->loadFromDatabase($sid, 'view');
+
+    if ($result != STORY_LOADED_OK) {
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
-    $A = DB_fetchArray($result);
 
     $shortmsg = COM_stripslashes ($shortmsg);
     $mailtext = sprintf ($LANG08[23], $from, $fromemail) . LB;
@@ -336,25 +338,34 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $mailtext .= '------------------------------------------------------------'
               . LB . LB
-              . COM_undoSpecialChars (stripslashes ($A['title'])) . LB
-              . strftime ($_CONF['date'], $A['day']) . LB;
+              . COM_undoSpecialChars($story->displayElements('title')) . LB
+              . strftime ($_CONF['date'], $story->DisplayElements('unixdate')) . LB;
 
     if ($_CONF['contributedbyline'] == 1) {
-        $author = COM_getDisplayName ($A['uid']);
+        $author = COM_getDisplayName($story->displayElements('uid'));
         $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
-    if ($A['postmode'] === 'wikitext') {
-        $mailtext .= LB
-            . COM_undoSpecialChars(stripslashes(strip_tags(COM_renderWikiText($A['introtext'])))).LB.LB
-            . COM_undoSpecialChars(stripslashes(strip_tags(COM_renderWikiText($A['bodytext'])))).LB.LB
-            . '------------------------------------------------------------'.LB;
-    } else {
-        $mailtext .= LB
-            . COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
-            . COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
-            . '------------------------------------------------------------'.LB;
+
+    $introtext = $story->DisplayElements('introtext');
+    $bodytext  = $story->DisplayElements('bodytext');
+    if ($story->DisplayElements('postmode') === 'wikitext') {
+        $introtext = COM_renderWikiText($introtext);
+        $bodytext  = COM_renderWikiText($bodytext);
     }
-    if ($A['commentcode'] == 0) { // comments allowed
+    $introtext = COM_undoSpecialChars(strip_tags($introtext));
+    $bodytext  = COM_undoSpecialChars(strip_tags($bodytext));
+
+    $introtext = str_replace(array("\012\015", "\015"), LB, $introtext);
+    $bodytext  = str_replace(array("\012\015", "\015"), LB, $bodytext);
+
+    $mailtext .= LB . $introtext;
+    if (! empty($bodytext)) {
+        $mailtext .= LB . LB . $bodytext;
+    }
+    $mailtext .= LB . LB 
+        . '------------------------------------------------------------' . LB;
+
+    if ($story->DisplayElements('commentcode') == 0) { // comments allowed
         $mailtext .= $LANG08[24] . LB
                   . COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                   . $sid . '#comments');
@@ -366,7 +377,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $mailto = COM_formatEmailAddress ($to, $toemail);
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
-    $subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
+    $subject = COM_undoSpecialChars(strip_tags('Re: '.$story->DisplayElements('title')));
 
     $sent = COM_mail ($mailto, $subject, $mailtext, $mailfrom);
     COM_updateSpeedlimit ('mail');
@@ -395,6 +406,8 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
 {
     global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
+    require_once $_CONF['path_system'] . 'lib-story.php';
+
     $retval = '';
 
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
@@ -417,9 +430,10 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
         return $retval;
     }
 
-    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getTopicSql('AND') . COM_getPermSql('AND'));
-    $A = DB_fetchArray($result);
-    if ($A['count'] == 0) {
+    $story = new Story();
+    $result = $story->loadFromDatabase($sid, 'view');
+
+    if ($result != STORY_LOADED_OK) {
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
@@ -438,11 +452,12 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
 
     $mail_template = new Template($_CONF['path_layout'] . 'profiles');
     $mail_template->set_file('form', 'contactauthorform.thtml');
-    $mail_template->set_var( 'xhtml', XHTML );
+    $mail_template->set_var('xhtml', XHTML);
     $mail_template->set_var('site_url', $_CONF['site_url']);
     $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
     $mail_template->set_var('layout_url', $_CONF['layout_url']);
     $mail_template->set_var('start_block_mailstory2friend', COM_startBlock($LANG08[17]));
+    $mail_template->set_var('story_title', $story->displayElements('title'));
     $mail_template->set_var('lang_fromname', $LANG08[20]);
     $mail_template->set_var('name', $from);
     $mail_template->set_var('lang_fromemailaddress', $LANG08[21]);
