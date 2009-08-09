@@ -277,16 +277,7 @@ function PLG_uninstall($type)
         // removing features
         $num_features = count($remvars['features']);
         for ($i = 0; $i < $num_features; $i++) {
-            $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                                    "ft_name = '{$remvars['features'][$i]}'");
-            if (!empty($access_id)) {
-                COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
-                DB_delete($_TABLES['access'], 'acc_ft_id', $access_id);
-                COM_errorLog ('...success', 1);
-                COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
-                DB_delete($_TABLES['features'], 'ft_name', $remvars['features'][$i]);
-                COM_errorLog ('...success', 1);
-            }
+            SEC_removeFeatureFromDB($remvars['features'][$i]);
         }
 
         // uninstall feeds
