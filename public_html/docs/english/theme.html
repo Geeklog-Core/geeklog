@@ -198,13 +198,37 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.1</a></h2>
 
 <ul>
+<li>Cosmetics: Made the permission checkboxes look more like an Admin list,
+    <tt>admin/common/edit_permissions.thtml</tt>. Introduced new CSS class
+    <tt>admin-list-smalltable</tt>, which is almost identical to
+    <tt>admin-list-table</tt> but without the <code>width:100%;</code></li>
 <li>Added a link back to the story to the "Mail Story to a Friend" form,
     <tt>profiles/contactauthorform.thtml</tt>. Available variables:
     <tt>{lang_title}</tt>, <tt>{story_title}</tt>, <tt>{story_url}</tt>,
     <tt>{story_link}</tt>.</tt>
+<li>Added textarea fields for meta description and meta keywords to the Story
+    Editor (<tt>admin/story/storyeditor.thtml</tt>,
+    <tt>admin/story/storyeditor_advanced.thtml</tt>).</li>
 <li>Added a <code>{remoteservice}</code> variable in
     <tt>admin/user/edituser.thtml</tt> to optionally display the name of the
     service a Remote User was using to log in.</li>
+</ul>
+
+<h3>Changes to plugin templates</h3>
+<p>Note that plugin template files are kept in a directory
+<tt>plugins/<i>pluginnname</i>/templates</tt> and not in the <tt>layout</tt>
+directory.</p>
+
+<ul>
+<li>Static Pages: In the Static Pages editor, moved the Hits display below
+    the Last Updated entry (<tt>admin/editor.thtml</tt>,
+    <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Static Pages: Added textarea fileds for meta description and meta keywords
+    in the Static Pages editor (<tt>admin/editor.thtml</tt>,
+    <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Polls: Added new CSS classes <tt>poll-autotag-message</tt>,
+    <tt>poll-autotag</tt>, <tt>poll-autotag-left</tt>, used when embedding polls
+    via the new autotags.</li>
 </ul>
 
 

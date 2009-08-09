@@ -192,6 +192,10 @@ select {
 .admin-menu-item { /* a single link in the menu */
   padding: 0px 5px 0px 5px;
 }
+.admin-list-smalltable {
+  text-align:left;
+  border-spacing:1px;
+}
 .admin-list-table {
   width:100%;
   text-align:left;

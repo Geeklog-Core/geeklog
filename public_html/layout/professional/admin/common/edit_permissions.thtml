@@ -1,16 +1,16 @@
-<table cellpadding="0" cellspacing="0">
+<table cellpadding="0" cellspacing="0" class="admin-list-smalltable">
     <tr>
-        <td colspan="2" class="edit-perm-up"><b>{owner}</b></td>
-        <td colspan="2" class="edit-perm-up"><b>{group}</b></td>
-        <td class="edit-perm-up"><b>{members}</b></td>
-        <td class="edit-perm-up"><b>{anonymous}</b></td>
+        <th colspan="2" class="edit-perm-up admin-list-headerfield">{owner}</th>
+        <th colspan="2" class="edit-perm-up admin-list-headerfield">{group}</th>
+        <th class="edit-perm-up admin-list-headerfield">{members}</th>
+        <th class="edit-perm-up admin-list-headerfield">{anonymous}</th>
     </tr>
-    <tr>
-        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
-        <td class="edit-perm-down"><b>E</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
-        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
-        <td class="edit-perm-down"><b>E</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
-        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
-        <td class="edit-perm-down"><b>R</b><br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
+    <tr class="pluginRow1">
+        <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
+        <td class="edit-perm-down admin-list-field"><b>E</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
+        <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
+        <td class="edit-perm-down admin-list-field"><b>E</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
+        <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
+        <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
     </tr>
 </table>
