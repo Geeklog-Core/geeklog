@@ -151,11 +151,9 @@ class DataBase
             }
         }
 
-        if ($this->_pgsql_version >= 7.4) {
-            if ($this->_charset == 'utf-8') {
-                pg_query($this->_db,"SET NAMES 'UTF8'"); //only pgsql > 7.4 supports utf8
-            }
-        }
+         if ($this->_pgsql_version >= 7.4 && $this->_charset == 'utf-8') {
+                    pg_query($this->_db,"SET NAMES 'UTF8'");
+                }
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n***leaving database->_connect***");
@@ -338,20 +336,17 @@ class DataBase
     */
     function dbQuery($sql,$ignore_errors=0)
     {
-        if ($this->isVerbose()) {
+        //if ($this->isVerbose()) {
             $this->_errorlog("\n***inside database->dbQuery***");
             $this->_errorlog("\n*** sql to execute is $sql ***");
-        }
+        //}
         /* Replace some non ANSI keywords */
         if(preg_match('#LIMIT ([0-9]+),([\\s])?([0-9]+)#',$sql,$matches))
         {
             $sql = str_replace($matches[0],'LIMIT '.$matches[3].' OFFSET '.$matches[1],$sql); 
-            echo $sql;    
         }
         // Run query
         if ($ignore_errors == 1) {
-            echo $sql;
-                    print_r(debug_backtrace());
 
             $result = pg_query($this->_db,$sql);
         } else {
@@ -473,8 +468,8 @@ class DataBase
                     next($value);
                 }
             } else {
-                // error, they both have to be arrays and of the
-                // same size
+                // error, they both have to be arrays and of the same size
+                COM_errorLog("The columns ($id) do not match the value count ($value)"); 
                 return false;
             }
         } else {
@@ -665,11 +660,11 @@ class DataBase
     {
         if(!empty($sequence))
         {
-            $result = pg_query('SELECT NEXTVAL(\''.$sequence.'\'); ');    
+            $result = pg_query('SELECT CURRVAL(\''.$sequence.'\'); ');    
         }
         else
         {
-            $result = pg_query('SELECT lastval();');    
+            $result = pg_query('SELECT LASTVAL();');    
         }
         $row = pg_fetch_row($result);
         unset($result);
@@ -766,27 +761,21 @@ class DataBase
         $result = pg_get_result($this->_db);
         if($this->_pgsql_version>=7.4)
         {
-          if(pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE))
-          {
-              $this->_errorlog('You have an error in your SQL query on line'.pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE)."<br/> SQL in question: $sql");
-             return('Error:'.pg_result_error_field($result,PGSQL_DIAG_SQLSTATE).'<br/>Description:'.pg_result_error_field($result,PGSQL_DIAG_MESSAGE_DETAIL));
-          }
-          return;  
-        }
-        else
-        {
-        if (pg_result_error($result)) {
-            $this->_errorlog(pg_result_error($result) . ". SQL in question: $sql");        
-            if ($this->_display_error) 
+            if(pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE)) //this provides a much more detailed error report
             {
-                return  'Error'.pg_result_error($result);
-            } else
-             {
-                return 'An SQL error has occurred. Please see error.log for details.';
-             }
+              $this->_errorlog('You have an error in your SQL query on line'.pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE)."<br/> SQL in question: $sql");
+             $error = 'Error:'.pg_result_error_field($result,PGSQL_DIAG_SQLSTATE).'<br/>Description:'.pg_result_error_field($result,PGSQL_DIAG_MESSAGE_DETAIL);
+            }
+            else {$error = "An SQL error has occurred in the following SQL : $sql.";}
         }
-  
-        return;
+         else
+         {
+            if (pg_result_error($result)) {
+                $this->_errorlog(pg_result_error($result) . ". SQL in question: $sql");        
+                if ($this->_display_error) {$error = 'Error'.pg_result_error($result);} 
+                else{$error = "An SQL error has occurred in the following SQL : $sql.";}
+            }
+        return $error;
         }
     }
     

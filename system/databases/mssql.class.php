@@ -616,7 +616,7 @@ class database {
                 }
             } else {
                 // error, they both have to be arrays and of the
-                // same size
+                // same size 
                 return false;
             }
         } else {
@@ -964,7 +964,7 @@ class database {
     * your code should ALWAYS call this function with its resource identifier otherwise you'll just pull off the 
     * last insertted ID which MAY or MAY NOT be the one from YOUR specific insert.  You've been warned!
     */
-    function dbInsertId($link_identifier ='')
+    function dbInsertId($link_identifier ='',$sequence='')
     {
      
        if ($link_identifier ==''){  //wow is this dangerous...  

@@ -369,12 +369,10 @@ if ($failed_tests > 0) {
     $display .= '<p class="warningsmall"><strong>'
              . $LANG_SECTEST['please_fix'] . '</strong></p>';
 
-    //DB_save($_TABLES['vars'], 'name,value', "'security_check','0'");
     DB_query("UPDATE {$_TABLES['vars']} SET name='security_check', value ='0'");
 } else {
     $display .= '<p>' . $LANG_SECTEST['please_note'] . '</p>';
 
-    //DB_save($_TABLES['vars'], 'name,value', "'security_check','1'");
     DB_query("UPDATE {$_TABLES['vars']} SET name='security_check', value ='1'");
 
 }

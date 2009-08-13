@@ -265,32 +265,13 @@ function DB_delete($table,$id,$value,$return_page='')
 */
 function DB_getItem($table,$what,$selection='')
 {
-    global $_DB_dbms;
-    if($_DB_dbms=='mysql')
-    {
-        if (!empty($selection)) {
-            $result = DB_query("SELECT $what FROM $table WHERE $selection");
-        } else {
-            $result = DB_query("SELECT $what FROM $table");
-        }
-        $ITEM = DB_fetchArray($result, true);
-        return $ITEM[0];
+    if (!empty($selection)) {
+        $result = DB_query("SELECT $what FROM $table WHERE $selection");
+    } else {
+        $result = DB_query("SELECT $what FROM $table");
     }
-    elseif($_DB_dbms=='pgsql')
-    {
-        $result = DB_query("SELECT check_table('$table', 'public');");
-        $row=DB_fetchArray($result);
-        if(!empty($row[0]))
-        {     //table exists
-             if(!empty($selection)) {$result = DB_query("SELECT $what FROM $table WHERE $selection");}
-             else {$result = DB_query("SELECT $what FROM $table");}
-             
-             $ITEM = DB_fetchArray($result, true);
-             return $ITEM[0];   
-        }
-    }
-    else{ COM_errorLog ('Unknown DB selected', 3);}
-    
+    $ITEM = DB_fetchArray($result, true);
+    return $ITEM[0];
 }
 
 /**

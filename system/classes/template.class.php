@@ -82,7 +82,7 @@ class Template
   * @var       int
   * @access    public
   */
-  var $debug    = 4;
+  var $debug    = false;
 
  /**
   * The base directory from which template files are loaded.
@@ -91,7 +91,7 @@ class Template
   * @access    private
   * @see       set_root
   */
-  var $root     = '';
+  var $root     = '.';
 
  /**
   * A hash of strings forming a translation table which translates variable names
@@ -159,8 +159,7 @@ class Template
   * @access    public
   * @return    void
   */
-  function Template($root='.', $unknowns = 'remove') {
- 
+  function Template($root = '.', $unknowns = 'remove') {
     if ($this->debug & 4) {
       echo "<p><b>Template:</b> root = $root, unknowns = $unknowns</p>\n";
     }
@@ -474,10 +473,10 @@ class Template
       return false;
     }
     
-    $varkeys = array_map(
-        create_function('$a', 'return "{" . $a . "}";'),
-        array_keys($this->varvals)
-    );
+	$varkeys = array_map(
+		create_function('$a', 'return "{" . $a . "}";'),
+		array_keys($this->varvals)
+	);
     $str = $this->get_var($varname);
     $str = str_replace($varkeys, array_values($this->varvals), $str);
     return $str;

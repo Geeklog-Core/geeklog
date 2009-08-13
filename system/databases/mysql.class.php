@@ -668,7 +668,7 @@ class database {
     * @return   int                             Returns last auto-generated ID
     *
     */
-    function dbInsertId($link_identifier = '')
+    function dbInsertId($link_identifier = '',$sequence='')
     {
         if (empty($link_identifier)) {
             return @mysql_insert_id();

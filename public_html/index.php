@@ -260,7 +260,12 @@ if (!empty($U['tids'])) {
 $sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
 
 if ($newstories) {
-    $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
+    
+    $sql['mysql'] .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
+    $sql['pgsql'] .= "AND (date >= (NOW(), INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
+    $sql['pgsql'] .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
+
+
 }
 
 $offset = ($page - 1) * $limit;
@@ -303,7 +308,6 @@ $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
 if ( $A = DB_fetchArray( $result ) ) {
-    $varme= 'inside fetcha rray';
     $story = new Story();
     $story->loadFromArray($A);
     if ( $_CONF['showfirstasfeatured'] == 1 ) {
@@ -342,7 +346,6 @@ if ( $A = DB_fetchArray( $result ) ) {
         $display .= COM_printPageNavigation ($base_url, $page, $num_pages);
     }
 } else { // no stories to display
-    $varme = 'not in fetch array!';
     if (!isset ($_CONF['hide_no_news_msg']) ||
             ($_CONF['hide_no_news_msg'] == 0)) {
         $display .= COM_startBlock ($LANG05[1], '',
