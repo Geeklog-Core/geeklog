@@ -1042,10 +1042,10 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
  * @param    int         $pid        ID of parent comment
  * @param    string      $type       Type of comment this is (article, polls, etc)
  * @param    string      $postmode   Indicates if text is HTML or plain text
- * @return   int         0 for success, > 0 indicates error
+ * @return   int         -1 == queued, 0 == comment saved, > 0 indicates error
  *
  */
-function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
+function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
 
@@ -1133,7 +1133,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
                     "'$sid',$uid,'$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}','$type'");
         }
 
-        $ret = -1;
+        $ret = -1; // comment queued
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
         
@@ -1200,11 +1200,15 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
         }
     }
 
-    // Send notification of comment if no errors and notications enabled for comments
-    if (($ret == 0) && isset ($_CONF['notification']) &&
-            in_array ('comment', $_CONF['notification'])) {
-        CMT_sendNotification ($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
-                          $type, $cid);
+    // Send notification of comment if no errors and notifications enabled
+    // for comments
+    if ((($ret == -1) || ($ret == 0)) && isset($_CONF['notification']) &&
+            in_array('comment', $_CONF['notification'])) {
+        if ($ret == -1) {
+            $cid = 0; // comment went into the submission queue
+        }
+        CMT_sendNotification($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
+                             $type, $cid);
     }
     
     return $ret;
@@ -1218,12 +1222,12 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
 * @param    $uid        int         user id
 * @param    $ipaddress  string      poster's IP address
 * @param    $type       string      type of comment ('article', 'poll', ...)
-* @param    $cid        int         comment id
+* @param    $cid        int         comment id (or 0 when in submission queue)
 *
 */
 function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 {
-    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09;
+    global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09;
 
     // we have to undo the addslashes() call from savecomment()
     $title = stripslashes ($title);
@@ -1255,8 +1259,13 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
         $mailbody .= $comment . "\n\n";
     }
 
-    $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+    if ($cid == 0) {
+        $mailbody .= $LANG01[10] . ' <' . $_CONF['site_admin_url']
+                  . "/moderation.php>\n\n";
+    } else {
+        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+                  . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
+    }
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
