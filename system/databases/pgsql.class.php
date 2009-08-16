@@ -388,42 +388,71 @@ class DataBase
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside database->dbSave ***");
         }
-        $sql ='SELECT COUNT(*) FROM '.$table;
+        $sql = "SELECT COUNT(*) FROM $table";
         $result = $this->dbQuery($sql);
         $row = pg_fetch_row($result);
-        if($row[0]==0)
+        if($row[0]==0) //nothing in the table yet
         {
-           $sql='INSERT INTO '.$table.'('.$fields.') VALUES('.$values.')'; 
+            $sql="INSERT INTO $table($fields) VALUES($values)";  
         }
         else
         {
-            $fields = explode(',',$fields);              
-            $values = explode(',',$values);
-            if(count($fields)==count($values) && count($fields)>0)
+            unset($row); unset($result);
+            $fields_array = explode(',',$fields);
+            $values_array = explode(',',$values);
+            $row = array();              
+            $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
+                    WHERE pg_class.oid = \''.$table.'\'::regclass AND 
+                    indrelid = pg_class.oid AND
+                    pg_attribute.attrelid = pg_class.oid AND 
+                    pg_attribute.attnum = any(pg_index.indkey)
+                    GROUP BY pg_attribute.attname, pg_attribute.attnum;';
+      
+            $result = $this->dbQuery($sql);
+            while($fetched = pg_fetch_row($result))
             {
-                $things='';
-                $counter = count($fields);
-                for($i=0;$i<$counter;$i++)
-                {
-                    if(($i+1)==$counter)
-                    {
-                        $things .= $fields[$i].'='.$values[$i];
-                    }
-                    else
-                    {
-                        $things .= $fields[$i].'='.$values[$i].', ';   
-                    }  
-                }
-                $sql='UPDATE '.$table.' SET '.$things;
+             $row[] = $fetched;   
             }
-            else
+            $counter=count($row);
+            if(!empty($row[0]))
             {
-                if ($this->isVerbose()) {
-                $this->_errorlog("\n*** Field count doesnt match value count or empty ***");
-                }   
-            }  
+                $key = array_search($row[0][0],$fields_array);
+                if($key!==FALSE) //$fields contains the primary key already
+                {
+                 $sql = "DELETE FROM $table WHERE {$row[0][0]}='{$values_array[$key]}'";
+                 $result = $this->dbQuery($sql);
+                }
+                elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
+                {
+                    $where_clause='';
+                    for($x=1;$x<$counter;$x++)
+                    {
+                        $key = array_search($row[$x][0],$fields_array);
+                        if($key!==FALSE)
+                        {
+                            $values_array[$key] = str_replace('\'','',$values_array[$key]);
+                            $values_array[$key] = str_replace('"','',$values_array[$key]);
+                            if($x==$counter-1){$where_clause .="{$row[$x][0]} ='{$values_array[$key]}'"; }
+                            else{$where_clause .="{$row[$x][0]} ='{$values_array[$key]}' AND ";}
+                        }
+                    }
+                    $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
+                    $result = $this->dbQuery($sql);
+                    $row2 = pg_fetch_row($result);
+                    if($row2[0]!=0){$sql = "DELETE FROM $table WHERE $where_clause'";}
+                    
+                    $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+                }
+                else
+                {
+                    COM_errorLog("There was a problem saving this DB_save call: $fields,$values"); 
+                }
+            }
+            else //no keys to worry about
+            {
+                $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+            }
         }
-        //$sql = "REPLACE INTO $table ($fields) VALUES ($values)";
 
         $this->dbQuery($sql);
 
@@ -660,7 +689,8 @@ class DataBase
     {
         if(!empty($sequence))
         {
-            $result = pg_query('SELECT CURRVAL(\''.$sequence.'\'); ');    
+            $result = @pg_query('SELECT CURRVAL(\''.$sequence.'\'); ');
+            if($result==FALSE) {$result = @pg_query('SELECT NEXTVAL(\''.$sequence.'\'); ');}    
         }
         else
         {
