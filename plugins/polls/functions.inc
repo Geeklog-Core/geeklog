@@ -1383,8 +1383,8 @@ function plugin_getcommenturlid_polls()
 /**
 * Poll Autotags
 * [poll: pid] - Displays a link to a poll using the Poll Topic as the title. A alternate title may be specified. 
-* [poll-vote: pid pid class:poll-autotag showall:1] - Width and showall not required. Class specifies the css class and Showall if set to 1, shows all questions
-* [poll-result: pid class:poll-autotag] - Width and showall not required. Class specifies the css class
+* [poll_vote: pid pid class:poll-autotag showall:1] - Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions
+* [poll_result: pid class:poll-autotag] - Class not required. Class specifies the css class
 *
 */
 function plugin_autotags_polls($op, $content = '', $autotag = '')

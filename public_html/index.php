@@ -131,6 +131,18 @@ if($topic)
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
             . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
             . '" title="Microsummary"' . XHTML . '>';
+
+    // Meta Tags
+    If ($_CONF['meta_tags'] > 0) {
+        $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
+        $A = DB_fetchArray ($result);
+
+        $meta_description = stripslashes($A['meta_description']);
+        $meta_keywords = stripslashes($A['meta_keywords']);
+        //$meta_description = stripslashes( DB_getItem( $_TABLES['topics'], 'meta_description', "tid = '$topic'" ));
+        //$meta_keywords = stripslashes( DB_getItem( $_TABLES['topics'], 'meta_keywords', "tid = '$topic'" ));
+        $header .=  COM_createMetaTags($meta_description, $meta_keywords);
+    }
 } else {
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
             . '/index.php?display=microsummary" title="Microsummary"' . XHTML . '>';

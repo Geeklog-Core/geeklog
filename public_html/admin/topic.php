@@ -174,6 +174,11 @@ function edittopic ($tid = '')
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']);
 
+    $topic_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $topic_templates->set_var('meta_description', stripslashes($A['meta_description']));
+    $topic_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
+    $topic_templates->set_var('meta_keywords', stripslashes($A['meta_keywords']));
+
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
     if ($A['is_default'] == 1) {
@@ -209,6 +214,8 @@ function edittopic ($tid = '')
 * @param    string  $tid            Topic ID
 * @param    string  $topic          Name of topic (what the user sees)
 * @param    string  $imageurl       (partial) URL to topic image
+* @param    string  $meta_description    Topic meta description
+* @param    string  $meta_keywords       Topic meta keywords
 * @param    int     $sortnum        number for sort order in "Topics" block
 * @param    int     $limitnews      number of stories per page for this topic
 * @param    int     $owner_id       ID of owner
@@ -221,7 +228,7 @@ function edittopic ($tid = '')
 * @param    string  $is_archive     'on' if this is the archive topic
 * @return   string                  HTML redirect or error message
 */
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
+function savetopic($tid,$topic,$imageurl,$meta_description, $meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
 {
     global $_CONF, $_TABLES, $LANG27, $MESSAGE;
 
@@ -253,6 +260,8 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
             $imageurl = '';
         }
         $topic = addslashes ($topic);
+        $meta_description = addslashes ($meta_description);
+        $meta_keywords = addslashes ($meta_keywords);
 
         if ($is_default == 'on') {
             $is_default = 1;
@@ -280,7 +289,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
             }
         }
 
-        DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck('article', $tid);
@@ -579,7 +588,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $is_archive = $_POST['is_archive'];
     }
     $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
-                           $imageurl,
+                           $imageurl, $_POST['meta_description'], $_POST['meta_keywords'],
                            COM_applyFilter ($_POST['sortnum'], true),
                            COM_applyFilter ($_POST['limitnews'], true),
                            COM_applyFilter ($_POST['owner_id'], true),

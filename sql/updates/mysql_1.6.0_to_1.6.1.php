@@ -3,6 +3,10 @@
 // Add meta tag columns to story table 
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD meta_description TEXT NULL AFTER frontpage, ADD meta_keywords TEXT NULL AFTER meta_description";
 
+
+// Add meta tag columns to topics table 
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD meta_description TEXT NULL AFTER imageurl, ADD meta_keywords TEXT NULL AFTER meta_description";
+
 /**
  * Add new config options
  *
