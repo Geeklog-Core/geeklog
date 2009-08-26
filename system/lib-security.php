@@ -579,10 +579,10 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
     }
 
     if ($_SEC_VERBOSE) {
-        COM_errorlog('perm_owner = ' . $perm_owner, 1);
-        COM_errorlog('perm_group = ' . $perm_group, 1);
-        COM_errorlog('perm_member = ' . $perm_members, 1);
-        COM_errorlog('perm_anon = ' . $perm_anon, 1);
+        COM_errorLog('perm_owner = ' . $perm_owner, 1);
+        COM_errorLog('perm_group = ' . $perm_group, 1);
+        COM_errorLog('perm_member = ' . $perm_members, 1);
+        COM_errorLog('perm_anon = ' . $perm_anon, 1);
         COM_errorLog('**** Leaving SEC_getPermissionValues ****', 1);
     }
 

@@ -703,7 +703,7 @@ function moveBlock()
         }
 
     } else {
-        COM_errorLOG("block admin error: Attempt to move an non existing block id: $bid");
+        COM_errorLog("block admin error: Attempt to move an non existing block id: $bid");
     }
     echo COM_refresh($_CONF['site_admin_url'] . "/block.php");
     exit;
