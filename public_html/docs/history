@@ -38,6 +38,10 @@ Calendar Plugin
 - Avoid triggering a false spam report when submitting an event with the default
   "http://" entry for the link still in place (bug #0000946) [Dirk]
 
+Links Plugin
+------------
+- Fixed wrong function name in the autoinstall.php file (bug #0000954)
+
 Polls Plugin
 ------------
 - Introduced [poll:], [poll_vote:], and [poll_result:] autotags, allowing to

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -146,7 +146,7 @@ function plugin_postinstall_links($pi_name)
         $sql = str_replace('#group#', $admin_group_id, $sql);
         DB_query($sql, 1);
         if (DB_error()) {
-            COM_error("SQL error in Links plugin postinstall, SQL: " . $sql);
+            COM_errorLog("SQL error in Links plugin postinstall, SQL: " . $sql);
             return false;
         }
     }
