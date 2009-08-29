@@ -393,7 +393,7 @@ class DataBase
         $row = pg_fetch_row($result);
         if($row[0]==0) //nothing in the table yet
         {
-            $sql="INSERT INTO $table($fields) VALUES($values)";  
+            $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)"); 
         }
         else
         {
@@ -406,7 +406,7 @@ class DataBase
                     indrelid = pg_class.oid AND
                     pg_attribute.attrelid = pg_class.oid AND 
                     pg_attribute.attnum = any(pg_index.indkey)
-                    GROUP BY pg_attribute.attname, pg_attribute.attnum;';
+                    GROUP BY pg_attribute.attname,pg_class.reltype;';
       
             $result = $this->dbQuery($sql);
             while($fetched = pg_fetch_row($result))
@@ -421,6 +421,7 @@ class DataBase
                 {
                  $sql = "DELETE FROM $table WHERE {$row[0][0]}='{$values_array[$key]}'";
                  $result = $this->dbQuery($sql);
+                 $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)");
                 }
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
                 {
@@ -441,7 +442,7 @@ class DataBase
                     $row2 = pg_fetch_row($result);
                     if($row2[0]!=0){$sql = "DELETE FROM $table WHERE $where_clause'";}
                     
-                    $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+                    $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)");  
                 }
                 else
                 {
@@ -450,11 +451,10 @@ class DataBase
             }
             else //no keys to worry about
             {
-                $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+                $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)"); 
             }
         }
 
-        $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbSave ***");
