@@ -370,6 +370,9 @@ function INST_writeConfig($config_file, $db)
                 'pass' => (isset($db['pass']) ? $db['pass'] : $_DB_pass),
                 'table_prefix' => (isset($db['table_prefix']) ? $db['table_prefix'] : $_DB_table_prefix),
                 'type' => (isset($db['type']) ? $db['type'] : $_DB_dbms) );
+    if ($db['type'] == 'mysql-innodb') {
+        $db['type'] = 'mysql';
+    }
 
     // Read in db-config.php so we can insert the DB information
     $dbconfig_file = fopen($config_file, 'r');
@@ -450,6 +453,8 @@ function INST_dbExists($db)
     $db_exists = false;
     switch ($db['type']) {
     case 'mysql':
+        // deliberate fallthrough - no "break"
+    case 'mysql-innodb':
         if (@mysql_select_db($db['name'], $db_handle)) {
             return true;
         }
