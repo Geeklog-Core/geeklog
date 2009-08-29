@@ -721,7 +721,7 @@ function get_SPX_Ver()
  */
 function INST_updateDB($_SQL)
 {
-    global $progress, $_DB, $_DB_dbms;
+    global $progress, $use_innodb, $_DB, $_DB_dbms;
 
     $_SQL = INST_checkInnodbUpgrade($_SQL);
     foreach ($_SQL as $sql) {

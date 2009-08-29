@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2009 (1.6.1)
 ------------
 
+- Fixed installation using InnoDB tables [Dirk]
 - Send a notification when a comment goes into the submission queue [Dirk]
 - Added a link back to the story to the "Mail Story to a Friend" form [Dirk]
 - Only list [code], [raw] tags when story.* permissions are required [Dirk]

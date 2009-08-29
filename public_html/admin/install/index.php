@@ -47,7 +47,7 @@ require_once 'lib-upgrade.php';
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_DB_dbms, $_DB_table_prefix, $_URL, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir;
+    global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_DB_dbms, $_DB_table_prefix, $_URL, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir, $use_innodb;
 
     switch ($install_step) {
 
@@ -446,7 +446,7 @@ function INST_installEngine($install_type, $install_step)
 
                 } else {
 
-                    if (INST_createDatabaseStructures($use_innodb)) {
+                    if (INST_createDatabaseStructures()) {
                         $site_name      = isset($_POST['site_name']) ? $_POST['site_name'] : (isset($_GET['site_name']) ? $_GET['site_name'] : '') ;
                         $site_slogan    = isset($_POST['site_slogan']) ? $_POST['site_slogan'] : (isset($_GET['site_slogan']) ? $_GET['site_slogan'] : '') ;
                         $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
@@ -729,13 +729,13 @@ function INST_showReturnFormData($post_data)
 /**
  * Sets up the database tables
  *
- * @param   boolean $use_innodb     Whether to use InnoDB table support if using MySQL
  * @return  boolean                 True if successful
  *
  */
-function INST_createDatabaseStructures ($use_innodb = false)
+function INST_createDatabaseStructures()
 {
-    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $site_url;
+    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass,
+           $site_url, $use_innodb;
 
     $_DB->setDisplayError (true);
 
@@ -884,6 +884,7 @@ $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path']
 $dbconfig_path      = INST_sanitizePath($dbconfig_path);
 $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $mode               = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : '');
+$use_innodb = false;
 
 // $display holds all the outputted HTML and content
 if (defined('XHTML')) {
