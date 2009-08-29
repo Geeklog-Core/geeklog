@@ -163,7 +163,6 @@ th {
   color:#000000;
   background-color:#DAE0ED;
   font-weight:bold;
-  font-size:larger;
   padding-left:3px;
   text-align:left;
 }
@@ -218,7 +217,8 @@ select {
   text-align:left;
   padding-left:5px;
   padding-right:5px;
-  font-size:larger;
+  padding-top:2px;
+  padding-bottom:2px;
 }
 /* Menus in blocks *****************************************************************/
 .blocklist ul {
