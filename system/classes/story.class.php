@@ -581,7 +581,7 @@ class Story
      */
     function saveToDatabase()
     {
-        global $_TABLES;
+        global $_TABLES,$_DB_dbms;
 
         if (DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1") == $this->_tid) {
             $this->_featured = 0;
@@ -665,9 +665,9 @@ class Story
 
         // Get the related URLs
         $this->_related = implode("\n", STORY_extractLinks("{$this->_introtext} {$this->_bodytext}"));
-        $sql = 'REPLACE INTO ' . $_TABLES['stories'] . ' (';
-        $values = ' VALUES (';
-        reset($this->_dbFields);
+        $fields='';
+        $values = '';
+        reset($this->_dbFields); 
 
         /* This uses the database field array to generate a SQL Statement. This
          * means that when adding new fields to save and load, all we need to do
@@ -675,22 +675,42 @@ class Story
          */
         while (list($fieldname, $save) = each($this->_dbFields)) {
             if ($save === 1) {
-                $varname = '_' . $fieldname;
-                $sql .= $fieldname . ', ';
+               $varname = '_' . $fieldname;
+                $fields .= $fieldname . ', ';
                 if (($fieldname == 'date') || ($fieldname == 'expire') || ($fieldname == 'comment_expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
-                    $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
+                    if($_DB_dbms=='mysql')
+                    {
+                        $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
+                    }
+                    else
+                    {
+                       $values.= '('.$this->{$varname}.'::ABSTIME::TIMESTAMP), ';   
+                    }
                 } else {
-                    $values .= '\'' . addslashes($this->{$varname}) . '\', ';
+                    if($this->{$varname}=='')
+                    {
+                        $values.="0, ";
+                    }
+                    else
+                    {
+                        if(is_numeric($this->{$varname}))
+                        {              
+                            $values .= addslashes($this->{$varname}).', ';
+                        }
+                        else
+                        {
+                            $values .= '\''.addslashes($this->{$varname}) . '\', ';     
+                        }
+                    }
                 }
             }
         }
 
-        $sql = substr($sql, 0, strlen($sql) - 2);
+        $fields = substr($fields, 0, strlen($fields) - 2);
         $values = substr($values, 0, strlen($values) - 2);
-        $sql .= ') ' . $values . ')';
 
-        DB_query($sql);
+        DB_save($_TABLES['stories'],$fields,$values);
 
         /* Clean up the old story */
         if ($oldArticleExists) {
