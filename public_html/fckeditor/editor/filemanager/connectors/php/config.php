@@ -22,13 +22,24 @@
  * Configuration file for the File Manager Connector for PHP.
  */
 
-include ('../../../../../lib-common.php');
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'config.php') !== false) {
+    die('This file can not be used on its own!');
+}
+
+include '../../../../../lib-common.php';
 global $Config ;
 
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only
 //		authenticated users can access this file or use some kind of session checking.
-$Config['Enabled'] = true ;
+$Config['Enabled'] = false;
+if (($_CONF['advanced_editor'] == 1) && !COM_isAnonUser()) {
+    // provisional permission check - we really need a .upload permission
+    $rights = implode(',', $_RIGHTS);
+    if (strpos($rights, '.edit') !== false) {
+        $Config['Enabled'] = true;
+    }
+}
 
 
 // Path to user files relative to the document root.
@@ -125,7 +136,7 @@ $Config['ChmodOnFolderCreate'] = 0777 ;
 
 */
 
-$Config['AllowedExtensions']['File']	= array('7z', 'aiff', 'asf', 'avi', 'bmp', 'csv', 'doc', 'fla', 'flv', 'gif', 'gz', 'gzip', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'ods', 'odt', 'pdf', 'png', 'ppt', 'pxd', 'qt', 'ram', 'rar', 'rm', 'rmi', 'rmvb', 'rtf', 'sdc', 'sitd', 'swf', 'sxc', 'sxw', 'tar', 'tgz', 'tif', 'tiff', 'txt', 'vsd', 'wav', 'wma', 'wmv', 'xls', 'xml', 'zip') ;
+$Config['AllowedExtensions']['File']	= array('aiff', 'asf', 'avi', 'bmp', 'csv', 'doc', 'fla', 'flv', 'gif', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'ods', 'odt', 'pdf', 'png', 'ppt', 'pxd', 'qt', 'ram', 'rm', 'rmi', 'rmvb', 'rtf', 'sdc', 'swf', 'sxc', 'sxw', 'tif', 'tiff', 'txt', 'vsd', 'wav', 'wma', 'wmv', 'xls', 'xml') ;
 $Config['DeniedExtensions']['File']		= array() ;
 $Config['FileTypesPath']['File']		= $Config['UserFilesPath'] . 'File/' ;
 $Config['FileTypesAbsolutePath']['File']= ($Config['UserFilesAbsolutePath'] == '') ? '' : $Config['UserFilesAbsolutePath'].'file/' ;
