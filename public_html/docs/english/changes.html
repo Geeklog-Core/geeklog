@@ -16,6 +16,24 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes160sr2">Geeklog 1.6.0sr2</a></h2>
+
+<p>This release addresses the following security issue:</p>
+<ul>
+<li>Unauthorized file uploads were possible through FCKeditor.<br>
+Uploaded files still had to go through FCKeditor's filter, so it was not possible to upload scripts (and the integrity of the Geeklog site as such was not in danger). There were, however, reports that this was used to host malware.<br>
+This update prevents use of the upload feature when FCKeditor is disabled and disables it for anonymous users. It also doesn't allow uploading of archive files any more. Furthermore, you need some sort of "edit" permission now to be able to upload files through FCKeditor (this is meant as an interim measure - we will probably introduce a separate "upload" permission in future Geeklog versions).</li>
+</ul>
+
+<p>Other fixes:</p>
+<ul>
+<li>Fixed installation using InnoDB tables.</li>
+<li>Fixed a (non-exploitable) SQL error when auto-updating a story's
+    commentcode field.</li>
+<li>Fixed a wrong function name in the Links plugin.</li>
+</ul>
+
+
 <h2><a name="changes160sr1">Geeklog 1.6.0sr1</a></h2>
 
 <p>This release addresses the following security issues:</p>

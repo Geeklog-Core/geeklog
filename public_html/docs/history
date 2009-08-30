@@ -1,9 +1,8 @@
 Geeklog History/Changes:
 
-??? ??, 2009 (1.6.1)
+Oct ??, 2009 (1.6.1)
 ------------
 
-- Fixed installation using InnoDB tables [Dirk]
 - Send a notification when a comment goes into the submission queue [Dirk]
 - Added a link back to the story to the "Mail Story to a Friend" form [Dirk]
 - Only list [code], [raw] tags when story.* permissions are required [Dirk]
@@ -14,8 +13,6 @@ Geeklog History/Changes:
 - Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
   displaying the date and time in search results [Dirk]
 - When disabling a feed, delete the feed file [Dirk]
-- Fixed an SQL error when the commentcode field was auto-updated (reported by
-  Jokke_K) [Dirk]
 - Moved leftover hard-coded text from admin/sectest.php to the language files
   [Dirk]
 - When creating Pingback excerpts, convert the other site's content to our
@@ -28,8 +25,6 @@ Geeklog History/Changes:
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
-- Updated Hebrew language file, provided by LWC
-
 Calendar Plugin
 ---------------
 - Reintroduced {event_begin_anchortag} and {event_end_anchortag} variables
@@ -38,10 +33,6 @@ Calendar Plugin
 - When cloning an event, the number of hits for the clone should be 0 [Dirk]
 - Avoid triggering a false spam report when submitting an event with the default
   "http://" entry for the link still in place (bug #0000946) [Dirk]
-
-Links Plugin
-------------
-- Fixed wrong function name in the autoinstall.php file (bug #0000954)
 
 Polls Plugin
 ------------
@@ -52,6 +43,33 @@ Static Pages Plugin
 -------------------
 - List available autotags in the static pages editor [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer
+
+
+Aug 30, 2009 (1.6.0sr2)
+------------
+
+This release addresses the following security issue:
+- Unauthorized file uploads were possible through FCKeditor.
+  Uploaded files still had to go through FCKeditor's filter, so it was not
+  possible to upload scripts (and the integrity of the Geeklog site as such was
+  not in danger). There were, however, reports that this was used to host
+  malware.
+  This update prevents use of the upload feature when FCKeditor is disabled and
+  disables it for anonymous users. It also doesn't allow uploading of archive
+  files any more. Furthermore, you need some sort of "edit" permission now to
+  be able to upload files through FCKeditor (this is meant as an interim
+  measure - we will probably introduce a separate "upload" permission in future
+  Geeklog versions).
+
+Not security-related:
+- Fixed installation using InnoDB tables [Dirk]
+- Links plugin: Fixed wrong function name in the autoinstall.php file
+  (bug #0000954)
+- Fixed an SQL error (due to a missing global declaration; not exploitable) when
+  the commentcode field was auto-updated (reported by Jokke_K) [Dirk]
+
+This release also includes updated Hebrew (provided by LWC) and German language
+files.
 
 
 Jul 30, 2009 (1.6.0sr1)
