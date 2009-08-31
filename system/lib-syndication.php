@@ -387,7 +387,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         $where .= ' AND frontpage = 1';
     }
 
-    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,date_part('epoch',date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid,tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
     $content = array();
     $sids = array();

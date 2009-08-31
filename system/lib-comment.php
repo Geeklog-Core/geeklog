@@ -1662,9 +1662,8 @@ function CMT_updateCommentcodes()
         DB_query($sql);
     }
     
-    $sql['mysql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
-    $sql['mssql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
-    $sql['pgsql'] = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE date_part('epoch',comment_expire) < '".mktime()."' AND date_part('epoch',comment_expire) <> 0";
+    $sql = "UPDATE {$_TABLES['stories']} SET commentcode = 1 WHERE UNIX_TIMESTAMP(comment_expire) < UNIX_TIMESTAMP() AND UNIX_TIMESTAMP(comment_expire) <> 0";
+    
     DB_query($sql);
 }
 
