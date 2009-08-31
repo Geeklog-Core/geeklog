@@ -679,14 +679,8 @@ class Story
                 $fields .= $fieldname . ', ';
                 if (($fieldname == 'date') || ($fieldname == 'expire') || ($fieldname == 'comment_expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
-                    if($_DB_dbms=='mysql')
-                    {
-                        $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
-                    }
-                    else
-                    {
-                       $values.= '('.$this->{$varname}.'::ABSTIME::TIMESTAMP), ';   
-                    }
+                    
+                     $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
                 } else {
                     if($this->{$varname}=='')
                     {
