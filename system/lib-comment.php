@@ -1140,7 +1140,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
                          . "AND sid = '$sid'");
         list($rht, $indent) = DB_fetchArray($result);
         if ( !DB_error() ) {
-            $rht2=$rht+=1;
+            $rht2=$rht+1;
             $indent+=1;
             DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
                    . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
@@ -1160,7 +1160,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode)
             $ret = 4; // Cannot return here, tables locked!
         }
     } else {
-        $rht2=$rht+=1;
+        $rht2=$rht+1;
         $rht3=$rht+2;
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
         if ( DB_error() ) {
