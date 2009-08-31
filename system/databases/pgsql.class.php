@@ -336,10 +336,10 @@ class DataBase
     */
     function dbQuery($sql,$ignore_errors=0)
     {
-        //if ($this->isVerbose()) {
+        if ($this->isVerbose()) {
             $this->_errorlog("\n***inside database->dbQuery***");
             $this->_errorlog("\n*** sql to execute is $sql ***");
-        //}
+        }
         /* Replace some non ANSI keywords */
         if(preg_match('#LIMIT ([0-9]+),([\\s])?([0-9]+)#',$sql,$matches))
         {
@@ -808,8 +808,9 @@ class DataBase
                 if ($this->_display_error) {$error = 'Error'.pg_result_error($result);} 
                 else{$error = "An SQL error has occurred in the following SQL : $sql.";}
             }
-        return $error;
         }
+        
+        return $error;
     }
     
     /**

@@ -102,7 +102,7 @@ function INST_installEngine($install_type, $install_step)
                     $mssql_selected = ' selected="selected"';
                     break;
                 case 'pgsql':
-                    $mssql_selected = ' selected="selected"';
+                    $pgsql_selected = ' selected="selected"';
                     break;
                 default:
                     $mysql_selected = ' selected="selected"';

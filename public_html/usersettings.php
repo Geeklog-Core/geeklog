@@ -1254,8 +1254,6 @@ function userprofile ($user, $msg = 0)
             $sidArray[] = $S['sid'];
         }
     }
-     unset($sql);
-    $sql = array();
     $sidList = implode("', '",$sidArray);
     $sidList = "'$sidList'";
 
