@@ -534,6 +534,11 @@ SELECT ROUND(EXTRACT(EPOCH FROM ABSTIME(NOW())))::int4 AS result;
 ' LANGUAGE 'SQL';
 ";
 
+$_SQL[] = "CREATE OR REPLACE FUNCTION FROM_UNIXTIME(integer) RETURNS timestamp AS '
+SELECT $1::ABSTIME::TIMESTAMP AS result;
+' LANGUAGE 'SQL';
+";
+
 $_SQL[] = "CREATE OR REPLACE FUNCTION CURDATE() RETURNS date AS 'SELECT current_date AS result' LANGUAGE 'SQL';";
 
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
