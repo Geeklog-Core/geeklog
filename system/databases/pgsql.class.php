@@ -375,8 +375,8 @@ class DataBase
         /**
     * Saves information to the database
     *
-    * This will use a REPLACE INTO to save a record into the
-    * database
+    * This will try to update the data in the database if it's already found, or 
+    * insert it, similiarly to MySQL's REPLACE INTO function. 
     *
     * @param    string      $table      The table to save to
     * @param    string      $fields     string  Comma demlimited list of fields to save
@@ -391,16 +391,18 @@ class DataBase
         $sql = "SELECT COUNT(*) FROM $table";
         $result = $this->dbQuery($sql);
         $row = pg_fetch_row($result);
-        if($row[0]==0) //nothing in the table yet
+        if($row[0]==0) //nothing in the table yet, so nothing to check
         {
             $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)"); 
         }
         else
-        {
+        { //some records exist, we need to possibly remove the old record if there are duplicate keys
             unset($row); unset($result);
             $fields_array = explode(',',$fields);
             $values_array = explode(',',$values);
-            $row = array();              
+            $row = array(); 
+            //this query will return all keys, ordered by the type of key
+            // ie primary key, compound key, then then index key            
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
                     WHERE pg_class.oid = \''.$table.'\'::regclass AND 
                     indrelid = pg_class.oid AND
@@ -414,22 +416,22 @@ class DataBase
              $row[] = $fetched;   
             }
             $counter=count($row);
-            if(!empty($row[0]))
+            if(!empty($row[0])) //we found some keys
             {
                 $key = array_search($row[0][0],$fields_array);
-                if($key!==FALSE) //$fields contains the primary key already
-                {
+                if($key!==FALSE) //$fields contains the primary key already, so we can delete
+                {                //the data there directly(if it matches the current primary kay)
                  $sql = "DELETE FROM $table WHERE {$row[0][0]}='{$values_array[$key]}'";
                  $result = $this->dbQuery($sql);
                  $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)");
                 }
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
-                {
+                { //we will construct an sql search with all the keys that were passed into this function
                     $where_clause='';
                     for($x=1;$x<$counter;$x++)
                     {
                         $key = array_search($row[$x][0],$fields_array);
-                        if($key!==FALSE)
+                        if($key!==FALSE) //if we find the key column in our $fields_array, add it to the search
                         {
                             $values_array[$key] = str_replace('\'','',$values_array[$key]);
                             $values_array[$key] = str_replace('"','',$values_array[$key]);
@@ -440,7 +442,8 @@ class DataBase
                     $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
-                    if($row2[0]!=0){$sql = "DELETE FROM $table WHERE $where_clause'";}
+                    if($row2[0]!=0) //we found a duplicate key the hard way, so lets delete that row
+                    {$sql = "DELETE FROM $table WHERE $where_clause'";}
                     
                     $this->dbQuery("INSERT INTO $table ($fields) VALUES ($values)");  
                 }
