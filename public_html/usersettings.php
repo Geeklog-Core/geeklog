@@ -878,15 +878,15 @@ function saveuser($A)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
-    // If not set or possibly removed from template - initialize variable
-    if (!isset($A['cooktime'])) {
-        $A['cooktime'] = 0;
+    if (! isset($A['cooktime'])) {
+        // If not set or possibly removed from template - set to default
+        $A['cooktime'] = $_CONF['default_perm_cookie_timeout'];
     } else {
-        $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
+        $A['cooktime'] = COM_applyFilter($A['cooktime'], true);
     }
     // If empty or invalid - set to user default
     // So code after this does not fail the user password required test
-    if (empty($A['cooktime']) OR $A['cooktime'] < 0) {
+    if ($A['cooktime'] < 0) { // note that == 0 is allowed!
         $A['cooktime'] = $_USER['cookietimeout'];
     }
 
