@@ -37,6 +37,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(basename(__FILE__))) !==
     die('This file can not be used on its own!');
 }
 
+/**
+* include default config
+*/
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '../install_defaults.php';
 
 global $_XMLSMAP_DEFAULT;

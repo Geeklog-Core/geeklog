@@ -29,7 +29,7 @@
 /**
 * MySQL updates
 *
-* @package Staticpage
+* @package StaticPages
 */
 
 $_UPDATES = array(
@@ -41,6 +41,10 @@ $_UPDATES = array(
 
 );
 
+/**
+* Handle update to plugin version 1.6.0: introduce meta tags option
+*
+*/
 function update_ConfValues_1_6_0()
 {
     global $_CONF, $_SP_DEFAULT;
