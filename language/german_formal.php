@@ -1033,7 +1033,7 @@ $LANG32 = array(
     6 => 'Warnung: Plugin schon installiert!',
     7 => 'Das Plugin, das Sie installieren wollen, ist schon vorhanden. Bitte löschen Sie es, bevor Sie noch einmal versuchen, es zu installieren',
     8 => 'Plugin-Kompatibilitätstest fehlgeschlagen',
-    9 => 'Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href="http://www.geeklog.net/">Geeklog</a> oder evtl. eine andere Version dieses Plugins.',
+    9 => 'Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href="http://www.geeklog.net/">Geeklog</a>.',
     10 => '<br' . XHTML . '><b>Es sind derzeit keine Plugins installiert.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'Um ein Plugin zu ändern oder zu löschen, auf das Ändern-Symbol klicken. Es werden dann auch weitere Details, inkl. der Homepage des Plugins, angezeigt. Wenn in der Liste (s.u.) zwei Versionsnummern für ein Plugin angezeigt werden, bedeutet das, dass für das Plugin noch ein Update durchgeführt werden muss. Um ein Plugin zu installieren oder aktualisieren bitte auch immer dessen Dokumentation lesen.',
     12 => '(kein Name angegeben)',
