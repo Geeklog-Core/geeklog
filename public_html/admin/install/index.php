@@ -1242,6 +1242,7 @@ $display .= '<br' . XHTML . '><br' . XHTML . '>' . LB
     . '</body>' . LB 
     . '</html>';
 
+header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo $display;
 
 ?>

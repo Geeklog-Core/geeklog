@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Send correct content type and character set header in the install script
+  (bug #0000964, patch provided by taca)
 - The "Remember Me For" option under My Account did not recognize the "(don't)"
   option any more (bug #0000961) [Dirk]
 - Send a notification when a comment goes into the submission queue [Dirk]

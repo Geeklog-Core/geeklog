@@ -88,6 +88,7 @@ define ('TESTMODE',false);           // Set to true to process the file without 
 @ini_set('auto_detect_line_endings', true);
 @set_time_limit(0);
 
+header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo INST_getHeader($LANG_MIGRATE[17]);
 
 $error = false;

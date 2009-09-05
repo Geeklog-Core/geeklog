@@ -529,6 +529,7 @@ if (INST_phpOutOfDate()) {
 
 $display .= INST_getFooter();
 
+header('Content-Type: text/html; charset=' . COM_getCharset());
 echo $display;
 
 ?>
