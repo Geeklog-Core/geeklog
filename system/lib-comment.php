@@ -1263,7 +1263,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
         $mailbody .= $LANG01[10] . ' <' . $_CONF['site_admin_url']
                   . "/moderation.php>\n\n";
     } else {
-        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+        $mailbody .= $LANG03[39] . ' <' . $_CONF['site_url']
                   . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
     }
 
