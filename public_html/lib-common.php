@@ -309,6 +309,9 @@ if (!defined('XHTML')) {
         break;
 
     default:
+        /**
+        * @ignore
+        */
         define('XHTML', '');
         break;
     }
