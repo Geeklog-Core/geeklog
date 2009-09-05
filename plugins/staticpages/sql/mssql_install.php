@@ -33,7 +33,7 @@
 /**
 * MS SQL updates
 *
-* @package Staticpage
+* @package StaticPages
 */
 
 $_SQL[] = "

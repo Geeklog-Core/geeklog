@@ -32,7 +32,7 @@
 /**
 * MySQL install
 *
-* @package Staticpage
+* @package StaticPages
 */
 
 $_SQL[] = "
