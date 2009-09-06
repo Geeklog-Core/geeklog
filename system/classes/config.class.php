@@ -638,7 +638,16 @@ class config {
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         if (!is_array($val)) {
-            $t->set_var('value', htmlspecialchars($val));
+            if (is_float($val)) {
+                /**
+                * @todo FIXME: for Locales where the comma is the decimal
+                *              separator, patch output to a decimal point
+                *              to prevent it being cut off by COM_applyFilter
+                */
+                $t->set_var('value', str_replace(',', '.', $val));
+            } else {
+                $t->set_var('value', htmlspecialchars($val));
+            }
         }
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));

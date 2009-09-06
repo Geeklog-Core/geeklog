@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Added a workaround to not lose the XMLSitemap priorities for Locales where
+  the comma is used as the decimal separator [Dirk]
 - Keep track of actual upper/lowercase spelling of plugin names in the
   XMLSitemap plugin [mystral-kk, Dirk]
 - Added support for a CUSTOM_renderMenu function when rendering the top menu
