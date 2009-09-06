@@ -806,6 +806,8 @@ function INST_pluginExists($plugin)
 * @param    boolean $migration  whether the upgrade is part of a site migration
 * @param    array   $old_conf   old $_CONF values before the migration
 * @return   int     number of failed plugin updates (0 = everything's fine)
+* @see      PLG_upgrade
+* @see      PLG_migrate
 *
 */
 function INST_pluginUpgrades($migration = false, $old_conf = array())
@@ -820,25 +822,24 @@ function INST_pluginUpgrades($migration = false, $old_conf = array())
     for ($i = 0; $i < $numPlugins; $i++) {
         list($pi_name, $pi_version) = DB_fetchArray($result);
 
-        $code_version = PLG_chkVersion($pi_name);
-        if (! empty($code_version) && ($code_version != $pi_version)) {
-            $success = true;
+        $success = true;
+        if ($migration) {
+            $success = PLG_migrate($pi_name, $old_conf);
+        }
 
-            if ($migration) {
-                $success = PLG_migrate($pi_name, $old_conf);
-            }
-
-            if ($success === true) {
+        if ($success === true) {
+            $code_version = PLG_chkVersion($pi_name);
+            if (! empty($code_version) && ($code_version != $pi_version)) {
                 $success = PLG_upgrade($pi_name);
             }
+        }
 
-            if ($success !== true) {
-                // upgrade failed - disable plugin
-                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                                               'pi_name', $pi_name);
-                COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
-                $failed++;
-            }
+        if ($success !== true) {
+            // migration or upgrade failed - disable plugin
+            DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                           'pi_name', $pi_name);
+            COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
+            $failed++;
         }
     }
 

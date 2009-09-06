@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Plugin migration was only called when the plugin also needed an upgrade
+  (bug #0000947) [Dirk]
 - The Migrate option in the install script now also works on an existing
   database (feature request #0000945) [Dirk]
 - Comment notifications used the phrase "Read the full article" when pointing
