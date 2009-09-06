@@ -389,7 +389,7 @@ function INST_writeConfig($config_file, $db)
     }
 
     // Read in db-config.php so we can insert the DB information
-    $dbconfig_file = fopen($config_file, 'r');
+    $dbconfig_file = fopen($config_file, 'rb');
     $dbconfig_data = fread($dbconfig_file, filesize($config_file));
     fclose($dbconfig_file);
 
@@ -402,7 +402,7 @@ function INST_writeConfig($config_file, $db)
     $dbconfig_data = str_replace("\$_DB_dbms = '" . $_DB_dbms . "';", "\$_DB_dbms = '" . $db['type'] . "';", $dbconfig_data); // Database type ('mysql' or 'mssql')
 
     // Write our changes to db-config.php
-    $dbconfig_file = fopen($config_file, 'w');
+    $dbconfig_file = fopen($config_file, 'wb');
     if (!fwrite($dbconfig_file, $dbconfig_data)) {
         return false;
     }
@@ -1145,7 +1145,7 @@ function INST_setVersion($siteconfig_path)
 {
     global $_TABLES, $LANG_INSTALL;
 
-    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_file = fopen($siteconfig_path, 'rb');
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);
 
@@ -1156,7 +1156,7 @@ function INST_setVersion($siteconfig_path)
              $siteconfig_data
             );
 
-    $siteconfig_file = @fopen($siteconfig_path, 'w');
+    $siteconfig_file = @fopen($siteconfig_path, 'wb');
     if (! fwrite($siteconfig_file, $siteconfig_data)) {
         exit($LANG_INSTALL[26] . ' ' . $LANG_INSTALL[28]);
     }

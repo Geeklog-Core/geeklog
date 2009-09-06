@@ -1177,7 +1177,7 @@ if (INST_phpOutOfDate()) {
 
         // Edit siteconfig.php and enter the correct GL path and system directory path
         $siteconfig_path = $_PATH['public_html/'] . 'siteconfig.php';
-        $siteconfig_file = fopen($siteconfig_path, 'r');
+        $siteconfig_file = fopen($siteconfig_path, 'rb');
         $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
         fclose($siteconfig_file);
 
@@ -1187,7 +1187,7 @@ if (INST_phpOutOfDate()) {
                             "\$_CONF['path'] = '" . str_replace('db-config.php', '', $_PATH['db-config.php']) . "';",
                             $siteconfig_data);
 
-        $siteconfig_file = fopen($siteconfig_path, 'w');
+        $siteconfig_file = fopen($siteconfig_path, 'wb');
         if (!fwrite($siteconfig_file, $siteconfig_data)) {
             exit ($LANG_INSTALL[26] . ' ' . $_PATH['public_html/'] . $LANG_INSTALL[28]);
         }
