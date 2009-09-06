@@ -193,14 +193,14 @@ function XMLSMAP_update($type = NULL, $include = NULL, $exclude = NULL)
     global $_CONF, $_XMLSMAP_CONF;
 
     if (($type !== NULL)
-            AND !in_array(strtolower($type), $_XMLSMAP_CONF['types'])) {
+            AND !in_array($type, $_XMLSMAP_CONF['types'])) {
         // Notified about content change, but from an irrelevant plugin, one
         // that doesn't implement 'plugin_getiteminfo_xxx' function.
         return TRUE;
     }
 
     if (($type !== NULL) &&
-            in_array(strtolower($type), $_XMLSMAP_CONF['exclude'])) {
+            in_array($type, $_XMLSMAP_CONF['exclude'])) {
         // plugin is on our exclude list, so ignore
         return TRUE;
     }

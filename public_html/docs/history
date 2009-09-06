@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Keep track of actual upper/lowercase spelling of plugin names in the
+  XMLSitemap plugin [mystral-kk, Dirk]
 - Added support for a CUSTOM_renderMenu function when rendering the top menu
   (feature request #0000845) [Dirk]
 - In the install script, always open db-config.php and siteconfig.php in
