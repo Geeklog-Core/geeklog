@@ -453,7 +453,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     $userChanged = false;
 
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
-    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
+    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . count($groups),1);
 
     if ($passwd != $passwd_conf) { // passwords don't match
         return edituser($uid, 67);

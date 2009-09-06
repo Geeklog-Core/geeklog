@@ -611,7 +611,7 @@ function STORY_whatsRelated( $related, $uid, $tid )
     }
 
     $related = '';
-    if( sizeof( $rel ) > 0 )
+    if( count( $rel ) > 0 )
     {
         $related = COM_checkWords( COM_makeList( $rel, 'list-whats-related' ));
     }

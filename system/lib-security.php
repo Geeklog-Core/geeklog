@@ -137,7 +137,7 @@ function SEC_getUserGroups($uid='')
             }
         }
 
-        if (sizeof ($cgroups) > 0) {
+        if (count($cgroups) > 0) {
             $glist = join(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                     . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
@@ -612,7 +612,7 @@ function SEC_getPermissionValue($perm_x)
 
     $retval = 0;
 
-    for ($i = 1; $i <= sizeof($perm_x); $i++) {
+    for ($i = 1; $i <= count($perm_x); $i++) {
         if ($_SEC_VERBOSE) {
             COM_errorLog("perm_x[$i] = " . current($perm_x), 1);
         }
@@ -671,7 +671,7 @@ function SEC_getFeatureGroup ($feature, $uid = '')
     $group = 0;
 
     $ft_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
-    if (($ft_id > 0) && (sizeof ($ugroups) > 0)) {
+    if (($ft_id > 0) && (count($ugroups) > 0)) {
         $grouplist = implode (',', $ugroups);
         $result = DB_query ("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
         $A = DB_fetchArray ($result);

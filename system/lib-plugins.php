@@ -1680,7 +1680,7 @@ function PLG_supportingFeeds()
         $function = 'plugin_getfeednames_' . $pi_name;
         if (function_exists($function)) {
             $feeds = $function();
-            if (is_array($feeds) && (sizeof($feeds) > 0)) {
+            if (is_array($feeds) && (count($feeds) > 0)) {
                 $plugins[] = $pi_name;
             }
         }
@@ -1689,7 +1689,7 @@ function PLG_supportingFeeds()
     $function = 'CUSTOM_getfeednames';
     if (function_exists($function)) {
         $feeds = $function();
-        if (is_array($feeds) && (sizeof($feeds) > 0)) {
+        if (is_array($feeds) && (count($feeds) > 0)) {
             $plugins[] = 'custom';
         }
     }

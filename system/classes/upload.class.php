@@ -261,7 +261,7 @@ class upload
     */
     function _setAvailableMimeTypes($mimeTypes = array())
     {
-        if (sizeof($mimeTypes) == 0) {
+        if (count($mimeTypes) == 0) {
             $this->_availableMimeTypes =
             array(
                 'application/x-gzip-compressed'     => '.tar.gz,.tgz',

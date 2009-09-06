@@ -208,7 +208,7 @@ function userprofile($user, $msg = 0, $plugin = '')
     $topics = "'" . implode ("','", $tids) . "'";
 
     // list of last 10 stories by this user
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $sql .= " ORDER BY unixdate DESC LIMIT 10";
         $result = DB_query ($sql);
@@ -242,7 +242,7 @@ function userprofile($user, $msg = 0, $plugin = '')
 
     // list of last 10 comments by this user
     $sidArray = array();
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         // first, get a list of all stories the current visitor has access to
         $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $result = DB_query($sql);

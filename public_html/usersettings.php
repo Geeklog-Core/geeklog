@@ -1208,7 +1208,7 @@ function userprofile ($user, $msg = 0)
     $topics = "'" . implode ("','", $tids) . "'";
 
     // list of last 10 stories by this user
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $sql .= " ORDER BY unixdate DESC LIMIT 10";
         $result = DB_query ($sql);
@@ -1243,7 +1243,7 @@ function userprofile ($user, $msg = 0)
 
     // list of last 10 comments by this user
     $sidArray = array();
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         // first, get a list of all stories the current visitor has access to
         $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $result = DB_query($sql);
@@ -1384,13 +1384,13 @@ function savepreferences($A)
     $AETIDS = USER_getAllowedTopics();          // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
 
     $tids = '';
-    if (sizeof ($TIDS) > 0) {
+    if (count($TIDS) > 0) {
         // the array_intersect mitigates the need to scrub the TIDS input
         $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS)));
     }
 
     $aids = '';
-    if (sizeof ($AIDS) > 0) {
+    if (count($AIDS) > 0) {
         // Scrub the AIDS array to prevent SQL injection and bad values
         foreach ($AIDS as $key => $val) {
             $AIDS[$key] = COM_applyFilter($val, true);
@@ -1420,7 +1420,7 @@ function savepreferences($A)
     }
 
     $etids = '';
-    if (($_CONF['emailstories'] == 1) && (sizeof($ETIDS) > 0)) {
+    if (($_CONF['emailstories'] == 1) && (count($ETIDS) > 0)) {
         // the array_intersect mitigates the need to scrub the ETIDS input
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }

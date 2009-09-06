@@ -284,7 +284,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
             $A = DB_fetchArray ($result);
 
             if ($mday != $A['mday']) {
-                if (sizeof ($entries) > 0) {
+                if (count($entries) > 0) {
                     $retval .= COM_makeList ($entries);
                     $entries = array ();
                 }
@@ -301,7 +301,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
             $entries[] = COM_createLink(stripslashes ($A['title']), $url);
         }
 
-        if (sizeof ($entries) > 0) {
+        if (count($entries) > 0) {
             $retval .= COM_makeList ($entries);
         }
 

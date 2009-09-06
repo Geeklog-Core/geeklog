@@ -587,7 +587,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     $allowedCounter = 0;
     $counter = 0;
 
-    $num_plugins = sizeof( $plugin_menu );
+    $num_plugins = count( $plugin_menu );
     if( ( $num_plugins == 0 ) && in_array( 'plugins', $_CONF['menu_elements'] ))
     {
         $key = array_search( 'plugins', $_CONF['menu_elements'] );
@@ -601,14 +601,14 @@ function COM_renderMenu( &$header, $plugin_menu )
         {
             $custom_entries = CUSTOM_menuEntries();
         }
-        if( sizeof( $custom_entries ) == 0 )
+        if( count( $custom_entries ) == 0 )
         {
             $key = array_search( 'custom', $_CONF['menu_elements'] );
             unset( $_CONF['menu_elements'][$key] );
         }
     }
 
-    $num_elements = sizeof( $_CONF['menu_elements'] );
+    $num_elements = count( $_CONF['menu_elements'] );
 
     foreach( $_CONF['menu_elements'] as $item )
     {
@@ -1825,7 +1825,7 @@ function COM_checkList($table, $selection, $where = '', $selected = '', $fieldna
         {
             $retval .= '<li><input type="checkbox" name="' . $fieldname . '[]" value="' . $A[0] . '"';
 
-            $sizeS = sizeof( $S );
+            $sizeS = count( $S );
             for( $x = 0; $x < $sizeS; $x++ )
             {
                 if( $A[0] == $S[$x] )
@@ -2529,7 +2529,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
                     $T = DB_fetchArray( $tresult );
                     $tids[] = $T['tid'];
                 }
-                if( sizeof( $tids ) > 0 )
+                if( count( $tids ) > 0 )
                 {
                     $topicsql = " (tid IN ('" . implode( "','", $tids ) . "'))";
                 }
@@ -3044,7 +3044,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
     $filter = new kses4;
-    if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( sizeof( $_CONF['allowed_protocols'] ) > 0 ))
+    if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( count( $_CONF['allowed_protocols'] ) > 0 ))
     {
         $filter->SetProtocols( $_CONF['allowed_protocols'] );
     }
@@ -3554,7 +3554,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     // sort the resulting array by block order
     $column = 'blockorder';
     $sortedBlocks = $blocks;
-    $num_sortedBlocks = sizeof( $sortedBlocks );
+    $num_sortedBlocks = count( $sortedBlocks );
     for( $i = 0; $i < $num_sortedBlocks - 1; $i++ )
     {
         for( $j = 0; $j < $num_sortedBlocks - 1 - $i; $j++ )
@@ -4114,7 +4114,7 @@ function COM_emailUserTopics()
             $TIDS = array_intersect( $TIDS, $ETIDS );
         }
 
-        if( sizeof( $TIDS ) > 0)
+        if( count( $TIDS ) > 0)
         {
             $commonsql .= " AND (tid IN ('" . implode( "','", $TIDS ) . "'))";
         }
@@ -4413,7 +4413,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     if( $_CONF['hidenewplugins'] == 0 )
     {
         list( $headlines, $smallheadlines, $content ) = PLG_getWhatsNew();
-        $plugins = sizeof( $headlines );
+        $plugins = count( $headlines );
         if( $plugins > 0 )
         {
             for( $i = 0; $i < $plugins; $i++ )
@@ -5582,7 +5582,7 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
         $tids[] = $T['tid'];
     }
 
-    if( sizeof( $tids ) > 0 )
+    if( count( $tids ) > 0 )
     {
         $topicsql .= "({$table}tid IN ('" . implode( "','", $tids ) . "'))";
     }

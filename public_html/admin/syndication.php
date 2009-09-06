@@ -421,7 +421,7 @@ function newfeed ()
     $retval = '';
 
     $plugins = PLG_supportingFeeds ();
-    if (sizeof ($plugins) == 0) {
+    if (count($plugins) == 0) {
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
         $retval = COM_siteHeader ('menu', $LANG33[11])

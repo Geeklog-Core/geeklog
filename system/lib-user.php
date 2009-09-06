@@ -653,7 +653,7 @@ function USER_getChildGroups($groupid)
     $to_check = array();
     array_push($to_check, $groupid);
     $groups = array();
-    while (sizeof($to_check) > 0) {
+    while (count($to_check) > 0) {
         $thisgroup = array_pop($to_check);
         if ($thisgroup > 0) {
             $result = DB_query("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $thisgroup");
