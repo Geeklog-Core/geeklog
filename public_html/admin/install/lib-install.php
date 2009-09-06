@@ -64,6 +64,9 @@ if (!defined('XHTML')) {
 if (!defined('SUPPORTED_PHP_VER')) {
     define('SUPPORTED_PHP_VER', '4.3.0');
 }
+if (!defined('SUPPORTED_MYSQL_VER')) {
+    define('SUPPORTED_MYSQL_VER', '3.23.2');
+}
 
 $_REQUEST = array_merge($_GET, $_POST);
 
@@ -273,14 +276,20 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
  */
 function INST_mysqlOutOfDate($db)
 {
+    $minv = explode('.', SUPPORTED_MYSQL_VER);
+
     if ($db['type'] == 'mysql' || $db['type'] == 'mysql-innodb') {
         $myv = mysql_v($db['host'], $db['user'], $db['pass']);
-        if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
-                (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
+
+        if (($myv[0] <  $minv[0]) ||
+           (($myv[0] == $minv[0]) && ($myv[1] <  $minv[1])) ||
+           (($myv[0] == $minv[0]) && ($myv[1] == $minv[1]) && ($myv[2] < $minv[2]))) {
+
             return true;
         }
-        return false;
     }
+
+    return false;
 }
 
 /**

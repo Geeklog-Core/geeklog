@@ -74,8 +74,8 @@ $display = INST_getHeader($LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1]); // Gra
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1>' . $LANG_INSTALL[4] . '</h1>' . LB;
-    $display .= '<p>' . $LANG_INSTALL[5] . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1>' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 

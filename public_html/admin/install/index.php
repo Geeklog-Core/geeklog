@@ -227,8 +227,10 @@ function INST_installEngine($install_type, $install_step)
         // Check if the user's version of MySQL is out of date
         } else if (INST_mysqlOutOfDate($DB)) { 
 
-            $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
-            $display .= '<p>' . $LANG_INSTALL[52]
+            $myv = mysql_v($DB['host'], $DB['user'], $DB['pass']);
+            $display .= '<h1>' . sprintf($LANG_INSTALL[51], SUPPORTED_MYSQL_VER)
+                     . '</h1>' . LB;
+            $display .= '<p>' . sprintf($LANG_INSTALL[52], SUPPORTED_MYSQL_VER)
                      . $myv[0] . '.' . $myv[1] . '.' . $myv[2]
                      . $LANG_INSTALL[53] . '</p>' . LB;
 
@@ -952,8 +954,8 @@ $display .= '
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1 class="heading">' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[4]) . '</h1>' . LB;
-    $display .= '<p>' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[5]) . phpversion() . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1 class="heading">' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . phpversion() . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 

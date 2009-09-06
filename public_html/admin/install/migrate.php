@@ -258,8 +258,8 @@ $display = INST_getHeader($LANG_MIGRATE[17]); // Grab the beginning HTML for the
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1>' . $LANG_INSTALL[4] . '</h1>' . LB;
-    $display .= '<p>' . $LANG_INSTALL[5] . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1>' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 
@@ -483,7 +483,8 @@ if (INST_phpOutOfDate()) {
             // (needs to connect to MySQL in order to check)
             if (INST_mysqlOutOfDate($DB)) {
 
-                $display .= INST_getAlertMsg($LANG_INSTALL[51]);
+                $display .= INST_getAlertMsg(sprintf($LANG_INSTALL[51],
+                                                     SUPPORTED_MYSQL_VER));
                 $import_errors++;
 
             } 
