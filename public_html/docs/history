@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Avoid SQL error with certain db dumps during migration (bug #0000955) [Dirk]
 - Plugin migration was only called when the plugin also needed an upgrade
   (bug #0000947) [Dirk]
 - The Migrate option in the install script now also works on an existing

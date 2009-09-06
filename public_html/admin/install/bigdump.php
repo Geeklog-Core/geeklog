@@ -69,6 +69,8 @@ $comment[]='-- ';
 // $comment[]='---';                  // Uncomment this line if using proprietary dump created by outdated mysqldump
 // $comment[]='CREATE DATABASE';      // Uncomment this line if your dump contains create database queries in order to ignore them
 $comment[]='/*!';                     // Or add your own string to leave out other proprietary things
+// see http://project.geeklog.net/tracking/view.php?id=955
+$comment[]='SET character_set_client = @saved_cs_client;';
 
 // Connection character set should be the same as the dump file character set (utf8, latin1, cp1251, koi8r etc.)
 // See http://dev.mysql.com/doc/refman/5.0/en/charset-charsets.html for the full list
