@@ -343,7 +343,7 @@ $LANG_HELP = array(
     'site_mail' => 'サイト管理者のEmailアドレスを入力します。',
     'noreply_mail' => 'サイト管理者のNo-Reply Email（返信を受け付けないEmailアドレス）を入力します。',
     'utf8' => 'サイトのデフォルト言語としてUTF-8を使用するかどうかを指示します。多言語サイトを作成するなら、チェックを入れることをお勧めします。',
-    'migrate_file' => '移行するバックアップファイル(*.sql)を選択します。"backups"ディレクトリ内のファイルから、あるいはあなたのコンピュータからファイルをアップロードできます。',
+    'migrate_file' => '移行するバックアップファイル(*.sql)を選択します。"backups"ディレクトリ内のファイルから、あるいはあなたのコンピュータからファイルをアップロードできます。 Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(in .zip, .tar.gz, or .tgz format)を選んでインストールしてください。'
 );
 

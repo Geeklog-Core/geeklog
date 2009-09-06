@@ -327,9 +327,9 @@ $LANG_ERROR = array(
 // help.php
 
 $LANG_HELP = array(
-    0 => 'Geeklog Installation Support',
-    'site_name' => 'The name of your website.',
-    'site_slogan' => 'A simple description of your website.',
+    0 => 'Hilfe zur Geeklog-Installation',
+    'site_name' => 'Der Name Deiner Website.',
+    'site_slogan' => 'Ein Motto oder eine kurze Beschreibung Deiner Website.',
     'db_type' => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.</p><p class="indent"><strong>Hinweis:</strong> InnoDB-Tabellen k&ouml;nnen zu besserer Performance auf (sehr) gro&szlig;en Websites f&uuml;hren, machen den Backup-Prozess aber komplizierter.',
     'db_host' => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
     'db_name' => 'The name of your database. If you are not sure what this is contact your hosting provider.',
@@ -341,8 +341,8 @@ $LANG_HELP = array(
     'site_mail' => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     'noreply_mail' => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
-    'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
+    'migrate_file' => 'W&auml;hle ein Backup, das migriert werden soll. Dies kann eine Datei in Deinem "backups"-Verzeichnis sein, Du kannst eine Backup-Datei hochladen, oder Du kannst den aktuellen Inhalt der Datenbank migrieren.',
+    'plugin_upload' => 'W&auml;hle ein Plugin-Archiv (in den Formaten .zip, .tar.gz oder .tgz format) zum Hochladen und Installieren.'
 );
 
 // which texts to use as labels, so they don't have to be translated again

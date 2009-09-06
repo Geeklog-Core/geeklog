@@ -342,7 +342,7 @@ $LANG_HELP = array(
     'site_mail' => '这是所有志乐寄出的电邮的回信地址和在辛迪加的联络信息.',
     'noreply_mail' => '这是系统电邮的寄信者地址用于用户登记时等等. 这应当是跟网站电邮同样或一个无法回信的地址避免冒名者借着网站登记来录取你的地址. 若这电邮不跟上面一样, 建议你加一个信息在你寄出的电邮里.',
     'utf8' => '指示你是否要用 UTF-8 为你网站的默认字库. 这在多言语的网站上会有帮助.',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 

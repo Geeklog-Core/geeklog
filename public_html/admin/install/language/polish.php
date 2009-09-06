@@ -341,7 +341,7 @@ $LANG_HELP = array(
     'site_mail' => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     'noreply_mail' => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 
