@@ -238,7 +238,8 @@ $LANG_MIGRATE = array(
     45 => 'Version des Datenbank-Backups konnte nicht ermittelt werden. Bitte ein manuelles Update durchf&uuml;hren.',
     46 => '',
     47 => 'Update von Version %s auf Version %s fehlgeschlagen.',
-    48 => 'Ein oder mehrere Plugins konnten nicht aktualisiert werden und wurden deaktiviert.'
+    48 => 'Ein oder mehrere Plugins konnten nicht aktualisiert werden und wurden deaktiviert.',
+    49 => 'Aktuellen Datenbank-Inhalt verwenden'
 );
 
 // +---------------------------------------------------------------------------+

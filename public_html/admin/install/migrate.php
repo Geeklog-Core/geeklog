@@ -335,11 +335,14 @@ if (INST_phpOutOfDate()) {
         }
         rsort($backup_files);
 
-        $display .= '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
+        $display .= '<p><label class="' . $form_label_dir . '">'
+            . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file')
+            . '</label>' . LB
             . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
             . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . LB
             . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . LB
             . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . LB
+            . '<option value="dbcontent">' . $LANG_MIGRATE[49] . '</option>' . LB
             . '</select> ' . LB
             . '<span id="migration-select">' . LB;
 
@@ -356,7 +359,9 @@ if (INST_phpOutOfDate()) {
                 $filename    = str_replace($backup_dir, '', $file_path);
                 $backup_file = str_replace($backup_dir, '', $file_path);
 
-                $display .= '<option value="' . $filename .'">' . $backup_file . ' (' . INST_formatSize(filesize($file_path)) . ')</option>' . LB;
+                $display .= '<option value="' . $filename .'">' . $backup_file
+                    . ' (' . INST_formatSize(filesize($file_path))
+                    . ')</option>' . LB;
 
             }
             
@@ -451,6 +456,11 @@ if (INST_phpOutOfDate()) {
                 $backup_file = $_FILES['backup_file'];
 
             }
+            break;
+
+        case 'dbcontent': // No upload / import required - use db as is
+            $backup_file = false;
+            $import_errors = 0;
             break;
 
         default:
@@ -561,6 +571,56 @@ if (INST_phpOutOfDate()) {
 
                 }
 
+                break;
+
+            case 'dbcontent':
+
+                require_once $_CONF['path_system'] . 'lib-database.php';
+                require_once 'lib-upgrade.php';
+
+                // we need the following information
+                $has_config = false;
+                $db_connection_charset = '';
+                $DB['table_prefix'] = '';
+
+                // get table prefix and check for conf_values table
+                $result = DB_query("SHOW TABLES");
+                $num_tables = DB_numRows($result);
+                for ($i = 0; $i < $num_tables; $i++) {
+                    list($table) = DB_fetchArray($result);
+                    if (substr($table, -6) == 'access') {
+                        $DB['table_prefix'] = substr($table, 0, -6);
+                    } elseif (strpos($table, 'conf_values') !== false) {
+                        $has_config = true;
+                        break;
+                    }
+                }
+
+                // try to figure out the charset
+                $result = DB_query("SHOW CREATE TABLE " . $DB['table_prefix']
+                                   . "access");
+                list($table, $create) = DB_fetchArray($result);
+                if (strpos($create, 'DEFAULT CHARSET=utf8') !== false) {
+                    $db_connection_charset = 'utf8';
+                }
+
+                // Update db-config.php with the table prefix from the db
+                if (!INST_writeConfig($dbconfig_path, $DB)) {
+                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                if (!INST_setDefaultCharset($siteconfig_path,
+                        ($db_connection_charset == 'utf8'
+                                                ? 'utf-8' : $LANG_CHARSET))) {
+                    exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                // skip step 3 since we don't need to import anything
+                header('Location: migrate.php?step=4&language=' . $language
+                    . '&site_url=' . urlencode($_REQUEST['site_url'])
+                    . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
                 break;
 
             } // End switch ($_REQUEST['migration_type']

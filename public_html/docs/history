@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- The Migrate option in the install script now also works on an existing
+  database (feature request #0000945) [Dirk]
 - Comment notifications used the phrase "Read the full article" when pointing
   to the new comment post (bug #0000940) [Dirk]
 - Send correct content type and character set header in the install script

@@ -239,7 +239,8 @@ $LANG_MIGRATE = array(
     45 => 'Could not identify database version. Please perform a manual update.',
     46 => '',
     47 => 'Database upgrade from version %s to version %s failed.',
-    48 => 'One or more plugins could not be updated and had to be disabled.'
+    48 => 'One or more plugins could not be updated and had to be disabled.',
+    49 => 'Use current database content'
 );
 
 // +---------------------------------------------------------------------------+

@@ -362,6 +362,11 @@ function INST_prettifyLanguageName($filename)
  */
 function INST_writeConfig($config_file, $db)
 {
+    // we may have included db-config.php elsewhere already, in which case
+    // all of these variables need to be imported from the global namespace
+    global $_DB_host, $_DB_name, $_DB_user, $_DB_pass, $_DB_table_prefix,
+           $_DB_dbms;
+
     require_once $config_file; // Grab the current DB values
 
     $db = array('host' => (isset($db['host']) ? $db['host'] : $_DB_host),
