@@ -422,7 +422,7 @@ function INST_installEngine($install_type, $install_step)
                             <li>' . $LANG_INSTALL[65] . '</li>
                         </ol>
 
-                        <div style="margin-left: auto; margin-right: auto; width: 125px">
+                        <div style="margin-left: auto; margin-right: auto; width: 175px">
                             <div style="position: absolute">
                                 <form action="index.php" method="post">
                                 <input type="hidden" name="mode" value="install"' . XHTML . '>
@@ -435,7 +435,7 @@ function INST_installEngine($install_type, $install_step)
                                 </form>
                             </div>
 
-                            <div style="position: relative; left: 55px; top: 5px">
+                            <div style="position: relative; left: 105px; top: 5px">
                                 <form action="index.php" method="post">
                                 <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                 <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
