@@ -639,30 +639,29 @@ function COM_renderMenu( &$header, $plugin_menu )
                 break;
 
             case 'custom':
-                $custom_count = 0;
-                $custom_size = sizeof( $custom_entries );
-                foreach( $custom_entries as $entry )
-                {
-                    $custom_count++;
+                if (function_exists('CUSTOM_renderMenu')) {
+                    CUSTOM_renderMenu($header, $custom_entries, $menuCounter);
+                } else {
+                    $custom_count = 0;
+                    $custom_size = count($custom_entries);
+                    foreach ($custom_entries as $entry) {
+                        $custom_count++;
 
-                    if( empty( $entry['url'] ) || empty( $entry['label'] ))
-                    {
-                        continue;
-                    }
+                        if (empty($entry['url']) || empty($entry['label'])) {
+                            continue;
+                        }
 
-                    $header->set_var( 'menuitem_url',  $entry['url'] );
-                    $header->set_var( 'menuitem_text', $entry['label'] );
+                        $header->set_var('menuitem_url',  $entry['url']);
+                        $header->set_var('menuitem_text', $entry['label']);
 
-                    if( $last_entry && ( $custom_count == $custom_size ))
-                    {
-                        $header->parse( 'menu_elements', 'menuitem_last',
-                                        true );
+                        if ($last_entry && ($custom_count == $custom_size)) {
+                            $header->parse('menu_elements', 'menuitem_last',
+                                           true);
+                        } else {
+                            $header->parse('menu_elements', 'menuitem', true);
+                        }
+                        $menuCounter++;
                     }
-                    else
-                    {
-                        $header->parse( 'menu_elements', 'menuitem', true );
-                    }
-                    $menuCounter++;
                 }
                 $url = '';
                 $label = '';

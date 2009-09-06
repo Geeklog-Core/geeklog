@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Added support for a CUSTOM_renderMenu function when rendering the top menu
+  (feature request #0000845) [Dirk]
 - In the install script, always open db-config.php and siteconfig.php in
   binary mode to avoid EOL character mixup on Windows (bug #0000730) [Dirk]
 - Avoid SQL error with certain db dumps during migration (bug #0000955) [Dirk]
