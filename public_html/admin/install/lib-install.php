@@ -623,7 +623,8 @@ function INST_getAlertMsg($mMessage, $mType = 'notice')
  */
 function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
 {
-    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass;
+    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass,
+           $language;
 
     require $dbconfig_path;
     require $siteconfig_path;
@@ -672,6 +673,7 @@ function INST_checkPost150Upgrade($dbconfig_path, $siteconfig_path)
             // current version is at least 1.5.0, so upgrade directly
             $req_string = 'index.php?mode=upgrade&step=3'
                         . '&dbconfig_path=' . $dbconfig_path
+                        . '&language=' . $language
                         . '&version=' . $version;
 
             header('Location: ' . $req_string);
