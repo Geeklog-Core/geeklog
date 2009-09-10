@@ -320,14 +320,21 @@ if ($A['count'] > 0) {
                                                         'class' => $feedClass));
             }
         }
-        if ($_CONF['trackback_enabled'] &&
-                ($story->displayElements('trackbackcode') >= 0) &&
-                SEC_hasRights('story.ping') &&
+        if (($_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ||
+                $_CONF['ping_enabled']) && SEC_hasRights('story.ping') &&
                 ($story->displayElements('draft_flag') == 0) &&
-                ($story->displayElements('day') < time ())) {
-            $url = $_CONF['site_admin_url']
-                 . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
-            $story_options[] = COM_createLink($LANG_TRB['send_trackback'], $url);
+                ($story->displayElements('day') < time ()) &&
+                ($story->displayElements('perm_anon') != 0)) {
+                
+            // check special case: no link when Trackbacks are disabled for this
+            // story AND pinging weblog directories is disabled
+            if (($story->displayElements('trackbackcode') >= 0) ||
+                    $_CONF['ping_enabled']) {
+                $url = $_CONF['site_admin_url']
+                     . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
+                $story_options[] = COM_createLink($LANG_TRB['send_trackback'],
+                                                  $url);
+            }
         }
     /*
         if (true) { // can subscribe

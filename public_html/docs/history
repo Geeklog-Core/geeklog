@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Fixed visibility of the "Send Ping" links in the Story Admin's list of stories
+  and the Story Options block [Dirk]
 - The install script was switching back to English in some upgrade scenarios
   (bug #0000969, patch provided by taca)
 - Added a workaround to not lose the XMLSitemap priorities for Locales where

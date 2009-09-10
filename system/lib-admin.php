@@ -934,10 +934,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'ping':
-        $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
-                 . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
-                 . $LANG24[21] . '"' . XHTML . '>';
-        if (($A['draft_flag'] == 0) && ($A['unixdate'] < time())) {
+        if (($A['draft_flag'] == 0) && ($A['unixdate'] < time()) &&
+                ($A['perm_anon'] != 0)) {
+            $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
+                     . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
+                     . $LANG24[21] . '"' . XHTML . '>';
             $url = $_CONF['site_admin_url']
                  . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
             $retval = COM_createLink($pingico, $url);
