@@ -246,11 +246,12 @@ function INST_phpOutOfDate()
  */
 function mysql_v($_DB_host, $_DB_user, $_DB_pass)
 {
-    if (@mysql_connect($_DB_host, $_DB_user, $_DB_pass) === false) {
+    $db_handle = @mysql_connect($_DB_host, $_DB_user, $_DB_pass);
+    if ($db_handle === false) {
         return false;
     }
 
-    $mysqlv = @mysql_get_server_info();
+    $mysqlv = @mysql_get_server_info($db_handle);
 
     if (!empty($mysqlv)) {
         preg_match('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
@@ -262,7 +263,7 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
         $mysqlminorv = 0;
         $mysqlrev = 0;
     }
-    @mysql_close();
+    @mysql_close($db_handle);
 
     return array($mysqlmajorv, $mysqlminorv, $mysqlrev);
 }
