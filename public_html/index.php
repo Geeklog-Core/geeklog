@@ -103,6 +103,7 @@ if( $microsummary )
         }
         $pagetitle = $_CONF['site_name'] . ' - ' . $pagetitle;
     }    
+    header('Content-Type: text/plain; charset=' . COM_getCharset());
     die($pagetitle);
 }
 
