@@ -283,9 +283,8 @@ if (isset($_GET['mode'])) {
 if ($mode == 'download') {
     $file = '';
     if (isset($_GET['file'])) {
-        $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $_GET['file']);
-        $file = str_replace('..', '', $file);
-        if (!file_exists($_CONF['backup_path'] . $file)) {
+        $file = COM_sanitizeFilename($_GET['file'], true);
+        if (! file_exists($_CONF['backup_path'] . $file)) {
             $file = '';
         }
     }
@@ -305,10 +304,11 @@ if ($mode == 'backup') {
 } elseif ($mode == 'delete') {
     if (SEC_checkToken()) {
         foreach ($_POST['delitem'] as $delfile) {
-            $file = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $delfile);
-            $file = str_replace('..', '', $file);
-            if (!@unlink($_CONF['backup_path'] . $file)) {
-                COM_errorLog('Unable to remove backup file "' . $file . '"');
+            $file = COM_sanitizeFilename($delfile, true);
+            if (! empty($file)) {
+                if (!@unlink($_CONF['backup_path'] . $file)) {
+                    COM_errorLog('Unable to remove backup file "' . $file . '"');
+                }
             }
         }
     }
