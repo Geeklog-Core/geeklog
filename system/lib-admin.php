@@ -1134,8 +1134,7 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
             $name = htmlspecialchars(COM_stripslashes(DB_getItem($_TABLES['commentsubmissions'], 'name', "cid = '{$A['id']}'")));
         }
         if (empty($name)) {
-            $name = DB_getItem($_TABLES['users'], 'username',
-                               "uid = '{$A['uid']}'");
+            $name = COM_getDisplayName($A['uid']);
         }
         if ($A['uid'] == 1) {
             $retval = $name;
@@ -1162,7 +1161,8 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
             $info = PLG_getItemInfo($A['type'], $A['sid'], 'title,url');
             if (empty($info) || empty($info[0]) || empty($info[1])) {
                 // if not available, display excerpt from the comment
-                $retval = COM_truncate(strip_tags($A['comment']), 40, '...');
+                $retval = COM_truncate(COM_getTextContent($A['comment']),
+                                       40, '...');
             } else {
                 $retval = COM_createLink($info[0], $info[1]);
             }
