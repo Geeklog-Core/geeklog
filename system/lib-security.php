@@ -1177,4 +1177,49 @@ function SEC_checkToken()
     return $return;
 }
 
+/**
+* Set a cookie using the HttpOnly flag
+*
+* Use this function to set "important" cookies (session, password, ...).
+* Browsers that support the HttpOnly flag will not allow JavaScript access
+* to such a cookie.
+*
+* @param    string  $name       cookie name
+* @param    string  $value      cookie value
+* @param    int     $expire     expire time
+* @param    string  $path       path on the server or $_CONF['cookie_path']
+* @param    string  $domain     domain or $_CONF['cookiedomain']
+* @param    bool    $secure     whether to use HTTPS or $_CONF['cookiesecure']
+* @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
+*
+*/
+function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null)
+{
+    global $_CONF;
+
+    $retval = false;
+
+    if ($path === null) {
+        $path = $_CONF['cookie_path'];
+    }
+    if ($domain === null) {
+        $domain = $_CONF['cookiedomain'];
+    }
+    if ($secure === null) {
+        $secure = $_CONF['cookiesecure'];
+    }
+
+    // the httponly parameter is only available as of PHP 5.2.0
+    if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
+        $retval = setcookie($name, $value, $expire, $path, $domain, $secure,
+                            true);
+    } else {
+        // fake it for older PHP versions; kudos to Matt Mecham
+        $retval = setcookie($name, $value, $expire, $path,
+                            $domain . '; httponly', $secure);
+    }
+
+    return $retval;
+}
+
 ?>

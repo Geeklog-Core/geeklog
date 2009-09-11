@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- The session and password cookies are now created with the HttpOnly flag set
+  to make it somewhat harder to read them from JavaScript (requires browser
+  support) [Dirk]
 - Fixed visibility of the "Send Ping" links in the Story Admin's list of stories
   and the Story Options block [Dirk]
 - The install script was switching back to English in some upgrade scenarios

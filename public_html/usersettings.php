@@ -1005,9 +1005,8 @@ function saveuser($A)
                 } else {
                     $cooktime = -1000;
                 }
-                setcookie($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                          $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                          $_CONF['cookiesecure']);
+                SEC_setCookie($_CONF['cookie_password'], $passwd,
+                              time() + $cooktime);
             } elseif (SEC_encryptPassword($A['old_passwd']) != $current_password) {
                 return COM_refresh ($_CONF['site_url']
                                     . '/usersettings.php?msg=68');
@@ -1023,13 +1022,11 @@ function saveuser($A)
 
         if ($A['cooktime'] <= 0) {
             $cooktime = 1000;
-            setcookie ($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime,
-                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                       $_CONF['cookiesecure']);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                          time() - $cooktime);
         } else {
-            setcookie ($_CONF['cookie_name'], $_USER['uid'],
-                       time() + $A['cooktime'], $_CONF['cookie_path'],
-                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                          time() + $A['cooktime']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {

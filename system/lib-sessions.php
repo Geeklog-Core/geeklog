@@ -321,9 +321,9 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
         COM_errorLog ("Setting session cookie: setcookie($cookiename, $sessid, 0, $cookiepath, $cookiedomain, $cookiesecure);", 1);
     }
 
-    if (setcookie ($cookiename, $sessid, 0, $cookiepath, $cookiedomain,
-                   $cookiesecure) === false) {
-        COM_errorLog ('Failed to set session cookie.', 1);
+    if (SEC_setCookie($cookiename, $sessid, 0, $cookiepath, $cookiedomain,
+                      $cookiesecure) === false) {
+        COM_errorLog('Failed to set session cookie.', 1);
     }
 }
 

@@ -847,15 +847,9 @@ case 'logout':
         SESS_endUserSession ($_USER['uid']);
         PLG_logoutUser ($_USER['uid']);
     }
-    setcookie ($_CONF['cookie_session'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
-    setcookie ($_CONF['cookie_password'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
-    setcookie ($_CONF['cookie_name'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
+    SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
+    SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
+    SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
     $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 
@@ -1157,13 +1151,10 @@ default:
                 if ($VERBOSE) {
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
-                setcookie ($_CONF['cookie_name'], $_USER['uid'],
-                           time() + $cooktime, $_CONF['cookie_path'],
-                           $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-                setcookie ($_CONF['cookie_password'],
-                           SEC_encryptPassword($passwd), time() + $cooktime,
-                           $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                           $_CONF['cookiesecure']);
+                SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                              time() + $cooktime);
+                SEC_setCookie($_CONF['cookie_password'],
+                              SEC_encryptPassword($passwd), time() + $cooktime);
             }
         } else {
             $userid = $_COOKIE[$_CONF['cookie_name']];
