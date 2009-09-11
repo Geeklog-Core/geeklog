@@ -473,10 +473,13 @@ default:  // New Comment
             }
             $noindex = '<meta name="robots" content="noindex"' . XHTML . '>'
                      . LB;
+            $pid = 0;
+            if (isset($_REQUEST['pid'])) {
+                $pid = COM_applyFilter($_REQUEST['pid'], true);
+            }
             $display .= COM_siteHeader('menu', $LANG03[1], $noindex)
-                     . CMT_commentForm ($title, '', $sid,
-                            COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
-                            $postmode)
+                     . CMT_commentForm($title, '', $sid, $pid, $type, $mode,
+                                       $postmode)
                      . COM_siteFooter();
         } else {
             $display .= COM_refresh($_CONF['site_url'] . '/index.php');
