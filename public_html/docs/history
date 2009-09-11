@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- For anonymous comments, use the anonymous user's name from the database, not
+  from the language file (cf. bug #0000960) [Dirk]
 - The session and password cookies are now created with the HttpOnly flag set
   to make it somewhat harder to read them from JavaScript (requires browser
   support) [Dirk]

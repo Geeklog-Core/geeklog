@@ -930,7 +930,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $name = htmlspecialchars(COM_checkWords(strip_tags(
                         COM_stripslashes($_COOKIE[$_CONF['cookie_anon_name']]))));
                 } else {
-                    $name = $LANG03[24]; // anonymous user
+                    $name = COM_getDisplayName(1); // anonymous user
                 }
                 $usernameblock = '<input type="text" name="username" size="16" value="' . 
                                  $name . '" maxlength="32"' . XHTML . '>';
@@ -1101,13 +1101,15 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 
     $comment = addslashes(CMT_prepareText($comment, $postmode, $type));
     $title = addslashes(COM_checkWords(strip_tags($title)));
-    if (isset($_POST['username']) && strcmp($_POST['username'],$LANG03[24]) != 0
-            && $uid == 1) {
-        $name = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
-        setcookie($_CONF['cookie_anon_name'], $name, time() + 31536000,
-                  $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                  $_CONF['cookiesecure']);
-        $name = addslashes($name);
+    if (($uid == 1) && isset($_POST['username'])) {
+        $anon = COM_getDisplayName(1);
+        if (strcmp($_POST['username'], $anon) != 0) {
+            $name = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
+            setcookie($_CONF['cookie_anon_name'], $name, time() + 31536000,
+                      $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                      $_CONF['cookiesecure']);
+            $name = addslashes($name);
+        }
     }
 
     // check for non-int pid's
