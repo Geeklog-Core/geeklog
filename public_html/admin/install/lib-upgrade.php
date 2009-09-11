@@ -765,14 +765,22 @@ function INST_checkInnodbUpgrade($_SQL)
  */
 function INST_innodbSupported()
 {
-    $result = DB_query("SHOW VARIABLES LIKE 'have_innodb'");
-    $A = DB_fetchArray($result, true);
+    $retval = false;
 
-    if (strcasecmp($A[1], 'yes') == 0) {
-        return true;
+    $result = DB_query("SHOW TABLE TYPES");
+    $numEngines = DB_numRows($result);
+    for ($i = 0; $i < $numEngines; $i++) {
+        $A = DB_fetchArray($result);
+
+        if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
+            if (strcasecmp($A['Support'], 'yes') == 0) {
+                $retval = true;
+            }
+            break;
+        }
     }
 
-    return false;
+    return $retval;
 }
 
 
