@@ -413,7 +413,7 @@ function liststaticpages()
         array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
         array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
         array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true),
-        array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => false),
+        array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => true),
         array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
         array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
     );
