@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- When an anonymous commentor left a name, use it in the comment submission
+  notification email (bug #0000960) [Dirk]
 - Removed the CSRF token from all links to edit a comment. We only need it in
   the actual comment editor and it caused problems on the moderation page [Dirk]
 - For anonymous comments, use the anonymous user's name from the database, not

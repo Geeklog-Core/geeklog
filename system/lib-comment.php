@@ -1103,11 +1103,11 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     if (($uid == 1) && isset($_POST['username'])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST['username'], $anon) != 0) {
-            $name = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
-            setcookie($_CONF['cookie_anon_name'], $name, time() + 31536000,
+            $username = COM_checkWords(strip_tags(COM_stripslashes($_POST['username'])));
+            setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
                       $_CONF['cookiesecure']);
-            $name = addslashes($name);
+            $name = addslashes($username);
         }
     }
 
@@ -1190,7 +1190,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         }
     }
 
-    //save user notification information
+    // save user notification information
     if (isset($_POST['notify']) && ($ret == -1 || $ret == 0) ) {
         $deletehash = md5($title . $cid . $comment . rand());
         if ($ret == -1) {
@@ -1208,8 +1208,13 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         if ($ret == -1) {
             $cid = 0; // comment went into the submission queue
         }
-        CMT_sendNotification($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
-                             $type, $cid);
+        if (($uid == 1) && isset($username)) {
+            CMT_sendNotification($title, $comment, $uid, $username,
+                                 $_SERVER['REMOTE_ADDR'], $type, $cid);
+        } else {
+            CMT_sendNotification($title, $comment, $uid, '',
+                                 $_SERVER['REMOTE_ADDR'], $type, $cid);
+        }
     }
     
     return $ret;
@@ -1221,26 +1226,42 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 * @param    $title      string      comment title
 * @param    $comment    string      text of the comment
 * @param    $uid        int         user id
+* @param    $username   string      optional name of anonymous user
 * @param    $ipaddress  string      poster's IP address
 * @param    $type       string      type of comment ('article', 'poll', ...)
 * @param    $cid        int         comment id (or 0 when in submission queue)
+* @return               boolean     true if successfully sent, otherwise false
 *
 */
-function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
+function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $cid)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09;
 
-    // we have to undo the addslashes() call from savecomment()
-    $title = stripslashes ($title);
-    $comment = stripslashes ($comment);
-
-    // strip HTML if posted in HTML mode
-    if (preg_match ('/<.*>/', $comment) != 0) {
-        $comment = strip_tags ($comment);
+    // sanity check
+    if (($username == $_SERVER['REMOTE_ADDR']) &&
+            ($ipaddress != $_SERVER['REMOTE_ADDR'])) {
+        COM_errorLog("The API for CMT_sendNotification has changed ...");
+        return false;
     }
 
-    $author = COM_getDisplayName ($uid);
-    if (($uid <= 1) && !empty ($ipaddress)) {
+    // we have to undo the addslashes() call from savecomment()
+    $title = stripslashes($title);
+    $comment = stripslashes($comment);
+
+    // strip HTML if posted in HTML mode
+    if (preg_match('/<.*>/', $comment) != 0) {
+        $comment = strip_tags($comment);
+    }
+
+    if ($uid < 1) {
+        $uid = 1;
+    }
+    if (($uid == 1) && !empty($username)) {
+        $author = $username;
+    } else {
+        $author = COM_getDisplayName($uid);
+    }
+    if (($uid == 1) && !empty($ipaddress)) {
         // add IP address for anonymous posters
         $author .= ' (' . $ipaddress . ')';
     }
@@ -1254,7 +1275,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 
     if ($_CONF['emailstorieslength'] > 0) {
         if ($_CONF['emailstorieslength'] > 1) {
-            $comment = MBYTE_substr ($comment, 0, $_CONF['emailstorieslength'])
+            $comment = MBYTE_substr($comment, 0, $_CONF['emailstorieslength'])
                      . '...';
         }
         $mailbody .= $comment . "\n\n";
@@ -1274,7 +1295,7 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
 
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+    return COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**
