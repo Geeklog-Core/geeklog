@@ -620,6 +620,12 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete']) && SEC_ch
     }
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
+    if (isset($_GET['msg'])) {
+        $msg = COM_applyFilter($_GET['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage($msg, 'staticpages');
+        }
+    }
     $editor = '';
     if (isset ($_GET['editor'])) {
         $editor = COM_applyFilter ($_GET['editor']);
