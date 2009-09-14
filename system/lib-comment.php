@@ -1235,7 +1235,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 */
 function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $type, $cid)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09;
+    global $_CONF, $_TABLES, $LANG01, $LANG03, $LANG08, $LANG09, $LANG29;
 
     // sanity check
     if (($username == $_SERVER['REMOTE_ADDR']) &&
@@ -1282,9 +1282,11 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     }
 
     if ($cid == 0) {
+        $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[41];
         $mailbody .= $LANG01[10] . ' <' . $_CONF['site_admin_url']
                   . "/moderation.php>\n\n";
     } else {
+        $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
         $mailbody .= $LANG03[39] . ' <' . $_CONF['site_url']
                   . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
     }
@@ -1293,7 +1295,6 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     $mailbody .= "\n$LANG08[34]\n";
     $mailbody .= "\n------------------------------\n";
 
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
 
     return COM_mail($_CONF['site_mail'], $mailsubject, $mailbody);
 }
