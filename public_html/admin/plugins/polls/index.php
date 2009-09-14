@@ -132,6 +132,8 @@ function listpolls()
 * @param    array   $Q              Array of poll questions
 * @param    string  $mainpage       Checkbox: poll appears on homepage
 * @param    string  $topic          The text for the topic
+* @param    string  $meta_description
+* @param    string  $meta_keywords
 * @param    int     $statuscode     (unused)
 * @param    string  $open           Checkbox: poll open for voting
 * @param    string  $hideresults    Checkbox: hide results until closed
@@ -148,7 +150,7 @@ function listpolls()
 * @return   string                  HTML redirect or error message
 *
 */
-function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
+function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $meta_keywords, $statuscode, $open,
                   $hideresults, $commentcode, $A, $V, $R, $owner_id, $group_id,
                   $perm_owner, $perm_group, $perm_members, $perm_anon)
 
@@ -162,6 +164,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $topic = COM_stripslashes($topic);
+    $meta_description = COM_stripslashes($meta_description);
+    $meta_keywords = COM_stripslashes($meta_keywords);
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
     if (empty($pid)) {
@@ -246,6 +250,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
     $topic = addslashes ($topic);
+    $meta_description = addslashes ($meta_description);
+    $meta_keywords = addslashes ($meta_keywords);
 
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
     $v = 0; // re-count votes sine they might have been changed
@@ -278,7 +284,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
         }
     }
     // save topics after the questions so we can include question count into table
-    $sql = "'$pid','$topic',$v, $k, '" . date ('Y-m-d H:i:s');
+    $sql = "'$pid','$topic','$meta_description','$meta_keywords',$v, $k, '" . date ('Y-m-d H:i:s');
 
     if ($mainpage == 'on') {
         $sql .= "',1";
@@ -299,7 +305,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $statuscode, $open,
     $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'],"pid, topic, voters, questions, date, display, "
+    DB_save($_TABLES['polltopics'],"pid, topic, meta_description, meta_keywords, voters, questions, date, display, "
            . "is_open, hideresults, statuscode, commentcode, owner_id, group_id, "
            . "perm_owner, perm_group, perm_members, perm_anon",$sql);
 
@@ -397,6 +403,8 @@ function editpoll ($pid = '')
     } else {
         $T['pid'] = COM_makeSid ();
         $T['topic'] = '';
+        $T['meta_description'] = '';
+        $T['meta_keywords'] = '';
         $T['voters'] = 0;
         $T['display'] = 1;
         $T['is_open'] = 1;
@@ -419,6 +427,16 @@ function editpoll ($pid = '')
     $poll_templates->set_var('lang_topic', $LANG25[9]);
     $poll_templates->set_var('poll_topic', htmlspecialchars ($T['topic']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
+    
+    $poll_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $poll_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
+    if (!empty($T['meta_description'])) {
+        $poll_templates->set_var('meta_description', $T['meta_description']);
+    }
+    if (!empty($T['meta_keywords'])) {
+        $poll_templates->set_var('meta_keywords', $T['meta_keywords']);        
+    }
+    
 
     $poll_templates->set_var('status_options', COM_optionList ($_TABLES['statuscodes'], 'code,name', $T['statuscode']));
     $poll_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$T['commentcode']));
@@ -600,7 +618,8 @@ if ($mode == 'edit') {
             $hideresults = COM_applyFilter ($_POST['hideresults']);
         }
         $display .= savepoll ($pid, $old_pid, $_POST['question'], $mainpage,
-                        $_POST['topic'], $statuscode, $open, $hideresults,
+                        $_POST['topic'], $_POST['meta_description'], $_POST['meta_keywords'], 
+                        $statuscode, $open, $hideresults,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         COM_applyFilter ($_POST['owner_id'], true),

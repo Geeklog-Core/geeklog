@@ -60,6 +60,8 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
     [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,    
     [voters] [numeric](8, 0) NULL ,
     [questions] [int] NOT NULL ,
     [date] [datetime] NULL ,
@@ -120,7 +122,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid,
 
 // default poll
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, date, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, meta_description, meta_keywords, voters, questions, date, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 'A poll about users opinions of Geeklog.', 'Poll, Geeklog, Opinion', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (0, 'geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (1, 'geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";

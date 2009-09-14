@@ -7,9 +7,17 @@
                                             <td><input type="text" dir="ltr" name="pid" value="{poll_id}" size="40" maxlength="40"{xhtml}> {lang_donotusespaces}</td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_topic}:</td>
+                                            <td align="right" valign="top">{lang_topic}:</td>
                                             <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</td>
                                         </tr>
+                                        <tr>
+                                            <td valign="top" align="right">{lang_metadescription}:</td>
+                                        <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" align="right">{lang_metakeywords}:</td>
+                                            <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+                                        </tr>                                          
                                         <tr>
                                             <td align="right">{lang_mode}:</td>
                                             <td>

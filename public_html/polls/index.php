@@ -169,14 +169,24 @@ if (empty($pid)) {
                $_CONF['cookiesecure']);
     $display .= COM_siteHeader() . POLLS_pollsave($pid, $aid);
 } elseif (! empty($pid)) {
-    $topic = DB_getItem($_TABLES['polltopics'], 'topic',
-                        "pid = '{$pid}'" . COM_getPermSQL('AND'));
+    $result = DB_query ("SELECT topic, meta_description, meta_keywords FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'" . COM_getPermSQL('AND'));
+    $A = DB_fetchArray ($result);
+    
+    $topic = $A['topic'];
     if (empty($topic)) {
         // poll doesn't exist or user doesn't have access
         $display .= COM_siteHeader('menu', $LANG_POLLS['pollstitle'])
                  . COM_showMessageText(sprintf($LANG25[12], $pid));
     } else {
-        $display .= COM_siteHeader('menu', $topic);
+        // Meta Tags
+        $headercode = '';
+        If ($_PO_CONF['meta_tags'] > 0) {
+            $meta_description = stripslashes($A['meta_description']);
+            $meta_keywords = stripslashes($A['meta_keywords']);            
+            $headercode = COM_createMetaTags($meta_description, $meta_keywords);
+        }
+        
+        $display .= COM_siteHeader('menu', $topic, $headercode);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'polls');
         }

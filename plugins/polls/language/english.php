@@ -126,7 +126,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'Voter IP Address valid for',
     'delete_polls' => 'Delete Polls with Owner?',
     'aftersave' => 'After Saving Poll',
-    'default_permissions' => 'Poll Default Permissions'
+    'default_permissions' => 'Poll Default Permissions',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['polls'] = array(

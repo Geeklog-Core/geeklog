@@ -304,8 +304,8 @@ function staticpageeditor_form($A, $error = false)
         $title = htmlspecialchars(stripslashes($A['sp_title']));
     }
     $sp_template->set_var('sp_title', $title);
-    $sp_template->set_var('lang_metadescription', $LANG_STATIC['meta_description']);
-    $sp_template->set_var('lang_metakeywords', $LANG_STATIC['meta_keywords']);
+    $sp_template->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $sp_template->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
     if (!empty($A['meta_description'])) {
         $sp_template->set_var('meta_description', $A['meta_description']);
     }

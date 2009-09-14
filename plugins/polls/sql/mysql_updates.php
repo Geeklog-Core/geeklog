@@ -38,7 +38,8 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollanswers']} CHANGE pid pid varchar(40) NOT NULL default ''",
         "ALTER TABLE {$_TABLES['pollquestions']} CHANGE pid pid varchar(40) NOT NULL default ''",
         "ALTER TABLE {$_TABLES['polltopics']} CHANGE pid pid varchar(40) NOT NULL default ''",
-        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE pid pid varchar(40) NOT NULL default ''"
+        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE pid pid varchar(40) NOT NULL default ''",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description TEXT NULL AFTER topic, ADD meta_keywords TEXT NULL AFTER meta_description"
     )
 
 );

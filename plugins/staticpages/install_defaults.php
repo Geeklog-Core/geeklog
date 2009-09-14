@@ -110,7 +110,7 @@ $_SP_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 $_SP_DEFAULT['atom_max_items'] = 10;
 
 // Display Meta Tags for static pages (1 = show, 0 = don't) 
- $_SP_DEFAULT['meta_tags'] = 0;
+$_SP_DEFAULT['meta_tags'] = 0;
 
 /**
 * Initialize Static Pages plugin configuration
