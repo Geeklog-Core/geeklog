@@ -404,15 +404,12 @@ case 'sendreport':
 
 case 'editsubmission':
     if (!SEC_hasRights('comment.moderate')) { 
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         break; 
     }
     // deliberate fall-through
 case 'edit':
-    if (SEC_checkToken()) {
-        $display .= handleEdit($mode);
-    } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-    }
+    $display .= handleEdit($mode);
     break;
 
 case 'unsubscribe':

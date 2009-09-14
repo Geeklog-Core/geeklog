@@ -316,8 +316,7 @@ function itemlist($type, $token)
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
         } elseif ($type == 'comment') {
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
-                    . '?mode=editsubmission&amp;cid=' . $A[0] .
-                    '&' . CSRF_TOKEN . '=' . $token;
+                    . '?mode=editsubmission&amp;cid=' . $A[0];
         } else {
             $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
                      . '.php?mode=editsubmission&amp;id=' . $A[0];

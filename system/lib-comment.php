@@ -433,8 +433,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $edit = '';
         if ($edit_option) {
             $editlink = $_CONF['site_url'] . '/comment.php?mode=edit&amp;cid='
-                . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
-                . '&amp;' . CSRF_TOKEN . '=' . $token;
+                . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type;
             $edit = COM_createLink($LANG01[4], $editlink) . ' | ';
         }
 
