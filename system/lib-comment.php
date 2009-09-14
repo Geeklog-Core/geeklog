@@ -1182,7 +1182,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     DB_unlockTable($_TABLES['comments']);
 
     // notify of new comment 
-    if ($_CONF['allow_reply_notifications'] == 1 && $pid > 1 && $ret == 0) {
+    if ($_CONF['allow_reply_notifications'] == 1 && $pid > 0 && $ret == 0) {
         $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
         $A = DB_fetchArray($result);
         if ($A !== false) {
@@ -1771,7 +1771,7 @@ function CMT_approveModeration($cid)
     DB_change($_TABLES['commentnotifications'], 'cid', $newcid, 'mid', $cid);
 
     // notify of new published comment
-    if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 1) {
+    if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 0) {
         $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = {$A['pid']}");
         $B = DB_fetchArray($result);
         if ($B !== false) {
