@@ -1161,14 +1161,22 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = DB_getItem($_TABLES['topics'], 'topic',
                                   "tid = '{$A[3]}'");
         } elseif (($fieldname == 2) && ($type == 'comment')) {
+            $commenttext = COM_getTextContent($A['comment']);
+            $excerpt = htmlspecialchars(COM_truncate($commenttext, 140, '...'));
+
             // try to provide a link to the parent item (e.g. article, poll)
             $info = PLG_getItemInfo($A['type'], $A['sid'], 'title,url');
             if (empty($info) || empty($info[0]) || empty($info[1])) {
                 // if not available, display excerpt from the comment
-                $retval = COM_truncate(COM_getTextContent($A['comment']),
-                                       40, '...');
+                $retval = htmlspecialchars(COM_truncate($commenttext, 40,
+                                                        '...'));
+                if (strlen($commenttext) > 40) {
+                    $retval = '<span title="' . $excerpt . '">' . $retval
+                            . '</span>';
+                }
             } else {
-                $retval = COM_createLink($info[0], $info[1]);
+                $retval = COM_createLink($info[0], $info[1],
+                                         array('title' => $excerpt));
             }
         } else {
             $retval = COM_makeClickableLinks(stripslashes($fieldvalue));
