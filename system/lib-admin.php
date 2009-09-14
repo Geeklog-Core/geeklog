@@ -860,7 +860,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_IMAGE_TYPE;
 
-    static $topics, $topic_access;
+    static $topics, $topic_access, $topic_anon;
 
     if (!isset($topics)) {
         $topics = array();
@@ -934,8 +934,12 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'ping':
+        if (!isset($topic_anon[$A['tid']])) {
+            $topic_anon[$A['tid']] = DB_getItem($_TABLES['topics'], 'perm_anon',
+                "tid = '" . addslashes($A['tid']) . "'");
+        }
         if (($A['draft_flag'] == 0) && ($A['unixdate'] < time()) &&
-                ($A['perm_anon'] != 0)) {
+                ($A['perm_anon'] != 0) && ($topic_anon[$A['tid']] != 0)) {
             $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
                      . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
                      . $LANG24[21] . '"' . XHTML . '>';

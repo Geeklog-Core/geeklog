@@ -325,11 +325,16 @@ if ($A['count'] > 0) {
                 ($story->displayElements('draft_flag') == 0) &&
                 ($story->displayElements('day') < time ()) &&
                 ($story->displayElements('perm_anon') != 0)) {
-                
+
+            // also check permissions for the topic
+            $topic_anon = DB_getItem($_TABLES['topics'], 'perm_anon',
+                "tid = '" . addslashes($story->displayElements('tid')) . "'");
+
             // check special case: no link when Trackbacks are disabled for this
             // story AND pinging weblog directories is disabled
-            if (($story->displayElements('trackbackcode') >= 0) ||
-                    $_CONF['ping_enabled']) {
+            if (($topic_anon != 0) &&
+                    (($story->displayElements('trackbackcode') >= 0) ||
+                    $_CONF['ping_enabled'])) {
                 $url = $_CONF['site_admin_url']
                      . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
                 $story_options[] = COM_createLink($LANG_TRB['send_trackback'],
