@@ -1179,9 +1179,11 @@ default:
 
         // Now that we have users data see if their theme cookie is set.
         // If not set it
-        setcookie ($_CONF['cookie_theme'], $_USER['theme'], time() + 31536000,
-                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                   $_CONF['cookiesecure']);
+        if (! empty($_USER['theme'])) {
+            setcookie($_CONF['cookie_theme'], $_USER['theme'],
+                      time() + 31536000, $_CONF['cookie_path'],
+                      $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+        }
 
         if (!empty($_SERVER['HTTP_REFERER'])
                 && (strstr($_SERVER['HTTP_REFERER'], '/users.php') === false)
