@@ -1158,9 +1158,21 @@ function plugin_upgrade_polls()
                 }
             }
             
+            $current_version = '2.1.0';
+            break;
+        case '2.1.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            
+            update_ConfValues_2_1_0();            
+            
             $current_version = '2.1.1';
             break;
-
+            
         default:
             $done = true;
         }

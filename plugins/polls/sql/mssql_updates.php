@@ -38,10 +38,26 @@ $_UPDATES = array(
         "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [pid] VARCHARS(40)",
         "ALTER TABLE {$_TABLES['pollquestions']} ALTER COLUMN [pid] VARCHARS(40)",
         "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [pid] VARCHARS(40)",
-        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHARS(40)",
+        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHARS(40)"
+    ),
+
+    '2.1.0' => array(
         "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER topic, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
     )
-
 );
+
+function update_ConfValues_2_1_0()
+{
+    global $_CONF, $_PO_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+    
+    // meta tag config options.
+    $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select', 0, 0, 0, 100, true, 'polls');
+
+    return true;
+}
 
 ?>
