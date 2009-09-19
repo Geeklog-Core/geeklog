@@ -24,7 +24,8 @@
     }
 
     function change_editmode(obj) {
-        showhideEditorDiv("editor",1);
+        showhideEditorDiv("editor",
+                document.getElementById('navlist').childElementCount - 6);
         if (obj.value == 'html') {
             document.getElementById('html_editor').style.display='none';
             document.getElementById('text_editor').style.display='';

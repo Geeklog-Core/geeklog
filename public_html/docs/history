@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Changing the Post Mode in Advanced Editor mode selected the wrong tab
+  (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional
   email headers (using a string for that parameter still works as CC:) [Dirk]
 - Fixed reply notification for the very first comment (bug #0000973)
