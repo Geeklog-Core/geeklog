@@ -3217,10 +3217,10 @@ function COM_formatEmailAddress( $name, $address )
 /**
 * Send an email.
 *
-* All emails sent by Geeklog are sent through this function now.
+* All emails sent by Geeklog are sent through this function.
 *
-* NOTE: Please note that using the $cc parameter will expose the email addresses
-*       of all recipients. Use with care.
+* NOTE: Please note that using CC: will expose the email addresses of
+*       all recipients. Use with care.
 *
 * @param    string      $to         recipients name and email address
 * @param    string      $subject    subject of the email
@@ -3228,47 +3228,44 @@ function COM_formatEmailAddress( $name, $address )
 * @param    string      $from       (optional) sender of the the email
 * @param    boolean     $html       (optional) true if to be sent as HTML email
 * @param    int         $priority   (optional) add X-Priority header, if > 0
-* @param    string      $cc         (optional) other recipients (name + email)
+* @param    mixed       $optional   (optional) other headers or CC:
 * @return   boolean                 true if successful,  otherwise false
 *
 */
-function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0, $cc = '' )
+function COM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0, $optional = null)
 {
     global $_CONF;
 
     static $mailobj;
 
-    if( empty( $from ))
-    {
-        $from = COM_formatEmailAddress( $_CONF['site_name'], $_CONF['site_mail']);
+    if (empty($from)) {
+        $from = COM_formatEmailAddress($_CONF['site_name'], $_CONF['site_mail']);
     }
 
-    $to = substr( $to, 0, strcspn( $to, "\r\n" ));
-    $cc = substr( $cc, 0, strcspn( $cc, "\r\n" ));
-    $from = substr( $from, 0, strcspn( $from, "\r\n" ));
-    $subject = substr( $subject, 0, strcspn( $subject, "\r\n" ));
-    $subject = COM_emailEscape( $subject );
+    $to = substr($to, 0, strcspn($to, "\r\n"));
+    if (($optional != null) && !is_array($optional)) {
+        $optional = substr($optional, 0, strcspn($optional, "\r\n"));
+    }
+    $from = substr($from, 0, strcspn($from, "\r\n"));
+    $subject = substr($subject, 0, strcspn($subject, "\r\n"));
+    $subject = COM_emailEscape($subject);
 
-    if( function_exists( 'CUSTOM_mail' ))
-    {
-        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority, $cc );
+    if (function_exists('CUSTOM_mail')) {
+        return CUSTOM_mail($to, $subject, $message, $from, $html, $priority,
+                           $optional);
     }
 
-    include_once( 'Mail.php' );
-    include_once( 'Mail/RFC822.php' );
+    include_once 'Mail.php';
+    include_once 'Mail/RFC822.php';
 
     $method = $_CONF['mail_settings']['backend'];
 
-    if( !isset( $mailobj ))
-    {
-        if(( $method == 'sendmail' ) || ( $method == 'smtp' ))
-        {
-            $mailobj =& Mail::factory( $method, $_CONF['mail_settings'] );
-        }
-        else
-        {
+    if (! isset($mailobj)) {
+        if (($method == 'sendmail') || ($method == 'smtp')) {
+            $mailobj =& Mail::factory($method, $_CONF['mail_settings']);
+        } else {
             $method = 'mail';
-            $mailobj =& Mail::factory( $method );
+            $mailobj =& Mail::factory($method);
         }
     }
 
@@ -3276,34 +3273,28 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     $headers = array();
 
     $headers['From'] = $from;
-    if( $method != 'mail' )
-    {
+    if ($method != 'mail') {
         $headers['To'] = $to;
     }
-    if( !empty( $cc ))
-    {
-        $headers['Cc'] = $cc;
+    if (($optional != null) && !is_array($optional) && !empty($optional)) {
+        // assume old (optional) CC: header
+        $headers['Cc'] = $optional;
     }
-    $headers['Date'] = date( 'r' ); // RFC822 formatted date
-    if( $method == 'smtp' )
-    {
-        list( $usec, $sec ) = explode( ' ', microtime());
-        $m = substr( $usec, 2, 5 );
-        $headers['Message-Id'] = '<' .  date( 'YmdHis' ) . '.' . $m
+    $headers['Date'] = date('r'); // RFC822 formatted date
+    if($method == 'smtp') {
+        list($usec, $sec) = explode(' ', microtime());
+        $m = substr($usec, 2, 5);
+        $headers['Message-Id'] = '<' .  date('YmdHis') . '.' . $m
                                . '@' . $_CONF['mail_settings']['host'] . '>';
     }
-    if( $html )
-    {
+    if ($html) {
         $headers['Content-Type'] = 'text/html; charset=' . $charset;
         $headers['Content-Transfer-Encoding'] = '8bit';
-    }
-    else
-    {
+    } else {
         $headers['Content-Type'] = 'text/plain; charset=' . $charset;
     }
     $headers['Subject'] = $subject;
-    if( $priority > 0 )
-    {
+    if ($priority > 0) {
         $headers['X-Priority'] = $priority;
     }
     $headers['X-Mailer'] = 'Geeklog ' . VERSION;
@@ -3317,13 +3308,19 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
         }
     }
 
-    $retval = $mailobj->send( $to, $headers, $message );
-    if( $retval !== true )
-    {
-        COM_errorLog( $retval->toString(), 1 );
+    // add optional headers last
+    if (($optional != null) && is_array($optional)) {
+        foreach ($optional as $h => $v) {
+            $headers[$h] = $v;
+        }
     }
 
-    return( $retval === true ? true : false );
+    $retval = $mailobj->send($to, $headers, $message);
+    if ($retval !== true) {
+        COM_errorLog($retval->toString(), 1);
+    }
+
+    return($retval === true ? true : false);
 }
 
 
