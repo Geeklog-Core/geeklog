@@ -532,20 +532,18 @@ function editpreferences()
 
     $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
 
-    while ($tDetails = current($T)) {
-        $tzcode = htmlspecialchars(key($T));
+    foreach ($T as $tzid => $tDetails) {
+        $tzcode = str_replace('_', ' ', $tzid);
+        $tzcode = htmlspecialchars($tzcode);
         $selection .= '<option value="' . $tzcode . '"';
         if ($timezone == $tzcode) {
-                $selection .= ' selected="selected"';
-        } else {
-                $selection .= '';
+            $selection .= ' selected="selected"';
         }
         $hours = $tDetails['offset'] / (3600 * 1000);
         if ($hours > 0) {
             $hours = "+$hours";
         }
         $selection .= ">$hours, {$tDetails['shortname']} ($tzcode)</option>" . LB;
-        next($T);
     }
     $selection .= '</select>';
     $preferences->set_var ('timezone_selector', $selection);
