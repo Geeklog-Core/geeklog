@@ -74,6 +74,10 @@ Calendar Plugin
 
 Polls Plugin
 ------------
+- When upgrading from Geeklog 1.5.2, the length of the poll IDs was not extended
+  to 40 characters - only fresh installs of Geeklog 1.6.0 and upgrades from
+  older versions worked correctly (cf. feature request #0000754) [Dirk]
+- Added support for meta tags and meta keywords, provided by Tom Homer
 - Introduced [poll:], [poll_vote:], and [poll_result:] autotags, allowing to
   embed polls where autotags are allowed, provided by Tom Homer
 

@@ -34,16 +34,19 @@
 
 $_UPDATES = array(
 
-    '2.0.1' => array(
+    '2.1.0' => array(
+        // These pid changes should have happened when upgrading from 2.0.2
+        // to 2.1.0 but were previously listed for an upgrade from 2.0.1 and
+        // therefore may have not been applied. Apply again to be sure.
         "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [pid] VARCHARS(40)",
         "ALTER TABLE {$_TABLES['pollquestions']} ALTER COLUMN [pid] VARCHARS(40)",
         "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [pid] VARCHARS(40)",
-        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHARS(40)"
-    ),
+        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHARS(40)",
 
-    '2.1.0' => array(
+        // New field post-2.1.0
         "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER topic, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
     )
+
 );
 
 function update_ConfValues_2_1_0()

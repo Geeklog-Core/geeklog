@@ -1151,15 +1151,13 @@ function plugin_upgrade_polls()
     while (! $done) {
         switch ($current_version) {
         case '2.0.1':
-            if (isset($_UPDATES[$current_version])) {
-                $_SQL = $_UPDATES[$current_version];
-                foreach ($_SQL as $sql) {
-                    DB_query($sql);
-                }
-            }
-            
+            $current_version = '2.0.2';
+            break;
+
+        case '2.0.2':
             $current_version = '2.1.0';
             break;
+
         case '2.1.0':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
