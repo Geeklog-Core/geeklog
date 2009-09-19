@@ -943,7 +943,11 @@ class config {
         }
 
         if (! empty($descUrl)) {
-            $retval = $descUrl . '#desc_' . $option;
+            if (strpos($descUrl, '#') === false) {
+                $retval = $descUrl . '#desc_' . $option;
+            } else {
+                $retval = $descUrl;
+            }
         }
 
         return $retval;
