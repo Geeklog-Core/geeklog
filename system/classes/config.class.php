@@ -916,37 +916,39 @@ class config {
     */
     function _get_ConfigHelp($group, $option)
     {
-        static $coreUrl;
+        static $docUrl;
+
+        if (! isset($docUrl)) {
+            $docUrl = array();
+        }
 
         $retval = '';
 
-        $descUrl = '';
-        if ($group == 'Core') {
-            if (isset($coreUrl)) {
-                $descUrl = $coreUrl;
-            } elseif (!empty($GLOBALS['_CONF']['site_url']) &&
-                    !empty($GLOBALS['_CONF']['path_html'])) {
-                $baseUrl = $GLOBALS['_CONF']['site_url'];
-                $doclang = COM_getLanguageName();
-                $cfg = 'docs/' . $doclang . '/config.html';
-                if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
-                    $descUrl = $baseUrl . '/' . $cfg;
+        if (! isset($docUrl[$group])) {
+            if ($group == 'Core') {
+                if (!empty($GLOBALS['_CONF']['site_url']) &&
+                        !empty($GLOBALS['_CONF']['path_html'])) {
+                    $baseUrl = $GLOBALS['_CONF']['site_url'];
+                    $doclang = COM_getLanguageName();
+                    $cfg = 'docs/' . $doclang . '/config.html';
+                    if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
+                        $url = $baseUrl . '/' . $cfg;
+                    } else {
+                        $url = $baseUrl . '/docs/english/config.html';
+                    }
                 } else {
-                    $descUrl = $baseUrl . '/docs/english/config.html';
+                    $url = 'http://www.geeklog.net/docs/english/config.html';
                 }
-                $coreUrl = $descUrl;
-            } else {
-                $descUrl = 'http://www.geeklog.net/docs/english/config.html';
+                $docUrl['Core'] = $url;
+            } else { // plugin
+                $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
             }
-        } else {
-            $descUrl = PLG_getDocumentationUrl($group, 'config');
         }
+        $retval = $docUrl[$group];
 
-        if (! empty($descUrl)) {
-            if (strpos($descUrl, '#') === false) {
-                $retval = $descUrl . '#desc_' . $option;
-            } else {
-                $retval = $descUrl;
+        if (! empty($retval)) {
+            if (strpos($retval, '#') === false) {
+                $retval .= '#desc_' . $option;
             }
         }
 
