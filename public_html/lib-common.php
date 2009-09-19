@@ -3196,18 +3196,20 @@ function COM_emailEscape( $string )
 * @return   string              formatted email address
 *
 */
-function COM_formatEmailAddress( $name, $address )
+function COM_formatEmailAddress($name, $address)
 {
+    $name = trim($name);
+    $address = trim($address);
+
     if (function_exists('CUSTOM_formatEmailAddress')) {
         return CUSTOM_formatEmailAddress($name, $address);
     }
 
-    $formatted_name = COM_emailEscape( $name );
+    $formatted_name = COM_emailEscape($name);
 
     // if the name comes back unchanged, it's not UTF-8, so preg_match is fine
-    if(( $formatted_name == $name ) && preg_match( '/[^0-9a-z ]/i', $name ))
-    {
-        $formatted_name = str_replace( '"', '\\"', $formatted_name );
+    if (($formatted_name == $name) && preg_match('/[^0-9a-z ]/i', $name)) {
+        $formatted_name = str_replace('"', '\\"', $formatted_name);
         $formatted_name = '"' . $formatted_name . '"';
     }
 
