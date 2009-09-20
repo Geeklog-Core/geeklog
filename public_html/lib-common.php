@@ -1984,7 +1984,7 @@ function COM_errorLog( $logentry, $actionid = '' )
         $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
                                  $logentry );
 
-        $timestamp = strftime( '%c' );
+        $timestamp = @strftime( '%c' );
 
         if (!isset($_CONF['path_layout']) &&
                 (($actionid == 2) || empty($actionid))) {
@@ -2066,7 +2066,7 @@ function COM_accessLog( $logentry )
         $logentry = str_replace( array( '<?', '?>' ), array( '(@', '@)' ),
                                  $logentry );
 
-        $timestamp = strftime( '%c' );
+        $timestamp = @strftime( '%c' );
         $logfile = $_CONF['path_log'] . 'access.log';
 
         if( !$file = fopen( $logfile, 'a' ))
