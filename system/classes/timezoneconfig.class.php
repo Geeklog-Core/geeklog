@@ -210,7 +210,7 @@ class TimeZoneConfig {
 
         }
 
-        uasort($timezones, 'TimeZoneConfig::_sort_by_timezone');
+        uasort($timezones, array('TimeZoneConfig', '_sort_by_timezone'));
 
         return $timezones;
     }
