@@ -1,12 +1,12 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.3                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | Set of javascript functions to support the user-move feature              |
 // | where two selectboxes are presented                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003,2004 by the following authors:                         |
+// | Copyright (C) 2003-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors:   Matt Kruse  - matt@mattkruse.com                               |
 // |            Blaine Lang - blaine@portalparts.com                           |
