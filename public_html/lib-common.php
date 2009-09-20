@@ -236,6 +236,7 @@ require_once( $_CONF['path_system'] . 'lib-custom.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
+TimeZoneConfig::setUserTimeZone();
 
 /**
 * Ulf Harnhammar's kses class

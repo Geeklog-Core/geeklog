@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- The user's time zone selection (from My Account) is actually used now [Dirk]
 - Modernized the "timezone hack", made the config option a dropdown, and moved
   all timezone-related code into a new TimeZoneConfig class [Dirk]
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
