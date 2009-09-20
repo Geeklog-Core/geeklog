@@ -80,11 +80,7 @@ class unpacker {
     function unpacker($file, $mime_type = null) {
 
         // default directory separator
-        if (strtoupper(substr(PHP_OS, 0, 3) == 'WIN')) {
-            $this->d_sep = '\\';
-        } else {
-            $this->d_sep = '/';
-        }
+        $this->d_sep = PATH_SEPARATOR;
 
         // if the file doesn't have it's path, assume local
         if (! strstr($file, $this->d_sep)) {
