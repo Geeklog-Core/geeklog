@@ -55,23 +55,32 @@ class TimeZoneConfig {
     {
         global $_CONF;
 
+        static $system_timezone = '';
+
         if (empty($tz) && !empty($_CONF['timezone'])) {
             $tz = $_CONF['timezone'];
         }
 
         if (! empty($tz)) {
-            if (function_exists('date_default_timezone_set')) {
-                if (! @date_default_timezone_set($tz)) {
-                    date_default_timezone_set('UTC');
-                    COM_errorLog("Timezone '$tz' not valid - using 'UTC' instead", 1);
+            if ($tz != $system_timezone) {
+                if (function_exists('date_default_timezone_set')) {
+                    if (! @date_default_timezone_set($tz)) {
+                        date_default_timezone_set('UTC');
+                        COM_errorLog("Timezone '$tz' not valid - using 'UTC' instead", 1);
+                        $system_timezone = 'UTC';
+                    } else {
+                        $system_timezone = $tz;
+                    }
+                } elseif (!ini_get('safe_mode') && function_exists('putenv')) {
+                    // aka "Timezone Hack"
+                    putenv('TZ=' . $tz);
+                    $system_timezone = $tz;
                 }
-            } elseif (!ini_get('safe_mode') && function_exists('putenv')) {
-                // aka "Timezone Hack"
-                putenv('TZ=' . $tz);
             }
         } elseif (function_exists('date_default_timezone_get')) {
             // this is not ideal but will stop PHP 5.3.0ff from complaining ...
-            date_default_timezone_set(@date_default_timezone_get());
+            $system_timezone = @date_default_timezone_get();
+            date_default_timezone_set($system_timezone);
         }
     }
 
