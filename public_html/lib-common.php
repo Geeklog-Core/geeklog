@@ -130,12 +130,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-common.php') !== false) {
     exit;
 }
 
-// timezone hack - set the webserver's timezone
-if( !empty( $_CONF['timezone'] ) && !ini_get( 'safe_mode' ) &&
-        function_exists( 'putenv' )) {
-    putenv( 'TZ=' . $_CONF['timezone'] );
-}
-
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
@@ -158,6 +152,13 @@ if (! $_CONF['have_pear']) {
         COM_errorLog('set_include_path failed - there may be problems using the PEAR classes.', 1);
     }
 }
+
+/**
+* Set the webserver's timezone
+*/
+
+require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
+TimeZoneConfig::setSystemTimeZone();
 
 /**
 * Include plugin class.

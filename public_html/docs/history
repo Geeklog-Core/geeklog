@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Modernized the "timezone hack", made the config option a dropdown, and moved
+  all timezone-related code into a new TimeZoneConfig class [Dirk]
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
   (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional

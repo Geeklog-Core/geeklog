@@ -291,7 +291,7 @@ function install_config()
     $c->add('thousand_separator',",",'text',6,29,NULL,440,TRUE);
     $c->add('decimal_separator',".",'text',6,29,NULL,450,TRUE);
     $c->add('decimal_count',"2",'text',6,29,NULL,460,TRUE);
-    $c->add('timezone','Etc/GMT-6','text',6,29,NULL,490,FALSE);
+    $c->add('timezone','UTC','select',6,29,NULL,490,FALSE);
 
     // Subgroup: Miscellaneous
     $c->add('sg_misc', NULL, 'subgroup', 7, 0, NULL, 0, TRUE);
