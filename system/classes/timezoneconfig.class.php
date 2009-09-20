@@ -86,10 +86,17 @@ class TimeZoneConfig {
     {
         global $_CONF, $_USER;
 
+        // handle like the theme cookie, i.e. use if user is not logged in
+        if (isset($_COOKIE[$_CONF['cookie_tzid']]) && empty($_USER['tzid'])) {
+            $_USER['tzid'] = $_COOKIE[$_CONF['cookie_tzid']];
+        }
+
         if (! empty($_USER['tzid'])) {
             $timezone = $_USER['tzid'];
         } elseif (! empty($_CONF['timezone'])) {
             $timezone = $_CONF['timezone'];
+        } elseif (function_exists('date_default_timezone_get')) {
+            $timezone = @date_default_timezone_get();
         } else {
             require_once 'Date/TimeZone.php';
 
