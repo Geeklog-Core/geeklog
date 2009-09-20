@@ -85,6 +85,28 @@ class TimeZoneConfig {
     }
 
     /**
+    * Set the user's preferred timezone
+    *
+    * Note that does nothing if $_CONF['timezone'] is empty, i.e. if no
+    * system timezone is defined, we don't set a user timezone either.
+    *
+    * @return void
+    * @static
+    *
+    */
+    function setUserTimeZone()
+    {
+        global $_CONF;
+
+        if (! empty($_CONF['timezone'])) {
+            $tz = TimeZoneConfig::getUserTimeZone();
+            if (! empty($tz)) {
+                TimeZoneConfig::setSystemTimeZone($tz);
+            }
+        }
+    }
+
+    /**
     * Get the user's preferred timezone
     *
     * @return   string  name of the timezone
