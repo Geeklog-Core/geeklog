@@ -40,6 +40,7 @@ class SearchCriteria {
     var $_rank;
     var $_url_rewrite;
     var $_append_query;
+    var $_results = array();
 
     function SearchCriteria( $pluginName, $pluginLabel )
     {
@@ -73,6 +74,11 @@ class SearchCriteria {
     function setAppendQuery( $append_query )
     {
         $this->_append_query = $append_query;
+    }
+
+    function setResults( $result_arr )
+    {
+        $this->_results = $result_arr;
     }
 
     function getSQL()
@@ -115,6 +121,11 @@ class SearchCriteria {
     function AppendQueryEnable()
     {
         return $this->_append_query;
+    }
+
+    function getResults()
+    {
+        return $this->_results;
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )
@@ -167,7 +178,7 @@ class SearchCriteria {
         {
             $word = trim($word);
             $tmp .= '(';
-            
+
             if ($titles) {
                 $tmp .= $columns['title'] . " LIKE '%$word%' OR ";
             } else {

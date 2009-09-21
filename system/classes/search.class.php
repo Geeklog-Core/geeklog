@@ -583,6 +583,11 @@ class Search {
                     COM_errorLog($debug_info);
                 }
 
+                $api_results = $result->getResults();
+                if (!empty($api_results)) {
+                    $obj->addResultArray($api_results);
+                }
+
                 $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
                 $this->_append_query[ $result->getName() ] = $result->AppendQueryEnable();

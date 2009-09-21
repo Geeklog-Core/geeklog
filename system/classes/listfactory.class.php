@@ -251,15 +251,27 @@ class ListFactory {
     }
 
     /**
-    * Appends a result to the list
+    * Appends a single result to the list
     *
     * @access public
-    * @param array $result An single result that will be appended to the rest
+    * @param array $result A single result that will be appended to the rest
     *
     */
     function addResult( $result )
     {
         $this->_preset_rows[] = $result;
+    }
+
+    /**
+    * Appends several results to the list
+    *
+    * @access public
+    * @param array $result An array of result that will be appended to the rest
+    *
+    */
+    function addResultArray( $arr )
+    {
+        $this->_preset_rows = array_merge($this->_preset_rows, $arr);
     }
 
     /**
