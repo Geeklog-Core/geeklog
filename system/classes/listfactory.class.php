@@ -545,6 +545,12 @@ class ListFactory {
             if (!$show_sort) {
                 $list_templates->set_var('show_sort', 'display:none;');
             }
+
+            // Write field
+            $list_templates->set_var('sort_text', "$sort_text...");
+            $list_templates->set_var('sort_href', "");
+            $list_templates->set_var('sort_selected', $sort_selected);
+            $list_templates->parse('page_sort', 'sort', true);
         }
 
         // Draw the sorting select box/table headings
@@ -561,8 +567,9 @@ class ListFactory {
 
                     // Show the sort arrow
                     if ($this->_sort_arr['field'] === $field['name']) {
-                        $selected = $sort_selected;
+                        //$selected = $sort_selected;
                         $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
+                        $text .= " ($direction)";
                     }
 
                     $href = $this->_page_url . "order={$field['name']}&amp;direction=$direction";
