@@ -41,6 +41,7 @@ class SearchCriteria {
     var $_url_rewrite;
     var $_append_query;
     var $_results = array();
+    var $_is_comment;
 
     function SearchCriteria( $pluginName, $pluginLabel )
     {
@@ -49,6 +50,7 @@ class SearchCriteria {
         $this->_rank = 3;
         $this->_url_rewrite = false;
         $this->_append_query = true;
+        $this->_is_comment = false;
     }
 
     function setSQL( $sql )
@@ -79,6 +81,11 @@ class SearchCriteria {
     function setResults( $result_arr )
     {
         $this->_results = $result_arr;
+    }
+
+    function setComment( $bool )
+    {
+        $this->_is_comment = $bool;
     }
 
     function getSQL()
@@ -126,6 +133,11 @@ class SearchCriteria {
     function getResults()
     {
         return $this->_results;
+    }
+
+    function getComment()
+    {
+        return $this->_is_comment;
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )

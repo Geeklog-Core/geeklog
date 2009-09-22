@@ -381,33 +381,15 @@ class Search {
             $sql .= "AND (s.uid = '$this->_author') ";
         }
 
-        $search = new SearchCriteria('stories', $LANG09[65]);
+        $search_s = new SearchCriteria('stories', $LANG09[65]);
         $columns = array('title' => 'title', 'introtext', 'bodytext');
-        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-        $search->setSQL($sql);
-        $search->setFTSQL($ftsql);
-        $search->setRank(5);
-        $search->setURLRewrite(true);
+        list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+        $search_s->setSQL($sql);
+        $search_s->setFTSQL($ftsql);
+        $search_s->setRank(5);
+        $search_s->setURLRewrite(true);
 
-        return $search;
-    }
-
-    /**
-    * Performs search on all comments
-    *
-    * @author Tony Bibbs, tony AT geeklog DOT net
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
-    * @access private
-    * @return object plugin object
-    *
-    */
-    function _searchComments()
-    {
-        global $_TABLES, $_DB_dbms, $LANG09;
-
-        // Make sure the query is SQL safe
-        $query = trim(addslashes($this->_query));
-
+        // Search Story Comments
         $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
         $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
 
@@ -442,14 +424,15 @@ class Search {
             $sql .= "AND (c.uid = '$this->_author') ";
         }
 
-        $search = new SearchCriteria('comments', $LANG09[66]);
+        $search_c = new SearchCriteria('comments', array($LANG09[65],$LANG09[66]));
         $columns = array('title' => 'c.title', 'comment');
-        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-        $search->setSQL($sql);
-        $search->setFTSQL($ftsql);
-        $search->setRank(2);
+        list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+        $search_c->setSQL($sql);
+        $search_c->setFTSQL($ftsql);
+        $search_c->setRank(2);
+        $search_c->setComment(true);
 
-        return $search;
+        return array($search_s, $search_c);
     }
 
     /**
@@ -545,13 +528,9 @@ class Search {
         $result_plugins = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $page, 5);
 
         // Add core searches
-        if ($this->_type == 'all' || $this->_type == 'stories')
+        if ($this->_type == 'all' || $this->_type == 'stories' || $this->_type == 'comments')
         {
-            $result_plugins[] = $this->_searchStories();
-        }
-        if ($this->_type == 'all' || $this->_type == 'comments')
-        {
-            $result_plugins[] = $this->_searchComments();
+            $result_plugins = array_merge($result_plugins, $this->_searchStories());
         }
 
         // Loop through all plugins separating the new API from the old
@@ -563,6 +542,13 @@ class Search {
         {
             if (is_a($result, 'SearchCriteria'))
             {
+                if ($this->_type == 'comments' && !$result->getComment()) {
+                    if ($this->_verbose) {
+                        COM_errorLog($result->getName() . " using APIv2. Skipped as type is not comments");
+                    }
+                    continue;
+                }
+
                 $debug_info = $result->getName() . " using APIv2 with ";
 
                 if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '')
