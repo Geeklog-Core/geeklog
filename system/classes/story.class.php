@@ -608,16 +608,18 @@ class Story
         }
 
         /* if a featured, non-draft, that goes live straight away, unfeature
-         * other stories:
+         * other stories in same topic:
          */
         if ($this->_featured == '1') {
             // there can only be one non-draft featured story
             if ($this->_draft_flag == 0 AND $this->_date <= time()) {
-                $id[1] = 'featured';
-                $values[1] = 1;
-                $id[2] = 'draft_flag';
-                $values[2] = 0;
-                DB_change($_TABLES['stories'], 'featured', '0', $id, $values);
+                if ($this->_frontpage == 1) {
+                    // un-feature any featured frontpage story
+                    DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND frontpage = 1 AND date <= NOW()");
+                }
+
+                // un-feature any featured story in the same topic
+                DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND tid = '{$this->_tid}' AND date <= NOW()");
             }
         }
 
