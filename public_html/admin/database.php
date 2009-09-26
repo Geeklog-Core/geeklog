@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
 // |                                                                           |
-// | Geeklog database backup administration page.                              |
+// | Geeklog database backup and maintenance page.                             |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2009 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,22 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* This admin panel provides some simple database backup and administration
+* abilities. You can create and download database backups, optimize tables,
+* or convert tables to InnoDB.
+* All of these functions are currently only available for MySQL. The link to
+* this admin panel is actually hidden when not using MySQL.
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 $display = '';
@@ -46,12 +61,6 @@ if (!SEC_inGroup('Root') OR ($_CONF['allow_mysqldump'] == 0)) {
     COM_output($display);
     exit;
 }
-
-/**
-* This page allows all Root admins to create a database backup.  It's pretty
-* simple actually.  The admin clicks a button, we do a mysqldump to a file in
-* the following format: geeklog_db_backup_YYYY_MM_DD_hh_mm_ss.sql  That's it.
-*/
 
 /**
 * Sort backup files with newest first, oldest last.
@@ -80,7 +89,8 @@ function compareBackupFiles($pFileA, $pFileB)
 */
 function listbackups()
 {
-    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG08, $LANG_ADMIN, $LANG_DB_BACKUP;
+    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG08, $LANG_ADMIN,
+           $LANG_DB_BACKUP, $_DB_dbms;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -122,11 +132,23 @@ function listbackups()
         $token = SEC_createToken();
         $menu_arr = array(
             array('url' => $_CONF['site_admin_url']
-                           . '/database.php?mode=backup&'.CSRF_TOKEN.'='.$token,
+                                . '/database.php?mode=backup&amp;'
+                                . CSRF_TOKEN . '=' . $token,
                   'text' => $LANG_ADMIN['create_new']),
-            array('url' => $_CONF['site_admin_url'],
-                  'text' => $LANG_ADMIN['admin_home'])
         );
+        if ($_DB_dbms == 'mysql') {
+            $menu_arr[] =
+                array('url' => $thisUrl . '?mode=optimize',
+                      'text' => $LANG_DB_BACKUP['optimize_menu']);
+            if (innodb_supported()) {
+                $menu_arr[] =
+                    array('url' => $thisUrl . '?mode=innodb',
+                          'text' => $LANG_DB_BACKUP['convert_menu']);
+            }
+        }
+        $menu_arr[] =
+            array('url' => $_CONF['site_admin_url'],
+                  'text' => $LANG_ADMIN['admin_home']);
         $retval .= COM_startBlock($LANG_DB_BACKUP['last_ten_backups'], '',
                             COM_getBlockTemplate('_admin_block', 'header'));
         $retval .= ADMIN_createMenu(
@@ -263,21 +285,393 @@ function downloadbackup($file)
     $dl->downloadFile($file);
 }
 
+/**
+* Delete selected backup files
+*
+* @return   string  empty string (nothing to do), or HTML error or success msg
+*
+*/
+function deletebackups()
+{
+    global $_CONF, $LANG_DB_BACKUP;
+
+    $retval = '';
+    $files = 0;
+    $failed = 0;
+
+    foreach ($_POST['delitem'] as $delfile) {
+        $file = COM_sanitizeFilename($delfile, true);
+        if (! empty($file)) {
+            $files++;
+            if (! @unlink($_CONF['backup_path'] . $file)) {
+                COM_errorLog('Unable to remove backup file "' . $file . '"');
+                $failed++;
+            }
+        }
+    }
+
+    if ($files > 0) {
+        if ($failed > 0) {
+            $retval .= COM_showMessageText($LANG_DB_BACKUP['delete_failure']);
+        } else {
+            $retval .= COM_showMessageText($LANG_DB_BACKUP['delete_success']);
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Create a simple form with two buttons
+*
+* Creates a simple form that has a Cancel and an "action" button, where
+* the latter invokes a POST request with $_POST['mode'] set to the given value.
+*
+* @param    string  $buttontext     text string for the "action" button
+* @param    string  $mode           mode value
+* @param    string  $token          CSRF token, will be created if empty
+* @return   string                  HTML form
+*
+*/
+function miniform_DoOrCancel($buttontext, $mode, $token = '')
+{
+    global $_CONF, $LANG_ADMIN;
+
+    $retval = '';
+
+    if (empty($token)) {
+        $token = SEC_createToken();
+    }
+
+    $retval .= '<div id="miniform"><form action="' . $_CONF['site_admin_url']
+            . '/database.php" method="post" style="display:inline;">' . LB;
+    $retval .= '<input type="submit" value="' . $buttontext . '"'
+            . XHTML . '>' . LB;
+    $retval .= '<input type="hidden" name="mode" value="' . $mode . '"'
+            . XHTML . '>' . LB;
+    $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+            . $token . '"' . XHTML . '>' . LB;
+    $retval .= '</form>' . LB;
+    $retval .= '<form action="' . $_CONF['site_admin_url']
+            . '/database.php" method="post" style="display:inline;">' . LB;
+    $retval .= '<input type="submit" value="' . $LANG_ADMIN['cancel'] . '"'
+            . XHTML . '>' . LB;
+    $retval .= '</form></div>' . LB;
+
+    return $retval;
+}
+
+/**
+* Check for InnoDB table support (usually as of MySQL 4.0, but may be
+* available in earlier versions, e.g. "Max" or custom builds).
+*
+* @return   true = InnoDB tables supported, false = not supported
+*
+*/
+function innodb_supported()
+{
+    global $_DB_dbms;
+
+    $retval = false;
+
+    if ($_DB_dbms == 'mysql') {
+        $result = DB_query("SHOW TABLE TYPES");
+        $numEngines = DB_numRows($result);
+        for ($i = 0; $i < $numEngines; $i++) {
+            $A = DB_fetchArray($result);
+
+            if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
+                if (strcasecmp($A['Support'], 'yes') == 0) {
+                    $retval = true;
+                }
+                break;
+            }
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Check if all the tables have already been converted to InnoDB
+*
+* @return   bool    true: all tables are InnoDB, otherwise false
+*
+*/
+function already_converted()
+{
+    global $_CONF, $_TABLES, $_DB_name;
+
+    $retval = false;
+
+    $engine = DB_getItem($_TABLES['vars'], 'value', "name = 'database_engine'");
+    if (!empty($engine) && ($engine == 'InnoDB')) {
+        // need to look at all the tables
+        $result = DB_query("SHOW TABLES");
+        $numTables = DB_numRows($result);
+        for ($i = 0; $i < $numTables; $i++) {
+            $A = DB_fetchArray($result, true);
+            $table = $A[0];
+            if (in_array($table, $_TABLES)) {
+                $result2 = DB_query("SHOW TABLE STATUS FROM $_DB_name LIKE '$table'");
+                $B = DB_fetchArray($result2);
+                if (strcasecmp($B['Engine'], 'InnoDB') != 0) {
+                    break; // found a non-InnoDB table
+                }
+            }
+        }
+        if ($i == $numTables) {
+            // okay, all the tables are InnoDB already
+            $retval = true;
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare for conversion to InnoDB tables
+*
+* @return   string  HTML form
+*
+*/
+function innodb()
+{
+    global $_CONF, $LANG_ADMIN, $LANG_DB_BACKUP;
+
+    $retval = '';
+
+    $retval .= COM_startBlock($LANG_DB_BACKUP['convert_title']);
+    $retval .= '<p>' . $LANG_DB_BACKUP['innodb_explain'] . '</p>' . LB;
+
+    if (already_converted()) {
+        $retval .= '<p>' . $LANG_DB_BACKUP['already_converted'] . '</p>' . LB;
+    } else {
+        $retval .= '<p>' . $LANG_DB_BACKUP['conversion_patience'] . '</p>' . LB;
+    }
+
+    $retval .= miniform_DoOrCancel($LANG_DB_BACKUP['convert_button'],
+                                   'doinnodb');
+    $retval .= COM_endBlock();
+    // Note: COM_siteFooter is added in MAIN
+
+    return $retval;
+}
+
+/**
+* Convert to InnoDB tables
+*
+* @param    string  $startwith  table to start with
+* @param    int     $failures   number of previous errors
+* @return   int                 number of errors during conversion
+*
+*/
+function doinnodb($startwith = '', $failures = 0)
+{
+    global $_CONF, $_TABLES, $_DB_name;
+
+    $retval = '';
+    $start = time();
+
+    DB_displayError(true);
+
+    $maxtime = @ini_get('max_execution_time');
+    if (empty($maxtime)) {
+        // unlimited or not allowed to query - assume 30 second default
+        $maxtime = 30;
+    }
+    $maxtime -= 5; // give us some leeway
+
+    $token = ''; // SEC_createToken();
+
+    $result = DB_query("SHOW TABLES");
+    $numTables = DB_numRows($result);
+    for ($i = 0; $i < $numTables; $i++) {
+        $A = DB_fetchArray($result, true);
+        $table = $A[0];
+        if (in_array($table, $_TABLES)) {
+            if (! empty($startwith)) {
+                if ($table == $startwith) {
+                    $startwith = '';
+                } else {
+                    continue; // already handled - skip
+                }
+            }
+
+            $result2 = DB_query("SHOW TABLE STATUS FROM $_DB_name LIKE '$table'");
+            $B = DB_fetchArray($result2);
+            if (strcasecmp($B['Engine'], 'InnoDB') == 0) {
+                continue; // already converted - skip
+            }
+
+            if (time() > $start + $maxtime) {
+                // this is taking too long - kick off another request
+                $startwith = $table;
+                $url = $_CONF['site_admin_url'] . '/database.php?mode=doinnodb';
+                if (! empty($token)) {
+                    $token = '&' . CSRF_TOKEN . '=' . $token;
+                }
+                header("Location: $url&startwith=$startwith&failures=$failures"
+                                  . $token);
+                exit;
+            }
+
+            $make_innodb = DB_query("ALTER TABLE $table ENGINE=InnoDB", 1);
+            if ($make_innodb === false) {
+                $failures++;
+                COM_errorLog('SQL error for table "' . $table . '" (ignored): '
+                             . DB_error());
+            }
+        }
+    }
+
+    DB_delete($_TABLES['vars'], 'name', 'database_engine');
+    DB_query("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
+
+    return $failures;
+}
+
+/**
+* Prepare for optimizing tables
+*
+* @return   string  HTML form
+*
+*/
+function optimize()
+{
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_DB_BACKUP;
+
+    $retval = '';
+
+    $lastrun = DB_getItem($_TABLES['vars'], 'UNIX_TIMESTAMP(value)',
+                          "name = 'lastoptimizeddb'");
+
+    $retval .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
+    $retval .= COM_startBlock($LANG_DB_BACKUP['optimize_title']);
+    $retval .= '<p>' . $LANG_DB_BACKUP['optimize_explain'] . '</p>' . LB;
+    if (!empty($lastrun)) {
+        $last = COM_getUserDateTimeFormat($lastrun);
+        $retval .= '<p>' . $LANG_DB_BACKUP['last_optimization'] . ': '
+                . $last[0] . '</p>' . LB;
+    }
+    $retval .= '<p>' . $LANG_DB_BACKUP['optimization_patience'] . '</p>' . LB;
+
+    $retval .= miniform_DoOrCancel($LANG_DB_BACKUP['optimize_button'],
+                                   'dooptimize');
+    $retval .= COM_endBlock();
+    // Note: COM_siteFooter is added in MAIN
+
+    return $retval;
+}
+
+/**
+* Optimize database tables
+*
+* @param    string  $startwith  table to start with
+* @param    int     $failures   number of previous errors
+* @return   int                 number of errors during conversion
+*
+*/
+function dooptimize($startwith = '', $failures = 0)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = '';
+    $start = time();
+
+    $lasttable = DB_getItem($_TABLES['vars'], 'value',
+                            "name = 'lastoptimizedtable'");
+    if (empty($startwith) && !empty($lasttable)) {
+        $startwith = $lasttable;
+    }
+
+    $maxtime = @ini_get('max_execution_time');
+    if (empty($maxtime)) {
+        // unlimited or not allowed to query - assume 30 second default
+        $maxtime = 30;
+    }
+    $maxtime -= 5; // give us some leeway
+
+    DB_displayError(true);
+
+    $token = ''; // SEC_createToken();
+
+    $result = DB_query("SHOW TABLES");
+    $numTables = DB_numRows($result);
+    for ($i = 0; $i < $numTables; $i++) {
+        $A = DB_fetchArray($result, true);
+        $table = $A[0];
+        if (in_array($table, $_TABLES)) {
+            if (! empty($startwith)) {
+                if ($table == $startwith) {
+                    $startwith = '';
+                } else {
+                    continue; // already handled - skip
+                }
+                if (!empty($lasttable) && ($lasttable == $table)) {
+                    continue; // skip
+                }
+            }
+
+            if (time() > $start + $maxtime) {
+                // this is taking too long - kick off another request
+                $startwith = $table;
+                $url = $_CONF['site_admin_url']
+                     . '/database.php?mode=dooptimize';
+                if (! empty($token)) {
+                    $token = '&' . CSRF_TOKEN . '=' . $token;
+                }
+                header("Location: $url&startwith=$startwith&failures=$failures"
+                                  . $token);
+                exit;
+            }
+
+            if (empty($lasttable)) {
+                DB_query("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastoptimizedtable', '$table')");
+                $lasttable = $table;
+            } else {
+                DB_query("UPDATE {$_TABLES['vars']} SET value = '$table' WHERE name = 'lastoptimizedtable'");
+            }
+            $optimize = DB_query("OPTIMIZE TABLE $table", 1);
+            if ($optimize === false) {
+                $failures++;
+                COM_errorLog('SQL error for table "' . $table . '" (ignored): '
+                             . DB_error());
+
+                $startwith = $table;
+                $url = $_CONF['site_admin_url']
+                     . '/database.php?mode=dooptimize';
+                if (! empty($token)) {
+                    $token = '&' . CSRF_TOKEN . '=' . $token;
+                }
+                header("Location: $url&startwith=$startwith&failures=$failures"
+                                  . $token);
+                exit;
+            }
+        }
+    }
+
+    DB_delete($_TABLES['vars'], 'name', 'lastoptimizedtable');
+    DB_delete($_TABLES['vars'], 'name', 'lastoptimizeddb');
+    DB_query("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastoptimizeddb', FROM_UNIXTIME(" . time() . "))");
+
+    return $failures;
+}
+
 
 // MAIN
 $display = '';
 
 $mode = '';
-if (isset($_GET['mode'])) {
-    if ($_GET['mode'] == 'backup') {
-        $mode = 'backup';
-    } else if ($_GET['mode'] == 'download') {
-        $mode = 'download';
+if (isset($_POST['mode'])) {
+    $mode = COM_applyFilter($_POST['mode']);
+    if ($mode == 'delete') {
+        if (! isset($_POST['delitem'])) {
+            $mode = '';
+        }
     }
-} else if (isset($_POST['mode'])) {
-    if (($_POST['mode'] == 'delete') && isset($_POST['delitem'])) {
-        $mode = 'delete';
-    }
+} elseif (isset($_GET['mode'])) {
+    $mode = COM_applyFilter($_GET['mode']);
 }
 
 if ($mode == 'download') {
@@ -294,31 +688,95 @@ if ($mode == 'download') {
     }
 }
 
-$display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
+$list_backups = true;
 
-if ($mode == 'backup') {
-    // Perform the backup if asked
+switch ($mode) {
+case 'backup':
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['new_backup']);
     if (SEC_checkToken()) {
         $display .= dobackup();
     }
-} elseif ($mode == 'delete') {
+    break;
+
+case 'delete':
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
     if (SEC_checkToken()) {
-        foreach ($_POST['delitem'] as $delfile) {
-            $file = COM_sanitizeFilename($delfile, true);
-            if (! empty($file)) {
-                if (!@unlink($_CONF['backup_path'] . $file)) {
-                    COM_errorLog('Unable to remove backup file "' . $file . '"');
-                }
+        $display .= deletebackups();
+    }
+    break;
+
+case 'optimize':
+    $display .= optimize();
+    $list_backups = false;
+    break;
+
+case 'dooptimize':
+    $startwith = '';
+    if (isset($_GET['startwith'])) {
+        $startwith = COM_applyFilter($_GET['startwith']);
+    }
+    if (!empty($startwith) || SEC_checkToken()) {
+        $failures = 0;
+        if (isset($_GET['failures'])) {
+            $failures = COM_applyFilter($_GET['failures'], true);
+        }
+        $num_errors = dooptimize($startwith, $failures);
+        $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
+        if ($num_errors == 0) {
+            $display .= COM_showMessageText($LANG_DB_BACKUP['optimize_success']);
+        } else {
+            $display .= COM_showMessageText($LANG_DB_BACKUP['optimize_success']
+                            . ' ' . $LANG_DB_BACKUP['table_issues']);
+        }
+    } else {
+        $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
+    }
+    break;
+
+case 'innodb':
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['convert_title']);
+    if (innodb_supported()) {
+        $display .= innodb();
+        $list_backups = false;
+    } else {
+        $display .= COM_showMessageText($LANG_DB_BACKUP['sorry_no_innodb']);
+    }
+    break;
+
+case 'doinnodb':
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['convert_title']);
+    if (innodb_supported()) {
+        $startwith = '';
+        if (isset($_GET['startwith'])) {
+            $startwith = COM_applyFilter($_GET['startwith']);
+        }
+        if (!empty($startwith) || SEC_checkToken()) {
+            $failures = 0;
+            if (isset($_GET['failures'])) {
+                $failures = COM_applyFilter($_GET['failures'], true);
+            }
+            $num_errors = doinnodb($startwith, $failures);
+            if ($num_errors == 0) {
+                $display .= COM_showMessageText($LANG_DB_BACKUP['innodb_success']);
+            } else {
+                $display .= COM_showMessageText($LANG_DB_BACKUP['innodb_success'] . ' ' . $LANG_DB_BACKUP['table_issues']);
             }
         }
+    } else {
+        $display .= COM_showMessageText($LANG_DB_BACKUP['sorry_no_innodb']);
     }
-} else {
+    break;
+
+default:
+    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
     $display .= COM_showMessageFromParameter();
+    break;
 }
 
 // Show all backups
-
-$display .= listbackups();
+if ($list_backups) {
+    $display .= listbackups();
+}
 
 $display .= COM_siteFooter();
 

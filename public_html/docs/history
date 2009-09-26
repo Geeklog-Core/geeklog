@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Moved the functionality of the toinnodb.php script into the Database Backups
+  admin panel [Dirk]
+- Added an option to optimze tables to the Database Backups admin panel [Dirk]
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
   (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional
