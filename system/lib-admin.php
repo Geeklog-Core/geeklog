@@ -1038,6 +1038,8 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
 {
     global $_CONF, $LANG_ADMIN, $LANG32;
 
+    static $added_token;
+
     $retval = '';
     
     switch($fieldname) {
@@ -1084,8 +1086,11 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
                 $retval = '<input type="checkbox" name="enabledplugins['
                         . $A['pi_name'] . ']" onclick="submit()" value="1"'
                         . $switch . XHTML . '>';
-                $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" '
-                        . 'value="' . $token . '"' . XHTML . '>';
+                if (! isset($added_token)) {
+                    $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" '
+                            . 'value="' . $token . '"' . XHTML . '>';
+                    $added_token = true;
+                }
             }
             break;
         default:
