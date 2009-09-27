@@ -359,26 +359,29 @@ function do_update($pi_name)
 
     $retval = '';
 
-    if (strlen($pi_name) == 0) {
-        $retval .= COM_showMessageText($LANG32[12], $LANG32[13]);
-
-        return $retval;
-    }
-
-    $result = PLG_upgrade($pi_name);
-    if ($result > 0 ) {
-        if ($result === TRUE) { // Catch returns that are just true/false
-            PLG_pluginStateChange($pi_name, 'upgraded');
-            $retval .= COM_refresh($_CONF['site_admin_url']
-                    . '/plugins.php?msg=60');
-        } else {  // Plugin returned a message number
-            $retval = COM_refresh($_CONF['site_admin_url']
-                    . '/plugins.php?msg=' . $result . '&amp;plugin='
-                    . $pi_name);
+    if (! empty($pi_name)) {
+        $result = PLG_upgrade($pi_name);
+        if ($result > 0) {
+            if ($result === TRUE) { // Catch returns that are just true/false
+                PLG_pluginStateChange($pi_name, 'upgraded');
+                $retval = COM_refresh($_CONF['site_admin_url']
+                        . '/plugins.php?msg=60');
+            } else {    // Plugin returned a message number
+                $retval = COM_refresh($_CONF['site_admin_url']
+                        . '/plugins.php?msg=' . $result . '&amp;plugin='
+                        . $pi_name);
+            }
+            return $retval;
+        } else {  // Plugin function returned a false
+            $retval = COM_showMessage(95);
         }
-    } else {  // Plugin function returned a false
-        $retval .= COM_showMessage(95);
+    } else { // no plugin name given
+        $retval = COM_showMessageText($LANG32[12], $LANG32[13]);
     }
+
+    $retval = COM_siteHeader('menu', $LANG32[13])
+            . $retval
+            . COM_siteFooter();
 
     return $retval;
 }
@@ -1209,9 +1212,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
 
 } elseif ((($mode == $LANG32[34]) && !empty($LANG32[34])) && SEC_checkToken()) { // update
     $pi_name = COM_applyFilter($_POST['pi_name']);
-    $display .= COM_siteHeader('menu', $LANG32[13]);
     $display .= do_update($pi_name);
-    $display .= COM_siteFooter();
 
 } elseif ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG32[13]);
