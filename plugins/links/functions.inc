@@ -186,6 +186,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
             if (empty($autotag['parm2'])) {
                 $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
                 list($siteurl, $linktext) = DB_fetchArray($result);
+                $linktext = stripslashes($linktext);
             } else {
                 $linktext = $autotag['parm2'];
                 $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
