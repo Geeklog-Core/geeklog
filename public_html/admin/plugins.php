@@ -1165,17 +1165,23 @@ function plugin_get_pluginname($plugin)
 
 // MAIN
 $display = '';
-if (isset($_POST['pluginenabler']) && SEC_checkToken()) {
-    if (isset($_POST['enabledplugins'])) {
-        changePluginStatus($_POST['enabledplugins']);
-    } else {
-        changePluginStatus(array());
-    }
+if (isset($_POST['pluginenabler'])) { // JavaScript-triggered POST request
+    if (isset($_POST['updatethisplugin'])) {
+        // translate into a standard update request (see below)
+        $_POST['mode'] = $LANG32[34];
+        $_POST['pi_name'] = $_POST['updatethisplugin'];
+    } elseif (SEC_checkToken()) {
+        if (isset($_POST['enabledplugins'])) {
+            changePluginStatus($_POST['enabledplugins']);
+        } else {
+            changePluginStatus(array());
+        }
 
-    // force a refresh so that the information of the plugin that was just
-    // enabled / disabled (menu entries, etc.) is displayed properly
-    header('Location: ' . $_CONF['site_admin_url'] . '/plugins.php');
-    exit;
+        // force a refresh so that the information of the plugin that was just
+        // enabled / disabled (menu entries, etc.) is displayed properly
+        header('Location: ' . $_CONF['site_admin_url'] . '/plugins.php');
+        exit;
+    }
 }
 
 $mode = '';

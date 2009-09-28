@@ -1064,7 +1064,17 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
             } else {
                 $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
                 if ($A['pi_enabled'] == 1) {
-                    $retval .= " <b>{$LANG32[38]}</b>";
+                    $retval .= " <b>{$LANG32[38]}</b>"
+                        . ' <input type="image" src="' . $_CONF['layout_url']
+                        . '/images/update.png" alt="[' . $LANG32[38]
+                        . ']" name="updatethisplugin" value="' . $A['pi_name']
+                        . '" onclick="submit()" title="' . $LANG32[42] . '"'
+                        . XHTML . '>';
+                    if (! isset($added_token)) {
+                        $retval .= '<input type="hidden" name="' . CSRF_TOKEN
+                                . '" ' . 'value="' . $token . '"' . XHTML . '>';
+                        $added_token = true;
+                    }
                 }
             }
             break;

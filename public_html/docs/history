@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Added an icon to make the plugin update option somewhat more obvious [Dirk]
+  (icon "stock_update-data.png" taken from Gnome 2.18 icon theme set by
+  AMAZIGH Aneglus, released under the GPL)
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
   (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional
