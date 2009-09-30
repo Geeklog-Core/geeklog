@@ -610,25 +610,16 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1) ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author') ";
     }
 
     $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
+
     $columns = array('title' => 'sp_title', 'sp_content');
+    $sql .= $search->getDateRangeSQL('AND', 'sp_date', $datestart, $dateend);
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
     $search->setRank(3);

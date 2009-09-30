@@ -1634,26 +1634,17 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     $sql = COM_getPermSQL('AND') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
     }
 
     // Search the public events
     $search_e = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[24]));
+
     $columns = array('title' => 'title', 'location', 'description');
+    $sql .= $search_e->getDateRangeSQL('AND', 'datestart', $datestart, $dateend);
     list($sql_tmp,$ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
+
     $search_e->setSQL($sql_tmp);
     $search_e->setFTSQL($ftsql_tmp);
     $search_e->setRank(2);
@@ -1664,8 +1655,10 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     // Search personal events
     $search_p = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[23]));
+
     $columns = array('title' => 'title', 'location', 'description');
     list($sql_tmp,$ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
+
     $search_p->setSQL($sql_tmp);
     $search_p->setFTSQL($ftsql_tmp);
     $search_p->setRank(2);

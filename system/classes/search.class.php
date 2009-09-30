@@ -362,18 +362,6 @@ class Search {
         $sql .= "WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ";
         $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
 
-        if (!empty($this->_dateStart) && !empty($this->_dateEnd))
-        {
-            $delim = substr($this->_dateStart, 4, 1);
-            if (!empty($delim))
-            {
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
-            }
-        }
         if (!empty($this->_topic)) {
             $sql .= "AND (s.tid = '$this->_topic') ";
         }
@@ -382,8 +370,11 @@ class Search {
         }
 
         $search_s = new SearchCriteria('stories', $LANG09[65]);
+
         $columns = array('title' => 'title', 'introtext', 'bodytext');
+        $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+
         $search_s->setSQL($sql);
         $search_s->setFTSQL($ftsql);
         $search_s->setRank(5);
@@ -405,18 +396,6 @@ class Search {
         $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getTopicSQL('AND',0,'s') . COM_getLangSQL('sid','AND','s') . ") ";
         $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ";
 
-        if (!empty($this->_dateStart) && !empty($this->_dateEnd))
-        {
-            $delim = substr($this->_dateStart, 4, 1);
-            if (!empty($delim))
-            {
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(c.date) BETWEEN '$startdate' AND '$enddate') ";
-            }
-        }
         if (!empty($this->_topic)) {
             $sql .= "AND (s.tid = '$this->_topic') ";
         }
@@ -425,8 +404,11 @@ class Search {
         }
 
         $search_c = new SearchCriteria('comments', array($LANG09[65],$LANG09[66]));
+
         $columns = array('title' => 'c.title', 'comment');
+        $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+
         $search_c->setSQL($sql);
         $search_c->setFTSQL($ftsql);
         $search_c->setRank(2);

@@ -204,6 +204,24 @@ class SearchCriteria {
 
         return array($sql,$ftsql);
     }
+
+    function getDateRangeSQL( $type = 'WHERE', $column, $datestart, $dateend )
+    {
+        if (!empty($datestart) && !empty($dateend))
+        {
+            $delim = substr($datestart, 4, 1);
+            if (!empty($delim))
+            {
+                $DS = explode($delim, $datestart);
+                $DE = explode($delim, $dateend);
+                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+                return " $type (UNIX_TIMESTAMP($column) BETWEEN '$startdate' AND '$enddate') ";
+            }
+        }
+
+        return "";
+    }
 }
 
 ?>
