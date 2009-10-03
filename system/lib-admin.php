@@ -1221,40 +1221,49 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
 {
     global $_CONF, $LANG_TRB;
 
+    static $added_token;
+
     $retval = '';
 
     switch($fieldname) {
-        case "edit":
-            $retval = COM_createLink($icon_arr['edit'],
-                "{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}");
-            break;
-        case "name":
-            $retval = COM_createLink($A['name'], $A['site_url']);
-            break;
-        case "method":
-            if ($A['method'] == 'weblogUpdates.ping') {
-                $retval = $LANG_TRB['ping_standard'];
-            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
-                $retval = $LANG_TRB['ping_extended'];
-            } else {
-                $retval = '<span class="warningsmall">' .
-                        $LANG_TRB['ping_unknown'] .  '</span>';
-            }
-            break;
-        case "is_enabled":
-            if ($A['is_enabled'] == 1) {
-                $switch = ' checked="checked"';
-            } else {
-                $switch = '';
-            }
-            $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
-                . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'],
+            "{$_CONF['site_admin_url']}/trackback.php?mode=editservice&amp;service_id={$A['pid']}");
+        break;
+
+    case 'name':
+        $retval = COM_createLink($A['name'], $A['site_url']);
+        break;
+
+    case 'method':
+        if ($A['method'] == 'weblogUpdates.ping') {
+            $retval = $LANG_TRB['ping_standard'];
+        } else if ($A['method'] == 'weblogUpdates.extendedPing') {
+            $retval = $LANG_TRB['ping_extended'];
+        } else {
+            $retval = '<span class="warningsmall">' . $LANG_TRB['ping_unknown']
+                    .  '</span>';
+        }
+        break;
+
+    case 'is_enabled':
+        if ($A['is_enabled'] == 1) {
+            $switch = ' checked="checked"';
+        } else {
+            $switch = '';
+        }
+        $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
+            . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
+        if (! isset($added_token)) {
             $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN
                     . "\" value=\"{$token}\"" . XHTML . ">";
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+            $added_token = true;
+        }
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
 
     return $retval;
