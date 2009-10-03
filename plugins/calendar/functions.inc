@@ -578,9 +578,15 @@ function plugin_savesubmission_calendar($A)
         if (($_CA_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights('calendar.submit')) {
 
+            if (COM_isAnonUser()) {
+                $uid = 1;
+            } else {
+                $uid = $_USER['uid'];
+            }
+
             DB_save ($_TABLES['eventsubmission'],
                      'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',
-                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$_USER['uid']}");
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$uid}");
 
             if (isset ($_CA_CONF['notification']) &&
                     ($_CA_CONF['notification'] == 1)) {
