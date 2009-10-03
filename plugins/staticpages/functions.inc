@@ -1085,7 +1085,9 @@ function plugin_autouninstall_staticpages ()
         /* give the name of the tables, without $_TABLES[] */
         'tables' => array('staticpage'),
         /* give the full name of the group, as in the db */
-        'groups' => array('Static Page Admin'),
+        'groups' => array('Static Page Admin', // correct Admin group name
+                          'Static Pages Admin' // typo in Geeklog 1.6.0
+                         ),
         /* give the full name of the feature, as in the db */
         'features' => array('staticpages.edit', 'staticpages.delete', 'staticpages.PHP'),
         /* give the full name of the block, including 'phpblock_', etc */

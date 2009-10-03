@@ -47,7 +47,7 @@ $_UPDATES = array(
 */
 function update_ConfValues_1_6_0()
 {
-    global $_CONF, $_SP_DEFAULT;
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
 
@@ -55,6 +55,24 @@ function update_ConfValues_1_6_0()
 
     // meta tag config options.
     $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select', 0, 0, 0, 120, true, 'staticpages');
+
+    // check for wrong Admin group name
+    $wrong_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                           "grp_name = 'Static Pages Admin'"); // wrong name
+    if (! empty($wrong_id)) {
+        $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                             "grp_name = 'Static Page Admin'"); // correct name
+        if (empty($grp_id)) {
+            // correct name not found - probably a fresh install: rename
+            DB_query("UPDATE {$_TABLES['groups']} SET grp_name = 'Static Page Admin' WHERE grp_name = 'Static Pages Admin'");
+        } else {
+            // both names exist: delete wrong group & assignments
+            DB_delete($_TABLES['access'], 'acc_grp_id', $wrong_id);
+            DB_delete($_TABLES['group_assignments'], 'ug_grp_id', $wrong_id);
+            DB_delete($_TABLES['group_assignments'], 'ug_main_grp_id', $wrong_id);
+            DB_delete($_TABLES['groups'], 'grp_name', 'Static Pages Admin');
+        }
+    }
 
     return true;
 }
