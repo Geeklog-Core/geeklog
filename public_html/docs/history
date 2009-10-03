@@ -63,8 +63,9 @@ Oct ??, 2009 (1.6.1)
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
-Calendar Plugin
+Calendar Plugin 1.1.1
 ---------------
+- Keep track of the user id for submitted events (bug #0000993) [Dirk]
 - Reintroduced {event_begin_anchortag} and {event_end_anchortag} variables
   in event.php [Dirk]
 - The number of hits for an event was reset when editing the event [Dirk]
