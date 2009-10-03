@@ -178,16 +178,12 @@ function edittopic ($tid = '')
                               $LANG_ADMIN['meta_description']);
     $topic_templates->set_var('lang_metakeywords',
                               $LANG_ADMIN['meta_keywords']);
-    $desc = '';
     if (! empty($A['meta_description'])) {
-        $desc = $A['meta_description'];
+        $topic_templates->set_var('meta_description', $A['meta_description']);
     }
-    $keywords = '';
     if (! empty($A['meta_keywords'])) {
-        $keywords = $A['meta_keywords'];
+        $topic_templates->set_var('meta_keywords', $A['meta_keywords']);
     }
-    $topic_templates->set_var('meta_description', $desc);
-    $topic_templates->set_var('meta_keywords', $keywords);
 
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
@@ -249,7 +245,7 @@ function edittopic ($tid = '')
 * @param    string  $is_archive     'on' if this is the archive topic
 * @return   string                  HTML redirect or error message
 */
-function savetopic($tid,$topic,$imageurl,$meta_description, $meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
+function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
 {
     global $_CONF, $_TABLES, $LANG27, $MESSAGE;
 
@@ -258,7 +254,7 @@ function savetopic($tid,$topic,$imageurl,$meta_description, $meta_keywords,$sort
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-    $tid = COM_sanitizeID ($tid);
+    $tid = COM_sanitizeID($tid);
 
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
@@ -608,15 +604,16 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['is_archive'])) {
         $is_archive = $_POST['is_archive'];
     }
-    $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
-                           $imageurl, $_POST['meta_description'], $_POST['meta_keywords'],
-                           COM_applyFilter ($_POST['sortnum'], true),
-                           COM_applyFilter ($_POST['limitnews'], true),
-                           COM_applyFilter ($_POST['owner_id'], true),
-                           COM_applyFilter ($_POST['group_id'], true),
-                           $_POST['perm_owner'], $_POST['perm_group'],
-                           $_POST['perm_members'], $_POST['perm_anon'],
-                           $is_default, $is_archive);
+    $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic'],
+                          $imageurl, $_POST['meta_description'],
+                          $_POST['meta_keywords'],
+                          COM_applyFilter($_POST['sortnum'], true),
+                          COM_applyFilter($_POST['limitnews'], true),
+                          COM_applyFilter($_POST['owner_id'], true),
+                          COM_applyFilter($_POST['group_id'], true),
+                          $_POST['perm_owner'], $_POST['perm_group'],
+                          $_POST['perm_members'], $_POST['perm_anon'],
+                          $is_default, $is_archive);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG27[1]);
     $tid = '';

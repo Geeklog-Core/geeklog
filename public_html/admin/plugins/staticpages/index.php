@@ -551,12 +551,13 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
-                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
-                           $owner_id, $group_id, $perm_owner, $perm_group,
-                           $perm_members, $perm_anon, $sp_php, $sp_nf,
-                           $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
-                           $sp_where, $sp_inblock, $postmode, $meta_description, $meta_keywords)
+function submitstaticpage($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
+                          $sp_format, $sp_onmenu, $sp_label, $commentcode,
+                          $owner_id, $group_id, $perm_owner, $perm_group,
+                          $perm_members, $perm_anon, $sp_php, $sp_nf,
+                          $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
+                          $sp_where, $sp_inblock, $postmode, $meta_description,
+                          $meta_keywords)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 

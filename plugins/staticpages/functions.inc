@@ -276,8 +276,8 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
     // Meta Tags
     If ($_SP_CONF['meta_tags'] > 0) {
-        $meta_description  = stripslashes ($A['meta_description']);
-        $meta_keywords  = stripslashes ($A['meta_keywords']);
+        $meta_description  = $A['meta_description'];
+        $meta_keywords  = $A['meta_keywords'];
         $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
     }
 
