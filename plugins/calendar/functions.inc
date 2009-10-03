@@ -479,7 +479,7 @@ function plugin_savesubmission_calendar($A)
     // pseudo-formatted event description for the spam check
     $spamcheck = '';
     if (empty($A['url'])) {
-        $spamcheck .= $title;
+        $spamcheck .= $A['title'];
     } else {
         $spamcheck .= COM_createLink($A['title'], $A['url']);
     }
