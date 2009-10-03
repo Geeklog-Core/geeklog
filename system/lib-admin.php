@@ -987,54 +987,67 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
 
+    static $added_token;
+
     $retval = '';
 
-    switch($fieldname) {
-        case 'edit':
-            $retval = COM_createLink($icon_arr['edit'],
-                "{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}");
-            break;
-        case 'type':
-            if ($A['type'] == 'article') {
-                $retval = $LANG33[55];
-            } else {
-                $retval = ucwords($A['type']);
-            }
-            break;
-        case 'format':
-            $retval = str_replace ('-' , ' ', ucwords ($A['format']));
-            break;
-        case 'updated':
-            $retval = strftime ($_CONF['daytime'], $A['date']);
-            break;
-        case 'is_enabled':
-            if ($A['is_enabled'] == 1) {
-                $switch = ' checked="checked"';
-            } else {
-                $switch = '';
-            }
-            $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
-                . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
+    switch ($fieldname) {
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'],
+            "{$_CONF['site_admin_url']}/syndication.php?mode=edit&amp;fid={$A['fid']}");
+        break;
+
+    case 'type':
+        if ($A['type'] == 'article') {
+            $retval = $LANG33[55];
+        } else {
+            $retval = ucwords($A['type']);
+        }
+        break;
+
+    case 'format':
+        $retval = str_replace('-' , ' ', ucwords($A['format']));
+        break;
+
+    case 'updated':
+        $retval = strftime($_CONF['daytime'], $A['date']);
+        break;
+
+    case 'is_enabled':
+        if ($A['is_enabled'] == 1) {
+            $switch = ' checked="checked"';
+        } else {
+            $switch = '';
+        }
+        $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
+            . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
+        if (! isset($added_token)) {
             $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
-            break;
-        case 'header_tid':
-            if ($A['header_tid'] == 'all') {
-                $retval = $LANG33[43];
-            } elseif ($A['header_tid'] == 'none') {
-                $retval = $LANG33[44];
-            } else {
-                $retval = DB_getItem ($_TABLES['topics'], 'topic',
-                                      "tid = '{$A['header_tid']}'");
-            }
-            break;
-        case 'filename':
-            $url = SYND_getFeedUrl ();
-            $retval = COM_createLink($A['filename'], $url . $A['filename']);
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+            $added_token = true;
+        }
+        break;
+
+    case 'header_tid':
+        if ($A['header_tid'] == 'all') {
+            $retval = $LANG33[43];
+        } elseif ($A['header_tid'] == 'none') {
+            $retval = $LANG33[44];
+        } else {
+            $retval = DB_getItem($_TABLES['topics'], 'topic',
+                                 "tid = '{$A['header_tid']}'");
+        }
+        break;
+
+    case 'filename':
+        $url = SYND_getFeedUrl();
+        $retval = COM_createLink($A['filename'], $url . $A['filename']);
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
+
     return $retval;
 }
 
