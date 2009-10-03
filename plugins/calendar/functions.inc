@@ -1478,6 +1478,10 @@ function plugin_upgrade_calendar()
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.0.3':
+            $current_version = '1.1.0';
+            break;
+
         case '1.1.0':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
