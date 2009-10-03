@@ -3,13 +3,16 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Call CUSTOM_userCheck from admin/user.php (bug #0000925) [Dirk]
+- You can now have one featured story per topic (feature request #0000750,
+  patch provided by Tom Homer)
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
   (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional
   email headers (using a string for that parameter still works as CC:) [Dirk]
 - Fixed reply notification for the very first comment (bug #0000973)
   [dengen, Dirk]
-- When an anonymous commentor left a name, use it in the comment notification
+- When an anonymous commenter left a name, use it in the comment notification
   email (bug #0000960) [Dirk]
 - Removed the CSRF token from all links to edit a comment. We only need it in
   the actual comment editor and it caused problems on the moderation page [Dirk]
