@@ -625,62 +625,70 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 
     $retval = false;
 
-    $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                    $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 
-    if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
-        switch($fieldname) {
-            case 'edit':
-                if ($access == 3) {
-                    $retval = COM_createLink($icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}");
+    if (($access > 0) && (hasBlockTopicAccess($A['tid']) > 0)) {
+        switch ($fieldname) {
+        case 'edit':
+            if ($access == 3) {
+                $retval = COM_createLink($icon_arr['edit'],
+                    "{$_CONF['site_admin_url']}/block.php?mode=edit&amp;bid={$A['bid']}");
+            }
+            break;
+
+        case 'title':
+            $retval = stripslashes($A['title']);
+            if (empty($retval)) {
+                $retval = '(' . $A['name'] . ')';
+            }
+            break;
+
+        case 'blockorder':
+            $retval .= $A['blockorder'];
+            break;
+
+        case 'is_enabled':
+            if ($access == 3) {
+                if ($A['is_enabled'] == 1) {
+                    $switch = ' checked="checked"';
+                } else {
+                    $switch = '';
                 }
-                break;
-            case 'title':
-                $retval = stripslashes ($A['title']);
-                if (empty ($retval)) {
-                    $retval = '(' . $A['name'] . ')';
+                $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
+                    . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
+                $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
+            }
+            break;
+
+        case 'move':
+            if ($access == 3) {
+                if ($A['onleft'] == 1) {
+                    $side = $LANG21[40];
+                    $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
+                    $moveTitleMsg = $LANG21[59];
+                    $switchside = '1';
+                } else {
+                    $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
+                    $moveTitleMsg = $LANG21[60];
+                    $switchside = '0';
                 }
-                break;
-            case 'blockorder':
-                $retval .= $A['blockorder'];
-                break;
-            case 'is_enabled':
-                if ($access == 3) {
-                    if ($A['is_enabled'] == 1) {
-                        $switch = ' checked="checked"';
-                    } else {
-                        $switch = '';
-                    }
-                    $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
-                        . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
-                    $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
-                }
-                break;
-            case 'move':
-                if ($access == 3) {
-                    if ($A['onleft'] == 1) {
-                        $side = $LANG21[40];
-                        $blockcontrol_image = 'block-right.' . $_IMAGE_TYPE;
-                        $moveTitleMsg = $LANG21[59];
-                        $switchside = '1';
-                    } else {
-                        $blockcontrol_image = 'block-left.' . $_IMAGE_TYPE;
-                        $moveTitleMsg = $LANG21[60];
-                        $switchside = '0';
-                    }
-                    $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
-                            ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
-                            ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up&amp;".CSRF_TOKEN."={$token}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
-                            ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside&amp;".CSRF_TOKEN."={$token}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
-                            ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn&amp;".CSRF_TOKEN."={$token}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
-                            ."</map>";
-                }
-                break;
-            default:
-                $retval = $fieldvalue;
-                break;
+                $csrftoken = '&amp;' . CSRF_TOKEN . '=' . $token;
+                $retval.="<img src=\"{$_CONF['layout_url']}/images/admin/$blockcontrol_image\" width=\"45\" height=\"20\" usemap=\"#arrow{$A['bid']}\" alt=\"\"" . XHTML . ">"
+                        ."<map id=\"arrow{$A['bid']}\" name=\"arrow{$A['bid']}\">"
+                        ."<area coords=\"0,0,12,20\"  title=\"{$LANG21[58]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=up{$csrftoken}\" alt=\"{$LANG21[58]}\"" . XHTML . ">"
+                        ."<area coords=\"13,0,29,20\" title=\"$moveTitleMsg\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=$switchside{$csrftoken}\" alt=\"$moveTitleMsg\"" . XHTML . ">"
+                        ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn${csrftoken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
+                        ."</map>";
+            }
+            break;
+
+        default:
+            $retval = $fieldvalue;
+            break;
         }
     }
+
     return $retval;
 }
 
