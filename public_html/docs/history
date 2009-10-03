@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Display the number of stories in the current topic in the Topic Editor
+  (feature request #0000806) [Dirk]
 - Call CUSTOM_userCheck from admin/user.php (bug #0000925) [Dirk]
 - You can now have one featured story per topic (feature request #0000750,
   patch provided by Tom Homer)

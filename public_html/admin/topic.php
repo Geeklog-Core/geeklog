@@ -174,10 +174,20 @@ function edittopic ($tid = '')
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']);
 
-    $topic_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
-    $topic_templates->set_var('meta_description', stripslashes($A['meta_description']));
-    $topic_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
-    $topic_templates->set_var('meta_keywords', stripslashes($A['meta_keywords']));
+    $topic_templates->set_var('lang_metadescription',
+                              $LANG_ADMIN['meta_description']);
+    $topic_templates->set_var('lang_metakeywords',
+                              $LANG_ADMIN['meta_keywords']);
+    $desc = '';
+    if (! empty($A['meta_description'])) {
+        $desc = $A['meta_description'];
+    }
+    $keywords = '';
+    if (! empty($A['meta_keywords'])) {
+        $keywords = $A['meta_keywords'];
+    }
+    $topic_templates->set_var('meta_description', $desc);
+    $topic_templates->set_var('meta_keywords', $keywords);
 
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
@@ -199,6 +209,17 @@ function edittopic ($tid = '')
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
+
+    if (empty($tid)) {
+        $num_stories = $LANG_ADMIN['na'];
+    } else {
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE tid = '" . addslashes($tid) . "'" . COM_getPermSql('AND'));
+        $N = DB_fetchArray( $nresult );
+        $num_stories = $N['count'];
+    }
+
+    $topic_templates->set_var('lang_num_stories', $LANG27[30]);
+    $topic_templates->set_var('num_stories', $num_stories);
     $topic_templates->set_var('gltoken_name', CSRF_TOKEN);
     $topic_templates->set_var('gltoken', SEC_createToken());
     $topic_templates->parse('output', 'editor');
@@ -259,9 +280,9 @@ function savetopic($tid,$topic,$imageurl,$meta_description, $meta_keywords,$sort
         if ($imageurl == '/images/topics/') {
             $imageurl = '';
         }
-        $topic = addslashes ($topic);
-        $meta_description = addslashes ($meta_description);
-        $meta_keywords = addslashes ($meta_keywords);
+        $topic = addslashes($topic);
+        $meta_description = addslashes(strip_tags($meta_description));
+        $meta_keywords = addslashes(strip_tags($meta_keywords));
 
         if ($is_default == 'on') {
             $is_default = 1;
