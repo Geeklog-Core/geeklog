@@ -274,6 +274,16 @@ function links_edit_category($cid, $pid)
     $T->set_var('topic_selection', '<select name="tid">' . $alltopics
                                    . $topics . '</select>');
 
+    if (empty($cid)) {
+        $num_links = $LANG_ADMIN['na'];
+    } else {
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE cid='{$cid}'" . COM_getPermSQL('AND'));
+        $N = DB_fetchArray($nresult);
+        $num_links = $N['count'];
+    }
+    $T->set_var('lang_num_links', $LANG_LINKS_ADMIN[61]);
+    $T->set_var('num_links', COM_numberFormat($num_links));
+
     // user access info
     $T->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $T->set_var('lang_owner', $LANG_ACCESS['owner']);

@@ -88,6 +88,8 @@ Calendar Plugin 1.1.1
 
 Links Plugin
 ------------
+- Display the number of links in the current category in the Category Editor.
+  Note: Does not (yet) count links in sub-categories [Dirk]
 - Link titles in autotags showed up with backslashes before quotes (bug
   #0000986) [Dirk]
 

@@ -23,6 +23,10 @@
                 <td>{topic_selection}<td>
             </tr>
             <tr>
+                <td align="right">{lang_num_links}:</td>
+                <td>{num_links}<td>
+            </tr>
+            <tr>
                 <td colspan="2"><hr{xhtml}></td>
             </tr>
             <tr>
