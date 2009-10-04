@@ -81,7 +81,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
     }
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
-        if (COM_isemail($authoremail)) {
+        if (COM_isemail($authoremail) && (strpos($authoremail, '@') === false)) {
             $result = DB_query("SELECT username,fullname,email FROM {$_TABLES['users']} WHERE uid = $uid");
             $A = DB_fetchArray($result);
 
@@ -530,36 +530,45 @@ switch ($what) {
         break;
 
     case 'sendstory':
-        $sid = COM_applyFilter ($_POST['sid']);
-        if (empty ($sid)) {
-            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        $sid = COM_applyFilter($_POST['sid']);
+        if (empty($sid)) {
+            $display = COM_refresh($_CONF['site_url'] . '/index.php');
         } else {
-            if (empty ($_POST['toemail']) || empty ($_POST['fromemail'])
-                    || !COM_isEmail ($_POST['toemail'])
-                    || !COM_isEmail ($_POST['fromemail'])) {
+            if (empty($_POST['toemail']) || empty($_POST['fromemail']) ||
+                    !COM_isEmail($_POST['toemail']) ||
+                    !COM_isEmail($_POST['fromemail']) ||
+                    (strpos($_POST['to'], '@') !== false) ||
+                    (strpos($_POST['from'], '@') !== false)) {
+                $display .= COM_siteHeader('menu', $LANG08[17])
+                         . mailstoryform ($sid, COM_applyFilter($_POST['to']),
+                                COM_applyFilter($_POST['toemail']),
+                                COM_applyFilter($_POST['from']),
+                                COM_applyFilter($_POST['fromemail']),
+                                $_POST['shortmsg'], 52)
+                         . COM_siteFooter();
+            } else if (empty($_POST['to']) || empty($_POST['from']) ||
+                    empty($_POST['shortmsg'])) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
-                         . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
-                                          COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                          $_POST['shortmsg'], 52)
-                         . COM_siteFooter ();
-            } else if (empty ($_POST['to']) || empty ($_POST['from']) ||
-                    empty ($_POST['shortmsg'])) {
-                $display .= COM_siteHeader ('menu', $LANG08[17])
-                         . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
-                                          COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                          $_POST['shortmsg'])
-                         . COM_siteFooter ();
+                         . COM_showMessageText($LANG08[22])
+                         . mailstoryform($sid, COM_applyFilter($_POST['to']),
+                                COM_applyFilter($_POST['toemail']),
+                                COM_applyFilter($_POST['from']),
+                                COM_applyFilter($_POST['fromemail']),
+                                $_POST['shortmsg'])
+                         . COM_siteFooter();
             } else {
-                $msg = PLG_itemPreSave ('emailstory', $_POST['shortmsg']);
-                if (!empty ($msg)) {
-                    $display .= COM_siteHeader ('menu', '')
-                             . COM_errorLog ($msg, 2)
-                             . mailstoryform ($sid, COM_applyFilter($_POST['to']), COM_applyFilter($_POST['toemail']),
-                                              COM_applyFilter($_POST['from']), COM_applyFilter($_POST['fromemail']),
-                                              $_POST['shortmsg'])
-                             . COM_siteFooter ();
+                $msg = PLG_itemPreSave('emailstory', $_POST['shortmsg']);
+                if (!empty($msg)) {
+                    $display .= COM_siteHeader('menu', $LANG08[17])
+                             . COM_errorLog($msg, 2)
+                             . mailstoryform($sid, COM_applyFilter($_POST['to']),
+                                COM_applyFilter($_POST['toemail']),
+                                COM_applyFilter($_POST['from']),
+                                COM_applyFilter($_POST['fromemail']),
+                                $_POST['shortmsg'])
+                             . COM_siteFooter();
                 } else {
-                    $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
+                    $display .= mailstory($sid, $_POST['to'], $_POST['toemail'],
                         $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
                 }
             }
