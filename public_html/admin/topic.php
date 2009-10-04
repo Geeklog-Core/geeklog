@@ -215,7 +215,7 @@ function edittopic ($tid = '')
     }
 
     $topic_templates->set_var('lang_num_stories', $LANG27[30]);
-    $topic_templates->set_var('num_stories', $num_stories);
+    $topic_templates->set_var('num_stories', COM_numberFormat($num_stories));
     $topic_templates->set_var('gltoken_name', CSRF_TOKEN);
     $topic_templates->set_var('gltoken', SEC_createToken());
     $topic_templates->parse('output', 'editor');
