@@ -371,11 +371,19 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
                                   . $sid);
     }
 
-    $mailto = COM_formatEmailAddress ($to, $toemail);
-    $mailfrom = COM_formatEmailAddress ($from, $fromemail);
-    $subject = COM_undoSpecialChars(strip_tags('Re: '.$story->DisplayElements('title')));
+    $mailto = COM_formatEmailAddress($to, $toemail);
+    $mailfrom = COM_formatEmailAddress($from, $fromemail);
+    $subject = 'Re: ' . COM_undoSpecialChars(strip_tags($story->DisplayElements('title')));
 
-    $sent = COM_mail ($mailto, $subject, $mailtext, $mailfrom);
+    $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
+
+    if ($sent && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
+        $ccmessage = sprintf($LANG08[38], $to);
+        $ccmessage .= "\n------------------------------------------------------------\n\n" . $mailtext;
+
+        $sent = COM_mail($mailfrom, $subject, $ccmessage, $mailfrom);
+    }
+
     COM_updateSpeedlimit ('mail');
 
     // Increment numemails counter for story
@@ -468,6 +476,8 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('toname', $to);
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
     $mail_template->set_var('toemail', $toemail);
+    $mail_template->set_var('lang_cc', $LANG08[36]);
+    $mail_template->set_var('lang_cc_description', $LANG08[37]);
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
     $mail_template->set_var('shortmsg', htmlspecialchars($shortmsg));
     $mail_template->set_var('lang_warning', $LANG08[22]);

@@ -198,6 +198,12 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.1</a></h2>
 
 <ul>
+<li>Added a "send copy to myself" option to
+    <tt>profiles/contactauthorform.thtml</tt></li>
+<li>Cosmetics: Made the look and layout of the "Send mail to user"
+    (<tt>contactuserform.thtml</tt>) and "Mail Story to a Friend"
+    (<tt>contactauthorform.thtml</tt>) dialogs more consistent (alignment, size
+    of input fields).</li>
 <li>The Topic Editor now contains a line displaying the number of stories in
     the current topic. New variables in <tt>admin/topic/topiceditor.thtml</tt>:
     <code>{lang_num_stories}</code>, <code>{num_stories}</tt></li>
@@ -238,12 +244,16 @@ directory.</p>
 <li>Links: Removed a <code>width="150"</code> from the Category editor template
     (<tt>admin/categoryeditor.thtml</tt>) that pushed the first column too far
     to the right.</li>
+<li>Static Pages: Added new input fields for a meta description and meta
+    keywords to the Static Pages editor.</li>
 <li>Static Pages: In the Static Pages editor, moved the Hits display below
     the Last Updated entry (<tt>admin/editor.thtml</tt>,
     <tt>admin/editor_advanced.thtml</tt>).</li>
 <li>Static Pages: Added textarea fileds for meta description and meta keywords
     in the Static Pages editor (<tt>admin/editor.thtml</tt>,
     <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Polls: Added new input fields for a meta description and meta keywords to
+    the Polls editor.</li>
 <li>Polls: Added new CSS classes <tt>poll-autotag-message</tt>,
     <tt>poll-autotag</tt>, <tt>poll-autotag-left</tt>, used when embedding polls
     via the new autotags.</li>

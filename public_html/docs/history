@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Added an option to send a copy to self to the "Mail Story to a Friend" dialog
+  and made the look of this and the "Send mail to user" dialogs more consistent
+  [Dirk]
 - Display the number of stories in the current topic in the Topic Editor
   (feature request #0000806) [Dirk]
 - Call CUSTOM_userCheck from admin/user.php (bug #0000925) [Dirk]
@@ -51,8 +54,8 @@ Oct ??, 2009 (1.6.1)
 - Only list [code], [raw] tags when story.* permissions are required [Dirk]
 - [page_break] was not listed when all HTML was allowed for Root users [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer
-- When an error occurs in bigdump.php (during migration) keep the language when
-  sending the user back to migrate.php (bug #0000943) [Dirk]
+- When an error occurs in bigdump.php (during migration) keep the selected
+  language when sending the user back to migrate.php (bug #0000943) [Dirk]
 - Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
   displaying the date and time in search results [Dirk]
 - When disabling a feed, delete the feed file [Dirk]
@@ -94,7 +97,7 @@ Polls Plugin
 
 Static Pages Plugin 1.6.1
 -------------------
-- Fresh installs of the plugin in Geeklog 1.6.1 accidentally used a wrong name
+- Fresh installs of the plugin in Geeklog 1.6.0 accidentally used a wrong name
   for the plugin's admin group. Silently fix that during the upgrade [Dirk]
 - Made the list of pages sortable by author (feature request #0000978) [Dirk]
 - List available autotags in the static pages editor [Dirk]

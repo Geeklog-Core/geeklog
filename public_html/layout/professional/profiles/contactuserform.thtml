@@ -1,31 +1,29 @@
+<p>{lang_description}</p>
 <form action="{site_url}/profiles.php" method="post" name="contact">
-    <table cellspacing="0" cellpadding="0" width="100%" class="plugin">
+    <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
-            <td colspan="2" class="pluginInfo">{lang_description}</td>
+            <td class="alignright"><b>{lang_username}</b></td>
+            <td><input type="text" name="author" size="40" maxlength="96" value="{username}"{xhtml}></td>
         </tr>
         <tr>
-            <td>{lang_username}</td>
-            <td><input type="text" name="author" size="32" value="{username}" maxlength="32"{xhtml}></td>
+            <td class="alignright"><b>{lang_useremail}</b></td>
+            <td><input type="text" name="authoremail" size="40" maxlength="96" value="{useremail}"{xhtml}></td>
         </tr>
         <tr>
-            <td>{lang_useremail}</td>
-            <td><input type="text" name="authoremail" size="32" value="{useremail}" maxlength="96"{xhtml}></td>
+            <td class="alignright"><b>{lang_subject}</b></td>
+            <td><input type="text" name="subject" size="40" maxlength="96" value="{subject}"{xhtml}></td>
         </tr>
         <tr>
-            <td>{lang_cc}</td>
+            <td class="alignright" style="vertical-align:top;"><b>{lang_message}</b></td>
+            <td><textarea name="message" rows="10" style="width:100%">{message}</textarea></td>
+        </tr>
+        <tr>
+            <td class="alignright"><b>{lang_cc}</b></td>
             <td><input type="checkbox" name="cc" checked="checked"{xhtml}>&nbsp;{lang_cc_description}</td>
-        </tr>
-        <tr>
-            <td>{lang_subject}</td>
-            <td><input type="text" name="subject" size="32" maxlength="96" value="{subject}"{xhtml}></td>
-        </tr>
-        <tr>
-            <td style="vertical-align:top;">{lang_message}</td>
-            <td><textarea name="message" wrap="physical" rows="10" cols="50">{message}</textarea></td>
         </tr>
         {captcha}
         <tr>
-            <td colspan="2" class="warning alignleft" style="padding-left:200px;padding-top:10px;">
+            <td colspan="2" class="warning aligncenter" style="padding-top:10px;">
                 {lang_nohtml}
                 <div style="padding:5px;">
                     <input type="hidden" name="what" value="contact"{xhtml}>
