@@ -455,7 +455,7 @@ $LANG08 = array(
     33 => 'Kompletter Artikel unter',
     34 => 'Ende dieser Nachricht',
     35 => 'Sorry, dieser User möchte keine E-Mails bekommen.',
-    36 => 'Copy:',
+    36 => 'Kopie:',
     37 => 'Send me a copy of this email',
     38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
@@ -993,10 +993,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Mail Utility",
-    2 => 'Von',
-    3 => 'Reply-to',
+    2 => 'Von (Name)',
+    3 => 'Von (E-Mail)',
     4 => 'Betreff',
-    5 => 'Text',
+    5 => 'Nachricht',
     6 => 'Senden',
     7 => 'Alle User',
     8 => 'Admin',

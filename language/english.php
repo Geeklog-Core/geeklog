@@ -994,10 +994,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Mail Utility",
-    2 => 'From',
-    3 => 'Reply-to',
+    2 => 'From Name',
+    3 => 'From Email Address',
     4 => 'Subject',
-    5 => 'Body',
+    5 => 'Message',
     6 => 'Send to:',
     7 => 'All users',
     8 => 'Admin',

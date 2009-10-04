@@ -16,6 +16,30 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes161">Geeklog 1.6.1</a></h2>
+
+<h3>New Features and Improvements</h3>
+
+<ul>
+<li>Geeklog now lets you enter meta descriptions and meta keywords for the main
+    page, for stories, topics, static pages, and polls. Please note that these
+    meta tags <a href="http://www.mattcutts.com/blog/keywords-meta-tag-in-web-search/">may not be used</a> by some search engines.</li>
+<li>You can now have one featured story per topic (for stories set to "Show
+    only in Topic").</li>
+<li>New autotags now allow you to embed polls in stories and everywhere else
+    where autotags are allowed.</li>
+<li>Minor security enhancement: "Important" cookies (like the session cookies)
+    are now created with the HttpOnly flag set. This will help avoid some XSS
+    attacks, provided your browser supports this flag.</li>
+</ul>
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>The admin group for the Static Pages plugin was created with a wrong name
+    in Geeklog 1.6.0 (fresh installs only).</li>
+</ul>
+
 <h2><a name="changes160sr2">Geeklog 1.6.0sr2</a></h2>
 
 <p>This release addresses the following security issue:</p>

@@ -3,9 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
-- Additional checks in "Mail Story to a Friend" and "Send mail to user" dialogs
-  to make sure users don't enter email addresses into the name fields (bug
-  #0000992) [Dirk]
+- Additional checks in "Mail Story to a Friend", "Send mail to user", and
+  "Mail Users" dialogs to make sure users don't enter email addresses into the
+  name fields (bug #0000992) [Dirk]
 - Added an option to send a copy to self to the "Mail Story to a Friend" dialog
   and made the look of this and the "Send mail to user" dialogs more consistent
   [Dirk]
