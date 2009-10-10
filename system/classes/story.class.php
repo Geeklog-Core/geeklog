@@ -440,11 +440,11 @@ class Story
             $sql = array();
 
             $sql['mysql']
-            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, "
+            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
 
             $sql['mssql'] =
-                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
         } elseif (!empty($sid) && ($mode == 'editsubmission')) {
             $sql = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
@@ -601,7 +601,7 @@ class Story
     {
         global $_TABLES;
 
-        if (DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1") == $this->_tid) {
+        if (DB_getItem($_TABLES['topics'], 'tid', 'archive_flag=1') == $this->_tid) {
             $this->_featured = 0;
             $this->_frontpage = 0;
             $this->_statuscode = STORY_ARCHIVE_ON_EXPIRE;
@@ -662,7 +662,7 @@ class Story
         }
 
         /* Acquire Comment Count */
-        $sql = "SELECT count(1) FROM {$_TABLES['comments']} WHERE type='article' AND sid='{$this->_sid}'";
+        $sql = "SELECT COUNT(1) FROM {$_TABLES['comments']} WHERE type='article' AND sid='{$this->_sid}'";
         $result = DB_query($sql);
 
         if ($result && (DB_numRows($result) == 1)) {
@@ -1381,6 +1381,7 @@ class Story
             $return = date('Y', $this->_expire);
 
             break;
+
         case 'cmt_close':
             if (isset($this->_comment_expire) && $this->_comment_expire != 0) {
                 $return = true;
@@ -1576,7 +1577,7 @@ class Story
             if ($this->_comment_expire != 0 && (time() > $this->_comment_expire) && $this->_commentcode == 0 ) {
                 $return = 1;
                 //if comment code is not 1, change it to 1
-                DB_query("UPDATE {$_TABLES['stories']} SET commentcode = '1' WHERE sid = '$this->_sid'"); //die('changed cc');
+                DB_query("UPDATE {$_TABLES['stories']} SET commentcode = '1' WHERE sid = '$this->_sid'");
             } else {
                 $return = $this->_commentcode;
             }
