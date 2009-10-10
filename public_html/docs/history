@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- The "Admin Group" checkbox in the Group Editor didn't work (bug #0000995,
+  reported & fix provided by Tsuchi)
 - Setting $_CONF['article_comment_close_days'] to a high value (to work around
   bugs with the "Disable Comments" option in 1.6.0) may result in values outside
   of the range of the year dropdown for that option, in which case it reverted
