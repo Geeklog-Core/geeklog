@@ -3,6 +3,10 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Setting $_CONF['article_comment_close_days'] to a high value (to work around
+  bugs with the "Disable Comments" option in 1.6.0) may result in values outside
+  of the range of the year dropdown for that option, in which case it reverted
+  to the current year a may have caused comments to be closed immediately [Dirk]
 - When viewing your own profile page, you now get an "edit" link that take you
   to "My Account" [Dirk]
 - Additional checks in "Mail Story to a Friend", "Send mail to user", and

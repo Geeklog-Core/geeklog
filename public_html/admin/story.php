@@ -591,7 +591,18 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $day_options = COM_getDayFormOptions($story->EditElements('cmt_close_day'));
     $story_templates->set_var('cmt_close_day_options', $day_options);
     
-    $year_options = COM_getYearFormOptions($story->EditElements('cmt_close_year'));
+    // ensure that the year dropdown includes the close year
+    $endtm = mktime(0, 0, 0, date('m'),
+                date('d') + $_CONF['article_comment_close_days'], date('Y'));
+    $yoffset = date('Y', $endtm) - date('Y');
+    $close_year = $story->EditElements('cmt_close_year');
+    if ($yoffset < -1) {
+        $year_options = COM_getYearFormOptions($close_year, $yoffset);
+    } elseif ($yoffset > 5) {
+        $year_options = COM_getYearFormOptions($close_year, -1, $yoffset);
+    } else {
+        $year_options = COM_getYearFormOptions($close_year);
+    }
     $story_templates->set_var('cmt_close_year_options', $year_options);
     
     $cmt_close_ampm = '';
