@@ -1859,6 +1859,7 @@ $LANG_confignames['Core'] = array(
     'atom_max_stories' => "Max. Stories in Webservices Feed",
     'disable_webservices' => 'Disable Webservices?',
     'restrict_webservices' => 'Restrict Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',

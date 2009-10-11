@@ -577,9 +577,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $story->EditElements('trackbackcode')));
     // comment expire 
-    $story_templates->set_var ('lang_cmt_disable', $LANG24[63]);
-    if ($story->EditElements('cmt_close') ) {
-        $story_templates->set_var('is_checked5', 'checked="checked"'); //check box if enabled
+    $story_templates->set_var('lang_cmt_disable', $LANG24[63]);
+    if ($story->EditElements('cmt_close')) {
+        $story_templates->set_var('is_checked5', 'checked="checked"');
         $story_templates->set_var('showcmtclosedisabled', 'false');
     } else {
         $story_templates->set_var('showcmtclosedisabled', 'true');

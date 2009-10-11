@@ -3,6 +3,10 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Added new option $_CONF['article_comment_close_enabled'] to enable/disable
+  automatically closing stories for comments after a certain amount of days
+  (bug #0000959). Changed handling of comment_expire field in gl_stories such
+  that 0 means the story is always open for comments [Dirk]
 - The "Admin Group" checkbox in the Group Editor didn't work (bug #0000995,
   reported & fix provided by Tsuchi)
 - Setting $_CONF['article_comment_close_days'] to a high value (to work around
