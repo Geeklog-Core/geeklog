@@ -169,7 +169,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Veel kontrollimata',
     58 => 'Kontrolli nüüd',
     59 => '<p>Kõigi nähtaval olevate linkide kontrollimiseks, klõpsa palun allpool oleval lingil "Kontrolli nüüd". Pane tähele, et kontrollimine võib sõltuvalt nähtaval olevate linkide arvust võtta veidi aega.</p>',
-    60 => 'Kasutaja %s proovis õigustamatult  muuta kategooriat: %s.'
+    60 => 'Kasutaja %s proovis õigustamatult  muuta kategooriat: %s.',
+    61 => 'Links in Category'
 );
 
 

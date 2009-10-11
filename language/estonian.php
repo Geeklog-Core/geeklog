@@ -825,7 +825,9 @@ $LANG24 = array(
     85 => 'Näita kõik',
     86 => 'Keerukam toimetaja',
     87 => 'Lugude statistika',
-    88 => 'Wiki-laadne formaat'
+    88 => 'Wiki-laadne formaat',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -860,7 +862,8 @@ $LANG27 = array(
     26 => 'määra see rubriik arhiveeritud lugude  jaoks vaikerubriigiks. Ainult üks rubriik on lubatud.',
     27 => 'või lae rubriigi ikoon',
     28 => 'Maksimum',
-    29 => 'Vead faili üleslaadimisel'
+    29 => 'Vead faili üleslaadimisel',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1472,7 +1475,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" ei tohiks kunagi olla osa  sinu saidi URList.  Palun loe public_html kohta käivat osa %s uuesti ja muuda enne jätkamist vastavalt lehe seadistust.',
     'installation' => 'Installeerimisjuhised',
     'directory' => 'Kaust',
-    'failed_bak' => 'Ebaõnnestus data kausta ajutiste failide kausta loomine. Kontrolli kausta õigusi!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'See on turvarisk ja see tuleb parandada!',
     'reachable' => 'Sinu %s on veebist kättesaadav.',
     'not_reachable' => 'Hea! Sinu %s pole veebist kättesaadav.',
@@ -1572,6 +1575,8 @@ $LANG_ADMIN = array(
     'addchild' => 'Lisa alamdetail',
     'list' => 'Loetelu',
     'list_all' => 'Loetle kõik',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A'
 );
 
@@ -1838,17 +1843,22 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => 'Keela autolingid?',
     'clickable_links' => 'Tee URL-id klikitavaks?',
     'compressed_output' => 'Saada väljund tihendatult?',
+    'frame_options' => 'Kaitse "clickjacking" vastu',
     'censormode' => 'Tsensuurireþiim?',
     'censorreplace' => 'Tsensuuri asendustekst',
     'censorlist' => 'Tsenseerimisloetelu',
     'ip_lookup' => 'IP otsing',
     'url_rewrite' => 'Luba URL-i ülekirjutamine',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Bloki vaikimisi õigused',
     'default_permissions_story' => 'Lugude vaikimisi õigused',
     'default_permissions_topic' => 'Rubriigi vaikimisi õigused',
     'atom_max_stories' => 'Maks. lugusid veebiteenuste lõimedes',
     'disable_webservices' => 'Keela veebiteenused?',
     'restrict_webservices' => 'Piira veebiteenused?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Sulge kommenteerimine päevaga (vaikimisi)',
     'comment_close_rec_stories' => 'Uusimate lugude arv, mida on lubatud kommenteerida',
     'allow_reply_notifications' => 'Luba kommentaarile vastamisest teavitamine?',
@@ -1859,8 +1869,7 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => 'Luba kasutajal tulemusi sorteerida?',
     'search_show_limit' => 'Näita lehe limiiti?',
     'search_separator' => 'Grupi eraldaja',
-    'search_def_keytype' => 'Vaikimisi otsimisviis',
-    'frame_options' => 'Kaitse "clickjacking" vastu'
+    'search_def_keytype' => 'Vaikimisi otsimisviis'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1941,9 +1950,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Tabel' => 'table'),
     20 => array('Täpne fraas' => 'phrase', 'Kõik sõnad' => 'all', 'Mõni sõnadest' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-        22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN',
-'(väljas)' => '')
-
+    22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN', '(väljas)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

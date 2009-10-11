@@ -826,7 +826,9 @@ $LANG24 = array(
     85 => 'הראה הכל',
     86 => 'עורך מתקדם',
     87 => 'סטטיסטיקות מאמר',
-    88 => 'פורמט בנוסח וויקי'
+    88 => 'פורמט בנוסח וויקי',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -861,7 +863,8 @@ $LANG27 = array(
     26 => 'היפכו נושא זה לנושא ברירת המחדל עבור מאמרים בארכיון. ניתן לבחור רק נושא אחד.',
     27 => 'או העלו אייקון לנושא',
     28 => 'מקסימום',
-    29 => 'שגיאות בהעלאת הקובץ'
+    29 => 'שגיאות בהעלאת הקובץ',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1473,7 +1476,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" לעולם אינו צריך להיות חלק מכתובת האתר שלכם. אנא קיראו את החלק לגבי public_html %s שוב ושנו את ההגדרות שלכם בהתאם לפני שתמשיכו.',
     'installation' => 'בהוראות ההתקנה',
     'directory' => '(ספרייה)',
-    'failed_bak' => 'נכשלה יצירת קובץ זמני בספריית ה-data שלכם. בידקו את הרשאות הספרייה שלכם!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'זהו סיכון בטחוני שיש לתקנו!',
     'reachable' => 'ה-%s שלכם נגיש מהרשת.',
     'not_reachable' => 'מצוין! ה-%s שלכם אינו נגיש מהרשת.',
@@ -1573,6 +1576,8 @@ $LANG_ADMIN = array(
     'addchild' => 'הוסיפו תת פריט',
     'list' => 'רשימה',
     'list_all' => 'רשימה של הכל',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'לא זמין'
 );
 
@@ -1845,12 +1850,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'רשימת צנזורה',
     'ip_lookup' => 'בדיקת IP',
     'url_rewrite' => 'איפשור URL Rewrite',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'הרשאות ברירת המחדל של קוביות מידע',
     'default_permissions_story' => 'הרשאות ברירת המחדל של מאמרים',
     'default_permissions_topic' => 'הרשאות ברירת המחדל של נושאים',
     'atom_max_stories' => 'כמות המאמרים המקסימלית בהזנה של שירותי רשת',
     'disable_webservices' => 'ביטול שירותי רשת?',
     'restrict_webservices' => 'הגבלת שירותי רשת?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'מספר הימים לפני שהתגובות יהיו סגורות (ברירת המחדל)',
     'comment_close_rec_stories' => 'כמות המאמרים הכי אחרונים שאפשר להגיב אליהם',
     'allow_reply_notifications' => 'איפשור הודעות לתגובות של תשובות?',
@@ -1942,7 +1951,8 @@ $LANG_configselects['Core'] = array(
     19 => array('גוגל' => 'google', 'טבלה' => 'table'),
     20 => array('ביטוי מדויק' => 'phrase', 'כל המילים שהוכנסו' => 'all', 'לפחות אחת מהמילים שהוכנסו' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => '')
+    22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

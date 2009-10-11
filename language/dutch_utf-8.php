@@ -830,7 +830,9 @@ $LANG24 = array(
     85 => 'Geef alles weer',
     86 => 'Geavanceerde edittor',
     87 => 'Verhaalstatistieken',
-    88 => 'Wiki-style format'
+    88 => 'Wiki-style format',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -865,7 +867,8 @@ $LANG27 = array(
     26 => 'maak hiervan uw standaard topic voor gearchiveerde artikelen. Slechts 1 topic is toegestaan.',
     27 => 'Of upload topicicoon',
     28 => 'Maximum',
-    29 => 'File upload fouten'
+    29 => 'File upload fouten',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1477,7 +1480,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
     'installation' => 'installation instructions',
     'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'This is a security risk and should be fixed!',
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
@@ -1577,6 +1580,8 @@ $LANG_ADMIN = array(
     'addchild' => 'Add child',
     'list' => 'list',
     'list_all' => 'List all',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A'
 );
 
@@ -1849,12 +1854,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'Censor List',
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'Enable URL Rewrite',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Block Default Permissions',
     'default_permissions_story' => 'Story Default Permissions',
     'default_permissions_topic' => 'Topic Default Permissions',
     'atom_max_stories' => 'Max. Stories in Webservices Feed',
     'disable_webservices' => 'Disable Webservices?',
     'restrict_webservices' => 'Restrict Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1946,7 +1955,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

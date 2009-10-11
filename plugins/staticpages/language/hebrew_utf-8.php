@@ -137,7 +137,8 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'צינזור תוכן?',
     'default_permissions' => 'הרשאות ברירת המחדל של עמוד',
     'aftersave' => 'לאחר שמירת עמוד',
-    'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת'
+    'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

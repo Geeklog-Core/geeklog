@@ -58,6 +58,8 @@ $LANG_POLLS = array(
     'upgrade1' => 'Installeerisid küsitluste plugina uue versiooni. Palun ',
     'upgrade2' => 'uuenda',
     'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti',
+    'pollclosed' => 'This poll is closed for voting.',
+    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'Käivita küsitlus'
 );
 
@@ -131,7 +133,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'Hääletaja IP Aadress kehtib kuni',
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
-    'default_permissions' => 'Küsitluse vaikimisi õigused'
+    'default_permissions' => 'Küsitluse vaikimisi õigused',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['polls'] = array(

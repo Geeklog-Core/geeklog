@@ -163,7 +163,7 @@ $LANG_fs['spamx'] = array(
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['spamx'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE)
+    1 => array('はい' => true, 'いいえ' => false)
 );
 
 ?>

@@ -829,7 +829,9 @@ $LANG24 = array(
     85 => 'Alles anzeigen',
     86 => 'WYSIWYG-Editor',
     87 => 'Artikel-Statistik',
-    88 => 'Format im Wiki-Stil '
+    88 => 'Format im Wiki-Stil ',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -864,7 +866,8 @@ $LANG27 = array(
     26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)',
     27 => 'oder ein Symbol hochladen',
     28 => 'maximal',
-    29 => 'Fehler beim Datei-Upload'
+    29 => 'Fehler beim Datei-Upload',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1576,6 +1579,8 @@ $LANG_ADMIN = array(
     'addchild' => 'Add child',
     'list' => 'auflisten',
     'list_all' => 'Alle auflisten',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A'
 );
 
@@ -1848,6 +1853,9 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'Liste zensierter Wörter',
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'URL-Rewrite einschalten',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Grundeinstellung Blockrechte',
     'default_permissions_story' => 'Grundeinstellung Artikelrechte',
     'default_permissions_topic' => 'Grundeinstellung Kategorierechte',
@@ -1946,7 +1954,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Tabelle' => 'table'),
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>
