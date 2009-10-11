@@ -105,6 +105,8 @@ Links Plugin
 
 Polls Plugin
 ------------
+- Fixed display of the Polls block when it only contained blocks not visible
+  for anonymous visitors (bug #0000996) [Dirk]
 - When upgrading from Geeklog 1.5.2, the length of the poll IDs was not extended
   to 40 characters - only fresh installs of Geeklog 1.6.0 and upgrades from
   older versions worked correctly (cf. feature request #0000754) [Dirk]

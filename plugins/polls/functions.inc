@@ -621,40 +621,41 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0)
 /**
 * This shows a poll
 *
-* This will determine if a user needs to see the poll form OR the poll
-* result.
+* This will determine if a user needs to see the poll form OR the poll result.
 *
-* @param        int        $size       Size in pixels of poll results
-* @param        string     $pid        topic ID to show (optional)
-* @param        int        $displaytype       Possible values 0 = Normal, 1 = In Block, 2 = autotag 
+* @param        int     $size           Size in pixels of poll results
+* @param        string  $pid            Poll topic ID to show (optional)
+* @param        bool    $showall        Show only the first question or all
+* @param        int     $displaytype    Possible values 0 = Normal, 1 = In Block, 2 = autotag 
+* @return       string  HTML formatted string of poll
 * @see function COM_pollVote
 * @see function COM_pollResults
-* @return    String  HTML Formated string of Poll
 *
 */
-
-function POLLS_showPoll($size, $pid='', $showall = false, $displaytype = 0 )
+function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
 {
-    global $_CONF, $_PO_CONF, $_TABLES, $LANG_POLLS;
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
 
     $retval = '';
 
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < UNIX_TIMESTAMP() - {$_PO_CONF['polladdresstime']}");
-    
-    if(!empty($pid)) {
+
+    if (!empty($pid)) {
         $Q['is_open'] = DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '".$pid."'");
 
-        if ($displaytype == 2 && $Q['is_open'] == 0) {
-            $retval = '<div class="poll-autotag-message">' . $LANG_POLLS['pollclosed']. "</div>";
+        if (($displaytype == 2) && ($Q['is_open'] == 0)) {
+            $retval = '<div class="poll-autotag-message">'
+                    . $LANG_POLLS['pollclosed'] . '</div>';
         }        
-        if(!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
+        if (!isset($_COOKIE['poll-' . $pid]) && !POLLS_ipAlreadyVoted($pid) &&
+                ($Q['is_open'] == 1)) {
             $retval .= POLLS_pollVote($pid, $showall, $displaytype);
         } else {
             $retval .= POLLS_pollResults($pid, $size, '', '', $displaytype);
         }
     } else {
-        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1 ORDER BY date DESC");
-        $nrows = DB_numRows($result );
+        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1" . COM_getPermSql('AND') . " ORDER BY date DESC");
+        $nrows = DB_numRows($result);
 
         $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");
 
@@ -662,23 +663,24 @@ function POLLS_showPoll($size, $pid='', $showall = false, $displaytype = 0 )
             for ($i = 1; $i <= $nrows; $i++) {
                 $Q = DB_fetchArray($result);
                 $pid = $Q['pid'];
-                //if ($size < 120) { // assume we're in the poll block
-                if ($displaytype == 1) { // In the poll block
+                if ($displaytype == 1) { // in the poll block
                     $showall = false;
                 } else { // assume we're in polls/index.php
                     $retval .= COM_startBlock($title);
                     $showall = true;
                 }
 
-                if (!isset($_COOKIE["poll-".$pid]) && !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
+                if (!isset($_COOKIE['poll-' . $pid]) &&
+                        !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
                     $retval .= POLLS_pollVote($pid, $showall, $displaytype);
                 } else {
-                    $retval .= POLLS_pollResults($pid, $size, '', '', $displaytype);
+                    $retval .= POLLS_pollResults($pid, $size, '', '',
+                                                 $displaytype);
                 }
 
-                if ($size < 120) {
-                    if ($i < $nrows){
-                        $retval .= "<div class=\"poll-divider\"></div>";
+                if ($displaytype == 1) { // in the poll block
+                    if (($i < $nrows) && !empty($retval)) {
+                        $retval .= '<div class="poll-divider"></div>';
                     }
                 } else {
                     $retval .= COM_endBlock();
@@ -686,6 +688,7 @@ function POLLS_showPoll($size, $pid='', $showall = false, $displaytype = 0 )
             }
         }
     }
+
     return $retval;
 }
 
@@ -953,10 +956,15 @@ function POLLS_ipAlreadyVoted($pid, $ip = '' )
     return $retval;
 }
 
+/**
+* Display the current poll(s) in a side block
+*
+* @return   string  HTML for the poll(s) to be displayed (or an empty string)
+*
+*/
 function phpblock_polls()
 {
-    $retval = POLLS_showPoll(60, '', false, 1);
-    return $retval;
+    return POLLS_showPoll(60, '', false, 1);
 }
 
 
