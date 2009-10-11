@@ -867,7 +867,7 @@ $LANG27 = array(
     27 => 'oder ein Symbol hochladen',
     28 => 'maximal',
     29 => 'Fehler beim Datei-Upload',
-    30 => 'Stories in Topic'
+    30 => 'Artikel i.d. Kategorie'
 );
 
 ###############################################################################
@@ -1470,9 +1470,9 @@ $LANG_DIR = array(
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest' => 'Geeklog Security Check',
-    'results' => 'Results of the Security Check',
-    'okay' => 'Everything seems to be in order.',
+    'sectest' => 'Geeklog Sicherheits-Check',
+    'results' => 'Ergebnis des Sicherheits-Checks',
+    'okay' => 'Es scheint alles in Ordnung zu sein.',
     'please_fix' => 'Please fix the above issues before using your site!',
     'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
     'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
@@ -1484,7 +1484,7 @@ $LANG_SECTEST = array(
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
     'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst' => 'Sie sollten das Installations-Verzeichnis %s entfernen, sobald Ihre Website fehlerfrei läuft.',
     'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
     'inst_removed' => 'Good! You seem to have removed the install directory already.',
     'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
