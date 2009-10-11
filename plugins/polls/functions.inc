@@ -549,7 +549,10 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0)
                     $filter = '';
                     if (!$showall) {
                         $nquestions--;
-                        $notification = $LANG25[35] . " $nquestions " . $LANG25[36];
+                        if ($nquestions > 0) {
+                            $notification = $LANG25[35] . " $nquestions "
+                                          . $LANG25[36];
+                        }
                         $filter = "AND qid='0'";
                         $nquestions = 1;
                     } else {
