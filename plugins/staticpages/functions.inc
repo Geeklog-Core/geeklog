@@ -572,11 +572,13 @@ function plugin_statssummary_staticpages()
 */
 function plugin_searchtypes_staticpages()
 {
-    global $LANG_STATIC;
+    global $LANG_STATIC, $_SP_CONF;
 
-    $tmp['staticpages'] = $LANG_STATIC['staticpages'];
-
-    return $tmp;
+    if ($_SP_CONF['includesearch'] == 1) {
+        $tmp['staticpages'] = $LANG_STATIC['staticpages'];
+        
+        return $tmp;
+    }
 }
 
 
@@ -1250,6 +1252,97 @@ function SP_render_content ($sp_content, $sp_php)
 function plugin_wsEnabled_staticpages()
 {
     return true;
+}
+
+/**
+* Return headlines for New Static Pages section in the What's New block, if enabled
+*
+* @return   mixed       array(headline, byline), or boolean false if disabled
+*
+*/
+function plugin_whatsnewsupported_staticpages()
+{
+    global $_SP_CONF, $LANG_STATIC, $LANG_WHATSNEW;
+
+    if ($_SP_CONF['hidenewstaticpages'] == 0) {
+        $retval = array($LANG_STATIC['pages'],
+                        COM_formatTimeString($LANG_WHATSNEW['new_last'],
+                                             $_SP_CONF['newstaticpagesinterval'])
+                       );
+    } else {
+        $retval = false;
+    }
+
+    return $retval;
+}
+
+/**
+* Return new Static Pages for the What's New block
+*
+* @return   string  HTML list of new staticpages
+*
+*/
+function plugin_getwhatsnew_staticpages()
+{
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
+
+    $retval = '';
+
+    $extra_sql = "";
+    if ($_SP_CONF['includecenterblocks'] == 0) {
+        $extra_sql =' AND sp_centerblock = 0';
+    }
+    if ($_SP_CONF['includephp'] == 0) {
+        $extra_sql .=' AND sp_php = 0';
+    }
+    
+    $sql = "SELECT sp_id, sp_title 
+        FROM {$_TABLES['staticpage']} 
+        WHERE NOT ISNULL(sp_content) AND (sp_date >= (date_sub(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        {$extra_sql} 
+        " . COM_getPermSQL( 'AND' ) . " 
+        ORDER BY sp_date DESC LIMIT 15";
+
+    $result = DB_query( $sql );
+
+    $nrows = DB_numRows( $result );
+
+    if( $nrows > 0)
+    {
+        $newstaticpages = array();
+
+        for( $x = 0; $x < $nrows; $x++ )
+        {
+            $A = DB_fetchArray( $result );
+
+            $url = COM_buildUrl( $_CONF['site_url']
+                . '/staticpages/index.php?page=' . $A['sp_id'] );                
+
+            $title = COM_undoSpecialChars( stripslashes( $A['sp_title'] ));
+            $titletouse = COM_truncate( $title, $_SP_CONF['title_trim_length'],
+                                        '...' );
+            if( $title != $titletouse )
+            {
+                $attr = array('title' => htmlspecialchars($title));
+            }
+            else
+            {
+                $attr = array();
+            }
+            $astaticpage = str_replace( '$', '&#36;', $titletouse );
+            $astaticpage = str_replace( ' ', '&nbsp;', $astaticpage );
+
+            $newstaticpages[] = COM_createLink($astaticpage, $url, $attr);
+        }
+
+        $retval .= COM_makeList( $newstaticpages, 'list-new-comments' );
+    }
+    else
+    {
+        $retval .= $LANG_STATIC['no_new_pages'] . '<br' . XHTML . '>' . LB;
+    }
+
+    return $retval;
 }
 
 /**
