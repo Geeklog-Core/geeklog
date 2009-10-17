@@ -491,7 +491,7 @@ function listplugins($token)
  *                          returns false if no error occured
  *
  */
-function plugin_getUploadError($mFile) 
+function plugin_getUploadError($mFile)
 {
     global $LANG32;
 
@@ -514,7 +514,7 @@ function plugin_getUploadError($mFile)
         $retval = false;
 
     }
-    
+
     return $retval;
 }
 
@@ -534,9 +534,9 @@ function plugin_upload_enabled()
     // If 'file_uploads' is enabled in php.ini
     // and the plugin directories are writable by the web server.
     $upload_enabled = (ini_get('file_uploads')
-                        && is_writable($_CONF['path'] . 'plugins/') 
+                        && is_writable($_CONF['path'] . 'plugins/')
                         && is_writable($_CONF['path_html'])
-                        && is_writable($path_admin . 'plugins/')) 
+                        && is_writable($path_admin . 'plugins/'))
                             ? true
                             : false;
 
@@ -663,7 +663,7 @@ function plugin_upload()
                 }
             }
 
-            /** 
+            /**
              * Install the plugin
              * This doesn't work if the public_html & public_html/admin/plugins directories aren't 777
              */
@@ -686,11 +686,11 @@ function plugin_upload()
             /**
              * One time I wanted to install a muffler on my car and
              * needed to match up the outside diameter of the car's
-             * exhaust pipe to the inside diameter of the muffler. 
+             * exhaust pipe to the inside diameter of the muffler.
              * Unfortunately, when I went to the auto parts store they
              * didn't have a coupling adapter that would perfectly
              * match the two pipes, only a bunch of smaller adapters.
-             * I ended up using about 4 small adapters to step down 
+             * I ended up using about 4 small adapters to step down
              * one size at a time to the size of the muffler's input.
              *
              * It's kind of like this regular expression:
@@ -1033,20 +1033,21 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         }
     }
 
-    // Add plugin's Admin group to the Root user group 
+    // Add plugin's Admin group to the Root user group
     // (assumes that the Root group's ID is always 1)
-    if ($admin_group_id > 1) {
+    if (count($groups) > 0) {
         if ($verbose) {
             COM_errorLog("Attempting to give all users in the Root group access to the '$plugin' Admin group", 1);
         }
 
-        DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
-                 . "($admin_group_id, NULL, 1)");
-        if (DB_error()) {
-            COM_errorLog('Error adding plugin admin group to Root group', 1);
-            PLG_uninstall($plugin);
-
-            return false;
+        foreach($groups as $key=>$value){
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+             . "($value, NULL, 1)");
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin admin group to Root group', 1);
+                PLG_uninstall($plugin);
+                return false;
+            }
         }
     }
 
@@ -1061,7 +1062,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             if (DB_error()) {
                 COM_errorLog('Error adding plugin default data', 1);
                 PLG_uninstall($plugin);
-            
+
                 return false;
             }
         }
@@ -1108,7 +1109,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             PLG_uninstall($plugin);
 
             return false;
-        }   
+        }
     }
 
     if ($verbose) {
@@ -1248,7 +1249,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     }
 
 } elseif (isset($_FILES['plugin']) && SEC_checkToken() &&
-        SEC_hasRights('plugin.install,plugin.upload')) { 
+        SEC_hasRights('plugin.install,plugin.upload')) {
     $display .= plugin_upload();
 
 } else { // 'cancel' or no mode at all
