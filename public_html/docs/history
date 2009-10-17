@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Don't display the comment form for a story when comments aren't enabled for it
+  (bug #0000994) [Dirk]
 - Fixed a long-standing quirk of the submission handling where the "Submissions"
   entry in the Admins Block wasn't updated after accepting / rejecting a
   submission [Dirk]
