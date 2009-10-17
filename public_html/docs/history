@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- When a Story Admin did not have permission to edit a story, Geeklog threw a
+  "call to a member function on a non-object" error when trying to display a
+  proper "access denied" message (reported by Chase and Cesar) [Dirk]
 - Don't display the comment form for a story when comments aren't enabled for it
   (bug #0000994) [Dirk]
 - Fixed a long-standing quirk of the submission handling where the "Submissions"
