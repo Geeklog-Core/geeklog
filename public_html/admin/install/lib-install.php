@@ -874,18 +874,20 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
     // Add plugin's Admin group to the Root user group 
     // (assumes that the Root group's ID is always 1)
-    if ($admin_group_id > 1) {
+    if (count($groups) > 0) {
         if ($verbose) {
             COM_errorLog("Attempting to give all users in the Root group access to the '$plugin' Admin group", 1);
         }
 
-        DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
-                 . "($admin_group_id, NULL, 1)");
-        if (DB_error()) {
-            COM_errorLog('Error adding plugin admin group to Root group', 1);
-            PLG_uninstall($plugin);
+        foreach ($groups as $key => $value) {
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES "
+                     . "($admin_group_id, NULL, 1)");
+            if (DB_error()) {
+                COM_errorLog('Error adding plugin admin group to Root group', 1);
+                PLG_uninstall($plugin);
 
-            return false;
+                return false;
+            }
         }
     }
 

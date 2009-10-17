@@ -6,6 +6,7 @@ Oct ??, 2009 (1.6.1)
 - Fixed a long-standing quirk of the submission handling where the "Submissions"
   entry in the Admins Block wasn't updated after accepting / rejecting a
   submission [Dirk]
+- Fixed creation of multiple plugin groups in plugin autoinstall [Randy, Dirk]
 - Added new option $_CONF['article_comment_close_enabled'] to enable/disable
   automatically closing stories for comments after a certain amount of days
   (bug #0000959). Changed handling of comment_expire field in gl_stories such
