@@ -866,6 +866,8 @@ class Story
      */
     function loadSubmission()
     {
+        global $_CONF;
+
         $array = $_POST;
 
         $this->_expire = time();
