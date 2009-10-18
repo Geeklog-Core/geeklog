@@ -598,7 +598,7 @@ function plugin_searchtypes_staticpages()
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $LANG_STATIC;
+    global $_TABLES, $_DB_dbms, $LANG_STATIC, $LANG09;
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
@@ -614,18 +614,51 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         $sql .= "AND (sp_uid = '$author') ";
     }
 
-    $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
+    $search_p = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
 
     $columns = array('title' => 'sp_title', 'sp_content');
-    $sql .= $search->getDateRangeSQL('AND', 'sp_date', $datestart, $dateend);
-    list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+    $sql .= $search_p->getDateRangeSQL('AND', 'sp_date', $datestart, $dateend);
+    list($sql,$ftsql) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql);
 
-    $search->setSQL($sql);
-    $search->setFTSQL($ftsql);
-    $search->setRank(3);
-    $search->setURLRewrite(true);
+    $search_p->setSQL($sql);
+    $search_p->setFTSQL($ftsql);
+    $search_p->setRank(3);
+    $search_p->setURLRewrite(true);
 
-    return $search;
+    // Search static page comments
+    $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
+    $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
+
+    // MSSQL has a problem when concatenating numeric values
+    if ($_DB_dbms == 'mssql') {
+        $sql .= "'/comment.php?mode=view&amp;cid=' + CAST(c.cid AS varchar(10)) AS url ";
+    } else {
+        $sql .= "CONCAT('/comment.php?mode=view&amp;cid=',c.cid) AS url ";
+    }
+
+    $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
+    $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
+    $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getTopicSQL('AND',0,'s') . COM_getLangSQL('sid','AND','s') . ") ";
+    $sql .= "WHERE (u.uid = c.uid) AND (s.commentcode >= 0) AND (s.sp_date <= NOW()) ";
+
+    if (!empty($topic)) {
+        $sql .= "AND (s.tid = '$topic') ";
+    }
+    if (!empty($author)) {
+        $sql .= "AND (c.uid = '$author') ";
+    }
+
+    $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'],$LANG09[66]));
+
+    $columns = array('title' => 'c.title', 'comment');
+    $sql .= $search_c->getDateRangeSQL('AND', 'c_date', $datestart, $dateend);
+    list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $search_c->setSQL($sql);
+    $search_c->setFTSQL($ftsql);
+    $search_c->setRank(2);
+
+    return array($search_p, $search_c);
 }
 
 
@@ -1009,7 +1042,7 @@ function plugin_upgrade_staticpages()
 
     $inst_parms = plugin_autoinstall_staticpages('staticpages');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-    
+
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
                                 . $_DB_dbms . '_updates.php';
 
@@ -1029,16 +1062,16 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
-            
-            update_ConfValues_1_6_0();            
-            
+
+            update_ConfValues_1_6_0();
+
             $current_version = '1.6.1';
             break;
 
         default:
             $done = true;
         }
-    }    
+    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'staticpages'");
 
