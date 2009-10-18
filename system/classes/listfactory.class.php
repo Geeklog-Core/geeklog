@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.6.1                                                             |
 // +---------------------------------------------------------------------------+
 // | listfactory.class.php                                                     |
 // |                                                                           |
@@ -528,7 +528,9 @@ class ListFactory {
             foreach ($this->_page_limits as $key => $val)
             {
                 $text = is_numeric($key) ? sprintf($LANG09[67], $val) : $key;
-                $href = $this->_page_url . "results=$val";
+                $href = $this->_page_url . "order={$this->_sort_arr['field']}&amp;" .
+                            "direction={$this->_sort_arr['direction']}&amp;results=$val";
+
                 $selected = $this->_per_page == $val ? ' selected="selected"' : '';
 
                 $list_templates->set_var('limit_text', $text);
@@ -584,7 +586,8 @@ class ListFactory {
                         $text .= " ($direction)";
                     }
 
-                    $href = $this->_page_url . "order={$field['name']}&amp;direction=$direction";
+                    $href = $this->_page_url . "results={$this->_per_page}&amp;" .
+                                "order={$field['name']}&amp;direction=$direction";
 
                     if ($this->_style == 'table') {
                         $text = "<a href=\"$href\">$text</a>";
