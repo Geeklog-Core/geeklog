@@ -778,21 +778,6 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
 
     $search_results = array();
 
-    // Search a single plugin if needed
-    if ($type != 'all') {
-        $function = 'plugin_dopluginsearch_' . $type;
-        if (function_exists($function)) {
-            $result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
-            if (is_array($result)) {
-                $search_results = array_merge($search_results, $result);
-            } else {
-                $search_results[] = $result;
-            }
-        }
-
-        return $search_results;
-    }
-
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {

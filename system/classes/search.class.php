@@ -412,7 +412,6 @@ class Search {
         $search_c->setSQL($sql);
         $search_c->setFTSQL($ftsql);
         $search_c->setRank(2);
-        $search_c->setComment(true);
 
         return array($search_s, $search_c);
     }
@@ -510,10 +509,7 @@ class Search {
         $result_plugins = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $page, 5);
 
         // Add core searches
-        if ($this->_type == 'all' || $this->_type == 'stories' || $this->_type == 'comments')
-        {
-            $result_plugins = array_merge($result_plugins, $this->_searchStories());
-        }
+        $result_plugins = array_merge($result_plugins, $this->_searchStories());
 
         // Loop through all plugins separating the new API from the old
         $new_api = 0;
@@ -524,9 +520,10 @@ class Search {
         {
             if (is_a($result, 'SearchCriteria'))
             {
-                if ($this->_type == 'comments' && !$result->getComment()) {
+                if ($this->_type != 'all' && $this->_type != $result->getName())
+                {
                     if ($this->_verbose) {
-                        COM_errorLog($result->getName() . " using APIv2. Skipped as type is not comments");
+                        COM_errorLog($result->getName() . " using APIv2. Skipped as type is not " . $this->_type);
                     }
                     continue;
                 }
