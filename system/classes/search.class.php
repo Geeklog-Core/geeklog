@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.6.1                                                             |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
@@ -342,8 +342,6 @@ class Search {
     /**
     * Performs search on all stories
     *
-    * @author Tony Bibbs, tony AT geeklog DOT net
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @return object plugin object
     *
@@ -425,7 +423,6 @@ class Search {
     * in this function to allow legacy support to plugins using
     * the old API calls defined versions prior to Geeklog 1.5.1
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @return string HTML output for search results
     *
@@ -460,7 +457,7 @@ class Search {
 
         $url = "{$this->_searchURL}&amp;type={$this->_type}&amp;mode=";
         $obj = new ListFactory($url.'search', $_CONF['search_limits'], $_CONF['num_search_results']);
-        $obj->setRowFunction(array($this, 'searchFormatCallBack'));
+        $obj->setRowFunction(array($this, 'searchFormatCallback'));
         $obj->setField('ID', 'id', false);
         $obj->setField('URL', 'url', false);
 
@@ -520,32 +517,15 @@ class Search {
         {
             if (is_a($result, 'SearchCriteria'))
             {
+                $debug_info = $result->getName() . " using APIv2";
+
                 if ($this->_type != 'all' && $this->_type != $result->getName())
                 {
                     if ($this->_verbose) {
-                        COM_errorLog($result->getName() . " using APIv2. Skipped as type is not " . $this->_type);
+                        $new_api++;
+                        COM_errorLog("$debug_info. Skipped as type is not " . $this->_type);
                     }
                     continue;
-                }
-
-                $debug_info = $result->getName() . " using APIv2 with ";
-
-                if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '')
-                {
-                    $debug_info .= "FULLTEXT. ";
-                    $sql = $result->getFTSQL();
-                }
-                else
-                {
-                    $debug_info .= "LIKE. ";
-                    $sql = $result->getSQL();
-                }
-
-                $sql = $this->_convertsql($sql);
-
-                $debug_info .= "SQL = " . print_r($sql,1);
-                if ($this->_verbose) {
-                    COM_errorLog($debug_info);
                 }
 
                 $api_results = $result->getResults();
@@ -553,18 +533,46 @@ class Search {
                     $obj->addResultArray($api_results);
                 }
 
-                $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
+                $api_callback_func = $result->getCallback();
+                if (!empty($api_callback_func))
+                {
+                    $debug_info .= " with Callback Function " . $api_callback_func;
+                    $obj->setCallback($result->getLabel(), $result->getName(), $api_callback_func, $result->getRank(), $result->getTotal());
+                }
+                else
+                {
+                    if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '')
+                    {
+                        $debug_info .= " with SQL FULLTEXT. ";
+                        $sql = $result->getFTSQL();
+                    }
+                    else
+                    {
+                        $debug_info .= " with SQL LIKE. ";
+                        $sql = $result->getSQL();
+                    }
+
+                    $sql = $this->_convertsql($sql);
+                    $debug_info .= "SQL = " . print_r($sql,1);
+                    $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
+                }
+
                 $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
                 $this->_append_query[ $result->getName() ] = $result->AppendQueryEnable();
-                $new_api++;
+
+                if ($this->_verbose) {
+                    $new_api++;
+                    COM_errorLog($debug_info);
+                }
             }
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
             {
                 // Some backwards compatibility
-                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
-                $debug_info .= " Count: " . $result->num_searchresults;
-                $debug_info .= " Headings: " . implode(",", $result->searchheading);
                 if ($this->_verbose) {
+                    $old_api++;
+                    $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
+                    $debug_info .= " Count: " . $result->num_searchresults;
+                    $debug_info .= " Headings: " . implode(",", $result->searchheading);
                     COM_errorLog($debug_info);
                 }
 
@@ -617,7 +625,6 @@ class Search {
 
                     $obj->addResult($api_results);
                 }
-                $old_api++;
             }
         }
 
@@ -673,19 +680,18 @@ class Search {
     }
 
     /**
-    * CallBack function for the ListFactory class
+    * Callback function for the ListFactory class
     *
     * This function gets called by the ListFactory class and formats
     * each row accordingly for example pulling usernames from the
     * users table and displaying a link to their profile.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @param array $row An array of plain data to format
     * @return array A reformatted version of the input array
     *
     */
-    function searchFormatCallBack( $preSort, $row )
+    function searchFormatCallback( $preSort, $row )
     {
         global $_CONF, $LANG09;
 
@@ -756,7 +762,6 @@ class Search {
     * version depending where the text was cut. Works on a
     * word basis, so long words wont get cut.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $keyword The word to centre around
     * @param string $text The complete text string
@@ -879,7 +884,6 @@ class Search {
     * number of similar heading names. Used for backwards
     * compatibility in the doSearch() function.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param array $headings All the headings
     * @param array $find An array of alternative headings to find
@@ -907,7 +911,6 @@ class Search {
     /**
     * Converts the MySQL CONCAT function to the MSSQL equivalent
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $sql The SQL to convert
     * @return string MSSQL friendly SQL

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.6.1                                                             |
 // +---------------------------------------------------------------------------+
 // | searchcriteria.class.php                                                  |
 // |                                                                           |
@@ -41,7 +41,10 @@ class SearchCriteria {
     var $_url_rewrite;
     var $_append_query;
     var $_results = array();
+    var $_callback_func = '';
+    var $_total_results = 0;
 
+    // CONSTRUCTOR
     function SearchCriteria( $pluginName, $pluginLabel )
     {
         $this->_pluginName = $pluginName;
@@ -49,16 +52,18 @@ class SearchCriteria {
         $this->_rank = 3;
         $this->_url_rewrite = false;
         $this->_append_query = true;
+        $this->_total_results = 0;
     }
 
-    function setSQL( $sql )
+    // GENERAL METHODS
+    function getName()
     {
-        $this->_sql = $sql;
+        return $this->_pluginName;
     }
 
-    function setFTSQL( $ftsql )
+    function getLabel()
     {
-        $this->_ftsql = $ftsql;
+        return $this->_pluginLabel;
     }
 
     function setRank( $rank )
@@ -81,33 +86,6 @@ class SearchCriteria {
         $this->_results = $result_arr;
     }
 
-    function getSQL()
-    {
-        return $this->_sql;
-    }
-
-    function getFTSQL()
-    {
-        global $_DB_dbms;
-
-        // When only one SQL statment is set we assume it is for MySQL
-        if ($this->_ftsql != '' && (is_string($this->_ftsql) && $_DB_dbms == 'mysql') || is_array($this->_ftsql)) {
-            return $this->_ftsql;
-        } else {
-            return '';
-        }
-    }
-
-    function getName()
-    {
-        return $this->_pluginName;
-    }
-
-    function getLabel()
-    {
-        return $this->_pluginLabel;
-    }
-
     function getRank()
     {
         return $this->_rank;
@@ -126,6 +104,55 @@ class SearchCriteria {
     function getResults()
     {
         return $this->_results;
+    }
+
+    // CALLBACK METHODS
+    function setCallback( $func )
+    {
+        $this->_callback_func = $func;
+    }
+
+    function getCallback()
+    {
+        return $this->_callback_func;
+    }
+
+    function setTotal( $total_results )
+    {
+        $this->_total_results = $total_results;
+    }
+
+    function getTotal()
+    {
+        return $this->_total_results;
+    }
+
+    // SQL METHODS
+    function setSQL( $sql )
+    {
+        $this->_sql = $sql;
+    }
+
+    function setFTSQL( $ftsql )
+    {
+        $this->_ftsql = $ftsql;
+    }
+
+    function getSQL()
+    {
+        return $this->_sql;
+    }
+
+    function getFTSQL()
+    {
+        global $_DB_dbms;
+
+        // When only one SQL statment is set we assume it is for MySQL
+        if ($this->_ftsql != '' && (is_string($this->_ftsql) && $_DB_dbms == 'mysql') || is_array($this->_ftsql)) {
+            return $this->_ftsql;
+        } else {
+            return '';
+        }
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )
@@ -208,7 +235,7 @@ class SearchCriteria {
             }
         }
 
-        return "";
+        return '';
     }
 }
 

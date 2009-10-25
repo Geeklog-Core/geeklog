@@ -206,7 +206,13 @@ class ListFactory {
         if ($name === ROW_NUMBER) {
             $sort = false;
         }
-        $this->_fields[] = array('title' => $title, 'name' => $name, 'display' => $display, 'sort' => $sort, 'format' => $format);
+        $this->_fields[] = array(
+            'title' => $title,
+            'name' => $name,
+            'display' => $display,
+            'sort' => $sort,
+            'format' => $format
+        );
     }
 
     /**
@@ -221,7 +227,26 @@ class ListFactory {
     */
     function setQuery( $title, $name, $sql, $rank )
     {
-        $this->_query_arr[] = array('title' => $title, 'name' => $name, 'sql' => $sql, 'rank' => $rank);
+        $this->_query_arr[] = array(
+            'type' => 'sql',
+            'title' => $title,
+            'name' => $name,
+            'sql' => $sql,
+            'rank' => $rank
+        );
+        $this->_total_rank += $rank;
+    }
+
+    function setCallback( $title, $name, $function, $rank, $total )
+    {
+        $this->_query_arr[] = array(
+            'type' => 'callback',
+            'title' => $title,
+            'name' => $name,
+            'func' => $function,
+            'rank' => $rank,
+            'total' => $total
+        );
         $this->_total_rank += $rank;
     }
 
@@ -282,21 +307,25 @@ class ListFactory {
     * @return int Total number of rows
     *
     */
-    function _numRows( $sql )
+    function _getTotal( $param )
     {
-        if (is_array($sql))
-        {
+        if ($param['type'] == 'callback') {
+            return $param['total'];
+        }
+        else {
+            $sql = $param['sql'];
+        }
+
+        if (is_array($sql)) {
             $sql['mysql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mysql']);
             $sql['mssql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mssql']);
         }
-        else
-        {
+        else {
             $sql = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql);
         }
         $result = DB_query($sql);
         $num_rows = DB_numRows($result);
-        if ($num_rows <= 1)
-        {
+        if ($num_rows <= 1) {
             $B = DB_fetchArray($result, true);
             $num_rows = $B[0];
         }
@@ -397,7 +426,7 @@ class ListFactory {
         $limits = array();
         for ($i = 0; $i < count($this->_query_arr); $i++)
         {
-            $limits[$i]['total'] = $this->_numRows($this->_query_arr[$i]['sql']);
+            $limits[$i]['total'] = $this->_getTotal($this->_query_arr[$i]);
             $limits[$i]['pp'] = round(($this->_query_arr[$i]['rank'] / $this->_total_rank) * $num_query_results);
             $this->_total_found += $limits[$i]['total'];
             $pp_total += $limits[$i]['pp'];
@@ -415,6 +444,44 @@ class ListFactory {
             if ($limits[$i]['limit'] <= 0) {
                 continue;
             }
+
+            // This is a callback function
+            if ($this->_query_arr[$i]['type'] == 'callback')
+            {
+                if (is_callable($this->_query_arr[$i]['func']))
+                {
+                    $callback_rows = call_user_func_array($this->_query_arr[$i]['func'], array($limits[$i]['offset'], $limits[$i]['limit']));
+
+                    foreach ($callback_rows as $row)
+                    {
+                        $col = array();
+                        $col[SQL_TITLE] = $this->_query_arr[$i]['title'];
+                        $col[SQL_NAME] = $this->_query_arr[$i]['name'];
+
+                        foreach ($this->_fields as $field)
+                        {
+                            if (!is_numeric($field['name']) && $field['name'][0] != '_') {
+                                if (empty($row[ $field['name'] ])) {
+                                    $col[ $field['name'] ] = 'LF_NULL';
+                                } else {
+                                    $col[ $field['name'] ] = $row[ $field['name'] ];
+                                }
+                            }
+                        }
+
+                        // Need to call the format function before and after
+                        // sorting the results.
+                        if (is_callable($this->_function)) {
+                            $col = call_user_func_array($this->_function, array(true, $col));
+                        }
+
+                        $rows_arr[] = $col;
+                    }
+                }
+                continue;
+            }
+
+            // This is an SQL query, so execute it and format the results
             $limit_sql = " LIMIT {$limits[$i]['offset']},{$limits[$i]['limit']}";
 
             if (is_array($this->_query_arr[$i]['sql']))
