@@ -47,15 +47,15 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
     // Set up the fields that will be seen by the user
     $obj->setField(
         '#',            // Title of the field
-        ROW_NUMBER,     // The field identifier can be either:
-                        //   ROW_NUMBER - The number of each row will be displayed
-                        //   SQL_TITLE  - The title given the the SQL query will be displayed
+        LF_ROW_NUMBER,  // The field identifier can be either:
+                        //   LF_ROW_NUMBER - The number of each row will be displayed
+                        //   LF_SOURCE_TITLE  - The title given the the SQL query will be displayed
                         //   <string>   - SQL column name
         true,           // Enables the field
         true,           // The field can be sorted
         '<b>%d.</b>'    // Formats the data
     );
-    $obj->setField('Type', SQL_TITLE, true, true, '<b>%s</b>');
+    $obj->setField('Type', LF_SOURCE_TITLE, true, true, '<b>%s</b>');
     $obj->setField('Title', 'title');
     $obj->setField('Text', 'text');
     $obj->setField('Date', 'date');
@@ -72,7 +72,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
     // Set up some queries to execute
     $sql = 'SELECT sid AS id, title, introtext AS text, date FROM stories';
     $obj->setQuery(
-        'Story', // The name given to the query which will be displayed in the SQL_TITLE field (optional)
+        'Story', // The name given to the query which will be displayed in the LF_SOURCE_TITLE field (optional)
         'story',
         $sql,    // The SQL string without the LIMIT or ORDER BY clauses. Notice the column names match the field identifiers
         5        // The rank of the query, 5 highest = more results, 1 lowest = least results
@@ -84,7 +84,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
     // Note: the array must match the field identifier names stated previously
     $extra_row = array(
         'id' => -1,
-        SQL_TITLE => 'Extra Row',
+        LF_SOURCE_TITLE => 'Extra Row',
         'title' => 'An extra row example',
         'text' => 'With some really really really long text.....<b>and HTML</b>',
         'date' => '2008-07-08 03:00:00'
@@ -132,7 +132,7 @@ class ListFactory {
 
     // PRIVATE VARIABLES
     var $_fields = array();
-    var $_query_arr = array();
+    var $_sources_arr = array();
     var $_total_rank = 0;
     var $_sort_arr = array();
     var $_def_sort_arr = array();
@@ -148,7 +148,7 @@ class ListFactory {
     * Constructor
     *
     * Sets up private url variable and defines the
-    * SQL_TITLE, SQL_NAME and ROW_NUMBER constants.
+    * LF_SOURCE_TITLE, LF_SOURCE_NAME and LF_ROW_NUMBER constants.
     *
     * @access public
     * @param string $url The URL of the page the table appears on
@@ -171,9 +171,9 @@ class ListFactory {
             $this->_page_limits = array(10, 15, 20, 25, 30, 35);
         }
 
-        define('SQL_TITLE', 0);
-        define('SQL_NAME', 1);
-        define('ROW_NUMBER', 2);
+        define('LF_SOURCE_TITLE', 0);
+        define('LF_SOURCE_NAME', 1);
+        define('LF_ROW_NUMBER', 2);
     }
 
     /**
@@ -191,7 +191,7 @@ class ListFactory {
     /**
     * Sets a field in the list.
     *
-    * Note: ROW_NUMBER cannot be sorted
+    * Note: LF_ROW_NUMBER cannot be sorted
     *
     * @access public
     * @param string $title The title of the field which is displayed to the user
@@ -203,7 +203,7 @@ class ListFactory {
     */
     function setField( $title, $name, $display = true, $sort = true, $format = '%s' )
     {
-        if ($name === ROW_NUMBER) {
+        if ($name === LF_ROW_NUMBER) {
             $sort = false;
         }
         $this->_fields[] = array(
@@ -227,7 +227,7 @@ class ListFactory {
     */
     function setQuery( $title, $name, $sql, $rank )
     {
-        $this->_query_arr[] = array(
+        $this->_sources_arr[] = array(
             'type' => 'sql',
             'title' => $title,
             'name' => $name,
@@ -237,13 +237,30 @@ class ListFactory {
         $this->_total_rank += $rank;
     }
 
-    function setCallback( $title, $name, $function, $rank, $total )
+    /**
+    * Sets a callback function that provides another source for results.
+    *
+    * The function will be passed two parameters, $offset and $limit,
+    * which will determine how many results are requested. The callback
+    * function should then return a multidimensional array containing
+    * the results. This provides an alternative to the setQuery()
+    * function as results can be sourced from anywhere.
+    *
+    * @access public
+    * @param string $title The text that's displayed to the user
+    * @param string $name The local name given to the query
+    * @param string $function Any callable function, method or lambda
+    * @param int $rank The rating that determins how many results will be returned
+    * @param int $total The total number of results that are avaliable
+    *
+    */
+    function setCallback( $title, $name, $callback, $rank, $total )
     {
-        $this->_query_arr[] = array(
+        $this->_sources_arr[] = array(
             'type' => 'callback',
             'title' => $title,
             'name' => $name,
-            'func' => $function,
+            'func' => $callback,
             'rank' => $rank,
             'total' => $total
         );
@@ -251,7 +268,8 @@ class ListFactory {
     }
 
     /**
-    * Sets the callback function that gets called when formatting a row
+    * Sets the callback function thats called on every row for styling
+    * or formatting.
     *
     * @access public
     * @param callback $function Any callable function, method or lambda
@@ -300,20 +318,21 @@ class ListFactory {
     }
 
     /**
-    * Gets the total number of results from a query
+    * Gets the total number of results from source item, either an sql
+    * query or a callback function.
     *
     * @access private
-    * @param string $sql The query
+    * @param array $source The source we are currently working with
     * @return int Total number of rows
     *
     */
-    function _getTotal( $param )
+    function _getTotal( $source )
     {
-        if ($param['type'] == 'callback') {
-            return $param['total'];
+        if ($source['type'] == 'callback') {
+            return $source['total'];
         }
         else {
-            $sql = $param['sql'];
+            $sql = $source['sql'];
         }
 
         if (is_array($sql)) {
@@ -382,6 +401,42 @@ class ListFactory {
     }
 
     /**
+    * Applies styling to each row and adds extra meta details that are
+    * used else where in the ListFactory.
+    *
+    * @access private
+    * @param array $row_arr A single results row
+    * @param array $source The source we are currently working with
+    * @return array The row with styling applied and extra meta details
+    *
+    */
+    function _fillrow( $row_arr, $source )
+    {
+        $col = array();
+        $col[LF_SOURCE_TITLE] = $source['title'];
+        $col[LF_SOURCE_NAME] = $source['name'];
+
+        foreach ($this->_fields as $field)
+        {
+            if (!is_numeric($field['name']) && $field['name'][0] != '_') {
+                if (empty($row_arr[ $field['name'] ])) {
+                    $col[ $field['name'] ] = 'LF_NULL';
+                } else {
+                    $col[ $field['name'] ] = $row_arr[ $field['name'] ];
+                }
+            }
+        }
+
+        // Need to call the format function before and after
+        // sorting the results.
+        if (is_callable($this->_function)) {
+            $col = call_user_func_array($this->_function, array(true, $col));
+        }
+
+        return $col;
+    }
+
+    /**
     * Executes pre set queries
     *
     * @access public
@@ -400,7 +455,7 @@ class ListFactory {
         if (is_numeric($this->_sort_arr['field']))
         {
             $ord = $this->_def_sort_arr['field'];
-            $this->_sort_arr['field'] = SQL_TITLE;
+            $this->_sort_arr['field'] = LF_SOURCE_TITLE;
         }
         else
         {
@@ -424,10 +479,10 @@ class ListFactory {
         $num_query_results = $this->_per_page - $this->_total_found;
         $pp_total = $this->_total_found;
         $limits = array();
-        for ($i = 0; $i < count($this->_query_arr); $i++)
+        for ($i = 0; $i < count($this->_sources_arr); $i++)
         {
-            $limits[$i]['total'] = $this->_getTotal($this->_query_arr[$i]);
-            $limits[$i]['pp'] = round(($this->_query_arr[$i]['rank'] / $this->_total_rank) * $num_query_results);
+            $limits[$i]['total'] = $this->_getTotal($this->_sources_arr[$i]);
+            $limits[$i]['pp'] = round(($this->_sources_arr[$i]['rank'] / $this->_total_rank) * $num_query_results);
             $this->_total_found += $limits[$i]['total'];
             $pp_total += $limits[$i]['pp'];
         }
@@ -438,45 +493,30 @@ class ListFactory {
         }
         $limits = $this->_getLimits($limits);
 
-        // Execute each query in turn
-        for ($i = 0; $i < count($this->_query_arr); $i++)
+        // Retrieve the results from each source in turn
+        for ($i = 0; $i < count($this->_sources_arr); $i++)
         {
             if ($limits[$i]['limit'] <= 0) {
                 continue;
             }
 
             // This is a callback function
-            if ($this->_query_arr[$i]['type'] == 'callback')
+            if ($this->_sources_arr[$i]['type'] == 'callback')
             {
-                if (is_callable($this->_query_arr[$i]['func']))
+                if (is_callable($this->_sources_arr[$i]['func']))
                 {
-                    $callback_rows = call_user_func_array($this->_query_arr[$i]['func'], array($limits[$i]['offset'], $limits[$i]['limit']));
+                    $callback_rows = call_user_func_array(
+                        $this->_sources_arr[$i]['func'],
+                        array($limits[$i]['offset'],
+                        $limits[$i]['limit'])
+                    );
 
-                    foreach ($callback_rows as $row)
-                    {
-                        $col = array();
-                        $col[SQL_TITLE] = $this->_query_arr[$i]['title'];
-                        $col[SQL_NAME] = $this->_query_arr[$i]['name'];
-
-                        foreach ($this->_fields as $field)
-                        {
-                            if (!is_numeric($field['name']) && $field['name'][0] != '_') {
-                                if (empty($row[ $field['name'] ])) {
-                                    $col[ $field['name'] ] = 'LF_NULL';
-                                } else {
-                                    $col[ $field['name'] ] = $row[ $field['name'] ];
-                                }
-                            }
-                        }
-
-                        // Need to call the format function before and after
-                        // sorting the results.
-                        if (is_callable($this->_function)) {
-                            $col = call_user_func_array($this->_function, array(true, $col));
-                        }
-
-                        $rows_arr[] = $col;
+                    foreach ($callback_rows as $row) {
+                        $rows_arr[] = $this->_fillrow($row, $this->_sources_arr[$i]);
                     }
+                } else {
+                    COM_errorLog('ListFactory: A callback function was set for "'.
+                        $this->_sources_arr[$i]['name'].'", but it could not be found.');
                 }
                 continue;
             }
@@ -484,42 +524,16 @@ class ListFactory {
             // This is an SQL query, so execute it and format the results
             $limit_sql = " LIMIT {$limits[$i]['offset']},{$limits[$i]['limit']}";
 
-            if (is_array($this->_query_arr[$i]['sql']))
-            {
-                $this->_query_arr[$i]['sql']['mysql'] .= $order_sql . $limit_sql;
-                $this->_query_arr[$i]['sql']['mssql'] .= $order_sql . $limit_sql;
-            }
-            else
-            {
-                $this->_query_arr[$i]['sql'] .= $order_sql . $limit_sql;
+            if (is_array($this->_sources_arr[$i]['sql'])) {
+                $this->_sources_arr[$i]['sql']['mysql'] .= $order_sql . $limit_sql;
+                $this->_sources_arr[$i]['sql']['mssql'] .= $order_sql . $limit_sql;
+            } else {
+                $this->_sources_arr[$i]['sql'] .= $order_sql . $limit_sql;
             }
 
-            $result = DB_query($this->_query_arr[$i]['sql']);
-
-            while ($A = DB_fetchArray($result))
-            {
-                $col = array();
-                $col[SQL_TITLE] = $this->_query_arr[$i]['title'];
-                $col[SQL_NAME] = $this->_query_arr[$i]['name'];
-
-                foreach ($this->_fields as $field)
-                {
-                    if (!is_numeric($field['name']) && $field['name'][0] != '_') {
-                        if (empty($A[ $field['name'] ])) {
-                            $col[ $field['name'] ] = 'LF_NULL';
-                        } else {
-                            $col[ $field['name'] ] = $A[ $field['name'] ];
-                        }
-                    }
-                }
-
-                // Need to call the format function before and after
-                // sorting the results.
-                if (is_callable($this->_function)) {
-                    $col = call_user_func_array($this->_function, array(true, $col));
-                }
-
-                $rows_arr[] = $col;
+            $result = DB_query($this->_sources_arr[$i]['sql']);
+            while ($A = DB_fetchArray($result)) {
+                $rows_arr[] = $this->_fillrow($A, $this->_sources_arr[$i]);
             }
         }
 
@@ -686,7 +700,7 @@ class ListFactory {
                 if ($field['display'] == true)
                 {
                     $fieldvalue = '';
-                    if ($field['name'] == ROW_NUMBER) {
+                    if ($field['name'] == LF_ROW_NUMBER) {
                         $fieldvalue = $r + $offset;
                     } else if (!empty($row[ $field['name'] ])) {
                         $fieldvalue = $row[ $field['name'] ];
@@ -710,7 +724,8 @@ class ListFactory {
         }
 
         // Print page numbers
-        $page_url = $this->_page_url . 'order=' . $this->_sort_arr['field'] . '&amp;direction=' . $this->_sort_arr['direction'] . '&amp;results=' . $this->_per_page;
+        $page_url = $this->_page_url.'order='.$this->_sort_arr['field'] .
+                '&amp;direction='.$this->_sort_arr['direction'].'&amp;results='.$this->_per_page;
         $num_pages = ceil($this->_total_found / $this->_per_page);
         if ($num_pages > 1) {
             $list_templates->set_var('google_paging', COM_printPageNavigation($page_url, $this->_page, $num_pages, 'page=', false, '', ''));
