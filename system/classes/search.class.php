@@ -457,7 +457,6 @@ class Search {
 
         $url = "{$this->_searchURL}&amp;type={$this->_type}&amp;mode=";
         $obj = new ListFactory($url.'search', $_CONF['search_limits'], $_CONF['num_search_results']);
-        $obj->setRowFunction(array($this, 'searchFormatCallback'));
         $obj->setField('ID', 'id', false);
         $obj->setField('URL', 'url', false);
 
@@ -495,6 +494,8 @@ class Search {
             $this->_wordlength = 50;
         }
         $obj->setDefaultSort('hits');
+        // set this only now, for compatibility with PHP 4
+        $obj->setRowFunction(array($this, 'searchFormatCallback'));
 
         // Start search timer
         $searchtimer = new timerobject();
