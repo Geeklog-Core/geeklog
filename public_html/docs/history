@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- The comment speed limit was being ignored (bug #0001003) [Dirk]
 - Added an icon to make the plugin update option somewhat more obvious [Dirk]
   (icon "stock_update-data.png" taken from Gnome 2.18 icon theme set by
   AMAZIGH Aneglus, released under the GPL)

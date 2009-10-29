@@ -779,7 +779,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
         return $retval;
     } else {
         COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
-        
+
         $last = 0;
         if ($mode != 'edit' && $mode != 'editsubmission' 
                 && $mode != $LANG03[28] && $mode != $LANG03[34]) {
@@ -1117,6 +1117,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         $pid = 0;
     }
 
+    COM_updateSpeedlimit('comment');
     if (empty($title) || empty($comment)) {
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
