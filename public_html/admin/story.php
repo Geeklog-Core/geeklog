@@ -727,11 +727,22 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $story_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $story_templates->set_var('gltoken', SEC_createToken());
+    $token = SEC_createToken();
+    $story_templates->set_var('gltoken', $token);
     $story_templates->parse('output','editor');
 
     $display .= COM_startBlock ($LANG24[5], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $expirytime = SEC_getTokenExpiryTime($token);
+    if ($expirytime > 0) {
+        $txt = '<p id="token-expirynotice">' . '' . '</p>';
+        $exptime = '<span id="token-expirytime">'
+                 . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+        $display .= '<p id="token-expirynotice">'
+                 . sprintf($LANG24[91], $exptime) . '</p>';
+    }
+
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 

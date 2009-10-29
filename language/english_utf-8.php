@@ -827,7 +827,8 @@ $LANG24 = array(
     87 => 'Story Stats',
     88 => 'Wiki-style format',
     89 => 'Meta Description',
-    90 => 'Meta Keywords'
+    90 => 'Meta Keywords',
+    91 => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes. You can always hit "Preview" to extend the expiry time.'
 );
 
 

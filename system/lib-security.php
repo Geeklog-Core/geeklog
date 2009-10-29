@@ -1178,6 +1178,33 @@ function SEC_checkToken()
 }
 
 /**
+* Get a token's expiry time
+*
+* @param    string  $token  the token we're looking for
+* @return   int             UNIX timestamp of the expiry time or 0
+*
+*/
+function SEC_getTokenExpiryTime($token)
+{
+    global $_TABLES, $_USER;
+
+    $retval = 0;
+
+    if (!COM_isAnonUser()) {
+
+        $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+        $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+
+        $result = DB_query($sql);
+        if (DB_numRows($result) == 1) {
+            list($retval) = DB_fetchArray($result);
+        }
+    }
+
+    return $retval;
+}
+
+/**
 * Set a cookie using the HttpOnly flag
 *
 * Use this function to set "important" cookies (session, password, ...).
