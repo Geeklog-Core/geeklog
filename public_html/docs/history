@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Oct ??, 2009 (1.6.1)
 ------------
 
+- Allow bigger values for a topic's Sort Order field (feature request #0001011)
+  [Dirk]
 - When a Story Admin did not have permission to edit a story, Geeklog threw a
   "call to a member function on a non-object" error when trying to display a
   proper "access denied" message (reported by Chase and Cesar) [Dirk]

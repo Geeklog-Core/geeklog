@@ -396,7 +396,7 @@ CREATE TABLE {$_TABLES['topics']} (
   imageurl varchar(255) default NULL,
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,
-  sortnum tinyint(3) default NULL,
+  sortnum smallint(3) default NULL,
   limitnews tinyint(3) default NULL,
   is_default tinyint(1) unsigned NOT NULL DEFAULT '0',
   archive_flag tinyint(1) unsigned NOT NULL DEFAULT '0',
