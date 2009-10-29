@@ -1066,6 +1066,7 @@ $LANG32 = array(
     39 => 'העלאת plugin',
     40 => 'הנכם יכולים להעלות ארכיון plugin (tar.gz, tgz, zip) ישירות לכאן:',
     41 => 'העלאה',
+    42 => 'Click to update',
     99 => 'התרחשה שגיאה לא ידועה',
     100 => 'אישור.',
     101 => 'הקובץ שהועלה עובר את הוראת upload_max_filesize directive ב-php.ini.',

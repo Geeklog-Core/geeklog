@@ -1065,6 +1065,7 @@ $LANG32 = array(
     39 => 'Lae plugin',
     40 => 'Sa võid otse siin laadida plugina arhiivi (.tar.gz, .tgz, .zip):',
     41 => 'Lae ülesse',
+    42 => 'Click to update',
     99 => 'Oli tundmatu viga',
     100 => 'OK.',
     101 => 'Ülesse laetud faili suurus ületab php.ini failis oleva upload_max_filesize direktiivi.',
