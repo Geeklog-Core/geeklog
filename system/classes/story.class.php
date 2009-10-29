@@ -263,11 +263,6 @@ class Story
                 STORY_AL_NUMERIC,
                 '_frontpage'
               ),
-            'comment_expire' => array
-              (
-                STORY_AL_NUMERIC,
-                '_comment_expire'
-              ),
            'commentcode' => array
               (
                 STORY_AL_NUMERIC,
@@ -404,15 +399,17 @@ class Story
 
         // Overwrite the date with the timestamp.
         $this->_date = $story['unixdate'];
+
         if (!empty($story['expireunix'])) {
             $this->_expire = $story['expireunix'];
         } else {
-            $this->_expire = '0';
+            $this->_expire = 0;
         }
+
         if (!empty($story['cmt_expire_unix'])) {
             $this->_comment_expire = $story['cmt_expire_unix'];
         } else {
-            $this->_comment_expire = '0';
+            $this->_comment_expire = 0;
         }
 
         // Store the original SID
@@ -440,11 +437,11 @@ class Story
             $sql = array();
 
             $sql['mysql']
-            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, "
+            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
 
             $sql['mssql'] =
-                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
         } elseif (!empty($sid) && ($mode == 'editsubmission')) {
             $sql = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
@@ -471,6 +468,12 @@ class Story
             }
             $this->_date = time();
             $this->_expire = time();
+            if ($_CONF['article_comment_close_enabled']) {
+                $this->_comment_expire = time() +
+                    ($_CONF['article_comment_close_days'] * 86400);
+            } else {
+                $this->_comment_expire = 0;
+            }
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_title = '';
@@ -570,7 +573,12 @@ class Story
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_featured = 0;
             $this->_expire = time();
-            $this->_expiredate = 0;
+            if ($_CONF['article_comment_close_enabled']) {
+                $this->_comment_expire = time() +
+                    ($_CONF['article_comment_close_days'] * 86400);
+            } else {
+                $this->_comment_expire = 0;
+            }
 
             if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$this->_tid}'") == 1) {
                 $this->_frontpage = 0;
@@ -601,7 +609,7 @@ class Story
     {
         global $_TABLES;
 
-        if (DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1") == $this->_tid) {
+        if (DB_getItem($_TABLES['topics'], 'tid', 'archive_flag=1') == $this->_tid) {
             $this->_featured = 0;
             $this->_frontpage = 0;
             $this->_statuscode = STORY_ARCHIVE_ON_EXPIRE;
@@ -662,7 +670,7 @@ class Story
         }
 
         /* Acquire Comment Count */
-        $sql = "SELECT count(1) FROM {$_TABLES['comments']} WHERE type='article' AND sid='{$this->_sid}'";
+        $sql = "SELECT COUNT(1) FROM {$_TABLES['comments']} WHERE type='article' AND sid='{$this->_sid}'";
         $result = DB_query($sql);
 
         if ($result && (DB_numRows($result) == 1)) {
@@ -697,7 +705,8 @@ class Story
             if ($save === 1) {
                 $varname = '_' . $fieldname;
                 $sql .= $fieldname . ', ';
-                if (($fieldname == 'date') || ($fieldname == 'expire') || ($fieldname == 'comment_expire')) {
+                if (($fieldname == 'date') || ($fieldname == 'expire') ||
+                        ($fieldname == 'comment_expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
                     $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
                 } else {
@@ -857,11 +866,18 @@ class Story
      */
     function loadSubmission()
     {
+        global $_CONF;
+
         $array = $_POST;
 
         $this->_expire = time();
         $this->_date = time();
-        $this->_expiredate = 0;
+        if ($_CONF['article_comment_close_enabled']) {
+            $this->_comment_expire = time() +
+                ($_CONF['article_comment_close_days'] * 86400);
+        } else {
+            $this->_comment_expire = 0;
+        }
 
         // Handle Magic GPC Garbage:
         while (list($key, $value) = each($array))
@@ -1292,7 +1308,7 @@ class Story
     /**
      * Provide access to story elements. For the editor.
      *
-     * This is a peudo-property, implementing a getter for story
+     * This is a pseudo-property, implementing a getter for story
      * details as if as an associative array. Personally, I'd
      * rather be able to assign getters and setters to actual
      * properties to mask controlled access to private member
@@ -1381,44 +1397,69 @@ class Story
             $return = date('Y', $this->_expire);
 
             break;
+
         case 'cmt_close':
-            if (isset($this->_comment_expire) && $this->_comment_expire != 0) {
-                $return = true;
-            } else {
-                $return = false;
-                //return default expire time to form
-                $this->_comment_expire = $this->_date + ($_CONF['article_comment_close_days']*86400);
-            }
-            
+            $return = ($this->_comment_expire == 0) ? false : true;
+
             break;
-            
+
         case 'cmt_close_second':
-            $return = date('s', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('s', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('s', $this->_comment_expire);
+            }
 
             break;
 
         case 'cmt_close_minute':
-            $return = date('i', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('i', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('i', $this->_comment_expire);
+            }
 
             break;
 
         case 'cmt_close_hour':
-            $return = date('H', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('H', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('H', $this->_comment_expire);
+            }
 
             break;
 
         case 'cmt_close_day':
-            $return = date('d', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('d', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('d', $this->_comment_expire);
+            }
 
             break;
 
         case 'cmt_close_month':
-            $return = date('m', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('m', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('m', $this->_comment_expire);
+            }
 
             break;
 
         case 'cmt_close_year':
-            $return = date('Y', $this->_comment_expire);
+            if ($this->_comment_expire == 0) {
+                $return = date('Y', time() +
+                               ($_CONF['article_comment_close_days'] * 86400));
+            } else {
+                $return = date('Y', $this->_comment_expire);
+            }
 
             break;
 
@@ -1572,11 +1613,11 @@ class Story
             break;
             
         case 'commentcode':
-            //check to see if comment_time has passed
+            // check to see if comment_time has passed
             if ($this->_comment_expire != 0 && (time() > $this->_comment_expire) && $this->_commentcode == 0 ) {
+                // if comment code is not 1, change it to 1
+                DB_query("UPDATE {$_TABLES['stories']} SET commentcode = '1' WHERE sid = '$this->_sid'");
                 $return = 1;
-                //if comment code is not 1, change it to 1
-                DB_query("UPDATE {$_TABLES['stories']} SET commentcode = '1' WHERE sid = '$this->_sid'"); //die('changed cc');
             } else {
                 $return = $this->_commentcode;
             }
@@ -1894,7 +1935,7 @@ class Story
 
         $this->_expire = $expiredate;
         
-        //comment expire time
+        // comment expire time
         if (isset($array['cmt_close_flag'])) {
             $cmt_close_ampm = COM_applyFilter($array['cmt_close_ampm']);
             $cmt_close_hour = COM_applyFilter($array['cmt_close_hour'], true);
@@ -1913,11 +1954,13 @@ class Story
             if ($cmt_close_ampm == 'am' AND $cmt_close_hour == 12) {
                 $cmt_close_hour = '00';
             }
-            
+
             $cmt_close_date
             = strtotime("$cmt_close_month/$cmt_close_day/$cmt_close_year $cmt_close_hour:$cmt_close_minute:$cmt_close_second");
-            
+
             $this->_comment_expire = $cmt_close_date;
+        } else {
+            $this->_comment_expire = 0;
         }
 
 
@@ -2027,12 +2070,8 @@ class Story
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
         }
-
-        if (empty($this->_comment_expire)) {
-            $this->_comment_expire = $this->_date
-                            + ($_CONF['article_comment_close_days'] * 86400);
-        }
     }
+
 // End Private Methods.
 
 /**************************************************************************/

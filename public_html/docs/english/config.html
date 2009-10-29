@@ -949,6 +949,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>). Anonymous users (those that did not register an account) can
     never edit their comments while admins can always edit comments.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_article_comment_close_enabled">article_comment_close_enabled</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether or not stories should be closed for comments after
+    a certain amount of days (see next option). This is only the default
+    setting for new stories and can be changed separately for each
+    story.</td></tr>
+<tr>
   <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
   <td valign="top">30</td>
   <td valign="top">Number of days after which a story is to be automatically
@@ -962,7 +969,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">0</td>
   <td valign="top">Number of most recent stories for which comment posting is
     allowed. Posting a new story will automatically close comments for the
-    oldest of these stories.</td></tr>
+    oldest of these stories. Set to 0 to disable this option.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_reply_notifications">allow_reply_notifications</a></td>
   <td valign="top">0</td>
@@ -992,10 +999,8 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If you chose 'imagemagick' for
     <code>$_CONF['image_lib']</code> above, then this should hold the
     <strong>complete path</strong> to the mogrify executable (from the
-    ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
-    You will need a fairly recent version of <a
-    href="http://www.imagemagick.org/">ImageMagick</a> for this to work
-    (version 5.4.9 or newer is recommended).</td></tr>
+    <a href="http://www.imagemagick.org/">ImageMagick</a> package), e.g.
+    '<tt>/usr/bin/mogrify</tt>' (ImageMagick 5.4.9 or newer recommended).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
   <td valign="top"><i>(disabled)</i></td>
@@ -1043,7 +1048,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">When set to <code>true</code>, this option enables debugging
     output to be written into Geeklog's <tt>error.log</tt> file during the
     upload of an image. This is useful to track down problems with the image
-    upload.</td></tr>
+    upload and resizing.</td></tr>
 </table>
 
 <h3><a name="images_articles">Images: Images in Articles</a></h3>
@@ -1133,8 +1138,9 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><i>(disabled)</i></td>
   <td valign="top">When enabled, this option should point to an image (full URL
     required!) that should be displayed for users without a user photo. When
-    this option is not set and a user does not have a user photo (or an avatar)
-    then Geeklog will simply not display anything.</td></tr>
+    this option is not set and a user does not have a user photo (or an <a 
+    href="#images_gravatar">avatar</a>) then Geeklog will simply not display
+    anything.</td></tr>
 </table>
 
 <h3><a name="images_gravatar">Images: Gravatar</a></h3>
@@ -1149,7 +1155,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
     be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
     user didn't upload a user photo (i.e. an uploaded photo always takes
-    priority).<br>
+    precedence).<br>
     Please note that this option may slow down your site on pages that display
     a lot of userphotos for different users (e.g. forum threads).</td></tr>
 <tr>
@@ -1408,7 +1414,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     display the actual error message to members of the Root group (to prevent
     leakage of possibly sensitive information). When set to <code>true</code>,
     this information will be displayed to <em>all</em> users. <strong>Use only
-    for debugging purposes!</strong></td></tr>
+    for debugging purposes!</strong><br>
+    Tip: If an error prevents you from logging into your site to enable that
+    option, you can also <a href="#desc_rootdebug_siteconfig">enable it in your
+    <tt>siteconfig.php</tt></a> file.</td></tr>
 </table>
 
 <h3><a name="misc_digest">Miscellaneous: Daily Digest</a></h3>
@@ -1595,6 +1604,19 @@ the installation and you should not normally have to edit this file.</p>
     another character encoding.<br>
     For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
     set is recommended.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
+  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top">Same as the '<a href="#desc_rootdebug">rootdebug</a>' option
+    in the Configuration. However, sometimes an error may occur that prevents
+    you from logging into your site and enabling the 'rootdebug' option. In
+    such a case, you can uncomment this line and enable the option here.<br>
+    In addition to 'true' and 'false', you can also set this option to 'force'
+    (only in <tt>siteconfig.php</tt>). This will enable displaying of sensitive
+    information like passwords and cookies.<br>
+    In any case, the same strong warning as <a href="#desc_rootdebug">above</a>
+    applies here, too: <strong>Do not leave this option enabled on a "live"
+    site!</strong></td></tr>
 </table>
 
 

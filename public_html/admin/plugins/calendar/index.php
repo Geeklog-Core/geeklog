@@ -104,7 +104,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
             return $retval;
         }
     } else {
-        $A['owner_id'] = $_USER['uid'];
+        if (empty($A['owner_id'])) {
+            $A['owner_id'] = $_USER['uid'];
+        }
         if (isset ($_GROUPS['Calendar Admin'])) {
             $A['group_id'] = $_GROUPS['Calendar Admin'];
         } else {

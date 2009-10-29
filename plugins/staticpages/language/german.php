@@ -140,7 +140,8 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Inhalt zensieren?',
     'default_permissions' => 'Grundeinstellungen Statische Seiten',
     'aftersave' => 'Nach dem Speichern der Seiten',
-    'atom_max_items' => 'Max. Seiten in Webservices News-Feed'
+    'atom_max_items' => 'Max. Seiten in Webservices News-Feed',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

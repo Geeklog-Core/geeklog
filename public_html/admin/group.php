@@ -529,7 +529,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
 
         // Use the field grp_gl_core to indicate if this is non-core GL Group is an Admin related group
         if (($grp_gl_core != 1) AND ($grp_id > 1)) {
-            if ($grp_admin == 'on') {
+            if ($grp_admin == 1) {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_id=$grp_id");
             } else {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_id=$grp_id");

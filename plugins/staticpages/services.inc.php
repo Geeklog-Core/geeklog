@@ -563,15 +563,18 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         }
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
-                      . "commentcode,meta_description,meta_keywords,owner_id,group_id,perm_owner,perm_group,"
+                      . "commentcode,meta_description,meta_keywords,owner_id,"
+                      . "group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
         $sql['mssql'] = "SELECT sp_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
-                      . "sp_date,sp_format,commentcode,owner_id,group_id,"
-                      . "perm_owner,perm_group,perm_members,perm_anon,sp_tid,"
-                      . "sp_help,sp_php,sp_inblock "
+                      . "sp_date,sp_format,commentcode,"
+                      . "CAST(meta_description AS text) AS meta_description,"
+                      . "CAST(meta_keywords AS text) AS meta_keywords,"
+                      . "owner_id,group_id,perm_owner,perm_group,perm_members,"
+                      . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
         $result = DB_query ($sql);

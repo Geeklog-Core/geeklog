@@ -484,38 +484,37 @@ function editpreferences()
     if ($_CONF['allow_user_themes'] == 1) {
         $selection = '<select id="theme" name="theme">' . LB;
 
-        if (empty ($_USER['theme'])) {
+        if (empty($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
         } else {
             $usertheme = $_USER['theme'];
         }
 
-        $themeFiles = COM_getThemes ();
-        usort ($themeFiles,
-               create_function ('$a,$b', 'return strcasecmp($a,$b);'));
+        $themeFiles = COM_getThemes();
+        usort($themeFiles, 'strcasecmp');
 
         foreach ($themeFiles as $theme) {
             $selection .= '<option value="' . $theme . '"';
             if ($usertheme == $theme) {
                 $selection .= ' selected="selected"';
             }
-            $words = explode ('_', $theme);
-            $bwords = array ();
+            $words = explode('_', $theme);
+            $bwords = array();
             foreach ($words as $th) {
-                if ((strtolower ($th{0}) == $th{0}) &&
-                    (strtolower ($th{1}) == $th{1})) {
-                    $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+                if ((strtolower($th{0}) == $th{0}) &&
+                    (strtolower($th{1}) == $th{1})) {
+                    $bwords[] = ucfirst($th);
                 } else {
                     $bwords[] = $th;
                 }
             }
-            $selection .= '>' . implode (' ', $bwords) . '</option>' . LB;
+            $selection .= '>' . implode(' ', $bwords) . '</option>' . LB;
         }
         $selection .= '</select>';
-        $preferences->set_var ('theme_selector', $selection);
-        $preferences->parse ('theme_selection', 'theme', true);
+        $preferences->set_var('theme_selector', $selection);
+        $preferences->parse('theme_selection', 'theme', true);
     } else {
-        $preferences->set_var ('theme_selection', '');
+        $preferences->set_var('theme_selection', '');
     }
 
     require_once ('Date/TimeZone.php');

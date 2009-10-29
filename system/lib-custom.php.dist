@@ -63,6 +63,8 @@ function phpblock_showrights()
 {
     global $_RIGHTS, $_CST_VERBOSE;
 
+    $retval = '';
+
     if ($_CST_VERBOSE) {
         COM_errorLog('**** Inside phpblock_showrights in lib-custom.php ****', 1);
     }
@@ -224,6 +226,8 @@ function CUSTOM_userDisplay($uid)
 {
     global $_CONF, $_TABLES;
 
+    $retval = '';
+
     $var = "Value from custom table";
     $retval .= '<tr>
         <td align="right"><b>Custom Fields:</b></td>
@@ -248,6 +252,8 @@ function CUSTOM_userDisplay($uid)
 function CUSTOM_userEdit($uid)
 {
     global $_CONF, $_TABLES;
+
+    $retval = '';
 
     $var = "Value from custom table";
     $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout', $uid);
@@ -298,6 +304,8 @@ function CUSTOM_userSave($uid)
 function CUSTOM_userForm ($msg = '')
 {
     global $_CONF, $_TABLES, $LANG04;
+
+    $retval = '';
 
     if (!empty ($msg) && ($msg != 'new')) {
         $retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
@@ -374,7 +382,9 @@ function CUSTOM_userForm ($msg = '')
 function CUSTOM_userCheck ($username, $email='')
 {
     global $MESSAGE;
+
     $retval = '';
+
     // Example, check that the full name has been entered
     // and complain if it's missing
     if (empty($_POST['fullname'])) {
@@ -407,6 +417,7 @@ function CUSTOM_showBlocks($showblocks)
     global $_CONF, $_USER, $_TABLES;
 
     $retval = '';
+
     if( !isset( $_USER['noboxes'] )) {
         if( !empty( $_USER['uid'] )) {
             $noboxes = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );

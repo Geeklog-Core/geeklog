@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008 by the following authors:                              |
+// | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -29,6 +29,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Calendar plugin automatic plugin install
+*
+* @package Calendar
+*/
+
 function plugin_autoinstall_calendar($pi_name)
 {
     $pi_name         = 'calendar';
@@ -38,7 +44,7 @@ function plugin_autoinstall_calendar($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.1.0',
+        'pi_version'      => '1.1.1',
         'pi_gl_version'   => '1.6.0',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );

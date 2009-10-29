@@ -138,7 +138,8 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Tsenseeri sisu?',
     'default_permissions' => 'Lehe vaikimisi õigused',
     'aftersave' => 'Pärast lehe salvestamist',
-    'atom_max_items' => 'Maks. lehti veebiteenuste lõimes'
+    'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['staticpages'] = array(

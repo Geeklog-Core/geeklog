@@ -455,7 +455,7 @@ $LANG08 = array(
     33 => 'Kompletter Artikel unter',
     34 => 'Ende dieser Nachricht',
     35 => 'Sorry, dieser User möchte keine E-Mails bekommen.',
-    36 => 'Copy:',
+    36 => 'Kopie:',
     37 => 'Send me a copy of this email',
     38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
@@ -828,7 +828,9 @@ $LANG24 = array(
     85 => 'Alles anzeigen',
     86 => 'Advanced Editor',
     87 => 'Artikel-Statistik',
-    88 => 'Format im Wiki-Stil '
+    88 => 'Format im Wiki-Stil ',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -863,7 +865,8 @@ $LANG27 = array(
     26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)',
     27 => 'oder ein Icon hochladen',
     28 => 'maximal',
-    29 => 'Fehler beim Datei-Upload'
+    29 => 'Fehler beim Datei-Upload',
+    30 => 'Artikel i.d. Kategorie'
 );
 
 ###############################################################################
@@ -993,10 +996,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Mail Utility",
-    2 => 'Von',
-    3 => 'Reply-to',
+    2 => 'Von (Name)',
+    3 => 'Von (E-Mail)',
     4 => 'Betreff',
-    5 => 'Text',
+    5 => 'Nachricht',
     6 => 'Senden',
     7 => 'Alle User',
     8 => 'Admin',
@@ -1228,7 +1231,7 @@ $MESSAGE = array(
     89 => 'Kann OpenID-Server nicht finden bzgl. der angegebenen Identity-URL.',
     90 => 'OpenID- Identifizierung abgebrochen.',
     91 => 'You specified an invalid identity URL.',
-    92 => "Bitte <a href=\"{$_CONF['site_admin_url']}/sectest.php\">die Sicherheit Ihrer Site überprüfen</a> bevor Sie sie benutzen!",
+    92 => "Bitte <a href=\"{$_CONF['site_admin_url']}/sectest.php\">die Sicherheit Deiner Site überprüfen</a> bevor Du sie benutzt!",
     93 => 'Database back up war erfolgreich.',
     94 => 'Backup Failed: Dateigröße unter 1kb',
     95 => 'Es gab einen Fehler.',
@@ -1466,9 +1469,9 @@ $LANG_DIR = array(
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest' => 'Geeklog Security Check',
-    'results' => 'Results of the Security Check',
-    'okay' => 'Everything seems to be in order.',
+    'sectest' => 'Geeklog Sicherheits-Check',
+    'results' => 'Ergebnis des Sicherheits-Checks',
+    'okay' => 'Es scheint alles in Ordnung zu sein.',
     'please_fix' => 'Please fix the above issues before using your site!',
     'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
     'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
@@ -1480,7 +1483,7 @@ $LANG_SECTEST = array(
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
     'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst' => 'Du solltest das Installations-Verzeichnis %s entfernen, sobald Deine Website fehlerfrei läuft.',
     'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
     'inst_removed' => 'Good! You seem to have removed the install directory already.',
     'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
@@ -1575,6 +1578,8 @@ $LANG_ADMIN = array(
     'addchild' => 'Add child',
     'list' => 'auflisten',
     'list_all' => 'Alle auflisten',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A'
 );
 
@@ -1847,12 +1852,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'Liste zensierter Wörter',
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'URL-Rewrite einschalten',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Grundeinstellung Blockrechte',
     'default_permissions_story' => 'Grundeinstellung Artikelrechte',
     'default_permissions_topic' => 'Grundeinstellung Kategorierechte',
     'atom_max_stories' => 'Max. Artikel im Webservices-Feed',
     'disable_webservices' => 'Webservices ausschalten?',
     'restrict_webservices' => 'Webservices beschränken?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1944,7 +1953,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Tabelle' => 'table'),
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

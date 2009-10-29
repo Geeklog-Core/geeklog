@@ -451,7 +451,8 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             $pagetitle = '';
             break;
     }
-    $display .= COM_siteHeader ('menu', $pagetitle);
+    $noindex = '<meta name="robots" content="noindex"' . XHTML . '>' . LB;
+    $display .= COM_siteHeader ('menu', $pagetitle, $noindex);
     $display .= submissionform($type, $mode, $topic);
     $display .= COM_siteFooter();
 }

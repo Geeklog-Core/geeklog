@@ -31,22 +31,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Japanese language page for the Geeklog links Plug-in!
- *
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 2.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- * @author Trinity Bays, trinity93 AT gmail DOT com
- * @author Tony Bibbs, tony AT tonybibbs DOT com
- * @author Tom Willett, twillett AT users DOT sourceforge DOT net
- *
- */
-
 global $LANG32;
 
 ###############################################################################
@@ -189,7 +173,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'まだ確認されていません。',
     58 => 'リンクの確認',
     59 => '<p>表示されている全てのリンクを確認する場合は、下の「リンクの確認」をクリックしてください。この処理はリンクの数に応じてかなりの時間がかかるかもしれません。</p>',
-    60 => 'ユーザ %s は権限なしにカテゴリ %s を編集しようとしました。'
+    60 => 'ユーザ %s は権限なしにカテゴリ %s を編集しようとしました。',
+    61 => 'Links in Category'
 );
 
 
@@ -276,7 +261,7 @@ $LANG_fs['links'] = array(
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     9 => array('リンク先サイトを表示する' => 'item', 'リンク管理を表示する' => 'list', '公開リンクリストを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );

@@ -894,9 +894,11 @@ class Template
       $this->haltmsg($msg);
     }
 
+    /* we won't be coming back from haltmsg() in that case anyway
     if ($this->halt_on_error == 'yes') {
       die("<b>Halted.</b>");
     }
+    */
 
     return false;
   }
@@ -915,7 +917,11 @@ class Template
   * @see       halt
   */
   function haltmsg($msg) {
-    printf("<b>Template Error:</b> %s<br" . XHTML . ">\n", $msg);
+    if ($this->halt_on_error == 'yes') {
+      trigger_error(sprintf("Template Error: %s", $msg));
+    } else {
+      printf("<b>Template Error:</b> %s<br" . XHTML . ">\n", $msg);
+    }
   }
 
 }

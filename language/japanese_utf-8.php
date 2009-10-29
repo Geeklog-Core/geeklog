@@ -232,7 +232,7 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# usersettings.php
+# users.php
 
 $LANG04 = array(
     1 => 'アカウント情報',
@@ -395,7 +395,8 @@ $LANG04 = array(
 );
 
 ###############################################################################
-# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -832,7 +833,9 @@ $LANG24 = array(
     85 => 'すべて表示',
     86 => 'アドバンストエディタ',
     87 => '記事の情報',
-    88 => 'Wikiスタイル'
+    88 => 'Wikiスタイル',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -867,7 +870,8 @@ $LANG27 = array(
     26 => 'この話題をアーカイブ記事用の話題にします。アーカイブ記事用の話題に設定できるのはひとつだけです。',
     27 => '話題アイコンアップロード',
     28 => '最大',
-    29 => 'ファイルアップロード時にエラー'
+    29 => 'ファイルアップロード時にエラー',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1069,11 +1073,7 @@ $LANG32 = array(
     39 => 'プラグインアップロード',
     40 => 'プラグインの圧縮ファイル (.tar.gz, .tgz, .zip) を直接ここにアップロードできます:',
     41 => 'アップロード',
-
-    // to match the PHP error constants,
-    // http://www.php.net/manual/en/features.file-upload.errors.php
-    // TBD: move to a separate $LANG array
-     99 => '不明なエラーが発生しました。',
+    99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードファイルのサイズは、php.ini 内の upload_max_filesize の値を超えています。',
     102 => 'アップロードファイルのサイズは、HTMLフォームで指定された MAX_FILE_SIZE の値を超えています。',
@@ -1246,7 +1246,7 @@ $MESSAGE = array(
     99 => 'プラグインはすでに存在します。',
     100 => 'あなたがアップロードしたファイルは GZip または Zip 形式のアーカイブではありませんでした。',
     101 => '(あなたがアクセスできる)話題はありません。記事を投稿するためには、少なくとも１つの話題が必要です。',
-    400 => '検証に合格していない必須フィールドがあります。', // 400番代の範囲のエラーコードはCUSTOMメンバーシップに予約
+    400 => '検証に合格していない必須フィールドがあります。',
     401 => 'フルネームを入力してください。'
 );
 
@@ -1326,10 +1326,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップが完了しました。',
     'db_explanation' => 'Geeklogをバックアップするには、「新規作成」をクリックしてください。',
-    'not_found' => '不正確なパス、セキュリティ上の制限、またはmysqldumpが実行できません。<br'
-                    . XHTML . '> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br'
-                    . XHTML . '> PHPの<a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a>の設定を確認してください。<br'
-                    . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定されています。",
+    'not_found' => "不正確なパス、セキュリティ上の制限、またはmysqldumpが実行できません。<br" . XHTML . "> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br" . XHTML . "> PHPの<a href=\"http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a>の設定を確認してください。<br" . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定されています。",
     'zero_size' => 'バックアップに失敗しました。ファイルの大きさが0バイトです。',
     'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
     'no_access' => "エラー: {$_CONF['backup_path']} ディレクトリにアクセスできません。",
@@ -1378,150 +1375,153 @@ $LANG_LOGIN = array(
 ###############################################################################
 # trackback.php
 
-$LANG_TRB = array (
-    'trackback'          => 'トラックバック',
-    'from'               => 'from',
-    'tracked_on'         => 'トラックバック オン',
-    'read_more'          => '続きを読む',
-    'intro_text'         => '\'%s\'について他のサイトでは次のように言及されています:',
-    'no_comments'        => 'この記事にはトラックバック・コメントがありません。',
+$LANG_TRB = array(
+    'trackback' => 'トラックバック',
+    'from' => 'from',
+    'tracked_on' => 'トラックバック オン',
+    'read_more' => '続きを読む',
+    'intro_text' => '\'%s\'について他のサイトでは次のように言及されています:',
+    'no_comments' => 'この記事にはトラックバック・コメントがありません。',
     'this_trackback_url' => 'このエントリのトラックバックURL:',
-    'num_comments'       => '%d件のトラックバック',
-    'send_trackback'     => 'トラックバック・ピングを送る',
-    'preview'            => 'プレビュー',
-    'editor_title'       => 'トラックバックを送る',
-    'trackback_url'      => 'トラックバックURL',
-    'entry_url'          => 'エントリのURL',
-    'entry_title'        => 'エントリのタイトル',
-    'blog_name'          => 'サイト名',
-    'excerpt'            => '概要',
-    'truncate_warning'   => '注: 受信したサイト側で概要を切り詰めることがあります',
-    'button_send'        => '送信',
-    'button_preview'     => 'プレビュー',
-    'send_error'         => 'エラー',
+    'num_comments' => '%d件のトラックバック',
+    'send_trackback' => 'トラックバック・ピングを送る',
+    'preview' => 'プレビュー',
+    'editor_title' => 'トラックバックを送る',
+    'trackback_url' => 'トラックバックURL',
+    'entry_url' => 'エントリのURL',
+    'entry_title' => 'エントリのタイトル',
+    'blog_name' => 'サイト名',
+    'excerpt' => '概要',
+    'truncate_warning' => '注: 受信したサイト側で概要を切り詰めることがあります',
+    'button_send' => '送信',
+    'button_preview' => 'プレビュー',
+    'send_error' => 'エラー',
     'send_error_details' => 'トラックバックの送信中にエラーが発生しました:',
-    'url_missing'        => 'エントリのURL',
-    'url_required'       => 'エントリのURLは必ず入力してください。',
-    'target_missing'     => 'トラックバックURLがありません',
-    'target_required'    => 'トラックバックURLを入力してください',
-    'error_socket'       => 'ソケットをオープンできませんでした。',
-    'error_response'     => '不明な応答が返されました。',
-    'error_unspecified'  => '不明なエラーです。',
-    'select_url'         => 'トラックバックURLを選択してください',
-    'not_found'          => 'トラックバックURLが見つかりません',
-    'autodetect_failed'  => 'コメントを送ろうとした記事のトラックバックURLを見つけられませんでした。URLを下に入力してください。',
-    'trackback_explain'  => '以下のリンクからトラックバックを送りたいURLを選択してください。その記事の正しいトラックバックURLを決定します。URLがわかっているなら<a href="%s">自分で入力</a>することもできます。',
+    'url_missing' => 'エントリのURL',
+    'url_required' => 'エントリのURLは必ず入力してください。',
+    'target_missing' => 'トラックバックURLがありません',
+    'target_required' => 'トラックバックURLを入力してください',
+    'error_socket' => 'ソケットをオープンできませんでした。',
+    'error_response' => '不明な応答が返されました。',
+    'error_unspecified' => '不明なエラーです。',
+    'select_url' => 'トラックバックURLを選択してください',
+    'not_found' => 'トラックバックURLが見つかりません',
+    'autodetect_failed' => 'コメントを送ろうとした記事のトラックバックURLを見つけられませんでした。URLを下に入力してください。',
+    'trackback_explain' => '以下のリンクからトラックバックを送りたいURLを選択してください。その記事の正しいトラックバックURLを決定します。URLがわかっているなら<a href="%s">自分で入力</a>することもできます。',
     'no_links_trackback' => 'リンクが見つかりません。このエントリにトラックバックを送信できません。',
-    'pingback'           => 'ピングバック',
-    'pingback_results'   => 'ピングバックの結果',
-    'send_pings'         => 'ピングを送信',
-    'send_pings_for'     => '"%s"にトラックバック・ピングを送る',
-    'no_links_pingback'  => 'リンクが見つかりません。このエントリへのピングバックは送信されませんでした。',
-    'pingback_success'   => 'ピングバックを送信しました。',
-    'no_pingback_url'    => 'ピングバックURLが見つかりません。',
-    'resend'             => '再送',
-    'ping_all_explain'   => 'あなたがリンクしたことを相手のサイトに知らせたり(<a href="http://en.wikipedia.org/wiki/Pingback">ピングバック</a>)、ウェブログディレクトリサービスにピングを送ってサイトが更新されたことを知らせたり、誰かのサイトの記事について書いたときに<a href="http://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF">トラックバック</a>を送ったりすることができます。',
-    'pingback_button'    => 'ピングバック送信',
-    'pingback_short'     => '記事のすべてのリンク先にピングバックを送信します。',
-    'pingback_disabled'  => '(ピングバックは無効です)',
-    'ping_button'        => 'ピング送信',
-    'ping_short'         => '登録したウェブログサイトにピングを一斉送信します。',
-    'ping_disabled'      => '(ピングは無効です)',
-    'trackback_button'   => 'トラックバック送信',
-    'trackback_short'    => '記事のリンク先にトラックバックを送信します。',
+    'pingback' => 'ピングバック',
+    'pingback_results' => 'ピングバックの結果',
+    'send_pings' => 'ピングを送信',
+    'send_pings_for' => '"%s"にトラックバック・ピングを送る',
+    'no_links_pingback' => 'リンクが見つかりません。このエントリへのピングバックは送信されませんでした。',
+    'pingback_success' => 'ピングバックを送信しました。',
+    'no_pingback_url' => 'ピングバックURLが見つかりません。',
+    'resend' => '再送',
+    'ping_all_explain' => 'あなたがリンクしたことを相手のサイトに知らせたり(<a href="http://en.wikipedia.org/wiki/Pingback">ピングバック</a>)、ウェブログディレクトリサービスにピングを送ってサイトが更新されたことを知らせたり、誰かのサイトの記事について書いたときに<a href="http://ja.wikipedia.org/wiki/%E3%83%88%E3%83%A9%E3%83%83%E3%82%AF%E3%83%90%E3%83%83%E3%82%AF">トラックバック</a>を送ったりすることができます。',
+    'pingback_button' => 'ピングバック送信',
+    'pingback_short' => '記事のすべてのリンク先にピングバックを送信します。',
+    'pingback_disabled' => '(ピングバックは無効です)',
+    'ping_button' => 'ピング送信',
+    'ping_short' => '登録したウェブログサイトにピングを一斉送信します。',
+    'ping_disabled' => '(ピングは無効です)',
+    'trackback_button' => 'トラックバック送信',
+    'trackback_short' => '記事のリンク先にトラックバックを送信します。',
     'trackback_disabled' => '(トラックバックは無効です)',
-    'may_take_a_while'   => 'ピングバックやピングの送信には時間がかかることがあります。',
-    'ping_results'       => 'ピングの結果',
-    'unknown_method'     => '不明なピングメソッドです。',
-    'ping_success'       => 'ピングを送信しました。',
-    'error_site_name'    => 'サイト名を入力してください。',
-    'error_site_url'     => 'サイトのURLを入力してください。',
-    'error_ping_url'     => '正しいピングURLを入力してください。',
-    'no_services'        => 'ウェブログディレクトリサービスが設定されていません。',
-    'services_headline'  => 'トラックバック管理',
-    'service_explain'    => 'ピング送信先のウェブログディレクトリサービスの編集・削除は編集アイコンをクリック、ウェブログディレクトリサービスを作成する場合は「新規作成」をクリックしてください。',
-    'service'            => 'サービス',
-    'ping_method'        => 'ピングメソッド',
-    'service_website'    => 'ウェブサイト',
-    'service_ping_url'   => 'ピングのURL',
-    'ping_standard'      => '標準ピング',
-    'ping_extended'      => '拡張ピング',
-    'ping_unknown'       => '(不明なメソッド)',
-    'edit_service'       => 'ウェブログディレクトリサービスの編集',
-    'trackbacks'         => 'トラックバック',
-    'editor_intro'       => '<a href="%s">%s</a>へのトラックバックを準備してください。',
-    'editor_intro_none'  => 'トラックバックを準備してください。',
-    'trackback_note'     => '記事にトラックバックを送るには、記事一覧でその記事の"' . $LANG24[21] . '"をクリックしてください。 記事に関係のないトラックバックを送るには <a href="%s">ここをクリック</a>。',
-    'pingback_explain'   => 'ピングバックするURLを入力してください。ピングバックで他のサイトからリンク が張られたことを自動的に通知されます。',
-    'pingback_url'       => 'ピングバックURL',
-    'site_url'           => 'このサイトのURL',
-    'pingback_note'      => '記事へのピングバックを送るには、記事をクリックしてください。"' . $LANG24[21] . '" に関係している記事にピングバックを送るには、<a href="%s">ここをクリック</a>。',
-    'pbtarget_missing'   => 'ピングバックURLではありません。',
-    'pbtarget_required'  => 'ピングバックURLを入力してください',
-    'pb_error_details'   => '次のピングバックの送信中にエラー:',
-    'delete_trackback'   => 'トラックバック削除: '
+    'may_take_a_while' => 'ピングバックやピングの送信には時間がかかることがあります。',
+    'ping_results' => 'ピングの結果',
+    'unknown_method' => '不明なピングメソッドです。',
+    'ping_success' => 'ピングを送信しました。',
+    'error_site_name' => 'サイト名を入力してください。',
+    'error_site_url' => 'サイトのURLを入力してください。',
+    'error_ping_url' => '正しいピングURLを入力してください。',
+    'no_services' => 'ウェブログディレクトリサービスが設定されていません。',
+    'services_headline' => 'トラックバック管理',
+    'service_explain' => 'ピング送信先のウェブログディレクトリサービスの編集・削除は編集アイコンをクリック、ウェブログディレクトリサービスを作成する場合は「新規作成」をクリックしてください。',
+    'service' => 'サービス',
+    'ping_method' => 'ピングメソッド',
+    'service_website' => 'ウェブサイト',
+    'service_ping_url' => 'ピングのURL',
+    'ping_standard' => '標準ピング',
+    'ping_extended' => '拡張ピング',
+    'ping_unknown' => '(不明なメソッド)',
+    'edit_service' => 'ウェブログディレクトリサービスの編集',
+    'trackbacks' => 'トラックバック',
+    'editor_intro' => '<a href="%s">%s</a>へのトラックバックを準備してください。',
+    'editor_intro_none' => 'トラックバックを準備してください。',
+    'trackback_note' => '記事にトラックバックを送るには、記事一覧でその記事の"トラックバック・ピングを送る"をクリックしてください。 記事に関係のないトラックバックを送るには <a href="%s">ここをクリック</a>。',
+    'pingback_explain' => 'ピングバックするURLを入力してください。ピングバックで他のサイトからリンク が張られたことを自動的に通知されます。',
+    'pingback_url' => 'ピングバックURL',
+    'site_url' => 'このサイトのURL',
+    'pingback_note' => '記事へのピングバックを送るには、記事をクリックしてください。"トラックバック・ピングを送る" に関係している記事にピングバックを送るには、<a href="%s">ここをクリック</a>。',
+    'pbtarget_missing' => 'ピングバックURLではありません。',
+    'pbtarget_required' => 'ピングバックURLを入力してください',
+    'pb_error_details' => '次のピングバックの送信中にエラー:',
+    'delete_trackback' => 'トラックバック削除: '
 );
 
 ###############################################################################
 # directory.php
 
-$LANG_DIR = array (
-    'title'            => '記事一覧',
-    'title_year'       => '%d年の記事一覧',
+$LANG_DIR = array(
+    'title' => '記事一覧',
+    'title_year' => '%d年の記事一覧',
     'title_month_year' => '%d年%s月の記事一覧',
-    'nav_top'          => '記事一覧のトップに戻る',
-    'no_articles'      => '記事がありません'
+    'nav_top' => '記事一覧のトップに戻る',
+    'no_articles' => '記事がありません'
 );
 
 ###############################################################################
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest'       => 'Geeklog セキュリティチェック',
-    'results'       => 'セキュリティチェックの結果',
-    'okay'          => 'すべて適正です。',
-    'please_fix'    => 'サイトを使用する前に上記の問題を修正してください!',
-    'please_note'   => '100% セキュアなサイトはありません。このスクリプトは明白なセキュリティの問題しか検証できません。',
+    'sectest' => 'Geeklog セキュリティチェック',
+    'results' => 'セキュリティチェックの結果',
+    'okay' => 'すべて適正です。',
+    'please_fix' => 'サイトを使用する前に上記の問題を修正してください!',
+    'please_note' => '100% セキュアなサイトはありません。このスクリプトは明白なセキュリティの問題しか検証できません。',
     'stay_informed' => 'Geeklogの新しい公開情報やセキュリティ問題の情報を継続してお知らせできるようにするために、あなたが(トラフィックの低い) %s メーリングリストに参加し、かつ（または）アップデート可能かどうかを確認するために、時々管理メニューの%sを行うことをお勧めします。',
-    'public_html'   => '"public_html"はあなたのサイトURLの一部に含まれないようにしてください。再度 %s 内のpublic_htmlに関する部分を読んで、設定を変更してから次に進んでください。',
-    'installation'  => 'インストール手順',
-    'directory'     => 'ディレクトリ',
-    'failed_bak'    => 'dataディレクトリに一時ファイルを作成できませんでした。ディレクトリのパーミッションを確認してください!',
-    'fix_it'        => 'これはセキュリティリスクであり、修正すべきです!',
-    'reachable'     => 'あなたの %s はWebからアクセス可能です。',
+    'public_html' => '"public_html"はあなたのサイトURLの一部に含まれないようにしてください。再度 %s 内のpublic_htmlに関する部分を読んで、設定を変更してから次に進んでください。',
+    'installation' => 'インストール手順',
+    'directory' => 'ディレクトリ',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
+    'fix_it' => 'これはセキュリティリスクであり、修正すべきです!',
+    'reachable' => 'あなたの %s はWebからアクセス可能です。',
     'not_reachable' => 'Good! あなたの %s はWebからアクセス不可能です。',
-    'not_sure'      => 'HTTPの応答コード%sを(%sのテストの実行時に)受信しました。この意味するところは不明です ...',
-    'remove_inst'   => 'あなたのサイトがエラーが発生することなく動き始めたならば、必ずinstallディレクトリ%sを削除してください。',
-    'remove_inst2'  => 'そのままにしておくと、悪意のあるユーザがあなたのインストールを破壊したり、サイトを乗っ取ったり、重要な情報を読み出したりするおそれがあります。',
-    'inst_removed'  => 'Good! あなたは既にinstallディレクトリを削除しています。',
-    'fix_password'  => 'あなたはまだ %s の Rootユーザアカウントの<strong>デフォルトパスワード</strong>を"password"から変更していません。',
+    'not_sure' => 'HTTPの応答コード%sを(%sのテストの実行時に)受信しました。この意味するところは不明です ...',
+    'remove_inst' => 'あなたのサイトがエラーが発生することなく動き始めたならば、必ずinstallディレクトリ%sを削除してください。',
+    'remove_inst2' => 'そのままにしておくと、悪意のあるユーザがあなたのインストールを破壊したり、サイトを乗っ取ったり、重要な情報を読み出したりするおそれがあります。',
+    'inst_removed' => 'Good! あなたは既にinstallディレクトリを削除しています。',
+    'fix_password' => 'あなたはまだ %s の Rootユーザアカウントの<strong>デフォルトパスワード</strong>を"password"から変更していません。',
     'password_okay' => 'Good! あなたは既にデフォルトアカウントのパスワードを変更しています。'
 );
 
-################################################################################
+###############################################################################
 # "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array (
-    # This here determines the order of the sentence "No new stories in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Stories"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
-    'new_string'  => '新着%i %n件(%t%s)',
-    'new_last'    => '(%t%s)',
-    # other strings
-    'minutes'     => '分',
-    'hours'       => '時間',
-    'days'        => '日',
-    'weeks'       => '週',
-    'months'      => 'ヶ月',
-    'minute'      => '分',
-    'hour'        => '時間',
-    'day'         => '日',
-    'week'        => '週',
-    'month'       => 'ヶ月'
+$LANG_WHATSNEW = array(
+    'new_string' => '新着%i %n件(%t%s)',
+    'new_last' => '(%t%s)',
+    'minutes' => '分',
+    'hours' => '時間',
+    'days' => '日',
+    'weeks' => '週',
+    'months' => 'ヶ月',
+    'minute' => '分',
+    'hour' => '時間',
+    'day' => '日',
+    'week' => '週',
+    'month' => 'ヶ月'
 );
+
+###############################################################################
+# Month names
 
 $LANG_MONTH = array(
     1 => ' 1',
@@ -1538,6 +1538,9 @@ $LANG_MONTH = array(
     12 => '12'
 );
 
+###############################################################################
+# Weekdays
+
 $LANG_WEEK = array(
     1 => '日',
     2 => '月',
@@ -1548,39 +1551,41 @@ $LANG_WEEK = array(
     7 => '土'
 );
 
-################################################################################
+###############################################################################
 # Admin - Strings
-#
+# 
 # These are some standard strings used by core functions as well as plugins to
 # display administration lists and edit pages
 
-$LANG_ADMIN = array (
-    'search'        => '検索',
+$LANG_ADMIN = array(
+    'search' => '検索',
     'limit_results' => '件数',
-    'submit'        => '実行',
-    'edit'          => '編集',
-    'edit_adv'      => 'アドバンストエディタ',
-    'admin_home'    => '管理画面',
-    'create_new'    => '新規作成',
-    'create_new_adv'=> '新規作成(アドバンスト)',
-    'enabled'       => '有効',
-    'title'         => 'タイトル',
-    'type'          => 'タイプ',
-    'topic'         => '話題',
-    'help_url'      => 'ヘルプURL',
-    'save'          => '保存',
-    'cancel'        => 'キャンセル',
-    'delete'        => '削除',
-    'delete_sel'    => '削除選択',
-    'copy'          => 'コピー',
-    'no_results'    => '- 見つかりませんでした -',
-    'data_error'    => '送信データに問題があります。データをチェックしてください',
-    'preview'       => 'プレビュー',
+    'submit' => '実行',
+    'edit' => '編集',
+    'edit_adv' => 'アドバンストエディタ',
+    'admin_home' => '管理画面',
+    'create_new' => '新規作成',
+    'create_new_adv' => '新規作成(アドバンスト)',
+    'enabled' => '有効',
+    'title' => 'タイトル',
+    'type' => 'タイプ',
+    'topic' => '話題',
+    'help_url' => 'ヘルプURL',
+    'save' => '保存',
+    'cancel' => 'キャンセル',
+    'delete' => '削除',
+    'delete_sel' => '削除選択',
+    'copy' => 'コピー',
+    'no_results' => '- 見つかりませんでした -',
+    'data_error' => '送信データに問題があります。データをチェックしてください',
+    'preview' => 'プレビュー',
     'records_found' => '件数',
-    'addchild'      => '子を追加',
-    'list'          => 'リスト',
-    'list_all'      => 'すべてのリスト',
-    'na'            => 'N/A'
+    'addchild' => '子を追加',
+    'list' => 'リスト',
+    'list_all' => 'すべてのリスト',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'N/A'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1588,31 +1593,31 @@ $LANG_ADMIN = array (
 # database.
 
 $LANG_commentcodes = array(
-    0   => 'コメント有効',
-    -1  => 'コメント停止',
-    1   => 'コメント中止'
+    0 => 'コメント有効',
+    -1 => 'コメント停止',
+    1 => 'コメント中止'
 );
 
 $LANG_commentmodes = array(
-    'flat'      => '一覧',
-    'nested'    => '入れ子',
-    'threaded'  => 'ツリー',
+    'flat' => '一覧',
+    'nested' => '入れ子',
+    'threaded' => 'ツリー',
     'nocomment' => '表示しない'
 );
 
 $LANG_cookiecodes = array(
-    0       => '受け付けない',
-    3600    => '1時間',
-    7200    => '2時間',
-    10800   => '3時間',
-    28800   => '8時間',
-    86400   => '1日',
-    604800  => '1週間',
+    0 => '受け付けない',
+    3600 => '1時間',
+    7200 => '2時間',
+    10800 => '3時間',
+    28800 => '8時間',
+    86400 => '1日',
+    604800 => '1週間',
     2678400 => '1ヶ月'
 );
 
 $LANG_dateformats = array(
-    0   => 'デフォルト'
+    0 => 'デフォルト'
 );
 
 $LANG_featurecodes = array(
@@ -1627,34 +1632,34 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'テキスト',
-    'html'      => 'HTML'
+    'html' => 'HTML'
 );
 
 $LANG_sortcodes = array(
-    'ASC'  => '古い順に',
+    'ASC' => '古い順に',
     'DESC' => '新しい順に'
 );
 
 $LANG_trackbackcodes = array(
-    0   => 'トラックバック有効',
-    -1  => 'トラックバック停止'
+    0 => 'トラックバック有効',
+    -1 => 'トラックバック停止'
 );
 
-################################################################################
+###############################################################################
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    'home'          => 'ホーム',
-    'admin_home'    => 'サイト管理',
-    'sections'      => 'コンフィギュレーション',
-    'restore'       => '設定',
-    'add_element'   => '要素を追加する',
-    'save_changes'  => '変更を保存する',
-    'reset_form'    => 'フォームを初期化する',
-    'changes_made'  => '変更が完了しました',
-    'title'         => 'コンフィギュレーション管理',
-    'disable'       => 'クリックしてこのオプションを無効にする',
-    'enable'        => '有効にする'
+    'home' => 'ホーム',
+    'admin_home' => 'サイト管理',
+    'sections' => 'コンフィギュレーション',
+    'restore' => '設定',
+    'add_element' => '要素を追加する',
+    'save_changes' => '変更を保存する',
+    'reset_form' => 'フォームを初期化する',
+    'changes_made' => '変更が完了しました',
+    'title' => 'コンフィギュレーション管理',
+    'disable' => 'クリックしてこのオプションを無効にする',
+    'enable' => '有効にする'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1852,12 +1857,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'バッドワード',
     'ip_lookup' => 'IP検索',
     'url_rewrite' => 'URLリライト',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'パーミッション',
     'default_permissions_story' => 'パーミッション',
     'default_permissions_topic' => 'パーミッション',
     'atom_max_stories' => 'フィードの最大記事数',
     'disable_webservices' => '無効にする',
     'restrict_webservices' => '制限する',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'クローズする日数(デフォルト)',
     'comment_close_rec_stories' => 'コメント可能な最新記事数',
     'allow_reply_notifications' => 'コメント通知を許可する',
@@ -1931,21 +1940,14 @@ $LANG_configselects['Core'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('拒否する' => 0, '最新ポストのみ保存する' => 1, 'マルチポストを許可する' => 2),
     3 => array('トラックバック有効' => 0, 'トラックバック停止' => -1),
-    4 => array('ノーチェック' => 0,
-               'URLリンクをチェックする' => 1,
-               'フルURLをチェックする' => 2,
-               'URLリンクとフルURLをチェックする' => 3,
-               'IPとサイトのIPをチェックする' => 4,
-               'IPとURLリンクをチェックする' => 5,
-               'IPとフルURLをチェックする' => 6,
-               'IPとフルURLとURLリンクをチェックする' => 7),
+    4 => array('ノーチェック' => 0, 'URLリンクをチェックする' => 1, 'フルURLをチェックする' => 2, 'URLリンクとフルURLをチェックする' => 3, 'IPとサイトのIPをチェックする' => 4, 'IPとURLリンクをチェックする' => 5, 'IPとフルURLをチェックする' => 6, 'IPとフルURLとURLリンクをチェックする' => 7),
     5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '全ページ' => 'all'),
     8 => array('右' => 'right', '左' => 'left'),
     9 => array('作成した項目を表示する' => 'item', '項目一覧を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     10 => array('なし' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'GDライブラリ' => 'gdlib'),
-    11 => array_flip($LANG_commentmodes),
+    11 => array('一覧' => 'flat', '入れ子' => 'nested', 'ツリー' => 'threaded', '表示しない' => 'nocomment'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('スキップする' => 0, '許可する(速度制限あり)' => 1, '許可する(速度制限なし)' => 2),
     14 => array('日曜日' => 'Sun', '月曜日' => 'Mon'),
@@ -1956,7 +1958,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('正確なフレーズ' => 'phrase', 'すべてのキーワードを含む' => 'all', 'いずれかのキーワードを含む' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

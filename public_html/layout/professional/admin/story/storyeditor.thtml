@@ -198,7 +198,7 @@ function enablearchive(obj) {
                                         <td><textarea name="bodytext" cols="45" rows="20" style="width:100%">{story_bodytext}</textarea></td>
                                     </tr>
                                     <tr>
-                                        <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
+                                        <td class="alignright" style="vertical-align:top;">{lang_postmode}:</td>
                                         <td style="vertical-align:top;">
                                             <select name="postmode">
                                                 {post_options}
@@ -208,7 +208,7 @@ function enablearchive(obj) {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="alignright" style="vertical-align:top;"><b>{lang_images}:</b></td>
+                                        <td class="alignright" style="vertical-align:top;">{lang_images}:</td>
                                         <td style="vertical-align:top;">
                                             {saved_images}
                                             {image_form_elements}

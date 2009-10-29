@@ -827,7 +827,9 @@ $LANG24 = array(
     85 => '完全顯示',
     86 => '高等編輯器',
     87 => '文章統計',
-    88 => 'Wiki 式的格式'
+    88 => 'Wiki 式的格式',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords'
 );
 
 ###############################################################################
@@ -862,7 +864,8 @@ $LANG27 = array(
     26 => '用此題目作保存檔的默認題目。只准許一個題目。',
     27 => '或上載主題圖像',
     28 => '最大',
-    29 => '文件上載出了問題'
+    29 => '文件上載出了問題',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1474,7 +1477,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
     'installation' => 'installation instructions',
     'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'This is a security risk and should be fixed!',
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
@@ -1574,6 +1577,8 @@ $LANG_ADMIN = array(
     'addchild' => '加入子單',
     'list' => '列',
     'list_all' => '列所有',
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A'
 );
 
@@ -1846,12 +1851,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => '檢查列',
     'ip_lookup' => 'IP 搜尋',
     'url_rewrite' => '啟動 URL Rewrite',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => '防礙默認許可設定',
     'default_permissions_story' => '文章默認許可設定',
     'default_permissions_topic' => '主題默認許可設定',
     'atom_max_stories' => 'Webservices Feed裏的文章數定',
     'disable_webservices' => '關閉 Webservices?',
     'restrict_webservices' => '限制 Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1943,7 +1952,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

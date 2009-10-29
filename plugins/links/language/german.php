@@ -167,7 +167,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Noch nicht überprüft',
     58 => 'Jetzt überprüfen',
     59 => '<p>Um alle aufgeführten Links zu überprüfen, einfach "Jetzt überprüfen" unten anklicken. Es kann etwas dauern, abhängig davon, wie viele Links aufgeführt sind.</p>',
-    60 => 'User %s hat unrechtmäßig versucht, die Kategorie %s zu editieren.'
+    60 => 'User %s hat unrechtmäßig versucht, die Kategorie %s zu editieren.',
+    61 => 'Links in Category'
 );
 
 

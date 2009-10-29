@@ -164,8 +164,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $topic = COM_stripslashes($topic);
-    $meta_description = COM_stripslashes($meta_description);
-    $meta_keywords = COM_stripslashes($meta_keywords);
+    $meta_description = strip_tags(COM_stripslashes($meta_description));
+    $meta_keywords = strip_tags(COM_stripslashes($meta_keywords));
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
     if (empty($pid)) {
@@ -249,9 +249,9 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
-    $topic = addslashes ($topic);
-    $meta_description = addslashes ($meta_description);
-    $meta_keywords = addslashes ($meta_keywords);
+    $topic = addslashes($topic);
+    $meta_description = addslashes($meta_description);
+    $meta_keywords = addslashes($meta_keywords);
 
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
     $v = 0; // re-count votes sine they might have been changed
@@ -305,9 +305,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'],"pid, topic, meta_description, meta_keywords, voters, questions, date, display, "
-           . "is_open, hideresults, statuscode, commentcode, owner_id, group_id, "
-           . "perm_owner, perm_group, perm_members, perm_anon",$sql);
+    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, date, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon", $sql);
 
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
@@ -618,8 +616,9 @@ if ($mode == 'edit') {
             $hideresults = COM_applyFilter ($_POST['hideresults']);
         }
         $display .= savepoll ($pid, $old_pid, $_POST['question'], $mainpage,
-                        $_POST['topic'], $_POST['meta_description'], $_POST['meta_keywords'], 
-                        $statuscode, $open, $hideresults,
+                        $_POST['topic'], $_POST['meta_description'],
+                        $_POST['meta_keywords'], $statuscode, $open,
+                        $hideresults,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         COM_applyFilter ($_POST['owner_id'], true),

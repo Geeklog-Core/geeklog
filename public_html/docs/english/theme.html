@@ -201,6 +201,16 @@ featured and archived stories.</li>
 <li>Added an icon, <tt>images/update.png</tt>, to be displayed in the admin's
     list of plugins when a plugin needs to be updated. The icon should have the
     same size as the "edit" icon (16x16 pixel in the Professional theme).</li>
+<li>Added a "send copy to myself" option to
+    <tt>profiles/contactauthorform.thtml</tt></li>
+<li>Cosmetics: Made the look and layout of the "Send mail to user"
+    (<tt>profiles/contactuserform.thtml</tt>), "Mail Story to a Friend"
+    (<tt>profiles/contactauthorform.thtml</tt>), and "Mail Users"
+    (<tt>admin/mail/mailform.thtml</tt>) dialogs more consistent (alignment,
+    size of input fields).</li>
+<li>The Topic Editor now contains a line displaying the number of stories in
+    the current topic. New variables in <tt>admin/topic/topiceditor.thtml</tt>:
+    <code>{lang_num_stories}</code>, <code>{num_stories}</tt></li>
 <li>Cosmetics: Fixed the position of the story preview when using the
     advanced editor (was slightly shifted to the right, <a
     href="http://project.geeklog.net/tracking/view.php?id=963">bug #0000963</a>). Changes to the <code>&lt;div id="preview"&gt;</code> in
@@ -238,12 +248,16 @@ directory.</p>
 <li>Links: Removed a <code>width="150"</code> from the Category editor template
     (<tt>admin/categoryeditor.thtml</tt>) that pushed the first column too far
     to the right.</li>
+<li>Static Pages: Added new input fields for a meta description and meta
+    keywords to the Static Pages editor.</li>
 <li>Static Pages: In the Static Pages editor, moved the Hits display below
     the Last Updated entry (<tt>admin/editor.thtml</tt>,
     <tt>admin/editor_advanced.thtml</tt>).</li>
 <li>Static Pages: Added textarea fileds for meta description and meta keywords
     in the Static Pages editor (<tt>admin/editor.thtml</tt>,
     <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Polls: Added new input fields for a meta description and meta keywords to
+    the Polls editor.</li>
 <li>Polls: Added new CSS classes <tt>poll-autotag-message</tt>,
     <tt>poll-autotag</tt>, <tt>poll-autotag-left</tt>, used when embedding polls
     via the new autotags.</li>
