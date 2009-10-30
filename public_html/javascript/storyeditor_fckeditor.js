@@ -43,8 +43,8 @@
     }
 
     function change_editmode(obj) {
-        showhideEditorDiv("editor",
-                document.getElementById('navlist').childElementCount - 6);
+        var navlistcount = document.getElementById('navlist').getElementsByTagName('li').length;
+        showhideEditorDiv("editor", navlistcount - 6);
         if (obj.value == 'html') {
             document.getElementById('html_editor').style.display='none';
             document.getElementById('text_editor').style.display='';

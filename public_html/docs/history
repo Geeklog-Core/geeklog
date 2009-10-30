@@ -14,6 +14,9 @@ Oct ??, 2009 (1.6.1)
 - When a Story Admin did not have permission to edit a story, Geeklog threw a
   "call to a member function on a non-object" error when trying to display a
   proper "access denied" message (reported by Chase and Cesar) [Dirk]
+- Allow external apps to contribute to search results (feature request #0000985)
+  [Sami]
+- Remember current sort/limit in search results (bug #0001007) [Sami]
 - Don't display the comment form for a story when comments aren't enabled for it
   (bug #0000994) [Dirk]
 - Fixed a long-standing quirk of the submission handling where the "Submissions"
@@ -29,7 +32,7 @@ Oct ??, 2009 (1.6.1)
 - Setting $_CONF['article_comment_close_days'] to a high value (to work around
   bugs with the "Disable Comments" option in 1.6.0) may result in values outside
   of the range of the year dropdown for that option, in which case it reverted
-  to the current year a may have caused comments to be closed immediately [Dirk]
+  to the previous(!) year and caused comments to be closed immediately [Dirk]
 - When viewing your own profile page, you now get an "edit" link that take you
   to "My Account" [Dirk]
 - Additional checks in "Mail Story to a Friend", "Send mail to user", and
