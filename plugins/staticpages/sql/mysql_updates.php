@@ -76,6 +76,9 @@ function update_ConfValues_1_6_0()
         }
     }
 
+    // move Default Permissions fieldset
+    DB_query("UPDATE {$_TABLES['conf_values']} SET fieldset = 3 WHERE (group_name = 'staticpages') AND (fieldset = 1)");
+
     // What's New Block
     $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'staticpages');
     $c->add('newstaticpagesinterval',$_SP_DEFAULT['new_staticpages_interval'],'text', 0, 1, NULL, 10, TRUE, 'staticpages');
