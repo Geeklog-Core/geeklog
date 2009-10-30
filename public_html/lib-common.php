@@ -2122,7 +2122,7 @@ function COM_showTopics( $topic='' )
         $op = 'AND';
     }
 
-    $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}" . $langsql;
+    $sql = "SELECT tid,topic,imageurl,meta_description FROM {$_TABLES['topics']}" . $langsql;
     if( !COM_isAnonUser() )
     {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
@@ -2271,6 +2271,17 @@ function COM_showTopics( $topic='' )
                         . '" title="' . $topicname . '"' . XHTML . '>';
         }
         $sections->set_var( 'topic_image', $topicimage );
+
+        $desc = trim($A['meta_description']);
+        $sections->set_var('topic_description', $desc);
+        $desc_escaped = htmlspecialchars($desc);
+        $sections->set_var('topic_description_escaped', $desc_escaped);
+        if (! empty($desc)) {
+            $sections->set_var('topic_title_attribute',
+                               'title="' . $desc_escaped . '"');
+        } else {
+            $sections->set_var('topic_title_attribute', '');
+        }
 
         if(( $A['tid'] == $topic ) && ( $page == 1 ))
         {
