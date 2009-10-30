@@ -600,7 +600,11 @@ function plugin_searchtypes_staticpages()
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $_DB_dbms, $LANG_STATIC, $LANG09;
+    global $_TABLES, $_DB_dbms, $LANG_STATIC, $LANG09, $_SP_CONF;
+
+    if ($_SP_CONF['includesearch'] != 1) {
+        return;
+    }
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
@@ -1298,7 +1302,7 @@ function plugin_getwhatsnew_staticpages()
     
     $sql = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE NOT ISNULL(sp_content) AND (sp_date >= (date_sub(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        WHERE NOT ISNULL(sp_content) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
         {$extra_sql} 
         " . COM_getPermSQL( 'AND' ) . " 
         ORDER BY sp_date DESC LIMIT 15";
