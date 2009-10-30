@@ -133,6 +133,10 @@ Polls Plugin
 
 Static Pages Plugin 1.6.1
 -------------------
+- Certain types or all Static Pages can now be excluded from the search results
+  (feature request #0000979, provided by Tom Homer)
+- New and updated Static Pages are now listed in the What's New block
+  (feature request #0000908, provided by Tom Homer)
 - Fresh installs of the plugin in Geeklog 1.6.0 accidentally used a wrong name
   for the plugin's admin group. Silently fix that during the upgrade [Dirk]
 - Made the list of pages sortable by author (feature request #0000978) [Dirk]
