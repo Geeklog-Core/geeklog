@@ -52,6 +52,8 @@ function update_ConfValues_1_6_0()
 
     $c = config::get_instance();
 
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
     // meta tag config options.
     $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select', 0, 0, 0, 120, true, 'staticpages');
 
