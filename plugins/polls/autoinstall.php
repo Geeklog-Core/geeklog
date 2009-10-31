@@ -146,6 +146,10 @@ function plugin_compatible_with_this_version_polls($pi_name)
         return false;
     }
 
+    if (! function_exists('SEC_getTokenExpiryNotice')) {
+        return false;
+    }
+
     return true;
 }
 

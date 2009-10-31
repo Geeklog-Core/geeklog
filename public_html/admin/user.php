@@ -46,7 +46,6 @@ require_once '../lib-common.php';
 /**
 * Security check to ensure user even belongs on this page
 */
-
 require_once 'auth.inc.php';
 
 /**
@@ -131,8 +130,11 @@ function edituser($uid = '', $msg = '')
         $A['status'] = USER_ACCOUNT_ACTIVE;
     }
 
-    $retval .= COM_startBlock ($LANG28[1], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $token = SEC_createToken();
+
+    $retval .= COM_startBlock($LANG28[1], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'edituser.thtml',
@@ -339,7 +341,7 @@ function edituser($uid = '', $msg = '')
                 '<input type="hidden" name="groups" value="-1"' . XHTML . '>');
     }
     $user_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $user_templates->set_var('gltoken', SEC_createToken());
+    $user_templates->set_var('gltoken', $token);
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));

@@ -1,8 +1,12 @@
 Geeklog History/Changes:
 
-Oct ??, 2009 (1.6.1)
-------------
+Nov 1, 2009 (1.6.1)
+-----------
 
+- Added a notice about the expiry time for the security token (and the potential
+  loss of changes) to most editors. This is meant as an intermediate step
+  until we get around to updating the editors and provide a more user friendly
+  solution. [Dirk]
 - Fixed display of text excerpt for search results on PHP 4 (bug #0001004)
   [Dirk]
 - The comment speed limit was being ignored (bug #0001003) [Dirk]

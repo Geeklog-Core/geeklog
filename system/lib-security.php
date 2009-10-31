@@ -1205,6 +1205,36 @@ function SEC_getTokenExpiryTime($token)
 }
 
 /**
+* Create a message informing the user when the security token is about to expire
+*
+* @param    string  $token      the token
+* @param    string  $extra_msg  (optional) additional text to include in notice
+* @return   string              formatted HTML of message
+*
+*/
+function SEC_getTokenExpiryNotice($token, $extra_msg = '')
+{
+    global $_CONF, $LANG_ADMIN;
+
+    $retval = '';
+
+    $expirytime = SEC_getTokenExpiryTime($token);
+    if ($expirytime > 0) {
+        $exptime = '<span id="token-expirytime">'
+                 . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+        $retval .= '<p id="token-expirynotice">'
+                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
+        if (! empty($extra_msg)) {
+            $retval .= ' ' . $extra_msg;
+        }
+
+        $retval .= '</p>' . LB;
+    }
+
+    return $retval;
+}
+
+/**
 * Set a cookie using the HttpOnly flag
 *
 * Use this function to set "important" cookies (session, password, ...).

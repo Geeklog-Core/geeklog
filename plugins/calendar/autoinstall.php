@@ -45,7 +45,7 @@ function plugin_autoinstall_calendar($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.1.1',
-        'pi_gl_version'   => '1.6.0',
+        'pi_gl_version'   => '1.6.1',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
@@ -130,6 +130,10 @@ function plugin_compatible_with_this_version_calendar($pi_name)
     }
 
     if (!function_exists('COM_showMessageText')) {
+        return false;
+    }
+
+    if (!function_exists('SEC_getTokenExpiryNotice')) {
         return false;
     }
 

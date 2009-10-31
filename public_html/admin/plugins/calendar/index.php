@@ -32,7 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Geeklog common function library
+*/
 require_once '../../../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once '../../auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -125,8 +132,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock($LANG_CAL_ADMIN[1], '',
-                              COM_getBlockTemplate ('_admin_block', 'header'));
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     if (!empty($A['eid'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -330,7 +340,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $event_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $event_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $event_templates->set_var('gltoken', SEC_createToken());
+    $event_templates->set_var('gltoken', $token);
     $event_templates->parse('output', 'editor');
     $retval .= $event_templates->finish($event_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));

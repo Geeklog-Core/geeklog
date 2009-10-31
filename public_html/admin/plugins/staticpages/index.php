@@ -155,9 +155,13 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $sp_template->set_var('site_url', $_CONF['site_url']);
     $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_template->set_var('start_block_editor',
-            COM_startBlock($LANG_STATIC['staticpageeditor']), '',
-                    COM_getBlockTemplate('_admin_block', 'header'));
+
+    $token = SEC_createToken();
+    $start_block = COM_startBlock($LANG_STATIC['staticpageeditor'], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $start_block .= SEC_getTokenExpiryNotice($token);
+
+    $sp_template->set_var('start_block_editor', $start_block);
     $sp_template->set_var('lang_save', $LANG_ADMIN['save']);
     $sp_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $sp_template->set_var('lang_preview', $LANG_ADMIN['preview']);
@@ -387,7 +391,7 @@ function staticpageeditor_form($A, $error = false)
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $sp_template->set_var('xhtml', XHTML);
     $sp_template->set_var('gltoken_name', CSRF_TOKEN);
-    $sp_template->set_var('gltoken', SEC_createToken());
+    $sp_template->set_var('gltoken', $token);
     $sp_template->parse('output', 'form');
         $retval .= $sp_template->finish($sp_template->get_var('output'));
 

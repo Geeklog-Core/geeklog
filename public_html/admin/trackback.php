@@ -30,6 +30,13 @@
 // +---------------------------------------------------------------------------+
 
 /**
+* Admin functions related to Trackbacks, Pingbacks, and Pings: Send Trackbacks,
+* Pingbacks, and configure the list of weblog directory services to "ping"
+* after an update.
+*
+*/
+
+/**
 * Geeklog common function library
 */
 require_once '../lib-common.php';
@@ -574,8 +581,11 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $retval .= showTrackbackMessage ('Error', $msg);
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock($LANG_TRB['edit_service'], getHelpUrl() . '#ping',
                               COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'serviceeditor.thtml'));
@@ -642,7 +652,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $template->set_var('extended_is_checked', 'checked="checked"');
     }
     $template->set_var('gltoken_name', CSRF_TOKEN);
-    $template->set_var('gltoken', SEC_createToken());
+    $template->set_var('gltoken', $token);
 
     $template->parse ('output', 'editor');
     $retval .= $template->finish ($template->get_var ('output'));

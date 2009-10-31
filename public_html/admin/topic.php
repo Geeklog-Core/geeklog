@@ -32,8 +32,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Topic administration page: Create, edit, delete topics.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
+
+/**
+* Geeklog story function library
+*/
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 $display = '';
@@ -89,8 +105,11 @@ function edittopic ($tid = '')
         }
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock ($LANG27[1], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
     if (!is_array ($A) || empty ($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
@@ -217,7 +236,7 @@ function edittopic ($tid = '')
     $topic_templates->set_var('lang_num_stories', $LANG27[30]);
     $topic_templates->set_var('num_stories', $num_stories);
     $topic_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $topic_templates->set_var('gltoken', SEC_createToken());
+    $topic_templates->set_var('gltoken', $token);
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
