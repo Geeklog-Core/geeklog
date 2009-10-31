@@ -1600,7 +1600,7 @@ $LANG_ADMIN = array (
     'list_all'      => 'List all',
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',        
-    'na'            => 'N/A'
+    'na'            => 'N/A',
     'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
 );
 
