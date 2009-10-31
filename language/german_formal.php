@@ -832,7 +832,7 @@ $LANG24 = array(
     88 => 'Format im Wiki-Stil',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'You can always hit "Preview" to extend the expiry time.'
+    91 => 'Sie können aber jederzeit auf "Vorschau" klicken, um diese Zeit zu verlängern.'
 );
 
 ###############################################################################
@@ -1345,13 +1345,13 @@ $LANG_DB_BACKUP = array(
     'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
     'innodb_success' => 'Successfully converted tables to InnoDB.',
     'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
-    'optimize_menu' => 'Optimize Tables',
-    'optimize_title' => 'Optimize Tables',
-    'optimize_button' => 'Optimize',
+    'optimize_menu' => 'Tabellen optimieren',
+    'optimize_title' => 'Tabellen Optimieren',
+    'optimize_button' => 'Optimieren',
     'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
-    'last_optimization' => 'Last optimization',
-    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
-    'optimize_success' => 'Successfully optimized database tables.'
+    'last_optimization' => 'Letzte Optimierung',
+    'optimization_patience' => 'Hinweis: Die Optimierung kann etwas Zeit in Anspruch nehmen. Bitte haben Sie etwas Geduld.',
+    'optimize_success' => 'Tabellen wurden erfolgreich optimiert.'
 );
 
 ###############################################################################
@@ -1603,7 +1603,7 @@ $LANG_ADMIN = array(
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',
     'na' => 'N/A',
-    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
+    'token_expiry' => 'Sie sollten Ihre Änderungen bis spätestens %s durchführen. Danach wird das Security-Token, das in diese Seite eingebettet ist, ungültig und Sie würden Ihre Änderungen verlieren.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
