@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Nov 1, 2009 (1.6.1)
 -----------
 
+- Searching by author threw an error on PHP 4 (bug #0001008) [Dirk]
 - Moved the functionality of the toinnodb.php script into the Database Backups
   admin panel [Dirk]
 - Added an option to optimze tables to the Database Backups admin panel [Dirk]

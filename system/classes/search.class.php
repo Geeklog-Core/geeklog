@@ -940,6 +940,8 @@ class Search {
     {
         if (function_exists('stripos')) {
             return stripos($haystack, $needle);
+        } elseif (empty($needle)) {
+            return false;
         } else {
             return strpos(strtolower($haystack), strtolower($needle));
         }
