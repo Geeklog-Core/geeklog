@@ -31,6 +31,9 @@ list of files that have been changed since the last release.</p>
 <li>Minor security enhancement: "Important" cookies (like the session cookies)
     are now created with the HttpOnly flag set. This will help avoid some XSS
     attacks, provided your browser supports this flag.</li>
+<li>The Migrate option in the install script can now also be applied to an
+    existing database (i.e. you don't need to import a database dump to update
+    your URLs and paths).</li>
 </ul>
 
 <h3>Bugfixes</h3>
@@ -40,6 +43,7 @@ list of files that have been changed since the last release.</p>
     re-open comments on stories that were closed due to this bug, you can use
     this SQL request:<br>
     <code style="margin-left:2em">UPDATE gl_stories SET commentcode = 0, comment_expire = 0 WHERE commentcode = 1;</code></li>
+<li>The comment speed limit was being ignored.</li>
 <li>The admin group for the Static Pages plugin was created with a wrong name
     in Geeklog 1.6.0 (fresh installs only).</li>
 </ul>

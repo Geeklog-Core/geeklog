@@ -201,16 +201,36 @@ featured and archived stories.</li>
 <li>Added an icon, <tt>images/update.png</tt>, to be displayed in the admin's
     list of plugins when a plugin needs to be updated. The icon should have the
     same size as the "edit" icon (16x16 pixel in the Professional theme).</li>
+<li>The Topic Editor now contains a line displaying the number of stories in
+    the current topic. New variables in <tt>admin/topic/topiceditor.thtml</tt>:
+    <code>{lang_num_stories}</code>, <code>{num_stories}</code></li>
+<li>Added a link back to the story to the "Mail Story to a Friend" form,
+    <tt>profiles/contactauthorform.thtml</tt>. Available variables:
+    <tt>{lang_title}</tt>, <tt>{story_title}</tt>, <tt>{story_url}</tt>,
+    <tt>{story_link}</tt>.</li>
 <li>Added a "send copy to myself" option to
     <tt>profiles/contactauthorform.thtml</tt></li>
+<li>Added textarea fields for meta description and meta keywords to the Story
+    Editor (<tt>admin/story/storyeditor.thtml</tt>,
+    <tt>admin/story/storyeditor_advanced.thtml</tt>).</li>
+<li>Added textarea fields for meta description and meta keywords to the Topic
+    Editor (<tt>admin/topic/topiceditor.thtml</tt>).</li>
+<li>Added a <code>{remoteservice}</code> variable in
+    <tt>admin/user/edituser.thtml</tt> to optionally display the name of the
+    service a Remote User was using to log in.</li>
+</ul>
+
+<h3>Cosmetic changes</h3>
+
+<p>These changes are mostly cosmetic and won't affect the functionality of a
+theme if not applied:</p>
+
+<ul>
 <li>Cosmetics: Made the look and layout of the "Send mail to user"
     (<tt>profiles/contactuserform.thtml</tt>), "Mail Story to a Friend"
     (<tt>profiles/contactauthorform.thtml</tt>), and "Mail Users"
     (<tt>admin/mail/mailform.thtml</tt>) dialogs more consistent (alignment,
     size of input fields).</li>
-<li>The Topic Editor now contains a line displaying the number of stories in
-    the current topic. New variables in <tt>admin/topic/topiceditor.thtml</tt>:
-    <code>{lang_num_stories}</code>, <code>{num_stories}</tt></li>
 <li>Cosmetics: Fixed the position of the story preview when using the
     advanced editor (was slightly shifted to the right, <a
     href="http://project.geeklog.net/tracking/view.php?id=963">bug #0000963</a>). Changes to the <code>&lt;div id="preview"&gt;</code> in
@@ -225,21 +245,10 @@ featured and archived stories.</li>
     <tt>admin/common/edit_permissions.thtml</tt>. Introduced new CSS class
     <tt>admin-list-smalltable</tt>, which is almost identical to
     <tt>admin-list-table</tt> but without the <code>width:100%;</code></li>
-<li>Added a link back to the story to the "Mail Story to a Friend" form,
-    <tt>profiles/contactauthorform.thtml</tt>. Available variables:
-    <tt>{lang_title}</tt>, <tt>{story_title}</tt>, <tt>{story_url}</tt>,
-    <tt>{story_link}</tt>.</tt>
-<li>Added textarea fields for meta description and meta keywords to the Story
-    Editor (<tt>admin/story/storyeditor.thtml</tt>,
-    <tt>admin/story/storyeditor_advanced.thtml</tt>).</li>
-<li>Added textarea fields for meta description and meta keywords to the Topic
-    Editor (<tt>admin/topic/topiceditor.thtml</tt>).</li>
-<li>Added a <code>{remoteservice}</code> variable in
-    <tt>admin/user/edituser.thtml</tt> to optionally display the name of the
-    service a Remote User was using to log in.</li>
 </ul>
 
 <h3>Changes to plugin templates</h3>
+
 <p>Note that plugin template files are kept in a directory
 <tt>plugins/<i>pluginnname</i>/templates</tt> and not in the <tt>layout</tt>
 directory.</p>
