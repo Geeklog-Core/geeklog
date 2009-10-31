@@ -109,7 +109,9 @@ $LANG_STATIC = array(
     'copy' => 'Koopia',
     'limit_results' => 'Piira tulemused',
     'search' => 'Otsi',
-    'submit' => 'Sisesta'
+    'submit' => 'Sisesta',
+    'no_new_pages' => 'No new pages',
+    'pages' => 'Pages'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -139,7 +141,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'Lehe vaikimisi õigused',
     'aftersave' => 'Pärast lehe salvestamist',
     'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'Enable Meta Tags',
+    'newstaticpagesinterval' => 'New Static Page Interval',
+    'hidenewstaticpages' => 'Hide New Static Pages',
+    'title_trim_length' => 'Title Trim Length',
+    'includecenterblocks' => 'Include Center Block Static Pages',
+    'includephp' => 'Include Static Pages with PHP',
+    'includesearch' => 'Enable Static Pages in Search',
+    'includesearchcenterblocks' => 'Include Center Block Static Pages',
+    'includesearchphp' => 'Include Static Pages with PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -148,6 +158,8 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Staatiliste  lehtede peaseadistused',
+    'fs_whatsnew' => 'What\'s New Block',
+    'fs_search' => 'Search Results',
     'fs_permissions' => 'Vaikimisi õigused'
 );
 

@@ -108,7 +108,9 @@ $LANG_STATIC = array(
     'copy' => 'העתקה',
     'limit_results' => 'הגבלת תוצאות',
     'search' => 'חיפוש',
-    'submit' => 'שליחה'
+    'submit' => 'שליחה',
+    'no_new_pages' => 'No new pages',
+    'pages' => 'Pages'
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
@@ -138,7 +140,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'הרשאות ברירת המחדל של עמוד',
     'aftersave' => 'לאחר שמירת עמוד',
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'Enable Meta Tags',
+    'newstaticpagesinterval' => 'New Static Page Interval',
+    'hidenewstaticpages' => 'Hide New Static Pages',
+    'title_trim_length' => 'Title Trim Length',
+    'includecenterblocks' => 'Include Center Block Static Pages',
+    'includephp' => 'Include Static Pages with PHP',
+    'includesearch' => 'Enable Static Pages in Search',
+    'includesearchcenterblocks' => 'Include Center Block Static Pages',
+    'includesearchphp' => 'Include Static Pages with PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -147,6 +157,8 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'הגדרות ראשיות של עמודים סטטיים',
+    'fs_whatsnew' => 'What\'s New Block',
+    'fs_search' => 'Search Results',
     'fs_permissions' => 'הרשאות ברירת המחדל'
 );
 

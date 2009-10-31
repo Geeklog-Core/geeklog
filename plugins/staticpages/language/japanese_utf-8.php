@@ -112,7 +112,9 @@ $LANG_STATIC = array(
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
-    'submit' => '登録'
+    'submit' => '登録',
+    'no_new_pages' => 'No new pages',
+    'pages' => 'Pages'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
@@ -142,7 +144,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'パーミッション',
     'aftersave' => 'ページ保存後の画面遷移',
     'atom_max_items' => 'フィードに書き出す最大ページ数',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'Enable Meta Tags',
+    'newstaticpagesinterval' => 'New Static Page Interval',
+    'hidenewstaticpages' => 'Hide New Static Pages',
+    'title_trim_length' => 'Title Trim Length',
+    'includecenterblocks' => 'Include Center Block Static Pages',
+    'includephp' => 'Include Static Pages with PHP',
+    'includesearch' => 'Enable Static Pages in Search',
+    'includesearchcenterblocks' => 'Include Center Block Static Pages',
+    'includesearchphp' => 'Include Static Pages with PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -151,6 +161,8 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => '静的ページのメイン設定',
+    'fs_whatsnew' => 'What\'s New Block',
+    'fs_search' => 'Search Results',
     'fs_permissions' => '静的ページのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
