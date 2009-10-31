@@ -1412,6 +1412,7 @@ function savepreferences($A)
             }
         }
     }
+    $selectedblocks = trim($selectedblocks);
 
     $etids = '';
     if (($_CONF['emailstories'] == 1) && (count($ETIDS) > 0)) {
