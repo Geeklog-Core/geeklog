@@ -642,6 +642,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 function reorderblocks()
 {
     global $_TABLES;
+
     $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -670,12 +671,12 @@ function reorderblocks()
 /**
 * Move blocks UP, Down and Switch Sides - Left and Right
 *
+* NOTE: Does not return.
+*
 */
 function moveBlock()
 {
     global $_CONF, $_TABLES, $LANG21;
-
-    $retval = '';
 
     $bid = COM_applyFilter($_GET['bid']);
     $where = COM_applyFilter($_GET['where']);
@@ -705,9 +706,8 @@ function moveBlock()
     } else {
         COM_errorLog("block admin error: Attempt to move an non existing block id: $bid");
     }
-    echo COM_refresh($_CONF['site_admin_url'] . "/block.php");
+    echo COM_refresh($_CONF['site_admin_url'] . '/block.php');
     exit;
-    return $retval;
 }
 
 
