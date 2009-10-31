@@ -495,7 +495,7 @@ function savefeed ($A)
         $A[$name] = COM_stripslashes ($value);
     }
 
-    if ($A['is_enabled'] == 'on') {
+    if (isset($A['is_enabled']) && ($A['is_enabled'] == 'on')) {
         $A['is_enabled'] = 1;
     } else {
         $A['is_enabled'] = 0;
