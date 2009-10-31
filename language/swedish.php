@@ -830,7 +830,8 @@ $LANG24 = array(
     87 => 'Story Stats',
     88 => 'Wiki-style format',
     89 => 'Meta Description',
-    90 => 'Meta Keywords'
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 ###############################################################################
@@ -1330,7 +1331,26 @@ $LANG_DB_BACKUP = array(
     'size' => 'Storlek',
     'bytes' => 'Byte',
     'total_number' => 'Totalt antal säkerhetskopior: %d',
-    'download' => 'Click to download this file'
+    'download' => 'Click to download this file',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1581,7 +1601,8 @@ $LANG_ADMIN = array(
     'list_all' => 'List all',
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',
-    'na' => 'N/A'
+    'na' => 'N/A',
+    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
