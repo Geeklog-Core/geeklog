@@ -1,8 +1,10 @@
 Geeklog History/Changes:
 
-Nov 1, 2009 (1.6.1)
+Nov 1, 2009 (1.6.1b1)
 -----------
 
+- Fixed an old bug that could cause SQL errors when a user changed their "Show
+  & hide boxes" settings [Dirk]
 - Searching by author threw an error on PHP 4 (bug #0001008) [Dirk]
 - Moved the functionality of the toinnodb.php script into the Database Backups
   admin panel [Dirk]
