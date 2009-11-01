@@ -45,7 +45,7 @@
 require_once '../lib-common.php';
 
 /**
-* Verifies that current user even has access to the page to this point
+* Security check to ensure user even belongs on this page
 */
 require_once 'auth.inc.php';
 
@@ -128,8 +128,10 @@ function editgroup($grp_id = '')
         $A['grp_gl_core'] = 0;
     }
 
+    $token = SEC_createToken();
     $retval .= COM_startBlock($LANG_ACCESS['groupeditor'], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     if (! empty($grp_id)) {
         // Groups tied to Geeklog's functionality shouldn't be deleted
@@ -267,7 +269,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('rights_options',
                               printrights($grp_id, $A['grp_gl_core']));
     $group_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $group_templates->set_var('gltoken', SEC_createToken());
+    $group_templates->set_var('gltoken', $token);
     $group_templates->parse('output','editor');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -529,7 +531,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
 
         // Use the field grp_gl_core to indicate if this is non-core GL Group is an Admin related group
         if (($grp_gl_core != 1) AND ($grp_id > 1)) {
-            if ($grp_admin == 'on') {
+            if ($grp_admin == 1) {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_id=$grp_id");
             } else {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_id=$grp_id");

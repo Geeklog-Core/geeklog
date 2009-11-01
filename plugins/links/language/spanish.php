@@ -170,7 +170,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Not validated yet',
     58 => 'Validate now',
     59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
-    60 => 'User %s tried illegally to edit category %s.'
+    60 => 'User %s tried illegally to edit category %s.',
+    61 => 'Links in Category'
 );
 
 

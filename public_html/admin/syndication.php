@@ -30,7 +30,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Content syndication administration page: Here you can create, edit, and
+* delete feeds in various formats for Geeklog and its plugins.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 $display = '';
@@ -260,6 +273,7 @@ function editfeed ($fid = 0, $type = '')
     }
 
     $retval = '';
+    $token = SEC_createToken();
 
     $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file ('editor', 'feededitor.thtml');
@@ -269,10 +283,13 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $feed_template->set_var ('layout_url', $_CONF['layout_url']);
 
-    $feed_template->set_var ('start_feed_editor', COM_startBlock ($LANG33[24],
-            '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $feed_template->set_var ('end_block',
-            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+    $start_block = COM_startBlock($LANG33[24], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $start_block .= SEC_getTokenExpiryNotice($token);
+
+    $feed_template->set_var('start_feed_editor', $start_block);
+    $feed_template->set_var('end_block',
+            COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
 
     $feed_template->set_var ('lang_feedtitle', $LANG33[25]);
     $feed_template->set_var ('lang_enabled', $LANG33[19]);
@@ -399,10 +416,10 @@ function editfeed ($fid = 0, $type = '')
         $feed_template->set_var ('is_enabled', '');
     }
     $feed_template->set_var('gltoken_name', CSRF_TOKEN);
-    $feed_template->set_var('gltoken', SEC_createToken());
+    $feed_template->set_var('gltoken', $token);
 
-    $retval .= $feed_template->finish ($feed_template->parse ('output',
-                                                              'editor'));
+    $retval .= $feed_template->finish($feed_template->parse('output',
+                                                            'editor'));
     return $retval;
 }
 
@@ -478,7 +495,7 @@ function savefeed ($A)
         $A[$name] = COM_stripslashes ($value);
     }
 
-    if ($A['is_enabled'] == 'on') {
+    if (isset($A['is_enabled']) && ($A['is_enabled'] == 'on')) {
         $A['is_enabled'] = 1;
     } else {
         $A['is_enabled'] = 0;

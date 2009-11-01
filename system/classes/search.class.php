@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.6.1                                                             |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
@@ -95,7 +95,7 @@ class Search {
             // In case we got a username instead of uid, convert it.  This should
             // make custom themes for search page easier.
             if (!is_numeric($this->_author) && !preg_match('/^([0-9]+)$/', $this->_author) && $this->_author != '') {
-                $this->_author = DB_getItem($_TABLES['users'], 'uid', "username='" . addslashes ($this->_author) . "'");
+                $this->_author = DB_getItem($_TABLES['users'], 'uid', 'username=\'' . addslashes ($this->_author) . '\'');
             }
 
             if ($this->_author < 1) {
@@ -342,8 +342,6 @@ class Search {
     /**
     * Performs search on all stories
     *
-    * @author Tony Bibbs, tony AT geeklog DOT net
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @return object plugin object
     *
@@ -355,101 +353,65 @@ class Search {
         // Make sure the query is SQL safe
         $query = trim(addslashes($this->_query));
 
-        $sql = "SELECT s.sid AS id, s.title AS title, s.introtext AS description, ";
-        $sql .= "UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ";
-        $sql .= "CONCAT('/article.php?story=',s.sid) AS url ";
-        $sql .= "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u ";
-        $sql .= "WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ";
+        $sql = 'SELECT s.sid AS id, s.title AS title, s.introtext AS description, ';
+        $sql .= 'UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ';
+        $sql .= 'CONCAT(\'/article.php?story=\',s.sid) AS url ';
+        $sql .= 'FROM '.$_TABLES['stories'].' AS s, '.$_TABLES['users'].' AS u ';
+        $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
         $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
 
-        if (!empty($this->_dateStart) && !empty($this->_dateEnd))
-        {
-            $delim = substr($this->_dateStart, 4, 1);
-            if (!empty($delim))
-            {
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
-            }
-        }
         if (!empty($this->_topic)) {
-            $sql .= "AND (s.tid = '$this->_topic') ";
+            $sql .= 'AND (s.tid = \''.$this->_topic.'\') ';
         }
         if (!empty($this->_author)) {
-            $sql .= "AND (s.uid = '$this->_author') ";
+            $sql .= 'AND (s.uid = \''.$this->_author.'\') ';
         }
 
-        $search = new SearchCriteria('stories', $LANG09[65]);
+        $search_s = new SearchCriteria('stories', $LANG09[65]);
+
         $columns = array('title' => 'title', 'introtext', 'bodytext');
-        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-        $search->setSQL($sql);
-        $search->setFTSQL($ftsql);
-        $search->setRank(5);
-        $search->setURLRewrite(true);
+        $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
+        list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
-        return $search;
-    }
+        $search_s->setSQL($sql);
+        $search_s->setFTSQL($ftsql);
+        $search_s->setRank(5);
+        $search_s->setURLRewrite(true);
 
-    /**
-    * Performs search on all comments
-    *
-    * @author Tony Bibbs, tony AT geeklog DOT net
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
-    * @access private
-    * @return object plugin object
-    *
-    */
-    function _searchComments()
-    {
-        global $_TABLES, $_DB_dbms, $LANG09;
-
-        // Make sure the query is SQL safe
-        $query = trim(addslashes($this->_query));
-
-        $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
-        $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
+        // Search Story Comments
+        $sql = 'SELECT c.cid AS id, c.title AS title, c.comment AS description, ';
+        $sql .= 'UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ';
 
         // MSSQL has a problem when concatenating numeric values
         if ($_DB_dbms == 'mssql') {
-            $sql .= "'/comment.php?mode=view&amp;cid=' + CAST(c.cid AS varchar(10)) AS url ";
+            $sql .= '\'/comment.php?mode=view&amp;cid=\' + CAST(c.cid AS varchar(10)) AS url ';
         } else {
-            $sql .= "CONCAT('/comment.php?mode=view&amp;cid=',c.cid) AS url ";
+            $sql .= 'CONCAT(\'/comment.php?mode=view&amp;cid=\',c.cid) AS url ';
         }
 
-        $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
-        $sql .= "LEFT JOIN {$_TABLES['stories']} AS s ON ((s.sid = c.sid) ";
-        $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getTopicSQL('AND',0,'s') . COM_getLangSQL('sid','AND','s') . ") ";
-        $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ";
+        $sql .= 'FROM '.$_TABLES['users'].' AS u, '.$_TABLES['comments'].' AS c ';
+        $sql .= 'LEFT JOIN '.$_TABLES['stories'].' AS s ON ((s.sid = c.sid) ';
+        $sql .= COM_getPermSQL('AND',0,2,'s').COM_getTopicSQL('AND',0,'s').COM_getLangSQL('sid','AND','s').') ';
+        $sql .= 'WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ';
 
-        if (!empty($this->_dateStart) && !empty($this->_dateEnd))
-        {
-            $delim = substr($this->_dateStart, 4, 1);
-            if (!empty($delim))
-            {
-                $DS = explode($delim, $this->_dateStart);
-                $DE = explode($delim, $this->_dateEnd);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                $sql .= "AND (UNIX_TIMESTAMP(c.date) BETWEEN '$startdate' AND '$enddate') ";
-            }
-        }
         if (!empty($this->_topic)) {
-            $sql .= "AND (s.tid = '$this->_topic') ";
+            $sql .= 'AND (s.tid = \''.$this->_topic.'\') ';
         }
         if (!empty($this->_author)) {
-            $sql .= "AND (c.uid = '$this->_author') ";
+            $sql .= 'AND (c.uid = \''.$this->_author.'\') ';
         }
 
-        $search = new SearchCriteria('comments', $LANG09[66]);
-        $columns = array('title' => 'c.title', 'comment');
-        list($sql, $ftsql) = $search->buildSearchSQL($this->_keyType, $query, $columns, $sql);
-        $search->setSQL($sql);
-        $search->setFTSQL($ftsql);
-        $search->setRank(2);
+        $search_c = new SearchCriteria('comments', array($LANG09[65],$LANG09[66]));
 
-        return $search;
+        $columns = array('title' => 'c.title', 'comment');
+        $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
+        list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
+
+        $search_c->setSQL($sql);
+        $search_c->setFTSQL($ftsql);
+        $search_c->setRank(2);
+
+        return array($search_s, $search_c);
     }
 
     /**
@@ -461,7 +423,6 @@ class Search {
     * in this function to allow legacy support to plugins using
     * the old API calls defined versions prior to Geeklog 1.5.1
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @return string HTML output for search results
     *
@@ -496,7 +457,6 @@ class Search {
 
         $url = "{$this->_searchURL}&amp;type={$this->_type}&amp;mode=";
         $obj = new ListFactory($url.'search', $_CONF['search_limits'], $_CONF['num_search_results']);
-        $obj->setRowFunction(array($this, 'searchFormatCallBack'));
         $obj->setField('ID', 'id', false);
         $obj->setField('URL', 'url', false);
 
@@ -509,31 +469,33 @@ class Search {
         if ($style == 'table')
         {
             $obj->setStyle('table');
-            //             Title        Name           Display     Sort   Format
-            $obj->setField($LANG09[62], ROW_NUMBER,    $show_num,  false, '<b>%d.</b>');
-            $obj->setField($LANG09[5],  SQL_TITLE,     $show_type, true,  '<b>%s</b>');
-            $obj->setField($LANG09[16], 'title',       true,       true);
-            $obj->setField($LANG09[63], 'description', true,       false);
-            $obj->setField($LANG09[17], 'date',        true,       true);
-            $obj->setField($LANG09[18], 'uid',         $show_user, true);
-            $obj->setField($LANG09[50], 'hits',        $show_hits, true);
+            //             Title        Name            Display     Sort   Format
+            $obj->setField($LANG09[62], LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
+            $obj->setField($LANG09[5],  LF_SOURCE_TITLE,$show_type, true,  '<b>%s</b>');
+            $obj->setField($LANG09[16], 'title',        true,       true);
+            $obj->setField($LANG09[63], 'description',  true,       false);
+            $obj->setField($LANG09[17], 'date',         true,       true);
+            $obj->setField($LANG09[18], 'uid',          $show_user, true);
+            $obj->setField($LANG09[50], 'hits',         $show_hits, true);
             $this->_wordlength = 7;
         }
         else if ($style == 'google')
         {
             $obj->setStyle('inline');
-            $obj->setField('',          ROW_NUMBER,    $show_num,  false, '<b>%d.</b>');
-            $obj->setField($LANG09[16], 'title',       true,       true,  '%s<br>');
-            $obj->setField('',          'description', true,       false, '%s<br>');
-            $obj->setField('',          '_html',       true,       false, '<span style="color:green;">');
-            $obj->setField($LANG09[18], 'uid',         $show_user, true,  $LANG01[104].' %s ');
-            $obj->setField($LANG09[17], 'date',        true,       true,  $LANG01[36].' %s');
-            $obj->setField($LANG09[5],  SQL_TITLE,     $show_type, true,  ' - %s');
-            $obj->setField($LANG09[50], 'hits',        $show_hits, true,  ' - %s '.$LANG09[50]);
-            $obj->setField('',          '_html',       true,       false, '</span>');
+            $obj->setField('',          LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
+            $obj->setField($LANG09[16], 'title',        true,       true,  '%s<br>');
+            $obj->setField('',          'description',  true,       false, '%s<br>');
+            $obj->setField('',          '_html',        true,       false, '<span style="color:green;">');
+            $obj->setField($LANG09[18], 'uid',          $show_user, true,  $LANG01[104].' %s ');
+            $obj->setField($LANG09[17], 'date',         true,       true,  $LANG01[36].' %s');
+            $obj->setField($LANG09[5],  LF_SOURCE_TITLE,$show_type, true,  ' - %s');
+            $obj->setField($LANG09[50], 'hits',         $show_hits, true,  ' - %s '.$LANG09[50]);
+            $obj->setField('',          '_html',        true,       false, '</span>');
             $this->_wordlength = 50;
         }
         $obj->setDefaultSort('hits');
+        // set this only now, for compatibility with PHP 4
+        $obj->setRowFunction(array($this, 'searchFormatCallback'));
 
         // Start search timer
         $searchtimer = new timerobject();
@@ -542,17 +504,12 @@ class Search {
 
         // Have plugins do their searches
         $page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
-        $result_plugins = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType, $page, 5);
+        $result_plugins = PLG_doSearch($this->_query, $this->_dateStart,
+            $this->_dateEnd, $this->_topic, $this->_type,
+            $this->_author, $this->_keyType, $page, 5);
 
         // Add core searches
-        if ($this->_type == 'all' || $this->_type == 'stories')
-        {
-            $result_plugins[] = $this->_searchStories();
-        }
-        if ($this->_type == 'all' || $this->_type == 'comments')
-        {
-            $result_plugins[] = $this->_searchComments();
-        }
+        $result_plugins = array_merge($result_plugins, $this->_searchStories());
 
         // Loop through all plugins separating the new API from the old
         $new_api = 0;
@@ -563,38 +520,57 @@ class Search {
         {
             if (is_a($result, 'SearchCriteria'))
             {
-                $debug_info = $result->getName() . " using APIv2 with ";
+                $debug_info = $result->getName().' using APIv2';
 
-                if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '')
+                if ($this->_type != 'all' && $this->_type != $result->getName())
                 {
-                    $debug_info .= "FULLTEXT. ";
-                    $sql = $result->getFTSQL();
+                    if ($this->_verbose) {
+                        $new_api++;
+                        COM_errorLog($debug_info.'. Skipped as type is not '.$this->_type);
+                    }
+                    continue;
+                }
+
+                $api_results = $result->getResults();
+                if (!empty($api_results)) {
+                    $obj->addResultArray($api_results);
+                }
+
+                $api_callback_func = $result->getCallback();
+                if (!empty($api_callback_func))
+                {
+                    $debug_info .= ' with Callback Function.';
+                    $obj->setCallback($result->getLabel(), $result->getName(), $api_callback_func, $result->getRank(), $result->getTotal());
                 }
                 else
                 {
-                    $debug_info .= "LIKE. ";
-                    $sql = $result->getSQL();
+                    if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '') {
+                        $sql = $result->getFTSQL();
+                    } else {
+                        $sql = $result->getSQL();
+                    }
+
+                    $sql = $this->_convertsql($sql);
+                    $debug_info .= ' with SQL = '.print_r($sql,1);
+                    $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 }
 
-                $sql = $this->_convertsql($sql);
-
-                $debug_info .= "SQL = " . print_r($sql,1);
-                if ($this->_verbose) {
-                    COM_errorLog($debug_info);
-                }
-
-                $obj->setQuery($result->getLabel(), $result->getName(), $sql, $result->getRank());
                 $this->_url_rewrite[ $result->getName() ] = $result->UrlRewriteEnable();
                 $this->_append_query[ $result->getName() ] = $result->AppendQueryEnable();
-                $new_api++;
+
+                if ($this->_verbose) {
+                    $new_api++;
+                    COM_errorLog($debug_info);
+                }
             }
             else if (is_a($result, 'Plugin') && $result->num_searchresults != 0)
             {
                 // Some backwards compatibility
-                $debug_info = $result->plugin_name . " using APIv1 with backwards compatibility.";
-                $debug_info .= " Count: " . $result->num_searchresults;
-                $debug_info .= " Headings: " . implode(",", $result->searchheading);
                 if ($this->_verbose) {
+                    $old_api++;
+                    $debug_info = $result->plugin_name.' using APIv1 with backwards compatibility.';
+                    $debug_info .= ' Count: ' . $result->num_searchresults;
+                    $debug_info .= ' Headings: ' . implode(',', $result->searchheading);
                     COM_errorLog($debug_info);
                 }
 
@@ -623,19 +599,12 @@ class Search {
                         // Convert the date back to a timestamp
                         $date = $old_row[ $col_date ];
                         $date = substr($date, 0, strpos($date, '@'));
-                        if ($date == '')
-                        {
-                            $date = $old_row[$col_date];
-                        }
-                        else
-                        {
-                            $date = strtotime($date);
-                        }
+                        $date = ($date == '' ? $old_row[$col_date] : strtotime($date));
                     }
 
                     $api_results = array(
-                                SQL_NAME =>       $result->plugin_name,
-                                SQL_TITLE =>      $label,
+                                LF_SOURCE_NAME =>   $result->plugin_name,
+                                LF_SOURCE_TITLE =>  $label,
                                 'title' =>        $col_title == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_title],
                                 'description' =>  $col_desc == -1 ? '<i>' . $LANG09[70] . '</i>' : $old_row[$col_desc],
                                 'date' =>         $col_date == -1 ? 'LF_NULL' : $date,
@@ -647,13 +616,12 @@ class Search {
 
                     $obj->addResult($api_results);
                 }
-                $old_api++;
             }
         }
 
         // Find out how many plugins are on the old/new system
         if ($this->_verbose) {
-            COM_errorLog("Search Plugins using APIv1: $old_api APIv2: $new_api");
+            COM_errorLog('Search Plugins using APIv1: '.$old_api.' APIv2: '.$new_api);
         }
 
         // Execute the queries
@@ -681,7 +649,7 @@ class Search {
         }
 
         // Clean the query string so that sprintf works as expected
-        $searchQuery = str_replace("%", "%%", $searchQuery);
+        $searchQuery = str_replace('%', '%%', $searchQuery);
 
         $retval = "{$LANG09[25]} $searchQuery. ";
         if (count($results) == 0)
@@ -694,34 +662,36 @@ class Search {
         else
         {
             $retval .= $LANG09[64] . " ($searchtime {$LANG09[27]}). ";
-            $retval .= str_replace("%", "%%", COM_createLink($LANG09[61], $url.'refine'));
+            $retval .= str_replace('%', '%%', COM_createLink($LANG09[61], $url.'refine'));
             $retval = '<p>' . $retval . '</p>' . LB;
-            $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '', $_CONF['search_show_sort'], $_CONF['search_show_limit']);
+            $retval = $obj->getFormattedOutput($results, $LANG09[11], $retval, '',
+                $_CONF['search_show_sort'], $_CONF['search_show_limit']);
         }
 
         return $retval;
     }
 
     /**
-    * CallBack function for the ListFactory class
+    * Callback function for the ListFactory class
     *
     * This function gets called by the ListFactory class and formats
     * each row accordingly for example pulling usernames from the
     * users table and displaying a link to their profile.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access public
     * @param array $row An array of plain data to format
     * @return array A reformatted version of the input array
     *
     */
-    function searchFormatCallBack( $preSort, $row )
+    function searchFormatCallback( $preSort, $row )
     {
         global $_CONF, $LANG09;
 
         if ($preSort)
         {
-            $row[SQL_TITLE] = is_array($row[SQL_TITLE]) ? implode($_CONF['search_separator'],$row[SQL_TITLE]) : $row[SQL_TITLE];
+            if (is_array($row[LF_SOURCE_TITLE])) {
+                $row[LF_SOURCE_TITLE] = implode($_CONF['search_separator'], $row[LF_SOURCE_TITLE]);
+            }
 
             if (is_numeric($row['uid']))
             {
@@ -739,17 +709,18 @@ class Search {
         }
         else
         {
-            $row[SQL_TITLE] = COM_createLink($row[SQL_TITLE], $this->_searchURL.'&amp;type='.$row[SQL_NAME].'&amp;mode=search');
+            $row[LF_SOURCE_TITLE] = COM_createLink($row[LF_SOURCE_TITLE],
+                $this->_searchURL.'&amp;type='.$row[LF_SOURCE_NAME].'&amp;mode=search');
 
             if ($row['url'] != '#')
             {
                 $row['url'] = ($row['url'][0] == '/' ? $_CONF['site_url'] : '') . $row['url'];
-                if (isset($this->_url_rewrite[$row[SQL_NAME]]) &&
-                        $this->_url_rewrite[$row[SQL_NAME]]) {
+                if (isset($this->_url_rewrite[$row[LF_SOURCE_NAME]]) &&
+                        $this->_url_rewrite[$row[LF_SOURCE_NAME]]) {
                     $row['url'] = COM_buildUrl($row['url']);
                 }
-                if (isset($this->_append_query[$row[SQL_NAME]]) &&
-                        $this->_append_query[$row[SQL_NAME]]) {
+                if (isset($this->_append_query[$row[LF_SOURCE_NAME]]) &&
+                        $this->_append_query[$row[LF_SOURCE_NAME]]) {
                     $row['url'] .= (strpos($row['url'],'?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
                 }
             }
@@ -786,7 +757,6 @@ class Search {
     * version depending where the text was cut. Works on a
     * word basis, so long words wont get cut.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $keyword The word to centre around
     * @param string $text The complete text string
@@ -909,7 +879,6 @@ class Search {
     * number of similar heading names. Used for backwards
     * compatibility in the doSearch() function.
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param array $headings All the headings
     * @param array $find An array of alternative headings to find
@@ -937,7 +906,6 @@ class Search {
     /**
     * Converts the MySQL CONCAT function to the MSSQL equivalent
     *
-    * @author Sami Barakat, s.m.barakat AT gmail DOT com
     * @access private
     * @param string $sql The SQL to convert
     * @return string MSSQL friendly SQL
@@ -972,6 +940,8 @@ class Search {
     {
         if (function_exists('stripos')) {
             return stripos($haystack, $needle);
+        } elseif (empty($needle)) {
+            return false;
         } else {
             return strpos(strtolower($haystack), strtolower($needle));
         }

@@ -57,6 +57,8 @@ $LANG_POLLS = array(
     'upgrade1' => 'התקנתם גרסה חדשה של plugins הסקרים. אנא',
     'upgrade2' => 'שדרגו',
     'editinstructions' => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.',
+    'pollclosed' => 'This poll is closed for voting.',
+    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'התחילו את הסקר'
 );
 
@@ -130,7 +132,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'כתובת ה-IP של המצביעים תקיפה עד',
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
-    'default_permissions' => 'הרשאות ברירת המחדל של סקר'
+    'default_permissions' => 'הרשאות ברירת המחדל של סקר',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['polls'] = array(

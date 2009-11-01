@@ -446,9 +446,8 @@ default:  // New Comment
 
     if ($type == 'article') {
         $dbTitle = DB_getItem($_TABLES['stories'], 'title',
-                                "sid = '{$sid}'" . COM_getPermSQL('AND')
-                                . " AND (draft_flag = 0) AND (date <= NOW()) "
-                                . COM_getTopicSQL('AND'));
+                    "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
+                    . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
         if ($dbTitle === null) {
             // no permissions, or no story of that title
             $display = COM_refresh($_CONF['site_url'] . '/index.php');

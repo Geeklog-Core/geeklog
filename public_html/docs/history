@@ -1,18 +1,71 @@
 Geeklog History/Changes:
 
-Oct ??, 2009 (1.6.1)
-------------
+Nov 1, 2009 (1.6.1b1)
+-----------
 
 - The user's time zone selection (from My Account) is actually used now [Dirk]
 - Modernized the "timezone hack", made the config option a dropdown, and moved
   all timezone-related code into a new TimeZoneConfig class [Dirk]
+- Fixed an old bug that could cause SQL errors when a user changed their "Show
+  & hide boxes" settings [Dirk]
+- Searching by author threw an error on PHP 4 (bug #0001008) [Dirk]
+- Moved the functionality of the toinnodb.php script into the Database Backups
+  admin panel [Dirk]
+- Added an option to optimze tables to the Database Backups admin panel [Dirk]
+- Added a notice about the expiry time for the security token (and the potential
+  loss of changes) to most editors. This is meant as an intermediate step
+  until we get around to updating the editors and provide a more user friendly
+  solution. [Dirk]
+- Fixed display of text excerpt for search results on PHP 4 (bug #0001004)
+  [Dirk]
+- The comment speed limit was being ignored (bug #0001003) [Dirk]
+- Added an icon to make the plugin update option somewhat more obvious [Dirk]
+  (icon "stock_update-data.png" taken from Gnome 2.18 icon theme set by
+  AMAZIGH Aneglus, released under the GPL)
+- Allow bigger values for a topic's Sort Order field (feature request #0001011)
+  [Dirk]
+- When a Story Admin did not have permission to edit a story, Geeklog threw a
+  "call to a member function on a non-object" error when trying to display a
+  proper "access denied" message (reported by Chase and Cesar) [Dirk]
+- Allow external apps to contribute to search results (feature request #0000985)
+  [Sami]
+- Remember current sort/limit in search results (bug #0001007) [Sami]
+- Don't display the comment form for a story when comments aren't enabled for it
+  (bug #0000994) [Dirk]
+- Fixed a long-standing quirk of the submission handling where the "Submissions"
+  entry in the Admins Block wasn't updated after accepting / rejecting a
+  submission [Dirk]
+- Fixed creation of multiple plugin groups in plugin autoinstall [Randy, Dirk]
+- Added new option $_CONF['article_comment_close_enabled'] to enable/disable
+  automatically closing stories for comments after a certain amount of days
+  (bug #0000959). Changed handling of comment_expire field in gl_stories such
+  that 0 means the story is always open for comments [Dirk]
+- The "Admin Group" checkbox in the Group Editor didn't work (bug #0000995,
+  reported & fix provided by Tsuchi)
+- Setting $_CONF['article_comment_close_days'] to a high value (to work around
+  bugs with the "Disable Comments" option in 1.6.0) may result in values outside
+  of the range of the year dropdown for that option, in which case it reverted
+  to the previous(!) year and caused comments to be closed immediately [Dirk]
+- When viewing your own profile page, you now get an "edit" link that take you
+  to "My Account" [Dirk]
+- Additional checks in "Mail Story to a Friend", "Send mail to user", and
+  "Mail Users" dialogs to make sure users don't enter email addresses into the
+  name fields (bug #0000992) [Dirk]
+- Added an option to send a copy to self to the "Mail Story to a Friend" dialog
+  and made the look of this and the "Send mail to user" dialogs more consistent
+  [Dirk]
+- Display the number of stories in the current topic in the Topic Editor
+  (feature request #0000806) [Dirk]
+- Call CUSTOM_userCheck from admin/user.php (bug #0000925) [Dirk]
+- You can now have one featured story per topic (feature request #0000750,
+  patch provided by Tom Homer)
 - Changing the Post Mode in Advanced Editor mode selected the wrong tab
   (bug #0000980, patch provided by dengen)
 - Made the former $cc parameter for COM_mail an optional array of additional
   email headers (using a string for that parameter still works as CC:) [Dirk]
 - Fixed reply notification for the very first comment (bug #0000973)
   [dengen, Dirk]
-- When an anonymous commentor left a name, use it in the comment notification
+- When an anonymous commenter left a name, use it in the comment notification
   email (bug #0000960) [Dirk]
 - Removed the CSRF token from all links to edit a comment. We only need it in
   the actual comment editor and it caused problems on the moderation page [Dirk]
@@ -49,8 +102,8 @@ Oct ??, 2009 (1.6.1)
 - Only list [code], [raw] tags when story.* permissions are required [Dirk]
 - [page_break] was not listed when all HTML was allowed for Root users [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer
-- When an error occurs in bigdump.php (during migration) keep the language when
-  sending the user back to migrate.php (bug #0000943) [Dirk]
+- When an error occurs in bigdump.php (during migration) keep the selected
+  language when sending the user back to migrate.php (bug #0000943) [Dirk]
 - Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
   displaying the date and time in search results [Dirk]
 - When disabling a feed, delete the feed file [Dirk]
@@ -66,8 +119,9 @@ Oct ??, 2009 (1.6.1)
 - Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
 - For Remote Users, display their service name in the User Editor [Dirk]
 
-Calendar Plugin
+Calendar Plugin 1.1.1
 ---------------
+- Keep track of the user id for submitted events (bug #0000993) [Dirk]
 - Reintroduced {event_begin_anchortag} and {event_end_anchortag} variables
   in event.php [Dirk]
 - The number of hits for an event was reset when editing the event [Dirk]
@@ -75,8 +129,17 @@ Calendar Plugin
 - Avoid triggering a false spam report when submitting an event with the default
   "http://" entry for the link still in place (bug #0000946) [Dirk]
 
+Links Plugin
+------------
+- Display the number of links in the current category in the Category Editor.
+  Note: Does not (yet) count links in sub-categories [Dirk]
+- Link titles in autotags showed up with backslashes before quotes (bug
+  #0000986) [Dirk]
+
 Polls Plugin
 ------------
+- Fixed display of the Polls block when it only contained polls not visible
+  for anonymous visitors (bug #0000996) [Dirk]
 - When upgrading from Geeklog 1.5.2, the length of the poll IDs was not extended
   to 40 characters - only fresh installs of Geeklog 1.6.0 and upgrades from
   older versions worked correctly (cf. feature request #0000754) [Dirk]
@@ -84,8 +147,14 @@ Polls Plugin
 - Introduced [poll:], [poll_vote:], and [poll_result:] autotags, allowing to
   embed polls where autotags are allowed, provided by Tom Homer
 
-Static Pages Plugin
+Static Pages Plugin 1.6.1
 -------------------
+- Certain types or all Static Pages can now be excluded from the search results
+  (feature request #0000979, provided by Tom Homer)
+- New and updated Static Pages are now listed in the What's New block
+  (feature request #0000908, provided by Tom Homer)
+- Fresh installs of the plugin in Geeklog 1.6.0 accidentally used a wrong name
+  for the plugin's admin group. Silently fix that during the upgrade [Dirk]
 - Made the list of pages sortable by author (feature request #0000978) [Dirk]
 - List available autotags in the static pages editor [Dirk]
 - Added support for meta tags and meta keywords, provided by Tom Homer

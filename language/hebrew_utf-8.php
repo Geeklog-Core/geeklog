@@ -826,7 +826,10 @@ $LANG24 = array(
     85 => 'הראה הכל',
     86 => 'עורך מתקדם',
     87 => 'סטטיסטיקות מאמר',
-    88 => 'פורמט בנוסח וויקי'
+    88 => 'פורמט בנוסח וויקי',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 ###############################################################################
@@ -861,7 +864,8 @@ $LANG27 = array(
     26 => 'היפכו נושא זה לנושא ברירת המחדל עבור מאמרים בארכיון. ניתן לבחור רק נושא אחד.',
     27 => 'או העלו אייקון לנושא',
     28 => 'מקסימום',
-    29 => 'שגיאות בהעלאת הקובץ'
+    29 => 'שגיאות בהעלאת הקובץ',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1063,6 +1067,7 @@ $LANG32 = array(
     39 => 'העלאת plugin',
     40 => 'הנכם יכולים להעלות ארכיון plugin (tar.gz, tgz, zip) ישירות לכאן:',
     41 => 'העלאה',
+    42 => 'Click to update',
     99 => 'התרחשה שגיאה לא ידועה',
     100 => 'אישור.',
     101 => 'הקובץ שהועלה עובר את הוראת upload_max_filesize directive ב-php.ini.',
@@ -1324,7 +1329,26 @@ $LANG_DB_BACKUP = array(
     'size' => 'גודל',
     'bytes' => 'Bytes',
     'total_number' => 'סך הכל גיבויים: %d',
-    'download' => 'ליחצו כדי להוריד קובץ זה'
+    'download' => 'ליחצו כדי להוריד קובץ זה',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1473,7 +1497,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" לעולם אינו צריך להיות חלק מכתובת האתר שלכם. אנא קיראו את החלק לגבי public_html %s שוב ושנו את ההגדרות שלכם בהתאם לפני שתמשיכו.',
     'installation' => 'בהוראות ההתקנה',
     'directory' => '(ספרייה)',
-    'failed_bak' => 'נכשלה יצירת קובץ זמני בספריית ה-data שלכם. בידקו את הרשאות הספרייה שלכם!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'זהו סיכון בטחוני שיש לתקנו!',
     'reachable' => 'ה-%s שלכם נגיש מהרשת.',
     'not_reachable' => 'מצוין! ה-%s שלכם אינו נגיש מהרשת.',
@@ -1573,7 +1597,10 @@ $LANG_ADMIN = array(
     'addchild' => 'הוסיפו תת פריט',
     'list' => 'רשימה',
     'list_all' => 'רשימה של הכל',
-    'na' => 'לא זמין'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'לא זמין',
+    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1845,12 +1872,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'רשימת צנזורה',
     'ip_lookup' => 'בדיקת IP',
     'url_rewrite' => 'איפשור URL Rewrite',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'הרשאות ברירת המחדל של קוביות מידע',
     'default_permissions_story' => 'הרשאות ברירת המחדל של מאמרים',
     'default_permissions_topic' => 'הרשאות ברירת המחדל של נושאים',
     'atom_max_stories' => 'כמות המאמרים המקסימלית בהזנה של שירותי רשת',
     'disable_webservices' => 'ביטול שירותי רשת?',
     'restrict_webservices' => 'הגבלת שירותי רשת?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'מספר הימים לפני שהתגובות יהיו סגורות (ברירת המחדל)',
     'comment_close_rec_stories' => 'כמות המאמרים הכי אחרונים שאפשר להגיב אליהם',
     'allow_reply_notifications' => 'איפשור הודעות לתגובות של תשובות?',
@@ -1942,7 +1973,8 @@ $LANG_configselects['Core'] = array(
     19 => array('גוגל' => 'google', 'טבלה' => 'table'),
     20 => array('ביטוי מדויק' => 'phrase', 'כל המילים שהוכנסו' => 'all', 'לפחות אחת מהמילים שהוכנסו' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => '')
+    22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

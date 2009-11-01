@@ -155,26 +155,26 @@ the Configuration admin panel:</p>
 </tr>
 <tr>
   <td><a name="desc_allow_php">allow_php</a></td>
-  <td><code>true</code></td>
+  <td>true</td>
   <td>Allows you to globally allow or disallow the <a href="#php">use of PHP</a>
     in static pages, i.e. it overrides the setting on individual pages.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_sort_by">sort_by</a></td>
-  <td><tt>'id'</tt></td>
+  <td>'id'</td>
   <td>Define sort order when more than one static page is displayed in
     centerblocks. Allows sorting by page ID, page title, and date of last
     change.</td>
 </tr>
 <tr>
   <td><a name="desc_sort_menu_by">sort_menu_by</a></td>
-  <td><tt>'label'</tt></td>
+  <td>'label'</td>
   <td>Define sort order for static pages in the site's menu. Allows sorting by
     page label, page ID, page title, and date of last change.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_delete_pages">delete_pages</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Specify what should happen to a static page when its owner (i.e. the user
     who created the page) is deleted. 'True' would delete the page, 'False'
     will assign it to a user in the "Root" group (usually the user with the
@@ -182,35 +182,35 @@ the Configuration admin panel:</p>
 </tr>
 <tr>
   <td><a name="desc_in_block">in_block</a></td>
-  <td><tt>true</tt></td>
+  <td>true</td>
   <td>Whether to display the content of static pages inside a block template or
     not. This is the default setting and can be overridden per page.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_show_hits">show_hits</a></td>
-  <td><tt>true</tt></td>
+  <td>true</td>
   <td>Whether to show the number of hits for a static page.</td>
 <tr>
 <tr>
   <td><a name="desc_show_date">show_date</a></td>
-  <td><tt>true</tt></td>
+  <td>true</td>
   <td>Whether to show the date and time of the last change to a static page.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_filter_html">filter_html</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Whether HTML in static pages should be run through Geeklog's HTML filter
     option.</td>
 </tr>
 <tr>
   <td><a name="desc_censor">censor</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Whether the content of the static page should be run through Geeklog's
     "bad words" filter.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_aftersave">aftersave</a></td>
-  <td><tt>'list'</tt></td>
+  <td>'list'</td>
   <td>Which page to go to after a static page has been saved:
     <ul>
     <li>'item': display the page</li>
@@ -230,6 +230,57 @@ the Configuration admin panel:</p>
   <td>false</td>
   <td>Whether to include the meta tags of the staticpage when it is displayed.</td>
 </tr>
+</table>
+
+<h3><a name="whatsnew">What's New Block</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_newstaticpagesinterval">newstaticpagesinterval</a></td>
+  <td valign="top">1209600</td>
+  <td valign="top">Static pages are "new" if they are this many seconds old.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_hidenewstaticpages">hidenewstaticpages</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to hide new static pages from the What's New block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_title_trim_length">title_trim_length</a></td>
+  <td valign="top">20</td>
+  <td valign="top">Max. length of the title of items listed in the What's New block.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_includecenterblocks">includecenterblocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that are displayed as a center block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_includephp">includephp</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that execute PHP.</td></tr>
+</table>
+
+
+<h3><a name="search">Search Results</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_includesearch">includesearch</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Set to true to enable static pages in search results.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_includesearchcenterblocks">includesearchcenterblocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that are displayed as a center block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_includesearchphp">includesearchphp</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that execute PHP.</td></tr>
 </table>
 
 <div class="footer">

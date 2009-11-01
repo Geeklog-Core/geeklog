@@ -44,12 +44,16 @@
 * Geeklog common function library
 */
 require_once '../lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
 * Security check to ensure user even belongs on this page
 */
 require_once 'auth.inc.php';
+
+/**
+* Geeklog story function library
+*/
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 // Set this to true if you want to have this code output debug messages to
 // the error log
@@ -232,8 +236,8 @@ function liststories()
 */
 function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
+           $MESSAGE;
 
     $display = '';
 
@@ -288,7 +292,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
                                 COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG24[41];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= STORY_renderArticle ($A, 'p');
+        $display .= STORY_renderArticle ($story, 'p');
         COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
         return $display;
     } elseif( $result == STORY_INVALID_SID ) {
@@ -577,9 +581,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $story->EditElements('trackbackcode')));
     // comment expire 
-    $story_templates->set_var ('lang_cmt_disable', $LANG24[63]);
-    if ($story->EditElements('cmt_close') ) {
-        $story_templates->set_var('is_checked5', 'checked="checked"'); //check box if enabled
+    $story_templates->set_var('lang_cmt_disable', $LANG24[63]);
+    if ($story->EditElements('cmt_close')) {
+        $story_templates->set_var('is_checked5', 'checked="checked"');
         $story_templates->set_var('showcmtclosedisabled', 'false');
     } else {
         $story_templates->set_var('showcmtclosedisabled', 'true');
@@ -591,7 +595,18 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $day_options = COM_getDayFormOptions($story->EditElements('cmt_close_day'));
     $story_templates->set_var('cmt_close_day_options', $day_options);
     
-    $year_options = COM_getYearFormOptions($story->EditElements('cmt_close_year'));
+    // ensure that the year dropdown includes the close year
+    $endtm = mktime(0, 0, 0, date('m'),
+                date('d') + $_CONF['article_comment_close_days'], date('Y'));
+    $yoffset = date('Y', $endtm) - date('Y');
+    $close_year = $story->EditElements('cmt_close_year');
+    if ($yoffset < -1) {
+        $year_options = COM_getYearFormOptions($close_year, $yoffset);
+    } elseif ($yoffset > 5) {
+        $year_options = COM_getYearFormOptions($close_year, -1, $yoffset);
+    } else {
+        $year_options = COM_getYearFormOptions($close_year);
+    }
     $story_templates->set_var('cmt_close_year_options', $year_options);
     
     $cmt_close_ampm = '';
@@ -716,13 +731,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $story_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $story_templates->set_var('gltoken', SEC_createToken());
+    $token = SEC_createToken();
+    $story_templates->set_var('gltoken', $token);
     $story_templates->parse('output','editor');
 
-    $display .= COM_startBlock ($LANG24[5], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
+    $display .= COM_startBlock($LANG24[5], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $display .= SEC_getTokenExpiryNotice($token, $LANG24[91]);
+
     $display .= $story_templates->finish($story_templates->get_var('output'));
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $display;
 }

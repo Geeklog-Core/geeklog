@@ -63,16 +63,15 @@ function configmanager_select_theme_helper()
     $themes = array();
 
     $themeFiles = COM_getThemes(true);
-    usort($themeFiles,
-          create_function('$a,$b', 'return strcasecmp($a,$b);'));
+    usort($themeFiles, 'strcasecmp');
 
     foreach ($themeFiles as $theme) {
-        $words = explode ('_', $theme);
-        $bwords = array ();
+        $words = explode('_', $theme);
+        $bwords = array();
         foreach ($words as $th) {
-            if ((strtolower ($th{0}) == $th{0}) &&
-                (strtolower ($th{1}) == $th{1})) {
-                $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+            if ((strtolower($th{0}) == $th{0}) &&
+                (strtolower($th{1}) == $th{1})) {
+                $bwords[] = ucfirst($th);
             } else {
                 $bwords[] = $th;
             }

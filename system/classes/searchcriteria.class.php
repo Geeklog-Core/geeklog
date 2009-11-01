@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.6.1                                                             |
 // +---------------------------------------------------------------------------+
 // | searchcriteria.class.php                                                  |
 // |                                                                           |
@@ -40,7 +40,11 @@ class SearchCriteria {
     var $_rank;
     var $_url_rewrite;
     var $_append_query;
+    var $_results = array();
+    var $_callback_func = '';
+    var $_total_results = 0;
 
+    // CONSTRUCTOR
     function SearchCriteria( $pluginName, $pluginLabel )
     {
         $this->_pluginName = $pluginName;
@@ -48,16 +52,18 @@ class SearchCriteria {
         $this->_rank = 3;
         $this->_url_rewrite = false;
         $this->_append_query = true;
+        $this->_total_results = 0;
     }
 
-    function setSQL( $sql )
+    // GENERAL METHODS
+    function getName()
     {
-        $this->_sql = $sql;
+        return $this->_pluginName;
     }
 
-    function setFTSQL( $ftsql )
+    function getLabel()
     {
-        $this->_ftsql = $ftsql;
+        return $this->_pluginLabel;
     }
 
     function setRank( $rank )
@@ -75,31 +81,9 @@ class SearchCriteria {
         $this->_append_query = $append_query;
     }
 
-    function getSQL()
+    function setResults( $result_arr )
     {
-        return $this->_sql;
-    }
-
-    function getFTSQL()
-    {
-        global $_DB_dbms;
-
-        // When only one SQL statment is set we assume it is for MySQL
-        if ($this->_ftsql != '' && (is_string($this->_ftsql) && $_DB_dbms == 'mysql') || is_array($this->_ftsql)) {
-            return $this->_ftsql;
-        } else {
-            return '';
-        }
-    }
-
-    function getName()
-    {
-        return $this->_pluginName;
-    }
-
-    function getLabel()
-    {
-        return $this->_pluginLabel;
+        $this->_results = $result_arr;
     }
 
     function getRank()
@@ -115,6 +99,60 @@ class SearchCriteria {
     function AppendQueryEnable()
     {
         return $this->_append_query;
+    }
+
+    function getResults()
+    {
+        return $this->_results;
+    }
+
+    // CALLBACK METHODS
+    function setCallback( $func )
+    {
+        $this->_callback_func = $func;
+    }
+
+    function getCallback()
+    {
+        return $this->_callback_func;
+    }
+
+    function setTotal( $total_results )
+    {
+        $this->_total_results = $total_results;
+    }
+
+    function getTotal()
+    {
+        return $this->_total_results;
+    }
+
+    // SQL METHODS
+    function setSQL( $sql )
+    {
+        $this->_sql = $sql;
+    }
+
+    function setFTSQL( $ftsql )
+    {
+        $this->_ftsql = $ftsql;
+    }
+
+    function getSQL()
+    {
+        return $this->_sql;
+    }
+
+    function getFTSQL()
+    {
+        global $_DB_dbms;
+
+        // When only one SQL statment is set we assume it is for MySQL
+        if ($this->_ftsql != '' && (is_string($this->_ftsql) && $_DB_dbms == 'mysql') || is_array($this->_ftsql)) {
+            return $this->_ftsql;
+        } else {
+            return '';
+        }
     }
 
     function buildSearchSQL( $keyType, $query, $columns, $sql = '' )
@@ -167,7 +205,7 @@ class SearchCriteria {
         {
             $word = trim($word);
             $tmp .= '(';
-            
+
             if ($titles) {
                 $tmp .= $columns['title'] . " LIKE '%$word%' OR ";
             } else {
@@ -180,6 +218,24 @@ class SearchCriteria {
         $sql .= substr($tmp, 0, -5) . ') ';
 
         return array($sql,$ftsql);
+    }
+
+    function getDateRangeSQL( $type = 'WHERE', $column, $datestart, $dateend )
+    {
+        if (!empty($datestart) && !empty($dateend))
+        {
+            $delim = substr($datestart, 4, 1);
+            if (!empty($delim))
+            {
+                $DS = explode($delim, $datestart);
+                $DE = explode($delim, $dateend);
+                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+                return " $type (UNIX_TIMESTAMP($column) BETWEEN '$startdate' AND '$enddate') ";
+            }
+        }
+
+        return '';
     }
 }
 

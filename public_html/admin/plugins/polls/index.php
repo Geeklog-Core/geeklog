@@ -164,8 +164,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $topic = COM_stripslashes($topic);
-    $meta_description = COM_stripslashes($meta_description);
-    $meta_keywords = COM_stripslashes($meta_keywords);
+    $meta_description = strip_tags(COM_stripslashes($meta_description));
+    $meta_keywords = strip_tags(COM_stripslashes($meta_keywords));
     $pid = COM_sanitizeID($pid);
     $old_pid = COM_sanitizeID($old_pid);
     if (empty($pid)) {
@@ -249,9 +249,9 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
 
-    $topic = addslashes ($topic);
-    $meta_description = addslashes ($meta_description);
-    $meta_keywords = addslashes ($meta_keywords);
+    $topic = addslashes($topic);
+    $meta_description = addslashes($meta_description);
+    $meta_keywords = addslashes($meta_keywords);
 
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
     $v = 0; // re-count votes sine they might have been changed
@@ -305,9 +305,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'],"pid, topic, meta_description, meta_keywords, voters, questions, date, display, "
-           . "is_open, hideresults, statuscode, commentcode, owner_id, group_id, "
-           . "perm_owner, perm_group, perm_members, perm_anon",$sql);
+    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, date, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon", $sql);
 
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
@@ -348,22 +346,43 @@ function editpoll ($pid = '')
 
     $retval = '';
 
+    if (!empty($pid)) {
+        $topic = DB_query("SELECT * FROM {$_TABLES['polltopics']} WHERE pid='$pid'");
+        $T = DB_fetchArray($topic);
+
+        // Get permissions for poll
+        $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],$T['perm_group'],$T['perm_members'],$T['perm_anon']);
+        if ($access == 0 OR $access == 2) {
+            // User doesn't have access...bail
+            $retval .= COM_startBlock($LANG25[21], '',
+                            COM_getBlockTemplate('_msg_block', 'header'));
+            $retval .= $LANG25[22];
+            $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
+            return $retval;
+        }
+    }
+
     // writing the menu on top
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
     $menu_arr = array (
         array('url' => $_CONF['site_admin_url'] . '/plugins/polls/index.php',
               'text' => $LANG_ADMIN['list_all']),
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home']));
 
-    $retval .= COM_startBlock ($LANG25[5], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $token = SEC_createToken();
+
+    $retval .= COM_startBlock($LANG25[5], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
 
     $retval .= ADMIN_createMenu(
         $menu_arr,
         $LANG_POLLS['editinstructions'],
         plugin_geticon_polls()
     );
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $poll_templates = new Template ($_CONF['path']
                                     . 'plugins/polls/templates/admin/');
@@ -374,23 +393,6 @@ function editpoll ($pid = '')
     $poll_templates->set_var ('site_url', $_CONF['site_url']);
     $poll_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $poll_templates->set_var ('layout_url', $_CONF['layout_url']);
-
-    if (!empty ($pid)) {
-        $topic = DB_query("SELECT * FROM {$_TABLES['polltopics']} WHERE pid='$pid'");
-        $T = DB_fetchArray($topic);
-
-        // Get permissions for poll
-        $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],$T['perm_group'],$T['perm_members'],$T['perm_anon']);
-        if ($access == 0 OR $access == 2) {
-            // User doesn't have access...bail
-            $retval .= COM_startBlock ($LANG25[21], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG25[22];
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
-            return $retval;
-        }
-    }
 
     if (!empty ($pid) AND ($access == 3) AND !empty ($T['owner_id'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -529,7 +531,7 @@ function editpoll ($pid = '')
     $navbar->set_selected($LANG25[31] . " 1");
     $poll_templates->set_var ('navbar', $navbar->generate());
     $poll_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $poll_templates->set_var('gltoken', SEC_createToken());
+    $poll_templates->set_var('gltoken', $token);
 
     $poll_templates->parse('output','editor');
     $retval .= $poll_templates->finish($poll_templates->get_var('output'));
@@ -618,8 +620,9 @@ if ($mode == 'edit') {
             $hideresults = COM_applyFilter ($_POST['hideresults']);
         }
         $display .= savepoll ($pid, $old_pid, $_POST['question'], $mainpage,
-                        $_POST['topic'], $_POST['meta_description'], $_POST['meta_keywords'], 
-                        $statuscode, $open, $hideresults,
+                        $_POST['topic'], $_POST['meta_description'],
+                        $_POST['meta_keywords'], $statuscode, $open,
+                        $hideresults,
                         COM_applyFilter ($_POST['commentcode'], true),
                         $_POST['answer'], $_POST['votes'], $_POST['remark'],
                         COM_applyFilter ($_POST['owner_id'], true),

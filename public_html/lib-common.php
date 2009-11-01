@@ -1952,12 +1952,20 @@ function COM_featuredCheck()
 
     $curdate = date( "Y-m-d H:i:s", time() );
 
-    if( DB_getItem( $_TABLES['stories'], 'COUNT(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'" ) > 1 )
+    // Loop through each topic
+    $sql = "SELECT tid FROM {$_TABLES['topics']}";
+    $result = DB_query( $sql );
+    $num = DB_numRows( $result );
+    for( $i = 0; $i < $num; $i++)
     {
-        // OK, we have two featured stories, fix that
+        $A = DB_fetchArray( $result );
 
-        $sid = DB_getItem( $_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1" );
-        DB_query( "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'" );
+        if( DB_getItem( $_TABLES['stories'], 'COUNT(*)', "featured = 1 AND draft_flag = 0 AND tid = '{$A['tid']}' AND date <= '$curdate'" ) > 1 )
+        {
+            // OK, we have two featured stories in a topic, fix that
+            $sid = DB_getItem( $_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1" );
+            DB_query( "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'" );
+        }
     }
 }
 
@@ -2116,7 +2124,7 @@ function COM_showTopics( $topic='' )
         $op = 'AND';
     }
 
-    $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}" . $langsql;
+    $sql = "SELECT tid,topic,imageurl,meta_description FROM {$_TABLES['topics']}" . $langsql;
     if( !COM_isAnonUser() )
     {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
@@ -2265,6 +2273,17 @@ function COM_showTopics( $topic='' )
                         . '" title="' . $topicname . '"' . XHTML . '>';
         }
         $sections->set_var( 'topic_image', $topicimage );
+
+        $desc = trim($A['meta_description']);
+        $sections->set_var('topic_description', $desc);
+        $desc_escaped = htmlspecialchars($desc);
+        $sections->set_var('topic_description_escaped', $desc_escaped);
+        if (! empty($desc)) {
+            $sections->set_var('topic_title_attribute',
+                               'title="' . $desc_escaped . '"');
+        } else {
+            $sections->set_var('topic_title_attribute', '');
+        }
 
         if(( $A['tid'] == $topic ) && ( $page == 1 ))
         {

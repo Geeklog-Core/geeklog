@@ -27,49 +27,45 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------|
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(__FILE__)) !== FALSE) {
-    die ('This file can not be used on its own.');
-}
-
 global $LANG32;
 
-$LANG_XMLSMAP = array (
-    'plugin'            => 'XMLSitemap',
-    'admin'             => 'XMLSitemap管理',
+$LANG_XMLSMAP = array(
+    'plugin' => 'XMLSitemap',
+    'admin' => 'XMLSitemap管理'
 );
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['xmlsitemap'] = array(
-    'label' => $LANG_XMLSMAP['plugin'],
-    'title' => $LANG_XMLSMAP['plugin'] . 'の設定',
+    'label' => 'XMLSitemap',
+    'title' => 'XMLSitemapの設定'
 );
 
 $LANG_confignames['xmlsitemap'] = array(
-    'sitemap_file'        => 'サイトマップファイル名',
+    'sitemap_file' => 'サイトマップファイル名',
     'mobile_sitemap_file' => 'モバイルサイトマップ名',
-    'types'               => 'サイトマップの内容',
-    'exclude'             => '除外するプラグイン',
-    'priorities'          => '',
-    'frequencies'         => '',
+    'types' => 'サイトマップの内容',
+    'exclude' => '除外するプラグイン',
+    'priorities' => '',
+    'frequencies' => ''
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => '主要設定',
+    'sg_main' => '主要設定'
 );
 
 $LANG_fs['xmlsitemap'] = array(
-    'fs_main' => $LANG_XMLSMAP['plugin'] . 'の主要設定',
-    'fs_pri'  => '優先度（既定値 = 0.5、0.0 = 最低、1.0 = 最高）',
-    'fs_freq' => '更新頻度',
+    'fs_main' => 'XMLSitemapの主要設定',
+    'fs_pri' => '優先度（既定値 = 0.5、0.0 = 最低、1.0 = 最高）',
+    'fs_freq' => '更新頻度'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never'),
+    20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never')
 );
 
 ?>

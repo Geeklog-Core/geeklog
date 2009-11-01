@@ -155,9 +155,13 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $sp_template->set_var('site_url', $_CONF['site_url']);
     $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_template->set_var('start_block_editor',
-            COM_startBlock($LANG_STATIC['staticpageeditor']), '',
-                    COM_getBlockTemplate('_admin_block', 'header'));
+
+    $token = SEC_createToken();
+    $start_block = COM_startBlock($LANG_STATIC['staticpageeditor'], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $start_block .= SEC_getTokenExpiryNotice($token);
+
+    $sp_template->set_var('start_block_editor', $start_block);
     $sp_template->set_var('lang_save', $LANG_ADMIN['save']);
     $sp_template->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $sp_template->set_var('lang_preview', $LANG_ADMIN['preview']);
@@ -387,7 +391,7 @@ function staticpageeditor_form($A, $error = false)
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $sp_template->set_var('xhtml', XHTML);
     $sp_template->set_var('gltoken_name', CSRF_TOKEN);
-    $sp_template->set_var('gltoken', SEC_createToken());
+    $sp_template->set_var('gltoken', $token);
     $sp_template->parse('output', 'form');
         $retval .= $sp_template->finish($sp_template->get_var('output'));
 
@@ -551,12 +555,13 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
-                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
-                           $owner_id, $group_id, $perm_owner, $perm_group,
-                           $perm_members, $perm_anon, $sp_php, $sp_nf,
-                           $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
-                           $sp_where, $sp_inblock, $postmode, $meta_description, $meta_keywords)
+function submitstaticpage($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
+                          $sp_format, $sp_onmenu, $sp_label, $commentcode,
+                          $owner_id, $group_id, $perm_owner, $perm_group,
+                          $perm_members, $perm_anon, $sp_php, $sp_nf,
+                          $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
+                          $sp_where, $sp_inblock, $postmode, $meta_description,
+                          $meta_keywords)
 {
     global $_CONF, $_TABLES, $LANG12, $LANG_STATIC, $_SP_CONF;
 

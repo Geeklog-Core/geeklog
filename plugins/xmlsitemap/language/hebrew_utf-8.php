@@ -27,15 +27,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------|
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(__FILE__)) !== FALSE) {
-    die ('This file can not be used on its own.');
-}
-
 global $LANG32;
 
 $LANG_XMLSMAP = array(
-    'plugin'            => 'XMLSitemap',
-    'admin'		        => 'ניהול XMLSitemap',
+    'plugin' => 'XMLSitemap',
+    'admin' => 'ניהול XMLSitemap'
 );
 
 // Localization of the Admin Configuration UI
@@ -45,31 +41,31 @@ $LANG_configsections['xmlsitemap'] = array(
 );
 
 $LANG_confignames['xmlsitemap'] = array(
-    'sitemap_file'        => 'שם קובץ Sitemap',
+    'sitemap_file' => 'שם קובץ Sitemap',
     'mobile_sitemap_file' => 'שם קובץ Mobile Sitemap',
-    'types'               => 'תוכן ה-sitemap',
-    'exclude'             => 'Plugins שלא יכללו ב-sitemap',
-    'priorities'          => '',
-    'frequencies'         => '',
+    'types' => 'תוכן ה-sitemap',
+    'exclude' => 'Plugins שלא יכללו ב-sitemap',
+    'priorities' => '',
+    'frequencies' => ''
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'הגדרות כלליות',
+    'sg_main' => 'הגדרות כלליות'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'ההגדרות הכלליות של XMLSitemap',
-    'fs_pri'  => 'עדיפות (ברירת המחדל = 0.5, הכי נמוך = 0.0, הכי גבוה = 1.0)',
-    'fs_freq' => 'תדירות עדכונים',
+    'fs_pri' => 'עדיפות (ברירת המחדל = 0.5, הכי נמוך = 0.0, הכי גבוה = 1.0)',
+    'fs_freq' => 'תדירות עדכונים'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('כן' => 1, 'לא' => 0),
-    1 => array('כן' => TRUE, 'לא' => FALSE),
+    1 => array('כן' => true, 'לא' => false),
     9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never'),
+    20 => array('תמיד' => 'always', 'כל שעה' => 'hourly', 'יומי' => 'daily', 'שבועי' => 'weekly', 'חודשי' => 'monthly', 'שנתי' => 'yearly', 'אף פעם' => 'never')
 );
 
 ?>

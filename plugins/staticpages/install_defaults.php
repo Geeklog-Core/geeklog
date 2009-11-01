@@ -97,6 +97,24 @@ $_SP_DEFAULT['show_date'] = 1;
 $_SP_DEFAULT['filter_html'] = 0;
 $_SP_DEFAULT['censor'] = 1;
 
+// What's New Block
+$_SP_DEFAULT['new_staticpages_interval'] = 1209600; // 2 weeks
+$_SP_DEFAULT['hide_new_staticpages'] = 0;
+$_SP_DEFAULT['title_trim_length'] = 20;
+$_SP_DEFAULT['include_centerblocks'] = 0;
+$_SP_DEFAULT['include_PHP'] = 0;
+
+// Search Results Filter
+$_SP_DEFAULT['include_search'] = 1;
+$_SP_DEFAULT['include_search_centerblocks'] = 0;
+$_SP_DEFAULT['include_search_PHP'] = 0;
+
+// The maximum number of items displayed when an Atom feed is requested
+$_SP_DEFAULT['atom_max_items'] = 10;
+
+// Display Meta Tags for static pages (1 = show, 0 = don't) 
+$_SP_DEFAULT['meta_tags'] = 0;
+
 // Define default permissions for new pages created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -106,11 +124,6 @@ $_SP_DEFAULT['censor'] = 1;
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_SP_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 
-// The maximum number of items displayed when an Atom feed is requested
-$_SP_DEFAULT['atom_max_items'] = 10;
-
-// Display Meta Tags for static pages (1 = show, 0 = don't) 
-$_SP_DEFAULT['meta_tags'] = 0;
 
 /**
 * Initialize Static Pages plugin configuration
@@ -161,11 +174,33 @@ function plugin_initconfig_staticpages()
                 0, 0, null, 110, true, 'staticpages');
         $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select',
                 0, 0, 0, 120, true, 'staticpages');
+
+        $c->add('fs_whatsnew', NULL, 'fieldset',
+                0, 1, NULL, 0, true, 'staticpages');
+        $c->add('newstaticpagesinterval',$_SP_DEFAULT['new_staticpages_interval'],'text',
+                0, 1, NULL, 10, TRUE, 'staticpages');
+        $c->add('hidenewstaticpages',$_SP_DEFAULT['hide_new_staticpages'],'select',
+                0, 1, 0, 20, TRUE, 'staticpages');
+        $c->add('title_trim_length',$_SP_DEFAULT['title_trim_length'],'text',
+                0, 1, NULL, 30, TRUE, 'staticpages');
+        $c->add('includecenterblocks',$_SP_DEFAULT['include_centerblocks'],'select',
+                0, 1, 0, 40, TRUE, 'staticpages');
+        $c->add('includephp',$_SP_DEFAULT['include_PHP'],'select',
+                0, 1, 0, 50, TRUE, 'staticpages');        
+        
+        $c->add('fs_search', NULL, 'fieldset',
+                0, 2, NULL, 0, true, 'staticpages');
+        $c->add('includesearch', $_SP_DEFAULT['include_search'], 'select',
+                0, 2, 0, 10, true, 'staticpages');
+        $c->add('includesearchcenterblocks',$_SP_DEFAULT['include_search_centerblocks'],'select',
+                0, 2, 0, 20, TRUE, 'staticpages');
+        $c->add('includesearchphp',$_SP_DEFAULT['include_search_PHP'],'select',
+                0, 2, 0, 30, TRUE, 'staticpages');   
         
         $c->add('fs_permissions', NULL, 'fieldset',
-                0, 1, NULL, 0, true, 'staticpages');
-        $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],
-                '@select', 0, 1, 12, 120, true, 'staticpages');
+                0, 3, NULL, 0, true, 'staticpages');
+        $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],'@select',
+                0, 3, 12, 120, true, 'staticpages');
 
     }
 

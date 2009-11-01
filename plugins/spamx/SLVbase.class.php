@@ -13,7 +13,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLVbase.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'slvbase.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

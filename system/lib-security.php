@@ -1178,6 +1178,63 @@ function SEC_checkToken()
 }
 
 /**
+* Get a token's expiry time
+*
+* @param    string  $token  the token we're looking for
+* @return   int             UNIX timestamp of the expiry time or 0
+*
+*/
+function SEC_getTokenExpiryTime($token)
+{
+    global $_TABLES, $_USER;
+
+    $retval = 0;
+
+    if (!COM_isAnonUser()) {
+
+        $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+        $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+
+        $result = DB_query($sql);
+        if (DB_numRows($result) == 1) {
+            list($retval) = DB_fetchArray($result);
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Create a message informing the user when the security token is about to expire
+*
+* @param    string  $token      the token
+* @param    string  $extra_msg  (optional) additional text to include in notice
+* @return   string              formatted HTML of message
+*
+*/
+function SEC_getTokenExpiryNotice($token, $extra_msg = '')
+{
+    global $_CONF, $LANG_ADMIN;
+
+    $retval = '';
+
+    $expirytime = SEC_getTokenExpiryTime($token);
+    if ($expirytime > 0) {
+        $exptime = '<span id="token-expirytime">'
+                 . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+        $retval .= '<p id="token-expirynotice">'
+                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
+        if (! empty($extra_msg)) {
+            $retval .= ' ' . $extra_msg;
+        }
+
+        $retval .= '</p>' . LB;
+    }
+
+    return $retval;
+}
+
+/**
 * Set a cookie using the HttpOnly flag
 *
 * Use this function to set "important" cookies (session, password, ...).
@@ -1220,6 +1277,76 @@ function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null,
     }
 
     return $retval;
+}
+
+/**
+* Prepare an array of the standard permission values
+*
+* This helper functions does the following:
+* 1) filter permission values, e.g. after a POST request
+* 2) translates the permission checkbox arrays into numerical values
+* 3) ensures that all the standard permission entries are set, so you don't
+*    have to check with isset() all the time
+*
+* <code>
+* $PERM = SEC_filterPermissions($_POST);
+* if ($PERM['perm_anon'] != 0) { ...
+* </code>
+*
+* @param    array   $A  array to filter on, e.g. $_POST
+* @return   array       array of only the 6 standard permission values
+* @see      SEC_getPermissionValues
+*
+*/
+function SEC_filterPermissions($A)
+{
+    $retval = array();
+
+    if (isset($A['owner_id'])) {
+        $retval['owner_id'] = COM_applyFilter($A['owner_id'], true);
+    } else {
+        $retval['owner_id'] = 0;
+    }
+
+    if (isset($A['group_id'])) {
+        $retval['group_id'] = COM_applyFilter($A['group_id'], true);
+    } else {
+        $retval['group_id'] = 0;
+    }
+
+    $perms = array('perm_owner', 'perm_group', 'perm_members', 'perm_anon');
+
+    $B = array();
+    foreach ($perms as $p) {
+        if (isset($A[$p])) {
+            $B[$p] = $A[$p];
+        } else {
+            $B[$p] = array();
+        }
+    }
+
+    $B = SEC_getPermissionValues($B['perm_owner'], $B['perm_group'],
+                                 $B['perm_members'], $B['perm_anon']);
+    for ($i = 0; $i < 4; $i++) {
+        $retval[$perms[$i]] = $B[$i];
+    }
+
+    return $retval;
+}
+
+/**
+* Helper function for when you want to call SEC_hasAccess and have all the
+* values to check in an array.
+*
+* @param    array   $A  array with the standard permission values
+* @return   int         returns 3 for read/edit 2 for read only 0 for no access
+* @see      SEC_hasAccess
+*
+*/
+function SEC_hasAccess2($A)
+{
+    return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                         $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 }
 
 ?>

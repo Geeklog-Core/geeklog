@@ -83,7 +83,7 @@
              <tr id="html_editarea" style="display:{show_htmleditor};">
                 <td colspan="2" style="margin-top:10px;border:1px solid #CCC;">
                   <textarea id="html_content" name="sp_content" cols="45" rows="24" style="width:100%" wrap="virtual">{sp_content}</textarea>
-                  <div class="warningsmall" style="padding:10px;">{lang_allowedhtml}</div>
+                  <div class="warningsmall" style="padding:10px;">{lang_allowed_html}</div>
                 </td>
              </tr>
           <tr>

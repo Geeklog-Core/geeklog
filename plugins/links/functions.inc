@@ -186,6 +186,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
             if (empty($autotag['parm2'])) {
                 $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
                 list($siteurl, $linktext) = DB_fetchArray($result);
+                $linktext = stripslashes($linktext);
             } else {
                 $linktext = $autotag['parm2'];
                 $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
@@ -367,25 +368,16 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     $sql .= "FROM {$_TABLES['links']} WHERE date <> 1 ";
     $sql .= COM_getPermSQL('AND') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
     }
 
     $search = new SearchCriteria('links', $LANG_LINKS[14]);
+
     $columns = array('title' => 'title', 'description');
+    $sql .= $search->getDateRangeSQL('AND', 'date', $datestart, $dateend);
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
     $search->setRank(3);

@@ -27,15 +27,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------|
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(__FILE__)) !== FALSE) {
-    die ('This file can not be used on its own.');
-}
-
 global $LANG32;
 
 $LANG_XMLSMAP = array(
-    'plugin'            => 'XMLSitemap',
-    'admin'		        => 'XMLSitemap Admin',
+    'plugin' => 'XMLSitemap',
+    'admin' => 'XMLSitemap Admin'
 );
 
 // Localization of the Admin Configuration UI
@@ -45,31 +41,31 @@ $LANG_configsections['xmlsitemap'] = array(
 );
 
 $LANG_confignames['xmlsitemap'] = array(
-    'sitemap_file'        => 'Saidikaardi faili nimi',
+    'sitemap_file' => 'Saidikaardi faili nimi',
     'mobile_sitemap_file' => 'Mobile Saidikaardi faili nimi',
-    'types'               => 'Saidikaardi sisu',
-    'exclude'             => 'Saidikaardilt väljajäätavad pluginad',
-    'priorities'          => '',
-    'frequencies'         => '',
+    'types' => 'Saidikaardi sisu',
+    'exclude' => 'Saidikaardilt väljajäätavad pluginad',
+    'priorities' => '',
+    'frequencies' => ''
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'Peaseaded',
+    'sg_main' => 'Peaseaded'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap peaseaded',
-    'fs_pri'  => 'Prioriteet (vaikimisi = 0,5, madalaim = 0,0, kõrgeim= 1,0)',
-    'fs_freq' => 'Uuendamise sagedus',
+    'fs_pri' => 'Prioriteet (vaikimisi = 0,5, madalaim = 0,0, kõrgeim= 1,0)',
+    'fs_freq' => 'Uuendamise sagedus'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['xmlsitemap'] = array(
-        0 => array('Jah' => 1, 'Ei' => 0),
+    0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
-9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
-            12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
-    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never'),
+    9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    20 => array('Alati' => 'always', 'Tunni tagant' => 'hourly', 'päeva tagant' => 'daily', 'nädala tagant' => 'weekly', 'kuu tagant' => 'monthly', 'aasta tagant' => 'yearly', 'mitte kunagi' => 'never')
 );
 
 ?>

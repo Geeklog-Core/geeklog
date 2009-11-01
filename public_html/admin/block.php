@@ -33,7 +33,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Block administration page: Create, edit, delete, move, enable/disable blocks
+* for the left and right sidebars of your Geeklog site.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -94,6 +107,8 @@ function editdefaultblock ($A, $access)
 
     $retval .= COM_startBlock ($LANG21[3], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
+    $token = SEC_createToken();
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','defaultblockeditor.thtml');
@@ -164,10 +179,11 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->set_var('max_url_length', 255);
     $block_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $block_templates->set_var('gltoken', SEC_createToken());
+    $block_templates->set_var('gltoken', $token);
     $block_templates->parse('output','editor');
+
     $retval .= $block_templates->finish($block_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -238,14 +254,18 @@ function editblock ($bid = '')
         $access = 3;
     }
 
+    $token = SEC_createToken();
+
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('xhtml', XHTML);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
-    $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
-            '', COM_getBlockTemplate ('_admin_block', 'header')));
+    $block_start = COM_startBlock($LANG21[3], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $block_start .= LB . SEC_getTokenExpiryNotice($token);
+    $block_templates->set_var('start_block_editor', $block_start);
 
     if (!empty($bid) && SEC_hasrights('block.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -354,9 +374,9 @@ function editblock ($bid = '')
         $block_templates->set_var ('allow_autotags', '');
     }
     $block_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $block_templates->set_var('gltoken', SEC_createToken());
-    $block_templates->set_var ('end_block',
-            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+    $block_templates->set_var('gltoken', $token);
+    $block_templates->set_var('end_block',
+            COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
 
@@ -642,6 +662,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 function reorderblocks()
 {
     global $_TABLES;
+
     $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -670,12 +691,12 @@ function reorderblocks()
 /**
 * Move blocks UP, Down and Switch Sides - Left and Right
 *
+* NOTE: Does not return.
+*
 */
 function moveBlock()
 {
     global $_CONF, $_TABLES, $LANG21;
-
-    $retval = '';
 
     $bid = COM_applyFilter($_GET['bid']);
     $where = COM_applyFilter($_GET['where']);
@@ -705,9 +726,8 @@ function moveBlock()
     } else {
         COM_errorLog("block admin error: Attempt to move an non existing block id: $bid");
     }
-    echo COM_refresh($_CONF['site_admin_url'] . "/block.php");
+    echo COM_refresh($_CONF['site_admin_url'] . '/block.php');
     exit;
-    return $retval;
 }
 
 

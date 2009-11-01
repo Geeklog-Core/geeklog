@@ -52,7 +52,7 @@ function plugin_autoinstall_polls($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '2.1.1',
-        'pi_gl_version'   => '1.6.0',
+        'pi_gl_version'   => '1.6.1',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
@@ -139,6 +139,14 @@ function plugin_compatible_with_this_version_polls($pi_name)
     }
 
     if (! function_exists('COM_showMessageText')) {
+        return false;
+    }
+
+    if (! isset($_CONF['meta_tags'])) {
+        return false;
+    }
+
+    if (! function_exists('SEC_getTokenExpiryNotice')) {
         return false;
     }
 

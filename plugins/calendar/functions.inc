@@ -34,6 +34,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Implementation of the Plugin API for the Calendar plugin
+*
+* @package Calendar
+*/
+
 if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.inc') !== false) {
     die('This file can not be used on its own.');
 }
@@ -342,7 +348,7 @@ function plugin_moderationvalues_calendar()
     return array (
         'eid',
         $_TABLES['events'],
-        "eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url",
+        "eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url,owner_id",
         $_TABLES['eventsubmission']
     );
 }
@@ -359,25 +365,25 @@ function plugin_moderationvalues_calendar()
 * @return     string       Any wanted HTML output
 *
 */
-function plugin_moderationapprove_calendar ($id)
+function plugin_moderationapprove_calendar($id)
 {
     global $_CA_CONF, $_GROUPS, $_TABLES, $_USER;
 
-    $A = array ();
-    SEC_setDefaultPermissions ($A, $_CA_CONF['default_permissions']);
+    // The eventsubmission table only keeps track of the submitter's uid,
+    // but not of grous and permissions. So set those to sensible defaults.
 
-    // Since the eventsubmission table does not contain fields for the owner
-    // and group, we set those to the current user. Also set the default
-    // permissions as specified in the plugin's configuration
-    if (isset ($_GROUPS['Calendar Admin'])) {
+    if (isset($_GROUPS['Calendar Admin'])) {
         $group_id = $_GROUPS['Calendar Admin'];
     } else {
-        $group_id = SEC_getFeatureGroup ('calendar.moderate');
+        $group_id = SEC_getFeatureGroup('calendar.moderate');
     }
-    DB_query ("UPDATE {$_TABLES['events']} SET owner_id = '{$_USER['uid']}',"
-             ."group_id = '$group_id',perm_owner = {$A['perm_owner']}, "
-             ."perm_group = {$A['perm_group']}, perm_members = {$A['perm_members']},"
-             ."perm_anon = {$A['perm_anon']} WHERE eid = $id");
+
+    $A = array();
+    SEC_setDefaultPermissions($A, $_CA_CONF['default_permissions']);
+
+    DB_query("UPDATE {$_TABLES['events']} SET group_id = '$group_id', perm_owner = '{$A['perm_owner']}', perm_group = '{$A['perm_group']}', perm_members = '{$A['perm_members']}', perm_anon = '{$A['perm_anon']}' WHERE eid = '$id'");
+
+    return '';
 }
 
 /**
@@ -479,7 +485,7 @@ function plugin_savesubmission_calendar($A)
     // pseudo-formatted event description for the spam check
     $spamcheck = '';
     if (empty($A['url'])) {
-        $spamcheck .= $title;
+        $spamcheck .= $A['title'];
     } else {
         $spamcheck .= COM_createLink($A['title'], $A['url']);
     }
@@ -572,9 +578,15 @@ function plugin_savesubmission_calendar($A)
         if (($_CA_CONF['eventsubmission'] == 1) &&
                 !SEC_hasRights('calendar.submit')) {
 
+            if (COM_isAnonUser()) {
+                $uid = 1;
+            } else {
+                $uid = $_USER['uid'];
+            }
+
             DB_save ($_TABLES['eventsubmission'],
-                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',
-                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+                     'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',
+                     "{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$uid}");
 
             if (isset ($_CA_CONF['notification']) &&
                     ($_CA_CONF['notification'] == 1)) {
@@ -1440,7 +1452,7 @@ function plugin_chkVersion_calendar()
 */
 function plugin_upgrade_calendar()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'calendar'");
@@ -1458,6 +1470,34 @@ function plugin_upgrade_calendar()
 
     $inst_parms = plugin_autoinstall_calendar('calendar');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+
+    require_once $_CONF['path'] . 'plugins/calendar/sql/'
+                                . $_DB_dbms . '_updates.php';
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '1.0.3':
+            $current_version = '1.1.0';
+            break;
+
+        case '1.1.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '1.1.1';
+            break;
+
+        default:
+            $done = true;
+            break;
+        }
+    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'calendar'");
 
@@ -1634,26 +1674,17 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     $sql = COM_getPermSQL('AND') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
     }
 
     // Search the public events
     $search_e = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[24]));
+
     $columns = array('title' => 'title', 'location', 'description');
+    $sql .= $search_e->getDateRangeSQL('AND', 'datestart', $datestart, $dateend);
     list($sql_tmp,$ftsql_tmp) = $search_e->buildSearchSQL($keyType, $query, $columns, $sql_e . $sql);
+
     $search_e->setSQL($sql_tmp);
     $search_e->setFTSQL($ftsql_tmp);
     $search_e->setRank(2);
@@ -1664,8 +1695,10 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
 
     // Search personal events
     $search_p = new SearchCriteria('calendar', array($LANG_CAL_1[16],$LANG_CAL_1[23]));
+
     $columns = array('title' => 'title', 'location', 'description');
     list($sql_tmp,$ftsql_tmp) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql_p . $sql);
+
     $search_p->setSQL($sql_tmp);
     $search_p->setFTSQL($ftsql_tmp);
     $search_p->setRank(2);

@@ -276,8 +276,8 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
     // Meta Tags
     If ($_SP_CONF['meta_tags'] > 0) {
-        $meta_description  = stripslashes ($A['meta_description']);
-        $meta_keywords  = stripslashes ($A['meta_keywords']);
+        $meta_description  = $A['meta_description'];
+        $meta_keywords  = $A['meta_keywords'];
         $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
     }
 
@@ -572,11 +572,13 @@ function plugin_statssummary_staticpages()
 */
 function plugin_searchtypes_staticpages()
 {
-    global $LANG_STATIC;
+    global $LANG_STATIC, $_SP_CONF;
 
-    $tmp['staticpages'] = $LANG_STATIC['staticpages'];
-
-    return $tmp;
+    if ($_SP_CONF['includesearch'] == 1) {
+        $tmp['staticpages'] = $LANG_STATIC['staticpages'];
+        
+        return $tmp;
+    }
 }
 
 
@@ -598,7 +600,11 @@ function plugin_searchtypes_staticpages()
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage)
 {
-    global $_TABLES, $LANG_STATIC;
+    global $_TABLES, $_DB_dbms, $LANG_STATIC, $LANG09, $_SP_CONF;
+
+    if ($_SP_CONF['includesearch'] != 1) {
+        return;
+    }
 
     // Make sure the query is SQL safe
     $query = trim(addslashes($query));
@@ -610,31 +616,52 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1) ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(sp_date) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author') ";
     }
 
-    $search = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
-    $columns = array('title' => 'sp_title', 'sp_content');
-    list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
-    $search->setSQL($sql);
-    $search->setFTSQL($ftsql);
-    $search->setRank(3);
-    $search->setURLRewrite(true);
+    $search_p = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
 
-    return $search;
+    $columns = array('title' => 'sp_title', 'sp_content');
+    $sql .= $search_p->getDateRangeSQL('AND', 'sp_date', $datestart, $dateend);
+    list($sql,$ftsql) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $search_p->setSQL($sql);
+    $search_p->setFTSQL($ftsql);
+    $search_p->setRank(3);
+    $search_p->setURLRewrite(true);
+
+    // Search static page comments
+    $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
+    $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
+
+    // MSSQL has a problem when concatenating numeric values
+    if ($_DB_dbms == 'mssql') {
+        $sql .= "'/comment.php?mode=view&amp;cid=' + CAST(c.cid AS varchar(10)) AS url ";
+    } else {
+        $sql .= "CONCAT('/comment.php?mode=view&amp;cid=',c.cid) AS url ";
+    }
+
+    $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
+    $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
+    $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sid','AND','s') . ") ";
+    $sql .= "WHERE (u.uid = c.uid) AND (s.commentcode >= 0) AND (s.sp_date <= NOW()) ";
+
+    if (!empty($author)) {
+        $sql .= "AND (c.uid = '$author') ";
+    }
+
+    $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'],$LANG09[66]));
+
+    $columns = array('title' => 'c.title', 'comment');
+    $sql .= $search_c->getDateRangeSQL('AND', 'c_date', $datestart, $dateend);
+    list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
+
+    $search_c->setSQL($sql);
+    $search_c->setFTSQL($ftsql);
+    $search_c->setRank(2);
+
+    return array($search_p, $search_c);
 }
 
 
@@ -1018,7 +1045,7 @@ function plugin_upgrade_staticpages()
 
     $inst_parms = plugin_autoinstall_staticpages('staticpages');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-    
+
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
                                 . $_DB_dbms . '_updates.php';
 
@@ -1038,16 +1065,16 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
-            
-            update_ConfValues_1_6_0();            
-            
+
+            update_ConfValues_1_6_0();
+
             $current_version = '1.6.1';
             break;
 
         default:
             $done = true;
         }
-    }    
+    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'staticpages'");
 
@@ -1094,7 +1121,9 @@ function plugin_autouninstall_staticpages ()
         /* give the name of the tables, without $_TABLES[] */
         'tables' => array('staticpage'),
         /* give the full name of the group, as in the db */
-        'groups' => array('Static Page Admin'),
+        'groups' => array('Static Page Admin', // correct Admin group name
+                          'Static Pages Admin' // typo in Geeklog 1.6.0
+                         ),
         /* give the full name of the feature, as in the db */
         'features' => array('staticpages.edit', 'staticpages.delete', 'staticpages.PHP'),
         /* give the full name of the block, including 'phpblock_', etc */
@@ -1227,6 +1256,97 @@ function SP_render_content ($sp_content, $sp_php)
 function plugin_wsEnabled_staticpages()
 {
     return true;
+}
+
+/**
+* Return headlines for New Static Pages section in the What's New block, if enabled
+*
+* @return   mixed       array(headline, byline), or boolean false if disabled
+*
+*/
+function plugin_whatsnewsupported_staticpages()
+{
+    global $_SP_CONF, $LANG_STATIC, $LANG_WHATSNEW;
+
+    if ($_SP_CONF['hidenewstaticpages'] == 0) {
+        $retval = array($LANG_STATIC['pages'],
+                        COM_formatTimeString($LANG_WHATSNEW['new_last'],
+                                             $_SP_CONF['newstaticpagesinterval'])
+                       );
+    } else {
+        $retval = false;
+    }
+
+    return $retval;
+}
+
+/**
+* Return new Static Pages for the What's New block
+*
+* @return   string  HTML list of new staticpages
+*
+*/
+function plugin_getwhatsnew_staticpages()
+{
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
+
+    $retval = '';
+
+    $extra_sql = "";
+    if ($_SP_CONF['includecenterblocks'] == 0) {
+        $extra_sql =' AND sp_centerblock = 0';
+    }
+    if ($_SP_CONF['includephp'] == 0) {
+        $extra_sql .=' AND sp_php = 0';
+    }
+    
+    $sql = "SELECT sp_id, sp_title 
+        FROM {$_TABLES['staticpage']} 
+        WHERE NOT ISNULL(sp_content) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        {$extra_sql} 
+        " . COM_getPermSQL( 'AND' ) . " 
+        ORDER BY sp_date DESC LIMIT 15";
+
+    $result = DB_query( $sql );
+
+    $nrows = DB_numRows( $result );
+
+    if( $nrows > 0)
+    {
+        $newstaticpages = array();
+
+        for( $x = 0; $x < $nrows; $x++ )
+        {
+            $A = DB_fetchArray( $result );
+
+            $url = COM_buildUrl( $_CONF['site_url']
+                . '/staticpages/index.php?page=' . $A['sp_id'] );                
+
+            $title = COM_undoSpecialChars( stripslashes( $A['sp_title'] ));
+            $titletouse = COM_truncate( $title, $_SP_CONF['title_trim_length'],
+                                        '...' );
+            if( $title != $titletouse )
+            {
+                $attr = array('title' => htmlspecialchars($title));
+            }
+            else
+            {
+                $attr = array();
+            }
+            $astaticpage = str_replace( '$', '&#36;', $titletouse );
+            $astaticpage = str_replace( ' ', '&nbsp;', $astaticpage );
+
+            $newstaticpages[] = COM_createLink($astaticpage, $url, $attr);
+        }
+
+        $retval .= COM_makeList( $newstaticpages, 'list-new-comments' );
+    }
+    else
+    {
+        $retval .= $LANG_STATIC['no_new_pages'] . '<br' . XHTML . '>' . LB;
+    }
+
+    return $retval;
 }
 
 /**

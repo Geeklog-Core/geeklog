@@ -46,13 +46,13 @@ function plugin_autoinstall_staticpages($pi_name)
 {
     $pi_name         = 'staticpages';
     $pi_display_name = 'Static Pages';
-    $pi_admin        = $pi_display_name . ' Admin';
+    $pi_admin        = 'Static Page Admin'; // "Page"(!), not "Pages"
 
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.6.1',
-        'pi_gl_version'   => '1.6.0',
+        'pi_gl_version'   => '1.6.1',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
@@ -139,6 +139,14 @@ function plugin_compatible_with_this_version_staticpages($pi_name)
     }
 
     if (! function_exists('COM_setLangIdAndAttribute')) {
+        return false;
+    }
+
+    if (! isset($_CONF['meta_tags'])) {
+        return false;
+    }
+
+    if (! function_exists('SEC_getTokenExpiryNotice')) {
         return false;
     }
 

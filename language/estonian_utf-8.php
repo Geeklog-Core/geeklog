@@ -825,7 +825,10 @@ $LANG24 = array(
     85 => 'Näita kõik',
     86 => 'Keerukam toimetaja',
     87 => 'Lugude statistika',
-    88 => 'Wiki-laadne formaat'
+    88 => 'Wiki-laadne formaat',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 ###############################################################################
@@ -860,7 +863,8 @@ $LANG27 = array(
     26 => 'määra see rubriik arhiveeritud lugude  jaoks vaikerubriigiks. Ainult üks rubriik on lubatud.',
     27 => 'või lae rubriigi ikoon',
     28 => 'Maksimum',
-    29 => 'Vead faili üleslaadimisel'
+    29 => 'Vead faili üleslaadimisel',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1062,6 +1066,7 @@ $LANG32 = array(
     39 => 'Lae plugin',
     40 => 'Sa võid otse siin laadida plugina arhiivi (.tar.gz, .tgz, .zip):',
     41 => 'Lae ülesse',
+    42 => 'Click to update',
     99 => 'Oli tundmatu viga',
     100 => 'OK.',
     101 => 'Ülesse laetud faili suurus ületab php.ini failis oleva upload_max_filesize direktiivi.',
@@ -1323,7 +1328,26 @@ $LANG_DB_BACKUP = array(
     'size' => 'suurus',
     'bytes' => 'baiti',
     'total_number' => 'Varunduste üldarv: %d',
-    'download' => 'Klõpsa selle faili allalaadimiseks'
+    'download' => 'Klõpsa selle faili allalaadimiseks',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1472,7 +1496,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" ei tohiks kunagi olla osa  sinu saidi URList.  Palun loe public_html kohta käivat osa %s uuesti ja muuda enne jätkamist vastavalt lehe seadistust.',
     'installation' => 'Installeerimisjuhised',
     'directory' => 'Kaust',
-    'failed_bak' => 'Ebaõnnestus data kausta ajutiste failide kausta loomine. Kontrolli kausta õigusi!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'See on turvarisk ja see tuleb parandada!',
     'reachable' => 'Sinu %s on veebist kättesaadav.',
     'not_reachable' => 'Hea! Sinu %s pole veebist kättesaadav.',
@@ -1572,7 +1596,10 @@ $LANG_ADMIN = array(
     'addchild' => 'Lisa alamdetail',
     'list' => 'Loetelu',
     'list_all' => 'Loetle kõik',
-    'na' => 'N/A'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'N/A',
+    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1838,17 +1865,22 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => 'Keela autolingid?',
     'clickable_links' => 'Tee URL-id klikitavaks?',
     'compressed_output' => 'Saada väljund tihendatult?',
+    'frame_options' => 'Kaitse "clickjacking" vastu',
     'censormode' => 'Tsensuurireþiim?',
     'censorreplace' => 'Tsensuuri asendustekst',
     'censorlist' => 'Tsenseerimisloetelu',
     'ip_lookup' => 'IP otsing',
     'url_rewrite' => 'Luba URL-i ülekirjutamine',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Bloki vaikimisi õigused',
     'default_permissions_story' => 'Lugude vaikimisi õigused',
     'default_permissions_topic' => 'Rubriigi vaikimisi õigused',
     'atom_max_stories' => 'Maks. lugusid veebiteenuste lõimedes',
     'disable_webservices' => 'Keela veebiteenused?',
     'restrict_webservices' => 'Piira veebiteenused?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Sulge kommenteerimine päevaga (vaikimisi)',
     'comment_close_rec_stories' => 'Uusimate lugude arv, mida on lubatud kommenteerida',
     'allow_reply_notifications' => 'Luba kommentaarile vastamisest teavitamine?',
@@ -1859,8 +1891,7 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => 'Luba kasutajal tulemusi sorteerida?',
     'search_show_limit' => 'Näita lehe limiiti?',
     'search_separator' => 'Grupi eraldaja',
-    'search_def_keytype' => 'Vaikimisi otsimisviis',
-    'frame_options' => 'Kaitse "clickjacking" vastu'
+    'search_def_keytype' => 'Vaikimisi otsimisviis'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1941,9 +1972,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Tabel' => 'table'),
     20 => array('Täpne fraas' => 'phrase', 'Kõik sõnad' => 'all', 'Mõni sõnadest' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-        22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN',
-'(väljas)' => '')
-
+    22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN', '(väljas)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

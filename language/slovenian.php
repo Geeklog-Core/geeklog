@@ -827,7 +827,10 @@ $LANG24 = array(
     85 => 'Pokaži vse',
     86 => 'Napredni urejevalnik',
     87 => 'Statistike èlankov',
-    88 => 'Wiki-style format'
+    88 => 'Wiki-style format',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 ###############################################################################
@@ -862,7 +865,8 @@ $LANG27 = array(
     26 => 'Naredi to rubriko privzeto za arhivirane èlanke. Dovoljena je samo ena rubrika.',
     27 => 'ali naloži ikono za rubriko',
     28 => 'Najveè',
-    29 => 'Napake pri nalaganju datotek'
+    29 => 'Napake pri nalaganju datotek',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -1064,6 +1068,7 @@ $LANG32 = array(
     39 => 'Upload a plugin',
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
+    42 => 'Click to update',
     99 => 'An unknown error occured',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
@@ -1325,7 +1330,26 @@ $LANG_DB_BACKUP = array(
     'size' => 'Velikost',
     'bytes' => 'Bajtov',
     'total_number' => 'Skupno število varnostnih kopij: %d',
-    'download' => 'Kliknite za prenos datoteke'
+    'download' => 'Kliknite za prenos datoteke',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1474,7 +1498,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
     'installation' => 'installation instructions',
     'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'This is a security risk and should be fixed!',
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
@@ -1574,7 +1598,10 @@ $LANG_ADMIN = array(
     'addchild' => 'Dodaj novo (child)',
     'list' => 'izpiši',
     'list_all' => 'Izpiši vse',
-    'na' => 'N/A'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'N/A',
+    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1846,12 +1873,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'seznam cenzur',
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'Omogoèi URL prepisovanje (Rewrite)',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => 'Prednastavljena dovoljenja bloka',
     'default_permissions_story' => 'Prednastavljena dovoljenja èlanka',
     'default_permissions_topic' => 'Prednastavljena dovoljenja rubrike',
     'atom_max_stories' => 'Najveèje število èlankov v Webservices Feed',
     'disable_webservices' => 'Onemogoèi Webservices?',
     'restrict_webservices' => 'Omeji Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1943,7 +1974,8 @@ $LANG_configselects['Core'] = array(
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
-    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => '')
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
 );
 
 ?>

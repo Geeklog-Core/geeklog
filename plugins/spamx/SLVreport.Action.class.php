@@ -13,7 +13,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'SLVreport.Action.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'slvreport.action.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

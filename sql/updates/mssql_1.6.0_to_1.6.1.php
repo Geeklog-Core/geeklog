@@ -23,6 +23,9 @@ function update_ConfValuesFor161()
     $c->add('meta_description','Geeklog, the open source content management system designed with security in mind.','text',0,0,NULL,2010,TRUE);
     $c->add('meta_keywords','Geeklog, Blog, Content Management System, CMS, Open Source, Security','text',0,0,NULL,2020,TRUE);
 
+    // new option to enable / disable closing of comments after x days
+    $c->add('article_comment_close_enabled',0,'select',4,21,0, 1685, TRUE);
+
     // the timezone config option is a dropdown now
     $utc = addslashes(serialize('UTC')); // change default timezone to UTC
     DB_query("UPDATE {$_TABLES['conf_values']} SET type = 'select', selectionArray = -1, default_value = '$utc' WHERE name = 'timezone' AND group_name = 'Core'");

@@ -153,7 +153,7 @@ function send_messages($vars)
 
     if (empty($vars['fra']) OR empty($vars['fraepost']) OR
             empty($vars['subject']) OR empty($vars['message']) OR
-            empty($vars['to_group'])) {
+            empty($vars['to_group']) OR (strpos($vars['fra'], '@') !== false)) {
         $retval .= COM_showMessageText($LANG31[26]);
 
         return $retval;
