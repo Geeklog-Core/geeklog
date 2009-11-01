@@ -1602,7 +1602,7 @@ $LANG_ADMIN = array(
     'list_all' => 'Alle auflisten',
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',
-    'na' => 'N/A',
+    'na' => 'n/v',
     'token_expiry' => 'Sie sollten Ihre Änderungen bis spätestens %s durchführen. Danach wird das Security-Token, das in diese Seite eingebettet ist, ungültig und Sie würden Ihre Änderungen verlieren.'
 );
 
@@ -1977,7 +1977,7 @@ $LANG_configselects['Core'] = array(
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Aktiviert' => 0, 'Deaktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2)
 );
 
 ?>
