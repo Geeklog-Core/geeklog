@@ -1339,7 +1339,7 @@ function plugin_getwhatsnew_staticpages()
             $newstaticpages[] = COM_createLink($astaticpage, $url, $attr);
         }
 
-        $retval .= COM_makeList( $newstaticpages, 'list-new-comments' );
+        $retval .= COM_makeList( $newstaticpages, 'list-new-plugins' );
     }
     else
     {
