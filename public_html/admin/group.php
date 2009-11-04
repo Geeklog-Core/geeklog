@@ -1083,8 +1083,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $features = $_POST['features'];
     }
     $groups = array();
-    if (isset($_POST[$_TABLES['groups']])) {
-        $groups = $_POST[$_TABLES['groups']];
+    if (isset($_POST['groups'])) {
+        $groups = $_POST['groups'];
     }
     $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
                           COM_applyFilter($_POST['grp_name']),
