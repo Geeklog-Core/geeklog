@@ -612,8 +612,6 @@ class ListFactory {
                 $href = $this->_page_url . "order={$this->_sort_arr['field']}&amp;" .
                             "direction={$this->_sort_arr['direction']}&amp;results=$val";
 
-                $selected = $this->_per_page == $val ? ' selected="selected"' : '';
-
                 // Prevent displaying too many limit items
                 if ($this->_total_found <= $val)
                 {
@@ -652,17 +650,11 @@ class ListFactory {
         }
         else
         {
-            $sort_selected = ' selected="selected"';
+            $sort_selected = '';
             $sort_text = $LANG09[68].' ';
             if (!$show_sort) {
                 $list_templates->set_var('show_sort', 'display:none;');
             }
-
-            // Write field
-            $list_templates->set_var('sort_text', "$sort_text...");
-            $list_templates->set_var('sort_href', "");
-            $list_templates->set_var('sort_selected', $sort_selected);
-            $list_templates->parse('page_sort', 'sort', true);
         }
 
         // Draw the sorting select box/table headings
@@ -678,10 +670,22 @@ class ListFactory {
                     $direction = $this->_def_sort_arr['direction'];
 
                     // Show the sort arrow
-                    if ($this->_sort_arr['field'] === $field['name']) {
-                        //$selected = $sort_selected;
+                    if ($this->_sort_arr['field'] === $field['name'])
+                    {
                         $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
-                        $text .= " ($direction)";
+
+                        if ($this->_style == 'inline') {
+                            // Add drop down item for current sort order
+                            $list_templates->set_var('sort_text', $text.' ('.$this->_sort_arr['direction'].')');
+                            $list_templates->set_var('sort_href', '');
+                            $list_templates->set_var('sort_selected', ' selected="selected"');
+                            $list_templates->parse('page_sort', 'sort', true);
+
+                            // Set up the sort order for the opposite direction
+                            $text .= " ($direction)";
+                        } else {
+                            $selected = $sort_selected;
+                        }
                     }
 
                     $href = $this->_page_url . "results={$this->_per_page}&amp;" .
@@ -728,6 +732,10 @@ class ListFactory {
 
                         // Write field
                         $list_templates->set_var('field_text', $fieldvalue);
+                        $list_templates->parse('item_field', 'field', true);
+                    } else {
+                        // Write an empty field
+                        $list_templates->set_var('field_text', '&nbsp;');
                         $list_templates->parse('item_field', 'field', true);
                     }
                 }
