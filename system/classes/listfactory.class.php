@@ -694,6 +694,10 @@ class ListFactory {
                 }
                 else if ($this->_style == 'table')
                 {
+                    $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
+                    $href = $this->_page_url . "results={$this->_per_page}&amp;" .
+                        "order={$field['name']}&amp;direction=$direction";
+
                     if ($show_sort && $field['sort'] != false)
                     {
                         $text = "<a href=\"$href\">$text</a>";
@@ -702,8 +706,6 @@ class ListFactory {
                             $selected = $sort_selected;
                         }
                     }
-                    $href = $this->_page_url . "results={$this->_per_page}&amp;" .
-                                "order={$field['name']}&amp;direction=$direction";
 
                     // Write field
                     $list_templates->set_var('sort_text', $text);
