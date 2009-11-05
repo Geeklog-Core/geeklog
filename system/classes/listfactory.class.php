@@ -614,10 +614,27 @@ class ListFactory {
 
                 $selected = $this->_per_page == $val ? ' selected="selected"' : '';
 
+                // Prevent displaying too many limit items
+                if ($this->_total_found <= $val)
+                {
+                    // If this is the last item, chances are its going to be selected
+                    $selected = $this->_per_page >= $val ? ' selected="selected"' : '';
+                    $list_templates->set_var('limit_href', $href);
+                    $list_templates->set_var('limit_text', $text);
+                    $list_templates->set_var('limit_selected', $selected);
+                    $list_templates->parse('page_limit', 'limit', true);
+
+                    break;
+                }
+
+                $selected = $this->_per_page == $val ? ' selected="selected"' : '';
                 $list_templates->set_var('limit_text', $text);
                 $list_templates->set_var('limit_href', $href);
                 $list_templates->set_var('limit_selected', $selected);
                 $list_templates->parse('page_limit', 'limit', true);
+            }
+            if (empty($text)) {
+                $list_templates->set_var('show_limit', 'display:none;');
             }
         }
         else
