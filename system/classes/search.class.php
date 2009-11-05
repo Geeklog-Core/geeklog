@@ -483,8 +483,8 @@ class Search {
         {
             $obj->setStyle('inline');
             $obj->setField('',          LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
-            $obj->setField($LANG09[16], 'title',        true,       true,  '%s<br>');
-            $obj->setField('',          'description',  true,       false, '%s<br>');
+            $obj->setField($LANG09[16], 'title',        true,       true,  '%s<br' . XHTML . '>');
+            $obj->setField('',          'description',  true,       false, '%s<br' . XHTML . '>');
             $obj->setField('',          '_html',        true,       false, '<span style="color:green;">');
             $obj->setField($LANG09[18], 'uid',          $show_user, true,  $LANG01[104].' %s ');
             $obj->setField($LANG09[17], 'date',         true,       true,  $LANG01[36].' %s');
