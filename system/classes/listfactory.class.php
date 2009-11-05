@@ -665,7 +665,7 @@ class ListFactory {
                 $text = $sort_text . $field['title'];
                 $href = '';
                 $selected = '';
-                
+
                 if ($this->_style == 'inline' && $show_sort && $field['sort'] != false)
                 {
                     $direction = $this->_def_sort_arr['direction'];
