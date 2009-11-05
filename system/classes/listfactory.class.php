@@ -665,42 +665,52 @@ class ListFactory {
                 $text = $sort_text . $field['title'];
                 $href = '';
                 $selected = '';
-                if ($show_sort && $field['sort'] != false)
+                
+                if ($this->_style == 'inline' && $show_sort && $field['sort'] != false)
                 {
                     $direction = $this->_def_sort_arr['direction'];
 
                     // Show the sort arrow
                     if ($this->_sort_arr['field'] === $field['name'])
                     {
+                        // Add drop down item for current sort order
+                        $list_templates->set_var('sort_text', $text.' ('.$this->_sort_arr['direction'].')');
+                        $list_templates->set_var('sort_href', '');
+                        $list_templates->set_var('sort_selected', ' selected="selected"');
+                        $list_templates->parse('page_sort', 'sort', true);
+
+                        // Set up the sort order for the opposite direction
                         $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
-
-                        if ($this->_style == 'inline') {
-                            // Add drop down item for current sort order
-                            $list_templates->set_var('sort_text', $text.' ('.$this->_sort_arr['direction'].')');
-                            $list_templates->set_var('sort_href', '');
-                            $list_templates->set_var('sort_selected', ' selected="selected"');
-                            $list_templates->parse('page_sort', 'sort', true);
-
-                            // Set up the sort order for the opposite direction
-                            $text .= " ($direction)";
-                        } else {
-                            $selected = $sort_selected;
-                        }
+                        $text .= " ($direction)";
                     }
-
                     $href = $this->_page_url . "results={$this->_per_page}&amp;" .
                                 "order={$field['name']}&amp;direction=$direction";
 
-                    if ($this->_style == 'table') {
-                        $text = "<a href=\"$href\">$text</a>";
-                    }
+                    // Write field
+                    $list_templates->set_var('sort_text', $text);
+                    $list_templates->set_var('sort_href', $href);
+                    $list_templates->set_var('sort_selected', '');
+                    $list_templates->parse('page_sort', 'sort', true);
                 }
+                else if ($this->_style == 'table')
+                {
+                    if ($show_sort && $field['sort'] != false)
+                    {
+                        $text = "<a href=\"$href\">$text</a>";
 
-                // Write field
-                $list_templates->set_var('sort_text', $text);
-                $list_templates->set_var('sort_href', $href);
-                $list_templates->set_var('sort_selected', $selected);
-                $list_templates->parse('page_sort', 'sort', true);
+                        if ($this->_sort_arr['field'] === $field['name']) {
+                            $selected = $sort_selected;
+                        }
+                    }
+                    $href = $this->_page_url . "results={$this->_per_page}&amp;" .
+                                "order={$field['name']}&amp;direction=$direction";
+
+                    // Write field
+                    $list_templates->set_var('sort_text', $text);
+                    $list_templates->set_var('sort_href', $href);
+                    $list_templates->set_var('sort_selected', $selected);
+                    $list_templates->parse('page_sort', 'sort', true);
+                }
             }
         }
 
