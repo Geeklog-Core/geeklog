@@ -8,6 +8,8 @@ Changes since 1.6.1b1:
   Note: This fix requires a change in search/searchform.thtml
 - Improved display of the "Sort by" and "Show n results" dropdowns on the
   search results page (feature request #0000910) [Sami, LWC]
+- The search results page used HTML <br> tags even when XHTML was requested
+  (bug #0001022, patch provided by taca)
 - Fixed wrong path reported in case of a missing 'data' directory (reported by
   Markus Wollschläger) [Dirk]
 - When a plugin returns 0 items for the Admins Block, don't display that as
