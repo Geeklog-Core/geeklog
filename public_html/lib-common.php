@@ -2758,28 +2758,27 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 
         // This will show the admin options for all installed plugins (if any)
 
-        for( $i = 0; $i < $num_plugins; $i++ )
-        {
-            $plg = current( $plugin_options );
+        for ($i = 0; $i < $num_plugins; $i++) {
+            $plg = current($plugin_options);
 
-            $adminmenu->set_var( 'option_url', $plg->adminurl );
-            $adminmenu->set_var( 'option_label', $plg->adminlabel );
+            $adminmenu->set_var('option_url',   $plg->adminurl);
+            $adminmenu->set_var('option_label', $plg->adminlabel);
 
-            if( empty( $plg->numsubmissions ))
-            {
-                $adminmenu->set_var( 'option_count', $LANG_ADMIN['na'] );
+            if (isset($plg->numsubmissions) &&
+                    is_numeric($plg->numsubmissions)) {
+                $adminmenu->set_var('option_count',
+                                    COM_numberFormat($plg->numsubmissions));
+            } elseif (! empty($plg->numsubmissions)) {
+                $adminmenu->set_var('option_count', $plg->numsubmissions);
+            } else {
+                $adminmenu->set_var('option_count', $LANG_ADMIN['na']);
             }
-            else
-            {
-                $adminmenu->set_var( 'option_count',
-                                     COM_numberFormat( $plg->numsubmissions ));
-            }
 
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $plg->adminurl ) ? 'current' : 'option', true );
+            $menu_item = $adminmenu->parse('item',
+                    ($thisUrl == $plg->adminurl) ? 'current' : 'option', true);
             $link_array[$plg->adminlabel] = $menu_item;
 
-            next( $plugin_options );
+            next($plugin_options);
         }
 
         if(( $_CONF['allow_mysqldump'] == 1 ) AND ( $_DB_dbms == 'mysql' ) AND

@@ -139,7 +139,7 @@ function plugin_getadminoption_spamx()
 
     if (SEC_hasRights('spamx.admin')) {
         return array($LANG_SX00['plugin_name'],
-            $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
+            $_CONF['site_admin_url'] . '/plugins/spamx/index.php', '');
     }
 }
 
