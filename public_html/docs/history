@@ -16,6 +16,10 @@ Changes since 1.6.1b1:
 
 - Updated Hebrew language files, provided by LWC
 
+Links Plugins
+-------------
+- When URL rewriting is enabled, return rewritten URLs for search results [Dirk]
+
 Static Pages Plugin
 -------------------
 - Fixed use of wrong CSS class for the entries for the What's New block [Tom]

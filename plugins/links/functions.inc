@@ -382,6 +382,7 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     $search->setFTSQL($ftsql);
     $search->setRank(3);
     $search->setAppendQuery(false);
+    $search->setURLRewrite(true);
 
     return $search;
 }
