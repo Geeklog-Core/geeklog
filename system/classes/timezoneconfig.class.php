@@ -87,7 +87,7 @@ class TimeZoneConfig {
     /**
     * Set the user's preferred timezone
     *
-    * Note that does nothing if $_CONF['timezone'] is empty, i.e. if no
+    * Note that it does nothing if $_CONF['timezone'] is empty, i.e. if no
     * system timezone is defined, we don't set a user timezone either.
     *
     * @return void
@@ -141,7 +141,9 @@ class TimeZoneConfig {
     /**
     * Provide a dropdown menu of the available timezones
     *
-    * @return   string  HTML for the dropdown
+    * @param    string  $selected   (optional) currently selected timezone
+    * @param    array   $attributes (optional) extra attributes for select tag
+    * @return   string              HTML for the dropdown
     * @static
     *
     */
