@@ -4,6 +4,8 @@ Nov ??, 2009 (1.6.1rc1)
 ------------
 
 Changes since 1.6.1b1:
+- "Refine search" lost the status of the "Titles Only" checkbox [Dirk]
+  Note: This fix requires a change in search/searchform.thtml
 - Improved display of the "Sort by" and "Show n results" dropdowns on the
   search results page (feature request #0000910) [Sami, LWC]
 - Fixed wrong path reported in case of a missing 'data' directory (reported by

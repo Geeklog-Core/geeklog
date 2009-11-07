@@ -62,6 +62,7 @@ class Search {
     var $_searchURL = '';
     var $_wordlength;
     var $_verbose = false; // verbose logging
+    var $_titlesOnly = false;
 
     /**
     * Constructor
@@ -104,6 +105,8 @@ class Search {
         }
         $this->_type = isset($_GET['type']) ? COM_applyFilter($_GET['type']) : 'all';
         $this->_keyType = isset($_GET['keyType']) ? COM_applyFilter($_GET['keyType']) : $_CONF['search_def_keytype'];
+
+        $this->_titlesOnly = isset($_GET['title']) ? true : false;
     }
 
     /**
@@ -247,6 +250,11 @@ class Search {
         $searchform->set_var ('query', $escquery);
         $searchform->set_var ('datestart', $this->_dateStart);
         $searchform->set_var ('dateend', $this->_dateEnd);
+        if ($this->_titlesOnly) {
+            $searchform->set_var('title_checked', ' checked="checked"');
+        } else {
+            $searchform->set_var('title_checked', '');
+        }
 
         $phrase_selected = '';
         $all_selected = '';
@@ -453,7 +461,8 @@ class Search {
             ((!empty($this->_dateStart))  ? '&amp;datestart=' . $this->_dateStart : '' ) .
             ((!empty($this->_dateEnd))    ? '&amp;dateend=' . $this->_dateEnd : '' ) .
             ((!empty($this->_topic))      ? '&amp;topic=' . $this->_topic : '' ) .
-            ((!empty($this->_author))     ? '&amp;author=' . $this->_author : '' );
+            ((!empty($this->_author))     ? '&amp;author=' . $this->_author : '' ) .
+            ($this->_titlesOnly           ? '&amp;title=true' : '');
 
         $url = "{$this->_searchURL}&amp;type={$this->_type}&amp;mode=";
         $obj = new ListFactory($url.'search', $_CONF['search_limits'], $_CONF['num_search_results']);

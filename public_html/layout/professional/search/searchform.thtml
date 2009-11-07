@@ -10,7 +10,7 @@
                                                 <option value="all" {key_all_selected}>{lang_all_words}</option>
                                                 <option value="any" {key_any_selected}>{lang_any_word}</option>
                                             </select>
-                                            <input type="checkbox" value="true" name="title"{xhtml}>{lang_titles}
+                                            <input type="checkbox" value="true" name="title"{title_checked}{xhtml}>{lang_titles}
                                         </td>
                                     </tr>
                                     <tr>
