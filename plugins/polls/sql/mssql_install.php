@@ -117,7 +117,7 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['pollvoters']}] ADD
     )  ON [PRIMARY]
 ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'polls_block','phpblock','Poll','all',100,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
 
 
 // default poll
