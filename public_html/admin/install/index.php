@@ -1062,7 +1062,7 @@ if (INST_phpOutOfDate()) {
             $chmod_string = 'chmod -R 777 ';
             // Files to check if writable
             $file_list = array( $_PATH['db-config.php'],
-                                $gl_path . (file_exists($gl_path . 'data') ? 'data/' : 'public_html/data/'),
+                                $gl_path . 'data/',
                                 $gl_path . 'logs/error.log',
                                 $_PATH['public_html/'] . 'siteconfig.php',
                                 $_PATH['public_html/'] . 'backend/geeklog.rss',

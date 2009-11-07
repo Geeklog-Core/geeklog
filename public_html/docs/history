@@ -4,6 +4,8 @@ Nov ??, 2009 (1.6.1rc1)
 ------------
 
 Changes since 1.6.1b1:
+- Fixed wrong path reported in case of a missing 'data' directory (reported by
+  Markus Wollschläger) [Dirk]
 - When a plugin returns 0 items for the Admins Block, don't display that as
   'N/A' (bug #0001025) [Dirk]
 - Fixed a bug in the Group Editor that didn't let you add groups to other groups
