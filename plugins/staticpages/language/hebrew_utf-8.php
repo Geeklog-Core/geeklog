@@ -6,7 +6,7 @@
 #
 # Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.6#1
+# Version 1.6.1#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -109,8 +109,9 @@ $LANG_STATIC = array(
     'limit_results' => 'הגבלת תוצאות',
     'search' => 'חיפוש',
     'submit' => 'שליחה',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages'
+    'no_new_pages' => 'אין עמודים חדשים',
+    'pages' => 'עמודים'
+
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
@@ -140,15 +141,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'הרשאות ברירת המחדל של עמוד',
     'aftersave' => 'לאחר שמירת עמוד',
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
-    'meta_tags' => 'Enable Meta Tags',
-    'newstaticpagesinterval' => 'New Static Page Interval',
-    'hidenewstaticpages' => 'Hide New Static Pages',
-    'title_trim_length' => 'Title Trim Length',
-    'includecenterblocks' => 'Include Center Block Static Pages',
-    'includephp' => 'Include Static Pages with PHP',
-    'includesearch' => 'Enable Static Pages in Search',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'meta_tags' => 'אפשרו תגיות Meta',
+    'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
+    'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
+    'title_trim_length' => 'אורך קיצוץ כותרות',
+    'includecenterblocks' => 'כיללו עמודים סטטיים בקוביות מידע מרכזיות',
+    'includephp' => 'כיללו עמודים סטטיים עם PHP',
+    'includesearch' => 'אפשרו עמודים סטטיים בחיפוש',
+    'includesearchcenterblocks' => 'כיללו עמודים סטטיים בקוביות מידע מרכזיות',
+    'includesearchphp' => 'כיללו עמודים סטטיים עם PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -157,19 +158,19 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'הגדרות ראשיות של עמודים סטטיים',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',
+    'fs_whatsnew' => 'קוביית המידע של מה חדש',
+    'fs_search' => 'תוצאות חיפוש',
     'fs_permissions' => 'הרשאות ברירת המחדל'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
-    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
+    2 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title'),
+    3 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title', 'תווית' => 'label'),
+    9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );
 
 ?>

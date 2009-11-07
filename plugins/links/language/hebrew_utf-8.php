@@ -7,7 +7,7 @@
 #
 # Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.6#1
+# Version 1.6.1#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -168,7 +168,7 @@ $LANG_LINKS_ADMIN = array(
     58 => 'ודאו עכשיו',
     59 => '<p>כדי לוודא את כל הקישורים המוצגים, אנא ליחצו על הקישור "ודאו עכשיו" שלהלן. אנא שימו לב שזה עלול לקחת קצת זמן בהתאם לכמות הקישורים המוצגים.</p>',
     60 => 'המשתמש %s ניסה לערוך ללא רשות את הקטגוריה %s.',
-    61 => 'Links in Category'
+    61 => 'קישורים בקטגוריה'
 );
 
 

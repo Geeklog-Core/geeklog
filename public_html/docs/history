@@ -10,6 +10,8 @@ Changes since 1.6.1b1:
   unless your $_TABLES['groups'] happened to be called "groups" (bug #0000998)
   [Dirk]
 
+- Updated Hebrew language files, provided by LWC
+
 Static Pages Plugin
 -------------------
 - Fixed use of wrong CSS class for the entries for the What's New block [Tom]

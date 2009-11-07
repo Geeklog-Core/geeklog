@@ -2,7 +2,7 @@
 
 ###############################################################################
 # hebrew.php
-# Version 1.6#1
+# Version 1.6.1#1
 # Copyright (C) 2009 http://lior.weissbrod.com
 #
 # Originally:
@@ -420,8 +420,8 @@ $LANG05 = array(
 $LANG08 = array(
     1 => 'הרעה שגיאה במשלוח ההודעה, אנא נסה/י שוב',
     2 => 'ההודעה נשלחה בהצלחה',
-    3 => 'וודאו שכתובת האימייל לקבלת תגובה תהיה נכונה',
-    4 => 'אנא מלאו את שמכם, את כתובת האימייל שלכם, את הנושא ואת ההודעה',
+    3 => 'אנא ודאו שהנכם משתמשים בכתובת אימייל תקינה בשדה כתובת האימייל שלכם',
+    4 => 'אנא מלאו את שדות השם, כתובת האימייל שלכם, הנושא וההודעה',
     5 => 'שגיאה, אין משתמש בשם שבחרת',
     6 => 'ההודעה לא נשלחה בהצלחה עקב שגיאה.',
     7 => 'פרופיל המשתמש של',
@@ -429,7 +429,7 @@ $LANG08 = array(
     9 => 'אתר בית',
     10 => 'שלח הודעת אימייל ל:',
     11 => 'שמכם',
-    12 => 'כתובת אימייל לקבלת תגובה',
+    12 => 'כתובת האימייל שלכם',
     13 => 'נושא',
     14 => 'הודעה:',
     15 => 'HTML לא יתורגם',
@@ -829,7 +829,7 @@ $LANG24 = array(
     88 => 'פורמט בנוסח וויקי',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'You can always hit "Preview" to extend the expiry time.'
+    91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.'
 );
 
 ###############################################################################
@@ -865,7 +865,7 @@ $LANG27 = array(
     27 => 'או העלו אייקון לנושא',
     28 => 'מקסימום',
     29 => 'שגיאות בהעלאת הקובץ',
-    30 => 'Stories in Topic'
+    30 => 'מאמרים בנושא'
 );
 
 ###############################################################################
@@ -995,10 +995,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "כלי שליחת הודעות האימייל של {$_CONF['site_name']}",
-    2 => 'מ',
-    3 => 'השב ל',
+    2 => 'שם השולח',
+    3 => 'כתובת האימייל של השולח',
     4 => 'נושא',
-    5 => 'גוף ההודעה',
+    5 => 'ההודעה',
     6 => 'שליחה ל:',
     7 => 'כל המשתמשים',
     8 => 'מנהל האתר',
@@ -1034,7 +1034,7 @@ $LANG32 = array(
     6 => 'אזהרה: ה-Plug-in כבר מותקן!',
     7 => 'ה-plug-in שהנכם מנסה להתקין כבר קיים. אנא מיחקו את ה-plugin לפני התקנתו מחדש.',
     8 => 'בדיקת התאמת Plugin נכשלה',
-    9 => 'ה-plugin דורש גירסה חדשה יותר של Geeklog. שדרגו את העותק שלכם של <a href="http://www.geeklog.net">Geeklog</a> או השיגו גירסה חדשה יותר של ה-plugin.',
+    9 => 'plugin זה דורש גירסה חדשה יותר של Geeklog. שדרגו את העותק שלכם של <a href="http://www.geeklog.net">Geeklog</a>.',
     10 => '<br' . XHTML . '><b>אין plugins מותקנים כרגע.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'כדי לערוך או למחוק plug-in, ליחצו על אייקון העריכה מתחת. זה יראה את פרטי ה-plugin כולל האתר של יוצריו. גם הגירסה המותקנת וגם הגירסה שמוחזרת מקוד ה-plugin מוצגות. זה יעזור לכם לדעת ה-plugin צריך לעבור שידרוג. כדי להתקין או לשדרג plugin אנא עיברו על הדוקומנטציה שלו.',
     12 => 'שום שם של plugin לא ניתן ל-plugineditor()',
@@ -1067,7 +1067,7 @@ $LANG32 = array(
     39 => 'העלאת plugin',
     40 => 'הנכם יכולים להעלות ארכיון plugin (tar.gz, tgz, zip) ישירות לכאן:',
     41 => 'העלאה',
-    42 => 'Click to update',
+    42 => 'ליחצו כדי לעדכן',
     99 => 'התרחשה שגיאה לא ידועה',
     100 => 'אישור.',
     101 => 'הקובץ שהועלה עובר את הוראת upload_max_filesize directive ב-php.ini.',
@@ -1330,25 +1330,25 @@ $LANG_DB_BACKUP = array(
     'bytes' => 'Bytes',
     'total_number' => 'סך הכל גיבויים: %d',
     'download' => 'ליחצו כדי להוריד קובץ זה',
-    'new_backup' => 'New Backup',
-    'delete_failure' => 'One or more backup files could not be deleted.',
-    'delete_success' => 'Backup file(s) successfully deleted.',
-    'convert_menu' => 'Convert to InnoDB',
-    'convert_title' => 'Convert to InnoDB tables',
-    'convert_button' => 'Convert',
-    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
-    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
-    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
-    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
-    'innodb_success' => 'Successfully converted tables to InnoDB.',
-    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
-    'optimize_menu' => 'Optimize Tables',
-    'optimize_title' => 'Optimize Tables',
-    'optimize_button' => 'Optimize',
-    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
-    'last_optimization' => 'Last optimization',
-    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
-    'optimize_success' => 'Successfully optimized database tables.'
+    'new_backup' => 'גיבוי חדש',
+    'delete_failure' => 'קובץ גיבוי אחד או יותר לא הצליח להימחק.',
+    'delete_success' => 'קובץ/קבצי גיבוי נמחק/ו בהצלחה.',
+    'convert_menu' => 'המרה ל-InnoDB',
+    'convert_title' => 'המרה לטבלאות InnoDB',
+    'convert_button' => 'המרה',
+    'sorry_no_innodb' => 'מצטערים, גרסת ה-MySQL שלכם לא תומכת בטבלאות InnoDB.',
+    'innodb_explain' => 'טבלאות InnoDB מאפשרות ביצועים טובים יותר במאגרים <em>מאוד</em> גדולים אבל הופכים את תהליך הגיבוי ליותר מסובך. אנא <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">קיראו</a> על היתרונות והחסרונות של טבלאות InnoDB לפני שתבצעו פעולה זו.',
+    'already_converted' => 'שימו לב: נראה שכל הטבלאות כבר הומרו ל-InnoDB.',
+    'conversion_patience' => 'שימו לב: ההמרה עשויה להיות ממושכת - אנא התאזרו בסבלנות.',
+    'innodb_success' => 'הטבלאות הומרו בהצלחה ל-InnoDB.',
+    'table_issues' => 'עם זאת, ייתכן שהיו בעיות עם חלק מהטבלאות. אנא בידקו את error.log בשביל פרטים.',
+    'optimize_menu' => 'ייעול טבלאות',
+    'optimize_title' => 'ייעול טבלאות',
+    'optimize_button' => 'ייעול',
+    'optimize_explain' => 'ייעול של טבלאות עשוי להגביר את ביצועי אתרכם. העוצמה הממשית תלויה בשימוש בכל טבלה כאשר חלק מהטבלאות עשויות להרוויח מכך יותר מהאחרות. אל תצפו לראות שינוי עצום בביצועים.<a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">מדריך -MySQL</a> מצהיר: <q>לא סביר שעליכם לעשות זאת יותר מפעם בשבוע או בחודש</q>.',
+    'last_optimization' => 'ההתייעלות האחרונה',
+    'optimization_patience' => 'שימו לב: הייעול עשוי להיות ממושך - אנא התאזרו בסבלנות.',
+    'optimize_success' => 'טבלאות מאגר המידע התייעלו בהצלחה.'
 );
 
 ###############################################################################
@@ -1497,7 +1497,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" לעולם אינו צריך להיות חלק מכתובת האתר שלכם. אנא קיראו את החלק לגבי public_html %s שוב ושנו את ההגדרות שלכם בהתאם לפני שתמשיכו.',
     'installation' => 'בהוראות ההתקנה',
     'directory' => '(ספרייה)',
-    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
+    'failed_tmp'    => 'נכשלה יצירת קובץ זמני בספריית ה-%s שלכם. בידקו את הרשאות הספרייה שלכם!',
     'fix_it' => 'זהו סיכון בטחוני שיש לתקנו!',
     'reachable' => 'ה-%s שלכם נגיש מהרשת.',
     'not_reachable' => 'מצוין! ה-%s שלכם אינו נגיש מהרשת.',
@@ -1600,7 +1600,7 @@ $LANG_ADMIN = array(
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',
     'na' => 'לא זמין',
-    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
+    'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1872,16 +1872,16 @@ $LANG_confignames['Core'] = array(
     'censorlist' => 'רשימת צנזורה',
     'ip_lookup' => 'בדיקת IP',
     'url_rewrite' => 'איפשור URL Rewrite',
-    'meta_tags' => 'Meta Tags',
-    'meta_description' => 'Default Meta Description',
-    'meta_keywords' => 'Default Meta Keywords',
+    'meta_tags' => 'תגיות Meta',
+    'meta_description' => 'ברירת המחדל של Meta Description',
+    'meta_keywords' => 'ברירת המחדל של Meta Keywords',
     'default_permissions_block' => 'הרשאות ברירת המחדל של קוביות מידע',
     'default_permissions_story' => 'הרשאות ברירת המחדל של מאמרים',
     'default_permissions_topic' => 'הרשאות ברירת המחדל של נושאים',
     'atom_max_stories' => 'כמות המאמרים המקסימלית בהזנה של שירותי רשת',
     'disable_webservices' => 'ביטול שירותי רשת?',
     'restrict_webservices' => 'הגבלת שירותי רשת?',
-    'article_comment_close_enabled' => 'Automatically close comments (default)',
+    'article_comment_close_enabled' => 'סגירת תגובות אוטומטית (ברירת המחדל)',
     'article_comment_close_days' => 'מספר הימים לפני שהתגובות יהיו סגורות (ברירת המחדל)',
     'comment_close_rec_stories' => 'כמות המאמרים הכי אחרונים שאפשר להגיב אליהם',
     'allow_reply_notifications' => 'איפשור הודעות לתגובות של תשובות?',
@@ -1974,7 +1974,7 @@ $LANG_configselects['Core'] = array(
     20 => array('ביטוי מדויק' => 'phrase', 'כל המילים שהוכנסו' => 'all', 'לפחות אחת מהמילים שהוכנסו' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2)
 );
 
 ?>

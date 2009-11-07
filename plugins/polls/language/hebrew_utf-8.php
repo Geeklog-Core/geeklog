@@ -7,7 +7,7 @@
 #
 # Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.6#1
+# Version 1.6.1#1
 
 #
 # This program is free software; you can redistribute it and/or
@@ -57,8 +57,8 @@ $LANG_POLLS = array(
     'upgrade1' => 'התקנתם גרסה חדשה של plugins הסקרים. אנא',
     'upgrade2' => 'שדרגו',
     'editinstructions' => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.',
-    'pollclosed' => 'This poll is closed for voting.',
-    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
+    'pollclosed' => 'ההצבעה לסקר זה סגורה.',
+    'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
     'start_poll' => 'התחילו את הסקר'
 );
 
@@ -133,7 +133,7 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
     'default_permissions' => 'הרשאות ברירת המחדל של סקר',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'אפשרו תגיות Meta'
 );
 
 $LANG_configsubgroups['polls'] = array(
