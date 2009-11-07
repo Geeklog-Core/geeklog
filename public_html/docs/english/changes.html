@@ -28,15 +28,23 @@ list of files that have been changed since the last release.</p>
     only in Topic").</li>
 <li>New autotags now allow you to embed polls in stories and everywhere else
     where autotags are allowed.</li>
-<li>Minor security enhancement: "Important" cookies (like the session cookies)
-    are now created with the HttpOnly flag set. This will help avoid some XSS
-    attacks, provided your browser supports this flag.</li>
 <li>The Migrate option in the install script can now also be applied to an
     existing database (i.e. you don't need to import a database dump to update
     your URLs and paths).</li>
 <li>The Database Backup admin panel now includes options to optimize the
     database and convert tables to InnoDB (MySQL only).</li>
+<li>Minor security enhancements:
+    <ul>
+        <li>"Important" cookies (like the session cookies) are now created with
+            the HttpOnly flag set. This will help avoid some XSS attacks,
+            provided your browser supports this flag.</li>
+        <li>Template errors will now trigger the <a href="http://www.geeklog.net/faqman/index.php?op=view&amp;t=65">standard error handler</a> instead of
+            exposing the template path.</li>
+        <li>Fixed inclusion protection for some of the Spam-X class files.</li>
+    </ul>
 </ul>
+
+<p>Please also see the list of <a href="theme.html#changes">theme changes</a>.</p>
 
 <h3>Bugfixes</h3>
 
