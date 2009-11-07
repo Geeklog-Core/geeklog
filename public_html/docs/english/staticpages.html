@@ -26,7 +26,7 @@
   <li>Static pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
   <li>"<a href="#cloning">cloning</a>" of existing pages</li>
   <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
-  <li>Provides <code>[staticpage:]</code> and <code>[staticpage_content:]</code> autotags</li>
+  <li>Provides <a href="#autotags">two autotags</a></li>
   <li>proper support for Geeklog permissions</li>
 </ul>
 
@@ -135,11 +135,11 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>To make use of URL rewriting, you will need to set the option "Enable URL Rewriting" to True in Geeklog's Configuration admin panel.</p>
 
-<h3><a name="delete">Deleting pages with their owner</a></h3>
+<h2><a name="delete">Deleting pages with their owner</a></h2>
 
 <p>As all objects in Geeklog, static pages have an owner (the user that created the static page). When that user's account is deleted for some reason, any static pages owned by that user can either be deleted as well or they can be assigned to another user in Geeklog's Root group.</p>
 
-<p>In the Configuration admin panel for the static pages plugin, you can set the "Delete Pages with Owner?" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
+<p>In the Configuration admin panel for the static pages plugin, you can set the "<a href="#desc_delete_pages">Delete Pages with Owner?</a>" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
 
 <h2><a name="config.php">Configuration</a></h2>
 
@@ -282,6 +282,22 @@ the Configuration admin panel:</p>
   <td valign="top">false</td>
   <td valign="top">Set to true to include static pages that execute PHP.</td></tr>
 </table>
+
+
+<h2><a name="autotags">Autotags</a></h2>
+
+<p>The Static Pages Plugin provides 2 <a href="http://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">autotags</a>,
+<code>[staticpage:]</code> and <code>[staticpage_content:]</code>.</p>
+
+<ul>
+<li>The <code>[staticpage:]</code> autotag will provide a link to a static page.
+    Simply add the page's ID after the colon. By default, the title of the
+    static page will be used as the link text. You can provide your own link
+    text after the page ID (but before the closing bracket).</li>
+<li>The <code>[staticpage_content:]</code> autotag will be replaced with the
+    contents of the static page in question. This can be useful when you need
+    to use a piece of text in more than one place.</li>
+</ul>
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>

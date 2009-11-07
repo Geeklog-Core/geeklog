@@ -158,6 +158,27 @@ to Geeklog 1.4.0), you may still have a "links" directory in your theme's
 directory - but that is not used any more and can be safely removed.</p>
 
 
+<h2><a name="autotags">Autotags</a></h2>
+
+<p>The Links Plugin provides one <a href="http://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">autotag</a>,
+<code>[link:]</code>. You can use this autotag to embed one of the links from
+your site's Links section into an article or a comment (amongst other things)
+without having to type out the full URL. Simply add the link's ID after the
+colon. It will then create a link to the site in question and use the link's
+title as the link text. Alternatively, you can add your own link text after the
+ID (but before the closing bracket).</p>
+
+<p>For example, on geeklog.net:</p>
+<ul>
+<li><code>[link:20030921074903113]</code> will be translated to: <code>&lt;a href="http://www.geeklog.net/links/portal.php/link/20030921074903113"&gt;Groklaw&lt;/a&gt;</code></li>
+<li><code>[event:20030921074903113 read everything about the SCO case]</code> will be translated to: <code>&lt;a href="http://www.geeklog.net/links/portal.php/link/20030921074903113"&gt;read everything about the SCO case&lt;/a&gt;</code></li>
+</ul>
+
+<p>Note that the <code>[link:]</code> autotag will always create links that go
+through Geeklog's <tt>portal.php</tt> script so that the number of clicks on
+that link can be counted.</p>
+
+
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.

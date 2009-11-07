@@ -122,6 +122,22 @@ are also relevant for the calendar plugin:</p>
 </ul>
 
 
+<h2><a name="autotags">Autotags</a></h2>
+
+<p>The Calendar Plugin provides one <a href="http://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">autotag</a>,
+<code>[event:]</code>. You can use this autotag to link to an event in the
+calendar without having to type out the URL. Simply add the event's ID after
+the colon. It will then create a link to that event and use the event's title
+as the link text. Alternatively, you can add your own link text after the ID
+(but before the closing bracket).</p>
+
+<p>For example, on geeklog.net:</p>
+<ul>
+<li><code>[event:20090805065311513]</code> will be translated to: <code>&lt;a href="http://www.geeklog.net/calendar/event.php?eid=20090805065311513"&gt;FrOSCon - Free and Open Source Software Conference&lt;/a&gt;</code></li>
+<li><code>[event:20090805065311513 FrOSCon 2009]</code> will be translated to: <code>&lt;a href="http://www.geeklog.net/calendar/event.php?eid=20090805065311513"&gt;FrOSCon 2009&lt;/a&gt;</code></li>
+</ul>
+
+
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>
     All trademarks and copyrights on this page are owned by their respective owners. Geeklog is copyleft.
