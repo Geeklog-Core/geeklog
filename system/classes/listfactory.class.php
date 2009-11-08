@@ -747,7 +747,7 @@ class ListFactory {
                         $list_templates->parse('item_field', 'field', true);
                     } else {
                         // Write an empty field
-                        $list_templates->set_var('field_text', '&nbsp;');
+                        $list_templates->set_var('field_text', ' ');
                         $list_templates->parse('item_field', 'field', true);
                     }
                 }
