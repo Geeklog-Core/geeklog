@@ -56,7 +56,7 @@ if (!defined('VERSION')) {
     * This constant defines Geeklog's version number. It will be written to
     * siteconfig.php and the database (in the latter case minus any suffix).
     */
-    define('VERSION', '1.6.1b1');
+    define('VERSION', '1.6.1rc1');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
