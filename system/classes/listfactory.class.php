@@ -479,12 +479,16 @@ class ListFactory {
         $num_query_results = $this->_per_page - $this->_total_found;
         $pp_total = $this->_total_found;
         $limits = array();
-        for ($i = 0; $i < count($this->_sources_arr); $i++)
-        {
+        $num = count($this->_sources_arr);
+        for ($i = 0; $i < $num; $i++) {
             $limits[$i]['total'] = $this->_getTotal($this->_sources_arr[$i]);
             $limits[$i]['pp'] = round(($this->_sources_arr[$i]['rank'] / $this->_total_rank) * $num_query_results);
             $this->_total_found += $limits[$i]['total'];
             $pp_total += $limits[$i]['pp'];
+        }
+        if ($num == 0) {
+            $limits[0]['total'] = 0;
+            $limits[0]['pp'] = 0;
         }
         if ($pp_total < $this->_per_page) {
             $limits[0]['pp'] += $this->_per_page - $pp_total;
