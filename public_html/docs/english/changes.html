@@ -33,6 +33,7 @@ list of files that have been changed since the last release.</p>
     your URLs and paths).</li>
 <li>The Database Backup admin panel now includes options to optimize the
     database and convert tables to InnoDB (MySQL only).</li>
+<li>Improved <a href="http://wiki.geeklog.net/index.php/Timezone_Support">timezone support</a> and let users actually set their own timezone.</li>
 <li>Minor security enhancements:
     <ul>
         <li>"Important" cookies (like the session cookies) are now created with
@@ -54,6 +55,8 @@ list of files that have been changed since the last release.</p>
     this SQL request:<br>
     <code style="margin-left:2em">UPDATE gl_stories SET commentcode = 0, comment_expire = 0 WHERE commentcode = 1;</code></li>
 <li>The comment speed limit was being ignored.</li>
+<li>Fixed a bug in the Group Editor that didn't let you add groups to other
+    groups (this problem was only introduced in Geeklog 1.6.0).</li>
 <li>The admin group for the Static Pages plugin was created with a wrong name
     in Geeklog 1.6.0 (fresh installs only).</li>
 </ul>
