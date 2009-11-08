@@ -4,6 +4,8 @@ Nov 8, 2009 (1.6.1rc1)
 -----------
 
 Changes since 1.6.1b1:
+- Moved hard coded green color for the search result byline (when using "Google"
+  style) to the stylesheet (new class "searchresult-byline") [Dirk]
 - "Refine search" lost the status of the "Titles Only" checkbox [Dirk]
   Note: This fix requires a change in search/searchform.thtml
 - Improved display of the "Sort by" and "Show n results" dropdowns on the

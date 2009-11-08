@@ -634,6 +634,9 @@ select {
   color:#000000;
   text-align:right;
 }
+.searchresult-byline {
+  color:green;
+}
 .site-slogan {
   color:#ffffff;
   background:transparent;

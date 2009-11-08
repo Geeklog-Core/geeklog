@@ -497,7 +497,7 @@ class Search {
             $obj->setField('',          LF_ROW_NUMBER,  $show_num,  false, '<b>%d.</b>');
             $obj->setField($LANG09[16], 'title',        true,       true,  '%s<br' . XHTML . '>');
             $obj->setField('',          'description',  true,       false, '%s<br' . XHTML . '>');
-            $obj->setField('',          '_html',        true,       false, '<span style="color:green;">');
+            $obj->setField('',          '_html',        true,       false, '<span class="searchresult-byline">');
             $obj->setField($LANG09[18], 'uid',          $show_user, $sort_uid,  $LANG01[104].' %s ');
             $obj->setField($LANG09[17], 'date',         true,       $sort_date,  $LANG01[36].' %s');
             $obj->setField($LANG09[5],  LF_SOURCE_TITLE,$show_type, $sort_type,  ' - %s');
