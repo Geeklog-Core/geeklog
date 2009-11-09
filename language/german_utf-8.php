@@ -1976,7 +1976,7 @@ $LANG_configselects['Core'] = array(
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Aktiviert' => 0, 'Deaktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2)
+    23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2)
 );
 
 ?>
