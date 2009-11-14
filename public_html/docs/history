@@ -9,6 +9,9 @@ Changes since 1.6.1rc1:
 
 Static Pages Plugin
 -------------------
+- Added missing code to handle $_SP_CONF['includesearchcenterblocks'] and
+  $_SP_CONF['includesearchphp'] options that was accidentally left out when
+  merging Tom's patch [Dirk]
 - Removed reference to undeclared variable in SP_render_content (bug #0001032)
   [Dirk]
 

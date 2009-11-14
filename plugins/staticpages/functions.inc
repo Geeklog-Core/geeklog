@@ -613,11 +613,19 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "UNIX_TIMESTAMP(sp.sp_date) AS date, sp.sp_uid AS uid, sp.sp_hits AS hits, ";
     $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
-    $sql .= "WHERE (sp.sp_uid = u.uid) AND (sp_php <> 1) ";
+    $sql .= "WHERE (sp.sp_uid = u.uid) ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author') ";
+    }
+
+    if ($_SP_CONF['includesearchcenterblocks'] == 0) {
+        $sql .='AND sp_centerblock = 0 ';
+    }
+
+    if ($_SP_CONF['includesearchphp'] == 0) {
+        $sql .= 'AND sp_php = 0 ';
     }
 
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
