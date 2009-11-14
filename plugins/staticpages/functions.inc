@@ -1238,7 +1238,7 @@ function SP_render_content ($sp_content, $sp_php)
         $retval = PLG_replacetags ($retval);
     } else {
         if ($sp_php != 0) {
-            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
+            COM_errorLog ("PHP in static pages is disabled. Can not display page.", 1);
             $retval .= $LANG_STATIC['deny_msg'];
         } else {
             $retval .= PLG_replacetags ($sp_content);

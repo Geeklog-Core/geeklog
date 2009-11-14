@@ -7,6 +7,11 @@ Changes since 1.6.1rc1:
 
 - Updated Estonian language file, provided by Artur Räpp
 
+Static Pages Plugin
+-------------------
+- Removed reference to undeclared variable in SP_render_content (bug #0001032)
+  [Dirk]
+
 
 Nov 8, 2009 (1.6.1rc1)
 -----------
