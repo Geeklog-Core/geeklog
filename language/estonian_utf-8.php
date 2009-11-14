@@ -826,9 +826,9 @@ $LANG24 = array(
     86 => 'Keerukam toimetaja',
     87 => 'Lugude statistika',
     88 => 'Wiki-laadne formaat',
-    89 => 'Meta Description',
-    90 => 'Meta Keywords',
-    91 => 'You can always hit "Preview" to extend the expiry time.'
+    89 => 'Meta kirjeldus',
+    90 => 'Meta märksõnad',
+    91 => 'Sa võid alati klõpsata "Eelvaade", et aegumisaega pikendada.'
 );
 
 ###############################################################################
@@ -864,7 +864,7 @@ $LANG27 = array(
     27 => 'või lae rubriigi ikoon',
     28 => 'Maksimum',
     29 => 'Vead faili üleslaadimisel',
-    30 => 'Stories in Topic'
+    30 => 'Lood rubriikides'
 );
 
 ###############################################################################
@@ -1026,7 +1026,7 @@ $LANG31 = array(
 
 $LANG32 = array(
     1 => 'Pluginate installeerimine võib kahjustada sinu Geeklogi installatsiooni ja lisaks kahjustada ka sinu süsteemi. On oluline, et sa installeeriksid vaid <a href="http://www.geeklog.net">Geeklogi kodulehelt</a> laetud pluginaid, sest me kontrollime hoolikalt meie lehele laetud pluginaid erinevates operatsioonisüsteemides. On oluline mõista, et plugina installeerimine nõuab mitmete süsteemikäskude kasutamist, mis võib kaasa tuua turvalisusprobleeme, eriti siis, kui sa kasutad kolmandatelt lehtedelt laetud pluginaid. Sellest hoiatusest hoolimata ei taga me plugina installeerimise edukust ega vastuta selle installeerimise tagajärjena põhjustatud kahju eest. Teiste sõnadega - installeeri oma vastutusel. Lisaks on iga plugina paketi juures juhend, kuidas installeerida plugin käsitsi.',
-    2 => 'Plug-in Installation Disclaimer',
+    2 => 'Plug-ina installeerimise disklaimer',
     3 => 'Plugina installeerimisvorm',
     4 => 'Plugina fail',
     5 => 'Pluginate loetelu',
@@ -1329,25 +1329,25 @@ $LANG_DB_BACKUP = array(
     'bytes' => 'baiti',
     'total_number' => 'Varunduste üldarv: %d',
     'download' => 'Klõpsa selle faili allalaadimiseks',
-    'new_backup' => 'New Backup',
-    'delete_failure' => 'One or more backup files could not be deleted.',
-    'delete_success' => 'Backup file(s) successfully deleted.',
-    'convert_menu' => 'Convert to InnoDB',
-    'convert_title' => 'Convert to InnoDB tables',
-    'convert_button' => 'Convert',
-    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
-    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
-    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
-    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
-    'innodb_success' => 'Successfully converted tables to InnoDB.',
-    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
-    'optimize_menu' => 'Optimize Tables',
-    'optimize_title' => 'Optimize Tables',
-    'optimize_button' => 'Optimize',
-    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
-    'last_optimization' => 'Last optimization',
-    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
-    'optimize_success' => 'Successfully optimized database tables.'
+    'new_backup' => 'Uus varundamine',
+    'delete_failure' => 'Ühe või enama backupfaili kustutamine ebaõnnestus.',
+    'delete_success' => 'Backupfail(id) on edukalt kustutatud.',
+    'convert_menu' => 'Konverteeri InnoDB formaati',
+    'convert_title' => 'Konverteeri InnoDB tabeliteks',
+    'convert_button' => 'Konverteeri',
+    'sorry_no_innodb' => 'Kahjuks sinu MySQL-i versioon ei toeta  InnoDB tabeleid.',
+    'innodb_explain' => 'InnoDB tabelid pakuvad suuremat jõudlust, kui tegu on <em>tõesti</em> suure andmebaasiga, kuid teeb varundamise protsessi keerulisemaks. Palun <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">loe rohkem </a> InnoDB tabelite kohta käivate poolt ja vastuargumente, enne kui teostad selle operatsiooni.',
+    'already_converted' => 'Märkus: Näib, et kõik tabelid on juba konverteeritud InnoDB tabeliteks.',
+    'conversion_patience' => 'Märkus: Konverteerimine võib võtta aega. Palun kannatust.',
+    'innodb_success' => 'Tabelid on edukalt konverteeritud InnoDB formaati.',
+    'table_issues' => 'Mõnede tabelitega võis olla probleeme. Vaata täpsemat infot error.log failist. .',
+    'optimize_menu' => 'Optimeeri tabeleid',
+    'optimize_title' => 'Optimeeri tabeleid',
+    'optimize_button' => 'Optimeeri',
+    'optimize_explain' => 'Tabelite optimeerimine võib parandada saidi jõudlust. Tegelik kasu sõltub iga tabeli kasutusest ja mõnede tabelite puhul annab see rohkem kasu kui teiste puhul. Ära oota tõeliselt suurt jõudluse tõusu. <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manuaal </a> ütleb: <q>Ei ole tõenäoline, et sa peaksid seda tegema sagedamini kui korra kuus või nädalas</q>.',
+    'last_optimization' => 'Viimane optimeerimine',
+    'optimization_patience' => 'Märkus: Optimeerimine võib võtta aega. Palun kannatust.',
+    'optimize_success' => 'Andmebaasi tabelite optimeerimine oli edukas.'
 );
 
 ###############################################################################
@@ -1596,10 +1596,10 @@ $LANG_ADMIN = array(
     'addchild' => 'Lisa alamdetail',
     'list' => 'Loetelu',
     'list_all' => 'Loetle kõik',
-    'meta_description' => 'Meta Description',
-    'meta_keywords' => 'Meta Keywords',
+    'meta_description' => 'Meta kirjeldus',
+    'meta_keywords' => 'Meta märksõnad',
     'na' => 'N/A',
-    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
+    'token_expiry' => 'Sul on aega kuni %s, et teha muutusi. Pärast seda aegub lehele lisatud turvalisuskood ja tehtud muutused lähevad kaotsi.'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
