@@ -221,7 +221,7 @@ $LANG03 = array(
     38 => 'A reply has been made to your comment \'%s\'.',
     39 => 'You may view the comment thread at the following address:',
     40 => 'If you wish to receive no further notifications of replies, visit the following link:',
-    41 => 'Hello %s,',
+    41 => 'Hallo %s,',
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications'
 );
@@ -456,7 +456,7 @@ $LANG08 = array(
     34 => 'Ende dieser Nachricht',
     35 => 'Sorry, dieser User möchte keine E-Mails bekommen.',
     36 => 'Kopie:',
-    37 => 'Send me a copy of this email',
+    37 => 'Ich möchte eine Kopie der E-Mail bekommen',
     38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
 );
 
@@ -803,7 +803,7 @@ $LANG24 = array(
     60 => '',
     61 => 'automatisch archivieren',
     62 => 'automatisch löschen',
-    63 => 'Disable Comments',
+    63 => 'Kommentare abschalten',
     64 => '',
     65 => '',
     66 => '',
@@ -982,14 +982,14 @@ $LANG29 = array(
     18 => 'E-Mail',
     34 => 'Kommandozentrale',
     35 => 'Beiträge: Artikel',
-    36 => 'Parent or Comment',
+    36 => 'Bezug oder Kommentar',
     37 => '',
     38 => 'Abschicken',
     39 => 'Derzeit gibt es keine Beiträge zu moderieren.',
     40 => 'Neue User',
-    41 => 'Comment Submissions',
-    42 => 'User Name',
-    43 => 'Auto-publish Comments?'
+    41 => 'Beiträge: Kommentare',
+    42 => 'Username',
+    43 => 'Moderation aufheben?'
 );
 
 ###############################################################################
@@ -1156,8 +1156,8 @@ $MESSAGE = array(
     12 => 'Der Block wurde gelöscht.',
     13 => 'Deine Kategorie wurde gespeichert.',
     14 => 'Die Kategorie und alle zugehörigen Artikel wurden gelöscht.',
-    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
-    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
+    15 => 'Dein Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.',
+    16 => 'Abonnement wurde gelöscht. Du wirst nicht länger über Antworten benachrichtigt.',
     17 => '',
     18 => '',
     19 => '',

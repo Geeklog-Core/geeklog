@@ -112,8 +112,8 @@ $LANG_STATIC = array(
     'limit_results' => 'Ergebnisse einschränken',
     'search' => 'Suchen',
     'submit' => 'Absenden',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages'
+    'no_new_pages' => 'Keine neuen Seiten',
+    'pages' => 'Seiten'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
