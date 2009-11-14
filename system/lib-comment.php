@@ -205,7 +205,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 *
 * @param    array    &$comments Database result set of comments to be printed
 * @param    string   $mode      'flat', 'threaded', etc
-* @param    string   $type      Type of item (article, poll, etc.)
+* @param    string   $type      Type of item (article, polls, etc.)
 * @param    string   $order     How to order the comments 'ASC' or 'DESC'
 * @param    boolean  $delete_option   if current user can delete comments
 * @param    boolean  $preview   Preview display (for edit) or not
@@ -566,7 +566,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 *
 * @param    string      $sid       ID for item to show comments for
 * @param    string      $title     Title of item
-* @param    string      $type      Type of item (article, poll, etc.)
+* @param    string      $type      Type of item (article, polls, etc.)
 * @param    string      $order     How to order the comments 'ASC' or 'DESC'
 * @param    string      $mode      comment mode (nested, flat, etc.)
 * @param    int         $pid       id of parent comment
@@ -1229,7 +1229,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 * @param    $uid        int         user id
 * @param    $username   string      optional name of anonymous user
 * @param    $ipaddress  string      poster's IP address
-* @param    $type       string      type of comment ('article', 'poll', ...)
+* @param    $type       string      type of comment ('article', 'polls', ...)
 * @param    $cid        int         comment id (or 0 when in submission queue)
 * @return               boolean     true if successfully sent, otherwise false
 *
@@ -1270,7 +1270,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
     $mailbody = "$LANG03[16]: $title\n"
               . "$LANG03[5]: $author\n";
 
-    if (($type != 'article') && ($type != 'poll')) {
+    if ($type != 'article') {
         $mailbody .= "$LANG09[5]: $type\n";
     }
 
@@ -1308,7 +1308,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
  * for the specified $type and $sid.
  *
  * @author  Vincent Furia, vinny01 AT users DOT sourceforge DOT net
- * @param   string      $type   article, poll, or plugin identifier
+ * @param   string      $type   article, or plugin identifier
  * @param   string      $sid    id of object comment belongs to
  * @param   int         $cid    Comment ID
  * @return  string      0 indicates success, >0 identifies problem
@@ -1360,7 +1360,7 @@ function CMT_deleteComment ($cid, $sid, $type)
 * Display form to report abusive comment.
 *
 * @param    string  $cid    comment id
-* @param    string  $type   type of comment ('article', 'poll', ...)
+* @param    string  $type   type of comment ('article', 'polls', ...)
 * @return   string          HTML for the form (or error message)
 *
 */
@@ -1439,7 +1439,7 @@ function CMT_reportAbusiveComment ($cid, $type)
 * Send report about abusive comment
 *
 * @param    string  $cid    comment id
-* @param    string  $type   type of comment ('article', 'poll', ...)
+* @param    string  $type   type of comment ('article', 'polls', ...)
 * @return   string          Meta refresh or HTML for error message
 *
 */
@@ -1495,7 +1495,7 @@ function CMT_sendReport ($cid, $type)
               . "$LANG03[16]: $title\n"
               . "$LANG03[5]: $author\n";
 
-    if (($type != 'article') && ($type != 'poll')) {
+    if ($type != 'article') {
         $mailbody .= "$LANG09[5]: $type\n";
     }
 
@@ -1611,7 +1611,7 @@ function CMT_handleEditSubmit($mode = null)
  * @author Jared Wenerd, wenerd87 AT gmail DOT com
  * @param string  $comment  comment text
  * @param string  $postmode ('html', 'plaintext', ...)
- * @param string  $type     Type of item (article, poll, etc.)
+ * @param string  $type     Type of item (article, polls, etc.)
  * @param bool    $edit     if true append edit tag
  * @param int     $cid      commentid if editing comment (for proper sig)
  * @return string of comment text
