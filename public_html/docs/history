@@ -2,8 +2,10 @@ Geeklog History/Changes:
 
 Nov ??, 2009 (1.6.1)
 ------------
-
 Changes since 1.6.1rc1:
+- The success message at the end of the install recommended setting
+  db-config.php and siteconfig.php to 755. These files don't need to be
+  executable, so recommend 644 instead (bug #0001036) [Dirk]
 
 - Updated Estonian language file, provided by Artur Räpp
 
