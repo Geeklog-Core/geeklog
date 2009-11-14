@@ -20,6 +20,7 @@
     </ul></li>
   <li><a href="#install">New Installation</a>
   <li><a href="#upgrade">Upgrading</a>
+  <li><a href="#migrate">Migrating</a>
   <li><a href="#installprob">Common Problems and Troubleshooting</a></li>
 </ul>
 
@@ -59,7 +60,7 @@
         </li>
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
-            <p><code>tar -zxvf geeklog-1.6.0.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-1.6.1.tar.gz</code> </p>
             
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/">7-Zip</a> or <a href="http://www.rarlab.com/">WinRAR</a> if you must decompress the file locally.</p>
         </li>
@@ -67,9 +68,9 @@
             <p>Create a blank MySQL or Microsoft SQL database and a user account with privileges to modify it. Your hosting provider may have already set up a database and account for you, contact them if you need assistance with this step.</p>
         </li>
         <li>
-            <p>Place the contents of <code>geeklog-1.6.0/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
+            <p>Place the contents of <code>geeklog-1.6.1/public_html/</code> into your web root directory on your web server. The web root directory is often named "public_html", "htdocs", or "www".</p>
         
-            <p>Next, place the remaining contents of <code>geeklog-1.6.0/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
+            <p>Next, place the remaining contents of <code>geeklog-1.6.1/</code> into either the parent directory of your root web directory (recommended) or any other non public folder and the installation wizard will attempt to locate them automatically. If it cannot you will be asked to specify their paths during installation. This is done as a security measure to prevent access to Geeklog system files by Internet users. </p>
             
             <p><strong>Note:</strong> If your hosting provider does not allow you to place files outside of your root web directory:</p>
             <ul>
@@ -107,12 +108,12 @@
         </li>
         <li>
             <p>Unpack the downloaded tarball file by running: </p>
-            <p><code>tar -zxvf geeklog-1.6.0.tar.gz</code> </p>
+            <p><code>tar -zxvf geeklog-1.6.1.tar.gz</code> </p>
             
             <p><strong>Note:</strong> Some users have reported that WinZip corrupts certain Geeklog files during decompression. This will cause errors during the installation process. You are strongly urged not to use WinZip. Try <a href="http://www.7-zip.org/">7-Zip</a> or <a href="http://www.rarlab.com/">WinRAR</a> if you must decompress the file locally.</p>
         </li>
         <li>
-            <p>Place the contents of <code>geeklog-1.6.0/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
+            <p>Place the contents of <code>geeklog-1.6.1/</code> into the same directory your old installation was located. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.</p>
         </li>
         <li>Depending on the version you're upgrading from:
             <ul>
@@ -132,6 +133,15 @@
         </li>        
     </ol>
    
+<h2><a name="migrate">Migrating</a></h2>
+
+<p>The install script's "Migrate" option will help you move your site to another server or domain name. It will update the configuration information stored in the database and can also update URLs in content, such as articles (in case the domain name or URL of your Geeklog site changed).</p>
+
+<p>After clicking on "Migrate", you will have to enter the database credentials for your (new) database server, as usual. Note that you don't need to enter a table prefix, as the Migrate option will detect it automatically.</p>
+
+<p>You then have the option to upload a database backup from your computer, to import from a backup that's already on the server (in Geeklog's <tt>backups</tt> directory), or you can use the current content of the database, in case you already imported it through other means.</p>
+
+<p><strong>Note:</strong> Uploading a backup file from your computer will only work as long as the size of the backup file is below the server's max. upload limit. The max. allowed size will be displayed when you select this option. If your backup file is over that limit, try compressing it (zip or gzip should work) or use one of the other two options.</p>
 
 <h2><a name="installprob">Common Problems and Troubleshooting</a></h2>
 
@@ -198,9 +208,7 @@ Cannnot connect to DB server</code></p>
             </li>
             <li>
                 <p><strong>Error:</strong> <code>Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440</code></p>
-                <p><strong>Answer:</strong> Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the <code>public_html/backend</code> directory and the geeklog.rss file have the same 775 or 777 permissions.</p>
-    
-                <p><strong>Tip:</strong> Use the script that is located at <code>http://yourgeeklogsite/admin/install/check.php</code> to test if all the permissions have been set up correctly.</p>
+                <p><strong>Answer:</strong> Make sure that the logs/ directory has the permissions set to at least 755 AND the files in it have permissions of at least 644. You may need to make the permissions 775 or 777 and 664 or 666 (respectively) if 755 and 644 isn't working for you. For good measure, make sure the <code>public_html/backend</code> directory and the geeklog.rss file have the same permissions.</p>
             </li>
             <li>
                 <p><strong>Whenever someone tries to log in or out, the following error is produced:</strong></p>
