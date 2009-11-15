@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Nov ??, 2009 (1.6.1)
 ------------
 Changes since 1.6.1rc1:
+- Updated the age-old help texts and added help files for comment and user
+  submissions as well as the draft stories list [Dirk]
 - The success message at the end of the install recommended setting
   db-config.php and siteconfig.php to 755. These files don't need to be
   executable, so recommend 644 instead (bug #0001036) [Dirk]

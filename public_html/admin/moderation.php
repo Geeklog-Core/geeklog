@@ -189,7 +189,7 @@ function commandcontrol($token)
     if ($_CONF['sort_admin']) {
         uksort ($items, 'strcasecmp');
     }
-     // logout is always the last entry
+    // logout is always the last entry
     $item = render_cc_item ($admin_templates,
                     $_CONF['site_url'] . '/users.php?mode=logout',
                     $_CONF['layout_url'] . '/images/icons/logout.' . $_IMAGE_TYPE,
@@ -262,7 +262,7 @@ function itemlist($type, $token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     $isplugin = false;
@@ -282,7 +282,7 @@ function itemlist($type, $token)
                 $isplugin = true;
             }
         }
-    } elseif ( $type == 'story') { // story submission
+    } elseif ($type == 'story') { // story submission
         $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
         $H =  array($LANG29[10], $LANG29[14], $LANG29[15]);
         $section_title = $LANG29[35];
@@ -293,7 +293,7 @@ function itemlist($type, $token)
               . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
-        $section_help = 'ccstorysubmission.html'; // FIXME
+        $section_help = 'cccommentsubmission.html';
     }
 
     // run SQL but this time ignore any errors
@@ -381,7 +381,7 @@ function userlist($token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
-    require_once ($_CONF['path_system'] . 'lib-admin.php');
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
@@ -407,7 +407,7 @@ function userlist($token)
 
     $text_arr = array('has_menu'  => false,
                       'title'     => $LANG29[40],
-                      'help_url'  => '',
+                      'help_url'  => 'ccusersubmission.html',
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php"
     );
@@ -447,7 +447,7 @@ function draftlist($token)
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -475,7 +475,7 @@ function draftlist($token)
 
     $text_arr = array('has_menu'  => false,
                       'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                      'help_url'  => '',
+                      'help_url'  => 'ccdraftsubmission.html',
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php");
 
