@@ -80,7 +80,7 @@ class unpacker {
     function unpacker($file, $mime_type = null) {
 
         // default directory separator
-        $this->d_sep = PATH_SEPARATOR;
+        $this->d_sep = DIRECTORY_SEPARATOR;
 
         // if the file doesn't have it's path, assume local
         if (! strstr($file, $this->d_sep)) {

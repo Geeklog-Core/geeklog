@@ -2,7 +2,9 @@ Geeklog History/Changes:
 
 Nov ??, 2009 (1.6.1)
 ------------
+
 Changes since 1.6.1rc1:
+- Fixed use of wrong constant in unpacker.class.php [Blaine]
 - Updated the age-old help texts and added help files for comment and user
   submissions as well as the draft stories list [Dirk]
 - The success message at the end of the install recommended setting
@@ -97,7 +99,7 @@ Nov 1, 2009 (1.6.1b1)
   bugs with the "Disable Comments" option in 1.6.0) may result in values outside
   of the range of the year dropdown for that option, in which case it reverted
   to the previous(!) year and caused comments to be closed immediately [Dirk]
-- When viewing your own profile page, you now get an "edit" link that take you
+- When viewing your own profile page, you now get an "edit" link that takes you
   to "My Account" [Dirk]
 - Additional checks in "Mail Story to a Friend", "Send mail to user", and
   "Mail Users" dialogs to make sure users don't enter email addresses into the
