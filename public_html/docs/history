@@ -4,6 +4,8 @@ Nov ??, 2009 (1.6.1)
 ------------
 
 Changes since 1.6.1rc1:
+- It wasn't possible to email a user via their profile page - checked the wrong
+  field for '@' characters (cf. bug #0000992; reported by rayleigh) [Dirk]
 - Fixed use of wrong constant in unpacker.class.php [Blaine]
 - Updated the age-old help texts and added help files for comment and user
   submissions as well as the draft stories list [Dirk]

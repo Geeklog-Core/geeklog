@@ -81,7 +81,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
     }
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
-        if (COM_isemail($authoremail) && (strpos($authoremail, '@') === false)) {
+        if (COM_isemail($authoremail) && (strpos($author, '@') === false)) {
             $result = DB_query("SELECT username,fullname,email FROM {$_TABLES['users']} WHERE uid = $uid");
             $A = DB_fetchArray($result);
 
