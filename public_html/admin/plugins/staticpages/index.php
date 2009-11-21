@@ -361,6 +361,8 @@ function staticpageeditor_form($A, $error = false)
     $content = '';
     if (isset($A['sp_content'])) {
         $content = htmlspecialchars(stripslashes($A['sp_content']));
+        $content = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                               $content);
     }
     $sp_template->set_var('sp_content', $content);
     if ($_SP_CONF['filter_html'] == 1) {

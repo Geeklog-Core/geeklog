@@ -17,6 +17,8 @@ Changes since 1.6.1rc1:
 
 Static Pages Plugin
 -------------------
+- Content in curly braces in a static page was mistaken for template variables
+  in the static pages editor (bug #0001038) [Dirk]
 - Added missing code to handle $_SP_CONF['includesearchcenterblocks'] and
   $_SP_CONF['includesearchphp'] options that was accidentally left out when
   merging Tom's patch [Dirk]
