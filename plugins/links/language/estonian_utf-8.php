@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# estonian_utf-8.php
+# estonian.php
 # This is the Estonian language file for the Geeklog Link plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -169,8 +169,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Veel kontrollimata',
     58 => 'Kontrolli nüüd',
     59 => '<p>Kõigi nähtaval olevate linkide kontrollimiseks, klõpsa palun allpool oleval lingil "Kontrolli nüüd". Pane tähele, et kontrollimine võib sõltuvalt nähtaval olevate linkide arvust võtta veidi aega.</p>',
-    60 => 'Kasutaja %s proovis õigustamatult  muuta kategooriat: %s.',
-    61 => 'Links in Category'
+    60 => 'Kasutaja %s proov<is õigustamatult  muuta kategooriat: %s.',
+    61 => 'Linke kategoorias'
 );
 
 

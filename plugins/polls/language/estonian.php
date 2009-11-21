@@ -134,7 +134,7 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
     'default_permissions' => 'Küsitluse vaikimisi õigused',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'Luba Meta sildid'
 );
 
 $LANG_configsubgroups['polls'] = array(

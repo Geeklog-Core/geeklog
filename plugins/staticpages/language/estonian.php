@@ -110,13 +110,13 @@ $LANG_STATIC = array(
     'limit_results' => 'Piira tulemused',
     'search' => 'Otsi',
     'submit' => 'Sisesta',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages'
+    'no_new_pages' => 'Pole uusi lehti',
+    'pages' => 'Lehti'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
+$PLG_staticpages_MESSAGE19 = 'Sinu leht on edukalt salvestatud.';
+$PLG_staticpages_MESSAGE20 = 'Sinu leht on edukalt kustutatud.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
@@ -141,15 +141,15 @@ $LANG_confignames['staticpages'] = array(
     'default_permissions' => 'Lehe vaikimisi õigused',
     'aftersave' => 'Pärast lehe salvestamist',
     'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
-    'meta_tags' => 'Enable Meta Tags',
-    'newstaticpagesinterval' => 'New Static Page Interval',
-    'hidenewstaticpages' => 'Hide New Static Pages',
-    'title_trim_length' => 'Title Trim Length',
-    'includecenterblocks' => 'Include Center Block Static Pages',
-    'includephp' => 'Include Static Pages with PHP',
-    'includesearch' => 'Enable Static Pages in Search',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'meta_tags' => 'Luba Meta sildid',
+    'newstaticpagesinterval' => 'Uute staatiliste lehtede aeg',
+    'hidenewstaticpages' => 'Peida: Uued staatilised lehed',
+    'title_trim_length' => 'Pealkirja kärpimise pikkus',
+    'includecenterblocks' => 'Kaasa keskploki staatilised lehed',
+    'includephp' => 'Kaasa PHP-ga staatilised lehed',
+    'includesearch' => 'Luba staatilised lehed otsingus',
+    'includesearchcenterblocks' => 'Kaasa keskploki staatilised lehed',
+    'includesearchphp' => 'Kaasa PHP-ga staatilised lehed'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -158,8 +158,8 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Staatiliste  lehtede peaseadistused',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',
+    'fs_whatsnew' => 'Mida uut plokk',
+    'fs_search' => 'Otsingu tulemused',
     'fs_permissions' => 'Vaikimisi õigused'
 );
 

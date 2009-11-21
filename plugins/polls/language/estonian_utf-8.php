@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# estonian_utf-8.php
+# estonian.php
 # This is the Estonian language file for the Geeklog Polls plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -134,7 +134,7 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
     'default_permissions' => 'Küsitluse vaikimisi õigused',
-    'meta_tags' => 'Enable Meta Tags'
+    'meta_tags' => 'Luba Meta sildid'
 );
 
 $LANG_configsubgroups['polls'] = array(
