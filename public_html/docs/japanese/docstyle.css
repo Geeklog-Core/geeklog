@@ -3,23 +3,27 @@ body {
   line-height: 150%;
 }
 
-code, kbd, var,tt {
+code,
+kbd,
+var,
+tt {
   font-family: "Hiragino Kaku Gothic", "ヒラギノ角ゴ W3", Osaka, "ＭＳ ゴシック", Verdana, Arial, Helvetica, sans-serif,monospace;
   font-size: 1.0em;
 }
 
 table {
   font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Osaka, "ＭＳ Ｐゴシック", Verdana, Arial, Helvetica, sans-serif;
-  margin:1em;
-  background:#F9F9F9;
-  border:1px #AAA solid;
-  border-collapse:collapse;
+  margin: 1em;
+  background: #F9F9F9;
+  border: 1px #AAA solid;
+  border-collapse: collapse;
   font-size: 1.0em;
 }
 
-table th, table td {
-  border:1px #AAA solid;
-  padding:0.2em;
+table th,
+table td {
+  border: 1px #AAA solid;
+  padding: 0.2em;
   vertical-align: top;
   line-height: 140%;
   font-size: 1.0em;
@@ -28,7 +32,6 @@ table th, table td {
 
 table th {
   background: silver;
-  text-align:center;
+  text-align: center;
   font-weight: bold;
 }
-

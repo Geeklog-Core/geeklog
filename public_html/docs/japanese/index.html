@@ -16,7 +16,7 @@
 
 <p>まず最初に、Geeklogをダウンロードしていただき、ありがとうございます。私たちは時間を費やして最高のWeblog（ブログ）ソフトウェア作成に取り組んできました。きっと使いやすく、パワフルなものに仕上がっていると思います。</p>
 
-<p>Geeklogをさらに使いやすくするために、以下のドキュメントを作成しました。インストール方法などのよくあるドキュメント以外にも開発者向けの完全なAPIドキュメントを用意しましたので、独自のテーマやプラグインを作成して、Geeklogをさらに使いやすいものにできます。</p>
+<p>Geeklogをさらに使いやすくするために、以下のドキュメントを作成しました。インストール方法などのよくあるドキュメント以外に、開発者向けの完全なAPIドキュメントへのリンクも用意しましたので、独自のテーマやプラグインを作成してGeeklogをさらに使いやすいものにできるでしょう。</p>
 
 <ul>
   <li><a href="#features">Geeklogの機能</a></li>
@@ -46,9 +46,11 @@
       <!-- <li>Writing Custom Functions</li> -->
     </ul></li>
   <li><a href="support.html">サポート</a></li>
-  <li><a href="changes.html">変更点リスト</a></li>
-  <li><a href="history.html">詳細変更履歴(historyをHTML化したもの）</a></li>
+  <li><a href="changes.html">変更履歴</a></li>
+  <li><a href="history.html">history(historyをHTML形式に編集したものです)</a></li>
 </ul>
+
+<p>Geeklogを使用する際のより詳細な情報は、Geeklogコミュニティにより維持されていて、絶えず発展している<a href="http://wiki.geeklog.net/">Geeklog Documentation Wiki</a>で見つかるでしょう。</p>
 
 <h2><a name="features">Geeklogの機能</a></h2>
 
@@ -85,30 +87,30 @@
 <h3>セキュリティ機能</h3>
 
 <ul>
-<li>ユーザアカウントとアクセス制御
-<li>Geeklogの全オブジェクトを制御する*nixスタイルのセキュリティモデル（プラグインでも使用可）
-<li>記事・話題ごとにアクセス制御できる
-<li>パスワードはすべて暗号化されて保存（生のパスワードを保存しない）
-<li>管理者のアクセスはすべてログに記録される
-<li>エラーはすべてログに記録される
-<li>フォーム送信とSQL呼び出しの際に発生するエラーはすべてログに記録される
+<li>ユーザアカウントとアクセス制御</li>
+<li>Geeklogの全オブジェクトを制御する*nixスタイルのセキュリティモデル（プラグインでも使用可）</li>
+<li>記事・話題ごとにアクセス制御できる</li>
+<li>パスワードはすべて暗号化されて保存（生のパスワードを保存しない）</li>
+<li>管理者のアクセスはすべてログに記録される</li>
+<li>エラーはすべてログに記録される</li>
+<li>フォーム送信とSQL呼び出しの際に発生するエラーはすべてログに記録される</li>
 </ul>
 
 <h3>開発者向けの機能</h3>
 
 <ul>
-<li>開発者向けのAPIでプラグイン開発をサポート
-<li>完全に設定可能なブロックシステム。ブロックの中でのPHP使用もサポート。
-<li>整然としたコードベース。PHPのオブジェクト指向機能を使用。
-<li>デフォルト(MySQLとMSSQL)以外のデータベースへの移植を可能にする軽量のデータベース抽象化レイヤ
+<li>開発者向けのAPIでプラグイン開発をサポート</li>
+<li>完全に設定可能なブロックシステム。ブロックの中でのPHP使用もサポート</li>
+<li>整然としたコードベース。PHPのオブジェクト指向機能を使用</li>
+<li>デフォルト(MySQLとMSSQL)以外のデータベースへの移植を可能にする軽量のデータベース抽象化レイヤ</li>
 </ul>
 
 <h2><a name="introduction">はじめに</a></h2>
 
-<p>GeeklogはもともとSecurity Geeks WebサイトのためにJason Whittenburgによって作成されました。2001年初頭に、Jasonは他のことに時間を使おうと決心し、プロジェクトを<a href="http://www.iowaoutdoors.org/">Iowa Outdoors</a>運営のためにGeeklogを使っていたTony Bibbsに引き渡しました。現在、Tonyは<a href="http://www.apteno.net/AptitudeCMS/trac">AptitudeCMS</a>（geeklog 2に相当）という名の次世代Geeklogの開発に注力しており、Dirk Haunが1.x系列の管理を行っています。</p>
+<p>GeeklogはもともとSecurity Geeks WebサイトのためにJason Whittenburgによって作成されました。2001年初頭に、Jasonは他のことに時間を使おうと決心し、プロジェクトを<a href="http://www.iowaoutdoors.org/">Iowa Outdoors</a>運営のためにGeeklogを使っていたTony Bibbsに引き渡しました。現在、Tonyは<a href="http://www.aptitudecms.org/">AptitudeCMS</a>（geeklog 2に相当）という名の次世代Geeklogの開発に注力しており、Dirk Haunが1.x系列の管理を行っています。</p>
 <p>Geeklogは正真正銘のオープンソースソフトウェアであり、<a href="../license" title="GNU General Public License">GNU GPLv2</a>ライセンスでリリースされています。Geeklogの管理は容易なはずですが、それでもシステムのいくつかのコンポーネントにアクセスする必要があるでしょう。</p>
 
-<p>このドキュメントはまだ発展の途上にあるため、意図せずして省略された箇所や、説明が過剰なし不足している箇所があるかもしれません。<a href="http://httpd.apache.org/">Apache</a> (ないしIIS)と(<a href="http://www.mysql.com/">MySQL</a>などの)SQLデータベース、<a href="http://www.php.net/">PHP</a>をある程度使った経験があることを前提としています。</p>
+<p>このドキュメントはまだ発展の途上にあるため、意図せずして省略された箇所や、説明が過剰なし不足している箇所があるかもしれません。<a href="http://httpd.apache.org/">Apache</a> (ないしIIS)と(<a href="http://www.mysql.com/">MySQL</a>や<a href="http://www.microsoft.com/sql/">MS SQL</a>などの)SQLデータベース、<a href="http://www.php.net/">PHP</a>をある程度使った経験があることを前提としています。</p>
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>

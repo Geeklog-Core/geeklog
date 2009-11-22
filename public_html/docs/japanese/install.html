@@ -23,6 +23,7 @@
     </ul></li>
   <li><a href="#install">新規インストール</a>
   <li><a href="#upgrade">旧バージョンからのアップグレード</a>
+  <li><a href="#migrate">移行</a>
   <li><a href="#installprob">よくある問題と解決法</a></li>
 </ul>
 
@@ -30,10 +31,10 @@
 <h2><a name="glossary">用語</a></h2>
 
     <ul>
-        <li>ディレクトリ: フォルダと同じ。</li>
-        <li>パス: Webサーバ上で、ファイルやディレクトリが実際にある場所。Windowsのパスはドライブ文字(<code>c:/inetpub/wwwroot/</code>)で始まり、*nix系列のパスは <code>/var/www/</code> のようにルート(<code>/</code>)から始まる。</li>
-        <li><a name="public_html">public_html</a>: URLでアクセスされる、公開領域のディレクトリ名 (その他: htdocs, www)</li>
-        <li><acronym title="Uniform Resource Locator">URL</acronym>: <code>http://www.foo.com/</code> などの、Web上での情報のありかを示すもの。</li>
+        <li>ディレクトリ: フォルダと同じです。</li>
+        <li>パス: Webサーバ上で、ファイルやディレクトリが実際にある場所です。Windows上でパスはドライブ文字(<code>c:/inetpub/wwwroot/</code>)で始まり、*nix系OS上でパスは <code>/var/www/</code> のようにルート(<code>/</code>)から始まります。</li>
+        <li><a name="public_html">public_html</a>: URLでアクセスされる、公開領域の一般的なディレクトリ名(その他: htdocs, www)です。</li>
+        <li><acronym title="Uniform Resource Locator">URL</acronym>: Uniform Resource LocatorはWeb上の情報の特定の部分を表すアドレス(<code>http://www.foo.com/</code>)です。</li>
     </ul>
     
 
@@ -41,14 +42,14 @@
 
     <h3><a name="preinstall">必要なソフトウェア</a></h3>
 
-        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHPのバージョン4.1.0以降が必要です（訳注：PHPの4.x系列はほぼメンテナンスが終了していますので、今さら選択する理由はありません。5.x系列のできるだけ新しいバージョンを選ぶとよいでしょう。2008年6月16日の時点では、最新バージョンは5.2.6です）。また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL 3.23.2</a>以降か、<a href="http://www.microsoft.com/sql/default.mspx">Microsoft SQL Server 2000</a>以降が必要です。</p>
+        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHPのバージョン4.1.0以降が必要です（訳注：PHPの4.x系列は2008年8月でセキュリティ対応を含めた保守が終了しています。PHP 5.x系列のできるだけ新しいバージョンを選ぶことをお勧めします。2009年11月12日の時点では、5.2系列の最新バージョンは5.2.11、5.3系列の最新バージョンは5.3.0です）。また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL 3.23.2</a>以降か、<a href="http://www.microsoft.com/sql/default.mspx">Microsoft SQL Server 2000</a>以降が必要です。</p>
 
     <h3><a name="things_you_should_know">必要な技術力</a></h3>
 
     <p>はじめてGeeklogをインストールするなら、次のことを確認しましょう。</p>
     <ul>
-        <li>Webディレクトリのルート（ドキュメントルート）の決め方を知っている(<a href="#glossary">パスとは?</a>)。
-        <li>ダウンロードしたGeeklogのターボール（圧縮ファイル）を伸張（解凍）できる。
+        <li>Webディレクトリのルート（ドキュメントルート）のパス(<a href="#glossary">パスとは?</a>)を見つけ出す方法を理解している。
+        <li>ダウンロードしたGeeklogのターボール（圧縮ファイル）を展開（解凍）できる。
         <li>データベースを新規作成するか、既存のデータベースにアクセスできる。
         <li>WebサーバにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。
     </ul>
@@ -61,8 +62,8 @@
             <p>Geeklogの現バージョンのターボール（圧縮ファイル）を<a href="http://www.geeklog.net/">Geeklog.net</a>や<a href="http://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
         </li>
         <li>
-            <p>次のコマンドを実行して、ダウンロードしたターボールを伸張（解凍）します。</p>
-            <p><code>tar -zxvf geeklog-1.5.1.tar.gz</code> </p>
+            <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
+            <p><code>tar -zxvf geeklog-1.6.1.tar.gz</code> </p>
             
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
         </li>
@@ -70,9 +71,9 @@
             <p>MySQLやMicrosoft SQLを使用し、空のデータベースと変更権限のあるユーザを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
         </li>
         <li>
-            <p><code>geeklog-1.6.0/public_html/</code> ディレクトリの中身をWebサーバのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
+            <p><code>geeklog-1.6.1/public_html/</code> ディレクトリの中身をWebサーバのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
         
-            <p>次に、<code>geeklog-1.6.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
+            <p>次に、<code>geeklog-1.6.1/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
             
             <p><strong>注意:</strong> ホスティング会社がドキュメントツリーの外にファイルを置くことを許可していない場合は、</p>
             <ol>
@@ -87,7 +88,7 @@
             <p>Geeklogのインストールウィザードは自動的にインストールを行うので、単に表示される手順に従ってください。</p>
         </li>
         <li>
-            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。サイトに最初に表示される記事を読んで、管理者としてのログイン情報を知り、初期値として設定されているパスワードを速やかに変更してください。</strong><br>
+            <p><strong>インストールが終了したら、必ず、 <code>admin/install</code> ディレクトリを削除してください。サイトに最初に表示される記事を読んで、管理者としてのログイン情報を知り、デフォルト状態のパスワードを速やかに変更してください。</strong><br>
 </p>
         </li>
     </ol>
@@ -107,18 +108,18 @@
             <p>Geeklogの現バージョンのターボール（圧縮ファイル）を<a href="http://www.geeklog.net/">Geeklog.net</a>や<a href="http://www.geeklog.jp/">Geeklog.jp</a>からダウンロードします。</p>
         </li>
         <li>
-            <p>次のコマンドを実行して、ダウンロードしたターボールを伸張（解凍）します。</p>
-            <p><code>tar -zxvf geeklog-1.6.0.tar.gz</code> </p>
+            <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
+            <p><code>tar -zxvf geeklog-1.6.1.tar.gz</code> </p>
             
             <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
         </li>
         <li>
-            <p><code>geeklog-1.6.0/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
+            <p><code>geeklog-1.6.1/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
         </li>
         <li>
             旧バージョンからのアップグレード：
 						<ul>
-							<li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<tt>config.php</tt> ファイル（メインの <code>config.php</code> と各プラグインの <code>config.php</code>）をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインの初期値に戻されてしまいます。</p></li>
+							<li><p><strong>Geeklog 1.4.1及びそれ以前のバージョンからのアップグレード</strong>：<tt>config.php</tt> ファイル（メインの <code>config.php</code> と各プラグインの <code>config.php</code>）をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。インストールウィザードはアップグレードの最中にこれらの設定ファイルからデータを読み取り、新しいコンフィギュレーション用に値を設定します。このステップを省くと、Geeklogとインストール済みプラグインのデフォルトに戻されてしまいます。</p></li>
 							<li><p><strong>Geeklog 1.5.0及びそれ以降のバージョンからのアップグレード</strong>：<tt>db-config.php</tt> と <tt>siteconfig.php</tt> をバックアップしておき、新しいバージョンを転送した後で、コピーをそれぞれの場所に戻してください。さもないと、アップグレードの過程でデータベース情報などを再入力することになります。</p></li>
 						</ul>
         </li>
@@ -136,6 +137,16 @@
         </li>
     </ol>
    
+
+<h2><a name="migrate">移行</a></h2>
+
+<p>インストール・スクリプトの「移行」オプションは、他のサーバやドメイン名からサイトの移動の手助けとなります。これはデータベースに保持されている構成情報を更新と、記事にようなコンテンツに含まれる(変更するGeeklogサイトのドメイン名やURLである)URLも更新できます。
+
+<p>「移行」をクリックした後は、いつものように(新しい)データベース・サーバの認証情報を入力しなければなりません。移行オプションは自動的に検出するので、テーブルの接頭子を入力する必要はないことに注意してください。</p>
+
+<p>次に、あなたのコンピュータからデータベースのバックアップをアップロードするか、サーバ(のGeeklogの<tt>backups</tt>ディレクトリ)に既に存在するバックアップから取り込むか、既に他の手段で取り込んでいる場合に現在のデータベースを使用するか、オプションから選択します。</p>
+
+<p><strong>注意:</strong> あなたのコンピュータからバックアップをアップロードするには、バックアップ・ファイルの大きさがサーバのアップロードの制限の最大値以下の場合だけ動作します。許可されている最大のサイズは、このオプションを選択すると表示されます。バックアップ・ファイルの大きさが制限を越えている場合はバックアップ・ファイルを圧縮する(zipやgzipが使用できます)か、他の2つのオプションを使用してください。</p>
 
 <h2><a name="installprob">よくある問題と解決法</a></h2>
 
@@ -180,7 +191,7 @@
                 <p><strong>答え:</strong> 上記の例はすべて(また、 <code>lib-common.php</code> で発生する "parse error" で、エラーが発生した行番号が特に3000から4000台の場合)、 <code>lib-common.php</code> が破損していることを示しています。</p>
                 <p>このドキュメントの冒頭に示したとおり、このエラーの原因は普通、次のうちの1つです:</p>
                 <ul>
-                    <li>あるバージョンのWinZipを用いてターボールを伸張（展開）した(WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を試してみてください)</li>
+                    <li>あるバージョンのWinZipを用いてターボールを展開した場合(WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を試してみてください)</li>
                     <li><code>lib-common.php</code> をDreamweaverなどのいわゆる<acronym title="What You See Is What You Get: 編集画面で表示されているとおりに実際に表示されること">WYSIWYG</acronym> HTMLエディタで編集した(代わりに、シンプルなテキストエディタを使用してください)</li>
                     <li><code>lib-common.php</code> をCpanelなどの管理ツールに組み込まれているオンラインのエディタで編集した(代わりに、シンプルなテキストエディタを使用してください)</li>
                 </ul>
@@ -202,9 +213,7 @@ Cannnot connect to DB server</code></p>
             </li>
             <li>
                 <p><strong>エラー:</strong> <code>Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440</code></p>
-                <p><strong>答え:</strong> logsディレクトリとその中に含まれるファイルの両方に少なくとも 775 のパーミッションがあることを確認します。775 でうまくいかないなら、777 にする必要があるでしょう。同様に、 <code>public_html/backend</code> ディレクトリとその中に含まれるファイル(geeklog.rssなど)にも 775 または 777 のパーミッションが必要です。</p>
-    
-                <p><strong>ヒント:</strong> <code>http://自分のサイトのURL/admin/install/check.php</code> を利用して、パーミッションがすべて適切に設定されているか確認するとよいでしょう。</p>
+                <p><strong>答え:</strong> logsディレクトリのパーミッションが少なくとも 775 であることと、*加えて* その中のファイルのパーミッションが少なくとも 644 であることを確認してください。755 と 644 のパーミッションで動作しない場合は、(それぞれ) 775 または 777 と 664 または 666 といったパーミッションにする必要があるかもしれません。同様に、ディレクトリ <code>public_html/backend</code> と (その中の)ファイル geeklog.rss も同じパーミッションであることを確認してください。</p>
             </li>
             <li>
                 <p><strong>誰かがログイン・ログアウトするたびに、次のエラーが発生する:</strong></p>
@@ -228,8 +237,7 @@ Cannnot connect to DB server</code></p>
             </li>
             <li>
                 <p>エラーメッセージをGoogleで検索してみましょう。他の人が同じ問題に遭遇し、解決している可能性があります。Googleで検索していると、同じエラーが発生している壊れたページが表示されることもあります。</p>
-            </li>
-                <p>なお、サポートについて詳しくは、ドキュメント「<a href="support.html">サポート</a>」をご覧ください。</p>
+                <p>なお、サポートについて詳しくは、ドキュメント「<a href="support.html">サポート</a>」をご覧ください。</p></li>
         </ol>
 
 
