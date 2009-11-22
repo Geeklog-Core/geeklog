@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Nov ??, 2009 (1.6.1)
+Nov 22, 2009 (1.6.1)
 ------------
 
 Changes since 1.6.1rc1:
@@ -13,7 +13,7 @@ Changes since 1.6.1rc1:
   db-config.php and siteconfig.php to 755. These files don't need to be
   executable, so recommend 644 instead (bug #0001036) [Dirk]
 
-- Updated Estonian language file, provided by Artur Räpp
+- Updated Estonian language files, provided by Artur Räpp
 
 Static Pages Plugin
 -------------------
@@ -48,8 +48,8 @@ Changes since 1.6.1b1:
 
 - Updated Hebrew language files, provided by LWC
 
-Links Plugins
--------------
+Links Plugin
+------------
 - When URL rewriting is enabled, return rewritten URLs for search results [Dirk]
 
 Static Pages Plugin
