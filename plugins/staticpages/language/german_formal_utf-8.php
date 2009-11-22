@@ -38,7 +38,7 @@ global $LANG32;
 
 $LANG_STATIC = array(
     'newpage' => 'Neue Seite',
-    'adminhome' => 'Kommandozentrale',
+    'adminhome' => 'Schaltzentrale',
     'staticpages' => 'Statische Seiten',
     'staticpageeditor' => 'Editor für Statische Seiten',
     'writtenby' => 'Autor',
@@ -171,7 +171,7 @@ $LANG_configselects['staticpages'] = array(
     1 => array('Ja' => true, 'Nein' => false),
     2 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title'),
     3 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title', 'Menüpunkt' => 'label'),
-    9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Kommandozentrale' => 'admin'),
+    9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
 );
 
