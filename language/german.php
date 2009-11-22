@@ -457,7 +457,7 @@ $LANG08 = array(
     35 => 'Sorry, dieser User möchte keine E-Mails bekommen.',
     36 => 'Kopie:',
     37 => 'Ich möchte eine Kopie der E-Mail bekommen',
-    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
+    38 => "Dies ist eine Kopie der E-Mail, die Du von <{$_CONF['site_url']}> an %s geschickt hast:"
 );
 
 ###############################################################################
@@ -934,9 +934,9 @@ $LANG28 = array(
     58 => 'Einmal-User',
     59 => 'Alte User',
     60 => 'User, angemeldet vor mehr als ',
-    61 => ' Monaten, aber nie eingelogged.',
+    61 => ' Monaten, aber nie eingeloggt.',
     62 => 'User, angemeldet vor mehr als  ',
-    63 => ' Monaten, dann nur einmalig innerhalb 24 h eingelogged.',
+    63 => ' Monaten, dann nur einmalig innerhalb 24 h eingeloggt.',
     64 => 'Normale User, die einfach die Site nicht mehr besucht haben seit ',
     65 => ' Monaten.',
     66 => 'Liste aktualisieren',
@@ -955,8 +955,8 @@ $LANG28 = array(
     79 => 'Keine User ausgewählt für Erinnerung',
     80 => 'Erinnerung erfolgreich verschickt',
     81 => 'Erinnerung, um den Account zu verifizieren für %s',
-    82 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde nicht benutzt seit %s und wird innerhalb  30 .",
-    83 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde seit der Einrichtung nicht benutzt \und wird gelöscht, wenn Sie nicht in Kürze einloggen.",
+    82 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde nicht benutzt seit %s und wird deaktiviert, wenn Sie nicht innerhalb 30 Tagen einloggen.",
+    83 => "Ihr Account auf der Seite {$_CONF['site_name']} wurde seit der Einrichtung nicht benutzt und wird gelöscht, wenn Sie nicht in Kürze einloggen.",
     84 => "Ihr Einlogname ist: %s  auf der Site: {$_CONF['site_url']}",
     85 => 'Wenn Du das Passwort vergessen hast, benutze folgenden Link: %s',
     86 => 'Enthalten',
@@ -1231,7 +1231,7 @@ $MESSAGE = array(
     87 => 'OpenID-Login wurde vom User abgebrochen.',
     88 => 'Der OpenID-Server gab einen Fehler zurück.',
     89 => 'Kann OpenID-Server nicht finden bzgl. der angegebenen Identity-URL.',
-    90 => 'OpenID- Identifizierung abgebrochen.',
+    90 => 'OpenID-Identifizierung abgebrochen.',
     91 => 'You specified an invalid identity URL.',
     92 => "Bitte <a href=\"{$_CONF['site_admin_url']}/sectest.php\">die Sicherheit Deiner Site überprüfen</a> bevor Du sie benutzt!",
     93 => 'Database back up war erfolgreich.',
@@ -1242,7 +1242,7 @@ $MESSAGE = array(
     98 => 'Das Plugin wurde erfolgreich hochgeladen.',
     99 => 'Das Plugin existiert schon.',
     100 => 'Die hochgeladene Plugindatei ist kein GZip oder Zip-Archiv.',
-    101 => 'Es gibt keine Kategorien (, auf die Sie Zugriff haben). Es bedarf mindestens einer Kategorie, um Beiträge zu schreiben.',
+    101 => 'Es gibt keine Kategorien (auf die Du Zugriff hast). Es bedarf mindestens einer Kategorie, um Beiträge zu schreiben.',
     400 => 'Nicht alle erforderlichen Felder konnten bestätigt werden',
     401 => 'Bitte den echten Namen eingeben'
 );
@@ -1383,7 +1383,7 @@ $LANG_404 = array(
 
 $LANG_LOGIN = array(
     1 => 'Anmeldung erforderlich',
-    2 => 'Sorry, aber um auf diesen Bereich zugreifen zu können, muss man als Benutzer registriert ein.',
+    2 => 'Sorry, aber um auf diesen Bereich zugreifen zu können, muss man als Benutzer registriert sein.',
     3 => 'Anmelden',
     4 => 'Neuer User'
 );
@@ -1903,7 +1903,7 @@ $LANG_configsubgroups['Core'] = array(
     'sg_theme' => 'Theme',
     'sg_blocks' => 'Blöcke',
     'sg_users' => 'User und Beiträge',
-    'sg_images' => 'Images',
+    'sg_images' => 'Bilder',
     'sg_locale' => 'Sprache und Lokalisierung',
     'sg_misc' => 'Vermischtes'
 );
