@@ -64,7 +64,7 @@ $LANG_STATIC = array(
     'delete' => '削除',
     'cancel' => 'キャンセル',
     'access_denied' => '申し訳ありませんが、先にログインしてください。',
-    'access_denied_msg' => 'チェックするとアクセス権限がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'access_denied_msg' => 'チェックするとアクセス権がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
@@ -113,8 +113,8 @@ $LANG_STATIC = array(
     'limit_results' => '絞込検索',
     'search' => '検索',
     'submit' => '登録',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages'
+    'no_new_pages' => '-',
+    'pages' => 'ページ'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
@@ -137,22 +137,22 @@ $LANG_confignames['staticpages'] = array(
     'sort_menu_by' => 'メニューでのソート項目',
     'delete_pages' => '所有者の削除と共に削除する',
     'in_block' => 'ページをブロックで囲む',
-    'show_hits' => 'ヒット数を表示する',
+    'show_hits' => '閲覧件数を表示する',
     'show_date' => '日時を表示する',
     'filter_html' => 'HTMLフィルターを適用する',
     'censor' => '内容を検閲する',
     'default_permissions' => 'パーミッション',
     'aftersave' => 'ページ保存後の画面遷移',
     'atom_max_items' => 'フィードに書き出す最大ページ数',
-    'meta_tags' => 'Enable Meta Tags',
-    'newstaticpagesinterval' => 'New Static Page Interval',
-    'hidenewstaticpages' => 'Hide New Static Pages',
-    'title_trim_length' => 'Title Trim Length',
-    'includecenterblocks' => 'Include Center Block Static Pages',
-    'includephp' => 'Include Static Pages with PHP',
-    'includesearch' => 'Enable Static Pages in Search',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'meta_tags' => 'メタタグを有効にする',
+    'newstaticpagesinterval' => '静的ページの"新着"の期間',
+    'hidenewstaticpages' => '新着ページを表示しない',
+    'title_trim_length' => 'タイトル最大長',
+    'includecenterblocks' => 'センターブロックの静的ページを含む',
+    'includephp' => '静的ページPHPを含む',
+    'includesearch' => '静的ページを検索する',
+    'includesearchcenterblocks' => 'センターブロックの静的ページを含む',
+    'includesearchphp' => '静的ページPHPを含む'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -161,15 +161,15 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => '静的ページのメイン設定',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',
-    'fs_permissions' => '静的ページのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_whatsnew' => '新着情報ブロック',
+    'fs_search' => '検索結果',
+    'fs_permissions' => '静的ページのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
