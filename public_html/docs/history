@@ -1,5 +1,13 @@
 Geeklog History/Changes:
 
+??? ??, 20?? (1.6.2)
+------------
+
+- Fixed delete option for dynamically added config options: Back in 1.5.1, we
+  renamed the JavaScript remove() function to gl_cfg_remove() but forgot to
+  update the dynamically created function calls (cf. bug #0000681) [Dirk]
+
+
 Nov 22, 2009 (1.6.1)
 ------------
 
