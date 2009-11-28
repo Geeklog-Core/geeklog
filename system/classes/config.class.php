@@ -680,6 +680,14 @@ class config {
         } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
         } elseif ($type == 'select') {
+            // if $name is like "blah[0]", separate name and index
+            $n = explode('[', $name);
+            $name = $n[0];
+            $index = null;
+            if (count($n) == 2) {
+                $i = explode(']', $n[1]);
+                $index = $i[0];
+            }
             $type_name = $type . '_' . $name;
             if ($group == 'Core') {
                 $fn = 'configmanager_' . $type_name . '_helper';
@@ -687,7 +695,11 @@ class config {
                 $fn = 'plugin_configmanager_' . $type_name . '_' . $group;
             }
             if (function_exists($fn)) {
-                $selectionArray = $fn();
+                if ($index === null) {
+                    $selectionArray = $fn();
+                } else {
+                    $selectionArray = $fn($index);
+                }
             } else if (is_array($selectionArray)) {
                 // leave sorting to the function otherwise
                 uksort($selectionArray, 'strcasecmp');
@@ -706,6 +718,9 @@ class config {
                 $t->set_var('opt_name', $sName);
                 $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
                 $t->parse('myoptions', 'select-options', true);
+            }
+            if ($index == 'placeholder') {
+                $t->set_var('hide_row', ' style="display:none;"');
             }
             return $t->parse('output', 'select-element');
         } elseif (strpos($type, '@') === 0) {
@@ -726,6 +741,12 @@ class config {
                                            'unkeyed-add-button'));
             $t->set_var('my_add_element_button', $button);
             $result = "";
+            if ($type == '%select') {
+                $result .= config::_UI_get_conf_element($group,
+                                $name . '[placeholder]', 'placeholder',
+                                substr($type, 1), 'placeholder', $selectionArray,
+                                true);
+            }
             foreach ($val as $valkey => $valval) {
                 $result .= config::_UI_get_conf_element($group,
                                 $name . '[' . $valkey . ']', $valkey,

@@ -42,6 +42,30 @@ function handleAddWithName(self, array_type, array_name, name){
   add_element(self.parentNode.parentNode.parentNode, array_name, name, 'text', '', '1');
  }else if(array_type == "placeholder"){
   add_element(self.parentNode.parentNode.parentNode, array_name, name, 'hidden', '1', '1');
+ }else if(array_type == "select"){
+  add_select(self.parentNode.parentNode.parentNode, array_name, name - 1, '1');
+ }
+}
+
+function add_select(tbl, arr_name, index, deletable){
+ var newRow = tbl.insertRow(tbl.rows.length - 1);
+ titleCell = newRow.insertCell(0);
+ paramCell = newRow.insertCell(1);
+ titleCell.className = "alignright";
+ titleCell.appendChild(document.createTextNode(index));
+ dropDown = tbl.getElementsByTagName('tr')[0].getElementsByTagName('td')[1].getElementsByTagName('select')[0].cloneNode(true);
+ dropDown.name = arr_name + "[" + index + "]";
+ paramCell.appendChild(dropDown);
+ if(deletable){
+  paramCell.appendChild(document.createTextNode("\n"));
+  deleteButton = document.createElement("input");
+  deleteButton.type = "button";
+  deleteButton.value = "x";
+  deleteButton.onclick =
+    function(){
+        gl_cfg_remove(this)
+    };
+  paramCell.appendChild(deleteButton);
  }
 }
 
