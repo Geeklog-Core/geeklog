@@ -813,10 +813,27 @@ class config {
     {
         if (is_array($input_val)) {
             $r = array();
+            $is_num = true;
+            $max_key = -1;
             foreach ($input_val as $key => $val) {
                 if ($key !== 'placeholder') {
                     $r[$key] = $this->_validate_input($val);
+                    if (is_numeric($key)) {
+                        if ($key > $max_key) {
+                            $max_key = $key;
+                        }
+                    } else {
+                        $is_num = false;
+                    }
                 }
+            }
+            if ($is_num && ($max_key >= 0) && ($max_key + 1 != count($r))) {
+                // re-number keys
+                $r2 = array();
+                foreach ($r as $val) {
+                    $r2[] = $val;
+                }
+                $r = $r2;
             }
         } else {
             $r = COM_stripslashes($input_val);
