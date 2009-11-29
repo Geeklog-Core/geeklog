@@ -117,6 +117,7 @@ $LANG_STATIC = array(
 $PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
 $PLG_staticpages_MESSAGE19 = 'Sinu leht on edukalt salvestatud.';
 $PLG_staticpages_MESSAGE20 = 'Sinu leht on edukalt kustutatud.';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
@@ -132,6 +133,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Luba PHP?',
     'sort_by' => 'Keskblokkide sorteerimisalus',
     'sort_menu_by' => 'Menüüelementide sorteerimisalus',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => 'Kustuta lehed, omanikuks?',
     'in_block' => 'Paiguta lehed blokki?',
     'show_hits' => 'Näita klikke?',
@@ -142,6 +144,7 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'Pärast lehe salvestamist',
     'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
     'meta_tags' => 'Luba Meta sildid',
+    'comment_code' => 'Comment Default',
     'newstaticpagesinterval' => 'Uute staatiliste lehtede aeg',
     'hidenewstaticpages' => 'Peida: Uued staatilised lehed',
     'title_trim_length' => 'Pealkirja kärpimise pikkus',
@@ -163,14 +166,16 @@ $LANG_fs['staticpages'] = array(
     'fs_permissions' => 'Vaikimisi õigused'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
     2 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title'),
     3 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title', 'Silt' => 'label'),
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
     9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

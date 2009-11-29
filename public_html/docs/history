@@ -6,7 +6,7 @@ Geeklog History/Changes:
 - Fixed topic selection for the Daily Digest (bug #0001041, patch provided by
   Ben)
 - Changed the 'menu_elements' and 'notification' config options to dropdowns
-  since there's only a fixed number of keywords that these two option recognize
+  since there's only a fixed number of keywords that these two options recognize
   [Dirk]
 - Fixed delete option for dynamically added config options: Back in 1.5.1, we
   renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
@@ -14,8 +14,8 @@ Geeklog History/Changes:
 
 Static Pages Plugin 1.6.2
 -------------------
-- Avoid pair of empty brackets on the printer-friendly version for Static Pages
-  without comments [Dirk]
+- Avoid a pair of empty brackets on the printer-friendly version for Static
+  Pages which have comments disabled [Dirk]
 - Added a config option to define the default sort order for the admin's list
   of Static Pages (feature request #0000812) [Dirk]
 - Made the initial size of the Static Pages edit area (when using FCKEditor)
