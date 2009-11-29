@@ -81,7 +81,7 @@ $LANG01 = array(
     37 => 'Ei käyttäjän kirjoituksia',
     38 => 'Content Syndication',
     39 => 'Virkistä',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '',
     41 => 'Vieraita sivustolla',
     42 => 'Tekijä:',
     43 => 'Vastaa tähän',
@@ -1185,7 +1185,7 @@ $MESSAGE = array(
     44 => 'Laajennus on onnistuneesti asennettu!',
     45 => 'Laajennus on poistettu.',
     46 => '',
-    47 => 'Tämä toiminto toimii vain *nix järjestelmissä.  Jos käyttöjärjestelmäsi on *nix, välimuisti on tyhjennetty. Jos käyttöjärjestelmäsi on Windows, joudut etsimään tiedostot adodb_*.php ja poistamaan ne käsin.',
+    47 => '',
     48 => "Kiitos jäsenhakemuksestasi sivustolle {$_CONF['site_name']}. Ylläpito käy läpi hakemuksesi. Hyväksymisen jälkeen salasanasi lähetetään antamaasi sähköpostiosoitteeseen.",
     49 => 'Ryhmä on tallennettu.',
     50 => 'Ryhmä on poistettu.',
@@ -1973,7 +1973,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

@@ -85,7 +85,7 @@ $LANG01 = array(
     37 => 'Keine Artikel.',
     38 => 'Newsfeed',
     39 => 'Neuladen',
-    40 => 'Auf dem Webserver ist <tt>register_globals = Off</tt>. Für Geeklog muss <tt>register_globals</tt> jedoch auf <strong>on</strong> stehen. Bitte dies vom Hoster ändern lassen auf <strong>on</strong>.',
+    40 => '',
     41 => 'Gäste',
     42 => 'Autor:',
     43 => 'Antwort schreiben',
@@ -1189,7 +1189,7 @@ $MESSAGE = array(
     44 => 'Das Plugin wurde erfolgreich installiert.',
     45 => 'Das Plugin wurde gelöscht.',
     46 => '',
-    47 => 'Diese Funktion läuft nur unter *nix.  Wenn *nix als Betriebssystem läuft, dann wurde der Cache erfolgreich gelöscht. Wenn Windows als Betriebssystem läuft, bitte nach den Dateien adodb_*.php suchen und diese manuell entfernen.',
+    47 => '',
     48 => "Danke, dass Sie sich bei {$_CONF['site_name']} angemeldet haben. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.",
     49 => 'Die Gruppe wurde gespeichert.',
     50 => 'Die Gruppe wurde gelöscht.',
@@ -1604,7 +1604,6 @@ $LANG_ADMIN = array(
     'meta_keywords' => 'Metatag Keywords',
     'na' => 'n/v',
     'token_expiry' => 'Achtung, zeitgesteuerte Sicherheitsfunktion (Security-Token). Nach %s lässt sich diese Seite nicht mehr speichern. Änderungen gehen verloren.'
-
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1978,7 +1977,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2)
+    23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

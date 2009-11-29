@@ -83,7 +83,7 @@ $LANG01 = array(
     37 => 'Ni èlankov',
     38 => 'Združevanje vsebine (Syndication)',
     39 => 'Osveži',
-    40 => 'Izkljuèene so <tt>register_globals = Off</tt> v <tt>php.ini</tt>. Geeklog zahteva <tt>register_globals</tt> <strong>vkljuèene</strong>. Preden nadaljuješ, jih prosim <strong>vkljuèi</strong> in ponovno zaženi spletni strežnik.',
+    40 => '',
     41 => 'Gostje',
     42 => 'Prispeval/a:',
     43 => 'Odgovori na to',
@@ -1187,7 +1187,7 @@ $MESSAGE = array(
     44 => 'Vtiènik je uspešno namešèen.',
     45 => 'Vtiènik je uspešno odstranjen.',
     46 => '',
-    47 => 'To deluje samo v operacijskem sistemu *nix.  Èe uporabljaš operacijski sistem, potem *nix , je bil cache uspešno izpraznjen. Èe uporabljaš Windows OS, boš moral poiskati datoteke po imenu adodb_*.php in jih odstraniti roèno.',
+    47 => '',
     48 => "Hvala, da si zaprosil za èlanstvo v {$_CONF['site_name']}. Pregledali bomo tvojo prošnjo. Èe bo odobrena, boš dobil geslo na e-naslov, ki si ga ravnokar vnesel.",
     49 => 'Skupina je uspešno shranjena.',
     50 => 'Skupina je uspešno izbrisana.',
@@ -1975,7 +1975,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

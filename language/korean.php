@@ -81,7 +81,7 @@ $LANG01 = array(
     37 => '-',
     38 => 'RSS 배신',
     39 => '갱신',
-    40 => '당신의 <tt>php.ini</tt>에서 off 로 되어 있는 것 같습니다. Geeklog는 <tt>register_globals가</tt>으로 되어야만 합니다. Geeklog를 사용하기 위해서는 <strong>on</strong> 으로 하여 웹서버를 재기동해 주시기 바랍니다.',
+    40 => '',
     41 => '손님',
     42 => '글쓴이',
     43 => '덧글추가',
@@ -1185,7 +1185,7 @@ $MESSAGE = array(
     44 => '플러그인을 인스트롤 하였습니다',
     45 => '플러그인을 삭제 하였습니다',
     46 => '',
-    47 => '이 기능은 *nix 상에서만 움직이지 않습니다.  만약 *nix 상에서 움직이고 있다면 캐슈는 무사합니다.  윈도우즈 상에서 움직이고 있는 경우는 adodb_*.php라고 하는 파일을 검색하여, 수동으로 삭제하시기 바랍니다.',
+    47 => '',
     48 => "{$_CONF['site_name']}에 등록해 주셔서 감사합니다.  관리자 측에서 심사합니다.  등록이 인정되면 당신의 등록된 메일주소에 비밀번호가 보내집니다.",
     49 => '그룹이 무사히 등록되었습니다.',
     50 => '그룹을 삭제하였습니다.',
@@ -1973,7 +1973,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

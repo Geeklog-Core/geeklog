@@ -80,7 +80,7 @@ $LANG01 = array(
     37 => 'Kullanýcýlardan hiç bir yazý gelmemiþ',
     38 => 'Content Syndication',
     39 => 'Yenile',
-    40 => 'php.ini parametlerinizden <tt>register_globals = Off</tt> konumundadýr. ancak, Geeklog  için <tt>register_globals</tt>parametresinin <strong>on</strong> konumunda olmasý gerekmektedir. Before you continue, please set it to <strong>on</strong> and restart your web server.Lütfen servis saðlayýcýnýz ile kontakt kurunuz',
+    40 => '',
     41 => 'Misafirler',
     42 => 'Yazar:',
     43 => 'Cevap Ver',
@@ -1184,7 +1184,7 @@ $MESSAGE = array(
     44 => 'Eklenti baþarýlya yüklendi!',
     45 => 'Eklenti baþarýyla silindi.',
     46 => '',
-    47 => 'Bu özellik sadece Linux, Unix gibi iþletim sistemlerinde çalýþýr.  Eðer Linux, Unix gibi bir iþletim sistemi kullanýyorsanýz, önbelleðiniz baþarýyla temizlenmiþtir. Eðer Windows kullanýyorsanýz, adodb_*.php  dosyalarýný aratýn ve silin.',
+    47 => '',
     48 => "{$_CONF['site_name']} sitesine üyelik baþvurunuz için teþekkür ederiz. Site yönetimi baþvurunuzu inceleyecektir. Eðer kabul alýrsanýz þifreniz belirttiðiniz eðmail adreisne gönderilecektir.",
     49 => 'Grubunuz baþarýyla kaydedildi.',
     50 => 'Grup baþarýyla silindi.',
@@ -1972,7 +1972,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

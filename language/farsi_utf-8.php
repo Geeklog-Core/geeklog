@@ -68,7 +68,7 @@ $LANG01 = array(
     37 => 'كاربر هيچ مقاله اي ندارد',
     38 => 'ظرفيت سنديكا',
     39 => 'بازيابي دوباره',
-    40 => 'شما داريد <tt>register_globals = Off</tt>در داخل <tt>php.ini</tt>. هنوز, Geeklog نياز دارد به <tt>register_globals</tt> اين را بايد <strong>on</strong>. پيش از ادامه آنرا تغيير دهيد به <strong>on</strong> و وب سرور خود را دوباره راه اندازي كنيد.',
+    40 => '',
     41 => 'كاربران ناشناس',
     42 => 'نوشته شده توسط:',
     43 => 'پاسخ دادن به اين',
@@ -1172,7 +1172,7 @@ $MESSAGE = array(
     44 => 'پلاگين مورد نظر با موفقيت نصب گرديد',
     45 => 'پلاگين مورد نظر با موفقيت حذف گرديد',
     46 => '',
-    47 => 'اين تابع تنها در سيستم عاملهاي مبتي بر *NIX اجرا خواهد شد . اگر شما از ويندوز استفاده ميكنيد براي پاك كردن كش فايلي كه گفته ميشود را سرچ كرده و پاك كنيد. adodb_*.php ',
+    47 => '',
     48 => "با تشكر از عضويت شما در سايت {$_CONF['site_name']}. تيم ما درخواست شما را بررسي كرده و در صورتي كه مورد قبول گرديد پسورد شما براي آدرس اي ميلي كه شما وارد كرده ايد فرستاده خواهد شد",
     49 => 'گروه شما با موفقيت ذخيره شد',
     50 => 'گروه  با موفقيت پاك شد',
@@ -1960,7 +1960,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

@@ -80,7 +80,7 @@ $LANG01 = array(
     37 => 'Tidak ada artikel dari user',
     38 => 'Sindikasi Isi',
     39 => 'Ulangi/Refresh',
-    40 => 'Anda memiliki<tt>register_globals = Off</tt> pada <tt>php.ini</tt>. Sedangkan, Geeklog membutuhkan <tt>register_globals</tt> menjadi <strong>on</strong>. Sebelum lanjut, silahkan diset <strong>on</strong> dulu dan restart web server anda.',
+    40 => '',
     41 => 'User Tamu',
     42 => 'Penanggung jawab:',
     43 => 'Balas ke yang ini',
@@ -1184,7 +1184,7 @@ $MESSAGE = array(
     44 => 'Plug-in telah terinstall dengas sukses!',
     45 => 'Plugin tersebut telah terhapus denagn sukses.',
     46 => '',
-    47 => 'Fungsi ini hanya bekerja dibawah *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.',
+    47 => '',
     48 => "Terima kasih telah menjadia nggota kami dengan {$_CONF['site_name']}. Team kami akan mereview anda. Jika memang layak password anda akan dikirim ke email jadi silahkan isi.",
     49 => 'Group anda telah tersimpan dengan sukses.',
     50 => 'Group tersebut telah terhapus dengan sukses.',
@@ -1972,7 +1972,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

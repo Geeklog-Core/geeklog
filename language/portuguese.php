@@ -79,7 +79,7 @@ $LANG01 = array(
     37 => 'Nenhuma notícia',
     38 => 'Content Syndication',
     39 => 'Actualizar',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '',
     41 => 'Utilizadores convidados',
     42 => 'Enviada por:',
     43 => 'Responder',
@@ -1183,7 +1183,7 @@ $MESSAGE = array(
     44 => 'O plug-in foi instalado com sucesso!',
     45 => 'O plug-in foi apagado com sucesso.',
     46 => '',
-    47 => 'Esta funcionalidade apenas trabalha em ambientes *nix.  Se estiver a trabalhar num ambiente *nix a cache foi limpa com sucesso. Se estiver no Windows, procure os ficheiros com o nome adodb_*.php e remova-os manualmente.',
+    47 => '',
     48 => "Obrigado por se aplicar como um membro de {$_CONF['site_name']}. A nossa equipa irá rever a sua aplicação. Se aprovada, a sua password será enviada para o email que nos indicou.",
     49 => 'O seu grupo foi guardado com sucesso.',
     50 => 'O grupo foi apagado com sucesso.',
@@ -1971,7 +1971,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

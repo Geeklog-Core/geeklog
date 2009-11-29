@@ -82,7 +82,7 @@ $LANG01 = array(
     37 => 'טרם נכתבו מאמרים',
     38 => 'סינדיקציית תוכן',
     39 => 'רענן',
-    40 => 'מוגדר לכם <tt>register_globals = Off</tt> ב-<tt>php.ini</tt> שלכם. עם זאת, דרוש ש- <tt>register_globals</tt> יהיה <strong>on</strong>. לפני שהנכם ממשיכים, אנא הגדירו אותו על <strong>on</strong> ואתחלו מחדש את שרת הרשת שלכם.',
+    40 => '',
     41 => 'אורחים',
     42 => 'נכתב על ידי:',
     43 => 'הגיבו לזה',
@@ -1186,7 +1186,7 @@ $MESSAGE = array(
     44 => 'ה-plugin הותקן בהצלחה!',
     45 => 'ה-plugin נמחק בהצלחה.',
     46 => '',
-    47 => 'יכולת זו עובדת רק תחת nix*. אם הינכם מריצים nix* כמערכת ההפעלה שלכם אז זיכרון המטמון שלכם נוקה בהצלחה. אם הנכם משתמשים בחלונות, תיאלצו לחפש אחר קבצים בשם adodb_*.php ולהסירם באופן ידני.',
+    47 => '',
     48 => "תודה לך על הגשת הבקשה שלך להצטרף ל-{$_CONF['site_name']}. אנו נבדוק את בקשתך. אם תאושר, סיסמתך תישלח אליך באימייל לכתובת האימייל שהרגע ציינת.",
     49 => 'קבוצתך נשמרה בהצלחה.',
     50 => 'הקבוצה נמחקה בהצלחה.',
@@ -1497,7 +1497,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" לעולם אינו צריך להיות חלק מכתובת האתר שלכם. אנא קיראו את החלק לגבי public_html %s שוב ושנו את ההגדרות שלכם בהתאם לפני שתמשיכו.',
     'installation' => 'בהוראות ההתקנה',
     'directory' => '(ספרייה)',
-    'failed_tmp'    => 'נכשלה יצירת קובץ זמני בספריית ה-%s שלכם. בידקו את הרשאות הספרייה שלכם!',
+    'failed_tmp' => 'נכשלה יצירת קובץ זמני בספריית ה-%s שלכם. בידקו את הרשאות הספרייה שלכם!',
     'fix_it' => 'זהו סיכון בטחוני שיש לתקנו!',
     'reachable' => 'ה-%s שלכם נגיש מהרשת.',
     'not_reachable' => 'מצוין! ה-%s שלכם אינו נגיש מהרשת.',
@@ -1974,7 +1974,9 @@ $LANG_configselects['Core'] = array(
     20 => array('ביטוי מדויק' => 'phrase', 'כל המילים שהוכנסו' => 'all', 'לפחות אחת מהמילים שהוכנסו' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
-    23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2)
+    23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

@@ -80,7 +80,7 @@ $LANG01 = array(
     37 => 'Brak artykułów użytkownika',
     38 => 'Syndykacja Treści',
     39 => 'Odśwież',
-    40 => 'Masz <tt>register_globals = Off</tt> w pliku <tt>php.ini</tt>. Niestety, Geeklog wymaga <tt>register_globals</tt> aby były ustawione na <strong>on</strong>. Proszę zmienieć ustawienia na <strong>on</strong> i restartować serwer www.',
+    40 => '',
     41 => 'Gość',
     42 => 'Autor:',
     43 => 'Odpowiedz',
@@ -1184,7 +1184,7 @@ $MESSAGE = array(
     44 => 'Plugin został zainstalowany!',
     45 => 'Plugin został wykasowany.',
     46 => '',
-    47 => 'Ta opcja działa tylko pod systemem *nixowym. Jeśli masz właśnie taki system operacyjny to cache został wyczyszczony. Pod Windozą, musisz poszukać plików adodb_*.php i usunąć je ręcznie.',
+    47 => '',
     48 => "Dziekujemy za zainteresowanie członkowstwem w {$_CONF['site_name']}. Zweryfikujemy twoje zgłoszenie i po zatwierdzeniu zostanie wysłane hasło pod podany adres e-mail.",
     49 => 'Twoja grupa została zapisana.',
     50 => 'Grupa została wykasowana.',
@@ -1972,7 +1972,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

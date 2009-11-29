@@ -88,7 +88,7 @@ $LANG01 = array(
     37 => 'Δεν έχει γίνει εισαγωγή άρθρων από τους χρήστες',
     38 => 'Κοινοπραξίες Περιεχομένου',
     39 => 'ανανέωση',
-    40 => 'Η μεταβλητή <tt>register_globals</tt> είναι <tt>ανενεργή</tt> στο αρχείο <tt>php.ini</tt>. Το Geeklog, για την ομαλή λειτουργεία του, απαιτεί η μεταβλητή <tt>register_globals</tt> να είναι <strong>ενεργοποιημένη</strong>. Πρίν να μπορέσετε να συνεχίσετε, παρακαλώ να θέσετε την μεταβλητή στην τιμή <strong>on</strong> και να επανεκινήσετε τον Εξυπηρετητή WWW.',
+    40 => '',
     41 => 'Επισκέπτες',
     42 => 'Συγγραφέας:',
     43 => 'Απαντήστε σε αυτό',
@@ -1192,7 +1192,7 @@ $MESSAGE = array(
     44 => 'Το εξωτερικό πρόγραμμα εγκαταστάθηκε με επιτυχία!',
     45 => 'Το εξωτερικό πρόγραμμα διαγράφτηκε με επιτυχία!',
     46 => '',
-    47 => 'Αυτό το χαρακτηριστικό λειτουργεί μόνο υπό συστήματα *nix. Εάν το λειτουργικό σας σύστημα είναι *nix τότε η cache σας έχει επιτυχώς καθαριστεί. Εάν είστε σε λειτουργικό σύστημα Windows, θα πρέπει να ψάξετε και να αφαιρέσετε τα αρχεία adodb_*.php.',
+    47 => '',
     48 => "Σας ευχαριστούμε για το ενδιαφέρον σας να γίνετε μέλος του {$_CONF['site_name']}. Η ομάδα μας θα αξιολογήσει την αίτηση σας. Αν εγκριθεί ο κωδικός σας θα αποσταλεί με μήνυμα ηλεκτρονικού ταχυδρομείου στην διεύθυνση που υποδηλώσατε.",
     49 => 'Το σύνολο σας αποθηκεύτηκε επιτυχώς.',
     50 => 'Το σύνολο διαγράφηκε επιτυχώς.',
@@ -1980,7 +1980,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

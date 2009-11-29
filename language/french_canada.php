@@ -83,7 +83,7 @@ $LANG01 = array(
     37 => 'Aucun article d\'utilisateur',
     38 => 'Diffusion du contenu',
     39 => 'Rafra&icirc;chir',
-    40 => 'Vos paramêtres sont &agrave; <tt>register_globals = Off</tt> dans le fichier <tt>php.ini</tt> alors que le syst&egrave;me requiers que les paramêtres <tt>register_globals</tt> soient &agrave; <strong>on</strong>. Avant de poursuivre, r&eacute;glez-les &agrave; <strong>on</strong> et red&eacute;marrez votre serveur.',
+    40 => '',
     41 => 'Visiteur(s)',
     42 => 'Cr&eacute;&eacute; par:',
     43 => 'Pour y r&eacute;pondre',
@@ -1187,7 +1187,7 @@ $MESSAGE = array(
     44 => 'Le plugin a &eacute;t&eacute; install&eacute; avec succ&egrave;s!',
     45 => 'Le plugin a &eacute;t&eacute; supprim&eacute; avec succ&egrave;s.',
     46 => '',
-    47 => 'Cet option ne fonctionne que sur *nix. Si vous utilisez *nix alors votre cache a &eacute;t&eacute; vid&eacute;e avec succ&egrave;s. Si vous utilisez Windows, vous devez chercher les fichiers adodb_*.php et les supprimer &agrave; la main.',
+    47 => '',
     48 => "Merci d'avoir demand&eacute; un compte membre sur {$_CONF['site_name']}. La demande a &eacute;t&eacute; envoy&eacute;e &agrave; notre &eacute;quipe qui en disposera. Lorsque la demande sera accept&eacute;e, votre mot de passe vous sera envoy&eacute; par courriel &agrave; l'adresse que vous avez fournie.",
     49 => 'Votre groupe a &eacute;t&eacute; enregistr&eacute; avec succ&egrave;s.',
     50 => 'Le groupe a &eacute;t&eacute; supprim&eacute; avec succ&egrave;s.',
@@ -1975,7 +1975,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

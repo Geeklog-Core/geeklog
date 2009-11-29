@@ -78,7 +78,7 @@ $LANG01 = array(
     37 => 'No hay noticias del usuario',
     38 => 'Content Syndication',
     39 => 'Actualizar',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '',
     41 => 'Usuarios Inviados',
     42 => 'Escrito por:',
     43 => 'Responder a',
@@ -1182,7 +1182,7 @@ $MESSAGE = array(
     44 => 'El Plug-In fue instalado con éxito.',
     45 => 'El Plug-In fue borrado con éxito.',
     46 => '',
-    47 => 'Esta función está disponible bajo *nix. Si estás usando *nix como tu sistema operativo, entonces tu caché ha sido limpiado con éxito. Si estás bajo Windows, necesitas buscar ficheros adodb_*.php y borrarlos manualmente.',
+    47 => '',
     48 => "Gracias por registrarte como miembro en {$_CONF['site_name']}. Nuestro equipo comprobará tu solicitud. Si es aprobada, te será enviado tu password a la dirección email que has indicado.",
     49 => 'Tu grupo ha sido grabado con éxito.',
     50 => 'El grupo ha sido borrado con éxito.',
@@ -1970,7 +1970,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

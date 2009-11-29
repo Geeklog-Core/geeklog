@@ -84,7 +84,7 @@ $LANG01 = array(
     37 => 'Немає статей користувачів',
     38 => 'Експорт контенту',
     39 => 'Оновити',
-    40 => 'У вашому <tt>php.ini</tt> встановлено <tt>register_globals = Off</tt>. Проте Geeklog потребує встановлення <tt>register_globals</tt> в <strong>on</strong>. Перш ніж продовжувати, будь-ласка, встановіть цю директиву в <strong>on</strong> і перезапустіть ваш вебсервер.',
+    40 => '',
     41 => 'Гості',
     42 => 'Автор:',
     43 => 'Відповісти',
@@ -1188,7 +1188,7 @@ $MESSAGE = array(
     44 => 'Модуль успішно встановлено!',
     45 => 'Модуль успішно вилучено.',
     46 => '',
-    47 => 'Ці функціональні можливості працюють лише в Unix-системах. Якщо ви використовуєте Unix, то ваша операційна система успішно очистить кеш. Якщо ви працюєте з Windows, вам буде потрібно розшукати файли adodb_*.php і вилучити їх вручну.',
+    47 => '',
     48 => "Дякуємо за реєстрацію на порталі {$_CONF['site_name']}. Наша команда перегляне ваше подання. У разі його схвалення ваш пароль буде надіслано вам на електронну адресу.",
     49 => 'Вашу групу успішно збережено.',
     50 => 'Групу було успішно вилучено.',
@@ -1976,7 +1976,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

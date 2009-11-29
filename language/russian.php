@@ -96,7 +96,7 @@ $LANG01 = array(
     37 => 'Статей нет',
     38 => 'Синдикация',
     39 => 'Обновить',
-    40 => 'Выставлен флаг <tt>register_globals = Off</tt> в вашем <tt>php.ini</tt>. Но Geeklog обязывает, чтобы <tt>register_globals</tt> был включен (<strong>on</strong>). Включите его в <strong>php.ini</strong> и перезагрузите HTTP сервер.',
+    40 => '',
     41 => 'Гости',
     42 => 'Автор:',
     43 => 'Ответить на это',
@@ -1200,7 +1200,7 @@ $MESSAGE = array(
     44 => 'Плагин успешно установлен!',
     45 => 'Плагин успешно удалён.',
     46 => '',
-    47 => 'Это работает только под *nix.  Если вы пользуетесь *nix, кэш успешно очищен. Есди вы на Windows, вам придётся самим найти файлы вида adodb_*.php и удалить их.',
+    47 => '',
     48 => "Спасибо за подачу заявления на членство в ' . {$_CONF['site_name']} . '. Мы рассмотрим Ваше заявление. Как только Вы приняты, Ваш пароль будет выслан Вам на указанный Вами адрес.",
     49 => 'Ваша группа успешно сохранена.',
     50 => 'Ваша группа успешно стерта.',
@@ -1988,7 +1988,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

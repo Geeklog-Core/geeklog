@@ -85,7 +85,7 @@ $LANG01 = array(
     37 => 'Nema korisnickih tekstova',
     38 => 'RSS',
     39 => 'Osvezi',
-    40 => 'Imate <tt>register_globals = Off</tt> u vasem <tt>php.ini</tt> fajlu. Geeklog zahteva da promenjiva <tt>register_globals</tt> bude <strong>on</strong>. Pre nego sto nastavite, molimo vas izvrsite izmene i restartujte web server.',
+    40 => '',
     41 => 'Gosti',
     42 => 'Autor:',
     43 => 'Odgovori na ovo',
@@ -1189,7 +1189,7 @@ $MESSAGE = array(
     44 => 'Plugin uspesno instaliran!',
     45 => 'Plugin uspesno ozbrisan.',
     46 => '',
-    47 => 'Ove funkcije rade samo pod *nix. Ako koristite *nix kao operativni sistem onda je vas cache uspesno ociscen. Ako koristite Windows, nadjite fajlove po imenu adodb_*.php i uklonite ih manuelno.',
+    47 => '',
     48 => "Zahvaljujemo Vam sto ste postali clan {$_CONF['site_name']}. Nas tim ce pregledati i oceniti vas zahtev. Ako bude prihvacen vasa lozinka ce Vam biti poslata na email.",
     49 => 'Vasa grupa je uspesno sacuvana.',
     50 => 'Grupa je uspesno obrisana.',
@@ -1977,7 +1977,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

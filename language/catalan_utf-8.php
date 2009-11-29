@@ -78,7 +78,7 @@ $LANG01 = array(
     37 => 'No hi ha noticies de l\'usuari/a',
     38 => 'Sindicació del contingut',
     39 => 'Actualització',
-    40 => 'Tens <tt>register_globals = Off</tt> al teu <tt>php.ini</tt>. No obstant, Geeklog requereix que <tt>register_globals</tt> estigui <strong>on</strong>. Abans de continuar, siusplau cambia-ho a <strong>on</strong> i reengega el teu servidor web.',
+    40 => '',
     41 => 'Usuaris invitats',
     42 => 'Escrit per:',
     43 => 'Respondre a',
@@ -1182,7 +1182,7 @@ $MESSAGE = array(
     44 => 'El Plug-In s\'ha instalat satisfactoriament.',
     45 => 'El Plug-In s\'ha borrat satisfactoriament.',
     46 => '',
-    47 => 'Aquesta funció està disponible sota *nix. Si estàs utilitzant *nix com a sistema operatiu, la teva còpia de visites (cache) s\'ha netejat satisfactoriament. Si estàs sota Windows, hauràs de cercar els arxius adodb_*.php i borrar-los manualment.',
+    47 => '',
     48 => "Gracies per registrar-te com a membre a {$_CONF['site_name']}. El nostre equip comprobarà la teva solicitut. Si es aprovada, se t\'enviarà la teva Contrassenya a la direcció correu electrònico que ens has proporcionat.",
     49 => 'El teu grup s\'ha guardat satisfactoriament.',
     50 => 'El grup s\'ha borrat satisfactoriament.',
@@ -1970,7 +1970,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

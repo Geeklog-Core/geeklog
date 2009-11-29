@@ -83,7 +83,7 @@ $LANG01 = array(
     37 => '没有文章',
     38 => '内容辛迪加',
     39 => '使新',
-    40 => '你的服务器的 <tt>php.ini</tt> 里设定为 <tt>register_globals = Off</tt>. 可是此软件需要将 <tt>register_globals</tt> 设定成 <strong>on</strong>. 所以在你继续以前，必须将它设定为<strong>on</strong>，然后重新开机.',
+    40 => '',
     41 => '客人',
     42 => '作者:',
     43 => '回复这个',
@@ -1187,7 +1187,7 @@ $MESSAGE = array(
     44 => '插件已被安装了。',
     45 => '插件已被删除了。',
     46 => '',
-    47 => '这只适用於 *nix 如果你的作业系统是 *nix，那麽你的缓冲器已被清除了。如果你的作业系统是 Windows，你要手动寻找文件命名为 adodb _ *.php 的档案并把它们除去。',
+    47 => '',
     48 => "感谢你申请成为 {$_CONF['site_name']} 的会员。只要经过我们员工的核对，我们会把密码寄到你所登记的电邮中。",
     49 => '你的小组已被保存了。',
     50 => '小组已被删除了。',
@@ -1975,7 +1975,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

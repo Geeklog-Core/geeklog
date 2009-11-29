@@ -84,7 +84,7 @@ $LANG01 = array(
     37 => 'Nema korisnickih tekstova',
     38 => 'Razmjena sadrzaja',
     39 => 'Osvjezi',
-    40 => 'Imate <tt>register_globals = Off</tt> u vasem <tt>php.ini</tt>. Site zahtjeva da <tt>register_globals</tt> bude <strong>on</strong>. Prije nego sto nastavite, molim postavite to na <strong>on</strong> i restartajte web server.',
+    40 => '',
     41 => 'Gosti',
     42 => 'Autor:',
     43 => 'Odgovorite na ovo',
@@ -1188,7 +1188,7 @@ $MESSAGE = array(
     44 => 'Plug-in uspjesno instaliran!',
     45 => 'Plug-in uspjesno izbrisan.',
     46 => '',
-    47 => 'Ove funkcije rade samo pod *nix. Ako koristite *nix kao vas operativni sistem onda je vas kod uspjesno ociscen. Ako koristite Windows, trebat cete traziti fileove po imenu adodb_*.php i ukloniti ih manuelno.',
+    47 => '',
     48 => "Zahvaljujemo vam sto ste postali clan {$_CONF['site_name']}. Nas tim ce pregledati i ocjeniti vas zahtjev. Ako bude prihvacen vasa lozinka ce vam biti poslata na vas mail.",
     49 => 'Vasa grupa je uspjesno spasena.',
     50 => 'Grupa je uspjesno izbrisana.',
@@ -1976,7 +1976,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

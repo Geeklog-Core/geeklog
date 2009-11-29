@@ -86,7 +86,7 @@ $LANG01 = array(
     37 => 'Geen artikelen',
     38 => 'Content Syndication',
     39 => 'vernieuwen',
-    40 => 'De instelling <tt>register_globals = Off</tt> is aanwezig in <tt>php.ini</tt>. Geeklog echter vereist dat <tt>register_globals</tt> ingesteld is op <strong>on</strong>. Voordat u verder gaat, gelieve dit op <strong>on</strong> in te stellen en herstart uw web server.',
+    40 => '',
     41 => 'Gast(en)',
     42 => 'Geschreven door:',
     43 => 'Hierop reageren',
@@ -1190,7 +1190,7 @@ $MESSAGE = array(
     44 => 'De plugin is ingevoegd!',
     45 => 'De plugin is verwijderd.',
     46 => '',
-    47 => 'Deze funktie werkt allen onder *nix. Indien u *nix gebruikt als besturingsysteem dan is uw cache geleegd. Indien u Windows gebruikt, moet u zoeken naar bestanden als adodb_*.php en deze handmatig verwijderen.',
+    47 => '',
     48 => "Bedankt voor uw aanvraag voor een gebruikersaccount van {$_CONF['site_name']}. De beheerders zullen uw aanvraag in behandeling nemen. Indien goedgekeurd, wordt uw wachtwoord naar het email adres verstuurd dat u net heeft ingevuld.",
     49 => 'De groep is opgeslagen.',
     50 => 'De groep is verwijderd.',
@@ -1978,7 +1978,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

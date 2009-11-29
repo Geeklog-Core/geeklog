@@ -83,7 +83,7 @@ $LANG01 = array(
     37 => '沒有文章',
     38 => '內容辛迪加',
     39 => '使新',
-    40 => '你的伺服器的 <tt>php.ini</tt> 裏設定為 <tt>register_globals = Off</tt>. 可是此軟體需要將 <tt>register_globals</tt> 設定成 <strong>on</strong>. 所以在你繼續以前，必須將它設定為<strong>on</strong>，然後重新開機.',
+    40 => '',
     41 => '客人',
     42 => '作者:',
     43 => '回復這個',
@@ -1187,7 +1187,7 @@ $MESSAGE = array(
     44 => '插件已被安裝了。',
     45 => '插件已被刪除了。',
     46 => '',
-    47 => '這只適用於 *nix 如果你的作業系統是 *nix，那麽你的緩衝器已被清除了。如果你的作業系統是 Windows，你要手動尋找檔命名為 adodb _ *.php 的檔案並把它們除去。',
+    47 => '',
     48 => "感謝你申請成為 {$_CONF['site_name']} 的會員。只要經過我們員工的核對，我們會把密碼寄到你所登記的電郵中。",
     49 => '你的小組已被保存了。',
     50 => '小組已被刪除了。',
@@ -1975,7 +1975,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

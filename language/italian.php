@@ -81,7 +81,7 @@ $LANG01 = array(
     37 => 'Nessun articolo dagli utenti',
     38 => 'Content Syndication',
     39 => 'Aggiorna',
-    40 => 'Hai <tt>register_globals = Off</tt> nel tuo <tt>php.ini</tt>. Tuttavia, Geeklog richiede che <tt>register_globals</tt> sia <strong>On</strong>. Prima di continuare, prego impostalo ad <strong>on</strong> e riavvia il tuo web server.',
+    40 => '',
     41 => 'Ospiti',
     42 => 'Inviato da:',
     43 => 'Rispondi a questo',
@@ -1185,7 +1185,7 @@ $MESSAGE = array(
     44 => 'Il plug-in &egrave; stato installato correttamente!',
     45 => 'Il plug-in &egrave; stato eliminato correttamente.',
     46 => '',
-    47 => 'Questa funzionalit&agrave; funziona solo sotto *nix. Se Geeklog sta girando sotto un sistema operativo *nix la tua cache verr&agrave; regolarmente azzerata. Se sei su Windows, dovrai necessariamente cercare i files con nome adodb_*.php ed eliminarli manualmente.',
+    47 => '',
     48 => "Grazie per la tua richiesta di registrazione a {$_CONF['site_name']}. Il nostro Team valuter&agrave; la tua richiesta. Se approvata ti verr&agrave; inviata via posta elettronica la password alla casella e-mail da te specificata.",
     49 => 'Il tuo gruppo &egrave; stato registrato correttamente.',
     50 => 'Il gruppo &egrave; stato eliminato correttamente.',
@@ -1973,7 +1973,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

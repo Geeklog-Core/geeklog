@@ -79,7 +79,7 @@ $LANG01 = array(
     37 => 'Bez èlánkù',
     38 => 'Content Syndication',
     39 => 'Obnovit',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '',
     41 => 'Hosté',
     42 => 'Publikováno:',
     43 => 'Odpovìdìt na toto',
@@ -1183,7 +1183,7 @@ $MESSAGE = array(
     44 => 'The plug-in was successfully installed!',
     45 => 'The plug-in was successfully deleted.',
     46 => '',
-    47 => 'This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.',
+    47 => '',
     48 => "Dìkujeme za registraci na {$_CONF['site_name']}.  Va¹e heslo pro pøístup do systému Vám bylo zasláno na email, který jste zadali.",
     49 => 'Skupina byla úspì¹nì ulo¾ena.',
     50 => 'Skupina byla úspì¹nì smazána.',
@@ -1971,7 +1971,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

@@ -84,7 +84,7 @@ $LANG01 = array(
     37 => 'Inga artiklar',
     38 => 'Content Syndication',
     39 => 'Uppdatera',
-    40 => 'Du har <tt>register_globals = Off</tt> i din <tt>php.ini</tt>. Geeklog kräver att <tt>register_globals</tt> är påslaget. Innan du fortsätter så måste du sätta det till <strong>on</strong> och starta om din webbserver.',
+    40 => '',
     41 => 'Gäster',
     42 => 'Skrivet av:',
     43 => 'Svara på detta',
@@ -1188,7 +1188,7 @@ $MESSAGE = array(
     44 => 'Insticksmodulen installerad!',
     45 => 'Insticksmodulen raderad.',
     46 => '',
-    47 => 'Denna funktion fungerar bara på *nix.  Om du använder *nix som ditt operativsystem så har din buffert raderats.  Om du använder Windows så måste du söka efter filer som heter adodb_*.php och radera dom manuellt.',
+    47 => '',
     48 => "Tack för att du ansökt om medlemsskap i {$_CONF['site_name']}. Vårt team kommer att se över din ansökan och om den godkänns så kommer du att få ett lösenord via epost.",
     49 => 'Din grupp har sparats.',
     50 => 'Gruppen har raderats.',
@@ -1976,7 +1976,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

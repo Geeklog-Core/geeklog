@@ -80,7 +80,7 @@ $LANG01 = array(
     37 => 'Geen gebruiker artikels',
     38 => 'Inhoud Sindikasie',
     39 => 'Herlaai',
-    40 => 'Jou <tt>register_globals = Off</tt> in jou <tt>php.ini</tt>. Geekolog vereis egter dat <tt>register_globals</tt> <strong>aan</strong> is. Voordat jy verder gaan, stel dit na <strong>on</strong> en herlaai jou webblaaier.',
+    40 => '',
     41 => 'Besoekers',
     42 => 'Geskryf deur:',
     43 => 'Antwoord hierop',
@@ -1184,7 +1184,7 @@ $MESSAGE = array(
     44 => 'Die prop is suksesvol gestoor!',
     45 => 'Die prop is suksesvol verwyder.',
     46 => '',
-    47 => 'Hierdie funksie werk slegs onder *nix stelsels.  Indien u wel \'n *nix bedryfstelsel gebruik is u kasgeheue suksesvol skoongevee. As u op Windows werk, moet u na l&ecirc;ers soek met die naam adodb_*.php en hulle handmatig verwyder.',
+    47 => '',
     48 => "Dankie vir u aansoek vir lidmaatskap tot {$_CONF['site_name']}. Ons span sal u aansoek nagaan.  Indien goedgekeur, sal u wagwoord gestuur word aan die epos adres wat u verskaf het.",
     49 => 'U groep is suksesvol gestoor.',
     50 => 'Die groep is suksesvol verwyder.',
@@ -1972,7 +1972,9 @@ $LANG_configselects['Core'] = array(
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2)
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>
