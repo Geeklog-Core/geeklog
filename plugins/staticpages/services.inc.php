@@ -590,42 +590,64 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             // WE ASSUME $output doesn't have any confidential fields 
 
         } else { // an error occured (page not found, access denied, ...)
-            if (empty ($page)) {
-                $failflg = 0;
-            } else {
-                $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
-            }
-            if ($failflg) {
-                if ($mode !== 'autotag') {
-                    $output = COM_siteHeader ('menu');
-                }
-                $output .= COM_startBlock ($LANG_LOGIN[1], '',
-                                        COM_getBlockTemplate ('_msg_block', 'header'));
-                $login = new Template ($_CONF['path_layout'] . 'submit');
-                $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-                $login->set_var ('login_message', $LANG_LOGIN[2]);
-                $login->set_var ('site_url', $_CONF['site_url']);
-                $login->set_var ('lang_login', $LANG_LOGIN[3]);
-                $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-                $login->parse ('output', 'login');
-                $output .= $login->finish ($login->get_var ('output'));
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                if ($mode !== 'autotag') {
-                    $output .= COM_siteFooter (true);
-                }
-            } else {
-                if ($mode !== 'autotag') {
-                    $output = COM_siteHeader ('menu');
-                }
-                $output .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                        COM_getBlockTemplate ('_msg_block', 'header'));
-                $output .= $LANG_STATIC['deny_msg'];
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                if ($mode !== 'autotag') {
-                    $output .= COM_siteFooter (true);
+
+            /**
+            * if the user has edit permissions and the page does not exist,
+            * send them to the editor so they can create it "wiki style"
+            */
+            $create_page = false;
+            if (($mode !== 'autotag') && ($count == 0) &&
+                    SEC_hasRights('staticpages.edit')) {
+                // check again without permissions
+                if (DB_count($_TABLES['staticpage'], 'sp_id', $page) == 0) {
+                    $url = $_CONF['site_admin_url']
+                         . '/plugins/staticpages/index.php?mode=edit&sp_new_id='
+                         . $page . '&msg=21';
+                    $output = COM_refresh($url);
+                    $create_page = true;
                 }
             }
 
+            if (! $create_page) {
+                if (empty($page)) {
+                    $failflg = 0;
+                } else {
+                    $failflg = DB_getItem($_TABLES['staticpage'], 'sp_nf',
+                                          "sp_id = '$page'");
+                }
+                if ($failflg) {
+                    if ($mode !== 'autotag') {
+                        $output = COM_siteHeader('menu');
+                    }
+                    $output .= COM_startBlock($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                    $login = new Template($_CONF['path_layout'] . 'submit');
+                    $login->set_file(array('login' => 'submitloginrequired.thtml'));
+                    $login->set_var('login_message', $LANG_LOGIN[2]);
+                    $login->set_var('site_url', $_CONF['site_url']);
+                    $login->set_var('lang_login', $LANG_LOGIN[3]);
+                    $login->set_var('lang_newuser', $LANG_LOGIN[4]);
+                    $login->parse('output', 'login');
+                    $output .= $login->finish($login->get_var('output'));
+                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                                 'footer'));
+                    if ($mode !== 'autotag') {
+                        $output .= COM_siteFooter(true);
+                    }
+                } else {
+                    if ($mode !== 'autotag') {
+                        $output = COM_siteHeader('menu');
+                    }
+                    $output .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                    $output .= $LANG_STATIC['deny_msg'];
+                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                                 'footer'));
+                    if ($mode !== 'autotag') {
+                        $output .= COM_siteFooter(true);
+                    }
+                }
+            }
             return PLG_RET_ERROR;
         }
 

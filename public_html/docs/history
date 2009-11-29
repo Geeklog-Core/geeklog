@@ -14,6 +14,8 @@ Geeklog History/Changes:
 
 Static Pages Plugin 1.6.2
 -------------------
+- If a page does not exist and the user has staticpages.edit rights, send them
+  to the Static Page Editor (feature request #0000975) [Dirk]
 - Added a Comment Default config option (feature request #0000966) [Dirk]
 - Added support for query highlighting [Dirk]
 

@@ -479,7 +479,16 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
             $A['sp_old_id'] = $A['sp_id'];
         }
     } elseif ($mode == 'edit') {
-        $A['sp_id'] = COM_makesid();
+        // check if a new sp_id has been suggested
+        $sp_new_id = '';
+        if (isset($_GET['sp_new_id'])) {
+            $sp_new_id = COM_applyFilter($_GET['sp_new_id']);
+        }
+        if (empty($sp_new_id)) {
+            $A['sp_id'] = COM_makesid();
+        } else {
+            $A['sp_id'] = $sp_new_id;
+        }
         $A['sp_uid'] = $_USER['uid'];
         $A['unixdate'] = time();
         $A['sp_help'] = '';

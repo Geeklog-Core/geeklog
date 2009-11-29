@@ -116,6 +116,7 @@ $LANG_STATIC = array(
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
 $PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
