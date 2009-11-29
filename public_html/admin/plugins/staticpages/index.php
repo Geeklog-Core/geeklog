@@ -408,7 +408,7 @@ function staticpageeditor_form($A, $error = false)
 */
 function liststaticpages()
 {
-    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_STATIC;
+    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_STATIC, $_SP_CONF;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -418,12 +418,37 @@ function liststaticpages()
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
         array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
-        array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true),
-        array('text' => $LANG_STATIC['writtenby'], 'field' => 'sp_uid', 'sort' => true),
-        array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true),
-        array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true)
+        array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true)
     );
-    $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
+    if ($_CONF['show_fullname'] == 1) {
+        $header_arr[] = array('text' => $LANG_STATIC['writtenby'], 'field' => 'fullname', 'sort' => true);
+    } else {
+        $header_arr[] = array('text' => $LANG_STATIC['writtenby'], 'field' => 'username', 'sort' => true);
+    }
+    $header_arr[] = array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true);
+
+    switch ($_SP_CONF['sort_list_by']) {
+    case 'author':
+        if ($_CONF['show_fullname'] == 1) {
+            $defsort_arr = array('field' => 'fullname', 'direction' => 'asc');
+        } else {
+            $defsort_arr = array('field' => 'username', 'direction' => 'asc');
+        }
+        break;
+
+    case 'date':
+        $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
+        break;
+
+    case 'id':
+        $defsort_arr = array('field' => 'sp_id', 'direction' => 'asc');
+        break;
+
+    case 'title':
+        $defsort_arr = array('field' => 'sp_title', 'direction' => 'asc');
+        break;
+    }
 
     $menu_arr = array (
         array('url' => $_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
@@ -435,7 +460,8 @@ function liststaticpages()
     $retval .= COM_startBlock($LANG_STATIC['staticpagelist'], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
 
-    $retval .= ADMIN_createMenu($menu_arr, $LANG_STATIC['instructions'], plugin_geticon_staticpages());
+    $retval .= ADMIN_createMenu($menu_arr, $LANG_STATIC['instructions'],
+                                plugin_geticon_staticpages());
 
     $text_arr = array(
         'has_extras' => true,
@@ -444,10 +470,12 @@ function liststaticpages()
 
     $query_arr = array(
         'table' => 'staticpage',
-        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate "
-                ."FROM {$_TABLES['staticpage']} WHERE 1=1 ",
+        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
+                ."FROM {$_TABLES['staticpage']} "
+                ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.sp_uid = {$_TABLES['users']}.uid "
+                ."WHERE 1=1 ",
         'query_fields' => array('sp_title', 'sp_id'),
-        'default_filter' => COM_getPermSQL ('AND', 0, 3)
+        'default_filter' => COM_getPermSQL('AND', 0, 3)
     );
 
     $retval .= ADMIN_list('static_pages', 'plugin_getListField_staticpages',

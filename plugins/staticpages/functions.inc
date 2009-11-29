@@ -1183,46 +1183,56 @@ function staticpages_templatePath ($path = '')
 
 function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 {
-    global $_CONF, $LANG_ADMIN, $LANG_STATIC, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_ADMIN, $LANG_STATIC;
 
-    switch($fieldname) {
-        case "edit":
-            $retval = COM_createLink($icon_arr['edit'],
-                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}");
-            break;
-        case "copy":
-            $retval = COM_createLink($icon_arr['copy'],
-                "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}");
-            break;
-        case "sp_title":
-            $sp_title = stripslashes ($A['sp_title']);
-            $url = COM_buildUrl ($_CONF['site_url'] .
-                                 '/staticpages/index.php?page=' . $A['sp_id']);
-            $retval = COM_createLink($sp_title, $url, array('title'=>$LANG_STATIC['title_display']));
-            break;
-        case "sp_uid":
-            $retval = COM_getDisplayName ($A['sp_uid']);
-            break;
-        case "sp_centerblock":
-            if ($A['sp_centerblock']) {
-                switch ($A['sp_where']) {
-                    case '1': $where = $LANG_STATIC['centerblock_top']; break;
-                    case '2': $where = $LANG_STATIC['centerblock_feat']; break;
-                    case '3': $where = $LANG_STATIC['centerblock_bottom']; break;
-                    default:  $where = $LANG_STATIC['centerblock_entire']; break;
-                }
-                $retval = $where;
-            } else {
-                $retval = $LANG_STATIC['centerblock_no'];
+    switch ($fieldname) {
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'],
+            "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id={$A['sp_id']}");
+        break;
+
+    case 'copy':
+        $retval = COM_createLink($icon_arr['copy'],
+            "{$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=clone&amp;sp_id={$A['sp_id']}");
+        break;
+
+    case 'sp_title':
+        $sp_title = stripslashes($A['sp_title']);
+        $url = COM_buildUrl($_CONF['site_url'] .
+                            '/staticpages/index.php?page=' . $A['sp_id']);
+        $retval = COM_createLink($sp_title, $url,
+                    array('title' => $LANG_STATIC['title_display']));
+        break;
+
+    case 'username':
+    case 'fullname':
+        $retval = COM_getDisplayName($A['sp_uid'], $A['username'],
+                                     $A['fullname']);
+        break;
+
+    case 'sp_centerblock':
+        if ($A['sp_centerblock']) {
+            switch ($A['sp_where']) {
+                case '1': $where = $LANG_STATIC['centerblock_top'];    break;
+                case '2': $where = $LANG_STATIC['centerblock_feat'];   break;
+                case '3': $where = $LANG_STATIC['centerblock_bottom']; break;
+                default:  $where = $LANG_STATIC['centerblock_entire']; break;
             }
-            break;
-        case "unixdate":
-            $retval = strftime ($_CONF['daytime'], $A['unixdate']);
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+            $retval = $where;
+        } else {
+            $retval = $LANG_STATIC['centerblock_no'];
+        }
+        break;
+
+    case 'unixdate':
+        $retval = strftime($_CONF['daytime'], $A['unixdate']);
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
+
     return $retval;
 }
 

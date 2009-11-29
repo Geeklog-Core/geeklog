@@ -133,6 +133,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Allow PHP?',
     'sort_by' => 'Sort Centerblocks by',
     'sort_menu_by' => 'Sort Menu Entries by',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => 'Delete Pages with Owner?',
     'in_block' => 'Wrap Pages in Block?',
     'show_hits' => 'Show Hits?',
@@ -171,6 +172,7 @@ $LANG_configselects['staticpages'] = array(
     1 => array('True' => TRUE, 'False' => FALSE),
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

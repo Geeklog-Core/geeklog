@@ -65,6 +65,9 @@ $_SP_DEFAULT['sort_by'] = 'id'; // can be 'id', 'title', 'date'
 // (assuming you're using a theme that uses the {plg_menu_elements} variable)
 $_SP_DEFAULT['sort_menu_by'] = 'label'; // can be 'id', 'label', 'title', 'date'
 
+// Sort admin list by which field?
+$_SP_DEFAULT['sort_list_by'] = 'title'; // can be 'id', 'title', 'date', 'author'
+
 // When a user is deleted, ownership of static pages created by that user can
 // be transfered to a user in the Root group (= 0) or the pages can be
 // deleted (= 1).
@@ -159,6 +162,8 @@ function plugin_initconfig_staticpages()
                 0, 0, 2, 20, true, 'staticpages');
         $c->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'select',
                 0, 0, 3, 30, true, 'staticpages');
+        $c->add('sort_list_by', $_SP_DEFAULT['sort_list_by'], 'select',
+                0, 0, 4, 35, true, 'staticpages');
         $c->add('delete_pages', $_SP_DEFAULT['delete_pages'], 'select',
                 0, 0, 0, 40, true, 'staticpages');
         $c->add('in_block', $_SP_DEFAULT['in_block'], 'select',
