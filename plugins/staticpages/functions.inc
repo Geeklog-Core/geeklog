@@ -260,10 +260,11 @@ function SP_countVisiblePages ()
 * @param    string  $comment_order  sorting of comments
 * @param    string  $comment_mode   comment mode (nested, flat, etc.)
 * @param    int     $msg            optional message number
+* @param    string  $query          optional search query string to highlight
 * @return   string                  HTML for the static page
 *
 */
-function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0)
+function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0, $query = '')
 {
     global $_CONF, $_TABLES, $_USER,
            $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
@@ -275,9 +276,9 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
     $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>';
 
     // Meta Tags
-    If ($_SP_CONF['meta_tags'] > 0) {
-        $meta_description  = $A['meta_description'];
-        $meta_keywords  = $A['meta_keywords'];
+    if ($_SP_CONF['meta_tags'] > 0) {
+        $meta_description = $A['meta_description'];
+        $meta_keywords = $A['meta_keywords'];
         $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
     }
 
@@ -292,11 +293,11 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
         $retval .= COM_showMessage($msg, 'staticpages');
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_startBlock (stripslashes ($A['sp_title']), $A['sp_help'],
-                        COM_getBlockTemplate ('_staticpages_block', 'header'));
+        $retval .= COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
+                        COM_getBlockTemplate('_staticpages_block', 'header'));
     }
 
-    $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
+    $spage = new Template($_CONF['path'] . 'plugins/staticpages/templates/');
     $spage->set_var('xhtml', XHTML);
     if (XHTML != '') {
         $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -304,22 +305,22 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
     $spage->set_var('site_url', $_CONF['site_url']);
     $spage->set_var('layout_url', $_CONF['layout_url']);
     $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $spage -> set_file( array('page'=>'staticpage.thtml',
-        'comments' => 'spcomments.thtml'));
+    $spage -> set_file(array('page' => 'staticpage.thtml',
+                             'comments' => 'spcomments.thtml'));
 
     if ($A['sp_format'] <> 'blankpage') {
         if ($_CONF['hideprintericon'] == 0) {
             $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['printable_format']);
             $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
-            $print_url = COM_buildURL ($_CONF['site_url']
+            $print_url = COM_buildURL($_CONF['site_url']
                 . '/staticpages/index.php?page=' . $page . '&amp;disp_mode=print');
             $icon = COM_createLink($printicon, $print_url);
             $spage->set_var('print_icon', $icon);
         }
-        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+        if ((SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-                SEC_hasRights ('staticpages.edit')) {
+                SEC_hasRights('staticpages.edit')) {
             $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['edit']);
             $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
@@ -336,24 +337,24 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
         }
     }
 
-    if($A['commentcode'] >= 0 ) {
+    if ($A['commentcode'] >= 0 ) {
         $delete_option = (SEC_hasRights('staticpages.edit') &&
             SEC_hasAccess($A['owner_id'], $A['group_id'],
             $A['perm_owner'], $A['perm_group'], $A['perm_members'],
             $A['perm_anon']) == 3 ? true : false);
         require_once $_CONF['path_system'] . 'lib-comment.php';
-        $spage->set_var ('commentbar', CMT_userComments($page, $A['sp_title'], 'staticpages',
+        $spage->set_var('commentbar', CMT_userComments($page, $A['sp_title'], 'staticpages',
                                     $comment_order, $comment_mode, 0, 1, false,
                                     $delete_option, $A['commentcode']));
     }
 
-
-    $content = SP_render_content (stripslashes ($A['sp_content']), $A['sp_php']);
-    $spage->set_var('content', $content );
+    $content = SP_render_content(stripslashes($A['sp_content']), $A['sp_php'],
+                                 $query);
+    $spage->set_var('content', $content);
 
     $spage->set_var('info_separator', 'hidden');
     if ($A['sp_format'] <> 'blankpage') {
-        $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
+        $curtime = COM_getUserDateTimeFormat($A['sp_date']);
         if ($_SP_CONF['show_date'] == 1) {
             $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
             $spage->set_var('lastupdate', $lastupdate);
@@ -363,15 +364,15 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
             if ($_SP_CONF['show_date'] == 1) {
                 $spage->set_var('info_separator','visible');
             }
-            $hits = COM_numberFormat ($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
+            $hits = COM_numberFormat($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
             $spage->set_var('hits', $hits);
         }
     }
 
     $retval .= $spage->finish($spage->parse('output', 'page'));
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
-                                                       'footer'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_block',
+                                                     'footer'));
     }
 
     if ($A['sp_format'] <> 'blankpage') {
@@ -386,7 +387,8 @@ function SP_displayPage ($page, $A, $comment_order = 'ASC', $comment_mode = 'nes
 
         if (($A['sp_format'] == 'allblocks') && ($_USER['noboxes'] != 1)) {
             $retval .= COM_siteFooter(true);
-        } else if (($A['sp_format'] == 'leftblocks') || ($A['sp_format'] == 'noblocks')) {
+        } elseif (($A['sp_format'] == 'leftblocks') ||
+                  ($A['sp_format'] == 'noblocks')) {
             $retval .= COM_siteFooter(false);
         } else {
             $retval .= COM_siteFooter();
@@ -463,12 +465,13 @@ function SP_printPage($page, $A)
 * @param    string  $comment_order  sorting of comments
 * @param    string  $comment_mode   comment mode (nested, flat, etc.)
 * @param    int     $msg            optional message number
+* @param    string  $query          optional search query string to highlight
 * @return   string                  HTML for the static page
 *
 */
-function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0)
+function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0, $query = '')
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_STATIC, $LANG_LOGIN;
+    global $_TABLES;
 
     $retval = '';
 
@@ -482,10 +485,10 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
 
         if ($mode == 'print') {
             $retval = SP_printPage($page, $retval);
-        } else if ($mode =='autotag') {
+        } elseif ($mode =='autotag') {
             $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
         } else {
-            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $msg);
+            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $msg, $query);
         }
 
         // increment hit counter for page
@@ -897,7 +900,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $spage->set_var('hits', $hits);
             }
 
-            $content = SP_render_content (stripslashes ($S['sp_content']), $S['sp_php']);
+            $content = SP_render_content(stripslashes($S['sp_content']), $S['sp_php']);
             $spage->set_var('content', $content );
             $retval .= $spage->finish($spage->parse('output', 'page'));
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
@@ -1222,10 +1225,11 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 *
 * @param    string  $sp_content the content (HTML or PHP source)
 * @param    int     $sp_php     flag: 1 = content is PHP source, 0 = is HTML
+* @param    string  $query      optional search query string to highlight
 * @return   string              rendered content (HTML)
 *
 */
-function SP_render_content ($sp_content, $sp_php)
+function SP_render_content($sp_content, $sp_php, $query = '')
 {
     global $_SP_CONF, $LANG_STATIC;
 
@@ -1234,22 +1238,28 @@ function SP_render_content ($sp_content, $sp_php)
     if ($_SP_CONF['allow_php'] == 1) {
         // Check for type (ie html or php)
         if ($sp_php == 1) {
-            $retval = eval ($sp_content);
-        } else if ($sp_php == 2) {
-            ob_start ();
-            eval ($sp_content);
-            $retval = ob_get_contents ();
-            ob_end_clean ();
+            $retval = eval($sp_content);
+        } elseif ($sp_php == 2) {
+            ob_start();
+            eval($sp_content);
+            $retval = ob_get_contents();
+            ob_end_clean();
         } else {
             $retval = $sp_content;
         }
-        $retval = PLG_replacetags ($retval);
+        $retval = PLG_replaceTags($retval);
+        if (! empty($query)) {
+            $retval = COM_highlightQuery($retval, $query);
+        }
     } else {
         if ($sp_php != 0) {
-            COM_errorLog ("PHP in static pages is disabled. Can not display page.", 1);
+            COM_errorLog("PHP in static pages is disabled. Can not display page.", 1);
             $retval .= $LANG_STATIC['deny_msg'];
         } else {
-            $retval .= PLG_replacetags ($sp_content);
+            $retval .= PLG_replaceTags($sp_content);
+            if (! empty($query)) {
+                $retval = COM_highlightQuery($retval, $query);
+            }
         }
     }
 

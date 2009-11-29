@@ -54,6 +54,10 @@ if (!in_array('staticpages', $_PLUGINS)) {
 COM_setArgNames(array('page', 'disp_mode'));
 $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
+$query = '';
+if (isset($_GET['query'])) {
+    $query = COM_applyfilter($_GET['query']);
+}
 
 // from comments display refresh:
 if (isset($_POST['order'])) {
@@ -81,7 +85,7 @@ if (isset($_GET['msg'])) {
     }
 }
 
-$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $msg);
+$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $msg, $query);
 
 if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());
