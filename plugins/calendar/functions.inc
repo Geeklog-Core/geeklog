@@ -884,12 +884,16 @@ function CALENDAR_listOld()
     $retval = '';
 
     $header_arr = array(      # display 'text' and use table field 'field'
-        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-        array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
-        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-        array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true),
-        array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true)
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true)
     );
+    if ($_CONF['show_fullname'] == 1) {
+        $header_arr[] = array('text' => $LANG_CAL_ADMIN[13], 'field' => 'fullname', 'sort' => true);
+    } else {
+        $header_arr[] = array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true);
+    }
+    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
+    $header_arr[] = array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true);
 
     $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
 
@@ -1005,12 +1009,16 @@ function CALENDAR_listevents()
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
-        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-        array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true),
-        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
-        array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true),
-        array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true)
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true)
     );
+    if ($_CONF['show_fullname'] == 1) {
+        $header_arr[] = array('text' => $LANG_CAL_ADMIN[13], 'field' => 'fullname', 'sort' => true);
+    } else {
+        $header_arr[] = array('text' => $LANG_CAL_ADMIN[13], 'field' => 'username', 'sort' => true);
+    }
+    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
+    $header_arr[] = array('text' => $LANG_CAL_ADMIN[14], 'field' => 'datestart', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_CAL_ADMIN[15], 'field' => 'dateend', 'sort' => true);
 
     $defsort_arr = array('field' => 'datestart', 'direction' => 'desc');
 
@@ -1740,45 +1748,52 @@ function plugin_getListField_calendar($fieldname, $fieldvalue, $A, $icon_arr)
                             $A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     switch($fieldname) {
-        case "delete":
-            $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\"" . XHTML . ">";
-            break;
-        case "edit":
-            if ($access == 3) {
-                $retval = COM_createLink(
-                    $icon_arr['edit'],
-                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
-                    . "?mode=edit&amp;eid={$A['eid']}");
-            }
-            break;
-        case "copy":
-            if ($access == 3) {
-                $retval = COM_createLink(
-                    $icon_arr['copy'],
-                    "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
-                    . "?mode=clone&amp;eid={$A['eid']}");
-            }
-            break;
-        case 'access':
-            if ($access == 3) {
-                $retval = $LANG_ACCESS['edit'];
-            } else {
-                $retval = $LANG_ACCESS['readonly'];
-            }
-            break;
-        case 'title':
-            $retval = stripslashes ($A['title']);
-            $retval = COM_createLink( $retval,
-                "{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}"
-            );
-            break;
-        case 'username':
-            $retval = COM_getDisplayName ($A['owner_id'], $A['username'], $A['fullname']);
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+    case 'delete':
+        $retval = "<input type=\"checkbox\" name=\"delitem[{$A['eid']}]\" checked=\"checked\"" . XHTML . ">";
+        break;
+
+    case 'edit':
+        if ($access == 3) {
+            $retval = COM_createLink(
+                $icon_arr['edit'],
+                "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
+                . "?mode=edit&amp;eid={$A['eid']}");
+        }
+        break;
+
+    case 'copy':
+        if ($access == 3) {
+            $retval = COM_createLink(
+                $icon_arr['copy'],
+                "{$_CONF['site_admin_url']}/plugins/calendar/index.php"
+                . "?mode=clone&amp;eid={$A['eid']}");
+        }
+        break;
+
+    case 'access':
+        if ($access == 3) {
+            $retval = $LANG_ACCESS['edit'];
+        } else {
+            $retval = $LANG_ACCESS['readonly'];
+        }
+        break;
+
+    case 'title':
+        $retval = COM_createLink(stripslashes($A['title']),
+                    "{$_CONF['site_url']}/calendar/event.php?eid={$A['eid']}");
+        break;
+
+    case 'username':
+    case 'fullname':
+        $retval = COM_getDisplayName($A['owner_id'], $A['username'],
+                                     $A['fullname']);
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
+
     return $retval;
 }
 
