@@ -441,7 +441,10 @@ function SP_printPage($page, $A)
         $numComments = COM_numberFormat($comments);
         $print->set_var('story_comments', $numComments);
         $print->set_var('comments_url', $commentsUrl);
-        $print->set_var('comments_text', $numComments . ' ' . $LANG01[3]);
+        $comments_text = $numComments . ' ' . $LANG01[3];
+        $print->set_var('comments_text', $comments_text);
+        $print->set_var('comments_text_in_brackets',
+                        '(' . $comments_text . ')');
         $print->set_var('comments_count', $numComments);
         $print->set_var('lang_comments', $LANG01[3]);
         $comments_with_count = sprintf($LANG01[121], $numComments);

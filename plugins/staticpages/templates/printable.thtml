@@ -16,6 +16,6 @@
     <p>{site_name}<br{xhtml}>
         <a href="{sp_url}">{sp_url}</a>
     </p>
-<p>({comments_text})</p>
+<p>{comments_text_in_brackets}</p>
 </body>
 </html>
