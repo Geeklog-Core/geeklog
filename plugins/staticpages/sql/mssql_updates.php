@@ -44,7 +44,7 @@ $_UPDATES = array(
 * Handle update to plugin version 1.6.0: introduce meta tags option
 *
 */
-function update_ConfValues_1_6_0()
+function SP_update_ConfValues_1_6_0()
 {
     global $_CONF, $_TABLES, $_SP_DEFAULT;
 
@@ -91,6 +91,26 @@ function update_ConfValues_1_6_0()
     $c->add('includesearch', $_SP_DEFAULT['include_search'], 'select', 0, 2, 0, 10, true, 'staticpages');
     $c->add('includesearchcenterblocks',$_SP_DEFAULT['include_search_centerblocks'],'select', 0, 2, 0, 20, TRUE, 'staticpages');
     $c->add('includesearchphp',$_SP_DEFAULT['include_search_PHP'],'select', 0, 2, 0, 30, TRUE, 'staticpages');   
+
+    return true;
+}
+
+/**
+* Handle update to plugin version 1.6.1
+*
+*/
+function SP_update_ConfValues_1_6_1()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
+            0, 0, 17, 125, true, 'staticpages');
 
     return true;
 }

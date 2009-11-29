@@ -468,7 +468,7 @@ function liststaticpages()
 */
 function staticpageeditor($sp_id, $mode = '', $editor = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_STATIC;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG_STATIC, $_SP_CONF;
 
     $retval = '';
 
@@ -484,7 +484,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['unixdate'] = time();
         $A['sp_help'] = '';
         $A['sp_old_id'] = '';
-        $A['commentcode'] = $_CONF['comment_code'];
+        $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
     } elseif (!empty($sp_id) && $mode == 'clone') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
@@ -495,7 +495,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
             $A['unixdate'] = time();
             $A['sp_hits'] = 0;
             $A['sp_old_id'] = '';
-            $A['commentcode'] = $_CONF['comment_code'];
+            $A['commentcode'] = $_SP_CONF['comment_code'];
         }
     } else {
         $A = $_POST;

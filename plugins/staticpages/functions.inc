@@ -1077,9 +1077,15 @@ function plugin_upgrade_staticpages()
                 }
             }
 
-            update_ConfValues_1_6_0();
+            SP_update_ConfValues_1_6_0();
 
             $current_version = '1.6.1';
+            break;
+
+        case '1.6.1':
+            SP_update_ConfValues_1_6_1();
+
+            $current_version = '1.6.2';
             break;
 
         default:

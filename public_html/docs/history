@@ -12,8 +12,9 @@ Geeklog History/Changes:
   renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
   update the dynamically created function calls (cf. bug #0000681) [Dirk]
 
-Static Pages Plugin
+Static Pages Plugin 1.6.2
 -------------------
+- Added a Comment Default config option (feature request #0000966) [Dirk]
 - Added support for query highlighting [Dirk]
 
 

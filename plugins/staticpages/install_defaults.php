@@ -115,6 +115,9 @@ $_SP_DEFAULT['atom_max_items'] = 10;
 // Display Meta Tags for static pages (1 = show, 0 = don't) 
 $_SP_DEFAULT['meta_tags'] = 0;
 
+// Whether to enable (0) or disable (-1) comments by default
+$_SP_DEFAULT['comment_code'] = -1;
+
 // Define default permissions for new pages created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -174,6 +177,8 @@ function plugin_initconfig_staticpages()
                 0, 0, null, 110, true, 'staticpages');
         $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select',
                 0, 0, 0, 120, true, 'staticpages');
+        $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
+                0, 0, 17, 125, true, 'staticpages');
 
         $c->add('fs_whatsnew', NULL, 'fieldset',
                 0, 1, NULL, 0, true, 'staticpages');
@@ -200,7 +205,7 @@ function plugin_initconfig_staticpages()
         $c->add('fs_permissions', NULL, 'fieldset',
                 0, 3, NULL, 0, true, 'staticpages');
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],'@select',
-                0, 3, 12, 120, true, 'staticpages');
+                0, 3, 12, 130, true, 'staticpages');
 
     }
 
