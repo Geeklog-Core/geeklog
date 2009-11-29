@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 20?? (1.6.2)
 ------------
 
+- Fixed topic selection for the Daily Digest (bug #0001041, patch provided by
+  Ben)
 - Changed the 'menu_elements' and 'notification' config options to dropdowns
   since there's only a fixed number of keywords that these two option recognize
   [Dirk]

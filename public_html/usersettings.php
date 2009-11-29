@@ -619,7 +619,7 @@ function editpreferences()
             $user_etids = '';
         }
         $tmp = COM_checkList($_TABLES['topics'], 'tid,topic', $permissions,
-                             $user_etids, 'topics');
+                             $user_etids, 'etids');
         $preferences->set_var('email_topic_checklist',
                 str_replace($_TABLES['topics'], 'etids', $tmp));
         $preferences->parse('digest_block', 'digest', true);
