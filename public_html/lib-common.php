@@ -4003,45 +4003,38 @@ function COM_getPassword( $loginname )
 * @return   string  Username, fullname or username@Service
 *
 */
-function COM_getDisplayName( $uid = '', $username='', $fullname='', $remoteusername='', $remoteservice='' )
+function COM_getDisplayName($uid = '', $username = '', $fullname = '', $remoteusername = '', $remoteservice = '')
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if ($uid == '')
-    {
-        if( COM_isAnonUser() )
-        {
+    if ($uid == '') {
+        if (COM_isAnonUser()) {
             $uid = 1;
-        }
-        else
-        {
+        } else {
             $uid = $_USER['uid'];
         }
     }
 
-    if( empty( $username ))
-    {
-        $query = DB_query( "SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'" );
-        list( $username, $fullname, $remoteusername, $remoteservice ) = DB_fetchArray( $query );
+    // "this shouldn't happen"
+    if ($uid == 0) {
+        $uid = 1;
     }
 
-    if( !empty( $fullname ) && ($_CONF['show_fullname'] == 1 ))
-    {
-        return $fullname;
+    if (empty($username)) {
+        $query = DB_query("SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'");
+        list($username, $fullname, $remoteusername, $remoteservice) = DB_fetchArray($query);
     }
-    else if(( $_CONF['user_login_method']['3rdparty'] || $_CONF['user_login_method']['openid'] ) && !empty( $remoteusername ))
-    {
-        if( !empty( $username ))
-        {
+
+    if (!empty($fullname) && ($_CONF['show_fullname'] == 1)) {
+        return $fullname;
+    } elseif (($_CONF['user_login_method']['3rdparty'] || $_CONF['user_login_method']['openid']) && !empty($remoteusername)) {
+        if (! empty($username)) {
             $remoteusername = $username;
         }
 
-        if( $_CONF['show_servicename'] )
-        {
+        if ($_CONF['show_servicename']) {
             return "$remoteusername@$remoteservice";
-        }
-        else
-        {
+        } else {
             return $remoteusername;
         }
     }
