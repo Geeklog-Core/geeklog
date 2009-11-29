@@ -195,7 +195,18 @@ featured and archived stories.</li>
 </ol>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.6.1</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
+
+<ul>
+<li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
+    <code>select-element</code>, <code>{hide_row}</code> was added for the
+    table row and a <code>{delete}</code> option was added after the
+    <code>select</code>. These changes are required to allow dynamic addition /
+    removal of dropdowns, e.g. for <code>$_CONF['menu_elements']</code>.</li>
+</ul>
+
+
+<h2><a name="changes161">Theme changes in Geeklog 1.6.1</a></h2>
 
 <ul>
 <li>Added rules for the <tt>token-expirynotice</tt> and

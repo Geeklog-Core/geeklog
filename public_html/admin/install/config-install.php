@@ -140,7 +140,7 @@ function install_config()
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE);
     $c->add('theme','professional','select',2,10,NULL,190,TRUE);
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE);
-    $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,10,NULL,200,TRUE);
+    $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE);
 
     $c->add('fs_theme_advanced', NULL, 'fieldset', 2, 11, NULL, 0, TRUE);
@@ -313,7 +313,7 @@ function install_config()
     $c->add('cookiesecure',FALSE,'select',7,30,1,630,TRUE);
 
     $c->add('fs_misc', NULL, 'fieldset', 7, 31, NULL, 0, TRUE);
-    $c->add('notification',array(),'%text',7,31,NULL,800,TRUE);
+    $c->add('notification',array(),'%select',7,31,25,800,TRUE);
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);

@@ -3,8 +3,11 @@ Geeklog History/Changes:
 ??? ??, 20?? (1.6.2)
 ------------
 
+- Changed the 'menu_elements' and 'notification' config options to dropdowns
+  since there's only a fixed number of keywords that these two option recognize
+  [Dirk]
 - Fixed delete option for dynamically added config options: Back in 1.5.1, we
-  renamed the JavaScript remove() function to gl_cfg_remove() but forgot to
+  renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
   update the dynamically created function calls (cf. bug #0000681) [Dirk]
 
 
