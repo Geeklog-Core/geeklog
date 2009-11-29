@@ -32,7 +32,7 @@
         oFCKeditor1.BasePath = geeklogEditorBasePath;
         oFCKeditor1.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
         oFCKeditor1.ToolbarSet = 'editor-toolbar2' ;
-        oFCKeditor1.Height = 200 ;
+        oFCKeditor1.Height = 400 ;
         oFCKeditor1.AutoGrowMax = 1200        
         oFCKeditor1.ReplaceTextarea() ;
     }
