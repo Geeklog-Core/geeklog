@@ -162,13 +162,18 @@ function liststories()
         . $alltopics . $seltopics . '</select>';
 
     $header_arr = array(
-        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
 
-    $header_arr[] = array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true);
-    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
-    $header_arr[] = array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true);
-    $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); //author
-    $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); //date
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true)
+    );
+    if ($_CONF['show_fullname'] == 1) {
+        $header_arr[] = array('text' => $LANG24[7], 'field' => 'fullname', 'sort' => true); // author
+    } else {
+        $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); // author
+    }
+    $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); // date
     $header_arr[] = array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true);
     $header_arr[] = array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true);
 
@@ -185,7 +190,7 @@ function liststories()
     );
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']);
+                        'text' => $LANG_ADMIN['admin_home']);
 
     $retval .= COM_startBlock($LANG24[22], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
@@ -212,7 +217,7 @@ function liststories()
         'table' => 'stories',
         'sql' => $sql,
         'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-        'default_filter' => $excludetopics . COM_getPermSQL ('AND')
+        'default_filter' => $excludetopics . COM_getPermSQL('AND')
     );
 
     $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,

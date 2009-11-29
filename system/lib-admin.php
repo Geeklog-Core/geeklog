@@ -968,6 +968,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'username':
+    case 'fullname':
         $retval = COM_getDisplayName($A['uid'], $A['username'], $A['fullname']);
         break;
 
