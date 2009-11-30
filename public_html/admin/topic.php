@@ -203,6 +203,11 @@ function edittopic ($tid = '')
     if (! empty($A['meta_keywords'])) {
         $topic_templates->set_var('meta_keywords', $A['meta_keywords']);
     }
+    if ($_CONF['meta_tags'] > 0) {
+        $topic_templates->set_var('hide_meta', '');
+    } else {
+        $topic_templates->set_var('hide_meta', ' style="display:none;"');
+    }
 
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
