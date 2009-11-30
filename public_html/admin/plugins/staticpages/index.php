@@ -321,6 +321,11 @@ function staticpageeditor_form($A, $error = false)
     if (!empty($A['meta_keywords'])) {
         $sp_template->set_var('meta_keywords', $A['meta_keywords']);        
     }
+    if (($_CONF['meta_tags'] > 0) && ($_SP_CONF['meta_tags'] > 0)) {
+        $sp_template->set_var('hide_meta', '');
+    } else {
+        $sp_template->set_var('hide_meta', ' style="display:none;"');
+    }
     $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
     if (isset($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
         $sp_template->set_var('onmenu_checked', 'checked="checked"');

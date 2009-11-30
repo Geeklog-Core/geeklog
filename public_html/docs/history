@@ -14,6 +14,8 @@ Geeklog History/Changes:
 
 Static Pages Plugin 1.6.2
 -------------------
+- Hide meta tag entry fields from Static Page editor when meta tag support is
+  disabled [Dirk]
 - Avoid a pair of empty brackets on the printer-friendly version for Static
   Pages which have comments disabled [Dirk]
 - Added a config option to define the default sort order for the admin's list
