@@ -3,8 +3,8 @@ Geeklog History/Changes:
 ??? ??, 20?? (1.6.2)
 ------------
 
-- Hide meta tag entry fields from Topic editor when meta tag support is
-  disabled [Dirk]
+- Hide meta tag entry fields from the Story and Topic editors when meta tag
+  support is disabled [Dirk]
 - Fixed topic selection for the Daily Digest (bug #0001041, patch provided by
   Ben)
 - Changed the 'menu_elements' and 'notification' config options to dropdowns

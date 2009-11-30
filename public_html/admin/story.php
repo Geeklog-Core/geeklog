@@ -551,6 +551,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('meta_description', $story->EditElements('meta_description'));
     $story_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
     $story_templates->set_var('meta_keywords', $story->EditElements('meta_keywords'));    
+    if ($_CONF['meta_tags'] > 0) {
+        $story_templates->set_var('hide_meta', '');
+    } else {
+        $story_templates->set_var('hide_meta', ' style="display:none;"');
+    }
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
     if(empty($currenttopic) && ($story->EditElements('tid') == '')) {
         $story->setTid(DB_getItem($_TABLES['topics'], 'tid',
