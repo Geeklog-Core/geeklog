@@ -430,7 +430,8 @@ function editpoll ($pid = '')
     $poll_templates->set_var('poll_topic', htmlspecialchars ($T['topic']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
     
-    $poll_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $poll_templates->set_var('lang_metadescription',
+                             $LANG_ADMIN['meta_description']);
     $poll_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
     if (!empty($T['meta_description'])) {
         $poll_templates->set_var('meta_description', $T['meta_description']);
@@ -438,7 +439,11 @@ function editpoll ($pid = '')
     if (!empty($T['meta_keywords'])) {
         $poll_templates->set_var('meta_keywords', $T['meta_keywords']);        
     }
-    
+    if (($_CONF['meta_tags'] > 0) && ($_PO_CONF['meta_tags'] > 0)) {
+        $poll_templates->set_var('hide_meta', '');
+    } else {
+        $poll_templates->set_var('hide_meta', ' style="display:none;"');
+    }
 
     $poll_templates->set_var('status_options', COM_optionList ($_TABLES['statuscodes'], 'code,name', $T['statuscode']));
     $poll_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$T['commentcode']));

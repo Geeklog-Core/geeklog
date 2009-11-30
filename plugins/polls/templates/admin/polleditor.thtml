@@ -10,11 +10,11 @@
                                             <td align="right" valign="top">{lang_topic}:</td>
                                             <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</td>
                                         </tr>
-                                        <tr>
+                                        <tr{hide_meta}>
                                             <td valign="top" align="right">{lang_metadescription}:</td>
                                         <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
                                         </tr>
-                                        <tr>
+                                        <tr{hide_meta}>
                                             <td valign="top" align="right">{lang_metakeywords}:</td>
                                             <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
                                         </tr>                                          
