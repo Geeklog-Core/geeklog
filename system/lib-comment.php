@@ -582,6 +582,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
+    $retval = '';
+
     if( !empty( $_USER['uid'] ) ) {
         $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
