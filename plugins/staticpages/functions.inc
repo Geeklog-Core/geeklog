@@ -127,7 +127,7 @@ function plugin_getmenuitems_staticpages()
 */
 function plugin_displaycomment_staticpages ($id, $cid, $title, $order, $format, $page, $view)
 {
-    global $_TABLES, $LANG_ACCESS;
+    global $_TABLES, $LANG_ACCESS, $LANG_STATIC;
 
     $retval = '';
 
@@ -151,7 +151,7 @@ function plugin_displaycomment_staticpages ($id, $cid, $title, $order, $format, 
     } else {
         $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_ACCESS['storydenialmsg']
+                . $LANG_STATIC['deny_msg']
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
