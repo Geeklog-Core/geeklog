@@ -457,7 +457,7 @@ function polls_templatePath ($path = '')
 *
 */
 
-function POLLS_pollVote($pid, $showall = true, $displaytype = 0)
+function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '')
 {
     global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25, $_IMAGE_TYPE;
     $retval = '';
@@ -606,8 +606,6 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0)
 
                     require_once $_CONF['path_system'] . 'lib-comment.php';
 
-                    $order = '';
-                    $mode  = '';
                     $retval .= CMT_userComments($pid, $P['topic'], 'polls',
                                                 $order, $mode, 0, 1, false,
                                                 $delete_option, $P['commentcode']);

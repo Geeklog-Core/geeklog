@@ -125,7 +125,7 @@ if (isset ($_POST['reply']) && ($_POST['reply'] == $LANG01[25])) {
     echo $display;
     exit;
 }
-
+//var_dump($_POST);die();
 $pid = 0;
 $aid = 0;
 if (isset ($_REQUEST['pid'])) {
@@ -135,8 +135,6 @@ if (isset ($_REQUEST['pid'])) {
     } else if (isset ($_POST['aid'])) {
         $aid = $_POST['aid'];
     }
-} elseif (isset($_POST['id'])) {       // Refresh from comment tool bar
-    $qid = COM_applyFilter ($_POST['id']);
 }
 $order = '';
 if (isset ($_REQUEST['order'])) {
@@ -180,12 +178,12 @@ if (empty($pid)) {
     } else {
         // Meta Tags
         $headercode = '';
-        If ($_PO_CONF['meta_tags'] > 0) {
+        if ($_PO_CONF['meta_tags'] > 0) {
             $meta_description = stripslashes($A['meta_description']);
             $meta_keywords = stripslashes($A['meta_keywords']);            
             $headercode = COM_createMetaTags($meta_description, $meta_keywords);
         }
-        
+
         $display .= COM_siteHeader('menu', $topic, $headercode);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'polls');
@@ -204,9 +202,9 @@ if (empty($pid)) {
             && !POLLS_ipAlreadyVoted ($pid)
             && $aid != -1
             ) {
-            $display .= POLLS_pollVote ($pid);
+            $display .= POLLS_pollVote($pid, true, 0, $order, $mode);
         } else {
-            $display .= POLLS_pollResults ($pid, 400, $order, $mode);
+            $display .= POLLS_pollResults($pid, 400, $order, $mode);
         }
     }
 } else {
