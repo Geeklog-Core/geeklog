@@ -58,7 +58,8 @@ $LANG_POLLS = array(
     'editinstructions' => 'Bitte für die Umfrage-ID mindestens eine Frage und zwei Antworten eintragen.',
     'pollclosed' => 'Diese Umfrage ist abgeschlossen.',
     'pollhidden' => 'Du hast schon abgestimmt. Die Ergebnisse dieser Umfrage werden veröffentlicht, sobald sie abgeschlossen ist.',
-    'start_poll' => 'Zur Umfrage'
+    'start_poll' => 'Zur Umfrage',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################

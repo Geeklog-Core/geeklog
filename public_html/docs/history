@@ -16,6 +16,8 @@ Geeklog History/Changes:
 
 Polls Plugin
 ------------
+- Fixed wrong "access denied" message when attempting to view comments on a poll
+  that the user is not allowed to view (bug #0001044) [Dirk]
 - Fixed comment bar Refresh button (bug #0001044) [Dirk]
 - Hide meta tag entry fields from Polls editor when meta tag support is
   disabled [Dirk]

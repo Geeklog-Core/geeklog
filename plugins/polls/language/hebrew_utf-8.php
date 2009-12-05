@@ -59,7 +59,8 @@ $LANG_POLLS = array(
     'editinstructions' => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.',
     'pollclosed' => 'ההצבעה לסקר זה סגורה.',
     'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
-    'start_poll' => 'התחילו את הסקר'
+    'start_poll' => 'התחילו את הסקר',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################

@@ -995,7 +995,7 @@ function plugin_geticon_polls ()
 */
 function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page, $view)
 {
-    global $_TABLES, $LANG_ACCESS;
+    global $_TABLES, $LANG_ACCESS, $LANG_POLLS;
 
     $retval = '';
 
@@ -1019,7 +1019,7 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
     } else {
         $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                         COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_ACCESS['storydenialmsg']
+                . $LANG_POLLS['deny_msg']
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 

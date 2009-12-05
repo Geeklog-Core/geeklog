@@ -41,30 +41,31 @@ global $LANG32;
 ###############################################################################
 
 $LANG_POLLS = array(
-    'polls'             => 'アンケート',
-    'results'           => '結果',
-    'pollresults'       => '投票結果',
-    'votes'             => '投票',
-    'vote'              => '投票する',
-    'pastpolls'         => 'アンケートの一覧',
-    'savedvotetitle'    => '投票ありがとうございました',
-    'savedvotemsg'      => 'テーマ:',
-    'pollstitle'        => 'アンケート一覧',
-    'polltopics'        => '他のアンケートを見る',
-    'stats_top10'       => 'アンケート（上位10件）',
-    'stats_topics'      => 'アンケートの質問',
-    'stats_votes'       => '投票',
-    'stats_none'        => 'このサイトにはアンケートがないか、まだ誰も投票していないようです。',
-    'stats_summary'     => 'アンケート数(投票数)',
-    'open_poll'         => '投票可否',
-    'answer_all'        => '残りのすべての質問にお答えください',
-    'not_saved'         => '結果は保存されませんでした',
-    'upgrade1'          => 'アンケートプラグインの新しいバージョンがインストールされました。',
-    'upgrade2'          => 'アップグレードしてください。',
-    'editinstructions'  => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
-    'pollclosed'        => 'このアンケートは投票を終了しました。',
-    'pollhidden'        => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
-    'start_poll'        => '投稿する'
+    'polls' => 'アンケート',
+    'results' => '結果',
+    'pollresults' => '投票結果',
+    'votes' => '投票',
+    'vote' => '投票する',
+    'pastpolls' => 'アンケートの一覧',
+    'savedvotetitle' => '投票ありがとうございました',
+    'savedvotemsg' => 'テーマ:',
+    'pollstitle' => 'アンケート一覧',
+    'polltopics' => '他のアンケートを見る',
+    'stats_top10' => 'アンケート（上位10件）',
+    'stats_topics' => 'アンケートの質問',
+    'stats_votes' => '投票',
+    'stats_none' => 'このサイトにはアンケートがないか、まだ誰も投票していないようです。',
+    'stats_summary' => 'アンケート数(投票数)',
+    'open_poll' => '投票可否',
+    'answer_all' => '残りのすべての質問にお答えください',
+    'not_saved' => '結果は保存されませんでした',
+    'upgrade1' => 'アンケートプラグインの新しいバージョンがインストールされました。',
+    'upgrade2' => 'アップグレードしてください。',
+    'editinstructions' => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
+    'pollclosed' => 'このアンケートは投票を終了しました。',
+    'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
+    'start_poll' => '投稿する',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
@@ -153,7 +154,7 @@ $LANG_fs['polls'] = array(
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
     9 => array('作成したアンケートを表示する' => 'item', 'アンケート管理を表示する' => 'list', 'アンケート一覧を表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
