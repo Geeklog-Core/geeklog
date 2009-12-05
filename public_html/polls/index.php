@@ -208,16 +208,10 @@ if (empty($pid)) {
         }
     }
 } else {
-    $poll_topic = DB_query ("SELECT topic FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql ('AND'));
-    $Q = DB_fetchArray ($poll_topic);
-    if (empty ($Q['topic'])) {
-        $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle'])
-                 . polllist ();
-    } else {
-        $display .= COM_siteHeader ('menu', $Q['topic'])
-                 . POLLS_pollResults ($pid, 400, $order, $mode);
-    }
+    $display .= COM_siteHeader('menu', $LANG_POLLS['pollstitle'])
+             . polllist();
 }
+
 $display .= COM_siteFooter();
 
 COM_output($display);
