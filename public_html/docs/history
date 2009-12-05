@@ -21,6 +21,7 @@ Polls Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Fixed comment bar Refresh button (bug #0001043) [Dirk]
 - Hide meta tag entry fields from Static Page editor when meta tag support is
   disabled [Dirk]
 - Avoid a pair of empty brackets on the printer-friendly version for Static
