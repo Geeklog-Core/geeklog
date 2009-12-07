@@ -65,7 +65,14 @@
           </tr>
           <tr>
               <td align="right">{lang_hits}:</td>
-              <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
+              <td>
+                <table cellspacing="0" cellpadding="0" width="100%">
+                  <tr>
+                    <td><input type="hidden" name="sp_hits" value="{sp_hits}"{xhtml}>{sp_hits_formatted}</td>
+                    <td class="alignright">{lang_comments}: {sp_comments}</td>
+                  </tr>
+                </table>
+              </td>
           </tr>
           <tr>
               <td colspan="2"><hr{xhtml}></td>

@@ -400,6 +400,14 @@ function staticpageeditor_form($A, $error = false)
         $sp_template->set_var('sp_hits_formatted',
                               COM_numberFormat($A['sp_hits']));
     }
+    $sp_template->set_var('lang_comments', $LANG_STATIC['comments']);
+    if ($A['commentcode'] == -1) {
+        $sp_template->set_var('sp_comments', $LANG_ADMIN['na']);
+    } else {
+        $num_comments = DB_count($_TABLES['comments'], array('sid', 'type'),
+            array(addslashes($A['sp_id']), 'staticpages'));
+        $sp_template->set_var('sp_comments', COM_numberFormat($num_comments));
+    }
     $sp_template->set_var('end_block',
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $sp_template->set_var('xhtml', XHTML);
