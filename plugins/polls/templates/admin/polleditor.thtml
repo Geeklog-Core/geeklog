@@ -44,15 +44,16 @@
                                     </div>
                                     {question_list}
                                     <h2>{lang_accessrights}</h2>
-                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><br{xhtml}></p>
-                                    <p>{lang_group}: {group_dropdown}<br{xhtml}></p>
+                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></p>
+                                    <p>{lang_group}: {group_dropdown}</p>
                                     <h2>{lang_permissions}</h2>
                                     <p>{lang_perm_key}</p>
                                     <div>{permissions_editor}</div>
                                     <p>{lang_permissions_msg}</p>
                                     <p>
                                     <input type="submit" name="mode" value="{lang_save}"{xhtml}>
-                                    <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}
+                                    <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
+                                    {delete_option}
                                     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                     <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
                                     </p>
