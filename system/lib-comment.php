@@ -330,39 +330,33 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
             $photo = '';
             if ($_CONF['allow_user_photo']) {
-                if (isset ($A['photo']) && empty($A['photo'])) {
+                if (isset($A['photo']) && empty($A['photo'])) {
                     $A['photo'] = '(none)';
                 }
                 $photo = USER_getPhoto($A['uid'], $A['photo'], $A['email']);
             }
-            if( !empty( $photo )) {
-                $template->set_var( 'author_photo', $photo );
+            $profile_link = $_CONF['site_url']
+                          . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+            if (! empty($photo)) {
+                $template->set_var('author_photo', $photo);
                 $camera_icon = '<img src="' . $_CONF['layout_url']
-                    . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""' . XHTML . '>';
-                $template->set_var( 'camera_icon',
-                    COM_createLink(
-                        $camera_icon,
-                        $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                    )
-                );
+                    . '/images/smallcamera.' . $_IMAGE_TYPE . '" alt=""'
+                    . XHTML . '>';
+                $template->set_var('camera_icon',
+                                   COM_createLink($camera_icon, $profile_link));
             } else {
-                $template->set_var( 'author_photo', '' );
-                $template->set_var( 'camera_icon', '' );
+                $template->set_var('author_photo', '');
+                $template->set_var('camera_icon', '');
             }
 
-            $template->set_var( 'start_author_anchortag', '<a href="'
-                    . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                    . $A['uid'] . '">' );
-            $template->set_var( 'end_author_anchortag', '</a>' );
-            $template->set_var( 'author_link',
-                COM_createLink(
-                    $fullname,
-                    $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid']
-                )
-            );
+            $template->set_var('start_author_anchortag',
+                               '<a href="' . $profile_link . '">' );
+            $template->set_var('end_author_anchortag', '</a>');
+            $template->set_var('author_link',
+                               COM_createLink($fullname, $profile_link));
 
         } else {
-            //comment is from anonymous user
+            // comment is from anonymous user
             if (isset($A['name'])) {
                 $A['username'] = strip_tags($A['name']);
             }
