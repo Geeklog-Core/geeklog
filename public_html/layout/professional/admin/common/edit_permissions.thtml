@@ -1,9 +1,9 @@
 <table cellpadding="0" cellspacing="0" class="admin-list-smalltable">
     <tr>
-        <th colspan="2" class="edit-perm-up admin-list-headerfield">{owner}</th>
-        <th colspan="2" class="edit-perm-up admin-list-headerfield">{group}</th>
-        <th class="edit-perm-up admin-list-headerfield">{members}</th>
-        <th class="edit-perm-up admin-list-headerfield">{anonymous}</th>
+        <th colspan="2" class="edit-perm-up admin-list-headerfield">{lang_owner}</th>
+        <th colspan="2" class="edit-perm-up admin-list-headerfield">{lang_group}</th>
+        <th class="edit-perm-up admin-list-headerfield">{lang_members}</th>
+        <th class="edit-perm-up admin-list-headerfield">{lang_anonymous}</th>
     </tr>
     <tr class="pluginRow1">
         <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>

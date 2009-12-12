@@ -411,8 +411,8 @@ function SEC_hasRights($features,$operator='AND')
 /**
 * Shows security control for an object
 *
-* This will return the HTML needed to create the security control see on the admin
-* screen for GL objects (i.e. stories, etc)
+* This will return the HTML needed to create the security control seen on the
+* admin screen for GL objects (i.e. stories, etc)
 *
 * @param        int     $perm_owner     Permissions the owner has 1 = edit 2 = read 3 = read/edit
 * @param        int     $perm_group     Permission the group has
@@ -421,48 +421,52 @@ function SEC_hasRights($features,$operator='AND')
 * @return       string  needed HTML (table) in HTML $perm_owner = array of permissions [edit,read], etc edit = 1 if permission, read = 2 if permission
 *
 */
-function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
+function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $LANG_ACCESS, $_CONF;
+    global $_CONF, $LANG_ACCESS;
 
     $retval = '';
 
     $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
-    $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
+    $perm_templates->set_file(array('editor' => 'edit_permissions.thtml'));
 
-    $perm_templates->set_var ( 'xhtml', XHTML );
-    $perm_templates->set_var ('site_url', $_CONF['site_url']);
-    $perm_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $perm_templates->set_var ('layout_url', $_CONF['layout_url']);
-    $perm_templates->set_var ('owner', $LANG_ACCESS['owner']);
-    $perm_templates->set_var ('group', $LANG_ACCESS['group']);
-    $perm_templates->set_var ('members', $LANG_ACCESS['members']);
-    $perm_templates->set_var ('anonymous', $LANG_ACCESS['anonymous']);
+    $perm_templates->set_var('xhtml', XHTML);
+    $perm_templates->set_var('site_url', $_CONF['site_url']);
+    $perm_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $perm_templates->set_var('layout_url', $_CONF['layout_url']);
+    $perm_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $perm_templates->set_var('owner', $LANG_ACCESS['owner']);
+    $perm_templates->set_var('lang_group', $LANG_ACCESS['group']);
+    $perm_templates->set_var('group', $LANG_ACCESS['group']);
+    $perm_templates->set_var('lang_members', $LANG_ACCESS['members']);
+    $perm_templates->set_var('members', $LANG_ACCESS['members']);
+    $perm_templates->set_var('lang_anonymous', $LANG_ACCESS['anonymous']);
+    $perm_templates->set_var('anonymous', $LANG_ACCESS['anonymous']);
 
     // Owner Permissions
     if ($perm_owner >= 2) {
-        $perm_templates->set_var ('owner_r_checked',' checked="checked"');
+        $perm_templates->set_var('owner_r_checked',' checked="checked"');
     }
     if ($perm_owner == 3) {
-        $perm_templates->set_var ('owner_e_checked',' checked="checked"');
+        $perm_templates->set_var('owner_e_checked',' checked="checked"');
     }
     // Group Permissions
     if ($perm_group >= 2) {
-        $perm_templates->set_var ('group_r_checked',' checked="checked"');
+        $perm_templates->set_var('group_r_checked',' checked="checked"');
     }
     if ($perm_group == 3) {
-        $perm_templates->set_var ('group_e_checked',' checked="checked"');
+        $perm_templates->set_var('group_e_checked',' checked="checked"');
     }
     // Member Permissions
     if ($perm_members == 2) {
-        $perm_templates->set_var ('members_checked',' checked="checked"');
+        $perm_templates->set_var('members_checked',' checked="checked"');
     }
     // Anonymous Permissions
     if ($perm_anon == 2) {
-        $perm_templates->set_var ('anon_checked',' checked="checked"');
+        $perm_templates->set_var('anon_checked',' checked="checked"');
     }
 
-    $perm_templates->parse('output','editor');
+    $perm_templates->parse('output', 'editor');
     $retval .= $perm_templates->finish($perm_templates->get_var('output'));
 
     return $retval;
