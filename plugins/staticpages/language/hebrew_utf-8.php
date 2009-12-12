@@ -110,7 +110,8 @@ $LANG_STATIC = array(
     'search' => 'חיפוש',
     'submit' => 'שליחה',
     'no_new_pages' => 'אין עמודים חדשים',
-    'pages' => 'עמודים'
+    'pages' => 'עמודים',
+    'comments' => 'Comments'
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';

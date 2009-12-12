@@ -114,7 +114,8 @@ $LANG_STATIC = array(
     'search' => '検索',
     'submit' => '登録',
     'no_new_pages' => '-',
-    'pages' => 'ページ'
+    'pages' => 'ページ',
+    'comments' => 'Comments'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';

@@ -111,7 +111,8 @@ $LANG_STATIC = array(
     'search' => 'Išèi',
     'submit' => 'Oddaj',
     'no_new_pages' => 'No new pages',
-    'pages' => 'Pages'
+    'pages' => 'Pages',
+    'comments' => 'Comments'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';

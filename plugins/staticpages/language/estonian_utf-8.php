@@ -111,7 +111,8 @@ $LANG_STATIC = array(
     'search' => 'Otsi',
     'submit' => 'Sisesta',
     'no_new_pages' => 'Pole uusi lehti',
-    'pages' => 'Lehti'
+    'pages' => 'Lehti',
+    'comments' => 'Comments'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
