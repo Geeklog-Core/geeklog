@@ -68,7 +68,7 @@ function staticpageeditor_form($A, $error = false)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
-           $LANG_postmodes, $MESSAGE;
+           $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE;
 
     $template_path = staticpages_templatePath('admin');
     if (!empty($sp_id) && $mode=='edit') {
@@ -140,12 +140,46 @@ function staticpageeditor_form($A, $error = false)
 
     $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $ownername = COM_getDisplayName($A['owner_id']);
-    $sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],
-                          'username', "uid = {$A['owner_id']}"));
-    $sp_template->set_var('owner_name', $ownername);
-    $sp_template->set_var('owner', $ownername);
+
+    $owner_name = COM_getDisplayName($A['owner_id']);
+    $owner_username = DB_getItem($_TABLES['users'], 'username',
+                                 "uid = {$A['owner_id']}");
+    $profile_link = $_CONF['site_url']
+                  . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+
     $sp_template->set_var('owner_id', $A['owner_id']);
+    $sp_template->set_var('owner', $owner_name);
+    $sp_template->set_var('owner_name', $owner_name);
+    $sp_template->set_var('owner_username', $owner_username);
+
+    if ($A['owner_id'] > 1) {
+        $sp_template->set_var('start_owner_anchortag',
+                              '<a href="' . $profile_link . '">' );
+        $sp_template->set_var('end_owner_anchortag', '</a>');
+        $sp_template->set_var('owner_link',
+                              COM_createLink($owner_name, $profile_link));
+
+        $photo = '';
+        if ($_CONF['allow_user_photo']) {
+            $photo = DB_getItem($_TABLES['users'], 'photo',
+                                "uid = {$A['owner_id']}");
+            if (! empty($photo)) {
+                $camera_icon = '<img src="' . $_CONF['layout_url']
+                             . '/images/smallcamera.' . $_IMAGE_TYPE
+                             . '" alt=""' . XHTML . '>';
+                $sp_template->set_var('camera_icon',
+                        COM_createLink($camera_icon, $profile_link));
+            }
+        }
+        if (empty($photo)) {
+            $sp_template->set_var('camera_icon', '');
+        }
+    } else {
+        $sp_template->set_var('start_owner_anchortag', '');
+        $sp_template->set_var('end_owner_anchortag', '');
+        $sp_template->set_var('owner_link', $owner_username);
+    }
+
     $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
     $sp_template->set_var('group_dropdown',
                           SEC_getGroupDropdown($A['group_id'], $access));
