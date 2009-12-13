@@ -320,6 +320,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $profile_link = $_CONF['site_url']
                       . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
 
+        $spage->set_var('lang_author', $LANG_STATIC['author']);
         $spage->set_var('start_author_anchortag',
                         '<a href="' . $profile_link . '">' );
         $spage->set_var('end_author_anchortag', '</a>');
@@ -401,7 +402,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
     if ($A['sp_format'] <> 'blankpage') {
         $curtime = COM_getUserDateTimeFormat($A['sp_date']);
         if ($_SP_CONF['show_date'] == 1) {
-            $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+            $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
+            $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
+            $spage->set_var('updated_date', $curtime[0]);
             $spage->set_var('lastupdate', $lastupdate);
         }
 
@@ -409,7 +412,10 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             if ($_SP_CONF['show_date'] == 1) {
                 $spage->set_var('info_separator', 'visible');
             }
-            $hits = COM_numberFormat($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
+            $num_hits = COM_numberFormat($A['sp_hits']);
+            $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
+            $spage->set_var('lang_hits', $LANG_STATIC['hits']);
+            $spage->set_var('hits_number', $num_hits);
             $spage->set_var('hits', $hits);
         }
     }
