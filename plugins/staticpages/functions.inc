@@ -359,8 +359,10 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $attr = array('title' => $LANG_STATIC['printable_format']);
             $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
             $print_url = COM_buildURL($_CONF['site_url']
-                . '/staticpages/index.php?page=' . $page . '&amp;disp_mode=print');
+                            . '/staticpages/index.php?page=' . $page
+                            . '&amp;disp_mode=print');
             $icon = COM_createLink($printicon, $print_url);
+            $spage->set_var('printable_url', $print_url);
             $spage->set_var('print_icon', $icon);
         }
         if ((SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
@@ -400,8 +402,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
     $spage->set_var('info_separator', 'hidden');
     if ($A['sp_format'] <> 'blankpage') {
-        $curtime = COM_getUserDateTimeFormat($A['sp_date']);
         if ($_SP_CONF['show_date'] == 1) {
+            $curtime = COM_getUserDateTimeFormat($A['sp_date']);
             $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
             $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
             $spage->set_var('updated_date', $curtime[0]);
@@ -416,6 +418,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
             $spage->set_var('lang_hits', $LANG_STATIC['hits']);
             $spage->set_var('hits_number', $num_hits);
+            $spage->set_var('sp_hits', $num_hits);
             $spage->set_var('hits', $hits);
         }
     }
@@ -459,7 +462,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 */
 function SP_printPage($page, $A)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG_DIRECTION;
+    global $_CONF, $_TABLES, $LANG01, $LANG_STATIC, $LANG_DIRECTION,
+           $_IMAGE_TYPE;
 
     $template_path = staticpages_templatePath();
     $print = new Template($template_path);
@@ -481,10 +485,70 @@ function SP_printPage($page, $A)
     $print->set_var('sp_title', stripslashes($A['sp_title']));
     $print->set_var('sp_content',
             SP_render_content(stripslashes($A['sp_content']), $A['sp_php']));
-    $print->set_var('sp_hits', COM_numberFormat($A['sp_hits']));
+
+    $author_name = COM_getDisplayName($A['owner_id']);
+    $author_username = DB_getItem($_TABLES['users'], 'username',
+                                  "uid = {$A['owner_id']}");
+    $print->set_var('author_id', $A['owner_id']);
+    $print->set_var('author', $author_name);
+    $print->set_var('author_name', $author_name);
+    $print->set_var('author_username', $author_username);
+
+    if ($A['owner_id'] > 1) {
+        $profile_link = $_CONF['site_url']
+                      . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+
+        $print->set_var('lang_author', $LANG_STATIC['author']);
+        $print->set_var('start_author_anchortag',
+                        '<a href="' . $profile_link . '">' );
+        $print->set_var('end_author_anchortag', '</a>');
+        $print->set_var('author_link',
+                        COM_createLink($author_name, $profile_link));
+
+        $photo = '';
+        if ($_CONF['allow_user_photo']) {
+            require_once $_CONF['path_system'] . 'lib-user.php';
+
+            $photo = DB_getItem($_TABLES['users'], 'photo',
+                                "uid = {$A['owner_id']}");
+            $photo = USER_getPhoto($A['owner_id'], $photo);
+            if (! empty($photo)) {
+                $print->set_var('author_photo', $photo);
+                $camera_icon = '<img src="' . $_CONF['layout_url']
+                             . '/images/smallcamera.' . $_IMAGE_TYPE
+                             . '" alt=""' . XHTML . '>';
+                $print->set_var('camera_icon',
+                                COM_createLink($camera_icon, $profile_link));
+            }
+        }
+        if (empty($photo)) {
+            $print->set_var('author_photo', '');
+            $print->set_var('camera_icon', '');
+        }
+    } else {
+        $print->set_var('start_author_anchortag', '');
+        $print->set_var('end_author_anchortag', '');
+        $print->set_var('author_link', $author_name);
+    }
+
+    $num_hits = COM_numberFormat($A['sp_hits']);
+    $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
+    $print->set_var('lang_hits', $LANG_STATIC['hits']);
+    $print->set_var('hits_number', $num_hits);
+    $print->set_var('sp_hits', $num_hits);
+    $print->set_var('hits', $hits);
+
+    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
+    $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
+    $print->set_var('lang_updated', $LANG_STATIC['lastupdated']);
+    $print->set_var('updated_date', $curtime[0]);
+    $print->set_var('lastupdate', $lastupdate);
+
     $printable = COM_buildURL($_CONF['site_url']
-               . '/staticpages/index.php?page=' . $page . '&amp;mode=print');
+                    . '/staticpages/index.php?page=' . $page
+                    . '&amp;disp_mode=print');
     $print->set_var('printable_url', $printable);
+
     if ($A['commentcode'] >= 0) {
         $commentsUrl = $sp_url . '#comments';
         $comments = DB_count($_TABLES['comments'],
