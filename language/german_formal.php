@@ -1252,11 +1252,11 @@ $MESSAGE = array(
 
 $LANG_ACCESS = array(
     'access' => 'Zugriff',
-    'ownerroot' => 'Eigent./Root',
+    'ownerroot' => 'Eigentümer/Root',
     'group' => 'Gruppe',
     'readonly' => 'Nur Lesen',
     'accessrights' => 'Zugriffsrechte',
-    'owner' => 'Eigent.',
+    'owner' => 'Eigentümer',
     'grantgrouplabel' => 'Obige Gruppenrechte zum Editieren gewähren',
     'permmsg' => 'Hinweis: Mitglieder bedeutet alle eingeloggten Mitglieder und Gast steht für alle nicht eingeloggten Besucher.',
     'securitygroups' => 'Security-Gruppen',
