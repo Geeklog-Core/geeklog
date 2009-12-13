@@ -616,14 +616,14 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $query = trim(addslashes($query));
 
     $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, ";
-    $sql .= "UNIX_TIMESTAMP(sp.sp_date) AS date, sp.sp_uid AS uid, sp.sp_hits AS hits, ";
+    $sql .= "UNIX_TIMESTAMP(sp.sp_date) AS date, sp.owner_id AS uid, sp.sp_hits AS hits, ";
     $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
-    $sql .= "WHERE (sp.sp_uid = u.uid) ";
+    $sql .= "WHERE (sp.owner_id = u.uid) ";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
     if (!empty ($author)) {
-        $sql .= "AND (sp_uid = '$author') ";
+        $sql .= "AND (owner_id = '$author') ";
     }
 
     if ($_SP_CONF['includesearchcenterblocks'] == 0) {
@@ -938,14 +938,13 @@ function plugin_user_delete_staticpages($uid)
 {
     global $_TABLES, $_SP_CONF;
 
-    if (DB_count ($_TABLES['staticpage'], 'sp_uid', $uid) +
-            DB_count ($_TABLES['staticpage'], 'owner_id', $uid) == 0) {
+    if (DB_count($_TABLES['staticpage'], 'owner_id', $uid) == 0) {
         return;
     }
 
     if ($_SP_CONF['delete_pages'] == 1) {
         // delete the pages
-        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE (sp_uid = $uid) OR (owner_id = $uid)");
+        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE owner_id = $uid");
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
@@ -954,7 +953,6 @@ function plugin_user_delete_staticpages($uid)
         $A = DB_fetchArray ($result);
         $rootuser = $A['ug_uid'];
 
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_uid = $rootuser WHERE sp_uid = $uid");
         DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }
 }
@@ -1086,6 +1084,13 @@ function plugin_upgrade_staticpages()
             break;
 
         case '1.6.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
             SP_update_ConfValues_1_6_1();
 
             $current_version = '1.6.2';
@@ -1209,7 +1214,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 
     case 'username':
     case 'fullname':
-        $retval = COM_getDisplayName($A['sp_uid'], $A['username'],
+        $retval = COM_getDisplayName($A['owner_id'], $A['username'],
                                      $A['fullname']);
         break;
 

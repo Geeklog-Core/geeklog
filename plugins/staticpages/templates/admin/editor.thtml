@@ -56,10 +56,6 @@
               </td>
           </tr>
           <tr>
-              <td align="right">{lang_writtenby}:</td>
-              <td>{name}<input type="hidden" name="sp_uid" value="{sp_uid}"{xhtml}></td>
-          </tr>
-          <tr>
               <td align="right">{lang_lastupdated}:</td>
               <td>{sp_formateddate}</td>
           </tr>
@@ -113,7 +109,10 @@
           </tr>
           <tr>
               <td align="right">{lang_owner}:</td>
-              <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
+              <td>
+                {owner_link} {camera_icon}
+                <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+              </td>
           </tr>
           <tr>
               <td align="right">{lang_group}:</td>
@@ -122,7 +121,7 @@
               </td>
           </tr>
           <tr>
-              <td colspan="2"><b>{lang_permissions}</b>:</td>
+              <td colspan="2"><b>{lang_permissions}</b></td>
           </tr>
           <tr>
               <td colspan="2"></td>

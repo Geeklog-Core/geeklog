@@ -37,6 +37,10 @@ $_UPDATES = array(
     '1.6.0' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description TEXT NULL AFTER commentcode",
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_keywords TEXT NULL AFTER meta_description"
+    ),
+
+    '1.6.1' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid"
     )
 
 );

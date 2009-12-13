@@ -117,10 +117,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    if (!isset($args['sp_uid'])) {
-        $args['sp_uid'] = $_USER['uid'];
-    }
-
     if (empty($args['sp_title']) && !empty($args['title'])) {
         $args['sp_title'] = $args['title'];
     }
@@ -161,7 +157,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     if ($args['gl_svc']) {
         $par_str = array('mode', 'sp_id', 'sp_old_id', 'sp_tid', 'sp_format',
                          'postmode');
-        $par_num = array('sp_uid', 'sp_hits', 'owner_id', 'group_id',
+        $par_num = array('sp_hits', 'owner_id', 'group_id',
                          'sp_where', 'sp_php', 'commentcode');
 
         foreach ($par_str as $str) {
@@ -250,7 +246,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     // END: Staticpages defaults 
 
     $sp_id = $args['sp_id'];
-    $sp_uid = $args['sp_uid'];
     $sp_title = $args['sp_title'];
     $sp_content = $args['sp_content'];
     $sp_hits = $args['sp_hits'];
@@ -404,9 +399,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
 
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,owner_id,group_id,'
+        DB_save ($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 

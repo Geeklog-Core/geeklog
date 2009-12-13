@@ -24,6 +24,7 @@ Polls Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Removed the sp_uid field since it's simply a duplicate of owner_id [Dirk]
 - Display number of comments in Static Page editor [Dirk]
 - Fixed wrong "access denied" message when attempting to view comments on a page
   that the user is not allowed to view (bug #0001043) [Dirk]

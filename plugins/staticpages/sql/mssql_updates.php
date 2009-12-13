@@ -36,8 +36,11 @@ $_UPDATES = array(
 
     '1.6.0' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER commentcode, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
-    )
+    ),
 
+    '1.6.1' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid"
+    )
 );
 
 /**

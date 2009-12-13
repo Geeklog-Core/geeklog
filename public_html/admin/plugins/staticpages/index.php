@@ -216,13 +216,13 @@ function staticpageeditor_form($A, $error = false)
     }
     $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
     $sp_template->set_var('username', DB_getItem($_TABLES['users'],
-                          'username', "uid = {$A['sp_uid']}"));
-    $authorname = COM_getDisplayName($A['sp_uid']);
+                          'username', "uid = {$A['owner_id']}"));
+    $authorname = COM_getDisplayName($A['owner_id']);
     $sp_template->set_var('name', $authorname);
     $sp_template->set_var('author', $authorname);
     $sp_template->set_var('lang_url', $LANG_STATIC['url']);
     $sp_template->set_var('lang_id', $LANG_STATIC['id']);
-    $sp_template->set_var('sp_uid', $A['sp_uid']);
+    $sp_template->set_var('sp_uid', $A['owner_id']);
     $sp_template->set_var('sp_id', $A['sp_id']);
     $sp_template->set_var('sp_old_id', $A['sp_old_id']);
     $sp_template->set_var('example_url', COM_buildURL($_CONF['site_url']
@@ -526,7 +526,7 @@ function liststaticpages()
         'table' => 'staticpage',
         'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
                 ."FROM {$_TABLES['staticpage']} "
-                ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.sp_uid = {$_TABLES['users']}.uid "
+                ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.owner_id = {$_TABLES['users']}.uid "
                 ."WHERE 1=1 ",
         'query_fields' => array('sp_title', 'sp_id'),
         'default_filter' => COM_getPermSQL('AND', 0, 3)
@@ -571,7 +571,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         } else {
             $A['sp_id'] = $sp_new_id;
         }
-        $A['sp_uid'] = $_USER['uid'];
+        $A['owner_id'] = $_USER['uid'];
         $A['unixdate'] = time();
         $A['sp_help'] = '';
         $A['sp_old_id'] = '';
@@ -582,7 +582,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
             $A['sp_id'] = COM_makesid();
-            $A['sp_uid'] = $_USER['uid'];
+            $A['owner_id'] = $_USER['uid'];
             $A['unixdate'] = time();
             $A['sp_hits'] = 0;
             $A['sp_old_id'] = '';
@@ -625,7 +625,6 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * Saves a Static Page to the database
 *
 * @param sp_id           string  ID of static page
-* @param sp_uid          string  ID of user that created page
 * @param sp_title        string  title of page
 * @param sp_content      string  page content
 * @param sp_hits         int     Number of page views
@@ -648,7 +647,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param sp_inblock      string  Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
+function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
                           $owner_id, $group_id, $perm_owner, $perm_group,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
@@ -660,7 +659,6 @@ function submitstaticpage($sp_id, $sp_uid, $sp_title, $sp_content, $sp_hits,
 
     $args = array(
                 'sp_id' => $sp_id,
-                'sp_uid' => $sp_uid,
                 'sp_title' => $sp_title,
                 'sp_content' => $sp_content,
                 'sp_hits' => $sp_hits,
@@ -757,14 +755,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['sp_inblock'])) {
             $_POST['sp_inblock'] = '';
         }
-        $sp_uid = COM_applyFilter($_POST['sp_uid'], true);
-        if ($sp_uid == 0) {
-            $sp_uid = $_USER['uid'];
-        }
         if (!isset($_POST['postmode'])) {
             $_POST['postmode'] = '';
         }
-        $display .= submitstaticpage($sp_id, $sp_uid, $_POST['sp_title'],
+        $display .= submitstaticpage($sp_id, $_POST['sp_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
             COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
             $_POST['sp_label'], COM_applyFilter($_POST['commentcode'], true),
