@@ -297,7 +297,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
                         COM_getBlockTemplate('_staticpages_block', 'header'));
     }
 
-    $spage = new Template($_CONF['path'] . 'plugins/staticpages/templates/');
+    $template_path = staticpages_templatePath();
+    $spage = new Template($template_path);
     $spage->set_var('xhtml', XHTML);
     if (XHTML != '') {
         $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -968,31 +969,37 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
 
-            $spage = new Template( $_CONF['path'] . 'plugins/staticpages/templates/' );
-            $spage->set_file( array('page'=>'centerblock.thtml'));
+            $template_path = staticpages_templatePath();
+            $spage = new Template($template_path);
+            $spage->set_file(array('page' => 'centerblock.thtml'));
             $spage->set_var('xhtml', XHTML);
             $spage->set_var('site_url', $_CONF['site_url']);
             $spage->set_var('layout_url', $_CONF['layout_url']);
             $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
 
             if ($_CONF['hideprintericon'] == 0) {
-                $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
+                $icon_url = $_CONF['layout_url'] . '/images/print.'
+                          . $_IMAGE_TYPE;
                 $attr = array('title' => $LANG_STATIC['printable_format']);
                 $printicon = COM_createImage($icon_url, $LANG01[65], $attr);
                 $print_url = COM_buildURL ($_CONF['site_url']
-                    . '/staticpages/index.php?page=' . $S['sp_id'] . '&amp;mode=print');
+                                . '/staticpages/index.php?page=' . $S['sp_id']
+                                . '&amp;disp_mode=print');
                 $icon = COM_createLink($printicon, $print_url);
                 $spage->set_var('print_icon', $icon);
             }
-            if ((SEC_hasAccess ($S['owner_id'], $S['group_id'], $S['perm_owner'],
+            if ((SEC_hasAccess($S['owner_id'], $S['group_id'], $S['perm_owner'],
                     $S['perm_group'], $S['perm_members'], $S['perm_anon']) == 3) &&
-                    SEC_hasRights ('staticpages.edit')) {
-                $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
+                    SEC_hasRights('staticpages.edit')) {
+                $icon_url = $_CONF['layout_url'] . '/images/edit.'
+                          . $_IMAGE_TYPE;
                 $attr = array('title' => $LANG_STATIC['edit']);
-                $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
+                $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'],
+                                                $attr);
                 $url = $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $S['sp_id'];
-                $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+                $attr = array('class' => 'editlink',
+                              'title' => $LANG_STATIC['edit']);
                 $icon =
                     '&nbsp;' . COM_createLink(
                     $editiconhtml, //display
@@ -1005,7 +1012,9 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             $spage->set_var('info_separator', 'hidden');
             if ($_SP_CONF['show_date'] == 1) {
                 $curtime = COM_getUserDateTimeFormat($S['sp_date']);
-                $lastupdate = $LANG_STATIC['lastupdated']. ' ' . $curtime[0];
+                $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
+                $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
+                $spage->set_var('updated_date', $curtime[0]);
                 $spage->set_var('lastupdate', $lastupdate);
             }
 
@@ -1013,29 +1022,32 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 if ($_SP_CONF['show_date'] == 1) {
                     $spage->set_var('info_separator', 'visible');
                 }
-                $hits = COM_numberFormat($S['sp_hits']) . ' '
-                                         . $LANG_STATIC['hits'];
+                $num_hits = COM_numberFormat($S['sp_hits']);
+                $hits = $LANG_STATIC['hits'] . ': ' . $num_hits;
+                $spage->set_var('lang_hits', $LANG_STATIC['hits']);
+                $spage->set_var('hits_number', $num_hits);
+                $spage->set_var('sp_hits', $num_hits);
                 $spage->set_var('hits', $hits);
             }
 
             $content = SP_render_content(stripslashes($S['sp_content']), $S['sp_php']);
-            $spage->set_var('content', $content );
+            $spage->set_var('content', $content);
             $retval .= $spage->finish($spage->parse('output', 'page'));
-            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
-                && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
-                $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_centerblock', 'footer'));
+            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title']) &&
+                    (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
+                $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_centerblock', 'footer'));
             }
 
             if ($where == 0) {
                 if ($S['sp_format'] == 'allblocks') {
-                    $retval .= COM_siteFooter (true);
+                    $retval .= COM_siteFooter(true);
                 } else if ($S['sp_format'] != 'blankpage') {
-                    $retval .= COM_siteFooter ();
+                    $retval .= COM_siteFooter();
                 }
             }
 
             // increment hit counter for page
-            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$S['sp_id']}'");
+            DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$S['sp_id']}'");
         }
     }
 
