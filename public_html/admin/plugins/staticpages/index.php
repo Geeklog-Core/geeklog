@@ -144,15 +144,15 @@ function staticpageeditor_form($A, $error = false)
     $owner_name = COM_getDisplayName($A['owner_id']);
     $owner_username = DB_getItem($_TABLES['users'], 'username',
                                  "uid = {$A['owner_id']}");
-    $profile_link = $_CONF['site_url']
-                  . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
-
     $sp_template->set_var('owner_id', $A['owner_id']);
     $sp_template->set_var('owner', $owner_name);
     $sp_template->set_var('owner_name', $owner_name);
     $sp_template->set_var('owner_username', $owner_username);
 
     if ($A['owner_id'] > 1) {
+        $profile_link = $_CONF['site_url']
+                      . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+
         $sp_template->set_var('start_owner_anchortag',
                               '<a href="' . $profile_link . '">' );
         $sp_template->set_var('end_owner_anchortag', '</a>');
