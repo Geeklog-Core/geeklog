@@ -40,7 +40,8 @@ $_UPDATES = array(
     ),
 
     '1.6.1' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid"
+        "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD draft_flag tinyint(1) unsigned default '0' AFTER meta_keywords"
     )
 
 );

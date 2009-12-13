@@ -48,6 +48,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   commentcode tinyint(4) NOT NULL default '0',
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,  
+  draft_flag tinyint(1) unsigned default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
