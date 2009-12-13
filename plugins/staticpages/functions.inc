@@ -303,10 +303,54 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
     }
     $spage->set_var('site_url', $_CONF['site_url']);
-    $spage->set_var('layout_url', $_CONF['layout_url']);
     $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $spage -> set_file(array('page' => 'staticpage.thtml',
-                             'comments' => 'spcomments.thtml'));
+    $spage->set_var('layout_url', $_CONF['layout_url']);
+    $spage->set_file(array('page'     => 'staticpage.thtml',
+                           'comments' => 'spcomments.thtml'));
+
+    $author_name = COM_getDisplayName($A['owner_id']);
+    $author_username = DB_getItem($_TABLES['users'], 'username',
+                                  "uid = {$A['owner_id']}");
+    $spage->set_var('author_id', $A['owner_id']);
+    $spage->set_var('author', $author_name);
+    $spage->set_var('author_name', $author_name);
+    $spage->set_var('author_username', $author_username);
+
+    if ($A['owner_id'] > 1) {
+        $profile_link = $_CONF['site_url']
+                      . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+
+        $spage->set_var('start_author_anchortag',
+                        '<a href="' . $profile_link . '">' );
+        $spage->set_var('end_author_anchortag', '</a>');
+        $spage->set_var('author_link',
+                        COM_createLink($author_name, $profile_link));
+
+        $photo = '';
+        if ($_CONF['allow_user_photo']) {
+            require_once $_CONF['path_system'] . 'lib-user.php';
+
+            $photo = DB_getItem($_TABLES['users'], 'photo',
+                                "uid = {$A['owner_id']}");
+            $photo = USER_getPhoto($A['owner_id'], $photo);
+            if (! empty($photo)) {
+                $spage->set_var('author_photo', $photo);
+                $camera_icon = '<img src="' . $_CONF['layout_url']
+                             . '/images/smallcamera.' . $_IMAGE_TYPE
+                             . '" alt=""' . XHTML . '>';
+                $spage->set_var('camera_icon',
+                                COM_createLink($camera_icon, $profile_link));
+            }
+        }
+        if (empty($photo)) {
+            $spage->set_var('author_photo', '');
+            $spage->set_var('camera_icon', '');
+        }
+    } else {
+        $spage->set_var('start_author_anchortag', '');
+        $spage->set_var('end_author_anchortag', '');
+        $spage->set_var('author_link', $author_name);
+    }
 
     if ($A['sp_format'] <> 'blankpage') {
         if ($_CONF['hideprintericon'] == 0) {
@@ -324,7 +368,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $icon_url = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['edit']);
             $editiconhtml = COM_createImage($icon_url, $LANG_STATIC['edit'], $attr);
-            $attr = array('class' => 'editlink','title' => $LANG_STATIC['edit']);
+            $attr = array('class' => 'editlink', 'title' => $LANG_STATIC['edit']);
             $url = $_CONF['site_admin_url']
                 . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page;
             $icon =
@@ -340,10 +384,11 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
     if ($A['commentcode'] >= 0 ) {
         $delete_option = (SEC_hasRights('staticpages.edit') &&
             SEC_hasAccess($A['owner_id'], $A['group_id'],
-            $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-            $A['perm_anon']) == 3 ? true : false);
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']) == 3 ? true : false);
         require_once $_CONF['path_system'] . 'lib-comment.php';
-        $spage->set_var('commentbar', CMT_userComments($page, $A['sp_title'], 'staticpages',
+        $spage->set_var('commentbar',
+                        CMT_userComments($page, $A['sp_title'], 'staticpages',
                                     $comment_order, $comment_mode, 0, 1, false,
                                     $delete_option, $A['commentcode']));
     }
@@ -362,7 +407,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
         if ($_SP_CONF['show_hits'] == 1) {
             if ($_SP_CONF['show_date'] == 1) {
-                $spage->set_var('info_separator','visible');
+                $spage->set_var('info_separator', 'visible');
             }
             $hits = COM_numberFormat($A['sp_hits']) . ' ' . $LANG_STATIC['hits'];
             $spage->set_var('hits', $hits);

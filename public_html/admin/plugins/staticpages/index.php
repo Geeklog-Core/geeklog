@@ -177,7 +177,7 @@ function staticpageeditor_form($A, $error = false)
     } else {
         $sp_template->set_var('start_owner_anchortag', '');
         $sp_template->set_var('end_owner_anchortag', '');
-        $sp_template->set_var('owner_link', $owner_username);
+        $sp_template->set_var('owner_link', $owner_name);
     }
 
     $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
