@@ -112,7 +112,10 @@ $LANG_STATIC = array(
     'submit' => 'Sisesta',
     'no_new_pages' => 'Pole uusi lehti',
     'pages' => 'Lehti',
-    'comments' => 'Comments'
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
@@ -146,6 +149,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
     'meta_tags' => 'Luba Meta sildid',
     'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
     'newstaticpagesinterval' => 'Uute staatiliste lehtede aeg',
     'hidenewstaticpages' => 'Peida: Uued staatilised lehed',
     'title_trim_length' => 'Pealkirja kärpimise pikkus',

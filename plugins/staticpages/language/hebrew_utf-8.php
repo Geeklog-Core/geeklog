@@ -111,7 +111,10 @@ $LANG_STATIC = array(
     'submit' => 'שליחה',
     'no_new_pages' => 'אין עמודים חדשים',
     'pages' => 'עמודים',
-    'comments' => 'Comments'
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
@@ -145,6 +148,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
     'meta_tags' => 'אפשרו תגיות Meta',
     'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
     'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
     'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
     'title_trim_length' => 'אורך קיצוץ כותרות',

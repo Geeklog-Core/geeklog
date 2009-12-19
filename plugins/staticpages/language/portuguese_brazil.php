@@ -113,7 +113,10 @@ $LANG_STATIC = array(
     'submit' => 'Submit',
     'no_new_pages' => 'No new pages',
     'pages' => 'Pages',
-    'comments' => 'Comments'
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -147,6 +150,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Enable Meta Tags',
     'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
     'newstaticpagesinterval' => 'New Static Page Interval',
     'hidenewstaticpages' => 'Hide New Static Pages',
     'title_trim_length' => 'Title Trim Length',

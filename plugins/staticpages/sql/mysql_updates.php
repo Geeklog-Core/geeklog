@@ -117,6 +117,8 @@ function SP_update_ConfValues_1_6_1()
 
     $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
             0, 0, 17, 125, true, 'staticpages');
+    $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
+            0, 0, 0, 127, true, 'staticpages');
     $c->add('sort_list_by', $_SP_DEFAULT['sort_list_by'], 'select',
             0, 0, 4, 35, true, 'staticpages');
 

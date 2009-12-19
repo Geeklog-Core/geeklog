@@ -150,7 +150,8 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'Nach dem Speichern der Seiten',
     'atom_max_items' => 'Max. Seiten in Webservices News-Feed',
     'meta_tags' => 'Meta-Tags verwenden',
-    'comment_code' => 'Comment Default',
+    'comment_code' => 'Kommentar Grundeinstellung',
+    'draft_flag' => 'Als Grundeinstellung auf Entwurf',
     'newstaticpagesinterval' => 'Zeitabstand für neue Seiten',
     'hidenewstaticpages' => 'Neue Seiten ausblenden',
     'title_trim_length' => 'Titel abschneiden nach',
@@ -181,7 +182,7 @@ $LANG_configselects['staticpages'] = array(
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
     9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1)
 );
 
 ?>

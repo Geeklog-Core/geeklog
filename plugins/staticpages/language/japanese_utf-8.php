@@ -115,7 +115,10 @@ $LANG_STATIC = array(
     'submit' => '登録',
     'no_new_pages' => '-',
     'pages' => 'ページ',
-    'comments' => 'Comments'
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
@@ -149,6 +152,7 @@ $LANG_confignames['staticpages'] = array(
     'atom_max_items' => 'フィードに書き出す最大ページ数',
     'meta_tags' => 'メタタグを有効にする',
     'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
     'newstaticpagesinterval' => '静的ページの"新着"の期間',
     'hidenewstaticpages' => '新着ページを表示しない',
     'title_trim_length' => 'タイトル最大長',
