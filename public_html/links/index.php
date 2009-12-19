@@ -296,7 +296,11 @@ function links_list($message)
                 $currentcid = $A['cid'];
                 $currentcategory = DB_getItem($_TABLES['linkcategories'],
                         'category', "cid = '" . addslashes($currentcid) . "'");
-                $linklist->set_var('link_category', $currentcategory);
+                if ($A['cid'] == $_LI_CONF['root']) {
+                    $linklist->set_var('link_category', $LANG_LINKS['root']);
+                } else {
+                    $linklist->set_var('link_category', $currentcategory);
+                }
             }
 
             prepare_link_item($A, $linklist);

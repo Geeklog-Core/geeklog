@@ -14,6 +14,10 @@ Geeklog History/Changes:
   renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
   update the dynamically created function calls (cf. bug #0000681) [Dirk]
 
+Links Plugin
+------------
+- Fixed localization of "Root" category (bug #0001047) [Dirk]
+
 Polls Plugin
 ------------
 - Fixed wrong "access denied" message when attempting to view comments on a poll
