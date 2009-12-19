@@ -87,6 +87,10 @@
                 </td>
              </tr>
           <tr>
+            <td align="right">{lang_draft}:</td>
+            <td><input type="checkbox" name="draft_flag" {draft_flag_checked}{xhtml}></td>
+          </tr>
+          <tr>
               <td align="right">{lang_lastupdated}:</td>
               <td>{sp_formateddate}</td>
           </tr>

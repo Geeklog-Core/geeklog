@@ -114,7 +114,10 @@ $LANG_STATIC = array(
     'submit' => 'Absenden',
     'no_new_pages' => 'Keine neuen Seiten',
     'pages' => 'SEITEN',
-    'comments' => 'Kommentare'
+    'comments' => 'Kommentare',
+    'draft' => 'Entwurf',
+    'draft_yes' => 'Ja',
+    'draft_no' => 'Nein'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Dein Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';

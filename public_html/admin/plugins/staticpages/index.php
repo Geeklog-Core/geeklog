@@ -335,6 +335,13 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('inblock_msg', $LANG_STATIC['inblock_msg']);
     $sp_template->set_var('inblock_info', $LANG_STATIC['inblock_info']);
 
+    if ($A['draft_flag'] == 1) {
+        $sp_template->set_var('draft_flag_checked', 'checked="checked"');
+    } else {
+        $sp_template->set_var('draft_flag_checked', '');
+    }
+    $sp_template->set_var('lang_draft', $LANG_STATIC['draft']);
+
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
     $sp_template->set_var('lang_lastupdated', $LANG_STATIC['date']);
     $sp_template->set_var('sp_formateddate', $curtime[0]);
@@ -462,7 +469,7 @@ function staticpageeditor_form($A, $error = false)
 */
 function liststaticpages()
 {
-    global $_CONF, $_TABLES, $_IMAGE_TYPE, $LANG_ADMIN, $LANG_STATIC, $_SP_CONF;
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG_ADMIN, $LANG_STATIC, $_SP_CONF;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -471,16 +478,18 @@ function liststaticpages()
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
-        array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
-        array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true)
+        //array('text' => $LANG_STATIC['id'], 'field' => 'sp_id', 'sort' => true),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'sp_title', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG_STATIC['draft'], 'field' => 'draft_flag', 'sort' => true)
     );
     if ($_CONF['show_fullname'] == 1) {
         $header_arr[] = array('text' => $LANG_STATIC['writtenby'], 'field' => 'fullname', 'sort' => true);
     } else {
         $header_arr[] = array('text' => $LANG_STATIC['writtenby'], 'field' => 'username', 'sort' => true);
     }
-    $header_arr[] = array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true);
     $header_arr[] = array('text' => $LANG_STATIC['date'], 'field' => 'unixdate', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_STATIC['head_centerblock'], 'field' => 'sp_centerblock', 'sort' => true);
 
     switch ($_SP_CONF['sort_list_by']) {
     case 'author':
@@ -577,6 +586,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['sp_old_id'] = '';
         $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
+        $A['draft_flag'] = 0; // TBD: $_SP_CONF['draft_flag']
     } elseif (!empty($sp_id) && $mode == 'clone') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
@@ -624,27 +634,31 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 /**
 * Saves a Static Page to the database
 *
-* @param sp_id           string  ID of static page
-* @param sp_title        string  title of page
-* @param sp_content      string  page content
-* @param sp_hits         int     Number of page views
-* @param sp_format       string  HTML or plain text
-* @param sp_onmenu       string  Flag to place entry on menu
-* @param sp_label        string  Menu Entry
-* @param commentcode     int     Comment Code
-* @param owner_id        int     Permission bits
-* @param group_id        int
-* @param perm_owner      int
-* @param perm_members    int
-* @param perm_anon       int
-* @param sp_php          int     Flag to indicate PHP usage
-* @param sp_nf           string  Flag to indicate type of not found message
-* @param sp_old_id       string  original ID of this static page
-* @param sp_centerblock  string  Flag to indicate display as a center block
-* @param sp_help         string  Help URL that displays in the block
-* @param sp_tid          string  topid id (for center block)
-* @param sp_where        int     position of center block
-* @param sp_inblock      string  Flag: wrap page in a block (or not)
+* @param string sp_id            ID of static page
+* @param string sp_title         title of page
+* @param string sp_content       page content
+* @param int    sp_hits          Number of page views
+* @param string sp_format        HTML or plain text
+* @param string sp_onmenu        Flag to place entry on menu
+* @param string sp_label         Menu Entry
+* @param int    commentcode      Comment Code
+* @param int    owner_id         Permission bits
+* @param int    group_id
+* @param int    perm_owner
+* @param int    perm_members
+* @param int    perm_anon
+* @param int    sp_php           Flag to indicate PHP usage
+* @param string sp_nf            Flag to indicate type of not found message
+* @param string sp_old_id        original ID of this static page
+* @param string sp_centerblock   Flag to indicate display as a center block
+* @param string sp_help          Help URL that displays in the block
+* @param string sp_tid           topid id (for center block)
+* @param int    sp_where         position of center block
+* @param string sp_inblock       Flag: wrap page in a block (or not)
+* @param string postmode
+* @param string meta_description
+* @param string meta_keywords
+* @param string draft_flag       Flag: save as draft
 *
 */
 function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
@@ -653,7 +667,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
                           $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
                           $sp_where, $sp_inblock, $postmode, $meta_description,
-                          $meta_keywords)
+                          $meta_keywords, $draft_flag)
 {
     $retval = '';
 
@@ -668,6 +682,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
                 'commentcode' => $commentcode,
                 'meta_description' => $meta_description,
                 'meta_keywords' => $meta_keywords,                
+                'draft_flag' => $draft_flag,
                 'owner_id' => $owner_id,
                 'group_id' => $group_id,
                 'perm_owner' => $perm_owner,
@@ -758,6 +773,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['postmode'])) {
             $_POST['postmode'] = '';
         }
+        if (!isset($_POST['draft_flag'])) {
+            $_POST['draft_flag'] = '';
+        }
         $display .= submitstaticpage($sp_id, $_POST['sp_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
             COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
@@ -769,8 +787,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             COM_applyFilter($_POST['sp_old_id']), $_POST['sp_centerblock'],
             $sp_help, COM_applyFilter($_POST['sp_tid']),
             COM_applyFilter($_POST['sp_where'], true), $_POST['sp_inblock'],
-            COM_applyFilter($_POST['postmode']), 
-            $_POST['meta_description'], $_POST['meta_keywords']); 
+            COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
+            $_POST['meta_keywords'], $_POST['draft_flag']); 
     } else {
         $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }

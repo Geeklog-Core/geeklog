@@ -80,20 +80,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         return PLG_RET_AUTH_FAILED;
     }
 
-    // TEST CODE
-    /*
-    foreach ($args as $k => $v) {
-        if (!is_array($v)) {
-            echo "$k => $v\r\n";
-        } else {
-            echo "$k => $v\r\n";
-            foreach ($v as $k1 => $v1) {
-                echo "        $k1 => $v1\r\n";
-            }
-        }
-    }
-    exit ();
-    */
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
         $gl_edit = $args['gl_edit'];
@@ -224,7 +210,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         if (!isset($args['sp_onmenu'])) {
             $args['sp_onmenu'] = '';
-        } else if (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
+        } elseif (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
             $svc_msg['error_desc'] = 'Menu label missing';
             return PLG_RET_ERROR;
         }
@@ -240,6 +226,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         if (empty($args['sp_centerblock'])) {
             $args['sp_centerblock'] = '';
+        }
+
+        if (empty($args['draft_flag']) && ($_SP_CONF['draft_flag'] == '1')) {
+            $args['draft_flag'] = 'on';
         }
     }
 
@@ -271,6 +261,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
     $sp_old_id = $args['sp_old_id'];
     $sp_centerblock = $args['sp_centerblock'];
+    $draft_flag = $args['draft_flag'];
     $sp_help = '';
     if (!empty($args['sp_help'])) {
         $sp_help = $args['sp_help'];
@@ -300,11 +291,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     // Check for unique page ID
     $duplicate_id = false;
     $delete_old_page = false;
-    if (DB_count ($_TABLES['staticpage'], 'sp_id', $sp_id) > 0) {
+    if (DB_count($_TABLES['staticpage'], 'sp_id', $sp_id) > 0) {
         if ($sp_id != $sp_old_id) {
             $duplicate_id = true;
         }
-    } elseif (!empty ($sp_old_id)) {
+    } elseif (! empty($sp_old_id)) {
         if ($sp_id != $sp_old_id) {
             $delete_old_page = true;
         }
@@ -344,6 +335,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $sp_inblock = 0;
         }
+        if ($draft_flag == 'on') {
+            $draft_flag = 1;
+        } else {
+            $draft_flag = 0;
+        }
 
         // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
@@ -372,7 +368,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         // make sure there's only one "entire page" static page per topic
         if (($sp_centerblock == 1) && ($sp_where == 0)) {
-            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'";
+            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE (sp_centerblock = 1) AND (sp_where = 0) AND (sp_tid = '$sp_tid') AND (draft_flag = 0)";
 
             // if we're in a multi-language setup, we need to allow one "entire
             // page" centerblock for 'all' or 'none' per language
@@ -399,14 +395,14 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
 
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id','$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
         if ($delete_old_page && !empty ($sp_old_id)) {
-            DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
+            DB_delete($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
@@ -504,6 +500,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
     $svc_msg['output_fields'] = array(
                                     'sp_hits',
                                     'sp_format',
+                                    'draft_flag',
                                     'owner_id',
                                     'group_id',
                                     'perm_owner',
@@ -552,14 +549,20 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if ($page == '') {
             $error = 1;
         }
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
+        $perms = SP_getPerms();
+        if (! SEC_hasRights('staticpages.edit')) {
+            if (! empty($perms)) {
+                $perms .= ' AND';
+            }
+            $perms .= '(draft_flag = 0)';
+        }
+        if (! empty($perms)) {
             $perms = ' AND ' . $perms;
         }
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
-                      . "commentcode,meta_description,meta_keywords,owner_id,"
-                      . "group_id,perm_owner,perm_group,"
+                      . "commentcode,meta_description,meta_keywords,draft_flag,"
+                      . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
@@ -567,20 +570,20 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
                       . "sp_date,sp_format,commentcode,"
                       . "CAST(meta_description AS text) AS meta_description,"
-                      . "CAST(meta_keywords AS text) AS meta_keywords,"
+                      . "CAST(meta_keywords AS text) AS meta_keywords,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,perm_members,"
                       . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
-        $result = DB_query ($sql);
-        $count = DB_numRows ($result);
+        $result = DB_query($sql);
+        $count = DB_numRows($result);
 
         if ($count == 0 || $count > 1) {
             $error = 1;
         }
 
         if (!($error)) {
-            $output = DB_fetchArray ($result, false);
+            $output = DB_fetchArray($result, false);
 
             // WE ASSUME $output doesn't have any confidential fields 
 
@@ -685,14 +688,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY sp_date DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,meta_description,meta_keywords,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-                ."sp_date,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,owner_id,group_id,perm_owner,perm_group,perm_members,"
+                ."sp_date,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
-        $result = DB_query ($sql);
+        $result = DB_query($sql);
 
         $count = 0;
         while (($output_item = DB_fetchArray ($result, false)) !== false) {
