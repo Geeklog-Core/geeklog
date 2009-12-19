@@ -187,7 +187,7 @@ function plugin_initconfig_staticpages()
                 0, 0, 0, 120, true, 'staticpages');
         $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
                 0, 0, 17, 125, true, 'staticpages');
-        $c->add('comment_code', $_SP_DEFAULT['draft_flag'], 'select',
+        $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
                 0, 0, 0, 127, true, 'staticpages');
 
         $c->add('fs_whatsnew', NULL, 'fieldset',
