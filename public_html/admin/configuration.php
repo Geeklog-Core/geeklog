@@ -105,9 +105,8 @@ $display = '';
 $conf_group = array_key_exists('conf_group', $_POST)
             ? $_POST['conf_group'] : 'Core';
 $config =& config::get_instance();
-$tokenstate = SEC_checkToken();
 
-if (array_key_exists('set_action', $_POST) && $tokenstate){
+if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
     if (SEC_inGroup('Root')) {
         if ($_POST['set_action'] == 'restore') {
             $config->restore_param($_POST['name'], $conf_group);
@@ -115,9 +114,7 @@ if (array_key_exists('set_action', $_POST) && $tokenstate){
             $config->unset_param($_POST['name'], $conf_group);
         }
     }
-}
-
-if (array_key_exists('form_submit', $_POST) && $tokenstate) {
+} elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
         $result = $config->updateConfig($_POST, $conf_group);
