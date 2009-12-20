@@ -1120,27 +1120,34 @@ function SEC_createToken($ttl = 1200)
 }
 
 /**
-  * Check a security token.
-  *
-  * Checks the POST and GET data for a security token, if one exists, validates that it's for this
-  * user and URL.
-  *
-  * @return boolean     true if the token is valid and for this user.
-  */
+* Check a security token.
+*
+* Checks the POST and GET data for a security token, if one exists, validates
+* that it's for this user and URL. If the token is not valid, it asks the user
+* to re-authenticate and re-sends the request if authentication was successful.
+*
+* @return   boolean     true if the token is valid; does not return if not!
+*
+*/
 function SEC_checkToken()
 {
+    global $LANG20;
+
     if (SECINT_checkToken()) {
         return true;
     }
 
+    /**
+    * Token not valid (probably expired): Ask user to authenticate again
+    */
     $returnurl = COM_getCurrentUrl();
     $method = strtoupper($_SERVER['REQUEST_METHOD']);
     $postdata = serialize($_POST);
     $getdata = serialize($_GET);
 
-    $display = COM_siteHeader('menu')
+    $display = COM_siteHeader('menu', $LANG20[1])
              . COM_showMessageText('The security token for this operation has expired. Please authenticate again to continue.')
-             . SECINT_loginform($returnurl, $method, $postdata, $getdata)
+             . SECINT_authform($returnurl, $method, $postdata, $getdata)
              . COM_siteFooter();
 
     COM_output($display);
@@ -1149,80 +1156,13 @@ function SEC_checkToken()
     // we don't return from here
 }
 
-function SECINT_loginform($returnurl, $method, $postdata = '', $getdata = '')
-{
-    global $_CONF, $LANG01, $LANG04;
-
-    $retval = '';
-
-    $user_templates = new Template($_CONF['path_layout'] . 'users');
-    $user_templates->set_file('login', 'loginform.thtml');
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
-
-    $user_templates->set_var('lang_newreglink', '');
-    $user_templates->set_var('lang_forgetpassword', '');
-
-    $user_templates->set_var('lang_login', $LANG04[80]);
-    $user_templates->set_var('lang_username', $LANG04[2]);
-    $user_templates->set_var('lang_password', $LANG01[57]);
-
-    $user_templates->set_var('start_block_loginagain', COM_startBlock('Security Token Expired'));
-    $user_templates->set_var('end_block', COM_endBlock());
-
-    $services = ''; // 3rd party remote authentification.
-    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
-        $modules = SEC_collectRemoteAuthenticationModules();
-        if (count($modules) > 0) {
-            if (!$_CONF['user_login_method']['standard'] &&
-                    (count($modules) == 1)) {
-                $select = '<input type="hidden" name="service" value="'
-                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
-            } else {
-                // Build select
-                $select = '<select name="service">';
-                if ($_CONF['user_login_method']['standard']) {
-                    $select .= '<option value="">' .  $_CONF['site_name']
-                            . '</option>';
-                }
-                foreach ($modules as $service) {
-                    $select .= '<option value="' . $service . '">' . $service
-                            . '</option>';
-                }
-                $select .= '</select>';
-            }
-
-            $user_templates->set_file('services', 'services.thtml');
-            $user_templates->set_var('lang_service', $LANG04[121]);
-            $user_templates->set_var('select_service', $select);
-            $user_templates->parse('output', 'services');
-            $services = $user_templates->finish($user_templates->get_var('output'));
-        }
-    }
-
-    // (ab)use {services} for some hidden fields
-    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
-              . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_returnurl" value="'
-              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_postdata" value="'
-              . urlencode($postdata) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_getdata" value="'
-              . urlencode($getdata) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_requestmethod" value="'
-              . $method . '"' . XHTML . '>' . LB;
-    $user_templates->set_var('services', $services);
-    $user_templates->set_var('openid_login', ''); // TBD
-
-    $user_templates->parse('output', 'login');
-
-    $retval .= $user_templates->finish($user_templates->get_var('output'));
-
-    return $retval;
-}
-
+/**
+* Helper function: Actual check of the security token
+*
+* @return   boolean     true if the token is valid and for this user.
+* @access   private
+*
+*/
 function SECINT_checkToken()
 {
     global $_USER, $_TABLES, $_DB_dbms;
@@ -1275,6 +1215,91 @@ function SECINT_checkToken()
     }
     
     return $return;
+}
+
+/**
+* Helper function: Display loginform and ask user to authenticate again
+*
+* @param    string  $returnurl  URL to return to after authentication
+* @param    string  $method     original request method: POST or GET
+* @param    string  $postdata   serialized POST data
+* @param    string  $getdata    serialized GET data
+* @return   string              HTML for the authentication form
+* @access   private
+*
+*/ 
+function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '')
+{
+    global $_CONF, $LANG01, $LANG04, $LANG20;
+
+    $retval = '';
+
+    $authform = new Template($_CONF['path_layout'] . 'users');
+    $authform->set_file('login', 'loginform.thtml');
+    $authform->set_var('xhtml', XHTML);
+    $authform->set_var('site_url', $_CONF['site_url']);
+    $authform->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $authform->set_var('layout_url', $_CONF['layout_url']);
+
+    $authform->set_var('lang_newreglink', '');
+    $authform->set_var('lang_forgetpassword', '');
+
+    $authform->set_var('lang_login', $LANG04[80]);
+    $authform->set_var('lang_username', $LANG04[2]);
+    $authform->set_var('lang_password', $LANG01[57]);
+
+    $authform->set_var('start_block_loginagain', COM_startBlock($LANG20[1]));
+    $authform->set_var('end_block', COM_endBlock());
+
+    $services = ''; // 3rd party remote authentification.
+    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) > 0) {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
+                }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
+            }
+
+            $authform->set_file('services', 'services.thtml');
+            $authform->set_var('lang_service', $LANG04[121]);
+            $authform->set_var('select_service', $select);
+            $authform->parse('output', 'services');
+            $services = $authform->finish($authform->get_var('output'));
+        }
+    }
+
+    // (ab)use {services} for some hidden fields
+    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
+              . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_returnurl" value="'
+              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_postdata" value="'
+              . urlencode($postdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_getdata" value="'
+              . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_requestmethod" value="'
+              . $method . '"' . XHTML . '>' . LB;
+    $authform->set_var('services', $services);
+    $authform->set_var('openid_login', ''); // TBD
+
+    $authform->parse('output', 'login');
+
+    $retval .= $authform->finish($authform->get_var('output'));
+
+    return $retval;
 }
 
 /**
