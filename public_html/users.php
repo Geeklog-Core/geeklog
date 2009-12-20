@@ -841,6 +841,74 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
 }
 
 
+function handle_expiredToken()
+{
+    require_once 'HTTP/Request.php';
+
+    $method = '';
+    if (isset($_POST['token_requestmethod'])) {
+        $method = COM_applyFilter($_POST['token_requestmethod']);
+    }
+    $returnurl = '';
+    if (isset($_POST['token_returnurl'])) {
+        $returnurl = urldecode($_POST['token_returnurl']);
+    }
+    $postdata = '';
+    if (isset($_POST['token_postdata'])) {
+        $postdata = urldecode($_POST['token_postdata']);
+    }
+    $getdata = '';
+    if (isset($_POST['token_getdata'])) {
+        $getdata = urldecode($_POST['token_getdata']);
+    }
+
+    if (!empty($method) && !empty($returnurl) &&
+            ((($method == 'POST') && !empty($postdata)) ||
+             (($method == 'GET') && !empty($getdata)))) {
+
+        $req = new HTTP_Request($returnurl);
+        if ($method == 'POST') {
+            $req->setMethod(HTTP_REQUEST_METHOD_POST);
+            $data = unserialize($postdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addPostData($key, SEC_createToken());
+                } else {
+                    $req->addPostData($key, $value);
+                }
+            }
+        } else {
+            $req->setMethod(HTTP_REQUEST_METHOD_GET);
+            $data = unserialize($getdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addQueryString($key, SEC_createToken());
+                } else {
+                    $req->addQueryString($key, $value);
+                }
+            }
+        }
+        $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+        // need to fake the referrer so the new token matches
+        $req->addHeader('Referer', COM_getCurrentUrl());
+        foreach ($_COOKIE as $cookie => $value) {
+            $req->addCookie($cookie, $value);
+        }
+        $response = $req->sendRequest();
+
+        if (PEAR::isError($response)) {
+            die("Request failed: " . $response->getMessage());
+        } else {
+            echo $req->getResponseBody();
+        }
+    } else {
+        echo COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+
+    // don't return
+    exit();
+}
+
 // MAIN
 if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
@@ -1141,6 +1209,9 @@ default:
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
+        if ($mode == 'tokenexpired') {
+            handle_expiredToken(); // won't come back
+        }
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
         $_USER = $userdata;

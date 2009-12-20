@@ -1129,6 +1129,74 @@ function SEC_createToken($ttl = 1200)
   */
 function SEC_checkToken()
 {
+    if (SECINT_checkToken()) {
+        return true;
+    }
+
+    $returnurl = COM_getCurrentUrl();
+    $method = strtoupper($_SERVER['REQUEST_METHOD']);
+    $postdata = serialize($_POST);
+    $getdata = serialize($_GET);
+
+    $display = COM_siteHeader('menu')
+             . COM_showMessageText('The security token for this operation has expired. Please authenticate again to continue.')
+             . SECINT_loginform($returnurl, $method, $postdata, $getdata)
+             . COM_siteFooter();
+
+    COM_output($display);
+    exit;
+
+    // we don't return from here
+}
+
+function SECINT_loginform($returnurl, $method, $postdata = '', $getdata = '')
+{
+    global $_CONF, $LANG01, $LANG04;
+
+    $retval = '';
+
+    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates->set_file('login', 'loginform.thtml');
+    $user_templates->set_var('xhtml', XHTML);
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
+
+    $user_templates->set_var('lang_newreglink', '');
+    $user_templates->set_var('lang_forgetpassword', '');
+
+    $user_templates->set_var('lang_login', $LANG04[80]);
+    $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('lang_password', $LANG01[57]);
+
+    $user_templates->set_var('start_block_loginagain', COM_startBlock('Security Token Expired'));
+    $user_templates->set_var('end_block', COM_endBlock());
+
+    $services = ''; // TBD: add services dropdown
+
+    // (ab)use {services} for some hidden fields
+    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
+              . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_returnurl" value="'
+              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_postdata" value="'
+              . urlencode($postdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_getdata" value="'
+              . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_requestmethod" value="'
+              . $method . '"' . XHTML . '>' . LB;
+    $user_templates->set_var('services', $services);
+    $user_templates->set_var('openid_login', ''); // TBD
+
+    $user_templates->parse('output', 'login');
+
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
+
+    return $retval;
+}
+
+function SECINT_checkToken()
+{
     global $_USER, $_TABLES, $_DB_dbms;
     
     $token = ''; // Default to no token.
