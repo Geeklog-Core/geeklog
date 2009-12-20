@@ -1172,7 +1172,35 @@ function SECINT_loginform($returnurl, $method, $postdata = '', $getdata = '')
     $user_templates->set_var('start_block_loginagain', COM_startBlock('Security Token Expired'));
     $user_templates->set_var('end_block', COM_endBlock());
 
-    $services = ''; // TBD: add services dropdown
+    $services = ''; // 3rd party remote authentification.
+    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) > 0) {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
+                }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
+            }
+
+            $user_templates->set_file('services', 'services.thtml');
+            $user_templates->set_var('lang_service', $LANG04[121]);
+            $user_templates->set_var('select_service', $select);
+            $user_templates->parse('output', 'services');
+            $services = $user_templates->finish($user_templates->get_var('output'));
+        }
+    }
 
     // (ab)use {services} for some hidden fields
     $services .= '<input type="hidden" name="mode" value="tokenexpired"'
