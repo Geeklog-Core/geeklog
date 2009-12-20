@@ -837,11 +837,18 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
     }
 
     // don't return
-    exit();
+    exit;
 }
 
 
-function handle_expiredToken()
+/**
+* Re-send a request after successful re-authentication
+*
+* Re-creates a GET or POST request based on data passed along in a form. Used
+* in case of an expired security token so that the user doesn't lose changes.
+*
+*/
+function resend_request()
 {
     require_once 'HTTP/Request.php';
 
@@ -906,7 +913,7 @@ function handle_expiredToken()
     }
 
     // don't return
-    exit();
+    exit;
 }
 
 // MAIN
@@ -1100,6 +1107,8 @@ case 'new':
     $display .= COM_siteFooter();
     break;
 
+case 'tokenexpired':
+// deliberate fallthrough (see below)
 default:
 
     // prevent dictionary attacks on passwords
@@ -1210,7 +1219,7 @@ default:
 
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
         if ($mode == 'tokenexpired') {
-            handle_expiredToken(); // won't come back
+            resend_request(); // won't come back
         }
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
