@@ -105,7 +105,11 @@ $display = '';
 $conf_group = array_key_exists('conf_group', $_POST)
             ? $_POST['conf_group'] : 'Core';
 $config =& config::get_instance();
-$tokenstate = SEC_checkToken();
+$tokenstate = false;
+if (array_key_exists('set_action', $_POST) ||
+        array_key_exists('form_submit', $_POST)) {
+    $tokenstate = SEC_checkToken();
+}
 
 if (array_key_exists('set_action', $_POST) && $tokenstate){
     if (SEC_inGroup('Root')) {
