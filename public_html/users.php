@@ -850,6 +850,8 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
 */
 function resend_request()
 {
+    global $_CONF;
+
     require_once 'HTTP/Request.php';
 
     $method = '';
@@ -859,6 +861,11 @@ function resend_request()
     $returnurl = '';
     if (isset($_POST['token_returnurl'])) {
         $returnurl = urldecode($_POST['token_returnurl']);
+        if (substr($returnurl, 0, strlen($_CONF['site_url'])) !=
+                $_CONF['site_url']) {
+            // only accept URLs on our site
+            $returnurl = '';
+        }
     }
     $postdata = '';
     if (isset($_POST['token_postdata'])) {
@@ -904,9 +911,9 @@ function resend_request()
         $response = $req->sendRequest();
 
         if (PEAR::isError($response)) {
-            die("Request failed: " . $response->getMessage());
+            trigger_error("Resending $method request failed: " . $response->getMessage());
         } else {
-            echo $req->getResponseBody();
+            COM_output($req->getResponseBody());
         }
     } else {
         echo COM_refresh($_CONF['site_url'] . '/index.php');
