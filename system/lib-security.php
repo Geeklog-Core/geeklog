@@ -1292,6 +1292,8 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '')
               . urlencode($getdata) . '"' . XHTML . '>' . LB;
     $services .= '<input type="hidden" name="token_requestmethod" value="'
               . $method . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+              . SEC_createToken() . '"'. XHTML . '>' . LB;
     $authform->set_var('services', $services);
     $authform->set_var('openid_login', ''); // TBD
 

@@ -876,9 +876,9 @@ function resend_request()
         $getdata = urldecode($_POST['token_getdata']);
     }
 
-    if (!empty($method) && !empty($returnurl) &&
+    if (SECINT_checkToken() && (!empty($method) && !empty($returnurl) &&
             ((($method == 'POST') && !empty($postdata)) ||
-             (($method == 'GET') && !empty($getdata)))) {
+             (($method == 'GET') && !empty($getdata))))) {
 
         $req = new HTTP_Request($returnurl);
         if ($method == 'POST') {
