@@ -875,6 +875,10 @@ function resend_request()
     if (isset($_POST['token_getdata'])) {
         $getdata = urldecode($_POST['token_getdata']);
     }
+    $files = '';
+    if (isset($_POST['token_files'])) {
+        $files = urldecode($_POST['token_files']);
+    }
 
     if (SECINT_checkToken() && !empty($method) && !empty($returnurl) &&
             ((($method == 'POST') && !empty($postdata)) ||
@@ -889,6 +893,14 @@ function resend_request()
                     $req->addPostData($key, SEC_createToken());
                 } else {
                     $req->addPostData($key, $value);
+                }
+            }
+            if (! empty($files)) {
+                $files = unserialize($files);
+            }
+            if (! empty($files)) {
+                foreach ($files as $key => $value) {
+                    $req->addPostData('_files_' . $key, $value);
                 }
             }
         } else {
@@ -1349,13 +1361,17 @@ default:
                 if (isset($_POST['token_getdata'])) {
                     $getdata = urldecode($_POST['token_getdata']);
                 }
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
                 if (SECINT_checkToken() && !empty($method) &&
                         !empty($returnurl) &&
                         ((($method == 'POST') && !empty($postdata)) ||
                         (($method == 'GET') && !empty($getdata)))) {
                     $display .= COM_showMessage(81);
                     $display .= SECINT_authform($returnurl, $method,
-                                                $postdata, $getdata);
+                                                $postdata, $getdata, $files);
                 } else {
                     echo COM_refresh($_CONF['site_url'] . '/index.php');
                     exit;

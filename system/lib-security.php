@@ -1131,7 +1131,7 @@ function SEC_createToken($ttl = 1200)
 */
 function SEC_checkToken()
 {
-    global $LANG20;
+    global $_CONF, $LANG20;
 
     if (SECINT_checkToken()) {
         return true;
@@ -1144,10 +1144,22 @@ function SEC_checkToken()
     $method = strtoupper($_SERVER['REQUEST_METHOD']);
     $postdata = serialize($_POST);
     $getdata = serialize($_GET);
+    $files = '';
+    if (! empty($_FILES)) {
+        $files = serialize($_FILES);
+        // rescue uploaded files
+        foreach ($_FILES as $f) {
+            if (! empty($f['name'])) {
+                $filename = basename($f['tmp_name']);
+                move_uploaded_file($f['tmp_name'],
+                                   $_CONF['path_data'] . $filename);
+            }
+        }
+    }
 
     $display = COM_siteHeader('menu', $LANG20[1])
              . COM_showMessageText('The security token for this operation has expired. Please authenticate again to continue.')
-             . SECINT_authform($returnurl, $method, $postdata, $getdata)
+             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files)
              . COM_siteFooter();
 
     COM_output($display);
@@ -1228,7 +1240,7 @@ function SECINT_checkToken()
 * @access   private
 *
 */ 
-function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '')
+function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
 {
     global $_CONF, $LANG01, $LANG04, $LANG20;
 
@@ -1290,6 +1302,8 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '')
               . urlencode($postdata) . '"' . XHTML . '>' . LB;
     $services .= '<input type="hidden" name="token_getdata" value="'
               . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_files" value="'
+              . urlencode($files) . '"' . XHTML . '>' . LB;
     $services .= '<input type="hidden" name="token_requestmethod" value="'
               . $method . '"' . XHTML . '>' . LB;
     $services .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'

@@ -509,6 +509,8 @@ class upload
     */
     function _copyFile()
     {
+        global $_CONF;
+
         if (!is_writable($this->_fileUploadDirectory)) {
             // Developer didn't check return value of setPath() method which would
             // have told them the upload directory was not writable.  Error out now
@@ -526,7 +528,11 @@ class upload
                 $sizeOK = false;
             }
         }
-        $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        if (substr($this->_currentFile['tmp_name'], 0, strlen($_CONF['path_data'])) == $_CONF['path_data']) {
+            $returnMove = rename($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        } else {
+            $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        }
         if (!($sizeOK)) {
             // OK, resize
             $sizefactor = $this->_calcSizefactor ($imageInfo['width'],
