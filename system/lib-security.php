@@ -1345,6 +1345,7 @@ function SECINT_recreateFilesArray()
                     }
                     $_FILES[$file][$kk] = $kv;
                 }
+                unset($_POST[$key]);
             }
         }
     }
