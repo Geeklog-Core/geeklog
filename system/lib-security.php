@@ -1318,6 +1318,36 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $fi
     return $retval;
 }
 
+
+/**
+* Helper function: Recreate $_FILES array after token re-authentication
+*
+* @return void
+* @access private
+*
+*/
+function SECINT_recreateFilesArray()
+{
+    global $_CONF;
+
+    if (empty($_FILES)) {
+        // recreate $_FILES array
+        foreach ($_POST as $key => $value) {
+            if (substr($key, 0, 7) == '_files_') {
+                $file = substr($key, 7);
+                foreach ($value as $kk => $kv) {
+                    if ($kk == 'tmp_name') {
+                        // fix path - uploaded files are in our data directory
+                        $filename = basename($kv);
+                        $kv = $_CONF['path_data'] . $filename;
+                    }
+                    $_FILES[$file][$kk] = $kv;
+                }
+            }
+        }
+    }
+}
+
 /**
 * Get a token's expiry time
 *

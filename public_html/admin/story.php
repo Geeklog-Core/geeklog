@@ -786,8 +786,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 */
 function submitstory($type='')
 {
-    global $_CONF;
-
     $output = '';
 
     $args = &$_POST;
@@ -803,21 +801,7 @@ function submitstory($type='')
         }
     }
 
-    if (empty($_FILES) && isset($_POST['_files_file1'])) {
-        // recreate $_FILES array
-        foreach ($_POST as $key => $value) {
-            if (substr($key, 0, 7) == '_files_') {
-                $file = substr($key, 7);
-                foreach ($value as $kk => $kv) {
-                    if ($kk == 'tmp_name') {
-                        $filename = basename($kv);
-                        $kv = $_CONF['path_data'] . $filename;
-                    }
-                    $_FILES[$file][$kk] = $kv;
-                }
-            }
-        }
-    }
+    SECINT_recreateFilesArray();
 
     /* ANY FURTHER PROCESSING on POST variables - COM_stripslashes etc.
      * Do it HERE on $args */
