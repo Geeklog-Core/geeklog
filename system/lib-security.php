@@ -1340,6 +1340,8 @@ function SECINT_recreateFilesArray()
                         // fix path - uploaded files are in our data directory
                         $filename = basename($kv);
                         $kv = $_CONF['path_data'] . $filename;
+                        // set a flag so we know where it's coming from
+                        $_FILES[$file]['_gl_data_dir'] = true;
                     }
                     $_FILES[$file][$kk] = $kv;
                 }
