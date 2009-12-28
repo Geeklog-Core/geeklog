@@ -448,7 +448,7 @@ class database {
             
         } else {
            
-            $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql);
+            $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql, E_USER_ERROR);
             if($result==FALSE){
                 echo "Query Failed: ";
                 echo "<pre>".$this->dbError($sql) . "</pre><hr" . XHTML . ">";

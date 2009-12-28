@@ -34,7 +34,7 @@
 // +---------------------------------------------------------------------------+
 
 // Prevent PHP from reporting uninitialized variables
-error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR);
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see

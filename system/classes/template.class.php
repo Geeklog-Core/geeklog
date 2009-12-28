@@ -918,7 +918,7 @@ class Template
   */
   function haltmsg($msg) {
     if ($this->halt_on_error == 'yes') {
-      trigger_error(sprintf("Template Error: %s", $msg));
+      trigger_error(sprintf("Template Error: %s", $msg), E_USER_ERROR);
     } else {
       printf("<b>Template Error:</b> %s<br" . XHTML . ">\n", $msg);
     }

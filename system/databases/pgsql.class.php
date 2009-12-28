@@ -346,7 +346,7 @@ class DataBase
         if ($ignore_errors == 1) {
             $result = @pg_query($this->_db,$sql);
         } else {
-            $result = @pg_query($this->_db,$sql) or trigger_error($this->dbError($sql));
+            $result = @pg_query($this->_db,$sql) or trigger_error($this->dbError($sql), E_USER_ERROR);
         }
 
         // If OK, return otherwise echo error
