@@ -614,6 +614,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+    SECINT_recreateFilesArray();
+
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
     } else {
@@ -638,7 +640,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                           $_POST['perm_owner'], $_POST['perm_group'],
                           $_POST['perm_members'], $_POST['perm_anon'],
                           $is_default, $is_archive);
-} else if ($mode == 'edit') {
+} elseif ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG27[1]);
     $tid = '';
     if (isset($_GET['tid'])) {

@@ -801,6 +801,8 @@ function submitstory($type='')
         }
     }
 
+    SECINT_recreateFilesArray();
+
     /* ANY FURTHER PROCESSING on POST variables - COM_stripslashes etc.
      * Do it HERE on $args */
 

@@ -1120,23 +1120,72 @@ function SEC_createToken($ttl = 1200)
 }
 
 /**
-  * Check a security token.
-  *
-  * Checks the POST and GET data for a security token, if one exists, validates that it's for this
-  * user and URL.
-  *
-  * @return boolean     true if the token is valid and for this user.
-  */
+* Check a security token.
+*
+* Checks the POST and GET data for a security token, if one exists, validates
+* that it's for this user and URL. If the token is not valid, it asks the user
+* to re-authenticate and re-sends the request if authentication was successful.
+*
+* @return   boolean     true if the token is valid; does not return if not!
+*
+*/
 function SEC_checkToken()
+{
+    global $_CONF, $LANG20, $LANG_ADMIN;
+
+    if (SECINT_checkToken()) {
+        return true;
+    }
+
+    /**
+    * Token not valid (probably expired): Ask user to authenticate again
+    */
+    $returnurl = COM_getCurrentUrl();
+    $method = strtoupper($_SERVER['REQUEST_METHOD']);
+    $postdata = serialize($_POST);
+    $getdata = serialize($_GET);
+    $files = '';
+    if (! empty($_FILES)) {
+        // rescue uploaded files
+        foreach ($_FILES as $key => $f) {
+            if (! empty($f['name'])) {
+                $filename = basename($f['tmp_name']);
+                move_uploaded_file($f['tmp_name'],
+                                   $_CONF['path_data'] . $filename);
+                $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
+            }
+        }
+        $files = serialize($_FILES);
+    }
+
+    $display = COM_siteHeader('menu', $LANG20[1])
+             . COM_showMessageText($LANG_ADMIN['token_expired'])
+             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files)
+             . COM_siteFooter();
+
+    COM_output($display);
+    exit;
+
+    // we don't return from here
+}
+
+/**
+* Helper function: Actual check of the security token
+*
+* @return   boolean     true if the token is valid and for this user.
+* @access   private
+*
+*/
+function SECINT_checkToken()
 {
     global $_USER, $_TABLES, $_DB_dbms;
     
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
     
-    if(array_key_exists(CSRF_TOKEN, $_GET)) {
+    if (array_key_exists(CSRF_TOKEN, $_GET)) {
         $token = COM_applyFilter($_GET[CSRF_TOKEN]);
-    } else if(array_key_exists(CSRF_TOKEN, $_POST)) {
+    } elseif (array_key_exists(CSRF_TOKEN, $_POST)) {
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
     
@@ -1179,6 +1228,170 @@ function SEC_checkToken()
     }
     
     return $return;
+}
+
+/**
+* Helper function: Display loginform and ask user to authenticate again
+*
+* @param    string  $returnurl  URL to return to after authentication
+* @param    string  $method     original request method: POST or GET
+* @param    string  $postdata   serialized POST data
+* @param    string  $getdata    serialized GET data
+* @return   string              HTML for the authentication form
+* @access   private
+*
+*/ 
+function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
+{
+    global $_CONF, $LANG01, $LANG04, $LANG20, $LANG_ADMIN;
+
+    $retval = '';
+
+    $authform = new Template($_CONF['path_layout'] . 'users');
+    $authform->set_file('login', 'loginform.thtml');
+    $authform->set_var('xhtml', XHTML);
+    $authform->set_var('site_url', $_CONF['site_url']);
+    $authform->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $authform->set_var('layout_url', $_CONF['layout_url']);
+
+    $authform->set_var('lang_message', $LANG_ADMIN['reauth_msg']);
+    $authform->set_var('lang_newreglink', '');
+    $authform->set_var('lang_forgetpassword', '');
+
+    $authform->set_var('lang_login', $LANG_ADMIN['authenticate']);
+    $authform->set_var('lang_username', $LANG04[2]);
+    $authform->set_var('lang_password', $LANG01[57]);
+
+    $authform->set_var('start_block_loginagain', COM_startBlock($LANG20[1]));
+    $authform->set_var('end_block', COM_endBlock());
+
+    $services = ''; // 3rd party remote authentification.
+    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) > 0) {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
+                }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
+            }
+
+            $authform->set_file('services', 'services.thtml');
+            $authform->set_var('lang_service', $LANG04[121]);
+            $authform->set_var('select_service', $select);
+            $authform->parse('output', 'services');
+            $services = $authform->finish($authform->get_var('output'));
+        }
+    }
+
+    // (ab)use {services} for some hidden fields
+    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
+              . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_returnurl" value="'
+              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_postdata" value="'
+              . urlencode($postdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_getdata" value="'
+              . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_files" value="'
+              . urlencode($files) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_requestmethod" value="'
+              . $method . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+              . SEC_createToken() . '"'. XHTML . '>' . LB;
+    $authform->set_var('services', $services);
+    $authform->set_var('openid_login', ''); // TBD
+
+    $authform->parse('output', 'login');
+
+    $retval .= $authform->finish($authform->get_var('output'));
+
+    return $retval;
+}
+
+
+/**
+* Helper function: Recreate $_FILES array after token re-authentication
+*
+* @return void
+* @access private
+*
+*/
+function SECINT_recreateFilesArray()
+{
+    global $_CONF;
+
+    if (empty($_FILES)) {
+        // recreate $_FILES array
+        foreach ($_POST as $key => $value) {
+            if (substr($key, 0, 7) == '_files_') {
+                $file = substr($key, 7);
+                foreach ($value as $kk => $kv) {
+                    if ($kk == 'tmp_name') {
+                        // fix path - uploaded files are in our data directory
+                        $filename = COM_sanitizeFilename(basename($kv), true);
+                        $kv = $_CONF['path_data'] . $filename;
+                        // set a flag so we know where it's coming from
+                        $_FILES[$file]['_gl_data_dir'] = true;
+                    }
+                    $_FILES[$file][$kk] = $kv;
+                }
+                unset($_POST[$key]);
+            }
+        }
+    }
+}
+
+/**
+* Helper function: Clean up any leftover files on failed re-authentication
+*
+* When re-authentication fails, we need to clean up any files that may have
+* been rescued during the original POST request with the expired token. Note
+* that the uploaded files are now in the site's 'data' directory.
+*
+* @param    mixed   $files  original or recreated $_FILES array
+* @return   void
+*
+*/
+function SECINT_cleanupFiles($files)
+{
+    global $_CONF;
+
+    // first, some sanity checks
+    if (! is_array($files)) {
+        if (empty($files)) {
+            return; // nothing to do
+        } else {
+            $files = @unserialize($files);
+        }
+    }
+    if (!is_array($files) || empty($files)) {
+        return; // bogus
+    }
+
+    foreach ($files as $key => $value) {
+        if (! empty($value['tmp_name'])) {
+            // ignore path - file is in $_CONF['path_data']
+            $filename = COM_sanitizeFilename(basename($value['tmp_name']), true);
+            $orphan = $_CONF['path_data'] . $filename;
+            if (file_exists($orphan)) {
+                if (! @unlink($orphan)) {
+                    COM_errorLog("SECINT_cleanupFile: Unable to remove file $filename from 'data' directory");
+                }
+            }
+        }
+    }
 }
 
 /**

@@ -837,9 +837,109 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
     }
 
     // don't return
-    exit();
+    exit;
 }
 
+
+/**
+* Re-send a request after successful re-authentication
+*
+* Re-creates a GET or POST request based on data passed along in a form. Used
+* in case of an expired security token so that the user doesn't lose changes.
+*
+*/
+function resend_request()
+{
+    global $_CONF;
+
+    require_once 'HTTP/Request.php';
+
+    $method = '';
+    if (isset($_POST['token_requestmethod'])) {
+        $method = COM_applyFilter($_POST['token_requestmethod']);
+    }
+    $returnurl = '';
+    if (isset($_POST['token_returnurl'])) {
+        $returnurl = urldecode($_POST['token_returnurl']);
+        if (substr($returnurl, 0, strlen($_CONF['site_url'])) !=
+                $_CONF['site_url']) {
+            // only accept URLs on our site
+            $returnurl = '';
+        }
+    }
+    $postdata = '';
+    if (isset($_POST['token_postdata'])) {
+        $postdata = urldecode($_POST['token_postdata']);
+    }
+    $getdata = '';
+    if (isset($_POST['token_getdata'])) {
+        $getdata = urldecode($_POST['token_getdata']);
+    }
+    $files = '';
+    if (isset($_POST['token_files'])) {
+        $files = urldecode($_POST['token_files']);
+    }
+
+    if (SECINT_checkToken() && !empty($method) && !empty($returnurl) &&
+            ((($method == 'POST') && !empty($postdata)) ||
+             (($method == 'GET') && !empty($getdata)))) {
+
+        $req = new HTTP_Request($returnurl);
+        if ($method == 'POST') {
+            $req->setMethod(HTTP_REQUEST_METHOD_POST);
+            $data = unserialize($postdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addPostData($key, SEC_createToken());
+                } else {
+                    $req->addPostData($key, $value);
+                }
+            }
+            if (! empty($files)) {
+                $files = unserialize($files);
+            }
+            if (! empty($files)) {
+                foreach ($files as $key => $value) {
+                    $req->addPostData('_files_' . $key, $value);
+                }
+            }
+        } else {
+            $req->setMethod(HTTP_REQUEST_METHOD_GET);
+            $data = unserialize($getdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addQueryString($key, SEC_createToken());
+                } else {
+                    $req->addQueryString($key, $value);
+                }
+            }
+        }
+        $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+        // need to fake the referrer so the new token matches
+        $req->addHeader('Referer', COM_getCurrentUrl());
+        foreach ($_COOKIE as $cookie => $value) {
+            $req->addCookie($cookie, $value);
+        }
+        $response = $req->sendRequest();
+
+        if (PEAR::isError($response)) {
+            if (! empty($files)) {
+                SECINT_cleanupFiles($files);
+            }
+            trigger_error("Resending $method request failed: " . $response->getMessage());
+        } else {
+            COM_output($req->getResponseBody());
+        }
+    } else {
+        if (! empty($files)) {
+            SECINT_cleanupFiles($files);
+        }
+        echo COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+
+    // don't return
+    exit;
+}
 
 // MAIN
 if (isset ($_REQUEST['mode'])) {
@@ -1032,6 +1132,8 @@ case 'new':
     $display .= COM_siteFooter();
     break;
 
+case 'tokenexpired':
+// deliberate fallthrough (see below)
 default:
 
     // prevent dictionary attacks on passwords
@@ -1141,6 +1243,9 @@ default:
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
+        if ($mode == 'tokenexpired') {
+            resend_request(); // won't come back
+        }
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
         $_USER = $userdata;
@@ -1214,16 +1319,16 @@ default:
         }
     } else {
         // On failed login attempt, update speed limit
-        if (!empty($loginname) || !empty($passwd) || !empty($service)) {
+        if (!empty($loginname) || !empty($passwd) || !empty($service) ||
+                ($mode == 'tokenexpired')) {
             COM_updateSpeedlimit('login');
         }
 
         $display .= COM_siteHeader('menu');
 
-        if (isset ($_REQUEST['msg'])) {
-            $msg = COM_applyFilter ($_REQUEST['msg'], true);
-        } else {
-            $msg = 0;
+        $msg = 0;
+        if (isset($_REQUEST['msg'])) {
+            $msg = COM_applyFilter($_REQUEST['msg'], true);
         }
         if ($msg > 0) {
             $display .= COM_showMessage($msg);
@@ -1233,20 +1338,73 @@ default:
         case 'create':
             // Got bad account info from registration process, show error
             // message and display form again
-            if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userForm'))) {
-                $display .= CUSTOM_userForm ();
+            if ($_CONF['custom_registration'] AND
+                    function_exists('CUSTOM_userForm')) {
+                $display .= CUSTOM_userForm();
             } else {
-                $display .= newuserform ();
+                $display .= newuserform();
             }
             break;
+
+        case 'tokenexpired':
+            // check to see if this was the last allowed attempt
+            if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
+                if (! empty($files)) {
+                    SECINT_cleanupFiles($files);
+                }
+                displayLoginErrorAndAbort(82, $LANG04[163], $LANG04[164]);
+            } else {
+                $returnurl = '';
+                if (isset($_POST['token_returnurl'])) {
+                    $returnurl = urldecode($_POST['token_returnurl']);
+                }
+                $method = '';
+                if (isset($_POST['token_requestmethod'])) {
+                    $method = COM_applyFilter($_POST['token_requestmethod']);
+                }
+                $postdata = '';
+                if (isset($_POST['token_postdata'])) {
+                    $postdata = urldecode($_POST['token_postdata']);
+                }
+                $getdata = '';
+                if (isset($_POST['token_getdata'])) {
+                    $getdata = urldecode($_POST['token_getdata']);
+                }
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
+                if (SECINT_checkToken() && !empty($method) &&
+                        !empty($returnurl) &&
+                        ((($method == 'POST') && !empty($postdata)) ||
+                        (($method == 'GET') && !empty($getdata)))) {
+                    $display .= COM_showMessage(81);
+                    $display .= SECINT_authform($returnurl, $method,
+                                                $postdata, $getdata, $files);
+                } else {
+                    if (! empty($files)) {
+                        SECINT_cleanupFiles($files);
+                    }
+                    echo COM_refresh($_CONF['site_url'] . '/index.php');
+                    exit;
+                }
+            }
+            break;
+
         default:
             // check to see if this was the last allowed attempt
             if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
                 displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
             } else { // Show login form
                 if(($msg != 69) && ($msg != 70)) {
-                    if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
-                        // Typically this will be used if you have a custom main site page and need to control the login process
+                    if ($_CONF['custom_registration'] AND
+                            function_exists('CUSTOM_loginErrorHandler')) {
+                        // Typically this will be used if you have a custom
+                        // main site page and need to control the login process
                         $display .= CUSTOM_loginErrorHandler($msg);
                     } else {
                         $display .= loginform(false, $status);
