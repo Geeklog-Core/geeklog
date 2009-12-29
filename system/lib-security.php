@@ -1352,6 +1352,47 @@ function SECINT_recreateFilesArray()
 }
 
 /**
+* Helper function: Clean up any leftover files on failed re-authentication
+*
+* When re-authentication fails, we need to clean up any files that may have
+* been rescued during the original POST request with the expired token. Note
+* that the uploaded files are now in the site's 'data' directory.
+*
+* @param    mixed   $files  original or recreated $_FILES array
+* @return   void
+*
+*/
+function SECINT_cleanupFiles($files)
+{
+    global $_CONF;
+
+    // first, some sanity checks
+    if (! is_array($files)) {
+        if (empty($files)) {
+            return; // nothing to do
+        } else {
+            $files = @unserialize($files);
+        }
+    }
+    if (!is_array($files) || empty($files)) {
+        return; // bogus
+    }
+
+    foreach ($files as $key => $value) {
+        if (! empty($value['tmp_name'])) {
+            // ignore path - file is in $_CONF['path_data']
+            $filename = basename($value['tmp_name']);
+            $orphan = $_CONF['path_data'] . $filename;
+            if (file_exists($orphan)) {
+                if (! @unlink($orphan)) {
+                    COM_errorLog("SECINT_cleanupFile: Unable to remove file $filename from 'data' directory");
+                }
+            }
+        }
+    }
+}
+
+/**
 * Get a token's expiry time
 *
 * @param    string  $token  the token we're looking for

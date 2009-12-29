@@ -923,11 +923,17 @@ function resend_request()
         $response = $req->sendRequest();
 
         if (PEAR::isError($response)) {
+            if (! empty($files)) {
+                SECINT_cleanupFiles($files);
+            }
             trigger_error("Resending $method request failed: " . $response->getMessage());
         } else {
             COM_output($req->getResponseBody());
         }
     } else {
+        if (! empty($files)) {
+            SECINT_cleanupFiles($files);
+        }
         echo COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
@@ -1343,6 +1349,13 @@ default:
         case 'tokenexpired':
             // check to see if this was the last allowed attempt
             if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
+                if (! empty($files)) {
+                    SECINT_cleanupFiles($files);
+                }
                 displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
             } else {
                 $returnurl = '';
@@ -1373,6 +1386,9 @@ default:
                     $display .= SECINT_authform($returnurl, $method,
                                                 $postdata, $getdata, $files);
                 } else {
+                    if (! empty($files)) {
+                        SECINT_cleanupFiles($files);
+                    }
                     echo COM_refresh($_CONF['site_url'] . '/index.php');
                     exit;
                 }
