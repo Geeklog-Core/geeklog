@@ -45,6 +45,11 @@ $_UPDATES = array(
 
         // New field post-2.1.0
         "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description TEXT NULL AFTER topic, ADD meta_keywords TEXT NULL AFTER meta_description"
+    ),
+
+    '2.1.1' => array(
+        // make room to store IPv6 addresses
+        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''"
     )
 
 );

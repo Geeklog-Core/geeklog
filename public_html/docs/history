@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Prepare database for storing IPv6 addresses (feature request #0000971) [Dirk]
+- Implemented re-authentication when trying to submit a form with an expired
+  security token. This will allow the user to save changes even when the token
+  has expired [Dirk]
 - Hide meta tag entry fields from the Story and Topic editors when meta tag
   support is disabled [Dirk]
 - Fixed topic selection for the Daily Digest (bug #0001041, patch provided by

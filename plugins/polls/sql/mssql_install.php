@@ -83,7 +83,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
     [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ipaddress] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]
 ";

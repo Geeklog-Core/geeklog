@@ -38,13 +38,18 @@ $_UPDATES = array(
         // These pid changes should have happened when upgrading from 2.0.2
         // to 2.1.0 but were previously listed for an upgrade from 2.0.1 and
         // therefore may have not been applied. Apply again to be sure.
-        "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [pid] VARCHARS(40)",
-        "ALTER TABLE {$_TABLES['pollquestions']} ALTER COLUMN [pid] VARCHARS(40)",
-        "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [pid] VARCHARS(40)",
-        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHARS(40)",
+        "ALTER TABLE {$_TABLES['pollanswers']} ALTER COLUMN [pid] VARCHAR(40)",
+        "ALTER TABLE {$_TABLES['pollquestions']} ALTER COLUMN [pid] VARCHAR(40)",
+        "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [pid] VARCHAR(40)",
+        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHAR(40)",
 
         // New field post-2.1.0
         "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER topic, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
+    )
+
+    '2.1.1' => array(
+        // make room to store IPv6 addresses
+        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [ipaddress] VARCHAR(39) NOT NULL"
     )
 
 );

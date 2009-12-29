@@ -1179,7 +1179,18 @@ function plugin_upgrade_polls()
             
             $current_version = '2.1.1';
             break;
-            
+
+        case '2.1.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '2.1.2';
+            break;
+
         default:
             $done = true;
         }

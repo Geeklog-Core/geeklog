@@ -103,7 +103,7 @@ CREATE TABLE {$_TABLES['comments']} (
   indent mediumint(10) unsigned NOT NULL default '0',
   name varchar(32) default NULL,
   uid mediumint(8) NOT NULL default '1',
-  ipaddress varchar(15) NOT NULL default '',
+  ipaddress varchar(39) NOT NULL default '',
   INDEX comments_sid(sid),
   INDEX comments_uid(uid),
   INDEX comments_lft(lft),
@@ -124,7 +124,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   uid mediumint(8) NOT NULL default '1',
   name varchar(32) default NULL,
   pid int(10) NOT NULL default '0',
-  ipaddress varchar(15) NOT NULL,
+  ipaddress varchar(39) NOT NULL,
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
 ";
@@ -254,7 +254,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sessions']} (
   sess_id int(10) unsigned NOT NULL default '0',
   start_time int(10) unsigned NOT NULL default '0',
-  remote_ip varchar(15) NOT NULL default '',
+  remote_ip varchar(39) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
   PRIMARY KEY  (sess_id),
@@ -275,7 +275,7 @@ CREATE TABLE {$_TABLES['sortcodes']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['speedlimit']} (
   id int(10) unsigned NOT NULL auto_increment,
-  ipaddress varchar(15) NOT NULL default '',
+  ipaddress varchar(39) NOT NULL default '',
   date int(10) unsigned default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id),
@@ -420,7 +420,7 @@ CREATE TABLE {$_TABLES['trackback']} (
   excerpt text,
   date datetime default NULL,
   type varchar(30) NOT NULL default 'article',
-  ipaddress varchar(15) NOT NULL default '',
+  ipaddress varchar(39) NOT NULL default '',
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid),
   INDEX trackback_url(url),

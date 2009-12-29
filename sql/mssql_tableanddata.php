@@ -124,7 +124,7 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [indent] [numeric](10, 0) NULL ,
     [name] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [uid] [int] NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [ipaddress] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -139,7 +139,7 @@ CREATE TABLE [dbo].[{$_TABLES['commentsubmissions']}] (
   [uid] [INT] NOT NULL default '1',
   [name] [varchar] (32) default NULL,
   [pid] [INT] NOT NULL default '0',
-  [ipaddress] [varchar](15) NOT NULL
+  [ipaddress] [varchar](39) NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -256,7 +256,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [sess_id] [numeric](10, 0) NOT NULL ,
     [start_time] [numeric](10, 0) NOT NULL ,
-    [remote_ip] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [remote_ip] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
     [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
@@ -272,7 +272,7 @@ CREATE TABLE [dbo].[{$_TABLES['sortcodes']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['speedlimit']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ipaddress] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
@@ -395,7 +395,7 @@ CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
     [excerpt] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [date] [datetime] NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [ipaddress] [varchar] (15) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+    [ipaddress] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
 ";
 

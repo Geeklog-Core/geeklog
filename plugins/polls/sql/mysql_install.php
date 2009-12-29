@@ -90,7 +90,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id int(10) unsigned NOT NULL auto_increment,
   pid varchar(20) NOT NULL,
-  ipaddress varchar(15) NOT NULL default '',
+  ipaddress varchar(39) NOT NULL default '',
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)
 ) TYPE=MyISAM
