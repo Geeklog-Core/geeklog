@@ -1131,7 +1131,7 @@ function SEC_createToken($ttl = 1200)
 */
 function SEC_checkToken()
 {
-    global $_CONF, $LANG20;
+    global $_CONF, $LANG20, $LANG_ADMIN;
 
     if (SECINT_checkToken()) {
         return true;
@@ -1159,7 +1159,7 @@ function SEC_checkToken()
     }
 
     $display = COM_siteHeader('menu', $LANG20[1])
-             . COM_showMessageText('The security token for this operation has expired. Please authenticate again to continue.')
+             . COM_showMessageText($LANG_ADMIN['token_expired'])
              . SECINT_authform($returnurl, $method, $postdata, $getdata, $files)
              . COM_siteFooter();
 
@@ -1183,9 +1183,9 @@ function SECINT_checkToken()
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
     
-    if(array_key_exists(CSRF_TOKEN, $_GET)) {
+    if (array_key_exists(CSRF_TOKEN, $_GET)) {
         $token = COM_applyFilter($_GET[CSRF_TOKEN]);
-    } else if(array_key_exists(CSRF_TOKEN, $_POST)) {
+    } elseif (array_key_exists(CSRF_TOKEN, $_POST)) {
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
     
@@ -1243,7 +1243,7 @@ function SECINT_checkToken()
 */ 
 function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
 {
-    global $_CONF, $LANG01, $LANG04, $LANG20;
+    global $_CONF, $LANG01, $LANG04, $LANG20, $LANG_ADMIN;
 
     $retval = '';
 
@@ -1254,10 +1254,11 @@ function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $fi
     $authform->set_var('site_admin_url', $_CONF['site_admin_url']);
     $authform->set_var('layout_url', $_CONF['layout_url']);
 
+    $authform->set_var('lang_message', $LANG_ADMIN['reauth_msg']);
     $authform->set_var('lang_newreglink', '');
     $authform->set_var('lang_forgetpassword', '');
 
-    $authform->set_var('lang_login', $LANG04[80]);
+    $authform->set_var('lang_login', $LANG_ADMIN['authenticate']);
     $authform->set_var('lang_username', $LANG04[2]);
     $authform->set_var('lang_password', $LANG01[57]);
 

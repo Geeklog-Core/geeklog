@@ -1356,7 +1356,7 @@ default:
                 if (! empty($files)) {
                     SECINT_cleanupFiles($files);
                 }
-                displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
+                displayLoginErrorAndAbort(82, $LANG04[163], $LANG04[164]);
             } else {
                 $returnurl = '';
                 if (isset($_POST['token_returnurl'])) {

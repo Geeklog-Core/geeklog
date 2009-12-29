@@ -383,7 +383,9 @@ $LANG04 = array(
     159 => 'This email was generated automatically. Please do not reply to this email.',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    162 => 'will not be scaled',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
 );
 
 ###############################################################################
@@ -428,7 +430,7 @@ $LANG08 = array(
     9 => 'User URL',
     10 => 'Send mail to',
     11 => 'Your Name:',
-    12 => 'Your Email Address:',
+    12 => 'Your Email Address',
     13 => 'Subject:',
     14 => 'Message:',
     15 => 'HTML will not be translated.',
@@ -1601,7 +1603,10 @@ $LANG_ADMIN = array (
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',        
     'na'            => 'N/A',
-    'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.'
+    'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate'  => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
