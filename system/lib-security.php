@@ -1146,15 +1146,16 @@ function SEC_checkToken()
     $getdata = serialize($_GET);
     $files = '';
     if (! empty($_FILES)) {
-        $files = serialize($_FILES);
         // rescue uploaded files
-        foreach ($_FILES as $f) {
+        foreach ($_FILES as $key => $f) {
             if (! empty($f['name'])) {
                 $filename = basename($f['tmp_name']);
                 move_uploaded_file($f['tmp_name'],
                                    $_CONF['path_data'] . $filename);
+                $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
             }
         }
+        $files = serialize($_FILES);
     }
 
     $display = COM_siteHeader('menu', $LANG20[1])
@@ -1338,7 +1339,7 @@ function SECINT_recreateFilesArray()
                 foreach ($value as $kk => $kv) {
                     if ($kk == 'tmp_name') {
                         // fix path - uploaded files are in our data directory
-                        $filename = basename($kv);
+                        $filename = COM_sanitizeFilename(basename($kv), true);
                         $kv = $_CONF['path_data'] . $filename;
                         // set a flag so we know where it's coming from
                         $_FILES[$file]['_gl_data_dir'] = true;
@@ -1381,7 +1382,7 @@ function SECINT_cleanupFiles($files)
     foreach ($files as $key => $value) {
         if (! empty($value['tmp_name'])) {
             // ignore path - file is in $_CONF['path_data']
-            $filename = basename($value['tmp_name']);
+            $filename = COM_sanitizeFilename(basename($value['tmp_name']), true);
             $orphan = $_CONF['path_data'] . $filename;
             if (file_exists($orphan)) {
                 if (! @unlink($orphan)) {
