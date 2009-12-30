@@ -14,6 +14,7 @@
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
 // |          Vincent Furia    - vmf AT abtech DOT org                         |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
+// |          Dirk Haun        - dirk AT haun-online DOT de
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -1071,19 +1072,20 @@ function SEC_encryptPassword($password)
 }
 
 /**
-  * Generate a security token.
-  *
-  * This generates and stores a one time security token. Security tokens are
-  * added to forms and urls in the admin section as a non-cookie double-check
-  * that the admin user really wanted to do that...
-  *
-  * @param $ttl int Time to live for token in seconds. Default is 20 minutes.
-  *
-  * @return string  Generated token, it'll be an MD5 hash (32chars)
-  */
+* Generate a security token.
+*
+* This generates and stores a one time security token. Security tokens are
+* added to forms and urls in the admin section as a non-cookie double-check
+* that the admin user really wanted to do that...
+*
+* @param  int  $ttl  Time to live for token in seconds. Default is 20 minutes.
+* @return string  Generated token, it'll be an MD5 hash (32chars)
+* @see SEC_checkToken
+*
+*/
 function SEC_createToken($ttl = 1200)
 {
-    global $_USER, $_TABLES, $_DB_dbms;
+    global $_TABLES, $_USER;
 
     static $last_token;
 
@@ -1124,9 +1126,11 @@ function SEC_createToken($ttl = 1200)
 *
 * Checks the POST and GET data for a security token, if one exists, validates
 * that it's for this user and URL. If the token is not valid, it asks the user
-* to re-authenticate and re-sends the request if authentication was successful.
+* to re-authenticate and resends the request if authentication was successful.
 *
 * @return   boolean     true if the token is valid; does not return if not!
+* @see      SECINT_checkToken
+* @link http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens
 *
 */
 function SEC_checkToken()
@@ -1134,6 +1138,10 @@ function SEC_checkToken()
     global $_CONF, $LANG20, $LANG_ADMIN;
 
     if (SECINT_checkToken()) {
+
+        // if this was a recreated request, recreate $_FILES array, too
+        SECINT_recreateFilesArray();
+
         return true;
     }
 
@@ -1174,12 +1182,13 @@ function SEC_checkToken()
 *
 * @return   boolean     true if the token is valid and for this user.
 * @access   private
+* @see      SEC_checkToken
 *
 */
 function SECINT_checkToken()
 {
-    global $_USER, $_TABLES, $_DB_dbms;
-    
+    global $_TABLES, $_USER;
+
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
     
@@ -1347,6 +1356,11 @@ function SECINT_recreateFilesArray()
                     }
                     $_FILES[$file][$kk] = $kv;
                 }
+                if (! file_exists($_FILES[$file]['tmp_name'])) {
+                    // whoops!?
+                    COM_errorLog("Uploaded file {$_FILES[$file]['name']} not found when recreating $_FILES array");
+                    unset($_FILES[$file]);
+                }
                 unset($_POST[$key]);
             }
         }
@@ -1362,6 +1376,7 @@ function SECINT_recreateFilesArray()
 *
 * @param    mixed   $files  original or recreated $_FILES array
 * @return   void
+* @access   private
 *
 */
 function SECINT_cleanupFiles($files)

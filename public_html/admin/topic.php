@@ -614,7 +614,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
-    SECINT_recreateFilesArray();
 
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
