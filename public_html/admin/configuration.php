@@ -114,6 +114,8 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
             $config->unset_param($_POST['name'], $conf_group);
         }
     }
+    $display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
+                                            ?  $_POST['subgroup'] : null);
 } elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
