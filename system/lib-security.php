@@ -1358,7 +1358,7 @@ function SECINT_recreateFilesArray()
                 }
                 if (! file_exists($_FILES[$file]['tmp_name'])) {
                     // whoops!?
-                    COM_errorLog("Uploaded file {$_FILES[$file]['name']} not found when recreating $_FILES array");
+                    COM_errorLog("Uploaded file {$_FILES[$file]['name']} not found when recreating \$_FILES array");
                     unset($_FILES[$file]);
                 }
                 unset($_POST[$key]);
