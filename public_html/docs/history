@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Fixed problem uninstalling plugins - missing globals (bug #0001048)
 - Added an option to create a copy of a story (feature request #0000811) [Dirk]
 - Updated FCKeditor to version 2.6.5 [Dirk]
 - Prepare database for storing IPv6 addresses (feature request #0000971) [Dirk]

@@ -396,7 +396,7 @@ function do_update($pi_name)
 */
 function do_uninstall($pi_name)
 {
-    global $_CONF;
+    global $_CONF, $_TABLES, $_DB_table_prefix;
 
     $retval = false;
 
