@@ -163,7 +163,7 @@ function liststories()
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
-        array('text' => 'Copy', 'field' => 'copy', 'sort' => false),
+        array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true)
