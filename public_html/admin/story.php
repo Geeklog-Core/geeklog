@@ -163,8 +163,8 @@ function liststories()
 
     $header_arr = array(
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => 'Copy', 'field' => 'copy', 'sort' => false),
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
-
         array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
         array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true)
     );
@@ -550,7 +550,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
     $story_templates->set_var('meta_description', $story->EditElements('meta_description'));
     $story_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
-    $story_templates->set_var('meta_keywords', $story->EditElements('meta_keywords'));    
+    $story_templates->set_var('meta_keywords', $story->EditElements('meta_keywords'));
     if ($_CONF['meta_tags'] > 0) {
         $story_templates->set_var('hide_meta', '');
     } else {
@@ -590,7 +590,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var ('trackback_options',
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $story->EditElements('trackbackcode')));
-    // comment expire 
+    // comment expire
     $story_templates->set_var('lang_cmt_disable', $LANG24[63]);
     if ($story->EditElements('cmt_close')) {
         $story_templates->set_var('is_checked5', 'checked="checked"');
@@ -601,10 +601,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     $month_options = COM_getMonthFormOptions($story->EditElements('cmt_close_month'));
     $story_templates->set_var('cmt_close_month_options', $month_options);
-    
+
     $day_options = COM_getDayFormOptions($story->EditElements('cmt_close_day'));
     $story_templates->set_var('cmt_close_day_options', $day_options);
-    
+
     // ensure that the year dropdown includes the close year
     $endtm = mktime(0, 0, 0, date('m'),
                 date('d') + $_CONF['article_comment_close_days'], date('Y'));
@@ -618,7 +618,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $year_options = COM_getYearFormOptions($close_year);
     }
     $story_templates->set_var('cmt_close_year_options', $year_options);
-    
+
     $cmt_close_ampm = '';
     $cmt_close_hour = $story->EditElements('cmt_close_hour');
     //correct hour
@@ -636,19 +636,19 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $ampm_select = '<input type="hidden" name="cmt_close_ampm" value=""' . XHTML . '>';
     }
     $story_templates->set_var ('cmt_close_ampm_selection', $ampm_select);
-    
+
     if ($_CONF['hour_mode'] == 24) {
         $hour_options = COM_getHourFormOptions ($story->EditElements('cmt_close_hour'), 24);
     } else {
         $hour_options = COM_getHourFormOptions ($cmt_close_hour);
     }
     $story_templates->set_var('cmt_close_hour_options', $hour_options);
-    
+
     $minute_options = COM_getMinuteFormOptions($story->EditElements('cmt_close_minute'));
     $story_templates->set_var('cmt_close_minute_options', $minute_options);
-    
+
     $story_templates->set_var('cmt_close_second', $story->EditElements('cmt_close_second'));
-    
+
     if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)) {
         $featured_options = "<select name=\"featured\">" . LB
@@ -859,7 +859,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                              $editor);
     $display .= COM_siteFooter();
     COM_output($display);
-} else if ($mode == 'edit') {
+} elseif (($mode == 'edit') || ($mode == 'clone')) {
     $display .= COM_siteHeader('menu', $LANG24[5]);
     $sid = '';
     if (isset ($_GET['sid'])) {

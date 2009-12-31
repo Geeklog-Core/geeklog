@@ -433,7 +433,7 @@ class Story
 
         $sid = addslashes(COM_applyFilter($sid));
 
-        if (!empty($sid) && (($mode == 'edit') || ($mode == 'view'))) {
+        if (!empty($sid) && (($mode == 'edit') || ($mode == 'view') || ($mode == 'clone'))) {
             $sql = array();
 
             $sql['mysql']
@@ -535,6 +535,19 @@ class Story
                     return STORY_INVALID_SID;
                 }
                 $this->loadFromArray($story);
+
+                /**
+                * The above SQL also got the story owner's username etc. from
+                * the DB. If the user doing the cloning is different from the
+                * original author, we need to fix those here.
+                */
+                if (($mode == 'clone') && ($this->_uid != $_USER['uid'])) {
+                    $this->_uid = $_USER['uid'];
+                    $story['owner_id'] = $this->_uid;
+                    $uresult = DB_query("SELECT username, fullname, photo, email FROM {$_TABLES['users']} WHERE uid = {$_USER['uid']}");
+                    list($this->_username, $this->_fullname, $this->_photo, $this->_email) = DB_fetchArray($uresult);
+                }
+
                 if (!isset($story['owner_id'])) {
                     $story['owner_id'] = 1;
                 }
@@ -593,9 +606,40 @@ class Story
             $this->_numemails = 0;
             $this->_statuscode = 0;
             $this->_owner_id = $this->_uid;
+
+        } elseif ($mode == 'clone') {
+
+            // new story, new sid ...
+            $this->_sid = COM_makesid();
+            $this->_old_sid = $this->_sid;
+
+            // assign ownership to current user
+            if (COM_isAnonUser()) {
+                $this->_uid = 1;
+            } else {
+                $this->_uid = $_USER['uid'];
+            }
+            $this->_owner_id = $this->_uid;
+
+            // use current date + time
+            $this->_date = time();
+            $this->_expire = time();
+
+            // if the original story uses comment expire, update the time
+            if ($this->_comment_expire != 0) {
+                $this->_comment_expire = time() +
+                    ($_CONF['article_comment_close_days'] * 86400);
+            }
+
+            // reset counters
+            $this->_hits = 0;
+            $this->_comments = 0;
+            $this->_trackbacks = 0;
+            $this->_numemails = 0;
         }
 
         $this->_sanitizeData();
+
         return STORY_LOADED_OK;
     }
 

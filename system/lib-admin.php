@@ -901,6 +901,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'access':
+    case 'copy':
     case 'edit':
     case 'edit_adv':
         $access = SEC_hasAccess($A['owner_id'], $A['group_id'],
@@ -926,10 +927,16 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             } elseif ($fieldname == 'edit') {
                 $editmode = 'std';
             }
-            $editurl = $_CONF['site_admin_url']
-                     . '/story.php?mode=edit&amp;editor=' . $editmode
-                     . '&amp;sid=' . $A['sid'];
-            $retval = COM_createLink($icon_arr['edit'], $editurl);
+            if ($fieldname == 'copy') {
+                $copyurl = $_CONF['site_admin_url']
+                         . '/story.php?mode=clone&amp;sid=' . $A['sid'];
+                $retval = COM_createLink($icon_arr['copy'], $copyurl);
+            } else {
+                $editurl = $_CONF['site_admin_url']
+                         . '/story.php?mode=edit&amp;editor=' . $editmode
+                         . '&amp;sid=' . $A['sid'];
+                $retval = COM_createLink($icon_arr['edit'], $editurl);
+            }
         }
         break;
 
@@ -1063,7 +1070,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
     static $added_token;
 
     $retval = '';
-    
+
     switch($fieldname) {
         case 'edit':
             $retval = COM_createLink($icon_arr['edit'],
