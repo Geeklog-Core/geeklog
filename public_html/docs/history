@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Fixed a non-feature where canceling out of the story editor would select that
+  story's topic in the admin's list of stories [Dirk]
 - Fixed problem uninstalling plugins - missing globals (bug #0001048)
 - Added an option to create a copy of a story (feature request #0000811) [Dirk]
 - Updated FCKeditor to version 2.6.5 [Dirk]

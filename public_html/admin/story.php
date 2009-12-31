@@ -103,7 +103,14 @@ function userlist ($uid = 0)
     return $retval;
 }
 
-function liststories()
+/**
+* Provide list of stories
+*
+* @param    string  $current_topic  (optional) currently selected topic
+* @return   string                  HTML for the list of stories
+*
+*/
+function liststories($current_topic = '')
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE,
            $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
@@ -112,11 +119,7 @@ function liststories()
 
     $retval = '';
 
-    if (!empty ($_GET['tid'])) {
-        $current_topic = COM_applyFilter($_GET['tid']);
-    } elseif (!empty ($_POST['tid'])) {
-        $current_topic = COM_applyFilter($_POST['tid']);
-    } else {
+    if (empty($current_topic)) {
         $current_topic = $LANG09[9];
     }
 
@@ -885,16 +888,24 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     submitstory ();
 } else { // 'cancel' or no mode at all
     $type = '';
-    if (isset($_POST['type'])){
-        $type = COM_applyFilter ($_POST['type']);
+    if (isset($_POST['type'])) {
+        $type = COM_applyFilter($_POST['type']);
     }
-    if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
+    if (($mode == $LANG24[10]) && !empty($LANG24[10]) &&
             ($type == 'submission')) {
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
+        $display = COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
     } else {
+        $current_topic = '';
+        if (empty($mode)) {
+            if (!empty ($_GET['tid'])) {
+                $current_topic = COM_applyFilter($_GET['tid']);
+            } elseif (!empty ($_POST['tid'])) {
+                $current_topic = COM_applyFilter($_POST['tid']);
+            }
+        }
         $display .= COM_siteHeader('menu', $LANG24[22]);
         $display .= COM_showMessageFromParameter();
-        $display .= liststories();
+        $display .= liststories($current_topic);
         $display .= COM_siteFooter();
     }
     COM_output($display);
