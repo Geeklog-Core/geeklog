@@ -1505,7 +1505,7 @@ function plugin_getwhatsnew_staticpages()
     
     $sql = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE NOT ISNULL(sp_content) AND (draft_flag = 0) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
         ORDER BY sp_date DESC LIMIT 15";

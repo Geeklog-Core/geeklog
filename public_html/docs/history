@@ -34,6 +34,7 @@ Polls Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Fixed SQL compatibility with MS SQL (bug #0001050)
 - Added a draft flag (feature request #0000884) [Dirk]
 - Removed the sp_uid field since it's simply a duplicate of owner_id [Dirk]
 - Display number of comments in Static Page editor [Dirk]
