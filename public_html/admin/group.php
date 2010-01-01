@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -781,12 +781,14 @@ function listgroups($show_all_groups = false)
     $defsort_arr = array('field' => 'grp_name', 'direction' => 'asc');
 
     $form_url = $_CONF['site_admin_url'] . '/group.php';
+    $edit_url = $_CONF['site_admin_url'] . '/group.php?mode=edit';
     if ($show_all_groups) {
         $form_url .= '?chk_showall=1';
+        $edit_url .= '&amp;chk_showall=1';
     }
 
     $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/group.php?mode=edit',
+        array('url' => $edit_url,
               'text' => $LANG_ADMIN['create_new']),
         array('url' => $_CONF['site_admin_url'],
               'text' => $LANG_ADMIN['admin_home'])
