@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Additional functions for install script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt.danger.west AT gmail DOT com                    |
 // |          Dirk Haun - dirk AT haun-online DOT de                           |
@@ -65,7 +65,7 @@ if (!defined('SUPPORTED_PHP_VER')) {
     define('SUPPORTED_PHP_VER', '4.3.0');
 }
 if (!defined('SUPPORTED_MYSQL_VER')) {
-    define('SUPPORTED_MYSQL_VER', '3.23.2');
+    define('SUPPORTED_MYSQL_VER', '4.0.0');
 }
 
 $_REQUEST = array_merge($_GET, $_POST);
