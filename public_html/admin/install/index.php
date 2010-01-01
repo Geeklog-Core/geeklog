@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -739,7 +739,7 @@ function INST_createDatabaseStructures()
     global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass,
            $site_url, $use_innodb;
 
-    $_DB->setDisplayError (true);
+    $_DB->setDisplayError(true);
 
     // Because the create table syntax can vary from dbms-to-dbms we are
     // leaving that up to each database driver (e.g. mysql.class.php,
@@ -750,28 +750,33 @@ function INST_createDatabaseStructures()
 
     $progress = '';
 
-    if (INST_checkTableExists ('access')) {
+    if (INST_checkTableExists('access')) {
         return false;
     }
 
     switch($_DB_dbms){
-        case 'mysql':
-            INST_updateDB($_SQL);
-            if ($use_innodb) {
-                DB_query ("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
-            }
-            break;
-        case 'mssql':
-            foreach ($_SQL as $sql) {
-                $_DB->dbQuery($sql, 0, 1);
-            }
-            break;
+    case 'mysql':
+        INST_updateDB($_SQL);
+        if ($use_innodb) {
+            DB_query("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
+        }
+        break;
+
+    case 'mssql':
+        foreach ($_SQL as $sql) {
+            $_DB->dbQuery($sql, 0, 1);
+        }
+        break;
+
+    default:
+        die("Unknown DB type '$_DB_dbms'");
+        break;
     }
 
     // Now insert mandatory data and a small subset of initial data
     foreach ($_DATA as $data) {
         $progress .= "executing " . $data . "<br" . XHTML . ">\n";
-        DB_query ($data);
+        DB_query($data);
     }
 
     return true;
