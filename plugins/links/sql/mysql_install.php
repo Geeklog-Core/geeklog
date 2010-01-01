@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -37,7 +37,7 @@
  * @filesource
  * @version 2.0
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2008
+ * @copyright Copyright &copy; 2005-2010
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Trinity Bays <trinity93@gmail.com>
  * @author Tony Bibbs <tony@tonybibbs.com>
@@ -65,7 +65,7 @@ CREATE TABLE {$_TABLES['linkcategories']} (
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   PRIMARY KEY (cid),
   KEY links_pid (pid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -86,7 +86,7 @@ CREATE TABLE {$_TABLES['links']} (
   INDEX links_category(cid),
   INDEX links_date(date),
   PRIMARY KEY (lid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -100,7 +100,7 @@ CREATE TABLE {$_TABLES['linksubmission']} (
   date datetime default NULL,
   owner_id mediumint(8) unsigned NOT NULL default '1',
   PRIMARY KEY (lid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 ?>

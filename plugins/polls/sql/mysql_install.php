@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mysql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -45,7 +45,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
   votes mediumint(8) unsigned default NULL,
   remark varchar(255) NULL,
   PRIMARY KEY (pid, qid, aid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -54,7 +54,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   pid varchar(40) NOT NULL default '',
   question varchar(255) NOT NULL,
   PRIMARY KEY (qid, pid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -83,7 +83,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
   PRIMARY KEY  (pid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -93,7 +93,7 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   ipaddress varchar(39) NOT NULL default '',
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'polls_block','phpblock','Poll','all',100,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";

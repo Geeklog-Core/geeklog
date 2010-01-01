@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -69,7 +69,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   KEY staticpage_sp_centerblock (sp_centerblock),
   KEY staticpage_sp_tid (sp_tid),
   KEY staticpage_sp_where (sp_where)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 ?>

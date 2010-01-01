@@ -65,7 +65,7 @@ if (!defined('SUPPORTED_PHP_VER')) {
     define('SUPPORTED_PHP_VER', '4.3.0');
 }
 if (!defined('SUPPORTED_MYSQL_VER')) {
-    define('SUPPORTED_MYSQL_VER', '4.0.0');
+    define('SUPPORTED_MYSQL_VER', '4.0.18');
 }
 
 $_REQUEST = array_merge($_GET, $_POST);
