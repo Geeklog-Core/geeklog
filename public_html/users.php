@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -71,7 +71,7 @@ function userprofile($uid, $msg = 0, $plugin = '')
            $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN, $LANG_ADMIN;
 
     $retval = '';
-    if (empty($_USER['username']) &&
+    if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
         $retval .= COM_siteHeader('menu', $LANG_LOGIN[1]);
         $retval .= COM_startBlock($LANG_LOGIN[1], '',

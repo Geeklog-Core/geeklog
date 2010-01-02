@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -578,7 +578,7 @@ function COM_getThemes( $all = false )
 */
 function COM_renderMenu( &$header, $plugin_menu )
 {
-    global $_CONF, $_USER, $LANG01, $topic;
+    global $_CONF, $LANG01, $topic;
 
     if( empty( $_CONF['menu_elements'] ))
     {
@@ -2313,7 +2313,7 @@ function COM_showTopics( $topic='' )
 */
 function COM_userMenu( $help='', $title='', $position='' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE;
+    global $_TABLES, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE;
 
     $retval = '';
 
@@ -2493,13 +2493,12 @@ function COM_userMenu( $help='', $title='', $position='' )
 */
 function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $LANG_ADMIN, $_BLOCK_TEMPLATE,
+    global $_TABLES, $_CONF, $LANG01, $LANG_ADMIN, $_BLOCK_TEMPLATE,
            $_DB_dbms, $config;
 
     $retval = '';
 
-    if( empty( $_USER['username'] ))
-    {
+    if (COM_isAnonUser()) {
         return $retval;
     }
 
@@ -3616,7 +3615,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 */
 function COM_formatBlock( $A, $noboxes = false )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21;
+    global $_CONF, $_TABLES, $LANG21;
 
     $retval = '';
 
@@ -4227,7 +4226,7 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_WHATSNEW, $page, $newstories;
+    global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $newstories;
 
     $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header', $position ));
@@ -4795,8 +4794,7 @@ function COM_getUserCookieTimeout()
 {
     global $_TABLES, $_USER, $_CONF;
 
-    if( empty( $_USER ))
-    {
+    if (COM_isAnonUser()) {
         return;
     }
 
@@ -4817,7 +4815,7 @@ function COM_getUserCookieTimeout()
 
 function phpblock_whosonline()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $LANG01, $_IMAGE_TYPE;
 
     $retval = '';
 

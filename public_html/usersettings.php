@@ -1071,11 +1071,11 @@ function saveuser($A)
 */
 function userprofile ($user, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
 
     $retval = '';
 
-    if (empty ($_USER['username']) &&
+    if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
         $retval .= COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
@@ -1480,7 +1480,7 @@ if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel'])
 
 $display = '';
 
-if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+if (! COM_isAnonUser()) {
     switch ($mode) {
     case 'saveuser':
         savepreferences ($_POST);

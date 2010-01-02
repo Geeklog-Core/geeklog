@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let users submit stories and plugin stuff.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2008 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -53,9 +53,9 @@ require_once $_CONF['path_system'] . 'lib-story.php';
 * @return   string          HTML for submission form
 *
 */
-function submissionform($type='story', $mode = '', $topic = '')
+function submissionform($type = 'story', $mode = '', $topic = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $LANG12, $LANG_LOGIN;
 
     $retval = '';
 
@@ -71,7 +71,7 @@ function submissionform($type='story', $mode = '', $topic = '')
             . $LANG12[31]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
-        if (empty ($_USER['username']) &&
+        if (COM_isAnonUser() &&
             (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
             $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
@@ -163,7 +163,7 @@ function submitstory($topic = '')
     $storyform->set_var ('layout_url', $_CONF['layout_url']);
     $storyform->set_var ('lang_username', $LANG12[27]);
 
-    if (!empty($_USER['username'])) {
+    if (! COM_isAnonUser()) {
         $storyform->set_var('story_username', $_USER['username']);
         $storyform->set_var('author', COM_getDisplayName ());
         $storyform->set_var('status_url', $_CONF['site_url']
@@ -280,7 +280,7 @@ function sendNotification ($table, $story)
 */
 function savestory ($A)
 {
-    global $_CONF, $_TABLES, $_USER;
+    global $_CONF, $_TABLES;
 
     $retval = '';
 
@@ -330,7 +330,7 @@ function savestory ($A)
 */
 function savesubmission($type, $A)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12;
+    global $_CONF, $_TABLES, $LANG12;
 
     $retval = COM_siteHeader ();
 
@@ -403,7 +403,7 @@ if (isset ($_REQUEST['mode'])) {
 }
 
 if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
-    if (empty ($_USER['username']) &&
+    if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
         $display = COM_refresh ($_CONF['site_url'] . '/index.php');
     } else {

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Directory of all the stories on a Geeklog site.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2009 by the following authors:                         |
+// | Copyright (C) 2004-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -44,8 +44,8 @@ define ('THIS_SCRIPT', 'directory.php');
 
 $display = '';
 
-if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
-                                   ($_CONF['directoryloginrequired'] == 1))) {
+if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
+                         ($_CONF['directoryloginrequired'] == 1))) {
     $display = COM_siteHeader ('menu', $LANG_DIR['title']);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));

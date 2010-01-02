@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog system statistics page.                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -37,7 +37,7 @@ require_once $_CONF['path_system'] . 'lib-admin.php';
 
 $display = '';
 
-if (empty ($_USER['username']) &&
+if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {
     $display = COM_siteHeader ('menu', $LANG_LOGIN[1]);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',

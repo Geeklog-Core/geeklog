@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog homepage.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -207,11 +207,11 @@ if (!empty ($displayBlock)) {
     }
 }
 
-if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+if (COM_isAnonUser()) {
+    $U['maxstories'] = 0;
+} else {
     $result = DB_query("SELECT maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
     $U = DB_fetchArray($result);
-} else {
-    $U['maxstories'] = 0;
 }
 
 $maxstories = 0;

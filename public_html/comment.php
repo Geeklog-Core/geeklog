@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -204,11 +204,11 @@ function handleView($view = true)
         $format = COM_applyFilter( $_REQUEST['format'] );
     }
     if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
-        if ( $_USER['uid'] > 1 ) {
+        if (COM_isAnonUser()) {
+            $format = $_CONF['comment_mode'];
+        } else {
             $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
                                   "uid = {$_USER['uid']}" );
-        } else {
-            $format = $_CONF['comment_mode'];
         }
     }
 
