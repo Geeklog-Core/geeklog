@@ -90,6 +90,8 @@ if (function_exists('set_error_handler')) {
 */
 require_once 'siteconfig.php';
 
+COM_checkInstalled();
+
 /**
 * Configuration class
 */
@@ -7049,6 +7051,67 @@ function COM_getTextContent($text)
     $text = preg_replace('/\s\s+/', ' ', $text);
 
     return trim($text);
+}
+
+/**
+* Check if Geeklog has been installed yet
+*
+* This is a (very) simple check to see if the user already ran the install
+* script. If not, abort and display a nice(r) welcome screen with handy links
+* to the install script and instructions. Inspired by MediaWiki ...
+*
+*/
+function COM_checkInstalled()
+{
+    global $_CONF;
+
+    $not_installed = false;
+
+    // this is the only thing we check for now ...
+    if (empty($_CONF) || !isset($_CONF['path']) ||
+            ($_CONF['path'] == '/path/to/Geeklog/')) {
+        $not_installed = true;
+    }
+
+    if ($not_installed) {
+        $rel = '';
+        $cd = getcwd();
+        if (! file_exists($cd . '/admin/install.index.php')) {
+            // this should cover most (though not all) cases
+            $rel = '../';
+        }
+
+        $display =
+'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Welcome to Geeklog</title>
+<meta name="robots" content="noindex,nofollow" />
+<style type="text/css">
+  html, body {
+    color:#000;
+    background-color:#fff;
+    font-family:sans-serif;
+    text-align:center;
+  }
+</style>
+</head>
+
+<body>
+<img src="' . $rel . 'docs/images/newlogo.gif" alt="" />
+
+<h1>Geeklog ' . VERSION . '</h1>
+<p>Please run the <a href="' . $rel . 'admin/install/index.php" rel="nofollow">install script</a> first.</p>
+<p>For more information, please refer to the <a href="' . $rel . 'docs/english/install.html" rel="nofollow">installation instructions</a>.</p>
+</body>
+</html>
+';
+
+        header("HTTP/1.1 503 Service Unavailable");
+        header("Status: 503 Service Unavailable");
+        header('Content-Type: text/html; charset=' . $_CONF['default_charset']);
+        die($display);
+    }
 }
 
 /**
