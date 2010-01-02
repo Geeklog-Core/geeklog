@@ -654,7 +654,7 @@ class config {
         } else {
             if ($allow_reset) {
                 $t->set_var('unset_link',
-                        "(<a href='#' onClick='unset(\"{$name}\");' title='"
+                        "(<a href='#' onclick='unset(\"{$name}\");return false;' title='"
                         . $LANG_CONFIG['disable'] . "'>X</a>)");
             }
             if (($a = strrchr($name, '[')) !== FALSE) {
@@ -870,7 +870,7 @@ class config {
                 if ($conf_group == $group) {
                     $link = "<div>$group_display</div>";
                 } else {
-                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></div>";
                 }
 
                 if ($group == 'Core') {
@@ -916,7 +916,7 @@ class config {
                 if ($i == $sg) {
                     $retval .= "<div>$group_display</div>";
                 } else {
-                    $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\")'>$group_display</a></div>";
+                    $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\");return false;'>$group_display</a></div>";
                 }
                 $i++;
             }

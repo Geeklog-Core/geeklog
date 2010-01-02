@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Make sure all onclick events in the Configuration return false (bug #0001054)
 - Moved hard-coded sort direction indicator (asc/desc) for search results to
   the language files [Dirk]
 - Changed the 'default_perm_cookie_timeout' config option to a dropdown so that

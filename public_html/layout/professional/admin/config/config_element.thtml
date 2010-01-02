@@ -31,7 +31,7 @@
 
 <!-- BEGIN unset-param -->
 <tr><td class="alignright">{display_name} {doc_link}</td>
-<td><a href="#" onclick="restore('{name}');">{lang_enable}</a></td>
+<td><a href="#" onclick="restore('{name}');return false;">{lang_enable}</a></td>
 </tr>
 <!-- END unset-param -->
 

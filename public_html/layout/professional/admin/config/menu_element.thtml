@@ -1,9 +1,9 @@
 
-<li><a href="#" onclick='open_group("{group_select_value}")'>{group_display}</a>
+<li><a href="#" onclick='open_group("{group_select_value}");return false;'>{group_display}</a>
     <ul>
 <!-- BEGIN subgroup-selector -->
    <li>
-     <a  href="#" {select_id} onclick='open_subgroup("{group_select_value}","{subgroup_name}")'>{subgroup_display_name}</a>
+     <a  href="#" {select_id} onclick='open_subgroup("{group_select_value}","{subgroup_name}");return false;'>{subgroup_display_name}</a>
    </li>
 <!-- END subgroup-selector -->
     </ul>
