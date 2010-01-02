@@ -8,9 +8,10 @@
 // |                                                                           |
 // | Loads the administration UI and sends input to config.class               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -96,6 +97,29 @@ function configmanager_select_timezone_helper()
     require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
 
     return array_flip(TimeZoneConfig::listAvailableTimeZones());
+}
+
+/**
+* Helper function: Provide dropdown for Permanent Cookie Timeout
+*
+* @return   array   Array of (description, timeout-in-seconds) pairs
+*
+*/
+function configmanager_select_default_perm_cookie_timeout_helper()
+{
+    global $_TABLES;
+
+    $retval = array();
+
+    $result = DB_query("SELECT cc_value,cc_descr FROM {$_TABLES['cookiecodes']}");
+    $num_values = DB_numRows($result);
+
+    for ($i = 0; $i < $num_values; $i++) {
+        list($cc_value, $cc_descr) = DB_fetchArray($result);
+        $retval[$cc_descr] = $cc_value;
+    }
+
+    return $retval;
 }
 
 

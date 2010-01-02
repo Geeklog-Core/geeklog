@@ -4,6 +4,9 @@
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = '%select', selectionArray = 24 WHERE name = 'menu_elements' AND group_name = 'Core'";
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = '%select', selectionArray = 25 WHERE name = 'notification' AND group_name = 'Core'";
 
+// make $_CONF['default_perm_cookie_timeout'] option a dropdown
+$_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'select' WHERE name = 'default_perm_cookie_timeout' AND group_name = 'Core'";
+
 // make room to store IPv6 addresses
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['commentsubmissions']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''";

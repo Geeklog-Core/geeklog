@@ -3,6 +3,9 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Changed the 'default_perm_cookie_timeout' config option to a dropdown so that
+  it's consistent with the "Remember me for" dropdown in My Account [Dirk]
+- Raised minimum required MySQL version to MySQL 4.0.18 [Dirk]
 - Fixed a non-feature where canceling out of the story editor would select that
   story's topic in the admin's list of stories [Dirk]
 - Fixed problem uninstalling plugins - missing globals (bug #0001048)

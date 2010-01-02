@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Initial configuration setup.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -306,7 +306,7 @@ function install_config()
     $c->add('cookie_tzid','timezone','text',7,30,NULL,575,TRUE);
     $c->add('cookie_anon_name','anon_name','text',7,30,NULL,577,TRUE);
     $c->add('cookie_ip',0,'select',7,30,0,580,TRUE);
-    $c->add('default_perm_cookie_timeout',28800,'text',7,30,NULL,590,TRUE);
+    $c->add('default_perm_cookie_timeout',28800,'select',7,30,NULL,590,TRUE);
     $c->add('session_cookie_timeout',7200,'text',7,30,NULL,600,TRUE);
     $c->add('cookie_path','/','text',7,30,NULL,610,TRUE);
     $c->add('cookiedomain','','text',7,30,NULL,620,TRUE);
