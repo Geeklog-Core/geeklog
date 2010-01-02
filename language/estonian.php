@@ -383,7 +383,9 @@ $LANG04 = array(
     159 => 'See E-kiri on automaatselt genereeritud . Ära vasta  sellele.',
     160 => '(maks. %d x %d pikslit, %d baiti; %s)',
     161 => 'Vähendatakse',
-    162 => 'Ei vähendata'
+    162 => 'Ei vähendata',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
 );
 
 ###############################################################################
@@ -530,7 +532,9 @@ $LANG09 = array(
     67 => 'Näita %d tulemust',
     68 => 'Sorteerimisalus',
     69 => 'Ainult pealkirjad',
-    70 => 'Pole saadaval ...'
+    70 => 'Pole saadaval ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -1599,7 +1603,10 @@ $LANG_ADMIN = array(
     'meta_description' => 'Meta kirjeldus',
     'meta_keywords' => 'Meta märksõnad',
     'na' => 'N/A',
-    'token_expiry' => 'Sul on aega kuni %s, et teha muutusi. Pärast seda aegub lehele lisatud turvalisuskood ja tehtud muutused lähevad kaotsi.'
+    'token_expiry' => 'Sul on aega kuni %s, et teha muutusi. Pärast seda aegub lehele lisatud turvalisuskood ja tehtud muutused lähevad kaotsi.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

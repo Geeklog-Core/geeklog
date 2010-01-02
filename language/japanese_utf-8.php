@@ -391,7 +391,9 @@ $LANG04 = array(
     159 => 'このメールは自動送信されたものです。返信しないでください。',
     160 => '(最大. %d X %d ピクセル, %d バイト; %s)',
     161 => 'リサイズ',
-    162 => 'リサイズなし'
+    162 => 'リサイズなし',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
 );
 
 ###############################################################################
@@ -538,7 +540,9 @@ $LANG09 = array(
     67 => '検索結果 %d 件',
     68 => 'ソート',
     69 => 'タイトルのみ',
-    70 => 'ありません ...'
+    70 => 'ありません ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -1607,7 +1611,10 @@ $LANG_ADMIN = array(
     'meta_description' => '説明文のメタタグ',
     'meta_keywords' => 'キーワードのメタタグ',
     'na' => 'N/A',
-    'token_expiry' => '%s までに編集してください。この時刻を過ぎると、このページに埋め込まれたセキュリティートークンは期限切れとなり、編集内容は失われます。'
+    'token_expiry' => '%s までに編集してください。この時刻を過ぎると、このページに埋め込まれたセキュリティートークンは期限切れとなり、編集内容は失われます。',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

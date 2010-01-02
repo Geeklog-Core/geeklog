@@ -535,7 +535,9 @@ $LANG09 = array(
     67 => 'Zeige %d Suchergebnisse',
     68 => 'Sortieren nach',
     69 => 'Nur Titel durchsuchen',
-    70 => 'Nicht verfügbar ...'
+    70 => 'Nicht verfügbar ...',
+    71 => 'aufsteigend',
+    72 => 'absteigend'
 );
 
 ###############################################################################
@@ -1606,8 +1608,8 @@ $LANG_ADMIN = array(
     'na' => 'n/v',
     'token_expiry' => 'Achtung, zeitgesteuerte Sicherheitsfunktion (Security-Token). Nach %s lässt sich diese Seite nicht mehr speichern. Änderungen gehen verloren.',
     'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
-    'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate'  => 'Authenticate'
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

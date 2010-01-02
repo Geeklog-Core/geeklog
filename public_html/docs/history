@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Moved hard-coded sort direction indicator (asc/desc) for search results to
+  the language files [Dirk]
 - Changed the 'default_perm_cookie_timeout' config option to a dropdown so that
   it's consistent with the "Remember me for" dropdown in My Account [Dirk]
 - Raised minimum required MySQL version to MySQL 4.0.18 [Dirk]

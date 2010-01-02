@@ -384,7 +384,9 @@ $LANG04 = array(
     159 => 'הודעת אימייל זו נוצרה אוטומטית. אנא אל תענו לה.',
     160 => '(מקסימום %d x %d פיקסלים, %d bytes; %s)',
     161 => 'יותאם למטה',
-    162 => 'לא יותאם'
+    162 => 'לא יותאם',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
 );
 
 ###############################################################################
@@ -531,7 +533,9 @@ $LANG09 = array(
     67 => 'הצגת %d תוצאות',
     68 => 'מיון לפי',
     69 => 'כותרות בלבד',
-    70 => 'לא זמין ...'
+    70 => 'לא זמין ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -1600,7 +1604,10 @@ $LANG_ADMIN = array(
     'meta_description' => 'Meta Description',
     'meta_keywords' => 'Meta Keywords',
     'na' => 'לא זמין',
-    'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.'
+    'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually

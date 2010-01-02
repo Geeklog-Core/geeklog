@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6.1                                                             |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | listfactory.class.php                                                     |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | from arrays or SQL statements. It will also supports the sorting and      |
 // | paging of results.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Sami Barakat     - s.m.barakat AT gmail DOT com                  |
 // +---------------------------------------------------------------------------+
@@ -678,14 +678,24 @@ class ListFactory {
                     if ($this->_sort_arr['field'] === $field['name'])
                     {
                         // Add drop down item for current sort order
-                        $list_templates->set_var('sort_text', $text.' ('.$this->_sort_arr['direction'].')');
+                        if ($this->_sort_arr['direction'] == 'asc') {
+                            $list_templates->set_var('sort_text',
+                                    $text . ' (' . $LANG09[71] . ')');
+                        } else {
+                            $list_templates->set_var('sort_text',
+                                    $text . ' (' . $LANG09[72] . ')');
+                        }
                         $list_templates->set_var('sort_href', '');
                         $list_templates->set_var('sort_selected', ' selected="selected"');
                         $list_templates->parse('page_sort', 'sort', true);
 
                         // Set up the sort order for the opposite direction
                         $direction = $this->_sort_arr['direction'] == 'asc' ? 'desc' : 'asc';
-                        $text .= " ($direction)";
+                        if ($direction == 'asc') {
+                            $text .= ' (' . $LANG09[71] . ')';
+                        } else {
+                            $text .= ' (' . $LANG09[72] . ')';
+                        }
                     }
                     $href = $this->_page_url . "results={$this->_per_page}&amp;" .
                                 "order={$field['name']}&amp;direction=$direction";
