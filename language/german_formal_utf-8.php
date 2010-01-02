@@ -965,7 +965,9 @@ $LANG28 = array(
     84 => "Ihr Einlogname ist: %s  auf der Site: {$_CONF['site_url']}",
     85 => 'Wenn Sie Ihr Passwort vergessen haben, benutzen Sie folgenden Link: %s',
     86 => 'Enthalten',
-    87 => 'Erinnerungen'
+    87 => 'Erinnerungen',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users'
 );
 
 ###############################################################################

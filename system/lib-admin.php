@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -725,6 +725,14 @@ function ADMIN_getListField_groups($fieldname, $fieldvalue, $A, $icon_arr, $sele
 
         case 'grp_gl_core':
             if ($A['grp_gl_core'] == 1) {
+                $retval = $LANG_ACCESS['yes'];
+            } else {
+                $retval = $LANG_ACCESS['no'];
+            }
+            break;
+
+        case 'grp_default':
+            if ($A['grp_default'] != 0) {
                 $retval = $LANG_ACCESS['yes'];
             } else {
                 $retval = $LANG_ACCESS['no'];

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -139,7 +139,7 @@ function edituser($uid = '', $msg = '')
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'edituser.thtml',
                                       'groupedit' => 'groupedit.thtml'));
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -236,7 +236,7 @@ function edituser($uid = '', $msg = '')
     if (!empty($uid)) {
         if ($A['uid'] == $_USER['uid']) {
             $allow_ban = false; // do not allow to ban yourself
-        } else if (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
+        } elseif (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
             $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
             $count_root_result = DB_query($count_root_sql);
             $C = DB_fetchArray($count_root_result); // how many are left?
@@ -294,6 +294,14 @@ function edituser($uid = '', $msg = '')
                       . ' ';
             $selected .= DB_getItem($_TABLES['groups'], 'grp_id',
                                     "grp_name = 'Logged-in Users'");
+
+            // add default groups, if any
+            $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_default = 1");
+            $num_defaults = DB_numRows($result);
+            for ($i = 0; $i < $num_defaults; $i++) {
+                list($def_grp) = DB_fetchArray($result);
+                $selected .= ' ' . $def_grp;
+            }
         }
         $thisUsersGroups = SEC_getUserGroups();
         $remoteGroup = DB_getItem($_TABLES['groups'], 'grp_id',
@@ -1103,7 +1111,7 @@ function importusers()
                 if ($result && $verbose_import) {
                     $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
                     COM_errorLog("Account for $u_name created successfully",1);
-                } else if ($result) {
+                } elseif ($result) {
                     $successes++;
                 } else {
                     // user creation failed

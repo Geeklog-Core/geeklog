@@ -213,7 +213,8 @@ CREATE TABLE [dbo].[{$_TABLES['groups']}] (
     [grp_id] [int] IDENTITY (1, 1) NOT NULL ,
     [grp_name] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [grp_descr] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [grp_gl_core] [tinyint] NOT NULL
+    [grp_gl_core] [tinyint] NOT NULL ,
+    [grp_default] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 

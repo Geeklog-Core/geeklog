@@ -106,11 +106,20 @@ function editgroup($grp_id = '')
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
+    $group_templates->set_var('xhtml', XHTML);
+
     $group_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $group_templates->set_var('lang_admingroup', $LANG28[49]);
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
-    $group_templates->set_var('xhtml', XHTML);
+    $group_templates->set_var('lang_defaultgroup', $LANG28[88]);
+    $group_templates->set_var('lang_defaultgrp_msg', $LANG28[89]);
+    $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
+    $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
+    $group_templates->set_var('lang_securitygroups',
+                              $LANG_ACCESS['securitygroups']);
+    $group_templates->set_var('lang_rights', $LANG_ACCESS['rights']);
+
     $showall = 0;
     if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
         $showall = 1;
@@ -118,14 +127,18 @@ function editgroup($grp_id = '')
     $group_templates->set_var('show_all', $showall);
 
     if (! empty($grp_id)) {
-        $result = DB_query("SELECT grp_id,grp_name,grp_descr,grp_gl_core FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
+        $result = DB_query("SELECT grp_id,grp_name,grp_descr,grp_gl_core,grp_default FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
         $A = DB_fetchArray($result);
         if ($A['grp_gl_core'] > 0) {
             $group_templates->set_var('chk_adminuse', 'checked="checked"');
         }
+        if ($A['grp_default'] != 0) {
+            $group_templates->set_var('chk_defaultuse', 'checked="checked"');
+        }
     } else {
         // new group, so it's obviously not a core group
         $A['grp_gl_core'] = 0;
+        $A['grp_default'] = 0;
     }
 
     $token = SEC_createToken();
@@ -152,8 +165,6 @@ function editgroup($grp_id = '')
         $group_templates->set_var('group_core', 0);
     }
 
-    $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
-
     if ($A['grp_gl_core'] != 1) {
         $group_templates->set_var('groupname_inputtype', 'text');
         $group_templates->set_var('groupname_static', '');
@@ -161,19 +172,17 @@ function editgroup($grp_id = '')
         $group_templates->set_var('groupname_inputtype', 'hidden');
         $group_templates->set_var('groupname_static', $A['grp_name']);
     }
-    if (isset ($A['grp_name'])) {
+    if (isset($A['grp_name'])) {
         $group_templates->set_var('group_name', $A['grp_name']);
     } else {
         $group_templates->set_var('group_name', '');
     }
 
-    $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
-    if (isset ($A['grp_descr'])) {
+    if (isset($A['grp_descr'])) {
         $group_templates->set_var('group_description', $A['grp_descr']);
     } else {
         $group_templates->set_var('group_description', '');
     }
-    $group_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
 
     $selected = '';
     if (! empty($grp_id)) {
@@ -258,7 +267,6 @@ function editgroup($grp_id = '')
                                    $defsort_arr, '', explode(' ', $selected));
     }
     $group_templates->set_var('group_options', $groupoptions);
-    $group_templates->set_var('lang_rights', $LANG_ACCESS['rights']);
 
     if ($A['grp_gl_core'] == 1) {
         $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS['corerightsdescr']);
@@ -272,7 +280,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('gltoken', $token);
     $group_templates->parse('output','editor');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -458,12 +466,13 @@ function printrights($grp_id = '', $core = 0)
 * @param    string  $grp_descr      Description of group
 * @param    boolean $grp_admin      Flag that indicates this is an admin use group
 * @param    boolean $grp_gl_core    Flag that indicates if this is a core Geeklog group
+* @param    boolean $grp_default    Flag that indicates if this is a default group
 * @param    array   $features       Features the group has access to
 * @param    array   $groups         Groups this group will belong to
 * @return   string                  HTML refresh or error message
 *
 */
-function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $features, $groups)
+function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $grp_default, $features, $groups)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
@@ -506,16 +515,17 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
         $grp_descr = COM_stripslashes ($grp_descr);
         $grp_descr = addslashes ($grp_descr);
 
-        if (empty ($grp_id)) {
-            DB_save ($_TABLES['groups'], 'grp_name,grp_descr,grp_gl_core',
-                     "'$grp_name','$grp_descr',$grp_gl_core");
-            $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                  "grp_name = '$grp_name'");
+        if (empty($grp_id)) {
+            DB_save($_TABLES['groups'],
+                    'grp_name,grp_descr,grp_gl_core,grp_default',
+                    "'$grp_name','$grp_descr',$grp_gl_core,$grp_default");
+            $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                 "grp_name = '$grp_name'");
             $new_group = true;
         } else {
-            DB_save ($_TABLES['groups'],
-                     'grp_id,grp_name,grp_descr,grp_gl_core',
-                     "$grp_id,'$grp_name','$grp_descr',$grp_gl_core");
+            DB_save($_TABLES['groups'],
+                    'grp_id,grp_name,grp_descr,grp_gl_core,grp_default',
+                    "$grp_id,'$grp_name','$grp_descr',$grp_gl_core,$grp_default");
             $new_group = false;
         }
 
@@ -585,14 +595,14 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $fe
         }
 
         if ($new_group) {
-            PLG_groupChanged ($grp_id, 'new');
+            PLG_groupChanged($grp_id, 'new');
         } else {
-            PLG_groupChanged ($grp_id, 'edit');
+            PLG_groupChanged($grp_id, 'edit');
         }
         if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
-            echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
+            return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49&chk_showall=1');
         } else {
-            echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
+            return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
         }
     } else {
         $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
@@ -775,6 +785,7 @@ function listgroups($show_all_groups = false)
         array('text' => $LANG_ACCESS['groupname'], 'field' => 'grp_name', 'sort' => true),
         array('text' => $LANG_ACCESS['description'], 'field' => 'grp_descr', 'sort' => true),
         array('text' => $LANG_ACCESS['coregroup'], 'field' => 'grp_gl_core', 'sort' => true),
+        array('text' => $LANG28[88], 'field' => 'grp_default', 'sort' => true),
         array('text' => $LANG_ACCESS['listusers'], 'field' => 'list', 'sort' => false)
     );
 
@@ -1107,6 +1118,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
     $grp_gl_core = COM_applyFilter($_POST['grp_gl_core'], true);
+    $grp_default = 0;
+    if (isset($_POST['chk_grpdefault'])) {
+        $grp_default = 1;
+    }
     $chk_grpadmin = '';
     if (isset($_POST['chk_grpadmin'])) {
         $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
@@ -1122,7 +1137,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
                           COM_applyFilter($_POST['grp_name']),
                           $_POST['grp_descr'], $chk_grpadmin, $grp_gl_core,
-                          $features, $groups);
+                          $grp_default, $features, $groups);
 } elseif (($mode == 'savegroupusers') && SEC_checkToken()) {
     $grp_id = COM_applyFilter($_REQUEST['grp_id'], true);
     $display .= savegroupusers($grp_id, $_POST['groupmembers']);

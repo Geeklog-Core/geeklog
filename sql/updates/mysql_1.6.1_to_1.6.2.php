@@ -14,4 +14,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} CHANGE remote_ip remote_ip varchar
 $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''";
 
+// new "Default Group" flag
+$_SQL[] = "ALTER TABLE {$_TABLES['groups']} ADD grp_default tinyint(1) unsigned NOT NULL default '0' AFTER grp_gl_core";
+
 ?>
