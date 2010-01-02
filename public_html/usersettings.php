@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -501,8 +501,8 @@ function editpreferences()
             $words = explode('_', $theme);
             $bwords = array();
             foreach ($words as $th) {
-                if ((strtolower($th{0}) == $th{0}) &&
-                    (strtolower($th{1}) == $th{1})) {
+                if ((strtolower($th[0]) == $th[0]) &&
+                    (strtolower($th[1]) == $th[1])) {
                     $bwords[] = ucfirst($th);
                 } else {
                     $bwords[] = $th;

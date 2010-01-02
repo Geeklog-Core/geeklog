@@ -70,8 +70,8 @@ function configmanager_select_theme_helper()
         $words = explode('_', $theme);
         $bwords = array();
         foreach ($words as $th) {
-            if ((strtolower($th{0}) == $th{0}) &&
-                (strtolower($th{1}) == $th{1})) {
+            if ((strtolower($th[0]) == $th[0]) &&
+                (strtolower($th[1]) == $th[1])) {
                 $bwords[] = ucfirst($th);
             } else {
                 $bwords[] = $th;
