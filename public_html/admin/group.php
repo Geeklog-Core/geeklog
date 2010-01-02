@@ -1001,13 +1001,44 @@ function savegroupusers($groupid, $groupmembers)
 
     $retval = '';
 
-    // Delete all the current buddy records for this user and add all the selected ones
-    $sql = "DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid IS NOT NULL";
-    DB_query($sql);
-    $adduser = explode('|', $groupmembers);
-    for ($i = 0; $i < count($adduser); $i++) {
-        $adduser[$i] = COM_applyFilter($adduser[$i], true);
-        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
+    $updateUsers = explode("|", $groupmembers);
+    $updateCount = count($updateUsers);
+    if ($updateCount > 0) {
+
+        // Retrieve all existing users in group so we can determine if changes
+        // are needed
+        $activeUsers = array();
+        $query = DB_query("SELECT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $groupid");
+        if (DB_numRows($query) > 0) {
+            while ($A = DB_fetchArray($query, false)) {
+                array_push($activeUsers, $A['ug_uid']);
+            }
+            $deleteGroupUsers = array_diff($activeUsers, $updateUsers);
+            $addGroupUsers = array_diff($updateUsers, $activeUsers);
+            if (is_array($deleteGroupUsers) AND count($deleteGroupUsers) > 0) {
+                foreach ($deleteGroupUsers as $uid) {
+                    $uid = COM_applyFilter($uid, true);
+                    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $groupid AND ug_uid = $uid");
+                }
+            }
+            if (is_array($addGroupUsers) AND count($addGroupUsers) > 0) {
+                foreach ($addGroupUsers as $uid) {
+                    $uid = COM_applyFilter($uid, true);
+                    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', $uid)");
+                }
+            }
+
+        } else {
+
+            // No active users which should never occur as Root users
+            // are always members
+            for ($i = 0; $i < $updateCount; $i++) {
+                $updateUsers[$i] = COM_applyFilter($updateUsers[$i], true);
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$updateUsers[$i]')");
+            }
+
+        }
+
     }
 
     if (isset($_REQUEST['chk_showall']) && ($_REQUEST['chk_showall'] == 1)) {
