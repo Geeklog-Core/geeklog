@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Calendar   |
 // | plugin's PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -129,7 +129,7 @@ function phpblock_calendar( $help='', $title='' )
         }
         $eventSql .= 'ORDER BY datestart,timestart';
 
-        if(( $_CA_CONF['personalcalendars'] == 1 ) && !empty( $_USER['uid'] )) {
+        if (($_CA_CONF['personalcalendars'] == 1) && !COM_isAnonUser()) {
             $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
             . "FROM {$_TABLES['personal_events']} ";
             if($_DB_dbms == 'mssql') {
@@ -149,7 +149,7 @@ function phpblock_calendar( $help='', $title='' )
         $oldDate1 = 'no_day';  // Invalid Date!
         $oldDate2 = 'last_d';  // Invalid Date!
 
-        if( $_CA_CONF['personalcalendars'] == 1 AND !empty( $_USER['uid'] )) {
+        if (($_CA_CONF['personalcalendars'] == 1) AND !COM_isAnonUser()) {
             $iterations = 2;
         } else {
             $iterations = 1;
@@ -367,7 +367,7 @@ function plugin_moderationvalues_calendar()
 */
 function plugin_moderationapprove_calendar($id)
 {
-    global $_CA_CONF, $_GROUPS, $_TABLES, $_USER;
+    global $_CA_CONF, $_GROUPS, $_TABLES;
 
     // The eventsubmission table only keeps track of the submitter's uid,
     // but not of grous and permissions. So set those to sensible defaults.
@@ -668,7 +668,7 @@ function plugin_getheadercode_calendar()
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_USER, $_CA_CONF, $LANG_CAL_1;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1;
 
     if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];

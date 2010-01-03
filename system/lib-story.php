@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -444,7 +444,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         }
 
         if(( $_CONF['hideemailicon'] == 1 ) ||
-           ( empty( $_USER['username'] ) &&
+           ( COM_isAnonUser() &&
                 (( $_CONF['loginrequired'] == 1 ) ||
                  ( $_CONF['emailstoryloginrequired'] == 1 ))))
         {
@@ -585,7 +585,7 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
 
 function STORY_whatsRelated( $related, $uid, $tid )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24;
+    global $_CONF, $_TABLES, $LANG24;
 
     // get the links from the story text
     if (!empty ($related)) {
@@ -594,7 +594,7 @@ function STORY_whatsRelated( $related, $uid, $tid )
         $rel = array ();
     }
 
-    if( !empty( $_USER['username'] ) || (( $_CONF['loginrequired'] == 0 ) &&
+    if( !COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
            ( $_CONF['searchloginrequired'] == 0 ))) {
         // add a link to "search by author"
         if( $_CONF['contributedbyline'] == 1 )

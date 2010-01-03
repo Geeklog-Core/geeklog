@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6.1                                                             |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -156,9 +156,9 @@ class Search {
     */
     function _isSearchAllowed()
     {
-        global $_USER, $_CONF;
+        global $_CONF;
 
-        if (empty($_USER['username'])) {
+        if (COM_isAnonUser()) {
             //check if an anonymous user is attempting to illegally access privilege search capabilities
             if (($this->_type != 'all') OR !empty($this->_dateStart) OR !empty($this->_dateEnd) OR ($this->_author > 0) OR !empty($topic)) {
                 if (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1)) {
@@ -188,9 +188,9 @@ class Search {
     */
     function _isFormAllowed ()
     {
-        global $_CONF, $_USER;
+        global $_CONF;
 
-        if (empty($_USER['username']) AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1))) {
+        if (COM_isAnonUser() AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1))) {
             return false;
         }
 

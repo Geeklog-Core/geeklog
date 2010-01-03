@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -172,7 +172,7 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
  */
 function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
 {
-    global $_CONF, $_TABLES, $LANG03, $_USER;
+    global $_CONF, $_TABLES, $LANG03;
 
     $retval = '';
 
@@ -444,7 +444,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
     if ($A['sp_format'] <> 'blankpage') {
         if (!isset($_USER['noboxes'])) {
-            if (empty($_USER['uid']) || ($_USER['uid'] == 1)) {
+            if (COM_isAnonUser()) {
                 $_USER['noboxes'] = 0;
             } else {
                 $_USER['noboxes'] = DB_getItem($_TABLES['userindex'],

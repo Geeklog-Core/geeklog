@@ -524,7 +524,7 @@ function USER_addGroup ($groupid, $uid = '')
      // set $uid if $uid is empty
     if (empty ($uid)) {
         // bail for anonymous users
-        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+        if (COM_isAnonUser()) {
             return false;
         } else {
             // If logged in set to current uid
@@ -559,7 +559,7 @@ function  USER_delGroup ($groupid, $uid = '')
     // set $uid if $uid is empty
     if (empty ($uid)) {
         // bail for anonymous users
-        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+        if (COM_isAnonUser()) {
             return false;
         } else {
             // If logged in set to current uid

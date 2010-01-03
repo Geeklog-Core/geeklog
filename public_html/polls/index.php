@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Display poll results and past polls.                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -58,14 +58,13 @@ if (!in_array('polls', $_PLUGINS)) {
 * @return   string          HTML for poll listing
 *
 */
-function polllist ()
+function polllist()
 {
-    global $_CONF, $_TABLES, $_USER, $_PO_CONF,
-           $LANG25, $LANG_LOGIN, $LANG_POLLS;
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG25, $LANG_LOGIN, $LANG_POLLS;
 
     $retval = '';
 
-    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+    if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
             ($_PO_CONF['pollsloginrequired'] == 1))) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));

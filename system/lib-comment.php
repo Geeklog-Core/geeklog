@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -122,7 +122,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
         $commentbar->set_var('story_link', $articleUrl);
     }
 
-    if( !empty( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) {
+    if (! COM_isAnonUser()) {
         $username = $_USER['username'];
         $fullname = $_USER['fullname'];
     } else {
@@ -137,7 +137,7 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
     $commentbar->set_var( 'user_name', $username );
     $commentbar->set_var( 'user_fullname', $fullname );
 
-    if( !empty( $_USER['username'] )) {
+    if (! COM_isAnonUser()) {
         $author = COM_getDisplayName( $_USER['uid'], $username, $fullname );
         $commentbar->set_var( 'user_nullname', $author );
         $commentbar->set_var( 'author', $author );
@@ -371,8 +371,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // hide reply link from anonymous users if they can't post replies
         $hidefromanon = false;
-        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 )
-                || ( $_CONF['commentsloginrequired'] == 1 ))) {
+        if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
+                                 ($_CONF['commentsloginrequired'] == 1))) {
             $hidefromanon = true;
         }
 
@@ -578,7 +578,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
     $retval = '';
 
-    if( !empty( $_USER['uid'] ) ) {
+    if (! COM_isAnonUser()) {
         $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
         if( empty( $order ) ) {
@@ -1362,11 +1362,11 @@ function CMT_deleteComment ($cid, $sid, $type)
 */
 function CMT_reportAbusiveComment ($cid, $type)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $LANG03, $LANG12, $LANG_LOGIN;
 
     $retval = '';
 
-    if (empty ($_USER['username'])) {
+    if (COM_isAnonUser()) {
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template ($_CONF['path_layout'] . 'submit');
@@ -1443,7 +1443,7 @@ function CMT_sendReport ($cid, $type)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG_LOGIN;
 
-    if (empty ($_USER['username'])) {
+    if (COM_isAnonUser()) {
         $retval = COM_siteHeader ('menu', $LANG_LOGIN[1]);
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));

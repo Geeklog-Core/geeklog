@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | event.php                                                                 |
 // |                                                                           |
 // | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -141,7 +141,7 @@ function saveuserevent ($eid)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+    if (! COM_isAnonUser()) {
 
         // Try to delete the event first in case it has already been added
         DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
@@ -390,7 +390,7 @@ case 'saveuserevent':
 
 case $LANG_CAL_1[45]: // save edited personal event
     if (!empty($LANG_CAL_1[45]) && ($_CA_CONF['personalcalendars'] == 1) &&
-            (!empty ($_USER['uid']) && ($_USER['uid'] > 1)) &&
+            !COM_isAnonUser() &&
             (isset ($_POST['calendar_type']) &&
              ($_POST['calendar_type'] == 'personal')) && SEC_checkToken()) {
         $display = plugin_savesubmission_calendar ($_POST);
@@ -403,7 +403,7 @@ case 'deleteevent':
 case $LANG_CAL_1[51]:
     if (($_CA_CONF['personalcalendars'] == 1) && SEC_checkToken()) {
         $eid = COM_applyFilter ($_REQUEST['eid']);
-        if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+        if (!empty($eid) && !COM_isAnonUser()) {
             DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
             $display .= COM_refresh ($_CONF['site_url']
                      . '/calendar/index.php?mode=personal&amp;msg=26');
@@ -418,7 +418,7 @@ case $LANG_CAL_1[51]:
 case 'edit':
     if ($_CA_CONF['personalcalendars'] == 1) {
         $eid = COM_applyFilter ($_GET['eid']);
-        if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+        if (!empty($eid) && !COM_isAnonUser()) {
             $result = DB_query ("SELECT * FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})");
             if (DB_numRows ($result) == 1) {
                 $A = DB_fetchArray ($result);
@@ -453,7 +453,7 @@ default:
     }
     if (!empty ($eid)) {
         if (($mode == 'personal') && ($_CA_CONF['personalcalendars'] == 1) &&
-                (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+                !COM_isAnonUser()) {
             $datesql = "SELECT * FROM {$_TABLES['personal_events']} "
                      . "WHERE (eid = '$eid') AND (uid = {$_USER['uid']})";
             $pagetitle = $LANG_CAL_2[28] . ' ' . COM_getDisplayName();
