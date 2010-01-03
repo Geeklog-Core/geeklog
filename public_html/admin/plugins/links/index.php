@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -490,7 +490,7 @@ function deleteLink($lid, $type = '')
             COM_accessLog("User {$_USER['username']} tried to illegally delete link submission $lid.");
         }
     } else {
-        COM_errorLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
+        COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
     }
 
     return COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
