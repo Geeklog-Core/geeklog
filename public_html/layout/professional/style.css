@@ -436,6 +436,8 @@ select {
 .fieldhelp {
   font-size:0.8em;
   color:#666666;
+  padding-left:0.8em;
+  padding-right:0.8em;
 }
 /* Footer *********************************************************************/
 .footerblock {

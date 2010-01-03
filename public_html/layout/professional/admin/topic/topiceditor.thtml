@@ -10,7 +10,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_storiesperpage}:</td>
-                                        <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"{xhtml}> ({lang_defaultis} {default_limit})</td>
+                                        <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"{xhtml}> <span class="fieldhelp">{lang_defaultis} {default_limit}</span></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_topicname}:</td>
@@ -34,11 +34,11 @@
                                     </tr>                                     
                                     <tr>
                                         <td class="alignright">{lang_defaulttopic}:</td>
-                                        <td><input type="checkbox" name="is_default" {default_checked}{xhtml}> ({lang_defaulttext})</td>
+                                        <td><input type="checkbox" name="is_default" {default_checked}{xhtml}> <span class="fieldhelp">{lang_defaulttext}</span></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_archivetopic}:</td>
-                                        <td><input type="checkbox" name="is_archive" {archive_checked} {archive_disabled}{xhtml}> ({lang_archivetext})</td>
+                                        <td><input type="checkbox" name="is_archive" {archive_checked} {archive_disabled}{xhtml}> <span class="fieldhelp">{lang_archivetext}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_num_stories}:</td>
