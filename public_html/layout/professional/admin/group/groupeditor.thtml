@@ -20,6 +20,12 @@
                                             <span class="fieldhelp">{lang_defaultgrp_msg}</span>
                                         </td>
                                     </tr>
+                                    <tr id="applydefault_row" {hide_defaultoption}>
+                                        <td class="alignright">&nbsp;</td>
+                                        <td><input type="checkbox" name="chk_applydefault" value="1"{xhtml}>
+                                            <span class="fieldhelp">{lang_applydefault_msg}</span>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td colspan="2"><hr{xhtml}></td>
                                     </tr>
