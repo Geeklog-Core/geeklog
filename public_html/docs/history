@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Blocks could not contain words in curly braces as they were mistaken for
+  template variables (bug #0001057) [Dirk]
 - Allow groups to be marked as a Default Group. New users will automatically be
   added to all default groups (feature request #0000798) [Dirk]
 - Make sure all onclick events in the Configuration return false (bug #0001054)

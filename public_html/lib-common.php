@@ -3708,30 +3708,29 @@ function COM_formatBlock( $A, $noboxes = false )
         }
     }
 
-    if( !empty( $A['content'] ) && ( trim( $A['content'] ) != '' ) && !$noboxes )
-    {
-        $blockcontent = stripslashes( $A['content'] );
+    if (!empty($A['content']) && (trim($A['content']) != '') && !$noboxes) {
+        $blockcontent = stripslashes($A['content']);
 
         // Hack: If the block content starts with a '<' assume it
         // contains HTML and do not call nl2br() which would only add
         // unwanted <br> tags.
 
-        if( substr( $blockcontent, 0, 1 ) != '<' )
-        {
-            $blockcontent = nl2br( $blockcontent );
+        if (substr($blockcontent, 0, 1) != '<') {
+            $blockcontent = nl2br($blockcontent);
         }
 
         // autotags are only(!) allowed in normal blocks
-        if(( $A['allow_autotags'] == 1 ) && ( $A['type'] == 'normal' ))
-        {
-            $blockcontent = PLG_replaceTags( $blockcontent );
+        if (($A['allow_autotags'] == 1) && ($A['type'] == 'normal')) {
+            $blockcontent = PLG_replaceTags($blockcontent);
         }
-        $blockcontent = str_replace( array( '<?', '?>' ), '', $blockcontent );
+        $blockcontent = str_replace(array('<?', '?>'), '', $blockcontent);
+        $blockcontent = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                                    $blockcontent);
 
-        $retval .= COM_startBlock( $A['title'], $A['help'],
-                       COM_getBlockTemplate( $A['name'], 'header', $position ))
+        $retval .= COM_startBlock($A['title'], $A['help'],
+                       COM_getBlockTemplate($A['name'], 'header', $position))
                 . $blockcontent . LB
-                . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer', $position ));
+                . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
     }
 
     return $retval;
