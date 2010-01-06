@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -362,12 +362,16 @@ function editblock ($bid = '')
     } else {
         $block_templates->set_var ('block_rdfupdated', $A['rdfupdated']);
     }
-    $block_templates->set_var ('lang_normalblockoptions', $LANG21[16]);
-    $block_templates->set_var ('lang_blockcontent', $LANG21[17]);
-    $block_templates->set_var ('lang_autotags', $LANG21[66]);
-    $block_templates->set_var ('lang_use_autotags', $LANG21[67]);
-    $block_templates->set_var ('block_content',
-                               htmlspecialchars (stripslashes ($A['content'])));
+    $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
+    $block_templates->set_var('lang_blockcontent', $LANG21[17]);
+    $block_templates->set_var('lang_autotags', $LANG21[66]);
+    $block_templates->set_var('lang_use_autotags', $LANG21[67]);
+
+    $content = htmlspecialchars(stripslashes($A['content']));
+    $content = str_replace(array('{', '}'), array('&#123;', '&#125;'),
+                           $content);
+    $block_templates->set_var('block_content', $content);
+
     if ($A['allow_autotags'] == 1) {
         $block_templates->set_var ('allow_autotags', 'checked="checked"');
     } else {
