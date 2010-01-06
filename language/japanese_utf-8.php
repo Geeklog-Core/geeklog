@@ -969,7 +969,10 @@ $LANG28 = array(
     84 => "あなたのログイン名: %s  サイト名: {$_CONF['site_url']}",
     85 => 'パスワードを紛失した場合には、以下のリンクをクリックしてください: %s',
     86 => '含む',
-    87 => 'リマインダー'
+    87 => 'リマインダー',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################

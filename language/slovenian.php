@@ -963,7 +963,10 @@ $LANG28 = array(
     84 => "Vaše uporabniško ime je: %s  za internetno stran: {$_CONF['site_url']}",
     85 => 'èe ste pozabili geslo, uporabite tole povezavo: %s',
     86 => 'Include',
-    87 => 'Reminders'
+    87 => 'Reminders',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################

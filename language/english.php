@@ -964,7 +964,8 @@ $LANG28 = array(
     86 => 'Include',
     87 => 'Reminders',
     88 => 'Default Group',
-    89 => 'Check to make this a default group for new users'
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################

@@ -961,7 +961,10 @@ $LANG28 = array(
     84 => "Meie lehel: {$_CONF['site_url']} on sinu kasutajanimi  : %s",
     85 => 'Kui unustasid oma salasõna, kasuta järgmist linki: %s',
     86 => 'Lisa',
-    87 => 'Meeldetuletused'
+    87 => 'Meeldetuletused',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################

@@ -963,7 +963,10 @@ $LANG28 = array(
     84 => "你的用戶名是: %s 我們的網站是: {$_CONF['site_url']}",
     85 => '若你忘記你的密碼請跟從這個連結: %s',
     86 => 'Include',
-    87 => 'Reminders'
+    87 => 'Reminders',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################

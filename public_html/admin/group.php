@@ -54,6 +54,9 @@ require_once 'auth.inc.php';
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
+// Set this to true to get various debug messages from this script
+$_GROUP_VERBOSE = false;
+
 $display = '';
 
 // Make sure user has rights to access this page
@@ -76,7 +79,7 @@ if (!SEC_hasRights('group.edit')) {
 function editgroup($grp_id = '')
 {
     global $_TABLES, $_CONF, $_USER, $LANG_ACCESS, $LANG_ADMIN, $MESSAGE,
-           $LANG28, $VERBOSE;
+           $LANG28, $_GROUP_VERBOSE;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
@@ -114,6 +117,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_admingrp_msg', $LANG28[50]);
     $group_templates->set_var('lang_defaultgroup', $LANG28[88]);
     $group_templates->set_var('lang_defaultgrp_msg', $LANG28[89]);
+    $group_templates->set_var('lang_applydefault_msg', $LANG28[90]);
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('lang_securitygroups',
@@ -174,6 +178,20 @@ function editgroup($grp_id = '')
     }
     if (isset($A['grp_name'])) {
         $group_templates->set_var('group_name', $A['grp_name']);
+
+        switch ($A['grp_name']) {
+        case 'All Users':
+        case 'Logged-in Users':
+        case 'Remote Users':
+            $group_templates->set_var('hide_defaultoption',
+                                      ' style="display:none;"');
+            break;
+
+        default:
+            $group_templates->set_var('hide_defaultoption', '');
+            break;
+        }
+
     } else {
         $group_templates->set_var('group_name', '');
     }
@@ -221,7 +239,7 @@ function editgroup($grp_id = '')
                                   $LANG_ACCESS['groupmsg']);
         $group_templates->set_var('hide_adminoption', '');
     }
-    if ($VERBOSE) {
+    if ($_GROUP_VERBOSE) {
         COM_errorLog("SELECTED: $selected");
     }
 
@@ -348,9 +366,8 @@ function getIndirectFeatures ($grp_id)
 */
 function printrights($grp_id = '', $core = 0)
 {
-    global $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
+    global $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
-    // $VERBOSE = true;
     // this gets a bit complicated so bear with the comments
 
     // get a list of all the features that the current user (i.e. Group Admin)
@@ -395,7 +412,7 @@ function printrights($grp_id = '', $core = 0)
 
         // Now merge the two arrays
         $grpftarray = array_merge ($grpftarray, $grpftarray1);
-        if ($VERBOSE) {
+        if ($_GROUP_VERBOSE) {
             // this is for debugging purposes
             for ($i = 1; $i < count($grpftarray); $i++) {
                 COM_errorLog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
@@ -459,6 +476,52 @@ function printrights($grp_id = '', $core = 0)
 }
 
 /**
+* Add or remove a default group to/from all existing accounts
+*
+* @param    int     $grp_id     ID of default group
+* @param    boolean $add        true: add, false: remove
+* @return   void
+*
+*/
+function applydefaultgroup($grp_id, $add = true)
+{
+    global $_TABLES, $_GROUP_VERBOSE;
+
+    /**
+    * In the "add" case, we have to insert one record for each user. Pack this
+    * many values into one INSERT statement to save some time and bandwidth.
+    */
+    $_values_per_insert = 25;
+
+    if ($_GROUP_VERBOSE) {
+        if ($add) {
+            COM_errorLog("Adding group '$grp_id' to all user accounts");
+        } else {
+            COM_errorLog("Removing group '$grp_id' from all user accounts");
+        }
+    }
+
+    if ($add) {
+        $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE uid > 1");
+        $num_users = DB_numRows($result);
+        for ($i = 0; $i < $num_users; $i += $_values_per_insert) {
+            $u = array();
+            for ($j = 0; $j < $_values_per_insert; $j++) {
+                list($uid) = DB_fetchArray($result);
+                $u[] = $uid;
+                if ($i + $j + 1 >= $num_users) {
+                    break;
+                }
+            }
+            $v = "($grp_id," . implode("), ($grp_id,", $u) . ')';
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES " . $v);
+        }
+    } else {
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_main_grp_id = $grp_id) AND (ug_grp_id IS NULL)");
+    }
+}
+
+/**
 * Save a group to the database
 *
 * @param    string  $grp_id         ID of group to save
@@ -467,14 +530,15 @@ function printrights($grp_id = '', $core = 0)
 * @param    boolean $grp_admin      Flag that indicates this is an admin use group
 * @param    boolean $grp_gl_core    Flag that indicates if this is a core Geeklog group
 * @param    boolean $grp_default    Flag that indicates if this is a default group
+* @param    boolean $grp_applydefault  Flag that indicates whether to apply a change in $grp_default to all existing user accounts
 * @param    array   $features       Features the group has access to
 * @param    array   $groups         Groups this group will belong to
 * @return   string                  HTML refresh or error message
 *
 */
-function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $grp_default, $features, $groups)
+function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $grp_default, $grp_applydefault, $features, $groups)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
     $retval = '';
     if (!empty($grp_name) && !empty($grp_descr)) {
@@ -498,7 +562,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         $g_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                             "grp_name = '$grp_name'");
         if ($g_id > 0) {
-            if (empty ($grp_id) || ($grp_id != $g_id)) {
+            if (empty($grp_id) || ($grp_id != $g_id)) {
                 // there already is a group with that name - complain
                 $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
                 $retval .= COM_startBlock ($LANG_ACCESS['groupexists'], '',
@@ -512,9 +576,10 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             }
         }
 
-        $grp_descr = COM_stripslashes ($grp_descr);
-        $grp_descr = addslashes ($grp_descr);
+        $grp_descr = COM_stripslashes($grp_descr);
+        $grp_descr = addslashes($grp_descr);
 
+        $grp_applydefault_add = true;
         if (empty($grp_id)) {
             DB_save($_TABLES['groups'],
                     'grp_name,grp_descr,grp_gl_core,grp_default',
@@ -523,6 +588,18 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
                                  "grp_name = '$grp_name'");
             $new_group = true;
         } else {
+            if ($grp_applydefault == 1) {
+                // check if $grp_default changed
+                $old_default = DB_getItem($_TABLES['groups'], 'grp_default',
+                                          "grp_id = $grp_id");
+                if ($old_default == $grp_default) {
+                    // no change required
+                    $grp_applydefault = 0;
+                } elseif ($old_default == 1) {
+                    $grp_applydefault_add = false;
+                }
+            }
+
             DB_save($_TABLES['groups'],
                     'grp_id,grp_name,grp_descr,grp_gl_core,grp_default',
                     "$grp_id,'$grp_name','$grp_descr',$grp_gl_core,$grp_default");
@@ -539,7 +616,8 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             return $retval;
         }
 
-        // Use the field grp_gl_core to indicate if this is non-core GL Group is an Admin related group
+        // Use the field grp_gl_core to indicate if this non-core GL Group
+        // is an Admin related group
         if (($grp_gl_core != 1) AND ($grp_id > 1)) {
             if ($grp_admin == 1) {
                 DB_query("UPDATE {$_TABLES['groups']} SET grp_gl_core=2 WHERE grp_id=$grp_id");
@@ -564,7 +642,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
                 }
             }
         }
-        if ($VERBOSE) {
+        if ($_GROUP_VERBOSE) {
             COM_errorLog('groups = ' . $groups);
             COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
         }
@@ -573,7 +651,9 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         if (! empty($groups)) {
             foreach ($groups as $g) {
                 if (in_array($g, $GroupAdminGroups)) {
-                    if ($VERBOSE) COM_errorLog("adding group_assignment $g for $grp_name",1);
+                    if ($_GROUP_VERBOSE) {
+                        COM_errorLog("adding group_assignment $g for $grp_name",1);
+                    }
                     $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($g,$grp_id)";
                     DB_query($sql);
                 }
@@ -592,6 +672,10 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             "(ug_uid = {$_USER['uid']}) AND (ug_main_grp_id = $grp_id)") == 0) {
                 DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($grp_id,{$_USER['uid']})");
             }
+        }
+
+        if ($grp_applydefault == 1) {
+            applydefaultgroup($grp_id, $grp_applydefault_add);
         }
 
         if ($new_group) {
@@ -1122,6 +1206,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['chk_grpdefault'])) {
         $grp_default = 1;
     }
+    $grp_applydefault = 0;
+    if (isset($_POST['chk_applydefault'])) {
+        $grp_applydefault = 1;
+    }
     $chk_grpadmin = '';
     if (isset($_POST['chk_grpadmin'])) {
         $chk_grpadmin = COM_applyFilter($_POST['chk_grpadmin']);
@@ -1137,7 +1225,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= savegroup(COM_applyFilter($_POST['grp_id'], true),
                           COM_applyFilter($_POST['grp_name']),
                           $_POST['grp_descr'], $chk_grpadmin, $grp_gl_core,
-                          $grp_default, $features, $groups);
+                          $grp_default, $grp_applydefault, $features, $groups);
 } elseif (($mode == 'savegroupusers') && SEC_checkToken()) {
     $grp_id = COM_applyFilter($_REQUEST['grp_id'], true);
     $display .= savegroupusers($grp_id, $_POST['groupmembers']);

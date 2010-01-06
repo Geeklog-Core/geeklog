@@ -962,7 +962,10 @@ $LANG28 = array(
     84 => "שם המשתמש שלך הוא: %s  בשביל האתר: {$_CONF['site_url']}",
     85 => 'אם שכחתם את הסיסמה, השתמשו בקישור הבא: %s',
     86 => 'שיוך',
-    87 => 'תזכורות'
+    87 => 'תזכורות',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################
