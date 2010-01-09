@@ -365,7 +365,7 @@ $LANG04 = array(
     137 => 'Filter Story Content',
     138 => 'Misc Settings',
     139 => 'Layout and Language',
-    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics<li>Set the maximum number of stories to show per page</li><li>Set your theme and perferred date format</li>',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics</li><li>Set the maximum number of stories to show per page</li><li>Set your theme, timezone and preferred date format</li>',
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users & admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
     143 => 'Filter Block Content',
@@ -384,7 +384,8 @@ $LANG04 = array(
     161 => 'will be scaled down',
     162 => 'will not be scaled',
     163 => 'Re-Authentication Failed',
-    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    165 => 'Use Advanced Editor'
 );
 
 ###############################################################################

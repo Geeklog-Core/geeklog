@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Added an option (under My Account > Layout & Language) for users to select
+  whether they want to use the Advanced Editor or not. The option is on by
+  default but only available when Advanced Editor has been enabled in the
+  Configuration (feature request #0000984) [Dirk]
 - Added support for textarea input fields in the Configuration (feature request
   #0000905) [Dirk]
 - Blocks could not contain words in curly braces as they were mistaken for

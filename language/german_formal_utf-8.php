@@ -370,7 +370,7 @@ $LANG04 = array(
     137 => 'Artikel ausfiltern',
     138 => 'Darstellung und Sprache',
     139 => 'Darstellung und Sprache',
-    140 => '<li>Kategorien ohne Icons: Wenn angekreuzt werden in Artikeln keine Icons mehr angezeigt.</li><li>Keine Blöcke: Wenn angekreuzt werden nur noch die Blöcke Einstellungen, Kategorien und der Admin-Block angezeigt.<li>Einstellung für die maximale Anzahl von Artikeln pro Seite.</li><li>Wählen Sie das Erscheinungsbild der Website und das bevorzugte Datumsformat.</li>',
+    140 => '<li>Kategorien ohne Icons: Wenn angekreuzt werden in Artikeln keine Icons mehr angezeigt.</li><li>Keine Blöcke: Wenn angekreuzt werden nur noch die Blöcke Einstellungen, Kategorien und der Admin-Block angezeigt.<li>Einstellung für die maximale Anzahl von Artikeln pro Seite.</li><li>Wählen Sie das Erscheinungsbild der Website, Ihre Zeitzone und das bevorzugte Datumsformat.</li>',
     141 => 'Privatsphäre',
     142 => 'Hier können Sie einstellen, ob Ihnen andere User und Admins E-Mails schicken können und ob Sie im Block "Wer ist online?" namentlich oder nur anonym erscheinen wollen.',
     143 => 'Blöcke anzeigen',
@@ -389,7 +389,8 @@ $LANG04 = array(
     161 => 'wird ggfs. skaliert',
     162 => 'wird nicht skaliert',
     163 => 'Re-Authentication Failed',
-    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.'
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    165 => 'WYSIWYG-Editor'
 );
 
 ###############################################################################
@@ -1873,7 +1874,7 @@ $LANG_confignames['Core'] = array(
     'login_speedlimit' => 'Login Speed-Limit',
     'user_html' => 'Erlaubtes User HTML',
     'admin_html' => 'Erlaubtes Admin HTML',
-    'advanced_html' => 'Zusätzl. HTML f.d. WYSIWYG Editor',
+    'advanced_html' => 'Zusätzl. HTML f.d. WYSIWYG-Editor',
     'skip_html_filter_for_root' => 'HTML des Root ungefiltert?',
     'allowed_protocols' => 'Erlaubte Protokolle',
     'disable_autolinks' => 'Autolinks ausschalten?',

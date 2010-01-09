@@ -318,8 +318,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ( isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1 )
-        && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ( 'xhtml', XHTML );
@@ -677,7 +676,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode'));
 
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
-    if ($_CONF['advanced_editor'] == 1) {
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         if ($story->EditElements('advanced_editor_mode') == 1 OR $story->EditElements('postmode') == 'adveditor') {
             $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
         } else {

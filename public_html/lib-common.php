@@ -240,6 +240,10 @@ require_once( $_CONF['path_system'] . 'lib-custom.php' );
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 TimeZoneConfig::setUserTimeZone();
 
+if (COM_isAnonUser()) {
+    $_USER['advanced_editor'] = $_CONF['advanced_editor'];
+}
+
 /**
 * Ulf Harnhammar's kses class
 *
@@ -1206,17 +1210,12 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         }
     }
 
-    if( isset( $_CONF['advanced_editor'] ) && ( $_CONF['advanced_editor'] == 1 )
-            && file_exists( $_CONF['path_layout']
-                            . 'advanced_editor_header.thtml' ))
-    {
-        $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
-        $header->parse( 'advanced_editor', 'editor' );
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+        $header->set_file('editor', 'advanced_editor_header.thtml');
+        $header->parse('advanced_editor', 'editor');
 
-    }
-    else
-    {
-         $header->set_var( 'advanced_editor', '' );
+    } else {
+         $header->set_var('advanced_editor', '');
     }
 
     // Call any plugin that may want to include extra Meta tags
@@ -3081,13 +3080,13 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     else
     {
-        if ($_CONF['advanced_editor'] && is_array($_CONF['advanced_html'])) {
-            $html = array_merge_recursive( $_CONF['user_html'],
-                                           $_CONF['admin_html'],
-                                           $_CONF['advanced_html'] );
+        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+            $html = array_merge_recursive($_CONF['user_html'],
+                                          $_CONF['admin_html'],
+                                          $_CONF['advanced_html']);
         } else {
-            $html = array_merge_recursive( $_CONF['user_html'],
-                                           $_CONF['admin_html'] );
+            $html = array_merge_recursive($_CONF['user_html'],
+                                          $_CONF['admin_html']);
         }
     }
 

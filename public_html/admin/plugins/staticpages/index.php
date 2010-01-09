@@ -85,20 +85,14 @@ function staticpageeditor_form($A, $error = false)
         }
         SEC_setDefaultPermissions($A, $_SP_CONF['default_permissions']);
         $access = 3;
-        if (isset($_CONF['advanced_editor']) &&
-          ($_CONF['advanced_editor'] == 1) &&
-          file_exists($template_path . '/editor_advanced.thtml'))
-        {
+        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
              $A['advanced_editor_mode'] = 1;
         }
     }
     $retval = '';
 
     $sp_template = new Template($template_path);
-    if (isset($_CONF['advanced_editor']) &&
-        ($_CONF['advanced_editor'] == 1) &&
-        file_exists($template_path . '/editor_advanced.thtml'))
-    {
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);

@@ -1,0 +1,4 @@
+   <tr>
+        <td style="width:100px;"><label for="advanced_editor">{lang_advanced_editor}:</label></td>
+        <td><input type="checkbox" id="advanced_editor" name="advanced_editor" {advanced_editor_checked}{xhtml}></td>
+   </tr>

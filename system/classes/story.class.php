@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2006-2009 by the following authors:                         |
+// | Copyright (C) 2006-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis, mike AT fuckingbrit DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -493,7 +493,8 @@ class Story
             $this->_trackbacks = 0;
             $this->_numemails = 0;
 
-            if (isset($_CONF['advanced_editor']) && $_CONF['advanced_editor'] && ($_CONF['postmode'] != 'plaintext')) {
+            if (($_CONF['advanced_editor'] && $_USER['advanced_editor']) &&
+                    ($_CONF['postmode'] != 'plaintext')) {
                 $this->_advanced_editor_mode = 1;
                 $this->_postmode = 'adveditor';
             } else {

@@ -198,6 +198,11 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
 
 <ul>
+<li>A new option in My Account allows users to enable/disable the Advanced
+    Editor. Requires a new template variable <tt>{advanced_editor_option}</tt>
+    in <tt>preferences/displayblock.thtml</tt> and a new template file
+    <tt>preferences/editor.thtml</tt> for the actual option (hidden unless
+    Advanced Editor is enabled globally in the Configuration).</li>
 <li>The Group Editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
     new options for default groups (<tt>chk_grpdefault</tt> and
     <tt>chk_applydefault</tt> checkboxes + language variables).</li>

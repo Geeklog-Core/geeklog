@@ -22,4 +22,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE ipaddress ipaddress varcha
 // new "Default Group" flag
 $_SQL[] = "ALTER TABLE {$_TABLES['groups']} ADD grp_default tinyint(1) unsigned NOT NULL default '0' AFTER grp_gl_core";
 
+// allow users to choose whether they want to use the Advanced Editor or not
+$_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD advanced_editor tinyint(1) unsigned NOT NULL default '1' AFTER dfid";
+$_SQL[] = "UPDATE {$_TABLES['userprefs']} SET advanced_editor = 0 WHERE uid = 1";
+
 ?>

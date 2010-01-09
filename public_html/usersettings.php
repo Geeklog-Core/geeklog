@@ -327,9 +327,9 @@ function deleteUserAccount ($form_reqid)
 */
 function editpreferences()
 {
-    global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04;
 
-    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline,advanced_editor FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
 
@@ -352,10 +352,12 @@ function editpreferences()
                                    'comment' => 'commentblock.thtml',
                                    'language' => 'language.thtml',
                                    'theme' => 'theme.thtml',
-                                   'privacy' => 'privacyblock.thtml'
+                                   'privacy' => 'privacyblock.thtml',
+                                   'editor' => 'editor.thtml'
                                   ));
-    $preferences->set_var ( 'xhtml', XHTML );
+    $preferences->set_var ('xhtml', XHTML);
     $preferences->set_var ('site_url', $_CONF['site_url']);
+    $preferences->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
     $preferences->set_var ('user_name', $_USER['username']);
@@ -515,6 +517,18 @@ function editpreferences()
         $preferences->parse('theme_selection', 'theme', true);
     } else {
         $preferences->set_var('theme_selection', '');
+    }
+
+    if ($_CONF['advanced_editor'] == 1) {
+        $preferences->set_var('lang_advanced_editor', $LANG04[165]);
+        if ($A['advanced_editor'] == 1) {
+            $preferences->set_var('advanced_editor_checked', 'checked="checked"');
+        } else {
+            $preferences->set_var('advanced_editor_checked', '');
+        }
+        $preferences->parse('advanced_editor_option', 'editor', true);
+    } else {
+        $preferences->set_var('advanced_editor_option', '');
     }
 
     // Timezone
@@ -1340,6 +1354,11 @@ function savepreferences($A)
     } else {
         $A['showonline'] = 0;
     }
+    if (isset($A['advanced_editor']) && ($A['advanced_editor'] == 'on')) {
+        $A['advanced_editor'] = 1;
+    } else {
+        $A['advanced_editor'] = 0;
+    }
 
     $A['maxstories'] = COM_applyFilter ($A['maxstories'], true);
     if (empty ($A['maxstories'])) {
@@ -1436,7 +1455,7 @@ function savepreferences($A)
 
     $A['dfid'] = COM_applyFilter ($A['dfid'], true);
 
-    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
+    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}', advanced_editor='{$A['advanced_editor']}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {
         $etids = '-';

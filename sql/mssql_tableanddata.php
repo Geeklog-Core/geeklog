@@ -448,6 +448,7 @@ CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
     [noicons] [tinyint] NULL ,
     [willing] [tinyint] NULL ,
     [dfid] [tinyint] NULL ,
+    [advanced_editor] [tinyint] NULL ,
     [tzid] [varchar] (125) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [emailstories] [smallint] NULL ,
     [emailfromadmin] [smallint] NULL ,

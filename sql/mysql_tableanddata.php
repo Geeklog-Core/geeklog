@@ -485,6 +485,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
   noicons tinyint(1) unsigned NOT NULL default '0',
   willing tinyint(3) unsigned NOT NULL default '1',
   dfid tinyint(3) unsigned NOT NULL default '0',
+  advanced_editor tinyint(1) unsigned NOT NULL default '1',
   tzid varchar(125) NOT NULL default '',
   emailstories tinyint(4) NOT NULL default '1',
   emailfromadmin tinyint(1) NOT NULL default '1',

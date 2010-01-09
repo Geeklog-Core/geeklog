@@ -792,9 +792,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         } else {
 
-            if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'comment/commentform_advanced.thtml')) {
+            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $postmode = 'html';
-            } elseif (empty ($postmode)) {
+            } elseif (empty($postmode)) {
                 $postmode = $_CONF['postmode'];
             }
 
@@ -880,10 +880,10 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             }
 
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
-            if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'comment/commentform_advanced.thtml')) {
-                $comment_template->set_file('form','commentform_advanced.thtml');
+            if ($_CONF['advanced_editor'] && $_USER['advanced_editor'])
+                $comment_template->set_file('form', 'commentform_advanced.thtml');
             } else {
-                $comment_template->set_file('form','commentform.thtml');
+                $comment_template->set_file('form', 'commentform.thtml');
             }
             $comment_template->set_var('xhtml', XHTML);
             $comment_template->set_var('site_url', $_CONF['site_url']);
