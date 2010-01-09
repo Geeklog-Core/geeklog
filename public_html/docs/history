@@ -37,6 +37,7 @@ Geeklog History/Changes:
 
 Links Plugin
 ------------
+- Added a link to "New category" from the Links editor [Dirk]
 - Fixed localization of "Root" category (bug #0001047) [Dirk]
 
 Polls Plugin

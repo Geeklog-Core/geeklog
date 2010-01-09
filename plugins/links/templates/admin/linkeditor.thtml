@@ -28,7 +28,8 @@
                                             <td>
                                                 <select name="categorydd">
                                                     {category_options}
-                                                </select>
+                                                </select> &nbsp;
+                                                <a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a>
                                             </td>
                                         </tr>
                                         <tr>
