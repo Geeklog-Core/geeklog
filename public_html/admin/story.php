@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -188,7 +188,7 @@ function liststories($current_topic = '')
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
+        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
               'text' => $LANG_ADMIN['create_new'])
     );
 
@@ -854,12 +854,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } else if (($mode == $LANG_ADMIN['preview']) && !empty ($LANG_ADMIN['preview'])) {
     $display .= COM_siteHeader('menu', $LANG24[5]);
-    $editor = '';
-    if (!empty ($_GET['editor'])) {
-        $editor = COM_applyFilter ($_GET['editor']);
-    }
-    $display .= storyeditor (COM_applyFilter ($_POST['sid']), 'preview', '', '',
-                             $editor);
+    $display .= storyeditor(COM_applyFilter($_POST['sid']), 'preview', '', '');
     $display .= COM_siteFooter();
     COM_output($display);
 } elseif (($mode == 'edit') || ($mode == 'clone')) {
@@ -872,11 +867,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_GET['topic'])) {
         $topic = COM_applyFilter ($_GET['topic']);
     }
-    $editor = '';
-    if (isset ($_GET['editor'])) {
-        $editor = COM_applyFilter ($_GET['editor']);
-    }
-    $display .= storyeditor ($sid, $mode, '', $topic, $editor);
+    $display .= storyeditor($sid, $mode, '', $topic);
     $display .= COM_siteFooter();
     COM_output($display);
 } else if ($mode == 'editsubmission') {
