@@ -601,8 +601,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 
     $user_templates = new Template ($_CONF['path_layout'] . 'users');
     $user_templates->set_file('login', 'loginform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     if ($statusmode == 0) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
         $user_templates->set_var('lang_message', $LANG04[115]);
