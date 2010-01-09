@@ -621,7 +621,7 @@ class config {
 
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
                         'select-element', 'list-element', 'unset-param',
-                        'keyed-add-button', 'unkeyed-add-button');
+                        'keyed-add-button', 'unkeyed-add-button', 'text-area');
         foreach ($blocks as $block) {
             $t->set_block('element', $block);
         }
@@ -677,6 +677,8 @@ class config {
             return $t->finish($t->parse('output', 'unset-param'));
         } elseif ($type == "text") {
             return $t->finish($t->parse('output', 'text-element'));
+        } elseif ($type == "textarea") {
+            return $t->finish($t->parse('output', 'text-area'));
         } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
         } elseif ($type == 'select') {

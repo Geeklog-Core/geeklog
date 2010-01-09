@@ -7,6 +7,11 @@ $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = '%select', selectionArray
 // make $_CONF['default_perm_cookie_timeout'] option a dropdown
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'select' WHERE name = 'default_perm_cookie_timeout' AND group_name = 'Core'";
 
+// change some config options to use a textarea instead of a one-line text field
+$_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'textarea' WHERE name = 'site_disabled_msg' AND group_name = 'Core'";
+$_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'textarea' WHERE name = 'meta_description' AND group_name = 'Core'";
+$_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'textarea' WHERE name = 'meta_keywords' AND group_name = 'Core'";
+
 // make room to store IPv6 addresses
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ALTER COLUMN [ipaddress] varchar(39) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['commentsubmissions']} ALTER COLUMN [ipaddress] varchar(39) NOT NULL";

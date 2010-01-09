@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Added support for textarea input fields in the Configuration (feature request
+  #0000905) [Dirk]
 - Blocks could not contain words in curly braces as they were mistaken for
   template variables (bug #0001057) [Dirk]
 - Allow groups to be marked as a Default Group. New users will automatically be

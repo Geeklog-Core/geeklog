@@ -48,12 +48,12 @@ function install_config()
     $c->add('site_name','','text',0,0,NULL,60,TRUE);
     $c->add('site_slogan','','text',0,0,NULL,70,TRUE);
     $c->add('microsummary_short','GL: ','text',0,0,NULL,80,TRUE);
-    $c->add('site_disabled_msg','Geeklog Site is down. Please come back soon.','text',0,0,NULL,510,TRUE);
+    $c->add('site_disabled_msg','Geeklog Site is down. Please come back soon.','textarea',0,0,NULL,510,TRUE);
     $c->add('copyrightyear',date('Y'),'text',0,0,NULL,1440,FALSE);
     $c->add('url_rewrite',FALSE,'select',0,0,1,1800,TRUE);
     $c->add('meta_tags',0,'select',0,0,23,2000,TRUE);
-    $c->add('meta_description','Geeklog, the open source content management system designed with security in mind.','text',0,0,NULL,2010,TRUE);
-    $c->add('meta_keywords','Geeklog, Blog, Content Management System, CMS, Open Source, Security','text',0,0,NULL,2020,TRUE);
+    $c->add('meta_description','Geeklog, the open source content management system designed with security in mind.','textarea',0,0,NULL,2010,TRUE);
+    $c->add('meta_keywords','Geeklog, Blog, Content Management System, CMS, Open Source, Security','textarea',0,0,NULL,2020,TRUE);
 
     $c->add('fs_mail', NULL, 'fieldset', 0, 1, NULL, 0, TRUE);
     $c->add('site_mail','','text',0,1,NULL,40,TRUE);
