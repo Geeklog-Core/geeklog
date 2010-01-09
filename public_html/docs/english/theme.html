@@ -198,6 +198,12 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
 
 <ul>
+<li>The Group Editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
+    new options for default groups (<tt>chk_grpdefault</tt> and
+    <tt>chk_applydefault</tt> checkboxes + language variables).</li>
+<li>The <tt>fieldhelp</tt> class was changed to include left and right padding
+    so that the hard-coded padding could be removed from the group editor
+    template, <tt>admin/group/groupeditor.thtml</tt>.</li>
 <li>For consistency: The template variables for the headline texts in
     <tt>admin/common/edit_permissions.thtml</tt> are now also available with a
     <code>lang_</code> prefix (<code>{lang_owner}</code>, etc).</li>
@@ -210,6 +216,15 @@ featured and archived stories.</li>
     <tt>admin/topic/topiceditor.thtml</tt>, to hide the text entry fields for
     the meta description and meta keywords when meta tag support is
     disabled.</li>
+<li>All <tt>onclick</tt> events in the Configuration templates should return
+    <code>false</code>. In <tt>admin/config/menu_element.thtml</tt>, the return
+    statement was missing for the <code>open_group</code> and
+    <code>open_subgroup</code> calls.
+    In <tt>admin/config/config_element.thtml</tt>, it was missing for the
+    <tt>unset-param</tt> case (i.e. the call to <code>restore</code>).</li>
+<li>Added a new textarea section to <tt>admin/config/config_element.thtml</tt>
+    to allow for configuration options to use a multi-line text entry
+    field.</li>
 <li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
     <code>select-element</code>, <code>{hide_row}</code> was added for the
     table row and a <code>{delete}</code> option was added after the
