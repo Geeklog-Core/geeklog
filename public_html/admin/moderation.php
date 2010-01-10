@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -90,9 +90,9 @@ function commandcontrol($token)
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
     $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));

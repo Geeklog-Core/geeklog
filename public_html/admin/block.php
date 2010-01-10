@@ -258,8 +258,8 @@ function editblock ($bid = '')
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
-    $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('xhtml', XHTML);
+    $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_start = COM_startBlock($LANG21[3], '',

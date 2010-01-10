@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -472,10 +472,10 @@ class config {
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
 
+        $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
         $t->set_var('layout_url', $_CONF['layout_url']);
-        $t->set_var('xhtml', XHTML);
         $t->set_var('gltoken_name', CSRF_TOKEN);
         $t->set_var('gltoken', SEC_createToken());
 
@@ -626,10 +626,10 @@ class config {
             $t->set_block('element', $block);
         }
 
+        $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
         $t->set_var('layout_url', $_CONF['layout_url']);
-        $t->set_var('xhtml', XHTML);
 
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
         $t->set_var('lang_enable', $LANG_CONFIG['enable']);

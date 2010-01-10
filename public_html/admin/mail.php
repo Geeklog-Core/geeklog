@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2009 by the following authors:                         |
+// | Copyright (C) 2001-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -86,6 +86,7 @@ function display_mailform ()
 
     $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
     $mail_templates->set_file(array('form' => 'mailform.thtml'));
+    $mail_templates->set_var('xhtml', XHTML);
     $mail_templates->set_var('site_url', $_CONF['site_url']);
     $mail_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $mail_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -124,7 +125,6 @@ function display_mailform ()
     $mail_templates->set_var('lang_send', $LANG31[12]);
     $mail_templates->set_var('end_block',
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
-    $mail_templates->set_var('xhtml', XHTML);
     $mail_templates->set_var('gltoken_name', CSRF_TOKEN);
     $mail_templates->set_var('gltoken', SEC_createToken());
 

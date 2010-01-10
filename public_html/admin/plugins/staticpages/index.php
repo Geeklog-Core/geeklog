@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Phill Gillespie  - phill AT mediaaustralia DOT com DOT au        |
@@ -94,6 +94,7 @@ function staticpageeditor_form($A, $error = false)
     $sp_template = new Template($template_path);
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
+
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);
         $sp_template->set_var('lang_toolbar', $LANG24[70]);
@@ -126,7 +127,12 @@ function staticpageeditor_form($A, $error = false)
     } else {
         $sp_template->set_file('form', 'editor.thtml');
     }
+
+    $sp_template->set_var('xhtml', XHTML);
+    $sp_template->set_var('site_url', $_CONF['site_url']);
+    $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
     $sp_template->set_var('layout_url', $_CONF['layout_url']);
+
     $sp_template->set_var('lang_mode', $LANG24[3]);
     $sp_template->set_var('comment_options',
                           COM_optionList($_TABLES['commentcodes'], 'code,name',
@@ -184,8 +190,6 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $sp_template->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
-    $sp_template->set_var('site_url', $_CONF['site_url']);
-    $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
 
     $token = SEC_createToken();
     $start_block = COM_startBlock($LANG_STATIC['staticpageeditor'], '',
@@ -445,7 +449,6 @@ function staticpageeditor_form($A, $error = false)
     }
     $sp_template->set_var('end_block',
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
-    $sp_template->set_var('xhtml', XHTML);
     $sp_template->set_var('gltoken_name', CSRF_TOKEN);
     $sp_template->set_var('gltoken', $token);
     $sp_template->parse('output', 'form');

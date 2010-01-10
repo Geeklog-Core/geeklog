@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -491,8 +491,8 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                                       'comments'   => 'pollcomments.thtml'));
                 $poll->set_var('xhtml', XHTML);
                 $poll->set_var('site_url', $_CONF['site_url']);
-                $poll->set_var('layout_url', $_CONF['layout_url']);
                 $poll->set_var('site_admin_url', $_CONF['site_admin_url']);
+                $poll->set_var('layout_url', $_CONF['layout_url']);
                 $poll->set_var('poll_id', $pid );
                 $poll->set_var('poll_topic', $P['topic'] );
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));

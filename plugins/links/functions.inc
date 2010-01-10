@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Links      |
 // | Plugins' PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -879,7 +879,9 @@ function plugin_submit_links()
 
     $linkform = new Template($_CONF['path'] . 'plugins/links/templates');
     $linkform->set_file('linkform', 'submitlink.thtml');
+    $linkform->set_var('xhtml', XHTML);
     $linkform->set_var('site_url', $_CONF['site_url']);
+    $linkform->set_var('site_admin_url', $_CONF['site_admin_url']);
     $linkform->set_var('layout_url', $_CONF['layout_url']);
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
@@ -893,7 +895,6 @@ function plugin_submit_links()
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
     $linkform->set_var('max_url_length', 255);
-    $linkform->set_var('xhtml', XHTML);
     $linkform->parse('theform', 'linkform');
     $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();

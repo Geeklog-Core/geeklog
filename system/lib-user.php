@@ -149,10 +149,12 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'welcome_email.txt'));
-        $template->set_var ( 'xhtml', XHTML );
+        $template->set_var ('xhtml', XHTML);
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('auth_info',
                             "$LANG04[2]: $username\n$LANG04[4]: $passwd");
-        $template->set_var ('site_url', $_CONF['site_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
         $template->set_var ('lang_text1', $LANG04[15]);
@@ -198,8 +200,10 @@ function USER_sendActivationEmail ($username, $useremail)
     if (file_exists ($_CONF['path_data'] . 'activation_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'activation_email.txt'));
-        $template->set_var ( 'xhtml', XHTML );
+        $template->set_var ('xhtml', XHTML);
         $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
         $template->set_var ('lang_text1', $LANG04[15]);

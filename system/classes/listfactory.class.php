@@ -583,6 +583,7 @@ class ListFactory {
         // insert std. values into the template
         $list_templates->set_var('xhtml', XHTML);
         $list_templates->set_var('site_url', $_CONF['site_url']);
+        $list_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
         $list_templates->set_var('layout_url', $_CONF['layout_url']);
 
         if (count($rows_arr) == 0)

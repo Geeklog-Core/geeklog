@@ -106,10 +106,10 @@ function editgroup($grp_id = '')
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor', 'groupeditor.thtml');
+    $group_templates->set_var('xhtml', XHTML);
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
-    $group_templates->set_var('xhtml', XHTML);
 
     $group_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
@@ -1052,11 +1052,12 @@ function editusers($group)
                 $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE);
 
     $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
-    $groupmembers->set_file(array('groupmembers'=>'groupmembers.thtml'));
+    $groupmembers->set_file(array('groupmembers' => 'groupmembers.thtml'));
+    $groupmembers->set_var('xhtml', XHTML);
     $groupmembers->set_var('site_url', $_CONF['site_url']);
     $groupmembers->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $groupmembers->set_var('group_listing_url', $group_listing_url);
     $groupmembers->set_var('layout_url', $_CONF['layout_url']);
+    $groupmembers->set_var('group_listing_url', $group_listing_url);
     $groupmembers->set_var('phpself', $_CONF['site_admin_url'] . '/group.php');
     $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
     $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']);
@@ -1071,7 +1072,6 @@ function editusers($group)
     $groupmembers->set_var('lang_grouplist', $LANG28[38]);
     $groupmembers->set_var('show_all', $showall);
     $groupmembers->set_var('group_id',$group);
-    $groupmembers->set_var('xhtml', XHTML);
     $groupmembers->set_var('gltoken_name', CSRF_TOKEN);
     $groupmembers->set_var('gltoken', SEC_createToken());
     $groupmembers->parse('output', 'groupmembers');

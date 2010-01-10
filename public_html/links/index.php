@@ -150,8 +150,10 @@ function links_list($message)
                                 'pagenav'  => 'pagenavigation.thtml',
                                 'catdrop'  => 'categorydropdown.thtml'));
     $linklist->set_var('xhtml', XHTML);
-    $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
+    $linklist->set_var('site_url', $_CONF['site_url']);
+    $linklist->set_var('site_admin_url', $_CONF['site_admin_url']);
     $linklist->set_var('layout_url', $_CONF['layout_url']);
+    $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
 
     if ($_LI_CONF['linkcols'] > 0) {
         // Create breadcrumb trail
@@ -234,7 +236,6 @@ function links_list($message)
         $linklist->parse('category_dropdown', 'catdrop', true);
     }
 
-    $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('cid', $cid);
     $linklist->set_var('cid_plain', $cid);
     $linklist->set_var('cid_encoded', urlencode($cid));
@@ -444,9 +445,11 @@ if (COM_isAnonUser() &&
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-    $login->set_var ( 'xhtml', XHTML );
-    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('xhtml', XHTML);
     $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $login->set_var ('layout_url', $_CONF['layout_url']);
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');

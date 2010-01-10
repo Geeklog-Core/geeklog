@@ -79,10 +79,10 @@ function userprofile($uid, $msg = 0, $plugin = '')
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file(array('login'=>'submitloginrequired.thtml'));
         $login->set_var('xhtml', XHTML);
-        $login->set_var('login_message', $LANG_LOGIN[2]);
         $login->set_var('site_url', $_CONF['site_url']);
         $login->set_var('site_admin_url', $_CONF['site_admin_url']);
         $login->set_var('layout_url', $_CONF['layout_url']);
+        $login->set_var('login_message', $LANG_LOGIN[2]);
         $login->set_var('lang_login', $LANG_LOGIN[3]);
         $login->set_var('lang_newuser', $LANG_LOGIN[4]);
         $login->parse('output', 'login');
@@ -122,6 +122,8 @@ function userprofile($uid, $msg = 0, $plugin = '')
                                     'strow'   => 'storyrow.thtml'));
     $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('start_block_userprofile',
             COM_startBlock($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());
@@ -447,8 +449,9 @@ function newpasswordform ($uid, $requestid)
 
     $pwform = new Template ($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
-    $pwform->set_var ( 'xhtml', XHTML );
+    $pwform->set_var ('xhtml', XHTML);
     $pwform->set_var ('site_url', $_CONF['site_url']);
+    $pwform->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
     $pwform->set_var ('user_id', $uid);
@@ -709,7 +712,7 @@ function newuserform ($msg = '')
     }
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform', 'registrationform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -762,7 +765,7 @@ function getpasswordform()
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('form', 'getpasswordform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);

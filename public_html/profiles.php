@@ -9,7 +9,7 @@
 // | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -208,13 +208,15 @@ function contactform ($uid, $subject = '', $message = '')
         if ((($P['emailfromadmin'] == 1) && $isAdmin) ||
             (($P['emailfromuser'] == 1) && !$isAdmin)) {
 
-            $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname);
-            $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
-            $mail_template->set_file ('form', 'contactuserform.thtml');
-            $mail_template->set_var ( 'xhtml', XHTML );
-            $mail_template->set_var ('site_url', $_CONF['site_url']);
-            $mail_template->set_var ('lang_description', $LANG08[26]);
-            $mail_template->set_var ('lang_username', $LANG08[11]);
+            $retval = COM_startBlock($LANG08[10] . ' ' . $displayname);
+            $mail_template = new Template($_CONF['path_layout'] . 'profiles');
+            $mail_template->set_file('form', 'contactuserform.thtml');
+            $mail_template->set_var('xhtml', XHTML);
+            $mail_template->set_var('site_url', $_CONF['site_url']);
+            $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
+            $mail_template->set_var('layout_url', $_CONF['layout_url']);
+            $mail_template->set_var('lang_description', $LANG08[26]);
+            $mail_template->set_var('lang_username', $LANG08[11]);
             if (COM_isAnonUser()) {
                 $sender = '';
                 if (isset ($_POST['author'])) {

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements the services provided by the 'Static Pages' plugin.  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -621,8 +621,11 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                                 COM_getBlockTemplate('_msg_block', 'header'));
                     $login = new Template($_CONF['path_layout'] . 'submit');
                     $login->set_file(array('login' => 'submitloginrequired.thtml'));
-                    $login->set_var('login_message', $LANG_LOGIN[2]);
+                    $login->set_var('xhtml', XHTML);
                     $login->set_var('site_url', $_CONF['site_url']);
+                    $login->set_var('site_admin_url', $_CONF['site_admin_url']);
+                    $login->set_var('layout_url', $_CONF['layout_url']);
+                    $login->set_var('login_message', $LANG_LOGIN[2]);
                     $login->set_var('lang_login', $LANG_LOGIN[3]);
                     $login->set_var('lang_newuser', $LANG_LOGIN[4]);
                     $login->parse('output', 'login');

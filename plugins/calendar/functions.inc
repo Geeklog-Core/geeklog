@@ -722,6 +722,10 @@ function plugin_submit_calendar($mode = 'master')
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
     $eventform = new Template ($_CONF['path'] . 'plugins/calendar/templates/');
     $eventform->set_file ('eventform', 'submitevent.thtml');
+    $eventform->set_var ('xhtml', XHTML);
+    $eventform->set_var ('site_url', $_CONF['site_url']);
+    $eventform->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $eventform->set_var ('layout_url', $_CONF['layout_url']);
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
         $eventform->set_var ('submit_url', '/submit.php');
@@ -734,9 +738,6 @@ function plugin_submit_calendar($mode = 'master')
     } else {
         $eventform->set_var ('hour_mode', 12);
     }
-    $eventform->set_var ('site_url', $_CONF['site_url']);
-    $eventform->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $eventform->set_var ('layout_url', $_CONF['layout_url']);
     $eventform->set_var ('lang_title', $LANG_CAL_1[28]);
 
     $eventform->set_var('lang_eventtype', $LANG_CAL_1[37]);
@@ -816,7 +817,6 @@ function plugin_submit_calendar($mode = 'master')
     } else {
         $eventform->set_var('hidden_fields', '');
     }
-    $eventform->set_var('xhtml', XHTML);
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
     $retval .= COM_endBlock();
@@ -907,17 +907,17 @@ function CALENDAR_listOld()
     );
 
     $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/admin');
-    $cal_templates->set_file (array ('form' => 'batchdelete.thtml'));
-    $cal_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $cal_templates->set_var ('site_url', $_CONF['site_url']);
-    $cal_templates->set_var('layout_url', $_CONF['layout_url']);
+    $cal_templates->set_file(array('form' => 'batchdelete.thtml'));
     $cal_templates->set_var('xhtml', XHTML);
-    $cal_templates->set_var ('usr_time', $usr_time);
-    $cal_templates->set_var ('lang_text_start', $LANG_CAL_ADMIN[28]);
-    $cal_templates->set_var ('lang_text_end', $LANG_CAL_ADMIN[29]);
-    $cal_templates->set_var ('lang_updatelist', $LANG_CAL_ADMIN[30]);
-    $cal_templates->set_var ('lang_delete_sel', $LANG_ADMIN['delete_sel']);
-    $cal_templates->set_var ('lang_delconfirm', $LANG_CAL_ADMIN[31]);
+    $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $cal_templates->set_var('layout_url', $_CONF['layout_url']);
+    $cal_templates->set_var('usr_time', $usr_time);
+    $cal_templates->set_var('lang_text_start', $LANG_CAL_ADMIN[28]);
+    $cal_templates->set_var('lang_text_end', $LANG_CAL_ADMIN[29]);
+    $cal_templates->set_var('lang_updatelist', $LANG_CAL_ADMIN[30]);
+    $cal_templates->set_var('lang_delete_sel', $LANG_ADMIN['delete_sel']);
+    $cal_templates->set_var('lang_delconfirm', $LANG_CAL_ADMIN[31]);
     $cal_templates->parse('form', 'form');
     $desc = $cal_templates->finish($cal_templates->get_var('form'));
 

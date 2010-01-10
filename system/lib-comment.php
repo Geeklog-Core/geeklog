@@ -763,10 +763,11 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template($_CONF['path_layout'] . 'submit');
         $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
-        $loginreq->set_var( 'xhtml', XHTML );
-        $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var('xhtml', XHTML);
         $loginreq->set_var('site_url', $_CONF['site_url']);
         $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $loginreq->set_var('layout_url', $_CONF['layout_url']);
+        $loginreq->set_var('login_message', $LANG_LOGIN[2]);
         $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
         $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
         $loginreq->parse('errormsg', 'loginreq');
@@ -827,13 +828,13 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             // Preview mode:
             if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment) ) {
-                $start = new Template( $_CONF['path_layout'] . 'comment' );
-                $start->set_file( array( 'comment' => 'startcomment.thtml' ));
-                $start->set_var( 'xhtml', XHTML );
-                $start->set_var( 'site_url', $_CONF['site_url'] );
-                $start->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-                $start->set_var( 'layout_url', $_CONF['layout_url'] );
-                $start->set_var( 'hide_if_preview', 'style="display:none"' );
+                $start = new Template($_CONF['path_layout'] . 'comment');
+                $start->set_file(array('comment' => 'startcomment.thtml'));
+                $start->set_var('xhtml', XHTML);
+                $start->set_var('site_url', $_CONF['site_url']);
+                $start->set_var('site_admin_url', $_CONF['site_admin_url']);
+                $start->set_var('layout_url', $_CONF['layout_url']);
+                $start->set_var('hide_if_preview', 'style="display:none"');
 
                 // Clean up all the vars
                 $A = array();
@@ -1367,18 +1368,20 @@ function CMT_reportAbusiveComment ($cid, $type)
     $retval = '';
 
     if (COM_isAnonUser()) {
-        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $loginreq = new Template ($_CONF['path_layout'] . 'submit');
-        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
-        $loginreq->set_var ('xhtml', XHTML);
-        $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
-        $loginreq->set_var ('site_url', $_CONF['site_url']);
-        $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
-        $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $loginreq->parse ('errormsg', 'loginreq');
-        $retval .= $loginreq->finish ($loginreq->get_var ('errormsg'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_startBlock($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate('_msg_block', 'header'));
+        $loginreq = new Template($_CONF['path_layout'] . 'submit');
+        $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var('xhtml', XHTML);
+        $loginreq->set_var('site_url', $_CONF['site_url']);
+        $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $loginreq->set_var('layout_url', $_CONF['layout_url']);
+        $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
+        $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
+        $loginreq->parse('errormsg', 'loginreq');
+        $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
 
         return $retval;
     }
@@ -1398,6 +1401,7 @@ function CMT_reportAbusiveComment ($cid, $type)
     $start->set_file(array('report' => 'reportcomment.thtml'));
     $start->set_var('xhtml', XHTML);
     $start->set_var('site_url', $_CONF['site_url']);
+    $start->set_var('site_admin_url', $_CONF['site_admin_url']);
     $start->set_var('layout_url', $_CONF['layout_url']);
     $start->set_var('lang_report_this', $LANG03[25]);
     $start->set_var('lang_send_report', $LANG03[10]);
@@ -1444,20 +1448,22 @@ function CMT_sendReport ($cid, $type)
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG_LOGIN;
 
     if (COM_isAnonUser()) {
-        $retval = COM_siteHeader ('menu', $LANG_LOGIN[1]);
-        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $loginreq = new Template ($_CONF['path_layout'] . 'submit');
-        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');
-        $loginreq->set_var ('xhtml', XHTML);
-        $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
-        $loginreq->set_var ('site_url', $_CONF['site_url']);
-        $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
-        $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $loginreq->parse ('errormsg', 'loginreq');
-        $retval .= $loginreq->finish ($loginreq->get_var ('errormsg'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter ();
+        $retval = COM_siteHeader('menu', $LANG_LOGIN[1]);
+        $retval .= COM_startBlock($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate('_msg_block', 'header'));
+        $loginreq = new Template($_CONF['path_layout'] . 'submit');
+        $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var('xhtml', XHTML);
+        $loginreq->set_var('site_url', $_CONF['site_url']);
+        $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $loginreq->set_var('layout_url', $_CONF['layout_url']);
+        $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
+        $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
+        $loginreq->parse('errormsg', 'loginreq');
+        $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $retval .= COM_siteFooter();
 
         return $retval;
     }

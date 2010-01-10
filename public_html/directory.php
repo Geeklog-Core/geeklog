@@ -53,6 +53,7 @@ if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
     $login->set_var ('xhtml', XHTML);
     $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $login->set_var ('layout_url', $_CONF['layout_url']);
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);

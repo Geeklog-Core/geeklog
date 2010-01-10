@@ -311,15 +311,15 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
     $template_path = staticpages_templatePath();
     $spage = new Template($template_path);
+    $spage->set_file(array('page'     => 'staticpage.thtml',
+                           'comments' => 'spcomments.thtml'));
     $spage->set_var('xhtml', XHTML);
-    if (XHTML != '') {
-        $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
-    }
     $spage->set_var('site_url', $_CONF['site_url']);
     $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
     $spage->set_var('layout_url', $_CONF['layout_url']);
-    $spage->set_file(array('page'     => 'staticpage.thtml',
-                           'comments' => 'spcomments.thtml'));
+    if (XHTML != '') {
+        $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+    }
 
     $author_name = COM_getDisplayName($A['owner_id']);
     $author_username = DB_getItem($_TABLES['users'], 'username',
@@ -481,6 +481,7 @@ function SP_printPage($page, $A)
     $template_path = staticpages_templatePath();
     $print = new Template($template_path);
     $print->set_file(array('print' => 'printable.thtml'));
+    $print->set_var('xhtml', XHTML);
     $print->set_var('site_url', $_CONF['site_url']);
     $print->set_var('site_admin_url', $_CONF['site_admin_url']);
     $print->set_var('layout_url', $_CONF['layout_url']);
@@ -489,7 +490,6 @@ function SP_printPage($page, $A)
 
     $print->set_var('direction', $LANG_DIRECTION);
     COM_setLangIdAndAttribute($print);
-    $print->set_var('xhtml', XHTML);
     $print->set_var('page_title', $_CONF['site_name'] . ' - '
                                   . stripslashes($A['sp_title']));
     $sp_url = COM_buildUrl($_CONF['site_url']
@@ -988,8 +988,8 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             $spage->set_file(array('page' => 'centerblock.thtml'));
             $spage->set_var('xhtml', XHTML);
             $spage->set_var('site_url', $_CONF['site_url']);
-            $spage->set_var('layout_url', $_CONF['layout_url']);
             $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
+            $spage->set_var('layout_url', $_CONF['layout_url']);
 
             if ($_CONF['hideprintericon'] == 0) {
                 $icon_url = $_CONF['layout_url'] . '/images/print.'

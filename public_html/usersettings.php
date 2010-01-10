@@ -60,6 +60,10 @@ function edituser()
                                    'photo'         => 'userphoto.thtml',
                                    'username'      => 'username.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
+    $preferences->set_var('xhtml', XHTML);
+    $preferences->set_var('site_url', $_CONF['site_url']);
+    $preferences->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $preferences->set_var('layout_url', $_CONF['layout_url']);
 
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
@@ -69,12 +73,9 @@ function edituser()
         $cnt++;
     }
     $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
-    $preferences->set_var ( 'xhtml', XHTML );
     $preferences->set_var ('navbar', $navbar->generate());
 
-    $preferences->set_var ('site_url', $_CONF['site_url']);
-    $preferences->set_var ('layout_url', $_CONF['layout_url']);
-    $preferences->set_var ('no_javascript_warning',$LANG04[150]);
+    $preferences->set_var ('no_javascript_warning', $LANG04[150]);
 
     $preferences->set_var ('cssid1', 1);
     $preferences->set_var ('cssid2', 2);
@@ -1096,11 +1097,11 @@ function userprofile ($user, $msg = 0)
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('xhtml', XHTML);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $login->set_var ('layout_url', $_CONF['layout_url']);
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -1128,8 +1129,10 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_file (array ('profile' => 'profile.thtml',
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
-    $user_templates->set_var ( 'xhtml', XHTML );
+    $user_templates->set_var ('xhtml', XHTML);
     $user_templates->set_var ('site_url', $_CONF['site_url']);
+    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var ('layout_url', $_CONF['layout_url']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var ('end_block', COM_endBlock ());
