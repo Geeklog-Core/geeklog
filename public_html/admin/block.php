@@ -214,12 +214,11 @@ function editblock ($bid = '')
 
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
-            $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'))
-                    . $LANG21[45]
-                    . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+        if (($access == 2) || ($access == 0) ||
+                (hasBlockTopicAccess($A['tid']) < 3)) {
+            $retval .= COM_showMessageText($LANG21[45],
+                                           $LANG_ACCESS['accessdenied']);
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
             return $retval;
@@ -387,6 +386,12 @@ function editblock ($bid = '')
     return $retval;
 }
 
+/**
+* Display two lists of blocks, separated by left and right
+*
+* @return   string  HTML for the two lists
+*
+*/
 function listblocks()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
@@ -420,6 +425,7 @@ function listblocks()
         array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
         array('text' => $LANG21[46], 'field' => 'move', 'sort' => false),
         array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG21[48], 'field' => 'name', 'sort' => true),
         array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
         array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true),
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
@@ -500,7 +506,7 @@ function listblocks()
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags)
+function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE;
 
@@ -509,14 +515,10 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
     $title = addslashes (COM_stripslashes (strip_tags ($title)));
     $phpblockfn = addslashes (COM_stripslashes (trim ($phpblockfn)));
     if (empty($title)) {
-        $retval .= COM_siteHeader ('menu', $LANG21[63])
-                . COM_startBlock ($LANG21[63], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG21[64]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                      'footer'))
-                . editblock ($bid)
-                . COM_siteFooter ();
+        $retval .= COM_siteHeader('menu', $LANG21[63])
+                . COM_showMessageText($LANG21[64], $LANG21[63])
+                . editblock($bid)
+                . COM_siteFooter();
         return $retval;
     }
 
@@ -584,14 +586,10 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             // must start with phpblock_ as the prefix.  This will prevent
             // the arbitrary execution of code
             if (!(stristr($phpblockfn,'phpblock_'))) {
-                $retval .= COM_siteHeader ('menu', $LANG21[37])
-                        . COM_startBlock ($LANG21[37], '',
-                                  COM_getBlockTemplate ('_msg_block', 'header'))
-                        . $LANG21[38]
-                        . COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                              'footer'))
-                        . editblock ($bid)
-                        . COM_siteFooter ();
+                $retval .= COM_siteHeader('menu', $LANG21[37])
+                        . COM_showMessageText($LANG21[38], $LANG21[37])
+                        . editblock($bid)
+                        . COM_siteFooter();
                 return $retval;
             }
             $content = '';
@@ -632,28 +630,26 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
 
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
-        $retval .= COM_siteHeader ('menu', $LANG21[32])
-                . COM_startBlock ($LANG21[32], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= COM_siteHeader('menu', $LANG21[32]);
         if ($type == 'portal') {
             // Portal block is missing fields
-            $retval .= $LANG21[33];
+            $msgtxt = $LANG21[33];
         } else if ($type == 'phpblock') {
             // PHP Block is missing field
-            $retval .= $LANG21[34];
+            $msgtxt = $LANG21[34];
         } else if ($type == 'normal') {
             // Normal block is missing field
-            $retval .= $LANG21[35];
+            $msgtxt = $LANG21[35];
         } else if ($type == 'gldefault') {
             // Default geeklog field missing
-            $retval .= $LANG21[42];
+            $msgtxt = $LANG21[42];
         } else {
             // Layout block missing content
-            $retval .= $LANG21[36];
+            $msgtxt = $LANG21[36];
         }
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . editblock ($bid)
-                . COM_siteFooter ();
+        $retval .= COM_showMessageText($msgtxt, $LANG21[32])
+                . editblock($bid)
+                . COM_siteFooter();
     }
 
     return $retval;

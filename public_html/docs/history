@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ??, 2010 (1.6.2)
 ------------
 
+- Show the block name in the list of blocks (feature request #0000819) [Dirk]
 - Added an option (under My Account > Layout & Language) for users to select
   whether they want to use the Advanced Editor or not. The option is on by
   default but only available when Advanced Editor has been enabled in the
