@@ -880,7 +880,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             }
 
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
-            if ($_CONF['advanced_editor'] && $_USER['advanced_editor'])
+            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $comment_template->set_file('form', 'commentform_advanced.thtml');
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
