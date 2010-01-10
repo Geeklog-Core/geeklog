@@ -48,7 +48,7 @@ require_once 'auth.inc.php';
 $display = '';
 
 // Make sure user has access to this page
-if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
+if (! SEC_hasRights('user.mail')) {
     $display .= COM_siteHeader('menu', $MESSAGE[30])
              . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
              . COM_siteFooter();
@@ -61,10 +61,11 @@ if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
 * Shows the form the admin uses to send Geeklog members a message. Right now
 * you can only email an entire group.
 *
-* @return   string      HTML for the email form
+* @param    array   $vars   optional array of form content
+* @return   string          HTML for the email form
 *
 */
-function display_mailform ()
+function display_mailform($vars = array())
 {
     global $_CONF, $LANG31, $LANG_ADMIN, $_IMAGE_TYPE;
 
@@ -98,21 +99,47 @@ function display_mailform ()
     $mail_templates->set_var('lang_to', $LANG31[18]);
     $mail_templates->set_var('lang_selectgroup', $LANG31[25]);
 
+    $to_group = 0;
+    if (isset($vars['to_group'])) {
+        $to_group = COM_applyFilter($vars['to_group'], true);
+    }
+
     $thisUsersGroups = SEC_getUserGroups();
     uksort($thisUsersGroups, 'strcasecmp');
     $group_options = '';
     foreach ($thisUsersGroups as $groupName => $groupID) {
         if ($groupName != 'All Users') {
-            $group_options .= '<option value="' . $groupID . '">'
-                           . ucwords($groupName) . '</option>';
+            $group_options .= '<option value="' . $groupID . '"';
+            if (($to_group > 0) && ($to_group == $groupID)) {
+                $group_options .= ' selected="selected"';
+            }
+            $group_options .= '>' . ucwords($groupName) . '</option>';
         }
     }
 
     $mail_templates->set_var('group_options', $group_options);
     $mail_templates->set_var('lang_from', $LANG31[2]);
-    $mail_templates->set_var('site_name', $_CONF['site_name']);
+    if (! empty($vars['fra'])) {
+        $from = $vars['fra'];
+    } else {
+        $from = $_CONF['site_name'];
+    }
+    $from = strip_tags($from);
+    $from = substr($from, 0, strcspn($from, "\r\n"));
+    $from = htmlspecialchars(trim($from), ENT_QUOTES);
+    $mail_templates->set_var('site_name', $from);
+
     $mail_templates->set_var('lang_replyto', $LANG31[3]);
-    $mail_templates->set_var('site_mail', $_CONF['site_mail']);
+    if (! empty($vars['fraepost'])) {
+        $fromemail = $vars['fraepost'];
+    } else {
+        $fromemail = $_CONF['site_mail'];
+    }
+    $fromemail = strip_tags($fromemail);
+    $fromemail = substr($fromemail, 0, strcspn($fromemail, "\r\n"));
+    $fromemail = htmlspecialchars(trim($fromemail), ENT_QUOTES);
+    $mail_templates->set_var('site_mail', $fromemail);
+
     $mail_templates->set_var('lang_subject', $LANG31[4]);
     $mail_templates->set_var('lang_body', $LANG31[5]);
     $mail_templates->set_var('lang_sendto', $LANG31[6]);
@@ -155,6 +182,7 @@ function send_messages($vars)
             empty($vars['subject']) OR empty($vars['message']) OR
             empty($vars['to_group']) OR (strpos($vars['fra'], '@') !== false)) {
         $retval .= COM_showMessageText($LANG31[26]);
+        $retval .= display_mailform($vars);
 
         return $retval;
     }
@@ -261,7 +289,7 @@ if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
     $display .= send_messages ($_POST);
 } else {
     $display .= COM_showMessageFromParameter();
-    $display .= display_mailform ();
+    $display .= display_mailform();
 }
 
 $display .= COM_siteFooter ();
