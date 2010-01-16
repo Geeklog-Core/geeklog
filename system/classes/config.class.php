@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -472,10 +472,10 @@ class config {
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
 
+        $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
         $t->set_var('layout_url', $_CONF['layout_url']);
-        $t->set_var('xhtml', XHTML);
         $t->set_var('gltoken_name', CSRF_TOKEN);
         $t->set_var('gltoken', SEC_createToken());
 
@@ -621,15 +621,15 @@ class config {
 
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
                         'select-element', 'list-element', 'unset-param',
-                        'keyed-add-button', 'unkeyed-add-button');
+                        'keyed-add-button', 'unkeyed-add-button', 'text-area');
         foreach ($blocks as $block) {
             $t->set_block('element', $block);
         }
 
+        $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
         $t->set_var('layout_url', $_CONF['layout_url']);
-        $t->set_var('xhtml', XHTML);
 
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
         $t->set_var('lang_enable', $LANG_CONFIG['enable']);
@@ -638,14 +638,23 @@ class config {
         $t->set_var('name', $name);
         $t->set_var('display_name', $display_name);
         if (!is_array($val)) {
-            $t->set_var('value', htmlspecialchars($val));
+            if (is_float($val)) {
+                /**
+                * @todo FIXME: for Locales where the comma is the decimal
+                *              separator, patch output to a decimal point
+                *              to prevent it being cut off by COM_applyFilter
+                */
+                $t->set_var('value', str_replace(',', '.', $val));
+            } else {
+                $t->set_var('value', htmlspecialchars($val));
+            }
         }
         if ($deletable) {
             $t->set_var('delete', $t->parse('output', 'delete-button'));
         } else {
             if ($allow_reset) {
                 $t->set_var('unset_link',
-                        "(<a href='#' onClick='unset(\"{$name}\");' title='"
+                        "(<a href='#' onclick='unset(\"{$name}\");return false;' title='"
                         . $LANG_CONFIG['disable'] . "'>X</a>)");
             }
             if (($a = strrchr($name, '[')) !== FALSE) {
@@ -668,9 +677,19 @@ class config {
             return $t->finish($t->parse('output', 'unset-param'));
         } elseif ($type == "text") {
             return $t->finish($t->parse('output', 'text-element'));
+        } elseif ($type == "textarea") {
+            return $t->finish($t->parse('output', 'text-area'));
         } elseif ($type == "placeholder") {
             return $t->finish($t->parse('output', 'placeholder-element'));
         } elseif ($type == 'select') {
+            // if $name is like "blah[0]", separate name and index
+            $n = explode('[', $name);
+            $name = $n[0];
+            $index = null;
+            if (count($n) == 2) {
+                $i = explode(']', $n[1]);
+                $index = $i[0];
+            }
             $type_name = $type . '_' . $name;
             if ($group == 'Core') {
                 $fn = 'configmanager_' . $type_name . '_helper';
@@ -678,7 +697,11 @@ class config {
                 $fn = 'plugin_configmanager_' . $type_name . '_' . $group;
             }
             if (function_exists($fn)) {
-                $selectionArray = $fn();
+                if ($index === null) {
+                    $selectionArray = $fn();
+                } else {
+                    $selectionArray = $fn($index);
+                }
             } else if (is_array($selectionArray)) {
                 // leave sorting to the function otherwise
                 uksort($selectionArray, 'strcasecmp');
@@ -697,6 +720,9 @@ class config {
                 $t->set_var('opt_name', $sName);
                 $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
                 $t->parse('myoptions', 'select-options', true);
+            }
+            if ($index == 'placeholder') {
+                $t->set_var('hide_row', ' style="display:none;"');
             }
             return $t->parse('output', 'select-element');
         } elseif (strpos($type, '@') === 0) {
@@ -717,6 +743,12 @@ class config {
                                            'unkeyed-add-button'));
             $t->set_var('my_add_element_button', $button);
             $result = "";
+            if ($type == '%select') {
+                $result .= config::_UI_get_conf_element($group,
+                                $name . '[placeholder]', 'placeholder',
+                                substr($type, 1), 'placeholder', $selectionArray,
+                                true);
+            }
             foreach ($val as $valkey => $valval) {
                 $result .= config::_UI_get_conf_element($group,
                                 $name . '[' . $valkey . ']', $valkey,
@@ -783,10 +815,27 @@ class config {
     {
         if (is_array($input_val)) {
             $r = array();
+            $is_num = true;
+            $max_key = -1;
             foreach ($input_val as $key => $val) {
                 if ($key !== 'placeholder') {
                     $r[$key] = $this->_validate_input($val);
+                    if (is_numeric($key)) {
+                        if ($key > $max_key) {
+                            $max_key = $key;
+                        }
+                    } else {
+                        $is_num = false;
+                    }
                 }
+            }
+            if ($is_num && ($max_key >= 0) && ($max_key + 1 != count($r))) {
+                // re-number keys
+                $r2 = array();
+                foreach ($r as $val) {
+                    $r2[] = $val;
+                }
+                $r = $r2;
             }
         } else {
             $r = COM_stripslashes($input_val);
@@ -823,7 +872,7 @@ class config {
                 if ($conf_group == $group) {
                     $link = "<div>$group_display</div>";
                 } else {
-                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\")'>$group_display</a></div>";
+                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></div>";
                 }
 
                 if ($group == 'Core') {
@@ -869,7 +918,7 @@ class config {
                 if ($i == $sg) {
                     $retval .= "<div>$group_display</div>";
                 } else {
-                    $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\")'>$group_display</a></div>";
+                    $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\");return false;'>$group_display</a></div>";
                 }
                 $i++;
             }
@@ -907,34 +956,40 @@ class config {
     */
     function _get_ConfigHelp($group, $option)
     {
-        static $coreUrl;
+        static $docUrl;
+
+        if (! isset($docUrl)) {
+            $docUrl = array();
+        }
 
         $retval = '';
 
-        $descUrl = '';
-        if ($group == 'Core') {
-            if (isset($coreUrl)) {
-                $descUrl = $coreUrl;
-            } elseif (!empty($GLOBALS['_CONF']['site_url']) &&
-                    !empty($GLOBALS['_CONF']['path_html'])) {
-                $baseUrl = $GLOBALS['_CONF']['site_url'];
-                $doclang = COM_getLanguageName();
-                $cfg = 'docs/' . $doclang . '/config.html';
-                if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
-                    $descUrl = $baseUrl . '/' . $cfg;
+        if (! isset($docUrl[$group])) {
+            if ($group == 'Core') {
+                if (!empty($GLOBALS['_CONF']['site_url']) &&
+                        !empty($GLOBALS['_CONF']['path_html'])) {
+                    $baseUrl = $GLOBALS['_CONF']['site_url'];
+                    $doclang = COM_getLanguageName();
+                    $cfg = 'docs/' . $doclang . '/config.html';
+                    if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
+                        $url = $baseUrl . '/' . $cfg;
+                    } else {
+                        $url = $baseUrl . '/docs/english/config.html';
+                    }
                 } else {
-                    $descUrl = $baseUrl . '/docs/english/config.html';
+                    $url = 'http://www.geeklog.net/docs/english/config.html';
                 }
-                $coreUrl = $descUrl;
-            } else {
-                $descUrl = 'http://www.geeklog.net/docs/english/config.html';
+                $docUrl['Core'] = $url;
+            } else { // plugin
+                $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
             }
-        } else {
-            $descUrl = PLG_getDocumentationUrl($group, 'config');
         }
+        $retval = $docUrl[$group];
 
-        if (! empty($descUrl)) {
-            $retval = $descUrl . '#desc_' . $option;
+        if (! empty($retval)) {
+            if (strpos($retval, '#') === false) {
+                $retval .= '#desc_' . $option;
+            }
         }
 
         return $retval;

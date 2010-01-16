@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Directory of all the stories on a Geeklog site.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2009 by the following authors:                         |
+// | Copyright (C) 2004-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -44,8 +44,8 @@ define ('THIS_SCRIPT', 'directory.php');
 
 $display = '';
 
-if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
-                                   ($_CONF['directoryloginrequired'] == 1))) {
+if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
+                         ($_CONF['directoryloginrequired'] == 1))) {
     $display = COM_siteHeader ('menu', $LANG_DIR['title']);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
@@ -53,6 +53,7 @@ if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
     $login->set_var ('xhtml', XHTML);
     $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $login->set_var ('layout_url', $_CONF['layout_url']);
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
@@ -293,7 +294,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
             $A = DB_fetchArray ($result);
 
             if ($mday != $A['mday']) {
-                if (sizeof ($entries) > 0) {
+                if (count($entries) > 0) {
                     $retval .= COM_makeList ($entries);
                     $entries = array ();
                 }
@@ -310,7 +311,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
             $entries[] = COM_createLink(stripslashes ($A['title']), $url);
         }
 
-        if (sizeof ($entries) > 0) {
+        if (count($entries) > 0) {
             $retval .= COM_makeList ($entries);
         }
 

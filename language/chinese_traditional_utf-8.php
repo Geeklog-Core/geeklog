@@ -83,7 +83,7 @@ $LANG01 = array(
     37 => '沒有文章',
     38 => '內容辛迪加',
     39 => '使新',
-    40 => '你的伺服器的 <tt>php.ini</tt> 裏設定為 <tt>register_globals = Off</tt>. 可是此軟體需要將 <tt>register_globals</tt> 設定成 <strong>on</strong>. 所以在你繼續以前，必須將它設定為<strong>on</strong>，然後重新開機.',
+    40 => '',
     41 => '客人',
     42 => '作者:',
     43 => '回復這個',
@@ -385,7 +385,10 @@ $LANG04 = array(
     159 => '這電郵是自動產生的。請不要回信。',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    162 => 'will not be scaled',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    165 => 'Use Advanced Editor'
 );
 
 ###############################################################################
@@ -532,7 +535,9 @@ $LANG09 = array(
     67 => 'Show %d Results',
     68 => 'Sort By',
     69 => 'Titles Only',
-    70 => 'Not available ...'
+    70 => 'Not available ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -827,7 +832,10 @@ $LANG24 = array(
     85 => '完全顯示',
     86 => '高等編輯器',
     87 => '文章統計',
-    88 => 'Wiki 式的格式'
+    88 => 'Wiki 式的格式',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 ###############################################################################
@@ -862,7 +870,8 @@ $LANG27 = array(
     26 => '用此題目作保存檔的默認題目。只准許一個題目。',
     27 => '或上載主題圖像',
     28 => '最大',
-    29 => '文件上載出了問題'
+    29 => '文件上載出了問題',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -955,7 +964,10 @@ $LANG28 = array(
     84 => "你的用戶名是: %s 我們的網站是: {$_CONF['site_url']}",
     85 => '若你忘記你的密碼請跟從這個連結: %s',
     86 => 'Include',
-    87 => 'Reminders'
+    87 => 'Reminders',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################
@@ -1064,6 +1076,7 @@ $LANG32 = array(
     39 => 'Upload a plugin',
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
+    42 => 'Click to update',
     99 => 'An unknown error occured',
     100 => 'Ok.',
     101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
@@ -1182,7 +1195,7 @@ $MESSAGE = array(
     44 => '插件已被安裝了。',
     45 => '插件已被刪除了。',
     46 => '',
-    47 => '這只適用於 *nix 如果你的作業系統是 *nix，那麽你的緩衝器已被清除了。如果你的作業系統是 Windows，你要手動尋找檔命名為 adodb _ *.php 的檔案並把它們除去。',
+    47 => '',
     48 => "感謝你申請成為 {$_CONF['site_name']} 的會員。只要經過我們員工的核對，我們會把密碼寄到你所登記的電郵中。",
     49 => '你的小組已被保存了。',
     50 => '小組已被刪除了。',
@@ -1325,7 +1338,26 @@ $LANG_DB_BACKUP = array(
     'size' => '大小',
     'bytes' => '位元組',
     'total_number' => '總備份次數: %d',
-    'download' => '點擊下載'
+    'download' => '點擊下載',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1474,7 +1506,7 @@ $LANG_SECTEST = array(
     'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
     'installation' => 'installation instructions',
     'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'failed_tmp' => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it' => 'This is a security risk and should be fixed!',
     'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
@@ -1574,7 +1606,13 @@ $LANG_ADMIN = array(
     'addchild' => '加入子單',
     'list' => '列',
     'list_all' => '列所有',
-    'na' => 'N/A'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'N/A',
+    'token_expiry' => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1840,17 +1878,22 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => '關閉 Autolinks?',
     'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
+    'frame_options' => 'Protection against "clickjacking"',
     'censormode' => '檢查方式?',
     'censorreplace' => '檢查代替文字',
     'censorlist' => '檢查列',
     'ip_lookup' => 'IP 搜尋',
     'url_rewrite' => '啟動 URL Rewrite',
+    'meta_tags' => 'Meta Tags',
+    'meta_description' => 'Default Meta Description',
+    'meta_keywords' => 'Default Meta Keywords',
     'default_permissions_block' => '防礙默認許可設定',
     'default_permissions_story' => '文章默認許可設定',
     'default_permissions_topic' => '主題默認許可設定',
     'atom_max_stories' => 'Webservices Feed裏的文章數定',
     'disable_webservices' => '關閉 Webservices?',
     'restrict_webservices' => '限制 Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1941,7 +1984,11 @@ $LANG_configselects['Core'] = array(
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

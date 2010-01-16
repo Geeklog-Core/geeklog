@@ -20,6 +20,7 @@
                 <td style="width:100px;"><label for="maxstories">{lang_maxstories}:</label></td>
                 <td><input type="text" size="3" maxlength="3" id="maxstories" name="maxstories" value="{maxstories_value}"{xhtml}></td>
             </tr>
+            {advanced_editor_option}
         </table>
         <table class="inputTable">
             <tr>

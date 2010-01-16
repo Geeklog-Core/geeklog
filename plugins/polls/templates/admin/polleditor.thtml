@@ -7,9 +7,17 @@
                                             <td><input type="text" dir="ltr" name="pid" value="{poll_id}" size="40" maxlength="40"{xhtml}> {lang_donotusespaces}</td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_topic}:</td>
+                                            <td align="right" valign="top">{lang_topic}:</td>
                                             <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</td>
                                         </tr>
+                                        <tr{hide_meta}>
+                                            <td valign="top" align="right">{lang_metadescription}:</td>
+                                        <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+                                        </tr>
+                                        <tr{hide_meta}>
+                                            <td valign="top" align="right">{lang_metakeywords}:</td>
+                                            <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+                                        </tr>                                          
                                         <tr>
                                             <td align="right">{lang_mode}:</td>
                                             <td>
@@ -36,15 +44,16 @@
                                     </div>
                                     {question_list}
                                     <h2>{lang_accessrights}</h2>
-                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><br{xhtml}></p>
-                                    <p>{lang_group}: {group_dropdown}<br{xhtml}></p>
+                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></p>
+                                    <p>{lang_group}: {group_dropdown}</p>
                                     <h2>{lang_permissions}</h2>
                                     <p>{lang_perm_key}</p>
                                     <div>{permissions_editor}</div>
                                     <p>{lang_permissions_msg}</p>
                                     <p>
                                     <input type="submit" name="mode" value="{lang_save}"{xhtml}>
-                                    <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>{delete_option}
+                                    <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
+                                    {delete_option}
                                     <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
                                     <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
                                     </p>

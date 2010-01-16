@@ -53,8 +53,8 @@ $LANG_INSTALL = array(
     1 => 'Installation Support',
     2 => 'The Ultimate Weblog System',
     3 => 'Geeklog Installation',
-    4 => 'PHP 4.3.0 required',
-    5 => 'Sorry, but Geeklog requires at least PHP 4.3.0 to run (you have version ',
+    4 => 'PHP %s required',
+    5 => 'Sorry, but Geeklog requires at least PHP %s to run (you have version ',
     6 => '). Please <a href="http://www.php.net/downloads.php">upgrade your PHP</a> install or ask your hosting service to do it for you.',
     7 => 'Unable to locate Geeklog files',
     8 => 'The installer was unable to locate critical Geeklog files. This is probably because you have moved them from their default location. Please specify the paths to the files and directories below:',
@@ -101,8 +101,8 @@ $LANG_INSTALL = array(
     48 => 'Site Email',
     49 => 'Site No-Reply Email',
     50 => 'Install',
-    51 => 'MySQL 3.23.2 or newer required',
-    52 => 'Sorry, but Geeklog requires at least MySQL 3.23.2 to run (you have version ',
+    51 => 'MySQL %s or newer required',
+    52 => 'Sorry, but Geeklog requires at least MySQL %s to run (you have version ',
     53 => '). Please <a href="http://dev.mysql.com/downloads/mysql/">upgrade your MySQL</a> install or ask your hosting service to do it for you.',
     54 => 'Incorrect database information',
     55 => 'Sorry, but the database information you entered does not appear to be correct. Please go back and try again.',
@@ -120,7 +120,7 @@ $LANG_INSTALL = array(
     67 => 'Error Setting up the Geeklog Database', 
     68 => 'The database is not empty. Please drop all tables in the database and start again.',
     69 => 'Upgrading Geeklog',
-    70 => 'Before we get started it is important that you back up your database current Geeklog files. This installation script will alter your Geeklog database so if something goes wrong and you need to restart the upgrade process, you will need a backup of your original database. YOU HAVE BEEN WARNED!',
+    70 => 'Before we get started it is important that you back up your database and the current Geeklog files. This installation script will alter your Geeklog database so if something goes wrong and you need to restart the upgrade process, you will need a backup of your original database. YOU HAVE BEEN WARNED!',
     71 => 'Please make sure to select the correct Geeklog version you are coming from below. This script will do incremental upgrades after this version (i.e. you can upgrade directly from any old version to ',
     72 => ').',
     73 => 'Please note this script will not upgrade any beta or release candidate versions of Geeklog.',
@@ -149,7 +149,7 @@ $LANG_INSTALL = array(
     96 => 'The installer was looking for %s in:',
     97 => 'Set File Permissions',
     98 => 'Advanced Users',
-    99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
+    99 => 'If you have command line (SSH) access to your web server then you can simply copy and paste the following command into your shell:',
     100 => 'Invalid mode specified',
     101 => 'Step',
     102 => 'Enter configuration information',
@@ -216,7 +216,7 @@ $LANG_MIGRATE = array(
     22 => 'already exists. Would you like to replace it?',
     23 => 'Yes',
     24 => 'No',
-    25 => 'The version of Geeklog you chose to migrate from is out of date.',
+    25 => '',
     26 => 'Migration notice: ',
     27 => 'The "',
     28 => '" plugin is missing and has been disabled. You can install and reactivate it at any time from the administration section.',
@@ -239,7 +239,8 @@ $LANG_MIGRATE = array(
     45 => "Could not identify database version. Please perform a manual update.",
     46 => '', // TBD
     47 => 'Database upgrade from version %s to version %s failed.',
-    48 => 'One or more plugins could not be updated and had to be disabled.'
+    48 => 'One or more plugins could not be updated and had to be disabled.',
+    49 => 'Use current database content'
 );
 
 // +---------------------------------------------------------------------------+
@@ -341,7 +342,7 @@ $LANG_HELP = array(
     'site_mail' => 'This is the return address for all email sent by Geeklog and contact info displayed in syndication feeds.',
     'noreply_mail' => 'This is the sender\'s address of emails sent by the system when users register, etc. This should be either the same as Site Email or a bouncing address to prevent spammers from getting your email address by registering on the site. If this is NOT the same as above, there will be a message in sent messages that replying to those emails is recommended.',
     'utf8' => 'Indicate whether to use UTF-8 as the default character set for your site. Recommended especially for multi-lingual setups.',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 

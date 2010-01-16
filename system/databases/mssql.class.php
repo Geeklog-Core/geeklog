@@ -448,7 +448,7 @@ class database {
             
         } else {
            
-            $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql);
+            $result = @mssql_query($sql,$this->_db) or trigger_error($this->dbError($sql) . ' - ' . $sql, E_USER_ERROR);
             if($result==FALSE){
                 echo "Query Failed: ";
                 echo "<pre>".$this->dbError($sql) . "</pre><hr" . XHTML . ">";
@@ -1144,6 +1144,7 @@ class database {
     
     //thanks to php.net for this
 function array_push_associative(&$arr) {
+  $ret = 0;
   $args = func_get_args();
   foreach ($args as $arg) {
       if (is_array($arg)) {

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.4                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | pingback.php                                                              |
 // |                                                                           |
 // | Handle pingbacks for stories and plugins.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2007 by the following authors:                         |
+// | Copyright (C) 2005-2009 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -28,8 +28,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// 
-// $Id: pingback.php,v 1.19 2007/09/02 07:50:56 dhaun Exp $
 
 require_once 'lib-common.php';
 
@@ -157,7 +155,38 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
                 $title = trim (COM_undoSpecialChars ($content[1]));
             }
 
-            if (isset($_CONF['pingback_excerpt']) && $_CONF['pingback_excerpt']) {
+            if ($_CONF['pingback_excerpt']) {
+
+                // Check which character set the site that sent the Pingback
+                // is using
+                $charset = 'ISO-8859-1'; // default, see RFC 2616, 3.7.1
+                $ctype = $req->getResponseHeader('Content-Type');
+                if (!empty($ctype)) {
+                    // e.g. text/html; charset=utf-8
+                    $c = explode(';', $ctype);
+                    foreach ($c as $ct) {
+                        $ch = explode('=', trim($ct));
+                        if (count($ch) == 2) {
+                            if(trim($ch[0]) == 'charset') {
+                                $charset = trim($ch[1]);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!empty($charset) &&
+                        (strcasecmp($charset, COM_getCharset()) != 0)) {
+
+                    if (function_exists('mb_convert_encoding')) {
+                        $body = @mb_convert_encoding($body, COM_getCharset(),
+                                                     $charset);
+                    } elseif (function_exists('iconv')) {
+                        $body = @iconv($charset, COM_getCharset(), $body);
+                    }
+                    // else: tough luck ...
+                }
+
                 $excerpt = PNB_makeExcerpt($body, $oururl);
             }
 

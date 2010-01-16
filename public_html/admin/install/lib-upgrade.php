@@ -474,6 +474,24 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $_SQL = '';
             break;
 
+        case '1.6.0':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.6.0_to_1.6.1.php';
+            INST_updateDB($_SQL);
+
+            update_ConfValuesFor161();
+
+            $current_gl_version = '1.6.1';
+            $_SQL = '';
+            break;
+
+        case '1.6.1':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.6.1_to_1.6.2.php';
+            INST_updateDB($_SQL);
+
+            $current_gl_version = '1.6.2';
+            $_SQL = '';
+            break;
+            
         default:
             $done = true;
         }
@@ -619,7 +637,7 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
 {
     $result = true;
 
-    $siteconfig_file = fopen($siteconfig_path, 'r');
+    $siteconfig_file = fopen($siteconfig_path, 'rb');
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);
 
@@ -630,7 +648,7 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
              $siteconfig_data
             );
 
-    $siteconfig_file = fopen($siteconfig_path, 'w');
+    $siteconfig_file = fopen($siteconfig_path, 'wb');
     if (!fwrite($siteconfig_file, $siteconfig_data)) {
         $result = false;
     }
@@ -711,7 +729,7 @@ function get_SPX_Ver()
  */
 function INST_updateDB($_SQL)
 {
-    global $progress, $_DB, $_DB_dbms;
+    global $progress, $use_innodb, $_DB, $_DB_dbms;
 
     $_SQL = INST_checkInnodbUpgrade($_SQL);
     foreach ($_SQL as $sql) {
@@ -755,14 +773,22 @@ function INST_checkInnodbUpgrade($_SQL)
  */
 function INST_innodbSupported()
 {
-    $result = DB_query("SHOW VARIABLES LIKE 'have_innodb'");
-    $A = DB_fetchArray($result, true);
+    $retval = false;
 
-    if (strcasecmp($A[1], 'yes') == 0) {
-        return true;
+    $result = DB_query("SHOW TABLE TYPES");
+    $numEngines = DB_numRows($result);
+    for ($i = 0; $i < $numEngines; $i++) {
+        $A = DB_fetchArray($result);
+
+        if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
+            if (strcasecmp($A['Support'], 'yes') == 0) {
+                $retval = true;
+            }
+            break;
+        }
     }
 
-    return false;
+    return $retval;
 }
 
 
@@ -796,6 +822,8 @@ function INST_pluginExists($plugin)
 * @param    boolean $migration  whether the upgrade is part of a site migration
 * @param    array   $old_conf   old $_CONF values before the migration
 * @return   int     number of failed plugin updates (0 = everything's fine)
+* @see      PLG_upgrade
+* @see      PLG_migrate
 *
 */
 function INST_pluginUpgrades($migration = false, $old_conf = array())
@@ -810,25 +838,24 @@ function INST_pluginUpgrades($migration = false, $old_conf = array())
     for ($i = 0; $i < $numPlugins; $i++) {
         list($pi_name, $pi_version) = DB_fetchArray($result);
 
-        $code_version = PLG_chkVersion($pi_name);
-        if (! empty($code_version) && ($code_version != $pi_version)) {
-            $success = true;
+        $success = true;
+        if ($migration) {
+            $success = PLG_migrate($pi_name, $old_conf);
+        }
 
-            if ($migration) {
-                $success = PLG_migrate($pi_name, $old_conf);
-            }
-
-            if ($success === true) {
+        if ($success === true) {
+            $code_version = PLG_chkVersion($pi_name);
+            if (! empty($code_version) && ($code_version != $pi_version)) {
                 $success = PLG_upgrade($pi_name);
             }
+        }
 
-            if ($success !== true) {
-                // upgrade failed - disable plugin
-                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                                               'pi_name', $pi_name);
-                COM_errorLog("Upgrade for '$pi_name' plugin failed - plugin disabled");
-                $failed++;
-            }
+        if ($success !== true) {
+            // migration or upgrade failed - disable plugin
+            DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                           'pi_name', $pi_name);
+            COM_errorLog("Migration or upgrade for '$pi_name' plugin failed - plugin disabled");
+            $failed++;
         }
     }
 

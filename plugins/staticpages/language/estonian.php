@@ -109,12 +109,19 @@ $LANG_STATIC = array(
     'copy' => 'Koopia',
     'limit_results' => 'Piira tulemused',
     'search' => 'Otsi',
-    'submit' => 'Sisesta'
+    'submit' => 'Sisesta',
+    'no_new_pages' => 'Pole uusi lehti',
+    'pages' => 'Lehti',
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
+$PLG_staticpages_MESSAGE19 = 'Sinu leht on edukalt salvestatud.';
+$PLG_staticpages_MESSAGE20 = 'Sinu leht on edukalt kustutatud.';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugina uuendamine pole toetatud.';
@@ -130,6 +137,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Luba PHP?',
     'sort_by' => 'Keskblokkide sorteerimisalus',
     'sort_menu_by' => 'Menüüelementide sorteerimisalus',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => 'Kustuta lehed, omanikuks?',
     'in_block' => 'Paiguta lehed blokki?',
     'show_hits' => 'Näita klikke?',
@@ -138,7 +146,18 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Tsenseeri sisu?',
     'default_permissions' => 'Lehe vaikimisi õigused',
     'aftersave' => 'Pärast lehe salvestamist',
-    'atom_max_items' => 'Maks. lehti veebiteenuste lõimes'
+    'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
+    'meta_tags' => 'Luba Meta sildid',
+    'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
+    'newstaticpagesinterval' => 'Uute staatiliste lehtede aeg',
+    'hidenewstaticpages' => 'Peida: Uued staatilised lehed',
+    'title_trim_length' => 'Pealkirja kärpimise pikkus',
+    'includecenterblocks' => 'Kaasa keskploki staatilised lehed',
+    'includephp' => 'Kaasa PHP-ga staatilised lehed',
+    'includesearch' => 'Luba staatilised lehed otsingus',
+    'includesearchcenterblocks' => 'Kaasa keskploki staatilised lehed',
+    'includesearchphp' => 'Kaasa PHP-ga staatilised lehed'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -147,17 +166,21 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Staatiliste  lehtede peaseadistused',
+    'fs_whatsnew' => 'Mida uut plokk',
+    'fs_search' => 'Otsingu tulemused',
     'fs_permissions' => 'Vaikimisi õigused'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
     2 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title'),
     3 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title', 'Silt' => 'label'),
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
     9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

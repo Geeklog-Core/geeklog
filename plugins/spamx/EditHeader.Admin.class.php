@@ -15,7 +15,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditHeader.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'editheader.admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

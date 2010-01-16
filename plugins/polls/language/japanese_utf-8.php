@@ -48,7 +48,7 @@ $LANG_POLLS = array(
     'vote' => '投票する',
     'pastpolls' => 'アンケートの一覧',
     'savedvotetitle' => '投票ありがとうございました',
-    'savedvotemsg' => 'テーマ：',
+    'savedvotemsg' => 'テーマ:',
     'pollstitle' => 'アンケート一覧',
     'polltopics' => '他のアンケートを見る',
     'stats_top10' => 'アンケート（上位10件）',
@@ -62,7 +62,10 @@ $LANG_POLLS = array(
     'upgrade1' => 'アンケートプラグインの新しいバージョンがインストールされました。',
     'upgrade2' => 'アップグレードしてください。',
     'editinstructions' => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
-    'start_poll' => '投稿する'
+    'pollclosed' => 'このアンケートは投票を終了しました。',
+    'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
+    'start_poll' => '投稿する',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
@@ -78,7 +81,7 @@ $LANG25 = array(
     7 => '(スペースを含まないこと)',
     8 => 'ホームページに表示する',
     9 => 'テーマ',
-    10 => '回答 / 投票数',
+    10 => '回答 / 投票数 / 備考',
     11 => 'アンケート( %s )の選択肢にエラーがありました',
     12 => 'アンケート( %s )の質問項目にエラーがありました',
     13 => 'アンケートの作成',
@@ -111,7 +114,7 @@ $LANG25 = array(
     40 => 'アンケートの結果を見る'
 );
 
-$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_polls_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
 $PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
 $PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
 
@@ -135,7 +138,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => '投票者のIPアドレスの有効期間',
     'delete_polls' => '所有者の削除と共に削除する',
     'aftersave' => 'アンケート保存後の画面遷移',
-    'default_permissions' => 'パーミッション'
+    'default_permissions' => 'パーミッション',
+    'meta_tags' => 'メタタグを有効にする'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -144,7 +148,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
-    'fs_permissions' => 'アンケートのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

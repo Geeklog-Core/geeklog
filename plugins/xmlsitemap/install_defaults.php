@@ -58,7 +58,7 @@ $_XMLSMAP_DEFAULT['sitemap_file']        = 'sitemap.xml';
 $_XMLSMAP_DEFAULT['mobile_sitemap_file'] = 'mobile_sitemap.xml';
 
 // Content types
-$_XMLSMAP_DEFAULT['types'] = array('article', 'staticpages', 'calendar');
+$_XMLSMAP_DEFAULT['types'] = array('article', 'calendar', 'polls', 'staticpages');
 
 // Plugins to exclude from sitemap
 $_XMLSMAP_DEFAULT['exclude'] = array('links');
@@ -66,16 +66,18 @@ $_XMLSMAP_DEFAULT['exclude'] = array('links');
 // Priorities (must be between 0.0 and 1.0; default value is 0.5)
 $_XMLSMAP_DEFAULT['priorities'] = array(
     'article'     => 0.5,
-    'staticpages' => 0.5,
     'calendar'    => 0.5,
+    'polls'       => 0.5,
+    'staticpages' => 0.5
 );
 
 // Frequencies (must be one of 'always', 'hourly', 'daily', 'weekly',
 // 'monthly', 'yearly', 'never')
 $_XMLSMAP_DEFAULT['frequencies'] = array(
     'article'     => 'daily',
-    'staticpages' => 'weekly',
     'calendar'    => 'daily',
+    'polls'       => 'daily',
+    'staticpages' => 'weekly'
 );
 
 /**

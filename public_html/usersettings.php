@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -60,6 +60,10 @@ function edituser()
                                    'photo'         => 'userphoto.thtml',
                                    'username'      => 'username.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
+    $preferences->set_var('xhtml', XHTML);
+    $preferences->set_var('site_url', $_CONF['site_url']);
+    $preferences->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $preferences->set_var('layout_url', $_CONF['layout_url']);
 
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
@@ -69,12 +73,9 @@ function edituser()
         $cnt++;
     }
     $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
-    $preferences->set_var ( 'xhtml', XHTML );
     $preferences->set_var ('navbar', $navbar->generate());
 
-    $preferences->set_var ('site_url', $_CONF['site_url']);
-    $preferences->set_var ('layout_url', $_CONF['layout_url']);
-    $preferences->set_var ('no_javascript_warning',$LANG04[150]);
+    $preferences->set_var ('no_javascript_warning', $LANG04[150]);
 
     $preferences->set_var ('cssid1', 1);
     $preferences->set_var ('cssid2', 2);
@@ -327,9 +328,9 @@ function deleteUserAccount ($form_reqid)
 */
 function editpreferences()
 {
-    global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG04;
 
-    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline,advanced_editor FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
 
@@ -352,10 +353,12 @@ function editpreferences()
                                    'comment' => 'commentblock.thtml',
                                    'language' => 'language.thtml',
                                    'theme' => 'theme.thtml',
-                                   'privacy' => 'privacyblock.thtml'
+                                   'privacy' => 'privacyblock.thtml',
+                                   'editor' => 'editor.thtml'
                                   ));
-    $preferences->set_var ( 'xhtml', XHTML );
+    $preferences->set_var ('xhtml', XHTML);
     $preferences->set_var ('site_url', $_CONF['site_url']);
+    $preferences->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
     $preferences->set_var ('user_name', $_USER['username']);
@@ -484,72 +487,60 @@ function editpreferences()
     if ($_CONF['allow_user_themes'] == 1) {
         $selection = '<select id="theme" name="theme">' . LB;
 
-        if (empty ($_USER['theme'])) {
+        if (empty($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
         } else {
             $usertheme = $_USER['theme'];
         }
 
-        $themeFiles = COM_getThemes ();
-        usort ($themeFiles,
-               create_function ('$a,$b', 'return strcasecmp($a,$b);'));
+        $themeFiles = COM_getThemes();
+        usort($themeFiles, 'strcasecmp');
 
         foreach ($themeFiles as $theme) {
             $selection .= '<option value="' . $theme . '"';
             if ($usertheme == $theme) {
                 $selection .= ' selected="selected"';
             }
-            $words = explode ('_', $theme);
-            $bwords = array ();
+            $words = explode('_', $theme);
+            $bwords = array();
             foreach ($words as $th) {
-                if ((strtolower ($th{0}) == $th{0}) &&
-                    (strtolower ($th{1}) == $th{1})) {
-                    $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+                if ((strtolower($th[0]) == $th[0]) &&
+                    (strtolower($th[1]) == $th[1])) {
+                    $bwords[] = ucfirst($th);
                 } else {
                     $bwords[] = $th;
                 }
             }
-            $selection .= '>' . implode (' ', $bwords) . '</option>' . LB;
+            $selection .= '>' . implode(' ', $bwords) . '</option>' . LB;
         }
         $selection .= '</select>';
-        $preferences->set_var ('theme_selector', $selection);
-        $preferences->parse ('theme_selection', 'theme', true);
+        $preferences->set_var('theme_selector', $selection);
+        $preferences->parse('theme_selection', 'theme', true);
     } else {
-        $preferences->set_var ('theme_selection', '');
+        $preferences->set_var('theme_selection', '');
     }
 
-    require_once ('Date/TimeZone.php');
-    // Timezone
-    if (empty($_USER['tzid']) && isset($_CONF['timezone'])) {
-        $timezone = $_CONF['timezone'];
-    } else if (!empty($_USER['tzid'])) {
-        $timezone = $_USER['tzid'];
-    } else {
-        $tz_obj = Date_TimeZone::getDefault();
-        $timezone = $tz_obj->id;
-    }
-    $selection = '<select id="tzid" name="tzid">' . LB;
-
-    $T = $GLOBALS['_DATE_TIMEZONE_DATA'];
-
-    while ($tDetails = current($T)) {
-        $tzcode = htmlspecialchars(key($T));
-        $selection .= '<option value="' . $tzcode . '"';
-        if ($timezone == $tzcode) {
-                $selection .= ' selected="selected"';
+    if ($_CONF['advanced_editor'] == 1) {
+        $preferences->set_var('lang_advanced_editor', $LANG04[165]);
+        if ($A['advanced_editor'] == 1) {
+            $preferences->set_var('advanced_editor_checked', 'checked="checked"');
         } else {
-                $selection .= '';
+            $preferences->set_var('advanced_editor_checked', '');
         }
-        $hours = $tDetails['offset'] / (3600 * 1000);
-        if ($hours > 0) {
-            $hours = "+$hours";
-        }
-        $selection .= ">$hours, {$tDetails['shortname']} ($tzcode)</option>" . LB;
-        next($T);
+        $preferences->parse('advanced_editor_option', 'editor', true);
+    } else {
+        $preferences->set_var('advanced_editor_option', '');
     }
-    $selection .= '</select>';
-    $preferences->set_var ('timezone_selector', $selection);
-    $preferences->set_var ('lang_timezone', $LANG04[158]);
+
+    // Timezone
+    require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
+
+    $timezone = TimeZoneConfig::getUserTimeZone();
+    $selection = TimeZoneConfig::getTimeZoneDropDown($timezone,
+            array('id' => 'tzid', 'name' => 'tzid'));
+
+    $preferences->set_var('timezone_selector', $selection);
+    $preferences->set_var('lang_timezone', $LANG04[158]);
 
     if ($A['noicons'] == '1') {
         $preferences->set_var ('noicons_checked', 'checked="checked"');
@@ -643,7 +634,7 @@ function editpreferences()
             $user_etids = '';
         }
         $tmp = COM_checkList($_TABLES['topics'], 'tid,topic', $permissions,
-                             $user_etids, 'topics');
+                             $user_etids, 'etids');
         $preferences->set_var('email_topic_checklist',
                 str_replace($_TABLES['topics'], 'etids', $tmp));
         $preferences->parse('digest_block', 'digest', true);
@@ -878,15 +869,15 @@ function saveuser($A)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
-    // If not set or possibly removed from template - initialize variable
-    if (!isset($A['cooktime'])) {
-        $A['cooktime'] = 0;
+    if (! isset($A['cooktime'])) {
+        // If not set or possibly removed from template - set to default
+        $A['cooktime'] = $_CONF['default_perm_cookie_timeout'];
     } else {
-        $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
+        $A['cooktime'] = COM_applyFilter($A['cooktime'], true);
     }
     // If empty or invalid - set to user default
     // So code after this does not fail the user password required test
-    if (empty($A['cooktime']) OR $A['cooktime'] < 0) {
+    if ($A['cooktime'] < 0) { // note that == 0 is allowed!
         $A['cooktime'] = $_USER['cookietimeout'];
     }
 
@@ -969,7 +960,7 @@ function saveuser($A)
              . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
-        COM_outputMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
     }
 
     $A['email'] = COM_applyFilter ($A['email']);
@@ -1005,9 +996,8 @@ function saveuser($A)
                 } else {
                     $cooktime = -1000;
                 }
-                setcookie($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                          $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                          $_CONF['cookiesecure']);
+                SEC_setCookie($_CONF['cookie_password'], $passwd,
+                              time() + $cooktime);
             } elseif (SEC_encryptPassword($A['old_passwd']) != $current_password) {
                 return COM_refresh ($_CONF['site_url']
                                     . '/usersettings.php?msg=68');
@@ -1023,13 +1013,11 @@ function saveuser($A)
 
         if ($A['cooktime'] <= 0) {
             $cooktime = 1000;
-            setcookie ($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime,
-                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                       $_CONF['cookiesecure']);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                          time() - $cooktime);
         } else {
-            setcookie ($_CONF['cookie_name'], $_USER['uid'],
-                       time() + $A['cooktime'], $_CONF['cookie_path'],
-                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+            SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                          time() + $A['cooktime']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -1098,22 +1086,22 @@ function saveuser($A)
 */
 function userprofile ($user, $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $LANG01, $LANG04, $LANG09, $LANG_LOGIN;
 
     $retval = '';
 
-    if (empty ($_USER['username']) &&
+    if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
         $retval .= COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('xhtml', XHTML);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $login->set_var ('layout_url', $_CONF['layout_url']);
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
@@ -1141,8 +1129,10 @@ function userprofile ($user, $msg = 0)
     $user_templates->set_file (array ('profile' => 'profile.thtml',
                                       'row'     => 'commentrow.thtml',
                                       'strow'   => 'storyrow.thtml'));
-    $user_templates->set_var ( 'xhtml', XHTML );
+    $user_templates->set_var ('xhtml', XHTML);
     $user_templates->set_var ('site_url', $_CONF['site_url']);
+    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var ('layout_url', $_CONF['layout_url']);
     $user_templates->set_var ('start_block_userprofile',
             COM_startBlock ($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var ('end_block', COM_endBlock ());
@@ -1208,7 +1198,7 @@ function userprofile ($user, $msg = 0)
     $topics = "'" . implode ("','", $tids) . "'";
 
     // list of last 10 stories by this user
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
 
         $sql .= " ORDER BY unixdate DESC LIMIT 10";
@@ -1244,7 +1234,7 @@ function userprofile ($user, $msg = 0)
 
     // list of last 10 comments by this user
     $sidArray = array();
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         // first, get a list of all stories the current visitor has access to
         $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $result = DB_query($sql);
@@ -1372,6 +1362,11 @@ function savepreferences($A)
     } else {
         $A['showonline'] = 0;
     }
+    if (isset($A['advanced_editor']) && ($A['advanced_editor'] == 'on')) {
+        $A['advanced_editor'] = 1;
+    } else {
+        $A['advanced_editor'] = 0;
+    }
 
     $A['maxstories'] = COM_applyFilter ($A['maxstories'], true);
     if (empty ($A['maxstories'])) {
@@ -1389,13 +1384,13 @@ function savepreferences($A)
     $AETIDS = USER_getAllowedTopics();          // array of strings (fetched, needed to "clean" $TIDS and $ETIDS)
 
     $tids = '';
-    if (sizeof ($TIDS) > 0) {
+    if (count($TIDS) > 0) {
         // the array_intersect mitigates the need to scrub the TIDS input
         $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS)));
     }
 
     $aids = '';
-    if (sizeof ($AIDS) > 0) {
+    if (count($AIDS) > 0) {
         // Scrub the AIDS array to prevent SQL injection and bad values
         foreach ($AIDS as $key => $val) {
             $AIDS[$key] = COM_applyFilter($val, true);
@@ -1423,9 +1418,10 @@ function savepreferences($A)
             }
         }
     }
+    $selectedblocks = trim($selectedblocks);
 
     $etids = '';
-    if (($_CONF['emailstories'] == 1) && (sizeof($ETIDS) > 0)) {
+    if (($_CONF['emailstories'] == 1) && (count($ETIDS) > 0)) {
         // the array_intersect mitigates the need to scrub the ETIDS input
         $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
@@ -1467,7 +1463,7 @@ function savepreferences($A)
 
     $A['dfid'] = COM_applyFilter ($A['dfid'], true);
 
-    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
+    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}', advanced_editor='{$A['advanced_editor']}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {
         $etids = '-';
@@ -1511,7 +1507,7 @@ if (isset($_POST['btncancel']) AND $_POST['btncancel'] == $LANG_ADMIN['cancel'])
 
 $display = '';
 
-if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+if (! COM_isAnonUser()) {
     switch ($mode) {
     case 'saveuser':
         savepreferences ($_POST);

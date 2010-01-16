@@ -246,8 +246,9 @@ if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been
 
 }
 
-$dbconfig_path      = (isset($_REQUEST['dbconfig_path'])) ? $_REQUEST['dbconfig_path'] : $gl_path . '/db-config.php';
-$step               = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : 1;
+$dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : $gl_path . '/db-config.php');
+$dbconfig_path      = INST_sanitizePath($dbconfig_path);
+$step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $backup_dir         = $_CONF['path'] . 'backups/';
 
 // $display holds all the outputted HTML and content
@@ -257,8 +258,8 @@ $display = INST_getHeader($LANG_MIGRATE[17]); // Grab the beginning HTML for the
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1>' . $LANG_INSTALL[4] . '</h1>' . LB;
-    $display .= '<p>' . $LANG_INSTALL[5] . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1>' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 
@@ -313,7 +314,7 @@ if (INST_phpOutOfDate()) {
             . '<form action="migrate.php" method="post" name="migrate" enctype="multipart/form-data">' . LB 
             . '<input type="hidden" name="step" value="2"' . XHTML . '>' . LB
             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
-            . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db[type]">' . LB 
                 . '<option value="mysql">' . $LANG_INSTALL[35] . '</option>' . LB 
             . '</select></p>' . LB
@@ -321,22 +322,27 @@ if (INST_phpOutOfDate()) {
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db[name]" value="' . $_FORM['name'] . '" size="20"' . XHTML . '></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db[user]" value="' . $_FORM['user'] . '" size="20"' . XHTML . '></p>' . LB
             . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db[pass]" value="' . $_FORM['pass'] . '" size="20"' . XHTML . '></p>' . LB
-            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
-            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB
+            . '<p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>' . LB;
 
         // Identify the backup files in backups/ and order them newest to oldest
-        $sql_files = glob($backup_dir . '*.sql');
-        $tar_files = glob($backup_dir . '*.tar.gz');
-        $tgz_files = glob($backup_dir . '*.tgz');
-        $zip_files = glob($backup_dir . '*.zip');
-        $backup_files = array_merge($sql_files, $tar_files, $tgz_files, $zip_files);
+        $backup_files = array();
+        foreach (array('*.sql', '*.tar.gz', '*.tgz', '*.zip') as $pattern) {
+            $files = glob($backup_dir . $pattern);
+            if (is_array($files)) {
+                $backup_files = array_merge($backup_files, $files);
+            }
+        }
         rsort($backup_files);
 
-        $display .= '<p><label class="' . $form_label_dir . '">' . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file') . '</label>' . LB
+        $display .= '<p><label class="' . $form_label_dir . '">'
+            . $LANG_MIGRATE[6] . ' ' . INST_helpLink('migrate_file')
+            . '</label>' . LB
             . '<select name="migration_type" onchange="INST_selectMigrationType()">' . LB
             . '<option value="">' . $LANG_MIGRATE[7] . '</option>' . LB
             . '<option value="select">' . $LANG_MIGRATE[8] . '</option>' . LB
             . '<option value="upload">' . $LANG_MIGRATE[9] . '</option>' . LB
+            . '<option value="dbcontent">' . $LANG_MIGRATE[49] . '</option>' . LB
             . '</select> ' . LB
             . '<span id="migration-select">' . LB;
 
@@ -353,7 +359,9 @@ if (INST_phpOutOfDate()) {
                 $filename    = str_replace($backup_dir, '', $file_path);
                 $backup_file = str_replace($backup_dir, '', $file_path);
 
-                $display .= '<option value="' . $filename .'">' . $backup_file . ' (' . INST_formatSize(filesize($file_path)) . ')</option>' . LB;
+                $display .= '<option value="' . $filename .'">' . $backup_file
+                    . ' (' . INST_formatSize(filesize($file_path))
+                    . ')</option>' . LB;
 
             }
             
@@ -450,6 +458,11 @@ if (INST_phpOutOfDate()) {
             }
             break;
 
+        case 'dbcontent': // No upload / import required - use db as is
+            $backup_file = false;
+            $import_errors = 0;
+            break;
+
         default:
             $display .= INST_getAlertMsg($LANG_MIGRATE[18]);
             $backup_file = false;
@@ -470,7 +483,8 @@ if (INST_phpOutOfDate()) {
             // (needs to connect to MySQL in order to check)
             if (INST_mysqlOutOfDate($DB)) {
 
-                $display .= INST_getAlertMsg($LANG_INSTALL[51]);
+                $display .= INST_getAlertMsg(sprintf($LANG_INSTALL[51],
+                                                     SUPPORTED_MYSQL_VER));
                 $import_errors++;
 
             } 
@@ -492,12 +506,12 @@ if (INST_phpOutOfDate()) {
             if (isset($_REQUEST['db'])) {
 
                 // Write the database info to db-config.php
-                if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
+                if (!INST_writeConfig(INST_sanitizePath($dbconfig_path), $DB)) {
 
                     exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
 
                 }
-            } 
+            }
 
             require_once $dbconfig_path; // Not sure if this needs to be included..
             switch ($_REQUEST['migration_type']) {
@@ -529,13 +543,13 @@ if (INST_phpOutOfDate()) {
                         $display .= '<p>' . $LANG_MIGRATE[21] . ' <code>' . $backup_file['name'] . '</code> ' . $LANG_MIGRATE[22] . '</p><br' . XHTML . '>' . LB
                             . '<form action="migrate.php" method="post"><p align="center">' . LB
                             . '<input type="hidden" name="step" value="3"' . XHTML . '>' . LB
-                            . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
+                            . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="site_url" value="' . urlencode($_REQUEST['site_url']) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="site_admin_url" value="' . urlencode($_REQUEST['site_admin_url']) . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="backup_file" value="' . $backup_file['name'] . '"' . XHTML . '>' . LB
                             . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                             . '<input type="submit" class="button big-button" name="overwrite_file" value="' . $LANG_MIGRATE[23] . '"' . XHTML .'>' . LB
-                            . '<input type="button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'migrate.php\'"' . XHTML .'>' . LB
+                            . '<input type="submit" class="button big-button" name="no" value="' . $LANG_MIGRATE[24] . '" onclick="document.location=\'migrate.php\'"' . XHTML .'>' . LB
                             . '</p></form>' . LB;
 
                     }
@@ -560,6 +574,56 @@ if (INST_phpOutOfDate()) {
 
                 break;
 
+            case 'dbcontent':
+
+                require_once $_CONF['path_system'] . 'lib-database.php';
+                require_once 'lib-upgrade.php';
+
+                // we need the following information
+                $has_config = false;
+                $db_connection_charset = '';
+                $DB['table_prefix'] = '';
+
+                // get table prefix and check for conf_values table
+                $result = DB_query("SHOW TABLES");
+                $num_tables = DB_numRows($result);
+                for ($i = 0; $i < $num_tables; $i++) {
+                    list($table) = DB_fetchArray($result);
+                    if (substr($table, -6) == 'access') {
+                        $DB['table_prefix'] = substr($table, 0, -6);
+                    } elseif (strpos($table, 'conf_values') !== false) {
+                        $has_config = true;
+                        break;
+                    }
+                }
+
+                // try to figure out the charset
+                $result = DB_query("SHOW CREATE TABLE " . $DB['table_prefix']
+                                   . "access");
+                list($table, $create) = DB_fetchArray($result);
+                if (strpos($create, 'DEFAULT CHARSET=utf8') !== false) {
+                    $db_connection_charset = 'utf8';
+                }
+
+                // Update db-config.php with the table prefix from the db
+                if (!INST_writeConfig($dbconfig_path, $DB)) {
+                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                if (!INST_setDefaultCharset($siteconfig_path,
+                        ($db_connection_charset == 'utf8'
+                                                ? 'utf-8' : $LANG_CHARSET))) {
+                    exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                // skip step 3 since we don't need to import anything
+                header('Location: migrate.php?step=4&language=' . $language
+                    . '&site_url=' . urlencode($_REQUEST['site_url'])
+                    . '&site_admin_url=' . urlencode($_REQUEST['site_admin_url']));
+                break;
+
             } // End switch ($_REQUEST['migration_type']
 
         }
@@ -574,6 +638,8 @@ if (INST_phpOutOfDate()) {
      * 
      */
     case 3:
+
+        require_once 'lib-upgrade.php';
 
         // Get the backup filename
         $backup_file = $_REQUEST['backup_file'];
@@ -609,6 +675,7 @@ if (INST_phpOutOfDate()) {
                         $num_create++;
                         $line = trim($line);
                         if (strpos($line, 'access') !== false) {
+                            $line = str_replace('IF NOT EXISTS ', '', $line);
                             $words = explode(' ', $line);
                             if (count($words) >= 3) {
                                 $table = str_replace('`', '', $words[2]);
@@ -627,6 +694,11 @@ if (INST_phpOutOfDate()) {
                         if (strpos($line, 'SET NAMES utf8') !== false) {
                             $db_connection_charset = 'utf8';
                         }
+                    } elseif (empty($db_connection_charset) &&
+                            strpos($line, 'ENGINE=') !== false) {
+                        if (strpos($line, 'DEFAULT CHARSET=utf8') !== false) {
+                            $db_connection_charset = 'utf8';
+                        }
                     }
                 }
             }
@@ -640,8 +712,16 @@ if (INST_phpOutOfDate()) {
 
             } else {
                 // Update db-config.php with the table prefix from the backup file.
-                if (!INST_writeConfig($_REQUEST['dbconfig_path'], $DB)) { 
-                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path . $LANG_INSTALL[58]);
+                if (!INST_writeConfig($dbconfig_path, $DB)) {
+                    exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                         . $LANG_INSTALL[58]);
+                }
+
+                if (!INST_setDefaultCharset($siteconfig_path,
+                        ($db_connection_charset == 'utf8'
+                                                ? 'utf-8' : $LANG_CHARSET))) {
+                    exit($LANG_INSTALL[26] . ' ' . $siteconfig_path
+                         . $LANG_INSTALL[58]);
                 }
 
                 // Send file to bigdump.php script to do the import.
@@ -782,6 +862,12 @@ if (INST_phpOutOfDate()) {
         if (empty($_CONF['noreply_mail']) && (! empty($_CONF['site_mail']))) {
             $_CONF['noreply_mail'] = $_CONF['site_mail'];
             $config->set('noreply_mail', $_CONF['noreply_mail']);
+        }
+
+        if (! empty($_OLD_CONF['ip_lookup'])) {
+            $_CONF['ip_lookup'] = str_replace($_OLD_CONF['site_url'],
+                $_CONF['site_url'], $_OLD_CONF['ip_lookup']);
+            $config->set('ip_lookup', $_CONF['ip_lookup']);
         }
 
         /**
@@ -966,7 +1052,7 @@ if (INST_phpOutOfDate()) {
             }
 
             $display .= '<p>' . $LANG_MIGRATE[36] . '</p>' . LB
-                .'<form action="success.php" method="GET">' . LB
+                .'<form action="success.php" method="get">' . LB
                 . '<input type="hidden" name="type" value="migrate"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="" value=""' . XHTML . '>' . LB
@@ -986,6 +1072,7 @@ if (INST_phpOutOfDate()) {
 
 $display .= INST_getFooter();
 
+header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo $display;
 
 ?>

@@ -188,7 +188,7 @@ class downloader
     */
     function _setAvailableExtensions($extensions = array())
     {
-        if (sizeof($extensions) == 0) {
+        if (count($extensions) == 0) {
             $this->_availableMimeTypes = 
                 array(
                     'tgz'  => 'application/x-gzip-compressed',
@@ -520,7 +520,7 @@ class downloader
         $fextension = substr($fileName, $pos);
 
         // If application has not set the allowedExtensions then initialize to the default
-        if(sizeof($this->_allowedExtensions) == 0) {
+        if(count($this->_allowedExtensions) == 0) {
             $this->_allowedExtensions = array_flip($this->_availableExtensions);
         }
 

@@ -32,8 +32,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Topic administration page: Create, edit, delete topics.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
+
+/**
+* Geeklog story function library
+*/
 require_once $_CONF['path_system'] . 'lib-story.php';
 
 $display = '';
@@ -89,8 +105,11 @@ function edittopic ($tid = '')
         }
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock ($LANG27[1], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
     if (!is_array ($A) || empty ($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
@@ -174,6 +193,22 @@ function edittopic ($tid = '')
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']);
 
+    $topic_templates->set_var('lang_metadescription',
+                              $LANG_ADMIN['meta_description']);
+    $topic_templates->set_var('lang_metakeywords',
+                              $LANG_ADMIN['meta_keywords']);
+    if (! empty($A['meta_description'])) {
+        $topic_templates->set_var('meta_description', $A['meta_description']);
+    }
+    if (! empty($A['meta_keywords'])) {
+        $topic_templates->set_var('meta_keywords', $A['meta_keywords']);
+    }
+    if ($_CONF['meta_tags'] > 0) {
+        $topic_templates->set_var('hide_meta', '');
+    } else {
+        $topic_templates->set_var('hide_meta', ' style="display:none;"');
+    }
+
     $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
     $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
     if ($A['is_default'] == 1) {
@@ -194,8 +229,19 @@ function edittopic ($tid = '')
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
+
+    if (empty($tid)) {
+        $num_stories = $LANG_ADMIN['na'];
+    } else {
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE tid = '" . addslashes($tid) . "'" . COM_getPermSql('AND'));
+        $N = DB_fetchArray( $nresult );
+        $num_stories = COM_numberFormat($N['count']);
+    }
+
+    $topic_templates->set_var('lang_num_stories', $LANG27[30]);
+    $topic_templates->set_var('num_stories', $num_stories);
     $topic_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $topic_templates->set_var('gltoken', SEC_createToken());
+    $topic_templates->set_var('gltoken', $token);
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -209,6 +255,8 @@ function edittopic ($tid = '')
 * @param    string  $tid            Topic ID
 * @param    string  $topic          Name of topic (what the user sees)
 * @param    string  $imageurl       (partial) URL to topic image
+* @param    string  $meta_description    Topic meta description
+* @param    string  $meta_keywords       Topic meta keywords
 * @param    int     $sortnum        number for sort order in "Topics" block
 * @param    int     $limitnews      number of stories per page for this topic
 * @param    int     $owner_id       ID of owner
@@ -221,7 +269,7 @@ function edittopic ($tid = '')
 * @param    string  $is_archive     'on' if this is the archive topic
 * @return   string                  HTML redirect or error message
 */
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
+function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
 {
     global $_CONF, $_TABLES, $LANG27, $MESSAGE;
 
@@ -230,7 +278,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-    $tid = COM_sanitizeID ($tid);
+    $tid = COM_sanitizeID($tid);
 
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
@@ -252,7 +300,9 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         if ($imageurl == '/images/topics/') {
             $imageurl = '';
         }
-        $topic = addslashes ($topic);
+        $topic = addslashes($topic);
+        $meta_description = addslashes(strip_tags($meta_description));
+        $meta_keywords = addslashes(strip_tags($meta_keywords));
 
         if ($is_default == 'on') {
             $is_default = 1;
@@ -280,7 +330,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
             }
         }
 
-        DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck('article', $tid);
@@ -564,6 +614,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) {
+
     if (empty ($_FILES['newicon']['name'])){
         $imageurl = COM_applyFilter ($_POST['imageurl']);
     } else {
@@ -578,16 +629,17 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['is_archive'])) {
         $is_archive = $_POST['is_archive'];
     }
-    $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
-                           $imageurl,
-                           COM_applyFilter ($_POST['sortnum'], true),
-                           COM_applyFilter ($_POST['limitnews'], true),
-                           COM_applyFilter ($_POST['owner_id'], true),
-                           COM_applyFilter ($_POST['group_id'], true),
-                           $_POST['perm_owner'], $_POST['perm_group'],
-                           $_POST['perm_members'], $_POST['perm_anon'],
-                           $is_default, $is_archive);
-} else if ($mode == 'edit') {
+    $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic'],
+                          $imageurl, $_POST['meta_description'],
+                          $_POST['meta_keywords'],
+                          COM_applyFilter($_POST['sortnum'], true),
+                          COM_applyFilter($_POST['limitnews'], true),
+                          COM_applyFilter($_POST['owner_id'], true),
+                          COM_applyFilter($_POST['group_id'], true),
+                          $_POST['perm_owner'], $_POST['perm_group'],
+                          $_POST['perm_members'], $_POST['perm_anon'],
+                          $is_default, $is_archive);
+} elseif ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG27[1]);
     $tid = '';
     if (isset($_GET['tid'])) {

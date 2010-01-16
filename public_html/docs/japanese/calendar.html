@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>カレンダプラグイン | Geeklogドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - カレンダプラグイン</div>
+
+<h1>カレンダプラグイン</h1>
+
+<p>イベントとカレンダセクションはかつてGeeklogのコアコードの一部でしたが、Geeklog 1.4.1よりプラグインとして分離されました。</p>
+
+<h2><a name="config.php">設定</a></h2>
+
+<p>カレンダプラグインの設定は、「管理者用メニュー - コンフィギュレーション - カレンダ」から変更できます。</p>
+
+<h3><a name="general">カレンダのメイン設定</a></h3>
+
+<table>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
+</tr>
+<tr>
+  <td><a name="desc_calendarloginrequired">ログインを要求する(calendarloginrequired)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、登録ユーザしかカレンダにアクセスできなくなります。<br>
+    この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されます。「すべてにログインを要求する」をはい(1)にすると、カレンダプラグインでログインを要求していなくても、ゲストユーザはカレンダにアクセスできなくなります。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_hidecalendarmenu">メニューに表示しない(hidecalendarmenu)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、サイトのメニューに「カレンダ」メニューを表示しません。</td>
+</tr>
+<tr>
+  <td><a name="desc_personalcalendars">個人カレンダを有効にする(personalcalendars)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、登録ユーザが個人カレンダを持てるようになります。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_eventsubmission">イベント投稿を管理者が承認する(eventsubmission)</a></td>
+  <td>はい(1)</td>
+  <td>はい(1)にすると、ユーザが投稿したイベントは管理者の承認待ちの状態になり、いいえ(0)にすると、即座に登録・表示されるようになります。</td>
+</tr>
+<tr>
+  <td><a name="desc_showupcomingevents">イベント予告を表示する(showupcomingevents)</a></td>
+  <td>はい(1)</td>
+  <td>はい(1)にすると、別のブロックに近い将来のイベントを表示します。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_upcomingeventsrange">イベント予告を表示する期間(upcomingeventsrange)</a></td>
+  <td>14（日）</td>
+  <td>何日先の予定まで表示するかを指定します。</td>
+</tr>
+<tr>
+  <td><a name="desc_hour_mode">時間制(hour_mode)</a></td>
+  <td>12</td>
+  <td>イベントを投稿・編集するときに12時間制にするか24時間制にするかを指定します。「管理者用メニュー - コンフィギュレーション - Geeklog - 言語とロケール」の「時間制(hour_mode)」の設定値がデフォルトとして設定されています。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_event_types">イベントの種類(event_types)</a></td>
+  <td>Anniversary, Appointment, Birthday, Business, Education, Holiday, Meeting, Miscellaneous, Personal, Phone Call, Special Occasion, Travel, Vacation<br>（訳注）日本語版では、記念日、約束、誕生日、打ち合わせ、セミナー、休日、会議、用事、個人の用事、電話、特別な行事、旅行、休暇となっています。</td>
+  <td>サイトカレンダと個人カレンダで使用されるイベントの種類です。</td>
+</tr>
+<tr>
+  <td><a name="desc_notification">メールで通知する(notification)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、サイトカレンダに新規イベントが投稿されたときに、管理者にEメールで通知します。個人カレンダのイベントの場合は通知されません。</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_delete_event">所有者の削除と共に削除する(delete_event)</a></td>
+  <td>いいえ(0)</td>
+  <td>はい(1)にすると、イベント所有者のアカウントが削除されたときに、所有していたすべてのイベントが削除され、いいえ(0)にすると、Rootグループに属するユーザ（たとえば、サイトの管理者）に引き継がれるます。これはサイトのイベントにしか当てはまりません。つまり、ユーザの個人カレンダのイベントは常に削除されます。</td>
+</tr>
+<tr>
+  <td><a name="desc_aftersave">イベント保存後の画面遷移(aftersave)</a></td>
+  <td>カレンダ管理を表示する(list)</td>
+  <td>イベントを保存した後にどのページへ移動するかを設定します。
+    <ul>
+    <li>作成したイベントを表示する(item): イベントの詳細を表示します。</li>
+    <li>カレンダ管理を表示する(list): 管理者用のイベントのリストを表示します（デフォルト）。</li>
+    <li>カレンダを表示する(plugin): カレンダを表示します。</li>
+    <li>Homeを表示する(home): サイトのHomeページ（トップページ）を表示します。</li>
+    <li>管理画面TOPを表示する(admin): 管理画面を表示します。</li>
+    </ul></td>
+</tr>
+</table>
+
+
+<h2><a name="others">他の設定</a></h2>
+
+<p>Geeklogの主要設定の一部がカレンダプラグインと関連していることに注意してください。</p>
+<ul>
+<li>時間と日付は、Geeklogのメインの設定にある現在の言語と<a href="config.html#languages_locale">ロケールの設定</a>に従ってフォーマットされます。</li>
+</ul>
+
+<h2><a name="autotags">自動タグ</a></h2>
+
+<p>カレンダプラグインは、<code>[event:]</code><a href="http://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">自動タグ</a>を提供します。このタグを使用すれば、URLを記述しなくてもカレンダのイベントにリンクを張ることができます。コロンの後にイベントIDを記述してください。イベントにリンクが張られ、イベントのタイトルがリンクテキストとして使用されます。別の方法としては、イベントIDの後に半角スペースに続けて独自のリンクテキストを指定することもできます（閉じカッコの前でなければなりません）。</p>
+
+<p>geeklog.netを例に取ると、</p>
+<ul>
+<li><code>[event:20090805065311513]</code> は <code>&lt;a href="http://www.geeklog.net/calendar/event.php?eid=20090805065311513"&gt;FrOSCon - Free and Open Source Software Conference&lt;/a&gt;</code> に変換されます。</li>
+<li><code>[event:20090805065311513 FrOSCon 2009]</code> は <code>&lt;a href="http://www.geeklog.net/calendar/event.php?eid=20090805065311513"&gt;FrOSCon 2009&lt;/a&gt;</code> に変換されます。</li>
+</ul>
+
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

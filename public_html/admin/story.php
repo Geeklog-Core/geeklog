@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -44,12 +44,16 @@
 * Geeklog common function library
 */
 require_once '../lib-common.php';
-require_once $_CONF['path_system'] . 'lib-story.php';
 
 /**
 * Security check to ensure user even belongs on this page
 */
 require_once 'auth.inc.php';
+
+/**
+* Geeklog story function library
+*/
+require_once $_CONF['path_system'] . 'lib-story.php';
 
 // Set this to true if you want to have this code output debug messages to
 // the error log
@@ -99,7 +103,14 @@ function userlist ($uid = 0)
     return $retval;
 }
 
-function liststories()
+/**
+* Provide list of stories
+*
+* @param    string  $current_topic  (optional) currently selected topic
+* @return   string                  HTML for the list of stories
+*
+*/
+function liststories($current_topic = '')
 {
     global $_CONF, $_TABLES, $_IMAGE_TYPE,
            $LANG09, $LANG_ADMIN, $LANG_ACCESS, $LANG24;
@@ -108,11 +119,7 @@ function liststories()
 
     $retval = '';
 
-    if (!empty ($_GET['tid'])) {
-        $current_topic = COM_applyFilter($_GET['tid']);
-    } elseif (!empty ($_POST['tid'])) {
-        $current_topic = COM_applyFilter($_POST['tid']);
-    } else {
+    if (empty($current_topic)) {
         $current_topic = $LANG09[9];
     }
 
@@ -158,13 +165,18 @@ function liststories()
         . $alltopics . $seltopics . '</select>';
 
     $header_arr = array(
-        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false));
-
-    $header_arr[] = array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true);
-    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false);
-    $header_arr[] = array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true);
-    $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); //author
-    $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); //date
+        array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG_ADMIN['copy'], 'field' => 'copy', 'sort' => false),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG_ACCESS['access'], 'field' => 'access', 'sort' => false),
+        array('text' => $LANG24[34], 'field' => 'draft_flag', 'sort' => true)
+    );
+    if ($_CONF['show_fullname'] == 1) {
+        $header_arr[] = array('text' => $LANG24[7], 'field' => 'fullname', 'sort' => true); // author
+    } else {
+        $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); // author
+    }
+    $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); // date
     $header_arr[] = array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true);
     $header_arr[] = array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true);
 
@@ -176,12 +188,12 @@ function liststories()
     $defsort_arr = array('field' => 'unixdate', 'direction' => 'desc');
 
     $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;editor=std',
+        array('url' => $_CONF['site_admin_url'] . '/story.php?mode=edit',
               'text' => $LANG_ADMIN['create_new'])
     );
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
-                          'text' => $LANG_ADMIN['admin_home']);
+                        'text' => $LANG_ADMIN['admin_home']);
 
     $retval .= COM_startBlock($LANG24[22], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
@@ -208,7 +220,7 @@ function liststories()
         'table' => 'stories',
         'sql' => $sql,
         'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
-        'default_filter' => $excludetopics . COM_getPermSQL ('AND')
+        'default_filter' => $excludetopics . COM_getPermSQL('AND')
     );
 
     $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,
@@ -232,8 +244,8 @@ function liststories()
 */
 function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
+           $MESSAGE;
 
     $display = '';
 
@@ -288,7 +300,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
                                 COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG24[41];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= STORY_renderArticle ($A, 'p');
+        $display .= STORY_renderArticle ($story, 'p');
         COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
         return $display;
     } elseif( $result == STORY_INVALID_SID ) {
@@ -306,11 +318,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ( isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1 )
-        && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
-        $advanced_editormode = true;
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
-        $story_templates->set_var ( 'xhtml', XHTML );
+        $advanced_editormode = true;
         $story_templates->set_var ('change_editormode', 'onchange="change_editmode(this);"');
 
         require_once $_CONF['path_system'] . 'classes/navbar.class.php';
@@ -334,13 +344,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         }
     } else {
         $story_templates->set_file(array('editor' => 'storyeditor.thtml'));
-        $story_templates->set_var('xhtml', XHTML);
         $advanced_editormode = false;
     }
-    $story_templates->set_var ('site_url',       $_CONF['site_url']);
-    $story_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $story_templates->set_var ('layout_url',     $_CONF['layout_url']);
-    $story_templates->set_var ('hour_mode',      $_CONF['hour_mode']);
+    $story_templates->set_var('xhtml', XHTML);
+    $story_templates->set_var('site_url',       $_CONF['site_url']);
+    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $story_templates->set_var('layout_url',     $_CONF['layout_url']);
+    $story_templates->set_var('hour_mode',      $_CONF['hour_mode']);
 
     if ($story->hasContent()) {
         $previewContent = STORY_renderArticle($story, 'p');
@@ -538,6 +548,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     $story_templates->set_var('story_title', $story->EditElements('title'));
+    $story_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
+    $story_templates->set_var('meta_description', $story->EditElements('meta_description'));
+    $story_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
+    $story_templates->set_var('meta_keywords', $story->EditElements('meta_keywords'));
+    if ($_CONF['meta_tags'] > 0) {
+        $story_templates->set_var('hide_meta', '');
+    } else {
+        $story_templates->set_var('hide_meta', ' style="display:none;"');
+    }
     $story_templates->set_var('lang_topic', $LANG_ADMIN['topic']);
     if(empty($currenttopic) && ($story->EditElements('tid') == '')) {
         $story->setTid(DB_getItem($_TABLES['topics'], 'tid',
@@ -572,10 +591,10 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var ('trackback_options',
             COM_optionList ($_TABLES['trackbackcodes'], 'code,name',
                             $story->EditElements('trackbackcode')));
-    // comment expire 
-    $story_templates->set_var ('lang_cmt_disable', $LANG24[63]);
-    if ($story->EditElements('cmt_close') ) {
-        $story_templates->set_var('is_checked5', 'checked="checked"'); //check box if enabled
+    // comment expire
+    $story_templates->set_var('lang_cmt_disable', $LANG24[63]);
+    if ($story->EditElements('cmt_close')) {
+        $story_templates->set_var('is_checked5', 'checked="checked"');
         $story_templates->set_var('showcmtclosedisabled', 'false');
     } else {
         $story_templates->set_var('showcmtclosedisabled', 'true');
@@ -583,13 +602,24 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     $month_options = COM_getMonthFormOptions($story->EditElements('cmt_close_month'));
     $story_templates->set_var('cmt_close_month_options', $month_options);
-    
+
     $day_options = COM_getDayFormOptions($story->EditElements('cmt_close_day'));
     $story_templates->set_var('cmt_close_day_options', $day_options);
-    
-    $year_options = COM_getYearFormOptions($story->EditElements('cmt_close_year'));
+
+    // ensure that the year dropdown includes the close year
+    $endtm = mktime(0, 0, 0, date('m'),
+                date('d') + $_CONF['article_comment_close_days'], date('Y'));
+    $yoffset = date('Y', $endtm) - date('Y');
+    $close_year = $story->EditElements('cmt_close_year');
+    if ($yoffset < -1) {
+        $year_options = COM_getYearFormOptions($close_year, $yoffset);
+    } elseif ($yoffset > 5) {
+        $year_options = COM_getYearFormOptions($close_year, -1, $yoffset);
+    } else {
+        $year_options = COM_getYearFormOptions($close_year);
+    }
     $story_templates->set_var('cmt_close_year_options', $year_options);
-    
+
     $cmt_close_ampm = '';
     $cmt_close_hour = $story->EditElements('cmt_close_hour');
     //correct hour
@@ -607,19 +637,19 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $ampm_select = '<input type="hidden" name="cmt_close_ampm" value=""' . XHTML . '>';
     }
     $story_templates->set_var ('cmt_close_ampm_selection', $ampm_select);
-    
+
     if ($_CONF['hour_mode'] == 24) {
         $hour_options = COM_getHourFormOptions ($story->EditElements('cmt_close_hour'), 24);
     } else {
         $hour_options = COM_getHourFormOptions ($cmt_close_hour);
     }
     $story_templates->set_var('cmt_close_hour_options', $hour_options);
-    
+
     $minute_options = COM_getMinuteFormOptions($story->EditElements('cmt_close_minute'));
     $story_templates->set_var('cmt_close_minute_options', $minute_options);
-    
+
     $story_templates->set_var('cmt_close_second', $story->EditElements('cmt_close_second'));
-    
+
     if (($_CONF['onlyrootfeatures'] == 1 && SEC_inGroup('Root'))
         or ($_CONF['onlyrootfeatures'] !== 1)) {
         $featured_options = "<select name=\"featured\">" . LB
@@ -645,7 +675,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode'));
 
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
-    if ($_CONF['advanced_editor'] == 1) {
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         if ($story->EditElements('advanced_editor_mode') == 1 OR $story->EditElements('postmode') == 'adveditor') {
             $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
         } else {
@@ -712,13 +742,16 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
     $story_templates->set_var('lang_delete', $LANG_ADMIN['delete']);
     $story_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $story_templates->set_var('gltoken', SEC_createToken());
+    $token = SEC_createToken();
+    $story_templates->set_var('gltoken', $token);
     $story_templates->parse('output','editor');
 
-    $display .= COM_startBlock ($LANG24[5], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
+    $display .= COM_startBlock($LANG24[5], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $display .= SEC_getTokenExpiryNotice($token, $LANG24[91]);
+
     $display .= $story_templates->finish($story_templates->get_var('output'));
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $display;
 }
@@ -819,15 +852,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } else if (($mode == $LANG_ADMIN['preview']) && !empty ($LANG_ADMIN['preview'])) {
     $display .= COM_siteHeader('menu', $LANG24[5]);
-    $editor = '';
-    if (!empty ($_GET['editor'])) {
-        $editor = COM_applyFilter ($_GET['editor']);
-    }
-    $display .= storyeditor (COM_applyFilter ($_POST['sid']), 'preview', '', '',
-                             $editor);
+    $display .= storyeditor(COM_applyFilter($_POST['sid']), 'preview', '', '');
     $display .= COM_siteFooter();
     COM_output($display);
-} else if ($mode == 'edit') {
+} elseif (($mode == 'edit') || ($mode == 'clone')) {
     $display .= COM_siteHeader('menu', $LANG24[5]);
     $sid = '';
     if (isset ($_GET['sid'])) {
@@ -837,11 +865,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_GET['topic'])) {
         $topic = COM_applyFilter ($_GET['topic']);
     }
-    $editor = '';
-    if (isset ($_GET['editor'])) {
-        $editor = COM_applyFilter ($_GET['editor']);
-    }
-    $display .= storyeditor ($sid, $mode, '', $topic, $editor);
+    $display .= storyeditor($sid, $mode, '', $topic);
     $display .= COM_siteFooter();
     COM_output($display);
 } else if ($mode == 'editsubmission') {
@@ -853,16 +877,24 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     submitstory ();
 } else { // 'cancel' or no mode at all
     $type = '';
-    if (isset($_POST['type'])){
-        $type = COM_applyFilter ($_POST['type']);
+    if (isset($_POST['type'])) {
+        $type = COM_applyFilter($_POST['type']);
     }
-    if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
+    if (($mode == $LANG24[10]) && !empty($LANG24[10]) &&
             ($type == 'submission')) {
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
+        $display = COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
     } else {
+        $current_topic = '';
+        if (empty($mode)) {
+            if (!empty ($_GET['tid'])) {
+                $current_topic = COM_applyFilter($_GET['tid']);
+            } elseif (!empty ($_POST['tid'])) {
+                $current_topic = COM_applyFilter($_POST['tid']);
+            }
+        }
         $display .= COM_siteHeader('menu', $LANG24[22]);
         $display .= COM_showMessageFromParameter();
-        $display .= liststories();
+        $display .= liststories($current_topic);
         $display .= COM_siteFooter();
     }
     COM_output($display);

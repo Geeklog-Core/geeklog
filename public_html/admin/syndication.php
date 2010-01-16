@@ -30,7 +30,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Content syndication administration page: Here you can create, edit, and
+* delete feeds in various formats for Geeklog and its plugins.
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once 'auth.inc.php';
 
 $display = '';
@@ -45,6 +58,23 @@ if (!SEC_hasRights('syndication.edit')) {
 }
 
 /**
+* Delete a feed's file
+*
+* @param    string  filename (without the path) of the feed
+* @return   void
+*
+*/
+function deleteFeedFile($filename)
+{
+    if (! empty($filename)) {
+        $feedfile = SYND_getFeedPath($filename);
+        if (file_exists($feedfile)) {
+            @unlink($feedfile);
+        }
+    }
+}
+
+/**
 * Toggle status of a feed from enabled to disabled and back
 *
 * @param    int     $fid    ID of the feed
@@ -55,15 +85,27 @@ function changeFeedStatus($fid_arr)
 {
     global $_TABLES;
 
+    $changes = false;
+
     // first disable all
-    DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '0'");
+    DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 0");
     if (isset($fid_arr)) {
         foreach ($fid_arr as $fid) {
-            $feed_id = addslashes (COM_applyFilter ($fid, true));
-            if (!empty ($fid)) {
+            $feed_id = addslashes(COM_applyFilter($fid, true));
+            if (!empty($fid)) {
                 // now enable those in the array
-                DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '1' WHERE fid = '$fid'");
+                DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 1 WHERE fid = '$fid'");
+                $changes = true;
             }
+        }
+    }
+
+    if ($changes) {
+        $result = DB_query("SELECT filename FROM {$_TABLES['syndication']} WHERE is_enabled = 0");
+        $num_feeds_off = DB_numRows($result);
+        for ($i = 0; $i < $num_feeds_off; $i++) {
+            list($feedfile) = DB_fetchArray($result);
+            deleteFeedFile($feedfile);
         }
     }
 }
@@ -92,7 +134,7 @@ function find_feedFormats ()
 /**
 * Return list of types available for article feeds
 *
-* @return   string   an array with id/name pairs for every feed
+* @return   array   an array with id/name pairs for every feed
 *
 */
 function get_articleFeeds()
@@ -123,6 +165,12 @@ function get_articleFeeds()
     return $options;
 }
 
+/**
+* List all feeds
+*
+* @return   string  HTML with the list of all feeds
+*
+*/
 function listfeeds()
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
@@ -225,6 +273,7 @@ function editfeed ($fid = 0, $type = '')
     }
 
     $retval = '';
+    $token = SEC_createToken();
 
     $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file ('editor', 'feededitor.thtml');
@@ -234,10 +283,13 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $feed_template->set_var ('layout_url', $_CONF['layout_url']);
 
-    $feed_template->set_var ('start_feed_editor', COM_startBlock ($LANG33[24],
-            '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $feed_template->set_var ('end_block',
-            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
+    $start_block = COM_startBlock($LANG33[24], '',
+                        COM_getBlockTemplate('_admin_block', 'header'));
+    $start_block .= SEC_getTokenExpiryNotice($token);
+
+    $feed_template->set_var('start_feed_editor', $start_block);
+    $feed_template->set_var('end_block',
+            COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
 
     $feed_template->set_var ('lang_feedtitle', $LANG33[25]);
     $feed_template->set_var ('lang_enabled', $LANG33[19]);
@@ -364,10 +416,10 @@ function editfeed ($fid = 0, $type = '')
         $feed_template->set_var ('is_enabled', '');
     }
     $feed_template->set_var('gltoken_name', CSRF_TOKEN);
-    $feed_template->set_var('gltoken', SEC_createToken());
+    $feed_template->set_var('gltoken', $token);
 
-    $retval .= $feed_template->finish ($feed_template->parse ('output',
-                                                              'editor'));
+    $retval .= $feed_template->finish($feed_template->parse('output',
+                                                            'editor'));
     return $retval;
 }
 
@@ -386,7 +438,7 @@ function newfeed ()
     $retval = '';
 
     $plugins = PLG_supportingFeeds ();
-    if (sizeof ($plugins) == 0) {
+    if (count($plugins) == 0) {
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
         $retval = COM_siteHeader ('menu', $LANG33[11])
@@ -443,7 +495,7 @@ function savefeed ($A)
         $A[$name] = COM_stripslashes ($value);
     }
 
-    if ($A['is_enabled'] == 'on') {
+    if (isset($A['is_enabled']) && ($A['is_enabled'] == 'on')) {
         $A['is_enabled'] = 1;
     } else {
         $A['is_enabled'] = 0;
@@ -508,15 +560,19 @@ function savefeed ($A)
         $A[$name] = addslashes ($value);
     }
 
-    DB_save ($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
+    DB_save($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,feedlogo,filename,charset,language,is_enabled,updated,update_info',
         "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['feedlogo']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
 
     if ($A['fid'] == 0) {
-        $A['fid'] = DB_insertId ();
+        $A['fid'] = DB_insertId();
     }
-    SYND_updateFeed ($A['fid']);
+    if ($A['is_enabled'] == 1) {
+        SYND_updateFeed($A['fid']);
+    } else {
+        deleteFeedFile($A['filename']);
+    }
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/syndication.php?msg=58');
+    return COM_refresh($_CONF['site_admin_url'] . '/syndication.php?msg=58');
 }
 
 /**
@@ -533,9 +589,7 @@ function deletefeed($fid)
     if ($fid > 0) {
         $feedfile = DB_getItem($_TABLES['syndication'], 'filename',
                                "fid = $fid");
-        if (!empty($feedfile)) {
-            @unlink(SYND_getFeedPath($feedfile));
-        }
+        deleteFeedFile($feedfile);
         DB_delete($_TABLES['syndication'], 'fid', $fid);
 
         return COM_refresh($_CONF['site_admin_url']
@@ -569,7 +623,7 @@ if ($mode == 'edit') {
                  . COM_siteFooter ();
     }
 }
-else if (($mode == $LANG33[1]) && !empty ($LANG33[1]))
+elseif (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= COM_siteHeader ('menu', $LANG33[24])
              . editfeed (0, COM_applyFilter($_REQUEST['type']))

@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language file for the Geeklog Static Page plugin
 #
-# Copyright (C) 2008
+# Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.4#1
+# Version 1.6.1#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -108,12 +108,19 @@ $LANG_STATIC = array(
     'copy' => 'העתקה',
     'limit_results' => 'הגבלת תוצאות',
     'search' => 'חיפוש',
-    'submit' => 'שליחה'
+    'submit' => 'שליחה',
+    'no_new_pages' => 'אין עמודים חדשים',
+    'pages' => 'עמודים',
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
+$PLG_staticpages_MESSAGE19 = 'העמוד שלכם נשמר בהצלחה.';
+$PLG_staticpages_MESSAGE20 = 'העמוד שלכם נמחק בהצלחה.';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'אין תמיכה בשידרוג ה-plugin.';
@@ -129,6 +136,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'איפשור PHP?',
     'sort_by' => 'מיון קוביות מידע מרכזיות לפי',
     'sort_menu_by' => 'מיון פריטים בתפריט לפי',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => 'מחיקת עמודים עם יוצריהם?',
     'in_block' => 'עטיפת העמודים בקוביית מידע?',
     'show_hits' => 'הצגת כמות לחיצות?',
@@ -137,7 +145,18 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'צינזור תוכן?',
     'default_permissions' => 'הרשאות ברירת המחדל של עמוד',
     'aftersave' => 'לאחר שמירת עמוד',
-    'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת'
+    'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
+    'meta_tags' => 'אפשרו תגיות Meta',
+    'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
+    'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
+    'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
+    'title_trim_length' => 'אורך קיצוץ כותרות',
+    'includecenterblocks' => 'כיללו עמודים סטטיים בקוביות מידע מרכזיות',
+    'includephp' => 'כיללו עמודים סטטיים עם PHP',
+    'includesearch' => 'אפשרו עמודים סטטיים בחיפוש',
+    'includesearchcenterblocks' => 'כיללו עמודים סטטיים בקוביות מידע מרכזיות',
+    'includesearchphp' => 'כיללו עמודים סטטיים עם PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -146,17 +165,21 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'הגדרות ראשיות של עמודים סטטיים',
+    'fs_whatsnew' => 'קוביית המידע של מה חדש',
+    'fs_search' => 'תוצאות חיפוש',
     'fs_permissions' => 'הרשאות ברירת המחדל'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
-    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
+    2 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title'),
+    3 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title', 'תווית' => 'label'),
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

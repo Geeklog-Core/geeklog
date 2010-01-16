@@ -32,7 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+/**
+* Geeklog common function library
+*/
 require_once '../../../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
 require_once '../../auth.inc.php';
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -104,7 +111,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
             return $retval;
         }
     } else {
-        $A['owner_id'] = $_USER['uid'];
+        if (empty($A['owner_id'])) {
+            $A['owner_id'] = $_USER['uid'];
+        }
         if (isset ($_GROUPS['Calendar Admin'])) {
             $A['group_id'] = $_GROUPS['Calendar Admin'];
         } else {
@@ -123,8 +132,11 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $event_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock($LANG_CAL_ADMIN[1], '',
-                              COM_getBlockTemplate ('_admin_block', 'header'));
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     if (!empty($A['eid'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -164,6 +176,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
         $A['allday'] = 0;
     }
 
+    $event_templates->set_var('lang_eventid', $LANG_CAL_ADMIN[34]);
     $event_templates->set_var('event_id', $A['eid']);
     $event_templates->set_var('lang_eventtitle', $LANG_ADMIN['title']);
     $A['title'] = str_replace('{','&#123;',$A['title']);
@@ -327,7 +340,7 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $event_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $event_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $event_templates->set_var('gltoken', SEC_createToken());
+    $event_templates->set_var('gltoken', $token);
     $event_templates->parse('output', 'editor');
     $retval .= $event_templates->finish($event_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -509,17 +522,22 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                                . '/plugins/calendar/index.php');
         }
 
+        $hits = DB_getItem($_TABLES['events'], 'hits', "eid = '$eid'");
+        if (empty($hits)) {
+            $hits = 0;
+        }
+
         DB_delete ($_TABLES['eventsubmission'], 'eid', $eid);
 
         DB_save($_TABLES['events'],
                'eid,title,event_type,url,allday,datestart,dateend,timestart,'
                .'timeend,location,address1,address2,city,state,zipcode,description,'
                .'postmode,owner_id,group_id,perm_owner,perm_group,perm_members,'
-               .'perm_anon',
+               .'perm_anon,hits',
                "'$eid','$title','$event_type','$url',$allday,'$datestart',"
                ."'$dateend','$timestart','$timeend','$location','$address1',"
                ."'$address2','$city','$state','$zipcode','$description','$postmode',"
-               ."$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+               ."$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$hits");
         if (DB_count ($_TABLES['personal_events'], 'eid', $eid) > 0) {
             $result = DB_query ("SELECT uid FROM {$_TABLES['personal_events']} "
                                ."WHERE eid = '{$eid}'");
@@ -631,6 +649,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
     $A = DB_fetchArray ($result);
+    $A['hits'] = 0;
     $A['eid'] = COM_makesid ();
     $A['owner_id'] = $_USER['uid'];
     $display .= COM_siteHeader ('menu', $LANG_CAL_ADMIN[1]);

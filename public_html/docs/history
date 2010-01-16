@@ -1,6 +1,345 @@
 Geeklog History/Changes:
 
-May 31, 2009 (1.6.0b2)
+??? ??, 2010 (1.6.2)
+------------
+
+- Show the block name in the list of blocks (feature request #0000819) [Dirk]
+- Added an option (under My Account > Layout & Language) for users to select
+  whether they want to use the Advanced Editor or not. The option is on by
+  default but only available when Advanced Editor has been enabled in the
+  Configuration (feature request #0000984) [Dirk]
+- Added support for textarea input fields in the Configuration (feature request
+  #0000905) [Dirk]
+- Blocks could not contain words in curly braces as they were mistaken for
+  template variables (bug #0001057) [Dirk]
+- Allow groups to be marked as a Default Group. New users will automatically be
+  added to all default groups (feature request #0000798) [Dirk]
+- Make sure all onclick events in the Configuration return false (bug #0001054)
+- Moved hard-coded sort direction indicator (asc/desc) for search results to
+  the language files [Dirk]
+- Changed the 'default_perm_cookie_timeout' config option to a dropdown so that
+  it's consistent with the "Remember me for" dropdown in My Account [Dirk]
+- Raised minimum required MySQL version to MySQL 4.0.18 [Dirk]
+- Fixed a non-feature where canceling out of the story editor would select that
+  story's topic in the admin's list of stories [Dirk]
+- Fixed problem uninstalling plugins - missing globals (bug #0001048)
+- Added an option to create a copy of a story (feature request #0000811) [Dirk]
+- Updated FCKeditor to version 2.6.5 [Dirk]
+- Prepare database for storing IPv6 addresses (feature request #0000971) [Dirk]
+- Implemented re-authentication when trying to submit a form with an expired
+  security token. This will allow the user to save changes even when the token
+  has expired [Dirk]
+- Hide meta tag entry fields from the Story and Topic editors when meta tag
+  support is disabled [Dirk]
+- Fixed topic selection for the Daily Digest (bug #0001041, patch provided by
+  Ben)
+- Changed the 'menu_elements' and 'notification' config options to dropdowns
+  since there's only a fixed number of keywords that these two options recognize
+  [Dirk]
+- Fixed delete option for dynamically added config options: Back in 1.5.1, we
+  renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
+  update the dynamically created function calls (cf. bug #0000681) [Dirk]
+
+Links Plugin
+------------
+- Added a link to "New category" from the Links editor [Dirk]
+- Fixed localization of "Root" category (bug #0001047) [Dirk]
+
+Polls Plugin
+------------
+- Fixed wrong "access denied" message when attempting to view comments on a poll
+  that the user is not allowed to view (bug #0001044) [Dirk]
+- Fixed comment bar Refresh button (bug #0001044) [Dirk]
+- Hide meta tag entry fields from Polls editor when meta tag support is
+  disabled [Dirk]
+
+Static Pages Plugin 1.6.2
+-------------------
+- Fixed SQL compatibility with MS SQL (bug #0001050)
+- Added a draft flag (feature request #0000884) [Dirk]
+- Removed the sp_uid field since it's simply a duplicate of owner_id [Dirk]
+- Display number of comments in Static Page editor [Dirk]
+- Fixed wrong "access denied" message when attempting to view comments on a page
+  that the user is not allowed to view (bug #0001043) [Dirk]
+- Fixed comment bar Refresh button (bug #0001043) [Dirk]
+- Hide meta tag entry fields from Static Page editor when meta tag support is
+  disabled [Dirk]
+- Avoid a pair of empty brackets on the printer-friendly version for Static
+  Pages which have comments disabled [Dirk]
+- Added a config option to define the default sort order for the admin's list
+  of Static Pages (feature request #0000812) [Dirk]
+- Made the initial size of the Static Pages edit area (when using FCKEditor)
+  larger (feature request #0001037) [Dirk]
+- If a page does not exist and the user has staticpages.edit rights, send them
+  to the Static Page Editor (feature request #0000975) [Dirk]
+- Added a Comment Default config option (feature request #0000966) [Dirk]
+- Added support for query highlighting [Dirk]
+
+
+Nov 22, 2009 (1.6.1)
+------------
+
+Changes since 1.6.1rc1:
+- It wasn't possible to email a user via their profile page - checked the wrong
+  field for '@' characters (cf. bug #0000992; reported by rayleigh) [Dirk]
+- Fixed use of wrong constant in unpacker.class.php [Blaine]
+- Updated the age-old help texts and added help files for comment and user
+  submissions as well as the draft stories list [Dirk]
+- The success message at the end of the install recommended setting
+  db-config.php and siteconfig.php to 755. These files don't need to be
+  executable, so recommend 644 instead (bug #0001036) [Dirk]
+
+- Updated Estonian language files, provided by Artur Räpp
+- Updated German language files, provided by Markus Wollschläger
+- Updated Japanese language files, provided by the Geeklog.jp group
+
+Static Pages Plugin
+-------------------
+- Content in curly braces in a static page was mistaken for template variables
+  in the static pages editor (bug #0001038) [Dirk]
+- Added missing code to handle $_SP_CONF['includesearchcenterblocks'] and
+  $_SP_CONF['includesearchphp'] options that was accidentally left out when
+  merging Tom's patch [Dirk]
+- Removed reference to undeclared variable in SP_render_content (bug #0001032)
+  [Dirk]
+
+
+Nov 8, 2009 (1.6.1rc1)
+-----------
+
+Changes since 1.6.1b1:
+- Moved hard coded green color for the search result byline (when using "Google"
+  style) to the stylesheet (new class "searchresult-byline") [Dirk]
+- "Refine search" lost the status of the "Titles Only" checkbox [Dirk]
+  Note: This fix requires a change in search/searchform.thtml
+- Improved display of the "Sort by" and "Show n results" dropdowns on the
+  search results page (feature request #0000910) [Sami, LWC]
+- The search results page used HTML <br> tags even when XHTML was requested
+  (bug #0001022, patch provided by taca)
+- Fixed wrong path reported in case of a missing 'data' directory (reported by
+  Markus Wollschläger) [Dirk]
+- When a plugin returns 0 items for its entry in the Admins Block, don't display
+  that as 'N/A' (bug #0001025) [Dirk]
+- Fixed a bug in the Group Editor that didn't let you add groups to other groups
+  unless your $_TABLES['groups'] happened to be called "groups" (bug #0000998)
+  [Dirk]
+
+- Updated Hebrew language files, provided by LWC
+
+Links Plugin
+------------
+- When URL rewriting is enabled, return rewritten URLs for search results [Dirk]
+
+Static Pages Plugin
+-------------------
+- Fixed use of wrong CSS class for the entries for the What's New block [Tom]
+
+
+Nov 1, 2009 (1.6.1b1)
+-----------
+
+- The user's time zone selection (from My Account) is actually used now [Dirk]
+- Modernized the "timezone hack", made the config option a dropdown, and moved
+  all timezone-related code into a new TimeZoneConfig class [Dirk]
+- Fixed an old bug that could cause SQL errors when a user changed their "Show
+  & hide boxes" settings [Dirk]
+- Searching by author threw an error on PHP 4 (bug #0001008) [Dirk]
+- Moved the functionality of the toinnodb.php script into the Database Backups
+  admin panel [Dirk]
+- Added an option to optimze tables to the Database Backups admin panel [Dirk]
+- Added a notice about the expiry time for the security token (and the potential
+  loss of changes) to most editors. This is meant as an intermediate step
+  until we get around to updating the editors and provide a more user friendly
+  solution. [Dirk]
+- Fixed display of text excerpt for search results on PHP 4 (bug #0001004)
+  [Dirk]
+- The comment speed limit was being ignored (bug #0001003) [Dirk]
+- Added an icon to make the plugin update option somewhat more obvious [Dirk]
+  (icon "stock_update-data.png" taken from Gnome 2.18 icon theme set by
+  AMAZIGH Aneglus, released under the GPL)
+- Allow bigger values for a topic's Sort Order field (feature request #0001011)
+  [Dirk]
+- When a Story Admin did not have permission to edit a story, Geeklog threw a
+  "call to a member function on a non-object" error when trying to display a
+  proper "access denied" message (reported by Chase and Cesar) [Dirk]
+- Allow external apps to contribute to search results (feature request #0000985)
+  [Sami]
+- Remember current sort/limit in search results (bug #0001007) [Sami]
+- Don't display the comment form for a story when comments aren't enabled for it
+  (bug #0000994) [Dirk]
+- Fixed a long-standing quirk of the submission handling where the "Submissions"
+  entry in the Admins Block wasn't updated after accepting / rejecting a
+  submission [Dirk]
+- Fixed creation of multiple plugin groups in plugin autoinstall [Randy, Dirk]
+- Added new option $_CONF['article_comment_close_enabled'] to enable/disable
+  automatically closing stories for comments after a certain amount of days
+  (bug #0000959). Changed handling of comment_expire field in gl_stories such
+  that 0 means the story is always open for comments [Dirk]
+- The "Admin Group" checkbox in the Group Editor didn't work (bug #0000995,
+  reported & fix provided by Tsuchi)
+- Setting $_CONF['article_comment_close_days'] to a high value (to work around
+  bugs with the "Disable Comments" option in 1.6.0) may result in values outside
+  of the range of the year dropdown for that option, in which case it reverted
+  to the previous(!) year and caused comments to be closed immediately [Dirk]
+- When viewing your own profile page, you now get an "edit" link that takes you
+  to "My Account" [Dirk]
+- Additional checks in "Mail Story to a Friend", "Send mail to user", and
+  "Mail Users" dialogs to make sure users don't enter email addresses into the
+  name fields (bug #0000992) [Dirk]
+- Added an option to send a copy to self to the "Mail Story to a Friend" dialog
+  and made the look of this and the "Send mail to user" dialogs more consistent
+  [Dirk]
+- Display the number of stories in the current topic in the Topic Editor
+  (feature request #0000806) [Dirk]
+- Call CUSTOM_userCheck from admin/user.php (bug #0000925) [Dirk]
+- You can now have one featured story per topic (feature request #0000750,
+  patch provided by Tom Homer)
+- Changing the Post Mode in Advanced Editor mode selected the wrong tab
+  (bug #0000980, patch provided by dengen)
+- Made the former $cc parameter for COM_mail an optional array of additional
+  email headers (using a string for that parameter still works as CC:) [Dirk]
+- Fixed reply notification for the very first comment (bug #0000973)
+  [dengen, Dirk]
+- When an anonymous commenter left a name, use it in the comment notification
+  email (bug #0000960) [Dirk]
+- Removed the CSRF token from all links to edit a comment. We only need it in
+  the actual comment editor and it caused problems on the moderation page [Dirk]
+- For anonymous comments, use the anonymous user's name from the database, not
+  from the language file (cf. bug #0000960) [Dirk]
+- The session and password cookies are now created with the HttpOnly flag set
+  to make it somewhat harder to read them from JavaScript (requires browser
+  support) [Dirk]
+- Fixed visibility of the "Send Ping" links in the Story Admin's list of stories
+  and the Story Options block [Dirk]
+- The install script was switching back to English in some upgrade scenarios
+  (bug #0000969, patch provided by taca)
+- Added a workaround to not lose the XMLSitemap priorities for Locales where
+  the comma is used as the decimal separator [Dirk]
+- Keep track of actual upper/lowercase spelling of plugin names in the
+  XMLSitemap plugin [mystral-kk, Dirk]
+- Added support for a CUSTOM_renderMenu function when rendering the top menu
+  (feature request #0000845) [Dirk]
+- In the install script, always open db-config.php and siteconfig.php in
+  binary mode to avoid EOL character mixup on Windows (bug #0000730) [Dirk]
+- Avoid SQL error with certain db dumps during migration (bug #0000955) [Dirk]
+- Plugin migration was only called when the plugin also needed an upgrade
+  (bug #0000947) [Dirk]
+- The Migrate option in the install script now also works on an existing
+  database (feature request #0000945) [Dirk]
+- Comment notifications used the phrase "Read the full article" when pointing
+  to the new comment post (bug #0000940) [Dirk]
+- Send correct content type and character set header in the install script
+  (bug #0000964, patch provided by taca)
+- The "Remember Me For" option under My Account did not recognize the "(don't)"
+  option any more (bug #0000961) [Dirk]
+- Send a notification when a comment goes into the submission queue [Dirk]
+- Added a link back to the story to the "Mail Story to a Friend" form [Dirk]
+- Only list [code], [raw] tags when story.* permissions are required [Dirk]
+- [page_break] was not listed when all HTML was allowed for Root users [Dirk]
+- Added support for meta tags and meta keywords, provided by Tom Homer
+- When an error occurs in bigdump.php (during migration) keep the selected
+  language when sending the user back to migrate.php (bug #0000943) [Dirk]
+- Use COM_getUserDateTimeFormat, i.e. the user's preferred format, for
+  displaying the date and time in search results [Dirk]
+- When disabling a feed, delete the feed file [Dirk]
+- Moved leftover hard-coded text from admin/sectest.php to the language files
+  [Dirk]
+- When creating Pingback excerpts, convert the other site's content to our
+  site's character set, when necessary [Dirk]
+- New function COM_getTextContent converts HTML into continuous text. Used for
+  a more accurate "read more" count for articles and to improve the text
+  excerpts for search results and pingbacks [Dirk]
+- Use COM_numberFormat to format the number of registered and anonymous users
+  displayed in the Who's Online block [Dirk]
+- Use $LANG_ADMIN['na'] instead of hard-coding 'N/A' in several places [Dirk]
+- For Remote Users, display their service name in the User Editor [Dirk]
+
+Calendar Plugin 1.1.1
+---------------
+- Keep track of the user id for submitted events (bug #0000993) [Dirk]
+- Reintroduced {event_begin_anchortag} and {event_end_anchortag} variables
+  in event.php [Dirk]
+- The number of hits for an event was reset when editing the event [Dirk]
+- When cloning an event, the number of hits for the clone should be 0 [Dirk]
+- Avoid triggering a false spam report when submitting an event with the default
+  "http://" entry for the link still in place (bug #0000946) [Dirk]
+
+Links Plugin
+------------
+- Display the number of links in the current category in the Category Editor.
+  Note: Does not (yet) count links in sub-categories [Dirk]
+- Link titles in autotags showed up with backslashes before quotes (bug
+  #0000986) [Dirk]
+
+Polls Plugin
+------------
+- Fixed display of the Polls block when it only contained polls not visible
+  for anonymous visitors (bug #0000996) [Dirk]
+- When upgrading from Geeklog 1.5.2, the length of the poll IDs was not extended
+  to 40 characters - only fresh installs of Geeklog 1.6.0 and upgrades from
+  older versions worked correctly (cf. feature request #0000754) [Dirk]
+- Added support for meta tags and meta keywords, provided by Tom Homer
+- Introduced [poll:], [poll_vote:], and [poll_result:] autotags, allowing to
+  embed polls where autotags are allowed, provided by Tom Homer
+
+Static Pages Plugin 1.6.1
+-------------------
+- Certain types or all Static Pages can now be excluded from the search results
+  (feature request #0000979, provided by Tom Homer)
+- New and updated Static Pages are now listed in the What's New block
+  (feature request #0000908, provided by Tom Homer)
+- Fresh installs of the plugin in Geeklog 1.6.0 accidentally used a wrong name
+  for the plugin's admin group. Silently fix that during the upgrade [Dirk]
+- Made the list of pages sortable by author (feature request #0000978) [Dirk]
+- List available autotags in the static pages editor [Dirk]
+- Added support for meta tags and meta keywords, provided by Tom Homer
+
+
+Aug 30, 2009 (1.6.0sr2)
+------------
+
+This release addresses the following security issue:
+- Unauthorized file uploads were possible through FCKeditor.
+  Uploaded files still had to go through FCKeditor's filter, so it was not
+  possible to upload scripts (and the integrity of the Geeklog site as such was
+  not in danger). There were, however, reports that this was used to host
+  malware.
+  This update prevents use of the upload feature when FCKeditor is disabled and
+  disables it for anonymous users. It also doesn't allow uploading of archive
+  files any more. Furthermore, you need some sort of "edit" permission now to
+  be able to upload files through FCKeditor (this is meant as an interim
+  measure - we will probably introduce a separate "upload" permission in future
+  Geeklog versions).
+
+Not security-related:
+- Fixed installation using InnoDB tables [Dirk]
+- Links plugin: Fixed wrong function name in the autoinstall.php file
+  (bug #0000954)
+- Fixed an SQL error (due to a missing global declaration; not exploitable) when
+  the commentcode field was auto-updated (reported by Jokke_K) [Dirk]
+
+This release also includes updated Hebrew (provided by LWC) and German language
+files.
+
+
+Jul 30, 2009 (1.6.0sr1)
+------------
+
+This release addresses the following security issues:
+- Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+  email a story to a friend.
+- The "Mail Story to a Friend" function didn't check story permissions, so that
+  it was possible to email a story even if you didn't have the permissions to
+  view it on the site.
+
+Not security-related:
+- Fixed an SQL error (due to a non-initialized variable; not exploitable) when
+  the story submission queue was off (reported by Dieter Thomas) [Dirk]
+- Fixed calls to a nonexistent function COM_outputMessageAndAbort (should have
+  been COM_displayMessageAndAbort) [Dirk]
+
+
+Jul 19, 2009 (1.6.0)
 ------------
 
 Geeklog 1.6.0 incorporates the following projects implemented during
@@ -9,6 +348,98 @@ the 2008 Google Summer of Code:
 + Site migration support and easier plugin installation, by Matt West
 + Improved search, by Sami Barakat
 + Comment moderation and editable comments, by Jared Wenerd
+
+Changes since 1.6.0rc2:
+- Updated language file for formal German, provided by Markus Wollschläger
+- Updated Japanese language file and documentation, provided by the
+  Geeklog.jp group
+
+
+Jul 12, 2009 (1.6.0rc2)
+------------
+
+Changes since 1.6.0rc1:
+- Updated FCKeditor to version 2.6.4.1 [Dirk]
+- Fixed advanced search not using start and end dates (bug #0000924, patch
+  provided by dengen)
+- Fixed auto-detection of table prefix during migration when the SQL dump
+  contained CREATE TABLE IF NOT EXISTS requests (bug #0000922) [Dirk]
+- When an error occurs in bigdump.php (during migration) send the user back to
+  migrate.php (bug #0000919) [Dirk]
+- Fixed warning in migration script when no backups are available (bug #0000918,
+  patch provided by hiroron)
+
+- Updated Estonian language files, provided by Artur Räpp
+- Updated Hebrew language files, provided by LWC
+- Updated Japanese language files and documentation, provided by the
+  Geeklog.jp group
+
+
+Jun 28, 2009 (1.6.0rc1)
+------------
+
+Changes since 1.6.0b3:
+- Fixed include path for db-config.php in bigdump.php (bug #0000915) [Dirk]
+- Improved detection of UTF-8 database dumps in migration (bug #0000916) [Dirk]
+- Fixed typos in the install script (bugs #0000913 and #0000914) [Dirk]
+
+
+Jun 21, 2009 (1.6.0b3)
+------------
+
+Changes since 1.6.0b2:
+- Fixed IE6 and Safari compatibility issue with sort and limit combo boxes in
+  search results (part of bug #0000874) [Sami]
+- Fixed HTML in the Configuration (bug #0000907) [Dirk]
+- Added a more prominent reminder to remove the install script [Dirk]
+- Made the link to a comment's parent object from the comment bar work properly
+  for plugins [Dirk]
+- Allow searching by topic (without a query string) again (reported by Markus
+  Wollschläger) [Dirk]
+- Fixed handling of $_CONF['comment_close_rec_stories'] (bug #0000899) [Dirk]
+- Improved selection of text portion displayed in search results [Dirk]
+- Fixed an error that occured after deleting a trackback [Dirk]
+- Replace autotags in search results (bug #0000887) [Dirk]
+- Don't insist on an email address when editing a Remote User (bug #0000885)
+  [Dirk]
+- Added a config option to send an X-FRAME-OPTIONS HTTP header to prevent
+  "clickjacking" (requires browser support) [Dirk]
+- Prevent XSS in the install script (reported independently by Nemesis and MaXe)
+  [Dirk]
+- Removed old plugin API function plugin_commentsupport from the Calendar,
+  Polls, and Static Pages plugins [Dirk]
+
+- Updated Japanese language files and Japanese documentation,
+  provided by the Geeklog.jp group
+
+Calendar plugin
+---------------
+- Fixed leap year check [Sean Clark]
+
+Polls plugin
+------------
+- Implemented PLG_getCommentUrlId [Dirk]
+- Update polls comments when changing a poll's ID so the comments don't become
+  orphaned (part of bug #0000901) [Dirk]
+
+Static Pages plugin
+-------------------
+- Another attempt to fix a compatibility issue with PHP 4 (parse error)
+  [Ben, Dirk]
+- Implemented PLG_getCommentUrlId [Dirk]
+- Update static pages comments when changing a page's ID so the comments don't
+  become orphaned (part of bug #0000901) [Dirk]
+- When deleting a static page, also delete its comments (bug #0000901) [Dirk]
+
+XMLSitemap plugin
+-----------------
+- Add the Polls plugin to the sitemap by default (part of bug #0000898) [Dirk]
+- When manually adding or removing plugins, automatically add/remove
+  corresponding entries for priority and frequency (part of bug #0000898) [Dirk]
+
+
+May 31, 2009 (1.6.0b2)
+------------
 
 Changes since 1.6.0b1:
 - Various fixes to the new search (work in progress) [Sami]
@@ -171,6 +602,8 @@ May 1, 2009 (1.6.0b1)
   themselves [Dirk]
 - Gave the Groups and User editors a facelift. Requires a new template file,
   admin/lists/inline.thtml [Dirk]
+- Introduced list of "advanced HTML" tags that are allowed when FCKeditor is
+  enabled. Needed for images (bug #0000757) [Blaine]
 - Add new permissions plugin.install and plugin.upload for more fine-grained
   control to the plugin admin panel (bug #0000637) [Dirk]
 - Introduced new plugin API function PLG_itemDeleted [Dirk]
@@ -239,6 +672,17 @@ Static Pages plugin
   now [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+Jul 30, 2009 (1.5.2sr5)
+------------
+
+This release addresses the following security issues:
+- Gerendi Sandor Attila reported an XSS in the forms to email a user and to
+  email a story to a friend.
+- The "Mail Story to a Friend" function didn't check story permissions, so that
+  it was possible to email a story even if you didn't have the permissions to
+  view it on the site.
 
 
 Apr 18, 2009 (1.5.2sr4)

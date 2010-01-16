@@ -13,7 +13,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'IPofUrl.Examine.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'ipofurl.examine.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -59,75 +59,78 @@ $VERBOSE = false;
 *
 * This grabs the user profile for a given user and displays it
 *
-* @param    int     $user   User ID of profile to get
+* @param    int     $uid    User ID of profile to get
 * @param    int     $msg    Message to display (if != 0)
 * @param    string  $plugin optional plugin name for message
 * @return   string          HTML for user profile page
 *
 */
-function userprofile($user, $msg = 0, $plugin = '')
+function userprofile($uid, $msg = 0, $plugin = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
+           $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN, $LANG_ADMIN;
 
     $retval = '';
-    if (empty ($_USER['username']) &&
+    if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
-        $retval .= COM_siteHeader ('menu', $LANG_LOGIN[1]);
-        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= COM_siteHeader('menu', $LANG_LOGIN[1]);
+        $retval .= COM_startBlock($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $login->set_var ('layout_url', $_CONF['layout_url']);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter ();
+        $login->set_file(array('login'=>'submitloginrequired.thtml'));
+        $login->set_var('xhtml', XHTML);
+        $login->set_var('site_url', $_CONF['site_url']);
+        $login->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $login->set_var('layout_url', $_CONF['layout_url']);
+        $login->set_var('login_message', $LANG_LOGIN[2]);
+        $login->set_var('lang_login', $LANG_LOGIN[3]);
+        $login->set_var('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse('output', 'login');
+        $retval .= $login->finish($login->get_var('output'));
+        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $retval .= COM_siteFooter();
 
         return $retval;
     }
 
-    $result = DB_query ("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
-    $nrows = DB_numRows ($result);
+    $result = DB_query("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid");
+    $nrows = DB_numRows($result);
     if ($nrows == 0) { // no such user
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
+        return COM_refresh($_CONF['site_url'] . '/index.php');
     }
-    $A = DB_fetchArray ($result);
+    $A = DB_fetchArray($result);
 
-    if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights ('user.edit')) {
-        COM_outputMessageAndAbort (30, '', 403, 'Forbidden');
+    if ($A['status'] == USER_ACCOUNT_DISABLED && !SEC_hasRights('user.edit')) {
+        COM_displayMessageAndAbort(30, '', 403, 'Forbidden');
     }
 
-    $display_name = htmlspecialchars(COM_getDisplayName($user, $A['username'],
+    $display_name = htmlspecialchars(COM_getDisplayName($uid, $A['username'],
                                                         $A['fullname']));
 
-    $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $display_name);
+    $retval .= COM_siteHeader('menu', $LANG04[1] . ' ' . $display_name);
     if ($msg > 0) {
         $retval .= COM_showMessage($msg, $plugin);
     }
 
     // format date/time to user preference
-    $curtime = COM_getUserDateTimeFormat ($A['regdate']);
+    $curtime = COM_getUserDateTimeFormat($A['regdate']);
     $A['regdate'] = $curtime[0];
 
-    $user_templates = new Template ($_CONF['path_layout'] . 'users');
-    $user_templates->set_file (array ('profile' => 'profile.thtml',
-                                      'row'     => 'commentrow.thtml',
-                                      'strow'   => 'storyrow.thtml'));
-    $user_templates->set_var ('xhtml', XHTML);
-    $user_templates->set_var ('site_url', $_CONF['site_url']);
-    $user_templates->set_var ('start_block_userprofile',
-            COM_startBlock ($LANG04[1] . ' ' . $display_name));
-    $user_templates->set_var ('end_block', COM_endBlock ());
-    $user_templates->set_var ('lang_username', $LANG04[2]);
+    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates->set_file(array('profile' => 'profile.thtml',
+                                    'row'     => 'commentrow.thtml',
+                                    'strow'   => 'storyrow.thtml'));
+    $user_templates->set_var('xhtml', XHTML);
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
+    $user_templates->set_var('start_block_userprofile',
+            COM_startBlock($LANG04[1] . ' ' . $display_name));
+    $user_templates->set_var('end_block', COM_endBlock());
+    $user_templates->set_var('lang_username', $LANG04[2]);
 
     if ($_CONF['show_fullname'] == 1) {
-        if (empty ($A['fullname'])) {
+        if (empty($A['fullname'])) {
             $username = $A['username'];
             $fullname = '';
         } else {
@@ -142,38 +145,46 @@ function userprofile($user, $msg = 0, $plugin = '')
     $fullname = htmlspecialchars($fullname);
 
     if ($A['status'] == USER_ACCOUNT_DISABLED) {
-        $username = sprintf ('<s title="%s">%s</s>', $LANG28[42], $username);
-        if (!empty ($fullname)) {
-            $fullname = sprintf ('<s title="%s">%s</s>', $LANG28[42], $fullname);
+        $username = sprintf('<s title="%s">%s</s>', $LANG28[42], $username);
+        if (!empty($fullname)) {
+            $fullname = sprintf('<s title="%s">%s</s>', $LANG28[42], $fullname);
         }
     }
 
-    $user_templates->set_var ('username', $username);
-    $user_templates->set_var ('user_fullname', $fullname);
+    $user_templates->set_var('username', $username);
+    $user_templates->set_var('user_fullname', $fullname);
 
-    if (SEC_hasRights ('user.edit')) {
-        global $_IMAGE_TYPE, $LANG_ADMIN;
-
+    if (!COM_isAnonUser() && ($_USER['uid'] == $uid)) {
+        $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+                   . $_IMAGE_TYPE . '" alt="' . $LANG01[48]
+                   . '" title="' . $LANG01[48] . '"' . XHTML . '>';
+        $edit_link_url = COM_createLink($edit_icon,
+                            $_CONF['site_url'] . '/usersettings.php');
+        $user_templates->set_var('edit_icon', $edit_icon);
+        $user_templates->set_var('edit_link', $edit_link_url);
+        $user_templates->set_var('user_edit', $edit_link_url);
+    } elseif (SEC_hasRights('user.edit')) {
         $edit_icon = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
                    . $_IMAGE_TYPE . '" alt="' . $LANG_ADMIN['edit']
                    . '" title="' . $LANG_ADMIN['edit'] . '"' . XHTML . '>';
         $edit_link_url = COM_createLink($edit_icon,
             "{$_CONF['site_admin_url']}/user.php?mode=edit&amp;uid={$A['uid']}");
-        $user_templates->set_var ('edit_icon', $edit_icon);
-        $user_templates->set_var ('edit_link', $edit_link_url);
-        $user_templates->set_var ('user_edit', $edit_link_url);
+        $user_templates->set_var('edit_icon', $edit_icon);
+        $user_templates->set_var('edit_link', $edit_link_url);
+        $user_templates->set_var('user_edit', $edit_link_url);
     }
 
     if (isset ($A['photo']) && empty ($A['photo'])) {
         $A['photo'] = '(none)'; // user does not have a photo
     }
-    $photo = USER_getPhoto ($user, $A['photo'], $A['email'], -1);
+    $photo = USER_getPhoto ($uid, $A['photo'], $A['email'], -1);
     $user_templates->set_var ('user_photo', $photo);
 
     $user_templates->set_var ('lang_membersince', $LANG04[67]);
     $user_templates->set_var ('user_regdate', $A['regdate']);        
     $user_templates->set_var ('lang_email', $LANG04[5]);
-    $user_templates->set_var ('user_id', $user);
+    $user_templates->set_var ('user_id', $uid);
+    $user_templates->set_var ('uid', $uid);
     $user_templates->set_var ('lang_sendemail', $LANG04[81]);
     $user_templates->set_var ('lang_homepage', $LANG04[6]);
     $user_templates->set_var ('user_homepage', COM_killJS ($A['homepage']));
@@ -208,12 +219,9 @@ function userprofile($user, $msg = 0, $plugin = '')
     $topics = "'" . implode ("','", $tids) . "'";
 
     // list of last 10 stories by this user
-    if (sizeof ($tids) > 0) {
-        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
-
+    if (count($tids) > 0) {
+        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $sql .= " ORDER BY unixdate DESC LIMIT 10";
-      
-
         $result = DB_query ($sql);
         $nrows = DB_numRows ($result);
     } else {
@@ -245,7 +253,7 @@ function userprofile($user, $msg = 0, $plugin = '')
 
     // list of last 10 comments by this user
     $sidArray = array();
-    if (sizeof ($tids) > 0) {
+    if (count($tids) > 0) {
         // first, get a list of all stories the current visitor has access to
         $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
         $result = DB_query($sql);
@@ -259,7 +267,7 @@ function userprofile($user, $msg = 0, $plugin = '')
     $sidList = "'$sidList'";
 
     // then, find all comments by the user in those stories
-    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
+    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $uid) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
 
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
     // field is part of the select
@@ -300,12 +308,12 @@ function userprofile($user, $msg = 0, $plugin = '')
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
-    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
+    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
     $user_templates->set_var ('number_stories', COM_numberFormat ($N['count']));
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user)";
+    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $uid)";
     if (!empty ($sidList)) {
         $sql .= " AND (sid in ($sidList))";
     }
@@ -317,14 +325,14 @@ function userprofile($user, $msg = 0, $plugin = '')
 
     // Call custom registration function if enabled and exists
     if ($_CONF['custom_registration'] && function_exists ('CUSTOM_userDisplay') ) {
-        $user_templates->set_var ('customfields', CUSTOM_userDisplay ($user));
+        $user_templates->set_var ('customfields', CUSTOM_userDisplay ($uid));
     }
-    PLG_profileVariablesDisplay ($user, $user_templates);
+    PLG_profileVariablesDisplay ($uid, $user_templates);
 
     $user_templates->parse ('output', 'profile');
     $retval .= $user_templates->finish ($user_templates->get_var ('output'));
 
-    $retval .= PLG_profileBlocksDisplay ($user);
+    $retval .= PLG_profileBlocksDisplay ($uid);
     $retval .= COM_siteFooter ();
 
     return $retval;
@@ -443,8 +451,9 @@ function newpasswordform ($uid, $requestid)
 
     $pwform = new Template ($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
-    $pwform->set_var ( 'xhtml', XHTML );
+    $pwform->set_var ('xhtml', XHTML);
     $pwform->set_var ('site_url', $_CONF['site_url']);
+    $pwform->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
     $pwform->set_var ('user_id', $uid);
@@ -597,8 +606,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
 
     $user_templates = new Template ($_CONF['path_layout'] . 'users');
     $user_templates->set_file('login', 'loginform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     if ($statusmode == 0) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
         $user_templates->set_var('lang_message', $LANG04[115]);
@@ -703,7 +714,7 @@ function newuserform ($msg = '')
     }
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform', 'registrationform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -756,7 +767,7 @@ function getpasswordform()
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('form', 'getpasswordform.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -833,9 +844,109 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
     }
 
     // don't return
-    exit();
+    exit;
 }
 
+
+/**
+* Re-send a request after successful re-authentication
+*
+* Re-creates a GET or POST request based on data passed along in a form. Used
+* in case of an expired security token so that the user doesn't lose changes.
+*
+*/
+function resend_request()
+{
+    global $_CONF;
+
+    require_once 'HTTP/Request.php';
+
+    $method = '';
+    if (isset($_POST['token_requestmethod'])) {
+        $method = COM_applyFilter($_POST['token_requestmethod']);
+    }
+    $returnurl = '';
+    if (isset($_POST['token_returnurl'])) {
+        $returnurl = urldecode($_POST['token_returnurl']);
+        if (substr($returnurl, 0, strlen($_CONF['site_url'])) !=
+                $_CONF['site_url']) {
+            // only accept URLs on our site
+            $returnurl = '';
+        }
+    }
+    $postdata = '';
+    if (isset($_POST['token_postdata'])) {
+        $postdata = urldecode($_POST['token_postdata']);
+    }
+    $getdata = '';
+    if (isset($_POST['token_getdata'])) {
+        $getdata = urldecode($_POST['token_getdata']);
+    }
+    $files = '';
+    if (isset($_POST['token_files'])) {
+        $files = urldecode($_POST['token_files']);
+    }
+
+    if (SECINT_checkToken() && !empty($method) && !empty($returnurl) &&
+            ((($method == 'POST') && !empty($postdata)) ||
+             (($method == 'GET') && !empty($getdata)))) {
+
+        $req = new HTTP_Request($returnurl);
+        if ($method == 'POST') {
+            $req->setMethod(HTTP_REQUEST_METHOD_POST);
+            $data = unserialize($postdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addPostData($key, SEC_createToken());
+                } else {
+                    $req->addPostData($key, $value);
+                }
+            }
+            if (! empty($files)) {
+                $files = unserialize($files);
+            }
+            if (! empty($files)) {
+                foreach ($files as $key => $value) {
+                    $req->addPostData('_files_' . $key, $value);
+                }
+            }
+        } else {
+            $req->setMethod(HTTP_REQUEST_METHOD_GET);
+            $data = unserialize($getdata);
+            foreach ($data as $key => $value) {
+                if ($key == CSRF_TOKEN) {
+                    $req->addQueryString($key, SEC_createToken());
+                } else {
+                    $req->addQueryString($key, $value);
+                }
+            }
+        }
+        $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
+        // need to fake the referrer so the new token matches
+        $req->addHeader('Referer', COM_getCurrentUrl());
+        foreach ($_COOKIE as $cookie => $value) {
+            $req->addCookie($cookie, $value);
+        }
+        $response = $req->sendRequest();
+
+        if (PEAR::isError($response)) {
+            if (! empty($files)) {
+                SECINT_cleanupFiles($files);
+            }
+            trigger_error("Resending $method request failed: " . $response->getMessage());
+        } else {
+            COM_output($req->getResponseBody());
+        }
+    } else {
+        if (! empty($files)) {
+            SECINT_cleanupFiles($files);
+        }
+        echo COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+
+    // don't return
+    exit;
+}
 
 // MAIN
 if (isset ($_REQUEST['mode'])) {
@@ -852,15 +963,9 @@ case 'logout':
         SESS_endUserSession ($_USER['uid']);
         PLG_logoutUser ($_USER['uid']);
     }
-    setcookie ($_CONF['cookie_session'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
-    setcookie ($_CONF['cookie_password'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
-    setcookie ($_CONF['cookie_name'], '', time() - 10000,
-               $_CONF['cookie_path'], $_CONF['cookiedomain'],
-               $_CONF['cookiesecure']);
+    SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
+    SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
+    SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
     $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 
@@ -1034,6 +1139,8 @@ case 'new':
     $display .= COM_siteFooter();
     break;
 
+case 'tokenexpired':
+// deliberate fallthrough (see below)
 default:
 
     // prevent dictionary attacks on passwords
@@ -1143,6 +1250,9 @@ default:
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
+        if ($mode == 'tokenexpired') {
+            resend_request(); // won't come back
+        }
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
         $userdata = SESS_getUserDataFromId($uid);
         $_USER = $userdata;
@@ -1162,13 +1272,10 @@ default:
                 if ($VERBOSE) {
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
-                setcookie ($_CONF['cookie_name'], $_USER['uid'],
-                           time() + $cooktime, $_CONF['cookie_path'],
-                           $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-                setcookie ($_CONF['cookie_password'],
-                           SEC_encryptPassword($passwd), time() + $cooktime,
-                           $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                           $_CONF['cookiesecure']);
+                SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
+                              time() + $cooktime);
+                SEC_setCookie($_CONF['cookie_password'],
+                              SEC_encryptPassword($passwd), time() + $cooktime);
             }
         } else {
             $userid = $_COOKIE[$_CONF['cookie_name']];
@@ -1193,9 +1300,11 @@ default:
 
         // Now that we have users data see if their theme cookie is set.
         // If not set it
-        setcookie ($_CONF['cookie_theme'], $_USER['theme'], time() + 31536000,
-                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                   $_CONF['cookiesecure']);
+        if (! empty($_USER['theme'])) {
+            setcookie($_CONF['cookie_theme'], $_USER['theme'],
+                      time() + 31536000, $_CONF['cookie_path'],
+                      $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+        }
 
         if (!empty($_SERVER['HTTP_REFERER'])
                 && (strstr($_SERVER['HTTP_REFERER'], '/users.php') === false)
@@ -1217,16 +1326,16 @@ default:
         }
     } else {
         // On failed login attempt, update speed limit
-        if (!empty($loginname) || !empty($passwd) || !empty($service)) {
+        if (!empty($loginname) || !empty($passwd) || !empty($service) ||
+                ($mode == 'tokenexpired')) {
             COM_updateSpeedlimit('login');
         }
 
         $display .= COM_siteHeader('menu');
 
-        if (isset ($_REQUEST['msg'])) {
-            $msg = COM_applyFilter ($_REQUEST['msg'], true);
-        } else {
-            $msg = 0;
+        $msg = 0;
+        if (isset($_REQUEST['msg'])) {
+            $msg = COM_applyFilter($_REQUEST['msg'], true);
         }
         if ($msg > 0) {
             $display .= COM_showMessage($msg);
@@ -1236,20 +1345,73 @@ default:
         case 'create':
             // Got bad account info from registration process, show error
             // message and display form again
-            if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userForm'))) {
-                $display .= CUSTOM_userForm ();
+            if ($_CONF['custom_registration'] AND
+                    function_exists('CUSTOM_userForm')) {
+                $display .= CUSTOM_userForm();
             } else {
-                $display .= newuserform ();
+                $display .= newuserform();
             }
             break;
+
+        case 'tokenexpired':
+            // check to see if this was the last allowed attempt
+            if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
+                if (! empty($files)) {
+                    SECINT_cleanupFiles($files);
+                }
+                displayLoginErrorAndAbort(82, $LANG04[163], $LANG04[164]);
+            } else {
+                $returnurl = '';
+                if (isset($_POST['token_returnurl'])) {
+                    $returnurl = urldecode($_POST['token_returnurl']);
+                }
+                $method = '';
+                if (isset($_POST['token_requestmethod'])) {
+                    $method = COM_applyFilter($_POST['token_requestmethod']);
+                }
+                $postdata = '';
+                if (isset($_POST['token_postdata'])) {
+                    $postdata = urldecode($_POST['token_postdata']);
+                }
+                $getdata = '';
+                if (isset($_POST['token_getdata'])) {
+                    $getdata = urldecode($_POST['token_getdata']);
+                }
+                $files = '';
+                if (isset($_POST['token_files'])) {
+                    $files = urldecode($_POST['token_files']);
+                }
+                if (SECINT_checkToken() && !empty($method) &&
+                        !empty($returnurl) &&
+                        ((($method == 'POST') && !empty($postdata)) ||
+                        (($method == 'GET') && !empty($getdata)))) {
+                    $display .= COM_showMessage(81);
+                    $display .= SECINT_authform($returnurl, $method,
+                                                $postdata, $getdata, $files);
+                } else {
+                    if (! empty($files)) {
+                        SECINT_cleanupFiles($files);
+                    }
+                    echo COM_refresh($_CONF['site_url'] . '/index.php');
+                    exit;
+                }
+            }
+            break;
+
         default:
             // check to see if this was the last allowed attempt
             if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
                 displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
             } else { // Show login form
                 if(($msg != 69) && ($msg != 70)) {
-                    if ($_CONF['custom_registration'] AND function_exists('CUSTOM_loginErrorHandler')) {
-                        // Typically this will be used if you have a custom main site page and need to control the login process
+                    if ($_CONF['custom_registration'] AND
+                            function_exists('CUSTOM_loginErrorHandler')) {
+                        // Typically this will be used if you have a custom
+                        // main site page and need to control the login process
                         $display .= CUSTOM_loginErrorHandler($msg);
                     } else {
                         $display .= loginform(false, $status);

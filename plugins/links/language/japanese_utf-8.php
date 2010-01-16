@@ -31,6 +31,22 @@
 #
 ###############################################################################
 
+/**
+ * This is the Japanese language page for the Geeklog links Plug-in!
+ *
+ * @package Links
+ * @subpackage Language
+ * @filesource
+ * @version 2.0
+ * @since GL 1.4.0
+ * @copyright Copyright &copy; 2005-2007
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @author Trinity Bays, trinity93 AT gmail DOT com
+ * @author Tony Bibbs, tony AT tonybibbs DOT com
+ * @author Tom Willett, twillett AT users DOT sourceforge DOT net
+ *
+ */
+
 global $LANG32;
 
 ###############################################################################
@@ -49,14 +65,14 @@ $LANG_LINKS = array(
     116 => 'リンク投稿',
     117 => 'リンク切れをご報告ください。',
     118 => 'リンク切れの報告',
-    119 => '次のリンクは切れていると報告されました： ',
-    120 => 'リンクの編集は、ここをクリック： ',
-    121 => 'リンク切れの報告者： ',
+    119 => '次のリンクは切れていると報告されました:',
+    120 => 'リンクの編集は、ここをクリック:',
+    121 => 'リンク切れの報告者:',
     122 => 'リンク切れをご報告いただきありがとうございます。できるだけ速やかに修正いたします。',
     123 => 'ありがとうございます。',
     124 => '表示',
     125 => 'カテゴリ',
-    126 => '現在の位置：',
+    126 => '現在の位置:',
     'root' => 'トップ'
 );
 
@@ -65,7 +81,7 @@ $LANG_LINKS = array(
 
 $LANG_LINKS_STATS = array(
     'links' => 'リンク数（クリック数）',
-    'stats_headline' => 'リンク(上位10件)',
+    'stats_headline' => 'リンク（上位10件）',
     'stats_page_title' => 'リンク',
     'stats_hits' => 'ヒット',
     'stats_no_hits' => 'このサイトにはリンクがないか、クリックした人がいないかのどちらかのようです。'
@@ -91,7 +107,7 @@ $LANG_LINKS_SUBMIT = array(
     3 => 'カテゴリ',
     4 => 'その他',
     5 => '新しいカテゴリ名',
-    6 => 'エラー：カテゴリを選んでください',
+    6 => 'エラー: カテゴリを選んでください',
     7 => '「その他」を選択する場合には新しいカテゴリ名を記入してください。',
     8 => 'タイトル',
     9 => 'URL',
@@ -162,7 +178,7 @@ $LANG_LINKS_ADMIN = array(
     42 => 'このカテゴリを削除する',
     43 => 'サイトカテゴリ',
     44 => '子カテゴリの追加',
-    46 => 'ユーザ %s は、アクセス権限がないカテゴリを削除しようとしました。',
+    46 => 'ユーザ %s は、アクセス権がないカテゴリを削除しようとしました。',
     50 => 'カテゴリのリスト',
     51 => 'リンクの作成',
     52 => 'カテゴリの作成',
@@ -173,7 +189,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'まだ確認されていません。',
     58 => 'リンクの確認',
     59 => '<p>表示されている全てのリンクを確認する場合は、下の「リンクの確認」をクリックしてください。この処理はリンクの数に応じてかなりの時間がかかるかもしれません。</p>',
-    60 => 'ユーザ %s は権限なしにカテゴリ %s を編集しようとしました。'
+    60 => 'ユーザ %s は権限なしにカテゴリ %s を編集しようとしました。',
+    61 => 'このカテゴリのリンク数'
 );
 
 
@@ -240,10 +257,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => '所有者の削除と共に削除する',
     'aftersave' => 'リンク保存後の画面遷移',
     'show_category_descriptions' => 'カテゴリの説明を表示する',
-    'new_window' => 'Open external links in new window?',
+    'new_window' => 'リンクを新しいウィンドウで開く',
     'root' => 'トップカテゴリのID',
     'default_permissions' => 'パーミッション',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'パーミッション'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -253,14 +270,14 @@ $LANG_configsubgroups['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'リンクの表示',
     'fs_admin' => 'リンクの管理',
-    'fs_permissions' => 'リンクのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_permissions' => 'リンクのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
+    'fs_cpermissions' => 'カテゴリのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => true, 'いいえ' => false),
+    1 => array('はい' => TRUE, 'いいえ' => FALSE),
     9 => array('リンク先サイトを表示する' => 'item', 'リンク管理を表示する' => 'list', '公開リンクリストを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );

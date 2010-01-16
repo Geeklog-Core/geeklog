@@ -57,7 +57,10 @@ $LANG_POLLS = array(
     'upgrade1' => 'You installed a new version of the Polls plugin. Please',
     'upgrade2' => 'upgrade',
     'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.',
-    'start_poll' => 'Start Poll'
+    'pollclosed' => 'This poll is closed for voting.',
+    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
+    'start_poll' => 'Start Poll',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
@@ -130,7 +133,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'Voter IP Address valid for',
     'delete_polls' => 'Delete Polls with Owner?',
     'aftersave' => 'After Saving Poll',
-    'default_permissions' => 'Poll Default Permissions'
+    'default_permissions' => 'Poll Default Permissions',
+    'meta_tags' => 'Enable Meta Tags'
 );
 
 $LANG_configsubgroups['polls'] = array(

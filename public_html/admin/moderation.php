@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -90,9 +90,9 @@ function commandcontrol($token)
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
     $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('site_url', $_CONF['site_url']);
     $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -189,7 +189,7 @@ function commandcontrol($token)
     if ($_CONF['sort_admin']) {
         uksort ($items, 'strcasecmp');
     }
-     // logout is always the last entry
+    // logout is always the last entry
     $item = render_cc_item ($admin_templates,
                     $_CONF['site_url'] . '/users.php?mode=logout',
                     $_CONF['layout_url'] . '/images/icons/logout.' . $_IMAGE_TYPE,
@@ -262,7 +262,7 @@ function itemlist($type, $token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     $isplugin = false;
@@ -282,7 +282,7 @@ function itemlist($type, $token)
                 $isplugin = true;
             }
         }
-    } elseif ( $type == 'story') { // story submission
+    } elseif ($type == 'story') { // story submission
         $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
         $H =  array($LANG29[10], $LANG29[14], $LANG29[15]);
         $section_title = $LANG29[35];
@@ -293,7 +293,7 @@ function itemlist($type, $token)
               . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
-        $section_help = 'ccstorysubmission.html'; // FIXME
+        $section_help = 'cccommentsubmission.html';
     }
 
     // run SQL but this time ignore any errors
@@ -316,8 +316,7 @@ function itemlist($type, $token)
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
         } elseif ($type == 'comment') {
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
-                    . '?mode=editsubmission&amp;cid=' . $A[0] .
-                    '&' . CSRF_TOKEN . '=' . $token;
+                    . '?mode=editsubmission&amp;cid=' . $A[0];
         } else {
             $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
                      . '.php?mode=editsubmission&amp;id=' . $A[0];
@@ -382,7 +381,7 @@ function userlist($token)
 {
     global $_CONF, $_TABLES, $LANG29, $LANG_ADMIN;
 
-    require_once ($_CONF['path_system'] . 'lib-admin.php');
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
     $sql = "SELECT uid as id,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2";
@@ -408,7 +407,7 @@ function userlist($token)
 
     $text_arr = array('has_menu'  => false,
                       'title'     => $LANG29[40],
-                      'help_url'  => '',
+                      'help_url'  => 'ccusersubmission.html',
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php"
     );
@@ -448,7 +447,7 @@ function draftlist($token)
 {
     global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
 
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
+    require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
 
@@ -476,7 +475,7 @@ function draftlist($token)
 
     $text_arr = array('has_menu'  => false,
                       'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                      'help_url'  => '',
+                      'help_url'  => 'ccdraftsubmission.html',
                       'no_data'   => $LANG29[39],
                       'form_url'  => "{$_CONF['site_admin_url']}/moderation.php");
 
@@ -743,24 +742,28 @@ function security_check_reminder()
 // MAIN
 
 $display = '';
-$display .= COM_siteHeader ('menu', $LANG29[34]);
-$display .= COM_showMessageFromParameter();
 
-if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation') && SEC_checkToken()) {
+if (isset($_POST['mode']) && ($_POST['mode'] == 'moderation') &&
+        SEC_checkToken()) {
     $action = array();
     if (isset($_POST['action'])) {
         $action = $_POST['action'];
     }
     if ($_POST['type'] == 'user') {
-        $display .= moderateusers($_POST['id'], $action,
-                                  COM_applyFilter($_POST['count'], true));
+        $mod_result = moderateusers($_POST['id'], $action,
+                                    COM_applyFilter($_POST['count'], true));
     } else {
-        $display .= moderation($_POST['id'], $action, $_POST['type'],
-                               COM_applyFilter ($_POST['count'], true));
+        $mod_result = moderation($_POST['id'], $action, $_POST['type'],
+                                 COM_applyFilter($_POST['count'], true));
     }
+    $display .= COM_siteHeader('menu', $LANG29[34])
+             .  COM_showMessageFromParameter()
+             .  $mod_result;
 } else {
-    $display .= security_check_reminder();
-    $display .= commandcontrol(SEC_createToken());
+    $display .= COM_siteHeader('menu', $LANG29[34])
+             .  COM_showMessageFromParameter()
+             .  security_check_reminder()
+             .  commandcontrol(SEC_createToken());
 }
 
 $display .= COM_siteFooter();

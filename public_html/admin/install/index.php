@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West         - matt AT mattdanger DOT net                   |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
@@ -47,7 +47,7 @@ require_once 'lib-upgrade.php';
  */
 function INST_installEngine($install_type, $install_step)
 {
-    global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_DB_dbms, $_DB_table_prefix, $_URL, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir;
+    global $_CONF, $_TABLES, $LANG_INSTALL, $LANG_CHARSET, $_DB, $_DB_dbms, $_DB_table_prefix, $_URL, $gl_path, $html_path, $dbconfig_path, $siteconfig_path, $display, $language, $form_label_dir, $use_innodb;
 
     switch ($install_step) {
 
@@ -69,7 +69,7 @@ function INST_installEngine($install_type, $install_step)
             }
         }
 
-        $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $_REQUEST['display_step'] . ' - ' . $LANG_INSTALL[102] . '</h1>' . LB;
+        $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . htmlspecialchars($_REQUEST['display_step']) . ' - ' . $LANG_INSTALL[102] . '</h1>' . LB;
 
 
         // Set all the form values either with their defaults or with received POST data.
@@ -156,30 +156,30 @@ function INST_installEngine($install_type, $install_step)
 
         $display .= '<h2>' . $LANG_INSTALL[31] . '</h2>
             <form action="index.php" method="post" name="install">
-            <input type="hidden" name="mode" value="' . $install_type . '"' . XHTML . '>
+            <input type="hidden" name="mode" value="' . htmlspecialchars($install_type) . '"' . XHTML . '>
             <input type="hidden" name="step" value="2"' . XHTML . '>
-            <input type="hidden" name="display_step" value="' . $_REQUEST['display_step'] . '"' . XHTML . '>
+            <input type="hidden" name="display_step" value="' . htmlspecialchars($_REQUEST['display_step']) . '"' . XHTML . '>
             <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
-            <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
+            <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
 
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . $site_name . '" size="40"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . $site_slogan . '" size="40"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . htmlspecialchars($site_name) . '" size="40"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . htmlspecialchars($site_slogan) . '" size="40"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
                 <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
                 ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option><option value="pgsql"' . $pgsql_selected . '>' . $LANG_INSTALL[360] . '</option>': '') . '
                 <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . '</p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. $db_host .'" size="20"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. $db_name . '" size="20"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . $db_user . '" size="20"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. htmlspecialchars($db_host) .'" size="20"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. htmlspecialchars($db_name) . '" size="20"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . htmlspecialchars($db_user) . '" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[42] . ' ' . INST_helpLink('db_pass') . '</label> <input type="password" name="db_pass" value="' . $db_pass . '" size="20"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . $db_prefix . '" size="20"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[43] . ' ' . INST_helpLink('db_prefix') . '</label> <input type="text" name="db_prefix" value="' . htmlspecialchars($db_prefix) . '" size="20"' . XHTML . '></p>
 
             <br' . XHTML . '>
             <h2>' . $LANG_INSTALL[44] . '</h2> 
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . $site_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . $site_admin_url . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . $site_mail . '" size="50"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[49] . ' ' . INST_helpLink('noreply_mail') . '</label> <input type="text" name="noreply_mail" value="' . $noreply_mail . '" size="50"' . XHTML . '></p>';
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[45] . ' ' . INST_helpLink('site_url') . '</label> <input type="text" name="site_url" value="' . htmlspecialchars($site_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[47] . ' ' . INST_helpLink('site_admin_url') . '</label> <input type="text" name="site_admin_url" value="' . htmlspecialchars($site_admin_url) . '" size="50"' . XHTML . '>  &nbsp; ' . $LANG_INSTALL[46] . '</p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[48] . ' ' . INST_helpLink('site_mail') . '</label> <input type="text" name="site_mail" value="' . htmlspecialchars($site_mail) . '" size="50"' . XHTML . '></p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[49] . ' ' . INST_helpLink('noreply_mail') . '</label> <input type="text" name="noreply_mail" value="' . htmlspecialchars($noreply_mail) . '" size="50"' . XHTML . '></p>';
 
         if ($install_type == 'install') {
             $display .= '
@@ -233,8 +233,10 @@ function INST_installEngine($install_type, $install_step)
         // Check if the user's version of MySQL is out of date
         } else if (INST_mysqlOutOfDate($DB)) { 
 
-            $display .= '<h1>' . $LANG_INSTALL[51] . '</h1>' . LB;
-            $display .= '<p>' . $LANG_INSTALL[52]
+            $myv = mysql_v($DB['host'], $DB['user'], $DB['pass']);
+            $display .= '<h1>' . sprintf($LANG_INSTALL[51], SUPPORTED_MYSQL_VER)
+                     . '</h1>' . LB;
+            $display .= '<p>' . sprintf($LANG_INSTALL[52], SUPPORTED_MYSQL_VER)
                      . $myv[0] . '.' . $myv[1] . '.' . $myv[2]
                      . $LANG_INSTALL[53] . '</p>' . LB;
 
@@ -250,7 +252,7 @@ function INST_installEngine($install_type, $install_step)
             // Write the database info to db-config.php
             if (!INST_writeConfig($dbconfig_path, $DB)) {
 
-                exit($LANG_INSTALL[26] . ' ' . $dbconfig_path
+                exit($LANG_INSTALL[26] . ' ' . htmlspecialchars($dbconfig_path)
                      . $LANG_INSTALL[58]);
 
             }
@@ -287,7 +289,7 @@ function INST_installEngine($install_type, $install_step)
             case 'install':
                 $hidden_fields = '<input type="hidden" name="mode" value="' . $install_type . '"' . XHTML . '>
                             <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
-                            <input type="hidden" name="dbconfig_path" value="' . urlencode($dbconfig_path) . '"' . XHTML . '>
+                            <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
                             <input type="hidden" name="site_name" value="' . urlencode($site_name) . '"' . XHTML . '>
                             <input type="hidden" name="site_slogan" value="' . urlencode($site_slogan) . '"' . XHTML . '>
                             <input type="hidden" name="site_url" value="' . urlencode($site_url) . '"' . XHTML . '>
@@ -345,7 +347,7 @@ function INST_installEngine($install_type, $install_step)
                               . '<p>' . $LANG_INSTALL[91] . '</p>';
                 } else {
 
-                    $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1','1.5.0','1.5.1','1.5.2');
+                    $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11','1.4.0','1.4.1','1.5.0','1.5.1','1.5.2','1.6.0','1.6.1');
                     if (empty($curv)) {
                         // If we were unable to determine the current GL
                         // version is then ask the user what it is
@@ -354,7 +356,7 @@ function INST_installEngine($install_type, $install_step)
                             <form action="index.php" method="post">
                             <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                             <input type="hidden" name="step" value="3"' . XHTML . '>
-                            <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
+                            <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
                             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[89] . '</label> <select name="version">';
                         $tmp_counter = 0;
                         $ver_selected = '';
@@ -455,24 +457,24 @@ function INST_installEngine($install_type, $install_step)
                             <li>' . $LANG_INSTALL[65] . '</li>
                         </ol>
 
-                        <div style="margin-left: auto; margin-right: auto; width: 125px">
+                        <div style="margin-left: auto; margin-right: auto; width: 175px">
                             <div style="position: absolute">
                                 <form action="index.php" method="post">
                                 <input type="hidden" name="mode" value="install"' . XHTML . '>
                                 <input type="hidden" name="step" value="3"' . XHTML . '>
                                 <input type="hidden" value="' . $language . '"' . XHTML . '>
-                                <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
+                                <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
                                 <input type="hidden" name="innodb" value="' . (($use_innodb) ? 'true' : 'false') . '"' . XHTML . '>
                                 <input type="hidden" name="install_plugins" value="' . $install_plugins . '"' . XHTML . '>
                                 <input type="submit" class="button big-button" value="' . $LANG_INSTALL[66] . '"' . XHTML . '>
                                 </form>
                             </div>
 
-                            <div style="position: relative; left: 55px; top: 5px">
+                            <div style="position: relative; left: 105px; top: 5px">
                                 <form action="index.php" method="post">
                                 <input type="hidden" name="mode" value="upgrade"' . XHTML . '>
                                 <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
-                                <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
+                                <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
                                 <input type="submit" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML . '>
                                 </form>
                             </div>
@@ -481,7 +483,7 @@ function INST_installEngine($install_type, $install_step)
 
                 } else {
 
-                    if (INST_createDatabaseStructures($use_innodb)) {
+                    if (INST_createDatabaseStructures()) {
                         $site_name      = isset($_POST['site_name']) ? $_POST['site_name'] : (isset($_GET['site_name']) ? $_GET['site_name'] : '') ;
                         $site_slogan    = isset($_POST['site_slogan']) ? $_POST['site_slogan'] : (isset($_GET['site_slogan']) ? $_GET['site_slogan'] : '') ;
                         $site_url       = isset($_POST['site_url']) ? $_POST['site_url'] : (isset($_GET['site_url']) ? $_GET['site_url'] : '') ;
@@ -738,22 +740,22 @@ function INST_showReturnFormData($post_data)
 
     $display = '
         <form action="index.php" method="post">
-        <input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>
+        <input type="hidden" name="mode" value="' . htmlspecialchars($mode) . '"' . XHTML . '>
         <input type="hidden" name="step" value="1"' . XHTML . '>
-        <input type="hidden" name="display_step" value="' . $_REQUEST['display_step'] . '"' . XHTML . '>
-        <input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>
+        <input type="hidden" name="display_step" value="' . htmlspecialchars($_REQUEST['display_step']) . '"' . XHTML . '>
+        <input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>
         <input type="hidden" name="language" value="' . $language . '"' . XHTML . '>
-        <input type="hidden" name="site_name" value="' . $post_data['site_name'] . '"' . XHTML . '>
-        <input type="hidden" name="site_slogan" value="' . $post_data['site_slogan'] . '"' . XHTML . '>
-        <input type="hidden" name="db_type" value="' . $post_data['db_type'] . '"' . XHTML . '>
-        <input type="hidden" name="db_host" value="' . $post_data['db_host'] . '"' . XHTML . '>
-        <input type="hidden" name="db_name" value="' . $post_data['db_name'] . '"' . XHTML . '>
-        <input type="hidden" name="db_user" value="' . $post_data['db_user'] . '"' . XHTML . '>
-        <input type="hidden" name="db_prefix" value="' . $post_data['db_prefix'] . '"' . XHTML . '>
-        <input type="hidden" name="site_url" value="' . $post_data['site_url'] . '"' . XHTML . '>
-        <input type="hidden" name="site_admin_url" value="' . $post_data['site_admin_url'] . '"' . XHTML . '>
-        <input type="hidden" name="site_mail" value="' . $post_data['site_mail'] . '"' . XHTML . '>
-        <input type="hidden" name="noreply_mail" value="' . $post_data['noreply_mail'] . '"' . XHTML . '>
+        <input type="hidden" name="site_name" value="' . htmlspecialchars($post_data['site_name']) . '"' . XHTML . '>
+        <input type="hidden" name="site_slogan" value="' . htmlspecialchars($post_data['site_slogan']) . '"' . XHTML . '>
+        <input type="hidden" name="db_type" value="' . htmlspecialchars($post_data['db_type']) . '"' . XHTML . '>
+        <input type="hidden" name="db_host" value="' . htmlspecialchars($post_data['db_host']) . '"' . XHTML . '>
+        <input type="hidden" name="db_name" value="' . htmlspecialchars($post_data['db_name']) . '"' . XHTML . '>
+        <input type="hidden" name="db_user" value="' . htmlspecialchars($post_data['db_user']) . '"' . XHTML . '>
+        <input type="hidden" name="db_prefix" value="' . htmlspecialchars($post_data['db_prefix']) . '"' . XHTML . '>
+        <input type="hidden" name="site_url" value="' . htmlspecialchars($post_data['site_url']) . '"' . XHTML . '>
+        <input type="hidden" name="site_admin_url" value="' . htmlspecialchars($post_data['site_admin_url']) . '"' . XHTML . '>
+        <input type="hidden" name="site_mail" value="' . htmlspecialchars($post_data['site_mail']) . '"' . XHTML . '>
+        <input type="hidden" name="noreply_mail" value="' . htmlspecialchars($post_data['noreply_mail']) . '"' . XHTML . '>
         <p align="center"><input type="submit" class="button big-button" value="&lt;&lt; ' . $LANG_INSTALL[61] . '"' . XHTML . '></p>
         </form>';
 
@@ -764,15 +766,15 @@ function INST_showReturnFormData($post_data)
 /**
  * Sets up the database tables
  *
- * @param   boolean $use_innodb     Whether to use InnoDB table support if using MySQL
  * @return  boolean                 True if successful
  *
  */
-function INST_createDatabaseStructures ($use_innodb = false)
+function INST_createDatabaseStructures()
 {
-    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $site_url;
+    global $_CONF, $_TABLES, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass,
+           $site_url, $use_innodb;
 
-    $_DB->setDisplayError (true);
+    $_DB->setDisplayError(true);
 
     // Because the create table syntax can vary from dbms-to-dbms we are
     // leaving that up to each database driver (e.g. mysql.class.php,
@@ -783,33 +785,39 @@ function INST_createDatabaseStructures ($use_innodb = false)
 
     $progress = '';
 
-    if (INST_checkTableExists ('access')) {
+    if (INST_checkTableExists('access')) {
         return false;
     }
 
     switch($_DB_dbms){
-        case 'mysql':
-            INST_updateDB($_SQL);
-            if ($use_innodb) {
-                DB_query ("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
-            }
-            break;
-        case 'mssql':
-            foreach ($_SQL as $sql) {
-                $_DB->dbQuery($sql, 0, 1);
-            }
-            break;
-        case 'pgsql':
-            foreach ($_SQL as $sql) {
-                $_DB->dbQuery($sql, 0, 1);
-            }
-            break;
+    case 'mysql':
+        INST_updateDB($_SQL);
+        if ($use_innodb) {
+            DB_query("INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_engine', 'InnoDB')");
+        }
+        break;
+
+    case 'mssql':
+        foreach ($_SQL as $sql) {
+            $_DB->dbQuery($sql, 0, 1);
+        }
+        break;
+
+    case 'pgsql':
+        foreach ($_SQL as $sql) {
+            $_DB->dbQuery($sql, 0, 1);
+        }
+        break;
+
+    default:
+        die("Unknown DB type '$_DB_dbms'");
+        break;
     }
 
     // Now insert mandatory data and a small subset of initial data
     foreach ($_DATA as $data) {
         $progress .= "executing " . $data . "<br" . XHTML . ">\n";
-        DB_query ($data);
+        DB_query($data);
     }
 
     return true;
@@ -921,8 +929,10 @@ for ($i = 0; $i < 4; $i++) {
 $html_path          = INST_getHtmlPath();
 $siteconfig_path    = '../../siteconfig.php';
 $dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : '');
+$dbconfig_path      = INST_sanitizePath($dbconfig_path);
 $step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 $mode               = isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : '');
+$use_innodb = false;
 
 // $display holds all the outputted HTML and content
 if (defined('XHTML')) {
@@ -959,12 +969,13 @@ if (empty($mode) || ($mode == 'check_permissions')) {
     $_PATH = array('dbconfig', 'public_html');
     if (isset($_GET['mode']) || isset($_POST['mode'])) {
         $value = (isset($_POST['mode'])) ? $_POST['mode'] : $_GET['mode'];
-        $display .= '<input type="hidden" name="mode" value="' . $value . '"' . XHTML . '>' . LB;
+        $display .= '<input type="hidden" name="mode" value="' . htmlspecialchars($value) . '"' . XHTML . '>' . LB;
     }
     foreach ($_PATH as $name) {
         if (isset($_GET[$name . '_path']) || isset($_POST[$name . '_path'])) {
             $value = (isset($_POST[$name . '_path'])) ? $_POST[$name . '_path'] : $_GET[$name . '_path'];
-            $display .= '<input type="hidden" name="' . $name .'_path" value="' . $value . '"' . XHTML . '>' . LB;
+            $value = INST_sanitizePath($value);
+            $display .= '<input type="hidden" name="' . $name .'_path" value="' . htmlspecialchars($value) . '"' . XHTML . '>' . LB;
         }
     }
 
@@ -989,8 +1000,8 @@ $display .= '
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1 class="heading">' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[4]) . '</h1>' . LB;
-    $display .= '<p>' . str_replace('4.1.0', SUPPORTED_PHP_VER, $LANG_INSTALL[5]) . phpversion() . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1 class="heading">' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . phpversion() . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 
@@ -1020,7 +1031,7 @@ if (INST_phpOutOfDate()) {
             // or in public_html have the user enter its location.
             $form_fields .= '<p><label class="' . $form_label_dir . '"><code>db-config.php</code></label> ' . LB
                         . '<input type="text" name="dbconfig_path" value="/path/to/'
-                        . $dbconfig_file . '" size="50"' . XHTML . '></p>'  . LB;
+                        . htmlspecialchars($dbconfig_file) . '" size="50"' . XHTML . '></p>'  . LB;
             $num_errors++;
         } else {
             // See whether the file/directory is located in the default place or in public_html
@@ -1060,8 +1071,7 @@ if (INST_phpOutOfDate()) {
     case 'check_permissions':
 
         // Get the paths from the previous page
-        $_PATH = array('db-config.php' => urldecode(isset($_GET['dbconfig_path'])
-                                            ? $_GET['dbconfig_path'] : $_POST['dbconfig_path']),
+        $_PATH = array('db-config.php' => INST_sanitizePath(urldecode(isset($_GET['dbconfig_path']) ? $_GET['dbconfig_path'] : $_POST['dbconfig_path'])),
                         'public_html/' => INST_getHtmlPath());
 
         // Be fault tolerant with the path the user enters
@@ -1078,7 +1088,7 @@ if (INST_phpOutOfDate()) {
         if (!file_exists($_PATH['db-config.php'])) {
             $display .= '<h1 class="heading">' . $LANG_INSTALL[3] . '</h1>' . LB
                 . '<p><span class="error">' . $LANG_INSTALL[38] . '</span>' . LB
-                . $LANG_INSTALL[84] . '<code>' . $_PATH['db-config.php'] . '</code>' . $LANG_INSTALL[85] . LB
+                . $LANG_INSTALL[84] . '<code>' . htmlspecialchars($_PATH['db-config.php']) . '</code>' . $LANG_INSTALL[85] . LB
                 . '</p>' . LB
                 . '<div style="margin-left: auto; margin-right: auto; width: 1px">' . LB
                 . '<form action="index.php" method="post">' . LB
@@ -1098,7 +1108,7 @@ if (INST_phpOutOfDate()) {
             $chmod_string = 'chmod -R 777 ';
             // Files to check if writable
             $file_list = array( $_PATH['db-config.php'],
-                                $gl_path . (file_exists($gl_path . 'data') ? 'data/' : 'public_html/data/'),
+                                $gl_path . 'data/',
                                 $gl_path . 'logs/error.log',
                                 $_PATH['public_html/'] . 'siteconfig.php',
                                 $_PATH['public_html/'] . 'backend/geeklog.rss',
@@ -1188,15 +1198,15 @@ if (INST_phpOutOfDate()) {
             // Show the "Select your installation method" buttons
             $upgr_class = ($LANG_DIRECTION == 'rtl') ? 'upgrade-rtl' : 'upgrade' ;
             $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[23] . '</h1>' . LB
-                . '<p><form action="index.php" method="GET">' . LB
-                . '<input type="hidden" name="dbconfig_path" value="' . $dbconfig_path . '"' . XHTML . '>' . LB
-                . '<input type="hidden" name="mode" value="' . $mode . '"' . XHTML . '>' . LB
+                . '<div><form action="index.php" method="get">' . LB
+                . '<input type="hidden" name="dbconfig_path" value="' . htmlspecialchars($dbconfig_path) . '"' . XHTML . '>' . LB
+                . '<input type="hidden" name="mode" value="' . htmlspecialchars($mode) . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="language" value="' . $language . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="display_step" value="' . ($display_step+1) . '"' . XHTML . '>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[24] . '"' . XHTML .'>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
-                . '</form> </p> <br' . XHTML . '>' . LB;
+                . '</form> </div> <br' . XHTML . '>' . LB;
    
         }
         break;
@@ -1207,13 +1217,13 @@ if (INST_phpOutOfDate()) {
     case 'write_paths':
 
         // Get the paths from the previous page
-        $_PATH = array('db-config.php' => urldecode($_REQUEST['dbconfig_path']),
-                        'public_html/' => urldecode($_REQUEST['public_html_path']));
+        $_PATH = array('db-config.php' => INST_sanitizePath(urldecode($_REQUEST['dbconfig_path'])),
+                        'public_html/' => INST_sanitizePath(urldecode($_REQUEST['public_html_path'])));
         $dbconfig_path = str_replace('db-config.php', '', $_PATH['db-config.php']);
 
         // Edit siteconfig.php and enter the correct GL path and system directory path
         $siteconfig_path = $_PATH['public_html/'] . 'siteconfig.php';
-        $siteconfig_file = fopen($siteconfig_path, 'r');
+        $siteconfig_file = fopen($siteconfig_path, 'rb');
         $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
         fclose($siteconfig_file);
 
@@ -1223,7 +1233,7 @@ if (INST_phpOutOfDate()) {
                             "\$_CONF['path'] = '" . str_replace('db-config.php', '', $_PATH['db-config.php']) . "';",
                             $siteconfig_data);
 
-        $siteconfig_file = fopen($siteconfig_path, 'w');
+        $siteconfig_file = fopen($siteconfig_path, 'wb');
         if (!fwrite($siteconfig_file, $siteconfig_data)) {
             exit ($LANG_INSTALL[26] . ' ' . $_PATH['public_html/'] . $LANG_INSTALL[28]);
         }
@@ -1280,6 +1290,7 @@ $display .= '<br' . XHTML . '><br' . XHTML . '>' . LB
     . '</body>' . LB 
     . '</html>';
 
+header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo $display;
 
 ?>

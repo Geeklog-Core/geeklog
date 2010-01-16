@@ -83,6 +83,10 @@ $_PO_DEFAULT['delete_polls'] = 0;
  */
 $_PO_DEFAULT['aftersave'] = 'list';
 
+
+// Display Meta Tags for static pages (1 = show, 0 = don't) 
+$_PO_DEFAULT['meta_tags'] = 0;
+
 // Define default permissions for new polls created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -134,6 +138,8 @@ function plugin_initconfig_polls()
                 0, 0, 0, 80, true, 'polls');
         $c->add('aftersave', $_PO_DEFAULT['aftersave'], 'select',
                 0, 0, 9, 90, true, 'polls');
+        $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select',
+                0, 0, 0, 100, true, 'polls');        
 
         $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls');
         $c->add('default_permissions', $_PO_DEFAULT['default_permissions'],

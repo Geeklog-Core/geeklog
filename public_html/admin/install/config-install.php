@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Initial configuration setup.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -48,9 +48,12 @@ function install_config()
     $c->add('site_name','','text',0,0,NULL,60,TRUE);
     $c->add('site_slogan','','text',0,0,NULL,70,TRUE);
     $c->add('microsummary_short','GL: ','text',0,0,NULL,80,TRUE);
-    $c->add('site_disabled_msg','Geeklog Site is down. Please come back soon.','text',0,0,NULL,510,TRUE);
+    $c->add('site_disabled_msg','Geeklog Site is down. Please come back soon.','textarea',0,0,NULL,510,TRUE);
     $c->add('copyrightyear',date('Y'),'text',0,0,NULL,1440,FALSE);
     $c->add('url_rewrite',FALSE,'select',0,0,1,1800,TRUE);
+    $c->add('meta_tags',0,'select',0,0,23,2000,TRUE);
+    $c->add('meta_description','Geeklog, the open source content management system designed with security in mind.','textarea',0,0,NULL,2010,TRUE);
+    $c->add('meta_keywords','Geeklog, Blog, Content Management System, CMS, Open Source, Security','textarea',0,0,NULL,2020,TRUE);
 
     $c->add('fs_mail', NULL, 'fieldset', 0, 1, NULL, 0, TRUE);
     $c->add('site_mail','','text',0,1,NULL,40,TRUE);
@@ -137,7 +140,7 @@ function install_config()
     $c->add('fs_theme', NULL, 'fieldset', 2, 10, NULL, 0, TRUE);
     $c->add('theme','professional','select',2,10,NULL,190,TRUE);
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE);
-    $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%text',2,10,NULL,200,TRUE);
+    $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE);
 
     $c->add('fs_theme_advanced', NULL, 'fieldset', 2, 11, NULL, 0, TRUE);
@@ -229,6 +232,7 @@ function install_config()
     $c->add('comment_edit',0,'select',4,21,0,1680,TRUE);
     $c->add('commentsubmission',0,'select',4,21,0, 1682, TRUE);
     $c->add('comment_edittime',1800,'text',4,21,NULL,1684,TRUE);
+    $c->add('article_comment_close_enabled',0,'select',4,21,0, 1685, TRUE);
     $c->add('article_comment_close_days',30,'text',4,21,NULL,1686,TRUE);
     $c->add('comment_close_rec_stories',0,'text',4,21,NULL,1688,TRUE);
     $c->add('allow_reply_notifications',0,'select',4,21,0, 1689, TRUE);
@@ -288,7 +292,7 @@ function install_config()
     $c->add('thousand_separator',",",'text',6,29,NULL,440,TRUE);
     $c->add('decimal_separator',".",'text',6,29,NULL,450,TRUE);
     $c->add('decimal_count',"2",'text',6,29,NULL,460,TRUE);
-    $c->add('timezone','Etc/GMT-6','text',6,29,NULL,490,FALSE);
+    $c->add('timezone','UTC','select',6,29,NULL,490,FALSE);
 
     // Subgroup: Miscellaneous
     $c->add('sg_misc', NULL, 'subgroup', 7, 0, NULL, 0, TRUE);
@@ -302,18 +306,19 @@ function install_config()
     $c->add('cookie_tzid','timezone','text',7,30,NULL,575,TRUE);
     $c->add('cookie_anon_name','anon_name','text',7,30,NULL,577,TRUE);
     $c->add('cookie_ip',0,'select',7,30,0,580,TRUE);
-    $c->add('default_perm_cookie_timeout',28800,'text',7,30,NULL,590,TRUE);
+    $c->add('default_perm_cookie_timeout',28800,'select',7,30,NULL,590,TRUE);
     $c->add('session_cookie_timeout',7200,'text',7,30,NULL,600,TRUE);
     $c->add('cookie_path','/','text',7,30,NULL,610,TRUE);
     $c->add('cookiedomain','','text',7,30,NULL,620,TRUE);
     $c->add('cookiesecure',FALSE,'select',7,30,1,630,TRUE);
 
     $c->add('fs_misc', NULL, 'fieldset', 7, 31, NULL, 0, TRUE);
-    $c->add('notification',array(),'%text',7,31,NULL,800,TRUE);
+    $c->add('notification',array(),'%select',7,31,25,800,TRUE);
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE);
-    $c->add('compressed_output',0,'select',7,31,1,1757,TRUE);
+    $c->add('compressed_output',0,'select',7,31,1,1756,TRUE);
+    $c->add('frame_options','DENY','select',7,31,22,1758,TRUE);
 
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE);
     $c->add('rootdebug',FALSE,'select',7,32,1,520,TRUE);

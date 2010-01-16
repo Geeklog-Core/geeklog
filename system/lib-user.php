@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -149,10 +149,12 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'welcome_email.txt'));
-        $template->set_var ( 'xhtml', XHTML );
+        $template->set_var ('xhtml', XHTML);
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('auth_info',
                             "$LANG04[2]: $username\n$LANG04[4]: $passwd");
-        $template->set_var ('site_url', $_CONF['site_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
         $template->set_var ('lang_text1', $LANG04[15]);
@@ -198,8 +200,10 @@ function USER_sendActivationEmail ($username, $useremail)
     if (file_exists ($_CONF['path_data'] . 'activation_email.txt')) {
         $template = new Template ($_CONF['path_data']);
         $template->set_file (array ('mail' => 'activation_email.txt'));
-        $template->set_var ( 'xhtml', XHTML );
+        $template->set_var ('xhtml', XHTML);
         $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
         $template->set_var ('lang_text1', $LANG04[15]);
@@ -241,37 +245,37 @@ function USER_sendActivationEmail ($username, $useremail)
 * @return   int                  new user's ID
 *
 */
-function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '',$batchimport=false)
+function USER_createAccount($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '', $batchimport = false)
 {
     global $_CONF, $_TABLES;
 
     $queueUser = false;
-    $username = addslashes ($username);
-    $email = addslashes ($email);
+    $username = addslashes($username);
+    $email = addslashes($email);
 
-    $regdate = strftime ('%Y-%m-%d %H:%M:%S', time ());
+    $regdate = strftime('%Y-%m-%d %H:%M:%S', time());
     $fields = 'username,email,regdate,cookietimeout';
     $values = "'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'";
 
-    if (!empty ($passwd)) {
-        $passwd = addslashes ($passwd);
+    if (! empty($passwd)) {
+        $passwd = addslashes($passwd);
         $fields .= ',passwd';
         $values .= ",'$passwd'";
     }
-    if (!empty ($fullname)) {
-        $fullname = addslashes ($fullname);
+    if (! empty($fullname)) {
+        $fullname = addslashes($fullname);
         $fields .= ',fullname';
         $values .= ",'$fullname'";
     }
-    if (!empty ($homepage)) {
-        $homepage = addslashes ($homepage);
+    if (! empty($homepage)) {
+        $homepage = addslashes($homepage);
         $fields .= ',homepage';
         $values .= ",'$homepage'";
     }
-    if (($_CONF['usersubmission'] == 1) && !SEC_hasRights ('user.edit')) {
+    if (($_CONF['usersubmission'] == 1) && !SEC_hasRights('user.edit')) {
         $queueUser = true;
-        if (!empty ($_CONF['allow_domains'])) {
-            if (USER_emailMatches ($email, $_CONF['allow_domains'])) {
+        if (!empty($_CONF['allow_domains'])) {
+            if (USER_emailMatches($email, $_CONF['allow_domains'])) {
                 $queueUser = false;
             }
         }
@@ -280,52 +284,59 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
             $values .= ',' . USER_ACCOUNT_AWAITING_APPROVAL;
         }
     } else {
-        if (!empty($remoteusername)) {
+        if (! empty($remoteusername)) {
             $fields .= ',remoteusername';
             $values .= ",'$remoteusername'";
         }
-        if (!empty($service)) {
+        if (! empty($service)) {
             $fields .= ',remoteservice';
             $values .= ",'$service'";
         }
     }
 
-    DB_query ("INSERT INTO {$_TABLES['users']} ($fields) VALUES ($values)");
+    DB_query("INSERT INTO {$_TABLES['users']} ($fields) VALUES ($values)");
     // Get the uid of the user, possibly given a service:
-    if ($remoteusername != '')
-    {
-        $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
+    if ($remoteusername != '') {
+        $uid = DB_getItem($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
     } else {
-        $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username' AND remoteservice IS NULL");
+        $uid = DB_getItem($_TABLES['users'], 'uid', "username = '$username' AND remoteservice IS NULL");
     }
 
     // Add user to Logged-in group (i.e. members) and the All Users group
-    $normal_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
-                              "grp_name='Logged-in Users'");
-    $all_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
-                           "grp_name='All Users'");
-    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($normal_grp, $uid)");
-    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($all_grp, $uid)");
+    $normal_grp = DB_getItem($_TABLES['groups'], 'grp_id',
+                             "grp_name='Logged-in Users'");
+    $all_grp = DB_getItem($_TABLES['groups'], 'grp_id',
+                          "grp_name='All Users'");
+    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($normal_grp, $uid)");
+    DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($all_grp, $uid)");
 
-    DB_query ("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-    if ($_CONF['emailstoriesperdefault'] == 1) {
-        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid,'')");
-    } else {
-        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
+    // any default groups?
+    $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_default = 1");
+    $num_groups = DB_numRows($result);
+    for ($i = 0; $i < $num_groups; $i++) {
+        list($def_grp) = DB_fetchArray($result);
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($def_grp, $uid)");
     }
 
-    DB_query ("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_limit']}')");
-    DB_query ("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+    DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
+    if ($_CONF['emailstoriesperdefault'] == 1) {
+        DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid,'')");
+    } else {
+        DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
+    }
+
+    DB_query("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_limit']}')");
+    DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
 
     // call custom registration function and plugins
-    if ($_CONF['custom_registration'] && (function_exists ('CUSTOM_userCreate'))) {
-        CUSTOM_userCreate ($uid,$batchimport);
+    if ($_CONF['custom_registration'] && function_exists('CUSTOM_userCreate')) {
+        CUSTOM_userCreate($uid,$batchimport);
     }
-    PLG_createUser ($uid);
+    PLG_createUser($uid);
 
     // Notify the admin?
-    if (isset ($_CONF['notification']) &&
-        in_array ('user', $_CONF['notification'])) {
+    if (isset($_CONF['notification']) &&
+            in_array('user', $_CONF['notification'])) {
         if ($queueUser) {
             $mode = 'inactive';
         } else {
@@ -517,7 +528,7 @@ function USER_addGroup ($groupid, $uid = '')
      // set $uid if $uid is empty
     if (empty ($uid)) {
         // bail for anonymous users
-        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+        if (COM_isAnonUser()) {
             return false;
         } else {
             // If logged in set to current uid
@@ -552,7 +563,7 @@ function  USER_delGroup ($groupid, $uid = '')
     // set $uid if $uid is empty
     if (empty ($uid)) {
         // bail for anonymous users
-        if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+        if (COM_isAnonUser()) {
             return false;
         } else {
             // If logged in set to current uid
@@ -653,7 +664,7 @@ function USER_getChildGroups($groupid)
     $to_check = array();
     array_push($to_check, $groupid);
     $groups = array();
-    while (sizeof($to_check) > 0) {
+    while (count($to_check) > 0) {
         $thisgroup = array_pop($to_check);
         if ($thisgroup > 0) {
             $result = DB_query("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $thisgroup");

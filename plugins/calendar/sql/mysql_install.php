@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mysql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -61,7 +61,7 @@ CREATE TABLE {$_TABLES['events']} (
   INDEX events_datestart(datestart),
   INDEX events_dateend(dateend),
   PRIMARY KEY  (eid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -82,8 +82,9 @@ CREATE TABLE {$_TABLES['eventsubmission']} (
   event_type varchar(40) NOT NULL default '',
   timestart time default NULL,
   timeend time default NULL,
+  owner_id mediumint(8) unsigned NOT NULL default '1',
   PRIMARY KEY  (eid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $_SQL[] = "
@@ -113,11 +114,11 @@ CREATE TABLE {$_TABLES['personal_events']} (
   timestart time default NULL,
   timeend time default NULL,
   PRIMARY KEY  (eid,uid)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2008050110130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL)";
+$_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend, owner_id) VALUES ('2008050110130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,1)";
 
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'events_block','phpblock','Events','all',4,'',1,'phpblock_calendar',{$_USER['uid']},#group#,3,3)";
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES (1,'events_block','phpblock','Events','all',100,'',1,'phpblock_calendar',{$_USER['uid']},#group#,3,3)";
 
 ?>

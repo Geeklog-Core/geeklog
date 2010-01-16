@@ -1,9 +1,9 @@
 <?php
 
 ###############################################################################
-# hebrew.php # last Update  10/9/2008
-# Version 1.5.1 #1.0
-# Copyright (C) http://lior.weissbrod.com
+# hebrew.php
+# Version 1.6.1#1
+# Copyright (C) 2009 http://lior.weissbrod.com
 #
 # Originally:
 # hebrew.php # last Update  07/03/2004 23:35
@@ -82,7 +82,7 @@ $LANG01 = array(
     37 => 'טרם נכתבו מאמרים',
     38 => 'סינדיקציית תוכן',
     39 => 'רענן',
-    40 => 'מוגדר לכם <tt>register_globals = Off</tt> ב-<tt>php.ini</tt> שלכם. עם זאת, דרוש ש- <tt>register_globals</tt> יהיה <strong>on</strong>. לפני שהנכם ממשיכים, אנא הגדירו אותו על <strong>on</strong> ואתחלו מחדש את שרת הרשת שלכם.',
+    40 => '',
     41 => 'אורחים',
     42 => 'נכתב על ידי:',
     43 => 'הגיבו לזה',
@@ -206,22 +206,22 @@ $LANG03 = array(
     25 => 'האם הנכם בטוחים שברצונכם לדווח על תגובה זו למנהלי האתר?',
     26 => '%s דיווח/ה על התגובה הפוגענית הבאה:',
     27 => 'דיווח על שימוש לרעה',
-    28 => 'Preview Changes',
-    29 => 'Submit Changes',
-    30 => 'Edited on',
-    31 => 'by',
-    32 => 'Editing a Comment',
-    33 => 'Editing a Comment Submission',
-    34 => 'Preview Submission Changes',
-    35 => 'Save Changes to Queue',
-    36 => 'Notify me of new replies',
-    37 => 'New Comment Reply',
-    38 => 'A reply has been made to your comment \'%s\'.',
-    39 => 'You may view the comment thread at the following address:',
-    40 => 'If you wish to receive no further notifications of replies, visit the following link:',
-    41 => 'Hello %s,',
-    42 => 'Unsubscribe',
-    43 => 'Unsubscribe from reply notifications'
+    28 => 'תצוגה מקדימה של השינויים',
+    29 => 'שליחת השינויים',
+    30 => 'נערך ב',
+    31 => 'על ידי',
+    32 => 'עריכת תגובה',
+    33 => 'עריכת תגובה שנשלחה',
+    34 => 'תצוגה מקדימה בשינויים בשליחה',
+    35 => 'שמירת השינויים לתור ההמתנה',
+    36 => 'הודיעו לי על תשובות חדשות',
+    37 => 'תגובה תשובתית חדשה',
+    38 => 'נשלחה תגובה לתגובה שלכם \'%s\'.',
+    39 => 'הנכם רשאים לצפות בשרשור התגובה בכתובת הבאה:',
+    40 => 'אם אינכם רוצים לקבל יותר הודעות על תגובות, בקרו בקישור הבא:',
+    41 => 'שלום %s,',
+    42 => 'ביטול הרשמה',
+    43 => 'ביטול הרשמה מהודעות על תגובות'
 );
 
 ###############################################################################
@@ -382,9 +382,12 @@ $LANG04 = array(
     157 => 'אפשרות מחיקה',
     158 => 'איזור זמן',
     159 => 'הודעת אימייל זו נוצרה אוטומטית. אנא אל תענו לה.',
-    160 => '(max. %d x %d pixels, %d bytes; %s)',
-    161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    160 => '(מקסימום %d x %d פיקסלים, %d bytes; %s)',
+    161 => 'יותאם למטה',
+    162 => 'לא יותאם',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    165 => 'Use Advanced Editor'
 );
 
 ###############################################################################
@@ -420,8 +423,8 @@ $LANG05 = array(
 $LANG08 = array(
     1 => 'הרעה שגיאה במשלוח ההודעה, אנא נסה/י שוב',
     2 => 'ההודעה נשלחה בהצלחה',
-    3 => 'וודאו שכתובת האימייל לקבלת תגובה תהיה נכונה',
-    4 => 'אנא מלאו את שמכם, את כתובת האימייל שלכם, את הנושא ואת ההודעה',
+    3 => 'אנא ודאו שהנכם משתמשים בכתובת אימייל תקינה בשדה כתובת האימייל שלכם',
+    4 => 'אנא מלאו את שדות השם, כתובת האימייל שלכם, הנושא וההודעה',
     5 => 'שגיאה, אין משתמש בשם שבחרת',
     6 => 'ההודעה לא נשלחה בהצלחה עקב שגיאה.',
     7 => 'פרופיל המשתמש של',
@@ -429,7 +432,7 @@ $LANG08 = array(
     9 => 'אתר בית',
     10 => 'שלח הודעת אימייל ל:',
     11 => 'שמכם',
-    12 => 'כתובת אימייל לקבלת תגובה',
+    12 => 'כתובת האימייל שלכם',
     13 => 'נושא',
     14 => 'הודעה:',
     15 => 'HTML לא יתורגם',
@@ -453,9 +456,9 @@ $LANG08 = array(
     33 => 'קיראו את המאמר המלא ב:',
     34 => 'סוף ההודעה',
     35 => 'מצטערים, משתמש זה מעדיף לא לקבל כלל הודעות אימייל.',
-    36 => 'Copy:',
-    37 => 'Send me a copy of this email',
-    38 => "This is a copy of the email that you sent to %s from <{$_CONF['site_url']}>:"
+    36 => 'עותק:',
+    37 => 'שילחו לי עותק מאימייל זה',
+    38 => "זהו עותק של אימייל ששלחתם אל\n%s\nמ-\n<{$_CONF['site_url']}>:"
 );
 
 ###############################################################################
@@ -524,14 +527,16 @@ $LANG09 = array(
     60 => 'בכל עמוד',
     61 => 'הגדירו מחדש את החיפוש',
     62 => '#',
-    63 => 'Description',
-    64 => 'Showing %1$d - %2$d of %3$d results',
-    65 => 'Story',
-    66 => 'Comment',
-    67 => 'Show %d Results',
-    68 => 'Sort By',
-    69 => 'Titles Only',
-    70 => 'Not available ...'
+    63 => 'תיאור',
+    64 => 'הצגת %1$d - %2$d מתוך %3$d תוצאות',
+    65 => 'מאמר',
+    66 => 'תגובה',
+    67 => 'הצגת %d תוצאות',
+    68 => 'מיון לפי',
+    69 => 'כותרות בלבד',
+    70 => 'לא זמין ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -801,7 +806,7 @@ $LANG24 = array(
     60 => '',
     61 => 'איחסון אוטומטי בארכיון',
     62 => 'מחיקה אוטומטית',
-    63 => 'Disable Comments',
+    63 => 'ניטרול תגובות',
     64 => '',
     65 => '',
     66 => '',
@@ -826,7 +831,10 @@ $LANG24 = array(
     85 => 'הראה הכל',
     86 => 'עורך מתקדם',
     87 => 'סטטיסטיקות מאמר',
-    88 => 'פורמט בנוסח וויקי'
+    88 => 'פורמט בנוסח וויקי',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.'
 );
 
 ###############################################################################
@@ -861,7 +869,8 @@ $LANG27 = array(
     26 => 'היפכו נושא זה לנושא ברירת המחדל עבור מאמרים בארכיון. ניתן לבחור רק נושא אחד.',
     27 => 'או העלו אייקון לנושא',
     28 => 'מקסימום',
-    29 => 'שגיאות בהעלאת הקובץ'
+    29 => 'שגיאות בהעלאת הקובץ',
+    30 => 'מאמרים בנושא'
 );
 
 ###############################################################################
@@ -953,8 +962,11 @@ $LANG28 = array(
     83 => "חשבונך ב {$_CONF['site_name']} לא היה בשימוש מאז שנוצר ויימחק בקרוב אם לא יזכה לגישה",
     84 => "שם המשתמש שלך הוא: %s  בשביל האתר: {$_CONF['site_url']}",
     85 => 'אם שכחתם את הסיסמה, השתמשו בקישור הבא: %s',
-    86 => 'Include',
-    87 => 'Reminders'
+    86 => 'שיוך',
+    87 => 'תזכורות',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################
@@ -976,14 +988,14 @@ $LANG29 = array(
     18 => 'כתובת אימייל',
     34 => 'שליטה ובקרה',
     35 => 'הגשות מאמרים',
-    36 => 'Parent or Comment',
+    36 => 'הורה או תגובה',
     37 => '',
     38 => 'אישור',
     39 => 'אין הגשות שדורשות פיקוח בזמן זה',
     40 => 'הגשות של משתמשים',
-    41 => 'Comment Submissions',
-    42 => 'User Name',
-    43 => 'Auto-publish Comments?'
+    41 => 'הגשות תגובות',
+    42 => 'שם משתמש',
+    43 => 'האם לפרסם אוטומטית תגובות?'
 );
 
 ###############################################################################
@@ -991,10 +1003,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "כלי שליחת הודעות האימייל של {$_CONF['site_name']}",
-    2 => 'מ',
-    3 => 'השב ל',
+    2 => 'שם השולח',
+    3 => 'כתובת האימייל של השולח',
     4 => 'נושא',
-    5 => 'גוף ההודעה',
+    5 => 'ההודעה',
     6 => 'שליחה ל:',
     7 => 'כל המשתמשים',
     8 => 'מנהל האתר',
@@ -1030,7 +1042,7 @@ $LANG32 = array(
     6 => 'אזהרה: ה-Plug-in כבר מותקן!',
     7 => 'ה-plug-in שהנכם מנסה להתקין כבר קיים. אנא מיחקו את ה-plugin לפני התקנתו מחדש.',
     8 => 'בדיקת התאמת Plugin נכשלה',
-    9 => 'ה-plugin דורש גירסה חדשה יותר של Geeklog. שדרגו את העותק שלכם של <a href="http://www.geeklog.net">Geeklog</a> או השיגו גירסה חדשה יותר של ה-plugin.',
+    9 => 'plugin זה דורש גירסה חדשה יותר של Geeklog. שדרגו את העותק שלכם של <a href="http://www.geeklog.net">Geeklog</a>.',
     10 => '<br' . XHTML . '><b>אין plugins מותקנים כרגע.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'כדי לערוך או למחוק plug-in, ליחצו על אייקון העריכה מתחת. זה יראה את פרטי ה-plugin כולל האתר של יוצריו. גם הגירסה המותקנת וגם הגירסה שמוחזרת מקוד ה-plugin מוצגות. זה יעזור לכם לדעת ה-plugin צריך לעבור שידרוג. כדי להתקין או לשדרג plugin אנא עיברו על הדוקומנטציה שלו.',
     12 => 'שום שם של plugin לא ניתן ל-plugineditor()',
@@ -1060,19 +1072,20 @@ $LANG32 = array(
     36 => 'קוד',
     37 => 'מידע',
     38 => 'עדכנו!',
-    39 => 'Upload a plugin',
-    40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
-    41 => 'Upload',
-    99 => 'An unknown error occured',
-    100 => 'Ok.',
-    101 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini.',
-    102 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.',
-    103 => 'The uploaded file was only partially uploaded.',
-    104 => 'No file was uploaded.',
-    105 => '(undefined error)',
-    106 => 'Missing a temporary folder.',
-    107 => 'Failed to write file to disk.',
-    108 => 'File upload stopped by extension.'
+    39 => 'העלאת plugin',
+    40 => 'הנכם יכולים להעלות ארכיון plugin (tar.gz, tgz, zip) ישירות לכאן:',
+    41 => 'העלאה',
+    42 => 'ליחצו כדי לעדכן',
+    99 => 'התרחשה שגיאה לא ידועה',
+    100 => 'אישור.',
+    101 => 'הקובץ שהועלה עובר את הוראת upload_max_filesize directive ב-php.ini.',
+    102 => 'הקובץ שהועלה עבר את הוראת MAX_FILE_SIZE שצויינה בטופס ה-HTML.',
+    103 => 'הקובץ שהועלה הועלה רק באופן חלקי.',
+    104 => 'שום קובץ לא הועלה.',
+    105 => '(שגיאה לא מזוהה)',
+    106 => 'חסרה ספרייה זמנית.',
+    107 => 'נכשלה כתיבת הקובץ לכונן.',
+    108 => 'העלאת הקובץ נעצרה לפי הסיומת.'
 );
 
 ###############################################################################
@@ -1149,8 +1162,8 @@ $MESSAGE = array(
     12 => 'קוביית המידע שלך נמחקה בהצלחה.',
     13 => 'הנושא שלך נשמר בהצלחה.',
     14 => 'הנושא וכל המאמרים וקוביות המידע שבתוכו נמחקו בהצלחה.',
-    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
-    16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
+    15 => 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.',
+    16 => 'רישומכם בוטל. לא תקבלו יותר הודעות על תגובות חדשות.',
     17 => '',
     18 => '',
     19 => '',
@@ -1163,7 +1176,7 @@ $MESSAGE = array(
     26 => '',
     27 => 'ההודעה נשלחה בהצלחה.',
     28 => 'ה-plugin נשמר בהצלחה',
-    29 => 'Sorry, you do not have access to this administration page.  Please note that all attempts to access unauthorized features are logged',
+    29 => 'מצטערים, אין לכם גישה לעמוד ניהול זה. אנא שימו לב שכל הנסיונות לגשת ליכולות לא מורשות נרשמות ביומן',
     30 => 'הגישה לא אושרה',
     31 => '',
     32 => '',
@@ -1181,7 +1194,7 @@ $MESSAGE = array(
     44 => 'ה-plugin הותקן בהצלחה!',
     45 => 'ה-plugin נמחק בהצלחה.',
     46 => '',
-    47 => 'יכולת זו עובדת רק תחת nix*. אם הינכם מריצים nix* כמערכת ההפעלה שלכם אז זיכרון המטמון שלכם נוקה בהצלחה. אם הנכם משתמשים בחלונות, תיאלצו לחפש אחר קבצים בשם adodb_*.php ולהסירם באופן ידני.',
+    47 => '',
     48 => "תודה לך על הגשת הבקשה שלך להצטרף ל-{$_CONF['site_name']}. אנו נבדוק את בקשתך. אם תאושר, סיסמתך תישלח אליך באימייל לכתובת האימייל שהרגע ציינת.",
     49 => 'קבוצתך נשמרה בהצלחה.',
     50 => 'הקבוצה נמחקה בהצלחה.',
@@ -1232,12 +1245,12 @@ $MESSAGE = array(
     95 => 'חלה תקלה.',
     96 => '',
     97 => '',
-    98 => 'The plugin was successfully uploaded.',
-    99 => 'The plugin already exists.',
-    100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
-    101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
-    400 => 'Not all required fields have been passed validation',
-    401 => 'Please enter Fullname'
+    98 => 'ה-plugin הועלה בהצלחה.',
+    99 => 'ה-plugin כבר קיים.',
+    100 => 'הקובץ -plugin שהעלתם לא היה ארכיון מכווץ GZip או Zip.',
+    101 => 'אין נושאים (שיש לכם גישה אליהם). הנכם צריכים לפחות נושא אחד כדי שתוכלו להגיש מאמרים.',
+    400 => 'לא כל השדות הנדרשים עברו וידוא',
+    401 => 'אנא הכניסו שם מלא'
 );
 
 ###############################################################################
@@ -1324,7 +1337,26 @@ $LANG_DB_BACKUP = array(
     'size' => 'גודל',
     'bytes' => 'Bytes',
     'total_number' => 'סך הכל גיבויים: %d',
-    'download' => 'ליחצו כדי להוריד קובץ זה'
+    'download' => 'ליחצו כדי להוריד קובץ זה',
+    'new_backup' => 'גיבוי חדש',
+    'delete_failure' => 'קובץ גיבוי אחד או יותר לא הצליח להימחק.',
+    'delete_success' => 'קובץ/קבצי גיבוי נמחק/ו בהצלחה.',
+    'convert_menu' => 'המרה ל-InnoDB',
+    'convert_title' => 'המרה לטבלאות InnoDB',
+    'convert_button' => 'המרה',
+    'sorry_no_innodb' => 'מצטערים, גרסת ה-MySQL שלכם לא תומכת בטבלאות InnoDB.',
+    'innodb_explain' => 'טבלאות InnoDB מאפשרות ביצועים טובים יותר במאגרים <em>מאוד</em> גדולים אבל הופכים את תהליך הגיבוי ליותר מסובך. אנא <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">קיראו</a> על היתרונות והחסרונות של טבלאות InnoDB לפני שתבצעו פעולה זו.',
+    'already_converted' => 'שימו לב: נראה שכל הטבלאות כבר הומרו ל-InnoDB.',
+    'conversion_patience' => 'שימו לב: ההמרה עשויה להיות ממושכת - אנא התאזרו בסבלנות.',
+    'innodb_success' => 'הטבלאות הומרו בהצלחה ל-InnoDB.',
+    'table_issues' => 'עם זאת, ייתכן שהיו בעיות עם חלק מהטבלאות. אנא בידקו את error.log בשביל פרטים.',
+    'optimize_menu' => 'ייעול טבלאות',
+    'optimize_title' => 'ייעול טבלאות',
+    'optimize_button' => 'ייעול',
+    'optimize_explain' => 'ייעול של טבלאות עשוי להגביר את ביצועי אתרכם. העוצמה הממשית תלויה בשימוש בכל טבלה כאשר חלק מהטבלאות עשויות להרוויח מכך יותר מהאחרות. אל תצפו לראות שינוי עצום בביצועים.<a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">מדריך -MySQL</a> מצהיר: <q>לא סביר שעליכם לעשות זאת יותר מפעם בשבוע או בחודש</q>.',
+    'last_optimization' => 'ההתייעלות האחרונה',
+    'optimization_patience' => 'שימו לב: הייעול עשוי להיות ממושך - אנא התאזרו בסבלנות.',
+    'optimize_success' => 'טבלאות מאגר המידע התייעלו בהצלחה.'
 );
 
 ###############################################################################
@@ -1464,25 +1496,25 @@ $LANG_DIR = array(
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest' => 'Geeklog Security Check',
-    'results' => 'Results of the Security Check',
-    'okay' => 'Everything seems to be in order.',
-    'please_fix' => 'Please fix the above issues before using your site!',
-    'please_note' => 'Please note that no site is ever 100% secure. This script can only test for obvious security issues.',
-    'stay_informed' => 'To stay informed about new Geeklog releases and possible security issues, we suggest that you subscribe to the (low-traffic) %s mailing list and/or use the %s option in your Admin menu from time to time to check for available updates.',
-    'public_html' => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
-    'installation' => 'installation instructions',
-    'directory' => 'directory',
-    'failed_bak' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
-    'fix_it' => 'This is a security risk and should be fixed!',
-    'reachable' => 'Your %s is reachable from the web.',
-    'not_reachable' => 'Good! Your %s is not reachable from the web.',
-    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
-    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
-    'inst_removed' => 'Good! You seem to have removed the install directory already.',
-    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
-    'password_okay' => 'Good! You seem to have changed the default account password already.'
+    'sectest' => 'בדיקת הבטיחות של Geeklog',
+    'results' => 'תוצאות בדיקת הבטיחות',
+    'okay' => 'הכל נראה תקין.',
+    'please_fix' => 'אנא תקנו את הדברים הבאים לפני שתשתמשו באתרכם!',
+    'please_note' => 'אנא שימו לב שכל אתר שהוא לעולם אינו 100% בטוח. סקריפט זה בודק רק עניינים בטחוניים ברורים.',
+    'stay_informed' => 'כדי להישאר מעודכנים לגבי גרסאות Geeklog חדשות ואולי גם לגבי בעיות בטחוניות אפשריות, אנו מציעים שתירשמו לרשימה (עם התנועה הנמוכה) %s ו/או תשתמשו באפשרות %s בתפריט הניהול מדי כל כמה זמן כדי לבדוק עדכונים זמינים.',
+    'public_html' => '"public_html" לעולם אינו צריך להיות חלק מכתובת האתר שלכם. אנא קיראו את החלק לגבי public_html %s שוב ושנו את ההגדרות שלכם בהתאם לפני שתמשיכו.',
+    'installation' => 'בהוראות ההתקנה',
+    'directory' => '(ספרייה)',
+    'failed_tmp' => 'נכשלה יצירת קובץ זמני בספריית ה-%s שלכם. בידקו את הרשאות הספרייה שלכם!',
+    'fix_it' => 'זהו סיכון בטחוני שיש לתקנו!',
+    'reachable' => 'ה-%s שלכם נגיש מהרשת.',
+    'not_reachable' => 'מצוין! ה-%s שלכם אינו נגיש מהרשת.',
+    'not_sure' => 'התקבלה תוצאת קוד HTTP %s בנסיון לבדוק את ה-%s שלכם. לא ברור מה לעשות עם זה ...',
+    'remove_inst' => 'הנכם באמת צריכים להסיר את ספריית ההתקנה %s ברגע שאתרכם מותקן ועובד בלי בעיות.',
+    'remove_inst2' => 'לשמור על זה בסביבה יאפשר למשתמשים זדוניים את היכולת להרוס את ההתקנה הנוכחית שלכם, להשתלט על אתרכם, או להשיג מידע רגיש.',
+    'inst_removed' => 'מצוין! נראה שהסרתם כבר את ספריית ה-install.',
+    'fix_password' => 'עדיין לא שיניתם את <strong>סיסמת ברירת המחדל</strong> מ-"password" ב-%s מחשבונות הניהול הראשי.',
+    'password_okay' => 'מצוין! נראה ששיניתם כבר את סיסמת ברירת המחדל.'
 );
 
 ###############################################################################
@@ -1573,7 +1605,13 @@ $LANG_ADMIN = array(
     'addchild' => 'הוסיפו תת פריט',
     'list' => 'רשימה',
     'list_all' => 'רשימה של הכל',
-    'na' => 'N/A'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'לא זמין',
+    'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate' => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1675,9 +1713,9 @@ $LANG_confignames['Core'] = array(
     'allow_mysqldump' => 'איפשור השלכת MySQL',
     'mysqldump_path' => 'נתיב לקובץ המבצע',
     'mysqldump_options' => 'אפשרויות השלכת MySQL',
-    'mysqldump_filename_mask' => 'Backup File Name Mask',
+    'mysqldump_filename_mask' => 'מיסוך שם קובץ גיבוי',
     'theme' => 'נושא עיצובי',
-    'doctype' => 'DOCTYPE Declaration',
+    'doctype' => 'הצהרת DOCTYPE',
     'menu_elements' => 'פריטי תפריט',
     'path_themes' => 'נתיב לנושאים עיצוביים',
     'disable_new_user_registration' => 'ביטול הרשמות חדשות',
@@ -1716,7 +1754,7 @@ $LANG_confignames['Core'] = array(
     'cookie_theme' => 'שם עוגיית נושא עיצובי',
     'cookie_language' => 'שם עוגיית שפה',
     'cookie_tzid' => 'שם עוגיית איזור זמן',
-    'cookie_anon_name' => 'Anon. Username Cookie Name',
+    'cookie_anon_name' => 'שם העוגייה של משתמשים אנונימיים',
     'cookie_ip' => 'האם להטמיע מספרי IP בעוגיות?',
     'default_perm_cookie_timeout' => 'פסק זמן קבוע',
     'session_cookie_timeout' => 'פסק זמן זמני',
@@ -1807,7 +1845,7 @@ $LANG_confignames['Core'] = array(
     'debug_image_upload' => 'הפעלת דיבג להעלאת תמונות?',
     'keep_unscaled_image' => 'השארת תמונות בגודלן המקורי?',
     'allow_user_scaling' => 'איפשור הקטנת תמונות של משתמשים?',
-    'jpeg_quality' => 'JPEG Quality?',
+    'jpeg_quality' => 'איכות JPEG?',
     'max_image_width' => 'רוחב התמונה המקסימל?',
     'max_image_height' => 'אורך התמונה המקסימלי?',
     'max_image_size' => 'גודל התמונה המקסימלי?',
@@ -1818,49 +1856,54 @@ $LANG_confignames['Core'] = array(
     'max_photo_height' => 'אורך התמונה המקסימלי?',
     'max_photo_size' => 'גודל התמונה המקסימלי?',
     'use_gravatar' => 'שימוש ב-Gravatar?',
-    'gravatar_rating' => 'איפשור רייטינג Gravatar',
+    'gravatar_rating' => 'איפשור דירוג הצפייה של Gravatar',
     'force_photo_width' => 'חיוב רוחב תמונה',
     'default_photo' => 'תמונת ברירת המחדל',
     'commentspeedlimit' => 'הגבלת מהירות תגובות',
     'comment_limit' => 'הגבלות תגובות',
     'comment_mode' => 'מצב תגובות',
     'comment_code' => 'ברירת המחדל של תגובות',
-    'comment_edit' => 'Allow Comment Edit?',
-    'comment_edittime' => 'Comment Edit Time (seconds)',
-    'commentsubmission' => 'Queue Comment Submissions',
+    'comment_edit' => 'איפשור עריכת תגובות?',
+    'comment_edittime' => 'זמן עריכת תגובות (בשניות)',
+    'commentsubmission' => 'תור להגשת תגובות',
     'passwordspeedlimit' => 'הגבלת מהירות סיסמאות',
     'login_attempts' => 'הכמות המקסימלית של נסיונות הזדהות',
     'login_speedlimit' => 'הגבלת מהירות הזדהות',
-    'user_html' => 'ה-HTML שזמין למשתמשים',
-    'admin_html' => 'ה-HTML שזמין למנהלים',
-    'advanced_html' => 'Additional HTML for Adv. Editor',
+    'user_html' => 'ה-HTML הזמין למשתמשים',
+    'admin_html' => 'ה-HTML הזמין למנהלים',
+    'advanced_html' => 'HTML נוסף עבור העורך המתקדם',
     'skip_html_filter_for_root' => 'דילוג על פילטר HTML למנהלים ראשיים?',
     'allowed_protocols' => 'פרוטוקולים מאופשרים',
     'disable_autolinks' => 'ביטול Autolinks?',
-    'clickable_links' => 'Make URLs clickable?',
-    'compressed_output' => 'Send compressed output?',
+    'clickable_links' => 'היפכו קישורים לנלחצים?',
+    'compressed_output' => 'שליחת פלט מכווץ?',
+    'frame_options' => 'הגנה נגד "clickjacking"',
     'censormode' => 'הפעלת צנזורה?',
     'censorreplace' => 'צנזורת החלפת טקסט',
     'censorlist' => 'רשימת צנזורה',
     'ip_lookup' => 'בדיקת IP',
     'url_rewrite' => 'איפשור URL Rewrite',
+    'meta_tags' => 'תגיות Meta',
+    'meta_description' => 'ברירת המחדל של Meta Description',
+    'meta_keywords' => 'ברירת המחדל של Meta Keywords',
     'default_permissions_block' => 'הרשאות ברירת המחדל של קוביות מידע',
     'default_permissions_story' => 'הרשאות ברירת המחדל של מאמרים',
     'default_permissions_topic' => 'הרשאות ברירת המחדל של נושאים',
     'atom_max_stories' => 'כמות המאמרים המקסימלית בהזנה של שירותי רשת',
     'disable_webservices' => 'ביטול שירותי רשת?',
     'restrict_webservices' => 'הגבלת שירותי רשת?',
-    'article_comment_close_days' => 'Days to close comments (default)',
-    'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
-    'allow_reply_notifications' => 'Allow comment reply notifications?',
-    'search_style' => 'Results List Style',
-    'search_limits' => 'Page Limits',
-    'search_show_num' => 'Show Result Number?',
-    'search_show_type' => 'Show Result Type?',
-    'search_show_sort' => 'Allow User to Sort Results?',
-    'search_show_limit' => 'Show Page Limits?',
-    'search_separator' => 'Group Separator',
-    'search_def_keytype' => 'Default Search Method'
+    'article_comment_close_enabled' => 'סגירת תגובות אוטומטית (ברירת המחדל)',
+    'article_comment_close_days' => 'מספר הימים לפני שהתגובות יהיו סגורות (ברירת המחדל)',
+    'comment_close_rec_stories' => 'כמות המאמרים הכי אחרונים שאפשר להגיב אליהם',
+    'allow_reply_notifications' => 'איפשור הודעות לתגובות של תשובות?',
+    'search_style' => 'סגנון רשימת תוצאות',
+    'search_limits' => 'תחומי עמוד',
+    'search_show_num' => 'הצגת מספר כמות התוצאות?',
+    'search_show_type' => 'הצגת סוג התוצאות?',
+    'search_show_sort' => 'איפשור למשתמש למיין תוצאות?',
+    'search_show_limit' => 'הצגת תחומי עמוד?',
+    'search_separator' => 'מפריד קבוצות',
+    'search_def_keytype' => 'שיטת חיפוש ברירת המחדל'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1919,28 +1962,32 @@ $LANG_fs['Core'] = array(
 );
 
 $LANG_configselects['Core'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Reject' => 0, 'Only Keep Latest' => 1, 'Allow Multiple Posts' => 2),
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
+    2 => array('דחייה' => 0, 'שמירת רק של החדשים' => 1, 'איפשור שליחות מרובות' => 2),
     3 => array('איפשור הפניות' => 0, 'ניטרול הפניות' => -1),
-    4 => array('Don\'t Check Anything' => 0, 'Check against Site URL' => 1, 'Check full URL' => 2, 'Check against Site URL and full URL' => 3, 'Check IP against Site IP' => 4, 'Check IP and Site URL' => 5, 'Check IP and Full URL' => 6, 'Check IP, Full URL, and Site URL' => 7),
+    4 => array('לא לבדוק כלום' => 0, 'בדיקה כנגד כתובת האתר' => 1, 'בדיקת הקישור המלא' => 2, 'בדיקה כנגד כתובת האתר והקישור המלא' => 3, 'בדיקת IP כנגד ה-IP של האתר' => 4, 'בדיקת IP וכתובת האתר' => 5, 'בדיקת IP והקישור המלא' => 6, 'בדיקת IP, הקישור המלא, וכתובת האתר' => 7),
     5 => array('טקסט פשוט' => 'plaintext', 'פורמט HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
-    7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
-    8 => array('Right' => 'right', 'Left' => 'left'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    10 => array('None' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
+    7 => array('בעמוד האחרון' => 'last', 'בעמוד הראשון' => 'first', 'בכל עמוד' => 'all'),
+    8 => array('ימין' => 'right', 'שמאל' => 'left'),
+    9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת עמוד הניהול' => 'admin'),
+    10 => array('כלום' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
     11 => array('שטוחות' => 'flat', 'בצורת עץ' => 'nested', 'מושחלות' => 'threaded', 'ללא תגובות' => 'nocomment'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    13 => array('Skip' => 0, 'Allow, with speedlimit' => 1, 'Allow, no speedlimit' => 2),
-    14 => array('Sunday' => 'Sun', 'Monday' => 'Mon'),
-    15 => array('By Number' => 'sortnum', 'Alphabetically' => 'alpha'),
-    16 => array('No Login required' => 0, 'Advanced Search only' => 1, 'Simple + Advanced Search' => 2),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
+    13 => array('דילוג' => 0, 'איפשור, עם הגבלת זמן' => 1, 'איפשור, בלי הגבלת זמן' => 2),
+    14 => array('יום ראשון' => 'Sun', 'יום שני' => 'Mon'),
+    15 => array('לפי מספר' => 'sortnum', 'לפי סדר אלף-בית' => 'alpha'),
+    16 => array('אין צורך בהזדהות במערכת' => 0, 'למנוע החיפוש המתקדם בלבד' => 1, 'לחיפוש פשוט + מתקדם' => 2),
+    17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1),
     18 => array('ניטרול' => 0, 'הפעלה (התאמה מדויקת)' => 1, 'הפעלה (לפי התחלת המילה)' => 2, 'הפעלה (לפי חלקי מילה)' => 3),
-    19 => array('Google' => 'google', 'Table' => 'table'),
-    20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    19 => array('גוגל' => 'google', 'טבלה' => 'table'),
+    20 => array('ביטוי מדויק' => 'phrase', 'כל המילים שהוכנסו' => 'all', 'לפחות אחת מהמילים שהוכנסו' => 'any'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
+    23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

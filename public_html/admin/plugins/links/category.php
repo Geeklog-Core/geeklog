@@ -210,8 +210,11 @@ function links_edit_category($cid, $pid)
         return COM_showMessage(6, 'links');
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock($LANG_LINKS_ADMIN[56], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $T = new Template($_CONF['path'] . 'plugins/links/templates/admin');
     $T->set_file(array('page' => 'categoryeditor.thtml'));
@@ -274,6 +277,16 @@ function links_edit_category($cid, $pid)
     $T->set_var('topic_selection', '<select name="tid">' . $alltopics
                                    . $topics . '</select>');
 
+    if (empty($cid)) {
+        $num_links = $LANG_ADMIN['na'];
+    } else {
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE cid='{$cid}'" . COM_getPermSQL('AND'));
+        $N = DB_fetchArray($nresult);
+        $num_links = COM_numberFormat($N['count']);
+    }
+    $T->set_var('lang_num_links', $LANG_LINKS_ADMIN[61]);
+    $T->set_var('num_links', $num_links);
+
     // user access info
     $T->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $T->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -289,7 +302,7 @@ function links_edit_category($cid, $pid)
     $T->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $T->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
     $T->set_var('gltoken_name', CSRF_TOKEN);
-    $T->set_var('gltoken', SEC_createToken());
+    $T->set_var('gltoken', $token);
 
     $T->parse('output', 'page');
     $retval .= $T->finish($T->get_var('output'));

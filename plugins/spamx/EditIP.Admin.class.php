@@ -14,7 +14,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'EditIP.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'editip.admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

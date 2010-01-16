@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
 <head>
   <title>Geeklog Documentation - Theme How-To</title>
   <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
@@ -195,7 +195,136 @@ featured and archived stories.</li>
 </ol>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.6.0</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
+
+<ul>
+<li>A new option in My Account allows users to enable/disable the Advanced
+    Editor. Requires a new template variable <tt>{advanced_editor_option}</tt>
+    in <tt>preferences/displayblock.thtml</tt> and a new template file
+    <tt>preferences/editor.thtml</tt> for the actual option (hidden unless
+    Advanced Editor is enabled globally in the Configuration).</li>
+<li>The Group Editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
+    new options for default groups (<tt>chk_grpdefault</tt> and
+    <tt>chk_applydefault</tt> checkboxes + language variables).</li>
+<li>The <tt>fieldhelp</tt> class was changed to include left and right padding
+    so that the hard-coded padding could be removed from the group editor
+    template, <tt>admin/group/groupeditor.thtml</tt>.</li>
+<li>For consistency: The template variables for the headline texts in
+    <tt>admin/common/edit_permissions.thtml</tt> are now also available with a
+    <code>lang_</code> prefix (<code>{lang_owner}</code>, etc).</li>
+<li>New variable <code>{hide_meta}</code> in the Story editor templates,
+    <tt>admin/topic/storyeditor.thtml</tt> and
+    <tt>admin/topic/storyeditor_advanced.thtml</tt>, to hide the text entry
+    fields for the meta description and meta keywords when meta tag support is
+    disabled.</li>
+<li>New variable <code>{hide_meta}</code> in the Topic editor template,
+    <tt>admin/topic/topiceditor.thtml</tt>, to hide the text entry fields for
+    the meta description and meta keywords when meta tag support is
+    disabled.</li>
+<li>All <tt>onclick</tt> events in the Configuration templates should return
+    <code>false</code>. In <tt>admin/config/menu_element.thtml</tt>, the return
+    statement was missing for the <code>open_group</code> and
+    <code>open_subgroup</code> calls.
+    In <tt>admin/config/config_element.thtml</tt>, it was missing for the
+    <tt>unset-param</tt> case (i.e. the call to <code>restore</code>).</li>
+<li>Added a new textarea section to <tt>admin/config/config_element.thtml</tt>
+    to allow for configuration options to use a multi-line text entry
+    field.</li>
+<li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
+    <code>select-element</code>, <code>{hide_row}</code> was added for the
+    table row and a <code>{delete}</code> option was added after the
+    <code>select</code>. These changes are required to allow dynamic addition /
+    removal of dropdowns, e.g. for <code>$_CONF['menu_elements']</code>.</li>
+</ul>
+
+
+<h2><a name="changes161">Theme changes in Geeklog 1.6.1</a></h2>
+
+<ul>
+<li>Added rules for the <tt>token-expirynotice</tt> and
+    <tt>token-expirytime</tt> ids (<em>not</em> classes!) to the stylesheet.
+    These are used to format the new notice in the editors, informing the user
+    when the security token will expire.</li>
+<li>Added an icon, <tt>images/update.png</tt>, to be displayed in the admin's
+    list of plugins when a plugin needs to be updated. The icon should have the
+    same size as the "edit" icon (16x16 pixel in the Professional theme).</li>
+<li>The Topic Editor now contains a line displaying the number of stories in
+    the current topic. New variables in <tt>admin/topic/topiceditor.thtml</tt>:
+    <code>{lang_num_stories}</code>, <code>{num_stories}</code></li>
+<li>Added a link back to the story to the "Mail Story to a Friend" form,
+    <tt>profiles/contactauthorform.thtml</tt>. Available variables:
+    <tt>{lang_title}</tt>, <tt>{story_title}</tt>, <tt>{story_url}</tt>,
+    <tt>{story_link}</tt>.</li>
+<li>Added a "send copy to myself" option to
+    <tt>profiles/contactauthorform.thtml</tt></li>
+<li>Added textarea fields for meta description and meta keywords to the Story
+    Editor (<tt>admin/story/storyeditor.thtml</tt>,
+    <tt>admin/story/storyeditor_advanced.thtml</tt>).</li>
+<li>Added textarea fields for meta description and meta keywords to the Topic
+    Editor (<tt>admin/topic/topiceditor.thtml</tt>).</li>
+<li>Added a <code>{remoteservice}</code> variable in
+    <tt>admin/user/edituser.thtml</tt> to optionally display the name of the
+    service a Remote User was using to log in.</li>
+<li>Added a <code>{title_checked}</code> variable to <tt>search/searchform.thtml</tt>, so that the "Refine search" option can keep the status of the "Titles
+    Only" checkbox.</li>
+<li>Moved hard-coded green color for the byline of search results in "Google"
+    style to the stylesheet: New class <code>searchresult-byline</code>.</li>
+</ul>
+
+<h3>Cosmetic changes</h3>
+
+<p>These changes are mostly cosmetic and won't affect the functionality of a
+theme if not applied:</p>
+
+<ul>
+<li>Cosmetics: Made the look and layout of the "Send mail to user"
+    (<tt>profiles/contactuserform.thtml</tt>), "Mail Story to a Friend"
+    (<tt>profiles/contactauthorform.thtml</tt>), and "Mail Users"
+    (<tt>admin/mail/mailform.thtml</tt>) dialogs more consistent (alignment,
+    size of input fields).</li>
+<li>Cosmetics: Fixed the position of the story preview when using the
+    advanced editor (was slightly shifted to the right, <a
+    href="http://project.geeklog.net/tracking/view.php?id=963">bug #0000963</a>). Changes to the <code>&lt;div id="preview"&gt;</code> in
+    <tt>admin/story/storyeditor_advanced.thtml</tt>.</li>
+<li>Cosmetics: Removed <code>font-size:larger;</code> for the header fields of
+    the admin lists from the stylesheet, but added some top/bottom padding
+    (<a href="http://project.geeklog.net/tracking/view.php?id=956">bug #0000956</a>).</li>
+<li>Cosmetics: Removed a <code>width="180"</code> from the Block editor template
+    (<tt>admin/block/blockeditor.thtml</tt>) that pushed the first column too
+    far to the right.</li>
+<li>Cosmetics: Made the permission checkboxes look more like an Admin list,
+    <tt>admin/common/edit_permissions.thtml</tt>. Introduced new CSS class
+    <tt>admin-list-smalltable</tt>, which is almost identical to
+    <tt>admin-list-table</tt> but without the <code>width:100%;</code></li>
+</ul>
+
+<h3>Changes to plugin templates</h3>
+
+<p>Note that plugin template files are kept in a directory
+<tt>plugins/<i>pluginnname</i>/templates</tt> and not in the <tt>layout</tt>
+directory.</p>
+
+<ul>
+<li>Links: Removed a <code>width="150"</code> from the Category editor template
+    (<tt>admin/categoryeditor.thtml</tt>) that pushed the first column too far
+    to the right.</li>
+<li>Static Pages: Added new input fields for a meta description and meta
+    keywords to the Static Pages editor.</li>
+<li>Static Pages: In the Static Pages editor, moved the Hits display below
+    the Last Updated entry (<tt>admin/editor.thtml</tt>,
+    <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Static Pages: Added textarea fileds for meta description and meta keywords
+    in the Static Pages editor (<tt>admin/editor.thtml</tt>,
+    <tt>admin/editor_advanced.thtml</tt>).</li>
+<li>Polls: Added new input fields for a meta description and meta keywords to
+    the Polls editor.</li>
+<li>Polls: Added new CSS classes <tt>poll-autotag-message</tt>,
+    <tt>poll-autotag</tt>, <tt>poll-autotag-left</tt>, used when embedding polls
+    via the new autotags.</li>
+</ul>
+
+
+<h2><a name="changes160">Theme changes in Geeklog 1.6.0</a></h2>
 
 <ul>
 <li>Themes can now opt to use a <tt>{doctype}</tt> variable in their
@@ -209,6 +338,13 @@ featured and archived stories.</li>
     (to be used in the <tt>&lt;html&gt;</tt> element).</li>
 <li>Added a space between a story's intro text and body text when using the
     <tt>{story_text_no_br}</tt> variable.</li>
+<li>The story templates in the Professional theme now use
+    <tt>{story_text_no_br}</tt> instead of <tt>{story_introtext}</tt>, i.e.
+    there are no <tt>&lt;br&gt;</tt> tags between a story's intro text and
+    body text any more. This allows for greater flexibility in formatting a
+    story (e.g. when using the intro text for teasers) but may result in older
+    stories being displayed differently now (no visible separation between intro
+    text and body text).</li>
 <li>Bugfix: The variables <tt>{contributedby_user}</tt> and
     <tt>{contributedby_fullname}</tt> were always empty.</li>
 <li>The two variables <tt>{start_contributedby_anchortag}</tt> and
@@ -243,6 +379,9 @@ featured and archived stories.</li>
     file: The header (including the icon, links, and the instructions) is now
     generated by Geeklog. The <tt>&lt;table&gt;</tt> that contained these
     elements has been removed from the template file.</li>
+<li>Configuration: <tt>config_element.thtml</tt> was missing a closing
+    <code>&lt;/option&gt;</code> tag; the <code>&lt;col&gt;</code> tags in
+    <tt>configuration.thtml</tt> were not XHTML compliant.</li>
 </ul>
 
 <h3>Search</h3>
@@ -255,9 +394,10 @@ with Geeklog.</p>
 
 <h3>Comments</h3>
 
-<p>The <tt>commentform.thtml</tt> and <tt>commentform.thtml</tt> template files
-were changed to include a security token and a <code>{notifcation}</code>
-variable (for the new option to be notified of followup comments).</p>
+<p>The <tt>commentform.thtml</tt> and <tt>commentform_advanced.thtml</tt>
+template files were changed to include a security token and a
+<code>{notification}</code> variable (for the new option to be notified of
+followup comments).</p>
 
 <h3>Plugins</h3>
 
@@ -280,7 +420,7 @@ everywhere:</p>
 <li><tt>{lang_permissions}</tt> (headline)</li>
 <li><tt>{lang_perm_key}</tt> (legend: R = read, ...)</li>
 <li><tt>{permissions_editor}</tt> (the actual checkboxes)</li>
-<li><tt>{lang_permissions_msg}</tt> ("Note: members is all logged in member ...)</li>
+<li><tt>{lang_permissions_msg}</tt> (Note: members is all logged in member ...)</li>
 </ul>
 <p>Template files using the alternative names will continue to work, but new
 files should use the above names from now on.</p>

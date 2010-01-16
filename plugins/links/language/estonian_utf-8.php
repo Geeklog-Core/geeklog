@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# estonian_utf-8.php
+# estonian.php
 # This is the Estonian language file for the Geeklog Link plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -169,7 +169,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'Veel kontrollimata',
     58 => 'Kontrolli nüüd',
     59 => '<p>Kõigi nähtaval olevate linkide kontrollimiseks, klõpsa palun allpool oleval lingil "Kontrolli nüüd". Pane tähele, et kontrollimine võib sõltuvalt nähtaval olevate linkide arvust võtta veidi aega.</p>',
-    60 => 'Kasutaja %s proovis õigustamatult  muuta kategooriat: %s.'
+    60 => 'Kasutaja %s proov<is õigustamatult  muuta kategooriat: %s.',
+    61 => 'Linke kategoorias'
 );
 
 
@@ -236,10 +237,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'Kustuta lingid, omanikuks?',
     'aftersave' => 'Pärast linkide salvestamist',
     'show_category_descriptions' => 'Näita kategooriate kirjeldust?',
-    'new_window' => 'Open external links in new window?',
+    'new_window' => 'Ava välised lingid uues aknas?',
     'root' => 'Peakategooria ID',
     'default_permissions' => 'Linkide vaikimisi õigused',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'Kategooria vaikimisi õigused'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -250,7 +251,7 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Avalike linkide loetelu häälestused',
     'fs_admin' => 'Linkide Admin häälestused',
     'fs_permissions' => 'Vaikimisi õigused',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_cpermissions' => 'Kategooria õigused'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']

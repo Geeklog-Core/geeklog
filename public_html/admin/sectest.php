@@ -118,8 +118,12 @@ function urlToCheck()
         $p = explode('/', $u2);
         if (count($p) > 1) {
             $cut = strlen($p[count($p) - 1]) + 1;
-            $url = substr($u, 0, -$cut) . '/';
+            $url = substr($u, 0, -$cut);
         }
+    }
+
+    if (!empty($url) && (substr($url, -1) == '/')) {
+        $url = substr($url, 0, -1);
     }
 
     return $url;
@@ -192,7 +196,7 @@ function doTest($baseurl, $urltocheck, $what)
     $retval = '';
 
     $retval .= '<li>';
-    $retcode = doHeadRequest($baseurl . $urltocheck, $errmsg);
+    $retcode = doHeadRequest($baseurl  . '/' . $urltocheck, $errmsg);
     if ($retcode == 777) {
         $retval .= $errmsg;
         $failed_tests++;
@@ -304,8 +308,9 @@ if (!empty($url)) {
             $instUrl = $_CONF['site_url'] . '/docs/english/install.html';
         }
         $instUrl .= '#public_html';
-        $display .= sprintf($LANG_SECTEST['public_html'],
-                      COM_createLink($LANG_SECTEST['installation'], $instUrl));
+        $display .= '<li>' . sprintf($LANG_SECTEST['public_html'],
+                      COM_createLink($LANG_SECTEST['installation'], $instUrl))
+                 . '</li>' . LB;
         $failed_tests++;
     }
 
@@ -335,7 +340,8 @@ if (!empty($url)) {
                                'backups ' . $LANG_SECTEST['directory']);
             @unlink($_CONF['backup_path'] . 'test.txt');
         } else {
-            $display .= '<li>Failed to create a temporary file in your backups directory. Check your directory permissions!</li>';
+            $display .= '<li>' . sprintf($LANG_SECTEST['failed_tmp'], 'backups')
+                     . '</li>';
         }
     }
 
@@ -343,7 +349,8 @@ if (!empty($url)) {
         $display .= doTest($url, 'data/test.txt', 'data directory');
         @unlink($_CONF['path_data'] . 'test.txt');
     } else {
-        $display .= '<li>' . $LANG_SECTEST['failed_bak'] . '</li>';
+        $display .= '<li>' . sprintf($LANG_SECTEST['failed_tmp'], 'data')
+                 . '</li>';
     }
 
     $display .= checkDefaultPassword();

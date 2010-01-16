@@ -8,9 +8,10 @@
 // |                                                                           |
 // | Loads the administration UI and sends input to config.class               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2008 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -63,16 +64,15 @@ function configmanager_select_theme_helper()
     $themes = array();
 
     $themeFiles = COM_getThemes(true);
-    usort($themeFiles,
-          create_function('$a,$b', 'return strcasecmp($a,$b);'));
+    usort($themeFiles, 'strcasecmp');
 
     foreach ($themeFiles as $theme) {
-        $words = explode ('_', $theme);
-        $bwords = array ();
+        $words = explode('_', $theme);
+        $bwords = array();
         foreach ($words as $th) {
-            if ((strtolower ($th{0}) == $th{0}) &&
-                (strtolower ($th{1}) == $th{1})) {
-                $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+            if ((strtolower($th[0]) == $th[0]) &&
+                (strtolower($th[1]) == $th[1])) {
+                $bwords[] = ucfirst($th);
             } else {
                 $bwords[] = $th;
             }
@@ -84,6 +84,44 @@ function configmanager_select_theme_helper()
     return $themes;
 }
 
+/**
+* Helper function: Provide timezone dropdown
+*
+* @return   array   Array of (timezone-long-name, timezone-short-name) pairs
+*
+*/
+function configmanager_select_timezone_helper()
+{
+    global $_CONF;
+
+    require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
+
+    return array_flip(TimeZoneConfig::listAvailableTimeZones());
+}
+
+/**
+* Helper function: Provide dropdown for Permanent Cookie Timeout
+*
+* @return   array   Array of (description, timeout-in-seconds) pairs
+*
+*/
+function configmanager_select_default_perm_cookie_timeout_helper()
+{
+    global $_TABLES;
+
+    $retval = array();
+
+    $result = DB_query("SELECT cc_value,cc_descr FROM {$_TABLES['cookiecodes']}");
+    $num_values = DB_numRows($result);
+
+    for ($i = 0; $i < $num_values; $i++) {
+        list($cc_value, $cc_descr) = DB_fetchArray($result);
+        $retval[$cc_descr] = $cc_value;
+    }
+
+    return $retval;
+}
+
 
 // MAIN
 $display = '';
@@ -91,9 +129,8 @@ $display = '';
 $conf_group = array_key_exists('conf_group', $_POST)
             ? $_POST['conf_group'] : 'Core';
 $config =& config::get_instance();
-$tokenstate = SEC_checkToken();
 
-if (array_key_exists('set_action', $_POST) && $tokenstate){
+if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
     if (SEC_inGroup('Root')) {
         if ($_POST['set_action'] == 'restore') {
             $config->restore_param($_POST['name'], $conf_group);
@@ -101,9 +138,9 @@ if (array_key_exists('set_action', $_POST) && $tokenstate){
             $config->unset_param($_POST['name'], $conf_group);
         }
     }
-}
-
-if (array_key_exists('form_submit', $_POST) && $tokenstate) {
+    $display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
+                                            ?  $_POST['subgroup'] : null);
+} elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
         $result = $config->updateConfig($_POST, $conf_group);

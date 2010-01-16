@@ -5,9 +5,9 @@
 #
 # This is the Hebrew language file for the Geeklog Links Plugin
 #
-# Copyright (C) 2008
+# Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.5#1
+# Version 1.6.1#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -167,7 +167,8 @@ $LANG_LINKS_ADMIN = array(
     57 => 'עדיין לא וודא',
     58 => 'ודאו עכשיו',
     59 => '<p>כדי לוודא את כל הקישורים המוצגים, אנא ליחצו על הקישור "ודאו עכשיו" שלהלן. אנא שימו לב שזה עלול לקחת קצת זמן בהתאם לכמות הקישורים המוצגים.</p>',
-    60 => 'המשתמש %s ניסה לערוך ללא רשות את הקטגוריה %s.'
+    60 => 'המשתמש %s ניסה לערוך ללא רשות את הקטגוריה %s.',
+    61 => 'קישורים בקטגוריה'
 );
 
 
@@ -234,10 +235,10 @@ $LANG_confignames['links'] = array(
     'delete_links' => 'מחיקת הקישורים עם שולחיהם?',
     'aftersave' => 'אחרי שמירת הקישור',
     'show_category_descriptions' => 'הצגת תיאור הקטגוריה?',
-    'new_window' => 'Open external links in new window?',
+    'new_window' => 'האם לפתוח קישורים חיצוניים בחלון חדש?',
     'root' => 'קוד הזיהוי של הקטגוריה הראשית',
     'default_permissions' => 'הרשאות ברירת המחדל של קישורים',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'הרשאות ברירת המחדל של קטגוריות'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -247,16 +248,16 @@ $LANG_configsubgroups['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'הגדרות רשימת קישורים פומביים',
     'fs_admin' => 'הגדרות ניהול קישורים',
-    'fs_permissions' => 'הרשאות ברירת המחדל',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_permissions' => 'הרשאות קישורים',
+    'fs_cpermissions' => 'הרשאות קטגוריות'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
+    9 => array('הפנייה לעמוד המקושר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת הרשימה הציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );
 
 ?>

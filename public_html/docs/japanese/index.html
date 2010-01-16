@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title>Geeklogドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<p><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></p>
+<div class="menu">Geeklogドキュメント</div>
+
+<h1>謝辞</h1>
+
+<p>まず最初に、Geeklogをダウンロードしていただき、ありがとうございます。私たちは時間を費やして最高のWeblog（ブログ）ソフトウェア作成に取り組んできました。きっと使いやすく、パワフルなものに仕上がっていると思います。</p>
+
+<p>Geeklogをさらに使いやすくするために、以下のドキュメントを作成しました。インストール方法などのよくあるドキュメント以外に、開発者向けの完全なAPIドキュメントへのリンクも用意しましたので、独自のテーマやプラグインを作成してGeeklogをさらに使いやすいものにできるでしょう。</p>
+
+<ul>
+  <li><a href="#features">Geeklogの機能</a></li>
+  <li><a href="#introduction">はじめに</a></li>
+  <li><a href="install.html">Geeklogのインストール方法</a>（アップグレードの方法を含む）</li>
+  <li><a href="config.html">設定方法（コンフィギュレーション）</a></li>
+  <li>インストール済みプラグイン
+    <ul>
+      <li><a href="calendar.html">カレンダプラグイン</a>
+        - サイト用カレンダ</li>
+      <li><a href="links.html">リンクプラグイン</a>
+        - リンク集</li>
+      <li><a href="polls.html">アンケート(Polls)プラグイン</a>
+        - アンケート収集</li>
+      <li><a href="spamx.html" rel="nofollow">Spam-Xプラグイン</a>
+        - コメントスパム対策</li>
+      <li><a href="staticpages.html">静的ページ(Static Pages)プラグイン</a>
+        - 記事以外の静的・動的ページ作成</li>
+      <li><a href="http://wiki.geeklog.net/index.php/XMLSitemap_Plugin">XMLサイトマッププラグイン</a>
+        - 検索エンジンのための<tt>sitemap.xml</tt>ファイルを生成</li>
+    </ul></li>
+  <li><a href="trackback.html">トラックバック、ピングバック、更新ピング</a></li>
+  <li>GeeklogのAPI
+    <ul>
+      <li><a href="http://wiki.geeklog.net/index.php/Plugin_Development">プラグイン開発</a></li>
+      <li><a href="theme.html">テーマ開発</a></li>
+      <!-- <li>Writing Custom Functions</li> -->
+    </ul></li>
+  <li><a href="support.html">サポート</a></li>
+  <li><a href="changes.html">変更履歴</a></li>
+  <li><a href="history.html">history(historyをHTML形式に編集したものです)</a></li>
+</ul>
+
+<p>Geeklogを使用する際のより詳細な情報は、Geeklogコミュニティにより維持されていて、絶えず発展している<a href="http://wiki.geeklog.net/">Geeklog Documentation Wiki</a>で見つかるでしょう。</p>
+
+<h2><a name="features">Geeklogの機能</a></h2>
+
+<p>Geeklogは、PHPとMySQL（バージョン1.4.1からはMicrosoft SQL Serverもサポート）をベースとした、ダイナミックなWebコンテンツを管理するためのアプリケーションです。インストール直後から、ブログエンジン、言い換えれば、コメント・トラックバック・多彩なRSSフォーマット・スパム防御などのCMS(Contents Management System: コンテンツ管理システム)に必須の機能をすべてサポートしたCMSとして機能します。</p>
+
+<h3>ブログ/CMS機能</h3>
+
+<ul>
+<li>複数の話題で記事の作成・公開予約・投稿・編集ができる</li>
+<li>公開の準備が整うまでは記事を書きかけ（ドラフト）として保存できる</li>
+<li>記事で使用するHTMLタグの管理(HTMLタグのホワイトリスト使用)</li>
+<li>ふさわしくない語句の規制(不快な語句のフィルタリング)</li>
+<li>記事の中に画像や他のコンテンツを埋め込むことができる</li>
+<li>複数の作者が記事を投稿できる</li>
+<li>ユーザからの投稿をサポート</li>
+<li>コメント、トラックバック、ピングバックをサポート</li>
+<li>よく使われるRSSフォーマット(RSS/RDF/Atomなど)のインポート・エクスポートをサポート</li>
+<li>スパム検出・削除</li>
+<li>個人用カレンダをサポートしたしっかりしたカレンダ機能</li>
+<li>OpenIDや他のリモート認証方法をサポート</li>
+<li>オープンソースのプラグインによる機能拡張</li>
+</ul>
+
+<h3>管理者用機能</h3>
+
+<ul>
+<li>簡単に自動でインストールできるインストーラ</li>
+<li>国際化とローカル化を完全にサポート</li>
+<li>使いやすい管理者用インターフェース</li>
+<li>Geeklogの全機能を完全に設定できる管理者用インターフェース</li>
+<li>カスタムのルック&amp;フィールをサポートしたユーザ指向のテーマエンジン</li>
+</ul>
+
+<h3>セキュリティ機能</h3>
+
+<ul>
+<li>ユーザアカウントとアクセス制御</li>
+<li>Geeklogの全オブジェクトを制御する*nixスタイルのセキュリティモデル（プラグインでも使用可）</li>
+<li>記事・話題ごとにアクセス制御できる</li>
+<li>パスワードはすべて暗号化されて保存（生のパスワードを保存しない）</li>
+<li>管理者のアクセスはすべてログに記録される</li>
+<li>エラーはすべてログに記録される</li>
+<li>フォーム送信とSQL呼び出しの際に発生するエラーはすべてログに記録される</li>
+</ul>
+
+<h3>開発者向けの機能</h3>
+
+<ul>
+<li>開発者向けのAPIでプラグイン開発をサポート</li>
+<li>完全に設定可能なブロックシステム。ブロックの中でのPHP使用もサポート</li>
+<li>整然としたコードベース。PHPのオブジェクト指向機能を使用</li>
+<li>デフォルト(MySQLとMSSQL)以外のデータベースへの移植を可能にする軽量のデータベース抽象化レイヤ</li>
+</ul>
+
+<h2><a name="introduction">はじめに</a></h2>
+
+<p>GeeklogはもともとSecurity Geeks WebサイトのためにJason Whittenburgによって作成されました。2001年初頭に、Jasonは他のことに時間を使おうと決心し、プロジェクトを<a href="http://www.iowaoutdoors.org/">Iowa Outdoors</a>運営のためにGeeklogを使っていたTony Bibbsに引き渡しました。現在、Tonyは<a href="http://www.aptitudecms.org/">AptitudeCMS</a>（geeklog 2に相当）という名の次世代Geeklogの開発に注力しており、Dirk Haunが1.x系列の管理を行っています。</p>
+<p>Geeklogは正真正銘のオープンソースソフトウェアであり、<a href="../license" title="GNU General Public License">GNU GPLv2</a>ライセンスでリリースされています。Geeklogの管理は容易なはずですが、それでもシステムのいくつかのコンポーネントにアクセスする必要があるでしょう。</p>
+
+<p>このドキュメントはまだ発展の途上にあるため、意図せずして省略された箇所や、説明が過剰なし不足している箇所があるかもしれません。<a href="http://httpd.apache.org/">Apache</a> (ないしIIS)と(<a href="http://www.mysql.com/">MySQL</a>や<a href="http://www.microsoft.com/sql/">MS SQL</a>などの)SQLデータベース、<a href="http://www.php.net/">PHP</a>をある程度使った経験があることを前提としています。</p>
+
+<div class="footer">
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
+</div>
+
+</body>
+</html>

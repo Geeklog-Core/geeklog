@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.2                                                 |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -28,13 +28,16 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: mysql_install.php,v 1.3 2007/08/09 18:29:34 dhaun Exp $
+
+/**
+* MySQL install
+*
+* @package StaticPages
+*/
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
-  sp_uid mediumint(8) NOT NULL default '1',
   sp_title varchar(128) NOT NULL default '',
   sp_content text NOT NULL,
   sp_hits mediumint(8) unsigned NOT NULL default '0',
@@ -43,6 +46,9 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_onmenu tinyint(1) unsigned NOT NULL default '0',
   sp_label varchar(64) default NULL,
   commentcode tinyint(4) NOT NULL default '0',
+  meta_description TEXT NULL,
+  meta_keywords TEXT NULL,  
+  draft_flag tinyint(1) unsigned default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   group_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
@@ -58,13 +64,12 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_inblock tinyint(1) unsigned default '1',
   postmode varchar(16) NOT NULL default 'html',
   PRIMARY KEY  (sp_id),
-  KEY staticpage_sp_uid (sp_uid),
   KEY staticpage_sp_date (sp_date),
   KEY staticpage_sp_onmenu (sp_onmenu),
   KEY staticpage_sp_centerblock (sp_centerblock),
   KEY staticpage_sp_tid (sp_tid),
   KEY staticpage_sp_where (sp_where)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 ?>

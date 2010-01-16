@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004-2009 by the following authors:                         |
+// | Copyright (C) 2004-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Willett       - tomw AT pigstye DOT net                      |
 // +---------------------------------------------------------------------------+
@@ -35,7 +35,7 @@ CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '', 
   INDEX spamx_name(name)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('spamx.counter', '0')";

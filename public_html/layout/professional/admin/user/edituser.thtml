@@ -16,7 +16,7 @@
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_username}:</td>
                                         <td>
-                                            <input type="text" size="16" maxlength="16" name="username" value="{username}"{xhtml}><br{xhtml}>
+                                            <input type="text" size="16" maxlength="16" name="username" value="{username}"{xhtml}> {remoteservice}<br{xhtml}>
                                             {user_photo}<br{xhtml}>
                                             {lang_delete_photo} {delete_photo_option}
                                         </td>

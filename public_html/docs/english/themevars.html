@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
 <head>
   <title>Geeklog Documentation - Variables in Themes</title>
   <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
@@ -216,6 +216,15 @@ file (which is used to display a story on its own page).</p>
         and <tt>story_text_no_br</tt> is that <tt>story_introtext</tt> inserts
         two HTML <tt>&lt;br&gt;</tt> tags between the intro and the body text
         whereas <tt>story_text_no_br</tt> does not do that (hence the name).</td></tr>
+<tr><td><code>story_introtext_only</code></td>
+    <td>Welcome and let me be the first to congratulate you on installing Geeklog ...</td>
+    <td>As the name implies, this variable <em>always</em> contains
+        <em>only</em> the story's intro text portion.</td>
+<tr><td><code>story_bodytext_only</code></td>
+    <td><i>(...)</i></td>
+    <td>This variable is only set when displaying the entire story. It contains
+        <em>only</em> the body text portion of the story, if
+        available.</td></tr>
 <tr><td><code>lang_todays_featured_article</code></td>
     <td>Today's Featured Article</td>
     <td>The words "Today's Featured Article" in the user's preferred language.
@@ -258,12 +267,18 @@ story is displayed on the index page <em>and</em> the body text of the story is
     <td><code>&lt;/a&gt;</code></td>
     <td>Closing tag for a link to the story.</td></tr>
 <tr><td><code>read_more_class</code></td>
-<tr><td><code>email_icon</code></td>
     <td>class="story-read-more"</td>
     <td>This variable is empty when the body text is empty and contains the
         class attribute when the body text is not empty. Use the
         <code>story-read-more</code> class to change the layout of the "read
         more" link.</td></tr>
+<tr><td><code>email_icon</code></td>
+    <td>(icon)</td>
+    <td>The email icon, linking to the form to send the article to a
+        friend.</td></tr>
+<tr><td><code>email_story_url</code></td>
+    <td><tt>http://.../profiles.php?sid=welcome</tt></td>
+    <td>The URL of the form to send the article to a friend.</td></tr>
 <tr><td><code>print_icon</code></td>
     <td>(icon)</td>
     <td>The printer icon, linking to a "printer friendly" version of the story.</td></tr>
@@ -295,6 +310,9 @@ enabled and when comments have been made to the story already:</p>
 <tr><td><code>comments_with_count</code></td>
     <td>2</td>
     <td>The number of comments to the story (will always be 1 or greater). <br>This string becomes a link as soon as there are comments available, pointing to <code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code></td></tr>
+<tr><td><code>comments_with_count</code></td>
+    <td>2</td>
+    <td>The number of comments to story only (may be 0).</td></tr>
 <tr><td><code>lang_comments</code></td>
     <td>comments</td>
     <td>The word "comments" in the user's preferred language.</td></tr>
@@ -343,7 +361,15 @@ when you allow the name of the story's author to be displayed:</p>
     <td>Link to the story author's profile (empty for anonymous authors).</td></tr>
 <tr><td><code>contributedby_photo</code></td>
     <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
-    <td>User photo of the story author, if provided (always empty for anonymous authors).</td></tr>
+    <td>User photo of the story author, if provided (and user photos are <a
+        href="config.html#desc_allow_user_photo">enabled</a>). For anonymous
+        users, this will be an empty string, unless use of <a
+        href="config.html#desc_use_gravatar">Gravatars</a> is enabled or a <a
+        href="config.html#desc_default_photo">default photo</a> is
+        configured.</td></tr>
+<tr><td><code>author_photo</code></td>
+    <td><i>(see above)</i></td>
+    <td>Same as <tt>{contributedby_photo}</tt></td></tr>
 <tr><td><code>camera_icon</code></td>
     <td>small camera icon and link to the author's user profile</td>
     <td>Displays the camera icon (the same as in the Who's Online block) and
@@ -402,6 +428,10 @@ permissions to edit a story:</p>
 <tr><td><code>edit_icon</code></td>
     <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
     <td>An icon linking to the admin's story editor to edit the story.</td></tr>
+<tr><td><code>edit_image</code></td>
+    <td><code>&lt;img src=".../images/edit.gif"&gt;</code></td>
+    <td>Only the <code>img</code> tag for the edit icon, without the
+        link.</td></tr>
 <tr><td><code>edit_url</code></td>
     <td><tt>http://www.example.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
     <td>URL to open the story in the admin's story editor</td></tr>

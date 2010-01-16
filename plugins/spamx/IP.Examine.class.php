@@ -4,7 +4,7 @@
 * File: IP.Examine.class.php
 * This is the IP BlackList Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2007 by the following authors:
+* Copyright (C) 2004-2009 by the following authors:
 * Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
@@ -13,7 +13,7 @@
 * @subpackage Modules
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'IP.Examine.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'ip.examine.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 
@@ -23,23 +23,24 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'IP.Examine.class.php') !== false) 
 require_once $_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php';
 
 /**
-* Examines Comment according to Personal BLacklist
+* Examines Comment according to Personal IP Blacklist
 *
-* @author Tom Willett tomw AT pigstye DOT net
+* @author Tom Willett, tomw AT pigstye DOT net
 *
 * @package Spam-X
 *
 */
 class IP extends BaseCommand {
     /**
-     * No Constructor Use BaseCommand constructor
+     * No Constructor - use BaseCommand constructor
      */
 
     /**
      * The execute method examines the IP address a comment is coming from,
      * comparing it against a blacklist of banned IP addresses.
      *
-     * @param $comment string                 Comment text to examine
+     * @param   string  $comment    Comment text to examine
+     * @return  int                 0: no spam, else: spam detected
      */
     function execute($comment)
     {
@@ -47,16 +48,17 @@ class IP extends BaseCommand {
     }
 
     /**
-     * The re-execute method is used to massdelete spam, essentially
-     * it does the same as execute, but is called with recorded comments
+     * The re-execute method is used to mass-delete spam, essentially.
+     * It does the same as execute, but is called with recorded comments
      * in order to match them against new rules that were not in effect
      * at the time of posting. To do that, it uses the IP address logged
      * when the comment was saved.
      *
-     * @param $comment string            Comment text to examine
-     * @param $date       unixtimestamp  Date/time the comment was posted
-     * @param $ip         string         IPAddress comment posted from
-     * @param $type       string         Type of comment (article etc)
+     * @param   string  $comment    Comment text to examine
+     * @param   int     $date       Date/time the comment was posted
+     * @param   string  $ip         IPAddress comment posted from
+     * @param   string  $type       Type of comment ('article', etc)
+     * @return  int                 0: no spam, else: spam detected
      */
     function reexecute($comment, $date, $ip, $type)
     {
@@ -69,13 +71,19 @@ class IP extends BaseCommand {
      * @param   string  $iptocheck  IP address to check
      * @param   string  $CIDR       IP address range to check against
      * @return  boolean             true if IP falls into the CIDR, else false
+     * @access  private
      *
      * Original author: Ian B, taken from
-     * http://www.php.net/manual/en/function.ip2long.php#71939
+     * @link http://www.php.net/manual/en/function.ip2long.php#71939
      *
      */
-    function _matchCIDR ($iptocheck, $CIDR)
+    function _matchCIDR($iptocheck, $CIDR)
     {
+        // not for IPv6 addresses
+        if (strpos($iptocheck, ':') !== false) {
+            return false;
+        }
+
         // get the base and the bits from the ban in the database
         list($base, $bits) = explode('/', $CIDR);
 
@@ -122,19 +130,25 @@ class IP extends BaseCommand {
      * @param   string  $ip     IP address to check
      * @param   string  $range  IP address range to check against
      * @return  boolean         true if IP falls into the IP range, else false
+     * @access  private
      *
      * Original authors: dh06 and Stephane, taken from
-     * http://www.php.net/manual/en/function.ip2long.php#70707
+     * @link http://www.php.net/manual/en/function.ip2long.php#70707
      *
      */
-    function _matchRange ($ip, $range)
+    function _matchRange($ip, $range)
     {
-        $d = strpos ($range, '-');
-        if ($d !== false) {
-           $from = ip2long (trim (substr ($range, 0, $d)));
-           $to = ip2long (trim (substr ($range, $d + 1)));
+        // not for IPv6 addresses
+        if (strpos($ip, ':') !== false) {
+            return false;
+        }
 
-           $ip = ip2long ($ip);
+        $d = strpos($range, '-');
+        if ($d !== false) {
+           $from = ip2long(trim(substr($range, 0, $d)));
+           $to = ip2long(trim(substr($range, $d + 1)));
+
+           $ip = ip2long($ip);
            return (($ip >= $from) && ($ip <= $to));
         }
 
@@ -145,13 +159,15 @@ class IP extends BaseCommand {
      * Private internal method, this actually processes a given ip
      * address against a blacklist of IP regular expressions.
      *
-     * @param $ip    string    IP address of comment poster
+     * @param   strint  $ip     IP address of comment poster
+     * @return  int             0: no spam, else: spam detected
+     * @access  private
      */
     function _process($ip)
     {
         global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        if (isset($_USER['uid']) && ($_USER['uid'] > 1)) {
             $uid = $_USER['uid'];
         } else {
             $uid = 1;
@@ -165,22 +181,22 @@ class IP extends BaseCommand {
 
         $ans = 0;
         for ($i = 0; $i < $nrows; $i++) {
-            list ($val) = DB_fetchArray ($result);
+            list($val) = DB_fetchArray($result);
 
             $matches = false;
-            if (strpos ($val, '/') !== false) {
-                $matches = $this->_matchCIDR ($ip, $val);
-            } else if (strpos ($val, '-') !== false) {
-                $matches = $this->_matchRange ($ip, $val);
+            if (strpos($val, '/') !== false) {
+                $matches = $this->_matchCIDR($ip, $val);
+            } elseif (strpos($val, '-') !== false) {
+                $matches = $this->_matchRange($ip, $val);
             } else {
-                $matches = (preg_match ("#$val#i", $ip) == 0 ? false : true);
+                $matches = (preg_match("#$val#i", $ip) == 0 ? false : true);
             }
 
             if ($matches) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log ($LANG_SX00['foundspam'] . $val .
-                           $LANG_SX00['foundspam2'] . $uid .
-                           $LANG_SX00['foundspam3'] . $ip);
+                SPAMX_log($LANG_SX00['foundspam'] . $val .
+                          $LANG_SX00['foundspam2'] . $uid .
+                          $LANG_SX00['foundspam3'] . $ip);
                 break;
             }
         }

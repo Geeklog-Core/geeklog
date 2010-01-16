@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2009 by the following authors:                         |
+// | Copyright (C) 2005-2010 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -28,6 +28,13 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
+
+/**
+* Admin functions related to Trackbacks, Pingbacks, and Pings: Send Trackbacks,
+* Pingbacks, and configure the list of weblog directory services to "ping"
+* after an update.
+*
+*/
 
 /**
 * Geeklog common function library
@@ -89,17 +96,20 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
             $p_excerpt = MBYTE_substr ($p_excerpt, 0, 252) . '...';
         }
 
-        $retval .= COM_startBlock ($LANG_TRB['preview']);
+        $retval .= COM_startBlock($LANG_TRB['preview']);
 
-        $preview = new Template ($_CONF['path_layout'] . 'trackback');
-        $preview->set_file (array ('comment' => 'trackbackcomment.thtml'));
-        $comment = TRB_formatComment ($url, $p_title, $p_blog, $p_excerpt);
+        $preview = new Template($_CONF['path_layout'] . 'trackback');
+        $preview->set_file(array('comment' => 'trackbackcomment.thtml'));
         $preview->set_var('xhtml', XHTML);
+        $preview->set_var('site_url', $_CONF['site_url']);
+        $preview->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $preview->set_var('layout_url', $_CONF['layout_url']);
+        $comment = TRB_formatComment($url, $p_title, $p_blog, $p_excerpt);
         $preview->set_var('formatted_comment', $comment);
-        $preview->parse ('output', 'comment');
-        $retval .= $preview->finish ($preview->get_var ('output'));
+        $preview->parse('output', 'comment');
+        $retval .= $preview->finish($preview->get_var('output'));
 
-        $retval .= COM_endBlock ();
+        $retval .= COM_endBlock();
     }
 
     if (empty ($url) && empty ($blog)) {
@@ -574,8 +584,11 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $retval .= showTrackbackMessage ('Error', $msg);
     }
 
+    $token = SEC_createToken();
+
     $retval .= COM_startBlock($LANG_TRB['edit_service'], getHelpUrl() . '#ping',
                               COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('editor' => 'serviceeditor.thtml'));
@@ -642,7 +655,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
         $template->set_var('extended_is_checked', 'checked="checked"');
     }
     $template->set_var('gltoken_name', CSRF_TOKEN);
-    $template->set_var('gltoken', SEC_createToken());
+    $template->set_var('gltoken', $token);
 
     $template->parse ('output', 'editor');
     $retval .= $template->finish ($template->get_var ('output'));

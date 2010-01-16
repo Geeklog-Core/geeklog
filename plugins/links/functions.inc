@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Links      |
 // | Plugins' PHP files.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users.sourceforge DOT net       |
@@ -194,6 +194,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
             if (empty($autotag['parm2'])) {
                 $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
                 list($siteurl, $linktext) = DB_fetchArray($result);
+                $linktext = stripslashes($linktext);
             } else {
                 $linktext = $autotag['parm2'];
                 $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
@@ -376,29 +377,21 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
     else{$sql .=" <> 1 "; }
     $sql .= COM_getPermSQL('AND') . ' ';
 
-    if (!empty($datestart) && !empty($dateend))
-    {
-        $delim = substr($datestart, 4, 1);
-        if (!empty($delim))
-        {
-            $DS = explode($delim, $datestart);
-            $DE = explode($delim, $dateend);
-            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-            $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
-        }
-    }
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
     }
 
     $search = new SearchCriteria('links', $LANG_LINKS[14]);
-    $columns = array('description', 'title' => 'title');
+
+    $columns = array('title' => 'title', 'description');
+    $sql .= $search->getDateRangeSQL('AND', 'date', $datestart, $dateend);
     list($sql,$ftsql) = $search->buildSearchSQL($keyType, $query, $columns, $sql);
+
     $search->setSQL($sql);
     $search->setFTSQL($ftsql);
     $search->setRank(3);
     $search->setAppendQuery(false);
+    $search->setURLRewrite(true);
 
     return $search;
 }
@@ -897,7 +890,9 @@ function plugin_submit_links()
 
     $linkform = new Template($_CONF['path'] . 'plugins/links/templates');
     $linkform->set_file('linkform', 'submitlink.thtml');
+    $linkform->set_var('xhtml', XHTML);
     $linkform->set_var('site_url', $_CONF['site_url']);
+    $linkform->set_var('site_admin_url', $_CONF['site_admin_url']);
     $linkform->set_var('layout_url', $_CONF['layout_url']);
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
@@ -911,7 +906,6 @@ function plugin_submit_links()
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
     $linkform->set_var('max_url_length', 255);
-    $linkform->set_var('xhtml', XHTML);
     $linkform->parse('theform', 'linkform');
     $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();

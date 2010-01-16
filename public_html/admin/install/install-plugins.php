@@ -63,8 +63,9 @@ if ($_CONF['path'] == '/path/to/Geeklog/') { // If the Geeklog path has not been
 
 }
 
-$dbconfig_path      = (isset($_REQUEST['dbconfig_path'])) ? $_REQUEST['dbconfig_path'] : $gl_path . '/db-config.php';
-$step               = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : 1;
+$dbconfig_path      = (isset($_POST['dbconfig_path'])) ? $_POST['dbconfig_path'] : ((isset($_GET['dbconfig_path'])) ? $_GET['dbconfig_path'] : $gl_path . '/db-config.php');
+$dbconfig_path      = INST_sanitizePath($dbconfig_path);
+$step               = isset($_GET['step']) ? $_GET['step'] : (isset($_POST['step']) ? $_POST['step'] : 1);
 
 // $display holds all the outputted HTML and content
 $display = INST_getHeader($LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1]); // Grab the beginning HTML for the installer theme.
@@ -73,8 +74,8 @@ $display = INST_getHeader($LANG_PLUGINS[2] . ' 3 - ' . $LANG_PLUGINS[1]); // Gra
 if (INST_phpOutOfDate()) {
 
     // If their version of PHP is not supported, print an error:
-    $display .= '<h1>' . $LANG_INSTALL[4] . '</h1>' . LB;
-    $display .= '<p>' . $LANG_INSTALL[5] . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
+    $display .= '<h1>' . sprintf($LANG_INSTALL[4], SUPPORTED_PHP_VER) . '</h1>' . LB;
+    $display .= '<p>' . sprintf($LANG_INSTALL[5], SUPPORTED_PHP_VER) . $phpv[0] . '.' . $phpv[1] . '.' . (int) $phpv[2] . $LANG_INSTALL[6] . '</p>' . LB;
 
 } else {
 
@@ -528,6 +529,7 @@ if (INST_phpOutOfDate()) {
 
 $display .= INST_getFooter();
 
+header('Content-Type: text/html; charset=' . COM_getCharset());
 echo $display;
 
 ?>

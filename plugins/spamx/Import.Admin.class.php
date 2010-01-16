@@ -19,7 +19,7 @@
  * @subpackage Modules
  */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'Import.Admin.class.php') !== false) {
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'import.admin.class.php') !== false) {
     die('This file can not be used on its own!');
 }
 

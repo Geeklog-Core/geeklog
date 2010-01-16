@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
@@ -148,6 +148,9 @@ if ($A['count'] > 0) {
         $story_template = new Template($_CONF['path_layout'] . 'article');
         $story_template->set_file('article', 'printable.thtml');
         $story_template->set_var('xhtml', XHTML);
+        $story_template->set_var('site_url', $_CONF['site_url']);
+        $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $story_template->set_var('layout_url', $_CONF['layout_url']);
         if (XHTML != '') {
             $story_template->set_var('xmlns',
                                      ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -191,9 +194,6 @@ if ($A['count'] > 0) {
         $story_template->set_var('story_text', $fulltext);
         $story_template->set_var('story_text_no_br', $fulltext_no_br);
 
-        $story_template->set_var('site_url', $_CONF['site_url']);
-        $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('site_name', $_CONF['site_name']);
         $story_template->set_var('site_slogan', $_CONF['site_slogan']);
         $story_template->set_var('story_id', $story->getSid());
@@ -237,6 +237,14 @@ if ($A['count'] > 0) {
                                   . $story->getSid());
         $headercode .= '<link rel="canonical" href="' . $permalink . '"'
                     . XHTML . '>';
+
+        // Meta Tags
+        If ($_CONF['meta_tags'] > 0) {
+            $meta_description  = $story->DisplayElements('meta_description');
+            $meta_keywords  = $story->DisplayElements('meta_keywords');        
+            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+        }
+
         if ($story->DisplayElements('trackbackcode') == 0) {
             if ($_CONF['trackback_enabled']) {
                 $trackbackurl = TRB_makeTrackbackUrl($story->getSid());
@@ -248,6 +256,7 @@ if ($A['count'] > 0) {
                 header('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
             }
         }
+        
         $display .= COM_siteHeader('menu', $pagetitle, $headercode);
 
         if (isset($_GET['msg'])) {
@@ -275,7 +284,7 @@ if ($A['count'] > 0) {
         $story_template->set_var('story_id', $story->getSid());
         $story_template->set_var('story_title', $pagetitle);
         $story_options = array ();
-        if (($_CONF['hideemailicon'] == 0) && (!empty ($_USER['username']) ||
+        if (($_CONF['hideemailicon'] == 0) && (!COM_isAnonUser() ||
                 (($_CONF['loginrequired'] == 0) &&
                  ($_CONF['emailstoryloginrequired'] == 0)))) {
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story->getSid()
@@ -311,14 +320,26 @@ if ($A['count'] > 0) {
                                                         'class' => $feedClass));
             }
         }
-        if ($_CONF['trackback_enabled'] &&
-                ($story->displayElements('trackbackcode') >= 0) &&
-                SEC_hasRights('story.ping') &&
+        if (($_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ||
+                $_CONF['ping_enabled']) && SEC_hasRights('story.ping') &&
                 ($story->displayElements('draft_flag') == 0) &&
-                ($story->displayElements('day') < time ())) {
-            $url = $_CONF['site_admin_url']
-                 . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
-            $story_options[] = COM_createLink($LANG_TRB['send_trackback'], $url);
+                ($story->displayElements('day') < time ()) &&
+                ($story->displayElements('perm_anon') != 0)) {
+
+            // also check permissions for the topic
+            $topic_anon = DB_getItem($_TABLES['topics'], 'perm_anon',
+                "tid = '" . addslashes($story->displayElements('tid')) . "'");
+
+            // check special case: no link when Trackbacks are disabled for this
+            // story AND pinging weblog directories is disabled
+            if (($topic_anon != 0) &&
+                    (($story->displayElements('trackbackcode') >= 0) ||
+                    $_CONF['ping_enabled'])) {
+                $url = $_CONF['site_admin_url']
+                     . '/trackback.php?mode=sendall&amp;id=' . $story->getSid();
+                $story_options[] = COM_createLink($LANG_TRB['send_trackback'],
+                                                  $url);
+            }
         }
     /*
         if (true) { // can subscribe

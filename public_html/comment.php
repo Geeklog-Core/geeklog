@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -204,11 +204,11 @@ function handleView($view = true)
         $format = COM_applyFilter( $_REQUEST['format'] );
     }
     if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
-        if ( $_USER['uid'] > 1 ) {
+        if (COM_isAnonUser()) {
+            $format = $_CONF['comment_mode'];
+        } else {
             $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
                                   "uid = {$_USER['uid']}" );
-        } else {
-            $format = $_CONF['comment_mode'];
         }
     }
 
@@ -404,15 +404,12 @@ case 'sendreport':
 
 case 'editsubmission':
     if (!SEC_hasRights('comment.moderate')) { 
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         break; 
     }
     // deliberate fall-through
 case 'edit':
-    if (SEC_checkToken()) {
-        $display .= handleEdit($mode);
-    } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-    }
+    $display .= handleEdit($mode);
     break;
 
 case 'unsubscribe':
@@ -449,9 +446,8 @@ default:  // New Comment
 
     if ($type == 'article') {
         $dbTitle = DB_getItem($_TABLES['stories'], 'title',
-                                "sid = '{$sid}'" . COM_getPermSQL('AND')
-                                . " AND (draft_flag = 0) AND (date <= NOW()) "
-                                . COM_getTopicSQL('AND'));
+                    "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
+                    . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
         if ($dbTitle === null) {
             // no permissions, or no story of that title
             $display = COM_refresh($_CONF['site_url'] . '/index.php');
@@ -473,10 +469,13 @@ default:  // New Comment
             }
             $noindex = '<meta name="robots" content="noindex"' . XHTML . '>'
                      . LB;
+            $pid = 0;
+            if (isset($_REQUEST['pid'])) {
+                $pid = COM_applyFilter($_REQUEST['pid'], true);
+            }
             $display .= COM_siteHeader('menu', $LANG03[1], $noindex)
-                     . CMT_commentForm ($title, '', $sid,
-                            COM_applyFilter ($_REQUEST['pid'], true), $type, $mode,
-                            $postmode)
+                     . CMT_commentForm($title, '', $sid, $pid, $type, $mode,
+                                       $postmode)
                      . COM_siteFooter();
         } else {
             $display .= COM_refresh($_CONF['site_url'] . '/index.php');

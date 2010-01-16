@@ -107,12 +107,19 @@ $LANG_STATIC = array(
     'copy' => 'Копіювати',
     'limit_results' => 'Обмежити результати',
     'search' => 'Пошук',
-    'submit' => 'Відіслати'
+    'submit' => 'Відіслати',
+    'no_new_pages' => 'No new pages',
+    'pages' => 'Pages',
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
 $PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
 $PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
@@ -128,6 +135,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Allow PHP?',
     'sort_by' => 'Sort Centerblocks by',
     'sort_menu_by' => 'Sort Menu Entries by',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => 'Delete Pages with Owner?',
     'in_block' => 'Wrap Pages in Block?',
     'show_hits' => 'Show Hits?',
@@ -136,7 +144,18 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Censor Content?',
     'default_permissions' => 'Page Default Permissions',
     'aftersave' => 'After Saving Page',
-    'atom_max_items' => 'Max. Pages in Webservices Feed'
+    'atom_max_items' => 'Max. Pages in Webservices Feed',
+    'meta_tags' => 'Enable Meta Tags',
+    'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
+    'newstaticpagesinterval' => 'New Static Page Interval',
+    'hidenewstaticpages' => 'Hide New Static Pages',
+    'title_trim_length' => 'Title Trim Length',
+    'includecenterblocks' => 'Include Center Block Static Pages',
+    'includephp' => 'Include Static Pages with PHP',
+    'includesearch' => 'Enable Static Pages in Search',
+    'includesearchcenterblocks' => 'Include Center Block Static Pages',
+    'includesearchphp' => 'Include Static Pages with PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -145,17 +164,21 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Static Pages Main Settings',
+    'fs_whatsnew' => 'What\'s New Block',
+    'fs_search' => 'Search Results',
     'fs_permissions' => 'Default Permissions'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => true, 'False' => false),
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

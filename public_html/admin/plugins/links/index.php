@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog Links Plugin administration page.                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -150,8 +150,12 @@ function editlink ($mode, $lid = '')
         SEC_setDefaultPermissions ($A, $_LI_CONF['default_permissions']);
         $access = 3;
     }
-    $retval .= COM_startBlock ($LANG_LINKS_ADMIN[1], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $token = SEC_createToken();
+
+    $retval .= COM_startBlock($LANG_LINKS_ADMIN[1], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $link_templates->set_var('link_id', $A['lid']);
     if (!empty($lid) && SEC_hasRights('links.edit')) {
@@ -207,7 +211,7 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $link_templates->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
     $link_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $link_templates->set_var('gltoken', SEC_createToken());
+    $link_templates->set_var('gltoken', $token);
     $link_templates->parse('output', 'editor');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
@@ -486,7 +490,7 @@ function deleteLink($lid, $type = '')
             COM_accessLog("User {$_USER['username']} tried to illegally delete link submission $lid.");
         }
     } else {
-        COM_errorLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
+        COM_accessLog("User {$_USER['username']} tried to illegally delete link $lid of type $type.");
     }
 
     return COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -46,7 +46,6 @@ require_once '../lib-common.php';
 /**
 * Security check to ensure user even belongs on this page
 */
-
 require_once 'auth.inc.php';
 
 /**
@@ -131,13 +130,16 @@ function edituser($uid = '', $msg = '')
         $A['status'] = USER_ACCOUNT_ACTIVE;
     }
 
-    $retval .= COM_startBlock ($LANG28[1], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $token = SEC_createToken();
+
+    $retval .= COM_startBlock($LANG28[1], '',
+                              COM_getBlockTemplate('_admin_block', 'header'));
+    $retval .= SEC_getTokenExpiryNotice($token);
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'edituser.thtml',
                                       'groupedit' => 'groupedit.thtml'));
-    $user_templates->set_var( 'xhtml', XHTML );
+    $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -155,7 +157,7 @@ function edituser($uid = '', $msg = '')
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
     if (empty ($A['uid'])) {
-        $user_templates->set_var ('user_id', 'n/a');
+        $user_templates->set_var ('user_id', $LANG_ADMIN['na']);
     } else {
         $user_templates->set_var ('user_id', $A['uid']);
     }
@@ -174,6 +176,15 @@ function edituser($uid = '', $msg = '')
     } else {
         $user_templates->set_var('username', '');
     }
+
+    $remoteservice = '';
+    if ($_CONF['show_servicename'] && ($_CONF['user_login_method']['3rdparty']
+            || $_CONF['user_login_method']['openid'])) {
+        if (! empty($A['remoteservice'])) {
+            $remoteservice = '@' . $A['remoteservice'];
+        }
+    }
+    $user_templates->set_var('remoteservice', $remoteservice);
 
     if ($_CONF['allow_user_photo'] && ($A['uid'] > 0)) {
         $photo = USER_getPhoto ($A['uid'], $A['photo'], $A['email'], -1);
@@ -225,7 +236,7 @@ function edituser($uid = '', $msg = '')
     if (!empty($uid)) {
         if ($A['uid'] == $_USER['uid']) {
             $allow_ban = false; // do not allow to ban yourself
-        } else if (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
+        } elseif (SEC_inGroup('Root', $A['uid'])) { // editing a Root user?
             $count_root_sql = "SELECT COUNT(ug_uid) AS root_count FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = 1 GROUP BY ug_uid;";
             $count_root_result = DB_query($count_root_sql);
             $C = DB_fetchArray($count_root_result); // how many are left?
@@ -283,6 +294,14 @@ function edituser($uid = '', $msg = '')
                       . ' ';
             $selected .= DB_getItem($_TABLES['groups'], 'grp_id',
                                     "grp_name = 'Logged-in Users'");
+
+            // add default groups, if any
+            $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_default = 1");
+            $num_defaults = DB_numRows($result);
+            for ($i = 0; $i < $num_defaults; $i++) {
+                list($def_grp) = DB_fetchArray($result);
+                $selected .= ' ' . $def_grp;
+            }
         }
         $thisUsersGroups = SEC_getUserGroups();
         $remoteGroup = DB_getItem($_TABLES['groups'], 'grp_id',
@@ -330,7 +349,7 @@ function edituser($uid = '', $msg = '')
                 '<input type="hidden" name="groups" value="-1"' . XHTML . '>');
     }
     $user_templates->set_var('gltoken_name', CSRF_TOKEN);
-    $user_templates->set_var('gltoken', SEC_createToken());
+    $user_templates->set_var('gltoken', $token);
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -444,16 +463,31 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     $userChanged = false;
 
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
-    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
+    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . count($groups),1);
 
     if ($passwd != $passwd_conf) { // passwords don't match
-        return edituser ($uid, 67);
+        return edituser($uid, 67);
     }
 
-    if (!empty ($username) && !empty ($email)) {
+    $nameAndEmailOkay = true;
+    if (empty($username)) {
+        $nameAndEmailOkay = false;
+    } elseif (empty($email)) {
+        if (empty($uid)) {
+            $nameAndEmailOkay = false; // new users need an email address
+        } else {
+            $service = DB_getItem($_TABLES['users'], 'remoteservice',
+                                  "uid = $uid");
+            if (empty($service)) {
+                $nameAndEmailOkay = false; // not a remote user - needs email
+            }
+        }
+    }
 
-        if (!COM_isEmail ($email)) {
-            return edituser ($uid, 52);
+    if ($nameAndEmailOkay) {
+
+        if (!empty($email) && !COM_isEmail($email)) {
+            return edituser($uid, 52);
         }
 
         $uname = addslashes ($username);
@@ -495,6 +529,18 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if ($ucount > 0) {
             // Admin just changed a user's email to one that already exists
             return edituser($uid, 56);
+        }
+
+        if ($_CONF['custom_registration'] &&
+                function_exists('CUSTOM_userCheck')) {
+            $ret = CUSTOM_userCheck($username, $email);
+            if (! empty($ret)) {
+                // need a numeric return value - otherwise use default message
+                if (! is_numeric($ret['number'])) {
+                    $ret['number'] = 400;
+                }
+                return edituser($uid, $ret['number']);
+            }
         }
 
         if (empty ($uid) || !empty ($passwd)) {
@@ -638,8 +684,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         }
     } else {
         $retval = COM_siteHeader('menu', $LANG28[1]);
-        $retval .= COM_errorLog($LANG28[10]);
-        if (DB_count($_TABLES['users'],'uid',$uid) > 0) {
+        $retval .= COM_showMessageText($LANG28[10]);
+        if (DB_count($_TABLES['users'], 'uid', $uid) > 0) {
             $retval .= edituser($uid);
         } else {
             $retval .= edituser();
@@ -918,7 +964,10 @@ function batchreminders()
             if (file_exists ($_CONF['path_data'] . 'reminder_email.txt')) {
                 $template = new Template ($_CONF['path_data']);
                 $template->set_file (array ('mail' => 'reminder_email.txt'));
+                $template->set_var ('xhtml', XHTML);
                 $template->set_var ('site_url', $_CONF['site_url']);
+                $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+                $template->set_var ('layout_url', $_CONF['layout_url']);
                 $template->set_var ('site_name', $_CONF['site_name']);
                 $template->set_var ('site_slogan', $_CONF['site_slogan']);
                 $template->set_var ('lang_username', $LANG04[2]);
@@ -1065,7 +1114,7 @@ function importusers()
                 if ($result && $verbose_import) {
                     $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
                     COM_errorLog("Account for $u_name created successfully",1);
-                } else if ($result) {
+                } elseif ($result) {
                     $successes++;
                 } else {
                     // user creation failed

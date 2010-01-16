@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Calendar Plugin 1.0                                                       |
+// | Calendar Plugin 1.1                                                       |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Geeklog calendar plugin                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -43,7 +43,7 @@ require_once $_CONF['path_system'] . 'classes/calendar.class.php';
 
 $display = '';
 
-if (empty ($_USER['username']) &&
+if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_CA_CONF['calendarloginrequired'] == 1))) {
     $display .= COM_siteHeader('');
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
@@ -533,7 +533,7 @@ case 'day':
         );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-        if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
+        if (!COM_isAnonUser() AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
                     . "/calendar/index.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
@@ -650,7 +650,7 @@ case 'week':
         );
     } else {
         $cal_templates->set_var('calendar_title', '[' . $_CONF['site_name'] . ' ' . $LANG_CAL_2[29]);
-        if (!empty($_USER['uid']) AND $_CA_CONF['personalcalendars'] == 1) {
+        if (!COM_isAnonUser() AND $_CA_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '|&nbsp;'
                 . COM_createLink($LANG_CAL_2[12], $_CONF['site_url']
                     . "/calendar/index.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year") . ']'
@@ -1048,8 +1048,7 @@ if ($mode == 'personal') {
     $cal_templates->set_var('lang_mastercal', $LANG_CAL_2[25] . $LANG_CAL_2[11]);
     $cal_templates->parse('master_calendar_option','mastercal',true);
 } else {
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
-            ($_CA_CONF['personalcalendars'] == 1)) {
+    if (!COM_isAnonUser() && ($_CA_CONF['personalcalendars'] == 1)) {
         $cal_templates->set_var('lang_mycalendar', $LANG_CAL_2[12]);
         $cal_templates->parse('personal_calendar_option','personalcal',true);
     } else {

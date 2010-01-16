@@ -9,7 +9,7 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -135,6 +135,9 @@ require_once $_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php';
 // Instantiate the database object
 $_DB = new database($_DB_host, $_DB_name, $_DB_user, $_DB_pass, 'COM_errorLog',
                     $_CONF['default_charset']);
+if (isset($_CONF['rootdebug']) && $_CONF['rootdebug']) {
+    DB_displayError(true);
+}
 
 // +---------------------------------------------------------------------------+
 // | These are the library functions.  In all cases they turn around and make  |

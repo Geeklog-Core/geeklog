@@ -277,16 +277,7 @@ function PLG_uninstall($type)
         // removing features
         $num_features = count($remvars['features']);
         for ($i = 0; $i < $num_features; $i++) {
-            $access_id = DB_getItem ($_TABLES['features'], 'ft_id',
-                                    "ft_name = '{$remvars['features'][$i]}'");
-            if (!empty($access_id)) {
-                COM_errorLog ("Attempting to remove {$remvars['features'][$i]} rights from all groups" ,1);
-                DB_delete($_TABLES['access'], 'acc_ft_id', $access_id);
-                COM_errorLog ('...success', 1);
-                COM_errorLog ("Attempting to remove the {$remvars['features'][$i]} feature", 1);
-                DB_delete($_TABLES['features'], 'ft_name', $remvars['features'][$i]);
-                COM_errorLog ('...success', 1);
-            }
+            SEC_removeFeatureFromDB($remvars['features'][$i]);
         }
 
         // uninstall feeds
@@ -786,21 +777,6 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
      */
 
     $search_results = array();
-
-    // Search a single plugin if needed
-    if ($type != 'all') {
-        $function = 'plugin_dopluginsearch_' . $type;
-        if (function_exists($function)) {
-            $result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType, $page, $perpage);
-            if (is_array($result)) {
-                $search_results = array_merge($search_results, $result);
-            } else {
-                $search_results[] = $result;
-            }
-        }
-
-        return $search_results;
-    }
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
@@ -1689,7 +1665,7 @@ function PLG_supportingFeeds()
         $function = 'plugin_getfeednames_' . $pi_name;
         if (function_exists($function)) {
             $feeds = $function();
-            if (is_array($feeds) && (sizeof($feeds) > 0)) {
+            if (is_array($feeds) && (count($feeds) > 0)) {
                 $plugins[] = $pi_name;
             }
         }
@@ -1698,7 +1674,7 @@ function PLG_supportingFeeds()
     $function = 'CUSTOM_getfeednames';
     if (function_exists($function)) {
         $feeds = $function();
-        if (is_array($feeds) && (sizeof($feeds) > 0)) {
+        if (is_array($feeds) && (count($feeds) > 0)) {
             $plugins[] = 'custom';
         }
     }
@@ -2338,7 +2314,7 @@ function PLG_getBlocks($side, $topic='')
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getBlocks_' . $pi_name;
         if (function_exists($function)) {
-            $items = $function($side, $topic='');
+            $items = $function($side, $topic);
             if (is_array($items)) {
                 $ret = array_merge($ret, $items);
             }
@@ -2346,7 +2322,7 @@ function PLG_getBlocks($side, $topic='')
     }
 
     if (function_exists('CUSTOM_getBlocks')) {
-       $cust_items .= CUSTOM_getBlocks($side, $topic='');
+       $cust_items .= CUSTOM_getBlocks($side, $topic);
        if (is_array($cust_items)) {
           $ret = array_merge($ret, $cust_items);
        }

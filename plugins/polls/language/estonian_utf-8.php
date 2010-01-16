@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# estonian_utf-8.php
+# estonian.php
 # This is the Estonian language file for the Geeklog Polls plugin
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -58,7 +58,10 @@ $LANG_POLLS = array(
     'upgrade1' => 'Installeerisid küsitluste plugina uue versiooni. Palun ',
     'upgrade2' => 'uuenda',
     'editinstructions' => 'Palun sisesta küsitluse ID, vähemalt üks küsitluse küsimus ning sellele küsimusele vähemalt kaks vastusevarianti',
-    'start_poll' => 'Käivita küsitlus'
+    'pollclosed' => 'This poll is closed for voting.',
+    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
+    'start_poll' => 'Käivita küsitlus',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
@@ -107,7 +110,7 @@ $LANG25 = array(
     40 => 'Vaata kõiki sellele küsitlusele antud vastuseid'
 );
 
-$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_polls_MESSAGE15 = 'Sinu kommentaar on suunatud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset kinnitamist.';
 $PLG_polls_MESSAGE19 = 'Sinu küsitlus on edukalt salvestatud.';
 $PLG_polls_MESSAGE20 = 'Sinu küsitlus on edukalt kustutatud.';
 
@@ -131,7 +134,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'Hääletaja IP Aadress kehtib kuni',
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
-    'default_permissions' => 'Küsitluse vaikimisi õigused'
+    'default_permissions' => 'Küsitluse vaikimisi õigused',
+    'meta_tags' => 'Luba Meta sildid'
 );
 
 $LANG_configsubgroups['polls'] = array(

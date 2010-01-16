@@ -1,1 +1,1 @@
-<option{limit_selected}{limit_subtags}>{limit_text}</option>
+<option{limit_selected} onmouseover="this.style.cursor='pointer';" value="{limit_href}">{limit_text}</option>

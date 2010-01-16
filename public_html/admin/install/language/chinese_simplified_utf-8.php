@@ -54,8 +54,8 @@ $LANG_INSTALL = array(
     1 => '安装支助',
     2 => '终极网志系统',
     3 => '志乐安装',
-    4 => '需要PHP 4.3.0',
-    5 => '抱歉, 志乐要求最少 PHP 4.3.0 来操作(你有的是',
+    4 => '需要PHP %s',
+    5 => '抱歉, 志乐要求最少 PHP %s 来操作(你有的是',
     6 => '). 请 <a href="http://www.php.net/downloads.php">升级PHP</a> 安装 或请你的网站服务员帮你安装.',
     7 => '找不到志乐档案',
     8 => '安装系统无法找到关键的志乐档案. 也许你将它们搬移过. 请指定所需档案和目录的路径:',
@@ -101,8 +101,8 @@ $LANG_INSTALL = array(
     48 => '网站电邮',
     49 => '网站的 不可回信的电邮',
     50 => '安装',
-    51 => '需要 MySQL 3.23.2',
-    52 => '抱歉, 志乐需要最少 MySQL 3.23.2 来操作 (你有的是 ',
+    51 => '需要 MySQL %s',
+    52 => '抱歉, 志乐需要最少 MySQL %s 来操作 (你有的是 ',
     53 => '). 请 <a href="http://dev.mysql.com/downloads/mysql/">升级你的MySQL</a> 安装 或请你的网站主机服务员帮你升级.',
     54 => '错误的数据库资料',
     55 => '抱歉, 数据库资料好像不准确. 请回去再试一次.',
@@ -149,7 +149,7 @@ $LANG_INSTALL = array(
     96 => 'The installer was looking for %s in:',
     97 => 'Set File Permissions',
     98 => 'Advanced Users',
-    99 => 'If you have command line (SSH) access to your web server then you can simple copy and paste the following command into your shell:',
+    99 => 'If you have command line (SSH) access to your web server then you can simply copy and paste the following command into your shell:',
     100 => 'Invalid mode specified',
     101 => 'Step',
     102 => 'Enter configuration information',
@@ -216,7 +216,7 @@ $LANG_MIGRATE = array(
     22 => 'already exists. Would you like to replace it?',
     23 => 'Yes',
     24 => 'No',
-    25 => 'The version of Geeklog you chose to migrate from is out of date.',
+    25 => '',
     26 => 'Migration notice: ',
     27 => 'The "',
     28 => '" plugin is missing and has been disabled. You can install and reactivate it at any time from the administration section.',
@@ -239,7 +239,8 @@ $LANG_MIGRATE = array(
     45 => 'Could not identify database version. Please perform a manual update.',
     46 => '',
     47 => 'Database upgrade from version %s to version %s failed.',
-    48 => 'One or more plugins could not be updated and had to be disabled.'
+    48 => 'One or more plugins could not be updated and had to be disabled.',
+    49 => 'Use current database content'
 );
 
 // +---------------------------------------------------------------------------+
@@ -341,7 +342,7 @@ $LANG_HELP = array(
     'site_mail' => '这是所有志乐寄出的电邮的回信地址和在辛迪加的联络信息.',
     'noreply_mail' => '这是系统电邮的寄信者地址用于用户登记时等等. 这应当是跟网站电邮同样或一个无法回信的地址避免冒名者借着网站登记来录取你的地址. 若这电邮不跟上面一样, 建议你加一个信息在你寄出的电邮里.',
     'utf8' => '指示你是否要用 UTF-8 为你网站的默认字库. 这在多言语的网站上会有帮助.',
-    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer.',
+    'migrate_file' => 'Choose the backup file you want to migrate. This can either be an exisiting file in your "backups" directory or you can upload a file from your computer. Alternatively, you can also migrate the current contents of the database.',
     'plugin_upload' => 'Choose a plugin archive (in .zip, .tar.gz, or .tgz format) to upload and install.'
 );
 

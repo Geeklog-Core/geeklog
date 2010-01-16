@@ -1,11 +1,11 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.5                                                               |
+// | Geeklog 1.6                                                               |
 // +---------------------------------------------------------------------------+
 // | javascript functions to support the online configuration manager          |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005,2006 by the following authors:                         |
+// | Copyright (C) 2005-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -42,6 +42,30 @@ function handleAddWithName(self, array_type, array_name, name){
   add_element(self.parentNode.parentNode.parentNode, array_name, name, 'text', '', '1');
  }else if(array_type == "placeholder"){
   add_element(self.parentNode.parentNode.parentNode, array_name, name, 'hidden', '1', '1');
+ }else if(array_type == "select"){
+  add_select(self.parentNode.parentNode.parentNode, array_name, name - 1, '1');
+ }
+}
+
+function add_select(tbl, arr_name, index, deletable){
+ var newRow = tbl.insertRow(tbl.rows.length - 1);
+ titleCell = newRow.insertCell(0);
+ paramCell = newRow.insertCell(1);
+ titleCell.className = "alignright";
+ titleCell.appendChild(document.createTextNode(index));
+ dropDown = tbl.getElementsByTagName('tr')[0].getElementsByTagName('td')[1].getElementsByTagName('select')[0].cloneNode(true);
+ dropDown.name = arr_name + "[" + index + "]";
+ paramCell.appendChild(dropDown);
+ if(deletable){
+  paramCell.appendChild(document.createTextNode("\n"));
+  deleteButton = document.createElement("input");
+  deleteButton.type = "button";
+  deleteButton.value = "x";
+  deleteButton.onclick =
+    function(){
+        gl_cfg_remove(this)
+    };
+  paramCell.appendChild(deleteButton);
  }
 }
 
@@ -62,7 +86,7 @@ function add_element(tbl, arr_name, index, disp_type, def_val, deletable){
   deleteButton.value = "x";
   deleteButton.onclick =
     function(){
-        remove(this)
+        gl_cfg_remove(this)
     };
   paramCell.appendChild(deleteButton);
  }
@@ -103,7 +127,7 @@ function add_array(tbl, arr_name, arr_index, key_names, arr_type, deletable){
    deleteButton.type = "button";
    deleteButton.value = "x";
    deleteButton.onclick = function(){
-    remove(this);
+    gl_cfg_remove(this);
     };
    arrayCell.appendChild(deleteButton);
   }

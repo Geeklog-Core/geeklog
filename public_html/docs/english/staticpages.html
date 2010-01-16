@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
 <head>
   <title>Geeklog Documentation - Static Pages Plugin</title>
   <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
@@ -26,7 +26,7 @@
   <li>Static pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
   <li>"<a href="#cloning">cloning</a>" of existing pages</li>
   <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
-  <li>Provides <code>[staticpage:]</code> and <code>[staticpage_content:]</code> autotags</li>
+  <li>Provides <a href="#autotags">two autotags</a></li>
   <li>proper support for Geeklog permissions</li>
 </ul>
 
@@ -135,11 +135,11 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>To make use of URL rewriting, you will need to set the option "Enable URL Rewriting" to True in Geeklog's Configuration admin panel.</p>
 
-<h3><a name="delete">Deleting pages with their owner</a></h3>
+<h2><a name="delete">Deleting pages with their owner</a></h2>
 
 <p>As all objects in Geeklog, static pages have an owner (the user that created the static page). When that user's account is deleted for some reason, any static pages owned by that user can either be deleted as well or they can be assigned to another user in Geeklog's Root group.</p>
 
-<p>In the Configuration admin panel for the static pages plugin, you can set the "Delete Pages with Owner?" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
+<p>In the Configuration admin panel for the static pages plugin, you can set the "<a href="#desc_delete_pages">Delete Pages with Owner?</a>" option to either "False" (which is also the default), meaning that static pages will not be deleted withtheir owner, but assigned to a member of the Root group instead (the user withthe lowest user ID, most likely the Admin). Setting the option to "True" means that static pages will be deleted when their owner's account is deleted.</p>
 
 <h2><a name="config.php">Configuration</a></h2>
 
@@ -155,62 +155,68 @@ the Configuration admin panel:</p>
 </tr>
 <tr>
   <td><a name="desc_allow_php">allow_php</a></td>
-  <td><code>true</code></td>
+  <td>true</td>
   <td>Allows you to globally allow or disallow the <a href="#php">use of PHP</a>
     in static pages, i.e. it overrides the setting on individual pages.</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_sort_by">sort_by</a></td>
-  <td><tt>'id'</tt></td>
+  <td>'id'</td>
   <td>Define sort order when more than one static page is displayed in
     centerblocks. Allows sorting by page ID, page title, and date of last
     change.</td>
 </tr>
 <tr>
   <td><a name="desc_sort_menu_by">sort_menu_by</a></td>
-  <td><tt>'label'</tt></td>
+  <td>'label'</td>
   <td>Define sort order for static pages in the site's menu. Allows sorting by
     page label, page ID, page title, and date of last change.</td>
 </tr>
 <tr class="r2">
+  <td><a name="desc_sort_list_by">sort_list_by</a></td>
+  <td>'title'</td>
+  <td>Defines the default sort order for the admin's list of static pages.
+    Allows sorting by author, page ID, page title, and date of last change.</td>
+</tr>
+<tr>
   <td><a name="desc_delete_pages">delete_pages</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Specify what should happen to a static page when its owner (i.e. the user
     who created the page) is deleted. 'True' would delete the page, 'False'
     will assign it to a user in the "Root" group (usually the user with the
     lowest user ID).</td>
 </tr>
-<tr>
+<tr class="r2">
   <td><a name="desc_in_block">in_block</a></td>
-  <td><tt>true</tt></td>
+  <td>true</td>
   <td>Whether to display the content of static pages inside a block template or
     not. This is the default setting and can be overridden per page.</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_show_hits">show_hits</a></td>
-  <td><tt>true</tt></td>
+  <td>true</td>
   <td>Whether to show the number of hits for a static page.</td>
-<tr>
-<tr>
-  <td><a name="desc_show_date">show_date</a></td>
-  <td><tt>true</tt></td>
-  <td>Whether to show the date and time of the last change to a static page.</td>
 </tr>
 <tr class="r2">
+  <td><a name="desc_show_date">show_date</a></td>
+  <td>true</td>
+  <td>Whether to show the date and time of the last change to a static page.</td>
+</tr>
+<tr>
   <td><a name="desc_filter_html">filter_html</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Whether HTML in static pages should be run through Geeklog's HTML filter
     option.</td>
 </tr>
-<tr>
+<tr class="r2">
   <td><a name="desc_censor">censor</a></td>
-  <td><tt>false</tt></td>
+  <td>false</td>
   <td>Whether the content of the static page should be run through Geeklog's
     "bad words" filter.</td>
 </tr>
-<tr class="r2">
+<tr>
   <td><a name="desc_aftersave">aftersave</a></td>
-  <td><tt>'list'</tt></td>
+  <td>'list'</td>
   <td>Which page to go to after a static page has been saved:
     <ul>
     <li>'item': display the page</li>
@@ -219,13 +225,97 @@ the Configuration admin panel:</p>
     <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
     </ul></td>
 </tr>
-<tr>
+<tr class="r2">
   <td><a name="desc_atom_max_items">atom_max_items</a></td>
   <td>10</td>
   <td>Max. number of static pages returned when an Atom feed is requested
     through the webservices API.</td>
 </tr>
+<tr>
+  <td><a name="desc_meta_tags">meta_tags</a></td>
+  <td>false</td>
+  <td>Whether to include the meta tags of the staticpage when it is displayed.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_comment_code">comment_code</a></td>
+  <td>-1</td>
+  <td>Allows you to define whether new Static Pages will allow comments (0) or
+    not (-1). This is only the default setting for new pages and can be
+    overridden for every single page.</td>
+</tr>
+<tr>
+  <td><a name="desc_draft_flag">draft_flag</a></td>
+  <td>0</td>
+  <td>Default setting for new Static Pages: Whether the page's draft flag should be set (1) or not (0).</td>
+</tr>
 </table>
+
+<h3><a name="whatsnew">What's New Block</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_newstaticpagesinterval">newstaticpagesinterval</a></td>
+  <td valign="top">1209600</td>
+  <td valign="top">Static pages are "new" if they are this many seconds old.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_hidenewstaticpages">hidenewstaticpages</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to hide new static pages from the What's New block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_title_trim_length">title_trim_length</a></td>
+  <td valign="top">20</td>
+  <td valign="top">Max. length of the title of items listed in the What's New block.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_includecenterblocks">includecenterblocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that are displayed as a center block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_includephp">includephp</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that execute PHP.</td></tr>
+</table>
+
+
+<h3><a name="search">Search Results</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_includesearch">includesearch</a></td>
+  <td valign="top">true</td>
+  <td valign="top">Set to true to enable static pages in search results.</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_includesearchcenterblocks">includesearchcenterblocks</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that are displayed as a center block.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_includesearchphp">includesearchphp</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Set to true to include static pages that execute PHP.</td></tr>
+</table>
+
+
+<h2><a name="autotags">Autotags</a></h2>
+
+<p>The Static Pages Plugin provides 2 <a href="http://www.geeklog.net/article.php/autolinks" title="geeklog.net: About Autolinks and Autotags">autotags</a>,
+<code>[staticpage:]</code> and <code>[staticpage_content:]</code>.</p>
+
+<ul>
+<li>The <code>[staticpage:]</code> autotag will provide a link to a static page.
+    Simply add the page's ID after the colon. By default, the title of the
+    static page will be used as the link text. You can provide your own link
+    text after the page ID (but before the closing bracket).</li>
+<li>The <code>[staticpage_content:]</code> autotag will be replaced with the
+    contents of the static page in question. This can be useful when you need
+    to use a piece of text in more than one place.</li>
+</ul>
 
 <div class="footer">
     <a href="http://wiki.geeklog.net/">The Geeklog Documentation Project</a><br>

@@ -50,7 +50,7 @@ $LANG_STATIC = array(
     'staticpagelist' => '静的ページ管理',
     'url' => 'URL',
     'edit' => '編集',
-    'lastupdated' => '最終更新日：',
+    'lastupdated' => '最終更新日:',
     'pageformat' => 'レイアウト',
     'leftrightblocks' => 'ヘッダ・フッタ・左右ブロックあり',
     'blankpage' => '全画面表示（ヘッダ・フッタ・ブロックなし）',
@@ -64,7 +64,7 @@ $LANG_STATIC = array(
     'delete' => '削除',
     'cancel' => 'キャンセル',
     'access_denied' => '申し訳ありませんが、先にログインしてください。',
-    'access_denied_msg' => 'チェックするとアクセス権限がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'access_denied_msg' => 'チェックするとアクセス権がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
@@ -72,7 +72,7 @@ $LANG_STATIC = array(
     'no_such_page_anon' => 'ログインしてください。',
     'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br' . XHTML . '>注意：このオプションを有効にすると、あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
+    'php_warn' => '<br' . XHTML . '>注意: このオプションを有効にすると、あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
     'exit_msg' => 'ログイン要求: ',
     'exit_info' => 'チェックすると、閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
     'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか、権限がないかのいずれかです。',
@@ -107,17 +107,24 @@ $LANG_STATIC = array(
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/japanese/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
     'printable_format' => '印刷用フォーマット',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
     'search' => '検索',
-    'submit' => '登録'
+    'submit' => '登録',
+    'no_new_pages' => '-',
+    'pages' => 'ページ',
+    'comments' => 'Comments',
+    'draft' => 'Draft',
+    'draft_yes' => 'Yes',
+    'draft_no' => 'No'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
+$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
@@ -133,15 +140,27 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'PHPを許可する',
     'sort_by' => 'センターブロックでのソート項目',
     'sort_menu_by' => 'メニューでのソート項目',
+    'sort_list_by' => 'Sort Admin List by',
     'delete_pages' => '所有者の削除と共に削除する',
     'in_block' => 'ページをブロックで囲む',
-    'show_hits' => 'ヒット数を表示する',
-    'show_date' => '日付を表示する',
-    'filter_html' => 'HTMLをフィルターする',
+    'show_hits' => '閲覧件数を表示する',
+    'show_date' => '日時を表示する',
+    'filter_html' => 'HTMLフィルターを適用する',
     'censor' => '内容を検閲する',
     'default_permissions' => 'パーミッション',
     'aftersave' => 'ページ保存後の画面遷移',
-    'atom_max_items' => 'フィードに使用するページの最大数'
+    'atom_max_items' => 'フィードに書き出す最大ページ数',
+    'meta_tags' => 'メタタグを有効にする',
+    'comment_code' => 'Comment Default',
+    'draft_flag' => 'Draft Flag Default',
+    'newstaticpagesinterval' => '静的ページの"新着"の期間',
+    'hidenewstaticpages' => '新着ページを表示しない',
+    'title_trim_length' => 'タイトル最大長',
+    'includecenterblocks' => 'センターブロックの静的ページを含む',
+    'includephp' => '静的ページPHPを含む',
+    'includesearch' => '静的ページを検索する',
+    'includesearchcenterblocks' => 'センターブロックの静的ページを含む',
+    'includesearchphp' => '静的ページPHPを含む'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -150,17 +169,21 @@ $LANG_configsubgroups['staticpages'] = array(
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => '静的ページのメイン設定',
-    'fs_permissions' => '静的ページのデフォルトパーミッション（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_whatsnew' => '新着情報ブロック',
+    'fs_search' => '検索結果',
+    'fs_permissions' => '静的ページのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
-// Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
+// Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
-    9 => array('作成した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
+    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 
 ?>

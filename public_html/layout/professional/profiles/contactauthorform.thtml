@@ -2,6 +2,10 @@
 <form action="{site_url}/profiles.php" method="post" name="contact">
     <table cellspacing="0" cellpadding="3" width="100%">
         <tr>
+            <td class="alignright"><b>{lang_title}:</b></td>
+            <td>{story_link}</td>
+        </tr>
+        <tr>
             <td class="alignright"><b>{lang_fromname}:</b></td>
             <td><input type="text" name="from" size="40" maxlength="96" value="{name}"{xhtml}></td>
         </tr>
@@ -19,14 +23,21 @@
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
-            <td><textarea name="shortmsg" rows="8" style="width:100%">{shortmsg}</textarea></td>
+            <td><textarea name="shortmsg" rows="10" style="width:100%">{shortmsg}</textarea></td>
+        </tr>
+        <tr>
+            <td class="alignright"><b>{lang_cc}</b></td>
+            <td><input type="checkbox" name="cc" checked="checked"{xhtml}>&nbsp;{lang_cc_description}</td>
         </tr>
         {captcha}
         <tr>
-            <td colspan="2" class="warning aligncenter"><br{xhtml}>{lang_warning}<br{xhtml}><br{xhtml}>
-                <input type="hidden" name="sid" value="{story_id}"{xhtml}>
-                <input type="hidden" name="what" value="sendstory"{xhtml}>
-                <input type="submit" value="{lang_sendmessage}"{xhtml}>
+            <td colspan="2" class="warning aligncenter" style="padding-top:10px;">
+                {lang_warning}
+                <div style="padding:5px;">
+                    <input type="hidden" name="sid" value="{story_id}"{xhtml}>
+                    <input type="hidden" name="what" value="sendstory"{xhtml}>
+                    <input type="submit" value="{lang_sendmessage}"{xhtml}>
+                </div>
             </td>
         </tr>
     </table>

@@ -14,6 +14,7 @@
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
 // |          Vincent Furia    - vmf AT abtech DOT org                         |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
+// |          Dirk Haun        - dirk AT haun-online DOT de
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -137,7 +138,7 @@ function SEC_getUserGroups($uid='')
             }
         }
 
-        if (sizeof ($cgroups) > 0) {
+        if (count($cgroups) > 0) {
             $glist = join(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                     . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
@@ -219,13 +220,14 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
         }
     }
 
-    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
-        if (empty ($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups ($uid);
+    if ((empty($_USER['uid']) && ($uid == 1)) ||
+            (isset($_USER['uid']) && ($uid == $_USER['uid']))) {
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $groups = $_GROUPS;
     } else {
-        $groups = SEC_getUserGroups ($uid);
+        $groups = SEC_getUserGroups($uid);
     }
 
     if (is_numeric($grp_to_verify)) {
@@ -410,8 +412,8 @@ function SEC_hasRights($features,$operator='AND')
 /**
 * Shows security control for an object
 *
-* This will return the HTML needed to create the security control see on the admin
-* screen for GL objects (i.e. stories, etc)
+* This will return the HTML needed to create the security control seen on the
+* admin screen for GL objects (i.e. stories, etc)
 *
 * @param        int     $perm_owner     Permissions the owner has 1 = edit 2 = read 3 = read/edit
 * @param        int     $perm_group     Permission the group has
@@ -420,48 +422,52 @@ function SEC_hasRights($features,$operator='AND')
 * @return       string  needed HTML (table) in HTML $perm_owner = array of permissions [edit,read], etc edit = 1 if permission, read = 2 if permission
 *
 */
-function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
+function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_anon)
 {
-    global $LANG_ACCESS, $_CONF;
+    global $_CONF, $LANG_ACCESS;
 
     $retval = '';
 
     $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
-    $perm_templates->set_file(array('editor'=>'edit_permissions.thtml'));
+    $perm_templates->set_file(array('editor' => 'edit_permissions.thtml'));
 
-    $perm_templates->set_var ( 'xhtml', XHTML );
-    $perm_templates->set_var ('site_url', $_CONF['site_url']);
-    $perm_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $perm_templates->set_var ('layout_url', $_CONF['layout_url']);
-    $perm_templates->set_var ('owner', $LANG_ACCESS['owner']);
-    $perm_templates->set_var ('group', $LANG_ACCESS['group']);
-    $perm_templates->set_var ('members', $LANG_ACCESS['members']);
-    $perm_templates->set_var ('anonymous', $LANG_ACCESS['anonymous']);
+    $perm_templates->set_var('xhtml', XHTML);
+    $perm_templates->set_var('site_url', $_CONF['site_url']);
+    $perm_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $perm_templates->set_var('layout_url', $_CONF['layout_url']);
+    $perm_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
+    $perm_templates->set_var('owner', $LANG_ACCESS['owner']);
+    $perm_templates->set_var('lang_group', $LANG_ACCESS['group']);
+    $perm_templates->set_var('group', $LANG_ACCESS['group']);
+    $perm_templates->set_var('lang_members', $LANG_ACCESS['members']);
+    $perm_templates->set_var('members', $LANG_ACCESS['members']);
+    $perm_templates->set_var('lang_anonymous', $LANG_ACCESS['anonymous']);
+    $perm_templates->set_var('anonymous', $LANG_ACCESS['anonymous']);
 
     // Owner Permissions
     if ($perm_owner >= 2) {
-        $perm_templates->set_var ('owner_r_checked',' checked="checked"');
+        $perm_templates->set_var('owner_r_checked',' checked="checked"');
     }
     if ($perm_owner == 3) {
-        $perm_templates->set_var ('owner_e_checked',' checked="checked"');
+        $perm_templates->set_var('owner_e_checked',' checked="checked"');
     }
     // Group Permissions
     if ($perm_group >= 2) {
-        $perm_templates->set_var ('group_r_checked',' checked="checked"');
+        $perm_templates->set_var('group_r_checked',' checked="checked"');
     }
     if ($perm_group == 3) {
-        $perm_templates->set_var ('group_e_checked',' checked="checked"');
+        $perm_templates->set_var('group_e_checked',' checked="checked"');
     }
     // Member Permissions
     if ($perm_members == 2) {
-        $perm_templates->set_var ('members_checked',' checked="checked"');
+        $perm_templates->set_var('members_checked',' checked="checked"');
     }
     // Anonymous Permissions
     if ($perm_anon == 2) {
-        $perm_templates->set_var ('anon_checked',' checked="checked"');
+        $perm_templates->set_var('anon_checked',' checked="checked"');
     }
 
-    $perm_templates->parse('output','editor');
+    $perm_templates->parse('output', 'editor');
     $retval .= $perm_templates->finish($perm_templates->get_var('output'));
 
     return $retval;
@@ -578,10 +584,10 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
     }
 
     if ($_SEC_VERBOSE) {
-        COM_errorlog('perm_owner = ' . $perm_owner, 1);
-        COM_errorlog('perm_group = ' . $perm_group, 1);
-        COM_errorlog('perm_member = ' . $perm_members, 1);
-        COM_errorlog('perm_anon = ' . $perm_anon, 1);
+        COM_errorLog('perm_owner = ' . $perm_owner, 1);
+        COM_errorLog('perm_group = ' . $perm_group, 1);
+        COM_errorLog('perm_member = ' . $perm_members, 1);
+        COM_errorLog('perm_anon = ' . $perm_anon, 1);
         COM_errorLog('**** Leaving SEC_getPermissionValues ****', 1);
     }
 
@@ -611,7 +617,7 @@ function SEC_getPermissionValue($perm_x)
 
     $retval = 0;
 
-    for ($i = 1; $i <= sizeof($perm_x); $i++) {
+    for ($i = 1; $i <= count($perm_x); $i++) {
         if ($_SEC_VERBOSE) {
             COM_errorLog("perm_x[$i] = " . current($perm_x), 1);
         }
@@ -670,7 +676,7 @@ function SEC_getFeatureGroup ($feature, $uid = '')
     $group = 0;
 
     $ft_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
-    if (($ft_id > 0) && (sizeof ($ugroups) > 0)) {
+    if (($ft_id > 0) && (count($ugroups) > 0)) {
         $grouplist = implode (',', $ugroups);
         $result = DB_query ("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
         $A = DB_fetchArray ($result);
@@ -1066,19 +1072,20 @@ function SEC_encryptPassword($password)
 }
 
 /**
-  * Generate a security token.
-  *
-  * This generates and stores a one time security token. Security tokens are
-  * added to forms and urls in the admin section as a non-cookie double-check
-  * that the admin user really wanted to do that...
-  *
-  * @param $ttl int Time to live for token in seconds. Default is 20 minutes.
-  *
-  * @return string  Generated token, it'll be an MD5 hash (32chars)
-  */
+* Generate a security token.
+*
+* This generates and stores a one time security token. Security tokens are
+* added to forms and urls in the admin section as a non-cookie double-check
+* that the admin user really wanted to do that...
+*
+* @param  int  $ttl  Time to live for token in seconds. Default is 20 minutes.
+* @return string  Generated token, it'll be an MD5 hash (32chars)
+* @see SEC_checkToken
+*
+*/
 function SEC_createToken($ttl = 1200)
 {
-    global $_USER, $_TABLES, $_DB_dbms;
+    global $_TABLES, $_USER;
 
     static $last_token;
 
@@ -1119,23 +1126,79 @@ function SEC_createToken($ttl = 1200)
 }
 
 /**
-  * Check a security token.
-  *
-  * Checks the POST and GET data for a security token, if one exists, validates that it's for this
-  * user and URL.
-  *
-  * @return boolean     true if the token is valid and for this user.
-  */
+* Check a security token.
+*
+* Checks the POST and GET data for a security token, if one exists, validates
+* that it's for this user and URL. If the token is not valid, it asks the user
+* to re-authenticate and resends the request if authentication was successful.
+*
+* @return   boolean     true if the token is valid; does not return if not!
+* @see      SECINT_checkToken
+* @link http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens
+*
+*/
 function SEC_checkToken()
 {
-    global $_USER, $_TABLES, $_DB_dbms;
-    
+    global $_CONF, $LANG20, $LANG_ADMIN;
+
+    if (SECINT_checkToken()) {
+
+        // if this was a recreated request, recreate $_FILES array, too
+        SECINT_recreateFilesArray();
+
+        return true;
+    }
+
+    /**
+    * Token not valid (probably expired): Ask user to authenticate again
+    */
+    $returnurl = COM_getCurrentUrl();
+    $method = strtoupper($_SERVER['REQUEST_METHOD']);
+    $postdata = serialize($_POST);
+    $getdata = serialize($_GET);
+    $files = '';
+    if (! empty($_FILES)) {
+        // rescue uploaded files
+        foreach ($_FILES as $key => $f) {
+            if (! empty($f['name'])) {
+                $filename = basename($f['tmp_name']);
+                move_uploaded_file($f['tmp_name'],
+                                   $_CONF['path_data'] . $filename);
+                $_FILES[$key]['tmp_name'] = $filename; // drop temp. dir
+            }
+        }
+        $files = serialize($_FILES);
+    }
+
+    $display = COM_siteHeader('menu', $LANG20[1])
+             . COM_showMessageText($LANG_ADMIN['token_expired'])
+             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files)
+             . COM_siteFooter();
+
+    COM_output($display);
+    exit;
+
+    // we don't return from here
+}
+
+/**
+* Helper function: Actual check of the security token
+*
+* @return   boolean     true if the token is valid and for this user.
+* @access   private
+* @see      SEC_checkToken
+*
+*/
+function SECINT_checkToken()
+{
+    global $_TABLES, $_USER;
+
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
     
-    if(array_key_exists(CSRF_TOKEN, $_GET)) {
+    if (array_key_exists(CSRF_TOKEN, $_GET)) {
         $token = COM_applyFilter($_GET[CSRF_TOKEN]);
-    } else if(array_key_exists(CSRF_TOKEN, $_POST)) {
+    } elseif (array_key_exists(CSRF_TOKEN, $_POST)) {
         $token = COM_applyFilter($_POST[CSRF_TOKEN]);
     }
     
@@ -1183,6 +1246,348 @@ function SEC_checkToken()
     }
     
     return $return;
+}
+
+/**
+* Helper function: Display loginform and ask user to authenticate again
+*
+* @param    string  $returnurl  URL to return to after authentication
+* @param    string  $method     original request method: POST or GET
+* @param    string  $postdata   serialized POST data
+* @param    string  $getdata    serialized GET data
+* @return   string              HTML for the authentication form
+* @access   private
+*
+*/ 
+function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
+{
+    global $_CONF, $LANG01, $LANG04, $LANG20, $LANG_ADMIN;
+
+    $retval = '';
+
+    $authform = new Template($_CONF['path_layout'] . 'users');
+    $authform->set_file('login', 'loginform.thtml');
+    $authform->set_var('xhtml', XHTML);
+    $authform->set_var('site_url', $_CONF['site_url']);
+    $authform->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $authform->set_var('layout_url', $_CONF['layout_url']);
+
+    $authform->set_var('lang_message', $LANG_ADMIN['reauth_msg']);
+    $authform->set_var('lang_newreglink', '');
+    $authform->set_var('lang_forgetpassword', '');
+
+    $authform->set_var('lang_login', $LANG_ADMIN['authenticate']);
+    $authform->set_var('lang_username', $LANG04[2]);
+    $authform->set_var('lang_password', $LANG01[57]);
+
+    $authform->set_var('start_block_loginagain', COM_startBlock($LANG20[1]));
+    $authform->set_var('end_block', COM_endBlock());
+
+    $services = ''; // 3rd party remote authentification.
+    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) > 0) {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
+                }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
+            }
+
+            $authform->set_file('services', 'services.thtml');
+            $authform->set_var('lang_service', $LANG04[121]);
+            $authform->set_var('select_service', $select);
+            $authform->parse('output', 'services');
+            $services = $authform->finish($authform->get_var('output'));
+        }
+    }
+
+    // (ab)use {services} for some hidden fields
+    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
+              . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_returnurl" value="'
+              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_postdata" value="'
+              . urlencode($postdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_getdata" value="'
+              . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_files" value="'
+              . urlencode($files) . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="token_requestmethod" value="'
+              . $method . '"' . XHTML . '>' . LB;
+    $services .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+              . SEC_createToken() . '"'. XHTML . '>' . LB;
+    $authform->set_var('services', $services);
+    $authform->set_var('openid_login', ''); // TBD
+
+    $authform->parse('output', 'login');
+
+    $retval .= $authform->finish($authform->get_var('output'));
+
+    return $retval;
+}
+
+
+/**
+* Helper function: Recreate $_FILES array after token re-authentication
+*
+* @return void
+* @access private
+*
+*/
+function SECINT_recreateFilesArray()
+{
+    global $_CONF;
+
+    if (empty($_FILES)) {
+        // recreate $_FILES array
+        foreach ($_POST as $key => $value) {
+            if (substr($key, 0, 7) == '_files_') {
+                $file = substr($key, 7);
+                foreach ($value as $kk => $kv) {
+                    if ($kk == 'tmp_name') {
+                        // fix path - uploaded files are in our data directory
+                        $filename = COM_sanitizeFilename(basename($kv), true);
+                        $kv = $_CONF['path_data'] . $filename;
+                        // set a flag so we know where it's coming from
+                        $_FILES[$file]['_gl_data_dir'] = true;
+                    }
+                    $_FILES[$file][$kk] = $kv;
+                }
+                if (! file_exists($_FILES[$file]['tmp_name'])) {
+                    // whoops!?
+                    COM_errorLog("Uploaded file {$_FILES[$file]['name']} not found when recreating \$_FILES array");
+                    unset($_FILES[$file]);
+                }
+                unset($_POST[$key]);
+            }
+        }
+    }
+}
+
+/**
+* Helper function: Clean up any leftover files on failed re-authentication
+*
+* When re-authentication fails, we need to clean up any files that may have
+* been rescued during the original POST request with the expired token. Note
+* that the uploaded files are now in the site's 'data' directory.
+*
+* @param    mixed   $files  original or recreated $_FILES array
+* @return   void
+* @access   private
+*
+*/
+function SECINT_cleanupFiles($files)
+{
+    global $_CONF;
+
+    // first, some sanity checks
+    if (! is_array($files)) {
+        if (empty($files)) {
+            return; // nothing to do
+        } else {
+            $files = @unserialize($files);
+        }
+    }
+    if (!is_array($files) || empty($files)) {
+        return; // bogus
+    }
+
+    foreach ($files as $key => $value) {
+        if (! empty($value['tmp_name'])) {
+            // ignore path - file is in $_CONF['path_data']
+            $filename = COM_sanitizeFilename(basename($value['tmp_name']), true);
+            $orphan = $_CONF['path_data'] . $filename;
+            if (file_exists($orphan)) {
+                if (! @unlink($orphan)) {
+                    COM_errorLog("SECINT_cleanupFile: Unable to remove file $filename from 'data' directory");
+                }
+            }
+        }
+    }
+}
+
+/**
+* Get a token's expiry time
+*
+* @param    string  $token  the token we're looking for
+* @return   int             UNIX timestamp of the expiry time or 0
+*
+*/
+function SEC_getTokenExpiryTime($token)
+{
+    global $_TABLES, $_USER;
+
+    $retval = 0;
+
+    if (!COM_isAnonUser()) {
+
+        $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+        $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+
+        $result = DB_query($sql);
+        if (DB_numRows($result) == 1) {
+            list($retval) = DB_fetchArray($result);
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Create a message informing the user when the security token is about to expire
+*
+* @param    string  $token      the token
+* @param    string  $extra_msg  (optional) additional text to include in notice
+* @return   string              formatted HTML of message
+*
+*/
+function SEC_getTokenExpiryNotice($token, $extra_msg = '')
+{
+    global $_CONF, $LANG_ADMIN;
+
+    $retval = '';
+
+    $expirytime = SEC_getTokenExpiryTime($token);
+    if ($expirytime > 0) {
+        $exptime = '<span id="token-expirytime">'
+                 . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+        $retval .= '<p id="token-expirynotice">'
+                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
+        if (! empty($extra_msg)) {
+            $retval .= ' ' . $extra_msg;
+        }
+
+        $retval .= '</p>' . LB;
+    }
+
+    return $retval;
+}
+
+/**
+* Set a cookie using the HttpOnly flag
+*
+* Use this function to set "important" cookies (session, password, ...).
+* Browsers that support the HttpOnly flag will not allow JavaScript access
+* to such a cookie.
+*
+* @param    string  $name       cookie name
+* @param    string  $value      cookie value
+* @param    int     $expire     expire time
+* @param    string  $path       path on the server or $_CONF['cookie_path']
+* @param    string  $domain     domain or $_CONF['cookiedomain']
+* @param    bool    $secure     whether to use HTTPS or $_CONF['cookiesecure']
+* @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
+*
+*/
+function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null, $secure = null)
+{
+    global $_CONF;
+
+    $retval = false;
+
+    if ($path === null) {
+        $path = $_CONF['cookie_path'];
+    }
+    if ($domain === null) {
+        $domain = $_CONF['cookiedomain'];
+    }
+    if ($secure === null) {
+        $secure = $_CONF['cookiesecure'];
+    }
+
+    // the httponly parameter is only available as of PHP 5.2.0
+    if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
+        $retval = setcookie($name, $value, $expire, $path, $domain, $secure,
+                            true);
+    } else {
+        // fake it for older PHP versions; kudos to Matt Mecham
+        $retval = setcookie($name, $value, $expire, $path,
+                            $domain . '; httponly', $secure);
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare an array of the standard permission values
+*
+* This helper functions does the following:
+* 1) filter permission values, e.g. after a POST request
+* 2) translates the permission checkbox arrays into numerical values
+* 3) ensures that all the standard permission entries are set, so you don't
+*    have to check with isset() all the time
+*
+* <code>
+* $PERM = SEC_filterPermissions($_POST);
+* if ($PERM['perm_anon'] != 0) { ...
+* </code>
+*
+* @param    array   $A  array to filter on, e.g. $_POST
+* @return   array       array of only the 6 standard permission values
+* @see      SEC_getPermissionValues
+*
+*/
+function SEC_filterPermissions($A)
+{
+    $retval = array();
+
+    if (isset($A['owner_id'])) {
+        $retval['owner_id'] = COM_applyFilter($A['owner_id'], true);
+    } else {
+        $retval['owner_id'] = 0;
+    }
+
+    if (isset($A['group_id'])) {
+        $retval['group_id'] = COM_applyFilter($A['group_id'], true);
+    } else {
+        $retval['group_id'] = 0;
+    }
+
+    $perms = array('perm_owner', 'perm_group', 'perm_members', 'perm_anon');
+
+    $B = array();
+    foreach ($perms as $p) {
+        if (isset($A[$p])) {
+            $B[$p] = $A[$p];
+        } else {
+            $B[$p] = array();
+        }
+    }
+
+    $B = SEC_getPermissionValues($B['perm_owner'], $B['perm_group'],
+                                 $B['perm_members'], $B['perm_anon']);
+    for ($i = 0; $i < 4; $i++) {
+        $retval[$perms[$i]] = $B[$i];
+    }
+
+    return $retval;
+}
+
+/**
+* Helper function for when you want to call SEC_hasAccess and have all the
+* values to check in an array.
+*
+* @param    array   $A  array with the standard permission values
+* @return   int         returns 3 for read/edit 2 for read only 0 for no access
+* @see      SEC_hasAccess
+*
+*/
+function SEC_hasAccess2($A)
+{
+    return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                         $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 }
 
 ?>

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements the services provided by the 'Static Pages' plugin.  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -62,7 +62,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
            $LANG_LOGIN, $_GROUPS, $_SP_CONF;
 
-    if ((PHP_VERSION > 4) && (! $_CONF['disable_webservices'])) {
+    if (version_compare(PHP_VERSION, '5.0.0', '>=') &&
+            (! $_CONF['disable_webservices'])) {
         require_once $_CONF['path_system'] . '/lib-webservices.php';
     }
 
@@ -79,20 +80,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         return PLG_RET_AUTH_FAILED;
     }
 
-    // TEST CODE
-    /*
-    foreach ($args as $k => $v) {
-        if (!is_array($v)) {
-            echo "$k => $v\r\n";
-        } else {
-            echo "$k => $v\r\n";
-            foreach ($v as $k1 => $v1) {
-                echo "        $k1 => $v1\r\n";
-            }
-        }
-    }
-    exit ();
-    */
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
         $gl_edit = $args['gl_edit'];
@@ -114,10 +101,6 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($args['sp_id']) && !empty($args['id'])) {
             $args['sp_id'] = $args['id'];
         }
-    }
-
-    if (!isset($args['sp_uid'])) {
-        $args['sp_uid'] = $_USER['uid'];
     }
 
     if (empty($args['sp_title']) && !empty($args['title'])) {
@@ -160,7 +143,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     if ($args['gl_svc']) {
         $par_str = array('mode', 'sp_id', 'sp_old_id', 'sp_tid', 'sp_format',
                          'postmode');
-        $par_num = array('sp_uid', 'sp_hits', 'owner_id', 'group_id',
+        $par_num = array('sp_hits', 'owner_id', 'group_id',
                          'sp_where', 'sp_php', 'commentcode');
 
         foreach ($par_str as $str) {
@@ -227,7 +210,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         if (!isset($args['sp_onmenu'])) {
             $args['sp_onmenu'] = '';
-        } else if (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
+        } elseif (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
             $svc_msg['error_desc'] = 'Menu label missing';
             return PLG_RET_ERROR;
         }
@@ -244,12 +227,15 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($args['sp_centerblock'])) {
             $args['sp_centerblock'] = '';
         }
+
+        if (empty($args['draft_flag']) && ($_SP_CONF['draft_flag'] == '1')) {
+            $args['draft_flag'] = 'on';
+        }
     }
 
     // END: Staticpages defaults 
 
     $sp_id = $args['sp_id'];
-    $sp_uid = $args['sp_uid'];
     $sp_title = $args['sp_title'];
     $sp_content = $args['sp_content'];
     $sp_hits = $args['sp_hits'];
@@ -259,6 +245,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     if (!empty($args['sp_label'])) {
         $sp_label = $args['sp_label'];
     }
+    $meta_description = $args['meta_description'];
+    $meta_keywords = $args['meta_keywords'];    
     $commentcode = $args['commentcode'];
     $owner_id = $args['owner_id'];
     $group_id = $args['group_id'];
@@ -273,6 +261,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
     $sp_old_id = $args['sp_old_id'];
     $sp_centerblock = $args['sp_centerblock'];
+    $draft_flag = $args['draft_flag'];
     $sp_help = '';
     if (!empty($args['sp_help'])) {
         $sp_help = $args['sp_help'];
@@ -302,11 +291,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     // Check for unique page ID
     $duplicate_id = false;
     $delete_old_page = false;
-    if (DB_count ($_TABLES['staticpage'], 'sp_id', $sp_id) > 0) {
+    if (DB_count($_TABLES['staticpage'], 'sp_id', $sp_id) > 0) {
         if ($sp_id != $sp_old_id) {
             $duplicate_id = true;
         }
-    } elseif (!empty ($sp_old_id)) {
+    } elseif (! empty($sp_old_id)) {
         if ($sp_id != $sp_old_id) {
             $delete_old_page = true;
         }
@@ -346,6 +335,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $sp_inblock = 0;
         }
+        if ($draft_flag == 'on') {
+            $draft_flag = 1;
+        } else {
+            $draft_flag = 0;
+        }
 
         // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
@@ -358,9 +352,14 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $sp_title = strip_tags ($sp_title);
         $sp_label = strip_tags ($sp_label);
 
+        $meta_description = strip_tags ($meta_description);
+        $meta_keywords = strip_tags ($meta_keywords);
+
         $sp_content = addslashes ($sp_content);
         $sp_title = addslashes ($sp_title);
         $sp_label = addslashes ($sp_label);
+        $meta_description = addslashes ($meta_description);
+        $meta_keywords = addslashes ($meta_keywords);        
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
@@ -369,7 +368,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         // make sure there's only one "entire page" static page per topic
         if (($sp_centerblock == 1) && ($sp_where == 0)) {
-            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'";
+            $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE (sp_centerblock = 1) AND (sp_where = 0) AND (sp_tid = '$sp_tid') AND (draft_flag = 0)";
 
             // if we're in a multi-language setup, we need to allow one "entire
             // page" centerblock for 'all' or 'none' per language
@@ -396,19 +395,22 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
 
-        DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id',$sp_uid,'$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode',$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
         if ($delete_old_page && !empty ($sp_old_id)) {
-            DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
+            DB_delete($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
             PLG_itemSaved($sp_id, 'staticpages');
         } else {
+            DB_change($_TABLES['comments'], 'sid', addslashes($sp_id),
+                      array('sid', 'type'),
+                      array(addslashes($sp_old_id), 'staticpages'));
             PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
         }
 
@@ -472,7 +474,9 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
         }
     }
 
-    DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_id);
+    DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
+    DB_delete($_TABLES['comments'], array('sid',  'type'),
+                                    array($sp_id, 'staticpages'));
 
     PLG_itemDeleted($sp_id, 'staticpages');
 
@@ -496,6 +500,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
     $svc_msg['output_fields'] = array(
                                     'sp_hits',
                                     'sp_format',
+                                    'draft_flag',
                                     'owner_id',
                                     'group_id',
                                     'perm_owner',
@@ -544,21 +549,30 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if ($page == '') {
             $error = 1;
         }
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
+        $perms = SP_getPerms();
+        if (! SEC_hasRights('staticpages.edit')) {
+            if (! empty($perms)) {
+                $perms .= ' AND';
+            }
+            $perms .= '(draft_flag = 0)';
+        }
+        if (! empty($perms)) {
             $perms = ' AND ' . $perms;
         }
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
-                      . "commentcode,owner_id,group_id,perm_owner,perm_group,"
+                      . "commentcode,meta_description,meta_keywords,draft_flag,"
+                      . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
         $sql['mssql'] = "SELECT sp_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
-                      . "sp_date,sp_format,commentcode,owner_id,group_id,"
-                      . "perm_owner,perm_group,perm_members,perm_anon,sp_tid,"
-                      . "sp_help,sp_php,sp_inblock "
+                      . "sp_date,sp_format,commentcode,"
+                      . "CAST(meta_description AS text) AS meta_description,"
+                      . "CAST(meta_keywords AS text) AS meta_keywords,draft_flag,"
+                      . "owner_id,group_id,perm_owner,perm_group,perm_members,"
+                      . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
         $sql['pgsql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
@@ -566,55 +580,80 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
-        $result = DB_query ($sql);
-        $count = DB_numRows ($result);
+        $result = DB_query($sql);
+        $count = DB_numRows($result);
 
         if ($count == 0 || $count > 1) {
             $error = 1;
         }
 
         if (!($error)) {
-            $output = DB_fetchArray ($result, false);
+            $output = DB_fetchArray($result, false);
 
             // WE ASSUME $output doesn't have any confidential fields 
 
         } else { // an error occured (page not found, access denied, ...)
-            if (empty ($page)) {
-                $failflg = 0;
-            } else {
-                $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
-            }
-            if ($failflg) {
-                if ($mode !== 'autotag') {
-                    $output = COM_siteHeader ('menu');
-                }
-                $output .= COM_startBlock ($LANG_LOGIN[1], '',
-                                        COM_getBlockTemplate ('_msg_block', 'header'));
-                $login = new Template ($_CONF['path_layout'] . 'submit');
-                $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-                $login->set_var ('login_message', $LANG_LOGIN[2]);
-                $login->set_var ('site_url', $_CONF['site_url']);
-                $login->set_var ('lang_login', $LANG_LOGIN[3]);
-                $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-                $login->parse ('output', 'login');
-                $output .= $login->finish ($login->get_var ('output'));
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                if ($mode !== 'autotag') {
-                    $output .= COM_siteFooter (true);
-                }
-            } else {
-                if ($mode !== 'autotag') {
-                    $output = COM_siteHeader ('menu');
-                }
-                $output .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                        COM_getBlockTemplate ('_msg_block', 'header'));
-                $output .= $LANG_STATIC['deny_msg'];
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                if ($mode !== 'autotag') {
-                    $output .= COM_siteFooter (true);
+
+            /**
+            * if the user has edit permissions and the page does not exist,
+            * send them to the editor so they can create it "wiki style"
+            */
+            $create_page = false;
+            if (($mode !== 'autotag') && ($count == 0) &&
+                    SEC_hasRights('staticpages.edit')) {
+                // check again without permissions
+                if (DB_count($_TABLES['staticpage'], 'sp_id', $page) == 0) {
+                    $url = $_CONF['site_admin_url']
+                         . '/plugins/staticpages/index.php?mode=edit&sp_new_id='
+                         . $page . '&msg=21';
+                    $output = COM_refresh($url);
+                    $create_page = true;
                 }
             }
 
+            if (! $create_page) {
+                if (empty($page)) {
+                    $failflg = 0;
+                } else {
+                    $failflg = DB_getItem($_TABLES['staticpage'], 'sp_nf',
+                                          "sp_id = '$page'");
+                }
+                if ($failflg) {
+                    if ($mode !== 'autotag') {
+                        $output = COM_siteHeader('menu');
+                    }
+                    $output .= COM_startBlock($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                    $login = new Template($_CONF['path_layout'] . 'submit');
+                    $login->set_file(array('login' => 'submitloginrequired.thtml'));
+                    $login->set_var('xhtml', XHTML);
+                    $login->set_var('site_url', $_CONF['site_url']);
+                    $login->set_var('site_admin_url', $_CONF['site_admin_url']);
+                    $login->set_var('layout_url', $_CONF['layout_url']);
+                    $login->set_var('login_message', $LANG_LOGIN[2]);
+                    $login->set_var('lang_login', $LANG_LOGIN[3]);
+                    $login->set_var('lang_newuser', $LANG_LOGIN[4]);
+                    $login->parse('output', 'login');
+                    $output .= $login->finish($login->get_var('output'));
+                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                                 'footer'));
+                    if ($mode !== 'autotag') {
+                        $output .= COM_siteFooter(true);
+                    }
+                } else {
+                    if ($mode !== 'autotag') {
+                        $output = COM_siteHeader('menu');
+                    }
+                    $output .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                    $output .= $LANG_STATIC['deny_msg'];
+                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                                 'footer'));
+                    if ($mode !== 'autotag') {
+                        $output .= COM_siteFooter(true);
+                    }
+                }
+            }
             return PLG_RET_ERROR;
         }
 
@@ -657,14 +696,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY sp_date DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-                ."sp_date,sp_format,owner_id,group_id,perm_owner,perm_group,perm_members,"
+                ."sp_date,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
-        $result = DB_query ($sql);
+        $result = DB_query($sql);
 
         $count = 0;
         while (($output_item = DB_fetchArray ($result, false)) !== false) {

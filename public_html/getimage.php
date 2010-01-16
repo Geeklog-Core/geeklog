@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows images outside of the webtree                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright ddd(C) 2004-2009 by the following authors:                         |
+// | Copyright (C) 2004-2009 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |

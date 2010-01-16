@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Functions needed to handle trackback comments.                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2009 by the following authors:                         |
+// | Copyright (C) 2005-2010 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -362,8 +362,9 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
 
     $template = new Template ($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('comment' => 'formattedcomment.thtml'));
-    $template->set_var ( 'xhtml', XHTML );
+    $template->set_var ('xhtml', XHTML);
     $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
 
     $template->set_var ('lang_from', $LANG_TRB['from']);
@@ -678,8 +679,9 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
     $template = new Template ($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('trackback' => 'trackback.thtml',
                                 'comment'   => 'trackbackcomment.thtml'));
-    $template->set_var ( 'xhtml', XHTML );
+    $template->set_var ('xhtml', XHTML);
     $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $template->set_var ('layout_url', $_CONF['layout_url']);
 
     $template->set_var ('lang_trackback', $LANG_TRB['trackback']);

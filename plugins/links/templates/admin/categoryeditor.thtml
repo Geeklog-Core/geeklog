@@ -3,7 +3,7 @@
     <form action="{site_admin_url}/plugins/links/category.php" method="post">
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr>
-                <td align="right" width="150">{lang_parent}:</td>
+                <td align="right">{lang_parent}:</td>
                 <td><select name="pid">{category_options}</select></td>
             </tr>
             <tr>
@@ -21,6 +21,10 @@
             <tr>
                 <td align="right">{lang_topic}:</td>
                 <td>{topic_selection}<td>
+            </tr>
+            <tr>
+                <td align="right">{lang_num_links}:</td>
+                <td>{num_links}<td>
             </tr>
             <tr>
                 <td colspan="2"><hr{xhtml}></td>

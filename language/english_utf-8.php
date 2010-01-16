@@ -81,7 +81,7 @@ $LANG01 = array(
     37 => 'No user stories',
     38 => 'Content Syndication',
     39 => 'Refresh',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '',
     41 => 'Guest Users',
     42 => 'Authored by:',
     43 => 'Reply to This',
@@ -366,7 +366,7 @@ $LANG04 = array(
     137 => 'Filter Story Content',
     138 => 'Misc Settings',
     139 => 'Layout and Language',
-    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics</li><li>Set the maximum number of stories to show per page</li><li>Set your theme, timezone and perferred date format</li>',
+    140 => '<li>No Topic Icons if checked will not display the story topic icons</li><li>No boxes if checked will only show the Admin Menu, User Menu and Topics</li><li>Set the maximum number of stories to show per page</li><li>Set your theme, timezone and preferred date format</li>',
     141 => 'Privacy Settings',
     142 => 'The default setting is to allow users &amp; admins to email fellow site members and show your status as online. Un-check these options to protect your privacy.',
     143 => 'Filter Block Content',
@@ -383,7 +383,10 @@ $LANG04 = array(
     159 => 'This email was generated automatically. Please do not reply to this email.',
     160 => '(max. %d x %d pixels, %d bytes; %s)',
     161 => 'will be scaled down',
-    162 => 'will not be scaled'
+    162 => 'will not be scaled',
+    163 => 'Re-Authentication Failed',
+    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    165 => 'Use Advanced Editor'
 );
 
 ###############################################################################
@@ -419,8 +422,8 @@ $LANG05 = array(
 $LANG08 = array(
     1 => 'There was an error sending your message. Please try again.',
     2 => 'Message sent successfully.',
-    3 => 'Please make sure you use a valid email address in the Reply To field.',
-    4 => 'Please fill in the Your Name, Reply To, Subject and Message fields',
+    3 => 'Please make sure you use a valid email address in the Your Email Address field.',
+    4 => 'Please fill in the Your Name, Your Email Address, Subject and Message fields',
     5 => 'Error: No such user.',
     6 => 'There was an error.',
     7 => 'User Profile for',
@@ -428,7 +431,7 @@ $LANG08 = array(
     9 => 'User URL',
     10 => 'Send mail to',
     11 => 'Your Name:',
-    12 => 'Reply To:',
+    12 => 'Your Email Address',
     13 => 'Subject:',
     14 => 'Message:',
     15 => 'HTML will not be translated.',
@@ -530,7 +533,9 @@ $LANG09 = array(
     67 => 'Show %d Results',
     68 => 'Sort By',
     69 => 'Titles Only',
-    70 => 'Not available ...'
+    70 => 'Not available ...',
+    71 => 'asc',
+    72 => 'desc'
 );
 
 ###############################################################################
@@ -825,7 +830,10 @@ $LANG24 = array(
     85 => 'Show All',
     86 => 'Advanced Editor',
     87 => 'Story Stats',
-    88 => 'Wiki-style format'
+    88 => 'Wiki-style format',
+    89 => 'Meta Description',
+    90 => 'Meta Keywords',
+    91 => 'You can always hit "Preview" to extend the expiry time.'
 );
 
 
@@ -861,7 +869,8 @@ $LANG27 = array(
     26 => 'make this the default topic for archived stories. Only one topic allowed.',
     27 => 'Or Upload Topic Icon',
     28 => 'Maximum',
-    29 => 'File Upload Errors'
+    29 => 'File Upload Errors',
+    30 => 'Stories in Topic'
 );
 
 ###############################################################################
@@ -954,7 +963,10 @@ $LANG28 = array(
     84 => "Your login name is: %s  for our site: {$_CONF['site_url']}",
     85 => 'If you have forgotten the password use the following link: %s',
     86 => 'Include',
-    87 => 'Reminders'
+    87 => 'Reminders',
+    88 => 'Default Group',
+    89 => 'Check to make this a default group for new users',
+    90 => 'Apply "Default Group" change to existing user accounts'
 );
 
 ###############################################################################
@@ -991,10 +1003,10 @@ $LANG29 = array(
 
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Mail Utility",
-    2 => 'From',
-    3 => 'Reply-to',
+    2 => 'From Name',
+    3 => 'From Email Address',
     4 => 'Subject',
-    5 => 'Body',
+    5 => 'Message',
     6 => 'Send to:',
     7 => 'All users',
     8 => 'Admin',
@@ -1030,7 +1042,7 @@ $LANG32 = array(
     6 => 'Warning: Plugin Already Installed!',
     7 => 'The plugin you are trying to install already exists.  Please delete the plugin before re-installing it',
     8 => 'Plugin Compatibility Check Failed',
-    9 => 'This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a> or get a newer version of the plugin.',
+    9 => 'This plugin requires a newer version of Geeklog. Please upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a>.',
     10 => '<br' . XHTML . '><b>There are no plugins currently installed.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'To modify or delete a plugin, click on that plugin\'s edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
@@ -1063,6 +1075,7 @@ $LANG32 = array(
     39 => 'Upload a plugin',
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
+    42 => 'Click to update',
 
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
@@ -1185,7 +1198,7 @@ $MESSAGE = array(
     44 => 'The plugin was successfully installed!',
     45 => 'The plugin was successfully deleted.',
     46 => '',
-    47 => 'This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.',
+    47 => '',
     48 => "Thank you for applying for a membership with {$_CONF['site_name']}. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.",
     49 => 'Your group has been successfully saved.',
     50 => 'The group has been successfully deleted.',
@@ -1331,7 +1344,27 @@ $LANG_DB_BACKUP = array(
     'size' => 'Size',
     'bytes' => 'Bytes',
     'total_number' => 'Total number of backups: %d',
-    'download' => 'Click to download this file'
+    'download' => 'Click to download this file',
+    'new_backup' => 'New Backup',
+    'delete_failure' => 'One or more backup files could not be deleted.',
+    'delete_success' => 'Backup file(s) successfully deleted.',
+    'convert_menu' => 'Convert to InnoDB',
+    'convert_title' => 'Convert to InnoDB tables',
+    'convert_button' => 'Convert',
+    'sorry_no_innodb' => 'Sorry, your version of MySQL does not support InnoDB tables.',
+    'innodb_explain' => 'InnoDB tables provide better performance on <em>really</em> large databases but make the backup process more complicated. Please <a href="http://dev.mysql.com/doc/mysql/en/innodb.html">read up</a> on the pros and cons of InnoDB tables before you perform this operation.',
+    'already_converted' => 'Note: It appears that all of the tables have already been converted to InnoDB.',
+    'conversion_patience' => 'Note: Conversion may take some time - please be patient.',
+    'innodb_success' => 'Successfully converted tables to InnoDB.',
+    'table_issues' => 'There may have been problems with some tables, though. Please check error.log for details.',
+
+    'optimize_menu' => 'Optimize Tables',
+    'optimize_title' => 'Optimize Tables',
+    'optimize_button' => 'Optimize',
+    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'last_optimization' => 'Last optimization',
+    'optimization_patience' => 'Note: Optimization may take some time - please be patient.',
+    'optimize_success' => 'Successfully optimized database tables.'
 );
 
 ###############################################################################
@@ -1479,7 +1512,7 @@ $LANG_SECTEST = array(
     'public_html'   => '"public_html" should never be part of your site\'s URL.  Please read the part about public_html in the %s again and change your setup accordingly before you proceed.',
     'installation'  => 'installation instructions',
     'directory'     => 'directory',
-    'failed_bak'    => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'failed_tmp'    => 'Failed to create a temporary file in your %s directory. Check your directory permissions!',
     'fix_it'        => 'This is a security risk and should be fixed!',
     'reachable'     => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
@@ -1573,7 +1606,13 @@ $LANG_ADMIN = array (
     'addchild'      => 'Add child',
     'list'          => 'list',
     'list_all'      => 'List all',
-    'na'            => 'N/A'
+    'meta_description' => 'Meta Description',
+    'meta_keywords' => 'Meta Keywords',        
+    'na'            => 'N/A',
+    'token_expiry'  => 'You have until %s to make changes. After that time, the security token embedded into this page will expire and you will lose your changes.',
+    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
+    'reauth_msg'    => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
+    'authenticate'  => 'Authenticate'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1839,17 +1878,22 @@ $LANG_confignames['Core'] = array(
     'disable_autolinks' => "Disable Autolinks?",
     'clickable_links' => 'Make URLs clickable?',
     'compressed_output' => 'Send compressed output?',
+    'frame_options' => 'Protection against "clickjacking"',
     'censormode' => "Censor Mode?",
     'censorreplace' => "Censor Replace Text",
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
+    'meta_tags' => "Meta Tags",
+    'meta_description' => "Default Meta Description",
+    'meta_keywords' => "Default Meta Keywords",    
     'default_permissions_block' => "Block Default Permissions",
     'default_permissions_story' => "Story Default Permissions",
     'default_permissions_topic' => "Topic Default Permissions",
     'atom_max_stories' => "Max. Stories in Webservices Feed",
     'disable_webservices' => 'Disable Webservices?',
     'restrict_webservices' => 'Restrict Webservices?',
+    'article_comment_close_enabled' => 'Automatically close comments (default)',
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
@@ -1947,7 +1991,11 @@ $LANG_configselects['Core'] = array(
     18 => array('Disabled' => 0, 'Enabled (Exact Match)' => 1, 'Enabled (Word Beginning)' => 2, 'Enabled (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Exact Phrase' => 'phrase', 'All of The Words' => 'all', 'Any of The Words' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict')
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
+    23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
 );
 
 ?>

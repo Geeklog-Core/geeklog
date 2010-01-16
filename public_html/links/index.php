@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Links Plugin                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -42,7 +42,7 @@
  * @filesource
  * @version 2.1
  * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2009
+ * @copyright Copyright &copy; 2005-2010
  * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
  * @author Tony Bibbs, tony AT tonybibbs DOT com
  * @author Mark Limburg, mlimburg AT users DOT sourceforge DOT net
@@ -150,8 +150,10 @@ function links_list($message)
                                 'pagenav'  => 'pagenavigation.thtml',
                                 'catdrop'  => 'categorydropdown.thtml'));
     $linklist->set_var('xhtml', XHTML);
-    $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
+    $linklist->set_var('site_url', $_CONF['site_url']);
+    $linklist->set_var('site_admin_url', $_CONF['site_admin_url']);
     $linklist->set_var('layout_url', $_CONF['layout_url']);
+    $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
 
     if ($_LI_CONF['linkcols'] > 0) {
         // Create breadcrumb trail
@@ -234,7 +236,6 @@ function links_list($message)
         $linklist->parse('category_dropdown', 'catdrop', true);
     }
 
-    $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('cid', $cid);
     $linklist->set_var('cid_plain', $cid);
     $linklist->set_var('cid_encoded', urlencode($cid));
@@ -296,7 +297,11 @@ function links_list($message)
                 $currentcid = $A['cid'];
                 $currentcategory = DB_getItem($_TABLES['linkcategories'],
                         'category', "cid = '" . addslashes($currentcid) . "'");
-                $linklist->set_var('link_category', $currentcategory);
+                if ($A['cid'] == $_LI_CONF['root']) {
+                    $linklist->set_var('link_category', $LANG_LINKS['root']);
+                } else {
+                    $linklist->set_var('link_category', $currentcategory);
+                }
             }
 
             prepare_link_item($A, $linklist);
@@ -343,7 +348,7 @@ function links_list($message)
 */
 function prepare_link_item($A, &$template)
 {
-    global $_CONF, $_USER, $_LI_CONF, $LANG_ADMIN, $LANG_LINKS, $LANG_DIRECTION,
+    global $_CONF, $_LI_CONF, $LANG_ADMIN, $LANG_LINKS, $LANG_DIRECTION,
            $_IMAGE_TYPE;
 
     $url = COM_buildUrl($_CONF['site_url']
@@ -413,7 +418,7 @@ if (isset ($_REQUEST['mode'])) {
 }
 
 $message = array();
-if (($mode == 'report') && (isset($_USER['uid']) && ($_USER['uid'] > 1))) {
+if (($mode == 'report') && !COM_isAnonUser()) {
     if (isset ($_GET['lid'])) {
         $lid = COM_applyFilter($_GET['lid']);
     }
@@ -433,16 +438,18 @@ if (($mode == 'report') && (isset($_USER['uid']) && ($_USER['uid'] > 1))) {
     }
 }
 
-if (empty ($_USER['username']) &&
+if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
     $display .= COM_siteHeader ('menu', $LANG_LINKS[114]);
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template ($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login' => 'submitloginrequired.thtml'));
-    $login->set_var ( 'xhtml', XHTML );
-    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('xhtml', XHTML);
     $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $login->set_var ('layout_url', $_CONF['layout_url']);
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');

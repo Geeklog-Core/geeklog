@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<html lang="en">
 <head>
   <title>Geeklog Documentation - Configuration</title>
   <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
@@ -93,6 +93,20 @@ manually.</p>
   <td valign="top">false</td>
   <td valign="top">Enable (true) or disable (false) URL rewriting.<br>
     Also see the section on <a href="#url-rewrite">URL Rewriting</a> below.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_meta_tags">meta_tags</a></td>
+  <td valign="top">disabled</td>
+  <td valign="top">Enabled - The meta tags for stories and topics will be displayed. If none are found, then the default will be used. The default will also be used for any page that doesn't have meta tags.<br>
+      Enabled (Default for Homepage only) - The same as Enabled except, the defaults are used only for the Homepage.<br>
+    Disabled - Meta tags are not used.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_meta_description">meta_description</a></td>
+  <td valign="top">'Geeklog, the open source content management system designed with security in mind.'</td>
+  <td valign="top">The default meta description for your site.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_meta_keywords">meta_keywords</a></td>
+  <td valign="top">'Geeklog, Blog, Content Management System, CMS, Open Source, Security'</td>
+  <td valign="top">The default meta keywords for your site.</td></tr>    
 </table>
 
 <h3><a name="site_mail">Site: Mail</a></h3>
@@ -274,7 +288,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_search_limits">search_limits</a></td>
   <td valign="top">10,15,25,30</td>
-  <td valign="top">The result limits a user can select. Each value <b>must</b> be seperated with a comma.</td></tr>
+  <td valign="top">The result limits a user can select. Each value <b>must</b> be separated with a comma.</td></tr>
 <tr>
   <td valign="top"><a name="desc_num_search_results">num_search_results</a></td>
   <td valign="top">30</td>
@@ -403,7 +417,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     <li>'list': show admin's list of stories (default)</li>
     <li>'home': display the site's homepage</li>
     <li>'admin': go to the "Admin Home" page, i.e. Command &amp; Control</li>
-    </ul></td></tr>
+    </ul>
+  <strong>Note:</strong> This option is ignored for story submissions. Editing
+  a story submission will always send you back to the submission queue (i.e.
+  "Admin Home" aka Command &amp; Control).</td></tr>
 </table>
 
 <h3><a name="stories_trackback">Stories and Trackback: Trackback</a></h3>
@@ -502,14 +519,14 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     hard-coded DOCTYPE in their <tt>header.thtml</tt>.</td></tr>
 <tr>
   <td valign="top"><a name="desc_menu_elements">menu_elements</a></td>
-  <td valign="top"><code>array('contribute', 'calendar', 'search', 'stats',
-    'directory', 'plugins')</code></td>
+  <td valign="top"><code>array('contribute', 'search', 'stats', 'directory',
+    'plugins')</code></td>
   <td valign="top">Specifies which entries are displayed in the site's menu bar
     (if your theme uses the <code>{menu_elements}</code> variable to display
     the menu bar). Can be any combination of <tt>'home'</tt>,
-    <tt>'contribute'</tt>, <tt>'calendar'</tt>, <tt>'search'</tt>,
-    <tt>'directory'</tt>, <tt>'prefs'</tt>, <tt>'plugins'</tt>,
-    and <tt>'custom'</tt> where <tt>'plugins'</tt> is the same as the
+    <tt>'contribute'</tt>, <tt>'search'</tt>, <tt>'stats'</tt>,
+    <tt>'directory'</tt>, <tt>'prefs'</tt>, <tt>'plugins'</tt>, and
+    <tt>'custom'</tt> where <tt>'plugins'</tt> is the same as the
     <code>{plg_menu_elements}</code> variable, i.e. a list of the menu entries
     provided by plugins, and <tt>'custom'</tt> displays the entries returned by
     a custom function <code>CUSTOM_menuEntries</code> (see
@@ -935,6 +952,13 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     submitted it. Requires that comments are editable (see <a href="#desc_comment_edit">above</a>). Anonymous users (those that did not register an account) can
     never edit their comments while admins can always edit comments.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_article_comment_close_enabled">article_comment_close_enabled</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Whether or not stories should be closed for comments after
+    a certain amount of days (see next option). This is only the default
+    setting for new stories and can be changed separately for each
+    story.</td></tr>
+<tr>
   <td valign="top"><a name="desc_article_comment_close_days">article_comment_close_days</a></td>
   <td valign="top">30</td>
   <td valign="top">Number of days after which a story is to be automatically
@@ -948,7 +972,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">0</td>
   <td valign="top">Number of most recent stories for which comment posting is
     allowed. Posting a new story will automatically close comments for the
-    oldest of these stories.</td></tr>
+    oldest of these stories. Set to 0 to disable this option.</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_reply_notifications">allow_reply_notifications</a></td>
   <td valign="top">0</td>
@@ -978,10 +1002,8 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If you chose 'imagemagick' for
     <code>$_CONF['image_lib']</code> above, then this should hold the
     <strong>complete path</strong> to the mogrify executable (from the
-    ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
-    You will need a fairly recent version of <a
-    href="http://www.imagemagick.org/">ImageMagick</a> for this to work
-    (version 5.4.9 or newer is recommended).</td></tr>
+    <a href="http://www.imagemagick.org/">ImageMagick</a> package), e.g.
+    '<tt>/usr/bin/mogrify</tt>' (ImageMagick 5.4.9 or newer recommended).</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
   <td valign="top"><i>(disabled)</i></td>
@@ -1029,7 +1051,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">When set to <code>true</code>, this option enables debugging
     output to be written into Geeklog's <tt>error.log</tt> file during the
     upload of an image. This is useful to track down problems with the image
-    upload.</td></tr>
+    upload and resizing.</td></tr>
 </table>
 
 <h3><a name="images_articles">Images: Images in Articles</a></h3>
@@ -1119,8 +1141,9 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><i>(disabled)</i></td>
   <td valign="top">When enabled, this option should point to an image (full URL
     required!) that should be displayed for users without a user photo. When
-    this option is not set and a user does not have a user photo (or an avatar)
-    then Geeklog will simply not display anything.</td></tr>
+    this option is not set and a user does not have a user photo (or an <a 
+    href="#images_gravatar">avatar</a>) then Geeklog will simply not display
+    anything.</td></tr>
 </table>
 
 <h3><a name="images_gravatar">Images: Gravatar</a></h3>
@@ -1135,7 +1158,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">If enabled (set to <tt>true</tt>), a user's avatar image will
     be requested from <a href="http://gravatar.com/">gravatar.com</a> if the
     user didn't upload a user photo (i.e. an uploaded photo always takes
-    priority).<br>
+    precedence).<br>
     Please note that this option may slow down your site on pages that display
     a lot of userphotos for different users (e.g. forum threads).</td></tr>
 <tr>
@@ -1368,6 +1391,17 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     however, result in slightly more load on the webserver.<br>
     For now, this feature should be considered <strong>experimental</strong> and
     hasn't been implemented for all HTML output yet.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_frame_options">frame_options</a></td>
+  <td valign="top">DENY</td>
+  <td valign="top">Protection against <a
+    href="http://en.wikipedia.org/wiki/Clickjacking">Clickjacking</a>: This
+    option indicates that the site's content should not be displayed in a frame.
+    This only works, however, when the visitor's browser respects the
+    <tt>X-FRAME-OPTIONS</tt> HTTP header. Options are to disallow all framing
+    (Strict), only allow framing from within the same site (Same Origin), or to
+    allow all framing (disabled). We strongly suggest <em>not</em> to disable
+    this option.</td></tr>
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
@@ -1383,7 +1417,10 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     display the actual error message to members of the Root group (to prevent
     leakage of possibly sensitive information). When set to <code>true</code>,
     this information will be displayed to <em>all</em> users. <strong>Use only
-    for debugging purposes!</strong></td></tr>
+    for debugging purposes!</strong><br>
+    Tip: If an error prevents you from logging into your site to enable that
+    option, you can also <a href="#desc_rootdebug_siteconfig">enable it in your
+    <tt>siteconfig.php</tt></a> file.</td></tr>
 </table>
 
 <h3><a name="misc_digest">Miscellaneous: Daily Digest</a></h3>
@@ -1570,6 +1607,19 @@ the installation and you should not normally have to edit this file.</p>
     another character encoding.<br>
     For <a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">multi-language</a> setups, using <code>'utf-8'</code> as the default character
     set is recommended.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_rootdebug_siteconfig">rootdebug</a></td>
+  <td valign="top"><i>(disabled)</i></td>
+  <td valign="top">Same as the '<a href="#desc_rootdebug">rootdebug</a>' option
+    in the Configuration. However, sometimes an error may occur that prevents
+    you from logging into your site and enabling the 'rootdebug' option. In
+    such a case, you can uncomment this line and enable the option here.<br>
+    In addition to 'true' and 'false', you can also set this option to 'force'
+    (only in <tt>siteconfig.php</tt>). This will enable displaying of sensitive
+    information like passwords and cookies.<br>
+    In any case, the same strong warning as <a href="#desc_rootdebug">above</a>
+    applies here, too: <strong>Do not leave this option enabled on a "live"
+    site!</strong></td></tr>
 </table>
 
 

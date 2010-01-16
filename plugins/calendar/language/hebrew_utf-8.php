@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language page for the Geeklog Calendar Plug-in!
 #
-# Copyright (C) 2008
+# Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.5#1
+# Version 1.6#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -220,11 +220,11 @@ $LANG_fs['calendar'] = array(
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    9 => array('הפנייה לאירוע' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת היומן' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );
 
 ?>

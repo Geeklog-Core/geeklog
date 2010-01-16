@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog homepage.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -109,6 +109,7 @@ if( $microsummary )
         }
         $pagetitle = $_CONF['site_name'] . ' - ' . $pagetitle;
     }    
+    header('Content-Type: text/plain; charset=' . COM_getCharset());
     die($pagetitle);
 }
 
@@ -137,6 +138,18 @@ if($topic)
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
             . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
             . '" title="Microsummary"' . XHTML . '>';
+
+    // Meta Tags
+    If ($_CONF['meta_tags'] > 0) {
+        $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
+        $A = DB_fetchArray ($result);
+
+        $meta_description = stripslashes($A['meta_description']);
+        $meta_keywords = stripslashes($A['meta_keywords']);
+        //$meta_description = stripslashes( DB_getItem( $_TABLES['topics'], 'meta_description', "tid = '$topic'" ));
+        //$meta_keywords = stripslashes( DB_getItem( $_TABLES['topics'], 'meta_keywords', "tid = '$topic'" ));
+        $header .=  COM_createMetaTags($meta_description, $meta_keywords);
+    }
 } else {
     $header = '<link rel="microsummary" href="' . $_CONF['site_url']
             . '/index.php?display=microsummary" title="Microsummary"' . XHTML . '>';
@@ -150,6 +163,35 @@ if (isset ($_GET['msg'])) {
     $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true), $plugin);
 }
 
+if (SEC_inGroup('Root') && ($page == 1)) {
+    $done = DB_getItem($_TABLES['vars'], 'value', "name = 'security_check'");
+    if ($done != 1) {
+        /**
+         * we don't have the path to the admin directory, so try to figure it
+         * out from $_CONF['site_admin_url']
+         * @todo FIXME: this duplicates some code from admin/sectest.php
+         */
+        $adminurl = $_CONF['site_admin_url'];
+        if (strrpos($adminurl, '/') == strlen($adminurl)) {
+            $adminurl = substr($adminurl, 0, -1);
+        }
+        $pos = strrpos($adminurl, '/');
+        if ($pos === false) {
+            // only guessing ...
+            $installdir = $_CONF['path_html'] . 'admin/install';
+        } else {
+            $installdir = $_CONF['path_html'] . substr($adminurl, $pos + 1)
+                        . '/install';
+        }
+
+        if (is_dir($installdir)) {
+            // deliberatly NOT print the actual path to the install dir
+            $secmsg = sprintf($LANG_SECTEST['remove_inst'], '')
+                    . ' ' . $MESSAGE[92];
+            $display .= COM_showMessageText($secmsg);
+        }
+    }
+}
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
@@ -171,11 +213,11 @@ if (!empty ($displayBlock)) {
     }
 }
 
-if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+if (COM_isAnonUser()) {
+    $U['maxstories'] = 0;
+} else {
     $result = DB_query("SELECT maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
     $U = DB_fetchArray($result);
-} else {
-    $U['maxstories'] = 0;
 }
 
 $maxstories = 0;

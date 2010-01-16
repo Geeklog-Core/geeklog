@@ -5,9 +5,9 @@
 #
 # This is the Hebrew language file for the Geeklog Polls plugin
 #
-# Copyright (C) 2008
+# Copyright (C) 2009
 # http://lior.weissbrod.com
-# Version 1.5#1
+# Version 1.6.1#1
 
 #
 # This program is free software; you can redistribute it and/or
@@ -57,7 +57,10 @@ $LANG_POLLS = array(
     'upgrade1' => 'התקנתם גרסה חדשה של plugins הסקרים. אנא',
     'upgrade2' => 'שדרגו',
     'editinstructions' => 'אנא מלאו את קוד הזיהוי של הסקר, לפחות שאלה אחת ושתי תשובות לה.',
-    'start_poll' => 'התחילו את הסקר'
+    'pollclosed' => 'ההצבעה לסקר זה סגורה.',
+    'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
+    'start_poll' => 'התחילו את הסקר',
+    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
@@ -106,7 +109,7 @@ $LANG25 = array(
     40 => 'צפו בכל התשובות של סקר זה'
 );
 
-$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_polls_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
 $PLG_polls_MESSAGE19 = 'הסקר שלכם נשמר בהצלחה.';
 $PLG_polls_MESSAGE20 = 'הסקר שלכם נמחק בהצלחה.';
 
@@ -130,7 +133,8 @@ $LANG_confignames['polls'] = array(
     'polladdresstime' => 'כתובת ה-IP של המצביעים תקיפה עד',
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
-    'default_permissions' => 'הרשאות ברירת המחדל של סקר'
+    'default_permissions' => 'הרשאות ברירת המחדל של סקר',
+    'meta_tags' => 'אפשרו תגיות Meta'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -144,11 +148,11 @@ $LANG_fs['polls'] = array(
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
-    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('כן' => 1, 'לא' => 0),
+    1 => array('כן' => true, 'לא' => false),
+    2 => array('לפי סדר שליחה' => 'submitorder', 'לפי הצבעות' => 'voteorder'),
+    9 => array('הפניה לסקר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת רשימה ציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );
 
 ?>

@@ -260,28 +260,15 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
     for ($i = 0; $i < $num_matches; $i++) {
         if ($matches[1][$i] == $url) {
             $pos = MBYTE_strpos($html, $matches[0][$i]);
-            $before = strip_tags(MBYTE_substr($html, 0, $pos));
+            $before = COM_getTextContent(MBYTE_substr($html, 0, $pos));
 
             $pos += MBYTE_strlen($matches[0][$i]);
-            $after = strip_tags(MBYTE_substr($html, $pos));
+            $after = COM_getTextContent(MBYTE_substr($html, $pos));
 
-            $linktext = trim(strip_tags($matches[2][$i]));
+            $linktext = COM_getTextContent($matches[2][$i]);
             break;
         }
     }
-
-    $bspace = (MBYTE_substr($before, -1) == ' ' ? true : false);
-    $aspace = (MBYTE_substr($after, 0, 1) == ' ' ? true : false);
-
-    $before = trim($before);
-    $after = trim($after);
-
-    // get rid of multiple whitespace
-    $pat = array('/^\s+/', '/\s{2,}/', '/\s+\$/');
-    $rep = array('',       ' ',        '');
-    $before   = preg_replace($pat, $rep, $before);
-    $linktext = preg_replace($pat, $rep, $linktext);
-    $after    = preg_replace($pat, $rep, $after);
 
     $tlen = MBYTE_strlen($linktext);
     if ($tlen >= $xlen) {
@@ -335,11 +322,11 @@ function PNB_makeExcerpt($html, $url, $xlen = 255)
         }
 
         // actual link text
-        if (!empty($before) && $bspace) {
+        if (!empty($before)) {
             $retval .= ' ';
         }
         $retval .= $linktext;
-        if (!empty($after) && $aspace) {
+        if (!empty($after)) {
             $retval .= ' ';
         }
 
