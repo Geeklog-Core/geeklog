@@ -336,7 +336,7 @@ $msql['mssql']="SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, 
          . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 $msql['pgsql']="SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
-            {$userfields} . , t.topic, t.imageurl
+            {$userfields}, t.topic, t.imageurl
             FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND
             {$sql} ORDER BY featured DESC, date DESC LIMIT {$limit} OFFSET {$offset}";
