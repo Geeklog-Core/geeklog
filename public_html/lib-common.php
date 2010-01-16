@@ -111,7 +111,8 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
         header("HTTP/1.1 503 Service Unavailable");
         header("Status: 503 Service Unavailable");
-        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.';
+        header('Content-Type: text/plain; charset=' . COM_getCharset());
+        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.' . LB;
     } else {
         // if the msg starts with http: assume it's a URL we should redirect to
         if (preg_match("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
@@ -119,7 +120,8 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
         } else {
             header("HTTP/1.1 503 Service Unavailable");
             header("Status: 503 Service Unavailable");
-            echo $_CONF['site_disabled_msg'];
+            header('Content-Type: text/html; charset=' . COM_getCharset());
+            echo $_CONF['site_disabled_msg'] . LB;
         }
     }
 
