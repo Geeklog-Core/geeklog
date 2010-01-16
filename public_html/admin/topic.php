@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -77,7 +77,7 @@ if (!SEC_hasRights('topic.edit')) {
 */
 function edittopic ($tid = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS,
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG04, $LANG27, $LANG_ACCESS,
            $LANG_ADMIN, $MESSAGE;
 
     $retval = '';
@@ -188,10 +188,21 @@ function edittopic ($tid = '')
     }
     $topic_templates->set_var('lang_topicimage', $LANG27[4]);
     $topic_templates->set_var('lang_uploadimage', $LANG27[27]);
-    $topic_templates->set_var('icon_dimensions', $_CONF['max_topicicon_width'].' x '.$_CONF['max_topicicon_height']);
     $topic_templates->set_var('lang_maxsize', $LANG27[28]);
+    $topic_templates->set_var('icon_dimensions',
+        $_CONF['max_topicicon_width'] . ' x ' . $_CONF['max_topicicon_height']);
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']);
+
+    if (empty($_CONF['image_lib'])) {
+        $scaling = $LANG04[162];
+    } else {
+        $scaling = $LANG04[161];
+    }
+    $topic_templates->set_var('icon_max_dimensions',
+        sprintf($LANG04[160], $_CONF['max_topicicon_width'],
+                              $_CONF['max_topicicon_height'],
+                              $_CONF['max_topicicon_size'], $scaling));
 
     $topic_templates->set_var('lang_metadescription',
                               $LANG_ADMIN['meta_description']);
