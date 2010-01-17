@@ -1,4 +1,4 @@
     <p>{lang_login_message}</p>
 
-    <p>[ {login_link} <span{hide_bar}|</span> {newuser_link} ]</p>
+    <p>[ {login_link} <span{hide_bar}>|</span> {newuser_link} ]</p>
 
