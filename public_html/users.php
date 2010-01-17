@@ -578,13 +578,15 @@ function createuser ($username, $email, $email_conf)
 }
 
 /**
-* Shows the user login form after failed attempts to either login or access a page
-* requiring login.
+* Shows the user login form
+* after failed attempts to either login or access a page requiring login.
 *
-* @return   string      HTML for login form
+* @param    boolean $hide_forgotpw_link whether to hide "forgot password?" link
+* @param    int     $userstatus         status of the user's account
+* @return   string                      HTML for login form
 *
 */
-function loginform ($hide_forgotpw_link = false, $statusmode = -1)
+function loginform($hide_forgotpw_link = false, $userstatus = -1)
 {
     global $_CONF, $LANG01, $LANG04;
 
@@ -596,10 +598,10 @@ function loginform ($hide_forgotpw_link = false, $statusmode = -1)
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
-    if ($statusmode == 0) {
+    if ($userstatus == USER_ACCOUNT_DISABLED) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
         $user_templates->set_var('lang_message', $LANG04[115]);
-    } elseif ($statusmode == 2) {
+    } elseif ($userstatus == USER_ACCOUNT_AWAITING_APPROVAL) {
         $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[116]));
         $user_templates->set_var('lang_message', $LANG04[117]);
     } else {
