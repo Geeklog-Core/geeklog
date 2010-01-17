@@ -1598,13 +1598,33 @@ function SEC_loginRequiredForm()
 
     $loginreq = new Template($_CONF['path_layout'] . 'submit');
     $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+
     $loginreq->set_var('xhtml', XHTML);
     $loginreq->set_var('site_url', $_CONF['site_url']);
     $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
     $loginreq->set_var('layout_url', $_CONF['layout_url']);
-    $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+
+    $loginreq->set_var('lang_login_message', $LANG_LOGIN[2]);
+    $loginreq->set_var('login_message', $LANG_LOGIN[2]); // deprecated
     $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
     $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
+
+    $login_link = COM_createLink($LANG_LOGIN[3],
+                                 $_CONF['site_url'] . '/users.php',
+                                 array('rel' => 'nofollow'));
+    $loginreq->set_var('login_link', $login_link);
+
+    if ($_CONF['disable_new_user_registration'] == 1) {
+        $loginreq->set_var('newuser_link', '');
+        $loginreq->set_var('hide_bar', ' style="display:none"');
+    } else {
+        $newuser_link = COM_createLink($LANG_LOGIN[4], $_CONF['site_url']
+                                                       . '/users.php?mode=new',
+                                       array('rel' => 'nofollow'));
+        $loginreq->set_var('newuser_link', $newuser_link);
+        $loginreq->set_var('hide_bar', '');
+    }
+
     $loginreq->parse('output', 'loginreq');
     $retval .= $loginreq->finish($loginreq->get_var('output'));
 

@@ -1,8 +1,10 @@
 Geeklog History/Changes:
 
-??? ??, 2010 (1.6.2)
+Apr ??, 2010 (1.6.2)
 ------------
 
+- Hide "New user" option from "Login required" form when new user registration
+  is disabled (bug #0000933) [Dirk]
 - Show the block name in the list of blocks (feature request #0000819) [Dirk]
 - Added an option (under My Account > Layout & Language) for users to select
   whether they want to use the Advanced Editor or not. The option is on by
