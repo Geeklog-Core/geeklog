@@ -1614,7 +1614,7 @@ function SEC_loginRequiredForm()
                                  array('rel' => 'nofollow'));
     $loginreq->set_var('login_link', $login_link);
 
-    if ($_CONF['disable_new_user_registration'] == 1) {
+    if ($_CONF['disable_new_user_registration']) {
         $loginreq->set_var('newuser_link', '');
         $loginreq->set_var('hide_bar', ' style="display:none"');
     } else {

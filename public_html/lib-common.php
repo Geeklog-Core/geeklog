@@ -2416,13 +2416,10 @@ function COM_userMenu( $help='', $title='', $position='' )
         $login->set_var( 'lang_password', $LANG01[57] );
         $login->set_var( 'lang_forgetpassword', $LANG01[119] );
         $login->set_var( 'lang_login', $LANG01[58] );
-        if( $_CONF['disable_new_user_registration'] == 1 )
-        {
-            $login->set_var( 'lang_signup', '' );
-        }
-        else
-        {
-            $login->set_var( 'lang_signup', $LANG01[59] );
+        if ($_CONF['disable_new_user_registration']) {
+            $login->set_var('lang_signup', '');
+        } else {
+            $login->set_var('lang_signup', $LANG01[59]);
         }
 
         // 3rd party remote authentification.
