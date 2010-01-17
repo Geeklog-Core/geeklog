@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -134,6 +134,10 @@ function plugin_compatible_with_this_version_calendar($pi_name)
     }
 
     if (!function_exists('SEC_getTokenExpiryNotice')) {
+        return false;
+    }
+
+    if (!function_exists('SEC_loginRequiredForm')) {
         return false;
     }
 

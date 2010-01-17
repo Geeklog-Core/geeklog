@@ -175,26 +175,13 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 */
 function contactform ($uid, $subject = '', $message = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG08;
 
     $retval = '';
 
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
                              ($_CONF['emailuserloginrequired'] == 1))) {
-        $retval = COM_startBlock ($LANG_LOGIN[1], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'));
-        $login = new Template($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $login->set_var ('layout_url', $_CONF['layout_url']);
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= SEC_loginRequiredForm();
     } else {
         $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
         $P = DB_fetchArray ($result);
@@ -410,7 +397,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
                         $fromemail = '', $shortmsg = '', $msg = 0)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG08;
 
     require_once $_CONF['path_system'] . 'lib-story.php';
 
@@ -418,20 +405,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
 
     if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
                              ($_CONF['emailstoryloginrequired'] == 1))) {
-        $retval = COM_startBlock ($LANG_LOGIN[1], '',
-                          COM_getBlockTemplate ('_msg_block', 'header'));
-        $login = new Template($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ( 'xhtml', XHTML );
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $login->set_var ('layout_url', $_CONF['layout_url']);
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= SEC_loginRequiredForm();
 
         return $retval;
     }

@@ -60,7 +60,7 @@ define('STATICPAGE_MAX_ID_LENGTH', 40);
 function service_submit_staticpages($args, &$output, &$svc_msg)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
-           $LANG_LOGIN, $_GROUPS, $_SP_CONF;
+           $_GROUPS, $_SP_CONF;
 
     if (version_compare(PHP_VERSION, '5.0.0', '>=') &&
             (! $_CONF['disable_webservices'])) {
@@ -442,8 +442,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
  */
 function service_delete_staticpages($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC,
-           $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG12, $LANG_STATIC;
 
     $output = COM_refresh($_CONF['site_admin_url']
                           . '/plugins/staticpages/index.php?msg=20');
@@ -493,7 +492,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
  */
 function service_get_staticpages($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $LANG_LOGIN, $_SP_CONF;
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $_SP_CONF;
 
     $output = '';
 
@@ -617,21 +616,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                     if ($mode !== 'autotag') {
                         $output = COM_siteHeader('menu');
                     }
-                    $output .= COM_startBlock($LANG_LOGIN[1], '',
-                                COM_getBlockTemplate('_msg_block', 'header'));
-                    $login = new Template($_CONF['path_layout'] . 'submit');
-                    $login->set_file(array('login' => 'submitloginrequired.thtml'));
-                    $login->set_var('xhtml', XHTML);
-                    $login->set_var('site_url', $_CONF['site_url']);
-                    $login->set_var('site_admin_url', $_CONF['site_admin_url']);
-                    $login->set_var('layout_url', $_CONF['layout_url']);
-                    $login->set_var('login_message', $LANG_LOGIN[2]);
-                    $login->set_var('lang_login', $LANG_LOGIN[3]);
-                    $login->set_var('lang_newuser', $LANG_LOGIN[4]);
-                    $login->parse('output', 'login');
-                    $output .= $login->finish($login->get_var('output'));
-                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
-                                                                 'footer'));
+                    $output .= SEC_loginRequiredForm();
                     if ($mode !== 'autotag') {
                         $output .= COM_siteFooter(true);
                     }

@@ -55,7 +55,7 @@ require_once $_CONF['path_system'] . 'lib-story.php';
 */
 function submissionform($type = 'story', $mode = '', $topic = '')
 {
-    global $_CONF, $_TABLES, $LANG12, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $LANG12;
 
     $retval = '';
 
@@ -73,20 +73,7 @@ function submissionform($type = 'story', $mode = '', $topic = '')
     } else {
         if (COM_isAnonUser() &&
             (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
-            $retval .= COM_startBlock ($LANG_LOGIN[1], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $loginreq = new Template($_CONF['path_layout'] . 'submit');
-            $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
-            $loginreq->set_var('xhtml', XHTML);
-            $loginreq->set_var('site_url', $_CONF['site_url']);
-            $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
-            $loginreq->set_var('layout_url', $_CONF['layout_url']);
-            $loginreq->set_var('login_message', $LANG_LOGIN[2]);
-            $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
-            $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
-            $loginreq->parse('errormsg', 'loginreq');
-            $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= SEC_loginRequiredForm();
             return $retval;
         } else {
             $retval .= COM_startBlock($LANG12[19])

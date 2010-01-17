@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -1579,6 +1579,38 @@ function SEC_hasAccess2($A)
 {
     return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                          $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+}
+
+/**
+* Display a "to access this area you need to be logged in" message
+*
+* @return   string      HTML for the message
+*
+*/
+function SEC_loginRequiredForm()
+{
+    global $_CONF, $LANG_LOGIN;
+
+    $retval = '';
+
+    $retval .= COM_startBlock($LANG_LOGIN[1], '',
+                              COM_getBlockTemplate('_msg_block', 'header'));
+
+    $loginreq = new Template($_CONF['path_layout'] . 'submit');
+    $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+    $loginreq->set_var('xhtml', XHTML);
+    $loginreq->set_var('site_url', $_CONF['site_url']);
+    $loginreq->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $loginreq->set_var('layout_url', $_CONF['layout_url']);
+    $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+    $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
+    $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
+    $loginreq->parse('output', 'loginreq');
+    $retval .= $loginreq->finish($loginreq->get_var('output'));
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+
+    return $retval;
 }
 
 ?>
