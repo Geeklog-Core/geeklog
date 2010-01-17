@@ -124,6 +124,8 @@ class Search {
     {
         global $_CONF, $LANG_LOGIN;
 
+        $retval = '';
+
         $retval .= COM_startBlock($LANG_LOGIN[1], '',
                         COM_getBlockTemplate('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
