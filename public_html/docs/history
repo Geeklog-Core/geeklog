@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- When a login is required to view some part of the site, we now display a
+  login form. This replaces the simple "Login required" message [Dirk]
 - Hide "New user" option from "Login required" form when new user registration
   is disabled (bug #0000933) [Dirk]
 - Show the block name in the list of blocks (feature request #0000819) [Dirk]

@@ -2470,6 +2470,7 @@ function COM_userMenu( $help='', $title='', $position='' )
             $login->set_var('openid_login', '');
         }
 
+        PLG_templateSetVars('loginblock', $login);
         $retval .= $login->finish($login->parse('output', 'form'));
         $retval .= COM_endBlock( COM_getBlockTemplate('user_block', 'footer', $position));
     }

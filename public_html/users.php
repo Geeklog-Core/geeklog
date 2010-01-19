@@ -588,97 +588,28 @@ function createuser ($username, $email, $email_conf)
 */
 function loginform($hide_forgotpw_link = false, $userstatus = -1)
 {
-    global $_CONF, $LANG01, $LANG04;
+    global $LANG04;
 
-    $retval = '';
+    $cfg = array(
+        'hide_forgotpw_link' => $hide_forgotpw_link
+    );
 
-    $user_templates = new Template ($_CONF['path_layout'] . 'users');
-    $user_templates->set_file('login', 'loginform.thtml');
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     if ($userstatus == USER_ACCOUNT_DISABLED) {
-        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
-        $user_templates->set_var('lang_message', $LANG04[115]);
+        $cfg['title']   = $LANG04[114];
+        $cfg['message'] = $LANG04[115];
+        $cfg['hide_forgotpw_link'] = true;
+        $cfg['no_newreg_link']     = true;
     } elseif ($userstatus == USER_ACCOUNT_AWAITING_APPROVAL) {
-        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[116]));
-        $user_templates->set_var('lang_message', $LANG04[117]);
+        $cfg['title']   = $LANG04[116];
+        $cfg['message'] = $LANG04[117];
+        $cfg['hide_forgotpw_link'] = true;
+        $cfg['no_newreg_link']     = true;
     } else {
-        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
-        if ($_CONF['disable_new_user_registration']) {
-            $user_templates->set_var('lang_newreglink', '');
-        } else {
-            $user_templates->set_var('lang_newreglink', $LANG04[123]);
-        }
-        $user_templates->set_var('lang_message', $LANG04[66]);
+        $cfg['title']   = $LANG04[65];
+        $cfg['message'] = $LANG04[66];
     }
 
-    $user_templates->set_var('lang_username', $LANG04[2]);
-    $user_templates->set_var('lang_password', $LANG01[57]);
-    if ($hide_forgotpw_link) {
-        $user_templates->set_var('lang_forgetpassword', '');
-    } else {
-        $user_templates->set_var('lang_forgetpassword', $LANG04[25]);
-    }
-    $user_templates->set_var('lang_login', $LANG04[80]);
-    $user_templates->set_var('end_block', COM_endBlock());
-
-    // 3rd party remote authentification.
-    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
-        $modules = SEC_collectRemoteAuthenticationModules();
-        if (count($modules) == 0) {
-            $user_templates->set_var('services', '');
-        } else {
-            if (!$_CONF['user_login_method']['standard'] &&
-                    (count($modules) == 1)) {
-                $select = '<input type="hidden" name="service" value="'
-                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
-            } else {
-                // Build select
-                $select = '<select name="service">';
-                if ($_CONF['user_login_method']['standard']) {
-                    $select .= '<option value="">' .  $_CONF['site_name']
-                            . '</option>';
-                }
-                foreach ($modules as $service) {
-                    $select .= '<option value="' . $service . '">' . $service
-                            . '</option>';
-                }
-                $select .= '</select>';
-            }
-
-            $user_templates->set_file('services', 'services.thtml');
-            $user_templates->set_var('lang_service', $LANG04[121]);
-            $user_templates->set_var('select_service', $select);
-            $user_templates->parse('output', 'services');
-            $user_templates->set_var('services',
-                   $user_templates->finish($user_templates->get_var('output')));
-        }
-    } else {
-        $user_templates->set_var('services', '');
-    }
-
-    // OpenID remote authentification.
-    if ($_CONF['user_login_method']['openid'] && ($_CONF['usersubmission'] == 0)
-            && !$_CONF['disable_new_user_registration']) {
-        $user_templates->set_file('openid_login', '../loginform_openid.thtml');
-        $user_templates->set_var('lang_openid_login', $LANG01[128]);
-        $user_templates->set_var('input_field_size', 40);
-        $app_url = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SCRIPT_URI'] : 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-        $user_templates->set_var('app_url', $app_url);
-        $user_templates->parse('output', 'openid_login');
-        $user_templates->set_var('openid_login',
-            $user_templates->finish($user_templates->get_var('output')));
-    } else {
-        $user_templates->set_var('openid_login', '');
-    }
-
-    $user_templates->parse('output', 'login');
-
-    $retval .= $user_templates->finish($user_templates->get_var('output'));
-
-    return $retval;
+    return SEC_loginForm($cfg);
 }
 
 /**
