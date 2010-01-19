@@ -198,10 +198,8 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
 
 <ul>
-<li>The "Login required" message form, <tt>submit/submitloginrequired.thtml</tt>, has been simplified by using new variables, <code>{login_link}</code> and
-    <code>{newuser_link}</code>, for the links. Using these variables, the new
-    user option will now also be hidden when registration for new users is
-    disabled (this change was required to address <a href="http://project.geeklog.net/tracking/view.php?id=933">bug #0000933</a>).</li>
+<li>The template file <tt>submit/submitloginrequired.thtml</tt> is no longer
+    needed and has been removed.</li>
 <li>In the topic editor template, <tt>admin/topic/topiceditor.thtml</tt>,
     display the max. size of the topic icon and whether it will be scaled down
     (new variable <code>{icon_max_dimensions}</code>).</li>
