@@ -10,7 +10,7 @@
 // | records. These settings are only used during the initial installation     |
 // | and not referenced any more once the plugin is installed.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Blaine Lang      - blaine AT portalparts DOT com                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -93,12 +93,9 @@ $_SP_DEFAULT['show_hits'] = 1;
 // the default for that option (1 = show date, 0 = don't).
 $_SP_DEFAULT['show_date'] = 1;
 
-// If you experience timeout issues, you may need to set both of the
-// following values to 0 as they are intensive
-
-// NOTE: using filter_html will render any blank pages useless
+// Whether to filter HTML or naughty words
 $_SP_DEFAULT['filter_html'] = 0;
-$_SP_DEFAULT['censor'] = 1;
+$_SP_DEFAULT['censor'] = 0;
 
 // What's New Block
 $_SP_DEFAULT['new_staticpages_interval'] = 1209600; // 2 weeks
