@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Static Pages Plugin                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -91,6 +91,9 @@ $retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mod
 
 if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());
+    if (! empty($_CONF['frame_options'])) {
+        header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
+    }
 }
 
 COM_output($retval);

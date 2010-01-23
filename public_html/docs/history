@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- Added clickjacking protection for the printer-friendly version of articles
+  [Dirk]
 - When a login is required to view some part of the site, we now display a
   login form. This replaces the simple "Login required" message [Dirk]
 - Hide "New user" option from "Login required" form when new user registration
@@ -59,6 +61,7 @@ Polls Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Added clickjacking protection for the printer-friendly version [Dirk]
 - Fixed SQL compatibility with MS SQL (bug #0001050)
 - Added a draft flag (feature request #0000884) [Dirk]
 - Removed the sp_uid field since it's simply a duplicate of owner_id [Dirk]
