@@ -299,11 +299,8 @@ else if( $_CONF['allow_user_themes'] == 1 )
 }
 
 /**
-* Include theme functions file
+* Include theme functions file which may/may not do anything
 */
-
-// Include theme functions file which may/may not do anything
-
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once $_CONF['path_layout'] . 'functions.php';
 }
@@ -327,9 +324,10 @@ if (!defined('XHTML')) {
     }
 }
 
-// themes can now specify the default image type
-// fall back to 'gif' if they don't
-
+/**
+* themes can specify the default image type
+* fall back to 'gif' if they don't
+*/
 if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
