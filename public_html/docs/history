@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- CUSTOM_group_change() was being called with wrong parameters (bug #0001051)
+  [Blaine]
 - Added clickjacking protection for the printer-friendly version of articles
   [Dirk]
 - When a login is required to view some part of the site, we now display a

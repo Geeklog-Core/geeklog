@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -1296,7 +1296,7 @@ function PLG_groupChanged($grp_id, $mode)
 
     $function = 'CUSTOM_group_changed';
     if (function_exists($function)) {
-        $function($uid);
+        $function($grp_id, $mode);
     }
 }
 
