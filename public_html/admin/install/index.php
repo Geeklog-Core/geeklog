@@ -1012,7 +1012,7 @@ if (INST_phpOutOfDate()) {
                 ' . $form_fields . '
                 <input type="submit" name="submit" class="submit button big-button" value="' . $LANG_INSTALL[62] . ' &gt;&gt;"' . XHTML . '>
                 </form>' . LB;
-            $display .= '<p>' . $LANG_INSTALL[94] . '<p>' . LB
+            $display .= '<p>' . $LANG_INSTALL[94] . '</p>' . LB
                      . '<ul><li>' . $LANG_INSTALL[95] . '<br' . XHTML . '>' . LB
                      . '<code>' . strtr(__FILE__, '\\', '/') . '</code></li>'
                      . '<li>' . sprintf($LANG_INSTALL[96],
@@ -1117,8 +1117,8 @@ if (INST_phpOutOfDate()) {
                     . $display_permissions . '</div>' . LB
                     . '<h2>' . $LANG_INSTALL[98] . '</h2>' . LB
                     . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
-                    . '<p><div class="codeblock"><code>' . $chmod_string . LB 
-                    . '</code></div></p><br ' . XHTML . '>' . LB;
+                    . '<p class="codeblock"><code>' . $chmod_string . LB 
+                    . '</code></p><br ' . XHTML . '>' . LB;
                 $step++;
 
             } else {
