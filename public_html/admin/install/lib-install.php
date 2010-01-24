@@ -1195,4 +1195,58 @@ function INST_sanitizePath($path)
     return $path;
 }
 
+/**
+* Prepare a dropdown list of all available databases
+*
+* Checks which driver classes and "tableanddata" files are actually present,
+* so that unwanted dbs can be removed (still requires special code all over the
+* place so you can't simply drop in new files to add support for new dbs).
+*
+* @param    string  $gl_path            base Geeklog install path
+* @param    string  $selected_dbtype    currently selected db type
+* @param    boolean $list_innodb        whether to list InnoDB option
+*
+*/
+function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = false)
+{
+    global $LANG_INSTALL;
+
+    $retval = '';
+
+    $dbs = array();
+
+    if (file_exists($gl_path . '/sql/mysql_tableanddata.php') &&
+            file_exists($gl_path . '/system/databases/mysql.class.php')) {
+        $dbs['mysql'] = $LANG_INSTALL[35];
+
+        // may not be needed as a separate option, e.g. for upgrades
+        if ($list_innodb) {
+            $dbs['mysql-innodb'] = $LANG_INSTALL[36];
+        }
+    }
+
+    if (file_exists($gl_path . '/sql/mssql_tableanddata.php') &&
+            file_exists($gl_path . '/system/databases/mssql.class.php')) {
+        $dbs['mssql'] = $LANG_INSTALL[37];
+    }
+
+    // later: PostgreSQL
+    /*
+    if (file_exists($gl_path . '/sql/pgsql_tableanddata.php') &&
+            file_exists($gl_path . '/system/databases/pgsql.class.php')) {
+        $dbs['pgsql'] = $LANG_INSTALL[360];
+    }
+    */
+
+    foreach ($dbs as $dbname => $optiontext) {
+        $retval .= '<option value="' . $dbname . '"';
+        if ($dbname == $selected_dbtype) {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>' . $optiontext . '</option>' . LB;
+    }
+
+    return $retval;
+}
+
 ?>

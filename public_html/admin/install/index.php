@@ -77,28 +77,26 @@ function INST_installEngine($install_type, $install_step)
         // go back because they entered incorrect database information.
         $site_name = (isset($_POST['site_name'])) ? str_replace('\\', '', $_POST['site_name']) : $LANG_INSTALL[29];
         $site_slogan = (isset($_POST['site_slogan'])) ? str_replace('\\', '', $_POST['site_slogan']) : $LANG_INSTALL[30];
-        $mysql_innodb_selected = '';
-        $mysql_selected = '';
-        $mssql_selected = '';
+        $db_selected = '';
         if (isset($_POST['db_type'])) {
             switch ($_POST['db_type']) {
                 case 'mysql-innodb':
-                    $mysql_innodb_selected = ' selected="selected"';
+                    $db_selected = 'mysql-innodb';
                     break;
                 case 'mssql':
-                    $mssql_selected = ' selected="selected"';
+                    $db_selected = 'mssql';
                     break;
                 default:
-                    $mysql_selected = ' selected="selected"';
+                    $db_selected = 'mysql';
                     break;
             }
         } else {
             switch ($_DB_dbms) {
                 case 'mssql':
-                    $mssql_selected = ' selected="selected"';
+                    $db_selected = 'mssql';
                     break;
                 default:
-                    $mysql_selected = ' selected="selected"';
+                    $db_selected = 'mysql';
                     break;
             }
         }
@@ -157,10 +155,12 @@ function INST_installEngine($install_type, $install_step)
 
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . htmlspecialchars($site_name) . '" size="40"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . htmlspecialchars($site_slogan) . '" size="40"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">
-                <option value="mysql"' . $mysql_selected . '>' . $LANG_INSTALL[35] . '</option>
-                ' . ($install_type == 'install' ? '<option value="mysql-innodb"' . $mysql_innodb_selected . '>' . $LANG_INSTALL[36] . '</option>' : '') . '
-                <option value="mssql"' . $mssql_selected . '>' . $LANG_INSTALL[37] . '</option></select> ' . '</p>
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">'
+
+            . INST_listOfSupportedDBs($gl_path, $db_selected,
+                    ($install_type == 'install' ? true : false)) .
+
+           '</select> ' . '</p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. htmlspecialchars($db_host) .'" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. htmlspecialchars($db_name) . '" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . htmlspecialchars($db_user) . '" size="20"' . XHTML . '></p>
