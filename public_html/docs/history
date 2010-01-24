@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- For anonymous comment submissions, use "Your Name" instead of "Username" in
+  the comment submission form (feature request #0001039) [Dirk]
 - CUSTOM_group_change() was being called with wrong parameters (bug #0001051)
   [Blaine]
 - Added clickjacking protection for the printer-friendly version of articles

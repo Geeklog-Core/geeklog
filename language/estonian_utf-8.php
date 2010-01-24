@@ -220,7 +220,8 @@ $LANG03 = array(
     40 => 'Kui sa ei soovi enam saada  teaviusi vastuste kohta, külasta järgnevat aadressit:',
     41 => 'Tere %s,',
     42 => 'Loobu tellimisest',
-    43 => 'Loobu vastuste teavitustest.'
+    43 => 'Loobu vastuste teavitustest.',
+    44 => 'Your Name'
 );
 
 ###############################################################################

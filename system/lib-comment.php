@@ -880,6 +880,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
             if ($_CONF['show_fullname'] == 1) {
                 $comment_template->set_var('lang_username', $LANG_ACCESS['name']);
+            } elseif (COM_isAnonUser()) {
+                $comment_template->set_var('lang_username', $LANG03[44]);
             } else {
                 $comment_template->set_var('lang_username', $LANG03[5]);
             }
