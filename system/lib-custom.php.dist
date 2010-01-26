@@ -20,7 +20,7 @@
 // | not include lib-common.php in this file.                                  |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -125,6 +125,8 @@ function CUSTOM_loginErrorHandler($msg='') {
 * - 'registration' (user registration form)
 * - 'contact' (email user form)
 * - 'emailstory' (email story to a friend)
+* - 'loginblock' (login form in the side bar)
+* - 'loginform' (login form in the content area)
 *
 * This function is called whenever PLG_templateSetVars is called, i.e. in
 * addition to the templates listed here, it may also be called from plugins.

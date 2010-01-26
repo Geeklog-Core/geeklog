@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -1261,81 +1261,38 @@ function SECINT_checkToken()
 */ 
 function SECINT_authform($returnurl, $method, $postdata = '', $getdata = '', $files = '')
 {
-    global $_CONF, $LANG01, $LANG04, $LANG20, $LANG_ADMIN;
+    global $LANG20, $LANG_ADMIN;
 
-    $retval = '';
+    // stick postdata etc. into hidden input fields
+    $hidden = '<input type="hidden" name="mode" value="tokenexpired"'
+            . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="token_returnurl" value="'
+            . urlencode($returnurl) . '"' . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="token_postdata" value="'
+            . urlencode($postdata) . '"' . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="token_getdata" value="'
+            . urlencode($getdata) . '"' . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="token_files" value="'
+            . urlencode($files) . '"' . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="token_requestmethod" value="'
+            . $method . '"' . XHTML . '>' . LB;
+    $hidden .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+            . SEC_createToken() . '"'. XHTML . '>' . LB;
 
-    $authform = new Template($_CONF['path_layout'] . 'users');
-    $authform->set_file('login', 'loginform.thtml');
-    $authform->set_var('xhtml', XHTML);
-    $authform->set_var('site_url', $_CONF['site_url']);
-    $authform->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $authform->set_var('layout_url', $_CONF['layout_url']);
+    $cfg = array(
+        'hide_forgotpw_link' => true,
+        'no_newreg_link'     => true,
+        'no_openid_login'    => true, // TBD
+        'no_plugin_vars'     => true, // no plugin vars in re-auth form, please
 
-    $authform->set_var('lang_message', $LANG_ADMIN['reauth_msg']);
-    $authform->set_var('lang_newreglink', '');
-    $authform->set_var('lang_forgetpassword', '');
+        'title'       => $LANG20[1],
+        'message'     => $LANG_ADMIN['reauth_msg'],
+        'button_text' => $LANG_ADMIN['authenticate'],
 
-    $authform->set_var('lang_login', $LANG_ADMIN['authenticate']);
-    $authform->set_var('lang_username', $LANG04[2]);
-    $authform->set_var('lang_password', $LANG01[57]);
+        'hidden_fields' => $hidden
+    );
 
-    $authform->set_var('start_block_loginagain', COM_startBlock($LANG20[1]));
-    $authform->set_var('end_block', COM_endBlock());
-
-    $services = ''; // 3rd party remote authentification.
-    if ($_CONF['user_login_method']['3rdparty'] && !$_CONF['usersubmission']) {
-        $modules = SEC_collectRemoteAuthenticationModules();
-        if (count($modules) > 0) {
-            if (!$_CONF['user_login_method']['standard'] &&
-                    (count($modules) == 1)) {
-                $select = '<input type="hidden" name="service" value="'
-                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
-            } else {
-                // Build select
-                $select = '<select name="service">';
-                if ($_CONF['user_login_method']['standard']) {
-                    $select .= '<option value="">' .  $_CONF['site_name']
-                            . '</option>';
-                }
-                foreach ($modules as $service) {
-                    $select .= '<option value="' . $service . '">' . $service
-                            . '</option>';
-                }
-                $select .= '</select>';
-            }
-
-            $authform->set_file('services', 'services.thtml');
-            $authform->set_var('lang_service', $LANG04[121]);
-            $authform->set_var('select_service', $select);
-            $authform->parse('output', 'services');
-            $services = $authform->finish($authform->get_var('output'));
-        }
-    }
-
-    // (ab)use {services} for some hidden fields
-    $services .= '<input type="hidden" name="mode" value="tokenexpired"'
-              . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_returnurl" value="'
-              . urlencode($returnurl) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_postdata" value="'
-              . urlencode($postdata) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_getdata" value="'
-              . urlencode($getdata) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_files" value="'
-              . urlencode($files) . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="token_requestmethod" value="'
-              . $method . '"' . XHTML . '>' . LB;
-    $services .= '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
-              . SEC_createToken() . '"'. XHTML . '>' . LB;
-    $authform->set_var('services', $services);
-    $authform->set_var('openid_login', ''); // TBD
-
-    $authform->parse('output', 'login');
-
-    $retval .= $authform->finish($authform->get_var('output'));
-
-    return $retval;
+    return SEC_loginForm($cfg);
 }
 
 
@@ -1588,6 +1545,163 @@ function SEC_hasAccess2($A)
 {
     return SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                          $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+}
+
+/**
+* Display a "to access this area you need to be logged in" message
+*
+* @return   string      HTML for the message
+*
+*/
+function SEC_loginRequiredForm()
+{
+    global $_CONF, $LANG_LOGIN;
+
+    $cfg = array(
+        'title'   => $LANG_LOGIN[1],
+        'message' => $LANG_LOGIN[2]
+    );
+
+    return SEC_loginForm($cfg);
+}
+
+/**
+* Displays a login form
+*
+* This is the version of the login form displayed in the content area of the
+* page (not the side bar). It will present all options (remote authentication
+* - including OpenID, new registration link, etc.) according to the current
+* configuration settings.
+*
+* @param    array   $use_config     options to override some of the defaults
+* @return   string                  HTML of the login form
+*
+*/
+function SEC_loginForm($use_config = array())
+{
+    global $_CONF, $LANG01, $LANG04;
+
+    $retval = '';
+
+    $default_config = array(
+        // display options
+        'hide_forgotpw_link' => false,
+
+        // for hidden fields to be included in the form
+        'hidden_fields'     => '',
+
+        // options to locally override some specific $_CONF options
+        'no_3rdparty_login' => false, // $_CONF['user_login_method']['3rdparty']
+        'no_openid_login'   => false, // $_CONF['user_login_method']['openid']
+        'no_newreg_link'    => false, // $_CONF['disable_new_user_registration']
+        'no_plugin_vars'    => false, // call PLG_templateSetVars?
+
+        // default texts
+        'title'       => $LANG04[65], // Try Logging in Again
+        'message'     => $LANG04[66], // You may have mistyped ...
+        'button_text' => $LANG04[80]  // Login
+    );
+
+    $config = array_merge($default_config, $use_config);
+
+    $loginform = new Template($_CONF['path_layout'] . 'users');
+    $loginform->set_file('login', 'loginform.thtml');
+    $loginform->set_var('xhtml', XHTML);
+    $loginform->set_var('site_url', $_CONF['site_url']);
+    $loginform->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $loginform->set_var('layout_url', $_CONF['layout_url']);
+
+    $loginform->set_var('start_block_loginagain',
+                        COM_startBlock($config['title']));
+    $loginform->set_var('lang_message', $config['message']);
+    if ($config['no_newreg_link'] || $_CONF['disable_new_user_registration']) {
+        $loginform->set_var('lang_newreglink', '');
+    } else {
+        $loginform->set_var('lang_newreglink', $LANG04[123]);
+    }
+
+    $loginform->set_var('lang_username', $LANG04[2]);
+    $loginform->set_var('lang_password', $LANG01[57]);
+    if ($config['hide_forgotpw_link']) {
+        $loginform->set_var('lang_forgetpassword', '');
+        $loginform->set_var('forgetpassword_link', '');
+    } else {
+        $loginform->set_var('lang_forgetpassword', $LANG04[25]);
+        $forget = COM_createLink($LANG04[25], $_CONF['site_url']
+                                              . '/users.php?mode=getpassword',
+                                 array('rel' => 'nofollow'));
+        $loginform->set_var('forgetpassword_link', $forget);
+    }
+    $loginform->set_var('lang_login', $config['button_text']);
+    $loginform->set_var('end_block', COM_endBlock());
+
+    // 3rd party remote authentification.
+    $services = '';
+    if (!$config['no_3rdparty_login'] &&
+            $_CONF['user_login_method']['3rdparty'] &&
+            ($_CONF['usersubmission'] == 0)) {
+        $modules = SEC_collectRemoteAuthenticationModules();
+        if (count($modules) > 0) {
+            if (!$_CONF['user_login_method']['standard'] &&
+                    (count($modules) == 1)) {
+                $select = '<input type="hidden" name="service" value="'
+                        . $modules[0] . '"' . XHTML . '>' . $modules[0];
+            } else {
+                // Build select
+                $select = '<select name="service">';
+                if ($_CONF['user_login_method']['standard']) {
+                    $select .= '<option value="">' .  $_CONF['site_name']
+                            . '</option>';
+                }
+                foreach ($modules as $service) {
+                    $select .= '<option value="' . $service . '">' . $service
+                            . '</option>';
+                }
+                $select .= '</select>';
+            }
+
+            $loginform->set_file('services', 'services.thtml');
+            $loginform->set_var('lang_service', $LANG04[121]);
+            $loginform->set_var('select_service', $select);
+            $loginform->parse('output', 'services');
+            $services .= $loginform->finish($loginform->get_var('output'));
+        }
+    }
+    if (! empty($config['hidden_fields'])) {
+        // allow caller to (ab)use {services} for hidden fields
+        $services .= $config['hidden_fields'];
+    }
+    $loginform->set_var('services', $services);
+
+    // OpenID remote authentification.
+    if (!$config['no_openid_login'] && $_CONF['user_login_method']['openid'] &&
+            ($_CONF['usersubmission'] == 0) &&
+            !$_CONF['disable_new_user_registration']) {
+        $loginform->set_file('openid_login', '../loginform_openid.thtml');
+        $loginform->set_var('lang_openid_login', $LANG01[128]);
+        $loginform->set_var('input_field_size', 40);
+
+        // for backward compatibility - not used any more
+        $app_url = isset($_SERVER['SCRIPT_URI'])
+                 ? $_SERVER['SCRIPT_URI']
+                 : 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+        $loginform->set_var('app_url', $app_url);
+
+        $loginform->parse('output', 'openid_login');
+        $loginform->set_var('openid_login',
+            $loginform->finish($loginform->get_var('output')));
+    } else {
+        $loginform->set_var('openid_login', '');
+    }
+
+    if (! $config['no_plugin_vars']) {
+        PLG_templateSetVars('loginform', $loginform);
+    }
+    $loginform->parse('output', 'login');
+
+    $retval .= $loginform->finish($loginform->get_var('output'));
+
+    return $retval;
 }
 
 ?>

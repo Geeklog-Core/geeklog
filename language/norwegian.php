@@ -232,7 +232,8 @@ $LANG03 = array(
     40 => 'If you wish to receive no further notifications of replies, visit the following link:',
     41 => 'Hello %s,',
     42 => 'Unsubscribe',
-    43 => 'Unsubscribe from reply notifications'
+    43 => 'Unsubscribe from reply notifications',
+    44 => 'Your Name'
 );
 
 ###############################################################################

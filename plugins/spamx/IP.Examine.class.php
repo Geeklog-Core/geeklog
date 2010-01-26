@@ -4,7 +4,7 @@
 * File: IP.Examine.class.php
 * This is the IP BlackList Examine class for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2009 by the following authors:
+* Copyright (C) 2004-2010 by the following authors:
 * Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
@@ -72,6 +72,7 @@ class IP extends BaseCommand {
      * @param   string  $CIDR       IP address range to check against
      * @return  boolean             true if IP falls into the CIDR, else false
      * @access  private
+     * @todo    CIDR support for IPv6 addresses
      *
      * Original author: Ian B, taken from
      * @link http://www.php.net/manual/en/function.ip2long.php#71939

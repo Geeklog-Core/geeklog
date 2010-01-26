@@ -1,2 +1,0 @@
-                            {login_message}<br{xhtml}><br{xhtml}>
-                            [ <a href="{site_url}/users.php" rel="nofollow">{lang_login}</a> | <a href="{site_url}/users.php?mode=new" rel="nofollow">{lang_newuser}</a> ]<br{xhtml}><br{xhtml}>

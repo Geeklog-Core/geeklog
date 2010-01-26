@@ -111,7 +111,8 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
         header("HTTP/1.1 503 Service Unavailable");
         header("Status: 503 Service Unavailable");
-        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.';
+        header('Content-Type: text/plain; charset=' . COM_getCharset());
+        echo $_CONF['site_name'] . ' is temporarily down.  Please check back soon.' . LB;
     } else {
         // if the msg starts with http: assume it's a URL we should redirect to
         if (preg_match("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
@@ -119,7 +120,8 @@ if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
         } else {
             header("HTTP/1.1 503 Service Unavailable");
             header("Status: 503 Service Unavailable");
-            echo $_CONF['site_disabled_msg'];
+            header('Content-Type: text/html; charset=' . COM_getCharset());
+            echo $_CONF['site_disabled_msg'] . LB;
         }
     }
 
@@ -297,11 +299,8 @@ else if( $_CONF['allow_user_themes'] == 1 )
 }
 
 /**
-* Include theme functions file
+* Include theme functions file which may/may not do anything
 */
-
-// Include theme functions file which may/may not do anything
-
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once $_CONF['path_layout'] . 'functions.php';
 }
@@ -325,9 +324,10 @@ if (!defined('XHTML')) {
     }
 }
 
-// themes can now specify the default image type
-// fall back to 'gif' if they don't
-
+/**
+* themes can specify the default image type
+* fall back to 'gif' if they don't
+*/
 if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
@@ -2414,13 +2414,10 @@ function COM_userMenu( $help='', $title='', $position='' )
         $login->set_var( 'lang_password', $LANG01[57] );
         $login->set_var( 'lang_forgetpassword', $LANG01[119] );
         $login->set_var( 'lang_login', $LANG01[58] );
-        if( $_CONF['disable_new_user_registration'] == 1 )
-        {
-            $login->set_var( 'lang_signup', '' );
-        }
-        else
-        {
-            $login->set_var( 'lang_signup', $LANG01[59] );
+        if ($_CONF['disable_new_user_registration']) {
+            $login->set_var('lang_signup', '');
+        } else {
+            $login->set_var('lang_signup', $LANG01[59]);
         }
 
         // 3rd party remote authentification.
@@ -2471,6 +2468,7 @@ function COM_userMenu( $help='', $title='', $position='' )
             $login->set_var('openid_login', '');
         }
 
+        PLG_templateSetVars('loginblock', $login);
         $retval .= $login->finish($login->parse('output', 'form'));
         $retval .= COM_endBlock( COM_getBlockTemplate('user_block', 'footer', $position));
     }

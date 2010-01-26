@@ -223,7 +223,8 @@ $LANG03 = array(
     40 => 'Wenn keine weiteren Benachrichtigungen gewünscht sind, dann bitte folgenden Link besuchen:',
     41 => 'Hallo %s,',
     42 => 'Abmelden',
-    43 => 'Abmelden von Benachrichtigungen auf Kommentare'
+    43 => 'Abmelden von Benachrichtigungen auf Kommentare',
+    44 => 'Dein Name'
 );
 
 ###############################################################################
