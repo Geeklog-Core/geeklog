@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql_install.php,v 1.3 2007/08/09 18:29:34 dhaun Exp $
+// $Id: pgsql_install.php,v 1.1 2010/01/26 18:29:34 dhaun Exp $
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
@@ -42,6 +42,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_format varchar(20) NOT NULL default '',
   sp_onmenu int NOT NULL default '0',
   sp_label varchar(64) default NULL,
+  draft_flag int unsigned default '0',
   commentcode int NOT NULL default '0',
   owner_id int NOT NULL default '1',
   group_id int NOT NULL default '1',
