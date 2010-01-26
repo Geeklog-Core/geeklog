@@ -288,7 +288,7 @@ function itemlist($type, $token)
         $section_title = $LANG29[35];
         $section_help = 'ccstorysubmission.html';
     } elseif ($type == 'comment') {
-        $sql = "SELECT cid AS id,title,comment,date,uid "
+        $sql = "SELECT cid AS id,title,comment,date,uid,type,sid "
               . "FROM {$_TABLES['commentsubmissions']} "
               . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
