@@ -8,7 +8,7 @@
 // |                                                                           |
 // | English language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -86,7 +86,6 @@ $LANG_INSTALL = array(
     34 => 'Database Type',
     35 => 'MySQL',
     36 => 'MySQL with InnoDB Table support',
-    360=>'PgSQL',
     37 => 'Microsoft SQL',
     38 => 'Error',
     39 => 'Database Hostname',
@@ -155,7 +154,8 @@ $LANG_INSTALL = array(
     102 => 'Enter configuration information',
     103 => 'and configure additional plugins',
     104 => 'Incorrect Admin Directory Path',
-    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.'
+    105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.',
+    106 => 'PostgreSQL'
 );
 
 // +---------------------------------------------------------------------------+

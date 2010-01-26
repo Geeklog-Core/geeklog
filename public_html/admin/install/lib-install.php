@@ -1239,13 +1239,10 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
         $dbs['mssql'] = $LANG_INSTALL[37];
     }
 
-    // later: PostgreSQL
-    /*
     if (file_exists($gl_path . '/sql/pgsql_tableanddata.php') &&
             file_exists($gl_path . '/system/databases/pgsql.class.php')) {
-        $dbs['pgsql'] = $LANG_INSTALL[360];
+        $dbs['pgsql'] = $LANG_INSTALL[106];
     }
-    */
 
     foreach ($dbs as $dbname => $optiontext) {
         $retval .= '<option value="' . $dbname . '"';
