@@ -1242,16 +1242,10 @@ function userprofile($user, $msg = 0)
     //     $sql .= " AND (sid in ($sidList))";
     // }
     if (!empty ($sidList)) {
-        $sql['mysql'] .= " HAVING sid in ($sidList)";
-        $sql['pgsql'] .= " HAVING sid in ($sidList)";
-        $sql['mssql'] .= " HAVING sid in ($sidList)";
-
+        $sql .= " HAVING sid in ($sidList)";
     }
-    $sql['mysql'] .= " ORDER BY unixdate DESC LIMIT 10";
-    $sql['mssql'] .= " ORDER BY unixdate DESC LIMIT 10";
-    $sql['pgsql'] .= " ORDER BY unixdate DESC LIMIT 10";
+    $sql .= " ORDER BY unixdate DESC LIMIT 10";
 
-     
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
