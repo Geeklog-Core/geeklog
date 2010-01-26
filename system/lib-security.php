@@ -1191,7 +1191,7 @@ function SEC_checkToken()
 */
 function SECINT_checkToken()
 {
-    global $_TABLES, $_USER;
+    global $_TABLES, $_USER, $_DB_dbms;
 
     $token = ''; // Default to no token.
     $return = false; // Default to fail.
