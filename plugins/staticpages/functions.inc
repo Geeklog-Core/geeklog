@@ -1502,10 +1502,17 @@ function plugin_getwhatsnew_staticpages()
     if ($_SP_CONF['includephp'] == 0) {
         $extra_sql .=' AND sp_php = 0';
     }
-    
-    $sql = "SELECT sp_id, sp_title 
+    $sql = array();
+    $sql['mysql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
         WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        {$extra_sql} 
+        " . COM_getPermSQL('AND') . " 
+        ORDER BY sp_date DESC LIMIT 15";
+        
+    $sql['pgsql'] = "SELECT sp_id, sp_title 
+        FROM {$_TABLES['staticpage']} 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (sp_date >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
         ORDER BY sp_date DESC LIMIT 15";
