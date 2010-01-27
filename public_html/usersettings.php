@@ -1449,8 +1449,7 @@ function savepreferences($A)
     if (empty ($etids)) {
         $etids = '-';
     }
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'");
-
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","{$_USER['uid']},'$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'");
     $A['commentmode'] = COM_applyFilter ($A['commentmode']);
     if (empty ($A['commentmode'])) {
         $A['commentmode'] = $_CONF['comment_mode'];
@@ -1468,8 +1467,7 @@ function savepreferences($A)
         $A['commentlimit'] = $_CONF['comment_limit'];
     }
 
-    DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$A['commentmode']}','{$A['commentorder']}','{$A['commentlimit']}'");
-
+    DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"{$_USER['uid']},'{$A['commentmode']}','{$A['commentorder']}','{$A['commentlimit']}'");
     PLG_userInfoChanged ($_USER['uid']);
 }
 
