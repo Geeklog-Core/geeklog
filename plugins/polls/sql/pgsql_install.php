@@ -45,8 +45,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
   answer varchar(255) default NULL,
   votes int default NULL,
   remark varchar(255) NULL,
-  PRIMARY KEY (pid, qid, aid)
-)
+  PRIMARY KEY (pid, qid, aid))
 ";
 
 $_SQL[] = "
@@ -54,8 +53,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   qid int NOT NULL DEFAULT '0',
   pid varchar(40) NOT NULL default '',
   question varchar(255) NOT NULL,
-  PRIMARY KEY (qid, pid)
-)
+  PRIMARY KEY (qid, pid))
 ";
 
 $_SQL[] = "
@@ -63,6 +61,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   pid varchar(40) NOT NULL default '',
   topic varchar(255) default NULL,
   voters int default NULL,
+  meta_description TEXT NULL,
   questions int NOT NULL default '0',
   date timestamp default NULL,
   display int NOT NULL default '0',
@@ -82,7 +81,6 @@ CREATE TABLE {$_TABLES['polltopics']} (
   CREATE INDEX pollquestions_display ON {$_TABLES['polltopics']}(display);
   CREATE INDEX pollquestions_commentcode ON {$_TABLES['polltopics']}(commentcode);
   CREATE INDEX pollquestions_statuscode ON {$_TABLES['polltopics']}(statuscode);
-
 ";
 
 $_SQL[] = "
@@ -91,8 +89,7 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   pid varchar(20) NOT NULL,
   ipaddress varchar(15) NOT NULL default '',
   date int default NULL,
-  PRIMARY KEY  (id)
-)
+  PRIMARY KEY  (id))
 ";
 
 $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
