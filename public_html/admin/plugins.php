@@ -942,7 +942,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             $grp_desc = addslashes($desc);
             $sql=array();
 
-            $sql['pgsql']="INSERT INTO {$_TABLES['groups']} (grp_id,grp_name, grp_descr) VALUES ((SELECT NEXTVAL('groups_grp_id_seq')),'$grp_name', '$grp_desc')";
+            $sql['pgsql']="INSERT INTO {$_TABLES['groups']} (grp_id,grp_name, grp_descr) VALUES ((SELECT NEXTVAL('{$_TABLES['groups']}_grp_id_seq')),'$grp_name', '$grp_desc')";
             $sql['mysql']="INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')";
             $sql['mssql']="INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')";
            
@@ -1014,7 +1014,7 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
             $sql=array();
             
              $sql['pgsql']="INSERT INTO {$_TABLES['features']} (ft_id,ft_name, ft_descr)
-                     VALUES ((SELECT nextval('ft_id_seq'))'$ft_name', '$ft_desc')"; 
+                     VALUES ((SELECT nextval('{$_TABLES['features']}_ft_id_seq')),'$ft_name', '$ft_desc')"; 
                        
              $sql['mysql']="INSERT INTO {$_TABLES['features']} (ft_name, ft_descr)
                     VALUES ('$ft_name', '$ft_desc')";
