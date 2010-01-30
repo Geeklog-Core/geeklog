@@ -4,7 +4,7 @@
 * File: SLVwhitelist.Admin.class.php
 * This is the SLV Whitelist Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2009 by the following authors:
+* Copyright (C) 2004-2010 by the following authors:
 * Author   Tom Willett     tomw AT pigstye DOT net
 *          Dirk Haun       dirk AT haun-online DOT de
 *
@@ -66,6 +66,7 @@ class SLVwhitelist extends BaseAdmin {
         $display = '<hr' . XHTML . '>' . LB . '<p><b>';
         $display .= $LANG_SX00['slvwhitelist'];
         $display .= '</b></p>' . LB . '<ul>' . LB;
+        $display .= '<li>' . $_CONF['site_url'] . '</li>' . LB;
         $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist'");
         $nrows = DB_numRows($result);
         for ($i = 0; $i < $nrows; $i++) {
