@@ -6897,10 +6897,10 @@ function COM_createMetaTags($meta_description, $meta_keywords)
     
     If ($_CONF['meta_tags'] > 0) {
         if ($meta_description != '') {
-            $headercode .= LB . '<meta name="description" content="' . $meta_description . '"' . XHTML . '>';
+            $headercode .= LB . '<meta name="description" content="' . ereg_replace("\n|\r|\r\n|\n\r", "", strip_tags($meta_description)) . '"' . XHTML . '>';
         }
         if ($meta_keywords != '') {
-            $headercode .= LB . '<meta name="keywords" content="' . $meta_keywords . '"' . XHTML . '>';
+            $headercode .= LB . '<meta name="keywords" content="' . ereg_replace("\n|\r|\r\n|\n\r", "", strip_tags($meta_keywords)) . '"' . XHTML . '>';
         }
     }    
 
