@@ -6,14 +6,14 @@
 // +---------------------------------------------------------------------------+
 // | psgql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
-// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
-// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
-// |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Trinity Bays      - trinity93 AT gmail DOT com 
-// |          Stanislav Palatnik - spalatnikk AT gmail DOT com                  |
+// | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
+// |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
+// |          Jason Whittenburg  - jwhitten AT securitygeeks DOT com           |
+// |          Dirk Haun          - dirk AT haun-online DOT de                  |
+// |          Trinity Bays       - trinity93 AT gmail DOT com                  |
+// |          Stanislav Palatnik - spalatnikk AT gmail DOT com                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -118,6 +118,6 @@ CREATE TABLE {$_TABLES['personal_events']} (
 
 $_SQL[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2008050110130162','Installed the Calendar plugin','Today, you successfully installed the Calendar plugin.','Your webserver',CURDATE(),CURDATE(),'http://www.geeklog.net/',1,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL)";
 
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),1,'events_block','phpblock','Events','all',4,'',1,'phpblock_calendar',{$_USER['uid']},#group#,3,3)";
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),1,'events_block','phpblock','Events','all',100,'',1,'phpblock_calendar',{$_USER['uid']},#group#,3,3)";
 
 ?>
