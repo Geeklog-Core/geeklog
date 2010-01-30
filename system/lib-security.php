@@ -1392,7 +1392,8 @@ function SEC_getTokenExpiryTime($token)
 
         $sql['mysql'] = "SELECT UNIX_TIMESTAMP(DATE_ADD(created, INTERVAL ttl SECOND)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
         $sql['mssql'] = "SELECT UNIX_TIMESTAMP(DATEADD(ss, ttl, created)) AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
-
+        $sql['pgsql'] = "SELECT UNIX_TIMESTAMP(created) + ttl AS expirytime FROM {$_TABLES['tokens']} WHERE (token = '$token') AND (owner_id = '{$_USER['uid']}') AND (ttl > 0)";
+        
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             list($retval) = DB_fetchArray($result);
