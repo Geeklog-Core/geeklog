@@ -965,8 +965,10 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'feed_url', implode( LB, $feed_url ));
 
     $relLinks = array();
-    if( !COM_onFrontpage() )
-    {
+    if (COM_onFrontpage()) {
+        $relLinks['canonical'] = '<link rel="canonical" href="'
+                               . $_CONF['site_url'] . '/"' . XHTML . '>';
+    } else {
         $relLinks['home'] = '<link rel="home" href="' . $_CONF['site_url']
                           . '/" title="' . $LANG01[90] . '"' . XHTML . '>';
     }
@@ -2110,170 +2112,136 @@ function COM_accessLog( $logentry )
 * @return   string                HTML formatted topic list
 *
 */
-
-function COM_showTopics( $topic='' )
+function COM_showTopics($topic = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
 
-    $langsql = COM_getLangSQL( 'tid' );
-    if( empty( $langsql ))
-    {
+    $langsql = COM_getLangSQL('tid');
+    if (empty($langsql)) {
         $op = 'WHERE';
-    }
-    else
-    {
+    } else {
         $op = 'AND';
     }
 
     $sql = "SELECT tid,topic,imageurl,meta_description FROM {$_TABLES['topics']}" . $langsql;
-    if( !COM_isAnonUser() )
-    {
-        $tids = DB_getItem( $_TABLES['userindex'], 'tids',
-                            "uid = '{$_USER['uid']}'" );
-        if( !empty( $tids ))
-        {
+    if (! COM_isAnonUser()) {
+        $tids = DB_getItem($_TABLES['userindex'], 'tids',
+                           "uid = '{$_USER['uid']}'");
+        if (! empty($tids)) {
             $sql .= " $op (tid NOT IN ('" . str_replace( ' ', "','", $tids )
-                 . "'))" . COM_getPermSQL( 'AND' );
+                 . "'))" . COM_getPermSQL('AND');
+        } else {
+            $sql .= COM_getPermSQL($op);
         }
-        else
-        {
-            $sql .= COM_getPermSQL( $op );
-        }
+    } else {
+        $sql .= COM_getPermSQL($op);
     }
-    else
-    {
-        $sql .= COM_getPermSQL( $op );
-    }
-    if( $_CONF['sortmethod'] == 'alpha' )
-    {
+    if ($_CONF['sortmethod'] == 'alpha') {
         $sql .= ' ORDER BY topic ASC';
-    }
-    else
-    {
+    } else {
         $sql .= ' ORDER BY sortnum';
     }
-    $result = DB_query( $sql );
+    $result = DB_query($sql);
 
     $retval = '';
-    $sections = new Template( $_CONF['path_layout'] );
-    if( isset( $_BLOCK_TEMPLATE['topicoption'] ))
-    {
-        $templates = explode( ',', $_BLOCK_TEMPLATE['topicoption'] );
-        $sections->set_file( array( 'option'  => $templates[0],
-                                    'current' => $templates[1] ));
-    }
-    else
-    {
-        $sections->set_file( array( 'option'   => 'topicoption.thtml',
-                                    'inactive' => 'topicoption_off.thtml' ));
+    $sections = new Template($_CONF['path_layout']);
+    if (isset($_BLOCK_TEMPLATE['topicoption'])) {
+        $templates = explode(',', $_BLOCK_TEMPLATE['topicoption']);
+        $sections->set_file(array('option'  => $templates[0],
+                                  'current' => $templates[1]));
+    } else {
+        $sections->set_file(array('option'   => 'topicoption.thtml',
+                                  'inactive' => 'topicoption_off.thtml'));
     }
 
-    $sections->set_var( 'xhtml', XHTML );
-    $sections->set_var( 'site_url', $_CONF['site_url'] );
-    $sections->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $sections->set_var( 'layout_url', $_CONF['layout_url'] );
-    $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
+    $sections->set_var('xhtml', XHTML);
+    $sections->set_var('site_url', $_CONF['site_url']);
+    $sections->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $sections->set_var('layout_url', $_CONF['layout_url']);
+    $sections->set_var('block_name', str_replace('_', '-', 'section_block'));
 
-    if( $_CONF['hide_home_link'] == 0 )
-    {
+    if ($_CONF['hide_home_link'] == 0) {
         // Give a link to the homepage here since a lot of people use this for
         // navigating the site
 
-        if( COM_onFrontpage() )
-        {
-            $sections->set_var( 'option_url', '' );
-            $sections->set_var( 'option_label', $LANG01[90] );
-            $sections->set_var( 'option_count', '' );
-            $sections->set_var( 'topic_image', '' );
-            $retval .= $sections->parse( 'item', 'inactive' );
-        }
-        else
-        {
-            $sections->set_var( 'option_url',
-                                $_CONF['site_url'] . '/index.php' );
-            $sections->set_var( 'option_label', $LANG01[90] );
-            $sections->set_var( 'option_count', '' );
-            $sections->set_var( 'topic_image', '' );
-            $retval .= $sections->parse( 'item', 'option' );
+        if (COM_onFrontpage()) {
+            $sections->set_var('option_url', '');
+            $sections->set_var('option_label', $LANG01[90]);
+            $sections->set_var('option_count', '');
+            $sections->set_var('option_attributes', '');
+            $sections->set_var('topic_image', '');
+            $retval .= $sections->parse('item', 'inactive');
+        } else {
+            $sections->set_var('option_url', $_CONF['site_url'] . '/');
+            $sections->set_var('option_label', $LANG01[90]);
+            $sections->set_var('option_count', '');
+            $sections->set_var('option_attributes', ' rel="home"');
+            $sections->set_var('topic_image', '');
+            $retval .= $sections->parse('item', 'option');
         }
     }
 
-    if( $_CONF['showstorycount'] )
-    {
+    if ($_CONF['showstorycount']) {
         $sql = "SELECT tid, COUNT(*) AS count FROM {$_TABLES['stories']} "
              . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
-             . COM_getPermSQL( 'AND' )
+             . COM_getPermSQL('AND')
              . ' GROUP BY tid';
-        $rcount = DB_query( $sql );
-        while( $C = DB_fetchArray( $rcount ))
-        {
+        $rcount = DB_query($sql);
+        while ($C = DB_fetchArray($rcount)) {
             $storycount[$C['tid']] = $C['count'];
         }
     }
 
-    if( $_CONF['showsubmissioncount'] )
-    {
+    if ($_CONF['showsubmissioncount']) {
         $sql = "SELECT tid, COUNT(*) AS count FROM {$_TABLES['storysubmission']} "
              . ' GROUP BY tid';
-        $rcount = DB_query( $sql );
-        while( $C = DB_fetchArray( $rcount ))
-        {
+        $rcount = DB_query($sql);
+        while ($C = DB_fetchArray($rcount)) {
             $submissioncount[$C['tid']] = $C['count'];
         }
     }
 
-    while( $A = DB_fetchArray( $result ) )
-    {
-        $topicname = stripslashes( $A['topic'] );
-        $sections->set_var( 'option_url', $_CONF['site_url']
-                            . '/index.php?topic=' . $A['tid'] );
-        $sections->set_var( 'option_label', $topicname );
+    while ($A = DB_fetchArray($result)) {
+        $topicname = stripslashes($A['topic']);
+        $sections->set_var('option_url', $_CONF['site_url']
+                                         . '/index.php?topic=' . $A['tid']);
+        $sections->set_var('option_label', $topicname);
 
         $countstring = '';
-        if( $_CONF['showstorycount'] || $_CONF['showsubmissioncount'] )
-        {
+        if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
             $countstring .= '(';
 
-            if( $_CONF['showstorycount'] )
-            {
-                if( empty( $storycount[$A['tid']] ))
-                {
-                    $countstring .= 0;
-                }
-                else
-                {
-                    $countstring .= COM_numberFormat( $storycount[$A['tid']] );
+            if ($_CONF['showstorycount']) {
+                if (empty($storycount[$A['tid']])) {
+                    $countstring .= '0';
+                } else {
+                    $countstring .= COM_numberFormat($storycount[$A['tid']]);
                 }
             }
 
-            if( $_CONF['showsubmissioncount'] )
-            {
-                if( $_CONF['showstorycount'] )
-                {
+            if ($_CONF['showsubmissioncount']) {
+                if ($_CONF['showstorycount']) {
                     $countstring .= '/';
                 }
-                if( empty( $submissioncount[$A['tid']] ))
-                {
-                    $countstring .= 0;
-                }
-                else
-                {
-                    $countstring .= COM_numberFormat( $submissioncount[$A['tid']] );
+                if (empty($submissioncount[$A['tid']])) {
+                    $countstring .= '0';
+                } else {
+                    $countstring .= COM_numberFormat($submissioncount[$A['tid']]);
                 }
             }
 
             $countstring .= ')';
         }
-        $sections->set_var( 'option_count', $countstring );
+        $sections->set_var('option_count', $countstring);
+        $sections->set_var('option_attributes', '');
 
         $topicimage = '';
-        if( !empty( $A['imageurl'] ))
-        {
-            $imageurl = COM_getTopicImageUrl( $A['imageurl'] );
+        if (! empty( $A['imageurl'])) {
+            $imageurl = COM_getTopicImageUrl($A['imageurl']);
             $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
                         . '" title="' . $topicname . '"' . XHTML . '>';
         }
-        $sections->set_var( 'topic_image', $topicimage );
+        $sections->set_var('topic_image', $topicimage);
 
         $desc = trim($A['meta_description']);
         $sections->set_var('topic_description', $desc);
@@ -2286,13 +2254,12 @@ function COM_showTopics( $topic='' )
             $sections->set_var('topic_title_attribute', '');
         }
 
-        if(( $A['tid'] == $topic ) && ( $page == 1 ))
-        {
-            $retval .= $sections->parse( 'item', 'inactive' );
+        if (($A['tid'] == $topic) && ($page == 1)) {
+            $retval .= $sections->parse('item', 'inactive');
         }
         else
         {
-            $retval .= $sections->parse( 'item', 'option' );
+            $retval .= $sections->parse('item', 'option');
         }
     }
 
