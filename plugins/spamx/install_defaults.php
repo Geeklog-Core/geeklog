@@ -100,8 +100,6 @@ function plugin_initconfig_spamx()
         $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx');
         $c->add('logging', $_SPX_DEFAULT['logging'], 'select',
                 0, 0, 1, 10, true, 'spamx');
-        $c->add('admin_override', $_SPX_DEFAULT['admin_override'], 'select',
-                0, 0, 1, 20, true, 'spamx');
         $c->add('timeout', $_SPX_DEFAULT['timeout'], 'text',
                 0, 0, null, 30, true, 'spamx');
         $c->add('notification_email', $_SPX_DEFAULT['notification_email'],

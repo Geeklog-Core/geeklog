@@ -167,7 +167,7 @@ function plugin_chkVersion_spamx()
 */
 function plugin_upgrade_spamx()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'spamx'");
@@ -185,6 +185,35 @@ function plugin_upgrade_spamx()
 
     $inst_parms = plugin_autoinstall_spamx('spamx');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+    
+    require_once $_CONF['path'] . 'plugins/spamx/sql/'
+                                . $_DB_dbms . '_updates.php';
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '1.2.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }            
+            
+            // Remove admin override since not needed anymore
+            $c = config::get_instance();
+            $c->del('admin_override', 'spamx');
+
+            
+            
+            $current_version = '1.2.1';
+            break;
+
+        default:
+            $done = true;
+        }
+    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'spamx'");
 
@@ -234,12 +263,10 @@ function plugin_migrate_spamx($old_conf)
 function plugin_checkforSpam_spamx ($comment, $action = -1)
 {
     global $_CONF, $_SPX_CONF;
-
-    // skip spam check for members of the 'spamx Admin' group, if enabled
-    if (isset ($_SPX_CONF['admin_override']) && $_SPX_CONF['admin_override']) {
-        if (SEC_inGroup ('spamx Admin')) {
-            return 0;
-        }
+    
+    // skip spam check for members of a group that has the spamx.skip right.
+    if (SEC_hasRights('spamx.skip')) {
+        return 0;
     }
 
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';

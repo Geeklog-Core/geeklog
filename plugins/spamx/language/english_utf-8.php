@@ -146,7 +146,6 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
-    'admin_override' => "Don't Filter Admin Posts",
     'logging' => 'Enable Logging',
     'timeout' => 'Timeout'
 );
