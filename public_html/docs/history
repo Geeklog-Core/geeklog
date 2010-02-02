@@ -63,6 +63,11 @@ Polls Plugin
 - Hide meta tag entry fields from Polls editor when meta tag support is
   disabled [Dirk]
 
+Spam-X Plugin
+-------------
+- List $_CONF['site_url'] as a non-editable entry in the SLV whitelist to
+  indicate that the site's URL is whitelisted automatically [Dirk]
+
 Static Pages Plugin 1.6.2
 -------------------
 - Added clickjacking protection for the printer-friendly version [Dirk]
