@@ -4,7 +4,7 @@
  * File: functions.inc
  * This is the functions.inc for the Geeklog Spam-X plugin
  *
- * Copyright (C) 2004-2009 by the following authors:
+ * Copyright (C) 2004-2010 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
  *              Dirk Haun       dirk AT haun-online DOT de
  *
@@ -193,6 +193,11 @@ function plugin_upgrade_spamx()
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.1.2':
+            // no db changes
+            $current_version = '1.2.0';
+            break;
+
         case '1.2.0':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -200,13 +205,11 @@ function plugin_upgrade_spamx()
                     DB_query($sql);
                 }
             }            
-            
+
             // Remove admin override since not needed anymore
             $c = config::get_instance();
             $c->del('admin_override', 'spamx');
 
-            
-            
             $current_version = '1.2.1';
             break;
 
