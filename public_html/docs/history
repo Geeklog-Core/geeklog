@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- CR and LF are now removed from the submitted password when a user logs in
+  (for bug #0000799) [Dirk]
 - Changed the label for the $_CONF['disable_autolinks'] config option to read
   "Disable Autotags" and updated the documentation (bug #0000912) [Dirk]
 - Changed the 'gravatar_rating' config option to a dropdown since it only
