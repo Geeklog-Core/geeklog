@@ -50,6 +50,13 @@ Apr ??, 2010 (1.6.2)
   renamed our JavaScript remove() function to gl_cfg_remove() but forgot to
   update the dynamically created function calls (cf. bug #0000681) [Dirk]
 
+Calendar Plugin
+---------------
+- Fixed an old bug in the event submission form: The text of the "Submit" button
+  must match the text $LANG12[8] to be recognized. Changed the form to always
+  use that string instead of the one from Calendar plugin's language file
+  (originally reported by kokaku in 2006(!) and again by Tereso Ramos in 2010).
+
 Links Plugin
 ------------
 - Added a link to "New category" from the Links editor [Dirk]

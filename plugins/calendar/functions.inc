@@ -676,7 +676,7 @@ function plugin_getheadercode_calendar()
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_CA_CONF, $LANG_CAL_1;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12;
 
     if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
@@ -815,7 +815,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
     $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
-    $eventform->set_var('lang_submit', $LANG_CAL_1[45]);
+    $eventform->set_var('lang_submit', $LANG12[8]);
     $eventform->set_var('mode', $mode);
     if ($mode == 'personal') {
         $token = SEC_createToken();
