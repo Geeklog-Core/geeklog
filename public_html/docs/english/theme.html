@@ -204,6 +204,9 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
 
 <ul>
+<li>In <tt>loginform_openid.thtml</tt>, the input field was missing a
+    <code>id="identity_url"</code> (since the &lt;label&gt; tag refers to an id,
+    not a name).</li>
 <li>A new variable <tt>{option_attributes}</tt> is available in the
     <tt>topicoption.thtml</tt> template file. It is currently only used to add
     a <code>rel="home"</code> attribute to the Home link in the Topics
