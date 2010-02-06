@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file provides helper functions for the automatic plugin install.     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -64,7 +64,7 @@ function plugin_autoinstall_spamx($pi_name)
     $features = array(
         $pi_name . '.admin'    => 'Full access to ' . $pi_display_name
                                   . ' plugin',
-        $pi_name . '.skip'    =>  'Skip checking posts for SPAM'                                  
+        $pi_name . '.skip'    =>  'Skip checking posts for Spam'
     );
 
     $mappings = array(

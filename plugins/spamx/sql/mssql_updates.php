@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | SPAMX Plugin 1.2                                                   |
+// | Spam-X Plugin 1.2                                                         |
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2010 by the following authors:                              |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -29,13 +29,13 @@
 /**
 * MS SQL updates
 *
-* @package StaticPages
+* @package Spam-X
 */
 
 $_UPDATES = array(
 
     '1.2.0' => array(
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) VALUES ('spamx.skip', 'Skip checking posts for SPAM')"
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) VALUES ('spamx.skip', 'Skip checking posts for Spam')"
     )
 
 );
