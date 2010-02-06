@@ -1859,7 +1859,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_height' => 'Max. Fotohöhe?',
     'max_photo_size' => 'Max. Fotogröße?',
     'use_gravatar' => 'Gravatare von Gravatar.com benutzen?',
-    'gravatar_rating' => 'Gravatar-Rating möglich',
+    'gravatar_rating' => 'Gravatar-Rating',
     'force_photo_width' => 'Fotogröße erzwingen',
     'default_photo' => 'Standardfoto',
     'commentspeedlimit' => 'Kommentar Speed-Limit',
@@ -1990,7 +1990,8 @@ $LANG_configselects['Core'] = array(
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user')
+    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
+    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X')
 );
 
 ?>

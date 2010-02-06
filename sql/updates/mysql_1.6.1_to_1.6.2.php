@@ -7,6 +7,9 @@ $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = '%select', selectionArray
 // make $_CONF['default_perm_cookie_timeout'] option a dropdown
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'select' WHERE name = 'default_perm_cookie_timeout' AND group_name = 'Core'";
 
+// make $_CONF['gravatar_rating'] option a dropdown
+$_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'select', selectionArray = 26 WHERE name = 'gravatar_rating' AND group_name = 'Core'";
+
 // change some config options to use a textarea instead of a one-line text field
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'textarea' WHERE name = 'site_disabled_msg' AND group_name = 'Core'";
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET type = 'textarea' WHERE name = 'meta_description' AND group_name = 'Core'";

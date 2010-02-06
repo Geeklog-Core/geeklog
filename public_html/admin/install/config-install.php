@@ -270,7 +270,7 @@ function install_config()
 
     $c->add('fs_gravatar', NULL, 'fieldset', 5, 27, NULL, 0, TRUE);
     $c->add('use_gravatar',FALSE,'select',5,27,1,1600,TRUE);
-    $c->add('gravatar_rating','R','text',5,27,NULL,1610,FALSE);
+    $c->add('gravatar_rating','R','select',5,27,26,1610,FALSE);
 
     // Subgroup: Languages and Locale
     $c->add('sg_locale', NULL, 'subgroup', 6, 0, NULL, 0, TRUE);
