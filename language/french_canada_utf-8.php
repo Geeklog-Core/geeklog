@@ -996,7 +996,7 @@ $LANG29 = array(
     39 => 'Il n\'y a aucune soumission &agrave; administrer pour le moment',
     40 => 'Soumissions des membres',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

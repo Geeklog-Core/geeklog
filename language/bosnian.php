@@ -986,7 +986,7 @@ $LANG29 = array(
     13 => 'Kategorija',
     14 => 'Datum',
     15 => 'Tema',
-    16 => 'User name',
+    16 => 'Username',
     17 => 'Full name',
     18 => 'Email',
     34 => 'Command and Control',
@@ -997,7 +997,7 @@ $LANG29 = array(
     39 => 'Trenutacno nema zahtjeva za administraciju-',
     40 => 'Zahtjev za reg. novih korisnika',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

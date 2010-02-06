@@ -993,7 +993,7 @@ $LANG29 = array(
     39 => 'Belum ada pengiriman link yang akan di olah untuk saat ini',
     40 => 'Pengiriman User',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

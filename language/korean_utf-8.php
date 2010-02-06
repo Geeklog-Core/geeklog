@@ -994,7 +994,7 @@ $LANG29 = array(
     39 => '현재 신청자 없음',
     40 => '사용자의 등록신청',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

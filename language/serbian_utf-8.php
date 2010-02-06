@@ -998,7 +998,7 @@ $LANG29 = array(
     39 => 'Trenutno nema tekstova (korisničkih doprinosa) za administraciju',
     40 => 'Korisnički Tekstovi (Poslati Materijali)',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

@@ -997,7 +997,7 @@ $LANG29 = array(
     39 => 'На даний момент модерувати нічого',
     40 => 'Користувачі для ухвалення',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

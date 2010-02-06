@@ -236,7 +236,7 @@ function USER_sendActivationEmail ($username, $useremail)
 *
 * NOTE: Does NOT send out password emails.
 *
-* @param    string  $username    user name (mandatory)
+* @param    string  $username    username (mandatory)
 * @param    string  $email       user's email address (mandatory)
 * @param    string  $passwd      password (optional, see above)
 * @param    string  $fullname    user's full name (optional)
@@ -353,7 +353,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
 /**
 * Send an email notification when a new user registers with the site.
 *
-* @param username string      User name of the new user
+* @param username string      Username of the new user
 * @param email    string      Email address of the new user
 * @param uid      int         User id of the new user
 * @param mode     string      Mode user was added at.

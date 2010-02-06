@@ -1001,7 +1001,7 @@ $LANG29 = array(
     39 => 'Δέν υπάρχουν υποβολές προς επιθεώρηση την παρούσα στιγμή',
     40 => 'Υποβολές χρηστών',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

@@ -996,7 +996,7 @@ $LANG29 = array(
     39 => 'Trenutno ni nobene čakajoče vsebine',
     40 => 'Uporabniška čakajoča vsebina',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

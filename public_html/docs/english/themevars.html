@@ -288,7 +288,7 @@ story is displayed on the index page <em>and</em> the body text of the story is
         link to the comment submission form (just like
         <code>{post_comment_link}</code>). When there are comments to the story,
         then this variable does <em>not</em> contain a link but instead
-        contains the user name of the person who posted the last comment as well
+        contains the username of the person who posted the last comment as well
         as the date and time when that comment was posted.</td></tr>
 </table>
 
@@ -338,16 +338,16 @@ when you allow the name of the story's author to be displayed:</p>
     <td>The user id of the story's author.</td></tr>
 <tr><td><code>contributedby_user</code></td>
     <td>Tony</td>
-    <td>The user name (short name) of the story's author.</td></tr>
+    <td>The username (short name) of the story's author.</td></tr>
 <tr><td><code>contributedby_fullname</code></td>
     <td>Tony Bibbs</td>
     <td>The full name of the story's author. If the user hasn't filled in
-        his/her full name, the user name is used instead.</td></tr>
+        his/her full name, the username is used instead.</td></tr>
 <tr><td><code>contributedby_author</code></td>
     <td>Tony Bibbs</td>
     <td>The name of the story's author. If <code>$_CONF['show_fullname']</code>
         is enabled, it will contain the author's full name (if provided).
-        Otherwise, it will contain the user name.</td></tr>
+        Otherwise, it will contain the username.</td></tr>
 <tr><td><code>start_contributedby_anchortag</code></td>
     <td><code>&lt;a class="storybyline" href="http://www.example.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
     <td>Opening tag for a link to the story author's profile (empty for

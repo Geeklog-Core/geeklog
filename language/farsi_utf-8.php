@@ -981,7 +981,7 @@ $LANG29 = array(
     39 => 'هيچ "حق دسترسي" براي مديريت  هم اكنون نيست',
     40 => 'حدود دسترسي كاربر',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

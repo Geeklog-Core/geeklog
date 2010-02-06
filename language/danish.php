@@ -981,7 +981,7 @@ $LANG29 = array(
     13 => 'Kategori',
     14 => 'Dato',
     15 => 'Emne',
-    16 => 'User name',
+    16 => 'Username',
     17 => 'Full name',
     18 => 'Email',
     34 => 'Kommandocentral',
@@ -992,7 +992,7 @@ $LANG29 = array(
     39 => 'Der er ingen tilføjelser til moderation på dette tidspunkt',
     40 => 'Bruger Tilføjelser',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

@@ -994,7 +994,7 @@ $LANG29 = array(
     39 => 'Non ci sono inserimenti da moderare al momento',
     40 => 'Inserimenti Utente',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

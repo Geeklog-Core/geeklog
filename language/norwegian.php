@@ -1006,7 +1006,7 @@ $LANG29 = array(
     39 => 'Det er ingen innlegg å vurdere nå',
     40 => 'Bruker innlegg',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

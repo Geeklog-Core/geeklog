@@ -230,7 +230,7 @@ $LANG03 = array(
 
 $LANG04 = array(
     1 => 'פרופיל המשתמש של',
-    2 => 'User Name',
+    2 => 'Username',
     3 => 'שמכם המלא',
     4 => 'Password',
     5 => 'Email',

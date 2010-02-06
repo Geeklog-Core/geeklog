@@ -996,7 +996,7 @@ $LANG29 = array(
     39 => '此时没有递交的东西',
     40 => '申请的用户',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

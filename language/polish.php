@@ -993,7 +993,7 @@ $LANG29 = array(
     39 => '¯adnych materia³ów do zatwierdzenia',
     40 => 'Materia³y przes³ane przez u¿ytkownika',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

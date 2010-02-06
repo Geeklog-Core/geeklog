@@ -445,7 +445,7 @@ function listusers()
 * Saves user to the database
 *
 * @param    int     $uid            user id
-* @param    string  $usernmae       (short) user name
+* @param    string  $usernmae       (short) username
 * @param    string  $fullname       user's full name
 * @param    string  $email          user's email address
 * @param    string  $regdate        date the user registered with the site

@@ -997,7 +997,7 @@ $LANG29 = array(
     39 => 'För tillfället finns det inga bidrag att ta ställning till',
     40 => 'Nya användare',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

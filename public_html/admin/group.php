@@ -949,7 +949,7 @@ function listgroups($show_all_groups = false)
 *
 * @param    int     $group_id   group id
 * @param    boolean $allusers   true: return users not in the group
-* @return   string              option list containing uids and user names
+* @return   string              option list containing uids and usernames
 *
 */
 function grp_selectUsers($group_id, $allusers = false)

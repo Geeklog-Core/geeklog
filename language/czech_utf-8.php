@@ -992,7 +992,7 @@ $LANG29 = array(
     39 => 'Nyní zde není nic k moderování',
     40 => 'Publikace uživatele',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

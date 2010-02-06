@@ -993,7 +993,7 @@ $LANG29 = array(
     39 => 'Daar is geen bydraes op hierdie tydstip wat aksie vereis nie',
     40 => 'Gebruikersbydraes',
     41 => 'Comment Submissions',
-    42 => 'User Name',
+    42 => 'Username',
     43 => 'Auto-publish Comments?'
 );
 

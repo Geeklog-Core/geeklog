@@ -105,7 +105,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'listfactory.class.php') !== false)
         if ($preSort)
         {
             // extract any further information from the results.
-            // such as converting user ID's to user names
+            // such as converting user ID's to usernames
         }
         else
         {
