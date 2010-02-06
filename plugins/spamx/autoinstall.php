@@ -53,7 +53,7 @@ function plugin_autoinstall_spamx($pi_name)
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '1.2.1',
         'pi_gl_version'   => '1.6.0',
-        'pi_homepage'     => 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx'
+        'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
     $groups = array(
