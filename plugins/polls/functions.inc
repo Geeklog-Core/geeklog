@@ -452,22 +452,23 @@ function polls_templatePath ($path = '')
 * @return       string  HTML Formatted Poll
 *
 */
-
 function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '')
 {
-    global $_CONF, $_TABLES, $LANG_POLLS, $LANG01, $_USER, $LANG25, $_IMAGE_TYPE;
+    global $_CONF, $_TABLES, $_USER, $LANG_POLLS, $LANG01, $LANG25,
+           $_IMAGE_TYPE;
+
     $retval = '';
 
-    $topic = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
+    $result = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
         . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
-    $ntopics = DB_numRows($topic);
+    $ntopics = DB_numRows($result);
 
     if ($ntopics == 0) {
         return $retval;
     }
 
-    $P = DB_fetchArray($topic);
+    $P = DB_fetchArray($result);
     
     if ((!isset($_COOKIE[$pid]) && !POLLS_ipAlreadyVoted($pid)) or ($P['is_open'] == 1)) {
         if ($ntopics == 1) {
@@ -515,9 +516,9 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 }
                 $poll->set_var('poll_results', $results);
 
-                $access = SEC_hasAccess($topic['owner_id'], $topic['group_id'],
-                                $topic['perm_owner'], $topic['perm_group'],
-                                $topic['perm_members'], $topic['perm_anon']);
+                $access = SEC_hasAccess($P['owner_id'], $P['group_id'],
+                                $P['perm_owner'], $P['perm_group'],
+                                $P['perm_members'], $P['perm_anon']);
                 if ($access == 3) {
                     $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
                         . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
@@ -762,8 +763,8 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype =
     $topic_sql = "SELECT topic,voters,is_open,hideresults,commentcode,owner_id,group_id,"
         . "perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
-    $topic = DB_query($topic_sql);
-    $P = DB_fetchArray($topic);
+    $result = DB_query($topic_sql);
+    $P = DB_fetchArray($result);
 
     if(SEC_hasAccess($P['owner_id'], $P['group_id'], $P['perm_owner'],
         $P['perm_group'], $P['perm_members'], $P['perm_anon']) == 0 ) {
@@ -788,7 +789,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype =
         return $retval;
     }
     
-    $ntopic = DB_numRows($topic );
+    $ntopic = DB_numRows($result);
     if ($ntopic == 1) {
         $questions_sql = "SELECT qid,pid,question "
             . "FROM {$_TABLES['pollquestions']} "
