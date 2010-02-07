@@ -6599,6 +6599,70 @@ function COM_getLanguageName()
 }
 
 /**
+* Truncate a string that contains HTML tags. Will close all HTML tags as needed.
+*
+* Truncates a string to a max. length and optionally adds a filler string,
+* e.g. '...', to indicate the truncation.
+* This function is multi-byte string aware. This function is based on a 
+* code snippet by pitje at Snipplr.com.
+*
+* NOTE: The truncated string may be shorter but will never be longer than
+*       $maxlen characters, i.e. the $filler string is taken into account.
+*       Characters from HTML tags are also taken into account. 
+*
+* @param    string  $htmltext   the text string which contains HTML tags to truncate
+* @param    int     $maxlen     max. number of characters in the truncated string
+* @param    string  $filler     optional filler string, e.g. '...'
+* @param    int     $endchars   number of characters to show after the filler
+* @return   string              truncated string
+*
+*/
+function COM_truncateHTML ( $htmltext, $maxlen, $filler = '', $endchars = 0 )
+{
+
+    $newlen = $maxlen - MBYTE_strlen($filler);
+    $len = MBYTE_strlen($htmltext);
+    if ($len > $maxlen) {
+        $htmltext = MBYTE_substr($htmltext, 0, $newlen - $endchars);
+
+        // Strip any mangled tags off the end
+        if (MBYTE_strrpos($htmltext, '<' ) > MBYTE_strrpos($htmltext, '>')) {
+            $htmltext = MBYTE_substr($htmltext, 0, MBYTE_strrpos($htmltext, '<'));
+        }        
+        
+        $htmltext = $htmltext . $filler . MBYTE_substr($htmltext, $len - $endchars, $endchars);
+    
+        // put all opened tags into an array
+        preg_match_all ( "#<([a-z]+)( .*)?(?!/)>#iU", $htmltext, $result );
+        $openedtags = $result[1];
+        $openedtags = array_diff($openedtags, array("img", "hr", "br"));
+        $openedtags = array_values($openedtags);
+    
+        // put all closed tags into an array
+        preg_match_all ("#</([a-z]+)>#iU", $htmltext, $result);
+        $closedtags = $result[1];
+        $len_opened = count($openedtags);
+        
+        // all tags are closed
+        if(count( $closedtags ) == $len_opened) {
+            return $htmltext;
+        }
+        $openedtags = array_reverse ($openedtags);
+    
+        // close tags
+        for($i = 0; $i < $len_opened; $i++) {
+            if (!in_array ($openedtags[$i], $closedtags )) {
+                $htmltext .= "</" . $openedtags[$i] . ">";
+            } else {
+                unset ($closedtags[array_search ($openedtags[$i], $closedtags)]);
+            }
+        }
+    }
+
+    return $htmltext;
+}
+
+/**
 * Truncate a string
 *
 * Truncates a string to a max. length and optionally adds a filler string,
