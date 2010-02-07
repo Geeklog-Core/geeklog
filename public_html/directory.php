@@ -442,7 +442,6 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $ysql['pgsql'] = $yearsql['pgsql'] . " GROUP BY year,date ORDER BY year DESC";
 
     $yresult = DB_query ($ysql);
-COM_errorLog($ysql['mysql']);
     $numyears = DB_numRows ($yresult);
 
     for ($i = 0; $i < $numyears; $i++) {
