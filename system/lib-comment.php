@@ -1110,20 +1110,19 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
         $ret = 5;
-    } elseif ( $_CONF['commentsubmission'] == 1 && !SEC_hasRights('comment.submit') ) {
-        //comment into comment submission table enabled
+    } elseif (($_CONF['commentsubmission'] == 1) &&
+            !SEC_hasRights('comment.submit')) {
+        // comment into comment submission table enabled
         if (isset($name)) {
-            DB_query ( "INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,date,title,pid,ipaddress) VALUES
-                ($sid',$uid,'$name','$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,date,title,pid,ipaddress) VALUES ('$sid',$uid,'$name','$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         } else {
-            DB_query ( "INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,date,title,pid,ipaddress) VALUES
-                ($sid',$uid,$comment',now(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,date,title,pid,ipaddress) VALUES ('$sid',$uid,$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         }
 
         $ret = -1; // comment queued
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
-        
+
         $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid "
                          . "AND sid = '$sid'");
         list($rht, $indent) = DB_fetchArray($result);
