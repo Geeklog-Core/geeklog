@@ -699,7 +699,9 @@ class Search {
                 }
                 if (isset($this->_append_query[$row[LF_SOURCE_NAME]]) &&
                         $this->_append_query[$row[LF_SOURCE_NAME]]) {
-                    $row['url'] .= (strpos($row['url'],'?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
+                    if (! empty($this->_query)) {
+                        $row['url'] .= (strpos($row['url'],'?') ? '&amp;' : '?') . 'query=' . urlencode($this->_query);
+                    }
                 }
             }
 
