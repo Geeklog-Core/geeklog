@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- Improved comment readability by adding a paragraph tag around "Plain Old Text"
+  comments and some padding in threaded mode (bug #0000833) [Dirk]
 - Hide the "Logout" link when editing a comment or comment submission
   (bug #0000893) [Dirk]
 - CR and LF are now removed from the submitted password when a user logs in

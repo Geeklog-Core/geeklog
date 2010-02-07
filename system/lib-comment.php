@@ -501,8 +501,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $text = str_replace('</div><!-- /COMMENTSIG -->', '', $text);
         $text = str_replace('<div class="comment-edit">', '', $text);
         $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);
-        if( preg_match( '/<.*>/', $text ) == 0 ) {
-            $A['comment'] = nl2br( $A['comment'] );
+        if (preg_match('/<.*>/', $text) == 0) {
+            $A['comment'] = '<p>' . nl2br($A['comment']) . '</p>';
         }
 
         // highlight search terms if specified
