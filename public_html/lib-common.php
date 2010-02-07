@@ -627,21 +627,18 @@ function COM_renderMenu( &$header, $plugin_menu )
         switch( $item )
         {
             case 'contribute':
-                if( empty( $topic ))
-                {
+                if (empty($topic)) {
                     $url = $_CONF['site_url'] . '/submit.php?type=story';
-                    $header->set_var( 'current_topic', '' );
-                }
-                else
-                {
+                    $header->set_var('current_topic', '');
+                } else {
+                    $tp = urlencode($topic);
                     $url = $_CONF['site_url']
-                         . '/submit.php?type=story&amp;topic=' . $topic;
-                    $header->set_var( 'current_topic', '&amp;topic=' . $topic );
+                         . '/submit.php?type=story&amp;topic=' . $tp;
+                    $header->set_var('current_topic', '&amp;topic=' . $tp);
                 }
                 $label = $LANG01[71];
-                if( $anon && ( $_CONF['loginrequired'] ||
-                        $_CONF['submitloginrequired'] ))
-                {
+                if ($anon && ($_CONF['loginrequired'] ||
+                              $_CONF['submitloginrequired'])) {
                     $allowed = false;
                 }
                 break;
