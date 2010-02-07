@@ -153,7 +153,7 @@ function DIR_monthLink ($topic, $year, $month, $count)
 */
 function DIR_navBar ($topic, $year, $month = 0)
 {
-    global $_CONF, $_TABLES, $LANG05, $LANG_DIR,$_DB_dbms;
+    global $_CONF, $_TABLES, $LANG05, $LANG_DIR;
 
     $retval = '';
 
@@ -183,9 +183,15 @@ function DIR_navBar ($topic, $year, $month = 0)
         $prevyear = 0;
     }
 
-    $currentyear = date ('Y', time ());
+    $currentyear = date('Y', time());
     if ($nextyear > $currentyear) {
         $nextyear = 0;
+    }
+    if (($month > 0) && ($nextyear > 0) && ($nextyear >= $currentyear)) {
+        $currentmonth = date('n', time());
+        if ($nextmonth > $currentmonth) {
+            $nextyear = 0;
+        }
     }
 
     if ($prevyear > 0) {
