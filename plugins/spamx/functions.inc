@@ -210,6 +210,16 @@ function plugin_upgrade_spamx()
             $c = config::get_instance();
             $c->del('admin_override', 'spamx');
 
+            // late fix: ensure 'notification_email' option can be disabled
+            $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = 'notification_email' AND group_name = 'spamx'");
+            list($value, $default_value) = DB_fetchArray($result);
+            if ($value != 'unset') {
+                if (substr($default_value, 0, 6) != 'unset:') {
+                    $unset = addslashes('unset:' . $default_value);
+                    DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = 'notification_email' AND group_name = 'spamx'");
+                }
+            }
+
             $current_version = '1.2.1';
             break;
 

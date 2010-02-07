@@ -82,6 +82,7 @@ Polls Plugin
 
 Spam-X Plugin
 -------------
+- Make sure the Notification Email config option can be disabled [Dirk]
 - List $_CONF['site_url'] as a non-editable entry in the SLV whitelist to
   indicate that the site's URL is whitelisted automatically [Dirk]
 
