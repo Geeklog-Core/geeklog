@@ -882,27 +882,31 @@ class Search {
     }
 
     /**
-    * Converts the MySQL CONCAT function to the MSSQL equivalent
+    * Converts the MySQL CONCAT function to the MS SQL / Postgres equivalents
     *
     * @access private
-    * @param string $sql The SQL to convert
-    * @return string MSSQL friendly SQL
+    * @param  string $sql The SQL to convert
+    * @return string      MS SQL or PostgreSQL friendly SQL
     *
     */
-    function _convertsql( $sql )
+    function _convertsql($sql)
     {
         global $_DB_dbms;
-        if ($_DB_dbms == 'mssql')
-        {
-            if (is_string( $sql ))
-            {
+
+        if ($_DB_dbms == 'mssql') {
+            if (is_string($sql)) {
                 $sql = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 + ', '\\1')", $sql);
-            }
-            else if (is_array( $sql ))
-            {
+            } elseif (is_array($sql)) {
                 $sql['mssql'] = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 + ', '\\1')", $sql['mssql']);
             }
+        } elseif ($_DB_dbms == 'pgsql') {
+            if (is_string($sql)) {
+                $sql = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', '\\1')", $sql);
+            } elseif (is_array($sql)) {
+                $sql['pgsql'] = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', '\\1')", $sql['pgsql']);
+            }
         }
+
         return $sql;
     }
 
