@@ -6,14 +6,9 @@
 // +---------------------------------------------------------------------------+
 // | pgsql_install.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2009-2010 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
-// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
-// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
-// |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Trinity Bays      - trinity93 AT gmail DOT com
-// |          Stansislav Palatnik - spalatnikk AT gmail DOT com                    |
+// | Authors: Stansislav Palatnik - spalatnikk AT gmail DOT com                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -32,7 +27,7 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* MySQL install data and tables
+* PostgreSQL install data and tables
 *
 * @package Polls
 */
@@ -62,6 +57,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   topic varchar(255) default NULL,
   voters int default NULL,
   meta_description TEXT NULL,
+  meta_keywords TEXT NULL,
   questions int NOT NULL default '0',
   date timestamp default NULL,
   display int NOT NULL default '0',
