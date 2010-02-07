@@ -890,6 +890,12 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('sid', $sid);
             $comment_template->set_var('pid', $pid);
             $comment_template->set_var('type', $type);
+            if ($mode == 'edit' || $mode == 'editsubmission' || $mode == $LANG03[28] || $mode == $LANG03[34]) {
+                $comment_template->set_var('hidewhenediting',
+                                           ' style="display:none;"');
+            } else {
+                $comment_template->set_var('hidewhenediting', '');
+            }
 
             $formurl = $_CONF['site_url'] . '/comment.php';
             if ($mode == 'edit' || $mode == $LANG03[28]) { //edit modes

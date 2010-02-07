@@ -9,7 +9,7 @@
                                                             <input type="hidden" name="pid" value="{pid}"{xhtml}>
                                                             <input type="hidden" name="type" value="{type}"{xhtml}>
                                                             <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                                            <input type="hidden" name="uid" value="{uid}"{xhtml}>{username} [ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]
+                                                            <input type="hidden" name="uid" value="{uid}"{xhtml}>{username} <span{hidewhenediting}>[ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]</span>
                                                         </td>
                                                     </tr>
                                                     <tr>

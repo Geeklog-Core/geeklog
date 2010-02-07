@@ -204,6 +204,12 @@ featured and archived stories.</li>
 <h2><a name="changes">Theme changes in Geeklog 1.6.2</a></h2>
 
 <ul>
+<li>When editing a comment or comment submission, the "Logout" link is now
+    hidden. This is done by adding a <code>span</code> around the link and a
+    new template variable, <tt>{hidewhenediting}</tt>, that will contain CSS to
+    hide the <code>span</code> when a comment is edited (but not when it's
+    submitted). Changed files: <tt>comment/commentform.thtml</tt> and
+    <tt>comment/commentform_advanced.thtml</tt>.</li>
 <li>In the profile template, <tt>users/profile.thtml</tt>, the link to "Find
     all postings by <i>User</i>" was shortened, as it contained a lot of
     unnecessary parameters for the search.</li>
