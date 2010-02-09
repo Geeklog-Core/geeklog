@@ -88,6 +88,14 @@ class url {
             $this->_arguments = explode('/', substr($_ENV['ORIG_PATH_INFO'], 1));
         } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
             $this->_arguments = explode('/', substr($_SERVER['ORIG_PATH_INFO'], 1));
+            
+            // Added for IIS 7 to work in FastCGI mode 
+            array_shift ($this->_arguments);
+            if ( $this->_arguments[0] == substr($_SERVER['SCRIPT_NAME'],1) ) {
+                array_shift($this->_arguments);
+            }
+            // end of add
+            
         } else {
             $this->_arguments = array();
         }
@@ -174,6 +182,13 @@ class url {
             return $_GET[$name];
         }
         
+        // Added for IIS 7 to work in FastCGI mode        
+        // if in REQUEST VARS array return it 
+        if (!empty($_REQUEST[$name])) {
+            return $_REQUEST[$name];
+        }   
+        // end of add
+
         // ok, pull from query string
         if (in_array($name,array_keys($this->_arguments))) {
             return $this->_arguments[$name];
