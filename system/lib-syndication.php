@@ -700,6 +700,20 @@ function SYND_getMimeType($format)
 }
 
 /**
+* Helper function: Derive printable feed format name
+*
+* @param    string  $format     internal name of the feed format, e.g. Atom-1.0
+* @return   string              MIME type, e.g. application/atom+xml
+*
+*/
+function SYND_getFeedType($format)
+{
+    $fmt = explode('-', $format);
+
+    return ucwords($fmt[0]);
+}
+
+/**
 * Helper function: Get default feed URL
 *
 * This is mostly for backward compatibility: Back in the dark ages, Geeklog
