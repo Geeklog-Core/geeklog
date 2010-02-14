@@ -1106,7 +1106,7 @@ function plugin_templatesetvars_polls ($templatename, &$template)
 {
     global $LANG_POLLS;
 
-    if ($templatename == 'header') {
+    if (($templatename == 'header') || ($templatename == 'footer')) {
         $template->set_var ('button_polls', $LANG_POLLS['polls']);
     }
 }

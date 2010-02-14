@@ -1215,7 +1215,7 @@ function plugin_templatesetvars_links ($templatename, &$template)
 {
     global $LANG_LINKS;
 
-    if ($templatename == 'header') {
+    if (($templatename == 'header') || ($templatename == 'footer')) {
         $template->set_var ('button_links', $LANG_LINKS[14]);
     }
 }

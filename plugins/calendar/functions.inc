@@ -1741,7 +1741,7 @@ function plugin_templatesetvars_calendar ($templatename, &$template)
 {
     global $LANG_CAL_1;
 
-    if ($templatename == 'header') {
+    if (($templatename == 'header') || ($templatename == 'footer')) {
         $template->set_var ('button_calendar', $LANG_CAL_1[16]);
     }
 }
