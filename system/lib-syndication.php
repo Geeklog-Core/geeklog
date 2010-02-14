@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2009 by the following authors:                         |
+// | Copyright (C) 2003-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
@@ -697,6 +697,30 @@ function SYND_getMimeType($format)
     $type = strtolower($fmt[0]);
 
     return 'application/' . $type . '+xml';
+}
+
+/**
+* Helper function: Get default feed URL
+*
+* This is mostly for backward compatibility: Back in the dark ages, Geeklog
+* only had one RSS feed and its URL was available as a template variable.
+* Moved that code here from COM_siteHeader/Footer for better encapsulation.
+*
+* @return   string      URL of the feed
+*
+*/
+function SYND_getDefaultFeedUrl()
+{
+    global $_CONF;
+
+    $feed = '';
+
+    if ($_CONF['backend'] > 0) {
+        $feed = substr_replace($_CONF['rdf_file'], $_CONF['site_url'], 0,
+                               strlen($_CONF['path_html']) - 1);
+    }
+
+    return $feed;
 }
 
 ?>

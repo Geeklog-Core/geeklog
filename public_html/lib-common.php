@@ -961,6 +961,11 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     }
     $header->set_var( 'feed_url', implode( LB, $feed_url ));
 
+    // for backward compatibility only - use {feed_url} instead
+    $feed = SYND_getDefaultFeedUrl();
+    $header->set_var('rdf_file', $feed);
+    $header->set_var('rss_url', $feed);
+
     $relLinks = array();
     if (COM_onFrontpage()) {
         $relLinks['canonical'] = '<link rel="canonical" href="'
@@ -1048,10 +1053,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $header->set_var( 'site_name', $_CONF['site_name'] );
     $header->set_var( 'site_slogan', $_CONF['site_slogan'] );
-    $rdf = substr_replace( $_CONF['rdf_file'], $_CONF['site_url'], 0,
-                           strlen( $_CONF['path_html'] ) - 1 );
-    $header->set_var( 'rdf_file', $rdf );
-    $header->set_var( 'rss_url', $rdf );
 
     $msg = rtrim($LANG01[67]) . ' ' . $_CONF['site_name'];
 
@@ -1354,10 +1355,10 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $footer->set_var( 'site_name', $_CONF['site_name'] );
     $footer->set_var( 'site_slogan', $_CONF['site_slogan'] );
-    $rdf = substr_replace( $_CONF['rdf_file'], $_CONF['site_url'], 0,
-                           strlen( $_CONF['path_html'] ) - 1 );
-    $footer->set_var( 'rdf_file', $rdf );
-    $footer->set_var( 'rss_url', $rdf );
+
+    $feed = SYND_getDefaultFeedUrl();
+    $footer->set_var('rdf_file', $feed);
+    $footer->set_var('rss_url', $feed);
 
     $year = date( 'Y' );
     $copyrightyear = $year;
