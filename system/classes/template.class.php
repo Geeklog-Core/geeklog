@@ -306,7 +306,10 @@ class Template
 
     $str = $this->get_var($parent);
     $reg = "/[ \t]*<!--\s+BEGIN $varname\s+-->\s*?\n?(\s*.*?\n?)\s*<!--\s+END $varname\s+-->\s*?\n?/sm";
-    preg_match_all($reg, $str, $m);
+    $matches = preg_match_all($reg, $str, $m);
+    if (($matches === false) || ($matches == 0)) {
+        return false;
+    }
     $str = str_replace($m[0][0], '{' . $name . '}', $str);
     $this->set_var($varname, $m[1][0]);
     $this->set_var($parent, $str);
