@@ -55,16 +55,16 @@ COM_setArgNames(array('page', 'disp_mode'));
 $page = COM_applyFilter(COM_getArgument('page'));
 $display_mode = COM_applyFilter(COM_getArgument('disp_mode'));
 $query = '';
-if (isset($_GET['query'])) {
+if (isset($_REQUEST['query'])) {
     $query = COM_applyfilter($_GET['query']);
 }
 
 // from comments display refresh:
-if (isset($_POST['order'])) {
-    $comment_order = COM_applyFilter($_POST['order']);
-    $comment_mode  = COM_applyFilter($_POST['mode']);
-    if (isset($_POST['page'])) {
-        $page = COM_applyFilter($_POST['page']);
+if (isset($_REQUEST['order'])) {
+    $comment_order = COM_applyFilter($_REQUEST['order']);
+    $comment_mode  = COM_applyFilter($_REQUEST['mode']);
+    if (isset($_REQUEST['cpage'])) {
+        $comment_page = COM_applyFilter($_REQUEST['cpage']);
     }
     if ((strcasecmp($comment_order, 'ASC') != 0) &&
             (strcasecmp($comment_order, 'DESC') != 0)) {
@@ -73,6 +73,7 @@ if (isset($_POST['order'])) {
 } else {
     $comment_order = '';
     $comment_mode  = '';
+    $comment_page = 1;
 }
 
 if ($display_mode != 'print') {
@@ -87,7 +88,7 @@ if (isset($_GET['msg'])) {
     }
 }
 
-$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $msg, $query);
+$retval = SP_returnStaticpage($page, $display_mode, $comment_order, $comment_mode, $comment_page, $msg, $query);
 
 if ($display_mode == 'print') {
     header('Content-Type: text/html; charset=' . COM_getCharset());

@@ -276,7 +276,7 @@ function SP_countVisiblePages()
 * @return   string                  HTML for the static page
 *
 */
-function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0, $query = '')
+function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nested', $comment_page = 1, $msg = 0, $query = '')
 {
     global $_CONF, $_TABLES, $_USER,
            $LANG01, $LANG11, $LANG_STATIC, $_IMAGE_TYPE, $_SP_CONF;
@@ -405,7 +405,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         require_once $_CONF['path_system'] . 'lib-comment.php';
         $spage->set_var('commentbar',
                         CMT_userComments($page, $A['sp_title'], 'staticpages',
-                                    $comment_order, $comment_mode, 0, 1, false,
+                                    $comment_order, $comment_mode, 0, $comment_page, false,
                                     $delete_option, $A['commentcode']));
     }
 
@@ -600,7 +600,7 @@ function SP_printPage($page, $A)
 * @return   string                  HTML for the static page
 *
 */
-function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $msg = 0, $query = '')
+function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $comment_mode = 'nested', $comment_page = 1, $msg = 0, $query = '')
 {
     global $_TABLES;
 
@@ -619,7 +619,7 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
         } elseif ($mode =='autotag') {
             $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
         } else {
-            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $msg, $query);
+            $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $comment_page, $msg, $query);
         }
 
         // increment hit counter for page
