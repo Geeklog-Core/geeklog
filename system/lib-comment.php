@@ -710,9 +710,17 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
         // Pagination
         $tot_pages =  ceil($count / $limit);
-        $pLink = $_CONF['site_url'] . "/article.php?story=$sid&amp;type=$type&amp;order=$order&amp;mode=$mode";
+        if ($type == 'article') {
+            $pLink = $_CONF['site_url'] . "/article.php?story=$sid";
+        } else {
+            list($plgurl, $plgid) = PLG_getCommentUrlId($type);
+            $pLink = "$plgurl?$plgid=$sid"; 
+        }
+        $pLink .= "&amp;type=$type&amp;order=$order&amp;mode=$mode";
+        
+        $page_str = "cpage=";
         $template->set_var('pagenav',
-                           COM_printPageNavigation($pLink, $page, $tot_pages));
+                           COM_printPageNavigation($pLink, $page, $tot_pages, $page_str, false));
 
         $template->set_var('comments', $thecomments);
         $retval = $template->finish($template->parse('output', 'commentarea'));
