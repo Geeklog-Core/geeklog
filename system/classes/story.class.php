@@ -756,7 +756,7 @@ class Story
         while (list($fieldname, $save) = each($this->_dbFields)) {
             if ($save === 1) {
                 $varname = '_' . $fieldname;
-                $sql .= $fieldname . ', ';
+                $fields .= $fieldname . ', ';
                 if (($fieldname == 'date') || ($fieldname == 'expire') ||
                         ($fieldname == 'comment_expire')) {
                     // let the DB server do this conversion (cf. timezone hack)
