@@ -132,6 +132,10 @@ $mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
+$page = 1;
+if (isset ($_REQUEST['cpage'])) {
+    $page = COM_applyFilter ($_REQUEST['cpage']);
+}
 $msg = 0;
 if (isset($_REQUEST['msg'])) {
     $msg = COM_applyFilter($_REQUEST['msg'], true);
@@ -190,9 +194,9 @@ if (empty($pid)) {
             && !POLLS_ipAlreadyVoted ($pid)
             && $aid != -1
             ) {
-            $display .= POLLS_pollVote($pid, true, 0, $order, $mode);
+            $display .= POLLS_pollVote($pid, true, 0, $order, $mode, $page);
         } else {
-            $display .= POLLS_pollResults($pid, 400, $order, $mode);
+            $display .= POLLS_pollResults($pid, 400, $order, $mode, $page);
         }
     }
 } else {

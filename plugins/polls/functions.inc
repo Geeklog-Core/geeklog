@@ -452,7 +452,7 @@ function polls_templatePath ($path = '')
 * @return       string  HTML Formatted Poll
 *
 */
-function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '')
+function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $mode = '', $page = 1)
 {
     global $_CONF, $_TABLES, $_USER, $LANG_POLLS, $LANG01, $LANG25,
            $_IMAGE_TYPE;
@@ -604,13 +604,13 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                     require_once $_CONF['path_system'] . 'lib-comment.php';
 
                     $retval .= CMT_userComments($pid, $P['topic'], 'polls',
-                                                $order, $mode, 0, 1, false,
+                                                $order, $mode, 0, $page, false,
                                                 $delete_option, $P['commentcode']);
                 }
             }
         }
     } else {
-        $retval .= POLLS_pollResults($pid, 0, '', '', $displaytype);
+        $retval .= POLLS_pollResults($pid, 0, '', '', 1, $displaytype);
     }
 
     return $retval;
@@ -649,7 +649,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
                 ($Q['is_open'] == 1)) {
             $retval .= POLLS_pollVote($pid, $showall, $displaytype);
         } else {
-            $retval .= POLLS_pollResults($pid, $size, '', '', $displaytype);
+            $retval .= POLLS_pollResults($pid, $size, '', '', 1, $displaytype);
         }
     } else {
         $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1" . COM_getPermSql('AND') . " ORDER BY date DESC");
@@ -672,7 +672,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
                         !POLLS_ipAlreadyVoted($pid) && ($Q['is_open'] == 1)) {
                     $retval .= POLLS_pollVote($pid, $showall, $displaytype);
                 } else {
-                    $retval .= POLLS_pollResults($pid, $size, '', '',
+                    $retval .= POLLS_pollResults($pid, $size, '', '', 1,
                                                  $displaytype);
                 }
 
@@ -754,7 +754,7 @@ function POLLS_pollsave($pid, $aid)
 * @return     string   HTML Formated Poll Results
 *
 */
-function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype = 0)
+function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $displaytype = 0)
 {
     global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
@@ -831,9 +831,9 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype =
                 $poll->set_var('edit_icon', $editlink);
             }
             if ($_PO_CONF['answerorder'] == 'voteorder'){
-                $order = "votes DESC";
+                $answerorder = "votes DESC";
             } else {
-                $order = "aid";
+                $answerorder = "aid";
             }
 
             for ($j = 0; $j < $nquestions; $j++) {
@@ -847,7 +847,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype =
                 $answer_sql = "SELECT votes,answer,remark "
                     . "FROM {$_TABLES['pollanswers']} "
                     . "WHERE pid='$pid' and qid='{$Q['qid']}' "
-                    . "ORDER BY $order";
+                    . "ORDER BY $answerorder";
                 $answers = DB_query ($answer_sql);
                 $nanswers = DB_numRows($answers);
 
@@ -918,7 +918,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $displaytype =
                     $P['perm_anon']) == 3 ? true : false);
                 require_once $_CONF['path_system'] . 'lib-comment.php';
                 $retval .= CMT_userComments($pid, $P['topic'], 'polls',
-                                            $order, $mode, 0, 1, false,
+                                            $order, $mode, 0, $page, false,
                                             $delete_option, $P['commentcode']);
             }
         }
@@ -1463,7 +1463,7 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
             if ($autotag['tag'] == 'poll_vote') {
                 $retval = POLLS_showPoll(0, $pid, $showall, 2);
             } else {
-                $retval = POLLS_pollResults($pid, 0,'', '', 2);
+                $retval = POLLS_pollResults($pid, 0,'', '', 1, 2);
             }
             $retval = '<div class="' . $css_class . '">' . $retval . '</div>';
             break;
