@@ -658,7 +658,7 @@ function editpreferences()
     if (!empty ($permissions)) {
         $whereblock .= $permissions . ' AND ';
     }
-    $whereblock .= "((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR "
+    $whereblock .= "((type != 'gldefault' AND is_enabled = 1) OR "
                  . "(type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','older_stories'))) "
                  . "ORDER BY onleft desc,blockorder,title";
     $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
