@@ -3,6 +3,9 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- When you had more than 50 blocks per side, disabling a block on one page of
+  the block list would also disable all blocks on all the other pages of the
+  list (reported by cesar) [Dirk]
 - Improved comment readability by adding a paragraph tag around "Plain Old Text"
   comments and some padding in threaded mode (bug #0000833) [Dirk]
 - Hide the "Logout" link when editing a comment or comment submission

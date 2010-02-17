@@ -662,16 +662,16 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
 
     return $retval;
 }
+
 /**
-*
-* Re-orders all blocks in steps of 10
+* Re-orders all blocks in increments of 10
 *
 */
 function reorderblocks()
 {
     global $_TABLES;
 
-    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
+    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft ASC, blockorder ASC;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -741,24 +741,45 @@ function moveBlock()
 
 /**
 * Enable and Disable block
+*
+* @param    string  $side       "1" = left-side blocks, "0" right-side blocks
+* @param    array   $bid_arr    array containing ids of enabled blocks
+* @param    int     $toporder   blockorder value of first block on current page
+* @return   void
+*
 */
-function changeBlockStatus($side, $bid_arr)
+function changeBlockStatus($side, $bid_arr, $toporder)
 {
     global $_CONF, $_TABLES;
 
-    // first, disable all on the requested side
-    $side = COM_applyFilter($side, true);
-    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    if ($toporder < 10) {
+        return;
+    }
+
+    $perpage = 0;
+    if (isset($_REQUEST['query_limit'])) {
+        $perpage = COM_applyFilter($_REQUEST['query_limit'], true);
+    }
+    if ($perpage == 0) {
+        $perpage = DEFAULT_ENTRIES_PER_PAGE;
+    }
+    $maxorder = $toporder + (10 * $perpage);
+
+    // first, disable all on the requested side (and page)
+    $side = ($side == '1' ? 1 : 0);
+    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 0 WHERE onleft = $side AND (blockorder >= $toporder AND blockorder < $maxorder)";
     DB_query($sql);
+
     if (isset($bid_arr)) {
         foreach ($bid_arr as $bid => $side) {
             $bid = COM_applyFilter($bid, true);
-            // the enable those in the array
-            $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '1' WHERE bid='$bid' AND onleft='$side'";
-            DB_query($sql);
+            // then enable those in the array
+            DB_change($_TABLES['blocks'], 'is_enabled', 1,
+                      array('bid', 'onleft'), array($bid, $side));
         }
     }
-    return;
 }
 
 /**
@@ -802,7 +823,8 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
     if (isset($_POST['enabledblocks'])) {
         $enabledblocks = $_POST['enabledblocks'];
     }
-    changeBlockStatus($_POST['blockenabler'], $enabledblocks);
+    changeBlockStatus($_POST['blockenabler'], $enabledblocks,
+                      COM_applyFilter($_POST['toporder'], true));
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {

@@ -44,6 +44,13 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-admin.php') !== false) {
 }
 
 /**
+* Default number of list entries per page
+*/
+if (! defined('DEFAULT_ENTRIES_PER_PAGE')) {
+    define('DEFAULT_ENTRIES_PER_PAGE', 50);
+}
+
+/**
 * Common function used in Admin scripts to display a list of items
 *
 * @param    string  $fieldfunction  Name of a function used to display the list item row details
@@ -235,7 +242,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if (isset($_REQUEST['query_limit'])) { // get query-limit (list-length)
         $query_limit = COM_applyFilter($_REQUEST['query_limit'], true);
         if ($query_limit == 0) {
-            $query_limit = 50;
+            $query_limit = DEFAULT_ENTRIES_PER_PAGE;
         }
     }
 
@@ -428,8 +435,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     if ($has_extras) {
-        $limit = 50; # default query limit if not other chosen.
-                     # maybe this could be a setting from the list?
+        /**
+        * default query limit if no other ch osen.
+        * @todo maybe this could be a setting from the list?
+        */
+        $limit = DEFAULT_ENTRIES_PER_PAGE;
         if (!empty($query_limit)) {
             $limit = $query_limit;
         }
@@ -623,6 +633,8 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
+    static $toporder_left, $toporder_right;
+
     $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
@@ -646,6 +658,16 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 
         case 'blockorder':
             $retval .= $A['blockorder'];
+            if ((!isset($toporder_left) && ($A['onleft'] == 1)) ||
+                    (!isset($toporder_right) && ($A['onleft'] == 0))) {
+                if ($A['onleft'] == 1) {
+                    $toporder_left = $A['blockorder'];
+                } else {
+                    $toporder_right = $A['blockorder'];
+                }
+                $retval .= LB . '<input type="hidden" name="toporder" value="'
+                        . $A['blockorder'] . '"' . XHTML . '>';
+            }
             break;
 
         case 'is_enabled':
