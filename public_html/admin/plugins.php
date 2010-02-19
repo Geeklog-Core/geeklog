@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -474,7 +474,12 @@ function listplugins($token)
 
     // this is a dummy variable so we know the form has been used if all plugins
     // should be disabled in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="pluginenabler" value="true"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="pluginenabler" value="true"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list('plugins', 'ADMIN_getListField_plugins', $header_arr,
                 $text_arr, $query_arr, $defsort_arr, '', $token, '', $form_arr);

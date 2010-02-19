@@ -450,7 +450,12 @@ function listblocks()
     // this is a dummy variable so we know the form has been used if all blocks
     // should be disabled on one side in order to disable the last one.
     // The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="blockenabler" value="1"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list(
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
@@ -474,7 +479,12 @@ function listblocks()
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="blockenabler" value="0"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list (
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2009 by the following authors:                         |
+// | Copyright (C) 2003-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -221,7 +221,12 @@ function listfeeds()
 
     // this is a dummy variable so we know the form has been used if all feeds
     // should be disabled in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="feedenabler" value="true"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list('syndication', 'ADMIN_getListField_syndication',
                           $header_arr, $text_arr, $query_arr, $defsort_arr, '',

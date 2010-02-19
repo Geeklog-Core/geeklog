@@ -476,6 +476,7 @@ function listServices()
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
+    $token = SEC_createToken();
 
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
@@ -518,11 +519,16 @@ function listServices()
 
     // this is a dummy variable so we know the form has been used if all services
     // should be disabled in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="serviceChanger" value="true"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="serviceChanger" value="true"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list('pingservice', 'ADMIN_getListField_trackback',
                           $header_arr, $text_arr, $query_arr, $defsort_arr,
-                          '', SEC_createToken(), '', $form_arr);
+                          '', $token, '', $form_arr);
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     if ($_CONF['trackback_enabled']) {
