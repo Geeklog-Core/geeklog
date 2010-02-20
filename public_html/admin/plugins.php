@@ -173,29 +173,58 @@ function plugineditor($pi_name, $confirmed = 0)
 /**
 * Toggle plugin status from enabled to disabled and back
 *
-* @param    array   $pi_name_arr    array of plugin states
+* @param    array   $enabledplugins     array containing ids of enabled plugins
+* @param    array   $visibleplugins     array containing ids of visible plugins
 * @return   void
 *
 */
-function changePluginStatus($pi_name_arr)
+function changePluginStatus($enabledplugins, $visibleplugins)
 {
     global $_TABLES, $_DB_table_prefix;
 
-    // first, get a list of all plugins
-    $rst = DB_query("SELECT pi_name, pi_enabled FROM {$_TABLES['plugins']}");
-    $plg_count = DB_numRows($rst);
-    for ($i = 0; $i < $plg_count; $i++) { // iterate and check/change match with array
-        $P = DB_fetchArray($rst);
-        if (isset($pi_name_arr[$P['pi_name']]) && ($P['pi_enabled'] == 0)) { // enable it
-            PLG_enableStateChange($P['pi_name'], true);
+    $disabledplugins = array_diff($visibleplugins, $enabledplugins);
+
+    /**
+    * Since plugins require some more love when enabling / disabling, we need
+    * to figure out exactly which plugin was enabled or disabled and treat it
+    * accordingly.
+    */
+
+    $plugin_name = '';
+
+    // first, check for a newly enabled plugin
+    $in = implode("','", $enabledplugins);
+    if (! empty($in)) {
+        $sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name IN ('{$in}') AND pi_enabled = 0";
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list($plugin_name) = DB_fetchArray($result);
+        }
+
+        if (! empty($plugin_name)) { // this plugin is to be enabled
+            PLG_enableStateChange($plugin_name, true);
             DB_change($_TABLES['plugins'], 'pi_enabled', 1,
-                                           'pi_name', $P['pi_name']);
-            PLG_pluginStateChange($P['pi_name'], 'enabled');
-        } elseif (!isset($pi_name_arr[$P['pi_name']]) && $P['pi_enabled'] == 1) {  // disable it
-            PLG_enableStateChange($P['pi_name'], false);
-            DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                                           'pi_name', $P['pi_name']);
-            PLG_pluginStateChange($P['pi_name'], 'disabled');
+                                           'pi_name', $plugin_name);
+            PLG_pluginStateChange($plugin_name, 'enabled');
+        }
+    }
+
+    // nothing found yet? check for a newly disabled plugin then
+    if (empty($plugin_name)) {
+        $in = implode("','", $disabledplugins);
+        if (! empty($in)) {
+            $sql = "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name IN ('{$in}') AND pi_enabled = 1";
+            $result = DB_query($sql);
+            if (DB_numRows($result) > 0) {
+                list($plugin_name) = DB_fetchArray($result);
+            }
+
+            if (! empty($plugin_name)) { // this plugin is to be disabled
+                PLG_enableStateChange($plugin_name, false);
+                DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                               'pi_name', $plugin_name);
+                PLG_pluginStateChange($plugin_name, 'disabled');
+            }
         }
     }
 }
@@ -1194,11 +1223,15 @@ if (isset($_POST['pluginenabler'])) { // JavaScript-triggered POST request
         $_POST['mode'] = $LANG32[34];
         $_POST['pi_name'] = $_POST['updatethisplugin'];
     } elseif (SEC_checkToken()) {
+        $enabledplugins = array();
         if (isset($_POST['enabledplugins'])) {
-            changePluginStatus($_POST['enabledplugins']);
-        } else {
-            changePluginStatus(array());
+            $enabledplugins = $_POST['enabledplugins'];
         }
+        $visibleplugins = array();
+        if (isset($_POST['visibleplugins'])) {
+            $visibleplugins = $_POST['visibleplugins'];
+        }
+        changePluginStatus($enabledplugins, $visibleplugins);
 
         // force a refresh so that the information of the plugin that was just
         // enabled / disabled (menu entries, etc.) is displayed properly

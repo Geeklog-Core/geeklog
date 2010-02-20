@@ -1133,12 +1133,14 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
             }
         }
         if ($not_present) {
-            $retval = '<input type="checkbox" name="enabledplugins['
-                    . $A['pi_name'] . ']" disabled="disabled"' . XHTML . '>';
+            $retval = '<input type="checkbox" disabled="disabled"'
+                    . XHTML . '>';
         } else {
-            $retval = '<input type="checkbox" name="enabledplugins['
-                    . $A['pi_name'] . ']" onclick="submit()" value="1"'
-                    . $switch . XHTML . '>';
+            $retval = '<input type="checkbox" name="enabledplugins[]" '
+                        . 'onclick="submit()" value="' . $A['pi_name'] . '"'
+                        . $switch . XHTML . '>'
+                    . '<input type="hidden" name="visibleplugins[]" value="'
+                        . $A['pi_name'] . '"' . XHTML . '>';
         }
         break;
 
