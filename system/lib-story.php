@@ -896,15 +896,64 @@ function STORY_doDeleteThisStoryNow($sid)
     CMT_updateCommentcodes();
 }
 
-/**
- * Return true since this component supports webservices
- *
- * @return  bool	True, if webservices are supported
+
+/*
+ * Implement *some* of the Plugin API functions for stories. While stories
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
  */
+
+/**
+* Return true since this component supports webservices
+*
+* @return   bool        True, if webservices are supported
+*
+*/
 function plugin_wsEnabled_story()
 {
     return true;
 }
+
+/**
+* Returns list of moderation values
+*
+* The array returned contains (in order): the row 'id' label, main table,
+* moderation fields (comma separated), and submission table
+*
+* @return   array       Returns array of useful moderation values
+*
+*/
+function plugin_moderationvalues_story()
+{
+    global $_TABLES;
+
+    return array(
+        'sid',
+        $_TABLES['stories'],
+        'sid,uid,tid,title,introtext,date,postmode',
+        $_TABLES['storysubmission']
+    );
+}
+
+/**
+* Performs story exclusive work for items deleted by moderation
+*
+* While moderation.php handles the actual removal from the submission
+* table, within this function we handle all other deletion related tasks
+*
+* @param    string  $sid    Identifying string, i.e. the story id
+* @return   string          Any wanted HTML output
+*
+*/
+function plugin_moderationdelete_story($sid)
+{
+    global $_TABLES;
+
+    DB_delete($_TABLES['storysubmission'], 'sid', $sid);
+
+    return '';
+}
+
 
 /*
  * START SERVICES SECTION

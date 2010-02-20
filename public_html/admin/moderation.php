@@ -508,34 +508,28 @@ function draftlist($token)
 * @return   string              HTML for "command and control" page
 *
 */
-function moderation ($mid, $action, $type, $count)
+function moderation($mid, $action, $type, $count)
 {
     global $_CONF, $_TABLES;
 
     $retval = '';
 
-    switch ($type) {
-    case 'story':
-        $id = 'sid';
-        $table = $_TABLES['stories'];
-        $submissiontable = $_TABLES['storysubmission'];
-        $fields = 'sid,uid,tid,title,introtext,date,postmode';
-        break;
-    case 'comment':
+    if (empty($type)) {
+        // something is terribly wrong, bail
+        $retval .= COM_errorLog("Submission type not set in moderation.php");
+        return $retval;
+    }
+
+    if ($type == 'comment') {
         $id = 'cid';
+        $table = $_TABLES['comments'];
         $submissiontable = $_TABLES['commentsubmissions'];
         $sidArray[] = '';
-        break;
-    default:
-        if (strlen($type) <= 0) {
-            // something is terribly wrong, bail
-            $retval .= COM_errorLog("Unable to find type of $type in moderation() in moderation.php");
-            return $retval;
-        }
+    } else {
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
-    // Set true if an valid action other than delete_all is selected
+    // Set true if a valid action other than delete_all is selected
     $formaction = false;
 
     for ($i = 0; $i < $count; $i++) {
@@ -547,19 +541,19 @@ function moderation ($mid, $action, $type, $count)
 
         switch ($action[$i]) {
         case 'delete':
-            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
-                // There may be some plugin specific processing that needs to
-                // happen first.
-                $retval .= PLG_deleteSubmission($type, $mid[$i]);
-            }
             if (empty($mid[$i])) {
                 $retval .= COM_errorLog("moderation.php just tried deleting everything in table $submissiontable because it got an empty id.  Please report this immediately to your site administrator");
                 return $retval;
             }
+
             if ($type == 'draft') {
                 STORY_deleteStory($mid[$i]);
             } else {
-                DB_delete($submissiontable,"$id",$mid[$i]);
+                // There may be some plugin specific processing that needs to
+                // happen first.
+                $retval .= PLG_deleteSubmission($type, $mid[$i]);
+
+                DB_delete($submissiontable, $id, $mid[$i]);
             }
             break;
 
@@ -607,22 +601,22 @@ function moderation ($mid, $action, $type, $count)
             break;
         }
     }
-    
+
     // after loop update comment tree and count for each story
     if (isset($sidArray)) {
-        foreach($sidArray as $sid) {
+        foreach ($sidArray as $sid) {
             CMT_rebuildTree($sid);
-            //update comment count of stories;
-            $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-            DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+            // update comment count of stories;
+            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+            DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
         }
     }
-    
-    //Add new comment users to group comment.submit group
+
+    // Add new comment users to group comment.submit group
     if (isset($_POST['publishfuture']) ) {
         for ($i = 0; $i < count($_POST['publishfuture']); $i++ ) {
             $uid =  COM_applyFilter($_POST['publishfuture'][$i], true);
-            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid) ) {
+            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid)) {
                 SEC_addUserToGroup($uid, 'Comment Submitters');
             }
         }
@@ -633,15 +627,16 @@ function moderation ($mid, $action, $type, $count)
     if (!$formaction AND isset($_POST['delitem'])) {
         foreach ($_POST['delitem'] as $delitem) {
             $delitem = COM_applyFilter($delitem);
-            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
-                // There may be some plugin specific processing that needs to
-                // happen first.
-                $retval .= PLG_deleteSubmission($type, $delitem);
-            }
-            if ($type == 'draft') {
-                STORY_deleteStory($delitem);
-            } else {
-                DB_delete($submissiontable,"$id",$delitem);
+            if (! empty($delitem)) {
+                if ($type == 'draft') {
+                    STORY_deleteStory($delitem);
+                } else {
+                    // There may be some plugin specific processing that needs
+                    // to happen first.
+                    $retval .= PLG_deleteSubmission($type, $delitem);
+
+                    DB_delete($submissiontable, $id, $delitem);
+                }
             }
         }
     }
