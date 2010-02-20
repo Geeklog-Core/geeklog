@@ -5,7 +5,12 @@ Apr ??, 2010 (1.6.2)
 
 - When you had more than 50 blocks per side, disabling a block on one page of
   the block list would also disable all blocks on all the other pages of the
-  list (reported by cesar) [Dirk]
+  list (reported by cesar)
+  On closer inspection, the same effect could also be triggered when using the
+  list's search or dropdown to only display a certain amount of entries. The
+  same problems also existed in the lists for Feeds, Plugins, and Weblog
+  Directory Services. All fixed now [Dirk]
+- Fixed links to comment pages (bug #0001061) [Tom]
 - Improved comment readability by adding a paragraph tag around "Plain Old Text"
   comments and some padding in threaded mode (bug #0000833) [Dirk]
 - Hide the "Logout" link when editing a comment or comment submission
@@ -14,6 +19,8 @@ Apr ??, 2010 (1.6.2)
   (for bug #0000799) [Dirk]
 - Changed the label for the $_CONF['disable_autolinks'] config option to read
   "Disable Autotags" and updated the documentation (bug #0000912) [Dirk]
+- Allow Spam-X to skip filtering of submitted content from certain user groups
+  (feature request #0001018) [Tom]
 - Changed the 'gravatar_rating' config option to a dropdown since it only
   supports four options anyway [Dirk]
 - For anonymous comment submissions, use "Your Name" instead of "Username" in
