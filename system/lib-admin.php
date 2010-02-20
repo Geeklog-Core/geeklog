@@ -1036,7 +1036,11 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
         break;
 
     case 'updated':
-        $retval = strftime($_CONF['daytime'], $A['date']);
+        if ($A['is_enabled'] == 1) {
+            $retval = strftime($_CONF['daytime'], $A['date']);
+        } else {
+            $retval = $LANG_ADMIN['na'];
+        }
         break;
 
     case 'is_enabled':
@@ -1045,8 +1049,8 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
         } else {
             $switch = '';
         }
-        $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
-            . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
+        $retval = '<input type="checkbox" name="enabledfeeds[]" onclick="submit()" value="' . $A['fid'] . '"' . $switch . XHTML . '>'
+                . '<input type="hidden" name="visiblefeeds[]" value="' . $A['fid'] . '"' . XHTML . '>';
         break;
 
     case 'header_tid':
