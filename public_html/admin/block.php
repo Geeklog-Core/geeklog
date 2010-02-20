@@ -765,13 +765,17 @@ function changeBlockStatus($enabledblocks, $visibleblocks)
 
     // disable blocks
     $in = implode(',', $disabled);
-    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 0 WHERE bid IN ($in)";
-    DB_query($sql);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 0 WHERE bid IN ($in)";
+        DB_query($sql);
+    }
 
     // enable blocks
     $in = implode(',', $enabledblocks);
-    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 1 WHERE bid IN ($in)";
-    DB_query($sql);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 1 WHERE bid IN ($in)";
+        DB_query($sql);
+    }
 }
 
 /**
