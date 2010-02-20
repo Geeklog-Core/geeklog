@@ -239,7 +239,7 @@ function commandcontrol($token)
 
     if ($_CONF['usersubmission'] == 1) {
         if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
-            $retval .= userlist ($token);
+            $retval .= userlist($token);
         }
     }
 
@@ -267,43 +267,46 @@ function itemlist($type, $token)
     $retval = '';
     $isplugin = false;
 
-    if ((strlen ($type) > 0) && ($type <> 'story') && ($type <> 'comment')) {
-        $function = 'plugin_itemlist_' . $type;
-        if (function_exists ($function)) {
-            // Great, we found the plugin, now call its itemlist method
-            $plugin = new Plugin();
-            $plugin = $function();
-            if (isset ($plugin)) {
-                $helpfile = $plugin->submissionhelpfile;
-                $sql = $plugin->getsubmissionssql;
-                $H = $plugin->submissionheading;
-                $section_title = $plugin->submissionlabel;
-                $section_help = $helpfile;
-                $isplugin = true;
-            }
-        }
-    } elseif ($type == 'story') { // story submission
-        $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
-        $H =  array($LANG29[10], $LANG29[14], $LANG29[15]);
-        $section_title = $LANG29[35];
-        $section_help = 'ccstorysubmission.html';
-    } elseif ($type == 'comment') {
+    if (empty($type)) {
+        // something is terribly wrong, bail
+        $retval .= COM_errorLog("Submission type not set in moderation.php");
+        return $retval;
+    }
+
+    if ($type == 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid "
               . "FROM {$_TABLES['commentsubmissions']} "
               . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
         $section_help = 'cccommentsubmission.html';
+    } else {
+        $function = 'plugin_itemlist_' . $type;
+        if (function_exists($function)) {
+            // Great, we found the plugin, now call its itemlist method
+            $plugin = new Plugin();
+            $plugin = $function();
+            if (isset($plugin)) {
+                $helpfile = $plugin->submissionhelpfile;
+                $sql = $plugin->getsubmissionssql;
+                $H = $plugin->submissionheading;
+                $section_title = $plugin->submissionlabel;
+                $section_help = $helpfile;
+                if ($type <> 'story') {
+                    $isplugin = true;
+                }
+            }
+        }
     }
 
     // run SQL but this time ignore any errors
-    if (!empty ($sql)) {
+    if (!empty($sql)) {
         $sql .= ' LIMIT 50'; // quick'n'dirty workaround to prevent timeouts
         $result = DB_query($sql, 1);
     }
-    if (empty ($sql) || DB_error()) {
+    if (empty($sql) || DB_error()) {
         // was more than likely a plugin that doesn't need moderation
-        //$nrows = -1;
+        $nrows = 0;
         return;
     } else {
         $nrows = DB_numRows($result);
@@ -326,7 +329,6 @@ function itemlist($type, $token)
         $data_arr[$i] = $A;
     }
 
-
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $H[0], 'field' => 1),
@@ -335,7 +337,7 @@ function itemlist($type, $token)
         array('text' => $LANG29[2], 'field' => 'delete'),
         array('text' => $LANG29[1], 'field' => 'approve'));
     if ($type == 'comment') {
-        //data for comment submission headers
+        // data for comment submission headers
         $header_arr[6]['text'] = $LANG29[42];
         $header_arr[6]['field'] = 'uid';
         $header_arr[7]['text'] = $LANG29[43];

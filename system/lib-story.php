@@ -954,6 +954,41 @@ function plugin_moderationdelete_story($sid)
     return '';
 }
 
+/**
+* Checks that the current user has the rights to moderate stories.
+* Returns true if this is the case, false otherwise
+*
+* @return   boolean     Returns true if moderator
+*
+*/
+function plugin_ismoderator_story()
+{
+    return SEC_hasRights('story.moderate');
+}
+
+/**
+* Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   Plugin object or void if not allowed
+*
+*/
+function plugin_itemlist_story()
+{
+    global $_TABLES, $LANG29;
+
+    if (plugin_ismoderator_story()) {
+        $plugin = new Plugin();
+        $plugin->submissionlabel = $LANG29[35];
+        $plugin->submissionhelpfile = 'ccstorysubmission.html';
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
+        $plugin->addSubmissionHeading($LANG29[10]);
+        $plugin->addSubmissionHeading($LANG29[14]);
+        $plugin->addSubmissionHeading($LANG29[15]);
+
+        return $plugin;
+    }
+}
+
 
 /*
  * START SERVICES SECTION
