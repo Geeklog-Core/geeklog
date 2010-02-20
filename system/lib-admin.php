@@ -1087,61 +1087,66 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
 
     $retval = '';
 
-    switch($fieldname) {
-        case 'edit':
-            $retval = COM_createLink($icon_arr['edit'],
+    switch ($fieldname) {
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'],
                 "{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}");
-            break;
-        case 'pi_name':
-            $retval = plugin_get_pluginname($A['pi_name']);
-            break;
-        case 'pi_version':
-            $plugin_code_version = PLG_chkVersion ($A['pi_name']);
-            if (empty ($plugin_code_version)) {
-                $code_version = $LANG_ADMIN['na'];
-            } else {
-                $code_version = $plugin_code_version;
-            }
-            $pi_installed_version = $A['pi_version'];
-            if (empty ($plugin_code_version) ||
-                    ($pi_installed_version == $code_version)) {
-                $retval = $pi_installed_version;
-            } else {
-                $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
-                if ($A['pi_enabled'] == 1) {
-                    $retval .= " <b>{$LANG32[38]}</b>"
-                        . ' <input type="image" src="' . $_CONF['layout_url']
-                        . '/images/update.png" alt="[' . $LANG32[38]
-                        . ']" name="updatethisplugin" value="' . $A['pi_name']
-                        . '" onclick="submit()" title="' . $LANG32[42] . '"'
-                        . XHTML . '>';
-                }
-            }
-            break;
-        case 'enabled':
-            $not_present = false;
+        break;
+
+    case 'pi_name':
+        $retval = plugin_get_pluginname($A['pi_name']);
+        break;
+
+    case 'pi_version':
+        $plugin_code_version = PLG_chkVersion($A['pi_name']);
+        if (empty($plugin_code_version)) {
+            $code_version = $LANG_ADMIN['na'];
+        } else {
+            $code_version = $plugin_code_version;
+        }
+        $pi_installed_version = $A['pi_version'];
+        if (empty($plugin_code_version) ||
+                ($pi_installed_version == $code_version)) {
+            $retval = $pi_installed_version;
+        } else {
+            $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
             if ($A['pi_enabled'] == 1) {
-                $switch = ' checked="checked"';
-            } else {
-                $switch = '';
-                if (! file_exists($_CONF['path'] . 'plugins/' . $A['pi_name']
-                                  . '/functions.inc')) {
-                    $not_present = true;
-                }
+                $retval .= " <b>{$LANG32[38]}</b>"
+                    . ' <input type="image" src="' . $_CONF['layout_url']
+                    . '/images/update.png" alt="[' . $LANG32[38]
+                    . ']" name="updatethisplugin" value="' . $A['pi_name']
+                    . '" onclick="submit()" title="' . $LANG32[42] . '"'
+                    . XHTML . '>';
             }
-            if ($not_present) {
-                $retval = '<input type="checkbox" name="enabledplugins['
-                        . $A['pi_name'] . ']" disabled="disabled"' . XHTML . '>';
-            } else {
-                $retval = '<input type="checkbox" name="enabledplugins['
-                        . $A['pi_name'] . ']" onclick="submit()" value="1"'
-                        . $switch . XHTML . '>';
+        }
+        break;
+
+    case 'enabled':
+        $not_present = false;
+        if ($A['pi_enabled'] == 1) {
+            $switch = ' checked="checked"';
+        } else {
+            $switch = '';
+            if (! file_exists($_CONF['path'] . 'plugins/' . $A['pi_name']
+                              . '/functions.inc')) {
+                $not_present = true;
             }
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+        }
+        if ($not_present) {
+            $retval = '<input type="checkbox" name="enabledplugins['
+                    . $A['pi_name'] . ']" disabled="disabled"' . XHTML . '>';
+        } else {
+            $retval = '<input type="checkbox" name="enabledplugins['
+                    . $A['pi_name'] . ']" onclick="submit()" value="1"'
+                    . $switch . XHTML . '>';
+        }
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
+
     return $retval;
 }
 
