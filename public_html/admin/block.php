@@ -761,9 +761,7 @@ function changeBlockStatus($enabledblocks, $visibleblocks)
 {
     global $_CONF, $_TABLES;
 
-    $enabled  = array_keys($enabledblocks);
-    $visible  = array_keys($visibleblocks);
-    $disabled = array_diff($visible, $enabled);
+    $disabled = array_diff($visibleblocks, $enabledblocks);
 
     // disable blocks
     $in = implode(',', $disabled);
@@ -771,7 +769,7 @@ function changeBlockStatus($enabledblocks, $visibleblocks)
     DB_query($sql);
 
     // enable blocks
-    $in = implode(',', $enabled);
+    $in = implode(',', $enabledblocks);
     $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 1 WHERE bid IN ($in)";
     DB_query($sql);
 }

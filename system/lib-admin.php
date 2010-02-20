@@ -665,11 +665,11 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                 } else {
                     $switch = '';
                 }
-                $retval = '<input type="checkbox" name="enabledblocks['
-                            . $A['bid'] . ']" onclick="submit()" value="'
-                            . $A['onleft'] . '"' . $switch . XHTML . '>'
-                        . '<input type="hidden" name="visibleblocks['
-                            . $A['bid'] . ']" value="1"' . XHTML . '>';
+                $retval = '<input type="checkbox" name="enabledblocks[]" '
+                            . 'onclick="submit()" value="' . $A['bid'] . '"'
+                            . $switch . XHTML . '>'
+                        . '<input type="hidden" name="visibleblocks[]" value="'
+                            . $A['bid'] . '"' . XHTML . '>';
             }
             break;
 
