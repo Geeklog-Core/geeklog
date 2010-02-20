@@ -633,8 +633,6 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 {
     global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
 
-    static $toporder_left, $toporder_right;
-
     $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
@@ -658,16 +656,6 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 
         case 'blockorder':
             $retval .= $A['blockorder'];
-            if ((!isset($toporder_left) && ($A['onleft'] == 1)) ||
-                    (!isset($toporder_right) && ($A['onleft'] == 0))) {
-                if ($A['onleft'] == 1) {
-                    $toporder_left = $A['blockorder'];
-                } else {
-                    $toporder_right = $A['blockorder'];
-                }
-                $retval .= LB . '<input type="hidden" name="toporder" value="'
-                        . $A['blockorder'] . '"' . XHTML . '>';
-            }
             break;
 
         case 'is_enabled':
@@ -677,8 +665,11 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                 } else {
                     $switch = '';
                 }
-                $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
-                    . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
+                $retval = '<input type="checkbox" name="enabledblocks['
+                            . $A['bid'] . ']" onclick="submit()" value="'
+                            . $A['onleft'] . '"' . $switch . XHTML . '>'
+                        . '<input type="hidden" name="visibleblocks['
+                            . $A['bid'] . ']" value="1"' . XHTML . '>';
             }
             break;
 
