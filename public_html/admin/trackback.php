@@ -741,23 +741,29 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
 /**
 * Toggle status of a ping service from enabled to disabled and back
 *
-* @param    int     $pid    ID of the service
+* @param    array   $enabledservices    array containing ids of enabled services
+* @param    array   $visibleservices    array containing ids of visible services
 * @return   void
 *
 */
-function changeServiceStatus ($pid_arr)
+function changeServiceStatus($enabledservices, $visibleservices)
 {
     global $_TABLES;
 
-    // first, disable all
-    DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '0'");
-    if (isset($pid_arr)) {
-        foreach ($pid_arr as $pid) { //enable those listed
-            $pid = addslashes (COM_applyFilter ($pid, true));
-            if (!empty ($pid)) {
-                DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '1' WHERE pid = '$pid'");
-            }
-        }
+    $disabled = array_diff($visibleservices, $enabledservices);
+
+    // disable services
+    $in = implode(',', $disabled);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['pingservice']} SET is_enabled = 0 WHERE pid IN ($in)";
+        DB_query($sql);
+    }
+
+    // enable services
+    $in = implode(',', $enabledservices);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['pingservice']} SET is_enabled = 1 WHERE pid IN ($in)";
+        DB_query($sql);
     }
 }
 
@@ -829,11 +835,15 @@ function getHelpUrl()
 $display = '';
 $mode = '';
 if ($_CONF['ping_enabled'] && isset($_POST['serviceChanger']) && SEC_checkToken()) {
-    $changedservices = array();
-    if (isset($_POST['changedservices'])) {
-        $changedservices = $_POST['changedservices'];
+    $enabledservices = array();
+    if (isset($_POST['enabledservices'])) {
+        $enabledservices = $_POST['enabledservices'];
     }
-    changeServiceStatus($changedservices);
+    $visibleservices = array();
+    if (isset($_POST['visibleservices'])) {
+        $visibleservices = $_POST['visibleservices'];
+    }
+    changeServiceStatus($enabledservices, $visibleservices);
 }
 
 if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {

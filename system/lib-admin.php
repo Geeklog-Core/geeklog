@@ -1274,8 +1274,11 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
         } else {
             $switch = '';
         }
-        $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
-            . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
+        $retval = '<input type="checkbox" name="enabledservices[]" '
+                        . 'onclick="submit()" value="' . $A['pid'] . '"'
+                        . $switch . XHTML . '>'
+                  . '<input type="hidden" name="visibleservices[]" value="'
+                            . $A['pid'] . '"' . XHTML . '>';
         break;
 
     default:
