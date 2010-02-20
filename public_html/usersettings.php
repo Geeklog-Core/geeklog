@@ -699,7 +699,7 @@ function editpreferences()
 *
 * @param   email   string   email address to check
 * @param   uid     int      user id of current user
-* @return          bool     true = exists, false = does not exist
+* @return          boolean  true = exists, false = does not exist
 *
 */
 function emailAddressExists ($email, $uid)

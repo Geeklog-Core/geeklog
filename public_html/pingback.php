@@ -227,7 +227,7 @@ function PNB_handlePingback ($id, $type, $url, $oururl)
 * Check if the targetURI really points to us
 *
 * @param    string  $url    targetURI, a URL on our site
-* @return   bool            true = is a URL on our site
+* @return   boolean         true = is a URL on our site
 *
 */
 function PNB_validURL ($url)

@@ -435,7 +435,7 @@ class upload
     *
     * @access   private
     * @param    string  $filename   name of uploaded file
-    * @return   bool                true: okay, false: an error occured
+    * @return   boolean             true: okay, false: an error occured
     *
     */
     function _keepOriginalFile ($filename)

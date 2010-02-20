@@ -395,7 +395,7 @@ function innodb_supported()
 /**
 * Check if all the tables have already been converted to InnoDB
 *
-* @return   bool    true: all tables are InnoDB, otherwise false
+* @return   boolean true: all tables are InnoDB, otherwise false
 *
 */
 function already_converted()

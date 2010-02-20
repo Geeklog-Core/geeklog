@@ -1454,7 +1454,7 @@ function SP_render_content($sp_content, $sp_php, $query = '')
 /**
  * Return true since this plugin supports webservices
  *
- * @return  bool	True, if webservices are supported
+ * @return  boolean     True, if webservices are supported
  */
 function plugin_wsEnabled_staticpages()
 {

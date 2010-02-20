@@ -1593,7 +1593,7 @@ function CMT_handleEditSubmit($mode = null)
  * @param string  $comment  comment text
  * @param string  $postmode ('html', 'plaintext', ...)
  * @param string  $type     Type of item (article, polls, etc.)
- * @param bool    $edit     if true append edit tag
+ * @param boolean $edit     if true append edit tag
  * @param int     $cid      commentid if editing comment (for proper sig)
  * @return string of comment text
  */

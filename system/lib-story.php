@@ -906,7 +906,7 @@ function STORY_doDeleteThisStoryNow($sid)
 /**
 * Return true since this component supports webservices
 *
-* @return   bool        True, if webservices are supported
+* @return   boolean     True, if webservices are supported
 *
 */
 function plugin_wsEnabled_story()
