@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- Block Names can no longer be empty [Dirk]
 - When you had more than 50 blocks per side, disabling a block on one page of
   the block list would also disable all blocks on all the other pages of the
   list (reported by cesar)

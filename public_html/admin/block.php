@@ -140,7 +140,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
         $block_templates->set_var('all_selected', 'selected="selected"');
-    } else if ($A['tid'] == 'homeonly') {
+    } elseif ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
     $block_templates->set_var('topic_options',
@@ -152,7 +152,7 @@ function editdefaultblock ($A, $access)
 
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } else if ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
@@ -306,7 +306,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
         $block_templates->set_var('all_selected', 'selected="selected"');
-    } else if ($A['tid'] == 'homeonly') {
+    } elseif ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
     $block_templates->set_var('topic_options',
@@ -316,7 +316,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_right', $LANG21[41]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } else if ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
@@ -326,9 +326,9 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
     if ($A['type'] == 'normal') {
         $block_templates->set_var('normal_selected', 'selected="selected"');
-    } else if ($A['type'] == 'phpblock') {
+    } elseif ($A['type'] == 'phpblock') {
         $block_templates->set_var('php_selected', 'selected="selected"');
-    } else if ($A['type'] == 'portal') {
+    } elseif ($A['type'] == 'portal') {
         $block_templates->set_var('portal_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
@@ -555,7 +555,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;
-    } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
+    } elseif (!empty($name) AND
+             ( ($type == 'normal' && !empty($title) && !empty($content))
+            OR ($type == 'portal' && !empty($title) && !empty($rdfurl))
+            OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))
+            OR ($type == 'gldefault' && (strlen($blockorder) > 0)) )) {
         if ($is_enabled == 'on') {
             $is_enabled = 1;
         } else {
@@ -575,7 +579,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
             // get rid of possible extra prefixes (e.g. "feed://http://...")
             if (substr ($rdfurl, 0, 4) == 'rss:') {
                 $rdfurl = substr ($rdfurl, 4);
-            } else if (substr ($rdfurl, 0, 5) == 'feed:') {
+            } elseif (substr ($rdfurl, 0, 5) == 'feed:') {
                 $rdfurl = substr ($rdfurl, 5);
             }
             if (substr ($rdfurl, 0, 2) == '//') {
@@ -649,16 +653,19 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
         $retval .= COM_siteHeader('menu', $LANG21[32]);
-        if ($type == 'portal') {
+        if (empty($name)) {
+            // empty block name
+            $msgtxt = $LANG21[50];
+        } elseif ($type == 'portal') {
             // Portal block is missing fields
             $msgtxt = $LANG21[33];
-        } else if ($type == 'phpblock') {
+        } elseif ($type == 'phpblock') {
             // PHP Block is missing field
             $msgtxt = $LANG21[34];
-        } else if ($type == 'normal') {
+        } elseif ($type == 'normal') {
             // Normal block is missing field
             $msgtxt = $LANG21[35];
-        } else if ($type == 'gldefault') {
+        } elseif ($type == 'gldefault') {
             // Default geeklog field missing
             $msgtxt = $LANG21[42];
         } else {
@@ -878,11 +885,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                     $_POST['perm_owner'], $_POST['perm_group'],
                     $_POST['perm_members'], $_POST['perm_anon'],
                     $is_enabled, $allow_autotags);
-} else if ($mode == 'edit') {
+} elseif ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG21[3])
              . editblock ($bid)
              . COM_siteFooter ();
-} else if ($mode == 'move') {
+} elseif ($mode == 'move') {
     $display .= COM_siteHeader('menu', $LANG21[19]);
     if(SEC_checkToken()) {
         $display .= moveBlock();
