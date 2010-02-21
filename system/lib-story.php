@@ -991,6 +991,96 @@ function plugin_itemlist_story()
 
 
 /*
+ * Another pseudo plugin API for draft stories
+ */
+
+/**
+* Returns list of moderation values
+*
+* The array returned contains (in order): the row 'id' label, main table,
+* moderation fields (comma separated), and submission table
+*
+* @return   array       Returns array of useful moderation values
+*
+*/
+function plugin_moderationvalues_story_draft()
+{
+    global $_TABLES;
+
+    return array(
+        'sid',
+        $_TABLES['stories'],
+        'sid,uid,tid,title,introtext,date,postmode',
+        $_TABLES['stories']
+    );
+}
+
+/**
+* Performs draft story exclusive work for items deleted by moderation
+*
+* While moderation.php handles the actual removal from the submission
+* table, within this function we handle all other deletion related tasks
+*
+* @param    string  $sid    Identifying string, i.e. the story id
+* @return   string          Any wanted HTML output
+*
+*/
+function plugin_moderationdelete_story_draft($sid)
+{
+    global $_TABLES;
+
+    STORY_deleteStory($sid);
+
+    return '';
+}
+
+/**
+* Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   Plugin object or void if not allowed
+*
+*/
+function plugin_itemlist_story_draft()
+{
+    global $_TABLES, $LANG24, $LANG29;
+
+    if (SEC_hasRights('story.edit')) {
+        $plugin = new Plugin();
+        $plugin->submissionlabel = $LANG29[35] . ' (' . $LANG24[34] . ')';
+        $plugin->submissionhelpfile = 'ccdraftsubmission.html';
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
+        $plugin->addSubmissionHeading($LANG29[10]);
+        $plugin->addSubmissionHeading($LANG29[14]);
+        $plugin->addSubmissionHeading($LANG29[15]);
+
+        return $plugin;
+    }
+}
+
+/**
+* "Approve" a draft story
+*
+* @param    string  $sid    story id
+* @return   void
+*
+*/
+function plugin_moderationapprove_story_draft($sid)
+{
+    global $_TABLES;
+
+    DB_change($_TABLES['stories'], 'draft_flag', 0, 'sid', $sid);
+
+    PLG_itemSaved($sid, 'article');
+
+    // update feeds
+    COM_rdfUpToDateCheck();
+
+    // update Older Stories block
+    COM_olderStuff();
+}
+
+
+/*
  * START SERVICES SECTION
  * This section implements the various services offered by the story module
  */

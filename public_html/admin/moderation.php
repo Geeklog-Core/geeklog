@@ -227,7 +227,7 @@ function commandcontrol($token)
 
     if ($_CONF['listdraftstories'] == 1) {
         if (SEC_hasRights('story.edit')) {
-            $retval .= draftlist ($token);
+            $retval .= itemlist('story_draft', $token);
         }
     }
     
@@ -265,13 +265,14 @@ function itemlist($type, $token)
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
-    $isplugin = false;
 
     if (empty($type)) {
         // something is terribly wrong, bail
         $retval .= COM_errorLog("Submission type not set in moderation.php");
         return $retval;
     }
+
+    $isplugin = false;
 
     if ($type == 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid "
@@ -292,7 +293,7 @@ function itemlist($type, $token)
                 $H = $plugin->submissionheading;
                 $section_title = $plugin->submissionlabel;
                 $section_help = $helpfile;
-                if ($type <> 'story') {
+                if (($type != 'story') && ($type != 'story_draft')) {
                     $isplugin = true;
                 }
             }
@@ -314,13 +315,19 @@ function itemlist($type, $token)
     $data_arr = array();
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
+        /**
+         * @todo There should be an API for these URLs ...
+         */
         if ($isplugin) {
             $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
         } elseif ($type == 'comment') {
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
                     . '?mode=editsubmission&amp;cid=' . $A[0];
-        } else {
+        } elseif ($type == 'story_draft') {
+            $A['edit'] = $_CONF['site_admin_url'] . '/story.php'
+                     . '?mode=edit&amp;sid=' . $A[0];
+        } else { // this pretty much only leaves $type == 'story'
             $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
                      . '.php?mode=editsubmission&amp;id=' . $A[0];
         }
@@ -335,7 +342,8 @@ function itemlist($type, $token)
         array('text' => $H[1], 'field' => 2),
         array('text' => $H[2], 'field' => 3),
         array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve'));
+        array('text' => $LANG29[1], 'field' => 'approve')
+    );
     if ($type == 'comment') {
         // data for comment submission headers
         $header_arr[6]['text'] = $LANG29[42];
@@ -350,7 +358,7 @@ function itemlist($type, $token)
                       'no_data'  => $LANG29[39],
                       'form_url' => "{$_CONF['site_admin_url']}/moderation.php"
     );
-    $form_arr = array("bottom" => '', "top" => '');
+    $form_arr = array('bottom' => '', 'top' => '');
     if ($nrows > 0) {
         $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
@@ -435,70 +443,6 @@ function userlist($token)
 }
 
 /**
-* Displays a list of all the stories that have the 'draft' flag set.
-*
-* When enabled, this will list all the stories that have been marked as
-* 'draft'. Approving a story from this list will clear the draft flag and
-* thus publish the story.
-*
-* @param    string  $token  CSRF token
-* @return   string          HTML for the list of draft stories
-*
-*/
-function draftlist($token)
-{
-    global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
-
-    require_once $_CONF['path_system'] . 'lib-admin.php';
-
-    $retval = '';
-
-    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
-    $nrows = DB_numRows($result);
-    $data_arr = array();
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
-                    . $A['id'];
-        $A['row'] = $i;
-        $A['title'] = stripslashes($A['title']);
-        $A['tid'] = stripslashes($A['tid']);
-        $data_arr[$i] = $A;
-    }
-
-    $header_arr = array(
-        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-        array('text' => $LANG29[10], 'field' => 'title'),
-        array('text' => $LANG29[14], 'field' => 'day'),
-        array('text' => $LANG29[15], 'field' => 'tid'),
-        array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve'));
-
-    $text_arr = array('has_menu'  => false,
-                      'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                      'help_url'  => 'ccdraftsubmission.html',
-                      'no_data'   => $LANG29[39],
-                      'form_url'  => "{$_CONF['site_admin_url']}/moderation.php");
-
-    $form_arr = array("bottom" => '', "top" => '');
-    if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="draft"' . XHTML . '>' . LB
-                . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
-                . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-                . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
-                . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
-    }
-
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, $listoptions, $form_arr);
-    $retval .= $table;
-    return $retval;
-}
-
-/**
 * Moderates an item
 *
 * This will actually perform moderation (approve or delete) one or more items
@@ -548,15 +492,11 @@ function moderation($mid, $action, $type, $count)
                 return $retval;
             }
 
-            if ($type == 'draft') {
-                STORY_deleteStory($mid[$i]);
-            } else {
-                // There may be some plugin specific processing that needs to
-                // happen first.
-                $retval .= PLG_deleteSubmission($type, $mid[$i]);
+            // There may be some plugin specific processing that needs to
+            // happen first.
+            $retval .= PLG_deleteSubmission($type, $mid[$i]);
 
-                DB_delete($submissiontable, $id, $mid[$i]);
-            }
+            DB_delete($submissiontable, $id, $mid[$i]);
             break;
 
         case 'approve':
@@ -584,21 +524,23 @@ function moderation($mid, $action, $type, $count)
                 PLG_itemSaved($A['sid'], 'article');
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
-            } else if ($type == 'draft') {
-                DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = '{$mid[$i]}'");
-
-                COM_rdfUpToDateCheck ();
-                COM_olderStuff ();
-            } else if ($type == 'comment') {
+            } elseif ($type == 'comment') {
                 $sid = CMT_approveModeration($mid[$i]);
-                if ( !in_array($sid, $sidArray) ) {
+                if (! in_array($sid, $sidArray)) {
                     $sidArray[$i] = $sid; 
                 }
             } else {
-                // This is called in case this is a plugin. There may be some
-                // plugin specific processing that needs to happen.
-                DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
-                $retval .= PLG_approveSubmission($type,$mid[$i]);
+                /**
+                * This is called in case this is a plugin. There may be some
+                * plugin specific processing that needs to happen.
+                */
+
+                // avoid unnecessary copy, e.g. for draft stories
+                if ($table != $submissiontable) {
+                    DB_copy($table, $fields, $fields,
+                            $submissiontable, $id, $mid[$i]);
+                }
+                $retval .= PLG_approveSubmission($type, $mid[$i]);
             }
             break;
         }
@@ -630,15 +572,11 @@ function moderation($mid, $action, $type, $count)
         foreach ($_POST['delitem'] as $delitem) {
             $delitem = COM_applyFilter($delitem);
             if (! empty($delitem)) {
-                if ($type == 'draft') {
-                    STORY_deleteStory($delitem);
-                } else {
-                    // There may be some plugin specific processing that needs
-                    // to happen first.
-                    $retval .= PLG_deleteSubmission($type, $delitem);
+                // There may be some plugin specific processing that needs
+                // to happen first.
+                $retval .= PLG_deleteSubmission($type, $delitem);
 
-                    DB_delete($submissiontable, $id, $delitem);
-                }
+                DB_delete($submissiontable, $id, $delitem);
             }
         }
     }
