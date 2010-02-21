@@ -676,6 +676,67 @@ function STORY_deleteImages ($sid)
 }
 
 /**
+* Delete a story.
+*
+* This is used to delete a story from the list of stories.
+*
+* @param    string  $sid    ID of the story to delete
+* @return   string          HTML, e.g. a meta redirect
+*
+*/
+function STORY_deleteStory($sid)
+{
+    $args = array (
+                    'sid' => $sid
+                  );
+
+    $output = '';
+
+    PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
+
+    return $output;
+}
+
+/**
+* Delete a story and related data immediately.
+*
+* Note: For internal use only! To delete a story, use STORY_deleteStory (see
+*       above), which will do permission checks and eventually end up here.
+*
+* @param    string  $sid    ID of the story to delete
+* @internal For internal use only!
+*
+*/
+function STORY_doDeleteThisStoryNow($sid)
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+
+    STORY_deleteImages($sid);
+    DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                    array($sid, 'article'));
+    DB_delete($_TABLES['trackback'], array('sid', 'type'),
+                                     array($sid, 'article'));
+    DB_delete($_TABLES['stories'], 'sid', $sid);
+
+    // notify plugins
+    PLG_itemDeleted($sid, 'article');
+
+    // update RSS feed and Older Stories block
+    COM_rdfUpToDateCheck();
+    COM_olderStuff();
+    CMT_updateCommentcodes();
+}
+
+
+/*
+ * Implement *some* of the Plugin API functions for stories. While stories
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+
+/**
 * Return information for a story
 *
 * This is the story equivalent of PLG_getItemInfo. See lib-plugins.php for
@@ -688,7 +749,7 @@ function STORY_deleteImages ($sid)
 * @return   mixed               string or array of strings with the information
 *
 */
-function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
+function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
 
@@ -841,67 +902,6 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
 
     return $retval;
 }
-
-/**
-* Delete a story.
-*
-* This is used to delete a story from the list of stories.
-*
-* @param    string  $sid    ID of the story to delete
-* @return   string          HTML, e.g. a meta redirect
-*
-*/
-function STORY_deleteStory($sid)
-{
-    $args = array (
-                    'sid' => $sid
-                  );
-
-    $output = '';
-
-    PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
-
-    return $output;
-}
-
-/**
-* Delete a story and related data immediately.
-*
-* Note: For internal use only! To delete a story, use STORY_deleteStory (see
-*       above), which will do permission checks and eventually end up here.
-*
-* @param    string  $sid    ID of the story to delete
-* @internal For internal use only!
-*
-*/
-function STORY_doDeleteThisStoryNow($sid)
-{
-    global $_CONF, $_TABLES;
-
-    require_once $_CONF['path_system'] . 'lib-comment.php';
-
-    STORY_deleteImages($sid);
-    DB_delete($_TABLES['comments'], array('sid', 'type'),
-                                    array($sid, 'article'));
-    DB_delete($_TABLES['trackback'], array('sid', 'type'),
-                                     array($sid, 'article'));
-    DB_delete($_TABLES['stories'], 'sid', $sid);
-
-    // notify plugins
-    PLG_itemDeleted($sid, 'article');
-
-    // update RSS feed and Older Stories block
-    COM_rdfUpToDateCheck();
-    COM_olderStuff();
-    CMT_updateCommentcodes();
-}
-
-
-/*
- * Implement *some* of the Plugin API functions for stories. While stories
- * aren't a plugin (and likely never will be), implementing some of the API
- * functions here will save us from doing special handling elsewhere.
- */
 
 /**
 * Return true since this component supports webservices
