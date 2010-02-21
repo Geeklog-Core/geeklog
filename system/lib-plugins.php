@@ -723,32 +723,6 @@ function PLG_getSearchTypes()
     return $types;
 }
 
-/**
-* Determines if a specific plugin supports Geeklog's
-* expanded search results feature
-*
-* NOTE: This function is not currently used
-*
-* @author   Tony Bibbs, tony AT tonybibbs DOT com
-* @access   public
-* @param    string  $type   Plugin name
-* @return   boolean         True if it is supported, otherwise false
-* @deprecated no longer used
-*
-*/
-function PLG_supportsExpandedSearch($type)
-{
-    $retval = '';
-    $function = 'plugin_supportsexpandedsearch_' . $type;
-    if (function_exists($function)) {
-        $retval = $function();
-    }
-    if (empty($retval) OR !is_bool($retval)) {
-        $retval = false;
-    }
-
-    return $retval;
-}
 
 /**
 * This function gives each plugin the opportunity to do their search
