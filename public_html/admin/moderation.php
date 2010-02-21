@@ -53,18 +53,18 @@ define ('ICONS_PER_ROW', 6);
 * @param    string      $url        URL the entry links to
 * @param    string      $image      URL of the icon
 * @param    string      $label      text to use under the icon
-* @return   void
+* @return   string                  HTML for rendered item
 *
 */
-function render_cc_item (&$template, $url = '', $image = '', $label = '')
+function render_cc_item(&$template, $url = '', $image = '', $label = '')
 {
-    if (!empty ($url)) {
-        $template->set_var ('page_url', $url);
-        $template->set_var ('page_image', $image);
-        $template->set_var ('option_label', $label);
-        $template->set_var ('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
+    if (! empty($url)) {
+        $template->set_var('page_url', $url);
+        $template->set_var('page_image', $image);
+        $template->set_var('option_label', $label);
+        $template->set_var('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
 
-        return $template->parse ('cc_main_options', 'ccitem', false);
+        return $template->parse('cc_main_options', 'ccitem', false);
     }
 
     return '';
@@ -75,8 +75,6 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 *
 * @param    string  $token  CSRF token
 * @return   string          HTML for the C&C block
-* @todo The moderation items should be displayed with the help of ul/li
-* instead of div's. 
 *
 */
 function commandcontrol($token)
@@ -268,7 +266,7 @@ function itemlist($type, $token)
 
     if (empty($type)) {
         // something is terribly wrong, bail
-        $retval .= COM_errorLog("Submission type not set in moderation.php");
+        COM_errorLog("Submission type not set in moderation.php");
         return $retval;
     }
 
@@ -369,9 +367,8 @@ function itemlist($type, $token)
     }
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, $listoptions, $form_arr);
-    $retval .= $table;
+    $retval .= ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                                $text_arr, $data_arr, $listoptions, $form_arr);
 
     return $retval;
 }
@@ -512,7 +509,7 @@ function moderation($mid, $action, $type, $count)
                 $T = DB_fetchArray ($result);
                 if ($T['archive_flag'] == 1) {
                     $frontpage = 0;
-                } else if (isset ($_CONF['frontpage'])) {
+                } elseif (isset ($_CONF['frontpage'])) {
                     $frontpage = $_CONF['frontpage'];
                 } else {
                     $frontpage = 1;
@@ -615,23 +612,23 @@ function moderateusers ($uid, $action, $count)
         }
 
         switch ($action[$i]) {
-            case 'delete': // Ok, delete everything related to this user
-                if ($uid[$i] > 1) {
-                    USER_deleteAccount ($uid[$i]);
-                }
-                break;
+        case 'delete': // Ok, delete everything related to this user
+            if ($uid[$i] > 1) {
+                USER_deleteAccount($uid[$i]);
+            }
+            break;
 
-            case 'approve':
-                $uid[$i] = COM_applyFilter($uid[$i], true);
-                $result = DB_query ("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
-                $nrows = DB_numRows($result);
-                if ($nrows == 1) {
-                    $A = DB_fetchArray($result);
-                    $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
-                    DB_query($sql);
-                    USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
-                }
-                break;
+        case 'approve':
+            $uid[$i] = COM_applyFilter($uid[$i], true);
+            $result = DB_query("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
+            $nrows = DB_numRows($result);
+            if ($nrows == 1) {
+                $A = DB_fetchArray($result);
+                $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
+                DB_query($sql);
+                USER_createAndSendPassword($A['username'], $A['email'], $A['uid']);
+            }
+            break;
         }
     }
 
@@ -641,7 +638,7 @@ function moderateusers ($uid, $action, $count)
         foreach ($_POST['delitem'] as $del_uid) {
             $del_uid = COM_applyFilter($del_uid,true);
             if ($del_uid > 1) {
-                USER_deleteAccount ($del_uid);
+                USER_deleteAccount($del_uid);
             }
         }
     }
