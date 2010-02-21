@@ -1408,28 +1408,37 @@ function SEC_getTokenExpiryTime($token)
 /**
 * Create a message informing the user when the security token is about to expire
 *
+* This message is only created for Remote Users who logged in using OpenID,
+* since the re-authentication does not work with OpenID.
+*
 * @param    string  $token      the token
 * @param    string  $extra_msg  (optional) additional text to include in notice
 * @return   string              formatted HTML of message
+* @see      SEC_checkToken
 *
 */
 function SEC_getTokenExpiryNotice($token, $extra_msg = '')
 {
-    global $_CONF, $LANG_ADMIN;
+    global $_CONF, $_USER, $LANG_ADMIN;
 
     $retval = '';
 
-    $expirytime = SEC_getTokenExpiryTime($token);
-    if ($expirytime > 0) {
-        $exptime = '<span id="token-expirytime">'
-                 . strftime($_CONF['timeonly'], $expirytime) . '</span>';
-        $retval .= '<p id="token-expirynotice">'
-                . sprintf($LANG_ADMIN['token_expiry'], $exptime);
-        if (! empty($extra_msg)) {
-            $retval .= ' ' . $extra_msg;
+    if (isset($_USER['remoteservice']) &&
+            ($_USER['remoteservice'] == 'openid')) {
+
+        $expirytime = SEC_getTokenExpiryTime($token);
+        if ($expirytime > 0) {
+            $exptime = '<span id="token-expirytime">'
+                     . strftime($_CONF['timeonly'], $expirytime) . '</span>';
+            $retval .= '<p id="token-expirynotice">'
+                    . sprintf($LANG_ADMIN['token_expiry'], $exptime);
+            if (! empty($extra_msg)) {
+                $retval .= ' ' . $extra_msg;
+            }
+
+            $retval .= '</p>' . LB;
         }
 
-        $retval .= '</p>' . LB;
     }
 
     return $retval;
