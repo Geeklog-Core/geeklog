@@ -66,6 +66,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   voters mediumint(8) unsigned default NULL,
   questions int(11) NOT NULL default '0',
   date datetime default NULL,
+  modified datetime default NULL,
   display tinyint(4) NOT NULL default '0',
   is_open tinyint(1) NOT NULL default '1',
   hideresults tinyint(1) NOT NULL default '0',

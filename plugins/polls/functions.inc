@@ -1242,7 +1242,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     foreach ($properties as $p) {
         switch ($p) {
         case 'date-modified':
-            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            $fields[] = 'UNIX_TIMESTAMP(modified) AS unixdate';
             break;
         case 'id':
             $fields[] = 'pid';

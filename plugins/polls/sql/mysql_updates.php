@@ -49,9 +49,11 @@ $_UPDATES = array(
 
     '2.1.1' => array(
         // make room to store IPv6 addresses
-        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''"
+        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''",
+        
+        "ALTER TABLE {$_TABLES['polltopics']} ADD modified datetime default NULL AFTER date"
     )
-
+    
 );
 
 function update_ConfValues_2_1_0()

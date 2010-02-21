@@ -60,6 +60,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   meta_keywords TEXT NULL,
   questions int NOT NULL default '0',
   date timestamp default NULL,
+  modified timestamp default NULL,
   display int NOT NULL default '0',
   is_open int NOT NULL default '1',
   hideresults int NOT NULL default '0',

@@ -245,6 +245,12 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     if (!empty($old_pid) && ($pid != $old_pid)) {
         $del_pid = $old_pid; // delete by old pid, create using new pid below
     }
+    // Retrieve Created Date before delete
+    $created_date = DB_getItem($_TABLES['polltopics'], 'date', "pid = '{$del_pid}'");
+    if ($created_date == '') {
+        $created_date = date ('Y-m-d H:i:s');
+    }
+    
     DB_delete($_TABLES['polltopics'], 'pid', $del_pid);
     DB_delete($_TABLES['pollanswers'], 'pid', $del_pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $del_pid);
@@ -284,7 +290,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
         }
     }
     // save topics after the questions so we can include question count into table
-    $sql = "'$pid','$topic','$meta_description','$meta_keywords',$v, $k, '" . date ('Y-m-d H:i:s');
+    $sql = "'$pid','$topic','$meta_description','$meta_keywords',$v, $k, '$created_date', '" . date ('Y-m-d H:i:s');
 
     if ($mainpage == 'on') {
         $sql .= "',1";
@@ -305,7 +311,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
 
     // Save poll topic
-    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, date, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon", $sql);
+    DB_save($_TABLES['polltopics'], "pid, topic, meta_description, meta_keywords, voters, questions, date, modified, display, is_open, hideresults, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon", $sql);
 
     if (empty($old_pid) || ($old_pid == $pid)) {
         PLG_itemSaved($pid, 'polls');
