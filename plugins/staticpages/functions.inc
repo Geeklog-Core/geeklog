@@ -92,7 +92,7 @@ function plugin_getmenuitems_staticpages()
     if (!empty($_SP_CONF['sort_menu_by'])) {
         $order = ' ORDER BY ';
         if ($_SP_CONF['sort_menu_by'] == 'date') {
-            $order .= 'sp_date DESC';
+            $order .= 'modified DESC';
         } elseif ($_SP_CONF['sort_menu_by'] == 'label') {
             $order .= 'sp_label';
         } elseif ($_SP_CONF['sort_menu_by'] == 'title') {
@@ -416,7 +416,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
     $spage->set_var('info_separator', 'hidden');
     if ($A['sp_format'] <> 'blankpage') {
         if ($_SP_CONF['show_date'] == 1) {
-            $curtime = COM_getUserDateTimeFormat($A['sp_date']);
+            $curtime = COM_getUserDateTimeFormat($A['modified']);
             $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
             $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
             $spage->set_var('updated_date', $curtime[0]);
@@ -551,7 +551,7 @@ function SP_printPage($page, $A)
     $print->set_var('sp_hits', $num_hits);
     $print->set_var('hits', $hits);
 
-    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
+    $curtime = COM_getUserDateTimeFormat($A['modified']);
     $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
     $print->set_var('lang_updated', $LANG_STATIC['lastupdated']);
     $print->set_var('updated_date', $curtime[0]);
@@ -744,7 +744,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $query = trim(addslashes($query));
 
     $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, ";
-    $sql .= "UNIX_TIMESTAMP(sp.sp_date) AS date, sp.owner_id AS uid, sp.sp_hits AS hits, ";
+    $sql .= "UNIX_TIMESTAMP(sp.created) AS date, sp.owner_id AS uid, sp.sp_hits AS hits, ";
     $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
     $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0)";
@@ -765,7 +765,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $search_p = new SearchCriteria('staticpages', $LANG_STATIC['staticpages']);
 
     $columns = array('title' => 'sp_title', 'sp_content');
-    $sql .= $search_p->getDateRangeSQL('AND', 'sp_date', $datestart, $dateend);
+    $sql .= $search_p->getDateRangeSQL('AND', 'created', $datestart, $dateend);
     list($sql,$ftsql) = $search_p->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search_p->setSQL($sql);
@@ -787,7 +787,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
     $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
     $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sid','AND','s') . ") ";
-    $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.sp_date <= NOW()) ";
+    $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
 
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
@@ -936,7 +936,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
     }
 
     if ($_SP_CONF['sort_by'] == 'date') {
-        $sort = 'sp_date DESC';
+        $sort = 'modified DESC';
     } elseif ($_SP_CONF['sort_by'] == 'title') {
         $sort = 'sp_title';
     } else { // default to "sort by id"
@@ -950,7 +950,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,sp_date,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND (draft_flag = 0)" . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND (draft_flag = 0)" . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query($spsql);
 
     $pages = DB_numRows($result);
@@ -1025,7 +1025,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
 
             $spage->set_var('info_separator', 'hidden');
             if ($_SP_CONF['show_date'] == 1) {
-                $curtime = COM_getUserDateTimeFormat($S['sp_date']);
+                $curtime = COM_getUserDateTimeFormat($S['modified']);
                 $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
                 $spage->set_var('lang_updated', $LANG_STATIC['lastupdated']);
                 $spage->set_var('updated_date', $curtime[0]);
@@ -1471,13 +1471,13 @@ function plugin_whatsnewsupported_staticpages()
 {
     global $_SP_CONF, $LANG_STATIC, $LANG_WHATSNEW;
 
-    if ($_SP_CONF['hidenewstaticpages'] == 0) {
+    if ($_SP_CONF['hidenewstaticpages'] == 'hide') {
+        $retval = false;
+    } else {
         $retval = array($LANG_STATIC['pages'],
                         COM_formatTimeString($LANG_WHATSNEW['new_last'],
                                              $_SP_CONF['newstaticpagesinterval'])
                        );
-    } else {
-        $retval = false;
     }
 
     return $retval;
@@ -1494,7 +1494,12 @@ function plugin_getwhatsnew_staticpages()
     global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
-
+    
+    if ($_SP_CONF['hidenewstaticpages'] == 'modified') {
+        $datecolumn = 'modified';
+    } else {
+        $datecolumn = 'created';
+    }
     $extra_sql = "";
     if ($_SP_CONF['includecenterblocks'] == 0) {
         $extra_sql =' AND sp_centerblock = 0';
@@ -1505,17 +1510,17 @@ function plugin_getwhatsnew_staticpages()
     $sql = array();
     $sql['mysql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (sp_date >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
-        ORDER BY sp_date DESC LIMIT 15";
+        ORDER BY {$datecolumn} DESC LIMIT 15";
         
     $sql['pgsql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (sp_date >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND ({$datecolumn} >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
-        ORDER BY sp_date DESC LIMIT 15";
+        ORDER BY {$datecolumn} DESC LIMIT 15";
 
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -1571,7 +1576,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     foreach ($properties as $p) {
         switch ($p) {
         case 'date-modified':
-            $fields[] = 'UNIX_TIMESTAMP(sp_date) AS unixdate';
+            $fields[] = 'UNIX_TIMESTAMP(modified) AS unixdate';
             break;
         case 'description':
         case 'excerpt':

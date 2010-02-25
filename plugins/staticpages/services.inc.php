@@ -394,10 +394,16 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
-
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
+        
+        // Retrieve created date
+        $datecreated = DB_getItem($_TABLES['staticpage'], 'created',"sp_id = '$sp_id'");
+        if ($datecreated == '') {
+            $datecreated = date('Y-m-d H:i:s');
+        }
+        
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id','$sp_title','$sp_content',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
@@ -559,7 +565,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             $perms = ' AND ' . $perms;
         }
         $sql = array();
-        $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
+        $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
@@ -567,14 +573,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "WHERE (sp_id = '$page')" . $perms;
         $sql['mssql'] = "SELECT sp_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
-                      . "sp_date,sp_format,commentcode,"
+                      . "created,modified,sp_format,commentcode,"
                       . "CAST(meta_description AS text) AS meta_description,"
                       . "CAST(meta_keywords AS text) AS meta_keywords,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,perm_members,"
                       . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
-        $sql['pgsql'] = "SELECT sp_title,sp_content,sp_hits,sp_date,sp_format,"
+        $sql['pgsql'] = "SELECT sp_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
@@ -645,8 +651,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if ($args['gl_svc']) {
             // This date format is PHP 5 only,
             // but only the web-service uses the value
-            $output['published']    = date('c', strtotime($output['sp_date']));
-            $output['updated']      = date('c', strtotime($output['sp_date']));
+            $output['published']    = date('c', strtotime($output['created']));
+            $output['updated']      = date('c', strtotime($output['modified']));
             $output['id']           = $page;
             $output['title']        = $output['sp_title'];
             $output['category']     = array($output['sp_tid']);
@@ -679,13 +685,13 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $max_items = $_SP_CONF['atom_max_items'] + 1;
 
         $limit = " LIMIT $offset, $max_items";
-        $order = " ORDER BY sp_date DESC";
+        $order = " ORDER BY modified DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,sp_date,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-                ."sp_date,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
+                ."created,modified,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
         $result = DB_query($sql);
@@ -702,8 +708,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
             if($args['gl_svc']) {
                 // This date format is PHP 5 only, but only the web-service uses the value 
-                $output_item['published']    = date('c', strtotime($output_item['sp_date']));
-                $output_item['updated']      = date('c', strtotime($output_item['sp_date']));
+                $output_item['published']    = date('c', strtotime($output_item['created']));
+                $output_item['updated']      = date('c', strtotime($output_item['modified']));
                 $output_item['id']           = $output_item['sp_id'];
                 $output_item['title']        = $output_item['sp_title'];
                 $output_item['category']     = array($output_item['sp_tid']);

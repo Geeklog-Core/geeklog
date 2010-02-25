@@ -530,7 +530,7 @@ function liststaticpages()
 
     $query_arr = array(
         'table' => 'staticpage',
-        'sql' => "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
+        'sql' => "SELECT *,UNIX_TIMESTAMP(modified) AS unixdate, {$_TABLES['users']}.username, {$_TABLES['users']}.fullname "
                 ."FROM {$_TABLES['staticpage']} "
                 ."LEFT JOIN {$_TABLES['users']} ON {$_TABLES['staticpage']}.owner_id = {$_TABLES['users']}.uid "
                 ."WHERE 1=1 ",
@@ -561,7 +561,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
     $retval = '';
 
     if (!empty($sp_id) && $mode == 'edit') {
-        $result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
+        $result = DB_query("SELECT *,UNIX_TIMESTAMP(modified) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
             $A['sp_old_id'] = $A['sp_id'];
@@ -585,7 +585,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
     } elseif (!empty($sp_id) && $mode == 'clone') {
-        $result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
+        $result = DB_query("SELECT *,UNIX_TIMESTAMP(modified) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
             $A['sp_id'] = COM_makesid();

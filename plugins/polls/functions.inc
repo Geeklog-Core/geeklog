@@ -652,7 +652,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
             $retval .= POLLS_pollResults($pid, $size, '', '', 1, $displaytype);
         }
     } else {
-        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1" . COM_getPermSql('AND') . " ORDER BY date DESC");
+        $result = DB_query("SELECT pid,topic,is_open FROM {$_TABLES['polltopics']} WHERE display = 1" . COM_getPermSql('AND') . " ORDER BY created DESC");
         $nrows = DB_numRows($result);
 
         $title = DB_getItem($_TABLES['blocks'], 'title', "name='poll_block'");
@@ -1242,7 +1242,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
     foreach ($properties as $p) {
         switch ($p) {
         case 'date-modified':
-            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            $fields[] = 'UNIX_TIMESTAMP(modified) AS unixdate';
             break;
         case 'id':
             $fields[] = 'pid';

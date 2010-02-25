@@ -40,7 +40,11 @@ $_UPDATES = array(
 
     '1.6.1' => array(
         "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD [draft_flag] [tinyint] NULL AFTER meta_keywords"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [draft_flag] [tinyint] NULL AFTER meta_keywords", 
+        
+        "EXEC sp_rename '{$_TABLES['staticpage']}.sp_date', 'created', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [modified] [datetime] NOT NULL AFTER created",
+        "UPDATE {$_TABLES['staticpage']} SET modified = created"
     )
 );
 
@@ -119,7 +123,9 @@ function SP_update_ConfValues_1_6_1()
             0, 0, 0, 127, true, 'staticpages');
     $c->add('sort_list_by', $_SP_DEFAULT['sort_list_by'], 'select',
             0, 0, 4, 35, true, 'staticpages');
-
+    $c->add('hidenewstaticpages',$_SP_DEFAULT['hide_new_staticpages'],'select', 
+        0, 1, 5, 20, TRUE, 'staticpages');
+    
     return true;
 }
 
