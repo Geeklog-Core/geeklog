@@ -99,7 +99,7 @@ $_SP_DEFAULT['censor'] = 0;
 
 // What's New Block
 $_SP_DEFAULT['new_staticpages_interval'] = 1209600; // 2 weeks
-$_SP_DEFAULT['hide_new_staticpages'] = 0;
+$_SP_DEFAULT['hide_new_staticpages'] = 'hide'; // 'hide', 'created', 'modified'
 $_SP_DEFAULT['title_trim_length'] = 20;
 $_SP_DEFAULT['include_centerblocks'] = 0;
 $_SP_DEFAULT['include_PHP'] = 0;
@@ -192,7 +192,7 @@ function plugin_initconfig_staticpages()
         $c->add('newstaticpagesinterval',$_SP_DEFAULT['new_staticpages_interval'],'text',
                 0, 1, NULL, 10, TRUE, 'staticpages');
         $c->add('hidenewstaticpages',$_SP_DEFAULT['hide_new_staticpages'],'select',
-                0, 1, 0, 20, TRUE, 'staticpages');
+                0, 1, 5, 20, TRUE, 'staticpages');
         $c->add('title_trim_length',$_SP_DEFAULT['title_trim_length'],'text',
                 0, 1, NULL, 30, TRUE, 'staticpages');
         $c->add('includecenterblocks',$_SP_DEFAULT['include_centerblocks'],'select',
