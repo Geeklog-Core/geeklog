@@ -83,7 +83,7 @@ function polllist()
                           'icon' => '', 'form_url' => '');
 
         $query_arr = array('table' => 'polltopics',
-                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate, display "
+                           'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(created) AS unixdate, display "
                                 . "FROM {$_TABLES['polltopics']} WHERE 1=1",
                            'query_fields' => array('topic'),
                            'default_filter' => COM_getPermSQL (),

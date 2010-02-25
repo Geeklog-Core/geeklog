@@ -65,7 +65,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   meta_keywords TEXT NULL,    
   voters mediumint(8) unsigned default NULL,
   questions int(11) NOT NULL default '0',
-  date datetime default NULL,
+  `created` datetime default NULL,
   modified datetime default NULL,
   display tinyint(4) NOT NULL default '0',
   is_open tinyint(1) NOT NULL default '1',
@@ -79,7 +79,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX pollquestions_qid(pid),
-  INDEX pollquestions_date(date),
+  INDEX pollquestions_created(created),
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
@@ -102,7 +102,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (is_enabled, name, type, title, tid,
 
 // default poll
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, meta_description, meta_keywords, voters, questions, date, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 'A poll about users opinions of Geeklog.', 'Poll, Geeklog, Opinion', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, meta_description, meta_keywords, voters, questions, created, modified, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 'A poll about users opinions of Geeklog.', 'Poll, Geeklog, Opinion', 0, 2, NOW(), NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (0, 'geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (1, 'geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";

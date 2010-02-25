@@ -51,7 +51,9 @@ $_UPDATES = array(
         // make room to store IPv6 addresses
         "ALTER TABLE {$_TABLES['pollvoters']} CHANGE ipaddress ipaddress varchar(39) NOT NULL default ''",
         
-        "ALTER TABLE {$_TABLES['polltopics']} ADD modified datetime default NULL AFTER date"
+        "ALTER TABLE {$_TABLES['polltopics']} CHANGE date `created` datetime default NULL",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD modified datetime default NULL AFTER `created`",
+        "UPDATE {$_TABLES['polltopics']} SET modified = `created`"
     )
     
 );

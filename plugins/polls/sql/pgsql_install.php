@@ -59,7 +59,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,
   questions int NOT NULL default '0',
-  date timestamp default NULL,
+  created timestamp default NULL,
   modified timestamp default NULL,
   display int NOT NULL default '0',
   is_open int NOT NULL default '1',
@@ -94,7 +94,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, 
 
 // default poll
 
-$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, date, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
+$DEFVALUES[] = "INSERT INTO {$_TABLES['polltopics']} (pid, topic, voters, questions, created, modified, display, is_open, hideresults, commentcode, statuscode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll', 'Tell us your opinion about Geeklog', 0, 2, NOW(), NOW(), 1, 1, 1, 0, 0, {$_USER['uid']}, #group#, 3, 2, 2, 2);";
 
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (0, 'geeklogfeaturepoll', 'What is the best new feature of Geeklog?');";
 $DEFVALUES[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, pid, question) VALUES (1, 'geeklogfeaturepoll', 'What is the all-time best feature of Geeklog?');";
