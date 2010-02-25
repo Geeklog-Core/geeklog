@@ -676,6 +676,67 @@ function STORY_deleteImages ($sid)
 }
 
 /**
+* Delete a story.
+*
+* This is used to delete a story from the list of stories.
+*
+* @param    string  $sid    ID of the story to delete
+* @return   string          HTML, e.g. a meta redirect
+*
+*/
+function STORY_deleteStory($sid)
+{
+    $args = array (
+                    'sid' => $sid
+                  );
+
+    $output = '';
+
+    PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
+
+    return $output;
+}
+
+/**
+* Delete a story and related data immediately.
+*
+* Note: For internal use only! To delete a story, use STORY_deleteStory (see
+*       above), which will do permission checks and eventually end up here.
+*
+* @param    string  $sid    ID of the story to delete
+* @internal For internal use only!
+*
+*/
+function STORY_doDeleteThisStoryNow($sid)
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+
+    STORY_deleteImages($sid);
+    DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                    array($sid, 'article'));
+    DB_delete($_TABLES['trackback'], array('sid', 'type'),
+                                     array($sid, 'article'));
+    DB_delete($_TABLES['stories'], 'sid', $sid);
+
+    // notify plugins
+    PLG_itemDeleted($sid, 'article');
+
+    // update RSS feed and Older Stories block
+    COM_rdfUpToDateCheck();
+    COM_olderStuff();
+    CMT_updateCommentcodes();
+}
+
+
+/*
+ * Implement *some* of the Plugin API functions for stories. While stories
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+
+/**
 * Return information for a story
 *
 * This is the story equivalent of PLG_getItemInfo. See lib-plugins.php for
@@ -688,7 +749,7 @@ function STORY_deleteImages ($sid)
 * @return   mixed               string or array of strings with the information
 *
 */
-function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
+function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
 
@@ -843,68 +904,181 @@ function STORY_getItemInfo($sid, $what, $uid = 0, $options = array())
 }
 
 /**
-* Delete a story.
+* Return true since this component supports webservices
 *
-* This is used to delete a story from the list of stories.
-*
-* @param    string  $sid    ID of the story to delete
-* @return   string          HTML, e.g. a meta redirect
+* @return   boolean     True, if webservices are supported
 *
 */
-function STORY_deleteStory($sid)
-{
-    $args = array (
-                    'sid' => $sid
-                  );
-
-    $output = '';
-
-    PLG_invokeService('story', 'delete', $args, $output, $svc_msg);
-
-    return $output;
-}
-
-/**
-* Delete a story and related data immediately.
-*
-* Note: For internal use only! To delete a story, use STORY_deleteStory (see
-*       above), which will do permission checks and eventually end up here.
-*
-* @param    string  $sid    ID of the story to delete
-* @internal For internal use only!
-*
-*/
-function STORY_doDeleteThisStoryNow($sid)
-{
-    global $_CONF, $_TABLES;
-
-    require_once $_CONF['path_system'] . 'lib-comment.php';
-
-    STORY_deleteImages($sid);
-    DB_delete($_TABLES['comments'], array('sid', 'type'),
-                                    array($sid, 'article'));
-    DB_delete($_TABLES['trackback'], array('sid', 'type'),
-                                     array($sid, 'article'));
-    DB_delete($_TABLES['stories'], 'sid', $sid);
-
-    // notify plugins
-    PLG_itemDeleted($sid, 'article');
-
-    // update RSS feed and Older Stories block
-    COM_rdfUpToDateCheck();
-    COM_olderStuff();
-    CMT_updateCommentcodes();
-}
-
-/**
- * Return true since this component supports webservices
- *
- * @return  bool	True, if webservices are supported
- */
 function plugin_wsEnabled_story()
 {
     return true;
 }
+
+/**
+* Returns list of moderation values
+*
+* The array returned contains (in order): the row 'id' label, main table,
+* moderation fields (comma separated), and submission table
+*
+* @return   array       Returns array of useful moderation values
+*
+*/
+function plugin_moderationvalues_story()
+{
+    global $_TABLES;
+
+    return array(
+        'sid',
+        $_TABLES['stories'],
+        'sid,uid,tid,title,introtext,date,postmode',
+        $_TABLES['storysubmission']
+    );
+}
+
+/**
+* Performs story exclusive work for items deleted by moderation
+*
+* While moderation.php handles the actual removal from the submission
+* table, within this function we handle all other deletion related tasks
+*
+* @param    string  $sid    Identifying string, i.e. the story id
+* @return   string          Any wanted HTML output
+*
+*/
+function plugin_moderationdelete_story($sid)
+{
+    global $_TABLES;
+
+    DB_delete($_TABLES['storysubmission'], 'sid', $sid);
+
+    return '';
+}
+
+/**
+* Checks that the current user has the rights to moderate stories.
+* Returns true if this is the case, false otherwise
+*
+* @return   boolean     Returns true if moderator
+*
+*/
+function plugin_ismoderator_story()
+{
+    return SEC_hasRights('story.moderate');
+}
+
+/**
+* Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   Plugin object or void if not allowed
+*
+*/
+function plugin_itemlist_story()
+{
+    global $_TABLES, $LANG29;
+
+    if (plugin_ismoderator_story()) {
+        $plugin = new Plugin();
+        $plugin->submissionlabel = $LANG29[35];
+        $plugin->submissionhelpfile = 'ccstorysubmission.html';
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
+        $plugin->addSubmissionHeading($LANG29[10]);
+        $plugin->addSubmissionHeading($LANG29[14]);
+        $plugin->addSubmissionHeading($LANG29[15]);
+
+        return $plugin;
+    }
+}
+
+
+/*
+ * Another pseudo plugin API for draft stories
+ */
+
+/**
+* Returns list of moderation values
+*
+* The array returned contains (in order): the row 'id' label, main table,
+* moderation fields (comma separated), and submission table
+*
+* @return   array       Returns array of useful moderation values
+*
+*/
+function plugin_moderationvalues_story_draft()
+{
+    global $_TABLES;
+
+    return array(
+        'sid',
+        $_TABLES['stories'],
+        'sid,uid,tid,title,introtext,date,postmode',
+        $_TABLES['stories']
+    );
+}
+
+/**
+* Performs draft story exclusive work for items deleted by moderation
+*
+* While moderation.php handles the actual removal from the submission
+* table, within this function we handle all other deletion related tasks
+*
+* @param    string  $sid    Identifying string, i.e. the story id
+* @return   string          Any wanted HTML output
+*
+*/
+function plugin_moderationdelete_story_draft($sid)
+{
+    global $_TABLES;
+
+    STORY_deleteStory($sid);
+
+    return '';
+}
+
+/**
+* Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   Plugin object or void if not allowed
+*
+*/
+function plugin_itemlist_story_draft()
+{
+    global $_TABLES, $LANG24, $LANG29;
+
+    if (SEC_hasRights('story.edit')) {
+        $plugin = new Plugin();
+        $plugin->submissionlabel = $LANG29[35] . ' (' . $LANG24[34] . ')';
+        $plugin->submissionhelpfile = 'ccdraftsubmission.html';
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
+        $plugin->addSubmissionHeading($LANG29[10]);
+        $plugin->addSubmissionHeading($LANG29[14]);
+        $plugin->addSubmissionHeading($LANG29[15]);
+
+        return $plugin;
+    }
+}
+
+/**
+* "Approve" a draft story
+*
+* @param    string  $sid    story id
+* @return   void
+*
+*/
+function plugin_moderationapprove_story_draft($sid)
+{
+    global $_TABLES;
+
+    DB_change($_TABLES['stories'], 'draft_flag', 0, 'sid', $sid);
+
+    PLG_itemSaved($sid, 'article');
+
+    // update feeds
+    COM_rdfUpToDateCheck();
+
+    // update Older Stories block
+    COM_olderStuff();
+}
+
 
 /*
  * START SERVICES SECTION

@@ -53,18 +53,18 @@ define ('ICONS_PER_ROW', 6);
 * @param    string      $url        URL the entry links to
 * @param    string      $image      URL of the icon
 * @param    string      $label      text to use under the icon
-* @return   void
+* @return   string                  HTML for rendered item
 *
 */
-function render_cc_item (&$template, $url = '', $image = '', $label = '')
+function render_cc_item(&$template, $url = '', $image = '', $label = '')
 {
-    if (!empty ($url)) {
-        $template->set_var ('page_url', $url);
-        $template->set_var ('page_image', $image);
-        $template->set_var ('option_label', $label);
-        $template->set_var ('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
+    if (! empty($url)) {
+        $template->set_var('page_url', $url);
+        $template->set_var('page_image', $image);
+        $template->set_var('option_label', $label);
+        $template->set_var('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
 
-        return $template->parse ('cc_main_options', 'ccitem', false);
+        return $template->parse('cc_main_options', 'ccitem', false);
     }
 
     return '';
@@ -75,8 +75,6 @@ function render_cc_item (&$template, $url = '', $image = '', $label = '')
 *
 * @param    string  $token  CSRF token
 * @return   string          HTML for the C&C block
-* @todo The moderation items should be displayed with the help of ul/li
-* instead of div's. 
 *
 */
 function commandcontrol($token)
@@ -227,7 +225,7 @@ function commandcontrol($token)
 
     if ($_CONF['listdraftstories'] == 1) {
         if (SEC_hasRights('story.edit')) {
-            $retval .= draftlist ($token);
+            $retval .= itemlist('story_draft', $token);
         }
     }
     
@@ -239,7 +237,7 @@ function commandcontrol($token)
 
     if ($_CONF['usersubmission'] == 1) {
         if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
-            $retval .= userlist ($token);
+            $retval .= userlist($token);
         }
     }
 
@@ -265,45 +263,49 @@ function itemlist($type, $token)
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
     $retval = '';
+
+    if (empty($type)) {
+        // something is terribly wrong, bail
+        COM_errorLog("Submission type not set in moderation.php");
+        return $retval;
+    }
+
     $isplugin = false;
 
-    if ((strlen ($type) > 0) && ($type <> 'story') && ($type <> 'comment')) {
-        $function = 'plugin_itemlist_' . $type;
-        if (function_exists ($function)) {
-            // Great, we found the plugin, now call its itemlist method
-            $plugin = new Plugin();
-            $plugin = $function();
-            if (isset ($plugin)) {
-                $helpfile = $plugin->submissionhelpfile;
-                $sql = $plugin->getsubmissionssql;
-                $H = $plugin->submissionheading;
-                $section_title = $plugin->submissionlabel;
-                $section_help = $helpfile;
-                $isplugin = true;
-            }
-        }
-    } elseif ($type == 'story') { // story submission
-        $sql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
-        $H =  array($LANG29[10], $LANG29[14], $LANG29[15]);
-        $section_title = $LANG29[35];
-        $section_help = 'ccstorysubmission.html';
-    } elseif ($type == 'comment') {
+    if ($type == 'comment') {
         $sql = "SELECT cid AS id,title,comment,date,uid,type,sid "
               . "FROM {$_TABLES['commentsubmissions']} "
               . "ORDER BY cid ASC";
         $H = array($LANG29[10], $LANG29[36], $LANG29[14]);
         $section_title = $LANG29[41];
         $section_help = 'cccommentsubmission.html';
+    } else {
+        $function = 'plugin_itemlist_' . $type;
+        if (function_exists($function)) {
+            // Great, we found the plugin, now call its itemlist method
+            $plugin = new Plugin();
+            $plugin = $function();
+            if (isset($plugin)) {
+                $helpfile = $plugin->submissionhelpfile;
+                $sql = $plugin->getsubmissionssql;
+                $H = $plugin->submissionheading;
+                $section_title = $plugin->submissionlabel;
+                $section_help = $helpfile;
+                if (($type != 'story') && ($type != 'story_draft')) {
+                    $isplugin = true;
+                }
+            }
+        }
     }
 
     // run SQL but this time ignore any errors
-    if (!empty ($sql)) {
+    if (!empty($sql)) {
         $sql .= ' LIMIT 50'; // quick'n'dirty workaround to prevent timeouts
         $result = DB_query($sql, 1);
     }
-    if (empty ($sql) || DB_error()) {
+    if (empty($sql) || DB_error()) {
         // was more than likely a plugin that doesn't need moderation
-        //$nrows = -1;
+        $nrows = 0;
         return;
     } else {
         $nrows = DB_numRows($result);
@@ -311,13 +313,19 @@ function itemlist($type, $token)
     $data_arr = array();
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
+        /**
+         * @todo There should be an API for these URLs ...
+         */
         if ($isplugin) {
             $A['edit'] = $_CONF['site_admin_url'] . '/plugins/' . $type
                      . '/index.php?mode=editsubmission&amp;id=' . $A[0];
         } elseif ($type == 'comment') {
             $A['edit'] = $_CONF['site_url'] . '/comment.php'
                     . '?mode=editsubmission&amp;cid=' . $A[0];
-        } else {
+        } elseif ($type == 'story_draft') {
+            $A['edit'] = $_CONF['site_admin_url'] . '/story.php'
+                     . '?mode=edit&amp;sid=' . $A[0];
+        } else { // this pretty much only leaves $type == 'story'
             $A['edit'] = $_CONF['site_admin_url'] . '/' .  $type
                      . '.php?mode=editsubmission&amp;id=' . $A[0];
         }
@@ -326,16 +334,16 @@ function itemlist($type, $token)
         $data_arr[$i] = $A;
     }
 
-
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 0),
         array('text' => $H[0], 'field' => 1),
         array('text' => $H[1], 'field' => 2),
         array('text' => $H[2], 'field' => 3),
         array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve'));
+        array('text' => $LANG29[1], 'field' => 'approve')
+    );
     if ($type == 'comment') {
-        //data for comment submission headers
+        // data for comment submission headers
         $header_arr[6]['text'] = $LANG29[42];
         $header_arr[6]['field'] = 'uid';
         $header_arr[7]['text'] = $LANG29[43];
@@ -348,7 +356,7 @@ function itemlist($type, $token)
                       'no_data'  => $LANG29[39],
                       'form_url' => "{$_CONF['site_admin_url']}/moderation.php"
     );
-    $form_arr = array("bottom" => '', "top" => '');
+    $form_arr = array('bottom' => '', 'top' => '');
     if ($nrows > 0) {
         $form_arr['bottom'] = '<input type="hidden" name="type" value="' . $type . '"' . XHTML . '>' . LB
                 . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
@@ -359,9 +367,8 @@ function itemlist($type, $token)
     }
 
     $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, $listoptions, $form_arr);
-    $retval .= $table;
+    $retval .= ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
+                                $text_arr, $data_arr, $listoptions, $form_arr);
 
     return $retval;
 }
@@ -433,70 +440,6 @@ function userlist($token)
 }
 
 /**
-* Displays a list of all the stories that have the 'draft' flag set.
-*
-* When enabled, this will list all the stories that have been marked as
-* 'draft'. Approving a story from this list will clear the draft flag and
-* thus publish the story.
-*
-* @param    string  $token  CSRF token
-* @return   string          HTML for the list of draft stories
-*
-*/
-function draftlist($token)
-{
-    global $_CONF, $_TABLES, $LANG24, $LANG29, $LANG_ADMIN;
-
-    require_once $_CONF['path_system'] . 'lib-admin.php';
-
-    $retval = '';
-
-    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
-    $nrows = DB_numRows($result);
-    $data_arr = array();
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $A['edit'] = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
-                    . $A['id'];
-        $A['row'] = $i;
-        $A['title'] = stripslashes($A['title']);
-        $A['tid'] = stripslashes($A['tid']);
-        $data_arr[$i] = $A;
-    }
-
-    $header_arr = array(
-        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-        array('text' => $LANG29[10], 'field' => 'title'),
-        array('text' => $LANG29[14], 'field' => 'day'),
-        array('text' => $LANG29[15], 'field' => 'tid'),
-        array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve'));
-
-    $text_arr = array('has_menu'  => false,
-                      'title'     => $LANG29[35] . ' (' . $LANG24[34] . ')',
-                      'help_url'  => 'ccdraftsubmission.html',
-                      'no_data'   => $LANG29[39],
-                      'form_url'  => "{$_CONF['site_admin_url']}/moderation.php");
-
-    $form_arr = array("bottom" => '', "top" => '');
-    if ($nrows > 0) {
-        $form_arr['bottom'] = '<input type="hidden" name="type" value="draft"' . XHTML . '>' . LB
-                . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"'. XHTML . '>' . LB
-                . '<input type="hidden" name="mode" value="moderation"' . XHTML . '>' . LB
-                . '<input type="hidden" name="count" value="' . $nrows . '"' . XHTML . '>'
-                . '<p align="center"><input type="submit" value="'
-                . $LANG_ADMIN['submit'] . '"' . XHTML . '></p>' . LB;
-    }
-
-    $listoptions = array('chkdelete' => true, 'chkfield' => 'id');
-    $table = ADMIN_simpleList('ADMIN_getListField_moderation', $header_arr,
-                              $text_arr, $data_arr, $listoptions, $form_arr);
-    $retval .= $table;
-    return $retval;
-}
-
-/**
 * Moderates an item
 *
 * This will actually perform moderation (approve or delete) one or more items
@@ -508,34 +451,28 @@ function draftlist($token)
 * @return   string              HTML for "command and control" page
 *
 */
-function moderation ($mid, $action, $type, $count)
+function moderation($mid, $action, $type, $count)
 {
     global $_CONF, $_TABLES;
 
     $retval = '';
 
-    switch ($type) {
-    case 'story':
-        $id = 'sid';
-        $table = $_TABLES['stories'];
-        $submissiontable = $_TABLES['storysubmission'];
-        $fields = 'sid,uid,tid,title,introtext,date,postmode';
-        break;
-    case 'comment':
+    if (empty($type)) {
+        // something is terribly wrong, bail
+        $retval .= COM_errorLog("Submission type not set in moderation.php");
+        return $retval;
+    }
+
+    if ($type == 'comment') {
         $id = 'cid';
+        $table = $_TABLES['comments'];
         $submissiontable = $_TABLES['commentsubmissions'];
         $sidArray[] = '';
-        break;
-    default:
-        if (strlen($type) <= 0) {
-            // something is terribly wrong, bail
-            $retval .= COM_errorLog("Unable to find type of $type in moderation() in moderation.php");
-            return $retval;
-        }
+    } else {
         list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
     }
 
-    // Set true if an valid action other than delete_all is selected
+    // Set true if a valid action other than delete_all is selected
     $formaction = false;
 
     for ($i = 0; $i < $count; $i++) {
@@ -547,20 +484,16 @@ function moderation ($mid, $action, $type, $count)
 
         switch ($action[$i]) {
         case 'delete':
-            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
-                // There may be some plugin specific processing that needs to
-                // happen first.
-                $retval .= PLG_deleteSubmission($type, $mid[$i]);
-            }
             if (empty($mid[$i])) {
                 $retval .= COM_errorLog("moderation.php just tried deleting everything in table $submissiontable because it got an empty id.  Please report this immediately to your site administrator");
                 return $retval;
             }
-            if ($type == 'draft') {
-                STORY_deleteStory($mid[$i]);
-            } else {
-                DB_delete($submissiontable,"$id",$mid[$i]);
-            }
+
+            // There may be some plugin specific processing that needs to
+            // happen first.
+            $retval .= PLG_deleteSubmission($type, $mid[$i]);
+
+            DB_delete($submissiontable, $id, $mid[$i]);
             break;
 
         case 'approve':
@@ -576,7 +509,7 @@ function moderation ($mid, $action, $type, $count)
                 $T = DB_fetchArray ($result);
                 if ($T['archive_flag'] == 1) {
                     $frontpage = 0;
-                } else if (isset ($_CONF['frontpage'])) {
+                } elseif (isset ($_CONF['frontpage'])) {
                     $frontpage = $_CONF['frontpage'];
                 } else {
                     $frontpage = 1;
@@ -588,41 +521,43 @@ function moderation ($mid, $action, $type, $count)
                 PLG_itemSaved($A['sid'], 'article');
                 COM_rdfUpToDateCheck ();
                 COM_olderStuff ();
-            } else if ($type == 'draft') {
-                DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = '{$mid[$i]}'");
-
-                COM_rdfUpToDateCheck ();
-                COM_olderStuff ();
-            } else if ($type == 'comment') {
+            } elseif ($type == 'comment') {
                 $sid = CMT_approveModeration($mid[$i]);
-                if ( !in_array($sid, $sidArray) ) {
+                if (! in_array($sid, $sidArray)) {
                     $sidArray[$i] = $sid; 
                 }
             } else {
-                // This is called in case this is a plugin. There may be some
-                // plugin specific processing that needs to happen.
-                DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
-                $retval .= PLG_approveSubmission($type,$mid[$i]);
+                /**
+                * This is called in case this is a plugin. There may be some
+                * plugin specific processing that needs to happen.
+                */
+
+                // avoid unnecessary copy, e.g. for draft stories
+                if ($table != $submissiontable) {
+                    DB_copy($table, $fields, $fields,
+                            $submissiontable, $id, $mid[$i]);
+                }
+                $retval .= PLG_approveSubmission($type, $mid[$i]);
             }
             break;
         }
     }
-    
+
     // after loop update comment tree and count for each story
     if (isset($sidArray)) {
-        foreach($sidArray as $sid) {
+        foreach ($sidArray as $sid) {
             CMT_rebuildTree($sid);
-            //update comment count of stories;
-            $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-            DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+            // update comment count of stories;
+            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+            DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
         }
     }
-    
-    //Add new comment users to group comment.submit group
+
+    // Add new comment users to group comment.submit group
     if (isset($_POST['publishfuture']) ) {
         for ($i = 0; $i < count($_POST['publishfuture']); $i++ ) {
             $uid =  COM_applyFilter($_POST['publishfuture'][$i], true);
-            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid) ) {
+            if ($uid > 1 && !SEC_inGroup('Comment Submitters', $uid)) {
                 SEC_addUserToGroup($uid, 'Comment Submitters');
             }
         }
@@ -633,15 +568,12 @@ function moderation ($mid, $action, $type, $count)
     if (!$formaction AND isset($_POST['delitem'])) {
         foreach ($_POST['delitem'] as $delitem) {
             $delitem = COM_applyFilter($delitem);
-            if (!empty ($type) && ($type <> 'story') && ($type <> 'draft')) {
-                // There may be some plugin specific processing that needs to
-                // happen first.
+            if (! empty($delitem)) {
+                // There may be some plugin specific processing that needs
+                // to happen first.
                 $retval .= PLG_deleteSubmission($type, $delitem);
-            }
-            if ($type == 'draft') {
-                STORY_deleteStory($delitem);
-            } else {
-                DB_delete($submissiontable,"$id",$delitem);
+
+                DB_delete($submissiontable, $id, $delitem);
             }
         }
     }
@@ -680,23 +612,23 @@ function moderateusers ($uid, $action, $count)
         }
 
         switch ($action[$i]) {
-            case 'delete': // Ok, delete everything related to this user
-                if ($uid[$i] > 1) {
-                    USER_deleteAccount ($uid[$i]);
-                }
-                break;
+        case 'delete': // Ok, delete everything related to this user
+            if ($uid[$i] > 1) {
+                USER_deleteAccount($uid[$i]);
+            }
+            break;
 
-            case 'approve':
-                $uid[$i] = COM_applyFilter($uid[$i], true);
-                $result = DB_query ("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
-                $nrows = DB_numRows($result);
-                if ($nrows == 1) {
-                    $A = DB_fetchArray($result);
-                    $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
-                    DB_query($sql);
-                    USER_createAndSendPassword ($A['username'], $A['email'], $A['uid']);
-                }
-                break;
+        case 'approve':
+            $uid[$i] = COM_applyFilter($uid[$i], true);
+            $result = DB_query("SELECT email,username, uid FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
+            $nrows = DB_numRows($result);
+            if ($nrows == 1) {
+                $A = DB_fetchArray($result);
+                $sql = "UPDATE {$_TABLES['users']} SET status=3 WHERE uid={$A['uid']}";
+                DB_query($sql);
+                USER_createAndSendPassword($A['username'], $A['email'], $A['uid']);
+            }
+            break;
         }
     }
 
@@ -706,7 +638,7 @@ function moderateusers ($uid, $action, $count)
         foreach ($_POST['delitem'] as $del_uid) {
             $del_uid = COM_applyFilter($del_uid,true);
             if ($del_uid > 1) {
-                USER_deleteAccount ($del_uid);
+                USER_deleteAccount($del_uid);
             }
         }
     }

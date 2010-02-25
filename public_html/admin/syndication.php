@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2009 by the following authors:                         |
+// | Copyright (C) 2003-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -77,36 +77,51 @@ function deleteFeedFile($filename)
 /**
 * Toggle status of a feed from enabled to disabled and back
 *
-* @param    int     $fid    ID of the feed
+* @param    array   $enabledfeeds   array containing ids of enabled feeds
+* @param    array   $visiblefeeds   array containing ids of visible feeds
 * @return   void
 *
 */
-function changeFeedStatus($fid_arr)
+function changeFeedStatus($enabledfeeds, $visiblefeeds)
 {
     global $_TABLES;
 
-    $changes = false;
+    $enabled_feed = 0;
 
-    // first disable all
-    DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 0");
-    if (isset($fid_arr)) {
-        foreach ($fid_arr as $fid) {
-            $feed_id = addslashes(COM_applyFilter($fid, true));
-            if (!empty($fid)) {
-                // now enable those in the array
-                DB_query("UPDATE {$_TABLES['syndication']} SET is_enabled = 1 WHERE fid = '$fid'");
-                $changes = true;
-            }
-        }
+    $disabled = array_diff($visiblefeeds, $enabledfeeds);
+
+    // disable feeds
+    $in = implode(',', $disabled);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['syndication']} SET is_enabled = 0 WHERE fid IN ($in)";
+        DB_query($sql);
     }
 
-    if ($changes) {
-        $result = DB_query("SELECT filename FROM {$_TABLES['syndication']} WHERE is_enabled = 0");
-        $num_feeds_off = DB_numRows($result);
-        for ($i = 0; $i < $num_feeds_off; $i++) {
-            list($feedfile) = DB_fetchArray($result);
-            deleteFeedFile($feedfile);
+    // enable feeds
+    $in = implode(',', $enabledfeeds);
+    if (! empty($in)) {
+        // if we just enabled a feed, figure out which one it was
+        $sql = "SELECT fid FROM {$_TABLES['syndication']} WHERE fid IN ($in) AND is_enabled = 0";
+        $result = DB_query($sql);
+        if (DB_numRows($result) > 0) {
+            list($enabled_feed) = DB_fetchArray($result);
         }
+
+        $sql = "UPDATE {$_TABLES['syndication']} SET is_enabled = 1 WHERE fid IN ($in)";
+        DB_query($sql);
+    }
+
+    // ensure files for disabled feeds are deleted
+    $result = DB_query("SELECT filename FROM {$_TABLES['syndication']} WHERE is_enabled = 0");
+    $num_feeds_off = DB_numRows($result);
+    for ($i = 0; $i < $num_feeds_off; $i++) {
+        list($feedfile) = DB_fetchArray($result);
+        deleteFeedFile($feedfile);
+    }
+
+    // if we enabled a feed, update it
+    if ($enabled_feed > 0) {
+        SYND_updateFeed($enabled_feed);
     }
 }
 
@@ -221,7 +236,12 @@ function listfeeds()
 
     // this is a dummy variable so we know the form has been used if all feeds
     // should be disabled in order to disable the last one.
-    $form_arr = array('bottom' => '<input type="hidden" name="feedenabler" value="true"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="feedenabler" value="true"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list('syndication', 'ADMIN_getListField_syndication',
                           $header_arr, $text_arr, $query_arr, $defsort_arr, '',
@@ -266,7 +286,7 @@ function editfeed ($fid = 0, $type = '')
             $A['is_enabled'] = 1;
             $A['updated'] = '';
             $A['update_info'] = '';
-            $A['date'] = time ();
+            $A['date'] = time();
         } else {
             return COM_refresh ($_CONF['site_admin_url'] . '/syndication.php');
         }
@@ -344,8 +364,12 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_charset', $A['charset']);
     $feed_template->set_var ('feed_language', $A['language']);
 
-    $nicedate = COM_getUserDateTimeFormat ($A['date']);
-    $feed_template->set_var ('feed_updated', $nicedate[0]);
+    if (($A['is_enabled'] == 1) && !empty($A['updated'])) {
+        $nicedate = COM_getUserDateTimeFormat($A['date']);
+        $feed_template->set_var('feed_updated', $nicedate[0]);
+    } else {
+        $feed_template->set_var('feed_updated', $LANG_ADMIN['na']);
+    }
 
     $formats = find_feedFormats ();
     $selection = '<select name="format">' . LB;
@@ -608,7 +632,11 @@ if ($_CONF['backend'] && isset($_POST['feedenabler']) && SEC_checkToken()) {
     if (isset($_POST['enabledfeeds'])) {
         $enabledfeeds = $_POST['enabledfeeds'];
     }
-    changeFeedStatus($enabledfeeds);
+    $visiblefeeds = array();
+    if (isset($_POST['visiblefeeds'])) {
+        $visiblefeeds = $_POST['visiblefeeds'];
+    }
+    changeFeedStatus($enabledfeeds, $visiblefeeds);
 }
 $mode = '';
 if (isset($_REQUEST['mode'])) {

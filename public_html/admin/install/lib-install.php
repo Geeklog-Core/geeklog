@@ -221,7 +221,7 @@ function php_v()
 /**
  * Check if the user's PHP version is supported by Geeklog
  *
- * @return bool True if supported, falsed if not supported
+ * @return boolean True if supported, falsed if not supported
  *
  */
 function INST_phpOutOfDate()
@@ -272,7 +272,7 @@ function mysql_v($_DB_host, $_DB_user, $_DB_pass)
  * Check if the user's MySQL version is supported by Geeklog
  *
  * @param   array   $db     Database information
- * @return  bool    True if supported, falsed if not supported
+ * @return  boolean True if supported, falsed if not supported
  *
  */
 function INST_mysqlOutOfDate($db)
@@ -367,7 +367,7 @@ function INST_prettifyLanguageName($filename)
  *
  * @param   string  $config_file    Full path to db-config.php
  * @param   array   $db             Database information to save
- * @return  bool    True if successful, false if not
+ * @return  boolean True if successful, false if not
  *
  */
 function INST_writeConfig($config_file, $db)
@@ -464,7 +464,7 @@ function INST_dbConnect($db)
  * Check if a Geeklog database exists
  *
  * @param   array   $db Array containing connection info
- * @return  bool        True if a database exists, false if not
+ * @return  boolean     True if a database exists, false if not
  *
  */
 function INST_dbExists($db)
@@ -498,7 +498,7 @@ function INST_dbExists($db)
  * NOTE:    This code is a modified copy from marufit at gmail dot com
  *
  * @param   string  $url    URL
- * @return  bool            True if URL exists, false if not
+ * @return  boolean         True if URL exists, false if not
  *
  */
 function INST_urlExists($url) 

@@ -1447,7 +1447,7 @@ function SEC_getTokenExpiryNotice($token, $extra_msg = '')
 * @param    int     $expire     expire time
 * @param    string  $path       path on the server or $_CONF['cookie_path']
 * @param    string  $domain     domain or $_CONF['cookiedomain']
-* @param    bool    $secure     whether to use HTTPS or $_CONF['cookiesecure']
+* @param    boolean $secure     whether to use HTTPS or $_CONF['cookiesecure']
 * @link http://blog.mattmecham.com/2006/09/12/http-only-cookies-without-php-52/
 *
 */

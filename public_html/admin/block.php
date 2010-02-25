@@ -140,7 +140,7 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
         $block_templates->set_var('all_selected', 'selected="selected"');
-    } else if ($A['tid'] == 'homeonly') {
+    } elseif ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
     $block_templates->set_var('topic_options',
@@ -152,7 +152,7 @@ function editdefaultblock ($A, $access)
 
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } else if ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
@@ -306,7 +306,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
     if ($A['tid'] == 'all') {
         $block_templates->set_var('all_selected', 'selected="selected"');
-    } else if ($A['tid'] == 'homeonly') {
+    } elseif ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
     $block_templates->set_var('topic_options',
@@ -316,7 +316,7 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_right', $LANG21[41]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
-    } else if ($A['onleft'] == 0) {
+    } elseif ($A['onleft'] == 0) {
         $block_templates->set_var('right_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_blockorder', $LANG21[9]);
@@ -326,9 +326,9 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
     if ($A['type'] == 'normal') {
         $block_templates->set_var('normal_selected', 'selected="selected"');
-    } else if ($A['type'] == 'phpblock') {
+    } elseif ($A['type'] == 'phpblock') {
         $block_templates->set_var('php_selected', 'selected="selected"');
-    } else if ($A['type'] == 'portal') {
+    } elseif ($A['type'] == 'portal') {
         $block_templates->set_var('portal_selected', 'selected="selected"');
     }
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
@@ -450,7 +450,12 @@ function listblocks()
     // this is a dummy variable so we know the form has been used if all blocks
     // should be disabled on one side in order to disable the last one.
     // The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="1"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="blockenabler" value="1"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list(
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
@@ -474,7 +479,12 @@ function listblocks()
 
     // this is a dummy-variable so we know the form has been used if all blocks should be disabled
     // on one side in order to disable the last one. The value is the onleft var
-    $form_arr = array('bottom' => '<input type="hidden" name="blockenabler" value="0"' . XHTML . '>');
+    $form_arr = array(
+        'top'    => '<input type="hidden" name="' . CSRF_TOKEN . '" value="'
+                    . $token . '"' . XHTML . '>',
+        'bottom' => '<input type="hidden" name="blockenabler" value="0"'
+                    . XHTML . '>'
+    );
 
     $retval .= ADMIN_list (
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
@@ -545,7 +555,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;
-    } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
+    } elseif (!empty($name) AND
+             ( ($type == 'normal' && !empty($title) && !empty($content))
+            OR ($type == 'portal' && !empty($title) && !empty($rdfurl))
+            OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))
+            OR ($type == 'gldefault' && (strlen($blockorder) > 0)) )) {
         if ($is_enabled == 'on') {
             $is_enabled = 1;
         } else {
@@ -565,7 +579,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
             // get rid of possible extra prefixes (e.g. "feed://http://...")
             if (substr ($rdfurl, 0, 4) == 'rss:') {
                 $rdfurl = substr ($rdfurl, 4);
-            } else if (substr ($rdfurl, 0, 5) == 'feed:') {
+            } elseif (substr ($rdfurl, 0, 5) == 'feed:') {
                 $rdfurl = substr ($rdfurl, 5);
             }
             if (substr ($rdfurl, 0, 2) == '//') {
@@ -639,16 +653,19 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
         $retval .= COM_siteHeader('menu', $LANG21[32]);
-        if ($type == 'portal') {
+        if (empty($name)) {
+            // empty block name
+            $msgtxt = $LANG21[50];
+        } elseif ($type == 'portal') {
             // Portal block is missing fields
             $msgtxt = $LANG21[33];
-        } else if ($type == 'phpblock') {
+        } elseif ($type == 'phpblock') {
             // PHP Block is missing field
             $msgtxt = $LANG21[34];
-        } else if ($type == 'normal') {
+        } elseif ($type == 'normal') {
             // Normal block is missing field
             $msgtxt = $LANG21[35];
-        } else if ($type == 'gldefault') {
+        } elseif ($type == 'gldefault') {
             // Default geeklog field missing
             $msgtxt = $LANG21[42];
         } else {
@@ -662,16 +679,16 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
 
     return $retval;
 }
+
 /**
-*
-* Re-orders all blocks in steps of 10
+* Re-orders all blocks in increments of 10
 *
 */
 function reorderblocks()
 {
     global $_TABLES;
 
-    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft asc, blockorder asc;";
+    $sql = "SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft ASC, blockorder ASC;";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -740,25 +757,32 @@ function moveBlock()
 
 
 /**
-* Enable and Disable block
+* Enable and Disable blocks
+*
+* @param    array   $enabledblocks  array containing ids of enabled blocks
+* @param    array   $visibleblocks  array containing ids of visible blocks
+* @return   void
+*
 */
-function changeBlockStatus($side, $bid_arr)
+function changeBlockStatus($enabledblocks, $visibleblocks)
 {
     global $_CONF, $_TABLES;
 
-    // first, disable all on the requested side
-    $side = COM_applyFilter($side, true);
-    $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '0' WHERE onleft='$side';";
-    DB_query($sql);
-    if (isset($bid_arr)) {
-        foreach ($bid_arr as $bid => $side) {
-            $bid = COM_applyFilter($bid, true);
-            // the enable those in the array
-            $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = '1' WHERE bid='$bid' AND onleft='$side'";
-            DB_query($sql);
-        }
+    $disabled = array_diff($visibleblocks, $enabledblocks);
+
+    // disable blocks
+    $in = implode(',', $disabled);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 0 WHERE bid IN ($in)";
+        DB_query($sql);
     }
-    return;
+
+    // enable blocks
+    $in = implode(',', $enabledblocks);
+    if (! empty($in)) {
+        $sql = "UPDATE {$_TABLES['blocks']} SET is_enabled = 1 WHERE bid IN ($in)";
+        DB_query($sql);
+    }
 }
 
 /**
@@ -802,7 +826,11 @@ if (isset($_POST['blockenabler']) && SEC_checkToken()) {
     if (isset($_POST['enabledblocks'])) {
         $enabledblocks = $_POST['enabledblocks'];
     }
-    changeBlockStatus($_POST['blockenabler'], $enabledblocks);
+    $visibleblocks = array();
+    if (isset($_POST['visibleblocks'])) {
+        $visibleblocks = $_POST['visibleblocks'];
+    }
+    changeBlockStatus($enabledblocks, $visibleblocks);
 }
 
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
@@ -857,11 +885,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                     $_POST['perm_owner'], $_POST['perm_group'],
                     $_POST['perm_members'], $_POST['perm_anon'],
                     $is_enabled, $allow_autotags);
-} else if ($mode == 'edit') {
+} elseif ($mode == 'edit') {
     $display .= COM_siteHeader ('menu', $LANG21[3])
              . editblock ($bid)
              . COM_siteFooter ();
-} else if ($mode == 'move') {
+} elseif ($mode == 'move') {
     $display .= COM_siteHeader('menu', $LANG21[19]);
     if(SEC_checkToken()) {
         $display .= moveBlock();

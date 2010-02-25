@@ -623,7 +623,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
 *
 * @param        int     $size           Size in pixels of poll results
 * @param        string  $pid            Poll topic ID to show (optional)
-* @param        bool    $showall        Show only the first question or all
+* @param        boolean $showall        Show only the first question or all
 * @param        int     $displaytype    Possible values 0 = Normal, 1 = In Block, 2 = autotag 
 * @return       string  HTML formatted string of poll
 * @see function COM_pollVote

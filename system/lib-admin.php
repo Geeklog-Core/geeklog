@@ -44,6 +44,13 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-admin.php') !== false) {
 }
 
 /**
+* Default number of list entries per page
+*/
+if (! defined('DEFAULT_ENTRIES_PER_PAGE')) {
+    define('DEFAULT_ENTRIES_PER_PAGE', 50);
+}
+
+/**
 * Common function used in Admin scripts to display a list of items
 *
 * @param    string  $fieldfunction  Name of a function used to display the list item row details
@@ -235,7 +242,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     if (isset($_REQUEST['query_limit'])) { // get query-limit (list-length)
         $query_limit = COM_applyFilter($_REQUEST['query_limit'], true);
         if ($query_limit == 0) {
-            $query_limit = 50;
+            $query_limit = DEFAULT_ENTRIES_PER_PAGE;
         }
     }
 
@@ -428,8 +435,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     if ($has_extras) {
-        $limit = 50; # default query limit if not other chosen.
-                     # maybe this could be a setting from the list?
+        /**
+        * default query limit if no other ch osen.
+        * @todo maybe this could be a setting from the list?
+        */
+        $limit = DEFAULT_ENTRIES_PER_PAGE;
         if (!empty($query_limit)) {
             $limit = $query_limit;
         }
@@ -655,9 +665,11 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                 } else {
                     $switch = '';
                 }
-                $retval = "<input type=\"checkbox\" name=\"enabledblocks[{$A['bid']}]\" "
-                    . "onclick=\"submit()\" value=\"{$A['onleft']}\"$switch" . XHTML . ">";
-                $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
+                $retval = '<input type="checkbox" name="enabledblocks[]" '
+                            . 'onclick="submit()" value="' . $A['bid'] . '"'
+                            . $switch . XHTML . '>'
+                        . '<input type="hidden" name="visibleblocks[]" value="'
+                            . $A['bid'] . '"' . XHTML . '>';
             }
             break;
 
@@ -1003,8 +1015,6 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG33, $_IMAGE_TYPE;
 
-    static $added_token;
-
     $retval = '';
 
     switch ($fieldname) {
@@ -1026,7 +1036,11 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
         break;
 
     case 'updated':
-        $retval = strftime($_CONF['daytime'], $A['date']);
+        if ($A['is_enabled'] == 1) {
+            $retval = strftime($_CONF['daytime'], $A['date']);
+        } else {
+            $retval = $LANG_ADMIN['na'];
+        }
         break;
 
     case 'is_enabled':
@@ -1035,12 +1049,8 @@ function ADMIN_getListField_syndication($fieldname, $fieldvalue, $A, $icon_arr, 
         } else {
             $switch = '';
         }
-        $retval = "<input type=\"checkbox\" name=\"enabledfeeds[]\" "
-            . "onclick=\"submit()\" value=\"{$A['fid']}\"$switch" . XHTML . ">";
-        if (! isset($added_token)) {
-            $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN . "\" value=\"{$token}\"" . XHTML . ">";
-            $added_token = true;
-        }
+        $retval = '<input type="checkbox" name="enabledfeeds[]" onclick="submit()" value="' . $A['fid'] . '"' . $switch . XHTML . '>'
+                . '<input type="hidden" name="visiblefeeds[]" value="' . $A['fid'] . '"' . XHTML . '>';
         break;
 
     case 'header_tid':
@@ -1075,75 +1085,70 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
 {
     global $_CONF, $LANG_ADMIN, $LANG32;
 
-    static $added_token;
-
     $retval = '';
 
-    switch($fieldname) {
-        case 'edit':
-            $retval = COM_createLink($icon_arr['edit'],
+    switch ($fieldname) {
+    case 'edit':
+        $retval = COM_createLink($icon_arr['edit'],
                 "{$_CONF['site_admin_url']}/plugins.php?mode=edit&amp;pi_name={$A['pi_name']}");
-            break;
-        case 'pi_name':
-            $retval = plugin_get_pluginname($A['pi_name']);
-            break;
-        case 'pi_version':
-            $plugin_code_version = PLG_chkVersion ($A['pi_name']);
-            if (empty ($plugin_code_version)) {
-                $code_version = $LANG_ADMIN['na'];
-            } else {
-                $code_version = $plugin_code_version;
-            }
-            $pi_installed_version = $A['pi_version'];
-            if (empty ($plugin_code_version) ||
-                    ($pi_installed_version == $code_version)) {
-                $retval = $pi_installed_version;
-            } else {
-                $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
-                if ($A['pi_enabled'] == 1) {
-                    $retval .= " <b>{$LANG32[38]}</b>"
-                        . ' <input type="image" src="' . $_CONF['layout_url']
-                        . '/images/update.png" alt="[' . $LANG32[38]
-                        . ']" name="updatethisplugin" value="' . $A['pi_name']
-                        . '" onclick="submit()" title="' . $LANG32[42] . '"'
-                        . XHTML . '>';
-                    if (! isset($added_token)) {
-                        $retval .= '<input type="hidden" name="' . CSRF_TOKEN
-                                . '" ' . 'value="' . $token . '"' . XHTML . '>';
-                        $added_token = true;
-                    }
-                }
-            }
-            break;
-        case 'enabled':
-            $not_present = false;
+        break;
+
+    case 'pi_name':
+        $retval = plugin_get_pluginname($A['pi_name']);
+        break;
+
+    case 'pi_version':
+        $plugin_code_version = PLG_chkVersion($A['pi_name']);
+        if (empty($plugin_code_version)) {
+            $code_version = $LANG_ADMIN['na'];
+        } else {
+            $code_version = $plugin_code_version;
+        }
+        $pi_installed_version = $A['pi_version'];
+        if (empty($plugin_code_version) ||
+                ($pi_installed_version == $code_version)) {
+            $retval = $pi_installed_version;
+        } else {
+            $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
             if ($A['pi_enabled'] == 1) {
-                $switch = ' checked="checked"';
-            } else {
-                $switch = '';
-                if (! file_exists($_CONF['path'] . 'plugins/' . $A['pi_name']
-                                  . '/functions.inc')) {
-                    $not_present = true;
-                }
+                $retval .= " <b>{$LANG32[38]}</b>"
+                    . ' <input type="image" src="' . $_CONF['layout_url']
+                    . '/images/update.png" alt="[' . $LANG32[38]
+                    . ']" name="updatethisplugin" value="' . $A['pi_name']
+                    . '" onclick="submit()" title="' . $LANG32[42] . '"'
+                    . XHTML . '>';
             }
-            if ($not_present) {
-                $retval = '<input type="checkbox" name="enabledplugins['
-                        . $A['pi_name'] . ']" disabled="disabled"' . XHTML . '>';
-            } else {
-                $retval = '<input type="checkbox" name="enabledplugins['
-                        . $A['pi_name'] . ']" onclick="submit()" value="1"'
-                        . $switch . XHTML . '>';
-                if (! isset($added_token)) {
-                    $retval .= '<input type="hidden" name="' . CSRF_TOKEN . '" '
-                            . 'value="' . $token . '"' . XHTML . '>';
-                    $added_token = true;
-                }
+        }
+        break;
+
+    case 'enabled':
+        $not_present = false;
+        if ($A['pi_enabled'] == 1) {
+            $switch = ' checked="checked"';
+        } else {
+            $switch = '';
+            if (! file_exists($_CONF['path'] . 'plugins/' . $A['pi_name']
+                              . '/functions.inc')) {
+                $not_present = true;
             }
-            break;
-        default:
-            $retval = $fieldvalue;
-            break;
+        }
+        if ($not_present) {
+            $retval = '<input type="checkbox" disabled="disabled"'
+                    . XHTML . '>';
+        } else {
+            $retval = '<input type="checkbox" name="enabledplugins[]" '
+                        . 'onclick="submit()" value="' . $A['pi_name'] . '"'
+                        . $switch . XHTML . '>'
+                    . '<input type="hidden" name="visibleplugins[]" value="'
+                        . $A['pi_name'] . '"' . XHTML . '>';
+        }
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
     }
+
     return $retval;
 }
 
@@ -1247,8 +1252,6 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
 {
     global $_CONF, $LANG_TRB;
 
-    static $added_token;
-
     $retval = '';
 
     switch($fieldname) {
@@ -1278,13 +1281,11 @@ function ADMIN_getListField_trackback($fieldname, $fieldvalue, $A, $icon_arr, $t
         } else {
             $switch = '';
         }
-        $retval = "<input type=\"checkbox\" name=\"changedservices[]\" "
-            . "onclick=\"submit()\" value=\"{$A['pid']}\"$switch" . XHTML . ">";
-        if (! isset($added_token)) {
-            $retval .= "<input type=\"hidden\" name=\"" . CSRF_TOKEN
-                    . "\" value=\"{$token}\"" . XHTML . ">";
-            $added_token = true;
-        }
+        $retval = '<input type="checkbox" name="enabledservices[]" '
+                        . 'onclick="submit()" value="' . $A['pid'] . '"'
+                        . $switch . XHTML . '>'
+                  . '<input type="hidden" name="visibleservices[]" value="'
+                            . $A['pid'] . '"' . XHTML . '>';
         break;
 
     default:

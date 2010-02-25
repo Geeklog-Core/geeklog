@@ -320,6 +320,9 @@ function plugin_ismoderator_calendar()
 
 /**
 * Returns SQL & Language texts to moderation.php
+*
+* @return   mixed   Plugin object or void if not allowed
+*
 */
 function plugin_itemlist_calendar()
 {

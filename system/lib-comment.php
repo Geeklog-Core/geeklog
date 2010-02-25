@@ -1130,7 +1130,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         if (isset($name)) {
             DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,date,title,pid,ipaddress) VALUES ('$sid',$uid,'$name','$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         } else {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,date,title,pid,ipaddress) VALUES ('$sid',$uid,$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,date,title,pid,ipaddress) VALUES ('$sid',$uid,'$comment',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         }
 
         $ret = -1; // comment queued
@@ -1593,7 +1593,7 @@ function CMT_handleEditSubmit($mode = null)
  * @param string  $comment  comment text
  * @param string  $postmode ('html', 'plaintext', ...)
  * @param string  $type     Type of item (article, polls, etc.)
- * @param bool    $edit     if true append edit tag
+ * @param boolean $edit     if true append edit tag
  * @param int     $cid      commentid if editing comment (for proper sig)
  * @return string of comment text
  */

@@ -1,7 +1,7 @@
                             <table cellspacing="0" cellpadding="3" border="0" width="100%">
                                 <tr>
                                     <td colspan="2">
-                                        <h1>{event_title}</h1>
+                                        <h1 class="summary">{event_title}</h1>
                                     </td>
                                 </tr>
                                 <tr valign="top">
@@ -14,7 +14,7 @@
                                 </tr>
                                 <tr valign="top">
                                     <td align="right"><b>{lang_where}:</b></td>
-                                    <td width="100%">
+                                    <td width="100%" class="location">
                                         {event_location}{br0}
                                         {event_address1}{br1}
                                         {event_address2}{br2}
@@ -23,7 +23,7 @@
                                 </tr>
                                 <tr valign="top">
                                     <td align="right"><b>{lang_description}:</b></td>
-                                    <td width="100%">{event_description}</td>
+                                    <td width="100%" class="description">{event_description}</td>
                                 </tr>
                                 <tr><td colspan="2">{addremove_event} {edit_icon}</td></tr>
                             </table><br{xhtml}><br{xhtml}>

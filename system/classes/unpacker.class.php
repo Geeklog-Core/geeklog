@@ -75,7 +75,7 @@ class unpacker {
      * 
      * @param string $file full path to archive
      * @param string $mime_type mime type ( optional, application/zip, /tar, etc )
-     * @return bool $success result of loading archive passed
+     * @return boolean $success result of loading archive passed
      */
     function unpacker($file, $mime_type = null) {
 
@@ -145,7 +145,7 @@ class unpacker {
      * 
      * @param string $file full path to archive
      * @param string $optional_type mime type ( application/zip, /tar, etc )
-     * @return bool $success result of loading archive passed
+     * @return boolean $success result of loading archive passed
      */
     function open($file, $optional_type = false) {
 
@@ -166,7 +166,7 @@ class unpacker {
      * 
      * Decides which loader to call, or returns false if one isn't found.
      * 
-     * @return bool $success result of loading archive passed
+     * @return boolean $success result of loading archive passed
      */
     function load_file() {
 
@@ -181,7 +181,7 @@ class unpacker {
     /**
      * load a zip archive
      * 
-     * @return bool $success result of loading archive passed
+     * @return boolean $success result of loading archive passed
      */
     function load_zip() {
 
@@ -210,7 +210,7 @@ class unpacker {
     /**
      * load a tar archive
      * 
-     * @return bool $success result of loading archive passed
+     * @return boolean $success result of loading archive passed
      */
     function load_tar() {
 
@@ -309,7 +309,7 @@ class unpacker {
      * 
      * @param string $target_path destination 
      * @param array $item_array array of specific path/file(s)
-     * @return bool result
+     * @return boolean result
      */
     function unpack($target_path, $item_array = null) {
 
@@ -336,7 +336,7 @@ class unpacker {
      * 
      * @param string $target_path destination 
      * @param array $item_array array of specific path/file(s)
-     * @return bool result
+     * @return boolean result
      */
     function unpack_zip($target_path, $item_array = null) {
 
@@ -395,7 +395,7 @@ class unpacker {
      * 
      * @param string $target_path destination 
      * @param array $item_array array of specific path/file(s)
-     * @return bool result
+     * @return boolean result
      */
     function unpack_tar($target_path, $item_array = null) {
 
@@ -413,7 +413,7 @@ class unpacker {
     /**
      * return the first directory name in the archive 
      * 
-     * @return mixed string directory name, or bool false
+     * @return mixed string directory name, or boolean false
      */
     function getdir() {
 
@@ -460,7 +460,7 @@ class unpacker {
      * 
      * @param string $errorno error number ( anything goes )
      * @param string $error error text ( anything goes ) 
-     * @return bool, always false
+     * @return boolean, always false
      */
     function setError($errorno, $error) {
 
