@@ -41,11 +41,11 @@
           </tr>
           <tr{hide_meta}>
               <td valign="top" align="right">{lang_metadescription}:</td>
-            <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+            <td><textarea name="meta_description" style="width:100%" cols="45" rows="2">{meta_description}</textarea></td>
           </tr>
           <tr{hide_meta}>
             <td valign="top" align="right">{lang_metakeywords}:</td>
-            <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+            <td><textarea name="meta_keywords" style="width:100%" cols="45" rows="2">{meta_keywords}</textarea></td>
           </tr>              
           <tr>
               <td valign="top" align="right">{lang_content}:</td>
