@@ -786,10 +786,9 @@ class Story
 
         DB_save($_TABLES['stories'],$fields,$values);
 
-        /* Clean up the old story */
         if ($oldArticleExists) {
-            $sql = "DELETE FROM {$_TABLES['stories']} WHERE sid='$checksid'";
-            DB_query($sql);
+            /* Clean up the old story */
+            DB_delete($_TABLES['stories'], 'sid', $checksid);
         }
 
         if ($this->type == 'submission') {
