@@ -70,6 +70,12 @@ if (!defined('SUPPORTED_MYSQL_VER')) {
 
 $_REQUEST = array_merge($_GET, $_POST);
 
+if (function_exists('date_default_timezone_get')) {
+    // this is not ideal but will stop PHP 5.3.0ff from complaining ...
+    $system_timezone = @date_default_timezone_get();
+    date_default_timezone_set($system_timezone);
+}
+
 if (empty($LANG_DIRECTION)) {
     $LANG_DIRECTION = 'ltr';
 }
