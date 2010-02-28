@@ -17,6 +17,7 @@ db-config.php
 public_html/siteconfig.php
 system/lib-custom.php
 
+public_html/.htaccess
 public_html/sitemap.xml
 
 config.php
