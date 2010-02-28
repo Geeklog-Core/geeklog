@@ -88,6 +88,8 @@ Links Plugin
 
 Polls Plugin
 ------------
+- Fixed display of the edit icon in the Poll block - didn't check for polls.edit
+  permissions (but wouldn't let you edit the poll) [Dirk]
 - Fixed wrong "access denied" message when attempting to view comments on a poll
   that the user is not allowed to view (bug #0001044) [Dirk]
 - Fixed comment bar Refresh button (bug #0001044) [Dirk]
