@@ -1231,6 +1231,10 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
 
     $retval = '';
 
+    if (substr($gl_path, -13) == 'db-config.php') {
+        $gl_path = dirname($gl_path);
+    }
+
     $dbs = array(
         'mysql'        => array('file'  => 'mysql',
                                 'fn'    => 'mysql_connect',
