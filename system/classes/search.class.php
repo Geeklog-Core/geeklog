@@ -471,7 +471,11 @@ class Search {
             $obj->setField('',          '_html',        true,       false, '</span>');
             $this->_wordlength = 50;
         }
-        $obj->setDefaultSort('hits');
+
+        // get default sort order
+        $default_sort = explode('|', $_CONF['search_def_sort']);
+        $obj->setDefaultSort($default_sort[0], $default_sort[1]);
+
         // set this only now, for compatibility with PHP 4
         $obj->setRowFunction(array($this, 'searchFormatCallback'));
 
