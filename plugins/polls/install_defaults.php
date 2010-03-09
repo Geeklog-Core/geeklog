@@ -83,6 +83,10 @@ $_PO_DEFAULT['delete_polls'] = 0;
  */
 $_PO_DEFAULT['aftersave'] = 'list';
 
+// What's New Block
+$_PO_DEFAULT['new_polls_interval'] = 1209600; // 2 weeks
+$_PO_DEFAULT['hide_new_polls'] = 'hide'; // 'hide', 'created', 'modified'
+$_PO_DEFAULT['title_trim_length'] = 20;
 
 // Display Meta Tags for static pages (1 = show, 0 = don't) 
 $_PO_DEFAULT['meta_tags'] = 0;
@@ -140,10 +144,20 @@ function plugin_initconfig_polls()
                 0, 0, 9, 90, true, 'polls');
         $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select',
                 0, 0, 0, 100, true, 'polls');        
+        
+        $c->add('fs_whatsnew', NULL, 'fieldset',
+                0, 1, NULL, 0, true, 'polls');
+        $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
+                0, 1, NULL, 10, TRUE, 'polls');
+        $c->add('hidenewpolls',$_PO_DEFAULT['hide_new_polls'],'select',
+                0, 1, 5, 20, TRUE, 'polls');
+        $c->add('title_trim_length',$_PO_DEFAULT['title_trim_length'],'text',
+                0, 1, NULL, 30, TRUE, 'polls');
 
-        $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls');
-        $c->add('default_permissions', $_PO_DEFAULT['default_permissions'],
-                '@select', 0, 1, 12, 100, true, 'polls');
+        $c->add('fs_permissions', NULL, 'fieldset', 
+                0, 2, NULL, 0, true, 'polls');
+        $c->add('default_permissions', $_PO_DEFAULT['default_permissions'], '@select', 
+                0, 2, 12, 100, true, 'polls');
     }
 
     return true;

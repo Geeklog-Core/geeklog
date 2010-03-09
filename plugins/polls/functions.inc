@@ -1185,6 +1185,8 @@ function plugin_upgrade_polls()
                 }
             }
 
+            update_ConfValues_2_1_1();
+            
             $current_version = '2.1.2';
             break;
 
@@ -1235,7 +1237,7 @@ function plugin_migrate_polls($old_conf)
 function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
 {
     global $_CONF, $_TABLES;
-
+    
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
     $fields = array();
@@ -1251,10 +1253,10 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
             $fields[] = 'topic';
             break;
         case 'url':
-            if ($pid == '*') {
-                // in this case, we need the pid to build the URL
-                $fields[] = 'pid';
-            }
+            // needed for $pid == '*', but also in case we're only requesting
+            // the URL (so that $fields isn't emtpy)
+            $fields[] = 'pid';
+
             break;
         default:
             // nothing to do
@@ -1473,6 +1475,117 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
     }
 
     return $content;
+}
+
+/**
+* Return headlines for New Polls section in the What's New block, if enabled
+*
+* @return   mixed       array(headline, byline), or boolean false if disabled
+*
+*/
+function plugin_whatsnewsupported_polls()
+{
+    global $_PO_CONF, $LANG_POLLS, $LANG_WHATSNEW;
+
+    if ($_PO_CONF['hidenewpolls'] == 'hide') {
+        $retval = false;
+    } else {
+        $retval = array($LANG_POLLS['polls'],
+                        COM_formatTimeString($LANG_WHATSNEW['new_last'],
+                                             $_PO_CONF['newpollsinterval'])
+                            );
+    }
+
+    return $retval;
+}
+
+/**
+* Return new Polls for the What's New block
+*
+* @return   string  HTML list of new staticpages
+*
+*/
+function plugin_getwhatsnew_polls()
+{
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
+
+    $retval = '';
+    if ($_PO_CONF['hidenewpolls'] == 'modified') {
+        $datecolumn = 'modified';
+    } else {
+        $datecolumn = 'created';
+    }
+    $sql = array();
+    $sql['mysql'] = "SELECT pid, topic 
+        FROM {$_TABLES['polltopics']} 
+        WHERE ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_PO_CONF['newpollsinterval']} SECOND))) 
+        " . COM_getPermSQL('AND') . " 
+        ORDER BY {$datecolumn} DESC LIMIT 15";
+        
+    $sql['pgsql'] = "SELECT  pid, topic 
+        FROM {$_TABLES['polltopics']} 
+        WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS')) 
+        " . COM_getPermSQL('AND') . " 
+        ORDER BY {$datecolumn} DESC LIMIT 15";
+
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
+    if ($nrows > 0) {
+        $newpolls = array();
+
+        for ($x = 0; $x < $nrows; $x++) {
+            $A = DB_fetchArray($result);
+
+            //$url = COM_buildUrl($_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']);
+            $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid'];
+
+            $title = COM_undoSpecialChars(stripslashes( $A['topic']));
+            $titletouse = COM_truncate($title, $_PO_CONF['title_trim_length'],
+                                       '...');
+            if ($title != $titletouse) {
+                $attr = array('title' => htmlspecialchars($title));
+            } else {
+                $attr = array();
+            }
+            $apoll = str_replace('$', '&#36;', $titletouse);
+            $apoll = str_replace(' ', '&nbsp;', $apoll);
+
+            $newpolls[] = COM_createLink($apoll, $url, $attr);
+        }
+
+        $retval .= COM_makeList($newpolls, 'list-new-plugins');
+    } else {
+        $retval .= $LANG_POLLS['no_new_polls'] . '<br' . XHTML . '>' . LB;
+    }
+
+    return $retval;
+}
+
+/**
+* Return new Polls comments for the What's New block
+*
+* @return   array list of new poll comments (dups, type, title, sid, lastdate)
+*
+*/
+function plugin_getwhatsnewcomment_polls()
+{
+    global $_CONF, $_TABLES;
+
+    // Comments
+    $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+        . " WHERE (pt.pid = sid)" . COM_getPermSQL('AND', 0, 2, 'pt')
+        . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+  
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($x = 0; $x < $nrows; $x++) {
+            $A[] = DB_fetchArray($result);    
+        }
+        
+        return $A;
+    }
 }
 
 ?>

@@ -63,11 +63,43 @@ function update_ConfValues_2_1_0()
     global $_CONF, $_PO_DEFAULT;
 
     require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
 
     $c = config::get_instance();
     
     // meta tag config options.
     $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select', 0, 0, 0, 100, true, 'polls');
+
+    return true;
+}
+
+function update_ConfValues_2_1_1()
+{
+    global $_CONF, $_PO_DEFAULT, $_PO_CONF;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+    require_once $_CONF['path'] . 'plugins/polls/install_defaults.php';
+    
+    $c = config::get_instance();
+
+    // What's New Block    
+    $c->add('fs_whatsnew', NULL, 'fieldset',
+            0, 1, NULL, 0, true, 'polls');
+    $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
+            0, 1, NULL, 10, TRUE, 'polls');
+    $c->add('hidenewpolls',$_PO_DEFAULT['hide_new_polls'],'select',
+            0, 1, 5, 20, TRUE, 'polls');
+    $c->add('title_trim_length',$_PO_DEFAULT['title_trim_length'],'text',
+            0, 1, NULL, 30, TRUE, 'polls');
+
+    // Permissions (needed to redefine order on configuration form)
+    $c->del('fs_permissions','polls');
+    $c->del('default_permissions','polls');
+    
+    $c->add('fs_permissions', NULL, 'fieldset', 
+            0, 2, NULL, 0, true, 'polls');
+    $c->add('default_permissions', $_PO_CONF['default_permissions'], '@select', 
+            0, 2, 12, 100, true, 'polls');    
 
     return true;
 }
