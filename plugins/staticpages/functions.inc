@@ -796,7 +796,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'],$LANG09[66]));
 
     $columns = array('title' => 'c.title', 'comment');
-    $sql .= $search_c->getDateRangeSQL('AND', 'c_date', $datestart, $dateend);
+    $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $datestart, $dateend);
     list($sql, $ftsql) = $search_c->buildSearchSQL($keyType, $query, $columns, $sql);
 
     $search_c->setSQL($sql);
@@ -1477,7 +1477,7 @@ function plugin_whatsnewsupported_staticpages()
         $retval = array($LANG_STATIC['pages'],
                         COM_formatTimeString($LANG_WHATSNEW['new_last'],
                                              $_SP_CONF['newstaticpagesinterval'])
-                       );
+                            );
     }
 
     return $retval;
@@ -1494,7 +1494,6 @@ function plugin_getwhatsnew_staticpages()
     global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
-    
     if ($_SP_CONF['hidenewstaticpages'] == 'modified') {
         $datecolumn = 'modified';
     } else {
@@ -1554,6 +1553,32 @@ function plugin_getwhatsnew_staticpages()
     }
 
     return $retval;
+}
+
+/**
+* Return new Static Page comments for the What's New block
+*
+* @return   array list of new staticpage comments (dups, type, title, sid, lastdate)
+*
+*/
+function plugin_getwhatsnewcomment_staticpages()
+{
+    global $_CONF, $_TABLES;
+
+    // Comments
+    $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
+        . " WHERE (sp.sp_id = sid) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
+        . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+  
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($x = 0; $x < $nrows; $x++) {
+            $A[] = DB_fetchArray($result);    
+        }
+        
+        return $A;
+    }
 }
 
 /**
