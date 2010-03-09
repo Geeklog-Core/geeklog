@@ -4290,52 +4290,74 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
 
-        $result = DB_query( $sql );
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        $new_plugin_comments= array();
+        if ($nrows > 0) {
+            for ($x = 0; $x < $nrows; $x++) {
+                $new_plugin_comments[] = DB_fetchArray($result); 
+            }
+        }
 
-        $nrows = DB_numRows( $result );
+        $new_plugin_comments = array_merge(PLG_getWhatsNewComment(), $new_plugin_comments);
+        
+        if( !empty($new_plugin_comments) ) {
+            // Sort array by element lastdate newest to oldest
+            foreach($new_plugin_comments as $k=>$v) {		
+                $b[$k] = strtolower($v['lastdate']);	
+            }	
+            arsort($b);	
+            foreach($b as $key=>$val) {		
+                $temp[] = $new_plugin_comments[$key];	
+            }	   
+            $new_plugin_comments = $temp;
 
-        if( $nrows > 0 )
-        {
             $newcomments = array();
-
-            for( $x = 0; $x < $nrows; $x++ )
-            {
-                $A = DB_fetchArray( $result );
-
-                if(( $A['type'] == 'article' ) || empty( $A['type'] ))
-                {
+            $count = 0;
+            foreach ($new_plugin_comments as $A) {
+                $count .= +1;
+                $url = '';
+                if(( $A['type'] == 'article' ) || empty( $A['type'] )) {
                     $url = COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] ) . '#comments';
+                } else {
+                    $info = PLG_getItemInfo($A['type'], $A['sid'], 'url');
+                    if (!(empty($info))) {
+                        //$url = COM_createLink($info[0], $info[1]); //, array('title' => $excerpt));
+                        $url = $info . '#comments';
+                    }
                 }
-
-                $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
-                $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
-                                            '...' );
-                if( $title != $titletouse )
-                {
-                    $attr = array('title' => htmlspecialchars($title));
+                // Check to see if url (plugin may not support PLG_getItemInfo
+                if (!(empty($url))) {
+                    $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
+                    $titletouse = COM_truncate( $title, $_CONF['title_trim_length'],
+                                                '...' );
+                    if( $title != $titletouse ) {
+                        $attr = array('title' => htmlspecialchars($title));
+                    } else {
+                        $attr = array();
+                    }
+                    $acomment = str_replace( '$', '&#36;', $titletouse );
+                    $acomment = str_replace( ' ', '&nbsp;', $acomment );
+    
+                    if( $A['dups'] > 1 ) {
+                        $acomment .= ' [+' . $A['dups'] . ']';
+                    }
+    
+                    $newcomments[] = COM_createLink($acomment, $url, $attr);
+                    
+                    if ($count == 15) {
+                        break;   
+                    }
                 }
-                else
-                {
-                    $attr = array();
-                }
-                $acomment = str_replace( '$', '&#36;', $titletouse );
-                $acomment = str_replace( ' ', '&nbsp;', $acomment );
-
-                if( $A['dups'] > 1 )
-                {
-                    $acomment .= ' [+' . $A['dups'] . ']';
-                }
-
-                $newcomments[] = COM_createLink($acomment, $url, $attr);
+                
             }
 
             $retval .= COM_makeList( $newcomments, 'list-new-comments' );
-        }
-        else
-        {
+        } else {
             $retval .= $LANG01[86] . '<br' . XHTML . '>' . LB;
         }
+        
         if(( $_CONF['hidenewplugins'] == 0 )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))

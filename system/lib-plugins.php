@@ -1936,6 +1936,51 @@ function PLG_getWhatsNew()
     return array($newheadlines, $newbylines, $newcontent);
 }
 
+
+/**
+* Ask plugins if they want to add new comments to Geeklog's What's New block.
+*
+* @return   array   $whatsnew
+*
+*/
+function PLG_getWhatsNewComment()
+{
+    global $_PLUGINS;
+
+    $whatsnew= array();
+    
+    foreach ($_PLUGINS as $pi_name) {
+        $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
+        if (function_exists($fn_head)) {
+            $supported = $fn_head();
+            if (is_array($supported)) {
+                list($headline, $byline) = $supported;
+
+                $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
+                if (function_exists($fn_new)) {
+                    $whatsnew = array_merge($fn_new (), $whatsnew);
+                }
+            }
+        }
+    }
+
+    $fn_head = 'CUSTOM_whatsnewsupported';
+    if (function_exists($fn_head)) {
+        $supported = $fn_head();
+        if (is_array($supported)) {
+            list($headline, $byline) = $supported;
+
+            $fn_new = 'CUSTOM_getwhatsnewcomment';
+            if (function_exists($fn_new)) {
+                $whatsnew = array_merge($fn_new (), $whatsnew);
+            }
+        }
+    }
+
+    return $whatsnew;    
+    
+}
+
 /**
 * Allows plugins and Core Geeklog Components to filter out spam.
 *
