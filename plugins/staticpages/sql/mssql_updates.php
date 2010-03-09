@@ -123,6 +123,8 @@ function SP_update_ConfValues_1_6_1()
             0, 0, 0, 127, true, 'staticpages');
     $c->add('sort_list_by', $_SP_DEFAULT['sort_list_by'], 'select',
             0, 0, 4, 35, true, 'staticpages');
+    
+    $c->del('hidenewstaticpages','staticpages');
     $c->add('hidenewstaticpages',$_SP_DEFAULT['hide_new_staticpages'],'select', 
         0, 1, 5, 20, TRUE, 'staticpages');
     
