@@ -1958,7 +1958,10 @@ function PLG_getWhatsNewComment()
 
                 $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
                 if (function_exists($fn_new)) {
-                    $whatsnew = array_merge($fn_new (), $whatsnew);
+                    $tempwhatsnew = $fn_new ();
+                    if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
+                        $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                    }
                 }
             }
         }
@@ -1972,7 +1975,10 @@ function PLG_getWhatsNewComment()
 
             $fn_new = 'CUSTOM_getwhatsnewcomment';
             if (function_exists($fn_new)) {
-                $whatsnew = array_merge($fn_new (), $whatsnew);
+                $tempwhatsnew = $fn_new ();
+                if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
+                    $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                }
             }
         }
     }
