@@ -1256,15 +1256,24 @@ function plugin_autouninstall_links ()
 
 /*
 * Build selection list
+*
+* @param    int     $access access permissions (3 = read/edit, 2 = read only)
+* @param    string  $sel    current selection
+* @return   string          HTML for select list
+*
 */
-function links_select_box ($access, $sel = '')
+function links_select_box($access, $sel = '')
 {
     global $_CONF, $LANG_LINKS, $_LI_CONF;
 
     // set root value
-    $menu = '<option value="' . $_LI_CONF['root'] . '">' . $LANG_LINKS['root'] . '</option>';
+    $menu = '<option value="' . $_LI_CONF['root'] . '">' . $LANG_LINKS['root']
+          . '</option>';
+
     // get option values
-    $list = links_select_box_recursive($menu, $_LI_CONF['root'], $sel, '&nbsp;&nbsp;', $access);
+    $list = links_select_box_recursive($menu, $_LI_CONF['root'], $sel,
+                                       '&nbsp;&nbsp;', $access);
+
     // return list of options
     return $list;
 }
