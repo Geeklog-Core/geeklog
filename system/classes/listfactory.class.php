@@ -448,23 +448,32 @@ class ListFactory {
     */
     function ExecuteQueries()
     {
-        // Get the details for sorting the list
-        $this->_sort_arr['field'] = isset($_GET['order']) ? COM_applyFilter($_GET['order']) : $this->_def_sort_arr['field'];
-        if (isset($_GET['direction']))
-            $this->_sort_arr['direction'] = $_GET['direction'] == 'asc' ? 'asc' : 'desc';
-        else
-            $this->_sort_arr['direction'] = $this->_def_sort_arr['direction'];
+        // Set to default sort, we will check the passed param in the next bit
+        $this->_sort_arr['field'] = $this->_def_sort_arr['field'];
 
-        if (is_numeric($this->_sort_arr['field']))
-        {
+        if (isset($_GET['order'])) {
+            // Loop though the order fields and find a match against $_GET param
+            foreach ($this->_fields as $field) {
+                if ($field['sort'] == true && $field['name'] == $_GET['order']) {
+                    $this->_sort_arr['field'] = $field['name']; // Use a trusted value
+                    break;
+                }
+            }
+        }
+
+        if (isset($_GET['direction'])) {
+            $this->_sort_arr['direction'] = $_GET['direction'] == 'asc' ? 'asc' : 'desc';
+        } else {
+            $this->_sort_arr['direction'] = $this->_def_sort_arr['direction'];
+        }
+
+        if (is_numeric($this->_sort_arr['field'])) {
             $ord = $this->_def_sort_arr['field'];
             $this->_sort_arr['field'] = LF_SOURCE_TITLE;
-        }
-        else
-        {
+        } else {
             $ord = $this->_sort_arr['field'];
         }
-        $order_sql = ' ORDER BY "' . addslashes($ord) . '" ' . strtoupper($this->_sort_arr['direction']);
+        $order_sql = ' ORDER BY ' . $ord . ' ' . strtoupper($this->_sort_arr['direction']);
 
         $this->_page = isset($_GET['page']) ? COM_applyFilter($_GET['page'], true) : 1;
         if (isset($_GET['results'])) {
@@ -475,8 +484,9 @@ class ListFactory {
         $this->_total_found = count($this->_preset_rows);
 
         // When the preset rows exceed per_page bail early
-        if ($this->_total_found > $this->_per_page)
+        if ($this->_total_found > $this->_per_page) {
             return array_slice($rows_arr, 0, $this->_per_page);
+        }
 
         // Calculate the limits for each query
         $num_query_results = $this->_per_page - $this->_total_found;

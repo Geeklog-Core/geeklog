@@ -2,16 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4.2                                                 |
+// | Static Pages Plugin 1.6                                                   |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2006 by the following authors:                         |
+// | Copyright (C) 2009-2010 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
-// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
-// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
-// |          Dirk Haun        - dirk AT haun-online DOT de                    |
+// | Authors: Stansislav Palatnik - spalatnikk AT gmail DOT com                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is licensed under the terms of the GNU General Public License|
@@ -28,8 +25,12 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: pgsql_install.php,v 1.1 2010/01/26 18:29:34 dhaun Exp $
+
+/**
+* PostgreSQL install data and tables
+*
+* @package StaticPages
+*/
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['staticpage']} (
@@ -61,7 +62,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   postmode varchar(16) NOT NULL default 'html',
   PRIMARY KEY  (sp_id));
   CREATE INDEX staticpage_sp_uid ON {$_TABLES['staticpage']}(sp_uid);
-  CREATE INDEX staticpage_sp_date ON {$_TABLES['staticpage']}(sp_date);
+  CREATE INDEX staticpage_created ON {$_TABLES['staticpage']}(created);
   CREATE INDEX staticpage_sp_onmenu ON {$_TABLES['staticpage']}(sp_onmenu);
   CREATE INDEX staticpage_sp_centerblock ON {$_TABLES['staticpage']}(sp_centerblock);
   CREATE INDEX staticpage_sp_tid ON {$_TABLES['staticpage']}(sp_tid);

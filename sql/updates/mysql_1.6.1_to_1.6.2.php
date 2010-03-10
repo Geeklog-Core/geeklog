@@ -29,4 +29,22 @@ $_SQL[] = "ALTER TABLE {$_TABLES['groups']} ADD grp_default tinyint(1) unsigned 
 $_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD advanced_editor tinyint(1) unsigned NOT NULL default '1' AFTER dfid";
 $_SQL[] = "UPDATE {$_TABLES['userprefs']} SET advanced_editor = 0 WHERE uid = 1";
 
+/**
+ * Add new config options
+ *
+ */
+function update_ConfValuesFor162()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    // search config options.
+    $c->add('search_def_sort','hits|desc','select',0,6,27,676,TRUE);
+
+    return true;
+}
+
 ?>

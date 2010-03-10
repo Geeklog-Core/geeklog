@@ -74,7 +74,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_anon int  NOT NULL default '2',
   PRIMARY KEY  (pid));
   CREATE INDEX  pollquestions_qid ON {$_TABLES['polltopics']}(pid);
-  CREATE INDEX pollquestions_date ON {$_TABLES['polltopics']}(date);
+  CREATE INDEX pollquestions_created ON {$_TABLES['polltopics']}(created);
   CREATE INDEX pollquestions_display ON {$_TABLES['polltopics']}(display);
   CREATE INDEX pollquestions_commentcode ON {$_TABLES['polltopics']}(commentcode);
   CREATE INDEX pollquestions_statuscode ON {$_TABLES['polltopics']}(statuscode);

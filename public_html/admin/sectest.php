@@ -334,7 +334,7 @@ if (!empty($url)) {
 
     // Note: We're not testing the 'sql' and 'language' directories.
 
-    if (($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') || $_DB_dbms=='pgsql') {
+    if (($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql')) {
         if (makeTempfile($_CONF['backup_path'] . 'test.txt')) {
             $display .= doTest($url, 'backups/test.txt',
                                'backups ' . $LANG_SECTEST['directory']);
@@ -376,12 +376,11 @@ if ($failed_tests > 0) {
     $display .= '<p class="warningsmall"><strong>'
              . $LANG_SECTEST['please_fix'] . '</strong></p>';
 
-    DB_query("UPDATE {$_TABLES['vars']} SET name='security_check', value ='0'");
+    DB_save($_TABLES['vars'], 'name,value', "'security_check','0'");
 } else {
     $display .= '<p>' . $LANG_SECTEST['please_note'] . '</p>';
 
-    DB_query("UPDATE {$_TABLES['vars']} SET name='security_check', value ='1'");
-
+    DB_save($_TABLES['vars'], 'name,value', "'security_check','1'");
 }
 
 $ml = COM_createLink('geeklog-announce',

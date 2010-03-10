@@ -1161,20 +1161,16 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $ret = 4; // Cannot return here, tables locked!
         }
     } else {
-        $rht2=$rht+1;
-        $rht3=$rht+2;
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
         if ( DB_error() ) {
             $rht = 0;
         }
+        $rht2=$rht+1;
+        $rht3=$rht+2;
         if (isset($name)) {
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
         } else {
-            $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
-            if ( DB_error() ) {
-                $rht = 0;
-            }
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }

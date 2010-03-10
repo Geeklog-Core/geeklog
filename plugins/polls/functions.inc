@@ -519,7 +519,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 $access = SEC_hasAccess($P['owner_id'], $P['group_id'],
                                 $P['perm_owner'], $P['perm_group'],
                                 $P['perm_members'], $P['perm_anon']);
-                if ($access == 3) {
+                if (($access == 3) && SEC_hasRights('polls.edit')) {
                     $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
                         . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid);
                     $poll->set_var('edit_link', $editlink);
@@ -817,9 +817,10 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
             $poll->set_var('poll_id', $pid);
             $poll->set_var('num_votes', COM_numberFormat($P['voters']));
             $poll->set_var('lang_votes', $LANG_POLLS['votes']);
-            $access = SEC_hasAccess($P['owner_id'],$P['group_id'],$P['perm_owner'],
-                $P['perm_group'],$P['perm_members'],$P['perm_anon']);
-            if ($access == 3) {
+            $access = SEC_hasAccess($P['owner_id'], $P['group_id'],
+                            $P['perm_owner'], $P['perm_group'],
+                            $P['perm_members'], $P['perm_anon']);
+            if (($access == 3) && SEC_hasRights('polls.edit')) {
                 $editlink = COM_createLink($LANG25[27], $_CONF['site_admin_url']
                     . '/plugins/polls/index.php?mode=edit&amp;pid=' . $pid );
                 $poll->set_var('edit_link', $editlink);

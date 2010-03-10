@@ -163,7 +163,7 @@ function INST_installEngine($install_type, $install_step)
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . htmlspecialchars($site_slogan) . '" size="40"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">'
 
-            . INST_listOfSupportedDBs($gl_path, $db_selected,
+            . INST_listOfSupportedDBs($dbconfig_path, $db_selected,
                     ($install_type == 'install' ? true : false)) .
 
            '</select> ' . '</p>
