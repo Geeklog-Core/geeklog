@@ -100,7 +100,7 @@ $LANG25 = array(
     37 => 'Hide results while poll is open',
     38 => 'While the poll is open, only the owner &amp; root can see the results',
     39 => 'The topic will be only displayed if there are more than 1 questions.',
-    40 => 'See all answers to this poll', 
+    40 => 'See all answers to this poll'
 );
 
 $PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -131,7 +131,7 @@ $LANG_confignames['polls'] = array(
     'default_permissions' => 'Poll Default Permissions',
     'newpollsinterval' => 'New Polls Interval',
     'hidenewpolls' => 'New Polls',
-    'title_trim_length' => 'Title Trim Length',    
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'Enable Meta Tags'
 );
 
@@ -141,7 +141,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
-    'fs_whatsnew' => 'What\'s New Block',    
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Default Permissions'
 );
 
