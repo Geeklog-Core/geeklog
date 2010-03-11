@@ -301,12 +301,17 @@ if (!empty($U['tids'])) {
 $sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
 
 if ($newstories) {
-    
-    $sql['mysql'] .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
-    $sql['pgsql'] .= "AND (date >= (NOW(), INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
-    $sql['pgsql'] .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
-
-
+    switch ($_DB_dbms) {
+    case 'mysql':
+        $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
+        break;
+    case 'pgsql':
+        $sql .= "AND (date >= (NOW() + INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
+        break;
+    case 'mssql':
+        $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
+        break;
+    }
 }
 
 $offset = ($page - 1) * $limit;
