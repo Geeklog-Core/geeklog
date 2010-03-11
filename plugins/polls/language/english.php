@@ -53,8 +53,8 @@ $LANG_POLLS = array(
     'pollclosed'        => 'This poll is closed for voting.', 
     'pollhidden'        => 'You have already voted. This poll results will only be shown when voting is closed.', 
     'start_poll'        => 'Start Poll',
-    'no_new_pages' => 'No new pages',
-    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
+    'no_new_polls'      => 'No new polls',
+    'deny_msg'          => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
 ###############################################################################
