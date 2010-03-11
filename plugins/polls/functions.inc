@@ -1237,7 +1237,7 @@ function plugin_migrate_polls($old_conf)
 */
 function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
     
     // parse $what to see what we need to pull from the database
     $properties = explode(',', $what);
@@ -1257,6 +1257,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
             // needed for $pid == '*', but also in case we're only requesting
             // the URL (so that $fields isn't emtpy)
             $fields[] = 'pid';
+            $fields[] = 'hideresults';
 
             break;
         default:
@@ -1317,9 +1318,12 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                                   . '/polls/index.php?pid=' . $pid
                                   . '&amp;aid=-1';
                 } else {
-                    $props['url'] = $_CONF['site_url']
-                                  . '/polls/index.php?pid=' . $A['pid']
-                                  . '&amp;aid=-1';
+                    // Users who have already voted but cannot see the results cannot view link
+                    if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
+                        $props['url'] = $_CONF['site_url']
+                                      . '/polls/index.php?pid=' . $A['pid'];
+                                      // . '&amp;aid=-1';
+                    }
                 }
                 break;
             default:
@@ -1508,7 +1512,7 @@ function plugin_whatsnewsupported_polls()
 */
 function plugin_getwhatsnew_polls()
 {
-    global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
+    global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS, $_USER;
 
     $retval = '';
     if ($_PO_CONF['hidenewpolls'] == 'modified') {
@@ -1517,13 +1521,13 @@ function plugin_getwhatsnew_polls()
         $datecolumn = 'created';
     }
     $sql = array();
-    $sql['mysql'] = "SELECT pid, topic 
+    $sql['mysql'] = "SELECT pid, topic, hideresults 
         FROM {$_TABLES['polltopics']} 
         WHERE ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_PO_CONF['newpollsinterval']} SECOND))) 
         " . COM_getPermSQL('AND') . " 
         ORDER BY {$datecolumn} DESC LIMIT 15";
         
-    $sql['pgsql'] = "SELECT  pid, topic 
+    $sql['pgsql'] = "SELECT  pid, topic, hideresults 
         FROM {$_TABLES['polltopics']} 
         WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS')) 
         " . COM_getPermSQL('AND') . " 
@@ -1538,27 +1542,32 @@ function plugin_getwhatsnew_polls()
         for ($x = 0; $x < $nrows; $x++) {
             $A = DB_fetchArray($result);
 
-            //$url = COM_buildUrl($_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']);
-            $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid'];
-
-            $title = COM_undoSpecialChars(stripslashes( $A['topic']));
-            $titletouse = COM_truncate($title, $_PO_CONF['title_trim_length'],
-                                       '...');
-            if ($title != $titletouse) {
-                $attr = array('title' => htmlspecialchars($title));
-            } else {
-                $attr = array();
+            // Users who have already voted but cannot see the results cannot view link
+            if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
+                $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid'];
+                $title = COM_undoSpecialChars(stripslashes( $A['topic']));
+                $titletouse = COM_truncate($title, $_PO_CONF['title_trim_length'],
+                                           '...');
+                if ($title != $titletouse) {
+                    $attr = array('title' => htmlspecialchars($title));
+                } else {
+                    $attr = array();
+                }
+                $apoll = str_replace('$', '&#36;', $titletouse);
+                $apoll = str_replace(' ', '&nbsp;', $apoll);
+    
+                $newpolls[] = COM_createLink($apoll, $url, $attr);
             }
-            $apoll = str_replace('$', '&#36;', $titletouse);
-            $apoll = str_replace(' ', '&nbsp;', $apoll);
-
-            $newpolls[] = COM_createLink($apoll, $url, $attr);
         }
-
-        $retval .= COM_makeList($newpolls, 'list-new-plugins');
-    } else {
-        $retval .= $LANG_POLLS['no_new_polls'] . '<br' . XHTML . '>' . LB;
+        
+        if (isset($url)) {
+            $retval .= COM_makeList($newpolls, 'list-new-plugins');
+        }
     }
+    
+    if ($nrows == 0 || !isset($url)) {
+        $retval .= $LANG_POLLS['no_new_polls'] . '<br' . XHTML . '>' . LB;
+    }     
 
     return $retval;
 }
