@@ -97,7 +97,7 @@
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"{xhtml}>
             <textarea id="bodyhtml" style="padding:5px 10px 5px 10px;" name="bodyhtml" cols="45" rows="20">{story_bodytext}</textarea>
         </div>
-        <div id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;">
+        <div id="editor_mode">
             {lang_allowed_html}
         </div>
         <div  id="se_options" style="width:100%; margin-top:10px; border:1px solid #ECE9D8; display:none;">
