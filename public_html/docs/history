@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- Fixed display of list of allowed HTML tags and available autotags in
+  advanced story editor mode (bug #0001020, patch provided by Chetan)
 - Since we can now re-authenticate expired security tokens, we don't need to
   display the token expire notice any longer. Exception: Users who logged in
   through OpenID can't re-authenticate and will still get the message [Dirk]
