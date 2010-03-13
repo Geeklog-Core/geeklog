@@ -1954,7 +1954,7 @@ function COM_featuredCheck()
     $curdate = date( "Y-m-d H:i:s", time() );
 
     // Loop through each topic
-    $sql = "SELECT tid FROM {$_TABLES['topics']}";
+    $sql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL();
     $result = DB_query( $sql );
     $num = DB_numRows( $result );
     for( $i = 0; $i < $num; $i++)
