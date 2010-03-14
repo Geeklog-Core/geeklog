@@ -462,8 +462,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     $retval = '';
     $userChanged = false;
 
-    if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
-    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . count($groups),1);
+    if ($_USER_VERBOSE) {
+        COM_errorLog("**** entering saveusers****", 1);
+        COM_errorLog("group size at beginning = " . count($groups), 1);
+    }
 
     if ($passwd != $passwd_conf) { // passwords don't match
         return edituser($uid, 67);
@@ -695,7 +697,9 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         exit;
     }
 
-    if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);
+    if ($_USER_VERBOSE) {
+        COM_errorLog("***************leaving saveusers*****************", 1);
+    }
 
     return $retval;
 }
@@ -1251,6 +1255,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete user $uid and failed CSRF checks.");
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
     }
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken()) { // save
     $delphoto = '';
@@ -1263,29 +1268,39 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
     if (!isset ($_POST['userstatus'])) {
         $_POST['userstatus'] = USER_ACCOUNT_ACTIVE;
     }
-    $display = saveusers (COM_applyFilter ($_POST['uid'], true),
-            $_POST['username'], $_POST['fullname'],
-            $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
-            $_POST['regdate'], $_POST['homepage'], $_POST['groups'],
-            $delphoto, $_POST['userstatus'], $_POST['oldstatus']);
-    if (!empty($display)) {
-        $tmp = COM_siteHeader('menu', $LANG28[22]);
-        $tmp .= $display;
-        $tmp .= COM_siteFooter();
-        $display = $tmp;
+    $uid = COM_applyFilter($_POST['uid'], true);
+    if ($uid == 1) {
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    } else {
+        $display = saveusers($uid, $_POST['username'], $_POST['fullname'],
+                    $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
+                    $_POST['regdate'], $_POST['homepage'], $_POST['groups'],
+                    $delphoto, $_POST['userstatus'], $_POST['oldstatus']);
+        if (!empty($display)) {
+            $tmp = COM_siteHeader('menu', $LANG28[22]);
+            $tmp .= $display;
+            $tmp .= COM_siteFooter();
+            $display = $tmp;
+        }
     }
 } elseif ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
     $msg = '';
-    if (isset ($_GET['msg'])) {
-        $msg = COM_applyFilter ($_GET['msg'], true);
+    if (isset($_GET['msg'])) {
+        $msg = COM_applyFilter($_GET['msg'], true);
     }
     $uid = '';
-    if (isset ($_GET['uid'])) {
-        $uid = COM_applyFilter ($_GET['uid'], true);
+    if (isset($_GET['uid'])) {
+        $uid = COM_applyFilter($_GET['uid'], true);
     }
-    $display .= edituser ($uid, $msg);
-    $display .= COM_siteFooter();
+    if ($uid == 1) {
+        echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    } else {
+        $display .= edituser($uid, $msg);
+        $display .= COM_siteFooter();
+    }
 } elseif (($mode == 'import') && SEC_checkToken()) {
     $display .= importusers();
 } elseif ($mode == 'importform') {
