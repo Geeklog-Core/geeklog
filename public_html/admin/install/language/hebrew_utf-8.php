@@ -45,9 +45,9 @@ $LANG_DIRECTION = 'rtl';
 // install.php
 
 $LANG_INSTALL = array(
-    0 => 'Geeklog - The Ultimate Weblog System',
+    0 => 'Geeklog - The secure CMS.',
     1 => 'תמיכת התקנה',
-    2 => 'The Ultimate Weblog System',
+    2 => 'The secure Content Management System.',
     3 => 'התקנת Geeklog',
     4 => 'דרוש PHP %s',
     5 => 'מצטערים, אבל Geeklog דורש לפחות PHP %s בשביל לרוץ (לכם יש גירסה ',
