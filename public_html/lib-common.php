@@ -2625,16 +2625,17 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $link_array[$LANG01[13]] = $menu_item;
         }
 
-        if( SEC_hasRights( 'user.edit' ))
-        {
+        if (SEC_hasRights('user.edit')) {
             $url = $_CONF['site_admin_url'] . '/user.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[17] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['users'] ) -1 ));
+            $adminmenu->set_var('option_url', $url);
+            $adminmenu->set_var('option_label', $LANG01[17]);
+            $active_users = DB_count($_TABLES['users'], 'status',
+                                     USER_ACCOUNT_ACTIVE);
+            $adminmenu->set_var('option_count',
+                    COM_numberFormat($active_users - 1));
 
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
+            $menu_item = $adminmenu->parse('item',
+                    $thisUrl == $url ? 'current' : 'option');
             $link_array[$LANG01[17]] = $menu_item;
         }
 

@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- The "Users" entry in the Admins block now displays the number of active users
+  only, i.e. it only counts users that logged in at least once [Dirk]
 - Fixed display of list of allowed HTML tags and available autotags in
   advanced story editor mode (bug #0001020, patch provided by Chetan)
 - Since we can now re-authenticate expired security tokens, we don't need to
