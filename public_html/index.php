@@ -306,7 +306,7 @@ if ($newstories) {
         $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
         break;
     case 'pgsql':
-        $sql .= "AND (date >= (NOW() + INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
+        $sql .= "AND (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
         break;
     case 'mssql':
         $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
