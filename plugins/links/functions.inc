@@ -904,6 +904,7 @@ function plugin_submit_links()
     $linkform->set_var('link_category_options', links_select_box(2, $category));
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
+    PLG_templateSetVars('links', $linkform);
     $linkform->set_var('lang_submit', $LANG12[8]);
     $linkform->set_var('max_url_length', 255);
     $linkform->parse('theform', 'linkform');

@@ -1954,7 +1954,7 @@ function COM_featuredCheck()
     $curdate = date( "Y-m-d H:i:s", time() );
 
     // Loop through each topic
-    $sql = "SELECT tid FROM {$_TABLES['topics']}";
+    $sql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL();
     $result = DB_query( $sql );
     $num = DB_numRows( $result );
     for( $i = 0; $i < $num; $i++)
@@ -2625,16 +2625,17 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $link_array[$LANG01[13]] = $menu_item;
         }
 
-        if( SEC_hasRights( 'user.edit' ))
-        {
+        if (SEC_hasRights('user.edit')) {
             $url = $_CONF['site_admin_url'] . '/user.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[17] );
-            $adminmenu->set_var( 'option_count',
-                    COM_numberFormat( DB_count( $_TABLES['users'] ) -1 ));
+            $adminmenu->set_var('option_url', $url);
+            $adminmenu->set_var('option_label', $LANG01[17]);
+            $active_users = DB_count($_TABLES['users'], 'status',
+                                     USER_ACCOUNT_ACTIVE);
+            $adminmenu->set_var('option_count',
+                    COM_numberFormat($active_users - 1));
 
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
+            $menu_item = $adminmenu->parse('item',
+                    $thisUrl == $url ? 'current' : 'option');
             $link_array[$LANG01[17]] = $menu_item;
         }
 
@@ -4225,7 +4226,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         // Find the newest stories
         $sql['mssql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $archsql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
         $sql['mysql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $archsql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
-        $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW()+ INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $archsql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );        
+        $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $archsql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );        
         $result = DB_query( $sql );
         $A = DB_fetchArray( $result );
         $nrows = $A['count'];

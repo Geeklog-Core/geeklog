@@ -49,9 +49,9 @@ $LANG_CHARSET = 'ISO-8859-2';
 // install.php
 
 $LANG_INSTALL = array(
-    0 => 'Geeklog - The Ultimate Weblog System',
+    0 => 'Geeklog - The secure CMS.',
     1 => 'Instalacja Pomoc',
-    2 => 'The Ultimate Weblog System',
+    2 => 'The secure Content Management System.',
     3 => 'Geeklog - Instalacja',
     4 => 'Wymagane PHP %s',
     5 => 'Sorry, ale Geeklog wymaga do uruchomienia co najmniej PHP %s (wersja zainstalowana to ',

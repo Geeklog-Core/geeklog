@@ -87,7 +87,7 @@ function INST_installEngine($install_type, $install_step)
                     $db_selected = 'mssql';
                     break;
                 case 'pgsql':
-                    $pgsql_selected = 'pgsql';
+                    $db_selected = 'pgsql';
                     break;
                 default:
                     $db_selected = 'mysql';
@@ -99,7 +99,7 @@ function INST_installEngine($install_type, $install_step)
                     $db_selected = 'mssql';
                     break;
                 case 'pgsql':
-                    $pgsql_selected = 'pgsql';
+                    $db_selected = 'pgsql';
                     break;
                 default:
                     $db_selected = 'mysql';
