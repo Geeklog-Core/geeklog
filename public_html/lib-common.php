@@ -4274,32 +4274,8 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
                                         $_CONF['newcommentsinterval'] )
                 . '</small></h3>';
 
-        $stwhere = '';
-
-        if( !COM_isAnonUser() )
-        {
-            $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
-            $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
-            $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL)";
-        }
-        else
-        {
-            $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
-        }
-        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";          
-        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
-        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
-
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        $new_plugin_comments= array();
-        if ($nrows > 0) {
-            for ($x = 0; $x < $nrows; $x++) {
-                $new_plugin_comments[] = DB_fetchArray($result); 
-            }
-        }
-
-        $new_plugin_comments = array_merge(PLG_getWhatsNewComment(), $new_plugin_comments);
+        $new_plugin_comments = array();
+        $new_plugin_comments = PLG_getWhatsNewComment();
         
         if( !empty($new_plugin_comments) ) {
             // Sort array by element lastdate newest to oldest
@@ -4317,16 +4293,12 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
             foreach ($new_plugin_comments as $A) {
                 $count .= +1;
                 $url = '';
-                if(( $A['type'] == 'article' ) || empty( $A['type'] )) {
-                    $url = COM_buildUrl( $_CONF['site_url']
-                        . '/article.php?story=' . $A['sid'] ) . '#comments';
-                } else {
-                    $info = PLG_getItemInfo($A['type'], $A['sid'], 'url');
-                    if (!(empty($info))) {
-                        //$url = COM_createLink($info[0], $info[1]); //, array('title' => $excerpt));
-                        $url = $info . '#comments';
-                    }
+
+                $info = PLG_getItemInfo($A['type'], $A['sid'], 'url');
+                if (!(empty($info))) {
+                    $url = $info . '#comments';
                 }
+                
                 // Check to see if url (plugin may not support PLG_getItemInfo
                 if (!(empty($url))) {
                     $title = COM_undoSpecialChars( stripslashes( $A['title'] ));
