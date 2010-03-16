@@ -735,6 +735,50 @@ function STORY_doDeleteThisStoryNow($sid)
  * aren't a plugin (and likely never will be), implementing some of the API
  * functions here will save us from doing special handling elsewhere.
  */
+ 
+/**
+* Return new Story comments for the What's New block
+*
+* @param    string  $numreturn  If 0 will return results for What's New Block. 
+*                               If > 0 will return last X new comments for User Profile.
+* @param    string  $uid        ID of the user to return results for. 0 = all users.
+* @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
+*
+*/
+function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
+{
+    global $_CONF, $_TABLES;
+
+    $stwhere = '';
+    if( !COM_isAnonUser() ) {
+        $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
+        $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+        $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL)";
+    } else {
+        $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
+    }
+    
+    if ($uid > 0) {
+        $stwhere .= " AND ({$_TABLES['comments']}.uid = $uid)";
+    }
+    if ($numreturn == 0 ) {
+        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";          
+        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
+        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
+    } else {
+        $sql['mysql'] = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ((({$stwhere}))) ORDER BY unixdate DESC LIMIT $numreturn";
+        
+    }
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($x = 0; $x < $nrows; $x++) {
+            $A[] = DB_fetchArray($result);    
+        }
+        
+        return $A;
+    }
+}
 
 /**
 * Return information for a story
