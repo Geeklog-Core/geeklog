@@ -1575,18 +1575,28 @@ function plugin_getwhatsnew_polls()
 /**
 * Return new Polls comments for the What's New block
 *
-* @return   array list of new poll comments (dups, type, title, sid, lastdate)
+* @param    string  $numreturn  If 0 will return results for What's New Block. 
+*                               If > 0 will return last X new comments for User Profile.
+* @param    string  $uid        ID of the user to return results for. 0 = all users.
+* @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
 *
 */
-function plugin_getwhatsnewcomment_polls()
+function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
-    // Comments
-    $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-        . " WHERE (pt.pid = sid)" . COM_getPermSQL('AND', 0, 2, 'pt')
-        . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
-  
+    if ($uid > 0) {
+        $stwhere = " AND ({$_TABLES['comments']}.uid = $uid)";
+    }    
+    if ($numreturn == 0 ) {
+        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+        . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+    } else {
+        $sql['mysql'] = "SELECT {$_TABLES['comments']}.sid, pt.topic title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
+    }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
