@@ -1031,42 +1031,25 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     }
 
     // list of last 10 comments by this user
-    $sidArray = array();
-    if (count($tids) > 0) {
-        // first, get a list of all stories the current visitor has access to
-        $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL('AND');
-        $result = DB_query($sql);
-        $numsids = DB_numRows($result);
-        for ($i = 1; $i <= $numsids; $i++) {
-            $S = DB_fetchArray($result);
-            $sidArray[] = $S['sid'];
-        }
-    }
-    $sidList = implode("', '",$sidArray);
-    $sidList = "'$sidList'";
-
-    // then, find all comments by the user in those stories
-    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $uid) GROUP BY sid,title,cid,UNIX_TIMESTAMP(date)";
-
-    /**
-    * SQL NOTE:  Using a HAVING clause is usually faster than a where if the
-    * field is part of the select
-    * if (!empty ($sidList)) {
-    *     $sql .= " AND (sid in ($sidList))";
-    * }
-    */
-    if (! empty($sidList)) {
-        $sql .= " HAVING sid in ($sidList)";
-    }
-    $sql .= " ORDER BY unixdate DESC LIMIT 10";
-
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $C = DB_fetchArray($result);
-            $user_templates->set_var('cssid', ($i % 2) + 1);
-            $user_templates->set_var('row_number', ($i + 1) . '.');
+    $new_plugin_comments = array();
+    $new_plugin_comments = PLG_getWhatsNewComment('', 10, $uid);
+    
+    if( !empty($new_plugin_comments) ) {
+        // Sort array by element lastdate newest to oldest
+        foreach($new_plugin_comments as $k=>$v) {		
+            $b[$k] = strtolower($v['unixdate']);	
+        }	
+        arsort($b);	
+        foreach($b as $key=>$val) {		
+            $temp[] = $new_plugin_comments[$key];	
+        }	   
+        $new_plugin_comments = $temp;   
+           
+        $i = 0;
+        foreach ($new_plugin_comments as $C) {
+            $i = $i + 1;
+            $user_templates->set_var('cssid', ($i % 2));
+            $user_templates->set_var('row_number', ($i) . '.');
             $C['title'] = str_replace('$', '&#36;', $C['title']);
             $comment_url = $_CONF['site_url']
                          . '/comment.php?mode=view&amp;cid=' . $C['cid'];
@@ -1079,6 +1062,10 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('comment_date', $commenttime[0]);
             $user_templates->parse('comment_row', 'row', true);
+            
+            if ($count == 10) {
+                break;   
+            }
         }
     } else {
         $user_templates->set_var('comment_row',
@@ -1093,9 +1080,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('number_stories', COM_numberFormat($N['count']));
     $user_templates->set_var('lang_number_comments', $LANG04[85]);
     $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $uid)";
-    if (! empty($sidList)) {
-        $sql .= " AND (sid in ($sidList))";
-    }
     $result = DB_query($sql);
     $N = DB_fetchArray($result);
     $user_templates->set_var('number_comments', COM_numberFormat($N['count']));

@@ -1938,35 +1938,58 @@ function PLG_getWhatsNew()
 
 
 /**
-* Ask plugins if they want to add new comments to Geeklog's What's New block.
+* Ask plugins if they want to add new comments to Geeklog's What's New block or 
+* User Profile Page.
 *
-* @return   array   $whatsnew
+
+* @param    string  $type       Plugin name. '' for all plugins.
+* @param    string  $numreturn  If 0 will return results for What's New Block. 
+*                               If > 0 will return last X new comments for User Profile.
+* @param    string  $uid        ID of the user to return results for. 0 = all users.
+* @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
 *
 */
-function PLG_getWhatsNewComment()
+function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
-    $whatsnew= array();
+    $whatsnew = array();
+    $plugintypes = array();
+
+    // Get Story new comment info first
+    if (($type == 'article') || ($type == 'story') || ($type == '')) {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $whatsnew  = plugin_getwhatsnewcomment_story($numreturn, $uid);
+        
+        if ($type == '') {
+            $plugintypes = $_PLUGINS;
+        }
+    } else {
+        $plugintypes[] = $type;
+    }
+   
+     if (!($type == 'article') || ($type == 'story')) {
+        // Now check new comments for plugins
+        foreach ($plugintypes as $pi_name) {
+            $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
+            if (function_exists($fn_head)) {
+                $supported = $fn_head();
+                if (is_array($supported)) {
+                    list($headline, $byline) = $supported;
     
-    foreach ($_PLUGINS as $pi_name) {
-        $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
-        if (function_exists($fn_head)) {
-            $supported = $fn_head();
-            if (is_array($supported)) {
-                list($headline, $byline) = $supported;
-
-                $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
-                if (function_exists($fn_new)) {
-                    $tempwhatsnew = $fn_new ();
-                    if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
-                        $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                    $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
+                    if (function_exists($fn_new)) {
+                        $tempwhatsnew = $fn_new ($numreturn, $uid);
+                        if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
+                            $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                        }
                     }
                 }
             }
         }
     }
 
+    // Now check new comments for custom changes
     $fn_head = 'CUSTOM_whatsnewsupported';
     if (function_exists($fn_head)) {
         $supported = $fn_head();
@@ -1975,7 +1998,7 @@ function PLG_getWhatsNewComment()
 
             $fn_new = 'CUSTOM_getwhatsnewcomment';
             if (function_exists($fn_new)) {
-                $tempwhatsnew = $fn_new ();
+                $tempwhatsnew = $fn_new ($numreturn, $uid);
                 if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
                     $whatsnew = array_merge($tempwhatsnew, $whatsnew);
                 }
