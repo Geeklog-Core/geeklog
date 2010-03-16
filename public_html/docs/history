@@ -80,6 +80,8 @@ Apr ??, 2010 (1.6.2)
 
 Calendar Plugin
 ---------------
+- Added support for a CAPTCHA in the submission form (bug #0001091, patch
+  provided by tuxcanfly)
 - Fixed an old bug in the event submission form: The text of the "Submit" button
   must match the text $LANG12[8] to be recognized. Changed the form to always
   use that string instead of the one from Calendar plugin's language file
@@ -87,6 +89,10 @@ Calendar Plugin
 
 Links Plugin
 ------------
+- Allow autotags in the Links and Link Category description (feature request
+  #0001079, patch provided by Akeda Bagus)
+- Added support for a CAPTCHA in the submission form (bug #0001091, patch
+  provided by tuxcanfly)
 - Added a link to "New category" from the Links editor [Dirk]
 - Fixed localization of "Root" category (bug #0001047) [Dirk]
 

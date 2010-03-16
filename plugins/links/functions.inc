@@ -522,7 +522,7 @@ function plugin_getfeedcontent_links ($feed, &$link, &$update)
         $lids[] = $row['lid'];
 
         $linktitle = stripslashes( $row['title'] );
-        $linkdesc = stripslashes( $row['description'] );
+        $linkdesc = PLG_replaceTags( stripslashes($row['description']) );
 
         $linklink = COM_buildUrl( $_CONF['site_url']
                   . '/links/portal.php?what=link&amp;item=' . $row['lid'] );
@@ -1024,7 +1024,7 @@ function LINKS_sendNotification ($table, $A)
     global $_CONF, $_TABLES, $LANG_LINKS, $LANG_LINKS_SUBMIT, $LANG08;
 
     $title = stripslashes ($A['title']);
-    $description = stripslashes ($A['description']);
+    $description = PLG_replaceTags( stripslashes($A['description']) );
 
     $mailbody = "$LANG_LINKS_SUBMIT[8]: $title\n"
               . "$LANG_LINKS_SUBMIT[9]: <{$A['url']}>\n"
@@ -1520,7 +1520,7 @@ function plugin_getiteminfo_links($lid, $what, $uid = 0, $options = array())
                 break;
             case 'description':
             case 'excerpt':
-                $props[$p] = stripslashes($A['description']);
+                $props[$p] = PLG_replaceTags( stripslashes($A['description']) );
                 break;
             case 'id':
                 $props['id'] = $A['lid'];

@@ -202,7 +202,7 @@ function links_list($message)
 
                 $linklist->set_var ('category_name', $C['category']);
                 if ($_LI_CONF['show_category_descriptions']) {
-                    $linklist->set_var ('category_description', $C['description']);
+                    $linklist->set_var ('category_description', PLG_replaceTags( $C['description'] ));
                 } else {
                     $linklist->set_var ('category_description', '');
                 }
@@ -363,7 +363,7 @@ function prepare_link_item($A, &$template)
     $template->set_var('link_name_encoded', urlencode($title));
     $template->set_var('link_hits', COM_numberFormat($A['hits']));
     $template->set_var('link_description',
-                       nl2br(stripslashes($A['description'])));
+                       PLG_replaceTags( nl2br(stripslashes($A['description'])) ));
 
     $attr = array('title' => $actualUrl);
     if (substr($actualUrl, 0, strlen($_CONF['site_url'])) != $_CONF['site_url']) {
