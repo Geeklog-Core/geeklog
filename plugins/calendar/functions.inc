@@ -818,6 +818,7 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
     $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
+    PLG_templateSetVars('calendar', $eventform);
     $eventform->set_var('lang_submit', $LANG12[8]);
     $eventform->set_var('mode', $mode);
     if ($mode == 'personal') {

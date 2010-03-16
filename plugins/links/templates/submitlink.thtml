@@ -23,6 +23,7 @@
                                     <tr>
                                         <td align="center" colspan="2">{lang_htmlnotallowed}</td>
                                     </tr>
+                                    {captcha}
                                     <tr>
                                         <td align="center" colspan="2">
                                             <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
