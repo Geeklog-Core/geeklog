@@ -1968,7 +1968,7 @@ function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
         $plugintypes[] = $type;
     }
    
-     if (!($type == 'article') || ($type == 'story')) {
+     if (!(($type == 'article') || ($type == 'story'))) {
         // Now check new comments for plugins
         foreach ($plugintypes as $pi_name) {
             $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
@@ -1981,7 +1981,11 @@ function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
                     if (function_exists($fn_new)) {
                         $tempwhatsnew = $fn_new ($numreturn, $uid);
                         if(!empty($tempwhatsnew) && is_array($tempwhatsnew)) {
-                            $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                            if (!empty($whatsnew)) {
+                                $whatsnew = array_merge($tempwhatsnew, $whatsnew);
+                            } else {
+                                $whatsnew = $tempwhatsnew;
+                            }
                         }
                     }
                 }
