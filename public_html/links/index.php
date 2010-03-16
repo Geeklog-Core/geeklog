@@ -112,13 +112,22 @@ function links_list($message)
         }
     }
     
-    // Check has access to this category
+    // Check has access and existent to this category
     if ($cid != $_LI_CONF['root']) {
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='{$cat}'");
         $A = DB_fetchArray($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
             $display .= COM_siteHeader ('menu', $page_title);
             $display .= COM_showMessage (5, 'links');
+            $display .= COM_siteFooter ();
+            COM_output($display);
+            exit;
+        }
+        
+        // check existent
+        if ( !isset($A['owner_id']) ) {
+            $display .= COM_siteHeader ('menu', $page_title);
+            $display .= COM_showMessage (16, 'links');
             $display .= COM_siteFooter ();
             COM_output($display);
             exit;
