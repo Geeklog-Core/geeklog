@@ -1527,6 +1527,8 @@ function plugin_getwhatsnew_polls()
         " . COM_getPermSQL('AND') . " 
         ORDER BY {$datecolumn} DESC LIMIT 15";
         
+    $sql['mssql'] = $sql['mysql'];
+    
     $sql['pgsql'] = "SELECT  pid, topic, hideresults 
         FROM {$_TABLES['polltopics']} 
         WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS')) 
@@ -1590,10 +1592,16 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
     }    
     if ($numreturn == 0 ) {
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-        . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
-            . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
+        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
-        $sql['mysql'] = "SELECT {$_TABLES['comments']}.sid, pt.topic title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+        $sql = "SELECT {$_TABLES['comments']}.sid, pt.topic title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
             . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }
