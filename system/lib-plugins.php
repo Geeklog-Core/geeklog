@@ -1485,7 +1485,9 @@ function PLG_collectTags()
 
     // Determine which Core Modules and Plugins support AutoLinks
     //                        'tag'   => 'module'
-    $autolinkModules = array('story' => 'geeklog');
+    $autolinkModules = array(
+        'story' => 'geeklog', 'user' => 'geeklog'
+    );
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
@@ -1601,6 +1603,22 @@ function PLG_replaceTags($content, $plugin = '')
                              . '/article.php?story=' . $autotag['parm1']);
                         if (empty($linktext)) {
                             $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
+                        }
+                    }
+                }
+
+                if ($autotag['tag'] == 'user') {
+                    $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
+                    if (! empty($autotag['parm1'])) {
+                        $uname = addslashes($autotag['parm1']);
+                        $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '$uname'";
+                        $result = DB_query($sql);
+                        if (DB_numRows($result) == 1) {
+                            $A = DB_fetchArray($result);
+                            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+                            if (empty($linktext)) {
+                                $linktext = COM_getDisplayName($A['uid'], $autotag['parm1'], $A['fullname']);
+                            }
                         }
                     }
                 }
