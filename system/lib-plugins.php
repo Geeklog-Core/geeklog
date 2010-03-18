@@ -1606,16 +1606,19 @@ function PLG_replaceTags($content, $plugin = '')
                         }
                     }
                 }
-                
+
                 if ($autotag['tag'] == 'user') {
-                    $autotag['parm1'] = addslashes($autotag['parm1']);
+                    $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
                     if (! empty($autotag['parm1'])) {
-                        $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '{$autotag['parm1']}'";
-                        $result = DB_query( $sql );
-                        $A = DB_fetchArray( $result );
-                        $url = $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'];
-                        if (empty($linktext)) {
-                            $linktext = COM_getDisplayName( $A['uid'], $autotag['parm1'], $A['fullname'] );
+                        $uname = addslashes($autotag['parm1']);
+                        $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '$uname'";
+                        $result = DB_query($sql);
+                        if (DB_numRows($result) == 1) {
+                            $A = DB_fetchArray($result);
+                            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+                            if (empty($linktext)) {
+                                $linktext = COM_getDisplayName($A['uid'], $autotag['parm1'], $A['fullname']);
+                            }
                         }
                     }
                 }
