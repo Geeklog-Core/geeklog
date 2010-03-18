@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.6.2)
 ------------
 
+- Introduced a [user:] autotag that links to a user's profile (feature request
+  #0001081, patch provided by Akeda Bagus)
 - The "Users" entry in the Admins block now displays the number of active users
   only, i.e. it only counts users that logged in at least once [Dirk]
 - Fixed display of list of allowed HTML tags and available autotags in
@@ -89,6 +91,9 @@ Calendar Plugin
 
 Links Plugin
 ------------
+- A link to an invalid Link Category could lead to an endless loop for users
+  with Link Admins permissions (bug #0001090; reported and patch provided by
+  Akeda Bagus)
 - Allow autotags in the Links and Link Category description (feature request
   #0001079, patch provided by Akeda Bagus)
 - Added support for a CAPTCHA in the submission form (bug #0001091, patch
