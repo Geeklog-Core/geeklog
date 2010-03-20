@@ -268,7 +268,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             $storytitle = stripslashes( $row['title'] );
             $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
             $fulltext = PLG_replaceTags( $fulltext );
-            $storytext = SYND_truncateSummary( $fulltext, $contentLength );
+            $storytext = COM_truncateHTML ( $fulltext, $contentLength, ' ...' );
 
             $fulltext = trim( $fulltext );
             $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
@@ -402,7 +402,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 
         $fulltext = stripslashes( $row['introtext']."\n".$row['bodytext'] );
         $fulltext = PLG_replaceTags( $fulltext );
-        $storytext = SYND_truncateSummary( $fulltext, $contentLength );
+        $storytext = COM_truncateHTML ( $fulltext, $contentLength, ' ...' );
         $fulltext = trim( $fulltext );
         $fulltext = str_replace(array("\015\012", "\015"), "\012", $fulltext);
 
@@ -505,8 +505,9 @@ function SYND_updateFeed( $fid )
                 if ($A['content_length'] != 1) {
                     $count = count($content);
                     for ($i = 0; $i < $count; $i++ ) {
-                        $content[$i]['summary'] = SYND_truncateSummary(
-                                    $content[$i]['text'], $A['content_length']);
+                        $content[$i]['summary'] = COM_truncateHTML(
+                                    $content[$i]['text'], $A['content_length'], ' ...');
+      
                     }
                 }
             }
@@ -621,28 +622,12 @@ function SYND_updateFeed( $fid )
 * @param    int     $length     max. length
 * @return   string              truncated text
 *
+* Note: Use COM_truncateHTML from now on.
+*
 */
 function SYND_truncateSummary($text, $length)
 {
-    if ($length == 0) {
-        return '';
-    } else {
-        $text = stripslashes($text);
-        $text = trim($text);
-        $text = str_replace(array("\015\012", "\015"), "\012", $text);
-        if (($length > 3) && (MBYTE_strlen($text) > $length)) {
-            $text = MBYTE_substr($text, 0, $length - 3) . '...';
-        }
-
-        // Check if we broke an html tag and storytext is now something
-        // like "blah blah <a href= ...". Delete "<*" if so.
-        if (MBYTE_strrpos($text, '<' ) > MBYTE_strrpos($text, '>')) {
-            $text = MBYTE_substr($text, 0, MBYTE_strrpos($text, '<'))
-                  . ' ...';
-        }
-
-        return $text;
-    }
+    return COM_truncateHTML ($text, $length, ' ...');
 }
 
 
