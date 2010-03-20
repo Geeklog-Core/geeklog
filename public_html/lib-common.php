@@ -6602,9 +6602,10 @@ function COM_getLanguageName()
 * This function is multi-byte string aware. This function is based on a 
 * code snippet by pitje at Snipplr.com.
 *
-* NOTE: The truncated string may be shorter but will never be longer than
-*       $maxlen characters, i.e. the $filler string is taken into account.
-*       Characters from HTML tags are also taken into account. 
+* NOTE: The truncated string may be shorter or longer than $maxlen characters.
+* Currently any initial html tags in the truncated string are taken into account.
+* The $filler string is also taken into account but any html tags that are added 
+* by this function to close open html tags are not. 
 *
 * @param    string  $htmltext   the text string which contains HTML tags to truncate
 * @param    int     $maxlen     max. number of characters in the truncated string
