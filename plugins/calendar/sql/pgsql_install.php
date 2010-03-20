@@ -82,6 +82,7 @@ CREATE TABLE {$_TABLES['eventsubmission']} (
   event_type varchar(40) NOT NULL default '',
   timestart time default NULL,
   timeend time default NULL,
+  owner_id int NOT NULL default '1',
   PRIMARY KEY  (eid)
 )
 ";
