@@ -1063,7 +1063,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $user_templates->set_var('comment_date', $commenttime[0]);
             $user_templates->parse('comment_row', 'row', true);
             
-            if ($count == 10) {
+            if ($i == 10) {
                 break;   
             }
         }
