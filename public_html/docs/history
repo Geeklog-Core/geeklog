@@ -2,7 +2,10 @@ Geeklog History/Changes:
 
 Apr ??, 2010 (1.6.2)
 ------------
-
+- New Plugin API PLG_getWhatsNewComment for adding comments from plugins to the 
+  Whats New Block and the User Profile page (feature request #0000835) [Tom]
+- Truncated stories in Feeds now will have any open html tags closed. 
+  (bug #0000749) [Tom]  
 - Introduced a [user:] autotag that links to a user's profile (feature request
   #0001081, patch provided by Akeda Bagus)
 - The "Users" entry in the Admins block now displays the number of active users
@@ -103,6 +106,9 @@ Links Plugin
 
 Polls Plugin
 ------------
+- Added What's New Block Support for Polls and Poll comments 
+  (feature request #0000835) [Tom]
+- Poll Topics now have a created and a modified date (bug #0000761) [Tom]
 - Fixed display of the edit icon in the Poll block - didn't check for polls.edit
   permissions (but wouldn't let you edit the poll) [Dirk]
 - Fixed wrong "access denied" message when attempting to view comments on a poll
@@ -113,12 +119,18 @@ Polls Plugin
 
 Spam-X Plugin
 -------------
+- A new right called spamx.skip allows SPAM-X to skip filtering of submitted 
+  content from certain user groups (bug #0001018) [Tom] 
 - Make sure the Notification Email config option can be disabled [Dirk]
 - List $_CONF['site_url'] as a non-editable entry in the SLV whitelist to
   indicate that the site's URL is whitelisted automatically [Dirk]
 
 Static Pages Plugin 1.6.2
 -------------------
+- Added What's New Block Support for Static Page comments
+  (feature request #0000835) [Tom]
+- Added modified date column. What's New Block Support for Static Page now 
+  allows you to use created or modified date [Tom]
 - Added clickjacking protection for the printer-friendly version [Dirk]
 - Fixed SQL compatibility with MS SQL (bug #0001050)
 - Added a draft flag (feature request #0000884) [Dirk]
