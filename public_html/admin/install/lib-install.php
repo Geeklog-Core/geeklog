@@ -440,9 +440,13 @@ function INST_checkTableExists($table)
  */
 function INST_dbConnect($db)
 {
+    /**
+    * temp. "fix", see http://project.geeklog.net/tracking/view.php?id=923
+    *
     if (empty($db['pass'])) {
         return false;
     }
+    */
     $db_handle = false;
     switch ($db['type']) {
     case 'mysql-innodb':

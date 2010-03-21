@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 Apr ??, 2010 (1.6.2)
 ------------
+
+- Allow empty database passwords again for now (cf. bug #0000923)
 - New Plugin API PLG_getWhatsNewComment for adding comments from plugins to the 
   Whats New Block and the User Profile page (feature request #0000835) [Tom]
 - Truncated stories in Feeds now will have any open html tags closed. 
