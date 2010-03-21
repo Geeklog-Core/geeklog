@@ -419,8 +419,51 @@ class DataBase
                 $key = array_search($row[0][0],$fields_array);
                 if($key!==FALSE) //$fields contains the primary key already
                 {
-                 $sql = "DELETE FROM $table WHERE {$row[0][0]}='{$values_array[$key]}'";
-                 $result = $this->dbQuery($sql);
+                	$validKey=false;
+                	$sql = "DELETE FROM $table WHERE ";
+                	if(strlen($values_array[$key])>0 && $values_array[$key]!='UNIX_TIMESTAMP()')
+                	{
+              	    	$sql.="{$row[0][0]}={$values_array[$key]} AND ";
+              	    	$validKey = true;
+                	}
+	                $fieldno = count($fields_array);
+	                if($fieldno>1)
+	                {
+	                	for($i=0;$i<$fieldno;$i++)
+	                	{
+	                		if($fields_array[$i]!=$fields_array[$key] && strlen($values_array[$i])>0 && $values_array[$i] !='-')
+	                		{
+	                			if($values_array[$i]== "'0000-00-00 00:00:00'" || $values_array[$i]=="'-'" 
+	                				|| $fields_array[$i]=='maxstories' || $fields_array[$i]=='commentorder'
+	                				|| $values_array[$i]=='NOW()' || $values_array[$i]=='UNIX_TIMESTAMP()'
+	                				|| strlen($values_array[$i])==0) //annoying things
+	                				$n = 'NULL';
+	                			else if($values_array[$i][0]=="'")
+	                			{
+	                				$sql.=$fields_array[$i]." = ".$values_array[$i];
+	                				if($i!=$fieldno-1)
+	                					$sql.=' AND ';
+	                			}
+	                				
+	                			else if($values_array[$i][0]==" " && $values_array[$i][1]=="'") //check for whitespace in first char
+	                			{
+	                				$sql.=$fields_array[$i]." = ".substr($values_array[$i],1);
+	                				if($i!=$fieldno-1)
+	                					$sql.=' AND ';
+	                			}
+	                			else
+	                			{
+	                				$sql.=$fields_array[$i]." = '".$values_array[$i]."'";
+	                				if($i!=$fieldno-1)
+	                					$sql.=' AND ';
+	                			}
+	                		}
+	                	}
+	                }
+	                if($fieldno>0 && $validKey)
+	               		$result = $this->dbQuery($sql);
+	                
+	                $sql="INSERT INTO $table($fields) VALUES($values)";
                 }
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
                 {
@@ -430,16 +473,20 @@ class DataBase
                         $key = array_search($row[$x][0],$fields_array);
                         if($key!==FALSE)
                         {
+                        	if(!empty($where_clause))
+                        		$where_clause.=' AND ';
+                        		
                             $values_array[$key] = str_replace('\'','',$values_array[$key]);
-                            $values_array[$key] = str_replace('"','',$values_array[$key]);
-                            if($x==$counter-1){$where_clause .="{$row[$x][0]} ='{$values_array[$key]}'"; }
-                            else{$where_clause .="{$row[$x][0]} ='{$values_array[$key]}' AND ";}
+                            $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
                     }
-                    $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
+                    echo $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
-                    if($row2[0]!=0){$sql = "DELETE FROM $table WHERE $where_clause'";}
+                    if($row2[0]!=0){
+                    $sql = "DELETE FROM $table WHERE $where_clause";
+                    $result = $this->dbQuery($sql);
+                    }
                     
                     $sql="INSERT INTO $table ($fields) VALUES ($values)";  
                 }
@@ -450,7 +497,7 @@ class DataBase
             }
             else //no keys to worry about
             {
-                $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+               $sql="INSERT INTO $table ($fields) VALUES ($values)";  
             }
         }
 
@@ -489,9 +536,15 @@ class DataBase
                 $sql .= ' WHERE ';
                 for ($i = 1; $i <= $num_ids; $i++) {
                     if ($i == $num_ids) {
-                        $sql .= current($id) . " = '" . current($value) . "'";
+                    	if($value[0]=="'")
+                    		$sql .= current($id) . " = " . current($value);
+                    	else
+                      	    $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
-                        $sql .= current($id) . " = '" . current($value) . "' AND ";
+                    	if($value[0]=="'")
+                    		$sql .= current($id) . " = " . current($value) . " AND ";
+                    	else
+                        	$sql .= current($id) . " = '" . current($value) . "' AND ";
                     }
                     next($id);
                     next($value);
@@ -507,7 +560,6 @@ class DataBase
                 $sql .= " WHERE $id = '$value'";
             }
         }
-
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
