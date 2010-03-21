@@ -440,13 +440,6 @@ function INST_checkTableExists($table)
  */
 function INST_dbConnect($db)
 {
-    /**
-    * temp. "fix", see http://project.geeklog.net/tracking/view.php?id=923
-    *
-    if (empty($db['pass'])) {
-        return false;
-    }
-    */
     $db_handle = false;
     switch ($db['type']) {
     case 'mysql-innodb':
@@ -1276,5 +1269,20 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
 
     return $retval;
 }
-
+/**
+* Check for blank database password in production environment
+*
+* @param   array   $db Database    information
+* @param   string  $site_url       The site's URL
+* @return  boolean                 True if password is set or it is a local server
+*
+*/
+function INST_dbPasswordCheck($site_url, $db)
+{
+    if (!empty($db['pass']) || (isset($site_url)  && (strpos($site_url, '127.0.0.1') !== false)  || (strpos($site_url, 'localhost') !== false))) {
+        return true;
+    } else {
+        return false;
+    }
+}
 ?>
