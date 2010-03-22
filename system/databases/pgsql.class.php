@@ -399,7 +399,8 @@ class DataBase
         {
             unset($row); unset($result);
             $fields_array = explode(',',$fields);
-            $values_array = explode(',',$values);
+            
+            $values_array = DBINT_parseCsvSqlString($values);
             $row = array();              
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
                     WHERE pg_class.oid = \''.$table.'\'::regclass AND 
@@ -416,55 +417,57 @@ class DataBase
             $counter=count($row);
             if(!empty($row[0]))
             {
-                $key = array_search($row[0][0],$fields_array);
-                if($key!==FALSE) //$fields contains the primary key already
-                {
-                	$validKey=false;
-                	$sql = "DELETE FROM $table WHERE ";
-                	if(strlen($values_array[$key])>0 && $values_array[$key]!='UNIX_TIMESTAMP()')
-                	{
-              	    	$sql.="{$row[0][0]}={$values_array[$key]} AND ";
-              	    	$validKey = true;
-                	}
-	                $fieldno = count($fields_array);
-	                if($fieldno>1)
+          		$key = array_search($row[0][0],$fields_array);
+          		if($key!==FALSE)
+          		{
+          			$sql = "DELETE FROM $table WHERE ";
+	                $uniqno = count($row);
+	                for($i=0;$i<$uniqno;$i++)
 	                {
-	                	for($i=0;$i<$fieldno;$i++)
-	                	{
-	                		if($fields_array[$i]!=$fields_array[$key] && strlen($values_array[$i])>0 && $values_array[$i] !='-')
-	                		{
-	                			if($values_array[$i]== "'0000-00-00 00:00:00'" || $values_array[$i]=="'-'" 
-	                				|| $fields_array[$i]=='maxstories' || $fields_array[$i]=='commentorder'
-	                				|| $values_array[$i]=='NOW()' || $values_array[$i]=='UNIX_TIMESTAMP()'
-	                				|| strlen($values_array[$i])==0) //annoying things
-	                				$n = 'NULL';
-	                			else if($values_array[$i][0]=="'")
-	                			{
-	                				$sql.=$fields_array[$i]." = ".$values_array[$i];
-	                				if($i!=$fieldno-1)
-	                					$sql.=' AND ';
-	                			}
-	                				
-	                			else if($values_array[$i][0]==" " && $values_array[$i][1]=="'") //check for whitespace in first char
-	                			{
-	                				$sql.=$fields_array[$i]." = ".substr($values_array[$i],1);
-	                				if($i!=$fieldno-1)
-	                					$sql.=' AND ';
-	                			}
-	                			else
-	                			{
-	                				$sql.=$fields_array[$i]." = '".$values_array[$i]."'";
-	                				if($i!=$fieldno-1)
-	                					$sql.=' AND ';
-	                			}
-	                		}
-	                	}
+	                	$key = array_search($row[$i][0],$fields_array);
+		                if($key!==FALSE) //$fields contains the primary key already
+		                {
+		                	$validKey=false;
+		                	if($values_array[$key]!='UNIX_TIMESTAMP()')
+		                	{
+		                		if($values_array[$key][0]=="'")
+		                		{
+		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$row[$i][0]}={$values_array[$key]}";
+		                		}
+		              	    	else 
+		              	    	{
+		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$row[$i][0]}='{$values_array[$key]}'";
+		              	    	}
+		                	}
+		                }
 	                }
-	                if($fieldno>0 && $validKey)
-	               		$result = $this->dbQuery($sql);
-	                
-	                $sql="INSERT INTO $table($fields) VALUES($values)";
-                }
+	                if($uniqno<2)
+	                {
+	                	if($values_array[$key+1]!='UNIX_TIMESTAMP()')
+		                	{
+		                		if($values_array[$key+1][0]=="'")
+		                		{
+		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$fields_array[$key+1]}={$values_array[$key+1]}";
+		                		}
+		              	    	else 
+		              	    	{
+		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$fields_array[$key+1]}='{$values_array[$key+1]}'";
+		              	    	}
+		                	}
+	                	
+	                }
+	                $this->dbQuery($sql);
+	                $sql="INSERT INTO $table ($fields) VALUES ($values)";
+	                //$this->dbQuery($sql);
+          		}
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
                 {
                     $where_clause='';
@@ -480,7 +483,6 @@ class DataBase
                             $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
                     }
-                    echo $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
                     if($row2[0]!=0){

@@ -449,8 +449,8 @@ CREATE TABLE {$_TABLES['userindex']} (
   uid smallint NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
   etids text,
-  aids varchar(255) NOT NULL default '',
-  boxes varchar(255) NOT NULL default '',
+  aids varchar(255) NOT NULL default '0',
+  boxes varchar(255) NOT NULL default '0',
   noboxes smallint NOT NULL default '0',
   maxstories smallint default NULL,
   PRIMARY KEY  (uid)
@@ -719,8 +719,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_descrip
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100) ";
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','-','','',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','-','0','0',0,0) ";
+$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','0','0',0,0) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (1,NULL,NULL,'',0,0,0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0) ";
