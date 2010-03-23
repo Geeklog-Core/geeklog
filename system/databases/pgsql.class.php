@@ -398,8 +398,7 @@ class DataBase
         else
         {
             unset($row); unset($result);
-            $fields_array = explode(',',$fields);
-            
+            $fields_array = explode(',',$fields);      
             $values_array = DBINT_parseCsvSqlString($values);
             $row = array();              
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
@@ -417,6 +416,7 @@ class DataBase
             $counter=count($row);
             if(!empty($row[0]))
             {
+            	print_r($row);
           		$key = array_search($row[0][0],$fields_array);
           		if($key!==FALSE)
           		{
@@ -428,7 +428,7 @@ class DataBase
 		                if($key!==FALSE) //$fields contains the primary key already
 		                {
 		                	$validKey=false;
-		                	if($values_array[$key]!='UNIX_TIMESTAMP()')
+		                	if(isset($values_array[$key][0]) && $values_array[$key]!='UNIX_TIMESTAMP()')
 		                	{
 		                		if($values_array[$key][0]=="'")
 		                		{
@@ -447,7 +447,7 @@ class DataBase
 	                }
 	                if($uniqno<2)
 	                {
-	                	if($values_array[$key+1]!='UNIX_TIMESTAMP()')
+	                	if(isset($values_array[$key+1][0]) && $values_array[$key+1]!='UNIX_TIMESTAMP()')
 		                	{
 		                		if($values_array[$key+1][0]=="'")
 		                		{
@@ -462,11 +462,9 @@ class DataBase
 		              	    		$sql.="{$fields_array[$key+1]}='{$values_array[$key+1]}'";
 		              	    	}
 		                	}
-	                	
 	                }
 	                $this->dbQuery($sql);
 	                $sql="INSERT INTO $table ($fields) VALUES ($values)";
-	                //$this->dbQuery($sql);
           		}
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
                 {
@@ -474,8 +472,7 @@ class DataBase
                     for($x=1;$x<$counter;$x++)
                     {
                         $key = array_search($row[$x][0],$fields_array);
-                        if($key!==FALSE)
-                        {
+                        if($key!==FALSE) {
                         	if(!empty($where_clause))
                         		$where_clause.=' AND ';
                         		
@@ -483,6 +480,7 @@ class DataBase
                             $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
                     }
+                    echo $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
                     if($row2[0]!=0){
@@ -502,14 +500,12 @@ class DataBase
                $sql="INSERT INTO $table ($fields) VALUES ($values)";  
             }
         }
-
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbSave ***");
         }
-    }
-    
+    }  
         /**
     * Deletes data from the database
     *
