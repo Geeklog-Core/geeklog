@@ -479,7 +479,7 @@ function plugin_getfeednames_links()
 
     $feeds = array ();
 
-    $result = DB_query ("SELECT cid,category FROM {$_TABLES['linkcategories']} GROUP BY category ORDER BY category ASC");
+    $result = DB_query ("SELECT cid,category FROM {$_TABLES['linkcategories']} GROUP BY cid,category ORDER BY category ASC");
     $num = DB_numRows ($result);
 
     if ($num > 0) {
