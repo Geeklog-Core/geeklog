@@ -400,6 +400,7 @@ class DataBase
             unset($row); unset($result);
             $fields_array = explode(',',$fields);      
             $values_array = DBINT_parseCsvSqlString($values);
+            $values = str_replace('0000-00-00 00:00:00','NOW()',$values);
             $row = array();              
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
                     WHERE pg_class.oid = \''.$table.'\'::regclass AND 
@@ -428,7 +429,8 @@ class DataBase
 		                if($key!==FALSE) //$fields contains the primary key already
 		                {
 		                	$validKey=false;
-		                	if(isset($values_array[$key][0]) && $values_array[$key]!='UNIX_TIMESTAMP()')
+		                	if(isset($values_array[$key][0]) && $values_array[$key]!='UNIX_TIMESTAMP()'
+		                	&& $values_array[$key]!='0000-00-00 00:00:00')
 		                	{
 		                		if($values_array[$key][0]=="'")
 		                		{
@@ -447,7 +449,8 @@ class DataBase
 	                }
 	                if($uniqno<2)
 	                {
-	                	if(isset($values_array[$key+1][0]) && $values_array[$key+1]!='UNIX_TIMESTAMP()')
+	                	if(isset($values_array[$key+1][0]) && $values_array[$key+1]!='UNIX_TIMESTAMP()'
+	                	&& $values_array[$key+1]!='0000-00-00 00:00:00')
 		                	{
 		                		if($values_array[$key+1][0]=="'")
 		                		{
