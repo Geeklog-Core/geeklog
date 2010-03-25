@@ -16,6 +16,10 @@
               <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
           </tr>
           <tr>
+              <td align="right">{lang_title}:</td>
+              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
+          </tr> 
+          <tr>
               <td align="right">{lang_addtomenu}:</td>
               <td>
                   <input type="checkbox" name="sp_onmenu" {onmenu_checked}{xhtml}>&nbsp;&nbsp;{lang_label}:

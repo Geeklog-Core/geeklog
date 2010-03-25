@@ -237,6 +237,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
     $sp_id = $args['sp_id'];
     $sp_title = $args['sp_title'];
+    $sp_page_title = $args['sp_page_title'];
     $sp_content = $args['sp_content'];
     $sp_hits = $args['sp_hits'];
     $sp_format = $args['sp_format'];
@@ -350,6 +351,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $sp_content = COM_checkHTML($sp_content, 'staticpages.edit');
         }
         $sp_title = strip_tags ($sp_title);
+        $sp_page_title = strip_tags ($sp_page_title);
         $sp_label = strip_tags ($sp_label);
 
         $meta_description = strip_tags ($meta_description);
@@ -357,6 +359,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
         $sp_content = addslashes ($sp_content);
         $sp_title = addslashes ($sp_title);
+        $sp_page_title = addslashes ($sp_page_title);
         $sp_label = addslashes ($sp_label);
         $meta_description = addslashes ($meta_description);
         $meta_keywords = addslashes ($meta_keywords);        
@@ -401,9 +404,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $datecreated = date('Y-m-d H:i:s');
         }
         
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id','$sp_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
@@ -565,7 +568,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             $perms = ' AND ' . $perms;
         }
         $sql = array();
-        $sql['mysql'] = "SELECT sp_title,sp_content,sp_hits,created,modified,sp_format,"
+        $sql['mysql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
@@ -655,6 +658,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             $output['updated']      = date('c', strtotime($output['modified']));
             $output['id']           = $page;
             $output['title']        = $output['sp_title'];
+            $output['page_title']   = $output['sp_page_title'];
             $output['category']     = array($output['sp_tid']);
             $output['content']      = $output['sp_content'];
             $output['content_type'] = 'html';
@@ -687,7 +691,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY modified DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
@@ -712,6 +716,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $output_item['updated']      = date('c', strtotime($output_item['modified']));
                 $output_item['id']           = $output_item['sp_id'];
                 $output_item['title']        = $output_item['sp_title'];
+                $output_item['page_title']   = $output_item['sp_page_title'];
                 $output_item['category']     = array($output_item['sp_tid']);
                 $output_item['content']      = $output_item['sp_content'];
                 $output_item['content_type'] = 'html';

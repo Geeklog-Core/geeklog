@@ -346,11 +346,17 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('sp_date', $curtime[1]);
 
     $sp_template->set_var('lang_title', $LANG_STATIC['title']);
+    $sp_template->set_var('lang_page_title', $LANG_STATIC['page_title']);
     $title = '';
+    $page_title = '';
     if (isset($A['sp_title'])) {
         $title = htmlspecialchars(stripslashes($A['sp_title']));
     }
+    if (isset($A['sp_page_title'])) {
+        $page_title = htmlspecialchars(stripslashes($A['sp_page_title']));
+    }
     $sp_template->set_var('sp_title', $title);
+    $sp_template->set_var('sp_page_title', $page_title);
     $sp_template->set_var('lang_metadescription',
                           $LANG_ADMIN['meta_description']);
     $sp_template->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
@@ -608,6 +614,9 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         if (isset($A['sp_title'])) {
             $A['sp_title'] = strip_tags($A['sp_title']);
         }
+        if (isset($A['sp_page_title'])) {
+            $A['sp_page_title'] = strip_tags($A['sp_page_title']);
+        }
         if (isset($A['meta_description'])) {
             $A['meta_description'] = strip_tags($A['meta_description']);
         }
@@ -633,6 +642,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 *
 * @param string sp_id            ID of static page
 * @param string sp_title         title of page
+* @param string sp_page_title    page title of the staticpage
 * @param string sp_content       page content
 * @param int    sp_hits          Number of page views
 * @param string sp_format        HTML or plain text
@@ -658,7 +668,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param string draft_flag       Flag: save as draft
 *
 */
-function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
+function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hits,
                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
                           $owner_id, $group_id, $perm_owner, $perm_group,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
@@ -671,6 +681,7 @@ function submitstaticpage($sp_id, $sp_title, $sp_content, $sp_hits,
     $args = array(
                 'sp_id' => $sp_id,
                 'sp_title' => $sp_title,
+                'sp_page_title' => $sp_page_title,
                 'sp_content' => $sp_content,
                 'sp_hits' => $sp_hits,
                 'sp_format' => $sp_format,
@@ -773,7 +784,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['draft_flag'])) {
             $_POST['draft_flag'] = '';
         }
-        $display .= submitstaticpage($sp_id, $_POST['sp_title'],
+        $display .= submitstaticpage($sp_id, $_POST['sp_title'], $_POST['sp_page_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
             COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
             $_POST['sp_label'], COM_applyFilter($_POST['commentcode'], true),

@@ -293,12 +293,16 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $meta_keywords = $A['meta_keywords'];
         $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
     }
+    $page_title = $A['sp_page_title'];
+    if(empty($page_title)) {
+        $page_title = $A['sp_title'];
+    }
 
     if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-        $retval .= COM_siteHeader('menu', $A['sp_title'], $headercode);
+        $retval .= COM_siteHeader('menu', $page_title, $headercode);
     } else {
         if ($A['sp_format'] <> 'blankpage') {
-            $retval .= COM_siteHeader('none', $A['sp_title'], $headercode);
+            $retval .= COM_siteHeader('none', $page_title, $headercode);
         }
     }
     if ($msg > 0) {
@@ -1635,6 +1639,9 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
         case 'title':
             $fields[] = 'sp_title';
             break;
+        case 'page_title':
+            $fields[] = 'sp_page_title';
+            break; 
         case 'url':
             // needed for $sp_id == '*', but also in case we're only requesting
             // the URL (so that $fields isn't emtpy)
@@ -1693,6 +1700,9 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 break;
             case 'title':
                 $props['title'] = stripslashes($A['sp_title']);
+                break;
+            case 'page_title':
+                $props['page_title'] = stripslashes($A['sp_page_title']);
                 break;
             case 'url':
                 if (empty($A['sp_id'])) {
