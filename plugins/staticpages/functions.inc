@@ -786,7 +786,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
     $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
-    $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sid','AND','s') . ") ";
+    $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sp_id','AND','s') . ") ";
     $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
 
     if (!empty($author)) {

@@ -131,6 +131,8 @@ Spam-X Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Fixed SQL error in the search when multi-language support was enabled (bug
+  #0001099) [Dirk]
 - Added What's New Block Support for Static Page comments
   (feature request #0000835) [Tom]
 - Added modified date column. What's New Block Support for Static Page now 
