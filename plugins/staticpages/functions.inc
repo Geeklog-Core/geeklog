@@ -1570,6 +1570,8 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
+    $stwhere = '';
+    
     if ($uid > 0) {
         $stwhere = " AND ({$_TABLES['comments']}.uid = $uid)";
     }    
