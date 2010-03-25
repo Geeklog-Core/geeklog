@@ -2824,6 +2824,8 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 */
 function COM_refresh($url)
 {
+    header('Content-Type: text/html; charset=' . COM_getCharset());
+
     return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
 }
 

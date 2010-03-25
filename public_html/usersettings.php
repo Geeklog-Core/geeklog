@@ -542,13 +542,13 @@ function editpreferences()
     $preferences->set_var('timezone_selector', $selection);
     $preferences->set_var('lang_timezone', $LANG04[158]);
 
-    if ($A['noicons'] == '1') {
+    if (isset ($A['noicons']) && $A['noicons'] == '1') {
         $preferences->set_var ('noicons_checked', 'checked="checked"');
     } else {
         $preferences->set_var ('noicons_checked', '');
     }
 
-    if ($A['noboxes'] == 1) {
+    if (isset ($A['noboxes']) && $A['noboxes'] == '1') {
         $preferences->set_var ('noboxes_checked', 'checked="checked"');
     } else {
         $preferences->set_var ('noboxes_checked', '');

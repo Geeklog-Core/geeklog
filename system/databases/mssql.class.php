@@ -1081,91 +1081,26 @@ class database {
        return $string;
        
     }
-  
-    
-    
-    
-    
-    
-    //since nothing can do this properly, i had to write it myself.
-    //trick is that a string csv may have a comma within a delimited csv field which explode
-    //cant handle
-    function parse_csv_sql_string($csv){
-        $len=strlen($csv);
-        $mode=0;        //mode=0 for non string, mode=1 for string
-        $retArray=array();
-        $thisValue='';
-        for($x=0;$x<$len;$x++){
-            //loop thru the string
-            if($csv[$x]=="'"){
-                if($x!=0){
-                    if($csv[$x-1]!="\\"){
-                        //this means that the preceeding char is not escape.. thus this is either the end of a mode 1 or the beginning of a mode 1
-                        if($mode==1){
-                            $mode=0;
-                            //this means that we are done this string value
-                            //dont add this character to the string
-                            }
-                        else{
-                            $mode=1;
-                            //dont add this character to the string....
-                            }
-                        }
-                    else{//this is a character to add.....
-                        $thisValue=$thisValue . $csv[$x];
-                        }
-                    }
-                else{//x==0
-                    $mode=1;
-                    }
-            }//end if csv
-            elseif($csv[$x]==","){
-                if($mode==1){
-                    //this means that the comma falls INSIDE of a string. its a keeper
-                    $thisValue=$thisValue . $csv[$x];
-                    }
-                else{//this is the dilineation between fields.. pop this value
-                    array_push($retArray, $thisValue);
-                    $thisValue='';
-                    $mode=0;
-                    }
-                }//end elseif
-                
-            else{
-                //just add it!
-                $thisValue=$thisValue . $csv[$x];
-                }//end else
-        }//end for
-        array_push($retArray, $thisValue);
-        return $retArray;
-    }//end function  
-    
-    
-    
-    //thanks to php.net for this
-function array_push_associative(&$arr) {
-  $ret = 0;
-  $args = func_get_args();
-  foreach ($args as $arg) {
-      if (is_array($arg)) {
-          foreach ($arg as $key => $value) {
-              @$arr[$key] = $value;
-              $ret++;
-          }
-      }else{
-          @$arr[$arg] = "";
-      }
-  }
-  return $ret;
-} 
- 
 
 
+    // thanks to php.net for this
+    function array_push_associative(&$arr)
+    {
+        $ret = 0;
+        $args = func_get_args();
+        foreach ($args as $arg) {
+            if (is_array($arg)) {
+                foreach ($arg as $key => $value) {
+                    @$arr[$key] = $value;
+                    $ret++;
+                }
+            } else {
+                @$arr[$arg] = "";
+            }
+        }
 
-
-
-
-
+        return $ret;
+    }
 
 
     /**

@@ -222,7 +222,11 @@ function INST_installEngine($install_type, $install_step)
             $display .= '<h2>' . $LANG_INSTALL[104] . '</h2><p>'
                      . $LANG_INSTALL[105] . '</p>'
                      . INST_showReturnFormData($_POST) . LB;
-
+        // Check for blank password in production environment
+        } else if (!INST_dbPasswordCheck($site_url, $DB)) {
+            $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'
+                     . $LANG_INSTALL[107] . '</p>'
+                     . INST_showReturnFormData($_POST) . LB;
         // Check if we can connect to the database
         } else if (!INST_dbConnect($DB)) { 
             $display .= '<h2>' . $LANG_INSTALL[54] . '</h2><p>'

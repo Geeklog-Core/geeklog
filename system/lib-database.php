@@ -576,4 +576,74 @@ function DB_checkTableExists($table)
     return $exists;
 }
 
+/**
+* Parse a CSV-like SQL string, as used by DB_save
+*
+* This function will help parse the CVS-like strings that are used by DB_save.
+* Those are specific to MySQL and have to be handled separately by other DBs.
+*
+* Since nothing can do this properly, I had to write it myself.
+* Trick is that a string csv may have a comma within a delimited csv field
+* which explode can't handle.
+*
+* @param    string  $csv    The string to parse
+* @return   array           parsed string contents
+* @author   Randy Kolenko
+* @see      DB_save
+* @internal to be used by the DB drivers only
+*
+*/
+function DBINT_parseCsvSqlString($csv)
+{
+    $len = strlen($csv);
+    $mode = 0;  // mode=0 for non string, mode=1 for string
+    $retArray = array();
+    $thisValue = '';
+    for ($x = 0; $x < $len; $x++) {
+        // loop thru the string
+        if ($csv[$x] == "'") {
+            if ($x != 0) {
+                if ($csv[$x-1] != "\\") {
+                    /**
+                    * this means that the preceeding char is not escape..
+                    * thus this is either the end of a mode 1 or the beginning
+                    * of a mode 1
+                    */
+                    if ($mode == 1) {
+                        $mode = 0;
+                        // this means that we are done this string value
+                        // don't add this character to the string
+                    } else {
+                        $mode = 1;
+                        // don't add this character to the string....
+                    }
+                } else {
+                    //this is a character to add.....
+                    $thisValue = $thisValue . $csv[$x];
+                }
+            } else {
+                // x==0
+                $mode = 1;
+            }
+        } elseif ($csv[$x] == ",") {
+            if ($mode == 1) {
+                // this means that the comma falls INSIDE of a string.
+                // its a keeper
+                $thisValue = $thisValue . $csv[$x];
+            } else {
+                // this is the dilineation between fields.. pop this value
+                array_push($retArray, $thisValue);
+                $thisValue = '';
+                $mode = 0;
+            }
+        } else {
+            // just add it!
+            $thisValue = $thisValue . $csv[$x];
+        }
+    }
+    array_push($retArray, $thisValue);
+
+    return $retArray;
+}
+
 ?>

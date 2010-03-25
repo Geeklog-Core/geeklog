@@ -398,8 +398,9 @@ class DataBase
         else
         {
             unset($row); unset($result);
-            $fields_array = explode(',',$fields);
-            $values_array = explode(',',$values);
+            $fields_array = explode(',',$fields);      
+            $values_array = DBINT_parseCsvSqlString($values);
+            $values = str_replace('0000-00-00 00:00:00','NOW()',$values);
             $row = array();              
             $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
                     WHERE pg_class.oid = \''.$table.'\'::regclass AND 
@@ -416,30 +417,79 @@ class DataBase
             $counter=count($row);
             if(!empty($row[0]))
             {
-                $key = array_search($row[0][0],$fields_array);
-                if($key!==FALSE) //$fields contains the primary key already
-                {
-                 $sql = "DELETE FROM $table WHERE {$row[0][0]}='{$values_array[$key]}'";
-                 $result = $this->dbQuery($sql);
-                }
+            	print_r($row);
+          		$key = array_search($row[0][0],$fields_array);
+          		if($key!==FALSE)
+          		{
+          			$sql = "DELETE FROM $table WHERE ";
+	                $uniqno = count($row);
+	                for($i=0;$i<$uniqno;$i++)
+	                {
+	                	$key = array_search($row[$i][0],$fields_array);
+		                if($key!==FALSE) //$fields contains the primary key already
+		                {
+		                	$validKey=false;
+		                	if(isset($values_array[$key][0]) && $values_array[$key]!='UNIX_TIMESTAMP()'
+		                	&& $values_array[$key]!='0000-00-00 00:00:00')
+		                	{
+		                		if($values_array[$key][0]=="'")
+		                		{
+		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$row[$i][0]}={$values_array[$key]}";
+		                		}
+		              	    	else 
+		              	    	{
+		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$row[$i][0]}='{$values_array[$key]}'";
+		              	    	}
+		                	}
+		                }
+	                }
+	                if($uniqno<2)
+	                {
+	                	if(isset($values_array[$key+1][0]) && $values_array[$key+1]!='UNIX_TIMESTAMP()'
+	                	&& $values_array[$key+1]!='0000-00-00 00:00:00')
+		                	{
+		                		if($values_array[$key+1][0]=="'")
+		                		{
+		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$fields_array[$key+1]}={$values_array[$key+1]}";
+		                		}
+		              	    	else 
+		              	    	{
+		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
+		                				$sql.=' AND ';
+		              	    		$sql.="{$fields_array[$key+1]}='{$values_array[$key+1]}'";
+		              	    	}
+		                	}
+	                }
+	                $this->dbQuery($sql);
+	                $sql="INSERT INTO $table ($fields) VALUES ($values)";
+          		}
                 elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
                 {
                     $where_clause='';
                     for($x=1;$x<$counter;$x++)
                     {
                         $key = array_search($row[$x][0],$fields_array);
-                        if($key!==FALSE)
-                        {
+                        if($key!==FALSE) {
+                        	if(!empty($where_clause))
+                        		$where_clause.=' AND ';
+                        		
                             $values_array[$key] = str_replace('\'','',$values_array[$key]);
-                            $values_array[$key] = str_replace('"','',$values_array[$key]);
-                            if($x==$counter-1){$where_clause .="{$row[$x][0]} ='{$values_array[$key]}'"; }
-                            else{$where_clause .="{$row[$x][0]} ='{$values_array[$key]}' AND ";}
+                            $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
                     }
-                    $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
+                    echo $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
-                    if($row2[0]!=0){$sql = "DELETE FROM $table WHERE $where_clause'";}
+                    if($row2[0]!=0){
+                    $sql = "DELETE FROM $table WHERE $where_clause";
+                    $result = $this->dbQuery($sql);
+                    }
                     
                     $sql="INSERT INTO $table ($fields) VALUES ($values)";  
                 }
@@ -450,17 +500,15 @@ class DataBase
             }
             else //no keys to worry about
             {
-                $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+               $sql="INSERT INTO $table ($fields) VALUES ($values)";  
             }
         }
-
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbSave ***");
         }
-    }
-    
+    }  
         /**
     * Deletes data from the database
     *
@@ -489,9 +537,15 @@ class DataBase
                 $sql .= ' WHERE ';
                 for ($i = 1; $i <= $num_ids; $i++) {
                     if ($i == $num_ids) {
-                        $sql .= current($id) . " = '" . current($value) . "'";
+                    	if($value[0]=="'")
+                    		$sql .= current($id) . " = " . current($value);
+                    	else
+                      	    $sql .= current($id) . " = '" . current($value) . "'";
                     } else {
-                        $sql .= current($id) . " = '" . current($value) . "' AND ";
+                    	if($value[0]=="'")
+                    		$sql .= current($id) . " = " . current($value) . " AND ";
+                    	else
+                        	$sql .= current($id) . " = '" . current($value) . "' AND ";
                     }
                     next($id);
                     next($value);
@@ -507,7 +561,6 @@ class DataBase
                 $sql .= " WHERE $id = '$value'";
             }
         }
-
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {

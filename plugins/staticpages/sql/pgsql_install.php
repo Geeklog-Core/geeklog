@@ -46,6 +46,8 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_label varchar(64) default NULL,
   draft_flag int default '0',
   commentcode int NOT NULL default '0',
+  meta_description TEXT NULL,
+  meta_keywords TEXT NULL,
   owner_id int NOT NULL default '1',
   group_id int NOT NULL default '1',
   perm_owner int NOT NULL default '3',
