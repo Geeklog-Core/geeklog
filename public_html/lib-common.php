@@ -3017,10 +3017,11 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     }
     while( $start_pos !== false );
 
-    if( isset( $_CONF['skip_html_filter_for_root'] ) &&
+    $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
+    
+    if ($has_skiphtmlfilterPermissions || (isset( $_CONF['skip_html_filter_for_root'] ) &&
              ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
-            SEC_inGroup( 'Root' ))
-    {
+            SEC_inGroup( 'Root' ))) {
         return $str;
     }
 
@@ -3871,10 +3872,11 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false)
     global $_CONF, $LANG01;
 
     $retval = '';
+    $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
 
-    if (isset($_CONF['skip_html_filter_for_root']) &&
+    if ($has_skiphtmlfilterPermissions || (isset($_CONF['skip_html_filter_for_root']) &&
              ($_CONF['skip_html_filter_for_root'] == 1) &&
-            SEC_inGroup('Root')) {
+            SEC_inGroup('Root'))) {
 
         if (!$list_only) {
             $retval .= '<span class="warningsmall">' . $LANG01[123]

@@ -29,6 +29,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['groups']} ADD grp_default tinyint(1) unsigned 
 $_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD advanced_editor tinyint(1) unsigned NOT NULL default '1' AFTER dfid";
 $_SQL[] = "UPDATE {$_TABLES['userprefs']} SET advanced_editor = 0 WHERE uid = 1";
 
+// Insert Group right to allow skipping of the HTML filter
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('htmlfilter.skip', 'Skip filtering posts for HTML', 1)";
+
 /**
  * Add new config options
  *

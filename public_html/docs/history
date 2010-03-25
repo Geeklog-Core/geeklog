@@ -2,6 +2,8 @@ Geeklog History/Changes:
 
 Apr ??, 2010 (1.6.2)
 ------------
+- A new right called htmlfilter.skip allows user groups to skip any html   
+  filtering on posts (feature request #0000952) [Tom]
 - New Plugin API PLG_getWhatsNewComment for adding comments from plugins to the 
   Whats New Block and the User Profile page (feature request #0000835) [Tom]
 - Truncated stories in Feeds now will have any open html tags closed. 
