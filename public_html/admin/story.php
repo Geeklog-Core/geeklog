@@ -548,6 +548,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG_ADMIN['title']);
     $story_templates->set_var('story_title', $story->EditElements('title'));
+    $story_templates->set_var('lang_page_title', $LANG_ADMIN['page_title']);
+    $story_templates->set_var('page_title' , $story->EditElements('page_title'));
     $story_templates->set_var('lang_metadescription', $LANG_ADMIN['meta_description']);
     $story_templates->set_var('meta_description', $story->EditElements('meta_description'));
     $story_templates->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
@@ -764,6 +766,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 * @param    int         $uid            ID of user that wrote the story
 * @param    string      $tid            Topic ID story belongs to
 * @param    string      $title          Title of story
+* @param    string      $page_title     Title of the page
 * @param    string      $introtext      Introduction text
 * @param    string      $bodytext       Text of body
 * @param    int         $hits           Number of times story has been viewed

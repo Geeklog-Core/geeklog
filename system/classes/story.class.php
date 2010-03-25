@@ -107,6 +107,7 @@ class Story
      */
     var $_sid;
     var $_title;
+    var $_page_title;
     var $_meta_description;
     var $_meta_keywords;    
     var $_introtext;
@@ -180,6 +181,7 @@ class Story
            'tid' => 1,
            'date' => 1,
            'title' => 1,
+           'page_title' => 1, 
            'meta_description' => 1,
            'meta_keywords' => 1,           
            'introtext' => 1,
@@ -227,6 +229,11 @@ class Story
               (
                 STORY_AL_ALPHANUM,
                 '_tid'
+              ),
+           'page_title' => array
+              (
+                STORY_AL_ANYTHING,
+                '_page_title'
               ),
            'meta_description' => array
               (
@@ -1531,6 +1538,11 @@ class Story
             $return = $this->_title; //htmlspecialchars($this->_title);
 
             break;
+
+        case 'page_title':
+            $return = $this->_page_title;
+
+            break;
             
         case 'meta_description':
             $return = $this->_meta_description;
@@ -1624,6 +1636,11 @@ class Story
 
         case 'title':
             $return = $this->_displayEscape($this->_title);
+
+            break;
+
+        case 'page_title':
+            $return = $this->_displayEscape($this->_page_title);
 
             break;
 

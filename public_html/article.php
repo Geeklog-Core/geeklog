@@ -156,8 +156,7 @@ if ($A['count'] > 0) {
                                      ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         $story_template->set_var('direction', $LANG_DIRECTION);
-        $story_template->set_var('page_title',
-                $_CONF['site_name'] . ': ' . $story->displayElements('title'));
+        $story_template->set_var('page_title', $story->DisplayElements('page_title'));
         $story_template->set_var('story_title',
                                  $story->DisplayElements('title'));
         header('Content-Type: text/html; charset=' . COM_getCharset());
@@ -233,7 +232,10 @@ if ($A['count'] > 0) {
         $display = $story_template->finish($story_template->get_var('output'));
     } else {
         // Set page title
-        $pagetitle = $story->DisplayElements('title');
+        $pagetitle = $story->DisplayElements('page_title');
+        if(empty($pagetitle)) {
+            $pagetitle = $story->DisplayElements('title');
+        }
 
         $headercode = '';
         $permalink = COM_buildUrl($_CONF['site_url'] . '/article.php?story='

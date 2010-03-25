@@ -28,6 +28,11 @@
                 <td><input type="text" size="48" maxlength="128" name="title" value="{story_title}"{xhtml}></td>
             </tr>
             <tr>
+                <td class="alignright">{lang_page_title}:</td>
+                <td><input type="text" size="48" maxlength="128" name="page_title" value="{page_title}"{xhtml}></td>
+            </tr>
+
+            <tr>
                 <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
                 <td><input type="text" dir="ltr" size="48" maxlength="40" name="sid" value="{story_id}"{xhtml}></td>
             </tr>
