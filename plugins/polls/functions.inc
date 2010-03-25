@@ -1318,8 +1318,13 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                                   . '/polls/index.php?pid=' . $pid
                                   . '&amp;aid=-1';
                 } else {
+                    if (COM_isAnonUser()) {
+                        $userid = 1;
+                    } else {
+                        $userid = $_USER['uid'];
+                    }                    
                     // Users who have already voted but cannot see the results cannot view link
-                    if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
+                    if ($userid == 2 || ($userid != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
                         $props['url'] = $_CONF['site_url']
                                       . '/polls/index.php?pid=' . $A['pid'];
                                       // . '&amp;aid=-1';
@@ -1587,6 +1592,8 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
+    $stwhere = '';
+    
     if ($uid > 0) {
         $stwhere = " AND ({$_TABLES['comments']}.uid = $uid)";
     }    
