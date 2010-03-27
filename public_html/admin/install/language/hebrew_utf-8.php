@@ -47,7 +47,7 @@ $LANG_DIRECTION = 'rtl';
 $LANG_INSTALL = array(
     0 => 'Geeklog - The secure CMS.',
     1 => 'תמיכת התקנה',
-    2 => '<span dir="ltr">The secure Content Management System.</span>',
+    2 => '<span dir="ltr">The secure CMS.</span>',
     3 => 'התקנת Geeklog',
     4 => 'דרוש PHP %s',
     5 => 'מצטערים, אבל Geeklog דורש לפחות PHP %s בשביל לרוץ (לכם יש גירסה ',
