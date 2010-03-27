@@ -62,7 +62,7 @@ if (!defined('XHTML')) {
     define('XHTML', ' /');
 }
 if (!defined('SUPPORTED_PHP_VER')) {
-    define('SUPPORTED_PHP_VER', '4.3.0');
+    define('SUPPORTED_PHP_VER', '4.4.0');
 }
 if (!defined('SUPPORTED_MYSQL_VER')) {
     define('SUPPORTED_MYSQL_VER', '4.0.18');
