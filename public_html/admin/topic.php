@@ -240,6 +240,7 @@ function edittopic ($tid = '')
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
+    $topic_templates->set_var('oldid', 'oldID');
 
     if (empty($tid)) {
         $num_stories = $LANG_ADMIN['na'];
@@ -340,7 +341,8 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
                 DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
             }
         }
-
+	
+        DB_query("DELETE FROM {$_TABLES['topics']} WHERE tid = '{$_POST['oldID']}'");
         DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
         // update feed(s) and Older Stories block

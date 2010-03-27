@@ -90,6 +90,7 @@
                                             <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
                                             {delete_option}
                                             <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+											<input type="hidden" name="{oldid}" value="{topic_id}"{xhtml}>
                                         </td>
                                     </tr>
                                 </table>
