@@ -574,7 +574,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
-        $sql['mssql'] = "SELECT sp_title,"
+        $sql['mssql'] = "SELECT sp_title,sp_page_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
                       . "created,modified,sp_format,commentcode,"
                       . "CAST(meta_description AS text) AS meta_description,"
@@ -583,7 +583,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
-        $sql['pgsql'] = "SELECT sp_title,sp_content,sp_hits,created,modified,sp_format,"
+        $sql['pgsql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,"
+                      . "created,modified,sp_format,"
                       . "commentcode,owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
@@ -694,10 +695,13 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
-        $sql['mssql'] = "SELECT sp_id,sp_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
+        $sql['mssql'] = "SELECT sp_id,sp_title,sp_page_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
                 ."created,modified,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
+                ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
+                ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $result = DB_query($sql);
 
         $count = 0;
