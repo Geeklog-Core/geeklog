@@ -261,6 +261,64 @@ function edittopic ($tid = '')
 }
 
 /**
+* Change a topic's ID in various places
+*
+* @param    string  $tid        new Topic ID
+* @parem    string  $old_tid    current Topic ID
+* @return   void
+*
+*/
+function changetopicid($tid, $old_tid)
+{
+    global $_TABLES;
+
+    DB_change($_TABLES['blocks'], 'tid', $tid, 'tid', $old_tid);
+    DB_change($_TABLES['stories'], 'tid', $tid, 'tid', $old_tid);
+    DB_change($_TABLES['storysubmission'], 'tid', $tid, 'tid', $old_tid);
+    DB_change($_TABLES['syndication'], 'header_tid', $tid,
+                                       'header_tid', $old_tid);
+
+    $result = DB_query("SELECT uid,tids,etids FROM {$_TABLES['userindex']} WHERE tids LIKE '%{$old_tid}%' OR etids LIKE '%{$old_tid}%'");
+    $num_users = DB_numRows($result);
+    for ($i = 0; $i < $num_users; $i++) {
+        $changed = false;
+        list($uid, $tids, $etids) = DB_fetchArray($result);
+        // check list of excluded topics
+        $t = explode(' ', $tids);
+        if (count($t) > 0) {
+            $found = array_search($old_tid, $t);
+            if ($found !== false) {
+                $t[$found] = $tid;
+                $tids = implode(' ', $t);
+                $changed = true;
+            }
+        }
+
+        // check topics for the Daily Digest
+        if (! empty($etids) && ($etids != '-')) {
+            $e = explode(' ', $etids);
+            if (count($e) > 0) {
+                $found = array_search($old_tid, $e);
+                if ($found !== false) {
+                    $e[$found] = $tid;
+                    $etids = implode(' ', $e);
+                    $changed = true;
+                }
+            }
+        }
+
+        if ($changed) {
+            // etids can be both NULL and "", so special handling required
+            if ($etids === null) {
+                DB_change($_TABLES['userindex'], 'tids', $tids, 'uid', $uid);
+            } else {
+                DB_query("UPDATE {$_TABLES['userindex']} SET tids = '{$tids}', etids = '{$etids}' WHERE uid = $uid");
+            }
+        }
+    }
+}
+
+/**
 * Save topic to the database
 *
 * @param    string  $tid            Topic ID
@@ -344,14 +402,10 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
         if (isset($_POST['old_tid'])) {
             $old_tid = COM_applyFilter($_POST['old_tid']);
             if (! empty($old_tid)) {
-                $old_tid = addslashes($old_tid);
+                $old_tid = COM_sanitizeID($old_tid);
+                changetopicid($tid, $old_tid);
 
-                DB_change($_TABLES['blocks'], 'tid', $tid, 'tid', $old_tid);
-                DB_change($_TABLES['stories'], 'tid', $tid, 'tid', $old_tid);
-                DB_change($_TABLES['storysubmission'], 'tid', $tid,
-                                                       'tid', $old_tid);
-                DB_change($_TABLES['syndication'], 'header_tid', $tid,
-                                                   'header_tid', $old_tid);
+                $old_tid = addslashes($old_tid);
                 DB_delete($_TABLES['topics'], 'tid', $old_tid);
             }
         }
