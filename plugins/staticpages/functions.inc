@@ -1795,4 +1795,24 @@ function plugin_getcommenturlid_staticpages()
     return $tmp;
 }
 
+/**
+* Callback function when an item was saved
+*
+* @param    string  $id     (unused) ID of item being saved
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @param    string  $old_id (unused) previous ID of item, if != $id
+* @return   void
+* @see      PLG_itemSaved
+*
+*/
+function plugin_itemsaved_staticpages($id, $type, $old_id)
+{
+    global $_TABLES;
+
+    // we're really only interested in Topic ID changes
+    if (($type == 'topic') && !empty($old_id) && ($id != $old_id)) {
+        DB_change($_TABLES['staticpage'], 'sp_tid', $id, 'sp_tid', $old_id);
+    }
+}
+
 ?>

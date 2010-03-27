@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
@@ -412,6 +412,11 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
 
         DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
+        if ($old_tid != $tid) {
+            PLG_itemSaved($tid, 'topic', $old_tid);
+        } else {
+            PLG_itemSaved($tid, 'topic');
+        }
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck('article', $tid);
         COM_olderStuff();
