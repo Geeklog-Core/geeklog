@@ -770,7 +770,7 @@ class Story
                     // let the DB server do this conversion (cf. timezone hack)
                     $values .= 'FROM_UNIXTIME(' . $this->{$varname} . '), ';
                 } else {
-                    if($this->{$varname}=='')
+                    if ($this->{$varname} === '')
                     {
                         $values.="'', ";
                     }
