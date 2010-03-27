@@ -417,7 +417,6 @@ class DataBase
             $counter=count($row);
             if(!empty($row[0]))
             {
-            	print_r($row);
           		$key = array_search($row[0][0],$fields_array);
           		if($key!==FALSE)
           		{
@@ -483,7 +482,6 @@ class DataBase
                             $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
                     }
-                    echo $sql="SELECT COUNT(*) FROM $table WHERE $where_clause";
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
                     if($row2[0]!=0){
