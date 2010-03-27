@@ -1592,6 +1592,7 @@ $LANG_ADMIN = array (
     'create_new_adv'=> 'Create New (Adv.)',
     'enabled'       => 'Enabled',
     'title'         => 'Title',
+    'page_title'    => 'Page Title',
     'type'          => 'Type',
     'topic'         => 'Topic',
     'help_url'      => 'Help File URL',

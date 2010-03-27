@@ -32,4 +32,25 @@ $_SQL[] = "UPDATE {$_TABLES['userprefs']} SET advanced_editor = 0 WHERE uid = 1"
 // Insert Group right to allow skipping of the HTML filter
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('htmlfilter.skip', 'Skip filtering posts for HTML', 1)";
 
+// new alternative page title for stories
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [page_title] [varchar] (128) NULL";
+
+/**
+ * Add new config options
+ *
+ */
+function update_ConfValuesFor162()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    // search config options.
+    $c->add('search_def_sort','hits|desc','select',0,6,27,676,TRUE);
+
+    return true;
+}
+
 ?>

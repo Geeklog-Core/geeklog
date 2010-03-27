@@ -296,6 +296,7 @@ CREATE TABLE {$_TABLES['stories']} (
   tid varchar(20) NOT NULL default 'General',
   date timestamp NOT NULL default current_timestamp,
   title varchar(128) default NULL,
+  page_title varchar(128) default NULL,
   introtext text,
   bodytext text,
   hits smallint NOT NULL default '0',
