@@ -240,7 +240,6 @@ function edittopic ($tid = '')
             $topic_templates->set_var ('archive_disabled', 'disabled');
         }
     }
-    $topic_templates->set_var('oldid', 'oldID');
 
     if (empty($tid)) {
         $num_stories = $LANG_ADMIN['na'];
@@ -342,7 +341,21 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
             }
         }
 	
-        DB_query("DELETE FROM {$_TABLES['topics']} WHERE tid = '{$_POST['oldID']}'");
+        if (isset($_POST['old_tid'])) {
+            $old_tid = COM_applyFilter($_POST['old_tid']);
+            if (! empty($old_tid)) {
+                $old_tid = addslashes($old_tid);
+
+                DB_change($_TABLES['blocks'], 'tid', $tid, 'tid', $old_tid);
+                DB_change($_TABLES['stories'], 'tid', $tid, 'tid', $old_tid);
+                DB_change($_TABLES['storysubmission'], 'tid', $tid,
+                                                       'tid', $old_tid);
+                DB_change($_TABLES['syndication'], 'header_tid', $tid,
+                                                   'header_tid', $old_tid);
+                DB_delete($_TABLES['topics'], 'tid', $old_tid);
+            }
+        }
+
         DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
 
         // update feed(s) and Older Stories block
@@ -642,10 +655,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['is_archive'])) {
         $is_archive = $_POST['is_archive'];
     }
+    $sortnum = 0;
+    if (isset($_POST['sortnum'])) {
+        $sortnum = COM_applyFilter($_POST['sortnum'], true);
+    }
     $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic'],
                           $imageurl, $_POST['meta_description'],
-                          $_POST['meta_keywords'],
-                          COM_applyFilter($_POST['sortnum'], true),
+                          $_POST['meta_keywords'], $sortnum,
                           COM_applyFilter($_POST['limitnews'], true),
                           COM_applyFilter($_POST['owner_id'], true),
                           COM_applyFilter($_POST['group_id'], true),

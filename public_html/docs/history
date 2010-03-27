@@ -2,6 +2,9 @@ Geeklog History/Changes:
 
 Apr ??, 2010 (1.6.2)
 ------------
+
+- Fixed an old bug that would create a new topic when you tried to change the
+  topic ID [Stan]
 - A new right called htmlfilter.skip allows user groups to skip any html   
   filtering on posts (feature request #0000952) [Tom]
 - Allow empty database passwords only for local installs (bug #0000923, patch
