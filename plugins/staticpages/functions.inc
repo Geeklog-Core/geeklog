@@ -1373,8 +1373,11 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
         $sp_title = stripslashes($A['sp_title']);
         $url = COM_buildUrl($_CONF['site_url'] .
                             '/staticpages/index.php?page=' . $A['sp_id']);
-        $retval = COM_createLink($sp_title, $url,
-                    array('title' => $LANG_STATIC['title_display']));
+        $attr = array();
+        if (! empty($A['sp_page_title'])) {
+            $attr['title'] = htmlspecialchars($A['sp_page_title']);
+        }
+        $retval = COM_createLink($sp_title, $url, $attr);
         break;
 
     case 'username':
