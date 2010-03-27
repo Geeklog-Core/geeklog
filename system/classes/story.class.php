@@ -771,7 +771,7 @@ class Story
                 } else {
                     if($this->{$varname}=='')
                     {
-                        $values.="0, ";
+                        $values.="'', ";
                     }
                     else
                     {
