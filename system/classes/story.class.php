@@ -393,7 +393,7 @@ class Story
             $varname = '_' . $fieldname;
 
             if (array_key_exists($fieldname, $story)) {
-                $this->{$varname}= stripslashes($story[$fieldname]);
+                $this->{$varname} = stripslashes($story[$fieldname]);
             }
         }
 
@@ -491,6 +491,7 @@ class Story
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_title = '';
+            $this->_page_title = '';
             $this->_meta_description = '';
             $this->_meta_keywords = '';            
             $this->_introtext = '';
