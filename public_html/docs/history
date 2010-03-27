@@ -3,9 +3,14 @@ Geeklog History/Changes:
 Apr ??, 2010 (1.7.0)
 ------------
 
+Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
+2009 Google Summer of Code.
+
 - Raised minimum required PHP version to PHP 4.4.0 [Dirk]
 - Fixed an old bug that would create a new topic when you tried to change the
   topic ID [Stan, Dirk]
+- Introduced an optional page title for stories (feature request #0001096,
+  patch provided by Vlad Voicu)
 - A new right called htmlfilter.skip allows user groups to skip any html   
   filtering on posts (feature request #0000952) [Tom]
 - Allow empty database passwords only for local installs (bug #0000923, patch
@@ -20,6 +25,7 @@ Apr ??, 2010 (1.7.0)
   only, i.e. it only counts users that logged in at least once [Dirk]
 - Fixed display of list of allowed HTML tags and available autotags in
   advanced story editor mode (bug #0001020, patch provided by Chetan)
+- Fixed sort by date in search results (bug #0001002) [Sami]
 - Since we can now re-authenticate expired security tokens, we don't need to
   display the token expire notice any longer. Exception: Users who logged in
   through OpenID can't re-authenticate and will still get the message [Dirk]
@@ -135,6 +141,8 @@ Spam-X Plugin
 
 Static Pages Plugin 1.6.2
 -------------------
+- Introduced an optional page title for static pages (feature request #0001096,
+  patch provided by Vlad Voicu)
 - Fixed SQL error in the search when multi-language support was enabled (bug
   #0001099) [Dirk]
 - Added What's New Block Support for Static Page comments
