@@ -39,7 +39,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [page_title] [varchar] (128) NU
  * Add new config options
  *
  */
-function update_ConfValuesFor162()
+function update_ConfValuesFor170()
 {
     global $_CONF, $_TABLES;
 
