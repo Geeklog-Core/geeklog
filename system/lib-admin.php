@@ -909,7 +909,11 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         $A['title'] = str_replace('$', '&#36;', $A['title']);
         $article_url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
                                     . $A['sid']);
-        $retval = COM_createLink(stripslashes($A['title']), $article_url);
+        $attr = array();
+        if (! empty($A['page_title'])) {
+            $attr['title'] = htmlspecialchars($A['page_title']);
+        }
+        $retval = COM_createLink(stripslashes($A['title']), $article_url, $attr);
         break;
 
     case 'draft_flag':
