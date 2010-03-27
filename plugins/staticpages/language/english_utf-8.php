@@ -40,6 +40,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Written By',
     'date' => 'Last Updated',
     'title' => 'Title',
+    'page_title' => 'Page Title',
     'content' => 'Content',
     'hits' => 'Hits',
     'staticpagelist' => 'Static Page List',

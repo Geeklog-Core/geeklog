@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -40,11 +40,13 @@ $_UPDATES = array(
 
     '1.6.1' => array(
         "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD [draft_flag] [tinyint] NULL AFTER meta_keywords", 
-        
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [draft_flag] [tinyint] NULL AFTER meta_keywords",
+
         "EXEC sp_rename '{$_TABLES['staticpage']}.sp_date', 'created', 'COLUMN'",
         "ALTER TABLE {$_TABLES['staticpage']} ADD [modified] [datetime] NOT NULL AFTER created",
-        "UPDATE {$_TABLES['staticpage']} SET modified = created"
+        "UPDATE {$_TABLES['staticpage']} SET modified = created",
+
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [sp_page_title] [varchar] (128) NOT NULL AFTER sp_title"
     )
 );
 

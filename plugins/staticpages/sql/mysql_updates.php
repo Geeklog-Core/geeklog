@@ -41,11 +41,13 @@ $_UPDATES = array(
 
     '1.6.1' => array(
         "ALTER TABLE {$_TABLES['staticpage']} DROP COLUMN sp_uid",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD draft_flag tinyint(1) unsigned default '0' AFTER meta_keywords", 
-        
+        "ALTER TABLE {$_TABLES['staticpage']} ADD draft_flag tinyint(1) unsigned default '0' AFTER meta_keywords",
+
         "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_date `created` datetime default NULL",
-        "ALTER TABLE {$_TABLES['staticpage']} ADD modified datetime NOT NULL default '0000-00-00 00:00:00' AFTER `created`", 
-        "UPDATE {$_TABLES['staticpage']} SET modified = `created`"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD modified datetime NOT NULL default '0000-00-00 00:00:00' AFTER `created`",
+        "UPDATE {$_TABLES['staticpage']} SET modified = `created`",
+
+        "ALTER TABLE {$_TABLES['staticpage']} ADD sp_page_title varchar(128) NOT NULL default '' AFTER sp_title"
     )
 
 );
