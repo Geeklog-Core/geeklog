@@ -42,6 +42,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Kirjutas',
     'date' => 'Uuendatud',
     'title' => 'Tiitel',
+    'page_title' => 'Page Title',
     'content' => 'Sisu',
     'hits' => 'Klikke',
     'staticpagelist' => 'Staatiliste lehtede nimekiri',
@@ -178,6 +179,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title'),
     3 => array('Aeg' => 'date', 'Lehe ID' => 'id', 'Tiitel' => 'title', 'Silt' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

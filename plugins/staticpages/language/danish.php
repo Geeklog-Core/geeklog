@@ -41,6 +41,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Skrevet af',
     'date' => 'Seneste Opdatering',
     'title' => 'Titel',
+    'page_title' => 'Page Title',
     'content' => 'Indhold',
     'hits' => 'Hits',
     'staticpagelist' => 'Faste Sider Liste',
@@ -177,6 +178,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

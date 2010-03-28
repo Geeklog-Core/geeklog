@@ -1591,6 +1591,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => 'צרו חדש (מתקדם)',
     'enabled' => 'מאופשר',
     'title' => 'כותרת',
+    'page_title' => 'Page Title',
     'type' => 'סוג',
     'topic' => 'נושא',
     'help_url' => 'כתובת קובץ עזרה',
@@ -1904,7 +1905,8 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => 'איפשור למשתמש למיין תוצאות?',
     'search_show_limit' => 'הצגת תחומי עמוד?',
     'search_separator' => 'מפריד קבוצות',
-    'search_def_keytype' => 'שיטת חיפוש ברירת המחדל'
+    'search_def_keytype' => 'שיטת חיפוש ברירת המחדל',
+    'search_def_sort' => 'Default Sort Order'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1989,7 +1991,8 @@ $LANG_configselects['Core'] = array(
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
-    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X')
+    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
 );
 
 ?>

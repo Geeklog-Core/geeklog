@@ -45,6 +45,7 @@ $LANG_STATIC = array(
     'writtenby' => '所有者',
     'date' => '最終更新日',
     'title' => 'タイトル',
+    'page_title' => 'Page Title',
     'content' => '内容',
     'hits' => '閲覧件数',
     'staticpagelist' => '静的ページ管理',
@@ -181,6 +182,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title'),
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

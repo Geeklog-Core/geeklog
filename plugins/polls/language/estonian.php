@@ -61,6 +61,7 @@ $LANG_POLLS = array(
     'pollclosed' => 'This poll is closed for voting.',
     'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'Käivita küsitlus',
+    'no_new_polls' => 'No new polls',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -135,6 +136,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
     'default_permissions' => 'Küsitluse vaikimisi õigused',
+    'newpollsinterval' => 'New Polls Interval',
+    'hidenewpolls' => 'New Polls',
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'Luba Meta sildid'
 );
 
@@ -144,6 +148,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Küsitluste üldised häälestused',
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Vaikimisi õigused'
 );
 
@@ -152,6 +157,7 @@ $LANG_configselects['polls'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
     2 => array('Nagu sisestatud' => 'submitorder', 'Häälte järgi' => 'voteorder'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Suuna küsitluste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita administreerimislehte' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
 );

@@ -43,6 +43,7 @@ $LANG_STATIC = array(
     'writtenby' => '作者',
     'date' => '更新日期',
     'title' => '标题',
+    'page_title' => 'Page Title',
     'content' => '内容',
     'hits' => '采样数',
     'staticpagelist' => '静态页目录',
@@ -179,6 +180,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

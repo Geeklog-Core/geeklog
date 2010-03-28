@@ -59,6 +59,7 @@ $LANG_POLLS = array(
     'pollclosed' => 'Diese Umfrage ist abgeschlossen.',
     'pollhidden' => 'Sie haben schon abgestimmt. Die Ergebnisse dieser Umfrage werden veröffentlicht, sobald sie abgeschlossen ist.',
     'start_poll' => 'Zur Umfrage',
+    'no_new_polls' => 'No new polls',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -133,6 +134,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Umfragen mit User löschen?',
     'aftersave' => 'Nach speichern der Umfrage',
     'default_permissions' => 'Grundeinstellungen Umfragen',
+    'newpollsinterval' => 'New Polls Interval',
+    'hidenewpolls' => 'New Polls',
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'Meta-Tags verwenden'
 );
 
@@ -142,6 +146,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Allgemeine Umfrageeinstellungen',
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Grundeinstellungen Rechte'
 );
 
@@ -150,6 +155,7 @@ $LANG_configselects['polls'] = array(
     0 => array('Ja' => 1, 'Nein' => 0),
     1 => array('Ja' => true, 'Nein' => false),
     2 => array('Wie eingereicht' => 'submitorder', 'Nach Abstimmung' => 'voteorder'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Zur Umfrage weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
 );

@@ -60,6 +60,7 @@ $LANG_POLLS = array(
     'pollclosed' => 'ההצבעה לסקר זה סגורה.',
     'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
     'start_poll' => 'התחילו את הסקר',
+    'no_new_polls' => 'No new polls',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -134,6 +135,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
     'default_permissions' => 'הרשאות ברירת המחדל של סקר',
+    'newpollsinterval' => 'New Polls Interval',
+    'hidenewpolls' => 'New Polls',
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'אפשרו תגיות Meta'
 );
 
@@ -143,6 +147,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Default Permissions'
 );
 
@@ -151,6 +156,7 @@ $LANG_configselects['polls'] = array(
     0 => array('כן' => 1, 'לא' => 0),
     1 => array('כן' => true, 'לא' => false),
     2 => array('לפי סדר שליחה' => 'submitorder', 'לפי הצבעות' => 'voteorder'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('הפניה לסקר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת רשימה ציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );

@@ -65,6 +65,7 @@ $LANG_POLLS = array(
     'pollclosed' => 'このアンケートは投票を終了しました。',
     'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
     'start_poll' => '投稿する',
+    'no_new_polls' => 'No new polls',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -139,6 +140,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => '所有者の削除と共に削除する',
     'aftersave' => 'アンケート保存後の画面遷移',
     'default_permissions' => 'パーミッション',
+    'newpollsinterval' => 'New Polls Interval',
+    'hidenewpolls' => 'New Polls',
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'メタタグを有効にする'
 );
 
@@ -148,6 +152,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
 );
 
@@ -156,6 +161,7 @@ $LANG_configselects['polls'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('作成したアンケートを表示する' => 'item', 'アンケート管理を表示する' => 'list', 'アンケート一覧を表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
 );

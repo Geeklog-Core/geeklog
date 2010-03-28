@@ -40,6 +40,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Autor',
     'date' => 'Ostatnia Aktualizacja',
     'title' => 'Tytuł',
+    'page_title' => 'Page Title',
     'content' => 'Zawartość',
     'hits' => 'Odsłon',
     'staticpagelist' => 'Lista Stron Statycznych',
@@ -176,6 +177,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
     3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

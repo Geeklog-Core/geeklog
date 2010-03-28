@@ -1598,6 +1598,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => '新規作成(アドバンスト)',
     'enabled' => '有効',
     'title' => 'タイトル',
+    'page_title' => 'Page Title',
     'type' => 'タイプ',
     'topic' => '話題',
     'help_url' => 'ヘルプURL',
@@ -1911,7 +1912,8 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => 'ユーザにソートを許可する',
     'search_show_limit' => '表示件数の選択オプションを表示する',
     'search_separator' => 'グループのセパレータ',
-    'search_def_keytype' => '検索条件のデフォルト'
+    'search_def_keytype' => '検索条件のデフォルト',
+    'search_def_sort' => 'Default Sort Order'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1996,7 +1998,8 @@ $LANG_configselects['Core'] = array(
     23 => array('無効にする' => 0, '有効にする' => 1, '有効にする(トップページにのみデフォルトを使用する)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
-    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X')
+    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
 );
 
 ?>

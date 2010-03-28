@@ -41,6 +41,7 @@ $LANG_STATIC = array(
     'writtenby' => 'נכתב על ידי',
     'date' => 'עידכון אחרון',
     'title' => 'כותרת',
+    'page_title' => 'Page Title',
     'content' => 'תוכן',
     'hits' => 'לחיצות',
     'staticpagelist' => 'רשימת עמודים סטטיים',
@@ -177,6 +178,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title'),
     3 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title', 'תווית' => 'label'),
     4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)

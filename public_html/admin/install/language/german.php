@@ -155,7 +155,8 @@ $LANG_INSTALL = array(
     103 => 'und zus&auml;tzliche Plugins konfigurieren',
     104 => 'Der Pfad f&uuml;r das Admin-Verzeichnis ist nicht korrekt',
     105 => 'Der Pfad, den Du f&uuml;r das Admin-Verzeichnis eingegeben hast, scheint nicht korrekt zu sein. Bitte &uuml;berpr&uuml;fe Deine Eingabe und versuche es dann noch einmal.',
-    106 => 'PostgreSQL'
+    106 => 'PostgreSQL',
+    107 => 'Database Password is required for production environments.'
 );
 
 // +---------------------------------------------------------------------------+

@@ -61,6 +61,7 @@ $LANG_POLLS = array(
     'pollclosed' => 'This poll is closed for voting.',
     'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'Zaèni anketo',
+    'no_new_polls' => 'No new polls',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -135,6 +136,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Delete Polls with Owner?',
     'aftersave' => 'After Saving Poll',
     'default_permissions' => 'Poll Default Permissions',
+    'newpollsinterval' => 'New Polls Interval',
+    'hidenewpolls' => 'New Polls',
+    'title_trim_length' => 'Title Trim Length',
     'meta_tags' => 'Enable Meta Tags'
 );
 
@@ -144,6 +148,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
+    'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Default Permissions'
 );
 
@@ -152,6 +157,7 @@ $LANG_configselects['polls'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => true, 'False' => false),
     2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
+    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
 );

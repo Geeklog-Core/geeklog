@@ -1594,6 +1594,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => 'Neu anlegen (Erw.)',
     'enabled' => 'Funktion aktivieren',
     'title' => 'Titel',
+    'page_title' => 'Page Title',
     'type' => 'Typ',
     'topic' => 'Kategorie',
     'help_url' => 'URL f. Hilfe-Datei',
@@ -1907,7 +1908,8 @@ $LANG_confignames['Core'] = array(
     'search_show_sort' => 'Darf User Ergebnisse sortieren?',
     'search_show_limit' => 'Seiteneinstellung zeigen?',
     'search_separator' => 'Trennzeichen für Gruppen',
-    'search_def_keytype' => 'Grundeinstellung Suchmethode'
+    'search_def_keytype' => 'Grundeinstellung Suchmethode',
+    'search_def_sort' => 'Default Sort Order'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1992,7 +1994,8 @@ $LANG_configselects['Core'] = array(
     23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
-    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X')
+    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
 );
 
 ?>
