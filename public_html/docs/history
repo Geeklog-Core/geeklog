@@ -6,6 +6,7 @@ Apr ??, 2010 (1.7.0)
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
 
+- Updated FCKeditor to version 2.6.6 [Dirk]
 - Raised minimum required PHP version to PHP 4.4.0 [Dirk]
 - Fixed an old bug that would create a new topic when you tried to change the
   topic ID [Stan, Dirk]
@@ -81,7 +82,6 @@ Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
   story's topic in the admin's list of stories [Dirk]
 - Fixed problem uninstalling plugins - missing globals (bug #0001048)
 - Added an option to create a copy of a story (feature request #0000811) [Dirk]
-- Updated FCKeditor to version 2.6.5 [Dirk]
 - Prepare database for storing IPv6 addresses (feature request #0000971) [Dirk]
 - Implemented re-authentication when trying to submit a form with an expired
   security token. This will allow the user to save changes even when the token
