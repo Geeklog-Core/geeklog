@@ -135,6 +135,8 @@ Polls Plugin
 
 Spam-X Plugin
 -------------
+- Fixed "Edit IP of URL Blacklist" module (bug #0001102, reported and patch
+  provided by Abhishek Shrivastava)
 - A new right called spamx.skip allows SPAM-X to skip filtering of submitted 
   content from certain user groups (bug #0001018) [Tom] 
 - Make sure the Notification Email config option can be disabled [Dirk]

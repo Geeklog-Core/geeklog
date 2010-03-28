@@ -2,9 +2,9 @@
 
 /**
 * File: EditIPofURL.Admin.class.php
-* This is the Edit IPofURL Module for the Geeklog Spam-X plugin
+* This is the Edit IP of URL Module for the Geeklog Spam-X plugin
 *
-* Copyright (C) 2004-2009 by the following authors:
+* Copyright (C) 2004-2010 by the following authors:
 * Author    Tom Willett     tomw AT pigstye DOT net
 *           Dirk Haun       dirk AT haun-online DOT de
 *
@@ -72,12 +72,12 @@ class EditIPofUrl extends BaseAdmin {
             list($e) = DB_fetchArray($result);
             $display .= '<li>'. COM_createLink(htmlspecialchars($e),
                 $_CONF['site_admin_url']
-                . '/plugins/spamx/index.php?command=EditIPofUrl&amp;action=delete&amp;entry=' . urlencode($e) . '&amp;' . CSRF_TOKEN . '=' . $token) .  '</li>' . LB;
+                . '/plugins/spamx/index.php?command=EditIPofURL&amp;action=delete&amp;entry=' . urlencode($e) . '&amp;' . CSRF_TOKEN . '=' . $token) .  '</li>' . LB;
         }
         $display .= '</ul>' . LB . '<p>' . $LANG_SX00['e1'] . '</p>' . LB;
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>' . LB;
         $display .= '<form method="post" action="' . $_CONF['site_admin_url']
-                 . '/plugins/spamx/index.php?command=EditIPofUrl">';
+                 . '/plugins/spamx/index.php?command=EditIPofURL">';
         $display .= '<div><input type="text" size="30" name="pentry"' . XHTML
                  . '>&nbsp;&nbsp;&nbsp;';
         $display .= '<input type="submit" name="paction" value="'
