@@ -651,7 +651,7 @@ function plugin_showstats_staticpages($showsitestats)
     if (!empty($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $result = DB_query("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE (sp_hits > 0) AND (draft_flag = 0)" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
+    $result = DB_query("SELECT sp_id,sp_title,sp_page_title,sp_hits FROM {$_TABLES['staticpage']} WHERE (sp_hits > 0) AND (draft_flag = 0)" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
     $nrows  = DB_numRows($result);
     if ($nrows > 0) {
         require_once $_CONF['path_system'] . 'lib-admin.php';
@@ -671,7 +671,14 @@ function plugin_showstats_staticpages($showsitestats)
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $A['sp_title'] = stripslashes($A['sp_title']);
+            $A['sp_title'] = stripslashes(trim($A['sp_title']));
+            if (empty($A['sp_title'])) {
+                $A['sp_title'] = $A['sp_page_title'];
+                if (empty($A['sp_title'])) {
+                    $A['sp_title'] = $A['sp_id'];
+                }
+                $A['sp_title'] = '(' . $A['sp_title'] . ')';
+            }
             $A['sid'] = COM_createLink($A['sp_title'],
                             COM_buildUrl($_CONF['site_url']
                                 . "/staticpages/index.php?page={$A['sp_id']}"));
