@@ -14,7 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |                                       
 // |          Jared Wenerd      - wenerd87 AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -995,18 +995,20 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('lang_preview', $LANG03[14]);
             }
 
-            PLG_templateSetVars('comment', $comment_template); 
-            if ($mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1)) { 
+            if ($mode == $LANG03[28] || ($mode == 'edit' && $_CONF['skip_preview'] == 1)) {
+                PLG_templateSetVars('comment', $comment_template); // Only for a edit form with a save button displayed (CAPTCHA related issue)
                 // for editing
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[29]
                     . '"' . XHTML . '>');
             } elseif ($mode == $LANG03[34] || ($mode == 'editsubmission' && $_CONF['skip_preview'] == 1))  {
+                PLG_templateSetVars('comment', $comment_template);
                 // editing submission comment
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[35]
                     . '"' . XHTML . '>');
             } elseif (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
+                PLG_templateSetVars('comment', $comment_template);
                 $comment_template->set_var('save_option',
                     '<input type="submit" name="mode" value="' . $LANG03[11]
                     . '"' . XHTML . '>');
