@@ -1370,7 +1370,14 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'sp_title':
-        $sp_title = stripslashes($A['sp_title']);
+        $sp_title = stripslashes(trim($A['sp_title']));
+        if (empty($sp_title)) {
+            $sp_title = $A['sp_page_title'];
+            if (empty($sp_title)) {
+                $sp_title = $A['sp_id'];
+            }
+            $sp_title = '(' . $sp_title . ')';
+        }
         $url = COM_buildUrl($_CONF['site_url'] .
                             '/staticpages/index.php?page=' . $A['sp_id']);
         $attr = array();
