@@ -1377,7 +1377,7 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'sp_title':
-        $sp_title = stripslashes(trim($A['sp_title']));
+        $sp_title = trim(stripslashes($A['sp_title']));
         if (empty($sp_title)) {
             $sp_title = $A['sp_page_title'];
             if (empty($sp_title)) {
