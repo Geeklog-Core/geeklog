@@ -33,7 +33,7 @@ global $Config ;
 // WARNING: don't just set "$Config['Enabled'] = true ;", you must be sure that only
 //		authenticated users can access this file or use some kind of session checking.
 $Config['Enabled'] = false;
-if (($_CONF['advanced_editor'] == 1) && !COM_isAnonUser()) {
+if (($_CONF['advanced_editor'] && $_USER['advanced_editor']) && !COM_isAnonUser()) {
     // provisional permission check - we really need a .upload permission
     $rights = implode(',', $_RIGHTS);
     if (strpos($rights, '.edit') !== false) {
