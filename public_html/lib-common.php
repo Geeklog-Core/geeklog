@@ -6790,12 +6790,20 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                     message!!!</h2>');
                 }
             }
-            echo('<pre>');
-            ob_start();
-            var_dump($errcontext);
-            $errcontext = htmlspecialchars(ob_get_contents());
-            ob_end_clean();
-            echo("$errcontext</pre></body></html>");
+            if (@ini_get('xdebug.default_enable') == 1) {
+                ob_start();
+                var_dump($errcontext);
+                $errcontext = ob_get_contents();
+                ob_end_clean();
+                echo("$errcontext</body></html>");
+            } else {
+                echo('<pre>');
+                ob_start();
+                var_dump($errcontext);
+                $errcontext = htmlspecialchars(ob_get_contents());
+                ob_end_clean();
+                echo("$errcontext</pre></body></html>");
+            }
             exit;
         }
     }
