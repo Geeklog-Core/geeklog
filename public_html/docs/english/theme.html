@@ -203,16 +203,54 @@ featured and archived stories.</li>
 
 <h2><a name="changes">Theme changes in Geeklog 1.7.0</a></h2>
 
+<h3>Admin templates</h3>
 <ul>
-<li>Added a hidden field "<tt>old_tid</tt>" to the topic editor template file,
+<li>New variable <code>{hide_meta}</code> in the Topic editor template,
+    <tt>admin/topic/topiceditor.thtml</tt>, to hide the text entry fields for
+    the meta description and meta keywords when meta tag support is
+    disabled.</li>
+<li>In the Topic editor template, <tt>admin/topic/topiceditor.thtml</tt>,
+    display the max. size of the topic icon and whether it will be scaled down
+    (new variable <code>{icon_max_dimensions}</code>).</li>
+<li>Added a hidden field "<tt>old_tid</tt>" to the Topic editor template file,
     <tt>admin/topic/topiceditor.thtml</tt>, to allow changing the topic id.</li>
+<li>New variable <code>{hide_meta}</code> in the Story editor templates,
+    <tt>admin/topic/storyeditor.thtml</tt> and
+    <tt>admin/topic/storyeditor_advanced.thtml</tt>, to hide the text entry
+    fields for the meta description and meta keywords when meta tag support is
+    disabled.</li>
 <li>Removed the <code>display:{show_htmleditor};</code> CSS snippet from the
     <code>&lt;div id="editor-mode"&gt;</code> in
     <tt>admin/topic/storyeditor_advanced.thtml</tt> to ensure that the list of
     allowed HTML tags and autotags is always visible.</li>
-<li>Added some padding to the <code>&lt;li&gt;</code> element in
-    <tt>comment/thread.thtml</tt> so that follow-up comments in threaded mode
-    are a bit more apart and easier to read.</li>
+<li>All <tt>onclick</tt> events in the Configuration templates should return
+    <code>false</code>. In <tt>admin/config/menu_element.thtml</tt>, the return
+    statement was missing for the <code>open_group</code> and
+    <code>open_subgroup</code> calls.
+    In <tt>admin/config/config_element.thtml</tt>, it was missing for the
+    <tt>unset-param</tt> case (i.e. the call to <code>restore</code>).</li>
+<li>Added a new textarea section to <tt>admin/config/config_element.thtml</tt>
+    to allow for configuration options to use a multi-line text entry
+    field.</li>
+<li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
+    <code>select-element</code>, <code>{hide_row}</code> was added for the
+    table row and a <code>{delete}</code> option was added after the
+    <code>select</code>. These changes are required to allow dynamic addition /
+    removal of dropdowns, e.g. for <code>$_CONF['menu_elements']</code>.</li>
+<li>The Group editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
+    new options for default groups (<tt>chk_grpdefault</tt> and
+    <tt>chk_applydefault</tt> checkboxes + language variables).</li>
+<li>The <tt>fieldhelp</tt> class was changed to include left and right padding
+    so that the hard-coded padding could be removed from the Group editor
+    template, <tt>admin/group/groupeditor.thtml</tt>.</li>
+<li>For consistency: The template variables for the headline texts in
+    <tt>admin/common/edit_permissions.thtml</tt> are now also available with a
+    <code>lang_</code> prefix (<code>{lang_owner}</code>, etc).</li>
+</ul>
+
+<h3>Other changes</h3>
+
+<ul>
 <li>When editing a comment or comment submission, the "Logout" link is now
     hidden. This is done by adding a <code>span</code> around the link and a
     new template variable, <tt>{hidewhenediting}</tt>, that will contain CSS to
@@ -229,48 +267,16 @@ featured and archived stories.</li>
     <tt>topicoption.thtml</tt> template file. It is currently only used to add
     a <code>rel="home"</code> attribute to the Home link in the Topics
     block.</li>
-<li>The template file <tt>submit/submitloginrequired.thtml</tt> is no longer
-    needed and has been removed.</li>
-<li>In the topic editor template, <tt>admin/topic/topiceditor.thtml</tt>,
-    display the max. size of the topic icon and whether it will be scaled down
-    (new variable <code>{icon_max_dimensions}</code>).</li>
 <li>A new option in My Account allows users to enable/disable the Advanced
     Editor. Requires a new template variable <tt>{advanced_editor_option}</tt>
-    in <tt>preferences/displayblock.thtml</tt> and a new template file
-    <tt>preferences/editor.thtml</tt> for the actual option (hidden unless
-    Advanced Editor is enabled globally in the Configuration).</li>
-<li>The Group Editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
-    new options for default groups (<tt>chk_grpdefault</tt> and
-    <tt>chk_applydefault</tt> checkboxes + language variables).</li>
-<li>The <tt>fieldhelp</tt> class was changed to include left and right padding
-    so that the hard-coded padding could be removed from the group editor
-    template, <tt>admin/group/groupeditor.thtml</tt>.</li>
-<li>For consistency: The template variables for the headline texts in
-    <tt>admin/common/edit_permissions.thtml</tt> are now also available with a
-    <code>lang_</code> prefix (<code>{lang_owner}</code>, etc).</li>
-<li>New variable <code>{hide_meta}</code> in the Story editor templates,
-    <tt>admin/topic/storyeditor.thtml</tt> and
-    <tt>admin/topic/storyeditor_advanced.thtml</tt>, to hide the text entry
-    fields for the meta description and meta keywords when meta tag support is
-    disabled.</li>
-<li>New variable <code>{hide_meta}</code> in the Topic editor template,
-    <tt>admin/topic/topiceditor.thtml</tt>, to hide the text entry fields for
-    the meta description and meta keywords when meta tag support is
-    disabled.</li>
-<li>All <tt>onclick</tt> events in the Configuration templates should return
-    <code>false</code>. In <tt>admin/config/menu_element.thtml</tt>, the return
-    statement was missing for the <code>open_group</code> and
-    <code>open_subgroup</code> calls.
-    In <tt>admin/config/config_element.thtml</tt>, it was missing for the
-    <tt>unset-param</tt> case (i.e. the call to <code>restore</code>).</li>
-<li>Added a new textarea section to <tt>admin/config/config_element.thtml</tt>
-    to allow for configuration options to use a multi-line text entry
-    field.</li>
-<li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
-    <code>select-element</code>, <code>{hide_row}</code> was added for the
-    table row and a <code>{delete}</code> option was added after the
-    <code>select</code>. These changes are required to allow dynamic addition /
-    removal of dropdowns, e.g. for <code>$_CONF['menu_elements']</code>.</li>
+    in <tt>preferences/displayblock.thtml</tt> and a <b>new template file</b>
+    <tt>preferences/editor.thtml</tt> for the actual option (the option remains
+    hidden unless Advanced Editor is enabled globally in the Configuration).</li>
+<li>Added some padding to the <code>&lt;li&gt;</code> element in
+    <tt>comment/thread.thtml</tt> so that follow-up comments in threaded mode
+    are a bit more apart and easier to read.</li>
+<li>The template file <tt>submit/submitloginrequired.thtml</tt> is no longer
+    needed and has been removed.</li>
 </ul>
 
 
