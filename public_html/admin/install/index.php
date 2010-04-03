@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -161,12 +161,12 @@ function INST_installEngine($install_type, $install_step)
 
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[32] . ' ' . INST_helpLink('site_name') . '</label> <input type="text" name="site_name" value="' . htmlspecialchars($site_name) . '" size="40"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[33] . ' ' . INST_helpLink('site_slogan') . '</label> <input type="text" name="site_slogan" value="' . htmlspecialchars($site_slogan) . '" size="40"' . XHTML . '></p>
-            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> <select name="db_type">'
+            <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[34] . ' ' . INST_helpLink('db_type') . '</label> '
 
             . INST_listOfSupportedDBs($dbconfig_path, $db_selected,
                     ($install_type == 'install' ? true : false)) .
 
-           '</select> ' . '</p>
+           '</p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[39] . ' ' . INST_helpLink('db_host') . '</label> <input type="text" name="db_host" value="'. htmlspecialchars($db_host) .'" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[40] . ' ' . INST_helpLink('db_name') . '</label> <input type="text" name="db_name" value="'. htmlspecialchars($db_name) . '" size="20"' . XHTML . '></p>
             <p><label class="' . $form_label_dir . '">' . $LANG_INSTALL[41] . ' ' . INST_helpLink('db_user') . '</label> <input type="text" name="db_user" value="' . htmlspecialchars($db_user) . '" size="20"' . XHTML . '></p>

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | polish.php                                                                |
 // |                                                                           |
-// |  Polish language file for the Geeklog installation script                 |
+// | Polish language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -156,7 +156,8 @@ $LANG_INSTALL = array(
     104 => 'Incorrect Admin Directory Path',
     105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.',
     106 => 'PostgreSQL',
-    107 => 'Database Password is required for production environments.'
+    107 => 'Database Password is required for production environments.',
+    108 => 'No Database Drivers found!'
 );
 
 // +---------------------------------------------------------------------------+
@@ -332,7 +333,7 @@ $LANG_HELP = array(
     0 => 'Geeklog Wsparcie Instalacji',
     'site_name' => 'Nazwa Twojej Strony.',
     'site_slogan' => 'Prosty opis Twojej strony.',
-    'db_type' => 'Geeklog can be installed using either a MySQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.</p><p class="indent"><strong>Note:</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
+    'db_type' => 'Geeklog can be installed using either a MySQL, PostgreSQL or Microsoft SQL database. If you are not sure which option to select contact your hosting provider.</p><p class="indent"><strong>Note:</strong> InnoDB Tables may improve performance on (very) large sites, but they also make database backups more complicated.',
     'db_host' => 'The network name (or IP address) of your database server. This is typically "localhost". If you are not sure contact your hosting provider.',
     'db_name' => 'The name of your database. If you are not sure what this is contact your hosting provider.',
     'db_user' => 'Your database user account. If you are not sure what this is contact your hosting provider.',

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | german.php                                                                |
 // |                                                                           |
 // | German language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -156,7 +156,8 @@ $LANG_INSTALL = array(
     104 => 'Der Pfad f&uuml;r das Admin-Verzeichnis ist nicht korrekt',
     105 => 'Der Pfad, den Du f&uuml;r das Admin-Verzeichnis eingegeben hast, scheint nicht korrekt zu sein. Bitte &uuml;berpr&uuml;fe Deine Eingabe und versuche es dann noch einmal.',
     106 => 'PostgreSQL',
-    107 => 'Database Password is required for production environments.'
+    107 => 'F&uuml;r den produktiven Einsatz wird ein Datenbank-Passwort ben&ouml;tigt!',
+    108 => 'Keine Datenbank-Treiber gefunden!'
 );
 
 // +---------------------------------------------------------------------------+
@@ -332,7 +333,7 @@ $LANG_HELP = array(
     0 => 'Hilfe zur Geeklog-Installation',
     'site_name' => 'Der Name Deiner Website.',
     'site_slogan' => 'Ein Motto oder eine kurze Beschreibung Deiner Website.',
-    'db_type' => 'Geeklog kann wahlweise auf einer MySQL- oder einer MS SQL-Datenbank installiert werden. Wenn Du nicht sicher bist, welche Option Du w&auml;hlen sollst, kontaktiere bitte Deinen Webhoster.</p><p class="indent"><strong>Hinweis:</strong> InnoDB-Tabellen k&ouml;nnen zu besserer Performance auf (sehr) gro&szlig;en Websites f&uuml;hren, machen den Backup-Prozess aber komplizierter.',
+    'db_type' => 'Geeklog kann wahlweise auf einer MySQL-, PostgreSQL- oder einer MS SQL-Datenbank installiert werden. Wenn Du nicht sicher bist, welche Option Du w&auml;hlen sollst, kontaktiere bitte Deinen Webhoster.</p><p class="indent"><strong>Hinweis:</strong> InnoDB-Tabellen k&ouml;nnen zu besserer Performance auf (sehr) gro&szlig;en Websites f&uuml;hren, machen den Backup-Prozess aber komplizierter.',
     'db_host' => 'Der Hostname (oder die IP-Adresse) Deines Datenbank-Servers. Typischerweise ist dies "localhost". Wenn Du nicht sicher bist, kontaktiere bitte Deinen Webhoster.',
     'db_name' => 'Der Name Deiner Datenbank. Wenn Du nicht sicher bist was das bedeutet, kontaktiere bitte Deinen Webhoster.',
     'db_user' => 'Der Username Deines Datenbank-Accounts. Wenn Du nicht sicher bist was Du eintragen sollst, kontaktiere bitte Deinen Webhoster.',

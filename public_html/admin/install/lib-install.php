@@ -1260,15 +1260,31 @@ function INST_listOfSupportedDBs($gl_path, $selected_dbtype, $list_innodb = fals
             $retval .= '<option value="' . $dbname . '"';
             if (! function_exists($info['fn'])) {
                 $retval .= ' disabled="disabled"';
+                unset($dbs[$dbname]);
             } elseif ($dbname == $selected_dbtype) {
                 $retval .= ' selected="selected"';
             }
             $retval .= '>' . $info['label'] . '</option>' . LB;
+        } else {
+            unset($dbs[$dbname]);
         }
+    }
+
+    $num_dbs = count($dbs);
+    if ($num_dbs == 0) {
+        $retval = '<span class="error">' . $LANG_INSTALL[108] . '</span>' . LB;
+    } elseif ($num_dbs == 1) {
+        $remaining = array_keys($dbs);
+        $retval = $dbs[$remaining[0]]['label']
+                . ' <input type="hidden" name="db_type" value="'
+                . $remaining[0] . '"' . XHTML . '>' . LB;
+    } else {
+        $retval = '<select name="db_type">' . LB . $retval . '</select>' . LB;
     }
 
     return $retval;
 }
+
 /**
 * Check for blank database password in production environment
 *
@@ -1285,4 +1301,5 @@ function INST_dbPasswordCheck($site_url, $db)
         return false;
     }
 }
+
 ?>

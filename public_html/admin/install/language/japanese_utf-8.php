@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | japanese_utf-8.php                                                        |
 // |                                                                           |
 // | Japanese language file for the Geeklog installation script                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -158,7 +158,8 @@ $LANG_INSTALL = array(
     104 => '不正な管理者パス',
     105 => '入力した管理者のディレクトリパスは不正確でした。もう一度やり直してください。',
     106 => 'PostgreSQL',
-    107 => 'Database Password is required for production environments.'
+    107 => 'Database Password is required for production environments.',
+    108 => 'No Database Drivers found!'
 );
 
 // +---------------------------------------------------------------------------+

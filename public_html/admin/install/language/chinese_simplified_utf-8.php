@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | chinese_simplified_utf-8.php                                              |
 // |                                                                           |
 // | Chinese language file for the Geeklog installation script                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -157,7 +157,8 @@ $LANG_INSTALL = array(
     104 => 'Incorrect Admin Directory Path',
     105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.',
     106 => 'PostgreSQL',
-    107 => 'Database Password is required for production environments.'
+    107 => 'Database Password is required for production environments.',
+    108 => 'No Database Drivers found!'
 );
 
 // +---------------------------------------------------------------------------+
