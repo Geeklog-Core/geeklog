@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-Apr ??, 2010 (1.7.0b1)
-------------
+Apr 4, 2010 (1.7.0b1)
+-----------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
@@ -30,7 +30,7 @@ Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
   advanced story editor mode (bug #0001020, patch provided by Chetan)
 - Fixed sort by date in search results (bug #0001002) [Sami]
 - Since we can now re-authenticate expired security tokens, we don't need to
-  display the token expire notice any longer. Exception: Users who logged in
+  display the token expiry notice any longer. Exception: Users who logged in
   through OpenID can't re-authenticate and will still get the message [Dirk]
 - Block Names can no longer be empty [Dirk]
 - When you had more than 50 blocks per side, disabling a block on one page of
@@ -105,7 +105,7 @@ Calendar Plugin
   provided by tuxcanfly)
 - Fixed an old bug in the event submission form: The text of the "Submit" button
   must match the text $LANG12[8] to be recognized. Changed the form to always
-  use that string instead of the one from Calendar plugin's language file
+  use that string instead of the one from the Calendar plugin's language file
   (originally reported by kokaku in 2006(!) and again by Tereso Ramos in 2010).
 
 Links Plugin
@@ -167,7 +167,7 @@ Static Pages Plugin 1.6.2
   Pages which have comments disabled [Dirk]
 - Added a config option to define the default sort order for the admin's list
   of Static Pages (feature request #0000812) [Dirk]
-- Made the initial size of the Static Pages edit area (when using FCKEditor)
+- Made the initial size of the Static Pages edit area (when using FCKeditor)
   larger (feature request #0001037) [Dirk]
 - If a page does not exist and the user has staticpages.edit rights, send them
   to the Static Page Editor (feature request #0000975) [Dirk]
