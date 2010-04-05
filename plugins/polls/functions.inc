@@ -1608,7 +1608,7 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
             . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
-        $sql = "SELECT {$_TABLES['comments']}.sid, pt.topic title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
+        $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title  title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
             . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }
