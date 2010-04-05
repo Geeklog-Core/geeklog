@@ -1992,7 +1992,7 @@ function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
             $fn_head = 'plugin_whatsnewsupported_' . $pi_name;
             if (function_exists($fn_head)) {
                 $supported = $fn_head();
-                if (is_array($supported)) {
+                if (is_array($supported) || ($numreturn > 0)) {
                     list($headline, $byline) = $supported;
     
                     $fn_new = 'plugin_getwhatsnewcomment_' . $pi_name;
