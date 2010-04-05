@@ -1607,11 +1607,10 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
             . " WHERE (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere}  GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
-        $sql = "SELECT {$_TABLES['comments']}.sid, sp.sp_title title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
+        $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
             . " WHERE (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }        
-  
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
