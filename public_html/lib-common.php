@@ -1951,21 +1951,32 @@ function COM_featuredCheck()
 {
     global $_TABLES;
 
-    $curdate = date( "Y-m-d H:i:s", time() );
-
+    // Look for multiple featured frontpage articles. If more than one pick the newest.
+    $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE featured = 1 AND draft_flag = 0 AND frontpage = 1 AND date <= NOW() ORDER BY date DESC LIMIT 2";
+    $resultB = DB_query($sql);
+    $numB = DB_numRows($resultB);
+    if ($numB > 1) {
+        $B = DB_fetchArray($resultB);
+        // un-feature all other featured frontpage story
+        $sql = "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND frontpage = 1 AND date <= NOW() AND sid NOT '{$B['sid']}'";
+        DB_query($sql);
+    }
+    
     // Loop through each topic
     $sql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL();
-    $result = DB_query( $sql );
-    $num = DB_numRows( $result );
-    for( $i = 0; $i < $num; $i++)
-    {
-        $A = DB_fetchArray( $result );
+    $result = DB_query($sql);
+    $num = DB_numRows($result);
+    for($i = 0; $i < $num; $i++) {
+        $A = DB_fetchArray($result);
 
-        if( DB_getItem( $_TABLES['stories'], 'COUNT(*)', "featured = 1 AND draft_flag = 0 AND tid = '{$A['tid']}' AND date <= '$curdate'" ) > 1 )
-        {
-            // OK, we have two featured stories in a topic, fix that
-            $sid = DB_getItem( $_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1" );
-            DB_query( "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'" );
+        $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE featured = 1 AND draft_flag = 0 AND tid = '{$A['tid']}' AND date <= NOW() ORDER BY date DESC LIMIT 2";
+        $resultB = DB_query($sql);
+        $numB = DB_numRows($resultB);
+        if ($numB > 1) {
+            // OK, we have two or more featured stories in a topic, fix that
+            $B = DB_fetchArray($resultB);
+            $sql = "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND tid = '{$A['tid']}' AND date <= NOW() AND sid NOT '{$B['sid']}'";
+            DB_query($sql);            
         }
     }
 }
