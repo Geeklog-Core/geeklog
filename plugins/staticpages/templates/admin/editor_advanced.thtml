@@ -16,8 +16,8 @@
               <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
           </tr>
           <tr>
-              <td align="right">{lang_title}:</td>
-              <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
+              <td align="right" style="white-space:nowrap;">{lang_page_title}:</td>
+              <td><input type="text" size="48" maxlength="255" name="sp_page_title" value="{sp_page_title}"{xhtml}></td>
           </tr> 
           <tr>
               <td align="right">{lang_addtomenu}:</td>
