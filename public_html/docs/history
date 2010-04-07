@@ -1,10 +1,23 @@
 Geeklog History/Changes:
 
-Apr 4, 2010 (1.7.0b1)
------------
+Apr ??, 2010 (1.7.0b2)
+------------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
+
+Changes since 1.6.1rc1:
+- Fixed COM_featuredCheck to ensure there's only one featured story on the front
+  page [Tom]
+- Fixed Last 10 Comments display in user profiles [Tom]
+
+Static Pages Plugin
+-------------------
+- Fixed Page Title when Advanced Editor is enabled (bug #0001113)
+
+
+Apr 4, 2010 (1.7.0b1)
+-----------
 
 - Fixed paths for image upload in FCKeditor (bug #0000931) and disabled Flash
   upload [Dirk]
