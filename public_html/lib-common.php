@@ -2958,7 +2958,7 @@ function COM_handleCode( $str )
 */
 function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
-    global $_CONF;
+    global $_CONF, $_USER;
 
     // replace any \ with &#092; (HTML equiv)
     $str = str_replace('\\', '&#092;', COM_stripslashes($str) );
