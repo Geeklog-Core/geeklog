@@ -1958,7 +1958,7 @@ function COM_featuredCheck()
     if ($numB > 1) {
         $B = DB_fetchArray($resultB);
         // un-feature all other featured frontpage story
-        $sql = "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND frontpage = 1 AND date <= NOW() AND sid NOT '{$B['sid']}'";
+        $sql = "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND frontpage = 1 AND date <= NOW() AND sid <> '{$B['sid']}'";
         DB_query($sql);
     }
     
