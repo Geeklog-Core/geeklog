@@ -1125,9 +1125,14 @@ if (INST_phpOutOfDate()) {
 
             foreach ($file_list as $file) {
                 if (!is_writable($file)) {
+                    if (is_file($file)) {
+                        $perm_should_be = '666';
+                    } else {
+                        $perm_should_be = '777';
+                    }
                     $permission = sprintf("%3o", @fileperms($file) & 0777);
                     $display_permissions    .= '<p><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
-                                            . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' 777</span> ('
+                                            . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' '. $perm_should_be .'</span> ('
                                             . $LANG_INSTALL[13] . ' ' . $permission . ')</p>' . LB ;
                     $chmod_string .= $file . ' ' ;
                     $num_wrong++;
