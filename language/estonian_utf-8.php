@@ -221,7 +221,9 @@ $LANG03 = array(
     41 => 'Tere %s,',
     42 => 'Loobu tellimisest',
     43 => 'Loobu vastuste teavitustest.',
-    44 => 'Your Name'
+    44 => 'Your Name',
+    45 => 'Delete',
+    46 => 'Cancel'
 );
 
 ###############################################################################

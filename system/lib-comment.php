@@ -959,6 +959,23 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $comment_template->set_var('lang_logoutorcreateaccount',
                     $LANG03[03]);
             }
+            
+            if ($mode == 'editsubmission') {
+                $comment_template->set_var('edit_submission_controls',
+                      '<table><tr><td>'
+                    . '<form style="display:inline" action="' . $_CONF['site_admin_url'] . '/moderation.php" method="post">'
+                    . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $comment_template->get_var('gltoken') . '"' . XHTML . '>'
+                    . '<input type="hidden" name="mode" value="moderation"' . XHTML .'>'
+                    . '<input type="hidden" name="action[0]" value="delete"' . XHTML . '>'
+                    . '<input type="hidden" name="id[0]" value="' . $cid . '"' . XHTML . '>'
+                    . '<input type="hidden" name="type" value="comment"' . XHTML . '>'
+                    . '<input type="hidden" name="count" value="1"' . XHTML . '>'
+                    . '<input type="submit" value="' . $LANG03[45] . '"' . XHTML . '>'
+                    . '</form> <form style="display:inline" action="' . $_CONF['site_admin_url'] . '/moderation.php" method="post">'
+                    . '<input type="submit" value="' . $LANG03[46] . '"' . XHTML . '>'
+                    . '</form></td></tr></table>'
+                 );
+            }
 
             if ($postmode == 'html') {
                 $comment_template->set_var ('show_texteditor', 'none');

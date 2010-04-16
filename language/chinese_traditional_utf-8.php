@@ -223,7 +223,9 @@ $LANG03 = array(
     41 => 'Hello %s,',
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications',
-    44 => 'Your Name'
+    44 => 'Your Name',
+    45 => 'Delete',
+    46 => 'Cancel'
 );
 
 ###############################################################################
