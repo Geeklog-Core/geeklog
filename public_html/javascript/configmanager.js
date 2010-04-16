@@ -93,8 +93,25 @@ function add_element(tbl, arr_name, index, disp_type, def_val, deletable){
 }
 
 function gl_cfg_remove(self){
- cell = self.parentNode.parentNode;
- cell.parentNode.removeChild(cell);
+ var tableRow = self.parentNode.parentNode;
+ var tableBody = tableRow.parentNode;
+ var table = tableBody.parentNode;
+ var index = 0;
+ tableBody.removeChild(tableRow);
+ // reindex numerical lists
+ if (table.className.match(new RegExp('(\\s|^)numerical_config_list(\\s|$)'))) {
+  for (var i = 0; i < tableBody.childNodes.length; i += 1) {
+   if (tableBody.childNodes[i].tagName == "TR"
+       && tableBody.childNodes[i].childNodes[0].childNodes[0].nodeName == "#text") {
+     var textNode = tableBody.childNodes[i].childNodes[0].childNodes[0];
+     if (!isNaN(parseInt(textNode.nodeValue))) {
+       textNode.nodeValue = '' + index;
+       index += 1;
+     }
+   }
+  }
+ }
+ 
 }
 
 function add_array(tbl, arr_name, arr_index, key_names, arr_type, deletable){

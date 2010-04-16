@@ -756,6 +756,11 @@ class config {
                                 true);
             }
             $t->set_var('my_elements', $result);
+            // if the values are indexed numerically, add a class to the table
+            // for identification. The UI code can take advantage of it
+            if ($val === array_values($val)) {
+                $t->set_var('arr_table_class_list', 'numerical_config_list');
+            }
             return $t->parse('output', 'list-element');
         }
     }

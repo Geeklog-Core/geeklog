@@ -49,7 +49,7 @@
 <input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);"{xhtml}>
 {delete}
 <input type="hidden" value="true" name="{name}[placeholder]"{xhtml}>
-<table style="display:none" id="arr_table">
+<table style="display:none" id="arr_table" class="{arr_table_class_list}">
 <col width="100">
 <col width="100%">
 {my_elements}
