@@ -46,5 +46,4 @@
                                                     </tr>
                                                 </table>
                                             </form>
-                                            {edit_submission_controls}
                                 {end_block}
