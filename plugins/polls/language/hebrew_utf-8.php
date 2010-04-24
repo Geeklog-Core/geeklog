@@ -8,7 +8,6 @@
 # Copyright (C) 2009
 # http://lior.weissbrod.com
 # Version 1.6.1#1
-
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -60,8 +59,8 @@ $LANG_POLLS = array(
     'pollclosed' => 'ההצבעה לסקר זה סגורה.',
     'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
     'start_poll' => 'התחילו את הסקר',
-    'no_new_polls' => 'No new polls',
-    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
+    'no_new_polls' => 'אין סקרים חדשים',
+    'deny_msg' => 'הגישה לסקר זה לא מאושרת. הסקר הוזז/נמחק או שאין ברשותכם הרשאות מתאימות.'
 );
 
 ###############################################################################
@@ -135,9 +134,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
     'default_permissions' => 'הרשאות ברירת המחדל של סקר',
-    'newpollsinterval' => 'New Polls Interval',
-    'hidenewpolls' => 'New Polls',
-    'title_trim_length' => 'Title Trim Length',
+    'newpollsinterval' => 'תוקף סקרים חדשים',
+    'hidenewpolls' => 'סקרים חדשים',
+    'title_trim_length' => 'אורך כותרות מקוצרות',
     'meta_tags' => 'אפשרו תגיות Meta'
 );
 
@@ -146,9 +145,9 @@ $LANG_configsubgroups['polls'] = array(
 );
 
 $LANG_fs['polls'] = array(
-    'fs_main' => 'General Polls Settings',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'הגדרות סקר כלליות',
+    'fs_whatsnew' => 'קוביית המידע מה חדש',
+    'fs_permissions' => 'הרשאות ברירת המחדל'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -156,7 +155,7 @@ $LANG_configselects['polls'] = array(
     0 => array('כן' => 1, 'לא' => 0),
     1 => array('כן' => true, 'לא' => false),
     2 => array('לפי סדר שליחה' => 'submitorder', 'לפי הצבעות' => 'voteorder'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
+    5 => array('החבאה' => 'hide', 'הצגה - שימוש בתאריך העדכון' => 'modified', 'הצגה - שימוש בתאריך היצירה' => 'created'),
     9 => array('הפניה לסקר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת רשימה ציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
 );

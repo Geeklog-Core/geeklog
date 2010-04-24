@@ -41,13 +41,13 @@ $LANG_STATIC = array(
     'writtenby' => 'נכתב על ידי',
     'date' => 'עידכון אחרון',
     'title' => 'כותרת',
-    'page_title' => 'Page Title',
+    'page_title' => 'כותרת עמוד',
     'content' => 'תוכן',
     'hits' => 'לחיצות',
     'staticpagelist' => 'רשימת עמודים סטטיים',
     'url' => 'כתובת',
     'edit' => 'עריכה',
-    'lastupdated' => 'עודכן לאחרונה ב:',
+    'lastupdated' => 'עודכן לאחרונה ב',
     'pageformat' => 'פורמט העמוד',
     'leftrightblocks' => 'קוביות מידע ימניות ושמאליות',
     'blankpage' => 'עמוד ריק',
@@ -102,7 +102,7 @@ $LANG_STATIC = array(
     'title_copy' => 'יצירת עותק של עמוד זה',
     'title_display' => 'הציגו את העמוד',
     'select_php_none' => 'אל תבצע PHP',
-    'select_php_return' => 'בצע PHP (return)',
+    'select_php_return' => 'בצע PHP (ב-return)',
     'select_php_free' => 'בצע PHP',
     'php_not_activated' => "השימוש ב-PHP בעמודים סטטיים לא מופעל. אנא ראו את <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">הדוקומנטציה</a> בשביל פרטים.",
     'printable_format' => 'פורמט להדפסה',
@@ -112,16 +112,16 @@ $LANG_STATIC = array(
     'submit' => 'שליחה',
     'no_new_pages' => 'אין עמודים חדשים',
     'pages' => 'עמודים',
-    'comments' => 'Comments',
-    'draft' => 'Draft',
-    'draft_yes' => 'Yes',
-    'draft_no' => 'No'
+    'comments' => 'תגובות',
+    'draft' => 'טיוטה',
+    'draft_yes' => 'כן',
+    'draft_no' => 'לא'
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';
 $PLG_staticpages_MESSAGE19 = 'העמוד שלכם נשמר בהצלחה.';
 $PLG_staticpages_MESSAGE20 = 'העמוד שלכם נמחק בהצלחה.';
-$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
+$PLG_staticpages_MESSAGE21 = 'עמוד זה לא קיים עדיין. כדי ליצור את העמוד, נא מלאו את הטופס שלהלן. אם הגעתם לכאן בטעות, ליחצו על כפתור הביטול.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'אין תמיכה בשידרוג ה-plugin.';
@@ -137,7 +137,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'איפשור PHP?',
     'sort_by' => 'מיון קוביות מידע מרכזיות לפי',
     'sort_menu_by' => 'מיון פריטים בתפריט לפי',
-    'sort_list_by' => 'Sort Admin List by',
+    'sort_list_by' => 'מיון רשימת ניהול לפי',
     'delete_pages' => 'מחיקת עמודים עם יוצריהם?',
     'in_block' => 'עטיפת העמודים בקוביית מידע?',
     'show_hits' => 'הצגת כמות לחיצות?',
@@ -148,8 +148,8 @@ $LANG_confignames['staticpages'] = array(
     'aftersave' => 'לאחר שמירת עמוד',
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
     'meta_tags' => 'אפשרו תגיות Meta',
-    'comment_code' => 'Comment Default',
-    'draft_flag' => 'Draft Flag Default',
+    'comment_code' => 'ברירת המחדל של תגובות',
+    'draft_flag' => 'ברירת המחדל של סימון כטיוטה',
     'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
     'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
     'title_trim_length' => 'אורך קיצוץ כותרות',
@@ -177,11 +177,11 @@ $LANG_configselects['staticpages'] = array(
     1 => array('כן' => true, 'לא' => false),
     2 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title'),
     3 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title', 'תווית' => 'label'),
-    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
+    4 => array('תאריך' => 'date', 'קוד זיהוי עמוד' => 'id', 'כותרת' => 'title', 'היוצר' => 'author'),
+    5 => array('החבאה' => 'hide', 'הצגה - שימוש בתאריך העדכון' => 'modified', 'הצגה - שימוש בתאריך היצירה' => 'created'),
     9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1)
 );
 
 ?>

@@ -142,7 +142,6 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'פעולות Spam-X',
     'notification_email' => 'התרעה בהודעת אימייל',
-    'admin_override' => 'לא לסנן הודעות מנהלים',
     'logging' => 'איפשור לוג',
     'timeout' => 'פקיעת זמן מוקצב'
 );

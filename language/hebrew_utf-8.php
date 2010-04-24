@@ -2,7 +2,7 @@
 
 ###############################################################################
 # hebrew.php
-# Version 1.6.1#1
+# Version 1.7.0#1
 # Copyright (C) 2009 http://lior.weissbrod.com
 #
 # Originally:
@@ -222,7 +222,7 @@ $LANG03 = array(
     41 => 'שלום %s,',
     42 => 'ביטול הרשמה',
     43 => 'ביטול הרשמה מהודעות על תגובות',
-    44 => 'Your Name'
+    44 => 'שמכם'
 );
 
 ###############################################################################
@@ -386,9 +386,9 @@ $LANG04 = array(
     160 => '(מקסימום %d x %d פיקסלים, %d bytes; %s)',
     161 => 'יותאם למטה',
     162 => 'לא יותאם',
-    163 => 'Re-Authentication Failed',
-    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
-    165 => 'Use Advanced Editor'
+    163 => 'האימות מחדש נכשל',
+    164 => 'עברתם על מספר הפעמים המותר לאימות מחדש. הפעולה בוטלה ושינוייכם האחרונים נאבדו, מצטערים.',
+    165 => 'שימוש בעורך מתקדם'
 );
 
 ###############################################################################
@@ -536,8 +536,8 @@ $LANG09 = array(
     68 => 'מיון לפי',
     69 => 'כותרות בלבד',
     70 => 'לא זמין ...',
-    71 => 'asc',
-    72 => 'desc'
+    71 => 'סדר עולה',
+    72 => 'סדר יורד'
 );
 
 ###############################################################################
@@ -700,7 +700,7 @@ $LANG21 = array(
     27 => 'קוביית מידע PHP',
     28 => 'אפשרויות קוביית מידע PHP',
     29 => 'פונקציית קוביית מידע',
-    30 => 'אם ברצונכם שאחת מקוביות המידע שלכם תשתמש בקוד PHP, הכניסו לעיל את שם הפונקציה. שם הפונקציה שלכם חייב להתחיל עם התחילית "_phpblock" (לדוגמא, phpblock_getweather). ללא תחילית זו, הפוקנציה שלכם *לא* תפעל. אנו עושים זאת כדי למנוע מאנשים שאולי פרצו להתקנת התוכנה מלהשתמש בקריאות פונקציה שרירותיות שעלולות לפגוע במערכת שלכם. אם תכללו סוגריים "()" אחרי שם הפונקציה שלכם, ישלחו לפונקציה שני פרמטרים. פרמטר 1 יהיה array עם שורת המידע של קוביית מידע זו בטבלה gl_blocks. פרמטר 2 יהיה מחרוזת טקסט המכילה כל טקסט שהוא שתשימו בין הסוגריים. לבסוף, מומלץ שתשימו את כל קוד קוביית המידע PHP שלך בתוך <span dir=ltr>/path/to/geeklog/system/lib-custom.php</span>. דבר זה יאפשר לקוד להישאר איתכם אפילו כאשר הנכם מעדכנים לגירסת תוכנה חדשה יותר.',
+    30 => 'אם ברצונכם שאחת מקוביות המידע שלכם תשתמש בקוד PHP, הכניסו לעיל את שם הפונקציה. שם הפונקציה שלכם חייב להתחיל עם התחילית "_phpblock" (לדוגמא, phpblock_getweather). ללא תחילית זו, הפוקנציה שלכם *לא* תפעל. אנו עושים זאת כדי למנוע מאנשים שאולי פרצו להתקנת התוכנה מלהשתמש בקריאות פונקציה שרירותיות שעלולות לפגוע במערכת שלכם. אם תכללו סוגריים "()" אחרי שם הפונקציה שלכם, ישלחו לפונקציה שני פרמטרים. פרמטר 1 יהיה array עם שורת המידע של קוביית מידע זו בטבלת gl_blocks. פרמטר 2 יהיה מחרוזת טקסט המכילה כל טקסט שהוא שתשימו בין הסוגריים. לבסוף, מומלץ שתשימו את כל קודי קוביות מידע PHP שלכם בתוך <span dir=ltr>/path/to/geeklog/system/lib-custom.php</span>. דבר זה יאפשר לקוד להישאר איתכם אפילו כאשר הנכם מעדכנים לגירסת תוכנה חדשה יותר.',
     31 => 'טעות בקוביית מידע PHP. הפונקציה, %s, לא קיימת.',
     32 => 'טעות של שדה/ות לא מלא/ים',
     33 => 'הנכם חייבים להכניס קישור לקובץ ההזנה בשביל קוביות מידע של פורטלים',
@@ -720,7 +720,7 @@ $LANG21 = array(
     47 => '',
     48 => 'שם קוביה',
     49 => ' (ללא רווחים וחייב להיות ייחודי)',
-    50 => 'The Block Name can not be empty',
+    50 => 'שם קוביית המידע לא יכול להיות ריק',
     51 => 'כולל <span dir=ltr><b>http://</b></span>',
     52 => 'אם תשאירו שדה זה ריק, אייקון העזרה של קוביית מידע זו לא יופיע',
     53 => 'אפשרו',
@@ -965,9 +965,9 @@ $LANG28 = array(
     85 => 'אם שכחתם את הסיסמה, השתמשו בקישור הבא: %s',
     86 => 'שיוך',
     87 => 'תזכורות',
-    88 => 'Default Group',
-    89 => 'Check to make this a default group for new users',
-    90 => 'Apply "Default Group" change to existing user accounts'
+    88 => 'קבוצת ברירת מחדל',
+    89 => 'אפשרו לקבוצה זו להיות קבוצת ברירת מחדל למשתמשים חדשים',
+    90 => 'הוסיפו את השינוי של "קבוצת ברירת מחדל" לחשבונות משתמשים קיימים'
 );
 
 ###############################################################################
@@ -1591,7 +1591,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => 'צרו חדש (מתקדם)',
     'enabled' => 'מאופשר',
     'title' => 'כותרת',
-    'page_title' => 'Page Title',
+    'page_title' => 'כותרת עמוד',
     'type' => 'סוג',
     'topic' => 'נושא',
     'help_url' => 'כתובת קובץ עזרה',
@@ -1611,9 +1611,9 @@ $LANG_ADMIN = array(
     'meta_keywords' => 'Meta Keywords',
     'na' => 'לא זמין',
     'token_expiry' => 'יש לכם עד %s לערוך שינויים. אחרי זמן זה, כרטיס הביטחון שמוטמע בעמוד זה יאבד את תוקפו ואתם תאבדו את השינויים שלכם.',
-    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
-    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate' => 'Authenticate'
+    'token_expired' => 'כרטיס הביטחון לפעולה זו פג. נא אמתו מחדש כדי להמשיך.',
+    'reauth_msg' => 'כרטיס הביטחון לפעולה זו פג. אם ברצונכם להמשיך בפעולה זו, נא אמתו מחדש להלן. כך יובטח ששינויים שהרגע ביצעתם לא יאבדו.',
+    'authenticate' => 'אימות'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1761,8 +1761,8 @@ $LANG_confignames['Core'] = array(
     'default_perm_cookie_timeout' => 'פסק זמן קבוע',
     'session_cookie_timeout' => 'פסק זמן זמני',
     'cookie_path' => 'נתיב לעוגייה',
-    'cookiedomain' => 'דומיין עוגייה',
-    'cookiesecure' => 'אבטחת עוגייה',
+    'cookiedomain' => 'דומיין העוגייה',
+    'cookiesecure' => 'עוגייה מאובטחת',
     'lastlogin' => 'תיעוד הזדהות אחרונה במערכת',
     'num_search_results' => 'כמות תוצאות החיפוש',
     'loginrequired' => 'נדרשת הזדהות במערכת?',
@@ -1858,7 +1858,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_height' => 'אורך התמונה המקסימלי?',
     'max_photo_size' => 'גודל התמונה המקסימלי?',
     'use_gravatar' => 'שימוש ב-Gravatar?',
-    'gravatar_rating' => 'איפשור דירוג הצפייה של Gravatar',
+    'gravatar_rating' => 'דירוג צפייה לפי Gravatar',
     'force_photo_width' => 'חיוב רוחב תמונה',
     'default_photo' => 'תמונת ברירת המחדל',
     'commentspeedlimit' => 'הגבלת מהירות תגובות',
@@ -1906,7 +1906,7 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'הצגת תחומי עמוד?',
     'search_separator' => 'מפריד קבוצות',
     'search_def_keytype' => 'שיטת חיפוש ברירת המחדל',
-    'search_def_sort' => 'Default Sort Order'
+    'search_def_sort' => 'ברירת המחדל של סדר מיון'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1989,10 +1989,10 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
-    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
-    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
+    25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user'),
+    26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
+    27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc')
 );
 
 ?>
