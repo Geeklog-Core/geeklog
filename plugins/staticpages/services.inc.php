@@ -64,7 +64,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
 
     if (version_compare(PHP_VERSION, '5.0.0', '>=') &&
             (! $_CONF['disable_webservices'])) {
-        require_once $_CONF['path_system'] . '/lib-webservices.php';
+        require_once $_CONF['path_system'] . 'lib-webservices.php';
     }
 
     $output = '';
