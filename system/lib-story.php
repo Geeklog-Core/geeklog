@@ -1151,6 +1151,10 @@ function service_submit_story($args, &$output, &$svc_msg)
     }
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
+    if (version_compare(PHP_VERSION, '5.0.0', '>=') &&
+            (! $_CONF['disable_webservices'])) {
+        require_once $_CONF['path_system'] . 'lib-webservices.php';
+    }
 
     $gl_edit = false;
     if (isset($args['gl_edit'])) {
@@ -1308,7 +1312,15 @@ function service_submit_story($args, &$output, &$svc_msg)
     $args['sid'] = COM_sanitizeID($args['sid']);
     if (!$gl_edit) {
         if (strlen($args['sid']) > STORY_MAX_ID_LENGTH) {
-            $args['sid'] = WS_makeId($args['slug'], STORY_MAX_ID_LENGTH);
+            $slug = '';
+            if (isset($args['slug'])) {
+                $slug = $args['slug'];
+            }
+            if (function_exists('WS_makeId')) {
+                $args['sid'] = WS_makeId($slug, STORY_MAX_ID_LENGTH);
+            } else {
+                $args['sid'] = COM_makeSid();
+            }
         }
     }
     $story = new Story();

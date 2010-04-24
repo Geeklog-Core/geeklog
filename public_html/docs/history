@@ -7,6 +7,8 @@ Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
 
 Changes since 1.7.0b1:
+- Fixed call to undefined function WS_makeId() when using very long story ids
+  (bug #0001140) [Dirk]
 - Fixed cloning of a story (bug #0001127, patch provided by Eric Brisco)
 - The installation script now recommends setting permissions to 666 for files
   and 777 for directories that need to be writable (bug #0001126, patch
