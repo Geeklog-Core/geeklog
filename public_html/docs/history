@@ -11,6 +11,8 @@ Changes since 1.6.1rc1:
   page [Tom]
 - Fixed Last 10 Comments display in user profiles [Tom]
 
+- Updated Italian language file, provided by Rouslan Placella
+
 Static Pages Plugin
 -------------------
 - Fixed Page Title when Advanced Editor is enabled (bug #0001113)
