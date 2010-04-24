@@ -10,12 +10,40 @@
 
 <body>
 <p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
-<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更点</div>  
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更点</div>
 
 <h1>変更点</h1>
 
-<p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更点の詳細なリストは、  
-<a href="history.html">ChangeLog</a>をご覧ください。<tt>docs/changed-files</tt>には、前回リリース以来変更されたファイルの一覧があります。</p>
+<p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更点の詳細なリストは、<a href="history.html">ChangeLog</a>をご覧ください。<tt>docs/changed-files</tt>には、前回リリース以来変更されたファイルの一覧があります。</p>
+
+<h2><a name="changes170">Geeklog 1.7.0</a></h2>
+
+<h3>新機能と改善点</h3>
+
+<ul>
+<li>Geeklogは、新たに <strong>PostgreSQL</strong> データベースをサポートします。この機能は Google Summer of Code 2009で、Stan Palatnik により開発されました。</li>
+<li>セキュリティートークン (CSRFプロテクション) が期限切れになったとき、ユーザは<a href="http://wiki.geeklog.net/index.php/Re-Authentication_for_expired_Tokens">再認証</a>できます。
+    再認証で成功すれば、編集内容を失うことなく操作を継続できます。</li>
+<li>Rootユーザにだけ選択が許可されていたHTML フィルターのスキップは、アクセス権として独立しました。</li>
+<li>デフォルトグループが追加されました。新規ユーザは、デフォルトグループに最初から属します。</li>
+<li>新着ブロックにのみ表示されていたプラグインのコメントが、ユーザのプロファイルにも表示されるようになりました。(新しいPlugin API 関数 - プラグインの変更が必要)。</li>
+<li>認証が必要なページの表示には、ログインフォームが表示されます。</li>
+<li>アドバンストエディタが有効なサイトでは、ユーザがマイアカウントの設定で有効にするか無効にするか選べるようになりました。</li>
+<li>記事コピーオプションが追加されました。(静的ページプラグインやカレンダープラグインのように)</li>
+<li>新しく自動タグ <code>[user:]</code> が提供されました。ユーザプロファイルへのリンクができます。</li>
+</ul>
+
+<h3>その他の変更</h3>
+
+<ul>
+<li>GeeklogのPHPとMySQLのシステム条件は、 <strong>PHP 4.4.0</strong>
+    と <strong>MySQL 4.0.18</strong>に引き上げられました。</li>
+<li><a href="http://www.fckeditor.net/">FCKeditor</a> 2.6.6 にアップグレードして同梱しました。</li>
+<li><a href="theme.html#changes">theme changes</a>も参照してください。</li>
+</ul>
+
+<p>このリリースもまたGoogle Summer of Code 2010の学生たちのたくさんのパッチと開発を含んでいます。ありがとうございます！</p>
+
 
 <h2><a name="changes161">Geeklog 1.6.1</a></h2>
 
@@ -263,7 +291,7 @@
 
 <ul>
 <li>Microsoft SQL Serverをサポート。今回のリリースより、GeeklogをMicrosoft SQL Serverにインストールできるようになりました。MySQLだけではなくなったのです。MS SQLサポートはRandy Kolenkoにより開発されました。Randy、ありがとう!<br>
-    サードパーティによるプラグインがMicrosoft SQL Serverで動作するには、MS SQLをサポートする必要があります。同梱しているプラグイン(カレンダ, リンク, アンケート, Spam-X, 静的ページ)は既にMS SQLをサポートするようアップグレード済みです。</li>
+    サードパーティによるプラグインがMicrosoft SQL Serverで動作するには、MS SQLをサポートする必要があります。同梱しているプラグイン(カレンダ、リンク、アンケート、Spam-X、静的ページ)は既にMS SQLをサポートするようアップグレード済みです。</li>
 <li><a href="calendar.html">カレンダプラグイン</a>: 以前は本体に組み込まれていたカレンダとイベント機能は今回からプラグインとして分離されました。Geeklog 1.4.0で実施された<a href="polls.html">アンケート</a>と<a href="links.html">リンク</a>機能に始まるプラグイン化の流れはこれで終了し、Geeklogのモジュール化が進みました。サイトに不要な機能を無効にしたり差し替えることが容易になっています。</li>
 <li><a href="http://wiki.geeklog.net/wiki/index.php/Multi-Language_Support">多言語サポート(Multi-language support)</a>： Geeklogを用いて真の多言語サイトの構築が可能になりました。ナビゲーションだけでなくサイトのコンテンツもまた、言語を切り替えれば追随します。</li>
 <li><a href="http://www.fckeditor.net/">FCKeditor</a> 2.3.1を同梱しました。画像をアップロードするファイルマネージャを再び同梱するようにしました。</li>
@@ -371,7 +399,7 @@
 <h3>セキュリティとスパム防御</h3>
 <ul>
     <li>ログインの試行には速度制限があり、デフォルトは5分間に3回までの試行です。(config.phpの<a href="config.html#login">login</a>)で設定可能。</li>
-    <li>COM_mailではEメールのTo:, From: Subject:のフィールドに含まれる改行コードを除去します。</li>
+    <li>COM_mailではEメールのTo:、From: Subject:のフィールドに含まれる改行コードを除去します。</li>
     <li>新しいユーザアカウントが作成され、ユーザによる投稿承認がconfig.phpで許可されると、万一アカウントの作成が途中で失敗した場合には、新しいアカウントが適切に承認待ちになることを保証しています。</li>
     <li>メールがスパムと確認されると、速度制限が生じます。 (例えば、新たに投稿を行う前に、送信者は速度制限が終了となるのを待つ必要があります。)</li>
     <li>スパムメールは、403&ldquo;禁止&rdquo; HTTP結果コードを取得します。</li>
@@ -724,7 +752,7 @@
 <p>寄稿者: Gene Wood、 Blaine Lang、 Tom Willet、及び Roger Websterが本リリースに寄稿いたしました。</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
 

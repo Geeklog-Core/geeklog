@@ -75,7 +75,7 @@ $LANG01 = array(
     23 => '管理レベル',
     24 => 'ゲストユーザ',
     25 => 'コメントを追加',
-    26 => 'コメントは投稿者の責任においてなされるものであり、サイト管理者は責任を負いません。',
+    26 => 'サイト管理者はコメントに関する責任を負いません。',
     27 => '最新の投稿',
     28 => '削除',
     29 => '-',
@@ -155,7 +155,7 @@ $LANG01 = array(
     103 => 'データベース',
     104 => ':',
     105 => 'グループメール',
-    106 => '閲覧件数',
+    106 => '閲覧数',
     107 => 'GLバージョンテスト',
     108 => 'キャッシュをクリア',
     109 => '迷惑報告',
@@ -168,7 +168,7 @@ $LANG01 = array(
     116 => 'トラックバック',
     117 => '記事一覧',
     118 => '続きのページへ:',
-    119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">パスワードを忘れたら</a>",
+    119 => "<a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\" rel=\"nofollow\">パスワード再設定</a>",
     120 => 'このコメントへの永久リンク',
     121 => 'コメント (%d件)',
     122 => 'トラックバック (%d件)',
@@ -229,7 +229,7 @@ $LANG03 = array(
     41 => 'こんにちは %s,',
     42 => '通知解除',
     43 => '返信の通知を解除する',
-    44 => 'Your Name'
+    44 => 'あなたの名前'
 );
 
 ###############################################################################
@@ -260,8 +260,8 @@ $LANG04 = array(
     22 => '新規登録',
     23 => "{$_CONF['site_name']}にユーザアカウントを登録すると、コメントや記事の投稿をあなたの名前で投稿できます。そうでなければゲストユーザとしてしか投稿できません。なお、サイト上でメールアドレスが表示されることはありませんのでご安心ください。ユーザ名は30文字以内で、半角・全角どちらも利用できます。",
     24 => 'パスワードはここに入力されたメールアドレス宛てに送信されます。',
-    25 => 'パスワードを忘れた方',
-    26 => 'ご登録頂いているユーザ名またはメールアドレスの<strong>どちらかを入力</strong>して『送信』ボタンを押してください。ご登録のメールアドレス宛にパスワード再発行用のURLを記載したメールが送信されます。',
+    25 => 'パスワード再設定',
+    26 => 'ご登録頂いているユーザ名またはメールアドレスの<strong>どちらかを入力</strong>して『送信』ボタンを押してください。ご登録のメールアドレス宛にパスワード再設定用のURLを記載したメールが送信されます。',
     27 => '新規登録',
     28 => '送信',
     29 => 'ログアウトしました:',
@@ -300,13 +300,13 @@ $LANG04 = array(
     62 => 'デフォルトは100件です',
     63 => "パスワードをメールで送信しました。メッセージにログイン方法をご案内しています。{$_CONF['site_name']}のご利用をお待ちしています。",
     64 => 'コメントの設定:',
-    65 => 'ログインしてください',
-    66 => 'ログインしてください',
+    65 => '再度ログインしてください',
+    66 => 'ログインに失敗しました。再度ログインしてください。',
     67 => '登録日時',
     68 => '認証の保存期間',
     69 => 'いったんログインした後、どのくらい認証情報を残しますか?',
     70 => "{$_CONF['site_name']}の表示と内容を設定",
-    71 => "{$_CONF['site_name']}では、レイアウトを自由に変えることができます。そのためには、まず、{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">登録</a>する必要があります。もし、すでに登録済みならば左のフォームを利用してログインしてください。",
+    71 => "{$_CONF['site_name']}では、レイアウトを自由に変えることができます。そのためには、まず、{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">登録</a>する必要があります。もし、すでに登録済みなら左のフォームを利用してログインしてください。",
     72 => 'テーマ',
     73 => '言語',
     74 => 'このサイトのデザインを変更',
@@ -323,12 +323,12 @@ $LANG04 = array(
     85 => 'コメントの総数:',
     86 => 'ユーザのすべての投稿を検索',
     87 => 'あなたのログイン名',
-    88 => "%s さん、こんにちは。\n\n{$_CONF['site_name']}よりお知らせです。\n\n以下のページよりパスワード再発行の手続きを行い、そのパスワードで\n今後はログインするようにしてください。\n\nなお、このメールに覚えがない場合、他の方がメールアドレスを間違えて\n入力された可能性があります。パスワードを変更されることはございません\nのでご安心ください。\n\n",
+    88 => "%s さん、こんにちは。\n\n{$_CONF['site_name']}よりお知らせです。\n\n以下のページよりパスワード再設定の手続きを行い、そのパスワードで\n今後はログインするようにしてください。\n\nなお、このメールに覚えがない場合、他の方がメールアドレスを間違えて\n入力された可能性があります。パスワードを変更されることはございません\nのでご安心ください。\n\n",
     89 => "パスワードを変えたくない場合はこのメッセージを無視してください。(パスワードは変わりません。) \n\n",
-    90 => '新しいパスワードを入力して『再発行』ボタンを押してください。',
-    91 => '再発行',
-    92 => 'パスワードを再発行する',
-    93 => 'パスワード再発行は %d 秒前に行われています。%d 秒お待ちください。',
+    90 => '新しいパスワードを入力して『再設定』ボタンを押してください。',
+    91 => '再設定',
+    92 => 'パスワードを再設定する',
+    93 => 'パスワード再設定は %d 秒前に行われています。%d 秒お待ちください。',
     94 => 'アカウント（"%s"）を削除',
     95 => 'あなたのアカウントを削除するには、下の「アカウント削除」ボタンをクリックしてください。ただし、あなたのアカウント名で投稿された記事やコメントは<strong>削除されません</strong>。これらの記事やコメントは「ゲストユーザ」の投稿として表示されます。',
     96 => 'アカウント削除',
@@ -354,7 +354,7 @@ $LANG04 = array(
     116 => 'アカウントが有効になるのを待機しています',
     117 => 'あなたのアカウントは管理者が有効にするのを待っています。管理者が承認するまでログインできません。',
     118 => "{$_CONF['site_name']} のあなたのアカウントが有効になりました。以下のリンクから、あなたのユーザ名(<username>)とメールで送られてきたパスワードでログインできます。",
-    119 => 'パスワードを忘れた場合、以下のリンクから新しいパスワードを再発行できます。',
+    119 => 'パスワードを紛失した場合、以下のリンクから新しいパスワードを再設定できます。',
     120 => 'アカウントが有効になりました。',
     121 => 'サービス',
     122 => '申し訳ありませんが、ユーザの新規登録は停止中です。',
@@ -393,9 +393,9 @@ $LANG04 = array(
     160 => '(最大. %d X %d ピクセル, %d バイト; %s)',
     161 => 'リサイズ',
     162 => 'リサイズなし',
-    163 => 'Re-Authentication Failed',
-    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
-    165 => 'Use Advanced Editor'
+    163 => '再認証エラー',
+    164 => '再認証回数を超えました。残念ながら操作はアボートされ、編集が失われました。',
+    165 => 'アドバンストエディタを使う'
 );
 
 ###############################################################################
@@ -522,7 +522,7 @@ $LANG09 = array(
     47 => '前',
     48 => '所有者',
     49 => '日付',
-    50 => '閲覧件数',
+    50 => '閲覧数',
     51 => '',
     52 => '場所',
     53 => '記事の検索結果',
@@ -543,8 +543,8 @@ $LANG09 = array(
     68 => 'ソート',
     69 => 'タイトルのみ',
     70 => 'ありません ...',
-    71 => 'asc',
-    72 => 'desc'
+    71 => '昇順',
+    72 => '降順'
 );
 
 ###############################################################################
@@ -580,7 +580,7 @@ $LANG10 = array(
     27 => 'アクティブユーザ数',
     28 => '',
     29 => '',
-    30 => 'ヒット',
+    30 => '閲覧数',
     31 => ''
 );
 
@@ -707,7 +707,7 @@ $LANG21 = array(
     27 => 'PHPブロック',
     28 => 'PHPブロックのオプション',
     29 => '関数',
-    30 => 'PHPを使用したブロックを使う場合、接頭子「phpblock_」（例 phpblock_themetester）のPHP関数名を入力してください。この接頭子が付いていない関数は呼び出されません。これは、悪意を持ったユーザがサイトに有害な関数を定義することを避けるためです。関数名に（）は不要です。すべてのPHPブロック関数は、/path/to/geeklog/system/lib-custom.phpにまとめてください。そうすることで、Geeklogをアップグレードしても使用し続けることができます。',
+    30 => 'PHPを使用したブロックを使う場合、接頭子「phpblock_」（例 phpblock_themetester）のPHP関数名を入力してください。この接頭子が付いていない関数は呼び出されません。これは、悪意を持ったユーザがサイトに有害な関数を定義することを避けるためです。ファンクション名の後に"()"を付けると、2つのパラメータをコールします。ひとつめは gl_blocksテーブルの配列。ふたつめは2つの括弧の間のテキストが格納されます。この関数は、あらかじめGeeklogの/path/to/geeklog/system/lib-custom.phpに記述しておかなければなりません。すべてのPHPブロックのコードは、lib-custom.phpに記述します。そうすることにより、Geeklogをスムーズにアップグレードできます。訳注:日本語版では、フォルダ system/customを作成し、その中にカスタム関数を入れて、よりアップグレードしやすい構成にしています。',
     31 => 'PHPブロックにエラーがあります。%sが存在しません。',
     32 => 'エラー。未入力の項目があります',
     33 => 'ポータルブロックのフィードURLを入力してください',
@@ -727,7 +727,7 @@ $LANG21 = array(
     47 => '',
     48 => 'ブロックID',
     49 => '(半角英数字とハイフン)',
-    50 => 'The Block Name can not be empty',
+    50 => 'ブロックIDを入力してください。',
     51 => 'http://を含む',
     52 => '空欄のままにしておくと、このブロックに対するヘルプのアイコンは表示されません',
     53 => '有効',
@@ -769,7 +769,7 @@ $LANG24 = array(
     15 => '日時',
     16 => '冒頭文',
     17 => '本文',
-    18 => '閲覧件数',
+    18 => '閲覧数',
     19 => 'コメント数',
     20 => 'ピング',
     21 => 'トラックバック・ピングを送る',
@@ -809,7 +809,7 @@ $LANG24 = array(
     55 => '記事を保存する際に下記のエラーが発生しました。保存する前に修正してください。',
     56 => '話題アイコン表示',
     57 => '元のサイズの画像を表示',
-    58 => 'アーカイブオプション',
+    58 => 'アーカイブ',
     59 => 'オプション',
     60 => '',
     61 => '自動アーカイブ',
@@ -972,9 +972,9 @@ $LANG28 = array(
     85 => 'パスワードを紛失した場合には、以下のリンクをクリックしてください: %s',
     86 => '含む',
     87 => 'リマインダー',
-    88 => 'Default Group',
-    89 => 'Check to make this a default group for new users',
-    90 => 'Apply "Default Group" change to existing user accounts'
+    88 => 'デフォルトグループ',
+    89 => '新規登録ユーザのデフォルトグループをチェック',
+    90 => '登録済みユーザアカウントにデフォルトグループを追加する'
 );
 
 ###############################################################################
@@ -1518,7 +1518,7 @@ $LANG_SECTEST = array(
     'reachable' => 'あなたの %s はWebからアクセス可能です。',
     'not_reachable' => 'Good! あなたの %s はWebからアクセス不可能です。',
     'not_sure' => 'HTTPの応答コード%sを(%sのテストの実行時に)受信しました。この意味するところは不明です ...',
-    'remove_inst' => 'あなたのサイトがエラーが発生することなく動き始めたならば、必ずinstallディレクトリ%sを削除してください。',
+    'remove_inst' => 'あなたのサイトがエラーが発生することなく動き始めたら、必ずinstallディレクトリ%sを削除してください。',
     'remove_inst2' => 'そのままにしておくと、悪意のあるユーザがあなたのインストールを破壊したり、サイトを乗っ取ったり、重要な情報を読み出したりするおそれがあります。',
     'inst_removed' => 'Good! あなたは既にinstallディレクトリを削除しています。',
     'fix_password' => 'あなたはまだ %s の Rootユーザアカウントの<strong>パスワード</strong>をデフォルトの"password"から変更していません。',
@@ -1598,7 +1598,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => '新規作成(アドバンスト)',
     'enabled' => '有効',
     'title' => 'タイトル',
-    'page_title' => 'Page Title',
+    'page_title' => 'ページタイトル',
     'type' => 'タイプ',
     'topic' => '話題',
     'help_url' => 'ヘルプURL',
@@ -1618,9 +1618,9 @@ $LANG_ADMIN = array(
     'meta_keywords' => 'キーワードのメタタグ',
     'na' => 'N/A',
     'token_expiry' => '%s までに編集してください。この時刻を過ぎると、このページに埋め込まれたセキュリティートークンは期限切れとなり、編集内容は失われます。',
-    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
-    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate' => 'Authenticate'
+    'token_expired' => 'この操作のセキュリティトークンは期限切れになりました。続けるには再度認証してください。',
+    'reauth_msg' => 'この操作のセキュリティトークンは期限切れになりました。続けるには下に表示されている認証を行なってください。そうすることによって編集は失われることはありません。',
+    'authenticate' => '認証する'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1756,16 +1756,16 @@ $LANG_confignames['Core'] = array(
     'languages' => '言語名[多言語モード]',
     'timezone' => 'タイムゾーン',
     'site_disabled_msg' => 'サイト閉鎖のメッセージまたはURL',
-    'rootdebug' => 'Rootユーザがデバッグする',
+    'rootdebug' => 'Rootデバッグ',
     'cookie_session' => 'セッションのクッキー名',
-    'cookie_name' => '長期保存クッキー名',
+    'cookie_name' => 'パーマネントクッキー名',
     'cookie_password' => 'パスワードのクッキー名',
     'cookie_theme' => 'テーマのクッキー名',
     'cookie_language' => '言語のクッキー名',
     'cookie_tzid' => 'タイムゾーンのクッキー名',
     'cookie_anon_name' => 'ゲストユーザ名のクッキー名',
     'cookie_ip' => 'クッキーにIPを埋め込む',
-    'default_perm_cookie_timeout' => '長期保存クッキーの有効期限',
+    'default_perm_cookie_timeout' => 'パーマネントクッキーの有効期限',
     'session_cookie_timeout' => 'セッションの有効期限',
     'cookie_path' => 'クッキーのパス',
     'cookiedomain' => 'クッキーのドメイン',
@@ -1825,7 +1825,7 @@ $LANG_confignames['Core'] = array(
     'limitnews' => '1ページあたりの記事の表示数',
     'minnews' => '記事の最小表示数',
     'contributedbyline' => '所有者を表示する',
-    'hideviewscount' => '閲覧回数を表示しない',
+    'hideviewscount' => '閲覧数を表示しない',
     'hideemailicon' => 'メールアイコンを表示しない',
     'hideprintericon' => '印刷アイコンを表示しない',
     'allow_page_breaks' => '改ページを許可する',
@@ -1865,7 +1865,7 @@ $LANG_confignames['Core'] = array(
     'max_photo_height' => '高さの最大値',
     'max_photo_size' => 'ファイルサイズの最大値',
     'use_gravatar' => 'Gravatarを使用する',
-    'gravatar_rating' => 'Gravatar評価を許可',
+    'gravatar_rating' => 'Gravatar評価',
     'force_photo_width' => '幅を固定する',
     'default_photo' => '写真のデフォルト',
     'commentspeedlimit' => '投稿間隔制限',
@@ -1876,8 +1876,8 @@ $LANG_confignames['Core'] = array(
     'comment_edittime' => '編集時間 (秒)',
     'commentsubmission' => '承認待ちリストに入れる',
     'passwordspeedlimit' => 'パスワード入力間隔制限',
-    'login_attempts' => 'ログイン試行回数制限',
-    'login_speedlimit' => 'ログイン試行間隔制限',
+    'login_attempts' => 'ログイン回数制限',
+    'login_speedlimit' => 'ログイン間隔制限',
     'user_html' => 'ユーザHTML',
     'admin_html' => '管理者HTML',
     'advanced_html' => 'アドバンストエディタ用追加HTML',
@@ -1913,7 +1913,7 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => '表示件数の選択オプションを表示する',
     'search_separator' => 'グループのセパレータ',
     'search_def_keytype' => '検索条件のデフォルト',
-    'search_def_sort' => 'Default Sort Order'
+    'search_def_sort' => 'ソート順のデフォルト'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1985,7 +1985,7 @@ $LANG_configselects['Core'] = array(
     10 => array('なし' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'GDライブラリ' => 'gdlib'),
     11 => array('一覧' => 'flat', '入れ子' => 'nested', 'ツリー' => 'threaded', '表示しない' => 'nocomment'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('スキップする' => 0, '許可する(速度制限あり)' => 1, '許可する(速度制限なし)' => 2),
+    13 => array('スキップする' => 0, '許可する(間隔制限あり)' => 1, '許可する(間隔制限なし)' => 2),
     14 => array('日曜日' => 'Sun', '月曜日' => 'Mon'),
     15 => array('番号順' => 'sortnum', 'アルファベット順' => 'alpha'),
     16 => array('いいえ' => 0, '検索オプションのみ要求' => 1, 'すべての検索機能で要求' => 2),
@@ -1996,10 +1996,10 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('無効にする' => 0, '有効にする' => 1, '有効にする(トップページにのみデフォルトを使用する)' => 2),
-    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
-    26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    24 => array('投稿する' => 'contribute', 'Home' => 'home', '詳しい検索' => 'search', 'ディレクトリ' => 'directory', 'マイアカウント' => 'prefs', 'プラグインエントリ' => 'plugins', 'カスタムエントリ' => 'custom', 'サイトステータス' => 'stats'),
+    25 => array('新着記事' => 'story', '新着コメント' => 'comment', '新着トラックバックス' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザ' => 'user'),
+    26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
+    27 => array('閲覧数 (昇順)' => 'hits|asc', '閲覧数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc')
 );
 
 ?>

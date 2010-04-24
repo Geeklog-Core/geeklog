@@ -74,6 +74,11 @@ $user_templates-&gt;set_file (array ('profile'=&gt;'profile.thtml', 'row'=&gt;'c
 <p><strong><a name="wysiwyg">テーマとWYSIWYGエディタ：</a></strong>
 Geeklogが使用するテンプレートファイルは完全なHTMLファイルではなく、断片に過ぎません。Geeklogはこの断片を組み合わせて適切なHTMLドキュメントを作成します。しかし、このため一部のWYSIWYG HTMLエディタが誤動作し、ファイルに不足しているHTML要素を勝手に追加して、Geeklogにとっては使い物にならなくしてしまうことがあります。<br>テーマの編集には、単純なテキストエディタを使用することをお勧めします。</p>
 
+<p><strong><a name="xhtml">XHTML:</a></strong>
+Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも準拠したテーマを作成できます。
+詳しくは次のWiki<a href="http://wiki.geeklog.net/index.php/Themes_and_XHTML">Themes and XHTML</a>をご覧ください。
+</p>
+
 <p><strong><a name="php">テンプレートファイル中のPHP：</a></strong>
 テーマの<em>ヘッダ</em>、つまり、<tt>header.thtml</tt> の中ではPHPのコードを使用できます。カスタム関数を使用したいなら、テーマディレクトリ内の <tt>functions.php</tt> ファイル内で定義すればよいでしょう。</p>
 
@@ -102,6 +107,85 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>徹底的にやりましょう。この時点では、永続リンクは注目記事以外の記事でしか表示されません。また、<acronym title="Cascading Style Sheet">CSS</acronym>を使用して外見を変更したり、リンクの場所を調節する必要があるでしょう。</li>
 <li>同じコードを <tt>featuredstorytext.thtml</tt> と <tt>archivestorytext.thtml</tt> テンプレートファイルに追加すれば、注目記事にも永続リンクが表示されるようになります。</li>
 </ol>
+
+<h2><a name="changes">Theme changes in Geeklog 1.7.0</a></h2>
+
+<h3>Admin templates</h3>
+<ul>
+<li>New variable <code>{hide_meta}</code> in the Topic editor template,
+    <tt>admin/topic/topiceditor.thtml</tt>, to hide the text entry fields for
+    the meta description and meta keywords when meta tag support is
+    disabled.</li>
+<li>In the Topic editor template, <tt>admin/topic/topiceditor.thtml</tt>,
+    display the max. size of the topic icon and whether it will be scaled down
+    (new variable <code>{icon_max_dimensions}</code>).</li>
+<li>Added a hidden field "<tt>old_tid</tt>" to the Topic editor template file,
+    <tt>admin/topic/topiceditor.thtml</tt>, to allow changing the topic id.</li>
+<li>New variable <code>{hide_meta}</code> in the Story editor templates,
+    <tt>admin/topic/storyeditor.thtml</tt> and
+    <tt>admin/topic/storyeditor_advanced.thtml</tt>, to hide the text entry
+    fields for the meta description and meta keywords when meta tag support is
+    disabled.</li>
+<li>Removed the <code>display:{show_htmleditor};</code> CSS snippet from the
+    <code>&lt;div id="editor-mode"&gt;</code> in
+    <tt>admin/topic/storyeditor_advanced.thtml</tt> to ensure that the list of
+    allowed HTML tags and autotags is always visible.</li>
+<li>All <tt>onclick</tt> events in the Configuration templates should return
+    <code>false</code>. In <tt>admin/config/menu_element.thtml</tt>, the return
+    statement was missing for the <code>open_group</code> and
+    <code>open_subgroup</code> calls.
+    In <tt>admin/config/config_element.thtml</tt>, it was missing for the
+    <tt>unset-param</tt> case (i.e. the call to <code>restore</code>).</li>
+<li>Added a new textarea section to <tt>admin/config/config_element.thtml</tt>
+    to allow for configuration options to use a multi-line text entry
+    field.</li>
+<li>In <tt>admin/config/config_element.thtml</tt>, in the section for the
+    <code>select-element</code>, <code>{hide_row}</code> was added for the
+    table row and a <code>{delete}</code> option was added after the
+    <code>select</code>. These changes are required to allow dynamic addition /
+    removal of dropdowns, e.g. for <code>$_CONF['menu_elements']</code>.</li>
+<li>The Group editor template, <tt>admin/group/groupeditor.thtml</tt>, has two
+    new options for default groups (<tt>chk_grpdefault</tt> and
+    <tt>chk_applydefault</tt> checkboxes + language variables).</li>
+<li>The <tt>fieldhelp</tt> class was changed to include left and right padding
+    so that the hard-coded padding could be removed from the Group editor
+    template, <tt>admin/group/groupeditor.thtml</tt>.</li>
+<li>For consistency: The template variables for the headline texts in
+    <tt>admin/common/edit_permissions.thtml</tt> are now also available with a
+    <code>lang_</code> prefix (<code>{lang_owner}</code>, etc).</li>
+</ul>
+
+<h3>Other changes</h3>
+
+<ul>
+<li>When editing a comment or comment submission, the "Logout" link is now
+    hidden. This is done by adding a <code>span</code> around the link and a
+    new template variable, <tt>{hidewhenediting}</tt>, that will contain CSS to
+    hide the <code>span</code> when a comment is edited (but not when it's
+    submitted). Changed files: <tt>comment/commentform.thtml</tt> and
+    <tt>comment/commentform_advanced.thtml</tt>.</li>
+<li>In the profile template, <tt>users/profile.thtml</tt>, the link to "Find
+    all postings by <i>User</i>" was shortened, as it contained a lot of
+    unnecessary parameters for the search.</li>
+<li>In <tt>loginform_openid.thtml</tt>, the input field was missing a
+    <code>id="identity_url"</code> (since the &lt;label&gt; tag refers to an id,
+    not a name).</li>
+<li>A new variable <tt>{option_attributes}</tt> is available in the
+    <tt>topicoption.thtml</tt> template file. It is currently only used to add
+    a <code>rel="home"</code> attribute to the Home link in the Topics
+    block.</li>
+<li>A new option in My Account allows users to enable/disable the Advanced
+    Editor. Requires a new template variable <tt>{advanced_editor_option}</tt>
+    in <tt>preferences/displayblock.thtml</tt> and a <b>new template file</b>
+    <tt>preferences/editor.thtml</tt> for the actual option (the option remains
+    hidden unless Advanced Editor is enabled globally in the Configuration).</li>
+<li>Added some padding to the <code>&lt;li&gt;</code> element in
+    <tt>comment/thread.thtml</tt> so that follow-up comments in threaded mode
+    are a bit more apart and easier to read.</li>
+<li>The template file <tt>submit/submitloginrequired.thtml</tt> is no longer
+    needed and has been removed.</li>
+</ul>
+
 
 <h2><a name="changes">Geeklog 1.6.1におけるテーマの変更点</a></h2>
 
@@ -266,7 +350,7 @@ if (empty($lang)) {
 
 <h2><a name="changes150">Geeklog 1.5.0におけるテーマの変更点</a></h2>
 
-<h3><a name="xhtml">XHTMLをサポート</a></h3>
+<h3><a name="xhtml-support">XHTMLをサポート</a></h3>
 
 <p>XHTML準拠のテーマがサポートされました。テーマの <tt>functions.php</tt> ファイルの中で、次の定数を定義する必要があります。</p>
 <pre style="margin-left:4em;"><code>define('XHTML', ' /');</code></pre>
@@ -867,8 +951,9 @@ you put the above line <em>before</em> the <code>&lt;title&gt;</code> tag in
 the <code>&lt;head&gt;</code> section of your <tt>header.thtml</tt> file.</p>
 
 <div class="footer">
-    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト(The Geeklog Documentation Project)</a><br>
+    <a href="http://wiki.geeklog.net/">Geeklogドキュメント作成プロジェクト</a>、<a href="http://wiki.geeklog.jp/">Geeklogドキュメント日本語版作成プロジェクト</a><br>
     本ページのすべての商標と著作権はそれぞれの所有者に帰属します。Geeklogはコピーレフトです。
 </div>
+
 </body>
 </html>
