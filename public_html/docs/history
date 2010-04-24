@@ -6,7 +6,13 @@ Apr ??, 2010 (1.7.0b2)
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
 
-Changes since 1.6.1rc1:
+Changes since 1.7.0b1:
+- Fixed cloning of a story (bug #0001127, patch provided by Eric Brisco)
+- The installation script now recommends setting permissions to 666 for files
+  and 777 for directories that need to be writable (bug #0001126, patch
+  provided by Eric Brisco)
+- Fixed dynamic renumbering of config items when an item is deleted (bug
+  #0001074, patch provided by Eric Brisco)
 - Fixed COM_featuredCheck to ensure there's only one featured story on the front
   page [Tom]
 - Fixed Last 10 Comments display in user profiles [Tom]

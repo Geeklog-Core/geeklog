@@ -236,7 +236,7 @@ function liststories($current_topic = '')
 * Displays the story entry form
 *
 * @param    string      $sid            ID of story to edit
-* @param    string      $mode           'preview', 'edit', 'editsubmission'
+* @param    string      $mode           'preview', 'edit', 'editsubmission', 'clone'
 * @param    string      $errormsg       a message to display on top of the page
 * @param    string      $currenttopic   topic selection for drop-down menu
 * @return   string      HTML for story editor
@@ -395,7 +395,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     $oldsid = $story->EditElements('originalSid');
-    if (!empty ($oldsid)) {
+    if (!empty ($oldsid) && $mode != 'clone') {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s' . XHTML . '>';
         $jsconfirm = ' onclick="return confirm(\'' . $MESSAGE[76] . '\');"';
@@ -736,8 +736,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('story_trackbacks', $story->EditElements('trackbacks'));
     $story_templates->set_var('lang_emails', $LANG24[39]);
     $story_templates->set_var('story_emails', $story->EditElements('numemails'));
-    $story_templates->set_var('story_id', $story->getSid());
-    $story_templates->set_var('old_story_id', $story->EditElements('originalSid'));
+    if ($mode == 'clone') {
+        $story_templates->set_var('story_id', COM_makesid());
+    } else {
+        $story_templates->set_var('story_id', $story->getSid());
+        $story_templates->set_var('old_story_id', $story->EditElements('originalSid'));
+    }
     $story_templates->set_var('lang_sid', $LANG24[12]);
     $story_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $story_templates->set_var('lang_preview', $LANG_ADMIN['preview']);
