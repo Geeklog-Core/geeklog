@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-sessions.php                                                          |
 // |                                                                           |
 // | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
@@ -359,7 +359,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     }
 
     if ($_SESS_VERBOSE) {
-        COM_errorLog("SQL in SESS_getUserIdFromSession is:\n $sql\n");
+        COM_errorLog("SQL in SESS_getUserIdFromSession is:\n $sql\n", 1);
     }
 
     $result = DB_query($sql);
@@ -440,11 +440,11 @@ function SESS_getUserData($username)
         . "{$_TABLES['userprefs']}.uid = {$_TABLES['users']}.uid AND username = '$username'";
 
     if(!$result = DB_query($sql)) {
-        COM_errorLog("error in get_userdata");
+        COM_errorLog("error in get_userdata", 1);
     }
 
     if(!$myrow = DB_fetchArray($result)) {
-        COM_errorLog("error in get_userdata");
+        COM_errorLog("error in get_userdata", 1);
     }
 
     return($myrow);
