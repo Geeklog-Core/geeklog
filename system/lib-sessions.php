@@ -138,6 +138,12 @@ function SESS_sessionCheck()
                     }
                     if (empty($cookie_password) || ($cookie_password <> $userpass)) {
                         // User may have modified their UID in cookie, ignore them
+                        SEC_setCookie($_CONF['cookie_session'], '',
+                                      time() - 10000);
+                        SEC_setCookie($_CONF['cookie_password'], '',
+                                      time() - 10000);
+                        SEC_setCookie($_CONF['cookie_name'], '',
+                                      time() - 10000);
                     } else if ($userid > 1) {
                         // Check user status
                         $status = SEC_checkUserStatus ($userid);
@@ -183,6 +189,9 @@ function SESS_sessionCheck()
                 }
                 if (empty($cookie_password) || ($cookie_password <> $userpass)) {
                     // User could have modified UID in cookie, don't do shit
+                    SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
+                    SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
+                    SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
                 } else if ($userid > 1) {
                     // Check user status
                     $status = SEC_checkUserStatus($userid);
