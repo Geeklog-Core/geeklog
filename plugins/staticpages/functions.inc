@@ -786,7 +786,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     // Search static page comments
     $sql = "SELECT c.cid AS id, c.title AS title, c.comment AS description, ";
-    $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ";
+    $sql .= "UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, '0' AS hits, ";
 
     // MSSQL has a problem when concatenating numeric values
     if ($_DB_dbms == 'mssql') {
