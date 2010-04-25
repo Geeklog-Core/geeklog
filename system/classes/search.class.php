@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
@@ -12,7 +12,7 @@
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
-// |          Sami Barakat     - s.m.barakat AT gmail DOT com                  |
+// |          Sami Barakat     - sami AT sbarakat DOT co DOT uk                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -355,7 +355,7 @@ class Search {
 
         // Search Story Comments
         $sql = 'SELECT c.cid AS id, c.title AS title, c.comment AS description, ';
-        $sql .= 'UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, ';
+        $sql .= 'UNIX_TIMESTAMP(c.date) AS date, c.uid AS uid, \'0\' AS hits, ';
 
         // MSSQL has a problem when concatenating numeric values
         if ($_DB_dbms == 'mssql') {
