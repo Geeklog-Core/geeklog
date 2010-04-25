@@ -137,13 +137,19 @@ function SESS_sessionCheck()
                                                "uid = $userid");
                     }
                     if (empty($cookie_password) || ($cookie_password <> $userpass)) {
-                        // User may have modified their UID in cookie, ignore them
+                        // Invalid or manipulated cookie data
                         SEC_setCookie($_CONF['cookie_session'], '',
                                       time() - 10000);
                         SEC_setCookie($_CONF['cookie_password'], '',
                                       time() - 10000);
-                        SEC_setCookie($_CONF['cookie_name'], '',
-                                      time() - 10000);
+                        SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
+
+                        COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
+                        if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                            if (! defined('XHTML')) { define('XHTML', ''); }
+                            COM_displayMessageAndAbort(82, '', 403, 'Access denied');
+                        }
+                        COM_updateSpeedlimit('login');
                     } else if ($userid > 1) {
                         // Check user status
                         $status = SEC_checkUserStatus ($userid);
@@ -188,10 +194,17 @@ function SESS_sessionCheck()
                     $cookie_password = $_COOKIE[$_CONF['cookie_password']];
                 }
                 if (empty($cookie_password) || ($cookie_password <> $userpass)) {
-                    // User could have modified UID in cookie, don't do shit
+                    // Invalid or manipulated cookie data
                     SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
                     SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
                     SEC_setCookie($_CONF['cookie_name'], '', time() - 10000);
+
+                    COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
+                    if (COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0) {
+                        if (! defined('XHTML')) { define('XHTML', ''); }
+                        COM_displayMessageAndAbort(82, '', 403, 'Access denied');
+                    }
+                    COM_updateSpeedlimit('login');
                 } else if ($userid > 1) {
                     // Check user status
                     $status = SEC_checkUserStatus($userid);
