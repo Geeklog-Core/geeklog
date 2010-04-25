@@ -143,7 +143,6 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'Spam-X tegevused',
     'notification_email' => 'Teavituskiri',
-    'admin_override' => 'Ära filtreeri administraatori postitusi',
     'logging' => 'Luba logimine',
     'timeout' => 'Ajapiir'
 );

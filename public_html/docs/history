@@ -25,6 +25,10 @@ Changes since 1.7.0b1:
   Geeklog.jp group
 - Updated Slovak language files, provided by Miroslav Fikar
 
+Spam-X Plugin
+-------------
+- Removed 'admin_override' entry from language files (bug #0001114)
+
 Static Pages Plugin
 -------------------
 - Fixed Page Title when Advanced Editor is enabled (bug #0001113)
