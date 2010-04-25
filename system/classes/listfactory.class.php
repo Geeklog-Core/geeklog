@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | listfactory.class.php                                                     |
 // |                                                                           |
@@ -12,7 +12,7 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
-// | Authors: Sami Barakat     - s.m.barakat AT gmail DOT com                  |
+// | Authors: Sami Barakat     - sami AT sbarakat DOT co DOT uk                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -454,7 +454,7 @@ class ListFactory {
         if (isset($_GET['order'])) {
             // Loop though the order fields and find a match against $_GET param
             foreach ($this->_fields as $field) {
-                if ($field['sort'] == true && $field['name'] == $_GET['order']) {
+                if ($field['sort'] == true && strcmp($field['name'], $_GET['order']) == 0) {
                     $this->_sort_arr['field'] = $field['name']; // Use a trusted value
                     break;
                 }
