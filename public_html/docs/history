@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Apr ??, 2010 (1.7.0b2)
+Apr ??, 2010 (1.7.0rc1)
 ------------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
@@ -19,6 +19,7 @@ Changes since 1.7.0b1:
   page [Tom]
 - Fixed Last 10 Comments display in user profiles [Tom]
 
+- Updated Estonian language file, provided by Artur Räpp
 - Updated Hebrew language files, provided by LWC
 - Updated Italian language files, provided by Rouslan Placella
 - Updated Japanese language files and documentation, provided by the
