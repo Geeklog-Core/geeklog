@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Apr ??, 2010 (1.7.0rc1)
+May ??, 2010 (1.7.0rc1)
 ------------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
@@ -25,6 +25,10 @@ Changes since 1.7.0b1:
 - Updated Japanese language files and documentation, provided by the
   Geeklog.jp group
 - Updated Slovak language files, provided by Miroslav Fikar
+
+Polls Plugin
+------------
+- Fixed MS SQL upgrade (bug #0001144)
 
 Spam-X Plugin
 -------------
