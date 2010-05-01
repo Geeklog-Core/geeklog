@@ -860,16 +860,16 @@ function plugin_savesubmission_links($A)
 
     $retval = '';
 
-    if (!empty ($A['title']) && !empty ($A['description']) &&
-                !empty ($A['url'])) {
-        $retval = plugin_save_submit_links ($A);
+    if (!empty($A['title']) && !empty($A['description']) && !empty($A['url'])
+            && ($A['url'] != 'http://')) {
+        $retval = plugin_save_submit_links($A);
     } else {
         $retval .= COM_siteHeader()
             . COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . submissionform('links')
+            . plugin_submit_links()
             . COM_siteFooter ();
     }
 
@@ -928,13 +928,28 @@ function plugin_save_submit_links($A)
     $retval = '';
 
     // pseudo-formatted link description for the spam check
-    $spamcheck = '<p>'. COM_createLink($A['title'], $A['url']) .' ('
-               . $A['categorydd'] . ')<br' . XHTML . '>' . $A['description']
-               . '</p>';
+    if ($A['url'] == 'http://') {
+        $link = $A['title'];
+    } else {
+        $link = COM_createLink($A['title'], $A['url']);
+    }
+    $spamcheck = '<p>'. $link .' (' . $A['categorydd'] . ')<br' . XHTML . '>'
+               . $A['description'] . '</p>';
     $result = PLG_checkforSpam($spamcheck, $_CONF['spamx']);
     if ($result > 0) {
         COM_updateSpeedlimit('submit');
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
+    }
+
+    $msg = PLG_itemPreSave('links', $A);
+    if (! empty($msg)) {
+        COM_updateSpeedlimit('submit');
+        $retval .= COM_siteHeader('menu')
+                . COM_errorLog($msg, 2)
+                . plugin_submit_links()
+                . COM_siteFooter();
+
+        return $retval;
     }
 
     $A['cid'] = strip_tags(COM_stripslashes($A['categorydd']));
