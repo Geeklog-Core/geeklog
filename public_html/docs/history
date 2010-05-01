@@ -26,6 +26,20 @@ Changes since 1.7.0b1:
   Geeklog.jp group
 - Updated Slovak language files, provided by Miroslav Fikar
 
+Calendar Plugin
+---------------
+- Added call to PLG_itemPreSave to support the CAPTCHA plugin (feature request
+  #0001091) [Dirk]
+
+Links Plugin
+------------
+- Added call to PLG_itemPreSave to support the CAPTCHA plugin (feature request
+  #0001091) [Dirk]
+- Fixed wrong speedlimit warning when not all required fields are filled in
+  when submitting a link [Dirk]
+- Treat the pre-populated partial link URL "http://" as if no URL was submitted
+  and prevent it from being used in the spam check [Dirk]
+
 Polls Plugin
 ------------
 - Fixed MS SQL upgrade (bug #0001144)
