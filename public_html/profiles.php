@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
 // |                                                                           |
@@ -109,7 +109,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $msg = PLG_itemPreSave ('contact', $message);
             if (!empty ($msg)) {
-                $retval .= COM_siteHeader ('menu', '')
+                $retval .= COM_siteHeader ('menu', $LANG04[81])
                         . COM_errorLog ($msg, 2)
                         . contactform ($uid, $subject, $message)
                         . COM_siteFooter ();
