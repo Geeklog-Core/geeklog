@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-May ??, 2010 (1.7.0rc1)
-------------
+May 2, 2010 (1.7.0rc1)
+-----------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
