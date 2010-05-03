@@ -590,6 +590,9 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
+        if ($_USER['advanced_editor'] == 1) {
+            $A['postmode'] = 'adveditor';
+        }
     } elseif (!empty($sp_id) && $mode == 'clone') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(modified) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL('AND', 0, 3));
         if (DB_numRows($result) == 1) {
