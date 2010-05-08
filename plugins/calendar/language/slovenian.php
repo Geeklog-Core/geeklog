@@ -1,10 +1,10 @@
 <?php
 
 ###############################################################################
-# slovenian.php - version 1.4.1
+# slovenian.php - version 1.7
 # This is the slovenian language page for the Geeklog Calendar Plug-in!
-# language file for geeklog version 1.4.1 beta by mb
-# gape@gape.org ; za pripombe, predloge ipd ... piši na email
+# language file for geeklog version 1.7 by Mateja B.
+# gape@gape.org ; za pripombe, predloge ipd. piši na e-naslov
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -64,7 +64,7 @@ $LANG_CAL_1 = array(
     24 => 'Dogodki te strani',
     25 => 'Ni prihajajoèih dogodkov',
     26 => 'Oddaj dogodek',
-    27 => "Oddaja dogodka na spletnem mestu {$_CONF['site_name']} bo tvoj dogodek dodala na glavni koledar, od koder lahko uporabniki tvoj dogodek dodajo v svoje osebne koledarje. Ta funkcija <b>NI</b> namenjena shranjevanju osebnih dogodkov, kot so rojstni dnevi in obletnice.<br" . XHTML . "><br" . XHTML . ">Ko svoj dogodek oddaš, bo poslan upravnikom, in èe bo odobren, se bo pojavil v glavnem koledarju.",
+    27 => "Oddaja dogodka na spletnem mestu {$_CONF['site_name']} bo tvoj dogodek dodala na glavni koledar, od koder ga lahko uporabniki dodajo v svoje osebne koledarje. Ta funkcija <b>NI</b> namenjena shranjevanju osebnih dogodkov, kot so rojstni dnevi in obletnice.<br" . XHTML . "><br" . XHTML . ">Ko svoj dogodek oddaš, bo poslan skrbnikom strani, in èe bo odobren, se bo pojavil v glavnem koledarju.",
     28 => 'Naslov',
     29 => 'Konèni èas',
     30 => 'Zaèetni èas',
@@ -76,7 +76,7 @@ $LANG_CAL_1 = array(
     36 => 'Poštna številka',
     37 => 'Vrsta dogodka',
     38 => 'Uredi vrste dogodkov',
-    39 => 'Lokacija',
+    39 => 'Prostor dogodka',
     40 => 'Dodaj dogodek v',
     41 => 'Glavni koledar',
     42 => 'Osebni koledar',
@@ -120,12 +120,12 @@ $LANG_CAL_2 = array(
     34 => 'Ura',
     35 => 'Hitro dodajanje',
     36 => 'Oddaj',
-    37 => 'Žal funkcija osebnega koledarja na tej strani ni omogoèena',
+    37 => 'Funkcija osebnega koledarja na tej strani ni omogoèena',
     38 => 'Urejevalnik osebnih dogodkov',
     39 => 'Dan',
     40 => 'Teden',
     41 => 'Mesec',
-    42 => 'Dodaj glavni dogodek',
+    42 => 'Dodaj dogodek',
     43 => 'Dogodki'
 );
 
@@ -149,7 +149,7 @@ $LANG_CAL_ADMIN = array(
     14 => 'Zaèetni datum',
     15 => 'Konèni datum',
     16 => '',
-    17 => "Poskušaš dostopiti do dogodka, za katerega nimaš pravic. Ta poskus je bil zabeležen. Prosim <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">pojdi nazaj na zaslon za upravljanje dogodkov</a>.",
+    17 => "Poskušaš dostopiti do dogodka, za katerega nimaš pravic. Ta poskus je bil zabeležen. Prosim, <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">pojdi nazaj na zaslon za upravljanje dogodkov</a>.",
     18 => '',
     19 => '',
     20 => 'shrani',
@@ -158,17 +158,17 @@ $LANG_CAL_ADMIN = array(
     23 => 'Napaèen zaèetni datum.',
     24 => 'Napaèen konèni datum.',
     25 => 'Konèni datum je pred zaèetnim datumom.',
-    26 => 'Delete old entries',
-    27 => 'These are the events that are older than ',
-    28 => ' months. Please click on the trashcan Icon on the bottom to delete them, or select a different timespan:<br' . XHTML . '>Find all entries that are older than ',
-    29 => ' months.',
-    30 => 'Update List',
-    31 => 'Are You sure you want to permanently delete ALL selected users?',
-    32 => 'List all',
-    33 => 'No events selected for deletion',
-    34 => 'Event ID',
-    35 => 'could not be deleted',
-    36 => 'Sucessfully deleted'
+    26 => 'Izbriši stare vnose',
+    27 => 'To so dogodki, starejši kot ',
+    28 => ' mesecev. Za izbris prosim klikni na ikono koša spodaj ali izberi drugaèen èasovni razpon:<br' . XHTML . '>Najdi vse vnose, starejše kot ',
+    29 => ' mesecev.',
+    30 => 'Posodobi seznam',
+    31 => 'Si preprièan/a, da hoèeš res trajno izbrisati VSE izbrane uporabnike?',
+    32 => 'Daj na seznam vse',
+    33 => 'Noben dogodek ni izbran za brisanje',
+    34 => 'ID dogodka',
+    35 => 'se ni dalo izbrisati',
+    36 => 'uspešno izbrisano'
 );
 
 $LANG_CAL_MESSAGE = array(
@@ -177,57 +177,57 @@ $LANG_CAL_MESSAGE = array(
     'private' => 'Dogodek je shranjen v tvoj koledar.',
     'login' => 'Ne morem odpreti tvojega osebnega koledarja, dokler se ne prijaviš',
     'removed' => 'Dogodek je uspešno odstranjen iz tvojega osebnega koledarja',
-    'noprivate' => 'Žal osebni koledarji na tem spletnem mestu niso omogoèeni',
-    'unauth' => 'Žal nimaš dostopa do strani za upravljanje dogodkov. Vsi poskusi dostopa do nepooblašèenih funkcij se beležijo.'
+    'noprivate' => 'Osebni koledarji na tem spletnem mestu niso omogoèeni',
+    'unauth' => 'Nimaš dostopa do strani za upravljanje dogodkov. Vsi poskusi dostopa do nepooblašèenih funkcij se beležijo.'
 );
 
-$PLG_calendar_MESSAGE4 = "Hvala, da si dogodek oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo ga bo pregledal eden od urednikov. Èe bo odobren, bo objavljen in dan na razpolago bralcem te spletne strani v razdelku <a href=\"{$_CONF['site_url']}/calendar/index.php\">koledar</a>.";
+$PLG_calendar_MESSAGE4 = "Hvala, da si dogodek oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo ga bo pregledal eden od urednikov. Èe bo odobren, bo objavljen in dan na razpolago bralcem te spletne strani v meniju <a href=\"{$_CONF['site_url']}/calendar/index.php\">Koledar</a>.";
 $PLG_calendar_MESSAGE17 = 'Tvoj dogodek je uspešno shranjen.';
 $PLG_calendar_MESSAGE18 = 'Dogodek je uspešno izbrisan.';
 $PLG_calendar_MESSAGE24 = 'Dogodek je shranjen v tvoj koledar.';
 $PLG_calendar_MESSAGE26 = 'Dogodek je uspešno izbrisan.';
 
 // Messages for the plugin upgrade
-$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_calendar_MESSAGE3001 = 'Nadgradnja vtiènika ni podprta.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['calendar'] = array(
-    'label' => 'Calendar',
-    'title' => 'Calendar Configuration'
+    'label' => 'Koledar',
+    'title' => 'Konfiguracija koledarja'
 );
 
 $LANG_confignames['calendar'] = array(
-    'calendarloginrequired' => 'Calendar Login Required?',
-    'hidecalendarmenu' => 'Hide Calendar Menu Entry?',
-    'personalcalendars' => 'Enable Personal Calendars?',
-    'eventsubmission' => 'Enable Submission Queue?',
-    'showupcomingevents' => 'Show upcoming Events?',
-    'upcomingeventsrange' => 'Upcoming Events Range',
-    'event_types' => 'Event Types',
-    'hour_mode' => 'Hour Mode',
-    'notification' => 'Notification Email?',
-    'delete_event' => 'Delete Events with Owner?',
-    'aftersave' => 'After Saving Event',
-    'default_permissions' => 'Event Default Permissions'
+    'calendarloginrequired' => 'Za koledar zahtevana prijava?',
+    'hidecalendarmenu' => 'Skrij napis Koledar v meniju?',
+    'personalcalendars' => 'Omogoèi osebne koledarje?',
+    'eventsubmission' => 'Omogoèi èakalno vrsto?',
+    'showupcomingevents' => 'Pokaži prihajajoèe dogodke?',
+    'upcomingeventsrange' => 'Razpon prihajajoèih dogodkov',
+    'event_types' => 'Vrste dogodkov',
+    'hour_mode' => 'Naèin ure',
+    'notification' => 'Obvestilo po e-pošti?',
+    'delete_event' => 'Izbriši dogodke skupaj z lastnikom?',
+    'aftersave' => 'Po shranitvi dogodka',
+    'default_permissions' => 'Prednastavljene pravice dogodka'
 );
 
 $LANG_configsubgroups['calendar'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Glavne nastavitve'
 );
 
 $LANG_fs['calendar'] = array(
-    'fs_main' => 'General Calendar Settings',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Splošne nastavitve koledarja',
+    'fs_permissions' => 'Prednastavljene pravice'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
+    0 => array('Da' => 1, 'Ne' => 0),
+    1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Forward to Event' => 'item', 'Display Admin List' => 'list', 'Display Calendar' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    9 => array('Naprej na dogodek' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži koledar' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
 );
 
 ?>
