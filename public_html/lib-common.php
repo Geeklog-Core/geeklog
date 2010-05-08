@@ -7137,7 +7137,7 @@ function COM_checkInstalled()
     if ($not_installed) {
         $rel = '';
         $cd = getcwd();
-        if (! file_exists($cd . '/admin/install.index.php')) {
+        if (! file_exists($cd . '/admin/install/index.php')) {
             // this should cover most (though not all) cases
             $rel = '../';
         }
