@@ -10,6 +10,8 @@ Changes since 1.7.0rc1:
 - Fixed a typo in the install check that prevented Geeklog from detecting if it
   was installed in a subdirectory (bug #0001148) [Dirk]
 
+- New and updated German language files for the Polls, Static Pages, and
+  XMLSitemap plugins, provided by Markus Wollschläger
 - Updated Slovenian language files, provided by Mateja B.
 
 

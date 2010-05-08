@@ -59,8 +59,8 @@ $LANG_POLLS = array(
     'pollclosed' => 'Diese Umfrage ist abgeschlossen.',
     'pollhidden' => 'Du hast schon abgestimmt. Die Ergebnisse dieser Umfrage werden veröffentlicht, sobald sie abgeschlossen ist.',
     'start_poll' => 'Zur Umfrage',
-    'no_new_polls' => 'No new polls',
-    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
+    'no_new_polls' => 'Keine neuen Umfragen',
+    'deny_msg' => 'Zugang zu dieser Umfrage nicht gestattet.  Entweder wurde diese Umfrage entfernt oder es fehlen die nötigen Zugriffsrechte.'
 );
 
 ###############################################################################
@@ -109,7 +109,7 @@ $LANG25 = array(
     40 => 'Alle Antworten zu dieser Umfrage ansehen'
 );
 
-$PLG_polls_MESSAGE15 = 'Dein Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
+$PLG_polls_MESSAGE15 = 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
 $PLG_polls_MESSAGE19 = 'Umfrage wurde gespeichert.';
 $PLG_polls_MESSAGE20 = 'Umfrage wurde gelöscht.';
 
@@ -124,19 +124,19 @@ $LANG_configsections['polls'] = array(
 );
 
 $LANG_confignames['polls'] = array(
-    'pollsloginrequired' => 'Zur Einsicht einloggen nötig?',
+    'pollsloginrequired' => 'Anmelden zur Einsicht nötig?',
     'hidepollsmenu' => 'Menüeintrag ausblenden?',
     'maxquestions' => 'Max. Fragen pro Umfrage',
     'maxanswers' => 'Max. Möglichkeiten pro Frage',
     'answerorder' => 'Ergebnisse sortieren ...',
-    'pollcookietime' => 'Voter Cookie gültig für',
-    'polladdresstime' => 'Voter IP-Adresse gültig für',
+    'pollcookietime' => 'Cookie des Abstimmenden gültig für',
+    'polladdresstime' => 'IP-Adresse des Abstimmenden gültig für',
     'delete_polls' => 'Umfragen mit User löschen?',
     'aftersave' => 'Nach speichern der Umfrage',
     'default_permissions' => 'Grundeinstellungen Umfragen',
-    'newpollsinterval' => 'New Polls Interval',
-    'hidenewpolls' => 'New Polls',
-    'title_trim_length' => 'Title Trim Length',
+    'newpollsinterval' => 'Zeitabstand neue Umfragen',
+    'hidenewpolls' => 'Neue Umfragen',
+    'title_trim_length' => 'Titel abschneiden nach',
     'meta_tags' => 'Meta-Tags verwenden'
 );
 
@@ -155,8 +155,8 @@ $LANG_configselects['polls'] = array(
     0 => array('Ja' => 1, 'Nein' => 0),
     1 => array('Ja' => true, 'Nein' => false),
     2 => array('Wie eingereicht' => 'submitorder', 'Nach Abstimmung' => 'voteorder'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
-    9 => array('Zur Umfrage weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
+    5 => array('Verbergen' => 'hide', 'Anzeigen - Modifiziertes Datum benutzen' => 'modified', 'Anzeigen - Datum der Erstellung benutzen' => 'created'),
+    9 => array('Zur Umfrage weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
 );
 
