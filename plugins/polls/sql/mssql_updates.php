@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mssql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -45,17 +45,17 @@ $_UPDATES = array(
 
         // New field post-2.1.0
         "ALTER TABLE {$_TABLES['polltopics']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER topic, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
-    )
+    ),
 
     '2.1.1' => array(
         // make room to store IPv6 addresses
         "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [ipaddress] VARCHAR(39) NOT NULL",
 
         "EXEC sp_rename '{$_TABLES['polltopics']}.date', 'created', 'COLUMN'",
-        "ALTER TABLE {$_TABLES['polltopics']} ADD modified [datetime] NULL AFTER created"
+        "ALTER TABLE {$_TABLES['polltopics']} ADD modified [datetime] NULL AFTER created",
         "UPDATE {$_TABLES['polltopics']} SET modified = created"        
     )
-    
+
 );
 
 function update_ConfValues_2_1_0()

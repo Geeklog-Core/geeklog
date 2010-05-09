@@ -44,7 +44,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Autor',
     'date' => 'Letzte Änderung',
     'title' => 'Titel',
-    'page_title' => 'Page Title',
+    'page_title' => 'Seitentitel',
     'content' => 'Inhalt',
     'hits' => 'Angezeigt',
     'staticpagelist' => 'Liste der Statischen Seiten',
@@ -82,7 +82,7 @@ $LANG_STATIC = array(
     'stats_no_hits' => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
     'id' => 'ID',
     'duplicate_id' => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte andere ID wählen.',
-    'instructions' => 'Um eine Statische Seite zu ändern oder zu löschen, auf das Ändern-Icon klicken. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neu anlegen (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das Kopie-Icon klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
+    'instructions' => 'Um eine Statische Seite zu ändern oder zu löschen, auf das Ändern-Symbol klicken. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neu anlegen (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das Kopie-Symbol klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
     'centerblock' => 'Centerblock: ',
     'centerblock_msg' => 'Wenn angekreuzt wird diese Seite als Block auf der Index-Seite angezeigt.',
     'topic' => 'Kategorie: ',
@@ -121,10 +121,10 @@ $LANG_STATIC = array(
     'draft_no' => 'Nein'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Ihr Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
+$PLG_staticpages_MESSAGE15 = 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
 $PLG_staticpages_MESSAGE19 = 'Seite wurde gespeichert.';
 $PLG_staticpages_MESSAGE20 = 'Seite wurde gelöscht';
-$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
+$PLG_staticpages_MESSAGE21 = 'Diese Seite existiert noch nicht. Um eine Seite zu erstellen bitte das Formular unten ausfüllen. Durch ein Versehen hier? Einfach den Abbrechen-Knopf drücken.';
 
 // Messages for the plugin upgrade
 $PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
@@ -140,7 +140,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'PHP erlauben?',
     'sort_by' => 'Centerblocks sortieren nach',
     'sort_menu_by' => 'Menüeinträge sortieren nach',
-    'sort_list_by' => 'Sort Admin List by',
+    'sort_list_by' => 'Adminliste sortieren nach',
     'delete_pages' => 'Seiten mit Benutzer löschen?',
     'in_block' => 'Block-Template verwenden?',
     'show_hits' => 'Anzeigezähler einblenden?',
@@ -149,7 +149,7 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Inhalt zensieren?',
     'default_permissions' => 'Grundeinstellungen Statische Seiten',
     'aftersave' => 'Nach dem Speichern der Seiten',
-    'atom_max_items' => 'Max. Seiten in Webservices News-Feed',
+    'atom_max_items' => 'Max. Seiten in Webservices Newsfeed',
     'meta_tags' => 'Meta-Tags verwenden',
     'comment_code' => 'Kommentar Grundeinstellung',
     'draft_flag' => 'Als Grundeinstellung auf Entwurf',
@@ -180,8 +180,8 @@ $LANG_configselects['staticpages'] = array(
     1 => array('Ja' => true, 'Nein' => false),
     2 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title'),
     3 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title', 'Menüpunkt' => 'label'),
-    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
+    4 => array('Datum' => 'date', 'Seiten-ID' => 'id', 'Titel' => 'title', 'Author' => 'author'),
+    5 => array('Verbergen' => 'hide', 'Anzeigen - Modifiziertes Datum benutzen' => 'modified', 'Anzeigen - Datum der Erstellung benutzen' => 'created'),
     9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
     17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1)

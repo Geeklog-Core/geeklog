@@ -510,6 +510,16 @@ function plugin_savesubmission_calendar($A)
         COM_displayMessageAndAbort($result, 'spamx', 403, 'Forbidden');
     }
 
+    $msg = PLG_itemPreSave('calendar', $A);
+    if (! empty($msg)) {
+        $retval .= COM_siteHeader('menu', $LANG_CAL_1[27])
+            . COM_errorLog($msg, 2)
+            . plugin_submit_calendar($A['calendar_type'])
+            . COM_siteFooter();
+
+        return $retval;
+    }
+
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
     $A['address1'] = addslashes (strip_tags (COM_checkWords ($A['address1'])));
     $A['address2'] = addslashes (strip_tags (COM_checkWords ($A['address2'])));

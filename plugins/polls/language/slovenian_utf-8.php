@@ -46,120 +46,120 @@ $LANG_POLLS = array(
     'savedvotetitle' => 'Glas shranjen',
     'savedvotemsg' => 'Tvoj glas je shranjen za anketo.',
     'pollstitle' => 'Ankete v sistemu',
-    'polltopics' => 'Other polls',
+    'polltopics' => 'Druge ankete',
     'stats_top10' => 'Najboljših 10 anket',
-    'stats_topics' => 'Poll Topic',
+    'stats_topics' => 'Rubrika ankete',
     'stats_votes' => 'Glasovi',
-    'stats_none' => 'Izgleda, da na tem mestu ni anket ali pa še nikoli ni nihče glasoval.',
+    'stats_none' => 'Izgleda, da na tem mestu ni anket ali pa še nikoli ni nihèe glasoval.',
     'stats_summary' => 'Ankete (odgovori) v sistemu',
     'open_poll' => 'Odprto za glasovanje',
-    'answer_all' => 'Please answer all remaining questions',
-    'not_saved' => 'Result not saved',
-    'upgrade1' => 'You installed a new version of the Polls plugin. Please',
-    'upgrade2' => 'upgrade',
-    'editinstructions' => 'Please fill in the Poll ID, at least one question and two answers for it.',
-    'pollclosed' => 'This poll is closed for voting.',
-    'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
-    'start_poll' => 'Začni anketo',
-    'no_new_polls' => 'No new polls',
-    'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
+    'answer_all' => 'Prosim, odgovori na vsa preostala vprašanja',
+    'not_saved' => 'Rezultat ni shranjen',
+    'upgrade1' => 'Namestil si novo razlièico vtiènika za ankete. Prosim',
+    'upgrade2' => 'nadgradi',
+    'editinstructions' => 'Prosim, izpolni ID ankete, vsaj eno vprašanje in dva odovora zanj.',
+    'pollclosed' => 'Ta anketa je zaprta za glasovanje.',
+    'pollhidden' => 'Si že glasoval/a. Rezultati te ankete bodo prikazani šele, ko bo glasovanja konec.',
+    'start_poll' => 'Zaèni anketo',
+    'no_new_polls' => 'Ni novih anket',
+    'deny_msg' => 'Dostop do te ankete je zavrnjen. Ali je bila anketa premaknjena/odstranjena ali pa nimaš zadostnih pravic.'
 );
 
 ###############################################################################
 # admin/plugins/polls/index.php
 
 $LANG25 = array(
-    1 => 'Mode',
-    2 => 'Please enter a topic, at least one question and at least one answer for that question.',
-    3 => 'Poll Created',
-    4 => 'Poll %s saved',
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Pollblock',
-    9 => 'Topic',
-    10 => 'Answers / Votes / Remark',
-    11 => 'There was an error getting poll answer data about the poll %s',
-    12 => 'There was an error getting poll question data about the poll %s',
-    13 => 'Create Poll',
-    14 => 'save',
-    15 => 'cancel',
-    16 => 'delete',
-    17 => 'Please enter a Poll ID',
-    18 => 'Poll List',
-    19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
-    20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
-    25 => 'Yes',
-    26 => 'No',
-    27 => 'Edit',
-    28 => 'Submit',
-    29 => 'Search',
-    30 => 'Limit Results',
-    31 => 'Question',
-    32 => 'To remove this question from the poll, remove its question text',
-    33 => 'Open for voting',
-    34 => 'Poll Topic:',
-    35 => 'This poll has',
-    36 => 'more questions.',
-    37 => 'Hide results while poll is open',
-    38 => 'While the poll is open, only the owner &amp; root can see the results',
-    39 => 'The topic will be only displayed if there are more than 1 questions.',
-    40 => 'See all answers to this poll'
+    1 => 'Naèin',
+    2 => 'Vnesi prosim temo, vsaj eno vprašanje in vsaj en odgovor zanj.',
+    3 => 'Anketa ustvarjena',
+    4 => 'Anketa %s shranjena',
+    5 => 'Uredi anketo',
+    6 => 'ID ankete',
+    7 => '(ne uporabljaj presledkov)',
+    8 => 'Prikaže se v anketnem bloku',
+    9 => 'Tema',
+    10 => 'Odgovori / Glasovi / Opombe',
+    11 => 'Med pridobivanjem podatkov o odgovoru pri anketi %s je prišlo do napake',
+    12 => 'Med pridobivanjem podatkov o vprašanju pri anketi %s je prišlo do napake',
+    13 => 'Ustvari anketo',
+    14 => 'shrani',
+    15 => 'preklièi',
+    16 => 'izbriši',
+    17 => 'Vnesi prosim ID ankete',
+    18 => 'Seznam anket',
+    19 => 'Za spremembo ali izbris ankete klikni na ikono za urejanje ankete. Za ustvarjenje nove ankete klikni na "Ustvari novo" zgoraj.',
+    20 => 'Glasovalci',
+    21 => 'Dostop zavrnjen',
+    22 => "Poskušaš dostopiti do ankete, za katero nimaš pravic. Ta poskus je bil zabeležen. Prosim, <a href=\"{$_CONF['site_admin_url']}/poll.php\">pojdi nazaj na zaslon za skrbništvo anket</a>.",
+    23 => 'Nova anketa',
+    24 => 'Skrbnikova vstopna stran',
+    25 => 'Da',
+    26 => 'Ne',
+    27 => 'Uredi',
+    28 => 'Pošlji',
+    29 => 'Išèi',
+    30 => 'Omeji rezultate',
+    31 => 'Vprašanje',
+    32 => 'To vprašanje odstraniš iz ankete tako, da odstraniš njegovo besedilo',
+    33 => 'Odprto za glasovanje',
+    34 => 'Tema ankete:',
+    35 => 'Ta anketa ima',
+    36 => 'veè vprašanj.',
+    37 => 'Skrij rezultate, ko je anketa odprta',
+    38 => 'Ko je anketa odprta, lahko vidita rezultate le lastnik in tisti z dostopom do korena (root)',
+    39 => 'Tema bo prikazana le, èe ima anketa veè kot eno vprašanje.',
+    40 => 'Poglej vse odgovore'
 );
 
-$PLG_polls_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
+$PLG_polls_MESSAGE15 = 'Tvoj komentar je odposlan v pregled in bo objavljen, ko ga odobri urednik.';
 $PLG_polls_MESSAGE19 = 'Tvoja anketa je uspešno shranjena.';
 $PLG_polls_MESSAGE20 = 'Tvoja anketa je uspešno izbrisana.';
 
 // Messages for the plugin upgrade
-$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_polls_MESSAGE3001 = 'Nadgradnja vtiènika ni podprta.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
-    'label' => 'Polls',
-    'title' => 'Polls Configuration'
+    'label' => 'Ankete',
+    'title' => 'Konfiguracija anket'
 );
 
 $LANG_confignames['polls'] = array(
-    'pollsloginrequired' => 'Polls Login Required?',
-    'hidepollsmenu' => 'Hide Polls Menu Entry?',
-    'maxquestions' => 'Max. Questions per Poll',
-    'maxanswers' => 'Max. Options per Question',
-    'answerorder' => 'Sort Results ...',
-    'pollcookietime' => 'Voter Cookie valid for',
-    'polladdresstime' => 'Voter IP Address valid for',
-    'delete_polls' => 'Delete Polls with Owner?',
-    'aftersave' => 'After Saving Poll',
-    'default_permissions' => 'Poll Default Permissions',
-    'newpollsinterval' => 'New Polls Interval',
-    'hidenewpolls' => 'New Polls',
-    'title_trim_length' => 'Title Trim Length',
-    'meta_tags' => 'Enable Meta Tags'
+    'pollsloginrequired' => 'Za ankete zahtevana prijava?',
+    'hidepollsmenu' => 'Skrij napis Ankete v meniju?',
+    'maxquestions' => 'Najveè vprašanj na anketo',
+    'maxanswers' => 'Najveè možnosti na vprašanje',
+    'answerorder' => 'Razvrsti rezultate ...',
+    'pollcookietime' => 'Piškotek glasovalca velja',
+    'polladdresstime' => 'IP-naslov glasovalca velja',
+    'delete_polls' => 'Izbriši ankete skupaj z lastnikom?',
+    'aftersave' => 'Po shranitvi ankete',
+    'default_permissions' => 'Prednastavljene pravice ankete',
+    'newpollsinterval' => 'Interval za nove ankete',
+    'hidenewpolls' => 'Nove ankete',
+    'title_trim_length' => 'Krajšanje dolžine naslova',
+    'meta_tags' => 'Omogoèi Meta Tags'
 );
 
 $LANG_configsubgroups['polls'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Glavne nastavitve'
 );
 
 $LANG_fs['polls'] = array(
-    'fs_main' => 'General Polls Settings',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Splošne nastavitve anket',
+    'fs_whatsnew' => 'Blok Kaj je novega',
+    'fs_permissions' => 'Prednastavljene pravice'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
-    9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('Da' => 1, 'Ne' => 0),
+    1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
+    2 => array('Kot odposlano' => 'submitorder', 'Po glasovih' => 'voteorder'),
+    5 => array('Skrij' => 'hide', 'Prikaži - uporabi spremenjeni datum' => 'modified', 'Prikaži - uporabi ustvarjeni datum' => 'created'),
+    9 => array('Naprej na anketo' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javno stran' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
 );
 
 ?>

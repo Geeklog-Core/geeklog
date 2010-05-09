@@ -1,10 +1,22 @@
 Geeklog History/Changes:
 
-Apr ??, 2010 (1.7.0b2)
-------------
+May 9, 2010 (1.7.0)
+-----------
 
 Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
+
+Changes since 1.7.0rc1:
+- Fixed a typo in the install check that prevented Geeklog from detecting if it
+  was installed in a subdirectory (bug #0001148) [Dirk]
+
+- New and updated German language files for the Polls, Static Pages, and
+  XMLSitemap plugins, provided by Markus Wollschläger
+- New and updated Slovenian language files, provided by Mateja B.
+
+
+May 2, 2010 (1.7.0rc1)
+-----------
 
 Changes since 1.7.0b1:
 - Fixed call to undefined function WS_makeId() when using very long story ids
@@ -19,11 +31,34 @@ Changes since 1.7.0b1:
   page [Tom]
 - Fixed Last 10 Comments display in user profiles [Tom]
 
+- Updated Estonian language file, provided by Artur Räpp
 - Updated Hebrew language files, provided by LWC
 - Updated Italian language files, provided by Rouslan Placella
 - Updated Japanese language files and documentation, provided by the
   Geeklog.jp group
 - Updated Slovak language files, provided by Miroslav Fikar
+
+Calendar Plugin
+---------------
+- Added call to PLG_itemPreSave to support the CAPTCHA plugin (feature request
+  #0001091) [Dirk]
+
+Links Plugin
+------------
+- Added call to PLG_itemPreSave to support the CAPTCHA plugin (feature request
+  #0001091) [Dirk]
+- Fixed wrong speedlimit warning when not all required fields are filled in
+  when submitting a link [Dirk]
+- Treat the pre-populated partial link URL "http://" as if no URL was submitted
+  and prevent it from being used in the spam check [Dirk]
+
+Polls Plugin
+------------
+- Fixed MS SQL upgrade (bug #0001144)
+
+Spam-X Plugin
+-------------
+- Removed 'admin_override' entry from language files (bug #0001114)
 
 Static Pages Plugin
 -------------------

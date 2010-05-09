@@ -1,10 +1,10 @@
 <?php
 
 ###############################################################################
-# slovenian_utf-8.php - version 1.5.1
+# slovenian_utf-8.php - version 1.7
 # This is the slovenian language file for the Geeklog Links Plugin
-# language file for geeklog version 1.4.1 beta by mb
-# gape@gape.org ; za pripombe, predloge ipd ... piši na email
+# language file for geeklog version 1.7 by Mateja B.
+# gape@gape.org ; za pripombe, predloge ipd. piši na e-naslov
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony AT tonybibbs DOT com
@@ -37,7 +37,7 @@ global $LANG32;
 ###############################################################################
 
 $LANG_LINKS = array(
-    10 => 'Čakajoča vsebina',
+    10 => 'Èakajoèa vsebina',
     14 => 'Povezave',
     84 => 'POVEZAVE',
     88 => 'Ni nedavnih novih povezav',
@@ -45,26 +45,26 @@ $LANG_LINKS = array(
     116 => 'Dodaj povezavo',
     117 => 'Prijavi napako v povezavi',
     118 => 'Prijava napake v povezavi',
-    119 => 'Te povezave so prijavljene kot nedelujoče: ',
-    120 => 'Da popraviš povezavo klikni tukj: ',
+    119 => 'Te povezave so prijavljene kot nedelujoèe: ',
+    120 => 'Da popraviš povezavo, klikni tukaj: ',
     121 => 'Napako v povezavi je prijavil: ',
-    122 => 'Hvala da ste prijavili to napako v povezavi. Administrator bo odpravil težavo takoj ko bo mogoče.',
+    122 => 'Hvala za prijavo napake v povezavi. Skrbnik strani bo težavo odpravil takoj, ko bo mogoèe.',
     123 => 'Hvala',
-    124 => 'Go',
+    124 => 'OK',
     125 => 'Kategorije',
-    126 => 'Ti si tukaj:',
-    'root' => 'Root'
+    126 => 'Podroèje:',
+    'root' => 'Vse'
 );
 
 ###############################################################################
 # for stats
 
 $LANG_LINKS_STATS = array(
-    'links' => 'Povezave (Kliki) v Sistemu',
-    'stats_headline' => '10 najbolj popularnih povezav',
+    'links' => 'Povezave (kliki) v sistemu',
+    'stats_headline' => '10 najpopularnejših povezav',
     'stats_page_title' => 'Povezave',
     'stats_hits' => 'Zadetki',
-    'stats_no_hits' => 'Izgleda, da na tem mestu ni povezav ali pa še nikoli ni nihče kliknil na nobeno.'
+    'stats_no_hits' => 'Izgleda, da na tem mestu ni povezav ali da še nikoli ni nihèe kliknil na nobeno.'
 );
 
 ###############################################################################
@@ -86,7 +86,7 @@ $LANG_LINKS_SUBMIT = array(
     2 => 'Povezava',
     3 => 'Kategorija',
     4 => 'Drugo',
-    5 => 'Če drugo, prosim navedi',
+    5 => 'Èe drugo, prosim navedi',
     6 => 'Napaka: Manjka kategorija',
     7 => 'Kadar izbereš "Drugo", prosim navedi tudi ime kategorije',
     8 => 'Naslov',
@@ -98,24 +98,24 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo ga bo pregledal eden od urednikov. Če bo odobren, bo objavljen in dan na razpolago bralcem te spletne strani v razdelku <a href={$_CONF['site_url']}/links/index.php>povezave</a>.";
+$PLG_links_MESSAGE1 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['site_name']}. Pred objavo jo bo pregledal urednik. Èe bo odobrena, bo objavljena in dana na razpolago bralcem te spletne strani v razdelku <a href={$_CONF['site_url']}/links/index.php>Povezave</a>.";
 $PLG_links_MESSAGE2 = 'Tvoja povezava je uspešno shranjena.';
 $PLG_links_MESSAGE3 = 'Povezava je uspešno izbrisana.';
-$PLG_links_MESSAGE4 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['site_name']}.  Sedaj jo lahko vidiš v razdelku <a href={$_CONF['site_url']}/links/index.php>povezave</a>.";
-$PLG_links_MESSAGE5 = 'Nimaš zadosti visokih pravic za prikaz te kategorije.';
-$PLG_links_MESSAGE6 = 'Nimaš zadosti visokih pravic za urejanje te kategorije.';
-$PLG_links_MESSAGE7 = 'Prosim vpiši ime kategorije in njen opis.';
+$PLG_links_MESSAGE4 = "Hvala, da si povezavo oddal/a na spletno mesto {$_CONF['site_name']}. Sedaj jo lahko vidiš v razdelku <a href={$_CONF['site_url']}/links/index.php>Povezave</a>.";
+$PLG_links_MESSAGE5 = 'Nimaš dovolj visokih pravic za prikaz te kategorije.';
+$PLG_links_MESSAGE6 = 'Nimaš dovolj visokih pravic za urejanje te kategorije.';
+$PLG_links_MESSAGE7 = 'Prosim, vpiši ime kategorije in njen opis.';
 $PLG_links_MESSAGE10 = 'Kategorija je bila uspešno shranjena.';
-$PLG_links_MESSAGE11 = 'Ni dovoljeno uporabiti imen "site" ali "user" za kategorijo - ta so rezervirana za notranjo uporabo.';
-$PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
+$PLG_links_MESSAGE11 = 'Za kategorijo ni dovoljeno uporabiti imen "site" ali "user" - ta so rezervirana za notranjo uporabo.';
+$PLG_links_MESSAGE12 = 'Nadrejeno kategorijo poskušaš narediti podrejeno v njeni lastni podkategoriji. To bi ustvarilo osamelo kategorijo, zato prosim podrejeno kategorijo/kategorije najprej premakni na višjo raven.';
 $PLG_links_MESSAGE13 = 'Kategorija je bila uspešno izbrisana.';
-$PLG_links_MESSAGE14 = 'Kategorija vsebuje povezave in ali kategorije. Prosim da jih prej izbrišeš.';
+$PLG_links_MESSAGE14 = 'Kategorija vsebuje povezave in/ali kategorije. Prosim, prej jih izbriši.';
 $PLG_links_MESSAGE15 = 'Nimaš dovolj visokih pravic za izbris te kategorije.';
 $PLG_links_MESSAGE16 = 'Kategorija s tem imenom ne obstaja.';
-$PLG_links_MESSAGE17 = 'Ime (id) te kategorije je že uporabljeno.';
+$PLG_links_MESSAGE17 = 'Ime (ID) te kategorije je že uporabljeno.';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = 'Nadgradnja vtičnika ni podprta.';
+$PLG_links_MESSAGE3001 = 'Nadgradnja vtiènika ni podprta.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -127,139 +127,139 @@ $LANG_LINKS_ADMIN = array(
     3 => 'Naslov povezave',
     4 => 'URL povezave',
     5 => 'Kategorija',
-    6 => '(vključi http://)',
+    6 => '(vkljuèi http://)',
     7 => 'Drugo',
     8 => 'Zadetki povezav',
     9 => 'Opis povezav',
-    10 => 'Določiti moraš  naslov povezave, URL in opis.',
+    10 => 'Doloèiti moraš naslov povezave, URL in opis.',
     11 => 'Upravljalnik povezav',
-    12 => 'Za spreminjanje ali izbris povezave klikni na njeno ikono za urejanje spodaj.  Za ustvarjenje nove povezave klikni na "Ustvari novo" zgoraj.',
+    12 => 'Za spreminjanje ali izbris povezave klikni na njeno ikono za urejanje spodaj. Za ustvarjenje nove povezave klikni na "Ustvari novo" zgoraj.',
     14 => 'kategorija povezave',
     16 => 'Dostop zavrnjen',
-    17 => "Poskušaš dostopiti do povezave, za katero nimaš pravic. Ta poskus je bil zabeležen. Prosim <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">pojdi nazaj na zaslon za upravljanje povezav</a>.",
-    20 => 'Če drugo, navedi',
+    17 => "Poskušaš dostopiti do povezave, za katero nimaš pravic. Ta poskus je bil zabeležen. Prosim, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">pojdi nazaj na zaslon za upravljanje povezav</a>.",
+    20 => 'Èe drugo, navedi',
     21 => 'shrani',
-    22 => 'prekliči',
+    22 => 'preklièi',
     23 => 'izbriši',
     24 => 'Ne najdem povezave',
-    25 => 'The link you selected for editing could not be found.',
-    26 => 'Validate Links',
-    27 => 'HTML Status',
-    28 => 'Edit category',
-    29 => 'Enter or edit the details below.',
-    30 => 'Category',
-    31 => 'Description',
-    32 => 'Category ID',
-    33 => 'Topic',
-    34 => 'Parent',
-    35 => 'All',
-    40 => 'Edit this category',
-    41 => 'Create child category',
-    42 => 'Delete this category',
-    43 => 'Site categories',
-    44 => 'Add&nbsp;child',
-    46 => 'User %s tried to delete a category to which they do not have access rights',
-    50 => 'List categories',
-    51 => 'New link',
-    52 => 'New category',
-    53 => 'List links',
-    54 => 'Category Manager',
-    55 => 'Edit categories below. Note that you cannot delete a category that contains other categories or links - you should delete these first, or move them to another category.',
-    56 => 'Category Editor',
-    57 => 'Not validated yet',
-    58 => 'Validate now',
-    59 => '<p>To validate all links displayed, please click on the "Validate now" link below. Please note that this might take some time depending on the amount of links displayed.</p>',
-    60 => 'User %s tried illegally to edit category %s.',
-    61 => 'Links in Category'
+    25 => 'Povezava, izbrana za urejanje, ni bila najdena.',
+    26 => 'Preveri povezave',
+    27 => 'HTML stanje',
+    28 => 'Uredi kategorijo',
+    29 => 'Vnesi ali uredi spodnje podrobnosti.',
+    30 => 'Kategorija',
+    31 => 'Opis',
+    32 => 'ID kategorije',
+    33 => 'Rubrika',
+    34 => 'Nadrejeno',
+    35 => 'Vse',
+    40 => 'Uredi to kategorijo',
+    41 => 'Ustvari podrejeno kategorijo',
+    42 => 'Izbriši to kategorijo',
+    43 => 'Kategorije strani',
+    44 => 'Dodaj&nbsp;podrejeno',
+    46 => 'Uporabnik %s je poskusil izbrisati kategorijo, do katere nima dostopnih pravic',
+    50 => 'Seznam kategorij',
+    51 => 'Nova povezava',
+    52 => 'Nova kategorija',
+    53 => 'Seznam povezav',
+    54 => 'Upravljalnik kategorij',
+    55 => 'Uredi spodnje kategorije. Vedi, da ne moreš izbrisati kategorije, ki vsebuje druge kategorije ali povezave - najprej jih je treba izbrisati ali premakniti v druge kategorije.',
+    56 => 'Urejevalnik kategorij',
+    57 => 'Še ni preverjeno',
+    58 => 'Preveri zdaj',
+    59 => '<p>Za preveritev vseh prikazanih povezav klikni na "Preveri zdaj" spodaj. Vedi prosim, da to lahko traja nekaj èasa, odvisno od kolièine prikazanih povezav.</p>',
+    60 => 'Uporabnik %s je poskusil nedovoljeno urejati kategorijo %s.',
+    61 => 'Povezave v kategoriji'
 );
 
 
 $LANG_LINKS_STATUS = array(
-    100 => 'Continue',
-    101 => 'Switching Protocols',
+    100 => 'Nadaljuj',
+    101 => 'Zamenjava protokolov',
     200 => 'OK',
-    201 => 'Created',
-    202 => 'Accepted',
-    203 => 'Non-Authoritative Information',
-    204 => 'No Content',
-    205 => 'Reset Content',
-    206 => 'Partial Content',
-    300 => 'Multiple Choices',
-    301 => 'Moved Permanently',
-    302 => 'Found',
-    303 => 'See Other',
-    304 => 'Not Modified',
-    305 => 'Use Proxy',
-    307 => 'Temporary Redirect',
-    400 => 'Bad Request',
-    401 => 'Unauthorized',
-    402 => 'Payment Required',
-    403 => 'Forbidden',
-    404 => 'Not Found',
-    405 => 'Method Not Allowed',
-    406 => 'Not Acceptable',
-    407 => 'Proxy Authentication Required',
-    408 => 'Request Timeout',
-    409 => 'Conflict',
-    410 => 'Gone',
-    411 => 'Length Required',
-    412 => 'Precondition Failed',
-    413 => 'Request Entity Too Large',
-    414 => 'Request-URI Too Long',
-    415 => 'Unsupported Media Type',
-    416 => 'Requested Range Not Satisfiable',
-    417 => 'Expectation Failed',
-    500 => 'Internal Server Error',
-    501 => 'Not Implemented',
-    502 => 'Bad Gateway',
-    503 => 'Service Unavailable',
-    504 => 'Gateway Timeout',
-    505 => 'HTTP Version Not Supported',
-    999 => 'Connection Timed out'
+    201 => 'Ustvarjeno',
+    202 => 'Sprejeto',
+    203 => 'Neavtoritativna informacija',
+    204 => 'Ni vsebine',
+    205 => 'Ponastavi vsebino',
+    206 => 'Delna vsebina',
+    300 => 'Veè izbir',
+    301 => 'Trajno prestavljeno',
+    302 => 'Najdeno',
+    303 => 'Glej drugo',
+    304 => 'Ni spremenjeno',
+    305 => 'Uporabi proxy',
+    307 => 'Zaèasna preusmeritev',
+    400 => 'Slaba zahteva',
+    401 => 'Neavtorizirano',
+    402 => 'Zahtevano plaèilo',
+    403 => 'Prepovedano',
+    404 => 'Ni najdeno',
+    405 => 'Metoda ni dovoljena',
+    406 => 'Ni sprejemljivo',
+    407 => 'Zahtevana proxy avtentifikacija',
+    408 => 'Zahtevan timeout',
+    409 => 'Konflikt',
+    410 => 'Zgubljen',
+    411 => 'Zahtevana dolžina',
+    412 => 'Predpogoj spodletel',
+    413 => 'Zahtevana entiteta prevelika',
+    414 => 'Zahtevan URL predolg',
+    415 => 'Nepodprt predstavnostni tip',
+    416 => 'Zahtevani razpon ni zadovoljiv',
+    417 => 'Prièakovanje spodletelo',
+    500 => 'Notranja strežniška napaka',
+    501 => 'Ni implementirano',
+    502 => 'Slab prehod',
+    503 => 'Storitev ni na voljo',
+    504 => 'Timeout prehoda',
+    505 => 'HTTP razlièica ni podprta',
+    999 => 'Timeout povezave'
 );
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
-    'label' => 'Links',
-    'title' => 'Links Configuration'
+    'label' => 'Povezave',
+    'title' => 'Konfiguracija povezav'
 );
 
 $LANG_confignames['links'] = array(
-    'linksloginrequired' => 'Links Login Required?',
-    'linksubmission' => 'Enable Submission Queue?',
-    'newlinksinterval' => 'New Links Interval',
-    'hidenewlinks' => 'Hide New Links?',
-    'hidelinksmenu' => 'Hide Links Menu Entry?',
-    'linkcols' => 'Categories per Column',
-    'linksperpage' => 'Links per Page',
-    'show_top10' => 'Show Top 10 Links?',
-    'notification' => 'Notification Email?',
-    'delete_links' => 'Delete Links with Owner?',
-    'aftersave' => 'After Saving Link',
-    'show_category_descriptions' => 'Show Category Description?',
-    'new_window' => 'Open external links in new window?',
-    'root' => 'ID of Root Category',
-    'default_permissions' => 'Link Default Permissions',
-    'category_permissions' => 'Category Default Permissions'
+    'linksloginrequired' => 'Za povezave zahtevana prijava?',
+    'linksubmission' => 'Omogoèi èakalno vrsto?',
+    'newlinksinterval' => 'Interval za nove povezave',
+    'hidenewlinks' => 'Skrij nove povezave?',
+    'hidelinksmenu' => 'Skrij napis Povezave v meniju?',
+    'linkcols' => 'Kategorij na stolpec',
+    'linksperpage' => 'Povezav na stran',
+    'show_top10' => 'Pokaži najpopularnejših 10 povezav?',
+    'notification' => 'Obvestilo po e-pošti?',
+    'delete_links' => 'Izbriši povezave skupaj z lastnikom?',
+    'aftersave' => 'Po shranitvi povezave',
+    'show_category_descriptions' => 'Pokaži opis kategorije?',
+    'new_window' => 'Odpri zunanje povezave v drugem oknu?',
+    'root' => 'ID korenske kategorije',
+    'default_permissions' => 'Prednastavljene pravice povezave',
+    'category_permissions' => 'Prednastavljene pravice kategorije'
 );
 
 $LANG_configsubgroups['links'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Glavne nastavitve'
 );
 
 $LANG_fs['links'] = array(
-    'fs_public' => 'Public Links List Settings',
-    'fs_admin' => 'Links Admin Settings',
-    'fs_permissions' => 'Default Permissions',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_public' => 'Nastavitve seznama javnih povezav',
+    'fs_admin' => 'Skrbnikove nastavitve povezav',
+    'fs_permissions' => 'Prednastavljene pravice',
+    'fs_cpermissions' => 'Pravice kategorije'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    0 => array('Da' => 1, 'Ne' => 0),
+    1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
+    9 => array('Naprej na povezano stran' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javni seznam' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
 );
 
 ?>

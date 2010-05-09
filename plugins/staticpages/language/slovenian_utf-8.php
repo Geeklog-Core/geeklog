@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# slovenian.php-saved as for version 1.4.1
+# slovenian_utf-8.php as for version 1.4.1
 # This is the english language page for the Geeklog Static Page Plug-in!
 # language file for geeklog version 1.4.1 beta by mb
 # gape@gape.org ; za pripombe, predloge ipd ... piši na email
@@ -36,16 +36,16 @@ global $LANG32;
 
 $LANG_STATIC = array(
     'newpage' => 'Nova stran',
-    'adminhome' => 'Upravnikova stran',
-    'staticpages' => 'Statične strani',
-    'staticpageeditor' => 'Urejevalnik statičnih strani',
+    'adminhome' => 'Skrbnikova stran',
+    'staticpages' => 'Statiène strani',
+    'staticpageeditor' => 'Urejevalnik statiènih strani',
     'writtenby' => 'Napisal:',
     'date' => 'Nazadnje posodobljeno',
     'title' => 'Naslov',
-    'page_title' => 'Page Title',
+    'page_title' => 'Naslov strani',
     'content' => 'Vsebina',
     'hits' => 'Zadetkov',
-    'staticpagelist' => 'Seznam statičnih strani',
+    'staticpagelist' => 'Seznam statiènih strani',
     'url' => 'URL',
     'edit' => 'Uredi',
     'lastupdated' => 'Nazadnje posodobljeno',
@@ -56,133 +56,133 @@ $LANG_STATIC = array(
     'leftblocks' => 'Levi blok',
     'addtomenu' => 'Dodaj v meni',
     'label' => 'Nalepka',
-    'nopages' => 'V sistemu še ni statičnih strani',
+    'nopages' => 'V sistemu še ni statiènih strani',
     'save' => 'shrani',
     'preview' => 'predogled',
     'delete' => 'izbriši',
-    'cancel' => 'prekliči',
+    'cancel' => 'preklièi',
     'access_denied' => 'Dostop zavrnjen',
-    'access_denied_msg' => 'Nedovoljeno poskušaš dostopiti do ene od upravniških statičnih strani.  Vsi poskusi nedovoljenega dostopa na to stran se beležijo.',
+    'access_denied_msg' => 'Nedovoljeno poskušaš dostopiti do ene od skrbniških statiènih strani. Vsi poskusi nedovoljenega dostopa na se beležijo.',
     'all_html_allowed' => 'Dovoljen je ves HTML',
-    'results' => 'Rezultati statičnih strani',
+    'results' => 'Rezultati statiènih strani',
     'author' => 'Avtor',
     'no_title_or_content' => 'Izpolniti moraš vsaj polji <b>Naslov</b> in <b>Vsebina</b>.',
     'no_such_page_anon' => 'Prosim, prijavi se.',
-    'no_page_access_msg' => "To je morda zato, ker nisi prijavljen/a ali pa nisi član spletne strani {$_CONF['site_name']}. Za popoln članski dostop <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> postani član</a> spletne strani {$_CONF['site_name']} .",
+    'no_page_access_msg' => "To je morda zato, ker nisi prijavljen/a ali pa sploh nisi èlan spletne strani {$_CONF['site_name']}. Za popoln èlanski dostop <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> postani èlan</a> spletne strani {$_CONF['site_name']} .",
     'php_msg' => 'PHP: ',
-    'php_warn' => 'Opozorilo: Koda PHP na tvoji strani bo procesirana, če omogočiš to možnost. Uporabljaj previdno!',
+    'php_warn' => 'Opozorilo: Koda PHP na tvoji strani bo procesirana, èe omogoèiš to možnost. Uporabljaj previdno!',
     'exit_msg' => 'Vrsta izhoda: ',
-    'exit_info' => 'Omogoči za Zahtevano prijavno sporočilo. Za  navadno varnostno preverjanje pusti okence prazno.',
+    'exit_info' => 'Omogoèi za Zahtevano prijavno sporoèilo. Za  navadno varnostno preverjanje pusti okence prazno.',
     'deny_msg' => 'Dostop do te strani je zavrnjen. Morda je bila stran premaknjena/odstranjena ali pa nimaš zadostnih dovoljenj.',
-    'stats_headline' => 'Najboljših 10 statičnih strani',
+    'stats_headline' => 'Najboljših 10 statiènih strani',
     'stats_page_title' => 'Naslov strani',
     'stats_hits' => 'Zadetki',
-    'stats_no_hits' => 'Izgleda, da na tem mestu ni statičnih strani ali pa še nikoli ni nihče nobene pogledal.',
+    'stats_no_hits' => 'Izgleda, da na tem mestu ni statiènih strani ali pa še nikoli ni nihèe nobene pogledal.',
     'id' => 'ID',
-    'duplicate_id' => 'Za to statično stran izbrani ID je že v rabi. Izberi prosim drug ID.',
-    'instructions' => 'Za spreminjanje ali izbris statične strani klikni na njeno ikono za urejanje spodaj. Za ogled statične strani klikni na naslov tiste, ki jo hočeš pogledati. Za ustvarjenje nove statične strani klikni na "Ustvari novo" zgoraj. Za ustvarjenje kopije že obstoječe statične strani klikni na ikono za kopiranje.',
+    'duplicate_id' => 'Za to statièno stran izbrani ID je že v rabi. Izberi prosim drug ID.',
+    'instructions' => 'Za spreminjanje ali izbris statiène strani klikni na njeno ikono za urejanje spodaj. Za ogled statiène strani klikni na naslov tiste, ki jo hoèeš pogledati. Za ustvarjenje nove statiène strani klikni na "Ustvari novo" zgoraj. Za ustvarjenje kopije že obstojeèe statiène strani klikni na ikono za kopiranje.',
     'centerblock' => 'Osrednji blok: ',
-    'centerblock_msg' => 'Če potrdiš, bo ta statična stran prikazana kot osrednji blok na glavni strani.',
+    'centerblock_msg' => 'Èe potrdiš, bo ta statièna stran prikazana kot osrednji blok na glavni strani.',
     'topic' => 'Rubrika: ',
     'position' => 'Položaj: ',
     'all_topics' => 'Vse',
-    'no_topic' => 'Samo domača stran',
+    'no_topic' => 'Samo vstopna stran',
     'position_top' => 'Vrh strani',
-    'position_feat' => 'Za udarnim člankom',
+    'position_feat' => 'Za udarnim èlankom',
     'position_bottom' => 'Dno strani',
     'position_entire' => 'Cela stran',
     'head_centerblock' => 'Osrednji blok',
     'centerblock_no' => 'Ne',
     'centerblock_top' => 'Zgoraj',
-    'centerblock_feat' => 'Udarni članek',
+    'centerblock_feat' => 'Udarni èlanek',
     'centerblock_bottom' => 'Spodaj',
     'centerblock_entire' => 'Celotna stran',
     'inblock_msg' => 'V bloku: ',
-    'inblock_info' => 'Če potrdiš, bo ta statična stran prikazana v okvirju (bloku).',
+    'inblock_info' => 'Èe potrdiš, bo ta statièna stran prikazana v okvirju (bloku).',
     'title_edit' => 'Uredi stran',
     'title_copy' => 'Naredi kopijo te strani',
     'title_display' => 'Prikaži stran',
     'select_php_none' => 'ne izvedi PHP',
     'select_php_return' => 'izvedi PHP (return)',
     'select_php_free' => 'izvedi PHP',
-    'php_not_activated' => "Uporaba PHP-ja na statičnih straneh ni vključena. Za podrobnosti glej <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">dokumentacijo</a>.",
+    'php_not_activated' => "Uporaba PHP-ja na statiènih straneh ni vkljuèena. Za podrobnosti glej <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">dokumentacijo</a>.",
     'printable_format' => 'Oblika za natis',
     'copy' => 'Kopiraj',
     'limit_results' => 'Omeji rezultate',
-    'search' => 'Išči',
+    'search' => 'Išèi',
     'submit' => 'Oddaj',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages',
-    'comments' => 'Comments',
-    'draft' => 'Draft',
-    'draft_yes' => 'Yes',
-    'draft_no' => 'No'
+    'no_new_pages' => 'Ni novih strani',
+    'pages' => 'Strani',
+    'comments' => 'Komentarji',
+    'draft' => 'Osnutek',
+    'draft_yes' => 'Da',
+    'draft_no' => 'Ne'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
-$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
+$PLG_staticpages_MESSAGE15 = 'Komentar je oddan v pregled in bo objavljen, ko ga odobri urednik.';
+$PLG_staticpages_MESSAGE19 = 'Stran je uspešno shranjena.';
+$PLG_staticpages_MESSAGE20 = 'Stran je uspešno izbrisana.';
+$PLG_staticpages_MESSAGE21 = 'Ta stran še ne obstaja. Za ustvarjenje strani prosim izpolni spodnji formular. Èe si tu po pomoti, klikni gumb Preklièi/Cancel.';
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_staticpages_MESSAGE3001 = 'Nadgradnja vtiènika ni podprta.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
-    'label' => 'Static Pages',
-    'title' => 'Static Pages Configuration'
+    'label' => 'Statiène strani',
+    'title' => 'Konfiguracija statiènih strani'
 );
 
 $LANG_confignames['staticpages'] = array(
-    'allow_php' => 'Allow PHP?',
-    'sort_by' => 'Sort Centerblocks by',
-    'sort_menu_by' => 'Sort Menu Entries by',
-    'sort_list_by' => 'Sort Admin List by',
-    'delete_pages' => 'Delete Pages with Owner?',
-    'in_block' => 'Wrap Pages in Block?',
-    'show_hits' => 'Show Hits?',
-    'show_date' => 'Show Date?',
-    'filter_html' => 'Filter HTML?',
-    'censor' => 'Censor Content?',
-    'default_permissions' => 'Page Default Permissions',
-    'aftersave' => 'After Saving Page',
-    'atom_max_items' => 'Max. Pages in Webservices Feed',
-    'meta_tags' => 'Enable Meta Tags',
-    'comment_code' => 'Comment Default',
-    'draft_flag' => 'Draft Flag Default',
-    'newstaticpagesinterval' => 'New Static Page Interval',
-    'hidenewstaticpages' => 'Hide New Static Pages',
-    'title_trim_length' => 'Title Trim Length',
-    'includecenterblocks' => 'Include Center Block Static Pages',
-    'includephp' => 'Include Static Pages with PHP',
-    'includesearch' => 'Enable Static Pages in Search',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'allow_php' => 'Dovoli PHP?',
+    'sort_by' => 'Osrednje bloke razvrsti po',
+    'sort_menu_by' => 'Menijske vpise razvrsti po',
+    'sort_list_by' => 'Skrbnikov seznam razvrsti po',
+    'delete_pages' => 'Izbriši strani skupaj z lastnikom?',
+    'in_block' => 'Uokviri stran v blok?',
+    'show_hits' => 'Prikaži zadetke?',
+    'show_date' => 'Prikaži datum?',
+    'filter_html' => 'Filtriraj HTML?',
+    'censor' => 'Cenzuriraj vsebino?',
+    'default_permissions' => 'Prednastavljene pravice strani',
+    'aftersave' => 'Po shranitvi strani',
+    'atom_max_items' => 'Najveè strani v feed-u spletnih storitev',
+    'meta_tags' => 'Omogoèi Meta Tags',
+    'comment_code' => 'Prednastavljeni komentarji',
+    'draft_flag' => 'Prednastavljena kot osnutek',
+    'newstaticpagesinterval' => 'Interval nove statiène strani',
+    'hidenewstaticpages' => 'Skrij nove statiène strani',
+    'title_trim_length' => 'Krajšanje dolžine naslova',
+    'includecenterblocks' => 'Vkljuèi statiène strani osrednjega bloka',
+    'includephp' => 'Vkljuèi statiène strani s PHP',
+    'includesearch' => 'Omogoèi statiène strani pri iskanju',
+    'includesearchcenterblocks' => 'Vkljuèi statiène strani osrednjega bloka',
+    'includesearchphp' => 'Vkljuèi statiène strani s PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Glavne nastavitve'
 );
 
 $LANG_fs['staticpages'] = array(
-    'fs_main' => 'Static Pages Main Settings',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Splošne nastavitve statiènih strani',
+    'fs_whatsnew' => 'Blok Kaj je novega',
+    'fs_search' => 'Rezultati iskanja',
+    'fs_permissions' => 'Prednastavljene pravice'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
-    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
-    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    0 => array('Da' => 1, 'Ne' => 0),
+    1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
+    2 => array('Datum' => 'date', 'ID strani' => 'id', 'Naslov' => 'title'),
+    3 => array('Datum' => 'date', 'ID strani' => 'id', 'Naslov' => 'title', 'Nalepka' => 'label'),
+    4 => array('Datum' => 'date', 'ID strani' => 'id', 'Naslov' => 'title', 'Avtor' => 'author'),
+    5 => array('Skrij' => 'hide', 'Prikaži - uporabi spremenjeni datum' => 'modified', 'Prikaži - uporabi ustvarjeni datum' => 'created'),
+    9 => array('Naprej na stran' => 'item', 'Prikaži seznam' => 'list', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
+    17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1)
 );
 
 ?>
