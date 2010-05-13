@@ -3,6 +3,10 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- In the Group Editor, hide the 'Apply "Default Group" change' option until the
+  state of the "Default Group" checkbox changes (feature request #0001116,
+  patch provided by Dushyant Tiwari)
+
 - New and updated French (France) language files, provided by Ben
 
 

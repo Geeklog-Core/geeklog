@@ -16,14 +16,18 @@
                                     </tr>
                                     <tr{hide_defaultoption}>
                                         <td class="alignright">{lang_defaultgroup}:</td>
-                                        <td><input type="checkbox" name="chk_grpdefault" value="1" {chk_defaultuse}{xhtml}>
+                                        <td>
+                                            <input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
                                             <span class="fieldhelp">{lang_defaultgrp_msg}</span>
                                         </td>
                                     </tr>
                                     <tr id="applydefault_row" {hide_defaultoption}>
                                         <td class="alignright">&nbsp;</td>
-                                        <td><input type="checkbox" name="chk_applydefault" value="1"{xhtml}>
-                                            <span class="fieldhelp">{lang_applydefault_msg}</span>
+                                        <td>
+                                            <div style="display:none" id="msg1">
+                                                <input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
+                                                <span class="fieldhelp">{lang_applydefault_msg}</span>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>

@@ -1,13 +1,13 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
-// | Commmon javascript functions                                              |
+// | Commmon JavaScript functions                                              |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2009 by the following authors:                         |
+// | Copyright (C) 2005-2010 by the following authors:                         |
 // |                                                                           |
-// |            Blaine Lang - blaine@portalparts.com                           |
+// |            Blaine Lang - blaine AT portalparts DOT com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -71,3 +71,13 @@
             elementToggle(id);
         }
     }
+
+//Basic function to hide the default option checkbox
+//displays the other checkbox on selecting the first checkbox.
+//used in the default group selection
+
+    function showHide(id1) {
+        el1 = document.getElementById(id1);
+        el1.style.display = (el1.style.display != 'block')? 'block' : 'none';
+    }
+
