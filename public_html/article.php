@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | article.php                                                               |
 // |                                                                           |
@@ -72,7 +72,7 @@ if (isset ($_POST['mode'])) {
         $order = COM_applyFilter ($_POST['order']);
     }
     if (isset ($_POST['query'])) {
-        $query = COM_applyFilter ($_POST['query']);
+        $query = $_POST['query'];
     }
     if (isset ($_POST['reply'])) {
         $reply = COM_applyFilter ($_POST['reply']);
@@ -88,7 +88,7 @@ if (isset ($_POST['mode'])) {
         $order = COM_applyFilter ($_GET['order']);
     }
     if (isset ($_GET['query'])) {
-        $query = COM_applyFilter ($_GET['query']);
+        $query = $_GET['query'];
     }
     if (isset ($_GET['reply'])) {
         $reply = COM_applyFilter ($_GET['reply']);
