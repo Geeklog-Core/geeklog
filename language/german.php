@@ -172,7 +172,7 @@ $LANG01 = array(
     125 => 'Sollen alle angekreuzten Einträge wirklich gelöscht werden?',
     126 => 'Alle Einträge ankreuzen oder deselektieren',
     127 => 'Permalink',
-    128 => 'Einloggen mit OpenID:',
+    128 => 'Anmelden mit OpenID:',
     129 => 'Konfiguration',
     130 => 'Webservices'
 );
@@ -361,8 +361,8 @@ $LANG04 = array(
     128 => 'Dein Name',
     129 => 'Passwort &amp; E-Mail',
     130 => 'Über Dich',
-    131 => 'Daily Digest Options',
-    132 => 'Daily Digest Feature',
+    131 => 'Daily Digest Optionen',
+    132 => 'Daily Digest-Funktion',
     133 => 'Kommentaranzeige',
     134 => 'Kommentaranzeige',
     135 => '<li>Anzeigemodus: Wie Kommentare angezeigt werden</li><li>Sortierreihenfolge: Wie Kommentare sortiert werden</li><li>Kommentarlimit: Maximale Anzahl Kommentare, die angezeigt werden (Default: 100)</li>',
@@ -372,7 +372,7 @@ $LANG04 = array(
     139 => 'Darstellung und Sprache',
     140 => '<li>Kategorien ohne Icons: Wenn angekreuzt werden in Artikeln keine Icons mehr angezeigt.</li><li>Keine Blöcke: Wenn angekreuzt werden nur noch die Blöcke Einstellungen, Kategorien und der Admin-Block angezeigt.<li>Einstellung für die maximale Anzahl von Artikeln pro Seite.</li><li>Wähle das Erscheinungsbild der Website, Deine Zeitzone und das bevorzugte Datumsformat.</li>',
     141 => 'Privatsphäre',
-    142 => 'Per Default ist es Admins und anderen Usern der Site erlaubt, Dir E-Mails zu schicken sowie Deinen Status unter "Wer Ist Online?" zu sehen. Hier kannst Du diese Einstellungen ändern.',
+    142 => 'Per Grundeinstellung ist es Admins und anderen Usern der Site erlaubt, Dir E-Mails zu schicken sowie Deinen Status unter "Wer Ist Online?" zu sehen. Hier kannst Du diese Einstellungen ändern.',
     143 => 'Blöcke anzeigen',
     144 => 'Blöcke anzeigen',
     145 => 'Vorschau: So sieht Dein Profil aus',
@@ -388,8 +388,8 @@ $LANG04 = array(
     160 => '(max. %d x %d Pixel, %d Bytes; %s)',
     161 => 'wird ggfs. skaliert',
     162 => 'wird nicht skaliert',
-    163 => 'Re-Authentication Failed',
-    164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
+    163 => 'Die Wiederauthetifizierung klappte nicht',
+    164 => 'Die maximale Anzahl für Wiederauthetifizierungsversuche wurde überschritten. Der Vorgang wurde abgebrochen und di eletzten Änderungen gingen verlohren, sorry.',
     165 => 'WYSIWYG-Editor'
 );
 
@@ -661,7 +661,7 @@ $LANG12 = array(
 
 $LANG20 = array(
     1 => 'Bitte authentifizieren!',
-    2 => 'Zugriff verweigert! Login-Information ungültig',
+    2 => 'Zugriff verweigert! Anmeldeinformation ungültig',
     3 => 'Ungültiges Passwort für User',
     4 => 'Username:',
     5 => 'Passwort:',
@@ -859,13 +859,13 @@ $LANG27 = array(
     13 => "Du hast keine Zugriffsrechte für diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/topic.php\">Zurück zum Administrator-Menü</a>.",
     14 => 'Sortiermethode',
     15 => 'alphabetisch',
-    16 => 'Default:',
+    16 => 'Grundeinstellung:',
     17 => 'Neue Kategorie',
     18 => 'Schaltzentrale',
     19 => 'Speichern',
     20 => 'Abbruch',
     21 => 'Löschen',
-    22 => 'Default',
+    22 => 'Grundeinstellung',
     23 => 'Zur voreingestellten Kategorie für neue Artikel machen',
     24 => '(*)',
     25 => 'Archiv-Kategorie',
@@ -914,13 +914,13 @@ $LANG28 = array(
     32 => 'Datei bearbeitet. %d User wurden importiert, dabei traten %d Fehler auf.',
     33 => 'Abschicken',
     34 => 'Fehler: Keine Datei zum Upload angegeben.',
-    35 => 'Letzter Login',
+    35 => 'Letzte Anmeldung',
     36 => '(noch nie)',
     37 => 'UID',
     38 => 'Gruppenliste',
     39 => 'Passwort (nochmal)',
     40 => 'Registriert',
-    41 => 'Letzter Login',
+    41 => 'Letzte Anmeldung',
     42 => 'Gesperrt',
     43 => 'Erwartet Aktivierung',
     44 => 'Erwartet Freigabe',
@@ -931,10 +931,10 @@ $LANG28 = array(
     49 => 'Admin-Gruppe',
     50 => 'Ankreuzen, um diese Gruppe als "Admin-Gruppe" ausfiltern zu können',
     51 => 'Online Days',
-    52 => '<br' . XHTML . '>Hinweis: "Online Days" ist die Anzahl der Tage zwischen der ersten Anmeldung und dem letzten Login.',
+    52 => '<br' . XHTML . '>Hinweis: "Online Days" ist die Anzahl der Tage zwischen der ersten Anmeldung und der letzten.',
     53 => 'registriert',
     54 => 'User löschen',
-    55 => 'Dies funktioniert nur, wenn die Funktion \'Record Last Login\' im Configuration admin panel aktiviert wurde.',
+    55 => 'Dies funktioniert nur, wenn die Funktion \'Letzte Anmeldung aufzeichnen\' im Configuration admin panel aktiviert wurde.',
     56 => 'Bitte den Typ User wählen, der gelöscht werden soll und "Liste aktualisieren" drücken. Dann die aus der Liste abhaken, di enicht gelöscht werden sollen und "Delete" drücken. Es werden nur die gelöscht, die gegenwärtig sichtbar sind. Dieser Hinweis für den Fall, dass die Liste sich über mehrere Seiten erstreckt.',
     57 => 'Phantom-User',
     58 => 'Einmal-User',
@@ -967,9 +967,9 @@ $LANG28 = array(
     85 => 'Wenn Du das Passwort vergessen hast, benutze folgenden Link: %s',
     86 => 'Enthalten',
     87 => 'Erinnerungen',
-    88 => 'Default Group',
-    89 => 'Check to make this a default group for new users',
-    90 => 'Apply "Default Group" change to existing user accounts'
+    88 => 'Voreingestellte Gruppe',
+    89 => 'Anklicken, um diese Gruppe zur voreingestellten Gruppe zu machen für neue User',
+    90 => '"Voreingestellte Gruppe" anwenden, um dies auch bei existierenden Usern zu ändern.'
 );
 
 ###############################################################################
@@ -1083,7 +1083,7 @@ $LANG32 = array(
     100 => 'Ok.',
     101 => 'Die Datei zum Hochladen ist größer als die Einstellung upload_max_filesize auf dem Webspace erlaubt.',
     102 => 'Die Datei zum Hochladen ist größer als die Einstellung MAX_FILE_SIZE, die im HTML-Formular angegeben wurde.',
-    103 => 'The uploaded file was only partially uploaded.',
+    103 => 'Die Datei wurde nur teilweise hochgeladen.',
     104 => 'Es ist keine Datei hochgeladen worden.',
     105 => '(undefinierter Fehler)',
     106 => 'Es fehlt ein temporäres Unterverzeichnis.',
@@ -1356,7 +1356,7 @@ $LANG_DB_BACKUP = array(
     'optimize_menu' => 'Tabellen optimieren',
     'optimize_title' => 'Tabellen Optimieren',
     'optimize_button' => 'Optimieren',
-    'optimize_explain' => 'Optimizing tables may help to improve the performance of your site. The actual impact depends on the table usage and some tables may benefit from it more than others. Do no expect to see a huge difference in performance. The <a href="http://dev.mysql.com/doc/mysql/en/optimize-table.html">MySQL manual</a> states: <q>it is not likely that you need to do this more than once a week or month</q>.',
+    'optimize_explain' => 'Das Optimieren der Tabellen mag helfen, die Geschwindigkeit des Auftritts zu verbessern. Die tatsächliche Verbesserung hängt ab von der Tabellenverwendung und einige mögen mehr davon profitieren als andere. Bitte keinen riesigen Unterschied in der Geschwindigkeit erwarten. Das <a href="http://dev.mysql.com/doc/mysql/de/optimize-table.html">MySQL-Handbuch</a> gibt an: <q>die Wahrscheinlichkeit, dass Sie dies häufiger als einmal in der Woche oder im Monat tun müssen, ist sehr gering</q>.',
     'last_optimization' => 'Letzte Optimierung',
     'optimization_patience' => 'Hinweis: Die Optimierung kann etwas Zeit in Anspruch nehmen. Bitte etwas Geduld mitbringen.',
     'optimize_success' => 'Tabellen wurden erfolgreich optimiert.'
@@ -1593,7 +1593,7 @@ $LANG_ADMIN = array(
     'create_new_adv' => 'Neu anlegen (Erw.)',
     'enabled' => 'Funktion aktivieren',
     'title' => 'Titel',
-    'page_title' => 'Page Title',
+    'page_title' => 'Seitentitel',
     'type' => 'Typ',
     'topic' => 'Kategorie',
     'help_url' => 'URL f. Hilfe-Datei',
@@ -1613,9 +1613,9 @@ $LANG_ADMIN = array(
     'meta_keywords' => 'Metatag Keywords',
     'na' => 'n/v',
     'token_expiry' => 'Achtung, zeitgesteuerte Sicherheitsfunktion (Security-Token). Nach %s lässt sich diese Seite nicht mehr speichern. Änderungen gehen verloren.',
-    'token_expired' => 'The security token for this operation has expired. Please authenticate again to continue.',
-    'reauth_msg' => 'The security token for this operation has expired. If you want to continue with this operation, then please authenticate again below. This will ensure that the changes you just made will not be lost.',
-    'authenticate' => 'Authenticate'
+    'token_expired' => 'Der Security-Token für diese Veränderung ist ausgelaufen. Bitte neu authentifizieren, um weiterzumachen.',
+    'reauth_msg' => 'Der Security-Token für diese Veränderung ist ausgelaufen. Wenn Sie weitermachen wollen, dann bitte unten neu authentifizieren. Damit wird sichergestellt, dass die grade gemachten Änderungen nicht verlohren gehen.',
+    'authenticate' => 'Authentifizieren'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1732,7 +1732,7 @@ $LANG_confignames['Core'] = array(
     'show_fullname' => 'Fullname wird angezeigt',
     'show_servicename' => 'Name des Service wird angezeigt',
     'custom_registration' => '"Custom Registration" aktivieren',
-    'user_login_method' => 'User Login-Methode ',
+    'user_login_method' => 'User-Anmeldemethode ',
     'spamx' => 'Spam-X Actions',
     'sort_admin' => 'Admin Links sortieren',
     'language' => 'Sprache',
@@ -1765,7 +1765,7 @@ $LANG_confignames['Core'] = array(
     'cookie_path' => 'Cookie-Pfad',
     'cookiedomain' => 'Cookie-Domain',
     'cookiesecure' => 'Cookie Secure',
-    'lastlogin' => 'Letzten Login aufzeichnen?',
+    'lastlogin' => 'Letzte Anmeldung aufzeichnen?',
     'num_search_results' => 'Anzahl Suchergebnisse',
     'loginrequired' => 'Anmelden generell nötig?',
     'submitloginrequired' => 'Anmelden für Beiträge?',
@@ -1871,8 +1871,8 @@ $LANG_confignames['Core'] = array(
     'comment_edittime' => 'Editierzeit (Sekunden)',
     'commentsubmission' => 'Kommentare moderieren',
     'passwordspeedlimit' => 'Passwort Speed-Limit',
-    'login_attempts' => 'Max. Login-Versuche',
-    'login_speedlimit' => 'Login Speed-Limit',
+    'login_attempts' => 'Max. Anmeldeversuche',
+    'login_speedlimit' => 'Anmelde-Speed-Limit',
     'user_html' => 'Erlaubtes User HTML',
     'admin_html' => 'Erlaubtes Admin HTML',
     'advanced_html' => 'Zusätzl. HTML f.d. WYSIWYG-Editor',
@@ -1888,8 +1888,8 @@ $LANG_confignames['Core'] = array(
     'ip_lookup' => 'IP Lookup',
     'url_rewrite' => 'URL-Rewrite einschalten',
     'meta_tags' => 'Meta Tags',
-    'meta_description' => 'Default Meta Description',
-    'meta_keywords' => 'Default Meta Keywords',
+    'meta_description' => 'Grundeinstellung Meta Description',
+    'meta_keywords' => 'Grundeinstellung Meta Keywords',
     'default_permissions_block' => 'Grundeinstellung Blockrechte',
     'default_permissions_story' => 'Grundeinstellung Artikelrechte',
     'default_permissions_topic' => 'Grundeinstellung Kategorierechte',
@@ -1908,7 +1908,7 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'Seiteneinstellung zeigen?',
     'search_separator' => 'Trennzeichen für Gruppen',
     'search_def_keytype' => 'Grundeinstellung Suchmethode',
-    'search_def_sort' => 'Default Sort Order'
+    'search_def_sort' => 'Grundeinstellung Sortierreihenfolge'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1937,7 +1937,7 @@ $LANG_fs['Core'] = array(
     'fs_language' => 'Sprache',
     'fs_debug' => 'Debug',
     'fs_cookies' => 'Cookies',
-    'fs_login' => 'Login Einstellungen',
+    'fs_login' => 'Anmeldeeinstellungen',
     'fs_search' => 'Suche',
     'fs_user_submission' => 'Registrierung User',
     'fs_submission' => 'Registrierungseinstellungen',
@@ -1983,18 +1983,18 @@ $LANG_configselects['Core'] = array(
     13 => array('überspringen' => 0, 'Erlauben mit Speed-Limit' => 1, 'Erlauben ohne Speed-Limit' => 2),
     14 => array('Sonntag' => 'Sun', 'Montag' => 'Mon'),
     15 => array('Nummerisch' => 'sortnum', 'Alphabetisch' => 'alpha'),
-    16 => array('Kein Login benötigt' => 0, 'Nur erweiterte Suche' => 1, 'Einfache und erweiterte Suche' => 2),
+    16 => array('Keine Anmeldung benötigt' => 0, 'Nur erweiterte Suche' => 1, 'Einfache und erweiterte Suche' => 2),
     17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1),
     18 => array('Aus' => 0, 'Ein (Exakte Übereinstimmung)' => 1, 'Ein (Wortanfang)' => 2, 'Ein (Teilwort)' => 3),
     19 => array('Google' => 'google', 'Tabelle' => 'table'),
     20 => array('Exakter Ausdruck' => 'phrase', 'Alle Worte' => 'all', 'Eines der Worte' => 'any'),
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
-    23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Default nur auf der Startseite)' => 2),
-    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
-    25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
+    23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Grundeinstellung nur auf der Startseite)' => 2),
+    24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
+    25 => array('Neuer Artikel' => 'story', 'Neuer Kommentar' => 'comment', 'Neuer Trackback' => 'trackback', 'Neuer Pingback' => 'pingback', 'Neuer User' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    27 => array('Hits (aufst)' => 'hits|asc', 'Hits (abst)' => 'hits|desc', 'Datum (aufst)' => 'date|asc', 'Datum (abst)' => 'date|desc', 'Titel (aufst)' => 'title|asc', 'Titel (abst)' => 'title|desc', 'Autor (aufst)' => 'uid|asc', 'Autor (abst)' => 'uid|desc')
 );
 
 ?>

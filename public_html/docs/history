@@ -13,11 +13,15 @@ Geeklog 1.7.0 now supports PostgreSQL, implemented by Stan Palatnik during the
 2009 Google Summer of Code.
 
 Changes since 1.7.0rc1:
+- Security: The autologin (using the long-term session cookie) was vulnerable
+  to dictionary attacks. This issue was originally reported by Bookoo of the
+  Nine Situations Group in one of his reports in April 2009 but apparently
+  overlooked by the Geeklog Team. Thanks to geeklog.net user Jack for pointing
+  this out.
 - Fixed a typo in the install check that prevented Geeklog from detecting if it
   was installed in a subdirectory (bug #0001148) [Dirk]
 
-- New and updated German language files for the Polls, Static Pages, and
-  XMLSitemap plugins, provided by Markus Wollschläger
+- New and updated German language files, provided by Markus Wollschläger
 - New and updated Slovenian language files, provided by Mateja B.
 
 
@@ -241,6 +245,17 @@ Static Pages Plugin 1.6.2
   to the Static Page Editor (feature request #0000975) [Dirk]
 - Added a Comment Default config option (feature request #0000966) [Dirk]
 - Added support for query highlighting [Dirk]
+
+
+May 9, 2010 (1.6.1sr1)
+------------
+
+This release addresses the following security issue:
+
+The autologin (using the long-term session cookie) is vulnerable to dictionary
+attacks. This issue was originally reported by Bookoo of the Nine Situations
+Group in one of his reports in April 2009 but apparently overlooked by the
+Geeklog Team. Thanks to geeklog.net user Jack for pointing this out.
 
 
 Nov 22, 2009 (1.6.1)
@@ -839,6 +854,17 @@ Static Pages plugin
   now [Dirk]
 - Display "successfully saved" and "successfully deleted" messages, just like
   every other plugin and built-in function does (bug #0000644) [Dirk]
+
+
+May 9, 2010 (1.5.2sr6)
+------------
+
+This release addresses the following security issue:
+
+The autologin (using the long-term session cookie) is vulnerable to dictionary
+attacks. This issue was originally reported by Bookoo of the Nine Situations
+Group in one of his reports in April 2009 but apparently overlooked by the
+Geeklog Team. Thanks to geeklog.net user Jack for pointing this out.
 
 
 Jul 30, 2009 (1.5.2sr5)
