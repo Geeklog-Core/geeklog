@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
 // |                                                                           |
@@ -199,14 +199,14 @@ function send_messages($vars)
     }
 
     // Urgent message!
-    if (isset ($vars['priority'])) {
+    if (isset($vars['priority'])) {
         $priority = 1;
     } else {
         $priority = 0;
     }
 
     // If you want to send html mail
-    if (isset ($vars['html'])) {
+    if (isset($vars['html'])) {
         $html = true;
     } else {
         $html = false;
@@ -215,84 +215,88 @@ function send_messages($vars)
     $groupList = implode(',', USER_getChildGroups($to_group));
 
     // and now mail it
-    if (isset ($vars['overstyr'])) {
+    if (isset($vars['overstyr'])) {
         $sql = "SELECT DISTINCT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email IS NOT NULL) and (email != ''))";
+        $sql .= " AND {$_TABLES['users']}.status = " . USER_ACCOUNT_ACTIVE . " AND ((email IS NOT NULL) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id IN ({$groupList})";
     } else {
         $sql = "SELECT DISTINCT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email IS NOT NULL) and (email != ''))";
+        $sql .= " AND {$_TABLES['users']}.status = " . USER_ACCOUNT_ACTIVE . " AND ((email IS NOT NULL) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
         $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id IN ({$groupList})";
     }
 
-    $result = DB_query ($sql);
-    $nrows = DB_numRows ($result);
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
 
-    $from = COM_formatEmailAddress ($vars['fra'], $vars['fraepost']);
-    $subject = COM_stripslashes ($vars['subject']);
-    $message = COM_stripslashes ($vars['message']);
+    $from = COM_formatEmailAddress($vars['fra'], $vars['fraepost']);
+    $subject = COM_stripslashes($vars['subject']);
+    $subject = strip_tags($subject);
+    $message = COM_stripslashes($vars['message']);
+    if (! $html) {
+        $message = strip_tags($message);
+    }
 
     // Loop through and send the messages!
-    $successes = array ();
-    $failures = array ();
+    $successes = array();
+    $failures = array();
     for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        if (empty ($A['fullname'])) {
-            $to = COM_formatEmailAddress ($A['username'], $A['email']);
+        $A = DB_fetchArray($result);
+        if (empty($A['fullname'])) {
+            $to = COM_formatEmailAddress($A['username'], $A['email']);
         } else {
-            $to = COM_formatEmailAddress ($A['fullname'], $A['email']);
+            $to = COM_formatEmailAddress($A['fullname'], $A['email']);
         }
 
-        if (!COM_mail ($to, $subject, $message, $from, $html, $priority)) {
-            $failures[] = htmlspecialchars ($to);
+        if (! COM_mail($to, $subject, $message, $from, $html, $priority)) {
+            $failures[] = htmlspecialchars($to);
         } else {
-            $successes[] = htmlspecialchars ($to);
+            $successes[] = htmlspecialchars($to);
         }
     }
 
-    $retval .= COM_startBlock ($LANG31[1]);
+    $retval .= COM_startBlock($LANG31[1]);
 
-    $failcount = count ($failures);
-    $successcount = count ($successes);
-    $mailresult = str_replace ('<successcount>', $successcount, $LANG31[20]);
-    $retval .= str_replace ('<failcount>', $failcount, $mailresult);
+    $failcount = count($failures);
+    $successcount = count($successes);
+    $mailresult = str_replace('<successcount>', $successcount, $LANG31[20]);
+    $retval .= str_replace('<failcount>', $failcount, $mailresult);
 
     $retval .= '<h2>' . $LANG31[21] . '</h2>';
-    for ($i = 0; $i < count ($failures); $i++) {
-        $retval .= current ($failures) . '<br' . XHTML . '>';
-        next ($failures);
+    for ($i = 0; $i < count($failures); $i++) {
+        $retval .= current($failures) . '<br' . XHTML . '>';
+        next($failures);
     }
-    if (count ($failures) == 0) {
+    if (count($failures) == 0) {
         $retval .= $LANG31[23];
     }
 
     $retval .= '<h2>' . $LANG31[22] . '</h2>';
-    for ($i = 0; $i < count ($successes); $i++) {
-        $retval .= current ($successes) . '<br' . XHTML . '>';
-        next ($successes);
+    for ($i = 0; $i < count($successes); $i++) {
+        $retval .= current($successes) . '<br' . XHTML . '>';
+        next($successes);
     }
-    if (count ($successes) == 0) {
+    if (count($successes) == 0) {
         $retval .= $LANG31[24];
     }
 
-    $retval .= COM_endBlock ();
+    $retval .= COM_endBlock();
 
     return $retval;
 }
 
 // MAIN
 
-$display .= COM_siteHeader ('menu', $LANG31[1]);
+$display .= COM_siteHeader('menu', $LANG31[1]);
 
 if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
-    $display .= send_messages ($_POST);
+    $display .= send_messages($_POST);
 } else {
     $display .= COM_showMessageFromParameter();
     $display .= display_mailform();
 }
 
-$display .= COM_siteFooter ();
+$display .= COM_siteFooter();
 
 COM_output($display);
 
