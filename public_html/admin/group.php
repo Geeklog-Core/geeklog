@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
@@ -338,7 +338,7 @@ function getIndirectFeatures ($grp_id)
     while (count($tocheck) > 0);
 
     // get features for all groups in $checked
-    $glist = join (',', $checked);
+    $glist = implode(',', $checked);
     $result = DB_query("SELECT DISTINCT ft_name FROM {$_TABLES['access']},{$_TABLES['features']} WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
     $nrows = DB_numRows ($result);
 

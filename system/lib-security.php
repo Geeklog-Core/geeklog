@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
@@ -139,7 +139,7 @@ function SEC_getUserGroups($uid='')
         }
 
         if (count($cgroups) > 0) {
-            $glist = join(',', $cgroups);
+            $glist = implode(',', $cgroups);
             $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
                     . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
             $nrows = DB_numRows($result);
@@ -517,7 +517,7 @@ function SEC_getUserPermissions($grp_id='', $uid='')
         return '';
     }
 
-    $glist = join(',', $groups);
+    $glist = implode(',', $groups);
     $result = DB_query("SELECT DISTINCT ft_name FROM {$_TABLES["access"]},{$_TABLES["features"]} "
                      . "WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
 
