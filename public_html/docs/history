@@ -3,11 +3,20 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Comment submissions for plugins were missing the type [Dirk]
 - In the Group Editor, hide the 'Apply "Default Group" change' option until the
   state of the "Default Group" checkbox changes (feature request #0001116,
   patch provided by Dushyant Tiwari)
+- Fixed handling of $LANG_DIRECTION in the install script (cf. bug #0000871)
+- Fixed query highlighting in articles - didn't work for queries that contained
+  characters filtered by COM_applyFilter [Dirk]
 
 - New and updated French (France) language files, provided by Ben
+
+Static Pages Plugin
+-------------------
+- Call up the Advanced Editor when enabled (bug #0001147, patch provided by
+  Samuel Leathers)
 
 
 May 9, 2010 (1.7.0)
