@@ -1959,12 +1959,12 @@ function PLG_getWhatsNew()
 * Ask plugins if they want to add new comments to Geeklog's What's New block or 
 * User Profile Page.
 *
-
 * @param    string  $type       Plugin name. '' for all plugins.
-* @param    string  $numreturn  If 0 will return results for What's New Block. 
+* @param    int     $numreturn  If 0 will return results for What's New Block. 
 *                               If > 0 will return last X new comments for User Profile.
-* @param    string  $uid        ID of the user to return results for. 0 = all users.
+* @param    int     $uid        ID of the user to return results for. 0 = all users.
 * @return   array list of new comments (dups, type, title, sid, lastdate) or (sid, title, cid, unixdate)
+* @since    Geeklog 1.7.0
 *
 */
 function PLG_getWhatsNewComment($type = '', $numreturn = 0, $uid = 0)
