@@ -465,6 +465,8 @@ default:  // New Comment
             if (empty($title)) {
                 if ($type == 'article') {
                     $title = $dbTitle;
+                } else {
+                    $title = PLG_getItemInfo($type, $sid, 'title');
                 }
                 $title = str_replace ('$', '&#36;', $title);
                 // CMT_commentForm expects non-htmlspecial chars for title...
