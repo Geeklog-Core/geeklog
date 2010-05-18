@@ -14,7 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
-// |          Randy Kolenko     - randy AT nextide DOT ca
+// |          Randy Kolenko     - randy AT nextide DOT ca                      |
 // |          Matt West         - matt AT mattdanger DOT net                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -286,9 +286,7 @@ $LANG_BIGDUMP = array(
     8 => 'Backup-Datei:',
     9 => 'Can\'t set file pointer behind the end of file.',
     10 => 'Can\'t set file pointer to offset: ',
-    11 => 'Stopped at the line ',
-    12 => '. At this place the current query is from csv file, but ',
-    13 => ' was not set.',
+    11 => 'There is no mySQL extension available in your PHP installation.',
     14 => 'Stopped at the line ',
     15 => '. At this place the current query includes more than ',
     16 => ' dump lines. That can happen if your dump file was created by some tool which doesn\'t place a semicolon followed by a linebreak at the end of each query, or if your dump contains extended inserts. Please read the BigDump FAQs for more information.',

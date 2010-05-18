@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | bigdump.php                                                               |
 // |                                                                           |
@@ -10,8 +10,9 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2008-2009 by the following authors:                         |
 // |                                                                           |
-// | Authors: Alexey Ozerov - alexey AT ozerov DOT de (BigDump author)         |
-// |          Matt West     - matt.danger.west AT gmail DOT com                |
+// | Authors: Alexey Ozerov    - alexey AT ozerov DOT de (BigDump author)      |
+// |          Matt West        - matt.danger.west AT gmail DOT com             |
+// |          Rouslan Placella - rouslan AT placella DOT com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -58,7 +59,6 @@ $site_admin_url   = (isset($_REQUEST['site_admin_url']) ? $_REQUEST['site_admin_
 
 // Other settings (optional)
 $filename         = '';     // Specify the dump filename to suppress the file selection dialog
-$csv_insert_table = '';     // Destination table for CSV files
 $linespersession  = 3000;   // Lines to be executed per one import session
 $delaypersession  = 0;      // You can specify a sleep time in milliseconds after each session
                             // Works only if JavaScript is activated. Use to reduce server overrun
@@ -83,18 +83,27 @@ if (isset($_REQUEST['db_connection_charset'])) {
 // If not familiar with PHP please don't change anything below this line
 // *******************************************************************************************
 
-//define ('VERSION','0.29b');
+//define ('VERSION','0.32b');
 define ('DATA_CHUNK_LENGTH',16384);  // How many chars are read per time
 define ('MAX_QUERY_LINES',300);      // How many lines may be considered to be one query (except text lines)
 define ('TESTMODE',false);           // Set to true to process the file without actually accessing the database
 @ini_set('auto_detect_line_endings', true);
 @set_time_limit(0);
 
+if (function_exists("date_default_timezone_set") && function_exists("date_default_timezone_get"))
+  @date_default_timezone_set(@date_default_timezone_get());
+
 header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 echo INST_getHeader($LANG_MIGRATE[17]);
 
 $error = false;
 $file  = false;
+
+// Check if mysql extension is available
+if (!$error && !function_exists('mysql_connect')) {
+  echo '<p>' . $LANG_BIGDUMP[11] . '</p>' . LB;
+  $error=true;
+}
 
 // Get the current directory
 if (isset($_SERVER["CGIA"]))
@@ -141,12 +150,12 @@ if (!$error && isset($_REQUEST["start"])) {
     $curfilename = "";
 
   // Recognize GZip filename
-  if (eregi("\.gz$",$curfilename)) 
+  if (preg_match("/\.gz$/i",$curfilename))
     $gzipmode = true;
   else
     $gzipmode = false;
 
-  if ((!$gzipmode && !$file=@fopen($curfilename,"rt")) || ($gzipmode && !$file=@gzopen($curfilename,"rt"))) {
+  if ((!$gzipmode && !$file=@fopen($curfilename,"r")) || ($gzipmode && !$file=@gzopen($curfilename,"r"))) {
     echo INST_getAlertMsg($LANG_BIGDUMP[5] . $curfilename . $LANG_BIGDUMP[6]);
     $error = true;
   }
@@ -165,7 +174,7 @@ if (!$error && isset($_REQUEST["start"])) {
 // START IMPORT SESSION HERE
 // *******************************************************************************************
 
-if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi("(\.(sql|gz|csv))$",$curfilename)) {
+if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_match("/(\.(sql|gz))$/i",$curfilename)) {
 
   // Check start and foffset are numeric values
   if (!is_numeric($_REQUEST["start"]) || !is_numeric($_REQUEST["foffset"])) {
@@ -213,17 +222,6 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
       }
       if ($dumpline==="") break;
 
-      // Stop if csv file is used, but $csv_insert_table is not set
-      if (($csv_insert_table == "") && (eregi("(\.csv)$",$curfilename))) {
-        echo INST_getAlertMsg($LANG_BIGDUMP[11] . $linenumber . $LANG_BIGDUMP[12] . $csv_insert_table . $LANG_BIGDUMP[13]);
-        $error=true;
-        break;
-      }
-     
-      // Create an SQL query from CSV line
-      if (($csv_insert_table != "") && (eregi("(\.csv)$",$curfilename)))
-        $dumpline = 'INSERT INTO '.$csv_insert_table.' VALUES ('.$dumpline.');';
-
       // Handle DOS and Mac encoded linebreaks (I don't know if it will work on Win32 or Mac Servers)
       $dumpline=str_replace("\r\n", "\n", $dumpline);
       $dumpline=str_replace("\r", "\n", $dumpline);
@@ -268,7 +266,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && eregi
       }
 
       // Execute query if end of query detected (; as last character) AND NOT in parents
-      if (ereg(";$",trim($dumpline)) && !$inparents) {
+      if (preg_match("/;$/",trim($dumpline)) && !$inparents) {
         if (!TESTMODE && !mysql_query(trim($query), $dbconnection)) {
           echo INST_getAlertMsg($LANG_BIGDUMP[17] . $linenumber . ': ' . trim($dumpline) . '.<br ' . XHTML . '>' . $LANG_BIGDUMP[18] . trim(nl2br(htmlentities($query))) . '<br ' . XHTML . '>' . $LANG_BIGDUMP[19] . mysql_error());
           $error=true;
