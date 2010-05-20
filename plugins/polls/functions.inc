@@ -1258,6 +1258,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
             // the URL (so that $fields isn't emtpy)
             $fields[] = 'pid';
             $fields[] = 'hideresults';
+            $fields[] = 'owner_id';
 
             break;
         default:
@@ -1323,12 +1324,14 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
                     } else {
                         $userid = $_USER['uid'];
                     }                    
-                    // Users who have already voted but cannot see the results cannot view link
-                    if ($userid == 2 || ($userid != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
-                        $props['url'] = $_CONF['site_url']
-                                      . '/polls/index.php?pid=' . $A['pid'];
-                                      // . '&amp;aid=-1';
+                    // Users who have already voted but cannot see the results cannot view link (unless they are the admin or the owner)
+                    $has_Permissions = false;
+                    if (($A['hideresults'] == 0) || (isset($_USER['uid']) && ($_USER['uid'] == $A['owner_id'])) || SEC_inGroup('Root')) {
+                        $has_Permissions = true;
                     }
+                    if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {                    
+                        $props['url'] = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid']; // . '&amp;aid=-1';                   
+                    } 
                 }
                 break;
             default:
@@ -1526,7 +1529,7 @@ function plugin_getwhatsnew_polls()
         $datecolumn = 'created';
     }
     $sql = array();
-    $sql['mysql'] = "SELECT pid, topic, hideresults 
+    $sql['mysql'] = "SELECT pid, topic, hideresults, owner_id 
         FROM {$_TABLES['polltopics']} 
         WHERE ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_PO_CONF['newpollsinterval']} SECOND))) 
         " . COM_getPermSQL('AND') . " 
@@ -1534,7 +1537,7 @@ function plugin_getwhatsnew_polls()
         
     $sql['mssql'] = $sql['mysql'];
     
-    $sql['pgsql'] = "SELECT  pid, topic, hideresults 
+    $sql['pgsql'] = "SELECT  pid, topic, hideresults, owner_id 
         FROM {$_TABLES['polltopics']} 
         WHERE ({$datecolumn} >= (NOW() - INTERVAL '{$_PO_CONF['newpollsinterval']} SECONDS')) 
         " . COM_getPermSQL('AND') . " 
@@ -1548,9 +1551,13 @@ function plugin_getwhatsnew_polls()
 
         for ($x = 0; $x < $nrows; $x++) {
             $A = DB_fetchArray($result);
-
-            // Users who have already voted but cannot see the results cannot view link
-            if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
+            // Users who have already voted but cannot see the results cannot view link (unless they are the admin or the owner)
+            $has_Permissions = false;
+            if (($A['hideresults'] == 0) || (isset($_USER['uid']) && ($_USER['uid'] == $A['owner_id'])) || SEC_inGroup('Root')) {
+                $has_Permissions = true;
+            }
+            if ($has_Permissions || (!$has_Permissions && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {                    
+            //if ($_USER['uid'] == 2 || ($_USER['uid'] != 2 && !($A['hideresults'] == 1 && (isset($_COOKIE['poll-' . $A['pid']]) || POLLS_ipAlreadyVoted($A['pid']))))) {
                 $url = $_CONF['site_url'] . '/polls/index.php?pid=' . $A['pid'];
                 $title = COM_undoSpecialChars(stripslashes( $A['topic']));
                 $titletouse = COM_truncate($title, $_PO_CONF['title_trim_length'],
