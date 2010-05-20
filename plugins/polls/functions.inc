@@ -1606,17 +1606,17 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
     }    
     if ($numreturn == 0 ) {
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " WHERE type = 'polls' AND (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
         $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " WHERE type = 'polls' AND (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " WHERE type = 'polls' AND (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
         $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title  title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['polltopics']} pt"
-            . " WHERE (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
+            . " WHERE type = 'polls' AND (pt.pid = sid) AND (pt.commentcode >= 0)" . COM_getPermSQL('AND', 0, 2, 'pt')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }
     $result = DB_query($sql);
@@ -1625,7 +1625,6 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
         for ($x = 0; $x < $nrows; $x++) {
             $A[] = DB_fetchArray($result);    
         }
-        
         return $A;
     }
 }
