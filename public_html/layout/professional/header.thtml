@@ -26,7 +26,7 @@
         </a>
         <span class="header-slogan">{site_slogan}</span>
     </div>
-    <table cellspacing="0" cellpadding="0" style="width:100%;">
+    <table border="0" cellspacing="0" cellpadding="0" style="width:100%;">
         <tr>
             {left_blocks}
             <td class="story-container">
