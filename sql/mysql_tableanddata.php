@@ -442,7 +442,7 @@ CREATE TABLE {$_TABLES['trackbackcodes']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['usercomment']} (
   uid mediumint(8) NOT NULL default '1',
-  commentmode varchar(10) NOT NULL default 'threaded',
+  commentmode varchar(10) NOT NULL default 'nested',
   commentorder varchar(4) NOT NULL default 'ASC',
   commentlimit mediumint(8) unsigned NOT NULL default '100',
   PRIMARY KEY  (uid)
@@ -704,7 +704,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_descrip
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.gif','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100) ";
-$_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100) ";
+$_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'nested','ASC',100) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','-','','',0,NULL) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL) ";
