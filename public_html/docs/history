@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Make sure we keep the current status of the user's Advanced Editor option
+  even when Advanced Editor is disabled for the site (Thanks, Markus) [Dirk]
 - Comment submissions for plugins were missing the type [Dirk]
 - In the Group Editor, hide the 'Apply "Default Group" change' option until the
   state of the "Default Group" checkbox changes (feature request #0001116,

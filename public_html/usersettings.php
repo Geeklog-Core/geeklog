@@ -1115,10 +1115,17 @@ function savepreferences($A)
     } else {
         $A['showonline'] = 0;
     }
-    if (isset($A['advanced_editor']) && ($A['advanced_editor'] == 'on')) {
-        $A['advanced_editor'] = 1;
+    if ($_CONF['advanced_editor'] == 1) {
+        if (isset($A['advanced_editor']) && ($A['advanced_editor'] == 'on')) {
+            $A['advanced_editor'] = 1;
+        } else {
+            $A['advanced_editor'] = 0;
+        }
     } else {
-        $A['advanced_editor'] = 0;
+        // when Advanced Editor is not enabled, make sure we don't overwrite
+        // the user's current setting
+        $A['advanced_editor'] = DB_getItem($_TABLES['userprefs'],
+                                    'advanced_editor', "uid = {$_USER['uid']}");
     }
 
     $A['maxstories'] = COM_applyFilter ($A['maxstories'], true);
