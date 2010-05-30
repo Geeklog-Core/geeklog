@@ -306,6 +306,7 @@ class Search {
         $searchform->set_var('search_limits', $options);
 
         $searchform->set_var('lang_search', $LANG09[10]);
+        PLG_templateSetVars('search', $searchform);
         $searchform->parse('output', 'searchform');
 
         $retval .= $searchform->finish($searchform->get_var('output'));

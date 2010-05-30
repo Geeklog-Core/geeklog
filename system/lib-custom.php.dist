@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-custom.php                                                            |
 // |                                                                           |
@@ -127,6 +127,7 @@ function CUSTOM_loginErrorHandler($msg='') {
 * - 'emailstory' (email story to a friend)
 * - 'loginblock' (login form in the side bar)
 * - 'loginform' (login form in the content area)
+* - 'search' (advanced search form; simple search is usually part of 'header')
 *
 * This function is called whenever PLG_templateSetVars is called, i.e. in
 * addition to the templates listed here, it may also be called from plugins.

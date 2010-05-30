@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
@@ -1405,12 +1405,24 @@ function PLG_profileExtrasSave($plugin = '')
 }
 
 /**
-* This function can be called to check if an plugin wants to set a template
+* This function can be called to check if a plugin wants to set a template
 * variable
 *
-* Example in COM_siteHeader, the API call is now added
 * A plugin can check for $templatename == 'header' and then set additional
 * template variables
+*
+* Called from within Geeklog for:
+* - 'header' (site header)
+* - 'footer' (site footer)
+* - 'storytext', 'featuredstorytext', 'archivestorytext' (story templates)
+* - 'story' (story submission)
+* - 'comment' (comment submission form)
+* - 'registration' (user registration form)
+* - 'contact' (email user form)
+* - 'emailstory' (email story to a friend)
+* - 'loginblock' (login form in the side bar)
+* - 'loginform' (login form in the content area)
+* - 'search' (advanced search form; simple search is usually part of 'header')
 *
 * @param    string   $templatename  Name of calling template
 * @param    ref     &$template      reference for the Template

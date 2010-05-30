@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Call PLG_templateSetVars for the Advanced Search form [Dirk]
 - Make sure we keep the current status of the user's Advanced Editor option
   even when Advanced Editor is disabled for the site (Thanks, Markus) [Dirk]
 - Comment submissions for plugins were missing the type [Dirk]
