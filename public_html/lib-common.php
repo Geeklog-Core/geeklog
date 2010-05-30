@@ -4453,47 +4453,41 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 * @param    string  $type           type (translated string) of new item
 * @param    int     $amount         amount of things that have been found.
 */
-function COM_formatTimeString( $time_string, $time, $type = '', $amount = 0 )
+function COM_formatTimeString($time_string, $time, $type = '', $amount = 0)
 {
     global $LANG_WHATSNEW;
 
     $retval = $time_string;
 
     // This is the amount you have to divide the previous by to get the
-    // different time intervals: hour, day, week, months
-    $time_divider = array( 60, 60, 24, 7, 30 );
+    // different time intervals: minute, hour, day, week, month, year
+    $time_divider = array(60, 60, 24, 7, 4, 12);
 
     // These are the respective strings to the numbers above. They have to match
     // the strings in $LANG_WHATSNEW (i.e. these are the keys for the array -
     // the actual text strings are taken from the language file).
-    $time_description  = array( 'minute',  'hour',  'day',  'week',  'month'  );
-    $times_description = array( 'minutes', 'hours', 'days', 'weeks', 'months' );
+    $time_description  = array('minute',  'hour',  'day',  'week',  'month',  'year');
+    $times_description = array('minutes', 'hours', 'days', 'weeks', 'months', 'years');
 
-    $time_dividers = count( $time_divider );
-    for( $s = 0; $s < $time_dividers; $s++ )
-    {
+    $time_dividers = count($time_divider);
+    for ($s = 0; $s < $time_dividers; $s++) {
         $time = $time / $time_divider[$s];
-        if( $time < $time_divider[$s + 1] )
-        {
-            if( $time == 1 )
-            {
-                if( $s == 0 )
-                {
+        if (($s + 1 >= $time_dividers) || ($time < $time_divider[$s + 1])) {
+            $time = intval($time);
+            if ($time == 1) {
+                if ($s == 0) {
                     $time_str = $time_description[$s];
-                }
-                else // go back to the previous unit, e.g. 1 day -> 24 hours
-                {
+                } else {
+                    // go back to the previous unit, e.g. 1 day -> 24 hours
                     $time_str = $times_description[$s - 1];
                     $time *= $time_divider[$s];
                 }
-            }
-            else
-            {
+            } else {
                 $time_str = $times_description[$s];
             }
-            $fields = array( '%n', '%i', '%t', '%s' );
-            $values = array( $amount, $type, $time, $LANG_WHATSNEW[$time_str] );
-            $retval = str_replace( $fields, $values, $retval );
+            $fields = array('%n', '%i', '%t', '%s');
+            $values = array($amount, $type, $time, $LANG_WHATSNEW[$time_str]);
+            $retval = str_replace($fields, $values, $retval);
             break;
         }
     }

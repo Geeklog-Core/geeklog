@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Fixed COM_formatTimeString to correctly handle intervals bigger than 4 weeks
+  (bug #0001158) [Dirk]
 - Call PLG_templateSetVars for the Advanced Search form [Dirk]
 - Make sure we keep the current status of the user's Advanced Editor option
   even when Advanced Editor is disabled for the site (Thanks, Markus) [Dirk]
