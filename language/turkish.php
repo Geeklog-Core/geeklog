@@ -1534,11 +1534,13 @@ $LANG_WHATSNEW = array(
     'days' => 'günler',
     'weeks' => 'haftalar',
     'months' => 'aylar',
+    'years' => 'years',
     'minute' => 'dakika',
     'hour' => 'saat',
     'day' => 'gün',
     'week' => 'hafta',
-    'month' => 'ay'
+    'month' => 'ay',
+    'year' => 'year'
 );
 
 ###############################################################################

@@ -988,7 +988,7 @@ $LANG29 = array(
     18 => 'E-post',
     34 => 'Kontrolli ja otsusta',
     35 => 'Sisestatud lood',
-    36 => 'Parent or Comment', /* tõlgi */
+    36 => 'Parent or Comment',
     37 => '',
     38 => 'Sisesta',
     39 => 'Hetkel pole ülevaatamist (modereerimist) vajavaid sisestusi.',
@@ -1535,11 +1535,13 @@ $LANG_WHATSNEW = array(
     'days' => 'päeva',
     'weeks' => 'nädala',
     'months' => 'kuu',
+    'years' => 'years',
     'minute' => 'minut',
     'hour' => 'tund',
     'day' => 'päeva',
     'week' => 'nädala',
-    'month' => 'kuu'
+    'month' => 'kuu',
+    'year' => 'year'
 );
 
 ###############################################################################

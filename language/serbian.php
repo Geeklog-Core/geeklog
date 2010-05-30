@@ -1539,11 +1539,13 @@ $LANG_WHATSNEW = array(
     'days' => 'dana',
     'weeks' => 'nedelje(a)',
     'months' => 'meseci',
+    'years' => 'years',
     'minute' => 'minuta',
     'hour' => 'sat',
     'day' => 'dan',
     'week' => 'nedelja',
-    'month' => 'mesec'
+    'month' => 'mesec',
+    'year' => 'year'
 );
 
 ###############################################################################

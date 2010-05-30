@@ -1534,11 +1534,13 @@ $LANG_WHATSNEW = array(
     'days' => 'dní',
     'weeks' => 'tı¾dòov',
     'months' => 'mesiacov',
+    'years' => 'years',
     'minute' => 'minúta',
     'hour' => 'hodina',
     'day' => 'deò',
     'week' => 'tı¾deò',
-    'month' => 'mesiac'
+    'month' => 'mesiac',
+    'year' => 'year'
 );
 
 ###############################################################################

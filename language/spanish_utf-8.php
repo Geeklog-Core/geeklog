@@ -1535,11 +1535,13 @@ $LANG_WHATSNEW = array(
     'days' => 'días',
     'weeks' => 'semanas',
     'months' => 'meses',
+    'years' => 'years',
     'minute' => 'minuto',
     'hour' => 'hora',
     'day' => 'día',
     'week' => 'semana',
-    'month' => 'mes'
+    'month' => 'mes',
+    'year' => 'year'
 );
 
 ###############################################################################

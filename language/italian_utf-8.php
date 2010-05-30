@@ -1471,11 +1471,11 @@ $LANG_TRB = array(
     'trackbacks' => 'Trackback',
     'editor_intro' => 'Prepara il tuo commento di trackback per <a href="%s">%s</a>.',
     'editor_intro_none' => 'Prepara il tuo commento di trackback.',
-    'trackback_note' => "Per inviare un commento di trackback per un articolo vai alla lista delle storie e clicca su \"Invia Ping\". <a href=\"%s\">Clicca qui</a> per inviare un trackback ad una storia estranea.",
+    'trackback_note' => 'Per inviare un commento di trackback per un articolo vai alla lista delle storie e clicca su "Invia Ping". <a href="%s">Clicca qui</a> per inviare un trackback ad una storia estranea.',
     'pingback_explain' => 'Inserisci l\'indirizzo per l\'invio di pingback. Il pingback non collecherá alla homepage del tuo sito.',
     'pingback_url' => 'Indirizzo di Pingback',
     'site_url' => 'Indirizzo di questo sito',
-    'pingback_note' => "Per inviare un pingback per un articolo vai alla lista delle storie e clicca su \"Invia Ping\". <a href=\"%s\">Clicca qui</a> per inviare unpingback ad una storia estranea.",
+    'pingback_note' => 'Per inviare un pingback per un articolo vai alla lista delle storie e clicca su "Invia Ping". <a href="%s">Clicca qui</a> per inviare unpingback ad una storia estranea.',
     'pbtarget_missing' => 'Nessun indirizzo di pingback',
     'pbtarget_required' => 'Inserisci un indirizzo di pingback',
     'pb_error_details' => 'Si é verificato un errore durante l\'invio del pingback:',
@@ -1536,11 +1536,13 @@ $LANG_WHATSNEW = array(
     'days' => 'giorni',
     'weeks' => 'settimane',
     'months' => 'mesi',
+    'years' => 'years',
     'minute' => 'minuti',
     'hour' => 'ora',
     'day' => 'giorno',
     'week' => 'settimana',
-    'month' => 'mese'
+    'month' => 'mese',
+    'year' => 'year'
 );
 
 ###############################################################################
