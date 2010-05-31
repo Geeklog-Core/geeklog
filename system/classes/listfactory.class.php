@@ -336,14 +336,12 @@ class ListFactory {
         }
 
         if (is_array($sql)) {
-            $sql['mysql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mysql']);
-            $sql['mssql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['mssql']);
-            $sql['pgsql'] = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql['pgsql']);
-
-            
+            $sql['mysql'] = preg_replace('/SELECT.*?FROM/is', 'SELECT COUNT(*) FROM', $sql['mysql']);
+            $sql['mssql'] = preg_replace('/SELECT.*?FROM/is', 'SELECT COUNT(*) FROM', $sql['mssql']);
+            $sql['pgsql'] = preg_replace('/SELECT.*?FROM/is', 'SELECT COUNT(*) FROM', $sql['pgsql']);
         }
         else {
-            $sql = preg_replace('/SELECT.*FROM/is', 'SELECT COUNT(*) FROM', $sql);
+            $sql = preg_replace('/SELECT.*?FROM/is', 'SELECT COUNT(*) FROM', $sql);
         }
         $result = DB_query($sql);
         $num_rows = DB_numRows($result);
