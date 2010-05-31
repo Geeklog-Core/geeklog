@@ -558,7 +558,8 @@ class ListFactory {
         $direction = $this->_sort_arr['direction'] == 'asc' ? SORT_ASC : SORT_DESC;
         $column = array();
         foreach ($rows_arr as $sortarray) {
-            $column[] = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
+            $c = strip_tags($sortarray[ $this->_sort_arr['field'] ]);
+            $column[] = $c == 'LF_NULL' ? '0' : $c;
         }
         array_multisort($column, $direction, $rows_arr);
 
