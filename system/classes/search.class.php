@@ -525,7 +525,7 @@ class Search {
                     $debug_info .= ' with Callback Function.';
                     $obj->setCallback($result->getLabel(), $result->getName(), $api_callback_func, $result->getRank(), $result->getTotal());
                 }
-                else
+                else if ($result->getSQL() != '' || $result->getFTSQL()  != '')
                 {
                     if ($_CONF['search_use_fulltext'] == true && $result->getFTSQL() != '') {
                         $sql = $result->getFTSQL();
