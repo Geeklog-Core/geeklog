@@ -283,9 +283,8 @@ function itemlist($type, $token)
         $function = 'plugin_itemlist_' . $type;
         if (function_exists($function)) {
             // Great, we found the plugin, now call its itemlist method
-            $plugin = new Plugin();
             $plugin = $function();
-            if (isset($plugin)) {
+            if (is_object($plugin)) {
                 $helpfile = $plugin->submissionhelpfile;
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
@@ -294,6 +293,8 @@ function itemlist($type, $token)
                 if (($type != 'story') && ($type != 'story_draft')) {
                     $isplugin = true;
                 }
+            } else if (is_string($plugin)) {
+                return '<div class="block-box">' . $plugin . '</div>' . LB;
             }
         }
     }
