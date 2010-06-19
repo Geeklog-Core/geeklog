@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Display the topic name (instead of the topic id) in the list of draft stories
+  (bug #0001171) [Dirk]
 - Fixed COM_formatTimeString to correctly handle intervals bigger than 4 weeks
   (bug #0001158) [Dirk]
 - Call PLG_templateSetVars for the Advanced Search form [Dirk]

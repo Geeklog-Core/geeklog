@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-admin.php                                                             |
 // |                                                                           |
@@ -1218,7 +1218,8 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     default:
-        if (($fieldname == 3) && ($type == 'story')) {
+        if (($fieldname == 3) &&
+                (($type == 'story') || ($type == 'story_draft'))) {
             $retval = DB_getItem($_TABLES['topics'], 'topic',
                                   "tid = '{$A[3]}'");
         } elseif (($fieldname == 2) && ($type == 'comment')) {
