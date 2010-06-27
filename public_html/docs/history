@@ -3,6 +3,7 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Fixed "Show & Hide Boxes" option in My Account (reported by Pushkar) [Dirk]
 - Display the topic name (instead of the topic id) in the list of draft stories
   (bug #0001171) [Dirk]
 - Fixed COM_formatTimeString to correctly handle intervals bigger than 4 weeks

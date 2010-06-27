@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
 // |                                                                           |
@@ -662,7 +662,7 @@ function editpreferences()
                  . "(type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','older_stories'))) "
                  . "ORDER BY onleft desc,blockorder,title";
     $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
-            'bid,title,type', $whereblock, $selectedblocks));
+            'bid,title,type', $whereblock, $selectedblocks, 'blocks'));
     $preferences->parse ('boxes_block', 'boxes', true);
 
     // comment preferences block
