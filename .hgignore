@@ -20,6 +20,9 @@ system/lib-custom.php
 public_html/.htaccess
 public_html/sitemap.xml
 
+# test framework, if present
+public_html/tests
+
 config.php
 plugins/calendar/config.php
 plugins/links/config.php
