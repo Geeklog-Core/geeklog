@@ -233,7 +233,7 @@ function PLG_uninstall($type)
     }
 
     if (function_exists('plugin_autouninstall_' . $type)) {
-        COM_errorLog ("Auto-uninstalling plugin $type:", 1);
+        COM_errorLog("Auto-uninstalling plugin $type:", 1);
         $function = 'plugin_autouninstall_' . $type;
         $remvars = $function();
 
@@ -242,7 +242,11 @@ function PLG_uninstall($type)
         }
 
         // removing tables
-        $num_tables = count($remvars['tables']);
+        if (isset($remvars['tables'])) {
+            $num_tables = count($remvars['tables']);
+        } else {
+            $num_tables = 0;
+        }
         for ($i = 0; $i < $num_tables; $i++) {
             if (isset($_TABLES[$remvars['tables'][$i]])) {
                 COM_errorLog("Dropping table {$_TABLES[$remvars['tables'][$i]]}", 1);
@@ -252,92 +256,108 @@ function PLG_uninstall($type)
         }
 
         // removing variables
-        $num_vars = count($remvars['vars']);
+        if (isset($remvars['vars'])) {
+            $num_vars = count($remvars['vars']);
+        } else {
+            $num_vars = 0;
+        }
         for ($i = 0; $i < $num_vars; $i++) {
-            COM_errorLog ("Removing variable {$remvars['vars'][$i]}", 1);
+            COM_errorLog("Removing variable {$remvars['vars'][$i]}", 1);
             DB_delete($_TABLES['vars'], 'name', $remvars['vars'][$i]);
-            COM_errorLog ('...success', 1);
+            COM_errorLog('...success', 1);
         }
 
         // removing groups
-        $num_groups = count($remvars['groups']);
+        if (isset($remvars['groups'])) {
+            $num_groups = count($remvars['groups']);
+        } else {
+            $num_groups = 0;
+        }
         for ($i = 0; $i < $num_groups; $i++) {
-            $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                  "grp_name = '{$remvars['groups'][$i]}'");
+            $grp_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                 "grp_name = '{$remvars['groups'][$i]}'");
             if (!empty($grp_id)) {
-                COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group", 1);
+                COM_errorLog("Attempting to remove the {$remvars['groups'][$i]} group", 1);
                 DB_delete($_TABLES['groups'], 'grp_id', $grp_id);
-                COM_errorLog ('...success', 1);
-                COM_errorLog ("Attempting to remove the {$remvars['groups'][$i]} group from all groups.", 1);
+                COM_errorLog('...success', 1);
+                COM_errorLog("Attempting to remove the {$remvars['groups'][$i]} group from all groups.", 1);
                 DB_delete($_TABLES['group_assignments'], 'ug_main_grp_id', $grp_id);
-                COM_errorLog ('...success', 1);
+                COM_errorLog('...success', 1);
             }
         }
 
         // removing features
-        $num_features = count($remvars['features']);
+        if (isset($remvars['features'])) {
+            $num_features = count($remvars['features']);
+        } else {
+            $num_features = 0;
+        }
         for ($i = 0; $i < $num_features; $i++) {
             SEC_removeFeatureFromDB($remvars['features'][$i]);
         }
 
         // uninstall feeds
         $sql = "SELECT filename FROM {$_TABLES['syndication']} WHERE type = '$type';";
-        $result = DB_query( $sql );
-        $nrows = DB_numRows( $result );
-        if ( $nrows > 0 ) {
-            COM_errorLog ('removing feed files', 1);
-            COM_errorLog ($nrows. ' files stored in table.', 1);
-            for ( $i = 0; $i < $nrows; $i++ ) {
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
+            COM_errorLog('removing feed files', 1);
+            COM_errorLog($nrows. ' files stored in table.', 1);
+            for ($i = 0; $i < $nrows; $i++) {
                 $fcount = $i + 1;
-                $A = DB_fetchArray( $result );
-                $fullpath = SYND_getFeedPath( $A[0] );
-                if ( file_exists( $fullpath ) ) {
-                    unlink ($fullpath);
-                    COM_errorLog ("removed file $fcount of $nrows: $fullpath", 1);
+                $A = DB_fetchArray($result);
+                $fullpath = SYND_getFeedPath($A[0]);
+                if (file_exists($fullpath)) {
+                    unlink($fullpath);
+                    COM_errorLog("removed file $fcount of $nrows: $fullpath", 1);
                 } else {
-                    COM_errorLog ("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
+                    COM_errorLog("cannot remove file $fcount of $nrows, it does not exist! ($fullpath)", 1);
                 }
             }
-            COM_errorLog ('...success', 1);
+            COM_errorLog('...success', 1);
             // Remove Links Feeds from syndiaction table
-            COM_errorLog ('removing links feeds from table', 1);
+            COM_errorLog('removing links feeds from table', 1);
             DB_delete($_TABLES['syndication'], 'type', $type);
-            COM_errorLog ('...success', 1);
+            COM_errorLog('...success', 1);
         }
 
         // remove comments for this plugin
-        COM_errorLog ("Attempting to remove comments for $type", 1);
+        COM_errorLog("Attempting to remove comments for $type", 1);
         DB_delete($_TABLES['comments'], 'type', $type);
-        COM_errorLog ('...success', 1);
+        COM_errorLog('...success', 1);
 
         // uninstall php-blocks
-        $num_blocks = count($remvars['php_blocks']);
+        if (isset($remvars['php_blocks'])) {
+            $num_blocks = count($remvars['php_blocks']);
+        } else {
+            $num_blocks = 0;
+        }
         for ($i = 0; $i < $num_blocks; $i++) {
             DB_delete($_TABLES['blocks'], array('type',     'phpblockfn'),
                                           array('phpblock', $remvars['php_blocks'][$i]));
         }
 
         // remove config table data for this plugin
-        COM_errorLog ("Attempting to remove config table records for group_name: $type", 1);
+        COM_errorLog("Attempting to remove config table records for group_name: $type", 1);
         DB_delete($_TABLES['conf_values'], 'group_name', $type);
-        COM_errorLog ('...success', 1);
+        COM_errorLog('...success', 1);
 
         // uninstall the plugin
-        COM_errorLog ("Attempting to unregister the $type plugin from Geeklog", 1);
+        COM_errorLog("Attempting to unregister the $type plugin from Geeklog", 1);
         DB_delete($_TABLES['plugins'], 'pi_name', $type);
-        COM_errorLog ('...success',1);
+        COM_errorLog('...success',1);
 
-        COM_errorLog ("Finished uninstalling the $type plugin.", 1);
+        COM_errorLog("Finished uninstalling the $type plugin.", 1);
 
         return true;
     } else {
 
-        $retval = PLG_callFunctionForOnePlugin ('plugin_uninstall_' . $type);
+        $retval = PLG_callFunctionForOnePlugin('plugin_uninstall_' . $type);
 
         if ($retval === true) {
-            $plg = array_search ($type, $_PLUGINS);
+            $plg = array_search($type, $_PLUGINS);
             if ($plg !== false) {
-                unset ($_PLUGINS[$plg]);
+                unset($_PLUGINS[$plg]);
             }
 
             return true;
