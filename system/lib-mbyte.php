@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-mbyte.php                                                             |
 // |                                                                           |
 // | function collection to handle mutli-byte related issues                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Oliver Spiesshofer - oliver AT spiesshofer DOT com               |
 // +---------------------------------------------------------------------------+
@@ -93,21 +93,25 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
     if (!isset($mb_enabled)) {
         $mb_enabled = false;
         if (strcasecmp($LANG_CHARSET, 'utf-8') == 0) {			
-			if($test == '') {
-			// Normal situation in live environment
-            	if (function_exists('mb_eregi_replace')) {
-                	$mb_enabled = mb_internal_encoding('UTF-8');
-				}
-				
-            } elseif($test == 'test') {
-				// Just for tests, true if we want function to exist
-				if($enabled) {
-					$mb_enabled = mb_internal_encoding('UTF-8');
-				}
-			}
+            if (empty($test)) {
+                // Normal situation in live environment
+                if (function_exists('mb_eregi_replace')) {
+                    $mb_enabled = mb_internal_encoding('UTF-8');
+                }
+            } elseif ($test == 'test') {
+                // Just for tests, true if we want function to exist
+                if ($enabled) {
+                    $mb_enabled = mb_internal_encoding('UTF-8');
+                }
+            } elseif ($test == 'test-reset') {
+                // Just for tests, allow resetting $mb_enabled
+                if (isset($mb_enabled)) {
+                    unset($mb_enabled);
+                }
+            }
         }
     }
-	
+
     return $mb_enabled;
 }	
 
