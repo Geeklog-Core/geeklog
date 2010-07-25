@@ -842,7 +842,7 @@ class upload
     */
     function setMaxDimensions($width_pixels, $height_pixels)
     {
-        if (!is_numeric($width_pixels) AND !is_numeric($height_pixels)) {
+        if (!is_numeric($width_pixels) OR !is_numeric($height_pixels)) {
             return false;
         }
 
