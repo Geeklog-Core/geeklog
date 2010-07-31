@@ -703,6 +703,7 @@ class Template
       return false;
     }
 
+    $result = array();
     foreach ($m as $v) {
       if (!array_key_exists($v, $this->varvals)) {
         if ($this->debug & 4) {
