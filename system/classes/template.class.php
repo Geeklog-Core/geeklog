@@ -144,6 +144,34 @@ class Template
   * @see       halt
   */
   var $last_error     = '';
+ 
+  /**
+  * The name of a function is retained in this variable and is used to do any post processing work. Defaults to checking for Autotags
+  *
+  * @var       string
+  * @access    public
+  * @see       halt
+  */
+  var $postprocess_fn     = 'PLG_replaceTags';
+ 
+  
+ /**
+* Replace Tags
+*
+* Perform any post processing work by calling the function held in $postprocess_fn
+*
+* @param    string      $str        String to search for Autotags
+* @access   private
+*/
+function _postprocess($str)
+{
+    $function = $this->postprocess_fn;
+    if (function_exists($function)) {
+        $str = $function($str);
+    }
+    
+    return $str;
+}
 
  /******************************************************************************
   * Class constructor. May be called with two optional parameters.
@@ -748,6 +776,8 @@ class Template
       break;
     }
 
+    $str = $this->_postprocess($str);
+    
     return $str;
   }
 
@@ -929,4 +959,5 @@ class Template
   }
 
 }
+
 ?>
