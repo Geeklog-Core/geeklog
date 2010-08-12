@@ -3,6 +3,12 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Autotags can now be inserted directly into template files.
+  (Feature #0001181) [Tom]
+- Plugins are able to control moderation and return a string to be displayed.
+  (Feature #0000619 patch provided by jmucchiello)
+- Admin lists can now display a 0 in a column instead of being blank
+  (bug #0001060 patch provided by jmucchiello)
 - Fixed "Show & Hide Boxes" option in My Account (reported by Pushkar) [Dirk]
 - Display the topic name (instead of the topic id) in the list of draft stories
   (bug #0001171) [Dirk]
