@@ -3709,8 +3709,6 @@ function COM_formatBlock( $A, $noboxes = false )
             $blockcontent = PLG_replaceTags($blockcontent);
         }
         $blockcontent = str_replace(array('<?', '?>'), '', $blockcontent);
-        $blockcontent = str_replace(array('{', '}'), array('&#123;', '&#125;'),
-                                    $blockcontent);
 
         $retval .= COM_startBlock($A['title'], $A['help'],
                        COM_getBlockTemplate($A['name'], 'header', $position))

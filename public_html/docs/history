@@ -3,6 +3,11 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Reverted parts of the changes for bug #0001057: Do _not_ escape curly braces
+  when displaying a block's content (bug #0001156). If you run into the problem
+  that words in curly braces inside blocks are interpreted as template
+  variables, simply add a space after the opening and/or the closing brace
+  [Dirk]
 - Autotags can now be inserted directly into template files.
   (Feature #0001181) [Tom]
 - Plugins are able to control moderation and return a string to be displayed.
