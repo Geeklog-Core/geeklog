@@ -163,7 +163,11 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             }
             for ($j = 0; $j < count($header_arr); $j++) {
                 $fieldname = $header_arr[$j]['field'];
-                $fieldvalue = strval($data_arr[$i][$fieldname]);
+                if (isset($data_arr[$i][$fieldname])) {
+                    $fieldvalue = strval($data_arr[$i][$fieldname]);
+                } else {
+                    $fieldvalue = '';
+                }
                 if ($use_fieldfunction) {
                     $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $data_arr[$i], $icon_arr);
                 }
@@ -499,7 +503,11 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         }
         for ($j = 0; $j < count($header_arr); $j++) {
             $fieldname = $header_arr[$j]['field']; # get field name from headers
-            $fieldvalue = strval($A[$fieldname]); # yes, get its data
+            if (isset($A[$fieldname])) {
+                $fieldvalue = strval($A[$fieldname]); # yes, get its data
+            } else {
+                $fieldvalue = '';                
+            }
             switch ($use_fieldfunction) {
             case 2: $fieldvalue = $fieldfunction($fieldname, $fieldvalue, $A, $icon_arr, $extra);
                     break;
