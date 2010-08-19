@@ -3,6 +3,8 @@ Geeklog History/Changes:
 ??? ?, 2010 (1.7.1)
 -----------
 
+- Added cancel and delete buttons to comment edit and submission forms when needed.
+  (Feature #0000981) [Tom]
 - Reverted parts of the changes for bug #0001057: Do _not_ escape curly braces
   when displaying a block's content (bug #0001156). If you run into the problem
   that words in curly braces inside blocks are interpreted as template

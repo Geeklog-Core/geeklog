@@ -41,7 +41,11 @@
                                                             <li>{lang_instr_line4}</li>
                                                             <li>{lang_instr_line5}</li></ul>
                                                             <input type="submit" name="mode" value="{lang_preview}"{xhtml}>
-                                                            {save_option} {notification}
+                                                            <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
+                                                            {save_option} 
+                                                            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}> 
+                                                            {delete_option} 
+                                                            {notification}
                                                         </td>
                                                     </tr>
                                                 </table>

@@ -60,6 +60,42 @@ require_once $_CONF['path_system'] . 'lib-comment.php';
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
+
+/**
+ * Handles a comment submission
+ *
+ * @copyright Vincent Furia 2005
+ * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
+ * @return string HTML (possibly a refresh)
+ */
+function handleCancel()
+{
+    global $_CONF;
+    
+    $display = '';
+
+    $type = COM_applyFilter ($_POST['type']);
+    $sid = COM_applyFilter ($_POST['sid']);
+    switch ( $type ) {
+        case 'article':
+            $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                . "/article.php?story=$sid"));
+
+            break;
+        default: // assume plugin
+            // Need a way to go back to initial page for plugins.
+            $url = PLG_getItemInfo($type, $sid, 'url');
+            if ($url == '') { // Then plugin doesn't support PLG_getItemInfo
+                $url = $_CONF['site_url'] . '/index.php';
+            }
+            $display = COM_refresh ($url);
+
+            break;
+    }
+
+    return $display;
+}
+
 /**
  * Handles a comment submission
  *
@@ -127,45 +163,51 @@ function handleSubmit()
  * @author Vincent Furia, vinny01 AT users DOT sourceforge DOT net
  * @return string HTML (possibly a refresh)
  */
-function handleDelete()
+function handleDelete($formtype)
 {
     global $_CONF, $_TABLES;
 
     $display = '';
+    
+    if ($formtype == 'editsubmission') {
+        DB_delete($_TABLES['commentsubmissions'], 'cid', COM_applyFilter($_REQUEST['cid'], true));
 
-    $type = COM_applyFilter($_REQUEST['type']);
-    $sid = COM_applyFilter($_REQUEST['sid']);
-
-    switch ($type) {
-    case 'article':
-        $has_editPermissions = SEC_hasRights('story.edit');
-        $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
-        $A = DB_fetchArray($result);
-
-        if ($has_editPermissions && SEC_hasAccess($A['owner_id'],
-                $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                $A['perm_members'], $A['perm_anon']) == 3) {
-            CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid,
-                              'article');
-            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
-            DB_change($_TABLES['stories'], 'comments', $comments,
-                      'sid', $sid);
-            $display .= COM_refresh(COM_buildUrl ($_CONF['site_url']
-                                    . "/article.php?story=$sid") . '#comments');
-        } else {
-            COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) tried to illegally delete comment $cid from $type $sid");
-            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        $display = COM_refresh ( $_CONF['site_admin_url'] . '/moderation.php');      
+    } else {
+        $type = COM_applyFilter($_REQUEST['type']);
+        $sid = COM_applyFilter($_REQUEST['sid']);    
+        
+        switch ($type) {
+        case 'article':
+            $has_editPermissions = SEC_hasRights('story.edit');
+            $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+            $A = DB_fetchArray($result);
+    
+            if ($has_editPermissions && SEC_hasAccess($A['owner_id'],
+                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                    $A['perm_members'], $A['perm_anon']) == 3) {
+                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid,
+                                  'article');
+                $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+                DB_change($_TABLES['stories'], 'comments', $comments,
+                          'sid', $sid);
+                $display .= COM_refresh(COM_buildUrl ($_CONF['site_url']
+                                        . "/article.php?story=$sid") . '#comments');
+            } else {
+                COM_errorLog("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) tried to illegally delete comment $cid from $type $sid");
+                $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+            }
+            break;
+    
+        default: // assume plugin
+            if (!($display = PLG_commentDelete($type, 
+                                COM_applyFilter($_REQUEST['cid'], true), $sid))) {
+                $display = COM_refresh($_CONF['site_url'] . '/index.php');
+            }
+            break;
         }
-        break;
-
-    default: // assume plugin
-        if (!($display = PLG_commentDelete($type, 
-                            COM_applyFilter($_REQUEST['cid'], true), $sid))) {
-            $display = COM_refresh($_CONF['site_url'] . '/index.php');
-        }
-        break;
     }
-
+    
     return $display;
 }
 
@@ -344,6 +386,10 @@ $mode = '';
 if (!empty ($_REQUEST['mode'])) {
     $mode = COM_applyFilter ($_REQUEST['mode']);
 }
+$formtype = '';
+if (!empty ($_REQUEST['formtype'])) {
+    $formtype = COM_applyFilter ($_REQUEST['formtype']);
+}
 switch ($mode) {
 case $LANG03[28]: // Preview Changes (for edit)
 case $LANG03[34]: // Preview Submission changes (for edit)
@@ -370,9 +416,10 @@ case $LANG03[11]: // Submit Comment
     $display .= handleSubmit();  // moved to function for readibility
     break;
 
+case $LANG_ADMIN['delete']:    
 case 'delete':
     if (SEC_checkToken()) {
-        $display .= handleDelete();  // moved to function for readibility
+        $display .= handleDelete($formtype);  // moved to function for readibility
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
@@ -430,7 +477,13 @@ case 'unsubscribe':
     }
     $display = COM_refresh($_CONF['site_url'] . '/index.php');
     break;
-
+case $LANG_ADMIN['cancel']:
+    if ($formtype == 'editsubmission') {
+        $display = COM_refresh ( $_CONF['site_admin_url'] . '/moderation.php');        
+    } else {
+        $display .= handleCancel();  // moved to function for readibility
+    }
+    break;
 default:  // New Comment
     $abort = false;
     $sid = '';
