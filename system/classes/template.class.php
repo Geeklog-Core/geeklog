@@ -146,21 +146,47 @@ class Template
   var $last_error     = '';
  
   /**
-  * The name of a function is retained in this variable and is used to do any post processing work. Defaults to checking for Autotags
+  * The name of a function is retained in this variable and is used to do any pre processing work. Defaults to checking for Autotags
   *
   * @var       string
   * @access    public
-  * @see       halt
+  * @see       _preprocess
   */
-  var $postprocess_fn     = 'PLG_replaceTags';
- 
-  
+  var $preprocess_fn     = 'PLG_replaceTags';
+   
+  /**
+  * The name of a function is retained in this variable and is used to do any post processing work.
+  *
+  * @var       string
+  * @access    public
+  * @see       _postprocess
+  */
+  var $postprocess_fn     = '';
+
  /**
-* Replace Tags
+* Pre Process
+*
+* Perform any post processing work by calling the function held in $preprocess_fn
+*
+* @param    string      $str        
+* @access   private
+*/
+function _preprocess($str)
+{
+    $function = $this->preprocess_fn;
+    if (function_exists($function)) {
+        $str = $function($str);
+    }
+    
+    return $str;
+}
+
+ /**
+* Post Process
 *
 * Perform any post processing work by calling the function held in $postprocess_fn
 *
-* @param    string      $str        String to search for Autotags
+* @param    string      $str        
 * @access   private
 */
 function _postprocess($str)
@@ -601,10 +627,13 @@ function _postprocess($str)
         }
       }
     }
+    
+    $str = $this->_preprocess($str);
 
     if ($this->debug & 4) {
       echo "<p><b>parse:</b> completed</p>\n";
     }
+    
     return $str;
   }
 
