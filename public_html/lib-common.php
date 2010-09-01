@@ -4599,7 +4599,7 @@ function COM_showMessageFromParameter()
 /**
 * Prints Google(tm)-like paging navigation
 *
-* @param        string      $base_url       base url to use for all generated links
+* @param        string      $base_url       base url to use for all generated links. If an array, then the current parameter as the first part of the url, and the end is the last part of the url
 * @param        int         $curpage        current page we are on
 * @param        int         $num_pages      Total number of pages
 * @param        string      $page_str       page-variable name AND '='
@@ -4615,6 +4615,15 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     global $LANG05;
 
     $retval = '';
+    $first_url = '';
+    $last_url = '';    
+    
+    if (is_array($base_url)) {
+        $first_url = current($base_url);
+        $last_url = end($base_url);
+    } else {
+        $first_url = $base_url;
+    }
 
     if( $num_pages < 2 )
     {
@@ -4623,7 +4632,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( !$do_rewrite )
     {
-        $hasargs = strstr( $base_url, '?' );
+        $hasargs = strstr( $first_url, '?' );
         if( $hasargs )
         {
             $sep = '&amp;';
@@ -4641,13 +4650,13 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( $curpage > 1 )
     {
-        $retval .= COM_createLink($LANG05[7], $base_url) . ' | ';
+        $retval .= COM_createLink($LANG05[7], $first_url . $last_url) . ' | ';
         $pg = '';
         if( ( $curpage - 1 ) > 1 )
         {
             $pg = $sep . $page_str . ( $curpage - 1 );
         }
-        $retval .= COM_createLink($LANG05[6], $base_url . $pg ) . ' | ';
+        $retval .= COM_createLink($LANG05[6], $first_url . $pg . $last_url ) . ' | ';
     }
     else
     {
@@ -4673,7 +4682,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             {
                 $pg = $sep . $page_str . $pgcount;
             }
-            $retval .= COM_createLink($pgcount, $base_url . $pg) . ' ';
+            $retval .= COM_createLink($pgcount, $first_url . $pg . $last_url) . ' ';
         }
     }
 
@@ -4688,10 +4697,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
     else
     {
-        $retval .= '| ' . COM_createLink($LANG05[5], $base_url . $sep
-                                         . $page_str . ($curpage + 1));
-        $retval .= ' | ' . COM_createLink($LANG05[8], $base_url . $sep
-                                          . $page_str . $num_pages);
+        $retval .= '| ' . COM_createLink($LANG05[5], $first_url . $sep
+                                         . $page_str . ($curpage + 1) . $last_url);
+        $retval .= ' | ' . COM_createLink($LANG05[8], $first_url . $sep
+                                          . $page_str . $num_pages . $last_url);
     }
 
     if( !empty( $retval ))
