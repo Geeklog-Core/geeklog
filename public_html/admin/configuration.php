@@ -107,7 +107,7 @@ function configmanager_select_timezone_helper()
 */
 function configmanager_select_default_perm_cookie_timeout_helper()
 {
-    global $_TABLES;
+    global $_TABLES, $LANG_cookiecodes;
 
     $retval = array();
 
@@ -116,9 +116,10 @@ function configmanager_select_default_perm_cookie_timeout_helper()
 
     for ($i = 0; $i < $num_values; $i++) {
         list($cc_value, $cc_descr) = DB_fetchArray($result);
+        $cc_descr = $LANG_cookiecodes[$cc_value];
         $retval[$cc_descr] = $cc_value;
     }
-
+    
     return $retval;
 }
 
