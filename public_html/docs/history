@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Sep ?, 2010 (1.7.1rc1)
 -----------
 
+- Reverted a change in 1.7.0 that would send a Content-Type header when calling
+  COM_refresh since this conflicts with some plugins (e.g. the Forum) [Dirk]
 - Fixed wrong view after posting a comment on a poll (bug #0001080, patch
   provided by Wojtek Szkutnik)
 - Fixed language in the dropdown for the permanent cookie in the Configuration
