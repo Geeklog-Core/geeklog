@@ -1,10 +1,14 @@
 Geeklog History/Changes:
 
-??? ?, 2010 (1.7.1)
+Sep ?, 2010 (1.7.1rc1)
 -----------
 
-- Added cancel and delete buttons to comment edit and submission forms when needed.
-  (Feature #0000981) [Tom]
+- Fixed wrong view after posting a comment on a poll (bug #0001080, patch
+  provided by Wojtek Szkutnik)
+- Fixed language in the dropdown for the permanent cookie in the Configuration
+  (bug #0001117, patch provided by Eric Brisco)
+- Added cancel and delete buttons to comment edit and submission forms when
+  needed. (Feature #0000981) [Tom]
 - Reverted parts of the changes for bug #0001057: Do _not_ escape curly braces
   when displaying a block's content (bug #0001156). If you run into the problem
   that words in curly braces inside blocks are interpreted as template
@@ -32,6 +36,7 @@ Geeklog History/Changes:
 - Fixed query highlighting in articles - didn't work for queries that contained
   characters filtered by COM_applyFilter [Dirk]
 
+- Updated Japanese language file, provided by the Geeklog.jp group
 - New and updated French (France) language files, provided by Ben
 
 Static Pages Plugin
