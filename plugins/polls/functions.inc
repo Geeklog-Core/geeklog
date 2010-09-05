@@ -124,7 +124,7 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
                 . COM_siteFooter();
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
-                                . "/polls/index.php?pid=$id&amp;aid=-1");
+                                . "/polls/index.php?pid=$id");
     }
 
     return $retval;
