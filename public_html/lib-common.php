@@ -1532,6 +1532,12 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' )
 {
     global $_CONF, $LANG01, $_IMAGE_TYPE;
+    
+    // If the theme implemented this for us then call their version instead.
+    $function = $_CONF['theme'] . '_startBlock';
+    if( function_exists( $function )) {
+        return $function( $title, $helpfile, $template );
+    }
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
@@ -1542,17 +1548,13 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
 
-    if( !empty( $helpfile ))
-    {
+    if( !empty( $helpfile )) {
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $help_content = '<img src="' . $helpimg. '" alt="?"' . XHTML . '>';
         $help_attr = array('class'=>'blocktitle');
-        if( !stristr( $helpfile, 'http://' ))
-        {
+        if( !stristr( $helpfile, 'http://' )) {
             $help_url = $_CONF['site_url'] . "/help/$helpfile";
-        }
-        else
-        {
+        } else {
             $help_url = $helpfile;
         }
         $help = COM_createLink($help_content, $help_url, $help_attr);
@@ -1575,6 +1577,12 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 function COM_endBlock( $template='blockfooter.thtml' )
 {
     global $_CONF;
+    
+    // If the theme implemented this for us then call their version instead.
+    $function = $_CONF['theme'] . '_endBlock';
+    if( function_exists( $function )) {
+        return $function( $template );
+    }
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
