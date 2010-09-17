@@ -231,6 +231,15 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($args['draft_flag']) && ($_SP_CONF['draft_flag'] == '1')) {
             $args['draft_flag'] = 'on';
         }
+        
+        if (empty($args['template_flag'])) {
+            $args['template_flag'] = '';
+        }
+
+        if (empty($args['template_id'])) {
+            $args['template_id'] = '';
+        }
+        
     }
 
     // END: Staticpages defaults 
@@ -263,6 +272,8 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_old_id = $args['sp_old_id'];
     $sp_centerblock = $args['sp_centerblock'];
     $draft_flag = $args['draft_flag'];
+    $template_flag = $args['template_flag'];
+    $template_id = $args['template_id'];
     $sp_help = '';
     if (!empty($args['sp_help'])) {
         $sp_help = $args['sp_help'];
@@ -341,6 +352,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $draft_flag = 0;
         }
+        if ($template_flag == 'on') {
+            $template_flag = 1;
+        } else {
+            $template_flag = 0;
+        }
 
         // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
@@ -368,7 +384,37 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
             $sp_php = 0;
         }
-
+        
+        // If marked as a template then set id to nothing and other default settings
+        if ($template_flag == 1) {
+            $template_id = '';
+            
+            $sp_onmenu = 0;
+            $sp_label = "";
+            $sp_centerblock = 0;
+            $sp_php = 0;
+            $sp_inblock = 0;
+            $sp_nf = 0;
+            
+            $sp_hits = 0;
+            $meta_description = "";
+            $meta_keywords = "";
+        } else {
+            if ($template_id != '') {
+                // If using a template, make sure php disabled
+                $sp_php = 0;
+                
+                // Double check template id exists and is still a template
+                $perms = SP_getPerms();
+                if (!empty($perms)) {
+                    $perms = ' AND ' . $perms;
+                }        
+                if (DB_getItem($_TABLES['staticpage'], 'COUNT(sp_id)',("sp_id = '$template_id' AND template_flag = 1 AND (draft_flag = 0)" . $perms)) == 0) {
+                    $template_id = '';
+                }
+            }
+        }
+        
         // make sure there's only one "entire page" static page per topic
         if (($sp_centerblock == 1) && ($sp_where == 0)) {
             $sql = "UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE (sp_centerblock = 1) AND (sp_where = 0) AND (sp_tid = '$sp_tid') AND (draft_flag = 0)";
@@ -404,9 +450,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $datecreated = date('Y-m-d H:i:s');
         }
         
-        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,draft_flag,owner_id,group_id,'
+        DB_save($_TABLES['staticpage'], 'sp_id,sp_title,sp_page_title, sp_content,created,modified,sp_hits,sp_format,sp_onmenu,sp_label,commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,owner_id,group_id,'
                 .'perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_help,sp_tid,sp_where,sp_inblock,postmode',
-                "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$draft_flag,$owner_id,$group_id,"
+                "'$sp_id','$sp_title','$sp_page_title','$sp_content','$datecreated',NOW(),$sp_hits,'$sp_format',$sp_onmenu,'$sp_label','$commentcode','$meta_description','$meta_keywords',$template_flag,'$template_id',$draft_flag,$owner_id,$group_id,"
                         ."$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_help','$sp_tid',$sp_where,"
                         ."'$sp_inblock','$postmode'");
 
@@ -482,6 +528,11 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
         }
     }
 
+    // If a staticpage template, remove any use of the file
+    if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_id'") == 1) {
+        $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '' WHERE template_id = '$sp_id'";
+        $result = DB_query($sql);
+    }
     DB_delete($_TABLES['staticpage'], 'sp_id', $sp_id);
     DB_delete($_TABLES['comments'], array('sid',  'type'),
                                     array($sp_id, 'staticpages'));
@@ -569,7 +620,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         }
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
-                      . "commentcode,meta_description,meta_keywords,draft_flag,"
+                      . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
@@ -578,14 +629,15 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
                       . "created,modified,sp_format,commentcode,"
                       . "CAST(meta_description AS text) AS meta_description,"
-                      . "CAST(meta_keywords AS text) AS meta_keywords,draft_flag,"
+                      . "CAST(meta_keywords AS text) AS meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,perm_members,"
                       . "perm_anon,sp_tid,sp_help,sp_php,sp_inblock "
                       . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
                       . $perms;
         $sql['pgsql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,"
                       . "created,modified,sp_format,"
-                      . "commentcode,owner_id,group_id,perm_owner,perm_group,"
+                      . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
+                      . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                       . "sp_inblock FROM {$_TABLES['staticpage']} "
                       . "WHERE (sp_id = '$page')" . $perms;
@@ -599,7 +651,43 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if (!($error)) {
             $output = DB_fetchArray($result, false);
 
-            // WE ASSUME $output doesn't have any confidential fields 
+            // WE ASSUME $output doesn't have any confidential fields
+            
+            
+            if ($output['template_id'] != '') {
+                
+                $retval = '';
+                $mode = '';
+                
+                $xmlObject = simplexml_load_string($output['sp_content']);
+                
+                // create array of XML data
+                $tag = array();    
+                foreach($xmlObject->variable as $variable) {
+                    $key = $variable["name"] . '';
+                    $value = $variable->data;
+                    $tag[$key] = $value;
+                }    
+            
+                // Loop through variables to replace any autotags first
+                foreach ($tag as &$value) {
+                    $value = PLG_replaceTags($value);
+                }
+                
+                $args = array(
+                            'sp_id' => $output['template_id'],
+                            'mode'  => $mode,
+                            'gl_svc' => ''
+                             );
+                $svc_msg = array();    
+            
+                if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
+                    $retval['sp_content'] = str_replace(array_keys($tag), array_values($tag), $retval['sp_content']);
+                    
+                    $output['sp_content'] = $retval['sp_content'];
+                }
+            }            
+            
 
         } else { // an error occured (page not found, access denied, ...)
 
@@ -692,14 +780,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $limit = " LIMIT $offset, $max_items";
         $order = " ORDER BY modified DESC";
         $sql = array();
-        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $sql['mssql'] = "SELECT sp_id,sp_title,sp_page_title,CAST(sp_content AS text) AS sp_content,sp_hits,"
-                ."created,modified,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
+                ."created,modified,sp_format,CAST(meta_description AS text) AS meta_description,CAST(meta_keywords AS text) AS meta_keywords,template_flag,template_id,draft_flag,owner_id,group_id,perm_owner,perm_group,perm_members,"
                 ."perm_anon,sp_tid,sp_help,sp_php,sp_inblock FROM {$_TABLES['staticpage']}"
                 . $perms . $order . $limit;
-        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,draft_flag,owner_id,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,meta_description,meta_keywords,template_flag,template_id,draft_flag,owner_id,"
                 ."group_id,perm_owner,perm_group,perm_members,perm_anon,sp_tid,sp_help,sp_php,"
                 ."sp_inblock FROM {$_TABLES['staticpage']}" . $perms . $order . $limit;
         $result = DB_query($sql);

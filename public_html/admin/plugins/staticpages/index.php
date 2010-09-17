@@ -371,6 +371,25 @@ function staticpageeditor_form($A, $error = false)
     } else {
         $sp_template->set_var('hide_meta', ' style="display:none;"');
     }
+    if ($A['template_flag'] == 1) {
+        $sp_template->set_var('template_flag_checked', 'checked="checked"');
+    } else {
+        $sp_template->set_var('template_flag_checked', '');
+    }
+    $sp_template->set_var('lang_template', $LANG_STATIC['template']);
+    $sp_template->set_var('lang_template_flag_msg', $LANG_STATIC['template_msg']);    
+    
+    $template_list = templatelist($A['template_id']);
+    $template_none = '<option value=""';
+    if ($A['template_id'] == "") {
+        $template_none .= ' selected="selected"';
+    }
+    $template_none .= '>' . $LANG_STATIC['none'] . '</option>';
+    $sp_template->set_var('use_template_selection', '<select name="template_id">'
+                          . $template_none . $template_list . '</select>');
+    $sp_template->set_var('lang_use_template', $LANG_STATIC['use_template']);
+    $sp_template->set_var('lang_use_template_msg', $LANG_STATIC['use_template_msg']);
+    
     $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
     if (isset($A['sp_onmenu']) && ($A['sp_onmenu'] == 1)) {
         $sp_template->set_var('onmenu_checked', 'checked="checked"');
@@ -460,6 +479,42 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->parse('output', 'form');
 
     $retval .= $sp_template->finish($sp_template->get_var('output'));
+
+    return $retval;
+}
+
+/**
+* List all template static pages. For use with a dropdown.
+*
+* @retun    string      HTML for the list
+*
+*/
+function templatelist( $selected = '' )
+{
+    global $_TABLES;
+
+    $retval = '';
+
+    $perms = SP_getPerms();
+    if (!empty($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+
+    $sql = "SELECT sp_id, sp_title FROM {$_TABLES['staticpage']} WHERE template_flag = 1 AND (draft_flag = 0)" . $perms;
+    $result = DB_query ($sql);
+    $nrows = DB_numRows ($result);   
+
+    if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);      
+
+            $retval .= '<option value="' . $A['sp_id'] . '"';
+            if ($A['sp_id'] == $selected) {
+                $retval .= ' selected="selected"';
+            }
+            $retval .= '>' . $A['sp_title'] . '</option>'; 
+        }
+    }
 
     return $retval;
 }
@@ -590,6 +645,8 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
+        $A['template_flag'] = ''; // Defaults to not a template
+        $A['template_id'] = ''; // Defaults to None
         if ($_USER['advanced_editor'] == 1) {
             $A['postmode'] = 'adveditor';
         }
@@ -677,7 +734,7 @@ function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hit
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
                           $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
                           $sp_where, $sp_inblock, $postmode, $meta_description,
-                          $meta_keywords, $draft_flag)
+                          $meta_keywords, $draft_flag, $template_flag, $template_id)
 {
     $retval = '';
 
@@ -692,7 +749,9 @@ function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hit
                 'sp_label' => $sp_label,
                 'commentcode' => $commentcode,
                 'meta_description' => $meta_description,
-                'meta_keywords' => $meta_keywords,                
+                'meta_keywords' => $meta_keywords,
+                'template_flag' => $template_flag,
+                'template_id' => $template_id,
                 'draft_flag' => $draft_flag,
                 'owner_id' => $owner_id,
                 'group_id' => $group_id,
@@ -787,6 +846,10 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
         if (!isset($_POST['draft_flag'])) {
             $_POST['draft_flag'] = '';
         }
+        if (!isset($_POST['template_flag'])) {
+            $_POST['template_flag'] = '';
+        }
+        
         $display .= submitstaticpage($sp_id, $_POST['sp_title'], $_POST['sp_page_title'],
             $_POST['sp_content'], COM_applyFilter($_POST['sp_hits'], true),
             COM_applyFilter($_POST['sp_format']), $_POST['sp_onmenu'],
@@ -799,7 +862,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             $sp_help, COM_applyFilter($_POST['sp_tid']),
             COM_applyFilter($_POST['sp_where'], true), $_POST['sp_inblock'],
             COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
-            $_POST['meta_keywords'], $_POST['draft_flag']); 
+            $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id']); 
     } else {
         $display = COM_refresh($_CONF['site_admin_url'] . '/index.php');
     }

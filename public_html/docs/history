@@ -47,6 +47,8 @@ Static Pages Plugin
 -------------------
 - Call up the Advanced Editor when enabled (bug #0001147, patch provided by
   Samuel Leathers)
+- A Static Page can now be marked as a template and used by other Static Pages. 
+  (Feature #0001085) [Tom]  
 
 
 May 9, 2010 (1.7.0)

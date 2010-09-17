@@ -48,6 +48,11 @@ $_UPDATES = array(
         "UPDATE {$_TABLES['staticpage']} SET modified = `created`",
 
         "ALTER TABLE {$_TABLES['staticpage']} ADD sp_page_title varchar(128) NOT NULL default '' AFTER sp_title"
+    ),
+    
+    '1.6.2' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `template_flag` TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER `meta_keywords`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `template_id` VARCHAR( 40 ) NOT NULL DEFAULT '' AFTER `template_flag`"
     )
 
 );

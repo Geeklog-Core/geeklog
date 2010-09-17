@@ -51,7 +51,7 @@ function plugin_autoinstall_staticpages($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.6.2',
+        'pi_version'      => '1.6.3',
         'pi_gl_version'   => '1.6.1',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );

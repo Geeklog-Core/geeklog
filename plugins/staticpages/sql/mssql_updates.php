@@ -47,7 +47,12 @@ $_UPDATES = array(
         "UPDATE {$_TABLES['staticpage']} SET modified = created",
 
         "ALTER TABLE {$_TABLES['staticpage']} ADD [sp_page_title] [varchar] (128) NOT NULL AFTER sp_title"
-    )
+    ),
+    
+    '1.6.2' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [template_flag] [tinyint] NULL AFTER `meta_keywords`",
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [template_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL AFTER template_flag"
+    )    
 );
 
 /**

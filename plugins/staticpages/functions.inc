@@ -102,7 +102,7 @@ function plugin_getmenuitems_staticpages()
         }
     }
 
-    $result = DB_query("SELECT sp_id, sp_label FROM {$_TABLES['staticpage']} WHERE (sp_onmenu = 1) AND (draft_flag = 0)" . COM_getPermSql('AND') . COM_getLangSql('sp_id', 'AND') . $order);
+    $result = DB_query("SELECT sp_id, sp_label FROM {$_TABLES['staticpage']} WHERE (sp_onmenu = 1) AND (draft_flag = 0) AND (template_flag = 0)" . COM_getPermSql('AND') . COM_getLangSql('sp_id', 'AND') . $order);
     $nrows = DB_numRows($result);
 
     $menuitems = array();
@@ -136,7 +136,7 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
     $sql = "SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, "
         . "perm_group, perm_members, perm_anon "
         . "FROM {$_TABLES['staticpage']} "
-        . "WHERE (sp_id = '$id') AND (draft_flag = 0)" . COM_getPermSQL('AND')
+        . "WHERE (sp_id = '$id') AND (draft_flag = 0) AND (template_flag = 0)" . COM_getPermSQL('AND')
         . ' GROUP BY sp_id';
     $result = DB_query($sql);
     $A = DB_fetchArray($result);
@@ -177,7 +177,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     $retval = '';
 
     $commentcode = DB_getItem($_TABLES['staticpage'], 'commentcode',
-                              "(sp_id = '$id') AND (draft_flag = 0)");
+                              "(sp_id = '$id') AND (draft_flag = 0) AND (template_flag = 0)");
     if ($commentcode != 0) {
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
@@ -256,7 +256,7 @@ function SP_countVisiblePages()
         } else {
             $perms .= ' AND';
         }
-        $perms .= ' (draft_flag = 0)';
+        $perms .= ' (draft_flag = 0) AND (template_flag = 0)';
     }
     $result = DB_query("SELECT COUNT(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
     $A = DB_fetchArray($result);
@@ -627,7 +627,7 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
         }
 
         // increment hit counter for page
-        DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE (sp_id = '$page') AND (draft_flag = 0)");
+        DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE (sp_id = '$page') AND (draft_flag = 0) AND (template_flag = 0)");
 
     }
 
@@ -651,7 +651,7 @@ function plugin_showstats_staticpages($showsitestats)
     if (!empty($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $result = DB_query("SELECT sp_id,sp_title,sp_page_title,sp_hits FROM {$_TABLES['staticpage']} WHERE (sp_hits > 0) AND (draft_flag = 0)" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
+    $result = DB_query("SELECT sp_id,sp_title,sp_page_title,sp_hits FROM {$_TABLES['staticpage']} WHERE (sp_hits > 0) AND (draft_flag = 0) AND (template_flag = 0)" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
     $nrows  = DB_numRows($result);
     if ($nrows > 0) {
         require_once $_CONF['path_system'] . 'lib-admin.php';
@@ -758,7 +758,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "UNIX_TIMESTAMP(sp.created) AS date, sp.owner_id AS uid, sp.sp_hits AS hits, ";
     $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
-    $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0)";
+    $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0)";
     $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
     if (!empty ($author)) {
@@ -798,7 +798,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
     $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
     $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sp_id','AND','s') . ") ";
-    $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
+    $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.template_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
 
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
@@ -961,7 +961,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND (draft_flag = 0)" . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND (draft_flag = 0) AND (template_flag = 0)" . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query($spsql);
 
     $pages = DB_numRows($result);
@@ -1073,7 +1073,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             }
 
             // increment hit counter for page
-            DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE (sp_id = '{$S['sp_id']}') AND (draft_flag = 0)");
+            DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE (sp_id = '{$S['sp_id']}') AND (draft_flag = 0) AND (template_flag = 0)");
         }
     }
 
@@ -1248,6 +1248,18 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.2';
             break;
+            
+        case '1.6.2':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '1.6.3';
+            break;
+            
 
         default:
             $done = true;
@@ -1530,7 +1542,7 @@ function plugin_getwhatsnew_staticpages()
     $sql = array();
     $sql['mysql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (template_flag = 0) AND ({$datecolumn} >= (DATE_SUB(NOW(), INTERVAL {$_SP_CONF['newstaticpagesinterval']} SECOND))) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
         ORDER BY {$datecolumn} DESC LIMIT 15";
@@ -1539,7 +1551,7 @@ function plugin_getwhatsnew_staticpages()
     
     $sql['pgsql'] = "SELECT sp_id, sp_title 
         FROM {$_TABLES['staticpage']} 
-        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND ({$datecolumn} >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
+        WHERE sp_content IS NOT NULL AND (draft_flag = 0) AND (template_flag = 0) AND ({$datecolumn} >= (NOW() - INTERVAL '{$_SP_CONF['newstaticpagesinterval']} SECONDS')) 
         {$extra_sql} 
         " . COM_getPermSQL('AND') . " 
         ORDER BY {$datecolumn} DESC LIMIT 15";
@@ -1598,17 +1610,17 @@ function plugin_getwhatsnewcomment_staticpages($numreturn = 0, $uid = 0)
     }    
     if ($numreturn == 0 ) {
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
-            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
+            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
         $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
-            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
+            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) {$stwhere} GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, title, sid, max(date) AS lastdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
-            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
+            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . " AND (date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) {$stwhere}  GROUP BY sid,type, title, sid ORDER BY 5 DESC LIMIT 15";
     } else {
         $sql = "SELECT {$_TABLES['comments']}.sid, {$_TABLES['comments']}.title title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']}, {$_TABLES['staticpage']} sp"
-            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
+            . " WHERE type = 'staticpages' AND (sp.sp_id = sid) AND (sp.commentcode >= 0) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)" . COM_getPermSQL('AND', 0, 2, 'sp')
             . "{$stwhere} ORDER BY unixdate DESC LIMIT $numreturn";
     }        
     $result = DB_query($sql);
@@ -1678,7 +1690,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
     }
 
     // prepare SQL request
-    $where = ' WHERE (draft_flag = 0)';
+    $where = ' WHERE (draft_flag = 0) AND (template_flag = 0) ';
     if ($sp_id != '*') {
         $where .= " AND (sp_id = '" . addslashes($sp_id) . "')";
     }

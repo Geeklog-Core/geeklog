@@ -51,6 +51,8 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [commentcode] [numeric](4, 0) NOT NULL,
     [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [template_flag] [tinyint] NULL ,
+    [template_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [draft_flag] [tinyint] NULL ,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,

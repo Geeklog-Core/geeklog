@@ -113,6 +113,17 @@
               <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
+              <td align="right" valign="top">{lang_template}:</td>
+              <td valign="top"><input type="checkbox" name="template_flag" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</td>
+          </tr>
+          <tr>
+              <td align="right">{lang_use_template}:</td>
+              <td>{use_template_selection}&nbsp;&nbsp;&nbsp;{lang_use_template_msg}</td>
+          </tr>             
+          <tr>
+              <td colspan="2"><hr{xhtml}></td>
+          </tr>
+          <tr>
               <td align="right" valign="top">{lang_centerblock}</td>
               <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
           </tr>
