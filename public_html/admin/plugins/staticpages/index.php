@@ -500,7 +500,7 @@ function templatelist( $selected = '' )
         $perms = ' AND ' . $perms;
     }
 
-    $sql = "SELECT sp_id, sp_title FROM {$_TABLES['staticpage']} WHERE template_flag = 1 AND (draft_flag = 0)" . $perms;
+    $sql = "SELECT sp_id, sp_title FROM {$_TABLES['staticpage']} WHERE template_flag = 1 AND (draft_flag = 0)" . $perms . " ORDER BY sp_title";
     $result = DB_query ($sql);
     $nrows = DB_numRows ($result);   
 
