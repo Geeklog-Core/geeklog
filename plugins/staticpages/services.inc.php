@@ -400,6 +400,12 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $meta_description = "";
             $meta_keywords = "";
         } else {
+            // See if it was a template before, if so and option changed, remove use from other pages
+            if (DB_getItem($_TABLES['staticpage'], 'template_flag', "sp_id = '$sp_old_id'") == 1) {
+                $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '' WHERE template_id = '$sp_old_id'";
+                $result = DB_query($sql);
+            }            
+            
             if ($template_id != '') {
                 // If using a template, make sure php disabled
                 $sp_php = 0;
@@ -457,6 +463,12 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                         ."'$sp_inblock','$postmode'");
 
         if ($delete_old_page && !empty ($sp_old_id)) {
+            // If a template and the id changed, update any staticpages that use it
+            if ($template_flag == 1) {
+                $sql = "UPDATE {$_TABLES['staticpage']} SET template_id = '$sp_id' WHERE template_id = '$sp_old_id'";
+                $result = DB_query($sql);            
+            }
+            
             DB_delete($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
