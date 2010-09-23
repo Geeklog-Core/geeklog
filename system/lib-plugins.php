@@ -1559,117 +1559,120 @@ function PLG_replaceTags($content, $plugin = '')
 
     $autolinkModules = PLG_collectTags();
 
-    // For each supported module, scan the content looking for any AutoLink tags
-    $tags = array();
-    $contentlen = MBYTE_strlen($content);
-    $content_lower = MBYTE_strtolower($content);
-    foreach ($autolinkModules as $moduletag => $module) {
-        $autotag_prefix = '['. $moduletag . ':';
-        $offset = 0;
-        $prev_offset = 0;
-        while ($offset < $contentlen) {
-            $start_pos = MBYTE_strpos($content_lower, $autotag_prefix,
-                                      $offset);
-            if ($start_pos === false) {
-                break;
-            } else {
-                $end_pos  = MBYTE_strpos($content_lower, ']', $start_pos);
-                $next_tag = MBYTE_strpos($content_lower, '[', $start_pos + 1);
-                if (($end_pos > $start_pos) AND
-                        (($next_tag === false) OR ($end_pos < $next_tag))) {
-                    $taglength = $end_pos - $start_pos + 1;
-                    $tag = MBYTE_substr($content, $start_pos, $taglength);
-                    $parms = explode(' ', $tag);
-
-                    // Extra test to see if autotag was entered with a space
-                    // after the module name
-                    if (MBYTE_substr($parms[0], -1) == ':') {
-                        $startpos = MBYTE_strlen($parms[0]) + MBYTE_strlen($parms[1]) + 2;
-                        $label = str_replace(']', '', MBYTE_substr($tag, $startpos));
-                        $tagid = $parms[1];
-                    } else {
-                        $label = str_replace(']', '', MBYTE_substr($tag,
-                                                MBYTE_strlen($parms[0]) + 1));
-                        $parms = explode(':', $parms[0]);
-                        if (count($parms) > 2) {
-                            // whoops, there was a ':' in the tag id ...
-                            array_shift($parms);
-                            $tagid = implode(':', $parms);
-                        } else {
-                            $tagid = $parms[1];
-                        }
-                    }
-
-                    $newtag = array(
-                        'module'    => $module,
-                        'tag'       => $moduletag,
-                        'tagstr'    => $tag,
-                        'startpos'  => $start_pos,
-                        'length'    => $taglength,
-                        'parm1'     => str_replace(']', '', $tagid),
-                        'parm2'     => $label
-                    );
-                    $tags[] = $newtag;
+    for ($i = 1; $i <= 5; $i++) {
+        // For each supported module, scan the content looking for any AutoLink tags
+        $tags = array();
+        $contentlen = MBYTE_strlen($content);
+        $content_lower = MBYTE_strtolower($content);
+        foreach ($autolinkModules as $moduletag => $module) {
+            $autotag_prefix = '['. $moduletag . ':';
+            $offset = 0;
+            $prev_offset = 0;
+            while ($offset < $contentlen) {
+                $start_pos = MBYTE_strpos($content_lower, $autotag_prefix,
+                                          $offset);
+                if ($start_pos === false) {
+                    break;
                 } else {
-                    // Error: tags do not match - return with no changes
-                    return $content . $LANG32[32];
+                    $end_pos  = MBYTE_strpos($content_lower, ']', $start_pos);
+                    $next_tag = MBYTE_strpos($content_lower, '[', $start_pos + 1);
+                    if (($end_pos > $start_pos) AND
+                            (($next_tag === false) OR ($end_pos < $next_tag))) {
+                        $taglength = $end_pos - $start_pos + 1;
+                        $tag = MBYTE_substr($content, $start_pos, $taglength);
+                        $parms = explode(' ', $tag);
+    
+                        // Extra test to see if autotag was entered with a space
+                        // after the module name
+                        if (MBYTE_substr($parms[0], -1) == ':') {
+                            $startpos = MBYTE_strlen($parms[0]) + MBYTE_strlen($parms[1]) + 2;
+                            $label = str_replace(']', '', MBYTE_substr($tag, $startpos));
+                            $tagid = $parms[1];
+                        } else {
+                            $label = str_replace(']', '', MBYTE_substr($tag,
+                                                    MBYTE_strlen($parms[0]) + 1));
+                            $parms = explode(':', $parms[0]);
+                            if (count($parms) > 2) {
+                                // whoops, there was a ':' in the tag id ...
+                                array_shift($parms);
+                                $tagid = implode(':', $parms);
+                            } else {
+                                $tagid = $parms[1];
+                            }
+                        }
+    
+                        $newtag = array(
+                            'module'    => $module,
+                            'tag'       => $moduletag,
+                            'tagstr'    => $tag,
+                            'startpos'  => $start_pos,
+                            'length'    => $taglength,
+                            'parm1'     => str_replace(']', '', $tagid),
+                            'parm2'     => $label
+                        );
+                        $tags[] = $newtag;
+                    } else {
+                        // Error: tags do not match - return with no changes
+                        return $content . $LANG32[32];
+                    }
+                    $prev_offset = $offset;
+                    $offset = $end_pos;
                 }
-                $prev_offset = $offset;
-                $offset = $end_pos;
             }
         }
-    }
-
-    // If we have found 1 or more AutoLink tag
-    if (count($tags) > 0) {       // Found the [tag] - Now process them all
-        foreach ($tags as $autotag) {
-            $function = 'plugin_autotags_' . $autotag['module'];
-            if (($autotag['module'] == 'geeklog') AND
-                    (empty($plugin) OR ($plugin == 'geeklog'))) {
-                $url = '';
-                $linktext = $autotag['parm2'];
-                if ($autotag['tag'] == 'story') {
-                    $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
-                    if (! empty($autotag['parm1'])) {
-                        $url = COM_buildUrl($_CONF['site_url']
-                             . '/article.php?story=' . $autotag['parm1']);
-                        if (empty($linktext)) {
-                            $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
-                        }
-                    }
-                }
-
-                if ($autotag['tag'] == 'user') {
-                    $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
-                    if (! empty($autotag['parm1'])) {
-                        $uname = addslashes($autotag['parm1']);
-                        $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '$uname'";
-                        $result = DB_query($sql);
-                        if (DB_numRows($result) == 1) {
-                            $A = DB_fetchArray($result);
-                            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+    
+        // If we have found 1 or more AutoLink tag
+        if (count($tags) > 0) {       // Found the [tag] - Now process them all
+            foreach ($tags as $autotag) {
+                $function = 'plugin_autotags_' . $autotag['module'];
+                if (($autotag['module'] == 'geeklog') AND
+                        (empty($plugin) OR ($plugin == 'geeklog'))) {
+                    $url = '';
+                    $linktext = $autotag['parm2'];
+                    if ($autotag['tag'] == 'story') {
+                        $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
+                        if (! empty($autotag['parm1'])) {
+                            $url = COM_buildUrl($_CONF['site_url']
+                                 . '/article.php?story=' . $autotag['parm1']);
                             if (empty($linktext)) {
-                                $linktext = COM_getDisplayName($A['uid'], $autotag['parm1'], $A['fullname']);
+                                $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
                             }
                         }
                     }
+    
+                    if ($autotag['tag'] == 'user') {
+                        $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
+                        if (! empty($autotag['parm1'])) {
+                            $uname = addslashes($autotag['parm1']);
+                            $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '$uname'";
+                            $result = DB_query($sql);
+                            if (DB_numRows($result) == 1) {
+                                $A = DB_fetchArray($result);
+                                $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
+                                if (empty($linktext)) {
+                                    $linktext = COM_getDisplayName($A['uid'], $autotag['parm1'], $A['fullname']);
+                                }
+                            }
+                        }
+                    }
+    
+                    if (!empty($url)) {
+                        $filelink = COM_createLink($linktext, $url);
+                        $content = str_replace($autotag['tagstr'], $filelink,
+                                               $content);
+                    }
+                } elseif (function_exists($function) AND
+                        (empty($plugin) OR ($plugin == $autotag['module']))) {
+                    $content = $function('parse', $content, $autotag);
                 }
-
-                if (!empty($url)) {
-                    $filelink = COM_createLink($linktext, $url);
-                    $content = str_replace($autotag['tagstr'], $filelink,
-                                           $content);
-                }
-            } elseif (function_exists($function) AND
-                    (empty($plugin) OR ($plugin == $autotag['module']))) {
-                $content = $function('parse', $content, $autotag);
             }
+        } else {
+            break;     
         }
     }
 
     return $content;
 }
-
 
 /**
 * Prepare a list of all plugins that support feeds. To do this, we re-use
