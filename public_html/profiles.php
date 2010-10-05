@@ -50,7 +50,7 @@ require_once 'lib-common.php';
 */
 function contactemail($uid,$author,$authoremail,$subject,$message)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08;
+    global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08, $LANG12;
 
     $retval = '';
 
@@ -76,8 +76,16 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
     // check mail speedlimit
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
-    if (COM_checkSpeedlimit ('mail') > 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=85');
+    $last = COM_checkSpeedlimit ('mail');
+    if ($last > 0) {
+        $retval = COM_siteHeader('menu', $LANG04[81]);
+        $retval .= COM_startBlock ($LANG12[26], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG08[39] . $last . $LANG08[40]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_siteFooter();
+        
+        return $retval;
     }
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
