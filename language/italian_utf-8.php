@@ -459,7 +459,9 @@ $LANG08 = array(
     35 => 'Scusa, ma l\'utente preferisce non ricevere e-mail.',
     36 => 'Copia:',
     37 => 'Inviami una copia di questa e-mail',
-    38 => "Questa é una copia dell'e-mail che hai inviato a %s da <{$_CONF['site_url']}>:"
+    38 => "Questa é una copia dell'e-mail che hai inviato a %s da <{$_CONF['site_url']}>:",
+    39 => 'Your last message was ',
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
 );
 
 ###############################################################################

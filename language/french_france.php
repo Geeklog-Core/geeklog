@@ -458,7 +458,9 @@ $LANG08 = array(
     35 => 'Désolé, ce membre ne désire pas recevoir de messages.',
     36 => 'Copie :',
     37 => 'Envoyez moi un double de cet email',
-    38 => "Ceci est une copie du message que vous avez envoyé à %s du site <{$_CONF['site_url']}> :"
+    38 => "Ceci est une copie du message que vous avez envoyé à %s du site <{$_CONF['site_url']}> :",
+    39 => 'Your last message was ',
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
 );
 
 ###############################################################################

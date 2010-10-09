@@ -458,7 +458,9 @@ $LANG08 = array(
     35 => 'Kahjuks ei soovi see kasutaja kirju saada.',
     36 => 'Koopia:',
     37 => 'Saada mulle selle kirja koopia',
-    38 => "See on koopia kirjast, mille saatsid %s-le lehelt aadressiga <{$_CONF['site_url']}>:"
+    38 => "See on koopia kirjast, mille saatsid %s-le lehelt aadressiga <{$_CONF['site_url']}>:",
+    39 => 'Your last message was ',
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
 );
 
 ###############################################################################

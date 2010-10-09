@@ -460,7 +460,9 @@ $LANG08 = array(
     35 => 'Žal ta uporabnik ne želi prejemati e-pošte.',
     36 => 'Kopija:',
     37 => 'Pošlji mi kopijo te e-pošte',
-    38 => "To je kopija e-pošte, ki si jo poslal/a osebi %s s <{$_CONF['site_url']}>:"
+    38 => "To je kopija e-pošte, ki si jo poslal/a osebi %s s <{$_CONF['site_url']}>:",
+    39 => 'Your last message was ',
+    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
 );
 
 ###############################################################################
