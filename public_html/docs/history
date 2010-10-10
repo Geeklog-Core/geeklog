@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Oct 1?, 2010 (1.7.1rc1)
+Oct 10, 2010 (1.7.1rc1)
 ------------
 
 - If content from an Autotag produces another Autotag it will be executed (to a
