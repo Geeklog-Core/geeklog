@@ -202,13 +202,26 @@ featured and archived stories.</li>
 
 
 <h2><a name="changes">Theme changes in Geeklog 1.7.1</a></h2>
-<p><small>(just collection for now - to be cleaned up before release)</small></p>
+
+<h3>Admin templates</h3>
 <ul>
 <li>Changed the <code>chk_grpdefault</code> and <code>chk_applydefault</code>
     checkboxes in <tt>admin/group/groupeditor.thtml</tt> so that the "apply
     Default Group change" option only shows up when the state of the Default
     Group checkbox changes (requires an additional piece of JavaScript in
     <tt>javascript/common.js</tt>).</li>
+</ul>
+
+<h3>Other changes</h3>
+<ul>
+<li>The comment submission forms will now display Cancel and Delete buttons,
+    depending on context (e.g. when reviewing a comment submission). Changes in
+    <tt>comment/commentform.thtml</tt> and <tt>comment/commentform_advanced.thtml</tt> for the new elements.</li>
+<li>Fixed a closing <tt>&lt;/div&gt;</tt> tag in <tt>loginform_openid.thtml</tt>.</li>
+<li>Cosmetics: Removed the 1px border from the <tt>block-bg-left</tt> and
+    <tt>block-bg-right</tt> classes in the stylesheet.</li>
+<li>Cosmetics: Added a <tt>border="0"</tt> to the main table in
+    <tt>header.thtml</tt>.</li>
 </ul>
 
 
