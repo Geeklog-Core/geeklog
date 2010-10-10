@@ -16,6 +16,34 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes171">Geeklog 1.7.1</a></h2>
+
+<h3>New Features and Improvements</h3>
+
+<ul>
+<li>A Static Page can now be marked as a template and used by other Static
+    Pages.</li>
+<li>Themes can now have their own display functions for the start and end of
+    blocks.</li>
+</ul>
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>In Geeklog 1.7.0, comment submissions for plugins were missing the type,
+    i.e. the comments were not recognized as plugin comments.</li>
+<li>Changing anything in My Account while Advanced Editor was disabled for the
+    site also disabled the user's setting for the Advanced Editor.</li>
+<li>Fixed the "Show & Hide Boxes" option in My Account.</li>
+<li>Reverted a change from Geeklog 1.7.0: Curly braces in block content are not
+    escaped any longer. To avoid words in curly braces being interpreted as
+    template variables (e.g. for JavaScript code), add a space after the opening
+    or before the closing brace.</li>
+<li>Reverted a change from Geeklog 1.7.0 that would send a Content-Type header
+    when calling <code>COM_refresh()</code> since this conflicts with some
+    plugins (e.g. the Forum).</li>
+</ul>
+
 <h2><a name="changes170">Geeklog 1.7.0</a></h2>
 
 <h3>New Features and Improvements</h3>
