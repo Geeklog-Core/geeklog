@@ -320,8 +320,7 @@ class database {
     function changeDESCRIBE($sql){
         $sql=trim($sql);
         $testSQL=strtolower($sql);
-        $testSQL=" " . $sql;
-       
+        $testSQL=" " . $testSQL;
         $isIn=strpos($testSQL,'describe ');
         if($isIn>0){
             if($sql[strlen($sql)-1]==';'){
@@ -566,9 +565,7 @@ class database {
         $values=$this->cleanseSQL($values);
         $values=str_replace("'",'"',$values);
         $sql="EXEC doIndexInsert '{$table}', '{$fields}', '{$values}'";
-        //$sql=$this->cleanseSQL($sql);
-//        echo "<pre>" . $sql . "</pre><hr" . XHTML . ">";
-//        exit(0);
+       
         $result=$this->dbQuery($sql,1);
         mssql_free_result($result);
         if ($this->isVerbose()) {
@@ -935,7 +932,7 @@ class database {
     * @return   array       Returns data array of current row from recordset
     *
     */
-    //here!
+
     function dbFetchArray($recordset, $both = false)
     {
       $this->_numberOfRowsAskedFor["{$recordset}"] = $this->_numberOfRowsAskedFor["{$recordset}"] +1;
