@@ -4,9 +4,9 @@
 # italian.php
 # This is the Italian language page for the Geeklog Static Page Plug-in!
 #
-# Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
+# Copyright (C) 2001 Tony Bibbs tony@tonybibbs.com
 # Copyright (C) 2005 magomarcelo magomarcelo@gmail.com magomarcelo.blogspot.com
+# Copyright (C) 2010 Rouslan Placella - rouslan {at} placella {dot} com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ $LANG_STATIC = array(
     'writtenby' => 'Scritto da',
     'date' => 'Ultimo Agg.',
     'title' => 'Titolo',
-    'page_title' => 'Page Title',
+    'page_title' => 'Titolo della pagina',
     'content' => 'Contenuto',
     'hits' => 'Visite',
     'staticpagelist' => 'Lista Pagine Statiche',
@@ -49,7 +49,7 @@ $LANG_STATIC = array(
     'edit' => 'Modifica',
     'lastupdated' => 'Ultimo Agg.',
     'pageformat' => 'Formato Pag.',
-    'leftrightblocks' => 'Blocchi a Sinistra & Destra',
+    'leftrightblocks' => 'Blocchi a Sinistra e Destra',
     'blankpage' => 'Pagina Vuota',
     'noblocks' => 'Nessun Blocco',
     'leftblocks' => 'Blocchi a Sinistra',
@@ -106,82 +106,82 @@ $LANG_STATIC = array(
     'select_php_free' => 'esegui PHP',
     'php_not_activated' => "L'uso di PHP nelle pagine statiche &egrave; disattivato. Prego vedi la <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">documentazione</a> per dettagli.",
     'printable_format' => 'Formato Stampabile',
-    'copy' => 'Copy',
-    'limit_results' => 'Limit Results',
-    'search' => 'Search',
-    'submit' => 'Submit',
-    'no_new_pages' => 'No new pages',
-    'pages' => 'Pages',
-    'comments' => 'Comments',
-    'draft' => 'Draft',
-    'draft_yes' => 'Yes',
+    'copy' => 'Copia',
+    'limit_results' => 'Limita i Risultati della ricerca',
+    'search' => 'Ricerca',    // is this used? 
+    'submit' => 'Invia',     // is this used?
+    'no_new_pages' => 'Nessuna nuova pagina',
+    'pages' => 'Pagine',
+    'comments' => 'Commenti',
+    'draft' => 'Bozza',
+    'draft_yes' => 'Si',
     'draft_no' => 'No'
 );
 
-$PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
-$PLG_staticpages_MESSAGE19 = 'Your page has been successfully saved.';
-$PLG_staticpages_MESSAGE20 = 'Your page has been successfully deleted.';
-$PLG_staticpages_MESSAGE21 = 'This page does not exist yet. To create the page, please fill in the form below. If you are here by mistake, click the Cancel button.';
+$PLG_staticpages_MESSAGE15 = 'Il suo commento &egrave; stato ricevuto e sar&agrave; pubblicato appena approvato da un moderatore.';
+$PLG_staticpages_MESSAGE19 = 'La sua pagina &egrave; stata salvata.';
+$PLG_staticpages_MESSAGE20 = 'La pagina &egrave; stata eliminata.';
+$PLG_staticpages_MESSAGE21 = 'Questa pagina non esiste. Compila la scheda sottostante per creare la pagina. Premi \'annulla\' se sei capitato su questa pagina a causa di un errore.';
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'Plugin upgrade not supported.';
+$PLG_staticpages_MESSAGE3001 = 'L\'aggiornamento di plugin non &egrave; supportato.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['staticpages'] = array(
-    'label' => 'Static Pages',
-    'title' => 'Static Pages Configuration'
+    'label' => 'Pagine Statiche',
+    'title' => 'Configurazione delle Pagine Statiche'
 );
 
 $LANG_confignames['staticpages'] = array(
-    'allow_php' => 'Allow PHP?',
-    'sort_by' => 'Sort Centerblocks by',
-    'sort_menu_by' => 'Sort Menu Entries by',
-    'sort_list_by' => 'Sort Admin List by',
-    'delete_pages' => 'Delete Pages with Owner?',
-    'in_block' => 'Wrap Pages in Block?',
-    'show_hits' => 'Show Hits?',
-    'show_date' => 'Show Date?',
-    'filter_html' => 'Filter HTML?',
-    'censor' => 'Censor Content?',
-    'default_permissions' => 'Page Default Permissions',
-    'aftersave' => 'After Saving Page',
-    'atom_max_items' => 'Max. Pages in Webservices Feed',
-    'meta_tags' => 'Enable Meta Tags',
-    'comment_code' => 'Comment Default',
-    'draft_flag' => 'Draft Flag Default',
-    'newstaticpagesinterval' => 'New Static Page Interval',
-    'hidenewstaticpages' => 'Hide New Static Pages',
-    'title_trim_length' => 'Title Trim Length',
-    'includecenterblocks' => 'Include Center Block Static Pages',
-    'includephp' => 'Include Static Pages with PHP',
-    'includesearch' => 'Enable Static Pages in Search',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'
+    'allow_php' => 'Permettere PHP?',
+    'sort_by' => 'Ordina i Centerblock secondo',
+    'sort_menu_by' => 'Ordina gli Elementi del Menu secondo',
+    'sort_list_by' => 'Ordina la Lista Ammin secondo',
+    'delete_pages' => 'Delete Pages with Owner?',    //?
+    'in_block' => 'Wrap Pages in Block?',    //?
+    'show_hits' => 'Mostrare Visite?',
+    'show_date' => 'Motrare Data?',
+    'filter_html' => 'Filtrare HTML?',
+    'censor' => 'Censurare il Contenuto?',
+    'default_permissions' => 'Autorizzazioni predefinite per pagine',
+    'aftersave' => 'Dopo Aver Salvato la Pagina',
+    'atom_max_items' => 'Max. Pages in Webservices Feed',    //?
+    'meta_tags' => 'Abilita Meta Tags',
+    'comment_code' => 'Comporatamento Predefinito per Commenti',
+    'draft_flag' => 'Draft Flag Default',    //?
+    'newstaticpagesinterval' => 'Intervallo per Nuove Pagine Statiche',
+    'hidenewstaticpages' => 'Nascondi Nuove Pagine Statiche',
+    'title_trim_length' => 'Massima Lunghezza del Titolo',
+    'includecenterblocks' => 'Include Center Block Static Pages', //?
+    'includephp' => 'Includi Pagine Statiche con PHP',
+    'includesearch' => 'Mostra Pagine Statiche Nei Risultati Di Ricerca',
+    'includesearchcenterblocks' => 'Include Center Block Static Pages', //?
+    'includesearchphp' => 'Mostra Pagine Statiche con PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
-    'sg_main' => 'Main Settings'
+    'sg_main' => 'Impostazioni Principali'
 );
 
 $LANG_fs['staticpages'] = array(
-    'fs_main' => 'Static Pages Main Settings',
-    'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',
-    'fs_permissions' => 'Default Permissions'
+    'fs_main' => 'Impostazioni Principali per Pagine Statiche',
+    'fs_whatsnew' => 'Blocco Per Novit&agrave;',
+    'fs_search' => 'Risultati di Ricerca',
+    'fs_permissions' => 'Autorizzazioni predefinite'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
 $LANG_configselects['staticpages'] = array(
-    0 => array('True' => 1, 'False' => 0),
-    1 => array('True' => true, 'False' => false),
-    2 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title'),
-    3 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Label' => 'label'),
-    4 => array('Date' => 'date', 'Page ID' => 'id', 'Title' => 'title', 'Author' => 'author'),
-    5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
-    17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
+    0 => array('Vero' => 1, 'Falso' => 0),
+    1 => array('Vero' => true, 'Falso' => false),
+    2 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title'),
+    3 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Label' => 'label'),
+    4 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Autore' => 'author'),
+    5 => array('Nascondi' => 'hide', 'Mostra - Usa Data dell\'ultima modifica' => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
+    9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
+    12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
+    17 => array('Commenti Abilitati' => 0, 'Commenti Disabilitati' => -1)
 );
 
 ?>
