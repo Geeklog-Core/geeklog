@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-story.php                                                             |
 // |                                                                           |
@@ -60,7 +60,7 @@ if (!defined ('STORY_ARCHIVE_ON_EXPIRE')) {
  * submit.php and admin/story.php (Preview mode for the last two).
  *
  * @param   object  $story      The story to display, an instance of the Story class.
- * @param   string  $index      n = 'Compact display' for list of stories. p = 'Preview' mode. Else full display of article.
+ * @param   string  $index      n = Full display of article. p = 'Preview' mode. Else introtext only.
  * @param   string  $storytpl   The template to use to render the story.
  * @param   string  $query      A search query, if one was specified.
  *
@@ -213,7 +213,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
     $show_comments = true;
 
-    // n = 'Compact display' for list of stories. p = 'Preview' mode.
+    // n = Full display of article. p = 'Preview' mode.
 
     if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
         $attributes = ' class="non-ul"';
