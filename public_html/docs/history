@@ -1,5 +1,18 @@
 Geeklog History/Changes:
 
+Oct 31, 2010 (1.7.1)
+------------
+
+- Fixed description of $index parameter for STORY_renderArticle (bug #0001203)
+  [Dirk]
+- The number of successfully imported users was always reported as 0 for the
+  "Batch Add" option in the User Manager (bug #0001211) [Ivy, Dirk]
+
+- New Italian language files for the Links plugin, provided by Rouslan Placella
+- Updated Italian language files for the Static Pages plugin, provided by
+  Rouslan Placella
+
+
 Oct 10, 2010 (1.7.1rc1)
 ------------
 
