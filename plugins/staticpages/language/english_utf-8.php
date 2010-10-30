@@ -163,7 +163,7 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Include Static Pages with PHP',
     'includesearch' => 'Enable Static Pages in Search',
     'includesearchcenterblocks' => 'Include Center Block Static Pages',
-    'includesearchphp' => 'Include Static Pages with PHP'    
+    'includesearchphp' => 'Include Static Pages with PHP'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -173,7 +173,7 @@ $LANG_configsubgroups['staticpages'] = array(
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Static Pages Main Settings',
     'fs_whatsnew' => 'What\'s New Block',
-    'fs_search' => 'Search Results',    
+    'fs_search' => 'Search Results',
     'fs_permissions' => 'Default Permissions'
 );
 
