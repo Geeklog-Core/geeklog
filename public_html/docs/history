@@ -7,6 +7,8 @@ Oct 31, 2010 (1.7.1)
   [Dirk]
 - The number of successfully imported users was always reported as 0 for the
   "Batch Add" option in the User Manager (bug #0001211) [Ivy, Dirk]
+- Fixed a bug in the MS SQL changeDESCRIBE method to properly prefix the proper
+  sql query string [Randy]
 
 - Updated Hebrew language files, provided by LWC
 - New Italian language files for the Links plugin, provided by Rouslan Placella
