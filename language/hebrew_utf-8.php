@@ -2,8 +2,8 @@
 
 ###############################################################################
 # hebrew.php
-# Version 1.7.0#1
-# Copyright (C) 2009 http://lior.weissbrod.com
+# Version 1.7.1#1
+# Copyright (C) 2010 http://lior.weissbrod.com
 #
 # Originally:
 # hebrew.php # last Update  07/03/2004 23:35
@@ -460,8 +460,8 @@ $LANG08 = array(
     36 => 'עותק:',
     37 => 'שילחו לי עותק מאימייל זה',
     38 => "זהו עותק של אימייל ששלחתם אל\n%s\nמ-\n<{$_CONF['site_url']}>:",
-    39 => 'Your last message was ',
-    40 => " seconds ago.  This site requires at least {$_CONF['speedlimit']} seconds between sending messages"
+    39 => 'הודעתכם האחרונה הייתה לפני ',
+    40 => " שניות.  אתר זה דורש לפחות {$_CONF['speedlimit']} שניות בין שליחת הודעות"
 );
 
 ###############################################################################
@@ -1538,13 +1538,13 @@ $LANG_WHATSNEW = array(
     'days' => 'ימים',
     'weeks' => 'שבועות',
     'months' => 'חודשים',
-    'years' => 'years',
+    'years' => 'שנים',
     'minute' => 'דקה',
     'hour' => 'שעה',
     'day' => 'יום',
     'week' => 'שבוע',
     'month' => 'חודש',
-    'year' => 'year'
+    'year' => 'שנה'
 );
 
 ###############################################################################

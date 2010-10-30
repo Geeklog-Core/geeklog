@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language file for the Geeklog Static Page plugin
 #
-# Copyright (C) 2009
+# Copyright (C) 2010
 # http://lior.weissbrod.com
-# Version 1.6.1#1
+# Version 1.7.1#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -113,11 +113,11 @@ $LANG_STATIC = array(
     'no_new_pages' => 'אין עמודים חדשים',
     'pages' => 'עמודים',
     'comments' => 'תגובות',
-    'template' => 'Template',
-    'use_template' => 'Use Template',
-    'template_msg' => 'When checked, this Static Page will be marked as a template.',
-    'none' => 'None',
-    'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
+    'template' => 'תבנית',
+    'use_template' => 'שימוש כתבנית',
+    'template_msg' => 'כאשר מופעל, עמוד סטטי זה יסומן כתבנית.',
+    'none' => 'אף אחד',
+    'use_template_msg' => 'אם עמוד סטטי זה אינו תבנית, תוכלו לתת לו תבנית להשתמש בה. אם תבחרו כך זיכרו שתוכן עמוד זה חייב להיות בפורמט תקין של XML.',
     'draft' => 'טיוטה',
     'draft_yes' => 'כן',
     'draft_no' => 'לא'
