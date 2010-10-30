@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
@@ -1115,11 +1115,12 @@ function importusers()
 
                 $result = USER_createAndSendPassword ($userName, $emailAddr, $uid);
 
-                if ($result && $verbose_import) {
-                    $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
-                    COM_errorLog("Account for $u_name created successfully",1);
-                } elseif ($result) {
+                if ($result) {
                     $successes++;
+                    if ($verbose_import) {
+                        $retval .= "<br" . XHTML . "> Account for <b>$u_name</b> created successfully.<br" . XHTML . ">\n";
+                        COM_errorLog("Account for $u_name created successfully",1);
+                    }
                 } else {
                     // user creation failed
                     $retval .= "<br" . XHTML . ">ERROR: There was a problem creating the account for <b>$u_name</b>.<br" . XHTML . ">\n";
