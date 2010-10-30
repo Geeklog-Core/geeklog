@@ -796,7 +796,7 @@ function SEC_checkUserStatus($userid)
   *
   * @param  string  $loginname Their username
   * @param  string  $passwd The password entered
-  * @param  string  $server The server portion of $username
+  * @param  string  $service The service portion of $username
   * @param  string  $uid OUTPUT parameter, pass it by ref to get uid back.
   * @return int     user status, -1 for fail.
   */
