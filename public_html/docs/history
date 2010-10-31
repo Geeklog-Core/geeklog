@@ -15,6 +15,11 @@ Oct 31, 2010 (1.7.1)
 - Updated Italian language files for the Static Pages plugin, provided by
   Rouslan Placella
 
+Calendar Plugin
+---------------
+- Fixed an SQL error when returning search results for the Personal Calendar
+  (bug #0001195) [Dirk]
+
 
 Oct 10, 2010 (1.7.1rc1)
 ------------

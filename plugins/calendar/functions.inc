@@ -1698,7 +1698,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     $sql_e .= "CONCAT('/calendar/event.php?eid=',eid) AS url ";
     $sql_e .= "FROM {$_TABLES['events']} WHERE 1=1 ";
 
-    $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, ";
+    $sql_p = "SELECT eid AS id, title, description, UNIX_TIMESTAMP(datestart) AS date, owner_id AS uid, 0 AS hits, ";
     $sql_p .= "CONCAT('/calendar/event.php?mode=personal&eid=',eid) AS url ";
     $sql_p .= "FROM {$_TABLES['personal_events']} WHERE (uid = $uid) ";
 
