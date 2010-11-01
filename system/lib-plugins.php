@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
 // |                                                                           |
@@ -1517,14 +1517,12 @@ function PLG_collectTags()
 
     // Determine which Core Modules and Plugins support AutoLinks
     //                        'tag'   => 'module'
-    $autolinkModules = array(
-        'story' => 'geeklog', 'user' => 'geeklog'
-    );
+    $all_plugins = array_merge($_PLUGINS, array('story', 'user'));
 
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($all_plugins as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
         if (function_exists($function)) {
-            $autotag = $function ('tagname');
+            $autotag = $function('tagname');
             if (is_array($autotag)) {
                 foreach ($autotag as $tag) {
                     $autolinkModules[$tag] = $pi_name;
@@ -1565,7 +1563,7 @@ function PLG_replaceTags($content, $plugin = '')
         $contentlen = MBYTE_strlen($content);
         $content_lower = MBYTE_strtolower($content);
         foreach ($autolinkModules as $moduletag => $module) {
-            $autotag_prefix = '['. $moduletag . ':';
+            $autotag_prefix = '[' . $moduletag . ':';
             $offset = 0;
             $prev_offset = 0;
             while ($offset < $contentlen) {
@@ -1625,43 +1623,7 @@ function PLG_replaceTags($content, $plugin = '')
         if (count($tags) > 0) {       // Found the [tag] - Now process them all
             foreach ($tags as $autotag) {
                 $function = 'plugin_autotags_' . $autotag['module'];
-                if (($autotag['module'] == 'geeklog') AND
-                        (empty($plugin) OR ($plugin == 'geeklog'))) {
-                    $url = '';
-                    $linktext = $autotag['parm2'];
-                    if ($autotag['tag'] == 'story') {
-                        $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
-                        if (! empty($autotag['parm1'])) {
-                            $url = COM_buildUrl($_CONF['site_url']
-                                 . '/article.php?story=' . $autotag['parm1']);
-                            if (empty($linktext)) {
-                                $linktext = stripslashes(DB_getItem($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
-                            }
-                        }
-                    }
-    
-                    if ($autotag['tag'] == 'user') {
-                        $autotag['parm1'] = COM_applyFilter($autotag['parm1']);
-                        if (! empty($autotag['parm1'])) {
-                            $uname = addslashes($autotag['parm1']);
-                            $sql = "SELECT uid, fullname FROM {$_TABLES['users']} WHERE username = '$uname'";
-                            $result = DB_query($sql);
-                            if (DB_numRows($result) == 1) {
-                                $A = DB_fetchArray($result);
-                                $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
-                                if (empty($linktext)) {
-                                    $linktext = COM_getDisplayName($A['uid'], $autotag['parm1'], $A['fullname']);
-                                }
-                            }
-                        }
-                    }
-    
-                    if (!empty($url)) {
-                        $filelink = COM_createLink($linktext, $url);
-                        $content = str_replace($autotag['tagstr'], $filelink,
-                                               $content);
-                    }
-                } elseif (function_exists($function) AND
+                if (function_exists($function) AND
                         (empty($plugin) OR ($plugin == $autotag['module']))) {
                     $content = $function('parse', $content, $autotag);
                 }

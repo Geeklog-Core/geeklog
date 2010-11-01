@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-story.php                                                             |
 // |                                                                           |
@@ -1122,6 +1122,44 @@ function plugin_moderationapprove_story_draft($sid)
 
     // update Older Stories block
     COM_olderStuff();
+}
+
+/**
+* Implements the [story:] autotag.
+*
+* @param    string  $op         operation to perform
+* @param    string  $content    item (e.g. story text), including the autotag
+* @param    array   $autotag    parameters used in the autotag
+* @param    mixed               tag names (for $op='tagname') or formatted content
+*
+*/
+function plugin_autotags_story($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_TABLES;
+
+    if ($op == 'tagname' ) {
+        return 'story';
+    } else {
+        $sid = COM_applyFilter($autotag['parm1']);
+        if (! empty($sid)) {
+            $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql('AND'));
+            $A = DB_fetchArray($result);
+            if ($A['count'] > 0) {
+
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                    . $sid);
+                $linktext = $autotag['parm2'];
+                if (empty($linktext)) {
+                    $linktext = stripslashes(DB_getItem($_TABLES['stories'],
+                                                'title', "sid = '$sid'"));
+                }
+                $link = COM_createLink($linktext, $url);
+                $content = str_replace($autotag['tagstr'], $link, $content);
+            }
+        }
+
+        return $content;
+    }
 }
 
 

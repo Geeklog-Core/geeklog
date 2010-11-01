@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-user.php                                                              |
 // |                                                                           |
@@ -1102,6 +1102,48 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     }
 
     return $retval;
+}
+
+/**
+* Implements the [user:] autotag.
+*
+* @param    string  $op         operation to perform
+* @param    string  $content    item (e.g. story text), including the autotag
+* @param    array   $autotag    parameters used in the autotag
+* @param    mixed               tag names (for $op='tagname') or formatted content
+*
+*/
+function plugin_autotags_user($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_TABLES, $LANG28;
+
+    if ($op == 'tagname' ) {
+        return 'user';
+    } else if ($op == 'parse') {
+        $uname = COM_applyFilter($autotag['parm1']);
+        $uname = addslashes($uname);
+        $sql = "SELECT uid, username, fullname, status FROM {$_TABLES['users']} WHERE username = '$uname'";
+        $result = DB_query($sql);
+        if (DB_numRows($result) == 1) {
+            $A = DB_fetchArray($result);
+            $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                 . $A['uid'];
+            $linktext = $autotag['parm2'];
+            if (empty($linktext)) {
+                $linktext = COM_getDisplayName($A['uid'], $A['username'], $A['fullname']);
+                if ($A['status'] == USER_ACCOUNT_DISABLED) {
+                    $linktext = sprintf('<s title="%s">%s</s>', $LANG28[42],
+                                        $linktext);
+                }
+            }
+
+            $link = COM_createLink($linktext, $url);
+            $content = str_replace($autotag['tagstr'], $link, $content);
+
+        }
+
+        return $content;
+    }
 }
 
 ?>
