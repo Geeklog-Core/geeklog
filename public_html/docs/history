@@ -1,5 +1,16 @@
 Geeklog History/Changes:
 
+Nov ??, 2010 (1.8.0)
+------------
+
+- Added a proper copyright header and license text (LGPLv2) to the template
+  class (feature request #0001128) [Dirk]
+- Fixed check for availability of PECL::ZipArchive in the unpacker class
+  (bug #0001209) [Dirk]
+- Moved handling of the [story:] and [user:] autotags to lib-story.php and
+  lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
+
+
 Oct 31, 2010 (1.7.1)
 ------------
 
