@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | unpacker.class.php                                                        |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | This class wraps calls to pecl Zip, pear Zip, pear Tar, using the best    |
 // | package available to unpack or list information about the archive.        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Justin Carlson        - justin DOT carlson AT gmail DOT com      |
 // +---------------------------------------------------------------------------+
@@ -185,7 +185,7 @@ class unpacker {
      */
     function load_zip() {
 
-        if (function_exists('zip_open')) {
+        if (class_exists('ZipArchive')) {
 
             // Use PECL ZIP
             $this->archive = new ZipArchive();
@@ -254,7 +254,7 @@ class unpacker {
     function list_zip() {
 
         // using PECL::ZipArchive
-        if (function_exists('zip_open')) {
+        if (class_exists('ZipArchive')) {
 
             // catch empty archive
             if ($this->archive->numFiles < 1) {
@@ -341,7 +341,7 @@ class unpacker {
     function unpack_zip($target_path, $item_array = null) {
 
         // using PECL::ZipArchive
-        if (function_exists('zip_open')) {
+        if (class_exists('ZipArchive')) {
 
             if ($this->archive) {
 
