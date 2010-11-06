@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Webservices Atom gateway                                                  |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | This file acts as a gateway to the Atom webservices.                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2008 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer   - rri AT silentyak DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -28,17 +28,9 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-//
-// $Id: index.php,v 1.4 2008/05/01 11:51:26 dhaun Exp $
 
 require_once '../../lib-common.php';
-
-/* Check for PHP5 */
-if (PHP_VERSION < 5) {
-    $_CONF['disable_webservices'] = true;
-} else {
-    require_once $_CONF['path_system'] . '/lib-webservices.php';
-}
+require_once $_CONF['path_system'] . '/lib-webservices.php';
 
 /* Check if WS component is enabled */
 if ($_CONF['disable_webservices']) {
