@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
 // |                                                                           |
@@ -1478,15 +1478,7 @@ function SEC_setCookie($name, $value, $expire = 0, $path = null, $domain = null,
         $secure = $_CONF['cookiesecure'];
     }
 
-    // the httponly parameter is only available as of PHP 5.2.0
-    if (version_compare(PHP_VERSION, '5.2.0', '>=')) {
-        $retval = setcookie($name, $value, $expire, $path, $domain, $secure,
-                            true);
-    } else {
-        // fake it for older PHP versions; kudos to Matt Mecham
-        $retval = setcookie($name, $value, $expire, $path,
-                            $domain . '; httponly', $secure);
-    }
+    $retval = setcookie($name, $value, $expire, $path, $domain, $secure, true);
 
     return $retval;
 }
