@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-common.php                                                            |
 // |                                                                           |
@@ -72,16 +72,12 @@ $_REQUEST = array_merge($_GET, $_POST);
 *
 */ 
 if (function_exists('set_error_handler')) {
-    if (PHP_VERSION >= 5) {
-        /* Tell the error handler to use the default error reporting options.
-         * You may like to change this to use it in more/less cases, if so,
-         * just use the syntax used in the call to error_reporting() above.
-         */
-        $defaultErrorHandler = set_error_handler('COM_handleError',
-                                                 error_reporting());
-    } else {
-        $defaultErrorHandler = set_error_handler('COM_handleError');
-    }
+    /* Tell the error handler to use the default error reporting options.
+     * You may like to change this to use it in more/less cases, if so,
+     * just use the syntax used in the call to error_reporting() above.
+     */
+    $defaultErrorHandler = set_error_handler('COM_handleError',
+                                             error_reporting());
 }
 
 /**
@@ -6763,11 +6759,6 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
 
     // Handle @ operator
     if (error_reporting() == 0) {
-        return;
-    }
-
-    // If in PHP4, then respect error_reporting
-    if ((PHP_VERSION < 5) && (($errno & error_reporting()) == 0)) {
         return;
     }
 
