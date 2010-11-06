@@ -1189,8 +1189,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     }
 
     require_once $_CONF['path_system'] . 'lib-comment.php';
-    if (version_compare(PHP_VERSION, '5.0.0', '>=') &&
-            (! $_CONF['disable_webservices'])) {
+    if (! $_CONF['disable_webservices']) {
         require_once $_CONF['path_system'] . 'lib-webservices.php';
     }
 

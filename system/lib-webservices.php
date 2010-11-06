@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-webservices.php                                                       |
 // |                                                                           |
 // | WS-related functions needed in more than one place.                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2009 by the following authors:                         |
+// | Copyright (C) 2007-2010 by the following authors:                         |
 // |                                                                           |
 // | Authors: Ramnath R Iyer        - rri AT silentyak DOT com                 |
 // |          Dirk Haun             - dirk AT haun-online DOT de               |
@@ -54,10 +54,6 @@ $WS_TEXT = '';
 // Set = true to enable verbose logging (in error.log)
 $WS_VERBOSE = false;
 
-/* Check for PHP5 */
-if (PHP_VERSION < 5) {
-    $_CONF['disable_webservices'] = true;
-}
 
 /**
  * Displays an error message with the appropriate HTTP error-code
