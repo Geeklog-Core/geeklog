@@ -3,6 +3,8 @@ Geeklog History/Changes:
 Nov ??, 2010 (1.8.0)
 ------------
 
+- Set minimum required PHP version to PHP 5.2.0 and removed all code that
+  ensured compatibility with PHP 4 (feature request #0001217) [Dirk]
 - Added a proper copyright header and license text (LGPLv2) to the template
   class (feature request #0001128) [Dirk]
 - Fixed check for availability of PECL::ZipArchive in the unpacker class
