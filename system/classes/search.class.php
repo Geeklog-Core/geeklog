@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | search.class.php                                                          |
 // |                                                                           |
@@ -759,7 +759,7 @@ class Search {
         }
 
         $rt = '';
-        $pos = $this->_stripos($text, $keyword);
+        $pos = stripos($text, $keyword);
         if ($pos !== false)
         {
             $pos_space = strpos($text, ' ', $pos);
@@ -836,13 +836,13 @@ class Search {
         $num_keywords = count($keywords);
 
         foreach ($haystack as $key => $value) {
-            if ($this->_stripos($value, $keywords[0]) !== false) {
+            if (stripos($value, $keywords[0]) !== false) {
                 if ($num_keywords == 1) {
                     return $key;
                 } else {
                     $matched_all = true;
                     for ($i = 1; $i < $num_keywords; $i++) {
-                        if ($this->_stripos($haystack[$key + $i], $keywords[$i]) === false) {
+                        if (stripos($haystack[$key + $i], $keywords[$i]) === false) {
                             $matched_all = false;
                             break;
                         }
@@ -915,25 +915,6 @@ class Search {
         }
 
         return $sql;
-    }
-
-    /**
-    * Helper function: Simulate stripos on PHP 4
-    *
-    * @param   string  $haystack  string to search in
-    * @param   string  $needle    string to search for
-    * @return  mixed              first pos of $needle in $haystack, or false 
-    *
-    */
-    function _stripos($haystack, $needle)
-    {
-        if (function_exists('stripos')) {
-            return stripos($haystack, $needle);
-        } elseif (empty($needle)) {
-            return false;
-        } else {
-            return strpos(strtolower($haystack), strtolower($needle));
-        }
     }
 }
 
