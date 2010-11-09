@@ -1065,6 +1065,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
  * @return   int         -1 == queued, 0 == comment saved, > 0 indicates error
  *
  */
+// FIXME: This function relies on $cid being NULL without being initialized in 
+//        the case of a comment submission. This is not ideal.
 function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03;
@@ -1107,11 +1109,8 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
     // Now check the result and display message if spam action was taken
     if ($result > 0) {
-        // update speed limit nonetheless
-        COM_updateSpeedlimit ('comment');
-
-        // then tell them to get lost ...
-        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
+        COM_updateSpeedlimit ('comment');                                // update speed limit nonetheless
+        COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden'); // then tell them to get lost ...
     }
 
     // Let plugins have a chance to decide what to do before saving the comment, return errors.
@@ -1142,22 +1141,24 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
     if (empty($title) || empty($comment)) {
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
-        $ret = 5;
-    } elseif (($_CONF['commentsubmission'] == 1) &&
-            !SEC_hasRights('comment.submit')) {
+        return $ret = 5;
+    } 
+    
+    if (($_CONF['commentsubmission'] == 1) && !SEC_hasRights('comment.submit')) {
         // comment into comment submission table enabled
         if (isset($name)) {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,name,comment,type,date,title,pid,ipaddress) "
+                   . "VALUES ('$sid',$uid,'$name','$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         } else {
-            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,ipaddress) VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
+            DB_query("INSERT INTO {$_TABLES['commentsubmissions']} (sid,uid,comment,type,date,title,pid,ipaddress) "
+                   . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         }
 
         $ret = -1; // comment queued
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
 
-        $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid "
-                         . "AND sid = '$sid'");
+        $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid AND sid = '$sid'");
         list($rht, $indent) = DB_fetchArray($result);
         if ( !DB_error() ) {
             $rht2=$rht+1;
@@ -1173,19 +1174,32 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                 DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
              "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht2,$indent,'$type','{$_SERVER['REMOTE_ADDR']}'");
             }
-            
+
+            $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
+            // notify parent of new comment
+            // NOTE: This could be modified to send notifications to all parents in the comment tree
+            //       with only a modification to the below SELECT statement
+            if ($_CONF['allow_reply_notifications'] == 1) {
+                $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
+                $A = DB_fetchArray($result);
+                if ($A !== false) {
+                    CMT_sendReplyNotification($A);
+                }
+            }
         } else { //replying to non-existent comment or comment in wrong article
             COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                        . 'to reply to a non-existent comment or the pid/sid did not match');
             $ret = 4; // Cannot return here, tables locked!
         }
+        DB_unlockTable($_TABLES['comments']);
     } else {
+        DB_lockTable ($_TABLES['comments']);
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
         if ( DB_error() ) {
             $rht = 0;
         }
-        $rht2=$rht+1;
-        $rht3=$rht+2;
+        $rht2=$rht+1;  // value of new comment's "lft"
+        $rht3=$rht+2;  // value of new comment's "rht"
         if (isset($name)) {
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress,name',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}','$name'");
@@ -1193,19 +1207,8 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }
-        
-    }
-
-    $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
-    DB_unlockTable($_TABLES['comments']);
-
-    // notify of new comment 
-    if ($_CONF['allow_reply_notifications'] == 1 && $pid > 0 && $ret == 0) {
-        $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
-        $A = DB_fetchArray($result);
-        if ($A !== false) {
-            CMT_sendReplyNotification($A);
-        }
+        $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
+        DB_unlockTable($_TABLES['comments']);
     }
 
     // save user notification information
@@ -1227,11 +1230,9 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $cid = 0; // comment went into the submission queue
         }
         if (($uid == 1) && isset($username)) {
-            CMT_sendNotification($title, $comment, $uid, $username,
-                                 $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title, $comment, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $cid);
         } else {
-            CMT_sendNotification($title, $comment, $uid, '',
-                                 $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title, $comment, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $cid);
         }
     }
     
