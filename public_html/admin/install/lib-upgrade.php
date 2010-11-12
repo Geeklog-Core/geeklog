@@ -493,6 +493,21 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $current_gl_version = '1.7.0';
             $_SQL = '';
             break;
+
+        case '1.7.0':
+            $current_gl_version = '1.7.1';
+            $_SQL = '';
+            break;
+
+        case '1.7.1':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.7.1_to_1.8.0.php';
+            INST_updateDB($_SQL);
+
+            update_ConfValuesFor180();
+
+            $current_gl_version = '1.8.0';
+            $_SQL = '';
+            break;            
             
         default:
             $done = true;

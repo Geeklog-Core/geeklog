@@ -8,10 +8,7 @@
             <td class="alignright" style="vertical-align:top;"><b>{lang_membersince}:</b></td>
             <td style="vertical-align:top;">{user_regdate}</td>
         </tr>
-        <tr>
-            <td class="alignright" style="vertical-align:top;"><b>{lang_email}:</b></td>
-            <td style="vertical-align:top;"><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></td>
-        </tr>
+        {email_option}
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_homepage}:</b></td>
             <td style="vertical-align:top;"><a href="{user_homepage}">{user_homepage}</a></td>

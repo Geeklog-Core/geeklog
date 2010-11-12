@@ -892,6 +892,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file(array('profile' => 'profile.thtml',
+                                    'email'     => 'email.thtml',
                                     'row'     => 'commentrow.thtml',
                                     'strow'   => 'storyrow.thtml'));
     $user_templates->set_var('xhtml', XHTML);
@@ -964,7 +965,12 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('user_id', $uid);
     $user_templates->set_var('uid', $uid);
-    $user_templates->set_var('lang_sendemail', $LANG04[81]);
+    if ($A['email'] != '') {
+        $user_templates->set_var('lang_sendemail', $LANG04[81]);
+        $user_templates->parse ('email_option', 'email', true);
+    } else {
+        $user_templates->set_var ('email_option', '');
+    }    
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS($A['homepage']));
     $user_templates->set_var('lang_location', $LANG04[106]);

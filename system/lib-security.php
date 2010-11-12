@@ -1597,6 +1597,7 @@ function SEC_loginForm($use_config = array())
         'hidden_fields'     => '',
 
         // options to locally override some specific $_CONF options
+        'no_oauth_login'    => false, // $_CONF['user_login_method']['oauth']
         'no_3rdparty_login' => false, // $_CONF['user_login_method']['3rdparty']
         'no_openid_login'   => false, // $_CONF['user_login_method']['openid']
         'no_newreg_link'    => false, // $_CONF['disable_new_user_registration']
@@ -1609,7 +1610,7 @@ function SEC_loginForm($use_config = array())
     );
 
     $config = array_merge($default_config, $use_config);
-
+    
     $loginform = new Template($_CONF['path_layout'] . 'users');
     $loginform->set_file('login', 'loginform.thtml');
     $loginform->set_var('xhtml', XHTML);
@@ -1700,6 +1701,30 @@ function SEC_loginForm($use_config = array())
         $loginform->set_var('openid_login', '');
     }
 
+    // OAuth remote authentification.
+    if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] && 
+            ($_CONF['usersubmission'] == 0) &&
+            !$_CONF['disable_new_user_registration']) {
+        $modules = SEC_collectRemoteOAuthModules();
+        if (count($modules) == 0) {
+            $loginform->set_var('oauth_login', '');
+        } else {
+            $html_oauth = '';
+            foreach ($modules as $service) {
+                $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
+                $loginform->set_var('oauth_service', $service);
+                // for sign in image
+                $loginform->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/login-with-' . $service . '.png');
+                $loginform->set_var('oauth_sign_in_image_style', '');
+                $loginform->parse('output', 'oauth_login');
+                $html_oauth .= $loginform->finish($loginform->get_var('output'));
+            }
+            $loginform->set_var('oauth_login', $html_oauth);
+        }
+    } else {
+        $loginform->set_var('oauth_login', '');
+    }
+
     if (! $config['no_plugin_vars']) {
         PLG_templateSetVars('loginform', $loginform);
     }
@@ -1708,6 +1733,56 @@ function SEC_loginForm($use_config = array())
     $retval .= $loginform->finish($loginform->get_var('output'));
 
     return $retval;
+}
+
+/**
+* Return available modules for Remote OAuth
+*
+* @return   array   Names of available remote OAuth modules
+*
+*/
+function SEC_collectRemoteOAuthModules()
+{
+    global $_CONF;
+
+    $modules = array();
+    
+    // Check for OpenSSL PHP extension which is required
+    if (extension_loaded('openssl')) {
+        $modulespath = $_CONF['path_system'] . 'classes/oauth/';
+        if (is_dir($modulespath)) {
+            $folder = opendir($modulespath);
+            while (($filename = @readdir($folder)) !== false) {
+                $pos = strpos($filename, '.auth.class.php');
+                if ($pos && (substr($filename, strlen($filename) - 4) == '.php')) {
+                    $mod = substr($filename, 0, $pos);
+                    $def_thtml = $_CONF['path_layout'] . 'loginform_oauth.thtml';
+                    $thtml = $_CONF['path_layout'] . 'loginform_' . $mod . '.thtml';
+                    if (file_exists($def_thtml) || file_exists($thtml)) {
+                        // Check to see if there is a config value to enable or disable login method
+                        if (isset($_CONF[$mod . '_login'])) {
+                            if ($_CONF[$mod . '_login']) {
+                                // Now check if a Consumer Key and Secret exist and are set
+                                if (isset($_CONF[$mod . '_consumer_key'])) {
+                                    if ($_CONF[$mod . '_consumer_key'] != '') {
+                                        if (isset($_CONF[$mod . '_consumer_secret'])) {
+                                            if ($_CONF[$mod . '_consumer_secret'] != '') {
+                                                $modules[] = $mod;
+                                            }
+                                        }                                
+                                    }
+                                }                                
+                            }
+                        } else {
+                            $modules[] = $mod;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return $modules;
 }
 
 ?>

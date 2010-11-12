@@ -33,5 +33,10 @@
                 {openid_login}
             </td>
         </tr>
+        <tr>
+            <td>
+                {oauth_login}
+            </td>
+        </tr>
     </table>
     {end_block}

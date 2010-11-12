@@ -2448,6 +2448,28 @@ function COM_userMenu( $help='', $title='', $position='' )
             $login->set_var('openid_login', '');
         }
 
+        // OAuth remote authentification.
+        if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
+            $modules = SEC_collectRemoteOAuthModules();
+            if (count($modules) == 0) {
+                $login->set_var('oauth_login', '');
+            } else {
+                $html_oauth = '';
+                foreach ($modules as $service) {
+                    $login->set_file('oauth_login', 'loginform_oauth.thtml');
+                    $login->set_var('oauth_service', $service);
+                    // for sign in image
+                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/login-with-' . $service . '.png');
+                    $login->set_var('oauth_sign_in_image_style', '');
+                    $login->parse('output', 'oauth_login');
+                    $html_oauth .= $login->finish($login->get_var('output'));
+                }
+                $login->set_var('oauth_login', $html_oauth);
+            }
+        } else {
+            $login->set_var('oauth_login', '');
+        }
+
         PLG_templateSetVars('loginblock', $login);
         $retval .= $login->finish($login->parse('output', 'form'));
         $retval .= COM_endBlock( COM_getBlockTemplate('user_block', 'footer', $position));
@@ -4854,11 +4876,17 @@ function phpblock_whosonline()
             $url = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'];
             $retval .= COM_createLink($username, $url);
 
-            if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1)
-            {
-                $usrimg = '<img src="' . $_CONF['layout_url']
-                        . '/images/smallcamera.' . $_IMAGE_TYPE
-                        . '" alt=""' . XHTML . '>';
+            if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1) {
+                if ($_CONF['whosonline_photo'] == true) {
+                    $usrimg = '<img src="' . $_CONF['site_url']
+                            . '/images/userphotos/' . $A['photo']
+                            . '" alt="" height="30" width="30"' . XHTML . '>';
+                } else {
+                    $usrimg = '<img src="' . $_CONF['layout_url']
+                            . '/images/smallcamera.' . $_IMAGE_TYPE
+                            . '" alt=""' . XHTML . '>';
+                }
+                        
                 $retval .= '&nbsp;' . COM_createLink($usrimg, $url);
             }
             $retval .= '<br' . XHTML . '>';

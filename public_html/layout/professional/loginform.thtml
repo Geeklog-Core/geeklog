@@ -11,3 +11,4 @@
 <p>{lang_signup}<br{xhtml}>
 {lang_forgetpassword}</p>
 {openid_login}
+{oauth_login}

@@ -52,13 +52,16 @@ function edituser()
 {
     global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN;
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile'       => 'profile.thtml',
                                    'photo'         => 'userphoto.thtml',
                                    'username'      => 'username.thtml',
+                                   'password'      => 'password.thtml',
+                                   'current_password'      => 'current_password.thtml',
+                                   'resynch'      => 'resynch.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
     $preferences->set_var('xhtml', XHTML);
     $preferences->set_var('site_url', $_CONF['site_url']);
@@ -141,6 +144,7 @@ function edituser()
     $preferences->set_var ('lang_name_legend', $LANG04[128]);
     $preferences->set_var ('lang_password_email_legend', $LANG04[129]);
     $preferences->set_var ('lang_personal_info_legend', $LANG04[130]);
+    $preferences->set_var ('lang_resynch', $LANG04[166]);
 
     $display_name = COM_getDisplayName ($_USER['uid']);
 
@@ -159,7 +163,23 @@ function edituser()
     $preferences->set_var ('fullname_value', htmlspecialchars ($A['fullname']));
     $preferences->set_var ('new_username_value',
                            htmlspecialchars ($_USER['username']));
-    $preferences->set_var ('password_value', '');
+    
+    if ($A['remoteservice'] == '') {
+        $preferences->set_var ('password_value', '');
+        $preferences->parse ('password_option', 'password', true);
+        $preferences->parse ('current_password_option', 'current_password', true);
+        $preferences->set_var ('resynch_option', '');
+    } else {
+        $preferences->set_var ('password_option', '');
+        $preferences->set_var ('current_password_option', '');
+        if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) { // OAuth only supports re-synch at the moment
+            $preferences->set_var ('resynch_checked', '');
+            $preferences->parse ('resynch_option', 'resynch', true);
+        } else {
+            $preferences->set_var ('resynch_option', '');
+        }
+    }    
+    
     if ($_CONF['allow_username_change'] == 1) {
         $preferences->parse ('username_option', 'username', true);
     } else {
@@ -883,15 +903,29 @@ function saveuser($A)
 
     // to change the password, email address, or cookie timeout,
     // we need the user's current password
-    $current_password = DB_getItem($_TABLES['users'], 'passwd',
-                                   "uid = {$_USER['uid']}");
-    if (!empty ($A['passwd']) || ($A['email'] != $_USER['email']) ||
-            ($A['cooktime'] != $_USER['cookietimeout'])) {
-        if (empty($A['old_passwd']) ||
-                (SEC_encryptPassword($A['old_passwd']) != $current_password)) {
-
-            return COM_refresh ($_CONF['site_url']
-                                . '/usersettings.php?msg=83');
+    $service = DB_getItem ($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}"); 
+    if ($service == '') {
+        $current_password = DB_getItem($_TABLES['users'], 'passwd',
+                                       "uid = {$_USER['uid']}");
+        if (!empty ($A['passwd']) || ($A['email'] != $_USER['email']) ||
+                ($A['cooktime'] != $_USER['cookietimeout'])) {
+            if (empty($A['old_passwd']) ||
+                    (SEC_encryptPassword($A['old_passwd']) != $current_password)) {
+    
+                return COM_refresh ($_CONF['site_url']
+                                    . '/usersettings.php?msg=83');
+            } elseif ($_CONF['custom_registration'] &&
+                        function_exists ('CUSTOM_userCheck')) {
+                $ret = CUSTOM_userCheck ($A['username'], $A['email']);
+                if (!empty($ret)) {
+                    // Need a numeric return for the default message handler
+                    // - if not numeric use default message
+                    if (!is_numeric($ret['number'])) {
+                        $ret['number'] = 400;
+                    }
+                    return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
+                }
+            }
         } elseif ($_CONF['custom_registration'] &&
                     function_exists ('CUSTOM_userCheck')) {
             $ret = CUSTOM_userCheck ($A['username'], $A['email']);
@@ -904,19 +938,14 @@ function saveuser($A)
                 return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
             }
         }
-    } elseif ($_CONF['custom_registration'] &&
-                function_exists ('CUSTOM_userCheck')) {
-        $ret = CUSTOM_userCheck ($A['username'], $A['email']);
-        if (!empty($ret)) {
-            // Need a numeric return for the default message handler
-            // - if not numeric use default message
-            if (!is_numeric($ret['number'])) {
-                $ret['number'] = 400;
-            }
-            return COM_refresh("{$_CONF['site_url']}/usersettings.php?msg={$ret['number']}");
-        }
-    }
+    } else {
+         if (($A['email'] != $_USER['email']) || ($A['cooktime'] != $_USER['cookietimeout'])) {
+             // re athenticate remote user again for these changes to take place
 
+             // Can't just be done here since user may have to relogin to his service which then sends us back here and we lose his changes
+             
+         }
+    }
     // no need to filter the password as it's encoded anyway
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = COM_applyFilter ($A['new_username']);
@@ -984,28 +1013,39 @@ function saveuser($A)
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?msg=56');
     } else {
-
-        if (!empty($A['passwd'])) {
-            if (($A['passwd'] == $A['passwd_conf']) &&
-                    (SEC_encryptPassword($A['old_passwd']) == $current_password)) {
-                $passwd = SEC_encryptPassword($A['passwd']);
-                DB_change($_TABLES['users'], 'passwd', "$passwd",
-                          "uid", $_USER['uid']);
-                if ($A['cooktime'] > 0) {
-                    $cooktime = $A['cooktime'];
-                } else {
-                    $cooktime = -1000;
+        $passwd = '';
+        if ($service == '') {
+            if (!empty($A['passwd'])) {
+                if (($A['passwd'] == $A['passwd_conf']) &&
+                        (SEC_encryptPassword($A['old_passwd']) == $current_password)) {
+                    $passwd = SEC_encryptPassword($A['passwd']);
+                    DB_change($_TABLES['users'], 'passwd', "$passwd",
+                              "uid", $_USER['uid']);
+                    if ($A['cooktime'] > 0) {
+                        $cooktime = $A['cooktime'];
+                    } else {
+                        $cooktime = -1000;
+                    }
+                    SEC_setCookie($_CONF['cookie_password'], $passwd,
+                                  time() + $cooktime);
+                } elseif (SEC_encryptPassword($A['old_passwd']) != $current_password) {
+                    return COM_refresh ($_CONF['site_url']
+                                        . '/usersettings.php?msg=68');
+                } elseif ($A['passwd'] != $A['passwd_conf']) {
+                    return COM_refresh ($_CONF['site_url']
+                                        . '/usersettings.php?msg=67');
                 }
-                SEC_setCookie($_CONF['cookie_password'], $passwd,
-                              time() + $cooktime);
-            } elseif (SEC_encryptPassword($A['old_passwd']) != $current_password) {
-                return COM_refresh ($_CONF['site_url']
-                                    . '/usersettings.php?msg=68');
-            } elseif ($A['passwd'] != $A['passwd_conf']) {
-                return COM_refresh ($_CONF['site_url']
-                                    . '/usersettings.php?msg=67');
             }
+        } else {
+            // Cookie
+            if ($A['cooktime'] > 0) {
+                $cooktime = $A['cooktime'];
+            } else {
+                $cooktime = -1000;
+            }
+            SEC_setCookie($_CONF['cookie_password'], $passwd, time() + $cooktime);
         }
+            
 
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
@@ -1065,12 +1105,62 @@ function saveuser($A)
 
         PLG_userInfoChanged ($_USER['uid']);
 
+        $msg = 5;
+        // Re Sync data if needed
+        if (isset($A['resynch'])) {
+            $query[] = ''; 
+            // ReSynch
+            if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) {       
+                $modules = SEC_collectRemoteOAuthModules();
+
+                $active_service = (count($modules) == 0) ? false : in_array(substr($_USER['remoteservice'], 6), $modules);
+                if (!$active_service) {
+                    $status = -1;
+                    $msg = 114; // Account saved but re-synch failed
+                } else {
+                    $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+        
+                    require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+        
+                    $consumer = new OAuthConsumer($service);
+                    $callback_query_string = $consumer->getCallback_query_string();
+                    $cancel_query_string = $consumer->getCancel_query_string();
+        
+                    if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                        $url = $consumer->find_identity_info($callback_url, $query);
+                        if (empty($url)) {
+                            $msg = 110;
+                        } else {
+                            header('Location: ' . $url);
+                            exit;
+                        }
+                    } elseif (isset($query[$callback_query_string])) {
+                        $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                        if (empty($oauth_userinfo)) {
+                            $msg = 111;
+                        } else {
+                            $consumer->doSynch($oauth_userinfo);
+                        }
+                    } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
+                            $msg = 112;
+                    } else {
+                        $msg = 91;
+                    }
+                }            
+            }
+            
+            if ($msg != 5) {
+                $msg = 114; // Account saved but re-synch failed
+            }
+        }
+        
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
+        
 
         return COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                            . $_USER['uid'] . '&amp;msg=5');
+                            . $_USER['uid'] . '&amp;msg=' . $msg);
     }
 }
 
@@ -1310,6 +1400,64 @@ if (! COM_isAnonUser()) {
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?msg=5');
         break;
+        
+    case 'synch':
+        $msg = 5;
+        $query[] = '';
+        if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0) && isset($_GET['oauth_login'])) {
+            // Here we go with the handling of OAuth authentification        
+            $modules = SEC_collectRemoteOAuthModules();
+            $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
+            if (!$active_service) {
+                $status = -1;
+                $msg = 114;
+            } else {
+                $query = array_merge($_GET, $_POST);
+                $service = $_GET['oauth_login']; // DB_getItem ($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}"); 
+                $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+    
+                require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+
+                $consumer = new OAuthConsumer($service);
+                $callback_query_string = $consumer->getCallback_query_string();
+                $cancel_query_string = $consumer->getCancel_query_string();
+
+                if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                    $url = $consumer->find_identity_info($callback_url, $query);
+                    if (empty($url)) {
+                        $msg = 110;
+                    } else {
+                        // header('Location: ' . $url);
+                        // exit;
+                        $msg = 110;
+                    }
+                } elseif (isset($query[$callback_query_string])) {
+                    $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                    if (empty($oauth_userinfo)) {
+                        $msg = 111;
+                    } else {
+                        $consumer->doSynch($oauth_userinfo);
+                    }
+                } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
+                        $msg = 112;
+                } else {
+                    $msg = 91;
+                }
+            }   
+            
+            if ($_US_VERBOSE) {
+                COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
+            }
+            
+            if ($msg == 5) {
+                $display = COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
+            } else {
+                $display = COM_refresh ($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
+            }
+            break;
+        }
+        
+        // Go right into default
 
     default: // also if $mode == 'edit', 'preferences', or 'comments'
         $display .= COM_siteHeader('menu', $LANG04[16]);

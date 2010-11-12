@@ -1,0 +1,4 @@
+    <tr>
+        <td><label for="resynch">{lang_resynch}:</label></td>
+        <td><input type="checkbox" id="resynch" name="resynch" {resynch_checked}{xhtml}></td>
+    </tr>
