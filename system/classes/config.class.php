@@ -471,6 +471,9 @@ class config {
         $t = new Template($_CONF['path_layout'] . 'admin/config');
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
+        
+        // Disable autotags in templates for configuration
+        $t->preprocess_fn = '';
 
         $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
@@ -618,6 +621,9 @@ class config {
 
         $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t -> set_file('element', 'config_element.thtml');
+        
+        // Disable autotags in templates for configuration
+        $t->preprocess_fn = '';        
 
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
                         'select-element', 'list-element', 'unset-param',
