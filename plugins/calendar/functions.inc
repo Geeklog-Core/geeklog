@@ -520,7 +520,9 @@ function plugin_savesubmission_calendar($A)
         return $retval;
     }
 
-    $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
+    // Remove any autotags the user doesn't have permission to use
+    $A['description'] = PLG_replaceTags($A['description'], '', true);
+     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
     $A['address1'] = addslashes (strip_tags (COM_checkWords ($A['address1'])));
     $A['address2'] = addslashes (strip_tags (COM_checkWords ($A['address2'])));
     $A['city'] = addslashes (strip_tags (COM_checkWords ($A['city'])));
@@ -827,7 +829,8 @@ function plugin_submit_calendar($mode = 'master')
     $eventform->set_var('lang_zipcode',$LANG_CAL_1[36]);
     $eventform->set_var('lang_location', $LANG_CAL_1[39]);
     $eventform->set_var('lang_description', $LANG_CAL_1[5]);
-    $eventform->set_var('lang_htmnotallowed', $LANG_CAL_1[44]);
+    $allowed = COM_allowedHTML('links.edit', false, 2);
+    $eventform->set_var('lang_allowed_html', $allowed);       
     PLG_templateSetVars('calendar', $eventform);
     $eventform->set_var('lang_submit', $LANG12[8]);
     $eventform->set_var('mode', $mode);
@@ -1149,10 +1152,31 @@ function plugin_submissioncount_calendar()
 */
 function plugin_autotags_calendar ($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_CAL_1, $_CA_CONF;
 
     if ($op == 'tagname' ) {
         return 'event';
+    } elseif ($op == 'permission' || $op == 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        
+        // Get Link Admin group id
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Calendar Admin'");
+        $owner_id = 2; // Admin
+        if (COM_getPermTag($owner_id, $group_id, $_CA_CONF['autotag_permissions_event'][0], $_CA_CONF['autotag_permissions_event'][1], $_CA_CONF['autotag_permissions_event'][2], $_CA_CONF['autotag_permissions_event'][3]) == $flag) {
+            $tagname[] = 'event';
+        }
+        
+        if (is_array($tagname)) {
+            return $tagname;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'event' => $LANG_CAL_1['autotag_desc_event']
+            );        
     } else if ($op == 'parse') {
         $eid = COM_applyFilter($autotag['parm1']);
         if (! empty($eid)) {
@@ -1503,6 +1527,8 @@ function plugin_upgrade_calendar()
 
     require_once $_CONF['path'] . 'plugins/calendar/sql/'
                                 . $_DB_dbms . '_updates.php';
+                                
+    require_once $_CONF['path'] . 'plugins/calendar/install_updates.php';                                   
 
     $current_version = $installed_version;
     $done = false;
@@ -1522,6 +1548,12 @@ function plugin_upgrade_calendar()
 
             $current_version = '1.1.1';
             break;
+
+        case '1.1.1':
+            update_ConfValues_1_1_1();  
+
+            $current_version = '1.1.2';
+            break;            
 
         default:
             $done = true;

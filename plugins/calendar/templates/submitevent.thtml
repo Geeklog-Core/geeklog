@@ -90,7 +90,7 @@
                                 <div class="form-description">{lang_description}:</div>
                                 <div class="form-field"><textarea name="description" style="width:100%" cols="45" rows="8"></textarea></div>
                                 <div class="clear-left"></div>
-                                <div class="form-field">{lang_htmnotallowed}</div>
+                                <div class="form-field">{lang_allowed_html}</div>
                                 {captcha}
                                 <div class="form-field">
                                     <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>

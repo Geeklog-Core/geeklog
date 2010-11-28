@@ -44,8 +44,8 @@ function plugin_autoinstall_calendar($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.1.1',
-        'pi_gl_version'   => '1.6.1',
+        'pi_version'      => '1.1.2',
+        'pi_gl_version'   => '1.8.0',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 

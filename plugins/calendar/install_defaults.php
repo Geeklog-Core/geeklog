@@ -100,6 +100,13 @@ $_CA_DEFAULT['aftersave'] = 'list';
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_CA_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 
+// Define default usuage permissions for the calendar autotags.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 2 = use
+// 0 = cannot use
+// (a value of 1 is not allowed)
+$_CA_DEFAULT['autotag_permissions_event'] = array (2, 2, 2, 2);
 
 /**
 * Initialize Calendar plugin configuration
@@ -166,7 +173,11 @@ function plugin_initconfig_calendar()
                 'calendar');
         $c->add('default_permissions', $_CA_DEFAULT['default_permissions'],
                 '@select', 0, 1, 12, 120, true, 'calendar');
-
+        
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
+                0, 10, NULL, 0, true, 'calendar');
+        $c->add('autotag_permissions_event', $_CA_DEFAULT['autotag_permissions_event'], '@select', 
+                0, 10, 13, 10, true, 'calendar');         
     }
 
     return true;
