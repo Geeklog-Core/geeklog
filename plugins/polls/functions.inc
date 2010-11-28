@@ -1152,6 +1152,8 @@ function plugin_upgrade_polls()
 
     require_once $_CONF['path'] . 'plugins/polls/sql/'
                                 . $_DB_dbms . '_updates.php';
+                                
+    require_once $_CONF['path'] . 'plugins/polls/install_updates.php';                                
 
     $current_version = $installed_version;
     $done = false;
@@ -1190,6 +1192,19 @@ function plugin_upgrade_polls()
             
             $current_version = '2.1.2';
             break;
+            
+        case '2.1.2':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            update_ConfValues_2_1_2();
+            
+            $current_version = '2.1.3';
+            break;            
 
         default:
             $done = true;
@@ -1432,10 +1447,39 @@ function plugin_getcommenturlid_polls()
 */
 function plugin_autotags_polls($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_PO_CONF, $_TABLES, $LANG_POLLS;
 
-    if ($op == 'tagname' ) {
+    if ($op == 'tagname') {
         return array('poll_vote', 'poll_result', 'poll');
+    } elseif ($op == 'permission' || $op == 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        
+        // Get Polls Admin group id
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
+        $owner_id = 2; // Admin
+        if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll_vote'][0], $_PO_CONF['autotag_permissions_poll_vote'][1], $_PO_CONF['autotag_permissions_poll_vote'][2], $_PO_CONF['autotag_permissions_poll_vote'][3]) == $flag) {
+            $tagname[] = 'poll_vote';
+        }
+        if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll_result'][0], $_PO_CONF['autotag_permissions_poll_result'][1], $_PO_CONF['autotag_permissions_poll_result'][2], $_PO_CONF['autotag_permissions_poll_result'][3]) == $flag) {
+            $tagname[] = 'poll_result';
+        }
+        if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll'][0], $_PO_CONF['autotag_permissions_poll'][1], $_PO_CONF['autotag_permissions_poll'][2], $_PO_CONF['autotag_permissions_poll'][3]) == $flag) {
+            $tagname[] = 'poll';
+        }
+        
+        if (is_array($tagname)) {
+            return $tagname;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'poll' => $LANG_POLLS['autotag_desc_poll'],
+            'poll_vote' => $LANG_POLLS['autotag_desc_poll_vote'],
+            'poll_result' => $LANG_POLLS['autotag_desc_poll_result']
+            );
     } elseif ($op == 'parse') {
         $pid = COM_applyFilter($autotag['parm1']);
         $showall = false;

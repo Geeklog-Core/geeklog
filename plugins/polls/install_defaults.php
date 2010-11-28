@@ -100,6 +100,16 @@ $_PO_DEFAULT['meta_tags'] = 0;
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_PO_DEFAULT['default_permissions'] = array (3, 2, 2, 2);
 
+// Define default usuage permissions for the polls autotags.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 2 = use
+// 0 = cannot use
+// (a value of 1 is not allowed)
+$_PO_DEFAULT['autotag_permissions_poll'] = array (2, 2, 2, 2);
+$_PO_DEFAULT['autotag_permissions_poll_vote'] = array (2, 2, 0, 0);
+$_PO_DEFAULT['autotag_permissions_poll_result'] = array (2, 2, 0, 0);
+
 
 /**
 * Initialize Polls plugin configuration
@@ -158,6 +168,15 @@ function plugin_initconfig_polls()
                 0, 2, NULL, 0, true, 'polls');
         $c->add('default_permissions', $_PO_DEFAULT['default_permissions'], '@select', 
                 0, 2, 12, 100, true, 'polls');
+        
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
+                0, 10, NULL, 0, true, 'polls');
+        $c->add('autotag_permissions_poll', $_PO_DEFAULT['autotag_permissions_poll'], '@select', 
+                0, 10, 13, 10, true, 'polls');       
+        $c->add('autotag_permissions_poll_vote', $_PO_DEFAULT['autotag_permissions_poll_vote'], '@select', 
+                0, 10, 13, 10, true, 'polls');       
+        $c->add('autotag_permissions_poll_result', $_PO_DEFAULT['autotag_permissions_poll_result'], '@select', 
+                0, 10, 13, 10, true, 'polls');       
     }
 
     return true;
