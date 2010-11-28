@@ -29,7 +29,12 @@ function update_ConfValuesFor180()
     $c->add('linkedin_consumer_secret','','text',4,16,NULL,355,TRUE);
     $c->add('twitter_login',0,'select',4,16,1,356,TRUE);
     $c->add('twitter_consumer_key','','text',4,16,NULL,357,TRUE);
-    $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE);    
+    $c->add('twitter_consumer_secret','','text',4,16,NULL,358,TRUE);   
+    
+    // Autotag usage permissions
+    $c->add('fs_autotag_permissions', NULL, 'fieldset', 7, 41, NULL, 0, TRUE);
+    $c->add('autotag_permissions_story', array(2, 2, 2, 2), '@select', 7, 41, 28, 1870, TRUE);
+    $c->add('autotag_permissions_user', array(2, 2, 2, 2), '@select', 7, 41, 28, 1880, TRUE);        
     
     return true;
 }

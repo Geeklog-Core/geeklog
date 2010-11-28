@@ -171,7 +171,13 @@ $LANG01 = array(
     127 => 'Permalink',
     128 => 'Login with OpenID:',
     129 => 'Configuration',
-    130 => 'Webservices'
+    130 => 'Webservices',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critial',
+    134 => 'Help',
+    135 => 'Warning'
+    
 );
 
 ###############################################################################
@@ -837,7 +843,8 @@ $LANG24 = array(
     88 => 'Wiki-style format',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'You can always hit "Preview" to extend the expiry time.'
+    91 => 'You can always hit "Preview" to extend the expiry time.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'  
 );
 
 
@@ -970,7 +977,8 @@ $LANG28 = array(
     87 => 'Reminders',
     88 => 'Default Group',
     89 => 'Check to make this a default group for new users',
-    90 => 'Apply "Default Group" change to existing user accounts'
+    90 => 'Apply "Default Group" change to existing user accounts',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.' 
 );
 
 ###############################################################################
@@ -1927,7 +1935,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => "Show Page Limits?",
     'search_separator' => "Group Separator",
     'search_def_keytype' => "Default Search Method",
-    'search_def_sort' => "Default Sort Order"
+    'search_def_sort' => "Default Sort Order", 
+    'autotag_permissions_story' => '[story: ] Permissions', 
+    'autotag_permissions_user' => '[user: ] Permissions'   
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1982,7 +1992,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'Story Default Permission',
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
-    'fs_webservices' => 'Webservices'
+    'fs_webservices' => 'Webservices',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2020,7 +2031,8 @@ $LANG_configselects['Core'] = array(
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

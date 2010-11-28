@@ -1135,10 +1135,31 @@ function plugin_moderationapprove_story_draft($sid)
 */
 function plugin_autotags_story($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG24;
 
     if ($op == 'tagname' ) {
         return 'story';
+    } elseif ($op == 'permission' || $op == 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        
+        // Get Story Admin group id
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+        $owner_id = 2; // Admin
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_story'][0], $_CONF['autotag_permissions_story'][1], $_CONF['autotag_permissions_story'][2], $_CONF['autotag_permissions_story'][3]) == $flag) {
+            $tagname[] = 'story';
+        }
+        
+        if (is_array($tagname)) {
+            return $tagname;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'story' => $LANG24['autotag_desc_story']
+            );        
     } else {
         $sid = COM_applyFilter($autotag['parm1']);
         if (! empty($sid)) {

@@ -1020,6 +1020,10 @@ class Story
         }
 
         $tmptid = addslashes(COM_sanitizeID($this->_tid));
+        
+        // Remove any autotags the user doesn't have permission to use
+        $this->_introtext = PLG_replaceTags($this->_introtext, '', true);
+        $this->_bodytext = PLG_replaceTags($this->_bodytext, '', true);           
 
         $result = DB_query('SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM ' .
                             "{$_TABLES['topics']} WHERE tid = '{$tmptid}'" .
@@ -1036,6 +1040,7 @@ class Story
             $this->_sid = addslashes($this->_sid);
             $this->_tid = $tmptid;
             $this->_title = addslashes($this->_title);
+            
             $this->_introtext = addslashes($this->_introtext);
             $this->_bodytext = addslashes($this->_bodytext);
             $this->_postmode = addslashes($this->_postmode);
@@ -1863,6 +1868,9 @@ class Story
         $out = '';
 
         $out = $this->replaceImages($in);
+        
+        // Remove any autotags the user doesn't have permission to use
+        $out = PLG_replaceTags($out, '', true);        
 
         if ($this->_postmode == 'plaintext') {
             $out = COM_undoClickableLinks($out);
@@ -2089,6 +2097,10 @@ class Story
         }
 
         $this->_title = htmlspecialchars(strip_tags(COM_checkWords($title)));
+
+        // Remove any autotags the user doesn't have permission to use
+        $intro = PLG_replaceTags($intro, '', true);
+        $body = PLG_replaceTags($body, '', true);        
         $this->_introtext = COM_checkHTML(COM_checkWords($intro), 'story.edit');
         $this->_bodytext = COM_checkHTML(COM_checkWords($body), 'story.edit');
     }
@@ -2113,6 +2125,10 @@ class Story
     function _plainTextLoadStory($title, $intro, $body)
     {
         $this->_title = htmlspecialchars(strip_tags(COM_checkWords($title)));
+        
+        // Remove any autotags the user doesn't have permission to use
+        $intro = PLG_replaceTags($intro, '', true);
+        $body = PLG_replaceTags($body, '', true);
         $this->_introtext = COM_makeClickableLinks(htmlspecialchars(COM_checkWords($intro)));
         $this->_bodytext = COM_makeClickableLinks(htmlspecialchars(COM_checkWords($body)));
     }

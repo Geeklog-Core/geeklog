@@ -1125,7 +1125,28 @@ function plugin_autotags_user($op, $content = '', $autotag = '')
 
     if ($op == 'tagname' ) {
         return 'user';
-    } else if ($op == 'parse') {
+    } elseif ($op == 'permission' || $op == 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        
+        // Get User Admin group id
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'User Admin'");
+        $owner_id = 2; // Admin
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_user'][0], $_CONF['autotag_permissions_user'][1], $_CONF['autotag_permissions_user'][2], $_CONF['autotag_permissions_user'][3]) == $flag) {
+            $tagname[] = 'user';
+        }
+        
+        if (is_array($tagname)) {
+            return $tagname;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'user' => $LANG28['autotag_desc_user']
+            );          
+    } elseif ($op == 'parse') {
         $uname = COM_applyFilter($autotag['parm1']);
         $uname = addslashes($uname);
         $sql = "SELECT uid, username, fullname, status FROM {$_TABLES['users']} WHERE username = '$uname'";

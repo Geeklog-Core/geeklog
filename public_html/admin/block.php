@@ -618,6 +618,11 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
             $rdfupdated = '';
             $rdflimit = 0;
             $phpblockfn = '';
+            
+            if ($allow_autotags == 1) {
+                // Remove any autotags the user doesn't have permission to use
+                $content = PLG_replaceTags($content, '', true);
+            }
             $content = addslashes ($content);
         }
         if ($rdflimit < 0) {

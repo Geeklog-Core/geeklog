@@ -1012,36 +1012,38 @@ a.pluginButton:hover {
 
 /* Common CSS for on-hover tooltip feature */
 a.tooltip {
-  position: relative; /* this is the key */
-  z-index:10;
-  color:#000;
-  text-decoration:none;
-}
-a.tooltip:hover  {
-  z-index:100;
-  text-decoration:none;
+    border-bottom: 1px dotted #000000; color: #000000; outline: none;
+    cursor: help; text-decoration: none;
+    position: relative;
 }
 a.tooltip span {
-  display: none;
+    margin-left: -999em;
+    position: absolute;
 }
 a.tooltip:hover span {
-  /* the span will display just on :hover state */
-  z-index:100;
-  color:#033666;
-  font-style:normal;
-  font-size:.8em;
-  line-height: 125%;
-  display:block;
-  position:absolute;
-  border:1px solid #C8DAF7;
-  background-color:#E5EFFF;
-  padding:4px;
-  text-align: left;
-  text-decoration:none;
-  left:-20px;
-  top:10px;
-  min-width:150px;
+    border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; 
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+    font-family: Calibri, Tahoma, Geneva, sans-serif;
+    position: absolute; left: 1em; top: 2em; z-index: 99;
+    margin-left: 0; width: 250px;
 }
+a.tooltip:hover img {
+    border: 0; margin: -10px 0 0 -55px;
+    float: left; position: absolute;
+}
+a.tooltip:hover em {
+    font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
+    display: block; padding: 0.2em 0 0.6em 0;
+}
+.classic { padding: 0.8em 1em; }
+.custom { padding: 0.5em 0.8em 0.8em 2em; }
+* html a:hover { background: transparent; }
+.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
+.critical { background: #FFCCAA; border: 1px solid #FF3334;	}
+.help { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+.warning { background: #FFFFAA; border: 1px solid #FFAD33; }
+
 /* End of common CSS for on-hover info feature */
 
 /* End of Common Plugin CSS */

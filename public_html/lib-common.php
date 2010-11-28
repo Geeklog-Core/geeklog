@@ -2928,6 +2928,8 @@ function COM_checkWords( $Message )
         }
     }
 
+    
+    
     return $EditedMessage;
 }
 
@@ -3893,8 +3895,9 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 * You can modify this by changing $_CONF['user_html'] in the configuration
 * (for admins, see also $_CONF['admin_html']).
 *
-* @param    string  $permissions    comma-separated list of rights which identify the current user as an "Admin"
-* @param    boolean $list_only      true = return only the list of HTML tags
+* @param    string  $permissions        comma-separated list of rights which identify the current user as an "Admin"
+* @param    boolean $list_only          true = return only the list of HTML tags
+* @param    boolean $filter_html_flag   0 = returns allowed all html tags, 1 = returns allowed HTML tags only, 2 = returns No HTML Tags Allowed (this is used by plugins if they have a config that overrides Geeklogs filter html settings or do not have a post mode)
 * @return   string                  HTML <div>/<span> enclosed string
 * @see      function COM_checkHTML
 * @todo     Bugs: The list always includes the [code], [raw], and [page_break]
@@ -3902,23 +3905,29 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 *           are not actually available (e.g. in comments on stories).
 *
 */
-function COM_allowedHTML($permissions = 'story.edit', $list_only = false)
+function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1)
 {
-    global $_CONF, $LANG01;
+    global $_CONF, $_PLUGINS, $LANG01;
 
     $retval = '';
     $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
 
-    if ($has_skiphtmlfilterPermissions || (isset($_CONF['skip_html_filter_for_root']) &&
+    if (($has_skiphtmlfilterPermissions || (isset($_CONF['skip_html_filter_for_root']) &&
              ($_CONF['skip_html_filter_for_root'] == 1) &&
-            SEC_inGroup('Root'))) {
+            SEC_inGroup('Root'))) || ($filter_html_flag == 0)) {
 
         if (!$list_only) {
             $retval .= '<span class="warningsmall">' . $LANG01[123]
                     . ',</span> ';
         }
         $retval .= '<div dir="ltr" class="warningsmall">';
+    } elseif ($filter_html_flag == 2) {
 
+        if (!$list_only) {
+            $retval .= '<span class="warningsmall">' . $LANG01[131]
+                    . ',</span> ';
+        }
+        $retval .= '<div dir="ltr" class="warningsmall">';
     } else {
 
         if (! $list_only) {
@@ -3956,10 +3965,26 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false)
         }
     }
 
-    // list autotags
-    $autotags = array_keys(PLG_collectTags());
-    $retval .= '[' . implode(':], [', $autotags) . ':]';
+    // List autotags user has permission to use (with descriptions)
+    $autotags = array_keys(PLG_collectTags('permission'));
+    $description = array_flip(PLG_collectTags('description'));
+    $done_once = false;
+    $comma = '';
+    foreach ($autotags as $tag) {
+        if ($done_once) { 
+            $comma = ',';
+        }
+        if ($description[$tag] != '') {
+           $retval .= $comma . COM_Tooltip(' [' . $tag . ':]', $description[$tag], $LANG01[132],'tooltip' , 'information');
+        } else {
+            $retval .= $comma . ' [' . $tag . ':]';
+        }
+        $done_once = true;
+    }
     $retval .= '</div>';
+
+    return $retval;
+    
 
     return $retval;
 }
@@ -5468,6 +5493,77 @@ function COM_getRate( $occurrences, $timespan )
 }
 
 /**
+* Check for Tag permissions.
+*
+* Creates part of an SQL expression that can be used to request items with the
+* standard set of Geeklog permissions.
+*
+* @param        string      $type     part of the SQL expr. e.g. 'WHERE', 'AND'
+* @param        int         $u_id     user id or 0 = current user
+* @param        int         $access   access to check for (2=read, 3=r&write)
+* @param        string      $table    table name if ambiguous (e.g. in JOINs)
+* @return       string      SQL expression string (may be empty)
+*
+*/
+function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $u_id = 0)
+{
+    global $_USER, $_GROUPS;
+
+    $retval = false;
+    $access = 2;
+    
+    if( $u_id <= 0) {
+        if( COM_isAnonUser() ) {
+            $uid = 1;
+        } else {
+            $uid = $_USER['uid'];
+        }
+    } else {
+        $uid = $u_id;
+    }
+
+    $UserGroups = array();
+    if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] )) {
+        if( empty( $_GROUPS )) {
+            $_GROUPS = SEC_getUserGroups( $uid );
+        }
+        $UserGroups = $_GROUPS;
+    } else {
+        $UserGroups = SEC_getUserGroups( $uid );
+    }
+
+    if( empty( $UserGroups )) {
+        // this shouldn't really happen, but if it does, handle user
+        // like an anonymous user
+        $uid = 1;
+    }
+
+    if( SEC_inGroup( 'Root', $uid )) {
+        return true;
+    } else {
+        if( $uid > 1 ) {
+            if (($owner_id == $uid) AND ($perm_owner >= $access)) { 
+                return true;
+            }
+    
+            if ((in_array($group_id, $UserGroups)) AND ($perm_group >= $access)) { 
+                return true;
+            }            
+                 
+            if ($perm_members >= $access) { 
+                return true;
+            }
+        } else {
+            if ($perm_anon >= $access) { 
+                return true;
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
 * Return SQL expression to check for permissions.
 *
 * Creates part of an SQL expression that can be used to request items with the
@@ -6639,6 +6735,42 @@ function COM_getLanguageName()
 
     return $retval;
 }
+
+/**
+* Returns an text/image that will display a tooltip
+*
+* This tooltip is based on an example from http://downloads.sixrevisions.com/css-tooltips/index.html
+*
+* @param    string  $hoverover  Text or image to display for the user to hover their mouse cursor over.
+* @param    string  $text       Text for the actual tooltip. Can include HTML.
+* @param    string  $title      Text for the tooltip title (if there is one). Can include HTML.
+* @param    string  $class      Specify a different tooltip class to use.
+* @param    string  $template   Specify a different template to use.
+* @return   string              HTML tooltip
+*
+*/
+function COM_Tooltip($hoverover = '', $text = '', $title = '', $class = 'tooltip', $template = 'classic') 
+{
+    global $_CONF, $_IMAGE_TYPE;
+    
+    if ($hoverover == '') {
+        $hoverover = '<img  border="0" src="' . $_CONF['layout_url'] . '/images/tooltip.' . $_IMAGE_TYPE . '">';   
+    }
+    
+    $tooltip = new Template($_CONF['path_layout'] .'tooltips/');
+    $tooltip->set_file(array('tooltip'    => $template . '.thtml'));    
+    
+    $tooltip->preprocess_fn = ''; // Do not process for autotags in text since tooltip
+    $tooltip->set_var('class', $class);
+    $tooltip->set_var('hoverover', $hoverover);
+    $tooltip->set_var('text', $text);
+    $tooltip->set_var('title', $title);
+    $tooltip->set_var('layout_url', $_CONF['layout_url']);
+    
+    $retval =  $tooltip->finish($tooltip->parse('output', 'tooltip'));
+    return $retval;
+}
+
 
 /**
 * Truncate a string that contains HTML tags. Will close all HTML tags as needed.

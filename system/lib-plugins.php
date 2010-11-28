@@ -1506,7 +1506,7 @@ function PLG_getHeaderCode()
 * @internal not to be used by plugins
 *
 */
-function PLG_collectTags()
+function PLG_collectTags($type = 'tagname')
 {
     global $_CONF, $_PLUGINS;
 
@@ -1522,15 +1522,32 @@ function PLG_collectTags()
     foreach ($all_plugins as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
         if (function_exists($function)) {
-            $autotag = $function('tagname');
-            if (is_array($autotag)) {
-                foreach ($autotag as $tag) {
-                    $autolinkModules[$tag] = $pi_name;
+            $autotag = $function($type);
+            if ($type == 'tagname' || $type == 'permission' || $type == 'nopermission') {
+                if ($type == 'permission') {
+                    // Compare permission info if both blank then no permission info found so rerun for tagname (backwards compatible)
+                    if (($function('permission') == '') && ($function('nopermission') == '')) {
+                        $autotag = $function('tagname');
+                    }
                 }
-            } else {
-                $autolinkModules[$autotag] = $pi_name;
+                if (is_array($autotag)) {
+                    foreach ($autotag as $tag) {
+                        $autolinkModules[$tag] = $pi_name;
+                    }
+                } elseif ($autotag != '') { // If is now possible that a autotag function exists but will not return anything due to permissions
+                    $autolinkModules[$autotag] = $pi_name;
+                }
+            } else {       
+                if (is_array($autotag)) {
+                    foreach ($autotag as $key => $tag) {
+                        $autolinkModules[$tag] = $key;
+                    }
+                } else {
+                    $autolinkModules[$autotag] = '';
+                }
             }
         }
+    
     }
 
     return $autolinkModules;
@@ -1544,9 +1561,10 @@ function PLG_collectTags()
 *
 * @param   string   $content   Content that should be parsed for autolinks
 * @param   string   $plugin    Optional if you only want to parse using a specific plugin
+* @param   string   $remove    Optional if you want to remove the autotag from the content
 *
 */
-function PLG_replaceTags($content, $plugin = '')
+function PLG_replaceTags($content, $plugin = '', $remove = false)
 {
     global $_CONF, $_TABLES, $LANG32;
 
@@ -1555,7 +1573,14 @@ function PLG_replaceTags($content, $plugin = '')
         return $content;
     }
 
-    $autolinkModules = PLG_collectTags();
+    if ($remove) {
+        $autolinkModules = PLG_collectTags('nopermission');
+        if (!is_array($autolinkModules)) { // a permission check may not return any data so no point parsing content
+            return $content;
+        }
+    } else {
+        $autolinkModules = PLG_collectTags();
+    }
 
     for ($i = 1; $i <= 5; $i++) {
         // For each supported module, scan the content looking for any AutoLink tags
@@ -1622,10 +1647,14 @@ function PLG_replaceTags($content, $plugin = '')
         // If we have found 1 or more AutoLink tag
         if (count($tags) > 0) {       // Found the [tag] - Now process them all
             foreach ($tags as $autotag) {
-                $function = 'plugin_autotags_' . $autotag['module'];
-                if (function_exists($function) AND
-                        (empty($plugin) OR ($plugin == $autotag['module']))) {
-                    $content = $function('parse', $content, $autotag);
+                if ($remove) {
+                    $content = str_replace($autotag['tagstr'], '', $content);
+                } else {
+                    $function = 'plugin_autotags_' . $autotag['module'];
+                    if (function_exists($function) AND
+                            (empty($plugin) OR ($plugin == $autotag['module']))) {
+                        $content = $function('parse', $content, $autotag);
+                    }
                 }
             }
         } else {

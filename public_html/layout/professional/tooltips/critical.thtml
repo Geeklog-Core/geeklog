@@ -1,0 +1,1 @@
+<a class="{class}" href="#">{hoverover}<span class="custom critical"><img src="{layout_url}/tooltips/images/critical.png" alt="{title}" height="48" width="48" /><em>{title}</em>{text}</span></a>

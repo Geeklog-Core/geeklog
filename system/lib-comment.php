@@ -514,9 +514,9 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A['comment'] = str_replace( '$', '&#36;',  $A['comment'] );
         $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
         $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
-
+        
         // Replace any plugin autolink tags
-        $A['comment'] = PLG_replaceTags( $A['comment'] );
+        $A['comment'] = PLG_replaceTags( $A['comment'] );        
 
         // create a reply to link
         $reply_link = '';
@@ -793,7 +793,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $postmode = 'html';
             } elseif (empty($postmode)) {
                 $postmode = $_CONF['postmode'];
-            }
+            }                                                                                       
 
             // Note:
             // $comment / $newcomment is what goes into the preview / is
@@ -807,6 +807,9 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $commenttext = str_replace('$','&#36;',$commenttext);
             $commenttext = str_replace('{','&#123;',$commenttext);
             $commenttext = str_replace('}','&#125;',$commenttext);
+            
+            // Remove any autotags the user doesn't have permission to use
+            $commenttext = PLG_replaceTags($commenttext, '', true);
 
             $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
@@ -1616,6 +1619,9 @@ function CMT_handleEditSubmit($mode = null)
 function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
 {
     global $_USER, $_TABLES, $LANG03, $_CONF; 
+
+    // Remove any autotags the user doesn't have permission to use
+    $comment = PLG_replaceTags($comment, '', true);    
     
     if ($postmode == 'html') {
         $html_perm = ($type == 'article') ? 'story.edit' : "$type.edit";

@@ -368,6 +368,10 @@ function install_config()
     $c->add('disable_webservices',   1, 'select', 7, 40, 0, 1840, TRUE);
     $c->add('restrict_webservices',  0, 'select', 7, 40, 0, 1850, TRUE);
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE);
+    
+    $c->add('fs_autotag_permissions', NULL, 'fieldset', 7, 41, NULL, 0, TRUE);
+    $c->add('autotag_permissions_story', array(2, 2, 2, 2), '@select', 7, 41, 28, 1870, TRUE);
+    $c->add('autotag_permissions_user', array(2, 2, 2, 2), '@select', 7, 41, 28, 1880, TRUE);
 }
 
 ?>
