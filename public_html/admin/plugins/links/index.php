@@ -189,6 +189,8 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG_LINKS_ADMIN[9]);
     $link_templates->set_var('link_description', stripslashes($A['description']));
+    $allowed = COM_allowedHTML('links.edit');
+    $link_templates->set_var('lang_allowed_html', $allowed);
     $link_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $link_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
 
@@ -257,6 +259,10 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
+
+    // Remove any autotags the user doesn't have permission to use
+    $description = PLG_replaceTags($description, '', true);
+    
     // clean 'em up
     $description = addslashes(COM_checkHTML(COM_checkWords($description),
                               'links.edit'));

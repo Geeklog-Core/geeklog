@@ -18,10 +18,11 @@
                                     </tr>
                                     <tr>
                                         <td align="right" valign="top"><b>{lang_description}:</b></td>
-                                        <td><textarea name="description" rows="8" cols="30" style="width:100%"></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="center" colspan="2">{lang_htmlnotallowed}</td>
+                                        <td>
+                                            <textarea name="description" rows="8" cols="30" style="width:100%"></textarea>
+                                            <br{xhtml}>
+                                            {lang_allowed_html}                                             
+                                        </td>
                                     </tr>
                                     {captcha}
                                     <tr>

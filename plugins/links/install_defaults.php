@@ -170,6 +170,14 @@ $_LI_DEFAULT['default_permissions'] = array (3, 2, 2, 2);
  */
 $_LI_DEFAULT['category_permissions'] = array (3, 2, 2, 2);
 
+// Define default usuage permissions for the links autotags.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 2 = use
+// 0 = cannot use
+// (a value of 1 is not allowed)
+$_LI_DEFAULT['autotag_permissions_link'] = array (2, 2, 2, 2);
+
 
 /**
 * Initialize Links plugin configuration
@@ -231,6 +239,11 @@ function plugin_initconfig_links()
         $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
         $c->add('category_permissions', $_LI_DEFAULT['category_permissions'],
                 '@select', 0, 3, 12, 150, true, 'links');
+        
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
+                0, 10, NULL, 0, true, 'links');
+        $c->add('autotag_permissions_link', $_LI_DEFAULT['autotag_permissions_link'], '@select', 
+                0, 10, 13, 10, true, 'links');             
 
     }
 

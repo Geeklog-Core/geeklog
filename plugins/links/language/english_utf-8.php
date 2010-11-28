@@ -73,6 +73,7 @@ $LANG_LINKS = array(
     124 => 'Go',
     125 => 'Categories',
     126 => 'You are here:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'Root' // title used for top level category
 );
 
@@ -277,7 +278,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'Open external links in new window?',
     'root' => 'ID of Root Category',
     'default_permissions' => 'Link Default Permissions',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'Category Default Permissions',
+    'autotag_permissions_link' => '[link: ] Permissions'    
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -288,7 +290,8 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Public Links List Settings',
     'fs_admin' => 'Links Admin Settings',
     'fs_permissions' => 'Link Permissions',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_cpermissions' => 'Category Permissions',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'    
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -296,7 +299,8 @@ $LANG_configselects['links'] = array(
     0 => array('True' => 1, 'False' => 0),
     1 => array('True' => TRUE, 'False' => FALSE),
     9 => array('Forward to Linked Site' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

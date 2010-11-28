@@ -328,6 +328,8 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 
+    // Remove any autotags the user doesn't have permission to use
+    $description = PLG_replaceTags($description, '', true);
     // clean 'em up
     $description = addslashes(COM_checkHTML(COM_checkWords($description),
                               'links.edit'));

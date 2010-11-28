@@ -42,6 +42,8 @@
                                             <td align="right" valign="top">{lang_linkdescription}:</td>
                                             <td>
                                                 <textarea name="description" cols="50" rows="8">{link_description}</textarea>
+                                                <br{xhtml}>
+                                                {lang_allowed_html}
                                             </td>
                                         </tr>
                                         <tr>
