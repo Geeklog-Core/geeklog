@@ -1132,12 +1132,37 @@ function plugin_chkVersion_staticpages()
 */
 function plugin_autotags_staticpages($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
 
     static $recursive = array();
 
     if ($op == 'tagname' ) {
         return array('staticpage', 'staticpage_content');
+    } elseif ($op == 'permission' || $op == 'nopermission') {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        
+        // Get Polls Admin group id
+        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
+        $owner_id = 2; // Admin
+        if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage_content'][0], $_SP_CONF['autotag_permissions_staticpage_content'][1], $_SP_CONF['autotag_permissions_staticpage_content'][2], $_SP_CONF['autotag_permissions_staticpage_content'][3]) == $flag) {
+            $tagname[] = 'staticpage_content';
+        }
+        if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage'][0], $_SP_CONF['autotag_permissions_staticpage'][1], $_SP_CONF['autotag_permissions_staticpage'][2], $_SP_CONF['autotag_permissions_staticpage'][3]) == $flag) {
+            $tagname[] = 'staticpage';
+        }
+        
+        if (is_array($tagname)) {
+            return $tagname;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'staticpage' => $LANG_STATIC['autotag_desc_staticpage'],
+            'staticpage_content' => $LANG_STATIC['autotag_desc_staticpage_content']
+            );        
     } elseif ($op == 'parse') {
         if ($autotag['tag'] == 'staticpage' ) {
             $sp_id = COM_applyFilter($autotag['parm1']);
@@ -1213,6 +1238,8 @@ function plugin_upgrade_staticpages()
 
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
                                 . $_DB_dbms . '_updates.php';
+                                
+    require_once $_CONF['path'] . 'plugins/staticpages/install_updates.php';   
 
     $current_version = $installed_version;
     $done = false;
@@ -1259,7 +1286,11 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.3';
             break;
-            
+        case '1.6.3':
+            SP_update_ConfValues_1_6_3();
+
+            $current_version = '1.6.4';
+            break;           
 
         default:
             $done = true;

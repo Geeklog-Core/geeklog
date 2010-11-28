@@ -357,7 +357,10 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
             $template_flag = 0;
         }
 
-        // Clean up the text
+        
+        // Remove any autotags the user doesn't have permission to use
+        $sp_content = PLG_replaceTags($sp_content, '', true);
+        // Clean up the text        
         if ($_SP_CONF['censor'] == 1) {
             $sp_content = COM_checkWords ($sp_content);
             $sp_title = COM_checkWords ($sp_title);

@@ -130,6 +130,14 @@ $_SP_DEFAULT['draft_flag'] = 0;
 // (a value of 1, ie. write-only, does not make sense and is not allowed)
 $_SP_DEFAULT['default_permissions'] = array(3, 2, 2, 2);
 
+// Define default usuage permissions for the staticpage autotags.
+// Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
+// order). Possible values:
+// 2 = use
+// 0 = cannot use
+// (a value of 1 is not allowed)
+$_SP_DEFAULT['autotag_permissions_staticpage'] = array (2, 2, 2, 2);
+$_SP_DEFAULT['autotag_permissions_staticpage_content'] = array (2, 2, 0, 0);
 
 /**
 * Initialize Static Pages plugin configuration
@@ -213,7 +221,13 @@ function plugin_initconfig_staticpages()
                 0, 3, NULL, 0, true, 'staticpages');
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],'@select',
                 0, 3, 12, 130, true, 'staticpages');
-
+        
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
+                0, 10, NULL, 0, true, 'staticpages');
+        $c->add('autotag_permissions_staticpage', $_SP_DEFAULT['autotag_permissions_staticpage'], '@select', 
+                0, 10, 13, 10, true, 'staticpages');       
+        $c->add('autotag_permissions_staticpage_content', $_SP_DEFAULT['autotag_permissions_staticpage_content'], '@select', 
+                0, 10, 13, 10, true, 'staticpages');          
     }
 
     return true;
