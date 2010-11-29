@@ -1035,14 +1035,14 @@ a.tooltip:hover em {
     font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
     display: block; padding: 0.2em 0 0.6em 0;
 }
-.classic { padding: 0.8em 1em; }
-.custom { padding: 0.5em 0.8em 0.8em 2em; }
+span.classic { padding: 0.8em 1em; }
+span.custom { padding: 0.5em 0.8em 0.8em 2em; }
 * html a:hover { background: transparent; }
-.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
-.critical { background: #FFCCAA; border: 1px solid #FF3334;	}
-.help { background: #9FDAEE; border: 1px solid #2BB0D7;	}
-.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
-.warning { background: #FFFFAA; border: 1px solid #FFAD33; }
+span.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
+span.critical { background: #FFCCAA; border: 1px solid #FF3334;	}
+span.help { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+span.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+span.warning { background: #FFFFAA; border: 1px solid #FFAD33; }
 
 /* End of common CSS for on-hover info feature */
 
