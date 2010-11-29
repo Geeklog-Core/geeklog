@@ -1135,7 +1135,7 @@ function plugin_moderationapprove_story_draft($sid)
 */
 function plugin_autotags_story($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES, $LANG24;
+    global $_CONF, $_TABLES, $LANG24, $_GROUPS;
 
     if ($op == 'tagname' ) {
         return 'story';
@@ -1146,8 +1146,7 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
             $flag = false;
         }
         
-        // Get Story Admin group id
-        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+        $group_id = $_GROUPS['Story Admin'];
         $owner_id = 2; // Admin
         if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_story'][0], $_CONF['autotag_permissions_story'][1], $_CONF['autotag_permissions_story'][2], $_CONF['autotag_permissions_story'][3]) == $flag) {
             $tagname[] = 'story';

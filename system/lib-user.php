@@ -1121,7 +1121,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 */
 function plugin_autotags_user($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES, $LANG28;
+    global $_CONF, $_TABLES, $LANG28, $_GROUPS;
 
     if ($op == 'tagname' ) {
         return 'user';
@@ -1132,8 +1132,7 @@ function plugin_autotags_user($op, $content = '', $autotag = '')
             $flag = false;
         }
         
-        // Get User Admin group id
-        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'User Admin'");
+        $group_id = $_GROUPS['User Admin'];
         $owner_id = 2; // Admin
         if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_user'][0], $_CONF['autotag_permissions_user'][1], $_CONF['autotag_permissions_user'][2], $_CONF['autotag_permissions_user'][3]) == $flag) {
             $tagname[] = 'user';

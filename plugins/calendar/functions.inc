@@ -1152,7 +1152,7 @@ function plugin_submissioncount_calendar()
 */
 function plugin_autotags_calendar ($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES, $LANG_CAL_1, $_CA_CONF;
+    global $_CONF, $_TABLES, $LANG_CAL_1, $_CA_CONF, $_GROUPS;
 
     if ($op == 'tagname' ) {
         return 'event';
@@ -1163,8 +1163,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
             $flag = false;
         }
         
-        // Get Link Admin group id
-        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Calendar Admin'");
+        $group_id = $_GROUPS['Calendar Admin'];
         $owner_id = 2; // Admin
         if (COM_getPermTag($owner_id, $group_id, $_CA_CONF['autotag_permissions_event'][0], $_CA_CONF['autotag_permissions_event'][1], $_CA_CONF['autotag_permissions_event'][2], $_CA_CONF['autotag_permissions_event'][3]) == $flag) {
             $tagname[] = 'event';

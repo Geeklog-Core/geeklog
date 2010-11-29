@@ -182,7 +182,7 @@ function plugin_getwhatsnew_links()
 */
 function plugin_autotags_links($op, $content = '', $autotag = '')
 {
-    global $_CONF, $_TABLES, $LANG_DIRECTION, $LANG_LINKS, $_LI_CONF;
+    global $_CONF, $_TABLES, $LANG_DIRECTION, $LANG_LINKS, $_LI_CONF, $_GROUPS;
 
     if ($op == 'tagname' ) {
         return 'link';
@@ -193,8 +193,7 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
             $flag = false;
         }
         
-        // Get Link Admin group id
-        $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Links Admin'");
+        $group_id = $_GROUPS['Links Admin'];
         $owner_id = 2; // Admin
         if (COM_getPermTag($owner_id, $group_id, $_LI_CONF['autotag_permissions_link'][0], $_LI_CONF['autotag_permissions_link'][1], $_LI_CONF['autotag_permissions_link'][2], $_LI_CONF['autotag_permissions_link'][3]) == $flag) {
             $tagname[] = 'link';
