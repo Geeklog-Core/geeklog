@@ -6754,7 +6754,7 @@ function COM_Tooltip($hoverover = '', $text = '', $title = '', $class = 'tooltip
     global $_CONF, $_IMAGE_TYPE;
     
     if ($hoverover == '') {
-        $hoverover = '<img  border="0" src="' . $_CONF['layout_url'] . '/images/tooltip.' . $_IMAGE_TYPE . '">';   
+        $hoverover = '<img id="tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '">';   
     }
     
     $tooltip = new Template($_CONF['path_layout'] .'tooltips/');
