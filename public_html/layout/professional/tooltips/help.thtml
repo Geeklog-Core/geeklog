@@ -1,1 +1,1 @@
-<a class="{class}" href="#">{hoverover}<span class="custom help"><img src="{layout_url}/tooltips/images/help.png" alt="{title}" height="48" width="48" /><em>{title}</em>{text}</span></a>
+<a class="{class}" href="#">{hoverover}<span class="custom help"><img class="icon" src="{layout_url}/tooltips/images/help.png" alt="{title}" height="48" width="48"{xhtml}><em>{title}</em>{text}</span></a>

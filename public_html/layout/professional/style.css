@@ -1021,33 +1021,36 @@ a.tooltip span {
     position: absolute;
 }
 a.tooltip:hover span {
-    border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; 
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
-    font-family: Calibri, Tahoma, Geneva, sans-serif;
+    border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; 
+    box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
+    font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
     position: absolute; left: 1em; top: 2em; z-index: 99;
     margin-left: 0; width: 250px;
 }
-a.tooltip:hover img {
-    border: 0; margin: -10px 0 0 -55px;
+a.tooltip:hover img.icon {
+    border: 0; margin: -15px 0 0 -51px;
     float: left; position: absolute;
 }
-img#tooltip-icon { 
+a.tooltip img#tooltip-icon { 
     border: 0;
-    margin: 0 0 0 2px;
-    position: absolute;
 }
 a.tooltip:hover em {
-    font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
-    display: block; padding: 0.2em 0 0.6em 0;
+    font-family: Candara, Tahoma, Geneva, sans, sans-serif; font-size: 1.2em; font-weight: bold;
+    display: block; padding: 0.2em 0 0.6em 0.4em;
 }
-span.classic { padding: 0.8em 1em; }
-span.custom { padding: 0.5em 0.8em 0.8em 2em; }
-* html a:hover { background: transparent; }
-span.classic {background: #FFFFAA; border: 1px solid #FFAD33; }
-span.critical { background: #FFCCAA; border: 1px solid #FF3334;	}
-span.help { background: #9FDAEE; border: 1px solid #2BB0D7;	}
-span.info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
-span.warning { background: #FFFFAA; border: 1px solid #FFAD33; }
+span.classic     { padding: 0.8em 1em; }
+span.custom      { padding: 0.5em 0.8em 0.8em 2em; }
+* html a:hover   { background: transparent; }
+span.classic     { background: #EEEEEC; border: 2px solid #555753; }
+span.critical    { background: #F5F0F0; border: 2px solid #A40000; }
+span.help        { background: #EDF0F2; border: 2px solid #204A87; }
+span.info        { background: #EDF0F2; border: 2px solid #204A87; }
+span.warning     { background: #FCF7EF; border: 2px solid #CE5C00; font-weight: normal; color: black; }
+
+span.critical em { color: #A40000; }
+span.help     em { color: #204A87; }
+span.info     em { color: #204A87; }
+span.warning  em { color: #CE5C00; }
 
 /* End of common CSS for on-hover info feature */
 

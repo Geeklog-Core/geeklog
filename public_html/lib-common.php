@@ -3972,12 +3972,12 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
     $comma = '';
     foreach ($autotags as $tag) {
         if ($done_once) { 
-            $comma = ',';
+            $comma = ', ';
         }
         if ($description[$tag] != '') {
-           $retval .= $comma . COM_Tooltip(' [' . $tag . ':]', $description[$tag], $LANG01[132],'tooltip' , 'information');
+           $retval .= $comma . COM_Tooltip('[' . $tag . ':]', $description[$tag], $LANG01[132],'information');
         } else {
-            $retval .= $comma . ' [' . $tag . ':]';
+            $retval .= $comma . '[' . $tag . ':]';
         }
         $done_once = true;
     }
@@ -6744,28 +6744,30 @@ function COM_getLanguageName()
 * @param    string  $hoverover  Text or image to display for the user to hover their mouse cursor over.
 * @param    string  $text       Text for the actual tooltip. Can include HTML.
 * @param    string  $title      Text for the tooltip title (if there is one). Can include HTML.
+* @param    string  $template   Specify a different template to use (classic, critical, help, information, warning). 
 * @param    string  $class      Specify a different tooltip class to use.
-* @param    string  $template   Specify a different template to use.
 * @return   string              HTML tooltip
 *
 */
-function COM_Tooltip($hoverover = '', $text = '', $title = '', $class = 'tooltip', $template = 'classic') 
+function COM_Tooltip($hoverover = '', $text = '', $title = '', $template = 'classic', $class = 'tooltip') 
 {
     global $_CONF, $_IMAGE_TYPE;
     
     if ($hoverover == '') {
-        $hoverover = '<img id="tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '">';   
+        $hoverover = '<img alt="?" id="tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';   
     }
     
     $tooltip = new Template($_CONF['path_layout'] .'tooltips/');
     $tooltip->set_file(array('tooltip'    => $template . '.thtml'));    
     
     $tooltip->preprocess_fn = ''; // Do not process for autotags in text since tooltip
+    
+    $tooltip->set_var('xhtml', XHTML);
+    $tooltip->set_var('layout_url', $_CONF['layout_url']);
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverover);
     $tooltip->set_var('text', $text);
     $tooltip->set_var('title', $title);
-    $tooltip->set_var('layout_url', $_CONF['layout_url']);
     
     $retval =  $tooltip->finish($tooltip->parse('output', 'tooltip'));
     return $retval;
