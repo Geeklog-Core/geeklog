@@ -177,12 +177,25 @@ function CUSTOM_templateSetVars($templatename, &$template)
     - See notes below in the custom function about the template changes
 */
 
-/* Create any new records in additional tables you may have added  */
-/* Update any fields in the core GL tables for this user as needed */
-/* Called when user is first created */
-function CUSTOM_userCreate ($uid,$bulkimport=false)
+/**
+* Called when user is first created
+* Create any new records in additional tables you may have added
+* Update any fields in the core GL tables for this user as needed
+*
+* @param    int     $uid        user id - record already exists at this point
+* @param    boolean $bulkimport true during Batch User Import (admin/user.php)
+* @return   boolean             true on success, otherwise false
+*
+*/
+function CUSTOM_userCreate($uid, $bulkimport = false)
 {
     global $_CONF, $_TABLES;
+
+    if ($bulkimport) {
+        // the sample code in this function is written for the normal signup
+        // process; the $_POST variables are not set during bulk import
+        return true;
+    }
 
     // Ensure all data is prepared correctly before inserts, quotes may need to
     // be escaped with addslashes()
