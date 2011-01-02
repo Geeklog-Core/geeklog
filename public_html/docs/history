@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-Dec ??, 2010 (1.8.0)
+Apr ??, 2011 (1.8.0)
 ------------
 
 - Handle $bulkimport flag in the CUSTOM_userCreate() sample code in
@@ -15,6 +15,15 @@ Dec ??, 2010 (1.8.0)
   (bug #0001209) [Dirk]
 - Moved handling of the [story:] and [user:] autotags to lib-story.php and
   lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
+
+
+Jan 2, 2011 (1.7.1sr1)
+-----------
+
+This release addresses the following security issue:
+
+Aung Khant of the YGN Ethical Hacker Group reported an XSS in the admin's
+configuration panel.
 
 
 Oct 31, 2010 (1.7.1)
@@ -331,6 +340,15 @@ Static Pages Plugin 1.6.2
   to the Static Page Editor (feature request #0000975) [Dirk]
 - Added a Comment Default config option (feature request #0000966) [Dirk]
 - Added support for query highlighting [Dirk]
+
+
+Jan 2, 2011 (1.6.1sr2)
+-----------
+
+This release addresses the following security issue:
+
+Aung Khant of the YGN Ethical Hacker Group reported an XSS in the admin's
+configuration panel.
 
 
 May 9, 2010 (1.6.1sr1)
