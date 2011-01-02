@@ -128,7 +128,7 @@ function configmanager_select_default_perm_cookie_timeout_helper()
 $display = '';
 
 $conf_group = array_key_exists('conf_group', $_POST)
-            ? $_POST['conf_group'] : 'Core';
+            ? COM_applyFilter($_POST['conf_group']) : 'Core';
 $config =& config::get_instance();
 
 if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
@@ -139,8 +139,9 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
             $config->unset_param($_POST['name'], $conf_group);
         }
     }
-    $display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
-                                            ?  $_POST['subgroup'] : null);
+    $subgroup = array_key_exists('subgroup', $_POST)
+              ? COM_applyFilter($_POST['subgroup']) : null;
+    $display = $config->get_ui($conf_group, $subgroup);
 } elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
@@ -151,10 +152,13 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
             PLG_configChange($conf_group, array_keys($result));
         }
     }
-    $display = $config->get_ui($conf_group, $_POST['sub_group'], $result);
+    $sub_group = array_key_exists('sub_group', $_POST)
+               ? COM_applyFilter($_POST['sub_group']) : '0';
+    $display = $config->get_ui($conf_group, $sub_group, $result);
 } else {
-    $display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
-                                            ?  $_POST['subgroup'] : null);
+    $subgroup = array_key_exists('subgroup', $_POST)
+              ? COM_applyFilter($_POST['subgroup']) : null;
+    $display = $config->get_ui($conf_group, $subgroup);
 }
 
 COM_output($display);
