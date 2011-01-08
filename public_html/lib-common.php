@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -7272,6 +7272,78 @@ function COM_getTextContent($text)
     $text = preg_replace('/\s\s+/', ' ', $text);
 
     return trim($text);
+}
+
+
+/**
+* Common function used to convert a Geeklog version number into
+* a version number that can be parsed by PHP's "version_compare()"
+*
+* @param    string  $version        Geeklog version number
+* @return   string                  Generic version number that can be correctly handled by PHP
+*
+*/
+function COM_versionConvert($version)
+{
+    $version = strtolower($version);
+
+    // Check if it's a bugfix release first
+    if (strpos($version, '-') !== false) {
+        // If it is, there is an extra number in the version
+        $version = str_replace('-', '.', $version);
+        $bugfix = '';
+    } else {
+        // Otherwise so we add a zero to compensate
+        $bugfix = '.0';
+    }
+
+    // We change the non-numerical part in the "versions" that were passed into the function
+    // beta                      -> 1
+    // rc                        -> 2
+    // hg                        -> ignore
+    // stable (e.g: no letters)  -> 3
+    // sr                        -> 4
+    if (strpos($version, 'b') !== false) {
+        $version = str_replace('b', $bugfix . '.1.', $version);
+    } else if (strpos($version, 'rc') !== false) {
+        $version = str_replace('rc', $bugfix . '.2.', $version);
+    } else if (strpos($version, 'sr') !== false) {
+        $version = str_replace('sr', $bugfix . '.4.', $version);
+    } else { // must be a stable version then...
+        // we always ignore the 'hg' bit
+        $version = str_replace('hg', '', $version);
+        $version .= $bugfix . '.3.0';
+    }
+
+    return $version;
+}
+
+/**
+* Common function used to compare two Geeklog version numbers
+*
+* @param    string  $version1       First version number to be compared
+* @param    string  $version2       Second version number to be sompared
+* @param    string  $operator       optional string to define how the two versions are to be compared
+*                                   valid operators are: <, lt, <=, le, >, gt, >=, ge, ==, =, eq, !=, <>, ne
+* @return   mixed                   By default, returns -1 if the first version is lower than the second,
+*                                   0 if they are equal, and 1 if the second is lower.
+*                                   When using the optional operator argument, the function will return TRUE
+*                                   if the relationship is the one specified by the operator, FALSE otherwise. 
+*/
+function COM_versionCompare($version1, $version2, $operator = '')
+{
+    // Convert Geeklog version numbers to a ones that can be parsed
+    // by PHP's "version_compare"
+    $version1 = COM_versionConvert($version1);
+    $version2 = COM_versionConvert($version2);
+
+    // All that there should be left at this point is numbers and dots,
+    // so PHP's built-in function can now take over.
+    if (empty($operator)) {
+        return version_compare($version1, $version2);
+    } else {
+        return version_compare($version1, $version2, $operator);
+    }
 }
 
 /**
