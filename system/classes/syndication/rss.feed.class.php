@@ -440,10 +440,19 @@
       {
         $this->_inItem = false;
         $this->articles[] = $this->_currentItem;
-      } elseif( $name == 'GUID' && $this->_permaLink ) {
-        /* if we have a guid that is ALSO a permalink, override link with it */
-        $this->_currentItem['link'] = $this->_currentItem['guid'];
-        $this->_linkGUID = true;
+      } elseif ($name == 'GUID') {
+        if ($this->_permaLink) {
+          // if we have a guid that is ALSO a permalink, override link with it
+          $this->_currentItem['link'] = $this->_currentItem['guid'];
+          $this->_linkGUID = true;
+        } elseif (empty($this->_currentItem['link']) &&
+                  substr($this->_currentItem['guid'], 0, 4) == 'http') {
+          /* this is NOT according to spec: if we don't have a link but the
+           * guid, despite being non-permanent, starts with http, use it instead
+           */
+          $this->_currentItem['link'] = $this->_currentItem['guid'];
+          $this->_linkGUID = true;
+        }
       }
       $this->_currentTag = '';
     }
