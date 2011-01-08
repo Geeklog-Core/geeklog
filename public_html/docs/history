@@ -3,6 +3,13 @@ Geeklog History/Changes:
 Apr ??, 2011 (1.8.0)
 ------------
 
+- Introduced COM_versionCompare() to compare Geeklog version numbers, since
+  they can't be compared using the PHP version_compare() function (feature
+  request #0000866, patch provided by Rouslan Placella)
+- When importing RSS feeds, accept a non-permanent guid as a link if there is
+  no dedicated link element, as long as the guid looks like a URL [Dirk]
+- Added a noindex robots meta tag to printable story pages so they aren't
+  indexed by search engines [Tom]
 - Handle $bulkimport flag in the CUSTOM_userCreate() sample code in
   lib-custom.php (bug #0001208) [Dirk]
   If you are using your own CUSTOM_userCreate(), please check that you handle
@@ -15,6 +22,11 @@ Apr ??, 2011 (1.8.0)
   (bug #0001209) [Dirk]
 - Moved handling of the [story:] and [user:] autotags to lib-story.php and
   lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
+
+Static Pages Plugin
+-------------------
+- Added a noindex robots meta tag to printable pages so they aren't indexed by
+  search engines [Tom]
 
 
 Jan 2, 2011 (1.7.1sr1)
