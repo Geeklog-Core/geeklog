@@ -5493,16 +5493,19 @@ function COM_getRate( $occurrences, $timespan )
 }
 
 /**
-* Check for Tag permissions.
+* Check for Tag usuage permissions.
 *
-* Creates part of an SQL expression that can be used to request items with the
-* standard set of Geeklog permissions.
+* This function takes the usuage access info of the autotag passed to it
+* and let's us know if the user has access to use the autotag.
 *
-* @param        string      $type     part of the SQL expr. e.g. 'WHERE', 'AND'
-* @param        int         $u_id     user id or 0 = current user
-* @param        int         $access   access to check for (2=read, 3=r&write)
-* @param        string      $table    table name if ambiguous (e.g. in JOINs)
-* @return       string      SQL expression string (may be empty)
+* @param        int     $owner_id       ID of the owner of object
+* @param        int     $group_id       ID of group object belongs to
+* @param        int     $perm_owner     Permissions the owner has
+* @param        int     $perm_group     Permissions the gorup has
+* @param        int     $perm_members   Permissions logged in members have
+* @param        int     $perm_anon      Permissions anonymous users have
+* @param        int     $uid            User ID to get information for. If empty current user.
+* @return       int 	returns true if user has access
 *
 */
 function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $u_id = 0)
@@ -5512,8 +5515,8 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
     $retval = false;
     $access = 2;
     
-    if( $u_id <= 0) {
-        if( COM_isAnonUser() ) {
+    if ($u_id <= 0) {
+        if (COM_isAnonUser()) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
@@ -5523,30 +5526,30 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
     }
 
     $UserGroups = array();
-    if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] )) {
-        if( empty( $_GROUPS )) {
-            $_GROUPS = SEC_getUserGroups( $uid );
+    if ((empty($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $UserGroups = $_GROUPS;
     } else {
-        $UserGroups = SEC_getUserGroups( $uid );
+        $UserGroups = SEC_getUserGroups($uid);
     }
 
-    if( empty( $UserGroups )) {
+    if (empty($UserGroups)) {
         // this shouldn't really happen, but if it does, handle user
         // like an anonymous user
         $uid = 1;
     }
 
-    if( SEC_inGroup( 'Root', $uid )) {
+    if (SEC_inGroup('Root', $uid)) {
         return true;
     } else {
-        if( $uid > 1 ) {
-            if (($owner_id == $uid) AND ($perm_owner >= $access)) { 
+        if ($uid > 1) {
+            if (($owner_id == $uid) && ($perm_owner >= $access)) { 
                 return true;
             }
     
-            if ((in_array($group_id, $UserGroups)) AND ($perm_group >= $access)) { 
+            if ((in_array($group_id, $UserGroups)) && ($perm_group >= $access)) { 
                 return true;
             }            
                  
