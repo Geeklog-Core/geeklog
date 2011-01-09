@@ -381,7 +381,7 @@ function plugin_moderationapprove_calendar($id)
     global $_CA_CONF, $_GROUPS, $_TABLES;
 
     // The eventsubmission table only keeps track of the submitter's uid,
-    // but not of grous and permissions. So set those to sensible defaults.
+    // but not of groups and permissions. So set those to sensible defaults.
 
     if (isset($_GROUPS['Calendar Admin'])) {
         $group_id = $_GROUPS['Calendar Admin'];
@@ -1162,15 +1162,22 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['Calendar Admin'];
-        $owner_id = 2; // Admin
-        if (COM_getPermTag($owner_id, $group_id, $_CA_CONF['autotag_permissions_event'][0], $_CA_CONF['autotag_permissions_event'][1], $_CA_CONF['autotag_permissions_event'][2], $_CA_CONF['autotag_permissions_event'][3]) == $flag) {
-            $tagname[] = 'event';
+        $tagnames = array();
+
+        if (isset($_GROUPS['Calendar Admin'])) {
+            $group_id = $_GROUPS['Calendar Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Calendar Admin'");
         }
-        
-        if (is_array($tagname)) {
-            return $tagname;
+        $owner_id = 2; // Admin
+
+        if (COM_getPermTag($owner_id, $group_id, $_CA_CONF['autotag_permissions_event'][0], $_CA_CONF['autotag_permissions_event'][1], $_CA_CONF['autotag_permissions_event'][2], $_CA_CONF['autotag_permissions_event'][3]) == $flag) {
+            $tagnames[] = 'event';
+        }
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (
