@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -1515,8 +1515,11 @@ function PLG_collectTags($type = 'tagname')
         return array();
     }
 
-    // Determine which Core Modules and Plugins support AutoLinks
-    //                        'tag'   => 'module'
+    // ensure that we're picking up the Core autotags
+
+    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-user.php';
+
     $all_plugins = array_merge($_PLUGINS, array('story', 'user'));
     
     $autolinkModules = array();
