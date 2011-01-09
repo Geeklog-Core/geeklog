@@ -1170,7 +1170,7 @@ function plugin_autotags_calendar ($op, $content = '', $autotag = '')
             $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                                    "grp_name = 'Calendar Admin'");
         }
-        $owner_id = 2; // Admin
+        $owner_id = SEC_getDefaultRootUser();
 
         if (COM_getPermTag($owner_id, $group_id, $_CA_CONF['autotag_permissions_event'][0], $_CA_CONF['autotag_permissions_event'][1], $_CA_CONF['autotag_permissions_event'][2], $_CA_CONF['autotag_permissions_event'][3]) == $flag) {
             $tagnames[] = 'event';

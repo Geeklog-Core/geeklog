@@ -1457,21 +1457,28 @@ function plugin_autotags_polls($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['Polls Admin'];
-        $owner_id = 2; // Admin
+        $tagnames = array();
+
+        if (isset($_GROUPS['Polls Admin'])) {
+            $group_id = $_GROUPS['Polls Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Polls Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();     
+
         if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll_vote'][0], $_PO_CONF['autotag_permissions_poll_vote'][1], $_PO_CONF['autotag_permissions_poll_vote'][2], $_PO_CONF['autotag_permissions_poll_vote'][3]) == $flag) {
-            $tagname[] = 'poll_vote';
+            $tagnames[] = 'poll_vote';
         }
         if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll_result'][0], $_PO_CONF['autotag_permissions_poll_result'][1], $_PO_CONF['autotag_permissions_poll_result'][2], $_PO_CONF['autotag_permissions_poll_result'][3]) == $flag) {
-            $tagname[] = 'poll_result';
+            $tagnames[] = 'poll_result';
         }
         if (COM_getPermTag($owner_id, $group_id, $_PO_CONF['autotag_permissions_poll'][0], $_PO_CONF['autotag_permissions_poll'][1], $_PO_CONF['autotag_permissions_poll'][2], $_PO_CONF['autotag_permissions_poll'][3]) == $flag) {
-            $tagname[] = 'poll';
+            $tagnames[] = 'poll';
         }
         
-        if (is_array($tagname)) {
-            return $tagname;
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (

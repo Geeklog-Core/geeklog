@@ -1785,4 +1785,27 @@ function SEC_collectRemoteOAuthModules()
     return $modules;
 }
 
+/**
+* Returns the default Root user id
+*
+* @return   int   The id of the default Root user
+*
+*/
+function SEC_getDefaultRootUser()
+{
+    global $_TABLES;
+     
+    $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
+                           "grp_name = 'Root'");
+    
+    $sql = "SELECT u.uid FROM {$_TABLES['users']} u,{$_TABLES['group_assignments']} ga  
+            WHERE u.uid > 1 AND u.uid = ga.ug_uid AND (ga.ug_main_grp_id = $rootgrp)
+            GROUP BY u.uid ORDER BY u.uid ASC LIMIT 1";
+    
+    $result = DB_query ($sql);
+    $A = DB_fetchArray ($result);      
+    
+    return $A['uid'];
+}
+
 ?>

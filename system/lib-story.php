@@ -1145,15 +1145,22 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['Story Admin'];
-        $owner_id = 2; // Admin
+        $tagnames = array();
+
+        if (isset($_GROUPS['Story Admin'])) {
+            $group_id = $_GROUPS['Story Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Story Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+
         if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_story'][0], $_CONF['autotag_permissions_story'][1], $_CONF['autotag_permissions_story'][2], $_CONF['autotag_permissions_story'][3]) == $flag) {
-            $tagname[] = 'story';
+            $tagnames[] = 'story';
         }
         
-        if (is_array($tagname)) {
-            return $tagname;
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (

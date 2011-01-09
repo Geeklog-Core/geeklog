@@ -1518,6 +1518,8 @@ function PLG_collectTags($type = 'tagname')
     // Determine which Core Modules and Plugins support AutoLinks
     //                        'tag'   => 'module'
     $all_plugins = array_merge($_PLUGINS, array('story', 'user'));
+    
+    $autolinkModules = array();
 
     foreach ($all_plugins as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;

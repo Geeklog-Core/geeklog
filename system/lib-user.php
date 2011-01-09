@@ -1131,15 +1131,22 @@ function plugin_autotags_user($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['User Admin'];
-        $owner_id = 2; // Admin
+        $tagnames = array();
+
+        if (isset($_GROUPS['User Admin'])) {
+            $group_id = $_GROUPS['User Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'User Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();   
+
         if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_user'][0], $_CONF['autotag_permissions_user'][1], $_CONF['autotag_permissions_user'][2], $_CONF['autotag_permissions_user'][3]) == $flag) {
-            $tagname[] = 'user';
+            $tagnames[] = 'user';
         }
         
-        if (is_array($tagname)) {
-            return $tagname;
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (

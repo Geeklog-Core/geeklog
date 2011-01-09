@@ -192,15 +192,22 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['Links Admin'];
-        $owner_id = 2; // Admin
+        $tagnames = array();
+
+        if (isset($_GROUPS['Links Admin'])) {
+            $group_id = $_GROUPS['Links Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Links Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+
         if (COM_getPermTag($owner_id, $group_id, $_LI_CONF['autotag_permissions_link'][0], $_LI_CONF['autotag_permissions_link'][1], $_LI_CONF['autotag_permissions_link'][2], $_LI_CONF['autotag_permissions_link'][3]) == $flag) {
-            $tagname[] = 'link';
+            $tagnames[] = 'link';
         }
         
-        if (is_array($tagname)) {
-            return $tagname;
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (

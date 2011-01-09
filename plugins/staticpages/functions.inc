@@ -1144,18 +1144,25 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
         } else {
             $flag = false;
         }
-        
-        $group_id = $_GROUPS['Static Page Admin'];
-        $owner_id = 2; // Admin
+        $tagnames = array();
+
+        if (isset($_GROUPS['Static Page Admin'])) {
+            $group_id = $_GROUPS['Static Page Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                                   "grp_name = 'Static Page Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();          
+
         if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage_content'][0], $_SP_CONF['autotag_permissions_staticpage_content'][1], $_SP_CONF['autotag_permissions_staticpage_content'][2], $_SP_CONF['autotag_permissions_staticpage_content'][3]) == $flag) {
-            $tagname[] = 'staticpage_content';
+            $tagnames[] = 'staticpage_content';
         }
         if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage'][0], $_SP_CONF['autotag_permissions_staticpage'][1], $_SP_CONF['autotag_permissions_staticpage'][2], $_SP_CONF['autotag_permissions_staticpage'][3]) == $flag) {
-            $tagname[] = 'staticpage';
+            $tagnames[] = 'staticpage';
         }
         
-        if (is_array($tagname)) {
-            return $tagname;
+        if (count($tagnames) > 0) {
+            return $tagnames;
         }
     } elseif ($op == 'description') {
         return array (
