@@ -1,1 +1,1 @@
-<a class="{class}" href="#">{hoverover}<span class="classic">{text}</span></a>
+<a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="classic">{text}</span></a>

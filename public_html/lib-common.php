@@ -3975,7 +3975,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
             $comma = ', ';
         }
         if ($description[$tag] != '') {
-           $retval .= $comma . COM_Tooltip('[' . $tag . ':]', $description[$tag], $LANG01[132],'information');
+           $retval .= $comma . COM_Tooltip('[' . $tag . ':]', $description[$tag], '', $LANG01[132],'information');
         } else {
             $retval .= $comma . '[' . $tag . ':]';
         }
@@ -5545,7 +5545,7 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
         return true;
     } else {
         if ($uid > 1) {
-            if (($owner_id == $uid) && ($perm_owner >= $access)) { 
+            if (($owner_id == $uid) && ($perm_owner >= $access)) {
                 return true;
             }
     
@@ -5557,12 +5557,12 @@ function COM_getPermTag($owner_id, $group_id, $perm_owner, $perm_group, $perm_me
                 return true;
             }
         } else {
-            if ($perm_anon >= $access) { 
+            if ($perm_anon >= $access) {
                 return true;
             }
         }
     }
-    
+
     return $retval;
 }
 
@@ -6746,13 +6746,14 @@ function COM_getLanguageName()
 *
 * @param    string  $hoverover  Text or image to display for the user to hover their mouse cursor over.
 * @param    string  $text       Text for the actual tooltip. Can include HTML.
+* @param    string  $link       Link for the tooltip. If passed, then the hoverover text becomes a link.
 * @param    string  $title      Text for the tooltip title (if there is one). Can include HTML.
 * @param    string  $template   Specify a different template to use (classic, critical, help, information, warning). 
 * @param    string  $class      Specify a different tooltip class to use.
 * @return   string              HTML tooltip
 *
 */
-function COM_Tooltip($hoverover = '', $text = '', $title = '', $template = 'classic', $class = 'tooltip') 
+function COM_Tooltip($hoverover = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'tooltip') 
 {
     global $_CONF, $_IMAGE_TYPE;
     
@@ -6771,6 +6772,14 @@ function COM_Tooltip($hoverover = '', $text = '', $title = '', $template = 'clas
     $tooltip->set_var('hoverover', $hoverover);
     $tooltip->set_var('text', $text);
     $tooltip->set_var('title', $title);
+    if ($link == '') {
+        $link = '#';
+        $cursor = 'help';
+    } else {
+        $cursor = 'pointer';
+    }
+    $tooltip->set_var('link', $link);
+    $tooltip->set_var('cursor', $cursor);
     
     $retval =  $tooltip->finish($tooltip->parse('output', 'tooltip'));
     return $retval;

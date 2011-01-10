@@ -1013,7 +1013,7 @@ a.pluginButton:hover {
 /* Common CSS for on-hover tooltip feature */
 a.tooltip {
     border-bottom: 1px dotted #000000; color: #000000; outline: none;
-    cursor: help; text-decoration: none;
+    text-decoration: none;
     position: relative;
 }
 a.tooltip span {
