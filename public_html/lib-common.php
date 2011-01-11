@@ -7298,17 +7298,40 @@ function COM_getTextContent($text)
 function COM_versionConvert($version)
 {
     $version = strtolower($version);
-
     // Check if it's a bugfix release first
-    if (strpos($version, '-') !== false) {
-        // If it is, there is an extra number in the version
-        $version = str_replace('-', '.', $version);
+    $dash = strpos($version, '-');
+    if ($dash !== false) {
+        // Sometimes the bugfix part is not placed in the version number
+        // according to the documentation and this needs to be accounted for
+        $rearrange = true; // Assume incorrect formatting
+        $b  = strpos($version, 'b');
+        $rc = strpos($version, 'rc');
+        $sr = strpos($version, 'sr');
+        if ($b && $b<$dash) {
+            $pos = $b;
+        } else if ($rc && $rc<$dash) {
+            $pos = $rc;
+        } else if ($sr && $sr<$dash) {
+            $pos = $sr;
+        } else {
+            // Version is correctly formatted
+            $rearrange = false;
+        }
+        // Rearrange the version number, if needed
+        if ($rearrange) {
+            $ver = substr($version, 0, $pos);
+            $cod = substr($version, $pos, $dash-$pos);
+            $bug = substr($version, $dash+1);
+            $version = $ver . '.' . $bug . $cod;
+        } else { // This bugfix release version is correctly formatted
+            // So there is an extra number in the version
+            $version = str_replace('-', '.', $version);
+        }
         $bugfix = '';
     } else {
-        // Otherwise so we add a zero to compensate
+        // Not a bugfix release, so we add a zero to compensate for the extra number
         $bugfix = '.0';
     }
-
     // We change the non-numerical part in the "versions" that were passed into the function
     // beta                      -> 1
     // rc                        -> 2
@@ -7326,7 +7349,6 @@ function COM_versionConvert($version)
         $version = str_replace('hg', '', $version);
         $version .= $bugfix . '.3.0';
     }
-
     return $version;
 }
 
@@ -7348,7 +7370,6 @@ function COM_versionCompare($version1, $version2, $operator = '')
     // by PHP's "version_compare"
     $version1 = COM_versionConvert($version1);
     $version2 = COM_versionConvert($version2);
-
     // All that there should be left at this point is numbers and dots,
     // so PHP's built-in function can now take over.
     if (empty($operator)) {
