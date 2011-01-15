@@ -171,7 +171,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Link Description',
     10 => 'You need to provide a link Title, URL and Description.',
     11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "Edit categories" above.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Link Category',
     16 => 'Access Denied',
     17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">go back to the link administration screen</a>.",
