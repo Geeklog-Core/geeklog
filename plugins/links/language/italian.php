@@ -5,7 +5,7 @@
 #
 # This is the Italian language file for the Geeklog Links Plugin
 #
-# Copyright (C) 2010 Rouslan Placella
+# Copyright (C) 2010 Rouslan Placella rouslan {at} placella {dot} com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 ###############################################################################
 
 /**
- * This is the Italian language page for the Geeklog links Plug-in!
+ * This is the Italian language page for the Geeklog Links Plug-in!
  *
  * @package Links
  * @subpackage Language

@@ -106,7 +106,7 @@ $LANG25 = array(
     36 => 'questions supplémentaires.',
     37 => 'Cacher les résultats pendant que le sondage est ouvert',
     38 => 'Pendant que le sondage est ouvert, seuls le propriétaire et l\'administrateur root peuvent voir les résultats',
-    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    39 => 'The topic will only be displayed if there is more than 1 question.',
     40 => 'Voir toutes les réponses à ce sondage'
 );
 

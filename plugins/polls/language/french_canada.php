@@ -106,7 +106,7 @@ $LANG25 = array(
     36 => 'more questions.',
     37 => 'Hide results while poll is open',
     38 => 'While the poll is open, only the owner &amp; root can see the results',
-    39 => 'The topic will be only displayed if there are more than 1 questions.',
+    39 => 'The topic will be only displayed if there is more than 1 question.',
     40 => 'See all answers to this poll'
 );
 

@@ -2,7 +2,7 @@
 
 ###############################################################################
 # italian.php
-# This is the Italian language page for the Geeklog Static Page Plug-in!
+# This is the Italian language page for the Geeklog Static Pages Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs tony@tonybibbs.com
 # Copyright (C) 2005 magomarcelo magomarcelo@gmail.com magomarcelo.blogspot.com
@@ -23,6 +23,18 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+
+/**
+ * This is the Italian language page for the Geeklog Static Pages Plug-in!
+ *
+ * @package Static Pages
+ * @subpackage Language
+ * @filesource
+ * @version 1.2
+ * @copyright Copyright &copy; 2010
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 global $LANG32;
 
