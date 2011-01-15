@@ -23,33 +23,15 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog links Plug-in!
- *
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 1.0
- * @since GL 1.7.1
- * @copyright Copyright &copy; 2010
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:    $LANG - variable name
-#                 XX - file id number
-#                 YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-/**
-* the link plugin's lang array
-*
-* @global array $LANG_LINKS
-*/
 $LANG_LINKS = array(
     10 => 'Inserimenti',
     14 => 'Collegamenti',
@@ -67,46 +49,35 @@ $LANG_LINKS = array(
     124 => 'Invia',
     125 => 'Categorie',
     126 => 'Sei qui:',
-    'root' => 'Categoria Principale' // title used for top level category
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
+    'root' => 'Categoria Principale'
 );
 
 ###############################################################################
 # for stats
-/**
-* the link plugin's lang stats array
-*
-* @global array $LANG_LINKS_STATS
-*/
+
 $LANG_LINKS_STATS = array(
     'links' => 'Collegamenti (Visite) nel sistema',
     'stats_headline' => 'Top 10 Collegamenti',
     'stats_page_title' => 'Collegamenti',
     'stats_hits' => 'Visite',
-    'stats_no_hits' => 'Sembra che non ci siano collegamenti in questo sito o che nessuno ne ha ancora utilizzato uno.',
+    'stats_no_hits' => 'Sembra che non ci siano collegamenti in questo sito o che nessuno ne ha ancora utilizzato uno.'
 );
 
 ###############################################################################
 # for the search
-/**
-* the link plugin's lang search array
-*
-* @global array $LANG_LINKS_SEARCH
-*/
+
 $LANG_LINKS_SEARCH = array(
- 'results' => 'Risultati (Collegamenti)',
- 'title' => 'Titolo',
- 'date' => 'Data Dell\'Inserimento',
- 'author' => 'Inserito Da',
- 'hits' => 'Visite'
+    'results' => 'Risultati (Collegamenti)',
+    'title' => 'Titolo',
+    'date' => 'Data Dell\'Inserimento',
+    'author' => 'Inserito Da',
+    'hits' => 'Visite'
 );
 
 ###############################################################################
 # for the submission form
-/**
-* the link plugin's lang submit form array
-*
-* @global array $LANG_LINKS_SUBMIT
-*/
+
 $LANG_LINKS_SUBMIT = array(
     1 => 'Inserisci un Collegamento',
     2 => 'Collegamento',
@@ -131,7 +102,6 @@ $PLG_links_MESSAGE4 = "Grazie per l\'invio del collegamento a {$_CONF['site_name
 $PLG_links_MESSAGE5 = 'Non hai le necessarie autorizzazioni per visualizzare questa categoria.';
 $PLG_links_MESSAGE6 = 'Non hai le necessarie autorizzazioni per modificare questa categoria.';
 $PLG_links_MESSAGE7 = 'Specifica il nome per la Categoria ed una Descrizione.';
-
 $PLG_links_MESSAGE10 = 'La tua categoria é stata salvata.';
 $PLG_links_MESSAGE11 = 'Gli id "site" or "user" sono riservati per uso interno. Scegli un altro id.';
 $PLG_links_MESSAGE12 = 'Stai cercando di spostare una categoria nella sua stessa categoria dipendente. Questo non é permesso. Prego sposta le categorie dipendenti ad un livello superiore e riprova.';
@@ -146,12 +116,8 @@ $PLG_links_MESSAGE3001 = 'L\'aggiornamento di plugin non é supportato.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
-# admin/link.php
-/**
-* the link plugin's lang admin array
-*
-* @global array $LANG_LINKS_ADMIN
-*/
+# admin/plugins/links/index.php
+
 $LANG_LINKS_ADMIN = array(
     1 => 'Editor Collegamenti',
     2 => 'ID del Collegamento',
@@ -182,7 +148,7 @@ $LANG_LINKS_ADMIN = array(
     31 => 'Descrizione',
     32 => 'ID della Categoria',
     33 => 'Argomento',
-    34 => 'Parent', //?
+    34 => 'Parent',
     35 => 'Tutti',
     40 => 'Modifica questa categoria',
     41 => 'Crea categoria dipendente',
@@ -204,50 +170,50 @@ $LANG_LINKS_ADMIN = array(
     61 => 'Collegamenti Nella Categoria'
 );
 
-$LANG_LINKS_STATUS = array(
-    100 => "Continua",
-    101 => "Commutazione Protocolli",
-    200 => "OK",
-    201 => "Creato",
-    202 => "Accettato",
-    203 => "Informazione Non Autorevole",
-    204 => "Nessun Contenuto",
-    205 => "Reimposta Contenuto",
-    206 => "Contenuto Parziale",
-    300 => "Multiple Choices",//?
-    301 => "Spostato Permanentemente",
-    302 => "Oggetto Spostato",
-    303 => "See Other",//?
-    304 => "Non Modificato",
-    305 => "Utilizza un Proxy",
-    307 => "Reindirizzamento Temporaneo",
-    400 => "Richiesta Errata",
-    401 => "Accesso Negato",
-    402 => "Pagamento Necessario",
-    403 => "Operazione Non Consentita",
-    404 => "Oggetto Non Trovato",
-    405 => "Metodo Non Consentito",
-    406 => "Non Consentito",
-    407 => "Autenticazione Proxy Necessaria",
-    408 => "Richiesta Scaduta",
-    409 => "Conflitto",
-    410 => "Gone",//?
-    411 => "Lunghezza richiesta",
-    412 => "Condizione preliminare non riuscita",
-    413 => "Entitá della richiesta troppo grande",
-    414 => "L'indirizzo della richiest é troppo lungo",
-    415 => "Unsupported Media Type",
-    416 => "L'Intervallo Richiesto non é valido",
-    417 => "Expectation Failed",//?
-    500 => "Errore interno del server",
-    501 => "Valori di intestazione specificano una configurazione non è implementata",
-    502 => "Gateway non valido",
-    503 => "Servizio non disponibile",
-    504 => "Gateway Timeout",
-    505 => "Versione HTTP Non Supportata",
-    999 => "Connessione Scaduta"
-);
 
+$LANG_LINKS_STATUS = array(
+    100 => 'Continua',
+    101 => 'Commutazione Protocolli',
+    200 => 'OK',
+    201 => 'Creato',
+    202 => 'Accettato',
+    203 => 'Informazione Non Autorevole',
+    204 => 'Nessun Contenuto',
+    205 => 'Reimposta Contenuto',
+    206 => 'Contenuto Parziale',
+    300 => 'Multiple Choices',
+    301 => 'Spostato Permanentemente',
+    302 => 'Oggetto Spostato',
+    303 => 'See Other',
+    304 => 'Non Modificato',
+    305 => 'Utilizza un Proxy',
+    307 => 'Reindirizzamento Temporaneo',
+    400 => 'Richiesta Errata',
+    401 => 'Accesso Negato',
+    402 => 'Pagamento Necessario',
+    403 => 'Operazione Non Consentita',
+    404 => 'Oggetto Non Trovato',
+    405 => 'Metodo Non Consentito',
+    406 => 'Non Consentito',
+    407 => 'Autenticazione Proxy Necessaria',
+    408 => 'Richiesta Scaduta',
+    409 => 'Conflitto',
+    410 => 'Gone',
+    411 => 'Lunghezza richiesta',
+    412 => 'Condizione preliminare non riuscita',
+    413 => 'Entitá della richiesta troppo grande',
+    414 => 'L\'indirizzo della richiest é troppo lungo',
+    415 => 'Unsupported Media Type',
+    416 => 'L\'Intervallo Richiesto non é valido',
+    417 => 'Expectation Failed',
+    500 => 'Errore interno del server',
+    501 => 'Valori di intestazione specificano una configurazione non è implementata',
+    502 => 'Gateway non valido',
+    503 => 'Servizio non disponibile',
+    504 => 'Gateway Timeout',
+    505 => 'Versione HTTP Non Supportata',
+    999 => 'Connessione Scaduta'
+);
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
@@ -271,7 +237,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'Aprire Collegamenti in una Nuova Finestra?',
     'root' => 'ID della Categoria Principale',
     'default_permissions' => 'Permessi Predefiniti per i Collegamenti',
-    'category_permissions' => 'Permessi Predefiniti per le Categorie'
+    'category_permissions' => 'Permessi Predefiniti per le Categorie',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -282,15 +249,17 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Impostazioni per la Lista dei Collegamenti Pubblici',
     'fs_admin' => 'Impostazioni Amministrative',
     'fs_permissions' => 'Impostazioni dei Permessi',
-    'fs_cpermissions' => 'Impostazioni delle Categorie'
+    'fs_cpermissions' => 'Impostazioni delle Categorie',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
-// Note: entry 9 is same as in $LANG_configselects['staticpages']
 $LANG_configselects['links'] = array(
     0 => array('Vero' => 1, 'Falso' => 0),
     1 => array('Vero' => true, 'Falso' => false),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
+
 ?>

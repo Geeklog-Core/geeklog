@@ -53,6 +53,7 @@ $LANG_LINKS = array(
     124 => 'Mine',
     125 => 'Kategooriad',
     126 => 'Oled siin:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'Pea'
 );
 
@@ -240,7 +241,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'Ava välised lingid uues aknas?',
     'root' => 'Peakategooria ID',
     'default_permissions' => 'Linkide vaikimisi õigused',
-    'category_permissions' => 'Kategooria vaikimisi õigused'
+    'category_permissions' => 'Kategooria vaikimisi õigused',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -251,7 +253,8 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Avalike linkide loetelu häälestused',
     'fs_admin' => 'Linkide Admin häälestused',
     'fs_permissions' => 'Vaikimisi õigused',
-    'fs_cpermissions' => 'Kategooria õigused'
+    'fs_cpermissions' => 'Kategooria õigused',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -259,7 +262,8 @@ $LANG_configselects['links'] = array(
     0 => array('Jah' => 1, 'Ei' => 0),
     1 => array('Jah' => true, 'Ei' => false),
     9 => array('Suuna edasi lingitud lehele' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita Admini lehte' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

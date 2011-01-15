@@ -171,7 +171,12 @@ $LANG01 = array(
     127 => 'Püsilink',
     128 => 'Logi sisse OpenID abiga:',
     129 => 'Seadistus',
-    130 => 'Veebiteenused'
+    130 => 'Veebiteenused',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -387,7 +392,8 @@ $LANG04 = array(
     162 => 'Ei vähendata',
     163 => 'Taasautoriseerimine ebaõnnestus',
     164 => 'Ületasid lubatud taasautoriseerimiste arvu. Tegevus on katkestatud ja viimati tehtud muutused läksid kahjuks kaduma.',
-    165 => 'Kasuta keerukamat toimetajat'
+    165 => 'Kasuta keerukamat toimetajat',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -836,7 +842,8 @@ $LANG24 = array(
     88 => 'Wiki-laadne formaat',
     89 => 'Meta kirjeldus',
     90 => 'Meta märksõnad',
-    91 => 'Sa võid alati klõpsata "Eelvaade", et aegumisaega pikendada.'
+    91 => 'Sa võid alati klõpsata "Eelvaade", et aegumisaega pikendada.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -968,7 +975,8 @@ $LANG28 = array(
     87 => 'Meeldetuletused',
     88 => 'Vaikegrupp',
     89 => 'Märgi, et teha sellest uute kasutajate jaoks vaikegrupp',
-    90 => 'Rakenda muutunud "Vaikegrupp" olemasolevatele kasutajakontodele'
+    90 => 'Rakenda muutunud "Vaikegrupp" olemasolevatele kasutajakontodele',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1251,6 +1259,11 @@ $MESSAGE = array(
     99 => 'Plugin on juba olemas.',
     100 => 'Laetud plugina fail pole GZip või Zip formaadis tihendatud arhiiv.',
     101 => 'Pole ühtegi rubriiki, millele sul oleks ligipääsu. Sul peab olema vähemalt üks rubriik, et saaksid lugusid sisestada.',
+    110 => 'Can not get URL for authentication.',
+    111 => 'Authentication error.',
+    112 => 'Certification has been canceled.',
+    113 => 'Your account has been created successfully. {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => 'Kõik väljad ei läbinud kontrolli',
     401 => 'Palun sisesta täisnimi'
 );
@@ -1734,6 +1747,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'Näita teenusenime',
     'custom_registration' => 'Luba kohandatud registreerimine',
     'user_login_method' => 'Kasutaja sisselogimise meetod',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'Spam-X tegevused',
     'sort_admin' => 'Sordi lingid',
     'language' => 'Keel',
@@ -1793,6 +1815,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'Avalehe link peidetud?',
     'whosonline_threshold' => 'Sessiooni pikkus',
     'whosonline_anonymous' => 'Anonüümsed ei näe nimesid?',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'Päevased kokkuvõtted lubatud?',
     'emailstorieslength' => 'Lugude pikkus',
     'emailstoriesperdefault' => 'Lubatud uute kasutajate jaoks?',
@@ -1909,7 +1932,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'Näita lehe limiiti?',
     'search_separator' => 'Grupi eraldaja',
     'search_def_keytype' => 'Vaikimisi otsimisviis',
-    'search_def_sort' => 'vaikimisi sorteerimisjärjestus'
+    'search_def_sort' => 'vaikimisi sorteerimisjärjestus',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1964,7 +1989,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'Loo vaikimisi õigused',
     'fs_perm_topic' => 'Rubriigi vaikimisi õigused',
     'fs_perm_block' => 'Ploki vaikimisi õigused',
-    'fs_webservices' => 'Veebiteenused'
+    'fs_webservices' => 'Veebiteenused',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -1995,7 +2021,8 @@ $LANG_configselects['Core'] = array(
     24 => array('Avlda' => 'contribute', 'Avaleht' => 'home', 'Täpsem otsing' => 'search', 'Artiklid' => 'directory', 'Minu konto' => 'prefs', 'Pluginate kanded' => 'plugins', 'Kohandatud kanded' => 'custom', 'Lehe statistika' => 'stats'),
     25 => array('Uued lood' => 'story', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

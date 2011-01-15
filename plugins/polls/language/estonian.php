@@ -62,6 +62,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'Käivita küsitlus',
     'no_new_polls' => 'No new polls',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -149,7 +152,8 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'Küsitluste üldised häälestused',
     'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'Vaikimisi õigused'
+    'fs_permissions' => 'Vaikimisi õigused',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -159,7 +163,8 @@ $LANG_configselects['polls'] = array(
     2 => array('Nagu sisestatud' => 'submitorder', 'Häälte järgi' => 'voteorder'),
     5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Suuna küsitluste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita avalikku loetelu' => 'plugin', 'Näita avalehte' => 'home', 'Näita administreerimislehte' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

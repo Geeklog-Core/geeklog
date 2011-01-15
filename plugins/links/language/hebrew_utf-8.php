@@ -51,6 +51,7 @@ $LANG_LINKS = array(
     124 => 'עיברו',
     125 => 'קטגוריות',
     126 => 'אתם כאן:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'ראשי'
 );
 
@@ -238,7 +239,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'האם לפתוח קישורים חיצוניים בחלון חדש?',
     'root' => 'קוד הזיהוי של הקטגוריה הראשית',
     'default_permissions' => 'הרשאות ברירת המחדל של קישורים',
-    'category_permissions' => 'הרשאות ברירת המחדל של קטגוריות'
+    'category_permissions' => 'הרשאות ברירת המחדל של קטגוריות',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -249,7 +251,8 @@ $LANG_fs['links'] = array(
     'fs_public' => 'הגדרות רשימת קישורים פומביים',
     'fs_admin' => 'הגדרות ניהול קישורים',
     'fs_permissions' => 'הרשאות קישורים',
-    'fs_cpermissions' => 'הרשאות קטגוריות'
+    'fs_cpermissions' => 'הרשאות קטגוריות',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -257,7 +260,8 @@ $LANG_configselects['links'] = array(
     0 => array('כן' => 1, 'לא' => 0),
     1 => array('כן' => true, 'לא' => false),
     9 => array('הפנייה לעמוד המקושר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת הרשימה הציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
-    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

@@ -85,7 +85,8 @@ $LANG_CAL_1 = array(
     48 => 'Angezeigt',
     49 => 'Es gibt keine Termine oder sie wurden von niemandem gelesen.',
     50 => 'Termine',
-    51 => 'Löschen'
+    51 => 'Löschen',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -206,7 +207,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Benachrichtigungs-eMail?',
     'delete_event' => 'Termine mit User löschen?',
     'aftersave' => 'Nach Speichern des Termins',
-    'default_permissions' => 'Grundeinstellungen Termine'
+    'default_permissions' => 'Grundeinstellungen Termine',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -215,7 +217,8 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Allgemeine Kalendereinstellungen',
-    'fs_permissions' => 'Grundeinstellungen Rechte'
+    'fs_permissions' => 'Grundeinstellungen Rechte',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -224,7 +227,8 @@ $LANG_configselects['calendar'] = array(
     1 => array('Ja' => true, 'Nein' => false),
     6 => array('12' => 12, '24' => 24),
     9 => array('Zum Termin weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Kalender anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
-    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
+    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

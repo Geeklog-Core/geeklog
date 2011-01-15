@@ -53,6 +53,7 @@ $LANG_LINKS = array(
     124 => 'OK',
     125 => 'Kategorije',
     126 => 'Podroèje:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'Vse'
 );
 
@@ -240,7 +241,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'Odpri zunanje povezave v drugem oknu?',
     'root' => 'ID korenske kategorije',
     'default_permissions' => 'Prednastavljene pravice povezave',
-    'category_permissions' => 'Prednastavljene pravice kategorije'
+    'category_permissions' => 'Prednastavljene pravice kategorije',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -251,7 +253,8 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Nastavitve seznama javnih povezav',
     'fs_admin' => 'Skrbnikove nastavitve povezav',
     'fs_permissions' => 'Prednastavljene pravice',
-    'fs_cpermissions' => 'Pravice kategorije'
+    'fs_cpermissions' => 'Pravice kategorije',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -259,7 +262,8 @@ $LANG_configselects['links'] = array(
     0 => array('Da' => 1, 'Ne' => 0),
     1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
     9 => array('Naprej na povezano stran' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javni seznam' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
-    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

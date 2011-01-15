@@ -88,7 +88,8 @@ $LANG_CAL_1 = array(
     48 => 'klikke',
     49 => 'Näib, et saidil pole ühtegi sündmust või mitte keegi pole neil klõpsanud.',
     50 => 'Sündmused',
-    51 => 'Kustuta'
+    51 => 'Kustuta',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -209,7 +210,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Teavituskiri?',
     'delete_event' => 'Kustuta sündmused, omanikuks?',
     'aftersave' => 'Pärast sündmuste salvestamist',
-    'default_permissions' => 'Sündmuste vaikimisi õigused'
+    'default_permissions' => 'Sündmuste vaikimisi õigused',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -218,7 +220,8 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Kalendri üldised häälestused',
-    'fs_permissions' => 'Vaikimisi õigused'
+    'fs_permissions' => 'Vaikimisi õigused',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -227,7 +230,8 @@ $LANG_configselects['calendar'] = array(
     1 => array('Jah' => true, 'Ei' => false),
     6 => array('12' => 12, '24' => 24),
     9 => array('Suuna sündmuste juurde' => 'item', 'Näita administreerimisloetelu' => 'list', 'Näita kalendrit' => 'plugin', 'Näita avalehte' => 'home', 'Näita admini lehte' => 'admin'),
-    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3)
+    12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

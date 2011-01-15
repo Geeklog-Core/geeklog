@@ -61,6 +61,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'Vous avez déjà voté. Les résultats seront disponible lorsque le sondage sera terminé.',
     'start_poll' => 'Commencer le sondage',
     'no_new_polls' => 'Pas de nouveau sondage',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
     'deny_msg' => 'L\'accès à ce sondage n\'est pas possible. Soit il a été déplacé, soit vous n\'avez pas les permissions suffisantes pour y accéder.'
 );
 
@@ -148,7 +151,8 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'Sondages paramètres généraux',
     'fs_whatsnew' => 'Block Quoi de neuf',
-    'fs_permissions' => 'Permissions par défault'
+    'fs_permissions' => 'Permissions par défault',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -158,7 +162,8 @@ $LANG_configselects['polls'] = array(
     2 => array('Conserver l\'ordre saisi' => 'submitorder', 'Par nombre de votes' => 'voteorder'),
     5 => array('Cacher' => 'hide', 'Montrer - Utiliser la date modification' => 'modified', 'Montrer - Utiliser la date de création' => 'created'),
     9 => array('Afficher le sondage' => 'item', 'Montrer la liste admin' => 'list', 'Montrer la liste publique' => 'plugin', 'Accueil' => 'home', 'Montrer panneau Admin' => 'admin'),
-    12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3)
+    12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

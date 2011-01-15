@@ -31,22 +31,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Japanese language page for the Geeklog links Plug-in!
- *
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 2.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- * @author Trinity Bays, trinity93 AT gmail DOT com
- * @author Tony Bibbs, tony AT tonybibbs DOT com
- * @author Tom Willett, twillett AT users DOT sourceforge DOT net
- *
- */
-
 global $LANG32;
 
 ###############################################################################
@@ -73,6 +57,7 @@ $LANG_LINKS = array(
     124 => '表示',
     125 => 'カテゴリ',
     126 => '現在の位置:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'トップ'
 );
 
@@ -260,7 +245,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'リンクを新しいウィンドウで開く',
     'root' => 'トップカテゴリのID',
     'default_permissions' => 'パーミッション',
-    'category_permissions' => 'パーミッション'
+    'category_permissions' => 'パーミッション',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -271,15 +257,17 @@ $LANG_fs['links'] = array(
     'fs_public' => 'リンクの表示',
     'fs_admin' => 'リンクの管理',
     'fs_permissions' => 'リンクのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_cpermissions' => 'カテゴリのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_cpermissions' => 'カテゴリのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     9 => array('リンク先サイトを表示する' => 'item', 'リンク管理を表示する' => 'list', '公開リンクリストを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

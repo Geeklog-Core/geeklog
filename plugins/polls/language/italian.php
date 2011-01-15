@@ -23,51 +23,45 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog Polls Plug-in!
- *
- * @package Polls
- * @subpackage Language
- * @filesource
- * @version 1.0
- * @since GL 1.8.0
- * @copyright Copyright &copy; 2011
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
+###############################################################################
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
+###############################################################################
+
 $LANG_POLLS = array(
-    'polls'             => 'Sondaggi',
-    'results'           => 'Risultati',
-    'pollresults'       => 'Risultati dei Sondaggi',
-    'votes'             => 'voti',
-    'vote'              => 'Vota',
-    'pastpolls'         => 'Vecchi Sondaggi',
-    'savedvotetitle'    => 'Voto Salvato',
-    'savedvotemsg'      => 'Il tuo voto é stato salvato per il sondaggio',
-    'pollstitle'        => 'Sondaggi nel Sistema',
-    'polltopics'        => 'Altri sondaggi',
-    'stats_top10'       => 'Top 10 Sondaggi',
-    'stats_topics'      => 'Tema',
-    'stats_votes'       => 'Voti',
-    'stats_none'        => 'Sembra non ci siano sondaggi o nessuno ha votato.',
-    'stats_summary'     => 'Sondaggi (Voti) nel sistema',
-    'open_poll'         => 'Aperto',
-    'answer_all'        => 'Rispondi alle domande rimanenti',
-    'not_saved'         => 'Risultato non salvato',
-    'upgrade1'          => 'Hai installato una nuova version dell\'estenzione Sondaggi. Prego',
-    'upgrade2'          => 'aggiorna',
-    'editinstructions'  => 'Devi includere un ID, almeno una domanda ed almeno due risposte per domanda.',
-    'pollclosed'        => 'Questo condaggio é chiuso.',
-    'pollhidden'        => 'Hai gia votato. I risultati di questo sondaggio verranno solo mostrati quando il sondaggio sará chiuso.', 
-    'start_poll'        => 'Comincia Sondaggio',
-    'no_new_polls'      => 'Nessun nuovo sondaggio',
-    'autotag_desc_poll'              => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_poll_vote'         => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
-    'autotag_desc_poll_result'       => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
-    'deny_msg'          => 'Accesso al sondaggio negato.  É possibile che il sondaggio é stato spostato/rimosso o che non hai i permessi necessari.'
+    'polls' => 'Sondaggi',
+    'results' => 'Risultati',
+    'pollresults' => 'Risultati dei Sondaggi',
+    'votes' => 'voti',
+    'vote' => 'Vota',
+    'pastpolls' => 'Vecchi Sondaggi',
+    'savedvotetitle' => 'Voto Salvato',
+    'savedvotemsg' => 'Il tuo voto é stato salvato per il sondaggio',
+    'pollstitle' => 'Sondaggi nel Sistema',
+    'polltopics' => 'Altri sondaggi',
+    'stats_top10' => 'Top 10 Sondaggi',
+    'stats_topics' => 'Tema',
+    'stats_votes' => 'Voti',
+    'stats_none' => 'Sembra non ci siano sondaggi o nessuno ha votato.',
+    'stats_summary' => 'Sondaggi (Voti) nel sistema',
+    'open_poll' => 'Aperto',
+    'answer_all' => 'Rispondi alle domande rimanenti',
+    'not_saved' => 'Risultato non salvato',
+    'upgrade1' => 'Hai installato una nuova version dell\'estenzione Sondaggi. Prego',
+    'upgrade2' => 'aggiorna',
+    'editinstructions' => 'Devi includere un ID, almeno una domanda ed almeno due risposte per domanda.',
+    'pollclosed' => 'Questo condaggio é chiuso.',
+    'pollhidden' => 'Hai gia votato. I risultati di questo sondaggio verranno solo mostrati quando il sondaggio sará chiuso.',
+    'start_poll' => 'Comincia Sondaggio',
+    'no_new_polls' => 'Nessun nuovo sondaggio',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
+    'deny_msg' => 'Accesso al sondaggio negato.  É possibile che il sondaggio é stato spostato/rimosso o che non hai i permessi necessari.'
 );
 
 ###############################################################################
@@ -77,15 +71,15 @@ $LANG25 = array(
     1 => 'Modo',
     2 => 'Devi includere un Tema, almeno una domanda ed almeno due risposte per domanda.',
     3 => 'Sondaggio Creato',
-    4 => "Sondaggio %s salvato",
+    4 => 'Sondaggio %s salvato',
     5 => 'Modifica Sondaggio',
     6 => 'ID del Sondaggio',
     7 => '(niente spazi)',
     8 => 'Mostra sul Blocco dei Sondaggi',
     9 => 'Tema',
     10 => 'Risposte / Voti / Note',
-    11 => "Si é verificato un errore durente la richiesta dei dati di risposte al riguardo del sondaggio %s",
-    12 => "Si é verificato un errore durente la richiesta dei dati delle domande al riguardo del sondaggio %s",
+    11 => 'Si é verificato un errore durente la richiesta dei dati di risposte al riguardo del sondaggio %s',
+    12 => 'Si é verificato un errore durente la richiesta dei dati delle domande al riguardo del sondaggio %s',
     13 => 'Crea Sondaggio',
     14 => 'salva',
     15 => 'cancella',
@@ -121,15 +115,14 @@ $PLG_polls_MESSAGE19 = 'Il tuo sondaggio é stato salvato con successo.';
 $PLG_polls_MESSAGE20 = 'Il tuo sondaggio é stato rimosso con successo.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'L\'aggiornamento di Estensioni non é supportato.';
+$PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
-
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
     'label' => 'Sondaggi',
     'title' => 'Configurazione degli Sondaggi'
-);  
+);
 
 $LANG_confignames['polls'] = array(
     'pollsloginrequired' => 'Login Necessario per Sondaggi?',
@@ -156,13 +149,13 @@ $LANG_fs['polls'] = array(
     'fs_main' => 'Impostazioni Generali per Sondaggi',
     'fs_whatsnew' => 'Blocco What\'s New',
     'fs_permissions' => 'Permessi Predefiniti',
-    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag'   
+    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('Vero' => 1, 'Falso' => 0),
-    1 => array('Vero' => TRUE, 'Falso' => FALSE),
+    1 => array('Vero' => true, 'Falso' => false),
     2 => array('Come salvati' => 'submitorder', 'In Base ai Voti' => 'voteorder'),
     5 => array('Nascondi' => 'hide', 'Mostra - Usa la data di ultima modifica' => 'modified', 'Mostra - Usa la data di creazione' => 'created'),
     9 => array('Vai al Sondaggio' => 'item', 'Mostra Lista Ammin' => 'list', 'Mostra Lista Pubblica' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),

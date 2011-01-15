@@ -171,7 +171,12 @@ $LANG01 = array(
     127 => 'Permalink',
     128 => 'Login avec OpenID:',
     129 => 'Configuration',
-    130 => 'Webservices'
+    130 => 'Webservices',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -387,7 +392,8 @@ $LANG04 = array(
     162 => 'ne sera pas réduite',
     163 => 'La réauthentification a échouée',
     164 => 'Vous avez dépassé le nombre maximum de réauthentification. Désolé, l\'opération a été annulée et votre modifications ont été perdues.',
-    165 => 'Utiliser l\éditeur avancé'
+    165 => 'Utiliser l\éditeur avancé',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -836,7 +842,8 @@ $LANG24 = array(
     88 => 'Format Wiki-style',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'Vous pouvez toujours utiliser le "Preview" pour prolonger le délai de péremption.'
+    91 => 'Vous pouvez toujours utiliser le "Preview" pour prolonger le délai de péremption.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -968,7 +975,8 @@ $LANG28 = array(
     87 => 'Rappels',
     88 => 'Groupe par défaut',
     89 => 'Cochez pour que les nouveaux membres fassent partie de ce groupe par défaut',
-    90 => 'Cochez pour placer aussi tous les anciens membres dans ce groupe'
+    90 => 'Cochez pour placer aussi tous les anciens membres dans ce groupe',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1251,6 +1259,11 @@ $MESSAGE = array(
     99 => 'Le plugin existe déjà.',
     100 => 'Le fichier du plugin que vous avez uploadé n\'ést pas une archive compressée au format GZip ou Zip.',
     101 => 'Il n\'y a pas de catégorie à laquelle vous puissiez accéder. Vous avez besoin au moins d\'une catégorie pour pouvoir soumettre un article.',
+    110 => 'Can not get URL for authentication.',
+    111 => 'Authentication error.',
+    112 => 'Certification has been canceled.',
+    113 => 'Your account has been created successfully. {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => 'Tous les champs nécessaires n\'ont pas passés la validation',
     401 => 'Saisir votre nom complet'
 );
@@ -1734,6 +1747,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'Montrer le nom du service',
     'custom_registration' => 'Permettre l\'enregistrement personnalisé',
     'user_login_method' => 'Autoriser la connexion',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'Actions Spam-X',
     'sort_admin' => 'Tri des liens',
     'language' => 'Langage',
@@ -1793,6 +1815,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'Cacher le lien Accueil',
     'whosonline_threshold' => 'Intervalle pour le calcul du nombre de visiteurs en ligne',
     'whosonline_anonymous' => 'Cacher le nom des membres aux visiteurs anonymes',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'Activer le résumé quotidien',
     'emailstorieslength' => 'Longueur des articles',
     'emailstoriesperdefault' => 'Activer le résumé quotidien par défault à tous les nouveaux membres',
@@ -1909,7 +1932,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'Montrer les limites',
     'search_separator' => 'Séparateur des groupes',
     'search_def_keytype' => 'Méthode de recherche par défaut',
-    'search_def_sort' => 'Ordre de recherche par défaut'
+    'search_def_sort' => 'Ordre de recherche par défaut',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1964,7 +1989,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'Story Default Permission',
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
-    'fs_webservices' => 'Webservices'
+    'fs_webservices' => 'Webservices',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -1995,7 +2021,8 @@ $LANG_configselects['Core'] = array(
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('Nouveaux articles' => 'story', 'Nouveaux commentaires' => 'comment', 'Nouveaux Trackbacks' => 'trackback', 'Nouveaux Pingbacks' => 'pingback', 'Nouveaux membres' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Titre (asc)' => 'title|asc', 'Titre (desc)' => 'title|desc', 'Auteur (asc)' => 'uid|asc', 'Auteur (desc)' => 'uid|desc')
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Titre (asc)' => 'title|asc', 'Titre (desc)' => 'title|desc', 'Auteur (asc)' => 'uid|asc', 'Auteur (desc)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

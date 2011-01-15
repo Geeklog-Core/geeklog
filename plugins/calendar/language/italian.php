@@ -23,19 +23,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog Calendar Plug-in!
- *
- * @package Calendar
- * @subpackage Language
- * @filesource
- * @version 1.0
- * @since GL 1.8.0
- * @copyright Copyright &copy; 2011
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
 ###############################################################################
@@ -57,7 +44,7 @@ $LANG_CAL_1 = array(
     8 => 'Dopo aver aggiunto questo evento al tuo calendario, potrai visualizzare gli eventi nei quali sei interessato cliccando su "Calendario Personale" nell\'area User Functions.',
     9 => 'Aggiungi al Mio Calendario',
     10 => 'Rimuovi dal Mio Calendario',
-    11 => "L'Evento é stato Aggiunto al Calendario di %s",
+    11 => 'L\'Evento é stato Aggiunto al Calendario di %s',
     12 => 'Evento',
     13 => 'Inizio',
     14 => 'Fine',
@@ -67,7 +54,7 @@ $LANG_CAL_1 = array(
     18 => 'Data della fine',
     19 => 'Inserimenti nel Calendario',
     20 => 'Titolo',
-    17 => 'Data dell\'inizio',
+    21 => 'Start Date',
     22 => 'Indirizzo',
     23 => 'I Tuoi Eventi',
     24 => 'Gli Eventi del Sito',
@@ -98,7 +85,7 @@ $LANG_CAL_1 = array(
     49 => 'Sembra che non ci siano eventi su questo sito o nessuno ne ha mai visitato uno.',
     50 => 'Eventi',
     51 => 'Rimuovi',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.' //?
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -107,7 +94,6 @@ $_LANG_CAL_SEARCH = array(
     'date_time' => 'Data e Ora',
     'location' => 'Localitá',
     'description' => 'Descrizione'
-
 );
 
 ###############################################################################
@@ -129,7 +115,7 @@ $LANG_CAL_2 = array(
     32 => 'Evento',
     33 => 'Data',
     34 => 'Ora',
-    35 => 'Quick Add', //?
+    35 => 'Quick Add',
     36 => 'Salva',
     37 => 'Il suo calendario personale non é abilitato su questo sito',
     38 => 'Editor di Eventi Personali',
@@ -137,7 +123,7 @@ $LANG_CAL_2 = array(
     40 => 'Settimana',
     41 => 'Mese',
     42 => 'Aggiungi Evento al Calendario Principale',
-    43 => 'Inserimenti degli Eventi',
+    43 => 'Inserimenti degli Eventi'
 );
 
 ###############################################################################
@@ -154,11 +140,11 @@ $LANG_CAL_ADMIN = array(
     8 => 'Descrizione dell\'evento',
     9 => '(includi http://)',
     10 => 'Sono necessari le data/ore, titolo ed una descrizione',
-    11 => 'Calendar Manager', //?
+    11 => 'Calendar Manager',
     12 => 'Per modificare or rimuove un evento, clicca sulla corrispondente icona nella lista in basso. Per creare un nuovo evento clicca su "Nuovo". Clicca sulla icona di copia per duplicare un evento.',
     13 => 'Autore',
-    17 => 'Data dell\'inizio',
-    18 => 'Data della fine',
+    14 => 'Start Date',
+    15 => 'End Date',
     16 => '',
     17 => "Stai cercando di accedere ad un evento per il quale non hai permesso.  Questo tentativo é stato registrato. <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">Ritorna all'area amministrativa degli eventi.</a>",
     18 => '',
@@ -183,23 +169,23 @@ $LANG_CAL_ADMIN = array(
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'Il tuo evento é stato salvato con successo.',
-    'delete'    => 'Il tuo evento é stato rimosso con successo.',
-    'private'   => 'L\'evento é stato salvate nel tuo calendario',
-    'login'     => 'Non é possibile accedere al suo calendario personale prima che hai effettuato il login',
-    'removed'   => 'Il tuo evento é stato rimosso con successo dal tuo calendario personale.',
+    'save' => 'Il tuo evento é stato salvato con successo.',
+    'delete' => 'Il tuo evento é stato rimosso con successo.',
+    'private' => 'L\'evento é stato salvate nel tuo calendario',
+    'login' => 'Non é possibile accedere al suo calendario personale prima che hai effettuato il login',
+    'removed' => 'Il tuo evento é stato rimosso con successo dal tuo calendario personale.',
     'noprivate' => 'I calendari personale non sono abilitati su questo sito',
-    'unauth'    => 'Non hai accesso alla pagina di amministrazione degli eventi. Note che tutti i tentativi di accesso non autorizzati sono salvati',
+    'unauth' => 'Non hai accesso alla pagina di amministrazione degli eventi. Note che tutti i tentativi di accesso non autorizzati sono salvati'
 );
 
-$PLG_calendar_MESSAGE4  = "Grazie per aver inviato un evento a {$_CONF['site_name']}. L'evento é stato inviato al nostro staff per l'approvazione. Se approvato, il tuo evento sará disponibile per la visualizzazione nel nostro <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendario</a>.";
+$PLG_calendar_MESSAGE4 = "Grazie per aver inviato un evento a {$_CONF['site_name']}. L'evento é stato inviato al nostro staff per l'approvazione. Se approvato, il tuo evento sará disponibile per la visualizzazione nel nostro <a href=\"{$_CONF['site_url']}/calendar/index.php\">calendario</a>.";
 $PLG_calendar_MESSAGE17 = 'Il tuo evento é stato salvato con successo.';
 $PLG_calendar_MESSAGE18 = 'L\'evento é stato rimosso con successo.';
 $PLG_calendar_MESSAGE24 = 'L\'evento é stato salvate nel tuo calendario.';
 $PLG_calendar_MESSAGE26 = 'L\'evento é stato rimosso con successo.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = 'L\'aggiornamento di Estensioni non supportato.';
+$PLG_calendar_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_calendar_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -237,7 +223,7 @@ $LANG_fs['calendar'] = array(
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
     0 => array('Vero' => 1, 'Falso' => 0),
-    1 => array('Vero' => TRUE, 'Falso' => FALSE),
+    1 => array('Vero' => true, 'Falso' => false),
     6 => array('12' => 12, '24' => 24),
     9 => array('Vai a pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Admin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Sola lettura' => 2, 'Lettura e Scrittura' => 3),

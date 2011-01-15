@@ -88,7 +88,8 @@ $LANG_CAL_1 = array(
     48 => 'Hits',
     49 => 'Il semblerait qu\'il n\'y est aucun événement sur ce site ou que personne ne les ai découverts.',
     50 => 'Événements',
-    51 => 'Effacer'
+    51 => 'Effacer',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -209,7 +210,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Notification par email',
     'delete_event' => 'Supprimer les évènements avec leur propriétaire',
     'aftersave' => 'Après la sauvegarde d\un évènement',
-    'default_permissions' => 'Permissions par défaut des évènements'
+    'default_permissions' => 'Permissions par défaut des évènements',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -218,7 +220,8 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Paramètres généraux du calendrier',
-    'fs_permissions' => 'Permissions par défaut'
+    'fs_permissions' => 'Permissions par défaut',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -227,7 +230,8 @@ $LANG_configselects['calendar'] = array(
     1 => array('Oui' => true, 'Non' => false),
     6 => array('12H' => 12, '24H' => 24),
     9 => array('Afficher l\'évènement' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher le calendrier' => 'plugin', 'Afficher la page d\'acceuil' => 'home', 'Afficher le panneau administratif' => 'admin'),
-    12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3)
+    12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

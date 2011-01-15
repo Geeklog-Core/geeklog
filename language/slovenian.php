@@ -173,7 +173,12 @@ $LANG01 = array(
     127 => 'Permalink',
     128 => 'Prijavi se z OpenID:',
     129 => 'Nastavitve',
-    130 => 'Spletne storitve'
+    130 => 'Spletne storitve',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -389,7 +394,8 @@ $LANG04 = array(
     162 => 'ne bo pomanjšana',
     163 => 'Ponovno preverjanje pristnosti je spodletelo',
     164 => 'Preseženo je bilo število dovoljenih poskusov preverjanja pristnosti. Postopek je bil prekinjen in zadnje spremembe so žal izgubljene.',
-    165 => 'Uporabi Napredni urejevalnik'
+    165 => 'Uporabi Napredni urejevalnik',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -838,7 +844,8 @@ $LANG24 = array(
     88 => 'Oblika v slogu Wiki',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'Za podaljšanje trajanja seje klikni "Predogled".'
+    91 => 'Za podaljšanje trajanja seje klikni "Predogled".',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -970,7 +977,8 @@ $LANG28 = array(
     87 => 'Opomniki',
     88 => 'Prednastavljena skupina',
     89 => 'Potrdi, da to postane prednastavljena skupina za nove uporabnike',
-    90 => 'Vnesi spremembe "Prednastavljene skupine" obstojeèim uporabniškim raèunom'
+    90 => 'Vnesi spremembe "Prednastavljene skupine" obstojeèim uporabniškim raèunom',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1253,6 +1261,11 @@ $MESSAGE = array(
     99 => 'Vtiènik že obstaja.',
     100 => 'Naložena vtièniška datoteka ni bila stisnjena kot arhiv GZip ali Zip.',
     101 => 'Ni rubrik (do katerih imaš dostop). Za oddajo èlanka potrebuješ vsaj eno rubriko.',
+    110 => 'Can not get URL for authentication.',
+    111 => 'Authentication error.',
+    112 => 'Certification has been canceled.',
+    113 => 'Your account has been created successfully. {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => 'Vsa zahtevana polja niso bila veljavno izpolnjena.',
     401 => 'Prosim, vnesi polno ime'
 );
@@ -1736,6 +1749,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'Prikaži ime servisa',
     'custom_registration' => 'Omogoèi registracijo po meri',
     'user_login_method' => 'Naèin prijave uporabnika',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'Spam-X dejanja',
     'sort_admin' => 'Uredi povezave',
     'language' => 'Jezik',
@@ -1795,6 +1817,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'Skrij povezavo na zaèetno stran?',
     'whosonline_threshold' => 'Najveè sej (Session Threshold?)',
     'whosonline_anonymous' => 'Skrij imena pred gosti?',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'Daily Digest omogoèen?',
     'emailstorieslength' => 'Dolžina èlankov',
     'emailstoriesperdefault' => 'Omogoèi za nove uporabnike?',
@@ -1911,7 +1934,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'Prikaži omejitve strani?',
     'search_separator' => 'Loèevalnik skupin',
     'search_def_keytype' => 'Prednastavljena metoda iskanja',
-    'search_def_sort' => 'Prednastavljen vrstni red sortiranja'
+    'search_def_sort' => 'Prednastavljen vrstni red sortiranja',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1966,7 +1991,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'Prednastavljena dovoljenja èlanka',
     'fs_perm_topic' => 'Prednastavljena dovoljenja rubrike',
     'fs_perm_block' => 'Prednastavljena dovoljenja bloka',
-    'fs_webservices' => 'Webservices'
+    'fs_webservices' => 'Webservices',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -1997,7 +2023,8 @@ $LANG_configselects['Core'] = array(
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

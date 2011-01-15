@@ -85,7 +85,8 @@ $LANG_CAL_1 = array(
     48 => 'לחיצות',
     49 => 'נראה שאין שום אירועים באתר זה או שאף אחד עוד לא לחץ על אחד מהם.',
     50 => 'אירועים',
-    51 => 'מחיקה'
+    51 => 'מחיקה',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -206,7 +207,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'הודעת תזכורת באימייל?',
     'delete_event' => 'מחיקת אירועים ביחד עם שולחיהם?',
     'aftersave' => 'לאחר שמירת האירוע',
-    'default_permissions' => 'אישורי ברירת המחדל של אירוע'
+    'default_permissions' => 'אישורי ברירת המחדל של אירוע',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -215,7 +217,8 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'הגדרות יומן כללי',
-    'fs_permissions' => 'הרשאות ברירת המחדל'
+    'fs_permissions' => 'הרשאות ברירת המחדל',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -224,7 +227,8 @@ $LANG_configselects['calendar'] = array(
     1 => array('כן' => true, 'לא' => false),
     6 => array('12' => 12, '24' => 24),
     9 => array('הפנייה לאירוע' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת היומן' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
-    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3)
+    12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

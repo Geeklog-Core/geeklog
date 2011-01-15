@@ -92,7 +92,8 @@ $LANG_CAL_1 = array(
     48 => '閲覧数',
     49 => 'このサイトにはイベントがないか、誰もイベントをクリックしていないかどちらかのようです。',
     50 => 'イベント',
-    51 => '削除'
+    51 => '削除',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -176,13 +177,13 @@ $LANG_CAL_ADMIN = array(
 );
 
 $LANG_CAL_MESSAGE = array(
-    'save'      => 'イベントが保存されました。',
-    'delete'    => 'イベントが削除されました。',
-    'private'   => 'イベントが個人カレンダに保存されました。',
-    'login'     => '個人カレンダを開くには、最初にログインしてください。',
-    'removed'   => '個人カレンダからイベントが削除されました。',
+    'save' => 'イベントが保存されました。',
+    'delete' => 'イベントが削除されました。',
+    'private' => 'イベントが個人カレンダに保存されました。',
+    'login' => '個人カレンダを開くには、最初にログインしてください。',
+    'removed' => '個人カレンダからイベントが削除されました。',
     'noprivate' => '申し訳ありませんが、このサイトでは、個人カレンダが無効です。',
-    'unauth'    =>'申し訳ありませんが、イベント管理ページにアクセスする権限がありません。このアクセスは記録させていただきましたのでご了承ください。'
+    'unauth' => '申し訳ありませんが、イベント管理ページにアクセスする権限がありません。このアクセスは記録させていただきましたのでご了承ください。'
 );
 
 $PLG_calendar_MESSAGE4 = "{$_CONF['site_name']}にイベントを投稿していただき、ありがとうございます。スタッフに送信され、承認待ちの状態になりました。承認された場合、このサイトの<a href=\"{$_CONF['site_url']}/calendar/index.php\">カレンダ</a>セクションに表示されます。";
@@ -213,7 +214,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'メールで通知する',
     'delete_event' => '所有者の削除と共に削除する',
     'aftersave' => 'イベント保存後の画面遷移',
-    'default_permissions' => 'パーミッション'
+    'default_permissions' => 'パーミッション',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -222,16 +224,18 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'カレンダのメイン設定',
-    'fs_permissions' => 'カレンダのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_permissions' => 'カレンダのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['calendar'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
-    1 => array('はい' => TRUE, 'いいえ' => FALSE),
+    1 => array('はい' => true, 'いいえ' => false),
     6 => array('12' => 12, '24' => 24),
     9 => array('作成したイベントを表示する' => 'item', 'カレンダ管理を表示する' => 'list', 'カレンダを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

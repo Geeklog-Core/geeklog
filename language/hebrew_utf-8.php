@@ -172,7 +172,12 @@ $LANG01 = array(
     127 => 'קישור קבוע',
     128 => 'הזדהו בעזרת OpenID:',
     129 => 'כיוון הגדרות',
-    130 => 'שירותי רשת'
+    130 => 'שירותי רשת',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -388,7 +393,8 @@ $LANG04 = array(
     162 => 'לא יותאם',
     163 => 'האימות מחדש נכשל',
     164 => 'עברתם על מספר הפעמים המותר לאימות מחדש. הפעולה בוטלה ושינוייכם האחרונים נאבדו, מצטערים.',
-    165 => 'שימוש בעורך מתקדם'
+    165 => 'שימוש בעורך מתקדם',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -837,7 +843,8 @@ $LANG24 = array(
     88 => 'פורמט בנוסח וויקי',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.'
+    91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -969,7 +976,8 @@ $LANG28 = array(
     87 => 'תזכורות',
     88 => 'קבוצת ברירת מחדל',
     89 => 'אפשרו לקבוצה זו להיות קבוצת ברירת מחדל למשתמשים חדשים',
-    90 => 'הוסיפו את השינוי של "קבוצת ברירת מחדל" לחשבונות משתמשים קיימים'
+    90 => 'הוסיפו את השינוי של "קבוצת ברירת מחדל" לחשבונות משתמשים קיימים',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1252,6 +1260,11 @@ $MESSAGE = array(
     99 => 'ה-plugin כבר קיים.',
     100 => 'הקובץ -plugin שהעלתם לא היה ארכיון מכווץ GZip או Zip.',
     101 => 'אין נושאים (שיש לכם גישה אליהם). הנכם צריכים לפחות נושא אחד כדי שתוכלו להגיש מאמרים.',
+    110 => 'Can not get URL for authentication.',
+    111 => 'Authentication error.',
+    112 => 'Certification has been canceled.',
+    113 => 'Your account has been created successfully. {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => 'לא כל השדות הנדרשים עברו וידוא',
     401 => 'אנא הכניסו שם מלא'
 );
@@ -1735,6 +1748,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'הציגו שם שירות',
     'custom_registration' => 'איפשור הרשמה מותאמת אישית',
     'user_login_method' => 'שיטת הזדהות במערכת',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'פעולות Spam-X',
     'sort_admin' => 'מיון קישורים',
     'language' => 'שפה',
@@ -1794,6 +1816,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'החבאת קישור הבית?',
     'whosonline_threshold' => 'סף זמני',
     'whosonline_anonymous' => 'החבאת שמות מפני אורחים?',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'איפשור Daily Digest?',
     'emailstorieslength' => 'אורך המאמרים',
     'emailstoriesperdefault' => 'איפשור עבור משתמשים חדשים?',
@@ -1910,7 +1933,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'הצגת תחומי עמוד?',
     'search_separator' => 'מפריד קבוצות',
     'search_def_keytype' => 'שיטת חיפוש ברירת המחדל',
-    'search_def_sort' => 'ברירת המחדל של סדר מיון'
+    'search_def_sort' => 'ברירת המחדל של סדר מיון',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1965,7 +1990,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'הרשאות ברירת המחדל של מאמרים',
     'fs_perm_topic' => 'הרשאות ברירת המחדל של נושאים',
     'fs_perm_block' => 'הרשאות ברירת המחדל של קוביות מידע',
-    'fs_webservices' => 'שירותי רשת'
+    'fs_webservices' => 'שירותי רשת',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -1996,7 +2022,8 @@ $LANG_configselects['Core'] = array(
     24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
     25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user'),
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
-    27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc')
+    27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

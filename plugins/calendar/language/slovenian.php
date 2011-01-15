@@ -88,7 +88,8 @@ $LANG_CAL_1 = array(
     48 => 'Zadetki',
     49 => 'Izgleda, da na tem mestu ni dogodkov ali pa še nikoli ni nihèe kliknil na nobenega.',
     50 => 'Dogodki',
-    51 => 'Izbriši'
+    51 => 'Izbriši',
+    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -209,7 +210,8 @@ $LANG_confignames['calendar'] = array(
     'notification' => 'Obvestilo po e-pošti?',
     'delete_event' => 'Izbriši dogodke skupaj z lastnikom?',
     'aftersave' => 'Po shranitvi dogodka',
-    'default_permissions' => 'Prednastavljene pravice dogodka'
+    'default_permissions' => 'Prednastavljene pravice dogodka',
+    'autotag_permissions_event' => '[event: ] Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -218,7 +220,8 @@ $LANG_configsubgroups['calendar'] = array(
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Splošne nastavitve koledarja',
-    'fs_permissions' => 'Prednastavljene pravice'
+    'fs_permissions' => 'Prednastavljene pravice',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -227,7 +230,8 @@ $LANG_configselects['calendar'] = array(
     1 => array('Da' => 'velja', 'Ne' => 'ne velja'),
     6 => array('12' => 12, '24' => 24),
     9 => array('Naprej na dogodek' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži koledar' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
-    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

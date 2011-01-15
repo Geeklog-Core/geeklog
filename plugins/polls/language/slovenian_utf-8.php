@@ -62,6 +62,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'Si že glasoval/a. Rezultati te ankete bodo prikazani šele, ko bo glasovanja konec.',
     'start_poll' => 'Zaèni anketo',
     'no_new_polls' => 'Ni novih anket',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
     'deny_msg' => 'Dostop do te ankete je zavrnjen. Ali je bila anketa premaknjena/odstranjena ali pa nimaš zadostnih pravic.'
 );
 
@@ -149,7 +152,8 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'Splošne nastavitve anket',
     'fs_whatsnew' => 'Blok Kaj je novega',
-    'fs_permissions' => 'Prednastavljene pravice'
+    'fs_permissions' => 'Prednastavljene pravice',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -159,7 +163,8 @@ $LANG_configselects['polls'] = array(
     2 => array('Kot odposlano' => 'submitorder', 'Po glasovih' => 'voteorder'),
     5 => array('Skrij' => 'hide', 'Prikaži - uporabi spremenjeni datum' => 'modified', 'Prikaži - uporabi ustvarjeni datum' => 'created'),
     9 => array('Naprej na anketo' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javno stran' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
-    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3)
+    12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

@@ -179,7 +179,12 @@ $LANG01 = array(
     127 => 'パーマリンク',
     128 => 'OpenIDログイン:',
     129 => 'コンフィギュレーション',
-    130 => 'Webサービス'
+    130 => 'Webサービス',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -395,7 +400,8 @@ $LANG04 = array(
     162 => 'リサイズなし',
     163 => '再認証エラー',
     164 => '再認証回数を超えました。残念ながら操作はアボートされ、編集が失われました。',
-    165 => 'アドバンストエディタを使う'
+    165 => 'アドバンストエディタを使う',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -844,7 +850,8 @@ $LANG24 = array(
     88 => 'Wikiスタイル',
     89 => '説明文のメタタグ',
     90 => 'キーワードのメタタグ',
-    91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。'
+    91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -976,7 +983,8 @@ $LANG28 = array(
     87 => 'リマインダー',
     88 => 'デフォルトグループ',
     89 => '新規登録ユーザのデフォルトグループをチェック',
-    90 => '登録済みユーザアカウントにデフォルトグループを追加する'
+    90 => '登録済みユーザアカウントにデフォルトグループを追加する',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1263,6 +1271,7 @@ $MESSAGE = array(
     111 => '認証でエラーが発生しました。',
     112 => '認証がキャンセルされました。',
     113 => 'あなたのアカウントがTwitter経由で作成されました。 {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => '検証に合格していない必須フィールドがあります。',
     401 => 'フルネームを入力してください。'
 );
@@ -1746,6 +1755,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'サービス名を表示する',
     'custom_registration' => 'カスタム登録を有効にする',
     'user_login_method' => 'ログイン方法',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'Spam-X',
     'sort_admin' => 'リンクをソートする',
     'language' => '言語',
@@ -1805,6 +1823,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'Homeへのリンクを表示しない',
     'whosonline_threshold' => 'セッションのしきい値',
     'whosonline_anonymous' => 'ゲストユーザには表示しない',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'デイリーダイジェストを送信する',
     'emailstorieslength' => '記事の長さ',
     'emailstoriesperdefault' => 'ユーザ登録で有効をデフォルトにする',
@@ -1921,7 +1940,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => '表示件数の選択オプションを表示する',
     'search_separator' => 'グループのセパレータ',
     'search_def_keytype' => '検索条件のデフォルト',
-    'search_def_sort' => 'ソート順のデフォルト'
+    'search_def_sort' => 'ソート順のデフォルト',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1976,7 +1997,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => '記事のパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_perm_topic' => '話題のパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_perm_block' => 'ブロックのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_webservices' => 'Webサービス'
+    'fs_webservices' => 'Webサービス',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2007,7 +2029,8 @@ $LANG_configselects['Core'] = array(
     24 => array('投稿する' => 'contribute', 'Home' => 'home', '詳しい検索' => 'search', 'ディレクトリ' => 'directory', 'マイアカウント' => 'prefs', 'プラグインエントリ' => 'plugins', 'カスタムエントリ' => 'custom', 'サイトステータス' => 'stats'),
     25 => array('新着記事' => 'story', '新着コメント' => 'comment', '新着トラックバックス' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザ' => 'user'),
     26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
-    27 => array('閲覧数 (昇順)' => 'hits|asc', '閲覧数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc')
+    27 => array('閲覧数 (昇順)' => 'hits|asc', '閲覧数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

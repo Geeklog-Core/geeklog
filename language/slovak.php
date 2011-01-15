@@ -170,7 +170,12 @@ $LANG01 = array(
     127 => 'Trvalý odkaz',
     128 => 'Prihlási» sa s OpenID:',
     129 => 'Konfigurácia',
-    130 => 'Web slu¾by'
+    130 => 'Web slu¾by',
+    131 => 'No HTML is allowed',
+    132 => 'Information',
+    133 => 'Critical',
+    134 => 'Help',
+    135 => 'Warning'
 );
 
 ###############################################################################
@@ -386,7 +391,8 @@ $LANG04 = array(
     162 => 'will not be scaled',
     163 => 'Re-Authentication Failed',
     164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
-    165 => 'Use Advanced Editor'
+    165 => 'Use Advanced Editor',
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -835,7 +841,8 @@ $LANG24 = array(
     88 => 'Wiki-style format',
     89 => 'Meta Description',
     90 => 'Meta Keywords',
-    91 => 'You can always hit "Preview" to extend the expiry time.'
+    91 => 'You can always hit "Preview" to extend the expiry time.',
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -967,7 +974,8 @@ $LANG28 = array(
     87 => 'Reminders',
     88 => 'Default Group',
     89 => 'Check to make this a default group for new users',
-    90 => 'Apply "Default Group" change to existing user accounts'
+    90 => 'Apply "Default Group" change to existing user accounts',
+    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
@@ -1250,6 +1258,11 @@ $MESSAGE = array(
     99 => 'The plugin already exists.',
     100 => 'The plugin file you uploaded was not a GZip or Zip compressed archive.',
     101 => 'There are no topics (that you have access to). You need at least one topic to be able to submit stories.',
+    110 => 'Can not get URL for authentication.',
+    111 => 'Authentication error.',
+    112 => 'Certification has been canceled.',
+    113 => 'Your account has been created successfully. {site_url}',
+    114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     400 => 'Not all required fields have been passed validation',
     401 => 'Please enter Fullname'
 );
@@ -1733,6 +1746,15 @@ $LANG_confignames['Core'] = array(
     'show_servicename' => 'Show Service Name',
     'custom_registration' => 'Enable Custom Registration',
     'user_login_method' => 'User Login Method',
+    'facebook_login' => 'Enable OAuth Login Method Facebook',
+    'facebook_consumer_key' => 'Facebook OAuth Application ID',
+    'facebook_consumer_secret' => 'Facebook OAuth Application Secret',
+    'linkedin_login' => 'Enable OAuth Login Method LinkedIn',
+    'linkedin_consumer_key' => 'LinkedIn OAuth API Key',
+    'linkedin_consumer_secret' => 'LinkedIn OAuth Secret Key',
+    'twitter_login' => 'Enable OAuth Login Method Twitter',
+    'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
+    'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
     'spamx' => 'Spam-X Actions',
     'sort_admin' => 'Sort Links',
     'language' => 'Language',
@@ -1792,6 +1814,7 @@ $LANG_confignames['Core'] = array(
     'hide_home_link' => 'Hide Home Link?',
     'whosonline_threshold' => 'Session Threshold',
     'whosonline_anonymous' => 'Hide Names from Guests?',
+    'whosonline_photo' => 'Display Thumbnail Photo?',
     'emailstories' => 'Daily Digest Enabled?',
     'emailstorieslength' => 'Length of Stories',
     'emailstoriesperdefault' => 'Enable for New Users?',
@@ -1908,7 +1931,9 @@ $LANG_confignames['Core'] = array(
     'search_show_limit' => 'Show Page Limits?',
     'search_separator' => 'Group Separator',
     'search_def_keytype' => 'Default Search Method',
-    'search_def_sort' => 'Default Sort Order'
+    'search_def_sort' => 'Default Sort Order',
+    'autotag_permissions_story' => '[story: ] Permissions',
+    'autotag_permissions_user' => '[user: ] Permissions'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -1963,7 +1988,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_story' => 'Story Default Permission',
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
-    'fs_webservices' => 'Webservices'
+    'fs_webservices' => 'Webservices',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_configselects['Core'] = array(
@@ -1994,7 +2020,8 @@ $LANG_configselects['Core'] = array(
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
-    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc')
+    27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
+    28 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

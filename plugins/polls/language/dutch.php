@@ -60,6 +60,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'You have already voted. This poll results will only be shown when voting is closed.',
     'start_poll' => 'Start Poll',
     'no_new_polls' => 'No new polls',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
     'deny_msg' => 'Access to this poll is denied.  Either the poll has been moved/removed or you do not have sufficient permissions.'
 );
 
@@ -147,7 +150,8 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
     'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'Default Permissions'
+    'fs_permissions' => 'Default Permissions',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -157,7 +161,8 @@ $LANG_configselects['polls'] = array(
     2 => array('As Submitted' => 'submitorder', 'By Votes' => 'voteorder'),
     5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to Poll' => 'item', 'Display Admin List' => 'list', 'Display Public List' => 'plugin', 'Display Home' => 'home', 'Display Admin' => 'admin'),
-    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3)
+    12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

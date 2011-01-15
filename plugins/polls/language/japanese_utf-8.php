@@ -66,6 +66,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
     'start_poll' => '投稿する',
     'no_new_polls' => '新しいアンケートはありません',
+    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
     'deny_msg' => 'このアンケートへアクセスできません。(このアンケートは移動したか削除されているか、あるいはアクセス権がありません。)'
 );
 
@@ -153,7 +156,8 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
     'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）'
+    'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -163,7 +167,8 @@ $LANG_configselects['polls'] = array(
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
     9 => array('作成したアンケートを表示する' => 'item', 'アンケート管理を表示する' => 'list', 'アンケート一覧を表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
-    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3)
+    12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>

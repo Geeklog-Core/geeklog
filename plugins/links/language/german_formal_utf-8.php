@@ -51,6 +51,7 @@ $LANG_LINKS = array(
     124 => 'Go',
     125 => 'Kategorien',
     126 => 'Sie sind hier:',
+    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
     'root' => 'oben'
 );
 
@@ -238,7 +239,8 @@ $LANG_confignames['links'] = array(
     'new_window' => 'Externe Links in neuem Fenster öffnen?',
     'root' => 'ID der Oberkategorie',
     'default_permissions' => 'Grundeinstellung Rechte',
-    'category_permissions' => 'Category Default Permissions'
+    'category_permissions' => 'Category Default Permissions',
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
@@ -249,7 +251,8 @@ $LANG_fs['links'] = array(
     'fs_public' => 'Einstellungen öffentliche Links',
     'fs_admin' => 'Admin Einstellungen',
     'fs_permissions' => 'Grundeinstellungen Rechte',
-    'fs_cpermissions' => 'Category Permissions'
+    'fs_cpermissions' => 'Category Permissions',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -257,7 +260,8 @@ $LANG_configselects['links'] = array(
     0 => array('Ja' => 1, 'Nein' => 0),
     1 => array('Ja' => true, 'Nein' => false),
     9 => array('Weiterleiten zur verlinkten Seite' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite anzeigen' => 'home', 'Schaltzentrale' => 'admin'),
-    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3)
+    12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
+    13 => array('No access' => 0, 'Use' => 2)
 );
 
 ?>
