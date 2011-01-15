@@ -1,5 +1,5 @@
 <form style="display:inline" action="{site_admin_url}/plugins/calendar/index.php?mode=batchdelete" method="post">
-    <div>
+    <div style="display: inline;">
         <input type="hidden" name="mode" value="batchdelete"{xhtml}>
         <input type="hidden" name="usr_time" value="{usr_time}"{xhtml}>
         {lang_text_start} <input class="aligncenter" type="text" name="usr_time" value="{usr_time}" size="3"{xhtml}>{lang_text_end}<br{xhtml}>
