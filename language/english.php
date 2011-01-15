@@ -174,7 +174,7 @@ $LANG01 = array(
     130 => 'Webservices',
     131 => 'No HTML is allowed',
     132 => 'Information',
-    133 => 'Critial',
+    133 => 'Critical',
     134 => 'Help',
     135 => 'Warning'
     
