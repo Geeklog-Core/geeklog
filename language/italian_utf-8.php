@@ -1,13 +1,13 @@
 <?php
 
 ###############################################################################
-# italian.php
+# italian_utf-8.php
 # Traduzione italiana per GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2002 quess65 webmaster@dynamikteam.net
 # Copyright (C) 2005 magomarcelo magomarcelo@gmail.com magomarcelo.blogspot.com
-# Copyright (C) 2010 Roccivic rouslan@placella.com
+# Copyright (C) 2011 Rouslan Placella rouslan {at} placella {dot} com
 #
 # Questo programma è free software; puoi ridistribuire e/o
 # modificarlo sotto i termini della GNU General Public License
@@ -736,7 +736,7 @@ $LANG21 = array(
     61 => 'Nessun titolo',
     62 => 'Limito per Articoli',
     63 => 'Titolo del blocco non consentito',
-    64 => 'Il tuo titolo non puo essera vuoto ed HTML non &egrave consentito!',
+    64 => 'Il tuo titolo non puo essera vuoto ed HTML non é consentito!',
     65 => 'Ordina',
     66 => 'Autotag',
     67 => 'Seleziona per consentire "autotag"',
@@ -1165,7 +1165,7 @@ $MESSAGE = array(
     12 => 'Il blocco é stato eliminato correttamente.',
     13 => 'Il tuo argomento é stato registrato correttamente.',
     14 => 'L\'argomento e tutte gli articoli e blocchi associati sono stati eliminati correttamente.',
-    15 => 'Your comment has been submitted for review and will be published when approved by a moderator.',
+    15 => 'Il tuo commento é stato salvato e verrá pubblicato appena approvato da un moderatore.',
     16 => 'You have been unsubscribed. You will no longer be notified of new replies.',
     17 => '',
     18 => '',
@@ -1208,9 +1208,9 @@ $MESSAGE = array(
     55 => 'Una e-mail ti é stata inviata e dovrebbe arrivare a breve. Prego segui le istruzioni contentute nel messaggio per impostare una nuova password per il tup account.',
     56 => 'L\'indirizzo e-mail da te fornito é giá in uso per un altro account.',
     57 => 'Il tuo account é stato eliminato.',
-    58 => 'Il tuo feed &egrave stato registrato correttamente.',
-    59 => 'Il feed &egrave stato eliminato correttamente.',
-    60 => 'Il plug-in &egrave stato aggiornato correttamente',
+    58 => 'Il tuo feed é stato registrato correttamente.',
+    59 => 'Il feed é stato eliminato correttamente.',
+    60 => 'Il plug-in é stato aggiornato correttamente',
     61 => 'Plug-in %s: Segnaposto messaggio sconosciuto',
     62 => 'Tutti i commenti di trackback sono stati disabilitati.',
     63 => 'Si é verificato un errore durante l\'eliminazione di un commento di trackback.',
@@ -1513,7 +1513,7 @@ $LANG_SECTEST = array(
     'reachable' => '%s é accessibile dal Web.',
     'not_reachable' => 'Ottimo! %s non é accessibile dal Web.',
     'not_sure' => 'Il risultato %s é stato ricevuto mentre %s veniva esaminato. Scusa, ma non so cosa significa ...',
-    'remove_inst' => 'C\'é bisogno che rimuovi la cartella di installazione %s nonappena il tuo sito funziona senza errori.',
+    'remove_inst' => 'É necessario rimuovere la cartella di installazione %s nonappena il tuo sito funziona senza errori.',
     'remove_inst2' => 'Se viene lascita, utenti con cattive intenzioni potranno avere la possibilitá di rovinare la tua installazione, prendere il controllo del sito o accedere ad importanti informazioni.',
     'inst_removed' => 'Ottimo! Hai giá rimosso la cartella di installazione.',
     'fix_password' => 'Non hai ancora cambiato la <strong>password predefinita</strong> "password" su %s account del tipo Root.',
