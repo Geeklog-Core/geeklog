@@ -887,8 +887,12 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         'leftblocks'    => 'leftblocks.thtml',
         'rightblocks'   => 'rightblocks.thtml'
         ));
+    
+    $header->postprocess_fn = 'PLG_replaceTags';
+    
     $header->set_var('doctype', $doctype);
     $header->set_var('xhtml', XHTML);
+    
     if (XHTML == '') {
         $header->set_var('xmlns', '');
     } else {
@@ -1342,6 +1346,8 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
             'rightblocks' => 'rightblocks.thtml',
             'leftblocks'  => 'leftblocks.thtml'
             ));
+    
+    $footer->postprocess_fn = 'PLG_replaceTags';
 
     // Do variable assignments
     $footer->set_var( 'xhtml', XHTML );
@@ -1537,6 +1543,8 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
+    
+    $block->postprocess_fn = 'PLG_replaceTags';
 
     $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
@@ -1582,6 +1590,8 @@ function COM_endBlock( $template='blockfooter.thtml' )
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
+    
+    $block->postprocess_fn = 'PLG_replaceTags';
 
     $block->set_var( 'xhtml', XHTML );
     $block->set_var( 'site_url', $_CONF['site_url'] );
@@ -6763,8 +6773,6 @@ function COM_Tooltip($hoverover = '', $text = '', $link = '', $title = '', $temp
     
     $tooltip = new Template($_CONF['path_layout'] .'tooltips/');
     $tooltip->set_file(array('tooltip'    => $template . '.thtml'));    
-    
-    $tooltip->preprocess_fn = ''; // Do not process for autotags in text since tooltip
     
     $tooltip->set_var('xhtml', XHTML);
     $tooltip->set_var('layout_url', $_CONF['layout_url']);

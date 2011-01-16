@@ -146,7 +146,7 @@ class Template
   * @access    public
   * @see       _preprocess
   */
-  var $preprocess_fn     = 'PLG_replaceTags';
+  var $preprocess_fn     = '';
    
   /**
   * The name of a function is retained in this variable and is used to do any post processing work.
@@ -621,8 +621,6 @@ function _postprocess($str)
         }
       }
     }
-    
-    $str = $this->_preprocess($str);
 
     if ($this->debug & 4) {
       echo "<p><b>parse:</b> completed</p>\n";
@@ -924,6 +922,9 @@ function _postprocess($str)
     if ($this->debug & 4) {
       printf("<b>loadfile:</b> loaded $filename into $varname<br" . XHTML . ">\n");
     }
+    
+    $str = $this->_preprocess($str);
+    
     $this->set_var($varname, $str);
 
     return true;

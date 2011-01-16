@@ -472,9 +472,6 @@ class config {
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
         
-        // Disable autotags in templates for configuration
-        $t->preprocess_fn = '';
-
         $t->set_var('xhtml', XHTML);
         $t->set_var('site_url', $_CONF['site_url']);
         $t->set_var('site_admin_url', $_CONF['site_admin_url']);
