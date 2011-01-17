@@ -73,8 +73,8 @@ $LANG_STATIC = array(
     'delete' => 'Cancella',
     'cancel' => 'Elimina',
     'access_denied' => 'Accesso Negato',
-    'access_denied_msg' => 'Stai tentando di accedere illegalmente all\'Amministrazione Pagine Statiche.  Prego nota che tutti i tentativi di accesso illegali sono registrati',
-    'all_html_allowed' => 'Tutto l\'HTML permesso',
+    'access_denied_msg' => "Stai tentando di accedere illegalmente all'Amministrazione Pagine Statiche.  Prego nota che tutti i tentativi di accesso illegali sono registrati",
+    'all_html_allowed' => "Tutto l'HTML permesso",
     'results' => 'Risultati Pagine Statiche',
     'author' => 'Autore',
     'no_title_or_content' => 'Devi almeno compilare i campi <b>Titolo</b> e <b>Contenuto</b>.',
@@ -90,9 +90,9 @@ $LANG_STATIC = array(
     'stats_hits' => 'Visite',
     'stats_no_hits' => 'Sembra che non ci siano pagine statiche in questo sito o che nessuno ne ha ancora visualizzata una.',
     'id' => 'ID',
-    'duplicate_id' => 'L\'ID che hai selezionato per questa pagina statica &egrave; gi&agrave; in uso. Prego seleziona un\'altro ID.',
+    'duplicate_id' => "L'ID che hai selezionato per questa pagina statica &egrave; gi&agrave; in uso. Prego seleziona un'altro ID.",
     'instructions' => 'Per modificare o eliminare una pagina statica, clicca sul numero della pagina sotto. Per visualizzare una pagina statica, clicca sul titolo della pagina che desideri vedere. Per creare una nuova pagina statica clicca su [ Nuova Pagina ] sopra. Clicca su [C] per creare una copia di una pagina esistente.',
-    'centerblock' => 'BloccoCentrale: ',
+    'centerblock' => 'Blocco Centrale: ',
     'centerblock_msg' => 'Quando selezionato, questa Pagina Statica sar&agrave; visualizzata come un blocco centrale nella pagina index.',
     'topic' => 'Argomento: ',
     'position' => 'Posizione: ',
@@ -102,7 +102,7 @@ $LANG_STATIC = array(
     'position_feat' => 'Dopo Articolo Evidenziato',
     'position_bottom' => 'Fine Pagina',
     'position_entire' => 'Pagina Intera',
-    'head_centerblock' => 'BloccoCentrale',
+    'head_centerblock' => 'Blocco Centrale',
     'centerblock_no' => 'No',
     'centerblock_top' => 'Capo Pag.',
     'centerblock_feat' => 'Art. Evidenz.',
@@ -138,10 +138,10 @@ $LANG_STATIC = array(
 $PLG_staticpages_MESSAGE15 = 'Il suo commento &egrave; stato ricevuto e sar&agrave; pubblicato appena approvato da un moderatore.';
 $PLG_staticpages_MESSAGE19 = 'La sua pagina &egrave; stata salvata.';
 $PLG_staticpages_MESSAGE20 = 'La pagina &egrave; stata eliminata.';
-$PLG_staticpages_MESSAGE21 = 'Questa pagina non esiste. Compila la scheda sottostante per creare la pagina. Premi \'annulla\' se sei capitato su questa pagina a causa di un errore.';
+$PLG_staticpages_MESSAGE21 = 'Questa pagina non esiste. Compila la scheda sottostante per creare la pagina. Premi "annulla" se sei capitato su questa pagina a causa di un errore.';
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'L\'aggiornamento di plugin non &egrave; supportato.';
+$PLG_staticpages_MESSAGE3001 = "L'aggiornamento di Estensioni non é supportato.";
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -152,7 +152,7 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'Permettere PHP?',
-    'sort_by' => 'Ordina i Centerblock secondo',
+    'sort_by' => 'Ordina il block centrale secondo',
     'sort_menu_by' => 'Ordina gli Elementi del Menu secondo',
     'sort_list_by' => 'Ordina la Lista Ammin secondo',
     'delete_pages' => 'Delete Pages with Owner?',
@@ -170,10 +170,10 @@ $LANG_confignames['staticpages'] = array(
     'newstaticpagesinterval' => 'Intervallo per Nuove Pagine Statiche',
     'hidenewstaticpages' => 'Nascondi Nuove Pagine Statiche',
     'title_trim_length' => 'Massima Lunghezza del Titolo',
-    'includecenterblocks' => 'Include Center Block Static Pages',
+    'includecenterblocks' => 'Includi Le Pagine Statiche nel Blocco Centrale',
     'includephp' => 'Includi Pagine Statiche con PHP',
     'includesearch' => 'Mostra Pagine Statiche Nei Risultati Di Ricerca',
-    'includesearchcenterblocks' => 'Include Center Block Static Pages',
+    'includesearchcenterblocks' => 'Includi Le Pagine Statiche dal Blocco Centrale',
     'includesearchphp' => 'Mostra Pagine Statiche con PHP'
 );
 
@@ -195,7 +195,7 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title'),
     3 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Label' => 'label'),
     4 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Autore' => 'author'),
-    5 => array('Nascondi' => 'hide', 'Mostra - Usa Data dell\'ultima modifica' => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
+    5 => array('Nascondi' => 'hide', "Mostra - Usa Data dell'ultima modifica" => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     17 => array('Commenti Abilitati' => 0, 'Commenti Disabilitati' => -1)
