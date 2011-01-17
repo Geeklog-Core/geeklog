@@ -469,7 +469,7 @@ function listplugins($token)
         array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
         array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
         array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
-        array('text' => $LANG_ADMIN['enabled'], 'field' => 'enabled', 'sort' => false)
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'pi_enabled', 'sort' => true)
     );
 
     $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');

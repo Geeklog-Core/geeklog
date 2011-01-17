@@ -1131,7 +1131,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
         }
         break;
 
-    case 'enabled':
+    case 'pi_enabled':
         $not_present = false;
         if ($A['pi_enabled'] == 1) {
             $switch = ' checked="checked"';
