@@ -140,7 +140,7 @@ class Template
   var $last_error     = '';
  
   /**
-  * The name of a function is retained in this variable and is used to do any pre processing work. Defaults to checking for Autotags
+  * The name of a function is retained in this variable and is used to do any pre processing work.
   *
   * @var       string
   * @access    public
