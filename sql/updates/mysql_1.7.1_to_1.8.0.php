@@ -17,7 +17,7 @@ function update_ConfValuesFor180()
     $c->add('whosonline_photo',0,'select',3,14,0,930,TRUE);
     
     // user_login_method
-    $c->delete('user_login_method', 'Core');
+    $c->del('user_login_method', 'Core');
     $c->add('user_login_method',array('standard' => $_CONF['user_login_method']['standard'] , 'openid' => $_CONF['user_login_method']['openid'] , '3rdparty' => $_CONF['user_login_method']['3rdparty'] , 'oauth' => false),'@select',4,16,1,320,TRUE);
 
     // OAuth Settings
