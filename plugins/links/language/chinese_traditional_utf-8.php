@@ -133,7 +133,7 @@ $LANG_LINKS_ADMIN = array(
     9 => '聯結描述',
     10 => '你需要提供聯結得標題, 網址及描述.',
     11 => '聯結管理器',
-    12 => '若要更改或刪除一個聯結，請點擊一下那聯結的編輯標圖.  若要建立一個新的聯結請點擊以上的 "建新".',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => '聯結類別',
     16 => '拒絕進入',
     17 => "你再使用一個你沒有權的聯結.  此企圖已被記錄. 請<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">回到連接管理處</a>.",

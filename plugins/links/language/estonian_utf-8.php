@@ -134,7 +134,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Lingi kirjeldus',
     10 => 'Sa pead määrama lingi URL-i, tiitli ja kirjelduse.',
     11 => 'Lingi haldur',
-    12 => 'Lingi toimetamiseks või kustutamiseks klõpsa allpool vastava lingi juures oleval toimetamisikoonil. Uue lingi loomiseks klõpsa "Tee uus" ülal.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Lingi kategooria',
     16 => 'Ligipääs tõkestatud',
     17 => "Sa proovisid ligi pääseda lingile, milleks pole sul õigust. See katse on logitud. Palun <a href=\"{$_CONF['site_admin_url']}/plugins/links/\"> mine tagasi linkide administreerimislehele.</a>",

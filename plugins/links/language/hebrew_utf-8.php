@@ -132,7 +132,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'תיאור הקישור',
     10 => 'הנכם צריכים לציין כותרת לקישור, כתובת ותיאור.',
     11 => 'ניהול קישורים',
-    12 => 'כדי לשנות או למחוק קישור, ליחצו על אייקון העריכה שלו שלהלן.  כדי ליצור קישור או קטגוריה חדשים, ליחצו על "קישור חדש" או "קטגוריה חדשה" שלעיל. כדי לערוך מספר קטגוריות, ליחצו על "עריכת קטגוריות" שלעיל.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'קטגורית קישור',
     16 => 'הגישה לא אושרה',
     17 => "הנכם מנסים לגשת לקישור שאין לכם גישה אליו.  נסיון זה נרשם ביומן. אנא <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">חיזרו למסך ניהול הקישורים</a>.",

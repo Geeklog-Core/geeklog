@@ -130,7 +130,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Описание',
     10 => 'Вы должны указать заголовок, URL и описание.',
     11 => 'Менеджер ссылок',
-    12 => 'Что бы изменить или удалить ссылку, нажмите на иконку редактирования, которая находиться ниже.  Что бы создать новую ссылку, выберете "Создать новую" вверху.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Категория ссылки',
     16 => 'Доступ запрещён',
     17 => "Вы попытались доступиться до ссылки с ограниченными правами на просмотр.  Инфрмация об этой попыткой записана.  Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">вернитесь к администрированию</a>.",

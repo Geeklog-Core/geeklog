@@ -130,7 +130,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Opis Linka',
     10 => 'Musisz podaæ Tytu³, URL, i Opis.',
     11 => 'Menad¿er Linków',
-    12 => 'Aby zmodyfikowaæ lub wykasowaæ link, kliknij na ikonê edycji poni¿ej.  Aby stworzyæ nowy link, kliknij na "Nowy Link" powy¿ej.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Kategoria Linka',
     16 => 'Odmowa Dostêpu',
     17 => "Nie masz uprawnieñ do tego linka.  Twoja próba wej¶cia zosta³a zarejestrowana w logu. Proszê <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">do ekranu zarz±dzania linkami</a>.",

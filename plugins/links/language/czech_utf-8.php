@@ -130,7 +130,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Popis odkazu',
     10 => 'Musíte zadat titulek, URL a popis.',
     11 => 'Správce odkazů',
-    12 => 'Pro změnu nebo vymazání odkazu, klikněte na ikonu editace.  Pro vytvoření nového odkazu, klikněte na "Create New".',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Kategorie odkazu',
     16 => 'Přístup byl zakázán',
     17 => "Pokooušíte se použít odkaz, na který nemáte dostatečná práva. Váš pokus byl zalogován. Prosím, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">na stránku pro administraci</a>.",

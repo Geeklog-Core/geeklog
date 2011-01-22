@@ -134,7 +134,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Opis povezav',
     10 => 'Doloèiti moraš naslov povezave, URL in opis.',
     11 => 'Upravljalnik povezav',
-    12 => 'Za spreminjanje ali izbris povezave klikni na njeno ikono za urejanje spodaj. Za ustvarjenje nove povezave klikni na "Ustvari novo" zgoraj.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'kategorija povezave',
     16 => 'Dostop zavrnjen',
     17 => "Poskušaš dostopiti do povezave, za katero nimaš pravic. Ta poskus je bil zabeležen. Prosim, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">pojdi nazaj na zaslon za upravljanje povezav</a>.",

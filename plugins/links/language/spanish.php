@@ -135,7 +135,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Descripción del enlace',
     10 => 'Necesita proporcionar un título, URL y descripción para el enlace.',
     11 => 'Gestor de enlaces',
-    12 => 'Para modificar o borrar un enlace, pulse en el botón de edición. Para crear un enlace nuevo pulse en "Crear nuevo".',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Categoría del enlace',
     16 => 'Acceso denegado',
     17 => "Estás intentando acceder a un enlace al que no tienes derecho. Este intento ha sido anotado. Por favor, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">vuelve a la pantalla de administración de enlaces</a>.",

@@ -132,7 +132,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Beschreibung',
     10 => 'Einen Titel, eine URL und eine Beschreibung für den Link angeben.',
     11 => 'Link-Manager',
-    12 => "Auf das Ändern-Icon klicken, um einen Link zu ändern oder zu löschen.  \nMit Neuer Link (s.o.) kann ein neuer Link angelegt werden.",
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Kategorie',
     16 => 'Zugriff verweigert',
     17 => "Keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",

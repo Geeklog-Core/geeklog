@@ -138,7 +138,7 @@ $LANG_LINKS_ADMIN = array(
     9 => '説明',
     10 => 'タイトル、URL、説明の入力が必要です',
     11 => 'リンク管理',
-    12 => 'リンクの編集・削除は編集アイコンをクリック、リンクまたはカテゴリの作成は上の「リンクの作成」または「カテゴリの作成」をクリックしてください。マルチカテゴリを編集する場合は、上の「カテゴリの編集」をクリックしてください。',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'カテゴリ',
     16 => 'アクセスが拒否されました',
     17 => "権限のないリンクにアクセスしようとしましたのでログに記録しました。<a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">リンクの管理画面に戻って</a>ください。",

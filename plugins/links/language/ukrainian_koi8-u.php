@@ -130,7 +130,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Опис',
     10 => 'Ви повинн╕ вказати заголовок, URL та опис.',
     11 => 'Менеджер посилань',
-    12 => 'Щоб зм╕нити чи видалити посилання, натисн╕ть його ╕конку редагування нижче.  Щоб створити нове посилання, обер╕ть "Створити нове" вгор╕.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Категор╕я посилання',
     16 => 'Доступ заборонено',
     17 => "Ви намагались отримати доступ до посилання, до якого у вас нема╓ прав.  Цю спробу записано. Будь-ласка, <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">поверн╕ться до адм╕н╕стрування</a>.",

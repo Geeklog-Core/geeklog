@@ -132,7 +132,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Link omschrijving',
     10 => 'U dient een link titel, URL en omschrijving op te geven.',
     11 => 'Link Manager',
-    12 => 'Om een link te wijzigen of verwijderen, klik op het Edit icoontje naast de link.  Om een nieuwe link toe te voegen, klik op "Link toevoegen" hierboven.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Link Categorie',
     16 => 'Toegang geweigerd',
     17 => "U probeert een link waar u geen toegang toe heeft te bewerken.  Deze poging is vastgelegd. Ga AUB terug naar de <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">linkmanager</a>.",

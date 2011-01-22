@@ -133,7 +133,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Description',
     10 => 'Vous devez saisir un titre, une URL et une description.',
     11 => 'Manager des liens',
-    12 => 'Pour modifier ou effacer un lien, cliquez sur l\'icone du lien ci-dessous.  Pour créer un nouveau lien ou une nouvelle catégorie, cliquez sur "Nouveau lien" ou "Nouvelle catégorie" ci-dessus. Pour éditer des catégories multiples, cliquez sur "editez des catégories" ci-dessous.',
+    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
     14 => 'Catégories',
     16 => 'Accès refusé',
     17 => "Vous essayez d'accéder à un lien sur lequel vous n'avez pas de droit. Cette tentative est enregistrée. Merci de <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">retourner à l'interface d'administration</a>.",
