@@ -132,7 +132,7 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Beschreibung',
     10 => 'Einen Titel, eine URL und eine Beschreibung für den Link angeben.',
     11 => 'Link-Manager',
-    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
+    12 => 'Um einen Link zu ändern oder zu löschen, auf das Ändern-Symbol klicken. Um einen neuen Link oder eine neue Kategorie anzulegen, auf "Neuer Link" bzw. "Neue Kategorie" klicken. Um mehrere Kategorien zu bearbeiten, auf "Kategorien auflisten" klicken.',
     14 => 'Kategorie',
     16 => 'Zugriff verweigert',
     17 => "Keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Zurück zum  Administrator-Menü</a>.",
@@ -169,7 +169,7 @@ $LANG_LINKS_ADMIN = array(
     58 => 'Jetzt überprüfen',
     59 => '<p>Um alle aufgeführten Links zu überprüfen, einfach "Jetzt überprüfen" unten anklicken. Es kann etwas dauern, abhängig davon, wie viele Links aufgeführt sind.</p>',
     60 => 'User %s hat unrechtmäßig versucht, die Kategorie %s zu editieren.',
-    61 => 'Links in Category'
+    61 => 'Links in der Kategorie'
 );
 
 
