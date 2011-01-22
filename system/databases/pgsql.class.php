@@ -490,10 +490,8 @@ class DataBase
                     }
                     
                     $sql="INSERT INTO $table ($fields) VALUES ($values)";  
-                }
-                else
-                {
-                    COM_errorLog("There was a problem saving this DB_save call: $fields,$values"); 
+                } else {
+                    $this->_errorlog("There was a problem saving this DB_save call: $fields,$values");
                 }
             }
             else //no keys to worry about
@@ -550,7 +548,7 @@ class DataBase
                 }
             } else {
                 // error, they both have to be arrays and of the same size
-                COM_errorLog("The columns ($id) do not match the value count ($value)"); 
+                $this->_errorlog("The columns ($id) do not match the value count ($value)");
                 return false;
             }
         } else {
