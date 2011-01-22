@@ -484,9 +484,9 @@ class DataBase
                     }
                     $result = $this->dbQuery($sql);
                     $row2 = pg_fetch_row($result);
-                    if($row2[0]!=0){
-                    $sql = "DELETE FROM $table WHERE $where_clause";
-                    $result = $this->dbQuery($sql);
+                    if ($row2 && is_array($row2) && !empty($row2[0])) {
+                        $sql = "DELETE FROM $table WHERE $where_clause";
+                        $result = $this->dbQuery($sql);
                     }
                     
                     $sql="INSERT INTO $table ($fields) VALUES ($values)";  
