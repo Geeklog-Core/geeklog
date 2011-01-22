@@ -6216,19 +6216,15 @@ function COM_onFrontpage()
     $onFrontpage = false;
 
     // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
-    if( empty( $_SERVER['PATH_INFO'] ))
-    {
+    if (empty($_SERVER['PATH_INFO'])) {
         $scriptName = $_SERVER['SCRIPT_NAME'];
-    }
-    else
-    {
+    } else {
         $scriptName = $_SERVER['PATH_INFO'];
     }
 
-    preg_match( '/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly );
-    if(( $scriptName == $pathonly[1] . '/index.php' ) &&
-            empty( $topic ) && ( $page == 1 ) && !$newstories )
-    {
+    preg_match('/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly);
+    if (($scriptName == $pathonly[1] . '/index.php') &&
+            empty($topic) && (empty($page) || ($page == 1)) && !$newstories) {
         $onFrontpage = true;
     }
 
