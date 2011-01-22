@@ -1497,6 +1497,35 @@ function PLG_getHeaderCode()
 }
 
 /**
+* This function is called from COM_siteFooter and will return additional footer
+* information. This can be used for JavaScript functions required for the plugin
+*
+* @return   string      returns a concatenated string of all plugins extra footer code
+* @since    Geeklog 1.8.0
+*
+*/
+function PLG_getFooterCode()
+{
+    global $_PLUGINS;
+
+    $footercode = '';
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_getfootercode_' . $pi_name;
+        if (function_exists($function)) {
+            $footercode .= $function();
+        }
+    }
+
+    $function = 'CUSTOM_getfootercode';
+    if (function_exists($function)) {
+        $footercode .= $function();
+    }
+
+    return $footercode;
+}
+
+/**
 * Get a list of all currently supported autolink tags.
 *
 * Returns an associative array where $A['tag-name'] = 'plugin-name'

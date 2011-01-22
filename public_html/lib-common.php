@@ -1504,6 +1504,9 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     // Call to plugins to set template variables in the footer
     PLG_templateSetVars( 'footer', $footer );
 
+    // Call any plugin that may want to include extra JavaScript functions
+    $footer->set_var('plg_footercode', PLG_getFooterCode());
+
     // Actually parse the template and make variable substitutions
     $footer->parse( 'index_footer', 'footer' );
 

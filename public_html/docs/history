@@ -3,6 +3,10 @@ Geeklog History/Changes:
 Apr ??, 2011 (1.8.0)
 ------------
 
+- Added a PLG_getFooterCode function and corresponding {plg_footercode}
+  variable in footer.thtml. This will allow plugins to add code to a site's
+  footer, e.g. to load JavaScript code as late as possible (based on patch
+  #0000906, provided by hiroron) [Dirk]
 - Introduced COM_versionCompare() to compare Geeklog version numbers, since
   they can't be compared using the PHP version_compare() function (feature
   request #0000866, patch provided by Rouslan Placella)
