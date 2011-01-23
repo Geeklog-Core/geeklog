@@ -7,6 +7,8 @@ Apr ??, 2011 (1.8.0)
   variable in footer.thtml. This will allow plugins to add code to a site's
   footer, e.g. to load JavaScript code as late as possible (based on patch
   #0000906, provided by hiroron) [Dirk]
+- COM_onFrontpage didn't work correctly when called from a theme's functions.php
+  (bug #0001254, patch provided by mystral-kk)
 - Introduced COM_versionCompare() to compare Geeklog version numbers, since
   they can't be compared using the PHP version_compare() function (feature
   request #0000866, patch provided by Rouslan Placella)
@@ -26,6 +28,11 @@ Apr ??, 2011 (1.8.0)
   (bug #0001209) [Dirk]
 - Moved handling of the [story:] and [user:] autotags to lib-story.php and
   lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
+
+Links Plugin
+------------
+- Fixed text above the list of links, which was referring to a menu entry that
+  no longer exists (bug #0001216)
 
 Static Pages Plugin
 -------------------
