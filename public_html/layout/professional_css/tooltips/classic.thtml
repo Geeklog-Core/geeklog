@@ -1,0 +1,1 @@
+<a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="classic">{text}</span></a>

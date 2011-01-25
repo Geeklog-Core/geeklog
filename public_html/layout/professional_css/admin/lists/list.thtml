@@ -1,0 +1,31 @@
+
+<!-- admin/lists/list.thtml { -->
+
+{search_menu}
+
+<form action="{form_url}" method="post">
+{formfields_top}
+
+<table class="admin-list">
+  <thead>
+    <tr>{header_row}</tr>
+  </thead>
+
+  <tbody>
+    {item_row}
+  </tbody>
+</table>
+
+<ul class="admin-list-navi" style="{show_deleteimage}">
+  <li><input type="image" name="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}></li>
+</ul>
+
+{formfields_bottom}
+
+</form>
+
+<p class="admin-list-message" style="{show_message}">{message}</p>
+
+{google_paging}
+
+<!-- } admin/lists/list.thtml -->

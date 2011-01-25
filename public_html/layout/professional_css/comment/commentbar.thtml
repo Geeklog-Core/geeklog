@@ -1,0 +1,41 @@
+
+<!-- comment/commentbar.thtml { -->
+
+<ul class="status">
+  <li>{start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}</li>
+  <li>{num_comments}{lang_comments}</li>
+  <li>{user_nullname}<a href="{login_logout_url}" rel="nofollow">{lang_login_logout}</a></li>
+</ul>
+
+<form action="{parent_url}" method="post" id="commentbar-selector" class="basic">
+
+  <div class="user_basic">
+    <ul>
+      <li>{order_selector}</li>
+      <li>{mode_selector}</li>
+      <li>
+        {hidden_field}
+        <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+        <input type="submit" value="{lang_refresh}" class="submit"{xhtml}>
+      </li>
+    </ul>
+  </div>  
+</form>
+
+<form action="{site_url}/comment.php" method="post" id="commentbar-comment" class="basic">
+  <div class="user_basic">
+    <ul class="submit">
+      <li>
+        <input type="hidden" name="sid" value="{sid}"{xhtml}>
+        <input type="hidden" name="pid" value="0"{xhtml}>
+        <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+        <input type="hidden" name="title" value="{comment_title}"{xhtml}>
+        <input type="submit" name="reply" value="{lang_reply}" class="submit"{xhtml}>
+      </li>
+    </ul>
+  </div>
+</form>
+
+<p class="disclaimer">{lang_disclaimer}</p>
+
+<!-- } comment/commentbar.thtml -->

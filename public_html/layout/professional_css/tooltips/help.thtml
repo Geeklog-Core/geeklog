@@ -1,0 +1,1 @@
+<a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="custom help"><img class="icon" src="{layout_url}/tooltips/images/help.png" alt="{title}" height="48" width="48"{xhtml}><em>{title}</em>{text}</span></a>

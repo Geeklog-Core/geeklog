@@ -1,0 +1,8 @@
+
+<!-- admin/moderation/moderation.thtml { -->
+
+<ul id="admin-moderation">
+  {cc_rows}
+</ul>
+
+<!-- } admin/moderation/moderation.thtml -->

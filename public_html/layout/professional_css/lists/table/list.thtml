@@ -1,0 +1,20 @@
+<!-- /lists/table/list.thtml { -->
+                            {list_top}
+                            <div class="admin-list-search">
+                                <form name="page_limit" style="display: inline;">
+                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                    {page_limit}
+                                </select>
+                               </form>
+                            </div>
+                            <table class="admin-list-table" style="{show_sort}">
+                                <tr style="background:#FFFFFF;">
+                                    {page_sort}
+                                </tr>
+                                {item_row}
+                            </table>
+                            <p class="aligncenter" style="{show_message}"><strong>{message}</strong></p>
+                            <br{xhtml}>
+                            {google_paging}
+                            {list_bottom}
+<!-- } /lists/table/list.thtml -->

@@ -1,0 +1,3 @@
+<!-- /lists/table/item_field.thtml { -->
+                                    <td>{field_text}</td>
+<!-- } /lists/table/item_field.thtml -->

@@ -1,0 +1,11 @@
+
+<!-- comment/startcomment.thtml { -->
+
+<div id="comments">
+  {commentbar}
+  {comments}
+
+  <p class="pagenav">{pagenav}</p>
+</div>
+
+<!-- } comment/startcomment.thtml -->

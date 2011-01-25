@@ -1,0 +1,55 @@
+
+<!-- admin/plugins/editor.thtml { -->
+
+{start_block_editor}
+
+<form action="{site_admin_url}/plugins.php" method="post" id="admin-editor" class="compact">
+
+  <div class="admin_basic">
+
+    <div id="admin-instructions">
+      <img src="{pi_icon}" alt=""{xhtml}>
+
+      <ul class="submit">
+        <li><input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}></li>
+        <li><input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}></li>
+        <li>{delete_option}</li>
+        <li>
+          <input type="hidden" name="pi_name" value="{pi_name}"{xhtml}>
+          <input type="hidden" name="confirmed" value="{confirmed}"{xhtml}>
+          <input type="hidden" name="pi_homepage" value="{pi_homepage}"{xhtml}>
+          <input type="hidden" name="pi_version" value="{pi_version}"{xhtml}>
+          <input type="hidden" name="pi_codeversion" value="{pi_codeversion}"{xhtml}>
+          <input type="hidden" name="pi_gl_version" value="{pi_gl_version}"{xhtml}>
+          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+          {update_option}
+        </li>
+      </ul>
+    </div>
+
+    <dl>
+      <dt>{lang_pluginname}</dt>
+      <dd>{pi_display_name}</dd>
+
+      <dt>{lang_pluginhomepage}</dt>
+      <dd><a href="{pi_homepage}">{pi_homepage}</a></dd>
+
+      <dt>{lang_pluginversion}</dt>
+      <dd>{pi_version}</dd>
+
+      <dt>{lang_plugincodeversion}</dt>
+      <dd>{pi_codeversion}</dd>
+
+      <dt>{lang_geeklogversion}</dt>
+      <dd>{pi_gl_version}</dd>
+
+      <dt>{lang_enabled}</dt>
+      <dd><input type="checkbox" name="enabled" {enabled_checked}{xhtml}></dd>
+    </dl>
+  </div>
+
+</form>
+
+{end_block}
+
+<!-- } admin/plugins/editor.thtml -->

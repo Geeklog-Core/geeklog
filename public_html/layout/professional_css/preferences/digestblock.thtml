@@ -1,0 +1,17 @@
+
+<!-- preferences/digestblock.thtml { -->
+
+<fieldset>
+  <legend>{lang_digest_top_header}</legend>
+
+  <dl class="notes">
+    <dt>{lang_digest_help_header}</dt>
+    <dd>{lang_emailedtopics}</dd>
+  </dl>
+
+  <p class="checklist">
+    {email_topic_checklist}
+  </p>
+</fieldset>
+
+<!-- } preferences/digestblock.thtml -->

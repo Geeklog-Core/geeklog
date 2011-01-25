@@ -1,0 +1,342 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Comment Style 
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Comment  | Comment page style.
+  Apply       : comment/startcomment.thtml, comment/commentbar.thtml,
+                comment/commentform.thtml, comment/commentform_advanced.thtml,
+                comment/reportcomment.thtml, comment/comment.thtml, comment/thread.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Comment Block
+--------------------------------------*/
+
+/* Comment Block */
+div#comments {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+/* Comment Page Navigation */
+div#comments p.pagenav {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+
+
+/*--------------------------------------
+  Comment バー
+--------------------------------------*/
+
+/* Comment Information (Story Title | Comment Number | Username) */
+div#comments ul.status {
+  list-style-type: none;
+  margin: 1em 0 0.5em 0;
+  padding: 0;
+}
+
+div#comments ul.status li {
+  display: inline;
+  margin: 0 2px;
+  padding: 0;
+}
+
+div#comments ul.status li a {
+  margin-left: 8px;
+}
+
+/* Comment Selecter Form  */
+div#comments form#commentbar-selector {
+  display: inline;
+}
+
+div#comments form#commentbar-selector fieldset {
+  display: inline;
+}
+
+div#comments form#commentbar-selector ul {
+  margin: 0;
+  padding: 0;
+}
+
+div#comments form#commentbar-selector ul li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Comment Submit Form  */
+div#comments form#commentbar-comment {
+  display: inline;
+}
+
+div#comments form#commentbar-comment fieldset {
+  display: inline;
+}
+
+/* Comment NOTE */
+div#comments p.disclaimer {
+  margin: 0.5em 0 1em 0;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Comment Body
+--------------------------------------*/
+
+/* Individual Comment (Tree) */
+div#comments ul.thread {
+  list-style-position: outside;
+  list-style-type: none;
+  margin: 0 0 0.5em 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Individual Comment (Tree) Title */
+div#comments ul.thread li.title {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Individual Comment (Tree) Auther */
+div#comments ul.thread li.author {
+  display: inline;
+  margin: 0 0 0 8px;
+  padding: 0;
+}
+
+div#comments ul.thread li.author:before {
+  content: " - ";
+}
+
+/* Individual Comment Level(Nested | Tree) */
+div#comments div.level-25,
+div#comments ul.level-25 {
+  margin-left: 0;
+}
+
+div#comments div.level-25,
+div#comments ul.level-25 {
+  margin-left: 16px;
+}
+
+div#comments div.level-50,
+div#comments ul.level-50 {
+  margin-left: 32px;
+}
+
+div#comments div.level-100,
+div#comments ul.level-100 {
+  margin-left: 48px;
+}
+
+div#comments div.level-125,
+div#comments ul.level-125 {
+  margin-left: 64px;
+}
+
+div#comments div.level-150
+div#comments ul.level-150 {
+  margin-left: 80px;
+}
+
+div#comments div.level-175
+div#comments ul.level-175 {
+  margin-left: 96px;
+}
+
+div#comments div.level-200,
+div#comments ul.level-200 {
+  margin-left: 112px;
+}
+
+div#comments div.level-225,
+div#comments ul.level-225 {
+  margin-left: 128px;
+}
+
+div#comments div.level-250,
+div#comments ul.level-250 {
+  margin-left: 144px;
+}
+
+/* Individual Comment  */
+div#comments div.block-comment-content {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+/* Comment Information  */
+div#comments div.block-comment-content ul.status {
+  list-style-position: outside;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Comment Title */
+div#comments div.block-comment-content ul.status li.title {
+  display: block;
+  margin: 1em 0 0.5em 0;
+  padding: 4px;
+  border: 1px solid #E7E7E7;
+  background: #F7F7F7;
+}
+
+/* Comment Auther */
+div#comments div.block-comment-content ul.status li.author {
+  display: block;
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+
+/* Comment 本文 */
+div#comments div.block-comment-content div.comment {
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+
+/* Comment Navigation */
+div#comments div.block-comment-content ul.navi {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+
+div#comments div.block-comment-content ul.navi:before {
+  content: "[";
+}
+
+div#comments div.block-comment-content ul.navi:after {
+  content: "]";
+}
+
+div#comments div.block-comment-content ul.navi li {
+  display: inline;
+  margin: 0 2px;
+  padding: 0;
+}
+
+/* 永久Links */
+div#comments div.block-comment-content ul.navi li.permlink {
+  margin: 0 2px 0 0;
+}
+
+div#comments div.block-comment-content ul.navi li.permlink:before {
+  content: " | ";
+}
+
+
+
+/*--------------------------------------
+  迷惑報告Form 
+--------------------------------------*/
+
+/* Comment  */
+form#reportcomment div.comment {
+  margin: 0 0 1em 0;
+  padding: 0;
+  border-bottom: 1px solid #E7E7E7;
+}
+
+
+
+/*--------------------------------------
+  Comment Submit Form (Normal Editor)
+--------------------------------------*/
+
+/* Username */
+form#commentform dl dt.username {
+  display: inline;
+}
+
+form#commentform dl dd.username {
+  display: inline;
+  margin-left: 8px;
+}
+
+form#commentform dl dd.username a {
+  margin-left: 8px;
+}
+
+form#commentform dl dd.username a:before {
+  content: "[";
+}
+
+form#commentform dl dd.username a:after {
+  content: "]";
+}
+
+/* Title */
+form#commentform dl dt.title {
+  margin-top: 0.5em;
+}
+
+/* NOTE */
+form#commentform dl.importantstuff dd ul {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0;
+}
+
+form#commentform dl.importantstuff dd ul li {
+  margin: 0 0 0 8px;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Comment Submit Form (Advanced Editor)
+--------------------------------------*/
+
+/* Username */
+form#commentform_advanced dl dt.username {
+  display: inline;
+}
+
+form#commentform_advanced dl dd.username {
+  display: inline;
+  margin-left: 8px;
+}
+
+form#commentform_advanced dl dd.username a {
+  margin-left: 8px;
+  padding: 0 2px;
+}
+
+form#commentform_advanced dl dd.username a:before {
+  content: "[";
+}
+
+form#commentform_advanced dl dd.username a:after {
+  content: "]";
+}
+
+/* Title */
+form#commentform_advanced dl dt.title {
+  margin-top: 0.5em;
+}
+
+/* NOTE */
+form#commentform_advanced dl.importantstuff dd ul {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0;
+}
+
+form#commentform_advanced dl.importantstuff dd ul li {
+  margin: 0 0 0 8px;
+  padding: 0;
+}

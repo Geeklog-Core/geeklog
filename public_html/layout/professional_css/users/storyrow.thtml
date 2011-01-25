@@ -1,0 +1,6 @@
+
+<!-- users/storyrow.thtml { -->
+
+<p class="storyrow">{row_number}{story_title}{story_date}</p>
+
+<!-- } users/storyrow.thtml -->

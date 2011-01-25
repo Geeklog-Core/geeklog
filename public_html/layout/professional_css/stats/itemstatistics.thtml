@@ -1,0 +1,18 @@
+
+<!-- stats/itemstatistics.thtml { -->
+
+<table class="itemstatistics">
+  <thead>
+    <tr>
+      <th>{item_label}</th>
+      <th>{stat_name}</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {stat_row}
+  </tbody>
+
+</table>
+
+<!-- } stats/itemstatistics.thtml -->

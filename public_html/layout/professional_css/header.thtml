@@ -1,0 +1,66 @@
+{doctype}
+<html{lang_attribute}{xmlns}>
+  <head profile="http://www.w3.org/2003/g/data-view">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
+    <title>{page_title_and_site_name}</title>
+
+    <meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
+    <meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
+    <meta http-equiv="imagetoolbar" content="no"{xhtml}>
+    <!-- link rel="SHORTCUT ICON" href="{site_url}/favicon.ico" -->
+    <!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+    <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}"{xhtml}>
+    <link rel="start contents" href="{site_url}"{xhtml}>
+{feed_url}
+{rel_links}
+{plg_headercode}
+{advanced_editor}
+<!-- Load Common Javascript Libraries -->
+    <script type="text/javascript" src="{site_url}/javascript/common.js"></script>
+    <script type="text/javascript" src="{layout_url}/javascript/confirm.js"></script>
+    <script type="text/javascript" src="{layout_url}/javascript/fix_html.js"></script>
+  </head>
+
+
+  <body class="js_off">
+<!-- header.thtml { -->
+
+<!-- #container { -->
+    <div id="container">
+
+      <!-- #header { -->
+      <div id="header">
+        <div id="header-content">
+          <h1 class="site_name"><a href="{site_url}"><img src="{site_logo}" width="151" height="56" alt="{site_name}"{xhtml}></a></h1>
+         <p class="site_slogan">{site_slogan}</p>
+        </div>
+      </div>
+      <!-- } #header -->
+
+      <hr class="separator"{xhtml}>
+
+      <!-- #navigation { -->
+      <div id="navigation">
+        <div class="navigation_content">
+          <ul>
+            {menu_elements}
+          </ul>
+        </div>
+      </div>
+      <!-- } #navigation -->
+
+      <hr class="separator"{xhtml}>
+
+      <!-- #wrapper { -->
+      <div id="wrapper">
+
+        {left_blocks}
+
+        <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs <![endif]-->
+        <!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
+        <!--[if !IE]> #centerblocks { <![endif]-->
+        <!-- Center Block Container -->
+        <div id="centerblocks">
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+
+<!-- } header.thtml -->

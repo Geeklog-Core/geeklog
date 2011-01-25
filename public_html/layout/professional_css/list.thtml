@@ -1,0 +1,8 @@
+
+<!-- list.thtml { -->
+
+      <ul {list_class}>
+        {list_items}
+      </ul>
+
+<!-- } list.thtml -->

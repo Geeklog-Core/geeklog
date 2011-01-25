@@ -1,0 +1,29 @@
+
+<!-- admin/user/batchdelete.thtml { -->
+
+<p>{lang_instruction}</p>
+
+<form action="{site_admin_url}/user.php?mode=batchdelete" method="post" id="admin-batchdelete" class="compact">
+  <fieldset>
+    <legend>{lang_updatelist}</legend>
+
+    <ul class="submit">
+      <li>
+<input type="hidden" name="usr_type" value="{usr_type}"><input type="hidden" name="usr_time[{usr_type}]" value="{usr_time}"{xhtml}>
+        <input type="hidden" name="mode" value="batchdelete"{xhtml}>
+        <input type="hidden" name="usr_type" value="{usr_type}"{xhtml}>
+        <input type="hidden" name="usr_time[{usr_type}]" value="{usr_time}"{xhtml}>
+      </li>
+    </ul>
+    <dl>
+      <dt>
+      {options_list}
+      </dt>
+      <dd>
+        <input type="submit" name="submit" value="{lang_updatelist}"{xhtml}>
+      </dd>
+    </dl>
+  </fieldset>
+</form>
+
+<!-- } admin/user/batchdelete.thtml -->

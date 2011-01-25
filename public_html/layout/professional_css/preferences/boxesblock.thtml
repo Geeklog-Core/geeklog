@@ -1,0 +1,15 @@
+
+<!-- preferences/boxesblock.thtml { -->
+
+<fieldset>
+  <legend>{lang_boxes_title}</legend>
+
+  <dl class="notes">
+    <dt>{lang_boxes_help_title}</dt>
+    <dd>{lang_boxes}</dd>
+  </dl>
+
+    {boxes_checklist}
+</fieldset>
+
+<!-- } preferences/boxesblock.thtml -->

@@ -1,0 +1,5 @@
+<!-- /lists/table/item_row.thtml { -->
+                                <tr class="pluginRow{cssid}" onmouseover="className='pluginRollOver';" onmouseout="className='pluginRow{cssid}';">
+                                    {item_field}
+                                </tr>
+<!-- } /lists/table/item_row.thtml -->

@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Tooltips Style 
+  Author      : 
+  Description : Style for Tooltips.
+  Apply       : tooltips/classic.thtml, tooltips/warning.thtml
+                tooltips/information.thtml, tooltips/critical.thtml
+                tooltips/help.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Tooltips 
+--------------------------------------*/
+
+a.tooltip {
+    border-bottom: 1px dotted #000000; color: #000000; outline: none;
+    text-decoration: none;
+    position: relative;
+}
+a.tooltip span {
+    margin-left: -999em;
+    position: absolute;
+}
+a.tooltip:hover span {
+    border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; 
+    box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
+    font-size: 1em; text-align: left; white-space:normal;
+    font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
+    position: absolute; left: 1em; top: 2em; z-index: 99;
+    margin-left: 0; width: 250px;
+}
+a.tooltip:hover img.icon {
+    border: 0; margin: -15px 0 0 -51px;
+    float: left; position: absolute;
+}
+a.tooltip img#tooltip-icon { 
+    border: 0;
+}
+a.tooltip:hover em {
+    font-family: Candara, Tahoma, Geneva, sans, sans-serif; font-size: 1.2em; font-weight: bold;
+    display: block; padding: 0.2em 0 0.6em 0.4em;
+}
+span.classic     { padding: 0.8em 1em; }
+span.custom      { padding: 0.5em 0.8em 0.8em 2em; }
+* html a:hover   { background: transparent; }
+span.classic     { background: #EEEEEC; border: 2px solid #555753; }
+span.critical    { background: #F5F0F0; border: 2px solid #A40000; }
+span.help        { background: #EDF0F2; border: 2px solid #204A87; }
+span.info        { background: #EDF0F2; border: 2px solid #204A87; }
+span.warning     { background: #FCF7EF; border: 2px solid #CE5C00; font-weight: normal; color: black; }
+span.critical em { color: #A40000; }
+span.help     em { color: #204A87; }
+span.info     em { color: #204A87; }
+span.warning  em { color: #CE5C00; }
+

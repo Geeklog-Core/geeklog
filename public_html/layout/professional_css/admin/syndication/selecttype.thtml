@@ -1,0 +1,17 @@
+
+<!-- admin/syndication/selecttype.thtml { -->
+
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-selecttype" class="basic">
+  <fieldset>
+    <legend>{lang_go}</legend>
+
+    <p class="message">{lang_explain}</p>
+
+    <ul class="submit">
+      <li>{type_selection}</li>
+      <li><input type="submit" value="{lang_go}" name="mode" class="submit"{xhtml}></li>
+    </ul>
+  </fieldset>
+</form>
+
+<!-- } admin/syndication/selecttype.thtml -->

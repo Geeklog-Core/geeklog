@@ -1,0 +1,37 @@
+<!--[if !IE]> Win IE 6のバグを回避するために一部、条件コメントを使用しています。 <![endif]-->
+<!--[if !IE]> (複数の浮動要素を組み合わせた場合に、最後の浮動要素の内容が重複するバグ) <![endif]-->
+<!-- leftblocks.thtml { -->
+
+    <!-- #leftblocks { -->
+    <!-- 左ブロックコンテナ -->
+    <div id="leftblocks">
+      <div class="block-left" id="block-left-search">
+        <h2>{button_search}</h2>
+        <div class="block-left-content">
+          <form action="{site_url}/search.php" method="get" id="searchform" class="basic">
+            <fieldset>
+              <legend>{button_search}</legend>
+              <ul>
+                <li><input type="text" size="16" maxlength="255" name="query" class="text"{xhtml}></li>
+                <li>
+                  <input type="hidden" value="all" name="type"{xhtml}>
+                  <input type="hidden" value="all" name="keyType"{xhtml}>
+                  <input type="hidden" value="search" name="mode"{xhtml}>
+                  <input type="submit" value="{button_search}" class="submit"{xhtml}>
+                </li>
+              </ul>
+              <ul>
+                <li><a href="{site_url}/search.php">{button_advsearch}</a></li>
+              </ul>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      {geeklog_blocks}
+    </div>
+    <!--[if !IE]> } #leftblocks <![endif]-->
+
+    <hr class="separator"{xhtml}>
+
+<!-- } leftblocks.thtml -->

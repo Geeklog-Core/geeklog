@@ -1,0 +1,15 @@
+
+<!--[if !IE]> Win IE 6のバグを回避するために一部、条件コメントを使用しています。 <![endif]-->
+<!--[if !IE]> (複数の浮動要素を組み合わせた場合に、最後の浮動要素の内容が重複するバグ) <![endif]-->
+<!--[if !IE]> rightblocks.thtml { <![endif]-->
+
+    <hr class="separator"{xhtml}>
+
+    <!--[if !IE]> #rightblocks { <![endif]-->
+    <!--[if !IE]> 右ブロックコンテナ <![endif]-->
+    <div id="rightblocks">
+      {geeklog_blocks}
+    </div>
+    <!-- } #rightblocks -->
+
+<!-- } rightblocks.thtml -->

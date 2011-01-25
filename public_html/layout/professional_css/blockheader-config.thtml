@@ -1,0 +1,8 @@
+
+<!-- blockheader-config.thtml { -->
+
+<div class="block-center">
+    <h2>{block_title}{block_help}</h2>
+      <div class="block-center-content">
+
+<!-- } blockheader-config.thtml -->
