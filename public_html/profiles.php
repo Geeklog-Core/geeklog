@@ -2,14 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
 // |                                                                           |
 // | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -42,13 +42,14 @@ require_once 'lib-common.php';
 * Mails the contents of the contact form to that user
 *
 * @param    int     $uid            User ID of person to send email to
+* @param    bool    $cc             Whether to send a copy of the message to the author
 * @param    string  $author         The name of the person sending the email
 * @param    string  $authoremail    Email address of person sending the email
 * @param    string  $subject        Subject of email
 * @param    string  $message        Text of message to send
 * @return   string                  Meta redirect or HTML for the contact form
 */
-function contactemail($uid,$author,$authoremail,$subject,$message)
+function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
 {
     global $_CONF, $_TABLES, $_USER, $LANG04, $LANG08, $LANG12;
 
@@ -119,7 +120,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             if (!empty ($msg)) {
                 $retval .= COM_siteHeader ('menu', $LANG04[81])
                         . COM_errorLog ($msg, 2)
-                        . contactform ($uid, $subject, $message)
+                        . contactform ($uid, $cc, $subject, $message)
                         . COM_siteFooter ();
 
                 return $retval;
@@ -156,7 +157,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             $retval .= COM_siteHeader ('menu', $LANG04[81])
                     . COM_errorLog ($LANG08[3], 2)
-                    . contactform ($uid, $subject, $message)
+                    . contactform ($uid, $cc, $subject, $message)
                     . COM_siteFooter ();
         }
     } else {
@@ -165,7 +166,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
         $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
         $retval .= COM_siteHeader ('menu', $LANG04[81])
                 . COM_errorLog ($LANG08[4], 2)
-                . contactform ($uid, $subject, $message)
+                . contactform ($uid, $cc, $subject, $message)
                 . COM_siteFooter ();
     }
 
@@ -176,12 +177,13 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 * Displays the contact form
 *
 * @param    int     $uid        User ID of article author
+* @param    bool    $cc         Whether to send a copy of the message to the author
 * @param    string  $subject    Subject of email
 * @param    string  $message    Text of message to send
 * @return   string              HTML for the contact form
 *
 */
-function contactform ($uid, $subject = '', $message = '')
+function contactform ($uid, $cc = false, $subject = '', $message = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
 
@@ -203,6 +205,9 @@ function contactform ($uid, $subject = '', $message = '')
         if ((($P['emailfromadmin'] == 1) && $isAdmin) ||
             (($P['emailfromuser'] == 1) && !$isAdmin)) {
 
+            if ($cc) {
+                $cc = ' checked="checked"';
+            }
             $retval = COM_startBlock($LANG08[10] . ' ' . $displayname);
             $mail_template = new Template($_CONF['path_layout'] . 'profiles');
             $mail_template->set_file('form', 'contactuserform.thtml');
@@ -237,6 +242,7 @@ function contactform ($uid, $subject = '', $message = '')
             } else {
                 $mail_template->set_var ('useremail', $_USER['email']);
             }
+            $mail_template->set_var('cc', $cc);
             $mail_template->set_var('lang_cc', $LANG08[36]);
             $mail_template->set_var('lang_cc_description', $LANG08[37]);
             $mail_template->set_var('lang_subject', $LANG08[13]);
@@ -398,11 +404,18 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 /**
 * Display form to email a story to someone.
 *
-* @param    string  $sid    ID of article to email
-* @return   string          HTML for email story form
+* @param    string  $sid        ID of article to email
+* @param    bool    $cc         Whether to send a copy of the message to the author
+* @param    string  $to         name of person / friend to email
+* @param    string  $toemail    friend's email address
+* @param    string  $from       name of person sending the email
+* @param    string  $fromemail  sender's email address
+* @param    string  $shortmsg   short intro text to send with the story
+* @param    string  $msg        Error message code
+* @return   string              HTML for email story form
 *
 */
-function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
+function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
                         $fromemail = '', $shortmsg = '', $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
@@ -438,6 +451,10 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
         }
     }
 
+    if ($cc) {
+        $cc = ' checked="checked"';
+    }
+
     $mail_template = new Template($_CONF['path_layout'] . 'profiles');
     $mail_template->set_file('form', 'contactauthorform.thtml');
     $mail_template->set_var('xhtml', XHTML);
@@ -460,6 +477,7 @@ function mailstoryform ($sid, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('toname', $to);
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
     $mail_template->set_var('toemail', $toemail);
+    $mail_template->set_var('cc', $cc);
     $mail_template->set_var('lang_cc', $LANG08[36]);
     $mail_template->set_var('lang_cc_description', $LANG08[37]);
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
@@ -487,11 +505,17 @@ if (isset ($_POST['what'])) {
     $what = '';
 }
 
+if (isset($_POST['cc'])) { // Remember if user wants to get a copy of the message
+    $cc = true;
+} else {
+    $cc = false;
+}
+
 switch ($what) {
     case 'contact':
         $uid = COM_applyFilter ($_POST['uid'], true);
         if ($uid > 1) {
-            $display .= contactemail ($uid, $_POST['author'],
+            $display .= contactemail ($uid, $cc, $_POST['author'],
                     $_POST['authoremail'], $_POST['subject'],
                     $_POST['message']);
         } else {
@@ -508,7 +532,7 @@ switch ($what) {
                                     . '/article.php?story=' . $sid));
         } else {
             $display .= COM_siteHeader ('menu', $LANG08[17])
-                     . mailstoryform ($sid)
+                     . mailstoryform ($sid, true)
                      . COM_siteFooter ();
         }
         break;
@@ -524,7 +548,7 @@ switch ($what) {
                     (strpos($_POST['to'], '@') !== false) ||
                     (strpos($_POST['from'], '@') !== false)) {
                 $display .= COM_siteHeader('menu', $LANG08[17])
-                         . mailstoryform ($sid, COM_applyFilter($_POST['to']),
+                         . mailstoryform ($sid, $cc, COM_applyFilter($_POST['to']),
                                 COM_applyFilter($_POST['toemail']),
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
@@ -534,7 +558,7 @@ switch ($what) {
                     empty($_POST['shortmsg'])) {
                 $display .= COM_siteHeader ('menu', $LANG08[17])
                          . COM_showMessageText($LANG08[22])
-                         . mailstoryform($sid, COM_applyFilter($_POST['to']),
+                         . mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
                                 COM_applyFilter($_POST['toemail']),
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
@@ -545,7 +569,7 @@ switch ($what) {
                 if (!empty($msg)) {
                     $display .= COM_siteHeader('menu', $LANG08[17])
                              . COM_errorLog($msg, 2)
-                             . mailstoryform($sid, COM_applyFilter($_POST['to']),
+                             . mailstoryform($sid, $cc, COM_applyFilter($_POST['to']),
                                 COM_applyFilter($_POST['toemail']),
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
@@ -573,7 +597,7 @@ switch ($what) {
                 $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             }
             $display .= COM_siteHeader ('menu', $LANG04[81])
-                     . contactform ($uid, $subject)
+                     . contactform ($uid, true, $subject)
                      . COM_siteFooter ();
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');

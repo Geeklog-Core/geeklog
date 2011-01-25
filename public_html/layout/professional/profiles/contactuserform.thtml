@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <td class="alignright"><b>{lang_cc}</b></td>
-            <td><input type="checkbox" name="cc" checked="checked"{xhtml}>&nbsp;{lang_cc_description}</td>
+            <td><input type="checkbox" name="cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</td>
         </tr>
         {captcha}
         <tr>
