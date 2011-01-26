@@ -121,7 +121,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Osnutek',
     'draft_yes' => 'Da',
-    'draft_no' => 'Ne'
+    'draft_no' => 'Ne',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Komentar je oddan v pregled in bo objavljen, ko ga odobri urednik.';
@@ -151,6 +153,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtriraj HTML?',
     'censor' => 'Cenzuriraj vsebino?',
     'default_permissions' => 'Prednastavljene pravice strani',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Po shranitvi strani',
     'atom_max_items' => 'Najveè strani v feed-u spletnih storitev',
     'meta_tags' => 'Omogoèi Meta Tags',
@@ -174,7 +178,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Splošne nastavitve statiènih strani',
     'fs_whatsnew' => 'Blok Kaj je novega',
     'fs_search' => 'Rezultati iskanja',
-    'fs_permissions' => 'Prednastavljene pravice'
+    'fs_permissions' => 'Prednastavljene pravice',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -187,6 +192,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Skrij' => 'hide', 'Prikaži - uporabi spremenjeni datum' => 'modified', 'Prikaži - uporabi ustvarjeni datum' => 'created'),
     9 => array('Naprej na stran' => 'item', 'Prikaži seznam' => 'list', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Komentarji omogoèeni' => 0, 'Komentarji onemogoèeni' => -1)
 );
 

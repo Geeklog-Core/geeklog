@@ -2,7 +2,7 @@
 
 ###############################################################################
 # portuguese.php
-# Esta é a tradução em Português do GeekLog!
+# Esta é a tradução em Português do Geeklog!
 #
 # Copyright (C) 2003 Mário Seabra
 # mseabra@bairrinfor.com

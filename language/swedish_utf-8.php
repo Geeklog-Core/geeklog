@@ -2,7 +2,7 @@
 
 ###############################################################################
 # swedish.php
-# This is the swedish language page for GeekLog!
+# This is the swedish language page for Geeklog!
 # Translation by: Markus Berg <kelvin@lysator.liu.se>
 #
 # Credits from original english.php:
@@ -710,7 +710,7 @@ $LANG21 = array(
     27 => 'PHP-block',
     28 => 'PHP-blockinställningar',
     29 => 'Blockfunktion',
-    30 => 'Om du vill använda PHP-kod i ditt block, ange namnet på funktionen ovan.  Din funktion måste börja med prefixet "phpblock_" (t.ex. phpblock_getweather).  Om det inte har detta prefix kommer funktionen inte att kallas.  Detta görs för att förhindra personer som eventuellt har hackat din Geeklog-installation från att exekvera godtycklig kod som kan skada ditt system.  Sätt inte tomma parenteser "()" efter ditt funktionsnamn.  Slutligen rekommenderas du att lägga alla dina PHP-block i /path/to/geeklog/system/lib-custom.php.  Då kommer koden att vara kvar även när du uppdaterar till en ny version av GeekLog.',
+    30 => 'Om du vill använda PHP-kod i ditt block, ange namnet på funktionen ovan.  Din funktion måste börja med prefixet "phpblock_" (t.ex. phpblock_getweather).  Om det inte har detta prefix kommer funktionen inte att kallas.  Detta görs för att förhindra personer som eventuellt har hackat din Geeklog-installation från att exekvera godtycklig kod som kan skada ditt system.  Sätt inte tomma parenteser "()" efter ditt funktionsnamn.  Slutligen rekommenderas du att lägga alla dina PHP-block i /path/to/geeklog/system/lib-custom.php.  Då kommer koden att vara kvar även när du uppdaterar till en ny version av Geeklog.',
     31 => 'Fel i PHP-block.  Funktionen \"%s\" existerar inte.',
     32 => 'Fel: Fält saknas',
     33 => 'Du måste ange länken till .rdf-filen för portalblock',

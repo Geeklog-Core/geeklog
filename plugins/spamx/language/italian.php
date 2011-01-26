@@ -26,18 +26,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog Spam-X Plug-in!
- *
- * @package Spam-X
- * @subpackage Language
- * @filesource
- * @version 1.2
- * @copyright Copyright &copy; 2011
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
 $LANG_SX00 = array(
@@ -81,9 +69,9 @@ $LANG_SX00 = array(
     'exmod' => 'Moduli Analisi Spam-X',
     'actmod' => 'Moduli Attivi',
     'avmod' => 'Moduli Disponibili',
-    'coninst' => "<hr" . XHTML . ">Fai clic su un modulo Attivo per eliminarlo, fai clic su un modulo Disponibile per aggiungerlo.<br" . XHTML . ">I moduli vengono eseguiti nell'ordine visualizzato.",
+    'coninst' => '<hr' . XHTML . '>Fai clic su un modulo Attivo per eliminarlo, fai clic su un modulo Disponibile per aggiungerlo.<br' . XHTML . '>I moduli vengono eseguiti nell\'ordine visualizzato.',
     'fsc' => 'Trovato Commento Spam corrispondente a ',
-    'fsc1' => " inviato dall'utente ",
+    'fsc1' => ' inviato dall\'utente ',
     'fsc2' => ' from IP ',
     'uMTlist' => 'Aggiorna MT-Blacklist',
     'uMTlist2' => ': Aggiunti ',
@@ -98,26 +86,26 @@ $LANG_SX00 = array(
     'plugin' => 'Estensione',
     'access_denied' => 'Accesso Negato',
     'access_denied_msg' => 'Solo gli Utenti Root possono Accedere a questa Pagina. Il Tuo nome utente ed IP sono stati registrati.',
-    'admin' => "Amministrazione dell'Estensione",
+    'admin' => 'Amministrazione dell\'Estensione',
     'install_header' => 'Installa/Disinstalla Estensione',
-    'installed' => "L'Estensione é Installata",
-    'uninstalled' => "L'Estensione non é Installata",
+    'installed' => 'L\'Estensione é Installata',
+    'uninstalled' => 'L\'Estensione non é Installata',
     'install_success' => 'Installazione Completata con Successo',
-    'install_failed' => "Installazione Fallita -- Controlla l'error log per scoprire il perché.",
+    'install_failed' => 'Installazione Fallita -- Controlla l\'error log per scoprire il perché.',
     'uninstall_msg' => 'Estensione Disinstallata con Successo',
     'install' => 'Installa',
     'uninstall' => 'Disinstalla',
-    'warning' => "Attenzione! L'estensione é ancora Attiva",
-    'enabled' => "Disattiva l'estensione prima di disinstallarla.",
+    'warning' => 'Attenzione! L\'estensione é ancora Attiva',
+    'enabled' => 'Disattiva l\'estensione prima di disinstallarla.',
     'readme' => 'STOP! Prima di premere prego leggi il ',
     'installdoc' => 'Installa Documento.',
     'spamdeleted' => 'Commento Spam Eliminato',
     'foundspam' => 'Trovato Commento Spam corrispondente a ',
-    'foundspam2' => " inviato dall'utente ",
-    'foundspam3' => " dall'IP ",
+    'foundspam2' => ' inviato dall\'utente ',
+    'foundspam3' => ' dall\'IP ',
     'deletespam' => 'Elimina Spam',
     'numtocheck' => 'Numero Commenti da controllare',
-    'note1' => "<p>Nota: L'Eliminazione in Blocco serve ad aiutarti quando sei colpito da",
+    'note1' => '<p>Nota: L\'Eliminazione in Blocco serve ad aiutarti quando sei colpito da',
     'note2' => ' commenti spam e Spam-X non riesce a bloccarli. <ul><li>Prima cerca il o i link o altri ',
     'note3' => 'identificatori di questo commento Spam ed aggiungilo alla tua blacklist personale.</li><li>Poi ',
     'note4' => 'torna qui a fai controllare a Spam-X se gli ultimi commenti sono spam.</li></ul><p>I commenti ',
@@ -130,7 +118,7 @@ $LANG_SX00 = array(
     'initial_import' => 'Importazione Iniziale MT-Blacklist',
     'import_success' => '<p>Importati con successo %d elementi della blacklist.',
     'import_failure' => '<p><strong>Errore:</strong> Nessun elemento trovato.',
-    'allow_url_fopen' => "<p>Spiacente, la configurazione del tuo webserver non permette la lettura di file remoti (<code>allow_url_fopen</code> é off). Please download the blacklist from the following URL and upload it into Geeklog's 'data' directory, <tt>%s</tt>, before trying again:",
+    'allow_url_fopen' => '<p>Spiacente, la configurazione del tuo webserver non permette la lettura di file remoti (<code>allow_url_fopen</code> é off). Please download the blacklist from the following URL and upload it into Geeklog\'s \'data\' directory, <tt>%s</tt>, before trying again:',
     'documentation' => 'Documentazione di Spam-X',
     'emailmsg' => "Un nuovo commento spam é stato inviato su \"%s\"\nUID utente:\"%s\"\n\nContenuto:\"%s\"",
     'emailsubject' => 'Commento Spam, %s',
@@ -153,10 +141,10 @@ $LANG_SX00 = array(
 
 // Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Spam identificato ed il Commento o Messaggio é stato eliminato.';
-$PLG_spamx_MESSAGE8 = "Spam identificato. E-mail inviata all'amministratore.";
+$PLG_spamx_MESSAGE8 = 'Spam identificato. E-mail inviata all\'amministratore.';
 
 // Messages for the plugin upgrade
-$PLG_spamx_MESSAGE3001 = "L'aggiornamento di Estensioni non é supportato.";
+$PLG_spamx_MESSAGE3001 = 'L\'aggiornamento di Estensioni non é supportato.';
 $PLG_spamx_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -168,7 +156,7 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'action' => 'Azioni di Spam-X',
     'notification_email' => 'Notifica via Email',
-    'logging' => "Registrazione dell'utilizzo e degli errori abilitata",
+    'logging' => 'Registrazione dell\'utilizzo e degli errori abilitata',
     'timeout' => 'Timeout'
 );
 

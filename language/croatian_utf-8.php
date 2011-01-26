@@ -2,7 +2,7 @@
 
 ###############################################################################
 # croatian_utf-8.php
-# This is the croatian language page for GeekLog!
+# This is the croatian language page for Geeklog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2004 Roberto 'druid' Bilic

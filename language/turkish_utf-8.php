@@ -2,7 +2,7 @@
 
 ###############################################################################
 # turkish.php
-# This is the turkish language page for GeekLog 1.4.0
+# This is the turkish language page for Geeklog 1.4.0
 # Translated by Kemal CELLAT
 # kemal@moderntalking.biz
 # http://www.moderntalking.biz

@@ -2,7 +2,7 @@
 
 ###############################################################################
 # romanian.php 
-# This is the romanian language page for GeekLog!
+# This is the romanian language page for Geeklog!
 #
 # Copyright (C) 2003 dan gheorghitza
 # dangk12@yahoo.com

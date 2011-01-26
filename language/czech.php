@@ -2,7 +2,7 @@
 
 ###############################################################################
 # 
-# This is the czech language page for GeekLog!
+# This is the czech language page for Geeklog!
 #
 # Copyright (C) 2002 hermes_trismegistos
 # hermes_trismegistos@post.cz

@@ -3,7 +3,7 @@
 ###############################################################################
 # french_france_utf-8.php
 #
-# This is a french language version for GeekLog!
+# This is a french language version for Geeklog!
 # Updated by ::Ben http::geeklog.fr 2010 05 10 
 #
 # Copyright (C) 2000 Jason Whittenburg

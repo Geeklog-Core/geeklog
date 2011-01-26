@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# This is the spanish language page for GeekLog!
+# This is the spanish language page for Geeklog!
 # 
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com

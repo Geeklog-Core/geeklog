@@ -2,7 +2,7 @@
 
 ###############################################################################
 # french_canada.php
-# This is a french language version for GeekLog!
+# This is a french language version for Geeklog!
 #
 #
 # Copyright (C) 2003 Jean-Francois Allard

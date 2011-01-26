@@ -2,7 +2,7 @@
 
 ###############################################################################
 # danish.php
-# This is the danish language page for GeekLog!
+# This is the danish language page for Geeklog!
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -705,7 +705,7 @@ $LANG21 = array(
     27 => 'PHP Kasse',
     28 => 'PHP Kasse Muligheder',
     29 => 'Kasse Funktioner',
-    30 => 'Hvis du vil anvende PHP i en af dine kasser, skal du angive navnet på funktionen herover. Navnet på din funktion skal starte med "phpblock_" (f.eks. phpblock_getweather). Hvis funktionen ikke starter med dette, vil funktionen ikke blive fundet. Vi anvender dette for at undgå, at eventuelle hackere af din hjemmeside, kan anvende harmfulde kald til funktioner, som vil være skadelige for dit system. Anvend IKKE tomme parantser "()" efter funktionsnavnet. Endelig er det anbefalelsesværdigt at du putter al din PHP kode i /path/to/geeklog/system/lib-custom.php. Dette tillader din kode at blive gemt og anvendt selvom du opgraderer til en nyere version af GeekLog.',
+    30 => 'Hvis du vil anvende PHP i en af dine kasser, skal du angive navnet på funktionen herover. Navnet på din funktion skal starte med "phpblock_" (f.eks. phpblock_getweather). Hvis funktionen ikke starter med dette, vil funktionen ikke blive fundet. Vi anvender dette for at undgå, at eventuelle hackere af din hjemmeside, kan anvende harmfulde kald til funktioner, som vil være skadelige for dit system. Anvend IKKE tomme parantser "()" efter funktionsnavnet. Endelig er det anbefalelsesværdigt at du putter al din PHP kode i /path/to/geeklog/system/lib-custom.php. Dette tillader din kode at blive gemt og anvendt selvom du opgraderer til en nyere version af Geeklog.',
     31 => 'Fejl i PHP kasse. Funktionen, , findes ikke.',
     32 => 'Fejl, Manglende Felt(er)',
     33 => 'Du skal indtaste URL adressen til .rdf filen for portal kasser',
@@ -717,7 +717,7 @@ $LANG21 = array(
     39 => 'Side',
     40 => 'Venstre',
     41 => 'Højre',
-    42 => 'Du skal angive kasserækkefølge og sikkerhedsniveau for standard GeekLog kasser',
+    42 => 'Du skal angive kasserækkefølge og sikkerhedsniveau for standard Geeklog kasser',
     43 => 'Kun På Hjemmeside',
     44 => '',
     45 => "Du forsøger at få adgang til en kasse, som du ikke har rettigheder til. Dette forsøg er blevet skrevet til loggen. Gå venligst <a href=\"{$_CONF['site_url']}/admin/block.php\">tilbage til kasseadministrationssiden</a> - tak.",

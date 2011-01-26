@@ -24,18 +24,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog Static Pages Plug-in!
- *
- * @package Static Pages
- * @subpackage Language
- * @filesource
- * @version 1.2
- * @copyright Copyright &copy; 2010
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
 ###############################################################################
@@ -73,8 +61,8 @@ $LANG_STATIC = array(
     'delete' => 'Cancella',
     'cancel' => 'Elimina',
     'access_denied' => 'Accesso Negato',
-    'access_denied_msg' => "Stai tentando di accedere illegalmente all'Amministrazione Pagine Statiche.  Prego nota che tutti i tentativi di accesso illegali sono registrati",
-    'all_html_allowed' => "Tutto l'HTML permesso",
+    'access_denied_msg' => 'Stai tentando di accedere illegalmente all\'Amministrazione Pagine Statiche.  Prego nota che tutti i tentativi di accesso illegali sono registrati',
+    'all_html_allowed' => 'Tutto l\'HTML permesso',
     'results' => 'Risultati Pagine Statiche',
     'author' => 'Autore',
     'no_title_or_content' => 'Devi almeno compilare i campi <b>Titolo</b> e <b>Contenuto</b>.',
@@ -90,7 +78,7 @@ $LANG_STATIC = array(
     'stats_hits' => 'Visite',
     'stats_no_hits' => 'Sembra che non ci siano pagine statiche in questo sito o che nessuno ne ha ancora visualizzata una.',
     'id' => 'ID',
-    'duplicate_id' => "L'ID che hai selezionato per questa pagina statica &egrave; gi&agrave; in uso. Prego seleziona un'altro ID.",
+    'duplicate_id' => 'L\'ID che hai selezionato per questa pagina statica &egrave; gi&agrave; in uso. Prego seleziona un\'altro ID.',
     'instructions' => 'Per modificare o eliminare una pagina statica, clicca sul numero della pagina sotto. Per visualizzare una pagina statica, clicca sul titolo della pagina che desideri vedere. Per creare una nuova pagina statica clicca su [ Nuova Pagina ] sopra. Clicca su [C] per creare una copia di una pagina esistente.',
     'centerblock' => 'Blocco Centrale: ',
     'centerblock_msg' => 'Quando selezionato, questa Pagina Statica sar&agrave; visualizzata come un blocco centrale nella pagina index.',
@@ -132,7 +120,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Bozza',
     'draft_yes' => 'Si',
-    'draft_no' => 'No'
+    'draft_no' => 'No',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Il suo commento &egrave; stato ricevuto e sar&agrave; pubblicato appena approvato da un moderatore.';
@@ -141,7 +131,7 @@ $PLG_staticpages_MESSAGE20 = 'La pagina &egrave; stata eliminata.';
 $PLG_staticpages_MESSAGE21 = 'Questa pagina non esiste. Compila la scheda sottostante per creare la pagina. Premi "annulla" se sei capitato su questa pagina a causa di un errore.';
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = "L'aggiornamento di Estensioni non é supportato.";
+$PLG_staticpages_MESSAGE3001 = 'L\'aggiornamento di Estensioni non é supportato.';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -162,6 +152,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtrare HTML?',
     'censor' => 'Censurare il Contenuto?',
     'default_permissions' => 'Autorizzazioni predefinite per pagine',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Dopo Aver Salvato la Pagina',
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Abilita Meta Tags',
@@ -185,7 +177,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Impostazioni Principali per Pagine Statiche',
     'fs_whatsnew' => 'Blocco Per Novit&agrave;',
     'fs_search' => 'Risultati di Ricerca',
-    'fs_permissions' => 'Autorizzazioni predefinite'
+    'fs_permissions' => 'Autorizzazioni predefinite',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -195,9 +188,10 @@ $LANG_configselects['staticpages'] = array(
     2 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title'),
     3 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Label' => 'label'),
     4 => array('Data' => 'date', 'ID Pagina' => 'id', 'Titolo' => 'title', 'Autore' => 'author'),
-    5 => array('Nascondi' => 'hide', "Mostra - Usa Data dell'ultima modifica" => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
+    5 => array('Nascondi' => 'hide', 'Mostra - Usa Data dell\'ultima modifica' => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Commenti Abilitati' => 0, 'Commenti Disabilitati' => -1)
 );
 

@@ -120,7 +120,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Bozza',
     'draft_yes' => 'Si',
-    'draft_no' => 'No'
+    'draft_no' => 'No',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Il suo commento é stato ricevuto e sará pubblicato appena approvato da un moderatore.';
@@ -150,6 +152,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtrare HTML?',
     'censor' => 'Censurare il Contenuto?',
     'default_permissions' => 'Autorizzazioni predefinite per pagine',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Dopo Aver Salvato la Pagina',
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Abilita Meta Tags',
@@ -173,7 +177,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Impostazioni Principali per Pagine Statiche',
     'fs_whatsnew' => 'Blocco Per Novitá',
     'fs_search' => 'Risultati di Ricerca',
-    'fs_permissions' => 'Autorizzazioni predefinite'
+    'fs_permissions' => 'Autorizzazioni predefinite',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -186,6 +191,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Nascondi' => 'hide', 'Mostra - Usa Data dell\'ultima modifica' => 'modified', 'Mostra - Usa Data  creazione' => 'created'),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Commenti Abilitati' => 0, 'Commenti Disabilitati' => -1)
 );
 

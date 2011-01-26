@@ -123,7 +123,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'Wenn diese Seite nicht selbst eine Vorlage ist, kann hier eine Vorlage zugewiesen werden. Bitte darauf achten, dass das korrekte XML-Format eingehalten wird.',
     'draft' => 'Entwurf',
     'draft_yes' => 'Ja',
-    'draft_no' => 'Nein'
+    'draft_no' => 'Nein',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Der Kommentar wurde gespeichert, muss aber noch von einem Moderator freigegeben werden.';
@@ -153,6 +155,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'HTML filtern?',
     'censor' => 'Inhalt zensieren?',
     'default_permissions' => 'Grundeinstellungen Statische Seiten',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Nach dem Speichern der Seiten',
     'atom_max_items' => 'Max. Seiten in Webservices Newsfeed',
     'meta_tags' => 'Meta-Tags verwenden',
@@ -176,7 +180,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Statische Seiten Haupteinstellungen',
     'fs_whatsnew' => 'Was-ist-neu-Block',
     'fs_search' => 'Suchergebnisse',
-    'fs_permissions' => 'Grundeinstellungen Rechte'
+    'fs_permissions' => 'Grundeinstellungen Rechte',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -189,6 +194,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Verbergen' => 'hide', 'Anzeigen - Modifiziertes Datum benutzen' => 'modified', 'Anzeigen - Datum der Erstellung benutzen' => 'created'),
     9 => array('Zur Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Kommentare eingeschaltet' => 0, 'Kommentare ausgeschaltet' => -1)
 );
 

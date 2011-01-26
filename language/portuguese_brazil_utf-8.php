@@ -2,7 +2,7 @@
 
 ###############################################################################
 # portuguese_brazil.php
-# Esta é a página em Português do Brasil para o GeekLog!
+# Esta é a página em Português do Brasil para o Geeklog!
 # Agradecimentos especiais para Mischa Polivanov pelo seu trabalho neste projeto
 #
 # Copyright (C) 2002 Dener C. Brito - LAST UPDATE: March 26,2002

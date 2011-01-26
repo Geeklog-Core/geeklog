@@ -3,7 +3,7 @@
 ###############################################################################
 # dutch.php
 #
-# This is a complete dutch language page for GeekLog !
+# This is a complete dutch language page for Geeklog !
 # Please contact Ronald <rlwedelschaap@edelaer.com> if you think anything
 # important is missing ...
 #

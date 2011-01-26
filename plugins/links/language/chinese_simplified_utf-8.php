@@ -3,7 +3,7 @@
 ###############################################################################
 # chinese_simplified_utf-8.php
 #
-# This is the Chinese Simplified (UTF-8) language set for GeekLog Links plugin
+# This is the Chinese Simplified (UTF-8) language set for Geeklog Links plugin
 # 
 # Last updated January 10, 2006
 #

@@ -6,7 +6,7 @@
 # Last Modified: 2008-05-23
 # Version: 1.5
 #
-# This is the Chinese Simplified (UTF-8) language set for GeekLog 1.5
+# This is the Chinese Simplified (UTF-8) language set for Geeklog 1.5
 #
 # Copyright (C) 2003 Samuel Maung Stone
 # sam AT stonemicro DOT com

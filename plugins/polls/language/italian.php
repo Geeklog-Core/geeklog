@@ -51,7 +51,7 @@ $LANG_POLLS = array(
     'open_poll' => 'Aperto',
     'answer_all' => 'Rispondi alle domande rimanenti',
     'not_saved' => 'Risultato non salvato',
-    'upgrade1' => "Hai installato una nuova version dell'estenzione Sondaggi. Prego",
+    'upgrade1' => 'Hai installato una nuova version dell\'estenzione Sondaggi. Prego',
     'upgrade2' => 'aggiorna',
     'editinstructions' => 'Devi includere un ID, almeno una domanda ed almeno due risposte per domanda.',
     'pollclosed' => 'Questo condaggio é chiuso.',
@@ -84,7 +84,7 @@ $LANG25 = array(
     14 => 'salva',
     15 => 'cancella',
     16 => 'rimuovi',
-    17 => "Inserisci l'ID di un sondaggio",
+    17 => 'Inserisci l\'ID di un sondaggio',
     18 => 'Lista dei Sondaggio',
     19 => 'To modify or delete a poll, click on the edit icon of the poll.  To create a new poll, click on "Create New" above.',
     20 => 'Utenti che hanno votato',
@@ -105,7 +105,7 @@ $LANG25 = array(
     35 => 'Questo Sondaggio ha',
     36 => 'altre domande.',
     37 => 'Nascondi risultati mentre il sondaggio é aperto',
-    38 => "Mentre il sondaggio é aperto solo il proprietario e l'utente root possono vedere i risultati",
+    38 => 'Mentre il sondaggio é aperto solo il proprietario e l\'utente root possono vedere i risultati',
     39 => 'Il tema verrá visualizzato se ci sará piú di una domanda.',
     40 => 'Visualizza tutte le risposte a questo sondaggio'
 );
@@ -115,7 +115,7 @@ $PLG_polls_MESSAGE19 = 'Il tuo sondaggio é stato salvato con successo.';
 $PLG_polls_MESSAGE20 = 'Il tuo sondaggio é stato rimosso con successo.';
 
 // Messages for the plugin upgrade
-$PLG_polls_MESSAGE3001 = "L'aggiornamento di Estensioni non é supportato.";
+$PLG_polls_MESSAGE3001 = 'L\'aggiornamento di Estensioni non é supportato.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -130,9 +130,9 @@ $LANG_confignames['polls'] = array(
     'maxquestions' => 'Max. Domande per Sondaggio',
     'maxanswers' => 'Max. Opzioni per Domanda',
     'answerorder' => 'Ordina Resultati ...',
-    'pollcookietime' => "Cookie dell'utente valido per",
-    'polladdresstime' => "Indirizzo IP dell'utente valido per",
-    'delete_polls' => "Rimuovere i Sondaggi se l'Utente che li ha creato é rimosso?",
+    'pollcookietime' => 'Cookie dell\'utente valido per',
+    'polladdresstime' => 'Indirizzo IP dell\'utente valido per',
+    'delete_polls' => 'Rimuovere i Sondaggi se l\'Utente che li ha creato é rimosso?',
     'aftersave' => 'Dopo aver Salvato il Sondaggio',
     'default_permissions' => 'Permessi Predefiniti per Sondaggi',
     'newpollsinterval' => 'Intervallo per Nuovi Sondaggi',
@@ -147,7 +147,7 @@ $LANG_configsubgroups['polls'] = array(
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Impostazioni Generali per Sondaggi',
-    'fs_whatsnew' => "Blocco What's New",
+    'fs_whatsnew' => 'Blocco What\'s New',
     'fs_permissions' => 'Permessi Predefiniti',
     'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag'
 );

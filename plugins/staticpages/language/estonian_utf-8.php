@@ -121,7 +121,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Draft',
     'draft_yes' => 'Yes',
-    'draft_no' => 'No'
+    'draft_no' => 'No',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Sinu kommentaar on saadetud läbivaatamiseks. See ilmub lehele pärast moderaatorite poolset heakskiitmist.';
@@ -151,6 +153,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtreeri HTML-i?',
     'censor' => 'Tsenseeri sisu?',
     'default_permissions' => 'Lehe vaikimisi õigused',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Pärast lehe salvestamist',
     'atom_max_items' => 'Maks. lehti veebiteenuste lõimes',
     'meta_tags' => 'Luba Meta sildid',
@@ -174,7 +178,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Staatiliste  lehtede peaseadistused',
     'fs_whatsnew' => 'Mida uut plokk',
     'fs_search' => 'Otsingu tulemused',
-    'fs_permissions' => 'Vaikimisi õigused'
+    'fs_permissions' => 'Vaikimisi õigused',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -187,6 +192,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Suuna edasi lehele' => 'item', 'Näita loetelu' => 'list', 'Näita avalehte' => 'home', 'Näita admini lehten' => 'admin'),
     12 => array('Pole ligipääsu' => 0, 'Ainult loetav' => 2, 'Loetav ja muudetav' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 

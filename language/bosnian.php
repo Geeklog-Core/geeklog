@@ -2,7 +2,7 @@
 
 ###############################################################################
 # bosnian.php
-# This is the bosnian language page for GeekLog!
+# This is the bosnian language page for Geeklog!
 # Special thanks to me and no one else for work on this project :)
 #
 # Copyright (C) 2004 Kenan 'bX' Hodzic

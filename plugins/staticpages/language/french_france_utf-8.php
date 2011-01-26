@@ -119,7 +119,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Brouillon',
     'draft_yes' => 'Oui',
-    'draft_no' => 'Non'
+    'draft_no' => 'Non',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Votre commentaire à bien été soumis et sera publié après avoir été approuvé par un modérateur.';
@@ -149,6 +151,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtrer le HTML',
     'censor' => 'Censurer le contenu',
     'default_permissions' => 'Permissions par défaut',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Après la sauvegarde de la page',
     'atom_max_items' => 'Max. de pages dans le flux des Webservices',
     'meta_tags' => 'Activer les Meta Tags',
@@ -172,7 +176,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Pages statiques paramètres principaux',
     'fs_whatsnew' => 'Block Quoi de neuf',
     'fs_search' => 'Résultats de la recherche',
-    'fs_permissions' => 'Default Permissions'
+    'fs_permissions' => 'Default Permissions',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -185,6 +190,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Cacher' => 'hide', 'Montrer - Utiliser la date de modification' => 'modified', 'Montrer - Utiliser la date de création' => 'created'),
     9 => array('Aller à la page' => 'item', 'Afficher la liste des pages' => 'list', 'Page d\'accueil' => 'home', 'Panneau d\'administration' => 'admin'),
     12 => array('Pas d\'acces' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Commentaires activés' => 0, 'Commentaires désactivés' => -1)
 );
 

@@ -2,7 +2,7 @@
 
 ###############################################################################
 # indonesian.php
-# This is the indonesian language page for GeekLog!
+# This is the indonesian language page for Geeklog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg

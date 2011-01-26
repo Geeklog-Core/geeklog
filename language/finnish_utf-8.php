@@ -2,7 +2,7 @@
 
 ###############################################################################
 # finnish.php
-# This is the Finnish language page for GeekLog!
+# This is the Finnish language page for Geeklog!
 #
 # Copyright (C) 2004 Jussi Josefsson
 # 20031012 - Version 1.0 - Geeklog 1.3.8

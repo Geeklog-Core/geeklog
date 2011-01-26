@@ -122,7 +122,9 @@ $LANG_STATIC = array(
     'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
     'draft' => 'Draft',
     'draft_yes' => 'Yes',
-    'draft_no' => 'No'
+    'draft_no' => 'No',
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
@@ -152,6 +154,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filter HTML?',
     'censor' => 'Censor Content?',
     'default_permissions' => 'Page Default Permissions',
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'After Saving Page',
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Enable Meta Tags',
@@ -175,7 +179,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => 'Static Pages Main Settings',
     'fs_whatsnew' => 'What\'s New Block',
     'fs_search' => 'Search Results',
-    'fs_permissions' => 'Default Permissions'
+    'fs_permissions' => 'Default Permissions',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -188,6 +193,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('Hide' => 'hide', 'Show - Use Modified Date' => 'modified', 'Show - Use Created Date' => 'created'),
     9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
     12 => array('No access' => 0, 'Read-Only' => 2, 'Read-Write' => 3),
+    13 => array('No access' => 0, 'Use' => 2),
     17 => array('Comments Enabled' => 0, 'Comments Disabled' => -1)
 );
 

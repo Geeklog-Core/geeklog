@@ -2,7 +2,7 @@
 
 ###############################################################################
 # ukrainian.php
-# This is the ukrainian language page for GeekLog!
+# This is the ukrainian language page for Geeklog!
 #
 #
 # Ukrainian language is so rich and versatile! 

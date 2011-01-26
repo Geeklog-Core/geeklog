@@ -2,7 +2,7 @@
 
 ###############################################################################
 # italian_utf-8.php
-# Traduzione italiana per GeekLog!
+# Traduzione italiana per Geeklog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2002 quess65 webmaster@dynamikteam.net
@@ -149,7 +149,7 @@ $LANG01 = array(
     104 => 'da',
     105 => 'Invio E-mail',
     106 => 'Visualizzazioni:',
-    107 => 'Test Versione GeekLog',
+    107 => 'Test Versione Geeklog',
     108 => 'Svuota Cache',
     109 => 'Segnala abuso',
     110 => 'Segnala questo inserimento all\'ammin. del sito',

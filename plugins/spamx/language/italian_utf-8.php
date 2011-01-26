@@ -26,18 +26,6 @@
 #
 ###############################################################################
 
-/**
- * This is the Italian language page for the Geeklog Spam-X Plug-in!
- *
- * @package Spam-X
- * @subpackage Language
- * @filesource
- * @version 1.2
- * @copyright Copyright &copy; 2011
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
- *
- */
-
 global $LANG32;
 
 $LANG_SX00 = array(

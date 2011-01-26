@@ -2,7 +2,7 @@
 
 ###############################################################################
 # english.php
-# This is the english language page for GeekLog!
+# This is the english language page for Geeklog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg

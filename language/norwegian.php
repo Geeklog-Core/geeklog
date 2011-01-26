@@ -3,7 +3,7 @@
 ###############################################################################
 # norwegian.php, based on
 # english.php
-# This is the norwegian language page for GeekLog!
+# This is the norwegian language page for Geeklog!
 #
 # Translator   : Torfinn Ingolfsen <tingo@start.no>
 # Date started : 2003-03-10

@@ -5,7 +5,7 @@
 # language file for geeklog version 1.7 by Mateja B.
 # gape@gape.org ; za pripombe, predloge ipd. piši na e-naslov
 #
-# This is the slovenian language page for GeekLog!
+# This is the slovenian language page for Geeklog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
