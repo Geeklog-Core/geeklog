@@ -238,6 +238,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_gl_version varchar(20) NOT NULL default '',
   pi_enabled tinyint(1) unsigned NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
+  pi_load smallint(5) unsigned NOT NULL default '10000',
   INDEX plugins_enabled(pi_enabled),
   PRIMARY KEY  (pi_name)
 ) ENGINE=MyISAM

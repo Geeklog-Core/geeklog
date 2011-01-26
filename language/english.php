@@ -1088,6 +1088,9 @@ $LANG32 = array(
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
     42 => 'Click to update',
+    43 => 'Load Order',
+    44 => 'Move plugin up the load order',
+    45 => 'Move plugin down the load order',
 
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php

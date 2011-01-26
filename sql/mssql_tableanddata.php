@@ -242,7 +242,8 @@ CREATE TABLE [dbo].[{$_TABLES['plugins']}] (
     [pi_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [pi_gl_version] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [pi_enabled] [tinyint] NOT NULL ,
-    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+    [pi_homepage] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [pi_load] [smallint] NOT NULL DEFAULT 10000
 ) ON [PRIMARY]
 ";
 

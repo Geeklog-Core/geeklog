@@ -63,7 +63,8 @@ $PLG_bufferCenterAPI = array();
 $PLG_buffered = false;
 
 // buffer enabled plugins
-$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1 ORDER BY pi_load ASC");
+
 /**
 * @global array List of all active plugins
 */

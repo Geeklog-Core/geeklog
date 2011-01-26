@@ -1,5 +1,7 @@
 <?php
 
+// Enable plugin load order
+$_SQL[] = "ALTER TABLE {$_TABLES['plugins']} ADD pi_load smallint(5) unsigned NOT NULL default '10000'";
 
 /**
  * Add new config options

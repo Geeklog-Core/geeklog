@@ -2,19 +2,20 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | plugins.php                                                               |
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Matt West         - matt AT mattdanger DOT net                   |
+// |          Rouslan Placella  - rouslan {at} placella {dot} com              |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -463,16 +464,19 @@ function listplugins($token)
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
+    reorderplugins();
+
     $retval = '';
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
+        array('text' => $LANG32[43], 'field' => 'pi_load', 'sort' => true),
         array('text' => $LANG32[16], 'field' => 'pi_name', 'sort' => true),
         array('text' => $LANG32[17], 'field' => 'pi_version', 'sort' => true),
         array('text' => $LANG32[18], 'field' => 'pi_gl_version', 'sort' => true),
         array('text' => $LANG_ADMIN['enabled'], 'field' => 'pi_enabled', 'sort' => true)
     );
 
-    $defsort_arr = array('field' => 'pi_name', 'direction' => 'asc');
+    $defsort_arr = array('field' => 'pi_load', 'direction' => 'asc');
 
     $menu_arr = array (
                     array('url' => $_CONF['site_admin_url'],
@@ -495,7 +499,7 @@ function listplugins($token)
 
     $query_arr = array(
         'table' => 'plugins',
-        'sql' => "SELECT pi_name, pi_version, pi_gl_version, "
+        'sql' => "SELECT pi_name, pi_version, pi_gl_version, pi_load, "
                 ."pi_enabled, pi_homepage FROM {$_TABLES['plugins']} WHERE 1=1",
         'query_fields' => array('pi_name'),
         'default_filter' => ''
@@ -515,6 +519,79 @@ function listplugins($token)
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
+}
+
+/**
+* Re-orders all plugins by load order in increments of 10
+*
+* @return   void
+*
+*/
+function reorderplugins()
+{
+    global $_TABLES;
+
+    $pluginOrd = 10;
+    $stepNumber = 10;
+
+    $sql = "SELECT * FROM {$_TABLES['plugins']} ORDER BY pi_load ASC;";
+    $result = DB_query($sql);
+    while ($A = DB_fetchArray($result)) {
+        if ($A['pi_load'] != $pluginOrd) {  // only update incorrect ones
+            DB_query("UPDATE {$_TABLES['plugins']} SET pi_load = '{$pluginOrd}' WHERE pi_name = '{$A['pi_name']}'");
+        }
+        $pluginOrd += $stepNumber;
+    }
+}
+
+/**
+* Change the load order of a plugin
+*
+* @param    string  $pi_name    Name of the plugin
+* @param    mixed   $where      Where to move the plugin specified by $pi_name.
+*                               Valid values are "up" and "dn", which stand for
+*                               "Move 'Up' or 'Down' through the load order"
+*                               or any integer between 0 and 10000.
+* @return   void
+*
+*/
+function change_load_order($pi_name='', $where='')
+{
+    if (!empty($pi_name) && !empty($where)) {
+        global $_CONF, $_TABLES;
+        $q = "SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'";
+        $q = DB_query($q);
+        if (DB_numRows($q) == 1) { // if the plugin exists
+            $query = '';
+            switch ($where) {
+                case ("up"):
+                    $A = DB_fetchArray($q);
+                    if ($A['pi_load'] > 10) { // no negative values
+                        $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load-11 WHERE pi_name = '{$pi_name}'";
+                    }
+                    break;
+
+                case ("dn"):
+                    $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load+11 WHERE pi_name = '{$pi_name}'";
+                    break;
+
+                default:
+                    if (is_numeric($where) && $where >= 0 && $where <= 10000) {
+                        $where = (int)$where;
+                        $query = "UPDATE {$_TABLES['plugins']} SET pi_load = {$where} WHERE pi_name = '{$pi_name}'";
+                    } else {
+                        COM_errorLog("plugins admin error: Attempt to assign an invalid load order '$where' to plugin '$pi_name'");
+                    }
+                    break;
+            }
+            if (!empty($query)) {
+                DB_query($query);
+                reorderplugins();
+            }
+        } else {
+            COM_errorLog("plugins admin error: Attempt to move a non existent plugin: $pi_name");
+        }
+    }
 }
 
 /**
@@ -1280,6 +1357,14 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $display .= COM_siteHeader('menu', $LANG32[13]);
     $display .= plugineditor(COM_applyFilter($_GET['pi_name']));
     $display .= COM_siteFooter();
+
+} elseif ($mode == 'change_load_order') {
+    SEC_checkToken();
+    if (SEC_hasRights('plugin.edit')) {
+        change_load_order(COM_applyFilter($_GET['pi_name']), COM_applyFilter($_GET['where']));
+    }
+    echo COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
+    exit;
 
 } elseif ((($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) && SEC_checkToken()) {
     $enabled = '';

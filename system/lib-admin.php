@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-admin.php                                                             |
 // |                                                                           |
 // | Admin-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Mark Limburg       - mlimburg AT users DOT sourceforge DOT net   |
@@ -1129,6 +1129,17 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
                     . XHTML . '>';
             }
         }
+        break;
+
+    case 'pi_load':
+        $csrftok = '&amp;' . CSRF_TOKEN . '=' . $token;
+        $style   = "style='vertical-align: text-bottom;'";
+        $upimg   = $_CONF['layout_url'] . '/images/admin/up.png';
+        $dnimg   = $_CONF['layout_url'] . '/images/admin/down.png';
+        $url     = $_CONF['site_admin_url'] . '/plugins.php?mode=change_load_order&amp;pi_name=' . $A['pi_name'] . $csrftok . '&amp;where=';
+        $retval .= COM_CreateLink( "<img $style alt='+' src='$upimg'" . XHTML . ">", $url . 'up' , array('title' => $LANG32[44]));
+        $retval .= '&nbsp;' . $A['pi_load'] . '&nbsp;';
+        $retval .= COM_CreateLink( "<img $style alt='-' src='$dnimg'" . XHTML . ">", $url . 'dn' , array('title' => $LANG32[45]));
         break;
 
     case 'pi_enabled':

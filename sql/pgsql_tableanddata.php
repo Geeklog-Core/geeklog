@@ -235,6 +235,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_gl_version varchar(20) NOT NULL default '',
   pi_enabled smallint  NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
+  pi_load smallint NOT NULL default '10000',
   PRIMARY KEY  (pi_name)
   );
   CREATE INDEX plugins_enabled ON {$_TABLES['plugins']}(pi_enabled);
