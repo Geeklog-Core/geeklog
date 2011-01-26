@@ -44,7 +44,7 @@ $LANG_LINKS = array(
     119 => 'Il Seguente Collegamento é Stato Segnalato Come Non Funzionante: ',
     120 => 'Clicca Qui Per Modificare il Collegamento: ',
     121 => 'Il Collegamento Non Funzionante é Stato Segnalato Da: ',
-    122 => "Grazie Per Aver Segnalato Questo Collegamento. L'amministratore correggerá questo problema al piú presto possibile",
+    122 => 'Grazie Per Aver Segnalato Questo Collegamento. L\'amministratore correggerá questo problema al piú presto possibile',
     123 => 'Grazie',
     124 => 'Invia',
     125 => 'Categorie',
@@ -70,7 +70,7 @@ $LANG_LINKS_STATS = array(
 $LANG_LINKS_SEARCH = array(
     'results' => 'Risultati (Collegamenti)',
     'title' => 'Titolo',
-    'date' => "Data Dell'Inserimento",
+    'date' => 'Data Dell\'Inserimento',
     'author' => 'Inserito Da',
     'hits' => 'Visite'
 );
@@ -112,7 +112,7 @@ $PLG_links_MESSAGE16 = 'Questa categoria non esiste.';
 $PLG_links_MESSAGE17 = 'Questo id é giá utilizzato da un altra categoria.';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = "L'aggiornamento delle Estensioni plugin non é supportato.";
+$PLG_links_MESSAGE3001 = 'L\'aggiornamento delle Estensioni plugin non é supportato.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -202,9 +202,9 @@ $LANG_LINKS_STATUS = array(
     411 => 'Lunghezza richiesta',
     412 => 'Condizione preliminare non riuscita',
     413 => 'Entitá della richiesta troppo grande',
-    414 => "L'indirizzo della richiest é troppo lungo",
+    414 => 'L\'indirizzo della richiest é troppo lungo',
     415 => 'Unsupported Media Type',
-    416 => "L'Intervallo Richiesto non é valido",
+    416 => 'L\'Intervallo Richiesto non é valido',
     417 => 'Expectation Failed',
     500 => 'Errore interno del server',
     501 => 'Valori di intestazione specificano una configurazione non è implementata',

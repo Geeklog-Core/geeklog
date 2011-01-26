@@ -5,7 +5,7 @@
 #
 # This is the Italian language file for the Geeklog Links Plugin
 #
-# Copyright (C) 2010 Rouslan Placella
+# Copyright (C) 2010 Rouslan Placella rouslan {at} placella {dot} com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -95,10 +95,10 @@ $LANG_LINKS_SUBMIT = array(
 ###############################################################################
 # Messages for COM_showMessage the submission form
 
-$PLG_links_MESSAGE1 = "Grazie per l\'invio del collegamento a {$_CONF['site_name']}.  Presto sará esaminato da uno dei amministratori.  Se approvato, verrá visualizzato in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
+$PLG_links_MESSAGE1 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  Presto sará esaminato da uno dei amministratori.  Se approvato, verrá visualizzato in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
 $PLG_links_MESSAGE2 = 'Il tuo collegamento é stato salvato.';
 $PLG_links_MESSAGE3 = 'Il collegamento é stato eliminato.';
-$PLG_links_MESSAGE4 = "Grazie per l\'invio del collegamento a {$_CONF['site_name']}.  é ora disponibile in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
+$PLG_links_MESSAGE4 = "Grazie per l'invio del collegamento a {$_CONF['site_name']}.  é ora disponibile in <a href={$_CONF['site_url']}/links/index.php>questa</a> sezione.";
 $PLG_links_MESSAGE5 = 'Non hai le necessarie autorizzazioni per visualizzare questa categoria.';
 $PLG_links_MESSAGE6 = 'Non hai le necessarie autorizzazioni per modificare questa categoria.';
 $PLG_links_MESSAGE7 = 'Specifica il nome per la Categoria ed una Descrizione.';
@@ -112,7 +112,7 @@ $PLG_links_MESSAGE16 = 'Questa categoria non esiste.';
 $PLG_links_MESSAGE17 = 'Questo id é giá utilizzato da un altra categoria.';
 
 // Messages for the plugin upgrade
-$PLG_links_MESSAGE3001 = 'L\'aggiornamento di plugin non é supportato.';
+$PLG_links_MESSAGE3001 = 'L\'aggiornamento delle Estensioni plugin non é supportato.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
@@ -130,10 +130,10 @@ $LANG_LINKS_ADMIN = array(
     9 => 'Descrizione del Collegamento',
     10 => 'Il Titolo, Indirizzo e la Descrizione Sono Necessari per Salvare il Collegamento.',
     11 => 'Manager Collegamenti',
-    12 => 'To modify or delete a link, click on that link\'s edit icon below.  To create a new link or a new category, click on "New link" or "New category" above. To edit multiple categories, click on "List categories" above.',
+    12 => 'Per modificare o eliminare un collegamento, clicca sull\'icona di modifica sottostante. Per creare un nuovo collegamento o categoria, clicca su "Nuovo Collegamento" o "Nuova Categoria". Per modificare piú di una categoria, clicca su "Mostra Categorie".',
     14 => 'Categoria del Collegamento',
     16 => 'Accesso Negato',
-    17 => "Hai cercato di accedere ad un collegamento per il quale non hai le necessarie autorizzazioni. Questo tentativo é stato salvato. <a href=\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Ritorna alo scermo amministrativo dei collegamenti</a>.",
+    17 => "Hai cercato di accedere ad un collegamento per il quale non hai le necessarie autorizzazioni. Questo tentativo é stato salvato. <a href\"{$_CONF['site_admin_url']}/plugins/links/index.php\">Ritorna alo scermo amministrativo dei collegamenti</a>.",
     20 => 'Se altro, specifica',
     21 => 'salva',
     22 => 'annulla',
@@ -229,7 +229,7 @@ $LANG_confignames['links'] = array(
     'hidelinksmenu' => 'Nascondere Collegamenti nel Menu?',
     'linkcols' => 'Categorie per Colunna',
     'linksperpage' => 'Collegamenti per Pagina',
-    'show_top10' => 'Mostrare la \'Top 10\' dei Collegamenti?',
+    'show_top10' => 'Mostrare la "Top 10" dei Collegamenti?',
     'notification' => 'Notifiche via Email?',
     'delete_links' => 'Eliminare Collegamenti con il Proprietario?',
     'aftersave' => 'Dopo Aver Salvato il Collegamento',
@@ -259,7 +259,7 @@ $LANG_configselects['links'] = array(
     1 => array('Vero' => true, 'Falso' => false),
     9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
 );
 
 ?>
