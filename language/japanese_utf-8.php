@@ -1272,6 +1272,7 @@ $MESSAGE = array(
     112 => '認証がキャンセルされました。',
     113 => 'あなたのアカウントがTwitter経由で作成されました。 {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
+    115 => 'Remote service has been disabled.',
     400 => '検証に合格していない必須フィールドがあります。',
     401 => 'フルネームを入力してください。'
 );

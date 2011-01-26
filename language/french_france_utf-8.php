@@ -1264,6 +1264,7 @@ $MESSAGE = array(
     112 => 'Certification has been canceled.',
     113 => 'Your account has been created successfully. {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
+    115 => 'Remote service has been disabled.',
     400 => 'Tous les champs nécessaires n\'ont pas passés la validation',
     401 => 'Saisir votre nom complet'
 );
