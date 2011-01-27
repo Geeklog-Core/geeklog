@@ -564,25 +564,25 @@ function change_load_order($pi_name='', $where='')
         if (DB_numRows($q) == 1) { // if the plugin exists
             $query = '';
             switch ($where) {
-                case ("up"):
-                    $A = DB_fetchArray($q);
-                    if ($A['pi_load'] > 10) { // no negative values
-                        $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load-11 WHERE pi_name = '{$pi_name}'";
-                    }
-                    break;
+            case "up":
+                $A = DB_fetchArray($q);
+                if ($A['pi_load'] > 10) { // no negative values
+                    $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load-11 WHERE pi_name = '{$pi_name}'";
+                }
+                break;
 
-                case ("dn"):
-                    $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load+11 WHERE pi_name = '{$pi_name}'";
-                    break;
+            case "dn":
+                $query = "UPDATE {$_TABLES['plugins']} SET pi_load = pi_load+11 WHERE pi_name = '{$pi_name}'";
+                break;
 
-                default:
-                    if (is_numeric($where) && $where >= 0 && $where <= 10000) {
-                        $where = (int)$where;
-                        $query = "UPDATE {$_TABLES['plugins']} SET pi_load = {$where} WHERE pi_name = '{$pi_name}'";
-                    } else {
-                        COM_errorLog("plugins admin error: Attempt to assign an invalid load order '$where' to plugin '$pi_name'");
-                    }
-                    break;
+            default:
+                if (is_numeric($where) && $where >= 0 && $where <= 10000) {
+                    $where = (int)$where;
+                    $query = "UPDATE {$_TABLES['plugins']} SET pi_load = {$where} WHERE pi_name = '{$pi_name}'";
+                } else {
+                    COM_errorLog("plugins admin error: Attempt to assign an invalid load order '$where' to plugin '$pi_name'");
+                }
+                break;
             }
             if (!empty($query)) {
                 DB_query($query);
