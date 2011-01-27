@@ -29,7 +29,7 @@ a.tooltip:hover span {
     box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
     font-size: 1em; text-align: left; white-space:normal;
     font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
-    position: absolute; left: 28px; top: 16px; z-index: 99;
+    position: absolute; left: 2.2em; top: 2.2em; z-index: 99;
     margin-left: 0; width: 250px;
 }
 a.tooltip:hover img.icon {
