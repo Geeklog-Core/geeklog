@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
 // |                                                                           |
 // | Geeklog database backup and maintenance page.                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs         - tony AT tonybibbs DOT com                   |
 // |          Blaine Lang        - langmail AT sympatico DOT ca                |
@@ -72,13 +72,56 @@ function compareBackupFiles($pFileA, $pFileB)
 {
     global $_CONF;
 
-    $lFiletimeA = filemtime($_CONF['backup_path'] . $pFileA);
-    $lFiletimeB = filemtime($_CONF['backup_path'] . $pFileB);
+    $lFiletimeA = @filemtime($_CONF['backup_path'] . $pFileA);
+    $lFiletimeB = @filemtime($_CONF['backup_path'] . $pFileB);
+
+    // filemtime() may fail on 32 bit system when the file is > 2GB.
+    // Sort alphabetically instead, assuming there's a date in the file name.
+    if (($lFiletimeA === false) || ($lFiletimeB === false)) {
+        return strcmp($pFileA, $pFileB);
+    }
+
     if ($lFiletimeA == $lFiletimeB) {
        return 0;
     }
 
     return ($lFiletimeA > $lFiletimeB) ? -1 : 1;
+}
+
+/**
+* Helper function to get a file's size
+*
+* The PHP filesize() method may fail on 32 bit systems with files > 2 GB
+* or may return negative values (Windows only?). So this function tries some
+* workarounds, but may eventually just give up and return zero ...
+*
+* @param    string  $filename   full path of the file
+* @return   mixed               int or float value: size of the file
+*
+*/
+function filesizeHelper($filename)
+{
+    $size = @filesize($filename);
+
+    if (($size === false) || ($size < 0)) {
+        // filesize() may fail on 32 bit systems with files > 2GB
+        // - try some workarounds
+        $size = 0;
+        if (PHP_OS == 'Linux') {
+            $option = '-c %s';
+        } elseif ((strpos(PHP_OS, 'BSD') !== false) || (PHP_OS == 'Darwin')) {
+            // Wouldn't it be nice if all *NIX commands had the same options?
+            $option = '-f %z';
+        }
+        if (! empty($option)) {
+            $size = (float) exec("stat $option " . escapeshellarg($filename));
+            if ($size <= 0) {
+                $size = 0;
+            }
+        }
+    }
+
+    return $size;
 }
 
 /**
@@ -122,7 +165,7 @@ function listbackups()
             $downloadLink = COM_createLink($backups[$i], $downloadUrl,
                     array('title' => $LANG_DB_BACKUP['download']));
             $backupfile = $_CONF['backup_path'] . $backups[$i];
-            $backupfilesize = COM_numberFormat(filesize($backupfile))
+            $backupfilesize = COM_numberFormat(filesizeHelper($backupfile))
                             . ' <b>' . $LANG_DB_BACKUP['bytes'] . '</b>';
             $data_arr[$i] = array('file' => $downloadLink,
                                   'size' => $backupfilesize,
