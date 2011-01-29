@@ -1108,9 +1108,16 @@ class Story
         $body = $this->_bodytext;
         $fulltext = "$intro $body";
 
-        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE "
-                            ."ai_sid = '{$this->_sid}' ORDER BY ai_img_num"
-                          );
+        // check if we have a (different) old sid - the article_images table
+        // will only be updated later! cf. bug #0001256
+        if (! empty($this->_originalSid) &&
+                ($this->_sid != $this->_originalSid)) {
+            $ai_sid = $this->_originalSid;
+        } else {
+            $ai_sid = $this->_sid;
+        }
+
+        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
         $nrows = DB_numRows($result);
         $errors = array();
         $stdImageLoc = true;
