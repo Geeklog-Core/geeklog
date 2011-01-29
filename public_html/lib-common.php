@@ -2029,6 +2029,10 @@ function COM_errorLog( $logentry, $actionid = '' )
                 (($actionid == 2) || empty($actionid))) {
             $actionid = 1;
         }
+        if ((($actionid == 2) || empty($actionid)) &&
+                !class_exists('Template')) {
+            $actionid = 1;
+        }
         if (!isset($_CONF['path_log']) && ($actionid != 2)) {
             $actionid = 3;
         }
