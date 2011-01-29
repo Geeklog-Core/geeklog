@@ -393,7 +393,7 @@ $LANG04 = array(
     163 => 'Re-Authentication Failed',
     164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
     165 => 'Use Advanced Editor', 
-    166 => 'Re-synch Remote Account'    
+    166 => 'Re-synch Remote Account'
 );
 
 ###############################################################################
@@ -843,7 +843,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
-    'autotag_desc_story' => '[story: sid alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.' 
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'  
 );
 
 
@@ -1087,6 +1087,9 @@ $LANG32 = array(
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
     42 => 'Click to update',
+    43 => 'Load Order',
+    44 => 'Move plugin up the load order',
+    45 => 'Move plugin down the load order',
 
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
@@ -1758,7 +1761,7 @@ $LANG_confignames['Core'] = array(
     'linkedin_consumer_secret' => "LinkedIn OAuth Secret Key",    
     'twitter_login' => "Enable OAuth Login Method Twitter",
     'twitter_consumer_key' => "Twitter OAuth Consumer Key",    
-    'twitter_consumer_secret' => "Twitter OAuth Consumer Secret",    
+    'twitter_consumer_secret' => "Twitter OAuth Consumer Secret",  
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Language",
@@ -1937,7 +1940,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => "Default Search Method",
     'search_def_sort' => "Default Sort Order", 
     'autotag_permissions_story' => '[story: ] Permissions', 
-    'autotag_permissions_user' => '[user: ] Permissions' 
+    'autotag_permissions_user' => '[user: ] Permissions'   
 );
 
 $LANG_configsubgroups['Core'] = array(
