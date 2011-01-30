@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -81,7 +81,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     }
 
     $introtext = $story->displayElements('introtext');
-    $bodytext = $story->displayElements('bodytext');
+    if (($index == 'n') || ($index == 'p')) {
+        $bodytext = $story->displayElements('bodytext');
+    } else {
+        // for the index page, we don't need the body text anyway
+        // also saves processing autotags
+        $bodytext = '';
+    }
 
     if( !empty( $query ))
     {
