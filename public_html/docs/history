@@ -3,6 +3,20 @@ Geeklog History/Changes:
 Apr ??, 2011 (1.8.0)
 ------------
 
+- A story's bodytext doesn't need to be evaluated when displaying the site's
+  index page (patch #0001204, provided by LWC)
+- The status of the "Send me a copy of this email" option was lost when the
+  form wasn't filled out correctly (bug #0001240, patch provided by Rouslan
+  Placella)
+- Database backup files > 2GB prevented displaying the list of db backup files
+  on some 32 bit systems. Added some workarounds (bug #0001257) [Dirk]
+- Fixed replacing the [imageX] tags when changing a story's id (bug #0001256)
+  [Dirk]
+- Fixed logging of SQL errors during the startup phase [Dirk]
+- The load order of plugins is now configurable (feature request #0001247,
+  patch provided by Rouslan Placella)
+- The list of plugins is now sortable by status (patch #0001249, provided by
+  Rouslan Placella)
 - Added a PLG_getFooterCode function and corresponding {plg_footercode}
   variable in footer.thtml. This will allow plugins to add code to a site's
   footer, e.g. to load JavaScript code as late as possible (based on patch
@@ -28,6 +42,11 @@ Apr ??, 2011 (1.8.0)
   (bug #0001209) [Dirk]
 - Moved handling of the [story:] and [user:] autotags to lib-story.php and
   lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
+
+Calendar Plugin
+---------------
+- Fixed a minor display issue in the batchdelete.thtml (patch #0001244, provided
+  by Rouslan Placella)
 
 Links Plugin
 ------------
