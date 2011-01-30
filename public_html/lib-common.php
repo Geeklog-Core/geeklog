@@ -6005,30 +6005,35 @@ function COM_undoClickableLinks( $text )
 * @return   string          the text with highlighted search words
 *
 */
-function COM_highlightQuery( $text, $query, $class = 'highlight' )
+function COM_highlightQuery($text, $query, $class = 'highlight')
 {
-    // escape PCRE special characters
-    $query = preg_quote($query, '/');
+    if (!empty($text) && !empty($query)) {
 
-    $mywords = explode(' ', $query);
-    foreach ($mywords as $searchword)
-    {
-        if (!empty($searchword))
-        {
-            $before = "/(?!(?:[^<]+>|[^>]+<\/a>))\b";
-            $after = "\b/i";
-            if ($searchword <> utf8_encode($searchword)) {
-                 if (@preg_match('/^\pL$/u', urldecode('%C3%B1'))) { // Unicode property support
-                      $before = "/(?<!\p{L})";
-                      $after = "(?!\p{L})/u";
-                 } else {
-                      $before = "/";
-                      $after = "/u";
-                 }
+        // escape PCRE special characters
+        $query = preg_quote($query, '/');
+
+        $mywords = explode(' ', $query);
+        foreach ($mywords as $searchword) {
+            if (!empty($searchword)) {
+                $before = "/(?!(?:[^<]+>|[^>]+<\/a>))\b";
+                $after = "\b/i";
+                if ($searchword <> utf8_encode($searchword)) {
+                    if (@preg_match('/^\pL$/u', urldecode('%C3%B1'))) {
+                        // Unicode property support
+                        $before = "/(?<!\p{L})";
+                        $after = "(?!\p{L})/u";
+                     } else {
+                        $before = "/";
+                        $after = "/u";
+                     }
+                }
+                $text = preg_replace($before . $searchword . $after,
+                                     "<span class=\"$class\">\\0</span>",
+                                     '<!-- x -->' . $text . '<!-- x -->');
             }
-            $text = preg_replace($before . $searchword . $after, "<span class=\"$class\">\\0</span>", '<!-- x -->' . $text . '<!-- x -->' );
         }
     }
+
     return $text;
 }
 
