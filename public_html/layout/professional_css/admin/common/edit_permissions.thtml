@@ -13,12 +13,12 @@
 
   <tbody>
     <tr>
-      <td>R<input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked} class="checkbox"{xhtml}></td>
-      <td>E<input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked} class="checkbox"{xhtml}></td>
-      <td>R<input type="checkbox" name="perm_group[]" value="2"{group_r_checked} class="checkbox"{xhtml}></td>
-      <td>E<input type="checkbox" name="perm_group[]" value="1"{group_e_checked} class="checkbox"{xhtml}></td>
-      <td>R<input type="checkbox" name="perm_members[]" value="2"{members_checked} class="checkbox"{xhtml}></td>
-      <td>R<input type="checkbox" name="perm_anon[]" value="2"{anon_checked} class="checkbox"{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked} class="checkbox"{xhtml}></td>
+      <td>E<br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked} class="checkbox"{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked} class="checkbox"{xhtml}></td>
+      <td>E<br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked} class="checkbox"{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked} class="checkbox"{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked} class="checkbox"{xhtml}></td>
     </tr>
   </tbody>
 </table>
