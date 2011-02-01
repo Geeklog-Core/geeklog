@@ -25,5 +25,6 @@
   </fieldset>
 </form>
 {openid_login}
+{oauth_login}
 
 <!-- } loginform.thtml -->
