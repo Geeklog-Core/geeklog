@@ -54,7 +54,7 @@ class facebookConsumer extends OAuthConsumerBaseClass {
         $params = array(
             'client_id' => $this->consumer_key,
             'redirect_uri' => $callback_url,
-            'scope' => 'email,user_website,user_location,user_photos',
+            'scope' => 'email,user_website,user_location,user_about_me,user_photos',
         );
         return $this->url_authorize . '?' . http_build_query($params, null, '&');
     }
@@ -129,7 +129,7 @@ class facebookConsumer extends OAuthConsumerBaseClass {
     protected function _getUpdateUserInfo($info) {
         $userinfo = array(
             'about'          => $info->about,
-            'location'       => $info->location,
+            'location'       => $info->location->name,
         );
         return $userinfo;
     }
