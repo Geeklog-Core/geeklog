@@ -62,15 +62,25 @@ function plugin_autoinstall_staticpages($pi_name)
     );
 
     $features = array(
-        $pi_name . '.edit'      => 'Access to ' . $pi_display_name . ' editor',
-        $pi_name . '.delete'    => 'Ability to delete static pages',
-        $pi_name . '.PHP'       => 'Ability to use PHP in static pages'
+        $pi_name . '.edit'                                  => 'Access to ' . $pi_display_name . ' editor',
+        $pi_name . '.delete'                                => 'Ability to delete static pages',
+        $pi_name . '.PHP'                                   => 'Ability to use PHP in static pages',
+        'config.' . $pi_name . '.tab_main'                  => 'Access to configure static pages main settings',
+        'config.' . $pi_name . '.tab_whatsnew'              => 'Access to configure static pages what\'s new block',
+        'config.' . $pi_name . '.tab_search'                => 'Access to configure static pages search results',
+        'config.' . $pi_name . '.tab_permissions'           => 'Access to configure static pages default permissions', 
+        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure static pages autotag usage permissions'
     );
 
     $mappings = array(
-        $pi_name . '.edit'      => array($pi_admin),
-        $pi_name . '.delete'    => array($pi_admin)
+        $pi_name . '.edit'                                  => array($pi_admin),
+        $pi_name . '.delete'                                => array($pi_admin), 
         // Note: 'staticpages.PHP' is not assigned to any group by default
+        'config.' . $pi_name . '.tab_main'                  => array($pi_admin),
+        'config.' . $pi_name . '.tab_whatsnew'              => array($pi_admin),
+        'config.' . $pi_name . '.tab_search'                => array($pi_admin),
+        'config.' . $pi_name . '.tab_permissions'           => array($pi_admin),        
+        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin)
     );
 
     $tables = array(

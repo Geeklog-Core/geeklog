@@ -160,74 +160,73 @@ function plugin_initconfig_staticpages()
     $c = config::get_instance();
     if (!$c->group_exists('staticpages')) {
 
-        $c->add('sg_main', NULL, 'subgroup',
-                0, 0, NULL, 0, true, 'staticpages');
-        $c->add('fs_main', NULL, 'fieldset',
-                0, 0, NULL, 0, true, 'staticpages');
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'staticpages', 0);
+        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, true, 'staticpages', 0);
+        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'staticpages', 0);
         $c->add('allow_php', $_SP_DEFAULT['allow_php'], 'select',
-                0, 0, 0, 10, true, 'staticpages');
+                0, 0, 0, 10, true, 'staticpages', 0);
         $c->add('sort_by', $_SP_DEFAULT['sort_by'], 'select',
-                0, 0, 2, 20, true, 'staticpages');
+                0, 0, 2, 20, true, 'staticpages', 0);
         $c->add('sort_menu_by', $_SP_DEFAULT['sort_menu_by'], 'select',
-                0, 0, 3, 30, true, 'staticpages');
+                0, 0, 3, 30, true, 'staticpages', 0);
         $c->add('sort_list_by', $_SP_DEFAULT['sort_list_by'], 'select',
-                0, 0, 4, 35, true, 'staticpages');
+                0, 0, 4, 35, true, 'staticpages', 0);
         $c->add('delete_pages', $_SP_DEFAULT['delete_pages'], 'select',
-                0, 0, 0, 40, true, 'staticpages');
+                0, 0, 0, 40, true, 'staticpages', 0);
         $c->add('in_block', $_SP_DEFAULT['in_block'], 'select',
-                0, 0, 0, 50, true, 'staticpages');
+                0, 0, 0, 50, true, 'staticpages', 0);
         $c->add('show_hits', $_SP_DEFAULT['show_hits'], 'select',
-                0, 0, 0, 60, true, 'staticpages');
+                0, 0, 0, 60, true, 'staticpages', 0);
         $c->add('show_date', $_SP_DEFAULT['show_date'], 'select',
-                0, 0, 0, 70, true, 'staticpages');
+                0, 0, 0, 70, true, 'staticpages', 0);
         $c->add('filter_html', $_SP_DEFAULT['filter_html'], 'select',
-                0, 0, 0, 80, true, 'staticpages');
+                0, 0, 0, 80, true, 'staticpages', 0);
         $c->add('censor', $_SP_DEFAULT['censor'], 'select',
-                0, 0, 0, 90, true, 'staticpages');
+                0, 0, 0, 90, true, 'staticpages', 0);
         $c->add('aftersave', $_SP_DEFAULT['aftersave'], 'select',
-                0, 0, 9, 100, true, 'staticpages');
+                0, 0, 9, 100, true, 'staticpages', 0);
         $c->add('atom_max_items', $_SP_DEFAULT['atom_max_items'], 'text',
-                0, 0, null, 110, true, 'staticpages');
+                0, 0, null, 110, true, 'staticpages', 0);
         $c->add('meta_tags', $_SP_DEFAULT['meta_tags'], 'select',
-                0, 0, 0, 120, true, 'staticpages');
+                0, 0, 0, 120, true, 'staticpages', 0);
         $c->add('comment_code', $_SP_DEFAULT['comment_code'], 'select',
-                0, 0, 17, 125, true, 'staticpages');
+                0, 0, 17, 125, true, 'staticpages', 0);
         $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
-                0, 0, 0, 127, true, 'staticpages');
+                0, 0, 0, 127, true, 'staticpages', 0);
 
-        $c->add('fs_whatsnew', NULL, 'fieldset',
-                0, 1, NULL, 0, true, 'staticpages');
+        $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'staticpages', 1);
+        $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'staticpages', 1);
         $c->add('newstaticpagesinterval',$_SP_DEFAULT['new_staticpages_interval'],'text',
-                0, 1, NULL, 10, TRUE, 'staticpages');
+                0, 1, NULL, 10, TRUE, 'staticpages', 1);
         $c->add('hidenewstaticpages',$_SP_DEFAULT['hide_new_staticpages'],'select',
-                0, 1, 5, 20, TRUE, 'staticpages');
+                0, 1, 5, 20, TRUE, 'staticpages', 1);
         $c->add('title_trim_length',$_SP_DEFAULT['title_trim_length'],'text',
-                0, 1, NULL, 30, TRUE, 'staticpages');
+                0, 1, NULL, 30, TRUE, 'staticpages', 1);
         $c->add('includecenterblocks',$_SP_DEFAULT['include_centerblocks'],'select',
-                0, 1, 0, 40, TRUE, 'staticpages');
+                0, 1, 0, 40, TRUE, 'staticpages', 1);
         $c->add('includephp',$_SP_DEFAULT['include_PHP'],'select',
-                0, 1, 0, 50, TRUE, 'staticpages');        
+                0, 1, 0, 50, TRUE, 'staticpages', 1);        
         
-        $c->add('fs_search', NULL, 'fieldset',
-                0, 2, NULL, 0, true, 'staticpages');
+        $c->add('tab_search', NULL, 'tab', 0, 2, NULL, 0, true, 'staticpages', 2);
+        $c->add('fs_search', NULL, 'fieldset', 0, 2, NULL, 0, true, 'staticpages', 2);
         $c->add('includesearch', $_SP_DEFAULT['include_search'], 'select',
-                0, 2, 0, 10, true, 'staticpages');
+                0, 2, 0, 10, true, 'staticpages', 2);
         $c->add('includesearchcenterblocks',$_SP_DEFAULT['include_search_centerblocks'],'select',
-                0, 2, 0, 20, TRUE, 'staticpages');
+                0, 2, 0, 20, TRUE, 'staticpages', 2);
         $c->add('includesearchphp',$_SP_DEFAULT['include_search_PHP'],'select',
-                0, 2, 0, 30, TRUE, 'staticpages');   
+                0, 2, 0, 30, TRUE, 'staticpages', 2);   
         
-        $c->add('fs_permissions', NULL, 'fieldset',
-                0, 3, NULL, 0, true, 'staticpages');
+        $c->add('tab_permissions', NULL, 'tab', 0, 3, NULL, 0, true, 'staticpages', 3);
+        $c->add('fs_permissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'staticpages', 3);
         $c->add('default_permissions', $_SP_DEFAULT['default_permissions'],'@select',
-                0, 3, 12, 130, true, 'staticpages');
+                0, 3, 12, 130, true, 'staticpages', 3);
         
-        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
-                0, 10, NULL, 0, true, 'staticpages');
+        $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'staticpages', 10);
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'staticpages', 10);
         $c->add('autotag_permissions_staticpage', $_SP_DEFAULT['autotag_permissions_staticpage'], '@select', 
-                0, 10, 13, 10, true, 'staticpages');       
+                0, 10, 13, 10, true, 'staticpages', 10);       
         $c->add('autotag_permissions_staticpage_content', $_SP_DEFAULT['autotag_permissions_staticpage_content'], '@select', 
-                0, 10, 13, 10, true, 'staticpages');          
+                0, 10, 13, 10, true, 'staticpages', 10);          
     }
 
     return true;

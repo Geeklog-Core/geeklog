@@ -1201,7 +1201,9 @@ function plugin_upgrade_polls()
                 }
             }
 
-            update_ConfValues_2_1_2();
+            polls_update_ConfValues_2_1_2();
+            
+            polls_update_ConfigSecurity_2_1_2();
             
             $current_version = '2.1.3';
             break;            

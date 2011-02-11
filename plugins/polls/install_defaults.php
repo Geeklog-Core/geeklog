@@ -132,51 +132,52 @@ function plugin_initconfig_polls()
     $c = config::get_instance();
     if (!$c->group_exists('polls')) {
 
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'polls');
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'polls');
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'polls', 0);
+        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, true, 'polls', 0);
+        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'polls', 0);
         $c->add('pollsloginrequired', $_PO_DEFAULT['pollsloginrequired'],
-                'select', 0, 0, 0, 10, true, 'polls');
+                'select', 0, 0, 0, 10, true, 'polls', 0);
         $c->add('hidepollsmenu', $_PO_DEFAULT['hidepollsmenu'], 'select',
-                0, 0, 1, 20, true, 'polls');
+                0, 0, 1, 20, true, 'polls', 0);
         $c->add('maxquestions', $_PO_DEFAULT['maxquestions'], 'text',
-                0, 0, 0, 30, true, 'polls');
+                0, 0, 0, 30, true, 'polls', 0);
         $c->add('maxanswers', $_PO_DEFAULT['maxanswers'], 'text',
-                0, 0, 0, 40, true, 'polls');
+                0, 0, 0, 40, true, 'polls', 0);
         $c->add('answerorder', $_PO_DEFAULT['answerorder'], 'select',
-                0, 0, 2, 50, true, 'polls');
+                0, 0, 2, 50, true, 'polls', 0);
         $c->add('pollcookietime', $_PO_DEFAULT['pollcookietime'], 'text',
-                0, 0, 0, 60, true, 'polls');
+                0, 0, 0, 60, true, 'polls', 0);
         $c->add('polladdresstime', $_PO_DEFAULT['polladdresstime'], 'text',
-                0, 0, 0, 70, true, 'polls');
+                0, 0, 0, 70, true, 'polls', 0);
         $c->add('delete_polls', $_PO_DEFAULT['delete_polls'], 'select',
-                0, 0, 0, 80, true, 'polls');
+                0, 0, 0, 80, true, 'polls', 0);
         $c->add('aftersave', $_PO_DEFAULT['aftersave'], 'select',
-                0, 0, 9, 90, true, 'polls');
+                0, 0, 9, 90, true, 'polls', 0);
         $c->add('meta_tags', $_PO_DEFAULT['meta_tags'], 'select',
-                0, 0, 0, 100, true, 'polls');        
+                0, 0, 0, 100, true, 'polls', 0);        
         
-        $c->add('fs_whatsnew', NULL, 'fieldset',
-                0, 1, NULL, 0, true, 'polls');
+        $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'polls', 1);
+        $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'polls', 1);
         $c->add('newpollsinterval',$_PO_DEFAULT['new_polls_interval'],'text',
-                0, 1, NULL, 10, TRUE, 'polls');
+                0, 1, NULL, 10, TRUE, 'polls', 1);
         $c->add('hidenewpolls',$_PO_DEFAULT['hide_new_polls'],'select',
-                0, 1, 5, 20, TRUE, 'polls');
+                0, 1, 5, 20, TRUE, 'polls', 1);
         $c->add('title_trim_length',$_PO_DEFAULT['title_trim_length'],'text',
-                0, 1, NULL, 30, TRUE, 'polls');
+                0, 1, NULL, 30, TRUE, 'polls', 1);
 
-        $c->add('fs_permissions', NULL, 'fieldset', 
-                0, 2, NULL, 0, true, 'polls');
+        $c->add('tab_permissions', NULL, 'tab', 0, 2, NULL, 0, true, 'polls', 2);
+        $c->add('fs_permissions', NULL, 'fieldset', 0, 2, NULL, 0, true, 'polls', 2);
         $c->add('default_permissions', $_PO_DEFAULT['default_permissions'], '@select', 
-                0, 2, 12, 100, true, 'polls');
+                0, 2, 12, 100, true, 'polls', 2);
         
-        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
-                0, 10, NULL, 0, true, 'polls');
+        $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'polls', 10);
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'polls', 10);
         $c->add('autotag_permissions_poll', $_PO_DEFAULT['autotag_permissions_poll'], '@select', 
-                0, 10, 13, 10, true, 'polls');       
+                0, 10, 13, 10, true, 'polls', 10);       
         $c->add('autotag_permissions_poll_vote', $_PO_DEFAULT['autotag_permissions_poll_vote'], '@select', 
-                0, 10, 13, 10, true, 'polls');       
+                0, 10, 13, 10, true, 'polls', 10);       
         $c->add('autotag_permissions_poll_result', $_PO_DEFAULT['autotag_permissions_poll_result'], '@select', 
-                0, 10, 13, 10, true, 'polls');       
+                0, 10, 13, 10, true, 'polls', 10);       
     }
 
     return true;

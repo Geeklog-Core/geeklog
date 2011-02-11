@@ -79,7 +79,7 @@ function render_cc_item(&$template, $url = '', $image = '', $label = '')
 */
 function commandcontrol($token)
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE, $_DB_dbms;
+    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE, $_DB_dbms;
 
     $retval = '';
 
@@ -157,6 +157,7 @@ function commandcontrol($token)
             $docsUrl = $_CONF['site_url'] . '/' . $docs;
         }
     }
+
     $cc_arr = array(
         array('condition' => ($_CONF['allow_mysqldump'] == 1) &&
                                 ($_DB_dbms == 'mysql') && SEC_inGroup('Root'),
@@ -170,7 +171,7 @@ function commandcontrol($token)
             'url' => 'http://www.geeklog.net/versionchecker.php?version='
                      . VERSION,
             'lang' => $LANG01[107], 'image' => '/images/icons/versioncheck.'),
-        array('condition' => (SEC_inGroup ('Root')),
+        array('condition' => SEC_hasRights($_CONF_FT, 'OR'),
             'url'=>$_CONF['site_admin_url'] . '/configuration.php',
             'lang' => $LANG01[129], 'image' => '/images/icons/configuration.')
     );

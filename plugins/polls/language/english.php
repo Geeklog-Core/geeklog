@@ -142,6 +142,13 @@ $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Main Settings'
 );
 
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions', 
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
     'fs_whatsnew' => 'What\'s New Block',

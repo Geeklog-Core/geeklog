@@ -47,17 +47,37 @@ function plugin_autoinstall_xmlsitemap($pi_name)
 {
     $pi_name         = 'xmlsitemap';
     $pi_display_name = 'XMLSitemap';
+    $pi_admin        = $pi_display_name . ' Admin';
 
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.0.0',
-        'pi_gl_version'   => '1.6.0',
+        'pi_version'      => '1.0.1',
+        'pi_gl_version'   => '1.8.0',
         'pi_homepage'     => 'http://www.geeklog.net/',
+    );
+    
+    $groups = array(
+        $pi_admin => 'Has full access to ' . $pi_display_name . ' features'
+    );
+
+    $features = array(
+        'config.' . $pi_name . '.tab_main'   => 'Access to configure general XMLSitemap settings',
+        'config.' . $pi_name . '.tab_pri'    => 'Access to configure XMLSitemap priorities',
+        'config.' . $pi_name . '.tab_freq'   => 'Access to configure XMLSitemap update frequency'
+    );
+
+    $mappings = array(
+        'config.' . $pi_name . '.tab_main'   => array($pi_admin),
+        'config.' . $pi_name . '.tab_pri'    => array($pi_admin),
+        'config.' . $pi_name . '.tab_freq'   => array($pi_admin)
     );
 
     $inst_parms = array(
         'info'      => $info,
+        'groups'    => $groups,
+        'features'  => $features,
+        'mappings'  => $mappings
     );
 
     return $inst_parms;

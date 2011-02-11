@@ -51,8 +51,8 @@ function plugin_autoinstall_spamx($pi_name)
     $info = array(
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
-        'pi_version'      => '1.2.1',
-        'pi_gl_version'   => '1.6.0',
+        'pi_version'      => '1.2.2',
+        'pi_gl_version'   => '1.8.0',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
@@ -62,13 +62,14 @@ function plugin_autoinstall_spamx($pi_name)
     );
 
     $features = array(
-        $pi_name . '.admin'    => 'Full access to ' . $pi_display_name
-                                  . ' plugin',
-        $pi_name . '.skip'    =>  'Skip checking posts for Spam'
+        $pi_name . '.admin'                 => 'Full access to ' . $pi_display_name . ' plugin',
+        $pi_name . '.skip'                  =>  'Skip checking posts for Spam', 
+        'config.' . $pi_name . '.tab_main'  => 'Access to configure Spam-x main settings'
     );
 
     $mappings = array(
-        $pi_name . '.admin'     => array($pi_admin)
+        $pi_name . '.admin'                 => array($pi_admin),
+        'config.' . $pi_name . '.tab_main'  => array($pi_admin)
     );
 
     $tables = array(

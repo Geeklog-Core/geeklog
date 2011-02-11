@@ -61,15 +61,25 @@ function plugin_autoinstall_links($pi_name)
     );
 
     $features = array(
-        $pi_name . '.edit'      => 'Access to links editor',
-        $pi_name . '.moderate'  => 'Ability to moderate pending links',
-        $pi_name . '.submit'    => 'May skip the links submission queue'
+        $pi_name . '.edit'                                  => 'Access to links editor',
+        $pi_name . '.moderate'                              => 'Ability to moderate pending links',
+        $pi_name . '.submit'                                => 'May skip the links submission queue', 
+        'config.' . $pi_name . '.tab_public'                => 'Access to configure public links list settings',
+        'config.' . $pi_name . '.tab_admin'                 => 'Access to configure links admin settings',
+        'config.' . $pi_name . '.tab_permissions'           => 'Access to configure link permissions',
+        'config.' . $pi_name . '.tab_cpermissions'          => 'Access to configure link\'s category permissions',
+        'config.' . $pi_name . '.tab_autotag_permissions'   => 'Access to configure link\'s autotag usage permissions'
     );
 
     $mappings = array(
-        $pi_name . '.edit'      => array($pi_admin),
-        $pi_name . '.moderate'  => array($pi_admin),
-        $pi_name . '.submit'    => array($pi_admin)
+        $pi_name . '.edit'                                  => array($pi_admin),
+        $pi_name . '.moderate'                              => array($pi_admin),
+        $pi_name . '.submit'                                => array($pi_admin),
+        'config.' . $pi_name . '.tab_public'                => array($pi_admin),
+        'config.' . $pi_name . '.tab_admin'                 => array($pi_admin),
+        'config.' . $pi_name . '.tab_permissions'           => array($pi_admin),
+        'config.' . $pi_name . '.tab_cpermissions'          => array($pi_admin),
+        'config.' . $pi_name . '.tab_autotag_permissions'   => array($pi_admin)        
     );
 
     $tables = array(

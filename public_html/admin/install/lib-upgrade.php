@@ -504,6 +504,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
             INST_updateDB($_SQL);
 
             update_ConfValuesFor180();
+            
+            update_ConfigSecurityFor180();
 
             $current_gl_version = '1.8.0';
             $_SQL = '';

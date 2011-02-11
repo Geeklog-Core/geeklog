@@ -1556,7 +1556,16 @@ function plugin_upgrade_calendar()
             break;
 
         case '1.1.1':
-            update_ConfValues_1_1_1();  
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            
+            calendar_update_ConfValues_1_1_1();
+            
+            calendar_update_ConfigSecurity_1_1_1();
 
             $current_version = '1.1.2';
             break;            

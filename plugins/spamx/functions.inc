@@ -188,6 +188,8 @@ function plugin_upgrade_spamx()
     
     require_once $_CONF['path'] . 'plugins/spamx/sql/'
                                 . $_DB_dbms . '_updates.php';
+                                
+    require_once $_CONF['path'] . 'plugins/spamx/install_updates.php';  
 
     $current_version = $installed_version;
     $done = false;
@@ -221,6 +223,21 @@ function plugin_upgrade_spamx()
             }
 
             $current_version = '1.2.1';
+            break;
+            
+        case '1.2.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }            
+
+            spamx_update_ConfValues_1_2_1();  
+            
+            spamx_update_ConfigSecurity_1_2_1();
+            
+            $current_version = '1.2.2';
             break;
 
         default:

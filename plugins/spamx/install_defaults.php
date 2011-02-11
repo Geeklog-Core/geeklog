@@ -96,16 +96,17 @@ function plugin_initconfig_spamx()
             $enable_email = false;
         }
 
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'spamx');
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx');
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'spamx', 0);
+        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 0);
+        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 0);
         $c->add('logging', $_SPX_DEFAULT['logging'], 'select',
-                0, 0, 1, 10, true, 'spamx');
+                0, 0, 1, 10, true, 'spamx', 0);
         $c->add('timeout', $_SPX_DEFAULT['timeout'], 'text',
-                0, 0, null, 30, true, 'spamx');
+                0, 0, null, 30, true, 'spamx', 0);
         $c->add('notification_email', $_SPX_DEFAULT['notification_email'],
-                'text', 0, 0, null, 40, $enable_email, 'spamx');
+                'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
         $c->add('action', $_SPX_DEFAULT['action'], 'text',
-                0, 0, null, 50, false, 'spamx');
+                0, 0, null, 50, false, 'spamx', 0);
 
     }
 

@@ -1293,7 +1293,16 @@ function plugin_upgrade_staticpages()
             $current_version = '1.6.3';
             break;
         case '1.6.3':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            
             SP_update_ConfValues_1_6_3();
+            
+            sp_update_ConfigSecurity_1_6_3();
 
             $current_version = '1.6.4';
             break;           

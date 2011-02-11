@@ -85,7 +85,7 @@ function plugin_chkVersion_xmlsitemap()
 */
 function plugin_upgrade_xmlsitemap()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'xmlsitemap'");
@@ -103,6 +103,36 @@ function plugin_upgrade_xmlsitemap()
 
     $inst_parms = plugin_autoinstall_xmlsitemap('xmlsitemap');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
+    
+    require_once $_CONF['path'] . 'plugins/xmlsitemap/sql/'
+                                . $_DB_dbms . '_updates.php';
+                                
+    require_once $_CONF['path'] . 'plugins/xmlsitemap/install_updates.php';                                   
+
+    $current_version = $installed_version;
+    $done = false;
+    while (! $done) {
+        switch ($current_version) {
+        case '1.0.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            xmlsitemap_update_ConfValues_1_0_0();
+            
+            xmlsitemap_update_ConfigSecurity_1_0_0();
+
+            $current_version = '1.0.1';
+            break;
+
+        default:
+            $done = true;
+            break;
+        }
+    }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'xmlsitemap'");
 

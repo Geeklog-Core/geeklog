@@ -100,6 +100,9 @@ $config->initConfig();
 
 $_CONF = $config->get_config('Core');
 
+// Get features that has ft_name like 'config%'
+$_CONF_FT = $config->_get_config_features();
+
 // Before we do anything else, check to ensure site is enabled
 
 if (isset($_CONF['site_enabled']) && !$_CONF['site_enabled']) {
@@ -828,11 +831,16 @@ function COM_renderMenu( &$header, $plugin_menu )
 * @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @param    string  $pagetitle  optional content for the page's <title>
 * @param    string  $headercode optional code to go into the page's <head>
+* @param    array   $jquery_ui  include jquery ui to go into the page's <head> if set to array of paramaters
+*                               Available paramaters:
+*                               - theme => base, redmond, etc.
+*                               - features => tabs, autocomplete, etc.
+*                               See config.class.php for usage. To exclude JQuery UI, just set $jquery_ui to null.
 * @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
 *
 */
-function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
+function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jquery_ui = null )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
@@ -1215,7 +1223,44 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         $header->parse('advanced_editor', 'editor');
 
     } else {
-         $header->set_var('advanced_editor', '');
+        $header->set_var('advanced_editor', '');
+    }
+    
+    // include jquery ui if $jquery_ui set to true
+    if ( is_array($jquery_ui) && !empty($jquery_ui) ) {
+        // set theme
+        if ( isset($jquery_ui['theme']) ) {
+            $jquery_ui_theme = $jquery_ui['theme'];
+        } else {
+            $jquery_ui_theme = 'redmond';
+        }
+        $header->set_var('jquery_ui_theme', $jquery_ui_theme);
+        
+        // set features
+        if ( isset($jquery_ui['features']) ) {
+            if ( is_array($jquery_ui['features']) && !empty($jquery_ui['features']) ) {
+                $jquery_ui_features = '';
+                foreach ( $jquery_ui['features'] as $jquery_ui_feature ) {
+                    $jquery_ui_features .= '<script type="text/javascript" '.
+                                           'src="' . $_CONF['site_url'] .
+                                           '/javascript/jquery_ui/jquery.ui.' . $jquery_ui_feature .
+                                           '.min.js"></script>';
+                }
+            }
+            
+            if ( is_string($jquery_ui['features']) && !empty($jquery_ui['features']) ) {
+                $jquery_ui_features = '<script type="text/javascript" '.
+                                       'src="'. $_CONF['site_url'] .
+                                       '/javascript/jquery_ui/jquery.ui.' . $jquery_ui['features'] .
+                                       '.min.js"></script>';
+            }
+        }
+        $header->set_var('jquery_ui_features', $jquery_ui_features);
+        
+        $header->set_file('jquery_ui_assets', '/jquery_ui/jquery_ui_header.thtml');
+        $header->parse('jquery_ui', 'jquery_ui_assets');
+    } else {
+        $header->set_var('jquery_ui', '');
     }
 
     // Call any plugin that may want to include extra Meta tags
@@ -2509,7 +2554,7 @@ function COM_userMenu( $help='', $title='', $position='' )
 */
 function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
-    global $_TABLES, $_CONF, $LANG01, $LANG_ADMIN, $_BLOCK_TEMPLATE,
+    global $_TABLES, $_CONF, $_CONF_FT, $LANG01, $LANG_ADMIN, $_BLOCK_TEMPLATE,
            $_DB_dbms, $config;
 
     $retval = '';
@@ -2521,7 +2566,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
     $plugin_options = PLG_getAdminOptions();
     $num_plugins = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ))
+    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAcess())        
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
@@ -2612,7 +2657,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             }
         }
 
-        if (SEC_inGroup('Root')) {
+        if (SEC_hasConfigAcess()) {
             $url = $_CONF['site_admin_url'] . '/configuration.php';
             $adminmenu->set_var('option_url', $url);
             $adminmenu->set_var('option_label', $LANG01[129]);

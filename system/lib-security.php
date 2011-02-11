@@ -272,6 +272,21 @@ function SEC_isModerator()
 }
 
 /**
+* Checks to see if current user has access to a configuration
+* 
+* @return   boolean     returns if user has any config. rights
+*/
+function SEC_hasConfigAcess() {
+    global $_CONF_FT;
+    
+    if (SEC_hasRights($_CONF_FT, 'OR')) {
+        return true;
+    }
+    
+    return false;
+}
+
+/**
 * Checks to see if current user has access to a topic
 *
 * Checks to see if current user has access to a topic
@@ -359,7 +374,7 @@ function SEC_hasRights($features,$operator='AND')
 {
     global $_USER, $_RIGHTS, $_SEC_VERBOSE;
 
-    if (strstr($features,',')) {
+    if (is_string($features) && strstr($features,',')) {
         $features = explode(',',$features);
     }
 

@@ -668,7 +668,7 @@ function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit, $upd
 */
 function plugin_upgrade_links()
 {
-    global $_CONF, $_TABLES, $_LI_CONF;
+    global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
 
     $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',         
                                     "pi_name = 'links'");
@@ -687,8 +687,8 @@ function plugin_upgrade_links()
     $inst_parms = plugin_autoinstall_links('links');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
     
-    //require_once $_CONF['path'] . 'plugins/links/sql/'
-    //                            . $_DB_dbms . '_updates.php';
+    require_once $_CONF['path'] . 'plugins/links/sql/'
+                                . $_DB_dbms . '_updates.php';
                                 
     require_once $_CONF['path'] . 'plugins/links/install_updates.php';                                
 
@@ -712,8 +712,16 @@ function plugin_upgrade_links()
             $current_version = '2.1.0';
             break;    
         case '2.1.0':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }            
 
-            update_ConfValues_2_1_0();
+            links_update_ConfValues_2_1_0();
+            
+            links_update_ConfigSecurity_2_1_0();
             
             $current_version = '2.1.1';
             break;            

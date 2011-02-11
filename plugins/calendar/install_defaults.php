@@ -144,40 +144,41 @@ function plugin_initconfig_calendar()
             }
         }
 
-        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'calendar');
-        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'calendar');
+        $c->add('sg_main', NULL, 'subgroup', 0, 0, NULL, 0, true, 'calendar', 0);
+        $c->add('tab_main', NULL, 'tab', 0, 0, NULL, 0, true, 'calendar', 0);
+        $c->add('fs_main', NULL, 'fieldset', 0, 0, NULL, 0, true, 'calendar', 0);
         $c->add('calendarloginrequired', $_CA_DEFAULT['calendarloginrequired'],
-                'select', 0, 0, 0, 10, true, 'calendar');
+                'select', 0, 0, 0, 10, true, 'calendar', 0);
         $c->add('hidecalendarmenu', $_CA_DEFAULT['hidecalendarmenu'],
-                'select', 0, 0, 1, 20, true, 'calendar');
+                'select', 0, 0, 1, 20, true, 'calendar', 0);
         $c->add('personalcalendars', $_CA_DEFAULT['personalcalendars'],
-                'select', 0, 0, 1, 30, true, 'calendar');
+                'select', 0, 0, 1, 30, true, 'calendar', 0);
         $c->add('eventsubmission', $_CA_DEFAULT['eventsubmission'],
-                'select', 0, 0, 0, 40, true, 'calendar');
+                'select', 0, 0, 0, 40, true, 'calendar', 0);
         $c->add('showupcomingevents', $_CA_DEFAULT['showupcomingevents'],
-                'select', 0, 0, 0, 50, true, 'calendar');
+                'select', 0, 0, 0, 50, true, 'calendar', 0);
         $c->add('upcomingeventsrange', $_CA_DEFAULT['upcomingeventsrange'],
-                'text', 0, 0, 0, 60, true, 'calendar');
+                'text', 0, 0, 0, 60, true, 'calendar', 0);
         $c->add('hour_mode', $_CA_DEFAULT['hour_mode'],
-                'select', 0, 0, 6, 70, true, 'calendar');
+                'select', 0, 0, 6, 70, true, 'calendar', 0);
         $c->add('event_types', $_CA_DEFAULT['event_types'],
-                '%text', 0, 0, NULL, 80, true, 'calendar');
+                '%text', 0, 0, NULL, 80, true, 'calendar', 0);
         $c->add('notification', $_CA_DEFAULT['notification'],
-                'select', 0, 0, 0, 90, true, 'calendar');
+                'select', 0, 0, 0, 90, true, 'calendar', 0);
         $c->add('delete_event', $_CA_DEFAULT['delete_event'],
-                'select', 0, 0, 0, 100, true, 'calendar');
+                'select', 0, 0, 0, 100, true, 'calendar', 0);
         $c->add('aftersave', $_CA_DEFAULT['aftersave'],
-                'select', 0, 0, 9, 110, true, 'calendar');
+                'select', 0, 0, 9, 110, true, 'calendar', 0);
 
-        $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true,
-                'calendar');
+        $c->add('tab_permissions', NULL, 'tab', 0, 1, NULL, 0, true, 'calendar', 1);
+        $c->add('fs_permissions', NULL, 'fieldset', 0, 1, NULL, 0, true, 'calendar', 1);
         $c->add('default_permissions', $_CA_DEFAULT['default_permissions'],
-                '@select', 0, 1, 12, 120, true, 'calendar');
+                '@select', 0, 1, 12, 120, true, 'calendar', 1);
         
-        $c->add('fs_autotag_permissions', NULL, 'fieldset', 
-                0, 10, NULL, 0, true, 'calendar');
+        $c->add('tab_autotag_permissions', NULL, 'tab', 0, 10, NULL, 0, true, 'calendar', 10);
+        $c->add('fs_autotag_permissions', NULL, 'fieldset', 0, 10, NULL, 0, true, 'calendar', 10);
         $c->add('autotag_permissions_event', $_CA_DEFAULT['autotag_permissions_event'], '@select', 
-                0, 10, 13, 10, true, 'calendar');         
+                0, 10, 13, 10, true, 'calendar', 10);         
     }
 
     return true;

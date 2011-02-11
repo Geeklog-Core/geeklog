@@ -19,6 +19,8 @@
     <script type="text/javascript" src="{site_url}/javascript/common.js"></script>
     <script type="text/javascript" src="{layout_url}/javascript/confirm.js"></script>
     <script type="text/javascript" src="{layout_url}/javascript/fix_html.js"></script>
+    <script type="text/javascript" src="{site_url}/javascript/jquery.min.js?v=1.4.2"></script>
+{jquery_ui}    
   </head>
 
 

@@ -57,6 +57,12 @@ $LANG_configsubgroups['xmlsitemap'] = array(
     'sg_main' => 'Main Settings',
 );
 
+$LANG_tab['xmlsitemap'] = array(
+    'tab_main' => 'XMLSitemap Main Settings',
+    'tab_pri'  => 'Priority',
+    'tab_freq' => 'Update frequency',
+);
+
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap Main Settings',
     'fs_pri'  => 'Priority (default = 0.5, lowest = 0.0, highest = 1.0)',
