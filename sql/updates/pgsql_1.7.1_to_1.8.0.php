@@ -4,7 +4,7 @@
 $_SQL[] = "ALTER TABLE {$_TABLES['plugins']} ADD COLUMN pi_load smallint NOT NULL DEFAULT (10000)::smallint";
 
 // Add Tab column in for config
-$_SQL[] = "ALTER TABLE {$_TABLES['conf_values']} ADD tab int default NULL AFTER sort_order";
+$_SQL[] = "ALTER TABLE {$_TABLES['conf_values']} ADD COLUMN tab int default NULL";
 // Set new Tab column to whatever fieldset is
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'Core'";
 // Make a few corrections, let default_permissions_story share it's tab with default_permissions_topic and default_permissions_block
@@ -14,7 +14,8 @@ $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET tab = 37 WHERE group_name = 'Cor
 $_SQL[] = "UPDATE {$_TABLES['conf_values']} SET tab = 37 WHERE group_name = 'Core' AND name = 'default_permissions_block'";
 
 // Increase name length to 50 on features table
-$_SQL[] = "ALTER TABLE {$_TABLES['features']} CHANGE ft_name ft_name VARCHAR(50) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['features']} ALTER COLUMN ft_name TYPE VARCHAR(50)";
+$_SQL[] = "ALTER TABLE {$_TABLES['features']} ALTER COLUMN ft_name SET NOT NULL";
 
 // Insert Group rights for configuration tabs
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.Core.tab_site', 'Access to configure site', 1)";

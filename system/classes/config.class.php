@@ -196,7 +196,7 @@ class config {
         global $_TABLES;
 
         // Figure out tabs first
-        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE 1";
+        $sql = "SELECT name, value, group_name, type, subgroup, tab FROM {$_TABLES['conf_values']} WHERE 1=1";
         $result = DB_query($sql);
         $tabs = array();
         $curr_group_name = '';
