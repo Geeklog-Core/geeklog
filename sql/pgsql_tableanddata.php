@@ -44,12 +44,12 @@ CREATE TABLE {$_TABLES['blocks']} (
   perm_anon smallint  NOT NULL default '2',
   PRIMARY KEY  (bid)
 );
-  CREATE INDEX blocks_bid ON {$_TABLES['blocks']}(bid);
-  CREATE INDEX blocks_is_enabled ON {$_TABLES['blocks']}(is_enabled);
-  CREATE INDEX blocks_tid ON {$_TABLES['blocks']}(tid);
-  CREATE INDEX blocks_type ON {$_TABLES['blocks']}(type);
-  CREATE INDEX blocks_name ON {$_TABLES['blocks']}(name);
-  CREATE INDEX blocks_onleft ON {$_TABLES['blocks']}(onleft); 
+  CREATE INDEX {$_TABLES['blocks']}_bid ON {$_TABLES['blocks']}(bid);
+  CREATE INDEX {$_TABLES['blocks']}_is_enabled ON {$_TABLES['blocks']}(is_enabled);
+  CREATE INDEX {$_TABLES['blocks']}_tid ON {$_TABLES['blocks']}(tid);
+  CREATE INDEX {$_TABLES['blocks']}_type ON {$_TABLES['blocks']}(type);
+  CREATE INDEX {$_TABLES['blocks']}_name ON {$_TABLES['blocks']}(name);
+  CREATE INDEX {$_TABLES['blocks']}_onleft ON {$_TABLES['blocks']}(onleft); 
 ";
 
 $_SQL[] = "
@@ -106,11 +106,11 @@ CREATE TABLE {$_TABLES['comments']} (
   ipaddress varchar(39) NOT NULL default '',
   PRIMARY KEY  (cid)
 );
-  CREATE INDEX comments_sid ON {$_TABLES['comments']}(sid);
-  CREATE INDEX comments_uid ON {$_TABLES['comments']}(uid);
-  CREATE INDEX comments_lft ON {$_TABLES['comments']}(lft);
-  CREATE INDEX comments_rht ON {$_TABLES['comments']}(rht);
-  CREATE INDEX comments_date ON {$_TABLES['comments']}(date); 
+  CREATE INDEX {$_TABLES['comments']}_sid ON {$_TABLES['comments']}(sid);
+  CREATE INDEX {$_TABLES['comments']}_uid ON {$_TABLES['comments']}(uid);
+  CREATE INDEX {$_TABLES['comments']}_lft ON {$_TABLES['comments']}(lft);
+  CREATE INDEX {$_TABLES['comments']}_rht ON {$_TABLES['comments']}(rht);
+  CREATE INDEX {$_TABLES['comments']}_date ON {$_TABLES['comments']}(date); 
 ";
 
 $_SQL[] = "
@@ -176,7 +176,7 @@ CREATE TABLE {$_TABLES['features']} (
   ft_descr varchar(255) NOT NULL default '',
   ft_gl_core smallint NOT NULL default '0',
   PRIMARY KEY  (ft_id));
-  CREATE INDEX ft_name ON {$_TABLES['features']}(ft_name);
+  CREATE INDEX {$_TABLES['features']}_ft_name ON {$_TABLES['features']}(ft_name);
 ";
 
 $_SQL[] = "
@@ -193,8 +193,8 @@ CREATE TABLE {$_TABLES['group_assignments']} (
   ug_uid smallint  default NULL,
   ug_grp_id smallint  default NULL
 );
-  CREATE INDEX group_assignments_ug_main_grp_id ON {$_TABLES['group_assignments']}(ug_main_grp_id);
-  CREATE INDEX group_assignments_ug_uid ON {$_TABLES['group_assignments']}(ug_uid);
+  CREATE INDEX {$_TABLES['group_assignments']}_ug_main_grp_id ON {$_TABLES['group_assignments']}(ug_main_grp_id);
+  CREATE INDEX {$_TABLES['group_assignments']}_ug_uid ON {$_TABLES['group_assignments']}(ug_uid);
 ";
 
 $_SQL[] = "
@@ -206,7 +206,7 @@ CREATE TABLE {$_TABLES['groups']} (
   grp_default smallint  NOT NULL default '0',
   PRIMARY KEY  (grp_id)
 );
-CREATE UNIQUE INDEX grp_name ON {$_TABLES['groups']}(grp_name);
+CREATE UNIQUE INDEX {$_TABLES['groups']}_grp_name ON {$_TABLES['groups']}(grp_name);
 ";
 
 $_SQL[] = "
@@ -226,7 +226,7 @@ CREATE TABLE {$_TABLES['pingservice']} (
   method varchar(80) default NULL,
   is_enabled smallint  NOT NULL DEFAULT '1',
   PRIMARY KEY (pid));
-  CREATE INDEX pingservice_is_enabled ON {$_TABLES['pingservice']}(is_enabled);
+  CREATE INDEX {$_TABLES['pingservice']}_is_enabled ON {$_TABLES['pingservice']}(is_enabled);
 ";
 
 $_SQL[] = "
@@ -239,7 +239,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_load smallint NOT NULL default '10000',
   PRIMARY KEY  (pi_name)
   );
-  CREATE INDEX plugins_enabled ON {$_TABLES['plugins']}(pi_enabled);
+  CREATE INDEX {$_TABLES['plugins']}_enabled ON {$_TABLES['plugins']}(pi_enabled);
 ";
 
 $_SQL[] = "
@@ -259,8 +259,8 @@ CREATE TABLE {$_TABLES['sessions']} (
   md5_sess_id varchar(128) default NULL,
   PRIMARY KEY  (sess_id)
 );
-  CREATE INDEX start_time ON {$_TABLES['sessions']} (start_time);
-  CREATE INDEX remote_ip ON {$_TABLES['sessions']}(remote_ip);
+  CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
+  CREATE INDEX {$_TABLES['sessions']}_remote_ip ON {$_TABLES['sessions']}(remote_ip);
 ";
 
 $_SQL[] = "
@@ -278,8 +278,8 @@ CREATE TABLE {$_TABLES['speedlimit']} (
   date int default NULL,
   type varchar(30) NOT NULL default 'submit',
   PRIMARY KEY (id));
-  CREATE UNIQUE INDEX type_ipaddress on {$_TABLES['speedlimit']}(type,ipaddress);
-  CREATE UNIQUE INDEX  date on {$_TABLES['speedlimit']}(date);
+  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_type_ipaddress on {$_TABLES['speedlimit']}(type,ipaddress);
+  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_date on {$_TABLES['speedlimit']}(date);
 ";
 
 $_SQL[] = "
@@ -326,15 +326,15 @@ CREATE TABLE {$_TABLES['stories']} (
   perm_anon smallint NOT NULL default '2',
   PRIMARY KEY  (sid)
 );
-CREATE INDEX stories_sid ON {$_TABLES['stories']}(sid);
-CREATE INDEX stories_tid ON {$_TABLES['stories']}(tid);
-CREATE INDEX stories_uid ON {$_TABLES['stories']}(uid);
-CREATE INDEX stories_featured ON {$_TABLES['stories']}(featured);
-CREATE INDEX stories_hits ON {$_TABLES['stories']}(hits);
-CREATE INDEX stories_statuscode ON {$_TABLES['stories']}(statuscode);
-CREATE INDEX stories_expire ON {$_TABLES['stories']}(expire);
-CREATE INDEX stories_date ON {$_TABLES['stories']}(date);
-CREATE INDEX stories_frontpage ON {$_TABLES['stories']}(frontpage);
+CREATE INDEX {$_TABLES['stories']}_sid ON {$_TABLES['stories']}(sid);
+CREATE INDEX {$_TABLES['stories']}_tid ON {$_TABLES['stories']}(tid);
+CREATE INDEX {$_TABLES['stories']}_uid ON {$_TABLES['stories']}(uid);
+CREATE INDEX {$_TABLES['stories']}_featured ON {$_TABLES['stories']}(featured);
+CREATE INDEX {$_TABLES['stories']}_hits ON {$_TABLES['stories']}(hits);
+CREATE INDEX {$_TABLES['stories']}_statuscode ON {$_TABLES['stories']}(statuscode);
+CREATE INDEX {$_TABLES['stories']}_expire ON {$_TABLES['stories']}(expire);
+CREATE INDEX {$_TABLES['stories']}_date ON {$_TABLES['stories']}(date);
+CREATE INDEX {$_TABLES['stories']}_frontpage ON {$_TABLES['stories']}(frontpage);
 ";
 
 $_SQL[] = "
@@ -371,10 +371,10 @@ CREATE TABLE {$_TABLES['syndication']} (
   update_info text,
   PRIMARY KEY (fid)
 );
-CREATE INDEX syndication_type on {$_TABLES['syndication']}(type);
-CREATE INDEX syndication_topic ON {$_TABLES['syndication']}(topic);
-CREATE INDEX syndication_is_enabled ON {$_TABLES['syndication']}(is_enabled);
-CREATE INDEX syndication_updated ON {$_TABLES['syndication']}(updated);
+CREATE INDEX {$_TABLES['syndication']}_type on {$_TABLES['syndication']}(type);
+CREATE INDEX {$_TABLES['syndication']}_topic ON {$_TABLES['syndication']}(topic);
+CREATE INDEX {$_TABLES['syndication']}_is_enabled ON {$_TABLES['syndication']}(is_enabled);
+CREATE INDEX {$_TABLES['syndication']}_updated ON {$_TABLES['syndication']}(updated);
 ";
 
 $_SQL[] = "
@@ -423,10 +423,10 @@ CREATE TABLE {$_TABLES['trackback']} (
   PRIMARY KEY (cid)
 );
 
-  CREATE INDEX trackback_sid ON {$_TABLES['trackback']}(sid);
-  CREATE INDEX trackback_url ON {$_TABLES['trackback']}(url);
-  CREATE INDEX trackback_type ON {$_TABLES['trackback']}(type);
-  CREATE INDEX trackback_date ON {$_TABLES['trackback']}(date);
+  CREATE INDEX {$_TABLES['trackback']}_sid ON {$_TABLES['trackback']}(sid);
+  CREATE INDEX {$_TABLES['trackback']}_url ON {$_TABLES['trackback']}(url);
+  CREATE INDEX {$_TABLES['trackback']}_type ON {$_TABLES['trackback']}(type);
+  CREATE INDEX {$_TABLES['trackback']}_date ON {$_TABLES['trackback']}(date);
 ";
 
 $_SQL[] = "
@@ -458,9 +458,9 @@ CREATE TABLE {$_TABLES['userindex']} (
   maxstories smallint default NULL,
   PRIMARY KEY  (uid)
 );
-CREATE INDEX userindex_uid ON {$_TABLES['userindex']}(uid);
-CREATE INDEX userindex_noboxes ON {$_TABLES['userindex']}(noboxes);
-CREATE INDEX userindex_maxstories ON {$_TABLES['userindex']}(maxstories);
+CREATE INDEX {$_TABLES['userindex']}_uid ON {$_TABLES['userindex']}(uid);
+CREATE INDEX {$_TABLES['userindex']}_noboxes ON {$_TABLES['userindex']}(noboxes);
+CREATE INDEX {$_TABLES['userindex']}_maxstories ON {$_TABLES['userindex']}(maxstories);
 ";
 
 $_SQL[] = "
@@ -515,12 +515,12 @@ CREATE TABLE {$_TABLES['users']} (
   num_reminders smallint NOT NULL default 0,
   PRIMARY KEY  (uid)
 );
-  CREATE INDEX LOGIN ON {$_TABLES['users']}(uid,passwd,username);
-  CREATE INDEX users_username ON {$_TABLES['users']}(username);
-  CREATE INDEX users_fullname ON {$_TABLES['users']}(fullname);
-  CREATE INDEX users_email ON {$_TABLES['users']}(email);
-  CREATE INDEX users_passwd ON {$_TABLES['users']}(passwd);
-  CREATE INDEX users_pwrequestid ON {$_TABLES['users']}(pwrequestid);
+  CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);
+  CREATE INDEX {$_TABLES['users']}_username ON {$_TABLES['users']}(username);
+  CREATE INDEX {$_TABLES['users']}_fullname ON {$_TABLES['users']}(fullname);
+  CREATE INDEX {$_TABLES['users']}_email ON {$_TABLES['users']}(email);
+  CREATE INDEX {$_TABLES['users']}_passwd ON {$_TABLES['users']}(passwd);
+  CREATE INDEX {$_TABLES['users']}_pwrequestid ON {$_TABLES['users']}(pwrequestid);
 ";
 
 $_SQL[] = "

@@ -58,10 +58,10 @@ CREATE TABLE {$_TABLES['events']} (
   timestart time default NULL,
   timeend time default NULL,
   PRIMARY KEY  (eid));
-  CREATE INDEX events_eid ON {$_TABLES['events']}(eid);
-  CREATE INDEX events_event_type ON {$_TABLES['events']}(event_type);
-  CREATE INDEX events_datestart ON {$_TABLES['events']}(datestart);
-  CREATE INDEX events_dateend ON {$_TABLES['events']}(dateend);
+  CREATE INDEX {$_TABLES['events']}_eid ON {$_TABLES['events']}(eid);
+  CREATE INDEX {$_TABLES['events']}_event_type ON {$_TABLES['events']}(event_type);
+  CREATE INDEX {$_TABLES['events']}_datestart ON {$_TABLES['events']}(datestart);
+  CREATE INDEX {$_TABLES['events']}_dateend ON {$_TABLES['events']}(dateend);
 ";
 
 $_SQL[] = "

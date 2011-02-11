@@ -73,11 +73,11 @@ CREATE TABLE {$_TABLES['polltopics']} (
   perm_members int  NOT NULL default '2',
   perm_anon int  NOT NULL default '2',
   PRIMARY KEY  (pid));
-  CREATE INDEX  pollquestions_qid ON {$_TABLES['polltopics']}(pid);
-  CREATE INDEX pollquestions_created ON {$_TABLES['polltopics']}(created);
-  CREATE INDEX pollquestions_display ON {$_TABLES['polltopics']}(display);
-  CREATE INDEX pollquestions_commentcode ON {$_TABLES['polltopics']}(commentcode);
-  CREATE INDEX pollquestions_statuscode ON {$_TABLES['polltopics']}(statuscode);
+  CREATE INDEX {$_TABLES['polltopics']}_pid ON {$_TABLES['polltopics']}(pid);
+  CREATE INDEX {$_TABLES['polltopics']}_created ON {$_TABLES['polltopics']}(created);
+  CREATE INDEX {$_TABLES['polltopics']}_display ON {$_TABLES['polltopics']}(display);
+  CREATE INDEX {$_TABLES['polltopics']}_commentcode ON {$_TABLES['polltopics']}(commentcode);
+  CREATE INDEX {$_TABLES['polltopics']}_statuscode ON {$_TABLES['polltopics']}(statuscode);
 ";
 
 $_SQL[] = "

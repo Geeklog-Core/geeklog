@@ -66,12 +66,12 @@ CREATE TABLE {$_TABLES['staticpage']} (
   sp_inblock int default '1',
   postmode varchar(16) NOT NULL default 'html',
   PRIMARY KEY  (sp_id));
-  CREATE INDEX staticpage_sp_uid ON {$_TABLES['staticpage']}(sp_uid);
-  CREATE INDEX staticpage_created ON {$_TABLES['staticpage']}(created);
-  CREATE INDEX staticpage_sp_onmenu ON {$_TABLES['staticpage']}(sp_onmenu);
-  CREATE INDEX staticpage_sp_centerblock ON {$_TABLES['staticpage']}(sp_centerblock);
-  CREATE INDEX staticpage_sp_tid ON {$_TABLES['staticpage']}(sp_tid);
-  CREATE INDEX staticpage_sp_where ON {$_TABLES['staticpage']}(sp_where);
+  CREATE INDEX {$_TABLES['staticpage']}_sp_uid ON {$_TABLES['staticpage']}(sp_uid);
+  CREATE INDEX {$_TABLES['staticpage']}_created ON {$_TABLES['staticpage']}(created);
+  CREATE INDEX {$_TABLES['staticpage']}_sp_onmenu ON {$_TABLES['staticpage']}(sp_onmenu);
+  CREATE INDEX {$_TABLES['staticpage']}_sp_centerblock ON {$_TABLES['staticpage']}(sp_centerblock);
+  CREATE INDEX {$_TABLES['staticpage']}_sp_tid ON {$_TABLES['staticpage']}(sp_tid);
+  CREATE INDEX {$_TABLES['staticpage']}_sp_where ON {$_TABLES['staticpage']}(sp_where);
 ";
 
 ?>

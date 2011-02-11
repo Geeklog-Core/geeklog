@@ -64,7 +64,7 @@ CREATE TABLE {$_TABLES['linkcategories']} (
   perm_members int NOT NULL default '2',
   perm_anon int NOT NULL default '2',
   PRIMARY KEY (cid));
-  CREATE INDEX links_pid ON {$_TABLES['linkcategories']}(pid);
+  CREATE INDEX {$_TABLES['linkcategories']}_pid ON {$_TABLES['linkcategories']}(pid);
 
 ";
 
@@ -84,8 +84,8 @@ CREATE TABLE {$_TABLES['links']} (
   perm_members int NOT NULL default '2',
   perm_anon int NOT NULL default '2',
   PRIMARY KEY (lid));
-  CREATE INDEX links_category ON {$_TABLES['links']}(cid);
-  CREATE INDEX links_date ON {$_TABLES['links']}(date);
+  CREATE INDEX {$_TABLES['links']}_category ON {$_TABLES['links']}(cid);
+  CREATE INDEX {$_TABLES['links']}_date ON {$_TABLES['links']}(date);
 ";
 
 $_SQL[] = "
