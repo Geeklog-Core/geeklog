@@ -1057,8 +1057,8 @@ $LANG32 = array(
     10 => '<br' . XHTML . '><b>There are no plugins currently installed.</b><br' . XHTML . '><br' . XHTML . '>',
     11 => 'To modify or delete a plugin, click on that plugin\'s edit icon below. This will show the plugin details including the authors\'s website. Both the installed version and the version returned from the plugin\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plugin please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
-    13 => 'Plugin Editor',
-    14 => 'New Plugin',
+    13 => 'Plugin Information Center',
+    14 => 'Uninstalled Plugins', // Resynch
     15 => 'Admin Home',
     16 => 'Plugin Name',
     17 => 'Plugin Version',
@@ -1083,13 +1083,32 @@ $LANG32 = array(
     36 => 'Code',
     37 => 'Data',
     38 => 'Update!',
-    39 => 'Upload a plugin',
+    39 => 'Upload a Plugin',
     40 => 'You can upload a plugin archive (.tar.gz, .tgz, .zip) directly here:',
     41 => 'Upload',
     42 => 'Click to update',
     43 => 'Load Order',
     44 => 'Move plugin up the load order',
     45 => 'Move plugin down the load order',
+    46 => 'Click to Delete this Plugin',
+    47 => "Really Delete \'%s\' Plugin?",
+    48 => 'Click to Enable this Plugin',
+    49 => 'Click to Disable this Plugin',
+    50 => 'Dependencies',
+    51 => 'OK',
+    52 => 'Unresolved',
+    53 => 'Disabled',
+    54 => 'Unavailable',
+    55 => 'Uninstalled',
+    56 => 'Wrong Version',
+    57 => 'Unknown',
+    58 => 'The load order of one or more plugins has been altered in order to resolve dependencies',
+    59 => 'Info',
+    60 => 'Close',
+    61 => 'Status',
+    62 => 'Click to Install this Plugin',
+    63 => 'This Plugin Cannot be Installed',
+    64 => 'This Plugin Cannot be Enabled',
 
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php
@@ -1699,17 +1718,21 @@ $LANG_trackbackcodes = array(
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    'home'          => 'Home',
-    'admin_home'    => 'Site Administration',
-    'sections'      => 'Configuration Sections',
-    'restore'       => 'Restore',
-    'add_element'   => 'Add Element',
-    'save_changes'  => 'Save Changes',
-    'reset_form'    => 'Reset Form',
-    'changes_made'  => 'Changes were successfully made to',
-    'title'         => 'Configuration Manager',
-    'disable'       => 'Click to disable this option',
-    'enable'        => 'Enable'
+    'home'                       => 'Home',
+    'admin_home'                 => 'Site Administration',
+    'sections'                   => 'Configuration Sections',
+    'restore'                    => 'Restore',
+    'add_element'                => 'Add Element',
+    'save_changes'               => 'Save Changes',
+    'reset_form'                 => 'Reset Form',
+    'changes_made'               => 'Changes were successfully made to',
+    'title'                      => 'Configuration Manager',
+    'disable'                    => 'Click to disable this option',
+    'enable'                     => 'Enable',
+    'default_tab_name'           => 'Main',
+    'search_configuration_label' => 'Search Configuration',
+    'error_validation_occurs'    => 'There are invalid configuration values. Please correct these fields ' .
+                                    '(just click the config variable to point you to the error field)'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1998,6 +2021,48 @@ $LANG_fs['Core'] = array(
     'fs_webservices' => 'Webservices',
     'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
+    
+$LANG_tab['Core'] = array(
+    'tab_site' => 'Site',
+    'tab_paths' => 'Paths',
+    'tab_theme' => 'Theme',
+    'tab_mail' => 'Mail',
+    'tab_pear' => 'Pear',
+    'tab_mysql' => 'MySQL',
+    'tab_users' => 'Users',
+    'tab_misc' => 'Miscellaneous',
+    'tab_spamx' => 'Spam-X',
+    'tab_admin_block' => 'Admin Block',
+    'tab_locale' => 'Locale',
+    'tab_language' => 'Language',
+    'tab_debug' => 'Debug',
+    'tab_cookies' => 'Cookies',
+    'tab_login' => 'Login Settings',
+    'tab_search' => 'Search',
+    'tab_user_submission' => 'User Submission',
+    'tab_submission' => 'Submission Settings',
+    'tab_topics_block' => 'Topics Block',
+    'tab_whosonline_block' => 'Who\'s Online Block',
+    'tab_daily_digest' => 'Daily Digest',
+    'tab_whatsnew_block' => 'What\'s New Block',
+    'tab_trackback' => 'Trackback',
+    'tab_pingback' => 'Pingback',
+    'tab_story' => 'Story',
+    'tab_theme_advanced' => 'Advanced Settings',
+    'tab_syndication' => 'Syndication',
+    'tab_imagelib' => 'Image Library',
+    'tab_upload' => 'Upload',
+    'tab_articleimg' => 'Images in Articles',
+    'tab_topicicon' => 'Topic Icons',
+    'tab_userphoto' => 'Photos',
+    'tab_gravatar' => 'Gravatar',
+    'tab_comments' => 'Comments',
+    'tab_htmlfilter' => 'HTML Filtering',
+    'tab_censoring' => 'Censoring',
+    'tab_iplookup' => 'IP Lookup',
+    'tab_permissions' => 'Permissions',
+    'tab_webservices' => 'Webservices',
+);
 
 $LANG_configselects['Core'] = array(
     0 => array('True'=>1,'False'=>0),
@@ -2036,6 +2101,54 @@ $LANG_configselects['Core'] = array(
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
     28 => array('No access' => 0, 'Use' => 2)
+);
+
+################################################################################
+# Localization of validation error messages
+
+$LANG_VALIDATION = array(
+    'default' => 'This field contains an invalid value',
+    'notEmpty' => 'This field cannot be empty',
+    'alphaNumeric' => 'This field must be in alpha numeric',
+    'between', 'This field must be in specified range',
+    'blank' => 'This field must be blank',
+    'comparison' => 'This field does not match the comparison operation',
+    'date' => 'This field must be in date format',
+    'year' => 'This field must be in year format such as 2010',
+    'time' => 'This field must be in time format',
+    'datetime' => 'This field must be in datetime format',
+    'boolean' => 'This field must be in boolean',
+    'decimal' => 'This field must be in decimal',
+    'email' => 'This field must contains valid email address',
+    'equalTo' => 'This field does not equal',
+    'extension' => 'This field only accept allowable file extension',
+    'ip' => 'This field must be in valid IP format',
+    'minLength' => 'This field is too short',
+    'maxLength' => 'This field is too long',
+    'numeric' => 'This field must be a numeric',
+    'phone' => 'This field must contains valid phone number',
+    'range' => 'This field must be in specified range',
+    'url' => 'This field must contains valid URL',
+    'inList' => 'This field must contain specified list',
+    'mail_settings_backend' => "This field must be one of 'smtp', 'sendmail', or 'mail'",
+    'mail_settings_sendmail_path' => 'This field must contains valid path to sendmail binary',
+    'mail_settings_host' => 'This field must contain valid hostname',
+    'mail_settings_port' => 'This field must be between 0 - 65535', 
+    'rdf_limit' => 'This field must in numeric or hour such as 24h', 
+    'path' => 'Path does not exist',
+    'file' => 'File does not exist', 
+    'search_limits' => 'This field must be numeric separated with a comma',
+    'num_search_results' => "This field must be numeric and from 'search_limits' above", 
+    'theme' => 'Theme directory does not exist',
+    'path_themes' => 'Theme path must be in absolute path and make sure the last character contains ' .
+                     'directory separator',
+    'path_to_mogrify' => 'You must set image library to imagemagick and fill this field with ' .
+                         'complete path to the mogrify executable',
+    'path_to_netpbm' => 'You must set image library to netpbm and fill this field with ' .
+                         'directory where the binaries from the Netpbm package are kept',  
+    'language' => 'Language file does not exist',
+    'timezone' => 'Invalid timezone',
+    'single_char' => 'This field must be a single character'                         
 );
 
 ?>
