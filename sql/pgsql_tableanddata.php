@@ -4,7 +4,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['access']} (
   acc_ft_id smallint NOT NULL default '0',
   acc_grp_id smallint NOT NULL default '0',
-  PRIMARY KEY  (acc_ft_id,acc_grp_id)
+  PRIMARY KEY (acc_ft_id,acc_grp_id)
 )
 ";
 
@@ -25,24 +25,24 @@ CREATE TABLE {$_TABLES['blocks']} (
   type varchar(20) NOT NULL default 'normal',
   title varchar(48) default NULL,
   tid varchar(20) NOT NULL default 'All',
-  blockorder smallint  NOT NULL default '1',
+  blockorder smallint NOT NULL default '1',
   content text,
-  allow_autotags smallint  NOT NULL DEFAULT '0',
+  allow_autotags smallint NOT NULL DEFAULT '0',
   rdfurl varchar(255) default NULL,
   rdfupdated timestamp  default NULL,
   rdf_last_modified varchar(40) default NULL,
   rdf_etag varchar(40) default NULL,
-  rdflimit smallint  NOT NULL default '0',
+  rdflimit smallint NOT NULL default '0',
   onleft smallint NOT NULL default '1',
   phpblockfn varchar(128) default '',
   help varchar(255) default '',
-  owner_id smallint  NOT NULL default '1',
-  group_id smallint  NOT NULL default '1',
-  perm_owner smallint  NOT NULL default '3',
-  perm_group smallint  NOT NULL default '3',
-  perm_members smallint  NOT NULL default '2',
-  perm_anon smallint  NOT NULL default '2',
-  PRIMARY KEY  (bid)
+  owner_id smallint NOT NULL default '1',
+  group_id smallint NOT NULL default '1',
+  perm_owner smallint NOT NULL default '3',
+  perm_group smallint NOT NULL default '3',
+  perm_members smallint NOT NULL default '2',
+  perm_anon smallint NOT NULL default '2',
+  PRIMARY KEY (bid)
 );
   CREATE INDEX {$_TABLES['blocks']}_bid ON {$_TABLES['blocks']}(bid);
   CREATE INDEX {$_TABLES['blocks']}_is_enabled ON {$_TABLES['blocks']}(is_enabled);
@@ -56,7 +56,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['commentcodes']} (
   code smallint NOT NULL default '0',
   name varchar(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 ) 
 ";
 
@@ -73,7 +73,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['commentmodes']} (
   mode varchar(10) NOT NULL default '',
   name varchar(32) default NULL,
-  PRIMARY KEY  (mode)
+  PRIMARY KEY (mode)
 )
 ";
 
@@ -83,7 +83,7 @@ CREATE TABLE {$_TABLES['commentnotifications']} (
   uid smallint NOT NULL,
   deletehash varchar(32) NOT NULL,
   mid int default NULL,
-  PRIMARY KEY  (deletehash)
+  PRIMARY KEY (deletehash)
 )
 ";
 
@@ -100,11 +100,11 @@ CREATE TABLE {$_TABLES['comments']} (
   pid int NOT NULL default '0',
   lft smallint NOT NULL default '0',
   rht smallint NOT NULL default '0',
-  indent smallint  NOT NULL default '0',
+  indent smallint NOT NULL default '0',
   name varchar(32) default NULL,
   uid smallint NOT NULL default '1',
   ipaddress varchar(39) NOT NULL default '',
-  PRIMARY KEY  (cid)
+  PRIMARY KEY (cid)
 );
   CREATE INDEX {$_TABLES['comments']}_sid ON {$_TABLES['comments']}(sid);
   CREATE INDEX {$_TABLES['comments']}_uid ON {$_TABLES['comments']}(uid);
@@ -125,7 +125,7 @@ CREATE TABLE {$_TABLES['commentsubmissions']} (
   name varchar(32) default NULL,
   pid int NOT NULL default '0',
   ipaddress varchar(39) NOT NULL,
-  PRIMARY KEY  (cid)
+  PRIMARY KEY (cid)
 )
 ";
 
@@ -148,7 +148,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['cookiecodes']} (
   cc_value int NOT NULL default '0',
   cc_descr varchar(20) NOT NULL default '',
-  PRIMARY KEY  (cc_value)
+  PRIMARY KEY (cc_value)
 )
 ";
 
@@ -157,7 +157,7 @@ CREATE TABLE {$_TABLES['dateformats']} (
   dfid smallint NOT NULL default '0',
   format varchar(32) default NULL,
   description varchar(64) default NULL,
-  PRIMARY KEY  (dfid)
+  PRIMARY KEY (dfid)
 )
 ";
 
@@ -165,7 +165,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['featurecodes']} (
   code smallint NOT NULL default '0',
   name varchar(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -175,7 +175,8 @@ CREATE TABLE {$_TABLES['features']} (
   ft_name varchar(50) NOT NULL default '',
   ft_descr varchar(255) NOT NULL default '',
   ft_gl_core smallint NOT NULL default '0',
-  PRIMARY KEY  (ft_id));
+  PRIMARY KEY (ft_id)
+);
   CREATE INDEX {$_TABLES['features']}_ft_name ON {$_TABLES['features']}(ft_name);
 ";
 
@@ -183,7 +184,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['frontpagecodes']} (
   code smallint NOT NULL default '0',
   name varchar(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -202,18 +203,18 @@ CREATE TABLE {$_TABLES['groups']} (
   grp_id SERIAL,
   grp_name varchar(50) NOT NULL default '',
   grp_descr varchar(255) NOT NULL default '',
-  grp_gl_core smallint  NOT NULL default '0',
-  grp_default smallint  NOT NULL default '0',
-  PRIMARY KEY  (grp_id)
+  grp_gl_core smallint NOT NULL default '0',
+  grp_default smallint NOT NULL default '0',
+  PRIMARY KEY (grp_id)
 );
-CREATE UNIQUE INDEX {$_TABLES['groups']}_grp_name ON {$_TABLES['groups']}(grp_name);
+  CREATE UNIQUE INDEX {$_TABLES['groups']}_grp_name ON {$_TABLES['groups']}(grp_name);
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code SERIAL, 
   name char(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -224,8 +225,9 @@ CREATE TABLE {$_TABLES['pingservice']} (
   ping_url varchar(255) default NULL,
   site_url varchar(255) default NULL,
   method varchar(80) default NULL,
-  is_enabled smallint  NOT NULL DEFAULT '1',
-  PRIMARY KEY (pid));
+  is_enabled smallint NOT NULL DEFAULT '1',
+  PRIMARY KEY (pid)
+);
   CREATE INDEX {$_TABLES['pingservice']}_is_enabled ON {$_TABLES['pingservice']}(is_enabled);
 ";
 
@@ -234,10 +236,10 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_name varchar(30) NOT NULL default '',
   pi_version varchar(20) NOT NULL default '',
   pi_gl_version varchar(20) NOT NULL default '',
-  pi_enabled smallint  NOT NULL default '1',
+  pi_enabled smallint NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
   pi_load smallint NOT NULL default '10000',
-  PRIMARY KEY  (pi_name)
+  PRIMARY KEY (pi_name)
   );
   CREATE INDEX {$_TABLES['plugins']}_enabled ON {$_TABLES['plugins']}(pi_enabled);
 ";
@@ -246,7 +248,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['postmodes']} (
   code char(10) NOT NULL default '',
   name char(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -257,7 +259,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
-  PRIMARY KEY  (sess_id)
+  PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
   CREATE INDEX {$_TABLES['sessions']}_remote_ip ON {$_TABLES['sessions']}(remote_ip);
@@ -267,7 +269,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['sortcodes']} (
   code char(4) NOT NULL default '0',
   name char(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -277,16 +279,17 @@ CREATE TABLE {$_TABLES['speedlimit']} (
   ipaddress varchar(39) NOT NULL default '',
   date int default NULL,
   type varchar(30) NOT NULL default 'submit',
-  PRIMARY KEY (id));
-  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_type_ipaddress on {$_TABLES['speedlimit']}(type,ipaddress);
-  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_date on {$_TABLES['speedlimit']}(date);
+  PRIMARY KEY (id)
+);
+  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_type_ipaddress ON {$_TABLES['speedlimit']}(type,ipaddress);
+  CREATE UNIQUE INDEX {$_TABLES['speedlimit']}_date ON {$_TABLES['speedlimit']}(date);
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['statuscodes']} (
   code int NOT NULL default '0',
   name char(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -324,17 +327,17 @@ CREATE TABLE {$_TABLES['stories']} (
   perm_group smallint NOT NULL default '3',
   perm_members smallint NOT NULL default '2',
   perm_anon smallint NOT NULL default '2',
-  PRIMARY KEY  (sid)
+  PRIMARY KEY (sid)
 );
-CREATE INDEX {$_TABLES['stories']}_sid ON {$_TABLES['stories']}(sid);
-CREATE INDEX {$_TABLES['stories']}_tid ON {$_TABLES['stories']}(tid);
-CREATE INDEX {$_TABLES['stories']}_uid ON {$_TABLES['stories']}(uid);
-CREATE INDEX {$_TABLES['stories']}_featured ON {$_TABLES['stories']}(featured);
-CREATE INDEX {$_TABLES['stories']}_hits ON {$_TABLES['stories']}(hits);
-CREATE INDEX {$_TABLES['stories']}_statuscode ON {$_TABLES['stories']}(statuscode);
-CREATE INDEX {$_TABLES['stories']}_expire ON {$_TABLES['stories']}(expire);
-CREATE INDEX {$_TABLES['stories']}_date ON {$_TABLES['stories']}(date);
-CREATE INDEX {$_TABLES['stories']}_frontpage ON {$_TABLES['stories']}(frontpage);
+  CREATE INDEX {$_TABLES['stories']}_sid ON {$_TABLES['stories']}(sid);
+  CREATE INDEX {$_TABLES['stories']}_tid ON {$_TABLES['stories']}(tid);
+  CREATE INDEX {$_TABLES['stories']}_uid ON {$_TABLES['stories']}(uid);
+  CREATE INDEX {$_TABLES['stories']}_featured ON {$_TABLES['stories']}(featured);
+  CREATE INDEX {$_TABLES['stories']}_hits ON {$_TABLES['stories']}(hits);
+  CREATE INDEX {$_TABLES['stories']}_statuscode ON {$_TABLES['stories']}(statuscode);
+  CREATE INDEX {$_TABLES['stories']}_expire ON {$_TABLES['stories']}(expire);
+  CREATE INDEX {$_TABLES['stories']}_date ON {$_TABLES['stories']}(date);
+  CREATE INDEX {$_TABLES['stories']}_frontpage ON {$_TABLES['stories']}(frontpage);
 ";
 
 $_SQL[] = "
@@ -347,7 +350,7 @@ CREATE TABLE {$_TABLES['storysubmission']} (
   bodytext text,
   date timestamp default NULL,
   postmode varchar(10) NOT NULL default 'html',
-  PRIMARY KEY  (sid)
+  PRIMARY KEY (sid)
 )
 ";
 
@@ -371,10 +374,10 @@ CREATE TABLE {$_TABLES['syndication']} (
   update_info text,
   PRIMARY KEY (fid)
 );
-CREATE INDEX {$_TABLES['syndication']}_type on {$_TABLES['syndication']}(type);
-CREATE INDEX {$_TABLES['syndication']}_topic ON {$_TABLES['syndication']}(topic);
-CREATE INDEX {$_TABLES['syndication']}_is_enabled ON {$_TABLES['syndication']}(is_enabled);
-CREATE INDEX {$_TABLES['syndication']}_updated ON {$_TABLES['syndication']}(updated);
+  CREATE INDEX {$_TABLES['syndication']}_type ON {$_TABLES['syndication']}(type);
+  CREATE INDEX {$_TABLES['syndication']}_topic ON {$_TABLES['syndication']}(topic);
+  CREATE INDEX {$_TABLES['syndication']}_is_enabled ON {$_TABLES['syndication']}(is_enabled);
+  CREATE INDEX {$_TABLES['syndication']}_updated ON {$_TABLES['syndication']}(updated);
 ";
 
 $_SQL[] = "
@@ -397,7 +400,7 @@ CREATE TABLE {$_TABLES['topics']} (
   meta_keywords TEXT NULL,
   sortnum smallint default NULL,
   limitnews smallint default NULL,
-  is_default smallint  NOT NULL DEFAULT '0',
+  is_default smallint NOT NULL DEFAULT '0',
   archive_flag smallint NOT NULL DEFAULT '0',
   owner_id smallint NOT NULL default '1',
   group_id smallint NOT NULL default '1',
@@ -405,7 +408,7 @@ CREATE TABLE {$_TABLES['topics']} (
   perm_group smallint NOT NULL default '3',
   perm_members smallint NOT NULL default '2',
   perm_anon smallint NOT NULL default '2',
-  PRIMARY KEY  (tid)
+  PRIMARY KEY (tid)
 )
 ";
 
@@ -422,7 +425,6 @@ CREATE TABLE {$_TABLES['trackback']} (
   ipaddress varchar(39) NOT NULL default '',
   PRIMARY KEY (cid)
 );
-
   CREATE INDEX {$_TABLES['trackback']}_sid ON {$_TABLES['trackback']}(sid);
   CREATE INDEX {$_TABLES['trackback']}_url ON {$_TABLES['trackback']}(url);
   CREATE INDEX {$_TABLES['trackback']}_type ON {$_TABLES['trackback']}(type);
@@ -433,7 +435,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['trackbackcodes']} (
   code smallint NOT NULL default '0',
   name varchar(32) default NULL,
-  PRIMARY KEY  (code)
+  PRIMARY KEY (code)
 )
 ";
 
@@ -443,7 +445,7 @@ CREATE TABLE {$_TABLES['usercomment']} (
   commentmode varchar(10) NOT NULL default 'nested',
   commentorder varchar(4) NOT NULL default 'ASC',
   commentlimit smallint NOT NULL default '100',
-  PRIMARY KEY  (uid)
+  PRIMARY KEY (uid)
 )
 ";
 
@@ -456,11 +458,11 @@ CREATE TABLE {$_TABLES['userindex']} (
   boxes varchar(255) NOT NULL default '0',
   noboxes smallint NOT NULL default '0',
   maxstories smallint default NULL,
-  PRIMARY KEY  (uid)
+  PRIMARY KEY (uid)
 );
-CREATE INDEX {$_TABLES['userindex']}_uid ON {$_TABLES['userindex']}(uid);
-CREATE INDEX {$_TABLES['userindex']}_noboxes ON {$_TABLES['userindex']}(noboxes);
-CREATE INDEX {$_TABLES['userindex']}_maxstories ON {$_TABLES['userindex']}(maxstories);
+  CREATE INDEX {$_TABLES['userindex']}_uid ON {$_TABLES['userindex']}(uid);
+  CREATE INDEX {$_TABLES['userindex']}_noboxes ON {$_TABLES['userindex']}(noboxes);
+  CREATE INDEX {$_TABLES['userindex']}_maxstories ON {$_TABLES['userindex']}(maxstories);
 ";
 
 $_SQL[] = "
@@ -474,7 +476,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
   totalcomments smallint NOT NULL default '0',
   lastgranted smallint NOT NULL default '0',
   lastlogin VARCHAR(10) NOT NULL default '0',
-  PRIMARY KEY  (uid)
+  PRIMARY KEY (uid)
 )
 ";
 
@@ -490,7 +492,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
   emailfromadmin smallint NOT NULL default '1',
   emailfromuser smallint NOT NULL default '1',
   showonline smallint NOT NULL default '1',
-  PRIMARY KEY  (uid)
+  PRIMARY KEY (uid)
 )
 ";
 
@@ -511,9 +513,9 @@ CREATE TABLE {$_TABLES['users']} (
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
   pwrequestid varchar(16) default NULL,
-  status smallint  NOT NULL default '1',
+  status smallint NOT NULL default '1',
   num_reminders smallint NOT NULL default 0,
-  PRIMARY KEY  (uid)
+  PRIMARY KEY (uid)
 );
   CREATE INDEX {$_TABLES['users']}_LOGIN ON {$_TABLES['users']}(uid,passwd,username);
   CREATE INDEX {$_TABLES['users']}_username ON {$_TABLES['users']}(username);
@@ -527,7 +529,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value text default NULL,
-  PRIMARY KEY  (name)
+  PRIMARY KEY (name)
 )
 ";
 
