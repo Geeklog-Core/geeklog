@@ -1159,6 +1159,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
         if (!PLG_checkDependencies($A['pi_name'])) {
             $retval = str_replace('<img ', '<img title="' . $LANG32[64] . '" ', $icon_arr['warning']);
         } else {
+            $not_present = false;
             if ($A['pi_enabled'] == 1) {
                 $switch = 'enabled';
                 $title  = $LANG32[49];

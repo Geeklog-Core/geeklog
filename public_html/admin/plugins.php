@@ -317,6 +317,7 @@ function show_newplugins($token)
                         $data_arr[] = array(
                             'pi_name'         => $dir,
                             'pi_display_name' => plugin_get_pluginname($dir),
+                            'pi_gl_version'   => '',
                             'number'          => $index,
                             'install_link'    => $url
                         );

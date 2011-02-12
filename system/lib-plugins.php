@@ -2761,6 +2761,7 @@ function PLG_pluginStateChange($type, $status)
 */
 function PLG_resolveDependencies() {
     global $_PLUGINS, $_TABLES;
+    $retval = '';
     $flag = true; // false means that all dependencies are resolved
     while ($flag) { // loop until ALL dependencies are satisfied
         $flag = false; // set this if any plugin has been disabled during the loop
@@ -2829,8 +2830,9 @@ function PLG_resolveDependencies() {
 */
 function PLG_printDependencies($pi_name, $pi_gl_version='') {
     global $LANG32;
+    $retval = '';
     $params = PLG_getParams($pi_name);
-    if (count($params['requires']) > 0) { // new autoinstall type
+    if (isset($params['requires']) && count($params['requires']) > 0) { // new autoinstall type
         foreach ($params['requires'] as $key => $value) {
             $op = '>='; // set the default
             if (!empty($value['operator'])) { // optional operator included
@@ -2879,7 +2881,7 @@ function PLG_checkDependencies($pi_name) {
     global $_TABLES;
     $retval = true;
     $params = PLG_getParams($pi_name);
-    if (count($params['requires']) > 0) { // plugin exists and uses new installer
+    if (isset($params['requires']) && count($params['requires']) > 0) { // plugin exists and uses new installer
         foreach ($params['requires'] as $key => $value) {
             $name = $value['name'];
             $ver = $value['version'];
