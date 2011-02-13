@@ -265,8 +265,6 @@ $_CONF_VALIDATE['Core']['facebook_login'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['facebook_consumer_key'] = array('rule' => 'alphaNumeric');
 $_CONF_VALIDATE['Core']['facebook_consumer_secret'] = array('rule' => 'alphaNumeric');
 $_CONF_VALIDATE['Core']['linkedin_login'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['linkedin_consumer_key'] = array('rule' => 'alphaNumeric');
-$_CONF_VALIDATE['Core']['linkedin_consumer_secret'] = array('rule' => 'alphaNumeric');
 $_CONF_VALIDATE['Core']['twitter_login'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['twitter_consumer_key'] = array('rule' => 'alphaNumeric');
 $_CONF_VALIDATE['Core']['twitter_consumer_secret'] = array('rule' => 'alphaNumeric');
