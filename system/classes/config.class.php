@@ -249,7 +249,7 @@ class config {
             // group the fieldset type
             if ($row[3] == 'fieldset') {
                 $this->conf_type['fieldset'][$row[2]][$row[0]] = $row[0];
-                continue;
+            //    continue;
             }               
             
             if ($row[1] !== 'unset') {
@@ -1645,7 +1645,7 @@ class config {
      * @return string JS variable in string
      */
     function _UI_autocomplete_data() {
-        global $_CONF, $LANG_configsections, $LANG_confignames, $LANG_tab, $LANG_CONFIG;
+        global $_CONF, $LANG_configsections, $LANG_confignames, $LANG_fs, $LANG_tab, $LANG_CONFIG;
         
         $permitted_groups = $this->_get_groups();
         $retval = array();
@@ -1670,8 +1670,18 @@ class config {
                     
                     foreach ($this->conf_tab_arr[$group][$sg][$tab] as $tab_id => $configs) {
                         foreach ($configs as $conf => $conf_var) {
-                            $label = array_key_exists($conf, $LANG_confignames[$group]) ?
-                                        $LANG_confignames[$group][$conf] : $conf;
+                            // Check to see if label exists for config name
+                            if (array_key_exists($conf, $LANG_confignames[$group])) {
+                                $label = $LANG_confignames[$group][$conf];    
+                            } else {
+                                // Maybe a fieldset, check to see if fieldset label exits
+                                if (array_key_exists($conf, $LANG_fs[$group])) {
+                                    $label = $LANG_fs[$group][$conf];
+                                } else {
+                                    // No label found, set name
+                                    $label = $conf;
+                                }
+                            }
                             
                             if ( is_array($conf_var) ) {
                                 foreach ( $conf_var as $_conf_var ) {
