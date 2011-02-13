@@ -43,14 +43,18 @@ class facebookConsumer extends OAuthConsumerBaseClass {
     public $url_userinfo_photo = 'https://graph.facebook.com/me/picture';
     public $callback_query_string = 'code';
     public $cancel_query_string = 'error_reason';
-    
+
     public function __construct() {
         $this->request = new HTTP_Request2;
         $this->request->setConfig('ssl_verify_peer', false);
         $this->request->setHeader('Accept-Encoding', '.*');
     }
-    
+
     public function find_identity_info($callback_url, $query) {
+        // COM_errorLog("FB:find_identity_info()----------------------");
+        // COM_errorLog("clearing cookies");
+        SEC_setCookie($_COOKIE['request_token'], '', time() - 10000);
+        SEC_setCookie($_COOKIE['request_token_secret'], '', time() - 10000);
         $params = array(
             'client_id' => $this->consumer_key,
             'redirect_uri' => $callback_url,
@@ -58,13 +62,16 @@ class facebookConsumer extends OAuthConsumerBaseClass {
         );
         return $this->url_authorize . '?' . http_build_query($params, null, '&');
     }
-    
+
     public function sreq_userinfo_response($query) {
         global $_CONF;
-        
+
+        // COM_errorLog("FB:sreq_userinfo_response()------------------");
         $userinfo = array();
-        
+
         try {
+            // COM_errorLog("upon entry, _COOKIE[request_token]={$_COOKIE['request_token']}");
+            // COM_errorLog("upon entry, _COOKIE[request_token_secret]={$_COOKIE['request_token_secret']}");
             $verifier = $query[$this->callback_query_string];
             $callback_url = $_CONF['site_url'] . '/users.php?oauth_login=facebook';
             $params = array(
@@ -73,41 +80,116 @@ class facebookConsumer extends OAuthConsumerBaseClass {
                 'client_secret' => $this->consumer_secret,
                 'code' => $verifier,
             );
+
+            // first request obtains access token
+
             $url_auth = $this->url_accessToken . '?' . http_build_query($params, null, '&');
+            // COM_errorLog("FB:sreq_userinfo_response() req1: " . $url_auth);
             $this->request->setUrl($url_auth);
             $response = $this->request->send();
             $rdata = $response->getBody();
+            // COM_errorLog("FB:sreq_userinfo_response() rsp1: " . $rdata);
             parse_str($rdata, $data);
             if (isset($data['access_token'])) {
                 $this->token = $data['access_token'];
+                SEC_setCookie('request_token', $data['access_token']);
             } else {
+                // COM_errorLog("error: access_token not retrieved");
                 $data = json_decode($rdata);
                 if (!empty($data->error)) {
                     $this->errormsg = $data->error->message;
                 }
-                return;
+                return; // early exit
             }
-            
+
+            // second request obtains what basic user info that the graphs API
+            // will give us without additional requests (everything but photo)
+
             $params = array('access_token' => $this->token);
             $url_me = $this->url_userinfo . '?' . http_build_query($params, null, '&');
+            // COM_errorLog("FB:sreq_userinfo_response() req2: " . $url_me);
             $this->request->setUrl($url_me);
             $response = $this->request->send();
             $rdata = $response->getBody();
+            // COM_errorLog("FB:sreq_userinfo_response() rsp2: " . $rdata);
             $data = json_decode($rdata);
             if (!empty($data->error)) {
                 $this->errormsg = $data->error->message;
                 return;
             }
             $userinfo = $data;
-            
+
+            // third request retrieves the user's photo URL
+
             $url_photo = $this->url_userinfo_photo . '?' . http_build_query($params, null, '&');
             $this->request->setUrl($url_photo);
+            // COM_errorLog("FB:sreq_serinfo_response() req3: " . $url_photo);
             $response = $this->request->send();
-            $rdata = $response->getHeader();
-            $userinfo->photo = $rdata['location'];
+            if(($response->getStatus() == '302') AND ($response->getReasonPhrase() == 'Found')) {
+                $header = $response->getHeader();
+                $userinfo->photo_url = $header['location'];
+                // COM_errorLog("photo_url=" . $userinfo->photo_url);
+            } else {
+                $userinfo->photo_url = '';
+                // COM_errorLog("photo_url=(null)");
+            }
+
         } catch (Exception $e) {
             $this->errormsg = get_class($e) . ': ' . $e->getMessage();
         }
+        // COM_errorLog("upon exit, request_token cookie={$this->token}");
+        // COM_errorLog("upon entry, request_token secret cookie={$this->token_secret}");
+        return $userinfo;
+    }
+
+    public function refresh_userinfo() {
+
+        // COM_errorLog("FB:refresh_userinfo()------------------");
+        $userinfo = array();
+
+        try {
+            // COM_errorLog("upon entry, _COOKIE[request_token]={$_COOKIE['request_token']}");
+            // COM_errorLog("upon entry, _COOKIE[request_token_secret]={$_COOKIE['request_token_secret']}");
+
+            // retrieve the access token
+            $this->token = $_COOKIE['request_token'];
+            if(empty($this->token)) {
+                exit;
+            } else {
+                // retrieve the userinfo
+                $params = array('access_token' => $this->token);
+                $url_me = $this->url_userinfo . '?' . http_build_query($params, null, '&');
+                // COM_errorLog("FB:refresh_userinfo() req1: " . $url_me);
+                $this->request->setUrl($url_me);
+                $response = $this->request->send();
+                $rdata = $response->getBody();
+                // COM_errorLog("FB:refresh_userinfo() rsp1: " . $rdata);
+                $data = json_decode($rdata);
+                if (!empty($data->error)) {
+                    $this->errormsg = $data->error->message;
+                    return;
+                }
+                $userinfo = $data;
+
+                // retrieve the user's photo URL
+                $url_photo = $this->url_userinfo_photo . '?' . http_build_query($params, null, '&');
+                $this->request->setUrl($url_photo);
+                // COM_errorLog("FB:refresh_userinfo() req2: " . $url_photo);
+                $response = $this->request->send();
+                if(($response->getStatus() == '302') AND ($response->getReasonPhrase() == 'Found')) {
+                    $header = $response->getHeader();
+                    $userinfo->photo_url = $header['location'];
+                    // COM_errorLog("photo_url=" . $userinfo->photo_url);
+                } else {
+                    $userinfo->photo_url = '';
+                    // COM_errorLog("photo_url=(null)");
+                }
+            }
+
+        } catch (Exception $e) {
+            $this->errormsg = get_class($e) . ': ' . $e->getMessage();
+        }
+
         return $userinfo;
     }
 
@@ -121,7 +203,7 @@ class facebookConsumer extends OAuthConsumerBaseClass {
             'homepage'       => $info->link,
             'remoteusername' => addslashes($info->id),
             'remoteservice'  => 'oauth.facebook',
-            'remotephoto'    => $info->photo,
+            'remotephoto'    => $info->photo_url,
         );
         return $users;
     }
@@ -138,11 +220,11 @@ class facebookConsumer extends OAuthConsumerBaseClass {
 
 if ( !function_exists('json_decode') ){
     function json_decode($json)
-    { 
+    {
         // Author: walidator.info 2009
         $comment = false;
         $out = '$x=';
-       
+
         for ($i=0; $i<strlen($json); $i++)
         {
             if (!$comment)
@@ -150,14 +232,14 @@ if ( !function_exists('json_decode') ){
                 if ($json[$i] == '{')        $out .= ' array(';
                 else if ($json[$i] == '}')    $out .= ')';
                 else if ($json[$i] == ':')    $out .= '=>';
-                else                         $out .= $json[$i];           
+                else                         $out .= $json[$i];
             }
             else $out .= $json[$i];
             if ($json[$i] == '"')    $comment = !$comment;
         }
         eval($out . ';');
         return $x;
-    } 
+    }
 }
 
 ?>

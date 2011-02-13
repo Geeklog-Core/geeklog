@@ -981,12 +981,15 @@ function saveuser($A)
             }
         }
     }
-             
+
     // a quick spam check with the unfiltered field contents
     $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1><p>';
-    $profile .= (empty($service)) ? COM_createLink($A['homepage'], $A['homepage']) . '<br' . XHTML . '>' : '';
+    // this is a hack, for some reason remoteservice links made SPAMX SLV check barf
+    if (empty($service)) {
+        $profile .= COM_createLink($A['homepage'], $A['homepage']) . '<br' . XHTML . '>';
+    }
     $profile .= $A['location'] . '<br' . XHTML . '>' . $A['sig'] . '<br' . XHTML . '>'
-             . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
+                . $A['about'] . '<br' . XHTML . '>' . $A['pgpkey'] . '</p>';
     $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
     if ($result > 0) {
         COM_displayMessageAndAbort ($result, 'spamx', 403, 'Forbidden');
@@ -1116,20 +1119,26 @@ function saveuser($A)
                     $status = -1;
                     $msg = 115; // Remote service has been disabled.
                 } else {
-                    // Send request to OAuth Service for user information
-                    require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
-        
-                    $consumer = new OAuthConsumer($service);
-
                     $query[] = '';
                     $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
 
-                    $url = $consumer->find_identity_info($callback_url, $query);
-                    if (empty($url)) {
-                        $msg = 110; // Can not get URL for authentication.'
+                    if ($service == 'oauth.facebook') {
+                        // facebook does resynch during refresh
+                        return COM_refresh($callback_url);
                     } else {
-                        header('Location: ' . $url);
-                        exit;
+                        // all other services use reauth/callback method
+                        // send request to OAuth Service for user information
+                        require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+            
+                        $consumer = new OAuthConsumer($service);
+    
+                        $url = $consumer->find_identity_info($callback_url, $query);
+                        if (empty($url)) {
+                            $msg = 110; // Can not get URL for authentication.'
+                        } else {
+                            header('Location: ' . $url);
+                            exit;
+                        }
                     }
                 }            
             }
@@ -1400,28 +1409,42 @@ if (! COM_isAnonUser()) {
                 $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
             } else {
                 $query = array_merge($_GET, $_POST);
-                $service = $_GET['oauth_login'];  
-                $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+                $service = $query['oauth_login'];
     
                 require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
 
                 $consumer = new OAuthConsumer($service);
-                $callback_query_string = $consumer->getCallback_query_string();
-                $cancel_query_string = $consumer->getCancel_query_string();
 
-                if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
-                    $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
-                } elseif (isset($query[$callback_query_string])) {
-                    $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                if ($service == 'oauth.facebook') {
+                    // facebook resynchronizations are easier to perform
+                    // we'll use a FB consumer-specific hack/method
+                    $oauth_userinfo = $consumer->refresh_userinfo();
                     if (empty($oauth_userinfo)) {
-                        $msg = 111; // Authentication error.
+                        $msg = 114; // account information saved but resynch failed
+                        COM_errorLog($MESSAGE[$msg]);
                     } else {
                         $consumer->doSynch($oauth_userinfo);
                     }
-                } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
-                        $msg = 112; // Certification has been canceled.
                 } else {
-                    $msg = 91; // You specified an invalid identity URL.
+                    // standard OAuth services utilize multiple callback method
+                    $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+                    $callback_query_string = $consumer->getCallback_query_string();
+                    $cancel_query_string = $consumer->getCancel_query_string();
+    
+                    if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                        $msg = 114; // Your re-synch with your remote account has failed but your other account information has been successfully saved.
+                    } elseif (isset($query[$callback_query_string])) {
+                        $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                        if (empty($oauth_userinfo)) {
+                            $msg = 111; // Authentication error.
+                        } else {
+                            $consumer->doSynch($oauth_userinfo);
+                        }
+                    } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
+                            $msg = 112; // Certification has been canceled.
+                    } else {
+                        $msg = 91; // You specified an invalid identity URL.
+                    }
                 }
             }   
             
