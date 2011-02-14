@@ -1723,7 +1723,7 @@ class config {
      * @return string JS variable in string
      */
     function _UI_js_image_spinner() {
-        $image = $GLOBALS['_CONF']['site_url'] . '/javascript/jquery_ui/themes/redmond/images/ui-anim_basic_16x16.gif';
+        $image = $GLOBALS['_CONF']['layout_url'] . '/jquery_ui/redmond/images/ui-anim_basic_16x16.gif';
         
         return 'var imgSpinner = "' . $image . '";';
     }
