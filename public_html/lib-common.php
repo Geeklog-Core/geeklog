@@ -833,7 +833,6 @@ function COM_renderMenu( &$header, $plugin_menu )
 * @param    string  $headercode optional code to go into the page's <head>
 * @param    array   $jquery_ui  include jquery ui to go into the page's <head> if set to array of paramaters
 *                               Available paramaters:
-*                               - theme => base, redmond, etc.
 *                               - features => tabs, autocomplete, etc.
 *                               See config.class.php for usage. To exclude JQuery UI, just set $jquery_ui to null.
 * @return   string              Formatted HTML containing the site header
@@ -1228,14 +1227,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jqu
     
     // include jquery ui if $jquery_ui set to true
     if ( is_array($jquery_ui) && !empty($jquery_ui) ) {
-        // set theme
-        if ( isset($jquery_ui['theme']) ) {
-            $jquery_ui_theme = $jquery_ui['theme'];
-        } else {
-            $jquery_ui_theme = 'redmond';
-        }
-        $header->set_var('jquery_ui_theme', $jquery_ui_theme);
-        
+       
         // set features
         if ( isset($jquery_ui['features']) ) {
             if ( is_array($jquery_ui['features']) && !empty($jquery_ui['features']) ) {

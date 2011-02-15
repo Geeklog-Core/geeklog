@@ -897,9 +897,8 @@ class config {
         $tab_li .= '</ul>';
         $t->set_var('tab_li', $tab_li);
 
-        $jquery_ui = array(
-            'theme' => 'redmond', 'features' => array('tabs', 'autocomplete')
-        );
+        $jquery_ui = array('features' => array('tabs', 'autocomplete'));
+        
         $display  = COM_siteHeader('none', $LANG_CONFIG['title'], '', $jquery_ui);
         $t->set_var('config_menu',$this->_UI_configmanager_menu($grp,$sg));
         
@@ -1723,7 +1722,7 @@ class config {
      * @return string JS variable in string
      */
     function _UI_js_image_spinner() {
-        $image = $GLOBALS['_CONF']['layout_url'] . '/jquery_ui/redmond/images/ui-anim_basic_16x16.gif';
+        $image = $GLOBALS['_CONF']['layout_url'] . '/jquery_ui/images/ui-anim_basic_16x16.gif';
         
         return 'var imgSpinner = "' . $image . '";';
     }

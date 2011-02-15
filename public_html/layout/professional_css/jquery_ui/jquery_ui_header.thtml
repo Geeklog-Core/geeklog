@@ -1,5 +1,5 @@
 <!-- Load JQuery UI -->
-<link type="text/css" href="{layout_url}/jquery_ui/{jquery_ui_theme}/jquery.ui.all.css?v=1.8.9" rel="stylesheet" />
+<link type="text/css" href="{layout_url}/jquery_ui/jquery.ui.all.css?v=1.8.9" rel="stylesheet" />
 <link type="text/css" href="{layout_url}/jquery_ui/jquery.ui.geeklog.css?v=1" rel="stylesheet" />
 <script type="text/javascript" src="{site_url}/javascript/jquery_ui/jquery.ui.core.min.js?v=1.8.9"></script>
 <script type="text/javascript" src="{site_url}/javascript/jquery_ui/jquery.ui.widget.min.js?v=1.8.9"></script>
