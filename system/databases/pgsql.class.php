@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Stanislav Palatnik, spalatnikk AT gmail DoT com                  |
 // +---------------------------------------------------------------------------+
@@ -36,10 +36,10 @@
 * This issue will need to be resolved some time ...
 *
 */
+class database {
 
-class DataBase
-{
     // PRIVATE PROPERTIES
+
     /**
     * @access private
     */
@@ -89,6 +89,7 @@ class DataBase
     * Logs messages by calling the function held in $_errorlog_fn
     *
     * @param    string      $msg        Message to log
+    *
     */
     function _errorlog($msg)
     {
@@ -97,27 +98,27 @@ class DataBase
             $function($msg);
         }
     }
-    
+
     /**
     * Creates a connection string for pg_connect
-    * Doesn't show the port because it isnt being provided in class default assumed
-    * 
+    * Doesn't show the port because it isn't being provided in class default assumed
+    *
     */
     function buildString()
     {
         $conn_string = '';
         $conn_string .= (!empty($this->_host))? 'host='.$this->_host:'localhost';
         $conn_string .= (!empty($this->_name))? ' dbname='.$this->_name:'';
-        $conn_string .= (!empty($this->_user))? ' user='.$this->_user:''; 
-        $conn_string .= (!empty($this->_pass))? ' password='.$this->_pass:''; 
-        
+        $conn_string .= (!empty($this->_user))? ' user='.$this->_user:'';
+        $conn_string .= (!empty($this->_pass))? ' password='.$this->_pass:'';
+
         return $conn_string;
     }
 
     /**
     * Connects to the pgSQL database server
     *
-    * This function connects to the MySQL server and returns the connection object
+    * This function connects to the PostgreSQL server and returns the connection object
     *
     * @return   object      Returns connection object
     *
@@ -137,31 +138,28 @@ class DataBase
         }
 
         if (!($this->_db)) {
-            if(pg_connection_busy($this->_db))
-            {
+            if(pg_connection_busy($this->_db)) {
                 if ($this->isVerbose()) {
                     $this->_errorlog("\n*** The current connection is busy ***");
                 }
-            }
-            else
-            {
+            } else {
                  if ($this->isVerbose()) {
                     $this->_errorlog("\n*** Error in database->_connect ***");
                 }
             }
         }
 
-         if ($this->_pgsql_version >= 7.4 && $this->_charset == 'utf-8') {
-                    pg_query($this->_db,"SET NAMES 'UTF8'");
-                }
+        if ($this->_pgsql_version >= 7.4 && $this->_charset == 'utf-8') {
+            pg_query($this->_db,"SET NAMES 'UTF8'");
+        }
 
         if ($this->isVerbose()) {
             $this->_errorlog("\n***leaving database->_connect***");
         }
     }
-    
 
- 
+
+
     // PUBLIC METHODS
 
     /**
@@ -190,8 +188,8 @@ class DataBase
 
         $this->_connect();
     }
-    
-        /**
+
+    /**
     * Retrieves returns the number of effected rows for last query
     *
     * Retrieves returns the number of effected rows for last query
@@ -202,15 +200,14 @@ class DataBase
     */
     function dbAffectedRows($recordset)
     {
-        if(!isset($recordset))
-        {
+        if(!isset($recordset)) {
             $recordset = pg_get_result($this->_db);
         }
         return @pg_affected_rows($recordset);
     }
-    
-        /**
-    * Returns the contents of one cell from a MySQL result set
+
+    /**
+    * Returns the contents of one cell from a PostgreSQL result set
     *
     * @param    object      $recordset      The recordset to operate on
     * @param    int         $row            row to get data from
@@ -231,7 +228,7 @@ class DataBase
         }
         return @pg_fetch_result($recordset,$row,$field);
     }
-    
+
     /**
     * Retrieves record from a recordset
     *
@@ -247,12 +244,12 @@ class DataBase
         if ($both) {
             $result_type = PGSQL_BOTH;
         } else {
-            $result_type = PGSQL_ASSOC;                     
+            $result_type = PGSQL_ASSOC;
         }
         return pg_fetch_array($recordset, NULL, $result_type);
-        
+
     }
-    
+
     /**
     * Retrieves returns the field name for a field
     *
@@ -267,7 +264,7 @@ class DataBase
     {
         return @pg_field_name($recordset,$fnumber);
     }
-    
+
     /**
     * Copies a record from one table to another (can be the same table)
     *
@@ -311,7 +308,7 @@ class DataBase
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -323,8 +320,8 @@ class DataBase
             $this->_errorlog("\n*** Leaving database->dbCopy ***");
         }
     }
-    
-        /**
+
+    /**
     * Executes a query on the pgSQL server
     *
     * This executes the passed SQL and returns the recordset or errors out
@@ -343,7 +340,7 @@ class DataBase
         /* Replace some non ANSI keywords */
         if(preg_match('#LIMIT ([0-9]+),([\\s])?([0-9]+)#',$sql,$matches))
         {
-            $sql = str_replace($matches[0],'LIMIT '.$matches[3].' OFFSET '.$matches[1],$sql); 
+            $sql = str_replace($matches[0],'LIMIT '.$matches[3].' OFFSET '.$matches[1],$sql);
         }
         // Run query
         if ($ignore_errors == 1) {
@@ -363,7 +360,9 @@ class DataBase
 
         } else {
             // callee may want to supress printing of errors
-            if ($ignore_errors == 1) return false;
+            if ($ignore_errors == 1) {
+                return false;
+            }
 
             if ($this->isVerbose()) {
                 $this->_errorlog("\n***sql caused an error***");
@@ -371,8 +370,8 @@ class DataBase
             }
         }
     }
-    
-        /**
+
+    /**
     * Saves information to the database
     *
     * This will use a REPLACE INTO to save a record into the
@@ -391,93 +390,87 @@ class DataBase
         $sql = "SELECT COUNT(*) FROM $table";
         $result = $this->dbQuery($sql);
         $row = pg_fetch_row($result);
-        if($row[0]==0) //nothing in the table yet
-        {
-            $sql="INSERT INTO $table($fields) VALUES($values)";  
-        }
-        else
-        {
-            unset($row); unset($result);
-            $fields_array = explode(',',$fields);      
+        if ($row[0] == 0) {
+            // nothing in the table yet
+            $sql = "INSERT INTO $table($fields) VALUES($values)";
+        } else {
+            unset($row);
+            unset($result);
+            $fields_array = explode(',',$fields);
             $values_array = DBINT_parseCsvSqlString($values);
             $values = str_replace('0000-00-00 00:00:00','NOW()',$values);
-            $row = array();              
-            $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute 
-                    WHERE pg_class.oid = \''.$table.'\'::regclass AND 
+            $row = array();
+            $sql = 'SELECT pg_attribute.attname FROM pg_index, pg_class, pg_attribute
+                    WHERE pg_class.oid = \''.$table.'\'::regclass AND
                     indrelid = pg_class.oid AND
-                    pg_attribute.attrelid = pg_class.oid AND 
+                    pg_attribute.attrelid = pg_class.oid AND
                     pg_attribute.attnum = any(pg_index.indkey)
                     GROUP BY pg_attribute.attname, pg_attribute.attnum;';
-      
+
             $result = $this->dbQuery($sql);
-            while($fetched = pg_fetch_row($result))
-            {
-             $row[] = $fetched;   
+            while($fetched = pg_fetch_row($result)) {
+                $row[] = $fetched;
             }
-            $counter=count($row);
-            if(!empty($row[0]))
-            {
-          		$key = array_search($row[0][0],$fields_array);
-          		if($key!==FALSE)
-          		{
-          			$sql = "DELETE FROM $table WHERE ";
-	                $uniqno = count($row);
-	                for($i=0;$i<$uniqno;$i++)
-	                {
-	                	$key = array_search($row[$i][0],$fields_array);
-		                if($key!==FALSE) //$fields contains the primary key already
-		                {
-		                	$validKey=false;
-		                	if(isset($values_array[$key][0]) && $values_array[$key]!='UNIX_TIMESTAMP()'
-		                	&& $values_array[$key]!='0000-00-00 00:00:00')
-		                	{
-		                		if($values_array[$key][0]=="'")
-		                		{
-		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
-		                				$sql.=' AND ';
-		              	    		$sql.="{$row[$i][0]}={$values_array[$key]}";
-		                		}
-		              	    	else 
-		              	    	{
-		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
-		                				$sql.=' AND ';
-		              	    		$sql.="{$row[$i][0]}='{$values_array[$key]}'";
-		              	    	}
-		                	}
-		                }
-	                }
-	                if($uniqno<2)
-	                {
-	                	if(isset($values_array[$key+1][0]) && $values_array[$key+1]!='UNIX_TIMESTAMP()'
-	                	&& $values_array[$key+1]!='0000-00-00 00:00:00')
-		                	{
-		                		if($values_array[$key+1][0]=="'")
-		                		{
-		                			if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
-		                				$sql.=' AND ';
-		              	    		$sql.="{$fields_array[$key+1]}={$values_array[$key+1]}";
-		                		}
-		              	    	else 
-		              	    	{
-		              	    		if(substr($sql,-5)!= ' AND ' && substr($sql,-6)!='WHERE ')
-		                				$sql.=' AND ';
-		              	    		$sql.="{$fields_array[$key+1]}='{$values_array[$key+1]}'";
-		              	    	}
-		                	}
-	                }
-	                $this->dbQuery($sql);
-	                $sql="INSERT INTO $table ($fields) VALUES ($values)";
-          		}
-                elseif($counter>1) //we will search for unique fields and see if they are getting duplicates
-                {
-                    $where_clause='';
-                    for($x=1;$x<$counter;$x++)
-                    {
-                        $key = array_search($row[$x][0],$fields_array);
-                        if($key!==FALSE) {
-                        	if(!empty($where_clause))
-                        		$where_clause.=' AND ';
-                        		
+            $counter = count($row);
+            if (!empty($row[0])) {
+                $key = array_search($row[0][0],$fields_array);
+                if ($key !== FALSE) {
+                    $sql = "DELETE FROM $table WHERE ";
+                    $uniqno = count($row);
+                    for ($i = 0; $i < $uniqno; $i++) {
+                        $key = array_search($row[$i][0],$fields_array);
+                        if ($key !== FALSE) {
+                            // $fields contains the primary key already
+                            $validKey = false;
+                            if (isset($values_array[$key][0]) &&
+                                    $values_array[$key]!='UNIX_TIMESTAMP()' &&
+                                    $values_array[$key]!='0000-00-00 00:00:00') {
+                                if ($values_array[$key][0] == "'") {
+                                    if ((substr($sql, -5) != ' AND ') &&
+                                            (substr($sql, -6) != 'WHERE ')) {
+                                        $sql .= ' AND ';
+                                    }
+                                    $sql.="{$row[$i][0]}={$values_array[$key]}";
+                                } else {
+                                    if (substr($sql, -5) != ' AND ' &&
+                                            (substr($sql, -6) != 'WHERE ')) {
+                                        $sql .= ' AND ';
+                                    }
+                                    $sql.="{$row[$i][0]}='{$values_array[$key]}'";
+                                }
+                            }
+                        }
+                    }
+                    if ($uniqno < 2) {
+                        if (isset($values_array[$key+1][0]) &&
+                                $values_array[$key+1] != 'UNIX_TIMESTAMP()' &&
+                                $values_array[$key+1] != '0000-00-00 00:00:00') {
+                            if ($values_array[$key+1][0] == "'") {
+                                if ((substr($sql, -5) != ' AND ') &&
+                                        (substr($sql, -6) != 'WHERE ')) {
+                                    $sql .= ' AND ';
+                                }
+                                $sql.="{$fields_array[$key+1]}={$values_array[$key+1]}";
+                            } else {
+                                if ((substr($sql, -5) != ' AND ') &&
+                                        (substr($sql, -6) != 'WHERE ')) {
+                                    $sql .= ' AND ';
+                                }
+                                $sql.="{$fields_array[$key+1]}='{$values_array[$key+1]}'";
+                            }
+                        }
+                    }
+                    $this->dbQuery($sql);
+                    $sql = "INSERT INTO $table ($fields) VALUES ($values)";
+                } elseif ($counter > 1) {
+                    // we will search for unique fields and see if they are getting duplicates
+                    $where_clause = '';
+                    for ($x = 1; $x < $counter; $x++) {
+                        $key = array_search($row[$x][0], $fields_array);
+                        if ($key !== FALSE) {
+                            if (!empty($where_clause)) {
+                                $where_clause.=' AND ';
+                            }
                             $values_array[$key] = str_replace('\'','',$values_array[$key]);
                             $where_clause .="{$row[$x][0]} ='{$values_array[$key]}'";
                         }
@@ -488,15 +481,14 @@ class DataBase
                         $sql = "DELETE FROM $table WHERE $where_clause";
                         $result = $this->dbQuery($sql);
                     }
-                    
-                    $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+
+                    $sql = "INSERT INTO $table ($fields) VALUES ($values)";
                 } else {
-                    $this->_errorlog("There was a problem saving this DB_save call: $fields,$values");
+                    $this->_errorlog("There was a problem saving this DB_save call: $fields, $values");
                 }
-            }
-            else //no keys to worry about
-            {
-               $sql="INSERT INTO $table ($fields) VALUES ($values)";  
+            } else {
+                // no keys to worry about
+               $sql="INSERT INTO $table ($fields) VALUES ($values)";
             }
         }
         $this->dbQuery($sql);
@@ -504,8 +496,9 @@ class DataBase
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbSave ***");
         }
-    }  
-        /**
+    }
+
+    /**
     * Deletes data from the database
     *
     * This will delete some data from the given table where id = value.  If
@@ -533,15 +526,17 @@ class DataBase
                 $sql .= ' WHERE ';
                 for ($i = 1; $i <= $num_ids; $i++) {
                     if ($i == $num_ids) {
-                    	if($value[0]=="'")
-                    		$sql .= current($id) . " = " . current($value);
-                    	else
-                      	    $sql .= current($id) . " = '" . current($value) . "'";
+                        if ($value[0] == "'") {
+                            $sql .= current($id) . " = " . current($value);
+                        } else {
+                            $sql .= current($id) . " = '" . current($value) . "'";
+                        }
                     } else {
-                    	if($value[0]=="'")
-                    		$sql .= current($id) . " = " . current($value) . " AND ";
-                    	else
-                        	$sql .= current($id) . " = '" . current($value) . "' AND ";
+                        if ($value[0] == "'") {
+                            $sql .= current($id) . " = " . current($value) . " AND ";
+                        } else {
+                            $sql .= current($id) . " = '" . current($value) . "' AND ";
+                        }
                     }
                     next($id);
                     next($value);
@@ -553,7 +548,7 @@ class DataBase
             }
         } else {
             // just regular string values, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && (isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -565,8 +560,8 @@ class DataBase
 
         return true;
     }
-    
-        /**
+
+    /**
     * Changes records in a table
     *
     * This will change the data in the given table that meet the given criteria and will
@@ -592,7 +587,7 @@ class DataBase
             $sql = "UPDATE $table SET $item_to_set = $value_to_set";
         } else {
             $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
-        } 
+        }
 
         if (is_array($id) || is_array($value)) {
             $num_ids = count($id);
@@ -615,7 +610,7 @@ class DataBase
             }
         } else {
             // These are regular strings, build sql
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -631,7 +626,7 @@ class DataBase
         }
 
     }
-    
+
     /**
     * Retrieves the number of rows in a recordset
     *
@@ -649,7 +644,7 @@ class DataBase
 
         // return only if recordset exists, otherwise 0
         if ($recordset) {
-            $rows=0; 
+            $rows=0;
             $rows = pg_num_rows($recordset);
             if ($this->isVerbose()) {
                 $this->_errorlog('got ' . $rows . ' rows');
@@ -664,8 +659,8 @@ class DataBase
             return 0;
         }
     }
-    
-        /**
+
+    /**
     * Returns the number of records for a query that meets the given criteria
     *
     * This will build a SELECT count(*) statement with the given criteria and
@@ -705,7 +700,7 @@ class DataBase
                 return false;
             }
         } else {
-            if (!empty($id) && ( isset($value) || $value != "")) { 
+            if (!empty($id) && ( isset($value) || $value != "")) {
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -723,34 +718,34 @@ class DataBase
         return ($this->dbResult($result,0));
 
     }
-    
+
     /**
     * Returns the last ID inserted
     *
     * Returns the last auto_increment ID generated
     *
     * @param    resource    $link_identifier    identifier for opened link
-    * $param    sequence name   $sequence       the sequence to get the value last insert ID from 
+    * $param    sequence name   $sequence       the sequence to get the value last insert ID from
     * @return   int                             Returns last auto-generated ID
     *
     */
-    function dbInsertId($link_identifier = '',$sequence='')
+    function dbInsertId($link_identifier = '', $sequence = '')
     {
-        if(!empty($sequence))
-        {
-            $result = @pg_query('SELECT CURRVAL(\''.$sequence.'\'); ');
-            if($result==FALSE) {$result = @pg_query('SELECT NEXTVAL(\''.$sequence.'\'); ');}    
-        }
-        else
-        {
-            $result = pg_query('SELECT LASTVAL();');    
+        if (!empty($sequence)) {
+            $result = @pg_query('SELECT CURRVAL(\'' . $sequence . '\'); ');
+            if ($result === FALSE) {
+                $result = @pg_query('SELECT NEXTVAL(\'' . $sequence . '\'); ');
+            }
+        } else {
+            $result = pg_query('SELECT LASTVAL();');
         }
         $row = pg_fetch_row($result);
         unset($result);
+
         return $row[0];
     }
-    
-        /**
+
+    /**
     * Lock a table
     *
     * Locks a table for write operations
@@ -799,7 +794,7 @@ class DataBase
             $this->_errorlog("\n*** Leaving database->dbUnlockTable ***");
         }
     }
-    
+
     /**
     * Turns debug mode on
     *
@@ -828,41 +823,51 @@ class DataBase
     {
         $this->_display_error = $flag;
     }
-    
-        /**
+
+    /**
     * Returns an database error message
     *
     * @param    string      $sql    SQL that may have caused the error
     * @return   string      Text for error message
+    *
     */
-    function dbError($sql='')
+    function dbError($sql = '')
     {
         $result = pg_get_result($this->_db);
-        if($this->_pgsql_version>=7.4)
-        {
-            if(pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE)) //this provides a much more detailed error report
-            {
-              $this->_errorlog('You have an error in your SQL query on line'.pg_result_error_field($result,PGSQL_DIAG_SOURCE_LINE)."<br/> SQL in question: $sql");
-             $error = 'Error:'.pg_result_error_field($result,PGSQL_DIAG_SQLSTATE).'<br/>Description:'.pg_result_error_field($result,PGSQL_DIAG_MESSAGE_DETAIL);
+        if ($this->_pgsql_version >= 7.4) {
+            //this provides a much more detailed error report
+            if (pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)) {
+                $this->_errorlog('You have an error in your SQL query on line'
+                    . pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)
+                    . "\nSQL in question: $sql");
+                $error = 'Error: '
+                       . pg_result_error_field($result, PGSQL_DIAG_SQLSTATE)
+                       . '<br' . XHTML . '>Description: '
+                       . pg_result_error_field($result, PGSQL_DIAG_MESSAGE_DETAIL);
+            } else {
+                $error = "An SQL error has occurred in the following SQL: $sql";
             }
-            else {$error = "An SQL error has occurred in the following SQL : $sql.";}
-        }
-         else
-         {
+        } else {
             if (pg_result_error($result)) {
-                $this->_errorlog(pg_result_error($result) . ". SQL in question: $sql");        
-                if ($this->_display_error) {$error = 'Error'.pg_result_error($result);} 
-                else{$error = "An SQL error has occurred in the following SQL : $sql.";}
+                $this->_errorlog(pg_result_error($result)
+                                 . ". SQL in question: $sql");
+                if ($this->_display_error) {
+                    $error = 'Error: ' . pg_result_error($result);
+                } else {
+                    $error = 'An SQL error has occurred. Please see error.log for details.';
+                }
             }
-        return $error;
         }
+
+        return $error;
     }
-    
+
     /**
     * Checks to see if debug mode is on
     * Returns value of $_verbose
     *
     * @return   boolean     true if in verbose mode otherwise false
+    *
     */
     function isVerbose()
     {
@@ -874,5 +879,6 @@ class DataBase
 
         return $this->_verbose;
     }
-} //end db
+}
+
 ?>
