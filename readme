@@ -97,7 +97,7 @@ features are as follows:
     - A fully configurable block system, with php-in-block support.
     - Well organized codebase, use of PHP's Object-Oriented features.
     - Thin database abstraction layer allowing Geeklog to be ported to DBMS's
-      other than the defaults (MySQL and MSSQL supported directly).
+      other than the defaults (MySQL, PostgreSQL, and MSSQL supported directly).
       
 3) Support
 ==========
