@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Apr ??, 2011 (1.8.0)
 ------------
 
+- Clean up images directory (bug #0001276) [Tom]
 - A story's bodytext doesn't need to be evaluated when displaying the site's
   index page (patch #0001204, provided by LWC)
 - The status of the "Send me a copy of this email" option was lost when the
