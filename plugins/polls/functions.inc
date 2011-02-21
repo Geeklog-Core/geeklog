@@ -500,7 +500,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
                 } else {
                     $poll->set_var('lang_vote', $LANG_POLLS['start_poll']);
                 }
-                $poll->set_var('lang_votes', $LANG_POLLS['votes']);
+                $poll->set_var('lang_voters', $LANG_POLLS['voters']);
 
                 $results = '';
                 if (($P['is_open'] == 0) || ($P['hideresults'] == 0) ||
@@ -816,7 +816,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_id', $pid);
             $poll->set_var('num_votes', COM_numberFormat($P['voters']));
-            $poll->set_var('lang_votes', $LANG_POLLS['votes']);
+            $poll->set_var('lang_voters', $LANG_POLLS['voters']);
             $access = SEC_hasAccess($P['owner_id'], $P['group_id'],
                             $P['perm_owner'], $P['perm_group'],
                             $P['perm_members'], $P['perm_anon']);

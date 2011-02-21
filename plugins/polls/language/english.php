@@ -33,6 +33,7 @@ $LANG_POLLS = array(
     'results'           => 'Results',
     'pollresults'       => 'Poll Results',
     'votes'             => 'votes',
+    'voters'            => 'voters',
     'vote'              => 'Vote',
     'pastpolls'         => 'Past Polls',
     'savedvotetitle'    => 'Vote Saved',

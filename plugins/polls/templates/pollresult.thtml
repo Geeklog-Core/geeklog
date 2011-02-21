@@ -1,5 +1,5 @@
 <span class="floatright">{edit_icon}</span><div class="poll-topic">{poll_topic}</div>
 {poll_questions}
 <div class="pluginTinyText">
-    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_votes} {poll_comments}
+    {notification} <a href="{site_url}/polls/index.php">{lang_polltopics}</a> | {num_votes} {lang_voters} {poll_comments}
 </div>

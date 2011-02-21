@@ -52,6 +52,11 @@ Links Plugin
 ------------
 - Fixed text above the list of links, which was referring to a menu entry that
   no longer exists (bug #0001216)
+  
+Polls Plugin
+------------
+- Fixed voters do not get counted correctly when updating a poll with multiple 
+  questions. (patch #0001056, provided by Erisco)
 
 Static Pages Plugin
 -------------------
