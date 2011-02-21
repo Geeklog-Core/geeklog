@@ -40,6 +40,9 @@ Apr ??, 2011 (1.8.0)
   class (feature request #0001128) [Dirk]
 - Fixed check for availability of PECL::ZipArchive in the unpacker class
   (bug #0001209) [Dirk]
+- Added in Autotag usage permissions and descriptions. Allowed HTML now 
+  displays autotag descriptions as tooltips (feature request #0001042) [Tom]
+- Added in COM_Tooltip function for displaying tooltips [Tom]
 - Moved handling of the [story:] and [user:] autotags to lib-story.php and
   lib-user.php, respectively (preparations for feature request #0001115) [Dirk]
 
