@@ -55,20 +55,20 @@
     height: 16px;
     float:left;
     margin:0 4px;
-    background: url(redmond/images/ui-icons_cd0a0a_256x240.png) 0 -144px;
+    background: url("images/ui-icons_cd0a0a_256x240.png") 0 -144px;
 }
 .saved_message {
     margin-top:5px;
     margin-bottom:5px;
     padding:10px 5px 8px 36px;
-    background: #C6F9C9 url("images/success.png") 10px 50% no-repeat;
+    background: #C6F9C9 url("../images/success.png") 10px 50% no-repeat;
     border: 2px solid #9BD39E;
     overflow: auto;
     font-weight: bold;
     color: #333;
 }
 .error_validation {
-    background: #CF3333 url("images/error.png") no-repeat 10px 50%;
+    background: #CF3333 url("../images/error.png") no-repeat 10px 50%;
     border: 2px solid #990000;
     color: #FFF;
 }
