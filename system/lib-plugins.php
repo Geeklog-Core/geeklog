@@ -2751,7 +2751,7 @@ function PLG_pluginStateChange($type, $status)
     }
 }
 
-/*
+/**
 *  Disables all plugins with unresolved dependencies
 *  and resolves the load order for all enabled plugins.
 *
@@ -2759,7 +2759,8 @@ function PLG_pluginStateChange($type, $status)
 *                   necessary to alter the load order of a plugin
 * @since            Geeklog 1.8.0
 */
-function PLG_resolveDependencies() {
+function PLG_resolveDependencies()
+{
     global $_PLUGINS, $_TABLES;
     $retval = '';
     $flag = true; // false means that all dependencies are resolved
@@ -2818,7 +2819,7 @@ function PLG_resolveDependencies() {
     }
 }
 
-/*
+/**
 * Returns a string with HTML that contains the dependency information of a plugin.
 *
 * @param    $pi_name         string     The short name of the plugin
@@ -2828,7 +2829,8 @@ function PLG_resolveDependencies() {
 * @since    Geeklog 1.8.0
 * 
 */
-function PLG_printDependencies($pi_name, $pi_gl_version='') {
+function PLG_printDependencies($pi_name, $pi_gl_version='')
+{
     global $LANG32;
     $retval = '';
     $params = PLG_getParams($pi_name);
@@ -2868,7 +2870,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version='') {
     return $retval;
 }
 
-/*
+/**
 * Given a plugin name see if ALL of it's dependencies are satisfied
 *
 * @param    $pi_name         string     The short name of the plugin
@@ -2877,7 +2879,8 @@ function PLG_printDependencies($pi_name, $pi_gl_version='') {
 * @since    Geeklog 1.8.0
 * 
 */
-function PLG_checkDependencies($pi_name) {
+function PLG_checkDependencies($pi_name)
+{
     global $_TABLES;
     $retval = true;
     $params = PLG_getParams($pi_name);
@@ -2907,7 +2910,7 @@ function PLG_checkDependencies($pi_name) {
     return true;
 }
 
-/*
+/**
 * Returns the status of a plugin or false if unavailable
 *
 * @param    $pi_name         string     The short name of the plugin to look for
@@ -2919,7 +2922,8 @@ function PLG_checkDependencies($pi_name) {
 * @since    Geeklog 1.8.0
 * 
 */
-function PLG_checkAvailable($pi_name, $version, $operator='>=') {
+function PLG_checkAvailable($pi_name, $version, $operator='>=')
+{
     global $_PLUGINS, $_TABLES, $_CONF;
     // not really a plugin
     if ($pi_name == 'geeklog') {
@@ -2957,7 +2961,7 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=') {
     return false;
 }
 
-/*
+/**
 * Get list of install parameters for a plugin (including dependencies)
 * For plugins with new install this works like a charm. For the older plugins, not so much.
 *
@@ -2967,11 +2971,11 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=') {
 * @since    Geeklog 1.8.0
 * 
 */
-function PLG_getParams($pi_name) {
+function PLG_getParams($pi_name)
+{
     global $_CONF;
-    $pi_name = COM_sanitizeFilename($pi_name);
     $retval = array();
-    $file = $_CONF['path'] . 'plugins/' . $pi_name . '/autoinstall.php';
+    $file = $_CONF['path'] . 'plugins/' . COM_sanitizeFilename($pi_name) . '/autoinstall.php';
     if (file_exists($file)) {
         // new install system
         include_once $file;
@@ -2981,7 +2985,7 @@ function PLG_getParams($pi_name) {
         }
     } else {
         // old install system
-        $file = $_CONF['path'] . 'plugins/' . $pi_name . '/config.php';
+        $file = $_CONF['path'] . 'plugins/' . COM_sanitizeFilename($pi_name) . '/config.php';
         if (file_exists($file)) {
             // find out what variables are included by $file
             $ar1 = get_defined_vars();

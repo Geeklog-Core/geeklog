@@ -283,14 +283,14 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     # get all template fields.
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
     $template_files = array(
-		    'list'   => ($inline_form ? 'inline.thtml' : 'list.thtml'),
-		    'header' => 'header.thtml',
-		    'row'    => 'listitem.thtml',
-		    'field'  => 'field.thtml' );
+            'list'   => ($inline_form ? 'inline.thtml' : 'list.thtml'),
+            'header' => 'header.thtml',
+            'row'    => 'listitem.thtml',
+            'field'  => 'field.thtml' );
     if ($showsearch) {
         $template_files['search'] = 'searchmenu.thtml';
     }
-	$admin_templates->set_file($template_files);
+    $admin_templates->set_file($template_files);
 
     # insert std. values into the template
     $admin_templates->set_var('xhtml', XHTML);
@@ -1412,38 +1412,38 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
 
     $retval = false;
     switch($fieldname) {
-        case 'info_uninstalled':
-            $retval  = COM_createLink($icon_arr['info'],
-                "{$_CONF['site_admin_url']}/plugins.php?mode=info_uninstalled&amp;pi_name={$A['pi_name']}",
-                array('title' => $LANG32[13]));
-            break;
+    case 'info_uninstalled':
+        $retval  = COM_createLink($icon_arr['info'],
+            "{$_CONF['site_admin_url']}/plugins.php?mode=info_uninstalled&amp;pi_name={$A['pi_name']}",
+            array('title' => $LANG32[13]));
+        break;
 
-        case 'pi_version':
-            $params = PLG_getParams($A['pi_name']);
-            $retval = $params['info']['pi_version'];
-            break;
+    case 'pi_version':
+        $params = PLG_getParams($A['pi_name']);
+        $retval = $params['info']['pi_version'];
+        break;
 
-        case 'pi_dependencies':
-            if (PLG_checkDependencies($A['pi_name'])) {
-                $retval = COM_Tooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
-            } else {
-                $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
-                $retval = COM_Tooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
-            }
-            break;
+    case 'pi_dependencies':
+        if (PLG_checkDependencies($A['pi_name'])) {
+            $retval = COM_Tooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+        } else {
+            $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
+            $retval = COM_Tooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+        }
+        break;
 
-        case 'install_link':
-            if (PLG_checkDependencies($A['pi_name'])) {
-                $retval = COM_createLink($icon_arr['install'], $A['install_link'],
-                array('title' => $LANG32[62]));
-            } else {
-                $retval = str_replace('<img ', '<img title="' . $LANG32[63] . '" ', $icon_arr['unavailable']);
-            }
-            break;
+    case 'install_link':
+        if (PLG_checkDependencies($A['pi_name'])) {
+            $retval = COM_createLink($icon_arr['install'], $A['install_link'],
+            array('title' => $LANG32[62]));
+        } else {
+            $retval = str_replace('<img ', '<img title="' . $LANG32[63] . '" ', $icon_arr['unavailable']);
+        }
+        break;
 
-        default:
+    default:
         $retval = $fieldvalue;
-            break;
+        break;
     }
     return $retval;
 }
