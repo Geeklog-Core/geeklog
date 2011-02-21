@@ -1191,7 +1191,7 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
     case 'delete':
         $csrftoken = '&amp;' . CSRF_TOKEN . '=' . $token;
         $id = 'uninstall_' . $A['pi_name']; // used by JavaScript
-        $message = sprintf($LANG32[47], plugin_get_pluginname($A['pi_name'])); // used by JavaScript
+        $message = sprintf($LANG32[47], "\'" . plugin_get_pluginname($A['pi_name']) . "\'"); // used by JavaScript
         $url = $_CONF['site_admin_url'] . '/plugins.php?mode=delete&amp;pi_name=' . $A['pi_name'] . $csrftoken;
         $link_args = array('title' => $LANG32[46],
                           'onclick' => "confirm_action('$message', '$url&amp;confirmed=1')",
@@ -1403,7 +1403,7 @@ function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $
 }
 
 /**
- * used in the user editor in admin/plugins.php
+ * used to display the entries for the list of uninstalled plugins, in admin/plugins.php
  *
  */
 function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $selected = '')
