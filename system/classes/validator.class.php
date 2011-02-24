@@ -659,7 +659,64 @@ class validator {
 		}
 		return is_finite($check);
 	}
+	
+/**
+ * Checks that a string contains something
+ *
+ * Returns true if string contains any characters. Function added so
+ * old validation would be bypassed.
+ *
+ * $check can be passed as an array:
+ * array('check' => 'valueToCheck');
+ *
+ * @param mixed $check Value to check
+ * @return boolean Success
+ * @access public
+ */
+	function string($check) {
+		$_this =& validator::getInstance();
+		$_this->__reset();
+		$_this->check = $check;
 
+		if (is_array($check)) {
+			$_this->_extract($check);
+		}
+
+		// No check is needed expect if something exists
+		if (empty($_this->check) && $_this->check != '0') {
+			return false;
+		}
+		
+		return true;
+	}
+	
+/**
+ * Checks that a string contains either nothing or something
+ *
+ * Returns true if string contains nothing or any characters. Function added so
+ * old validation would be bypassed.
+ *
+ * $check can be passed as an array:
+ * array('check' => 'valueToCheck');
+ *
+ * @param mixed $check Value to check
+ * @return boolean Success
+ * @access public
+ */
+	function stringOrEmpty($check) {
+		$_this =& validator::getInstance();
+		$_this->__reset();
+		$_this->check = $check;
+
+		if (is_array($check)) {
+			$_this->_extract($check);
+		}
+		
+		// No check is needed since none or any values are fine.
+		
+		return true;
+	}	
+	
 /**
  * Checks that a value is a valid URL according to http://www.w3.org/Addressing/URL/url-spec.txt
  *

@@ -34,12 +34,17 @@
 $_CONF_VALIDATE['Core']['site_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_admin_url'] = array('rule' => 'url');
 $_CONF_VALIDATE['Core']['site_name'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['site_slogan'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['microsummary_short'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['site_disabled_msg'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['copyrightyear'] = array(
     'rule' => 'copyrightyear',
     'message' => isset($LANG_VALIDATION['year']) ? $LANG_VALIDATION['year'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['url_rewrite'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), true));
+$_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
 
 /* Subgroup Site, Tab Mail */
@@ -262,12 +267,14 @@ $_CONF_VALIDATE['Core']['user_login_method[openid]'] = array('rule' => 'boolean'
 $_CONF_VALIDATE['Core']['user_login_method[3rdparty]'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['user_login_method[oauth]'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['facebook_login'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['facebook_consumer_key'] = array('rule' => 'alphaNumeric');
-$_CONF_VALIDATE['Core']['facebook_consumer_secret'] = array('rule' => 'alphaNumeric');
+$_CONF_VALIDATE['Core']['facebook_consumer_key'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['facebook_consumer_secret'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['linkedin_login'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['linkedin_consumer_key'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['linkedin_consumer_secret'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['twitter_login'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['twitter_consumer_key'] = array('rule' => 'alphaNumeric');
-$_CONF_VALIDATE['Core']['twitter_consumer_secret'] = array('rule' => 'alphaNumeric');
+$_CONF_VALIDATE['Core']['twitter_consumer_key'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['twitter_consumer_secret'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['aftersave_user'] = array(
     'rule' => array('inList', array('admin', 'home', 'list', 'item'), true)
 );
