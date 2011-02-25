@@ -18,12 +18,12 @@
                                 </tr>
                                 <tr>
                                     <td class="alignright" style="vertical-align: top;"><b>{lang_dependencies}:</b></td>
-                                    <td>{pi_requires}</td>
+                                    <td>{pi_dependencies}</td>
                                 </tr>
                                     <tr>
                                         <td colspan="2">
                                             <form method="get" action="{site_admin_url}/plugins.php">
-                                                <input style="width: 100%" type="submit" value="{lang_goback_url}">
+                                                <input style="width: 100%" type="submit" value="{back}">
                                             </form>
                                         </td>
                                     </tr>

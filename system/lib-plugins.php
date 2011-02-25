@@ -2790,7 +2790,7 @@ function PLG_resolveDependencies()
         foreach ($_PLUGINS as $key => $pi_name) {
             $maxqueries--;
             $params = PLG_getParams($pi_name);
-            if (is_array($params['requires'])) {
+            if (isset($params['requires']) && is_array($params['requires'])) {
                 // load order of the plugin
                 $p = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$pi_name}'");
                 $p = DB_fetchArray($p);
@@ -2846,7 +2846,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
             $status = PLG_checkAvailable($name, $ver, $op);
             if (!$status) {
                 $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
-            } else if ($status == 'version') {
+            } else if ($status == 'wrong_version') {
                 $retval .= "<b class='status_red'>{$LANG32[56]}</b>";
             } else if ($status == 'disabled') {
                 $retval .= "<b class='status_orange'>{$LANG32[53]}</b>";
@@ -2875,7 +2875,7 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
 *
 * @param    $pi_name         string     The short name of the plugin
 * @return                    bool       True or False, depending on whether all of the
-*                                       depepndencies are satifsfied for plugin $pi_name
+*                                       dependencies are satisfied for plugin $pi_name
 * @since    Geeklog 1.8.0
 * 
 */
@@ -2918,7 +2918,7 @@ function PLG_checkDependencies($pi_name)
 * @param    $operator        string     Optional operator to override the default
 *                                       See COM_versionCompare() for all valid operators
 * @return                    mixed      false is returned if the plugin is unavailable
-*                                       other possible values are: 'ok', 'disabled', 'uninstalled', 'version'
+*                                       other possible values are: 'ok', 'disabled', 'uninstalled', 'wrong_version'
 * @since    Geeklog 1.8.0
 * 
 */
@@ -2943,7 +2943,7 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=')
             if (COM_VersionCompare($A['pi_version'], $version, $operator)) {
                 return 'ok';
             } else {
-                return 'version'; // Wrong version, that is
+                return 'wrong_version';
             }
         }
         // a disabled plugin
@@ -2973,7 +2973,7 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=')
 */
 function PLG_getParams($pi_name)
 {
-    global $_CONF;
+    global $_CONF, $LANG_ADMIN, $_DB_table_prefix;
     $retval = array();
     $file = $_CONF['path'] . 'plugins/' . COM_sanitizeFilename($pi_name) . '/autoinstall.php';
     if (file_exists($file)) {
@@ -3018,6 +3018,14 @@ function PLG_getParams($pi_name)
     if (!empty($retval['info']['pi_gl_version'])) {
         // treat it like a requirement for a plugin and use the "new-style" dependency array
         $retval['requires'][] = array('name' => 'geeklog', 'version' => $retval['info']['pi_gl_version']);
+    } else {
+        // We need to initialise this index of the array, so we place a string in it.
+        $retval['info']['pi_gl_version'] = $LANG_ADMIN['na'];
+    }
+    // If we don't know the plugin version
+    if (empty($retval['info']['pi_version'])) {
+        // We need to initialise this index of the array, so we place a string in it.
+        $retval['info']['pi_version'] = $LANG_ADMIN['na'];
     }
     return $retval;
 }
