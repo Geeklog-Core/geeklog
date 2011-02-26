@@ -53,6 +53,12 @@ $LANG_configsubgroups['xmlsitemap'] = array(
     'sg_main' => 'Peaseaded'
 );
 
+$LANG_tab['xmlsitemap'] = array(
+    'tab_main' => 'XMLSitemap Main Settings',
+    'tab_pri' => 'Priority',
+    'tab_freq' => 'Update frequency'
+);
+
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap peaseaded',
     'fs_pri' => 'Prioriteet (vaikimisi = 0,5, madalaim = 0,0, kõrgeim= 1,0)',

@@ -164,6 +164,10 @@ $LANG_configsubgroups['spamx'] = array(
     'sg_main' => 'Impostazioni Principali'
 );
 
+$LANG_tab['spamx'] = array(
+    'tab_main' => 'Spam-X Main Settings'
+);
+
 $LANG_fs['spamx'] = array(
     'fs_main' => 'Impostazioni Principali di Spam-X'
 );

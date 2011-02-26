@@ -248,6 +248,14 @@ $LANG_configsubgroups['links'] = array(
     'sg_main' => 'Paramètres principaux'
 );
 
+$LANG_tab['links'] = array(
+    'tab_public' => 'Public Links List Settings',
+    'tab_admin' => 'Links Admin Settings',
+    'tab_permissions' => 'Link Permissions',
+    'tab_cpermissions' => 'Category Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['links'] = array(
     'fs_public' => 'Paramètres de la liste publique des liens',
     'fs_admin' => 'Paramètres administrateur des liens',

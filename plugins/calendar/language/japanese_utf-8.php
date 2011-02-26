@@ -222,6 +222,12 @@ $LANG_configsubgroups['calendar'] = array(
     'sg_main' => 'メイン'
 );
 
+$LANG_tab['calendar'] = array(
+    'tab_main' => 'General Calendar Settings',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['calendar'] = array(
     'fs_main' => 'カレンダのメイン設定',
     'fs_permissions' => 'カレンダのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',

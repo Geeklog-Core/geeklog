@@ -218,6 +218,12 @@ $LANG_configsubgroups['calendar'] = array(
     'sg_main' => 'Paramétres principaux'
 );
 
+$LANG_tab['calendar'] = array(
+    'tab_main' => 'General Calendar Settings',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Paramètres généraux du calendrier',
     'fs_permissions' => 'Permissions par défaut',

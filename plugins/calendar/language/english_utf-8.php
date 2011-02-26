@@ -211,17 +211,23 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Delete Events with Owner?',
     'aftersave' => 'After Saving Event',
     'default_permissions' => 'Event Default Permissions',
-    'autotag_permissions_event' => '[event: ] Permissions'
+    'autotag_permissions_event' => '[event: ] Permissions'    
 );
 
 $LANG_configsubgroups['calendar'] = array(
     'sg_main' => 'Main Settings'
 );
 
+$LANG_tab['calendar'] = array(
+    'tab_main' => 'General Calendar Settings',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+ 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'General Calendar Settings',
     'fs_permissions' => 'Default Permissions',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'  
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'      
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']

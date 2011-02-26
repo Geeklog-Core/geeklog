@@ -154,7 +154,7 @@ $LANG_confignames['staticpages'] = array(
     'censor' => 'Censor Content?',
     'default_permissions' => 'Page Default Permissions',
     'autotag_permissions_staticpage' => '[staticpage: ] Permissions', 
-    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',     
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions', 
     'aftersave' => 'After Saving Page',
     'atom_max_items' => 'Max. Pages in Webservices Feed',
     'meta_tags' => 'Enable Meta Tags',
@@ -174,12 +174,20 @@ $LANG_configsubgroups['staticpages'] = array(
     'sg_main' => 'Main Settings'
 );
 
+$LANG_tab['staticpages'] = array(
+    'tab_main' => 'Static Pages Main Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_search' => 'Search Results',
+    'tab_permissions' => 'Default Permissions', 
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'     
+);
+
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Static Pages Main Settings',
     'fs_whatsnew' => 'What\'s New Block',
     'fs_search' => 'Search Results',
     'fs_permissions' => 'Default Permissions', 
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'  
+    'fs_autotag_permissions' => 'Autotag Usage Permissions'      
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']

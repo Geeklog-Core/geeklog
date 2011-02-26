@@ -218,6 +218,12 @@ $LANG_configsubgroups['calendar'] = array(
     'sg_main' => 'Peahäälestused'
 );
 
+$LANG_tab['calendar'] = array(
+    'tab_main' => 'General Calendar Settings',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Kalendri üldised häälestused',
     'fs_permissions' => 'Vaikimisi õigused',

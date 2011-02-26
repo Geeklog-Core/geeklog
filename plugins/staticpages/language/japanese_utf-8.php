@@ -177,6 +177,14 @@ $LANG_configsubgroups['staticpages'] = array(
     'sg_main' => 'メイン'
 );
 
+$LANG_tab['staticpages'] = array(
+    'tab_main' => 'Static Pages Main Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_search' => 'Search Results',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['staticpages'] = array(
     'fs_main' => '静的ページのメイン設定',
     'fs_whatsnew' => '新着情報ブロック',

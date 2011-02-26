@@ -173,6 +173,14 @@ $LANG_configsubgroups['staticpages'] = array(
     'sg_main' => 'הגדרות ראשיות'
 );
 
+$LANG_tab['staticpages'] = array(
+    'tab_main' => 'Static Pages Main Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_search' => 'Search Results',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'הגדרות ראשיות של עמודים סטטיים',
     'fs_whatsnew' => 'קוביית המידע של מה חדש',

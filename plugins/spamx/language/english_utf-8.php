@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english_utf-8.php,v 1.11 2008/04/13 11:59:08 dhaun Exp $
+ * $Id: english.php,v 1.23 2008/04/13 11:59:08 dhaun Exp $
  */
 
 global $LANG32;
@@ -152,6 +152,10 @@ $LANG_confignames['spamx'] = array(
 
 $LANG_configsubgroups['spamx'] = array(
     'sg_main' => 'Main Settings'
+);
+
+$LANG_tab['spamx'] = array(
+    'tab_main' => 'Spam-X Main Settings'
 );
 
 $LANG_fs['spamx'] = array(
