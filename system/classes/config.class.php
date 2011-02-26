@@ -486,29 +486,37 @@ class config {
                        $subgroup,
                        $group,
                        ($selection_array === null ?
-                        -1 : $selection_array),
+                            -1 : $selection_array),
                        $sort,
-                       ($tab === null ?
-                        'NULL' : $tab), // Let it be NULL for plugins that support the older config
                        ($fieldset === null ?
-                        0 : $fieldset),
-                       serialize($default_value));
+                             0 : $fieldset),
+                       serialize($default_value)
+                      );
+
+        $columns = 'name, value, type, subgroup, group_name, selectionArray, sort_order, fieldset, default_value';
+
+        // special handling of $tab for backward compatibility
+        if ($tab !== null) {
+            $columns .= ', tab';
+            $Qargs[9] = $tab;
+        }
         $Qargs = array_map('addslashes', $Qargs);
-        
+
         // Now add in config item
-        $sql = "INSERT INTO {$_TABLES['conf_values']} (name, value, type, " .
-            "subgroup, group_name, selectionArray, sort_order, tab,".
-            " fieldset, default_value) VALUES ("
-            ."'{$Qargs[0]}',"
-            ."'{$Qargs[1]}',"
-            ."'{$Qargs[2]}',"
-            ."{$Qargs[3]},"
-            ."'{$Qargs[4]}',"
-            ."{$Qargs[5]},"
-            ."{$Qargs[6]},"
-            ."{$Qargs[7]},"
-            ."'{$Qargs[8]}',"
-            ."'{$Qargs[9]}')";
+        $sql = "INSERT INTO {$_TABLES['conf_values']} ($columns) VALUES ("
+             . "'{$Qargs[0]}',"
+             . "'{$Qargs[1]}',"
+             . "'{$Qargs[2]}',"
+             . "{$Qargs[3]},"
+             . "'{$Qargs[4]}',"
+             . "{$Qargs[5]},"
+             . "{$Qargs[6]},"
+             . "'{$Qargs[7]}',"
+             . "'{$Qargs[8]}'";
+        if ($tab !== null) {
+            $sql .= ",{$Qargs[9]}";
+        }
+        $sql .= ')';
 
         $this->_DB_escapedQuery($sql);
 
