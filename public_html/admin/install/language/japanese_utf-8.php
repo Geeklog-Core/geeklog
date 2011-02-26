@@ -288,7 +288,7 @@ $LANG_BIGDUMP = array(
     8 => '作業中 ファイル:',
     9 => 'ファイルの末尾にファイルポインタを移動できません。',
     10 => 'ファイルポインタ移動不可:',
-    11 => 'There is no mySQL extension available in your PHP installation.',
+    11 => 'There is no MySQL extension available in your PHP installation.',
     14 => '中止した行版:',
     15 => '。このクエリには',
     16 => '行以上が含まれています。各クエリの末尾にセミコロンを付けないツールでダンプファイルを生成した場合や、ダンプファイルの中に複数行INSERT文が含まれる場合に発生する可能性があります。',
@@ -306,8 +306,7 @@ $LANG_BIGDUMP = array(
     28 => 'または待って!',
     29 => 'エラーが発生しました。',
     30 => '最初からスタート',
-    31 => '(再起動する前に古いテーブルを削除してください)',
-    32 => 'There is no mySQL extension available in your PHP installation.'
+    31 => '(再起動する前に古いテーブルを削除してください)'
 );
 
 // +---------------------------------------------------------------------------+
