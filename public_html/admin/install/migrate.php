@@ -360,7 +360,7 @@ if (INST_phpOutOfDate()) {
                 $backup_file = str_replace($backup_dir, '', $file_path);
 
                 $display .= '<option value="' . $filename .'">' . $backup_file
-                    . ' (' . INST_formatSize(filesize($file_path))
+                    . ' (' . INST_formatSize(@filesize($file_path))
                     . ')</option>' . LB;
 
             }
