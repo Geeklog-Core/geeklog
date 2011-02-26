@@ -40,6 +40,7 @@ $LANG_POLLS = array(
     'results' => 'Résultats',
     'pollresults' => 'Résultat des sondages',
     'votes' => 'votes',
+    'voters' => 'voters',
     'vote' => 'Vote',
     'pastpolls' => 'Sondages anciens',
     'savedvotetitle' => 'Vote sauvegardé',
@@ -138,6 +139,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Supprimer le sondage avec le propriétaire',
     'aftersave' => 'Après la sauvegarde du sondage',
     'default_permissions' => 'Permissions par défaut du sondage',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'Interval des nouveaux sondages',
     'hidenewpolls' => 'Nouveaux sondages',
     'title_trim_length' => 'Couper la longueur du titre',
@@ -146,6 +150,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Principaux paramètres'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

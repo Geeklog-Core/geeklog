@@ -41,6 +41,7 @@ $LANG_POLLS = array(
     'results' => 'Tulemused',
     'pollresults' => 'Hääletuste tulemused',
     'votes' => 'Hääletust',
+    'voters' => 'voters',
     'vote' => 'Hääleta',
     'pastpolls' => 'Viimased küsitlused',
     'savedvotetitle' => 'Hääl salvestatud',
@@ -139,6 +140,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Kustuta küsitlused, omanikuks?',
     'aftersave' => 'Pärast küsitluse salvestamist',
     'default_permissions' => 'Küsitluse vaikimisi õigused',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'New Polls Interval',
     'hidenewpolls' => 'New Polls',
     'title_trim_length' => 'Title Trim Length',
@@ -147,6 +151,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Peahäälestused'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

@@ -40,6 +40,7 @@ $LANG_POLLS = array(
     'results' => '結果',
     'pollresults' => '調查結果',
     'votes' => '票',
+    'voters' => 'voters',
     'vote' => '票',
     'pastpolls' => '過去的調查',
     'savedvotetitle' => '投票已存續',
@@ -138,6 +139,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Delete Polls with Owner?',
     'aftersave' => 'After Saving Poll',
     'default_permissions' => 'Poll Default Permissions',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'New Polls Interval',
     'hidenewpolls' => 'New Polls',
     'title_trim_length' => 'Title Trim Length',
@@ -146,6 +150,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Main Settings'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

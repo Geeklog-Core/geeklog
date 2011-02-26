@@ -33,6 +33,7 @@ $LANG_POLLS = array(
     'results'           => 'Results',
     'pollresults'       => 'Poll Results',
     'votes'             => 'votes',
+    'voters'            => 'voters',
     'vote'              => 'Vote',
     'pastpolls'         => 'Past Polls',
     'savedvotetitle'    => 'Vote Saved',
@@ -134,7 +135,7 @@ $LANG_confignames['polls'] = array(
     'default_permissions' => 'Poll Default Permissions',
     'autotag_permissions_poll' => '[poll: ] Permissions',
     'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
-    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',    
     'newpollsinterval' => 'New Polls Interval',
     'hidenewpolls' => 'New Polls',
     'title_trim_length' => 'Title Trim Length',
@@ -145,10 +146,17 @@ $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Main Settings'
 );
 
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions', 
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+);
+
 $LANG_fs['polls'] = array(
     'fs_main' => 'General Polls Settings',
     'fs_whatsnew' => 'What\'s New Block',
-    'fs_permissions' => 'Default Permissions',
+    'fs_permissions' => 'Default Permissions', 
     'fs_autotag_permissions' => 'Autotag Usage Permissions'
 );
 

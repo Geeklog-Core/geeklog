@@ -39,6 +39,7 @@ $LANG_POLLS = array(
     'results' => 'תוצאות',
     'pollresults' => 'תוצאות סקרים',
     'votes' => 'הצבעות',
+    'voters' => 'voters',
     'vote' => 'הצבעה',
     'pastpolls' => 'סקרי עבר',
     'savedvotetitle' => 'ההצבעה נשמרה',
@@ -137,6 +138,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'מחיקת הסקרים עם יוצריהם?',
     'aftersave' => 'לאחר שמירת סקר',
     'default_permissions' => 'הרשאות ברירת המחדל של סקר',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'תוקף סקרים חדשים',
     'hidenewpolls' => 'סקרים חדשים',
     'title_trim_length' => 'אורך כותרות מקוצרות',
@@ -145,6 +149,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'הגדרות ראשיות'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

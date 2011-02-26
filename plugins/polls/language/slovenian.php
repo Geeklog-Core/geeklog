@@ -41,6 +41,7 @@ $LANG_POLLS = array(
     'results' => 'Rezultati',
     'pollresults' => 'Rezultati anket',
     'votes' => 'glasov',
+    'voters' => 'voters',
     'vote' => 'Glasuj',
     'pastpolls' => 'Pretekle ankete',
     'savedvotetitle' => 'Glas shranjen',
@@ -139,6 +140,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Izbriši ankete skupaj z lastnikom?',
     'aftersave' => 'Po shranitvi ankete',
     'default_permissions' => 'Prednastavljene pravice ankete',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'Interval za nove ankete',
     'hidenewpolls' => 'Nove ankete',
     'title_trim_length' => 'Krajšanje dolžine naslova',
@@ -147,6 +151,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Glavne nastavitve'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

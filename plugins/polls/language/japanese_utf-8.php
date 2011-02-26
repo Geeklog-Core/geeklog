@@ -45,6 +45,7 @@ $LANG_POLLS = array(
     'results' => '結果',
     'pollresults' => '投票結果',
     'votes' => '投票',
+    'voters' => 'voters',
     'vote' => '投票する',
     'pastpolls' => 'アンケートの一覧',
     'savedvotetitle' => '投票ありがとうございました',
@@ -143,6 +144,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => '所有者の削除と共に削除する',
     'aftersave' => 'アンケート保存後の画面遷移',
     'default_permissions' => 'パーミッション',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'アンケート投稿の間隔',
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
@@ -151,6 +155,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'メイン'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(

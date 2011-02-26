@@ -37,6 +37,7 @@ $LANG_POLLS = array(
     'results' => 'Результати',
     'pollresults' => 'Результати опитування',
     'votes' => 'голос╕в',
+    'voters' => 'voters',
     'vote' => 'Голосувати',
     'pastpolls' => 'Минул╕ опитування',
     'savedvotetitle' => 'Голос збережено',
@@ -135,6 +136,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => 'Delete Polls with Owner?',
     'aftersave' => 'After Saving Poll',
     'default_permissions' => 'Poll Default Permissions',
+    'autotag_permissions_poll' => '[poll: ] Permissions',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'New Polls Interval',
     'hidenewpolls' => 'New Polls',
     'title_trim_length' => 'Title Trim Length',
@@ -143,6 +147,13 @@ $LANG_confignames['polls'] = array(
 
 $LANG_configsubgroups['polls'] = array(
     'sg_main' => 'Main Settings'
+);
+
+$LANG_tab['polls'] = array(
+    'tab_main' => 'General Polls Settings',
+    'tab_whatsnew' => 'What\'s New Block',
+    'tab_permissions' => 'Default Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['polls'] = array(
