@@ -52,7 +52,7 @@ class scripts {
     
     private $scripts; // Array of JavaScript set to be loaded either in the header or footer
     
-    private $restricted_names; 
+    private $restricted_names; // Restricted names list for JavaScript files
     
     private $header_set; // Flag to know if Header Code already has been retrieved
     private $javascript_set; // Flag to know if ANY JavaScript has been set yet
@@ -84,20 +84,21 @@ class scripts {
         $this->jquery_ui_cdn = false;
         
         // Add Theme CSS File
-        $this->setCSSFilePrivate('theme',$theme_path . '/style.css');        
-        
-        // Add Geeklog Specific JavaScript files
-        $this->setJavaScriptFile('core','/javascript/common.js');
-        // Check to see if advanced editor is needed
-        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-            $this->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-        }
+        $this->setCSSFilePrivate('theme', $theme_path . '/style.css');
         
         // Find available JavaScript libraries
-        $this->findJavaScriptLibraries();        
+        $this->findJavaScriptLibraries();     
         
-        // Setup restricted names after setting main libraries (do not want plugins missing with them)
-        $this->restricted_names = array('core', 'jquery', 'theme');
+        // Automatically set Common library since we have not updated core yet to set it when needed
+        $this->setJavaScriptLibrary('common');
+        
+        // Check to see if advanced editor is needed, this should be setup as a library at some point like common
+        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+            $this->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
+        }            
+        
+        // Setup restricted names after setting main libraries (do not want plugins messing with them)
+        $this->restricted_names = array('fckeditor', 'core', 'jquery', 'theme');
         
     }
     
@@ -114,8 +115,14 @@ class scripts {
         
         $theme_path = '/layout/' . $_CONF['theme'];
         
-        // Find available jQuery files
         
+        // Add Geeklog Specific JavaScript files. Treat them as library files since other plugins may try to load them
+        $name = 'common';
+        $this->library_files[$name]['file'] = 'javascript/common.js';
+        $this->library_files[$name]['load'] = false;        
+                     
+        
+        // Find available jQuery library files
         $version_jQuery = '1.5.1';
         $this->jquery_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $version_jQuery .'/jquery.min.js';
         $name = 'jquery';
@@ -184,11 +191,13 @@ class scripts {
         
         global $_CONF;
         
+        $name = strtolower($name);
+        
         if (isset($this->library_files[$name])) {
             if (!$this->library_files[$name]['load']) {
                 $this->library_files[$name]['load'] = true;
-                // If name something else besides jQuery make sure all libraries are loaded
-                if ($name != 'jquery' && !$this->jquery_ui_cdn) {
+                // If name is subset of jQuery.UI make sure all UI libraries are loaded
+                if (substr($name, 0, 10) == 'jquery.ui.' && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path'] . 'public_html/' .$this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
