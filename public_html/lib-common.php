@@ -246,6 +246,15 @@ if (COM_isAnonUser()) {
 }
 
 /**
+* Include the Scripts class
+*
+* This provides the ability to set css and javascript.
+*/
+
+require_once( $_CONF['path_system'] . 'classes/scripts.class.php' );
+$_SCRIPTS = new scripts();
+
+/**
 * Ulf Harnhammar's kses class
 *
 */
@@ -831,18 +840,14 @@ function COM_renderMenu( &$header, $plugin_menu )
 * @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @param    string  $pagetitle  optional content for the page's <title>
 * @param    string  $headercode optional code to go into the page's <head>
-* @param    array   $jquery_ui  include jquery ui to go into the page's <head> if set to array of paramaters
-*                               Available paramaters:
-*                               - features => tabs, autocomplete, etc.
-*                               See config.class.php for usage. To exclude JQuery UI, just set $jquery_ui to null.
 * @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
 *
 */
-function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jquery_ui = null )
+function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
-           $_IMAGE_TYPE, $topic, $_COM_VERBOSE;
+           $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -1075,7 +1080,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jqu
     $header->set_var( 'datetime', $curtime[0] );
     $header->set_var( 'site_logo', $_CONF['layout_url']
                                    . '/images/logo.' . $_IMAGE_TYPE );
-    $header->set_var( 'css_url', $_CONF['layout_url'] . '/style.css' );
     $header->set_var( 'theme', $_CONF['theme'] );
 
     $header->set_var('charset', COM_getCharset());
@@ -1217,44 +1221,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jqu
         }
     }
 
-    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-        $header->set_file('editor', 'advanced_editor_header.thtml');
-        $header->parse('advanced_editor', 'editor');
-
-    } else {
-        $header->set_var('advanced_editor', '');
-    }
-    
-    // include jquery ui if $jquery_ui set to true
-    if ( is_array($jquery_ui) && !empty($jquery_ui) ) {
-       
-        // set features
-        if ( isset($jquery_ui['features']) ) {
-            if ( is_array($jquery_ui['features']) && !empty($jquery_ui['features']) ) {
-                $jquery_ui_features = '';
-                foreach ( $jquery_ui['features'] as $jquery_ui_feature ) {
-                    $jquery_ui_features .= '<script type="text/javascript" '.
-                                           'src="' . $_CONF['site_url'] .
-                                           '/javascript/jquery_ui/jquery.ui.' . $jquery_ui_feature .
-                                           '.min.js"></script>';
-                }
-            }
-            
-            if ( is_string($jquery_ui['features']) && !empty($jquery_ui['features']) ) {
-                $jquery_ui_features = '<script type="text/javascript" '.
-                                       'src="'. $_CONF['site_url'] .
-                                       '/javascript/jquery_ui/jquery.ui.' . $jquery_ui['features'] .
-                                       '.min.js"></script>';
-            }
-        }
-        $header->set_var('jquery_ui_features', $jquery_ui_features);
-        
-        $header->set_file('jquery_ui_assets', '/jquery_ui/jquery_ui_header.thtml');
-        $header->parse('jquery_ui', 'jquery_ui_assets');
-    } else {
-        $header->set_var('jquery_ui', '');
-    }
-
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
     $headercode .= PLG_getHeaderCode();
@@ -1319,6 +1285,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jqu
         }
     }
     
+    $headercode = $_SCRIPTS->getHeader() . $headercode;
     $header->set_var( 'plg_headercode', $headercode );
 
     // The following lines allow users to embed PHP in their templates.  This
@@ -1361,7 +1328,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '', $jqu
 */
 function COM_siteFooter( $rightblock = -1, $custom = '' )
 {
-    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS;
+    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic, $LANG_BUTTONS, $_SCRIPTS;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -1384,7 +1351,9 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
             'leftblocks'  => 'leftblocks.thtml'
             ));
     
-    $footer->postprocess_fn = 'PLG_replaceTags';
+    // Needed to set for pre (instead of post) since JavaScript could contain 
+    // autotag labels (like in configuration search) 
+    $footer->preprocess_fn = 'PLG_replaceTags';
 
     // Do variable assignments
     $footer->set_var( 'xhtml', XHTML );
@@ -1541,8 +1510,13 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     // Call to plugins to set template variables in the footer
     PLG_templateSetVars( 'footer', $footer );
 
+    // Retrieve any JavaScript libraries, variables and functions
+    $footercode = $_SCRIPTS->getFooter();
+    
     // Call any plugin that may want to include extra JavaScript functions
-    $footer->set_var('plg_footercode', PLG_getFooterCode());
+    $footercode .= PLG_getFooterCode();
+    
+    $footer->set_var('plg_footercode', $footercode);
 
     // Actually parse the template and make variable substitutions
     $footer->parse( 'index_footer', 'footer' );

@@ -1,14 +1,6 @@
 
 <!-- comment/commentform_advanced.thtml { -->
 
-<script type="text/javascript">
-  <!--
-  // Setup editor path for FCKeditor JS Functions
-  geeklogEditorBasePath = "{site_url}/fckeditor/";
-  -->
-</script>
-<script type="text/JavaScript" src="{site_url}/javascript/submitcomment_fckeditor.js"></script>
-
 {start_block_postacomment}
 <form action="{site_url}/comment.php" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="linear">
   <div class="user_basic">

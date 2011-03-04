@@ -744,7 +744,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 */
 function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_ADMIN, $LANG_ACCESS, $MESSAGE;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_ADMIN, $LANG_ACCESS
+    , $MESSAGE, $_SCRIPTS;
 
     $retval = '';
 
@@ -882,6 +883,12 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $comment_template->set_file('form', 'commentform_advanced.thtml');
+                
+                // Add JavaScript
+                $js = 'geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';
+                $_SCRIPTS->setJavaScript($js, true);
+                $_SCRIPTS->setJavaScriptFile('submitcomment_fckeditor', '/javascript/submitcomment_fckeditor.js');
+                
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
             }

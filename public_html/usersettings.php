@@ -50,7 +50,7 @@ $_US_VERBOSE = false;
 */
 function edituser()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $_USER, $LANG_MYACCOUNT, $LANG04, $LANG_ADMIN, $_SCRIPTS;
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
@@ -85,6 +85,37 @@ function edituser()
 
     $preferences->set_var ('preview', USER_showProfile($_USER['uid'], true));
     $preferences->set_var ('prefs', editpreferences());
+    
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('profile_editor', '/javascript/profile_editor.js');
+    
+    $js = '<!-- JS Functions which will execute only if JS enabled will un-hide the special features that enhance the profile editor -->
+    <script type="text/JavaScript">
+    //<![CDATA[
+        /* Initially the navbar is hidden - in case JS is disabled. Enable it now */
+        document.getElementById("pe_navbar").style.display="";
+    
+        /* Now cycle through the profile tabs as the number in the template could have been modified (personalized)
+           If you add custom panels, just ensure you use the class jsenabled_hide or jsenabled_show
+           Build an object that can then be referenced in the functon showhideProfileEditorDiv
+        */
+    
+        var profilepanels = new Object;
+        var el;
+        el=document.getElementsByTagName("div");
+        for(i=0;i<el.length;i++) {
+            var divname = el[i].id  
+            if(el[i].className == "jsenabled_show"){
+                el[i].style.display = "";
+                profilepanels[divname] = "show";
+            } else if(el[i].className == "jsenabled_hide"){
+                el[i].style.display = "none";
+                profilepanels[divname] = "hidden";   
+            }
+        }
+    //]]>
+    </script>';    
+    $_SCRIPTS->setJavaScript($js);    
 
     // some trickery to ensure alternating colors with the available options ...
     if ($_CONF['allow_username_change'] == 1) {

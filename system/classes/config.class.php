@@ -743,7 +743,8 @@ class config {
      */
     function get_ui($grp, $sg='0', $change_result=null)
     {
-        global $_CONF, $LANG_CONFIG, $LANG_configsubgroups, $LANG_tab, $LANG_fs;
+        global $_CONF, $LANG_CONFIG, $LANG_configsubgroups, $LANG_tab, $LANG_fs,
+            $_SCRIPTS;
 
         if(!array_key_exists($grp, $LANG_configsubgroups)) {
             $LANG_configsubgroups[$grp] = array();
@@ -782,7 +783,13 @@ class config {
         $t->set_var('gltoken', SEC_createToken());
         
         // set javascript variable for autocomplete
-        $t->set_var('autocomplete_data', $this->_UI_autocomplete_data());
+        $js = $this->_UI_autocomplete_data();
+        // set javascript variable for image spinner
+        $js .= $this->_UI_js_image_spinner();        
+        $js .= "var frmGroupAction = '" . $_CONF['site_admin_url'] . "/configuration.php';";
+        $_SCRIPTS->setJavaScript($js, true);
+        $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
+        
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
             $t->set_var('search_configuration_value', $_POST['search-configuration-cached']);
@@ -794,9 +801,6 @@ class config {
         } else {
             $t->set_var('tab_id_value', '');
         }
-        
-        // set javascript variable for image spinner
-        $t->set_var('imgSpinner', $this->_UI_js_image_spinner());
 
         $t->set_var('lang_save_changes', $LANG_CONFIG['save_changes']);
         $t->set_var('lang_reset_form', $LANG_CONFIG['reset_form']);
@@ -904,10 +908,11 @@ class config {
         }
         $tab_li .= '</ul>';
         $t->set_var('tab_li', $tab_li);
-
-        $jquery_ui = array('features' => array('tabs', 'autocomplete'));
         
-        $display  = COM_siteHeader('none', $LANG_CONFIG['title'], '', $jquery_ui);
+        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
+        $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
+        
+        $display  = COM_siteHeader('none', $LANG_CONFIG['title']);
         $t->set_var('config_menu',$this->_UI_configmanager_menu($grp,$sg));
         
         // message box

@@ -1,9 +1,3 @@
- <script type="text/javascript">
-    // Setup editor path for FCKeditor JS Functions
-    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
-</script>
-<script type="text/JavaScript" src="{site_url}/javascript/submitcomment_fckeditor.js"></script>
-
                                 {start_block_postacomment}
                                             <form action="{form_url}" method="post" onsubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" width="100%">

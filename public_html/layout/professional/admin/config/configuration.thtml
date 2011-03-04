@@ -1,9 +1,3 @@
-<script type="text/javascript">
-{autocomplete_data}{imgSpinner}
-var frmGroupAction = '{site_admin_url}/configuration.php';
-</script>
-<script type="text/javascript" src="{site_url}/javascript/admin.configuration.js?v=9"></script>
-
 <form method="post" action="{site_admin_url}/configuration.php" name="group">
 <input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
 <input type="hidden" value="" name="subgroup"{xhtml}>
