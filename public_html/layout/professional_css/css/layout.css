@@ -147,7 +147,7 @@ div#container div#navigation ul li.last-child a:active {
 --------------------------------------*/
 
 div#container div#wrapper {
-  overflow: hidden;  /* Adjust floating element */
+  overflow: visible;  /* Adjust floating element */
   width: 960px;  /*  Site Width[W] */
   margin: 0 auto;
   padding: 0 0 2em 0;
@@ -218,7 +218,7 @@ body.js_off div#container div#wrapper div#leftblocks {
 --------------------------------------*/
 
 div#container div#wrapper div#centerblocks {
-  overflow: auto;
+  overflow: visible;
 }
 
 /* JavaScript Enabled* 3 Column ( Left Block*  Center Block*  Right Block)  Center Block Container */
