@@ -1109,6 +1109,11 @@ $LANG32 = array(
     62 => 'Click to Install this Plugin',
     63 => 'This Plugin Cannot be Installed',
     64 => 'This Plugin Cannot be Enabled',
+    65 => 'The plugin upload function has been disabled due to the following errors:',
+    66 => 'File uploads are disabled in your PHP configuration.',
+    67 => 'The directory "%s" is not writable.',
+    68 => 'You do not have the required permissions to install plugins.',
+    69 => 'You do not have the required permissions to upload plugins.',
 
     // to match the PHP error constants,
     // http://www.php.net/manual/en/features.file-upload.errors.php

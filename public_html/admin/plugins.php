@@ -149,8 +149,8 @@ function plugin_info_installed($pi_name)
                         . '/functions.inc')) {
             $plg_templates->set_var('pi_enabled', $LANG32[21]);
         } else {
-        	$plg_templates->set_var('pi_enabled', '<div class="status_red">' . $LANG32[54] . '</div>');
-		}
+            $plg_templates->set_var('pi_enabled', '<div class="status_red">' . $LANG32[54] . '</div>');
+        }
     }
     $plg_templates->set_var('back', $LANG32[60]);
     $plg_templates->set_var('gltoken', SEC_createToken());
@@ -608,26 +608,39 @@ function plugin_getUploadError($mFile)
 /**
 * Check if uploads are possible
 *
-* @return   boolean     true: uploads possible; false: not possible
+* @return   array     a list of errors or an empty array, if there weren't any.
 *
 */
 function plugin_upload_enabled()
 {
-    global $_CONF;
+    global $_CONF, $LANG32;
 
     $path_admin = $_CONF['path_html'] . substr($_CONF['site_admin_url'],
             strlen($_CONF['site_url']) + 1) . '/';
 
     // If 'file_uploads' is enabled in php.ini
     // and the plugin directories are writable by the web server.
-    $upload_enabled = (ini_get('file_uploads')
-                        && is_writable($_CONF['path'] . 'plugins/')
-                        && is_writable($_CONF['path_html'])
-                        && is_writable($path_admin . 'plugins/'))
-                            ? true
-                            : false;
+    $errors = array();
+    if (!ini_get('file_uploads')) {
+        $errors[] = $LANG32[66];
+    }
+    if (!is_writable($_CONF['path'] . 'plugins/')) {
+        $errors[] = sprintf($LANG32[67], $_CONF['path'] . 'plugins/');
+    }
+    if (!is_writable($_CONF['path_html'])) {
+        $errors[] = sprintf($LANG32[67], $_CONF['path_html']);
+    }
+    if (!is_writable($path_admin . 'plugins/')) {
+        $errors[] = sprintf($LANG32[67], $path_admin . 'plugins/');
+    }
+    if (!SEC_hasRights('plugin.install')) {
+        $errors[] = $LANG32[68];
+    }
+    if (!SEC_hasRights('plugin.upload')) {
+        $errors[] = $LANG32[69];
+    }
 
-    return $upload_enabled;
+    return $errors;
 }
 
 /**
@@ -646,17 +659,26 @@ function plugin_show_uploadform($token)
     $retval .= COM_startBlock($LANG32[39], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
 
-    // Show the upload form
-    $retval .= '<p>' . $LANG32[40] . '</p>' . LB
-            . '<form name="plugins_upload" action="' . $_CONF['site_admin_url']             . '/plugins.php" method="post" enctype="multipart/form-data">' . LB
-            . '<div>' . $LANG28[29] . ': '
-            . '<input type="file" dir="ltr" name="plugin" size="40"' . XHTML
-            . '> ' . LB
-            . '<input type="submit" name="upload" value="' . $LANG32[41] . '"'
-            . XHTML . '>' . LB
-            . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token
-            . '"' . XHTML . '>' . '</div>' . LB . '</form>' . LB;
-
+    // Check if all the requirements needed to upload a plugin are met
+    $errors = plugin_upload_enabled();
+    if (count($errors) == 0) {
+        // Show the upload form
+        $retval .= '<p>' . $LANG32[40] . '</p>' . LB
+                 . '<form name="plugins_upload" action="' . $_CONF['site_admin_url']
+                 . '/plugins.php" method="post" enctype="multipart/form-data">' . LB
+                 . '<div>' . $LANG28[29] . ': '
+                 . '<input type="file" dir="ltr" name="plugin" size="40"' . XHTML . '> ' . LB
+                 . '<input type="submit" name="upload" value="' . $LANG32[41] . '"' . XHTML . '>' . LB
+                 . '<input type="hidden" name="' . CSRF_TOKEN . '" value="' . $token . '"' . XHTML . '>'
+                 . '</div>' . LB . '</form>' . LB;
+    } else {
+        // Show the errors
+        $retval .= '<p>' . $LANG32[65] . '</p>' . LB . '<div><ul>' . LB;
+        foreach ($errors as $key => $value) {
+            $retval .= "<li>$value</li>";
+        }
+        $retval .= '</ul></div>' . LB;
+    }
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
@@ -918,11 +940,8 @@ function plugin_main($message = '', $token = '')
         $retval .= show_newplugins($token);
     }
 
-    // If the web server will allow the user to upload a plugin
-    if (plugin_upload_enabled() &&
-            SEC_hasRights('plugin.install,plugin.upload')) {
-        $retval .= plugin_show_uploadform($token);
-    }
+    // Show the upload form or an error message
+    $retval .= plugin_show_uploadform($token);
 
     $retval .= COM_siteFooter();
 
