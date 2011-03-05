@@ -1951,6 +1951,7 @@ $LANG_confignames['Core'] = array(
     'censorlist' => "Censor List",
     'ip_lookup' => "IP Lookup",
     'url_rewrite' => "Enable URL Rewrite",
+    'cdn_hosted' => "Use CDN-hosted copy of jQuery",
     'meta_tags' => "Meta Tags",
     'meta_description' => "Default Meta Description",
     'meta_keywords' => "Default Meta Keywords",    

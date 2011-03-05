@@ -42,6 +42,7 @@ $_CONF_VALIDATE['Core']['copyrightyear'] = array(
     'message' => isset($LANG_VALIDATION['year']) ? $LANG_VALIDATION['year'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['url_rewrite'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), true));
 $_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');

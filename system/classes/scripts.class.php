@@ -40,10 +40,10 @@ class scripts {
 
     private $library_files; // Array of available jQuery library files that can be loaded
     
-    private $jquery_cdn; // Flag to use jQuery file from Google CDN
+    private $jquery_cdn; // Flag to use jQuery file from CDN-hosted source (Google)
     private $jquery_cdn_file; // Location of jQuery file at Google
     
-    private $jquery_ui_cdn; // Flag to use jQuery UI file from Google CDN
+    private $jquery_ui_cdn; // Flag to use jQuery UI file from CDN-hosted source (Google)
     private $jquery_ui_cdn_file; // Location of jQuery UI file at Google
     
     private $script_files; // Array of JavaScript files set to be loaded either in the header or footer
@@ -79,7 +79,6 @@ class scripts {
         
         $theme_path = '/layout/' . $_CONF['theme'];
         
-        $_CONF['Google_CDN'] = false;
         $this->jquery_cdn = false;
         $this->jquery_ui_cdn = false;
         
@@ -196,8 +195,8 @@ class scripts {
         if (isset($this->library_files[$name])) {
             if (!$this->library_files[$name]['load']) {
                 $this->library_files[$name]['load'] = true;
-                // If name is subset of jQuery.UI make sure all UI libraries are loaded
-                if (substr($name, 0, 10) == 'jquery.ui.' && !$this->jquery_ui_cdn) {
+                // If name is subset of jQuery. make sure all Core UI libraries are loaded
+                if (substr($name, 0, 7) == 'jquery.' && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
                     if (!file_exists($_CONF['path'] . 'public_html/' .$this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
@@ -215,11 +214,11 @@ class scripts {
                     $this->library_files['jquery.ui.position']['load'] = true;
                     $this->library_files['jquery.ui.mouse']['load'] = true;
                     
-                    if ($_CONF['Google_CDN']) {
+                    if ($_CONF['cdn_hosted']) {
                         $this->jquery_cdn = true;
                         $this->jquery_ui_cdn = true;
                     }
-                } elseif ($name == 'jquery' && $_CONF['Google_CDN']) {
+                } elseif ($name == 'jquery' && $_CONF['cdn_hosted']) {
                     $this->jquery_cdn = true;
                 }
 
@@ -426,19 +425,31 @@ class scripts {
             // Set JavaScript Library Files first incase other scripts need them
             if ($this->jquery_cdn) {
                 $footercode .= '<script type="text/javascript" src="' . $this->jquery_cdn_file . '"></script>' . LB;
+                $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
                 if ($this->jquery_ui_cdn) {
                     $footercode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
-                }
-            } else{
-                if ($this->jquery_ui_cdn) { //This might happen if a jQuery UI file is not found
-                    $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
-                    $footercode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
-                } else {
-                    foreach ($this->library_files as $file) {
-                        if ($file['load']) {
-                            $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $file['file'] . '"></script>' . LB;
+                    // Since using CDN file reset loading of jQuery UI
+                    foreach ($this->library_files as $key => &$file) {
+                        if (substr($key, 0, 7) == 'jquery.') {
+                            $file['load'] = false;
                         }
+                    }                    
+                }
+            } elseif ($this->jquery_ui_cdn) { // This might happen if a jQuery UI file is not found
+                $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $this->library_files['jquery']['file'] . '"></script>' . LB;
+                $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
+                $footercode .= '<script type="text/javascript" src="' . $this->jquery_ui_cdn_file . '"></script>' . LB;
+                // Since using CDN file reset loading of jQuery UI
+                foreach ($this->library_files as $key => &$file) {
+                    if (substr($key, 0, 7) == 'jquery.') {
+                        $file['load'] = false;
                     }
+                }                  
+            }
+            // Now load in the rest of the libraries
+            foreach ($this->library_files as $file) {
+                if ($file['load']) {
+                    $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . '/' . $file['file'] . '"></script>' . LB;
                 }
             }
             
