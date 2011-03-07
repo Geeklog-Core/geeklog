@@ -211,9 +211,10 @@ function plugin_initconfig_links()
                 0, 0, 0, 30, true, 'links', 0);
         $c->add('show_top10', $_LI_DEFAULT['show_top10'], 'select',
                 0, 0, 1, 40, true, 'links', 0);
-        $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'], 'select', 0, 0, 1, 50, true, 'links', 0);
+        $c->add('show_category_descriptions', $_LI_DEFAULT['show_category_descriptions'], 
+                'select', 0, 0, 1, 50, true, 'links', 0);
         $c->add('new_window', $_LI_DEFAULT['new_window'], 'select',
-                0, 0, 1, 55, true, 'links');
+                0, 0, 1, 55, true, 'links',0);
 
         $c->add('tab_admin', NULL, 'tab', 0, 1, NULL, 0, true, 'links', 1);
         $c->add('fs_admin', NULL, 'fieldset', 0, 1, NULL, 0, true, 'links', 1);
