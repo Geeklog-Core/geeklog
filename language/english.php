@@ -1759,6 +1759,7 @@ $LANG_confignames['Core'] = array(
     'noreply_mail' => "No-Reply E-Mail",
     'site_name' => "Site Name",
     'site_slogan' => "Slogan",
+    'owner_name' => "Owner Name",
     'microsummary_short' => "Microsummary",
     'path_log' => "Log",
     'path_language' => "Language",

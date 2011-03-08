@@ -169,6 +169,9 @@ function update_ConfValuesFor180()
     // JavaScript use Google CDN for jQuery
     $c->add('cdn_hosted',FALSE,'select',0,0,1,1900,TRUE, $me, 0);
     
+    // Owner Name Configuration
+    $c->add('owner_name','','text',0,0,NULL,1000,TRUE, $me, 0);
+    
     // Add in all the New Tabs
     $c->add('tab_site', NULL, 'tab', 0, 0, NULL, 0, TRUE, $me, 0);
     $c->add('tab_mail', NULL, 'tab', 0, 1, NULL, 0, TRUE, $me, 1);

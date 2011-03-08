@@ -1370,12 +1370,16 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
     $year = date( 'Y' );
     $copyrightyear = $year;
-    if( !empty( $_CONF['copyrightyear'] ))
-    {
+    if(!empty($_CONF['copyrightyear'])) {
         $copyrightyear = $_CONF['copyrightyear'];
     }
+    if(!empty($_CONF['owner_name'])) {
+        $copyrightname = $_CONF['owner_name'];
+    } else {
+        $copyrightname = $_CONF['site_name'];
+    }
     $footer->set_var( 'copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
-            . $copyrightyear . ' ' . $_CONF['site_name'] . '<br' . XHTML . '>&nbsp;'
+            . $copyrightyear . ' ' . $copyrightname . '<br' . XHTML . '>&nbsp;'
             . $LANG01[94] );
     $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; '
             . $copyrightyear . ' ' . $_CONF['site_name'] );
