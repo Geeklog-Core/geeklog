@@ -346,7 +346,7 @@ function plugin_spamaction_spamx ($comment, $action)
     $spamx_path = $_CONF['path'] . 'plugins/spamx/';
 
     if (($action == -1) || ($action == '')) {
-        $action = $_SPX_CONF['action'];
+        $action = $_SPX_CONF['spamx_action'];
     }
 
     // Set up Spamx_Action array

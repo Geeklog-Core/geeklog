@@ -105,7 +105,7 @@ function plugin_initconfig_spamx()
                 0, 0, null, 30, true, 'spamx', 0);
         $c->add('notification_email', $_SPX_DEFAULT['notification_email'],
                 'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
-        $c->add('action', $_SPX_DEFAULT['action'], 'text',
+        $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text',
                 0, 0, null, 50, false, 'spamx', 0);
 
     }
