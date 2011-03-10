@@ -475,7 +475,16 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
 } elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
     $result = null;
     if (! array_key_exists('form_reset', $_POST)) {
-        require_once 'configuration_validation.php';
+        if ($conf_group == 'Core') {
+            require_once 'configuration_validation.php';
+        } else {
+            // Retrieve plugin config validation if found 
+            $filename = $_CONF['path'] . 'plugins/' . $conf_group . '/configuration_validation.php';
+            if (file_exists($filename)) {
+                require_once $filename;
+            }
+        }
+
         $result = $config->updateConfig($_POST, $conf_group);
 
         // notify plugins

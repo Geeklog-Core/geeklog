@@ -198,7 +198,7 @@ class scripts {
                 // If name is subset of jQuery. make sure all Core UI libraries are loaded
                 if (substr($name, 0, 7) == 'jquery.' && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
-                    if (!file_exists($_CONF['path'] . 'public_html/' .$this->library_files[$name]['file'])) {
+                    if (!file_exists($_CONF['path'] . 'public_html/' . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
                         
                         $this->css_files['jquery.ui']['load'] = true;
