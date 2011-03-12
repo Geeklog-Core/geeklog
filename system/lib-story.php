@@ -80,19 +80,18 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $storytpl = 'storytext.thtml';
     }
 
-    $introtext = $story->displayElements('introtext');
-    if (($index == 'n') || ($index == 'p')) {
-        $bodytext = $story->displayElements('bodytext');
-    } else {
-        // for the index page, we don't need the body text anyway
-        // also saves processing autotags
+    $introtext = COM_undoSpecialChars($story->displayElements('introtext'));
+    $bodytext = COM_undoSpecialChars($story->displayElements('bodytext'));
+    $readmore = empty($bodytext)?0:1;
+    $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
+    if (COM_onFrontpage()) {
         $bodytext = '';
     }
 
     if( !empty( $query ))
     {
-        $introtext = COM_highlightQuery( $introtext, $query );
-        $bodytext  = COM_highlightQuery( $bodytext, $query );
+        $introtext = COM_highlightQuery( COM_undoSpecialChars($introtext), $query );
+        $bodytext  = COM_highlightQuery( COM_undoSpecialChars($bodytext), $query );
     }
 
 
@@ -327,11 +326,10 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $article->set_var( 'story_text_no_br', $introtext );
         $article->set_var( 'story_introtext_only', $introtext );
 
-        if( !empty( $bodytext ))
+        if($readmore)
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link',
