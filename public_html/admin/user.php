@@ -137,7 +137,8 @@ function edituser($uid = '', $msg = '')
     $retval .= SEC_getTokenExpiryNotice($token);
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file (array ('form' => 'edituser.thtml',
+    $user_templates->set_file (array ('form'      => 'edituser.thtml',
+                                      'password'  => 'password.thtml',        
                                       'groupedit' => 'groupedit.thtml'));
     $user_templates->set_var('xhtml', XHTML);
     $user_templates->set_var('site_url', $_CONF['site_url']);
@@ -178,8 +179,7 @@ function edituser($uid = '', $msg = '')
     }
 
     $remoteservice = '';
-    if ($_CONF['show_servicename'] && ($_CONF['user_login_method']['3rdparty']
-            || $_CONF['user_login_method']['openid'])) {
+    if ($_CONF['show_servicename']) {
         if (! empty($A['remoteservice'])) {
             $remoteservice = '@' . $A['remoteservice'];
         }
@@ -210,8 +210,15 @@ function edituser($uid = '', $msg = '')
     } else {
         $user_templates->set_var ('user_fullname', '');
     }
-    $user_templates->set_var('lang_password', $LANG28[5]);
-    $user_templates->set_var('lang_password_conf', $LANG28[39]);
+    
+    if ($A['remoteservice'] == '') {
+        $user_templates->set_var('lang_password', $LANG28[5]);
+        $user_templates->set_var('lang_password_conf', $LANG28[39]);
+        $user_templates->parse ('password_option', 'password', true);
+    } else {
+        $user_templates->set_var ('password_option', '');
+    }
+    
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     if (isset ($A['email'])) {
         $user_templates->set_var('user_email', htmlspecialchars($A['email']));
@@ -466,6 +473,12 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         COM_errorLog("**** entering saveusers****", 1);
         COM_errorLog("group size at beginning = " . count($groups), 1);
     }
+    
+    // If remote service then assume blank password
+    if ($A['remoteservice'] != '') {
+        $passwd = '';
+        $passwd_conf = '';
+    }
 
     if ($passwd != $passwd_conf) { // passwords don't match
         return edituser($uid, 67);
@@ -548,7 +561,9 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty ($uid) || !empty ($passwd)) {
             $passwd = SEC_encryptPassword($passwd);
         } else {
-            $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
+            if ($A['remoteservice'] != '') {
+                $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
+            }
         }
 
         if (empty ($uid)) {

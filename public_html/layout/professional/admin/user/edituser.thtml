@@ -25,14 +25,7 @@
                                         <td class="alignright">{lang_fullname}:</td>
                                         <td><input type="text" size="48" maxlength="80" name="fullname" value="{user_fullname}"{xhtml}></td>
                                     </tr>
-                                    <tr>
-                                        <td class="alignright">{lang_password}:</td>
-                                        <td><input type="password" size="16" name="passwd" value=""{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="alignright">{lang_password_conf}:</td>
-                                        <td><input type="password" size="16" name="passwd_conf" value=""{xhtml}></td>
-                                    </tr>
+                                    {password_option}
                                     <tr>
                                         <td class="alignright">{lang_emailaddress}:</td>
                                         <td><input type="text" size="48" maxlength="255" name="email" value="{user_email}"{xhtml}></td>
