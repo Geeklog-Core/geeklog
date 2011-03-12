@@ -1,5 +1,4 @@
                                 <noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
-                                <script type="text/JavaScript" src="{site_url}/polls/polls_editor.js"></script>
                                 <form action="{site_admin_url}/plugins/polls/index.php" method="post">
                                     <table cellspacing="0" cellpadding="2" width="100%">
                                         <tr>

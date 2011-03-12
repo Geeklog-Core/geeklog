@@ -1114,14 +1114,14 @@ function plugin_templatesetvars_polls ($templatename, &$template)
 
 function plugin_getheadercode_polls()
 {
-    global $_CONF;
-
-    $str = null;
-    $str = LB . '<link rel="stylesheet" type="text/css" href="'
-        . $_CONF['site_url'] . '/polls/style.css"' . XHTML . '>';
-
-    return $str;
+    global $_SCRIPTS;
+    
+    // You normally only set the css file when needed but with the way the plugin was 
+    // written with COM_SiteHeader called right at the begininng of most pages 
+    // it is easier for now to set it all the time
+    $_SCRIPTS->setCSSFile('polls', '/polls/style.css');
 }
+
 
 /**
 * Update the Polls plugin

@@ -346,7 +346,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
 function editpoll ($pid = '')
 {
     global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE, $LANG_POLLS;
+           $LANG_ADMIN, $MESSAGE, $LANG_POLLS, $_SCRIPTS;
 
     $retval = '';
 
@@ -426,6 +426,8 @@ function editpoll ($pid = '')
         $T['commentcode'] = $_CONF['comment_code'];
         $access = 3;
     }
+    
+    $_SCRIPTS->setJavaScriptFile('polls_editor', '/polls/polls_editor.js');
 
     $poll_templates->set_var('lang_pollid', $LANG25[6]);
     $poll_templates->set_var('poll_id', $T['pid']);
