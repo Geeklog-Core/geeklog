@@ -245,14 +245,6 @@ if (COM_isAnonUser()) {
     $_USER['advanced_editor'] = $_CONF['advanced_editor'];
 }
 
-/**
-* Include the Scripts class
-*
-* This provides the ability to set css and javascript.
-*/
-
-require_once( $_CONF['path_system'] . 'classes/scripts.class.php' );
-$_SCRIPTS = new scripts();
 
 /**
 * Ulf Harnhammar's kses class
@@ -305,6 +297,16 @@ else if( $_CONF['allow_user_themes'] == 1 )
         }
     }
 }
+
+
+/**
+* Include the Scripts class
+*
+* This provides the ability to set css and javascript.
+*/
+
+require_once( $_CONF['path_system'] . 'classes/scripts.class.php' );
+$_SCRIPTS = new scripts();
 
 /**
 * Include theme functions file which may/may not do anything
