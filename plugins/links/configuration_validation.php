@@ -30,6 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+    die('This file can not be used on its own!');
+}
+
 // Public Links List Settings
 $_CONF_VALIDATE['links']['linksloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['links']['linkcols'] = array('rule' => 'numeric');

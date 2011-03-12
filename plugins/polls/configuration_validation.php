@@ -30,6 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+    die('This file can not be used on its own!');
+}
+
 // General Polls Settings
 $_CONF_VALIDATE['polls']['pollsloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['polls']['hidepollsmenu'] = array('rule' => 'boolean');

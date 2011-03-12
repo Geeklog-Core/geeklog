@@ -30,6 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+    die('This file can not be used on its own!');
+}
+
 // Static Pages Main Settings
 $_CONF_VALIDATE['staticpages']['allow_php'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['staticpages']['sort_by'] = array(

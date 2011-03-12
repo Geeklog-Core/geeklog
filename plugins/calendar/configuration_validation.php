@@ -30,6 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'configuration_validation.php') !== false) {
+    die('This file can not be used on its own!');
+}
+
 // General Calendar Settings
 $_CONF_VALIDATE['calendar']['calendarloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['calendar']['hidecalendarmenu'] = array('rule' => 'boolean');
