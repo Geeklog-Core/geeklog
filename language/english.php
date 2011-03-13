@@ -2161,7 +2161,7 @@ $LANG_VALIDATION = array(
                          'directory where the binaries from the Netpbm package are kept',  
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'                         
+    'single_char' => 'This field must be a single character'
 );
 
 ?>
