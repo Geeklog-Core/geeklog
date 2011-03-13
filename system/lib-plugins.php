@@ -2795,9 +2795,9 @@ function PLG_resolveDependencies()
                 $p = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$pi_name}'");
                 $p = DB_fetchArray($p);
                 foreach ($params['requires'] as $rkey => $rvalue) {
-                    if ($rvalue['name'] != 'geeklog') {
+                    if (isset($rvalue['plugin'])) {
                         // load order of the dependency
-                        $q = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$rvalue['name']}'");
+                        $q = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$rvalue['plugin']}'");
                         $q = DB_fetchArray($q);
                         if ( $q['pi_load'] > $p['pi_load'] ) { // incorrect load order
                             // move down the order
@@ -2831,31 +2831,51 @@ function PLG_resolveDependencies()
 */
 function PLG_printDependencies($pi_name, $pi_gl_version='')
 {
-    global $LANG32;
+    global $LANG32, $_DB_dbms;
     $retval = '';
     $params = PLG_getParams($pi_name);
     if (isset($params['requires']) && count($params['requires']) > 0) { // new autoinstall type
         foreach ($params['requires'] as $key => $value) {
+            $name = '';
+            if (isset($value['plugin'])) {
+                $name = $value['plugin'];
+            } elseif (isset($value['core'])) {
+                $name = $value['core'];
+            }
             $op = '>='; // set the default
-            if (!empty($value['operator'])) { // optional operator included
+            if (isset($value['operator'])) { // optional operator included
                 $op = $value['operator']; // override default
             }
-            $name = $value['name'];
-            $ver  = $value['version'];
-            $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
-            $status = PLG_checkAvailable($name, $ver, $op);
-            if (!$status) {
-                $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
-            } else if ($status == 'wrong_version') {
-                $retval .= "<b class='status_red'>{$LANG32[56]}</b>";
-            } else if ($status == 'disabled') {
-                $retval .= "<b class='status_orange'>{$LANG32[53]}</b>";
-            } else if ($status == 'uninstalled') {
-                $retval .= "<b class='status_orange'>{$LANG32[55]}</b>";
-            } else if ($status == 'ok') {
-                $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+            $ver = '0.0.0';
+            if (isset($value['version'])) {
+                $ver = $value['version'];
             }
-            $retval .= "</b>";
+            if (!empty($name)) { // check for a plugin or a core requirement
+                $op = '>='; // set the default
+                $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
+                $status = PLG_checkAvailable($name, $ver, $op);
+                if (!$status) {
+                    $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                } else if ($status == 'wrong_version') {
+                    $retval .= "<b class='status_red'>{$LANG32[56]}</b>";
+                } else if ($status == 'disabled') {
+                    $retval .= "<b class='status_orange'>{$LANG32[53]}</b>";
+                } else if ($status == 'uninstalled') {
+                    $retval .= "<b class='status_orange'>{$LANG32[55]}</b>";
+                } else if ($status == 'ok') {
+                    $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+                }
+                   $retval .= "</b>";
+            } else if (isset($value['db']) && $_DB_dbms == $value['db']) { // check for a database requirement
+                $name = $value['db'];
+                $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
+                if (PLG_checkAvailableDb($name, $pi_name, $ver, $op)) {
+                    $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+                } else {
+                    $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                }
+                $retval .= "</b>";
+            }
         }
     } else if (!empty($pi_gl_version)) { // old plugin install
         $retval .= "geeklog >= $pi_gl_version ";
@@ -2881,20 +2901,36 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
 */
 function PLG_checkDependencies($pi_name)
 {
-    global $_TABLES;
+    global $_TABLES, $_DB_dbms;
+
     $retval = true;
     $params = PLG_getParams($pi_name);
+
     if (isset($params['requires']) && count($params['requires']) > 0) { // plugin exists and uses new installer
-        foreach ($params['requires'] as $key => $value) {
-            $name = $value['name'];
-            $ver = $value['version'];
-            $op = '>=';
-            if (!empty($value['operator'])) {
-                $op = $value['operator'];
+        foreach ($params['requires'] as $key => $value) { // check for requirements
+            $name = '';
+            if (isset($value['plugin'])) {
+                $name = $value['plugin'];
+            } elseif (isset($value['core'])) {
+                $name = $value['core'];
             }
-            $status = PLG_checkAvailable($name, $ver, $op);
-            if ($status != 'ok') {
-                return false;
+            $op = '>='; // set the default
+            if (!empty($value['operator'])) { // optional operator included
+                $op = $value['operator']; // override default
+            }
+            if (isset($value['version'])) {
+                $ver = $value['version'];
+            } else {
+                $ver = '0.0.0';
+            }
+            if (!empty($name)) { // check for a plugin or a core requirement
+                if (PLG_checkAvailable($name, $ver, $op) != 'ok') {
+                    return false;
+                }
+            } elseif (isset($value['db']) && $_DB_dbms == $value['db']) { // check for db requirements
+                if (PLG_checkAvailableDb($value['db'], $pi_name, $ver, $op) != true) {
+                    return false;
+                }
             }
         }
     } else { // maybe it's a plugin with a legacy installer
@@ -2962,6 +2998,35 @@ function PLG_checkAvailable($pi_name, $version, $operator='>=')
 }
 
 /**
+* Returns true if the database server version matches the criteria and the required
+* file is available in the plugin, false otherwise.
+*
+* @param    $db              string     The name of the dbms to check for
+* @param    $pi_name         string     The short name of the plugin for which to check support
+* @param    $version         string     A version to ask for, the default operator is '>='
+* @param    $operator        string     Optional operator to override the default
+*                                       See COM_versionCompare() for all valid operators
+* @return                    bool       
+*
+* @since    Geeklog 1.8.0
+* 
+*/
+function PLG_checkAvailableDb($db, $pi_name, $version, $operator='>=')
+{
+    global $_CONF;
+
+    // check if the plugin supports the dbms
+    $dbFile = $_CONF['path'] . 'plugins/' . $pi_name . '/sql/' . strtolower($db) . '_install.php';
+
+    // if both requirements are satisfied, return true
+    if (file_exists($dbFile) && COM_versionCompare(DB_getVersion(), $version, $operator)) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
 * Get list of install parameters for a plugin (including dependencies)
 * For plugins with new install this works like a charm. For the older plugins, not so much.
 *
@@ -3017,7 +3082,7 @@ function PLG_getParams($pi_name)
     // If we have a geeklog version requirement...
     if (!empty($retval['info']['pi_gl_version'])) {
         // treat it like a requirement for a plugin and use the "new-style" dependency array
-        $retval['requires'][] = array('name' => 'geeklog', 'version' => $retval['info']['pi_gl_version']);
+        $retval['requires'][] = array('core' => 'geeklog', 'version' => $retval['info']['pi_gl_version']);
     } else {
         // We need to initialise this index of the array, so we place a string in it.
         $retval['info']['pi_gl_version'] = $LANG_ADMIN['na'];
