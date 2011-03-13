@@ -287,7 +287,7 @@ function DB_getItem($table,$what,$selection='')
 * @param        string          $value_to_set       Value to set abovle field to
 * @param        array|string    $id                 field name(s) to use in where clause
 * @param        array|string    $value              Value(s) to use in where clause
-* @param	    string          $return_page        page to send user to when done with change
+* @param        string          $return_page        page to send user to when done with change
 * @param        boolean         $supress_quotes     whether or not to use single quotes in where clause
 *
 */
@@ -331,7 +331,7 @@ function DB_count($table,$id='',$value='')
 * @param        string          $fields         Comma delmited list of fields to copy over
 * @param        string          $values         Values to store in database field
 * @param        string          $tablefrom      Table to get record from
-* @param        array|string   	$id             Field name(s) to use in where clause
+* @param        array|string    $id             Field name(s) to use in where clause
 * @param        array|string    $value          Value(s) to use in where clause
 * @param        string          $return_page    Page to send user to when done
 *
@@ -645,5 +645,17 @@ function DBINT_parseCsvSqlString($csv)
 
     return $retArray;
 }
+
+/**
+* @return     string     the version of the database server
+*/
+
+function DB_getVersion()
+{
+    global $_DB;
+
+    return $_DB->dbGetVersion();
+}
+
 
 ?>

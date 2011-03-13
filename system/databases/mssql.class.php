@@ -1151,6 +1151,15 @@ class database {
         }
     }
 
+    /**
+    * @return     string     the version of the database application
+    */
+    function dbGetVersion()
+    {
+        $q = $this->dbQuery("SELECT SERVERPROPERTY('productversion')");
+        $v = $this->dbFetchArray($q, true);
+        return $v[0];
+    }
     
 }//end class
 

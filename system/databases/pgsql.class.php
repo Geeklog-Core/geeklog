@@ -884,6 +884,16 @@ class database {
 
         return $this->_verbose;
     }
+
+    /**
+    * @return     string     the version of the database application
+    */
+    function dbGetVersion()
+    {
+        $v = @pg_version($this->_db);
+        return $v['server'];
+    }
+
 }
 
 ?>

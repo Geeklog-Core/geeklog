@@ -749,6 +749,15 @@ class database {
             $this->_errorlog("\n*** Leaving database->dbUnlockTable ***");
         }
     }
+
+    /**
+    * @return     string     the version of the database application
+    */
+    function dbGetVersion()
+    {
+        return @mysql_get_server_info();
+    }
+
 }
 
 ?>
