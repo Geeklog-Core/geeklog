@@ -1361,7 +1361,14 @@ function plugin_autouninstall_staticpages ()
                           'Static Pages Admin' // typo in Geeklog 1.6.0
                          ),
         /* give the full name of the feature, as in the db */
-        'features' => array('staticpages.edit', 'staticpages.delete', 'staticpages.PHP'),
+        'features' => array('staticpages.edit', 
+                            'staticpages.delete', 
+                            'staticpages.PHP',
+                            'config.staticpages.tab_main',
+                            'config.staticpages.tab_whatsnew',
+                            'config.staticpages.tab_search',
+                            'config.staticpages.tab_permissions',
+                            'config.staticpages.tab_autotag_permissions'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
         /* give all vars with their name */

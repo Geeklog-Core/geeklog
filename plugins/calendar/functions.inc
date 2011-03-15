@@ -1644,7 +1644,12 @@ function plugin_autouninstall_calendar ()
         /* give the full name of the group, as in the db */
         'groups' => array('Calendar Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('calendar.edit', 'calendar.moderate', 'calendar.submit'),
+        'features' => array('calendar.edit', 
+                            'calendar.moderate', 
+                            'calendar.submit',
+                            'config.calendar.tab_main',
+                            'config.calendar.tab_permissions',
+                            'config.calendar.tab_autotag_permissions'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
         /* give all vars with their name */

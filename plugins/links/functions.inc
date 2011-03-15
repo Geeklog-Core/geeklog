@@ -1321,7 +1321,14 @@ function plugin_autouninstall_links ()
         /* give the full name of the group, as in the db */
         'groups' => array('Links Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('links.edit', 'links.moderate', 'links.submit'),
+        'features' => array('links.edit', 
+                            'links.moderate', 
+                            'links.submit', 
+                            'config.links.tab_public', 
+                            'config.links.tab_admin', 
+                            'config.links.tab_permissions', 
+                            'config.links.tab_cpermissions', 
+                            'config.links.tab_autotag_permissions'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_topic_categories', 'phpblock_topic_links'),
         /* give all vars with their name */

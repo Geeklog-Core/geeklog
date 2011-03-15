@@ -437,7 +437,10 @@ function plugin_autouninstall_spamx ()
         /* give the full name of the group, as in the db */
         'groups' => array('spamx Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('spamx.admin', 'spamx.view', 'spamx.skip'),
+        'features' => array('spamx.admin', 
+                            'spamx.view', 
+                            'spamx.skip', 
+                            'config.spamx.tab_main'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array(),
         /* give all vars with their name */
