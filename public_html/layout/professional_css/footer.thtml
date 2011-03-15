@@ -30,15 +30,15 @@
     </div>
     <!-- } #container -->
 
+    {plg_footercode}
+    
 <!-- Depending on the situation, HTML body element's class attribute to specify a value by JavaScript
      The argument from the left, the right block container, the middle block left the right block id attribute value -->
 <script type="text/javascript">
 <!--
   FixHTML('leftblocks', 'centerblocks', 'rightblocks');
 -->
-</script>
-
-    {plg_footercode}
+</script>    
 
 <!-- } footer.thtml -->
 
