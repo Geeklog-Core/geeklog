@@ -2832,23 +2832,28 @@ function PLG_resolveDependencies()
 function PLG_printDependencies($pi_name, $pi_gl_version='')
 {
     global $LANG32, $_DB_dbms;
+
     $retval = '';
     $params = PLG_getParams($pi_name);
+
+    $dbAvailable  = array(); // cache the databases that are supported by the plugin
+    $dbSupported = false; // True if we support the database that the plugin is requiring
+
     if (isset($params['requires']) && count($params['requires']) > 0) { // new autoinstall type
-        foreach ($params['requires'] as $key => $value) {
+        foreach ($params['requires'] as $key => $value) { // check every requirement that is imposed by the plugin
             $name = '';
             if (isset($value['plugin'])) {
                 $name = $value['plugin'];
             } elseif (isset($value['core'])) {
-                $name = $value['core'];
+                $name = 'geeklog';
             }
             $op = '>='; // set the default
             if (isset($value['operator'])) { // optional operator included
                 $op = $value['operator']; // override default
             }
-            $ver = '0.0.0';
-            if (isset($value['version'])) {
-                $ver = $value['version'];
+            $ver = '0.0.0'; // set the default version
+            if (isset($value['version'])) { // the plugin is requiring a particular version
+                $ver = $value['version']; // override the default
             }
             if (!empty($name)) { // check for a plugin or a core requirement
                 $op = '>='; // set the default
@@ -2865,15 +2870,27 @@ function PLG_printDependencies($pi_name, $pi_gl_version='')
                 } else if ($status == 'ok') {
                     $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
                 }
-                   $retval .= "</b>";
-            } else if (isset($value['db']) && $_DB_dbms == $value['db']) { // check for a database requirement
-                $name = $value['db'];
-                $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
-                if (PLG_checkAvailableDb($name, $pi_name, $ver, $op)) {
-                    $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
-                } else {
-                    $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                $retval .= "</b>";
+            } else if (isset($value['db'])){ // check for a database requirement
+                $dbAvailable[] = array($value['db'], $op, $ver); // cache the database types
+                if ($_DB_dbms == $value['db']) { // this db requirement matches the database that the site is run on
+                    $name = $value['db'];
+                    $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">$name $op $ver ";
+                    if (PLG_checkAvailableDb($name, $pi_name, $ver, $op)) {
+                        $dbSupported = true; // the reuirement for the database is fullfilled
+                        $retval .= "<b class='status_green'>{$LANG32[51]}</b>";
+                    } else { // unsupported version
+                        $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
+                    }
+                    $retval .= "</b>";
                 }
+            }
+        }
+        if (count($dbAvailable) > 0 && !$dbSupported) {
+            // the plugin requires a database, but this requirement is not fullfilled
+            foreach ($dbAvailable as $key => $value) { // print every database that would satisfy this requirement
+                $retval .= "<b class=\"notbold\" style=\"display: block; padding: 2px; margin: 0;\">{$value[0]} {$value[1]} {$value[2]} ";
+                $retval .= "<b class='status_red'>{$LANG32[54]}</b>";
                 $retval .= "</b>";
             }
         }
@@ -2906,6 +2923,9 @@ function PLG_checkDependencies($pi_name)
     $retval = true;
     $params = PLG_getParams($pi_name);
 
+    $dbSupported = false; // True if we support the database that the plugin is requiring
+    $dbRequired  = false; // True if the plugin needs a database
+
     if (isset($params['requires']) && count($params['requires']) > 0) { // plugin exists and uses new installer
         foreach ($params['requires'] as $key => $value) { // check for requirements
             $name = '';
@@ -2918,20 +2938,24 @@ function PLG_checkDependencies($pi_name)
             if (!empty($value['operator'])) { // optional operator included
                 $op = $value['operator']; // override default
             }
-            if (isset($value['version'])) {
-                $ver = $value['version'];
-            } else {
-                $ver = '0.0.0';
+            $ver = '0.0.0'; // set the default version
+            if (isset($value['version'])) { // the plugin is requiring a particular version
+                $ver = $value['version']; // override the default
             }
             if (!empty($name)) { // check for a plugin or a core requirement
                 if (PLG_checkAvailable($name, $ver, $op) != 'ok') {
                     return false;
                 }
-            } elseif (isset($value['db']) && $_DB_dbms == $value['db']) { // check for db requirements
-                if (PLG_checkAvailableDb($value['db'], $pi_name, $ver, $op) != true) {
-                    return false;
+            } elseif (isset($value['db'])) { // check for db requirements
+                $dbRequired = true; // there is at least one database requirement
+                if ($_DB_dbms == $value['db'] && PLG_checkAvailableDb($value['db'], $pi_name, $ver, $op)) {
+                    $dbSupported = true;
                 }
             }
+        }
+        if ($dbRequired && !$dbSupported) {
+            // the plugin requires a database, but this requirement is not fullfilled
+            return false;
         }
     } else { // maybe it's a plugin with a legacy installer
         $q = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '{$pi_name}'");
