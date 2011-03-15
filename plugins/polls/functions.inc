@@ -400,7 +400,11 @@ function plugin_autouninstall_polls ()
         /* give the full name of the group, as in the db */
         'groups' => array('Polls Admin'),
         /* give the full name of the feature, as in the db */
-        'features' => array('polls.edit'),
+        'features' => array('polls.edit', 
+                            'config.polls.tab_whatsnew',
+                            'config.polls.tab_main',
+                            'config.polls.tab_permissions',
+                            'config.polls.tab_autotag_permissions'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_polls'),
         /* give all vars with their name */
@@ -458,7 +462,7 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
            $_IMAGE_TYPE;
 
     $retval = '';
-
+    
     $result = DB_query("SELECT topic,voters,commentcode,is_open,hideresults,owner_id "
         . ",group_id,perm_owner,perm_group,perm_anon,perm_members "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'" . COM_getPermSql('AND'));
@@ -635,7 +639,7 @@ function POLLS_showPoll($size, $pid = '', $showall = false, $displaytype = 0)
     global $_CONF, $_TABLES, $_PO_CONF, $LANG_POLLS;
 
     $retval = '';
-
+    
     DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < UNIX_TIMESTAMP() - {$_PO_CONF['polladdresstime']}");
 
     if (!empty($pid)) {
@@ -760,6 +764,7 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
            $_PO_CONF, $LANG01, $LANG_POLLS, $_COM_VERBOSE, $LANG25;
 
     $retval = '';
+    
     $topic_sql = "SELECT topic,voters,is_open,hideresults,commentcode,owner_id,group_id,"
         . "perm_owner,perm_group,perm_members,perm_anon "
         . "FROM {$_TABLES['polltopics']} WHERE pid='$pid'";
@@ -1116,9 +1121,9 @@ function plugin_getheadercode_polls()
 {
     global $_SCRIPTS;
     
-    // You normally only set the css file when needed but with the way the plugin was 
-    // written with COM_SiteHeader called right at the begininng of most pages 
-    // it is easier for now to set it all the time
+    // You normally only set the css file when needed but with the possibility of
+    // the poll block or autotag being displayed after COM_SiteHeader being called
+    // we need to set it just in case
     $_SCRIPTS->setCSSFile('polls', '/polls/style.css');
 }
 
