@@ -133,27 +133,6 @@ if (!$newstories && !$displayall) {
     }
 }
 
-if ($topic)
-{
-    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
-            . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
-            . '" title="Microsummary"' . XHTML . '>';
-
-    // Meta Tags
-    if ($_CONF['meta_tags'] > 0) {
-        $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
-        $A = DB_fetchArray ($result);
-
-        $meta_description = stripslashes($A['meta_description']);
-        $meta_keywords = stripslashes($A['meta_keywords']);
-        $header .= COM_createMetaTags($meta_description, $meta_keywords);
-    }
-} else {
-    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
-            . '/index.php?display=microsummary" title="Microsummary"' . XHTML
-            . '>';
-}
-$display .= COM_siteHeader('menu', '', $header);
 if (isset ($_GET['msg'])) {
     $plugin = '';
     if (isset ($_GET['plugin'])) {
@@ -406,6 +385,28 @@ if ( $A = DB_fetchArray( $result ) ) {
 
     $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 }
+
+if ($topic)
+{
+    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
+            . '/index.php?display=microsummary&amp;topic=' . urlencode($topic)
+            . '" title="Microsummary"' . XHTML . '>';
+
+    // Meta Tags
+    if ($_CONF['meta_tags'] > 0) {
+        $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
+        $A = DB_fetchArray ($result);
+
+        $meta_description = stripslashes($A['meta_description']);
+        $meta_keywords = stripslashes($A['meta_keywords']);
+        $header .= COM_createMetaTags($meta_description, $meta_keywords);
+    }
+} else {
+    $header = '<link rel="microsummary" href="' . $_CONF['site_url']
+            . '/index.php?display=microsummary" title="Microsummary"' . XHTML
+            . '>';
+}
+$display = COM_siteHeader('menu', '', $header) . $display;
 
 $display .= COM_siteFooter (true); // The true value enables right hand blocks.
 
