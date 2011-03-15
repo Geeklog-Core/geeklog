@@ -237,11 +237,12 @@ class scripts {
     * @param    $script     script to include in page
     * @param    $wrap       set to true to place script tags around contents of $script
     * @param    $footer     set to true to include script in footer, else script placed in header
+    * @param    $constant   Future use. Set to true if script is planned to be loaded all the time (Caching/Compression)
     * @access   public
     * @return   boolean 
     *
     */    
-    public function setJavaScript($script, $wrap = false, $footer = true) {
+    public function setJavaScript($script, $wrap = false, $footer = true, $constant = false) {
         
         // If header code make sure header not already set
         if ($this->header_set && !$footer) {
