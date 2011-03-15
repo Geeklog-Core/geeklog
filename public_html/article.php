@@ -378,8 +378,10 @@ if ($A['count'] > 0) {
         $story_template->set_var ('whats_related_story_options',
                                   $related . $optionsblock);
 
+        // Another option here could be to figure out if story is first on page
+        $tmpl = $_CONF['showfirstasfeatured'] ? 'featuredstorytext.thtml' : '';
         $story_template->set_var ('formatted_article',
-                                  STORY_renderArticle ($story, 'n', '', $query));
+                                  STORY_renderArticle ($story, 'n', $tmpl, $query));
 
         // display comments or not?
         if ( (is_numeric($mode)) and ($_CONF['allow_page_breaks'] == 1) )
