@@ -283,94 +283,99 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
 
     $retval = '';
 
-    $sp_url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
-                           . $page);
-    $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>';
+    // get content
+    $content = SP_render_content(stripslashes($A['sp_content']), $A['sp_php'], $query);
 
-    // Meta Tags
-    if ($_SP_CONF['meta_tags'] > 0) {
-        $meta_description = $A['meta_description'];
-        $meta_keywords = $A['meta_keywords'];
-        $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
-    }
-    $page_title = $A['sp_page_title'];
-    if(empty($page_title)) {
-        $page_title = $A['sp_title'];
-    }
-
-    if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-        $retval .= COM_siteHeader('menu', $page_title, $headercode);
+    if ($A['sp_format'] == 'blankpage') {
+        // The format is "blank page", only return the content of the page - nothing else.
+        $retval = $content;
     } else {
-        if ($A['sp_format'] <> 'blankpage') {
+        // The format is not "blank page", we need to do some more processing
+        $sp_url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
+                               . $page);
+        $headercode = '<link rel="canonical" href="' . $sp_url . '"' . XHTML . '>';
+
+        // Meta Tags
+        if ($_SP_CONF['meta_tags'] > 0) {
+            $meta_description = $A['meta_description'];
+            $meta_keywords = $A['meta_keywords'];
+            $headercode .= COM_createMetaTags($meta_description, $meta_keywords);
+        }
+        $page_title = $A['sp_page_title'];
+        if(empty($page_title)) {
+            $page_title = $A['sp_title'];
+        }
+
+        if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
+            $retval .= COM_siteHeader('menu', $page_title, $headercode);
+        } else {
             $retval .= COM_siteHeader('none', $page_title, $headercode);
         }
-    }
-    if ($msg > 0) {
-        $retval .= COM_showMessage($msg, 'staticpages');
-    }
-    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
-                        COM_getBlockTemplate('_staticpages_block', 'header'));
-    }
+        if ($msg > 0) {
+            $retval .= COM_showMessage($msg, 'staticpages');
+        }
+        if ($A['sp_inblock'] == 1) {
+            $retval .= COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
+                            COM_getBlockTemplate('_staticpages_block', 'header'));
+        }
 
-    $template_path = staticpages_templatePath();
-    $spage = new Template($template_path);
-    $spage->set_file(array('page'     => 'staticpage.thtml',
-                           'comments' => 'spcomments.thtml'));
-    $spage->set_var('xhtml', XHTML);
-    $spage->set_var('site_url', $_CONF['site_url']);
-    $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $spage->set_var('layout_url', $_CONF['layout_url']);
-    if (XHTML != '') {
-        $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
-    }
+        $template_path = staticpages_templatePath();
+        $spage = new Template($template_path);
+        $spage->set_file(array('page'     => 'staticpage.thtml',
+                               'comments' => 'spcomments.thtml'));
+        $spage->set_var('xhtml', XHTML);
+        $spage->set_var('site_url', $_CONF['site_url']);
+        $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
+        $spage->set_var('layout_url', $_CONF['layout_url']);
+        if (XHTML != '') {
+            $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
+        }
 
-    $author_name = COM_getDisplayName($A['owner_id']);
-    $author_username = DB_getItem($_TABLES['users'], 'username',
-                                  "uid = {$A['owner_id']}");
-    $spage->set_var('author_id', $A['owner_id']);
-    $spage->set_var('author', $author_name);
-    $spage->set_var('author_name', $author_name);
-    $spage->set_var('author_username', $author_username);
+        $author_name = COM_getDisplayName($A['owner_id']);
+        $author_username = DB_getItem($_TABLES['users'], 'username',
+                                      "uid = {$A['owner_id']}");
+        $spage->set_var('author_id', $A['owner_id']);
+        $spage->set_var('author', $author_name);
+        $spage->set_var('author_name', $author_name);
+        $spage->set_var('author_username', $author_username);
 
-    if ($A['owner_id'] > 1) {
-        $profile_link = $_CONF['site_url']
-                      . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
+        if ($A['owner_id'] > 1) {
+            $profile_link = $_CONF['site_url']
+                          . '/users.php?mode=profile&amp;uid=' . $A['owner_id'];
 
-        $spage->set_var('lang_author', $LANG_STATIC['author']);
-        $spage->set_var('start_author_anchortag',
-                        '<a href="' . $profile_link . '">' );
-        $spage->set_var('end_author_anchortag', '</a>');
-        $spage->set_var('author_link',
-                        COM_createLink($author_name, $profile_link));
+            $spage->set_var('lang_author', $LANG_STATIC['author']);
+            $spage->set_var('start_author_anchortag',
+                            '<a href="' . $profile_link . '">' );
+            $spage->set_var('end_author_anchortag', '</a>');
+            $spage->set_var('author_link',
+                            COM_createLink($author_name, $profile_link));
 
-        $photo = '';
-        if ($_CONF['allow_user_photo']) {
-            require_once $_CONF['path_system'] . 'lib-user.php';
+            $photo = '';
+            if ($_CONF['allow_user_photo']) {
+                require_once $_CONF['path_system'] . 'lib-user.php';
 
-            $photo = DB_getItem($_TABLES['users'], 'photo',
-                                "uid = {$A['owner_id']}");
-            $photo = USER_getPhoto($A['owner_id'], $photo);
-            if (! empty($photo)) {
-                $spage->set_var('author_photo', $photo);
-                $camera_icon = '<img src="' . $_CONF['layout_url']
-                             . '/images/smallcamera.' . $_IMAGE_TYPE
-                             . '" alt=""' . XHTML . '>';
-                $spage->set_var('camera_icon',
-                                COM_createLink($camera_icon, $profile_link));
+                $photo = DB_getItem($_TABLES['users'], 'photo',
+                                    "uid = {$A['owner_id']}");
+                $photo = USER_getPhoto($A['owner_id'], $photo);
+                if (! empty($photo)) {
+                    $spage->set_var('author_photo', $photo);
+                    $camera_icon = '<img src="' . $_CONF['layout_url']
+                                 . '/images/smallcamera.' . $_IMAGE_TYPE
+                                 . '" alt=""' . XHTML . '>';
+                    $spage->set_var('camera_icon',
+                                    COM_createLink($camera_icon, $profile_link));
+                }
             }
+            if (empty($photo)) {
+                $spage->set_var('author_photo', '');
+                $spage->set_var('camera_icon', '');
+            }
+        } else {
+            $spage->set_var('start_author_anchortag', '');
+            $spage->set_var('end_author_anchortag', '');
+            $spage->set_var('author_link', $author_name);
         }
-        if (empty($photo)) {
-            $spage->set_var('author_photo', '');
-            $spage->set_var('camera_icon', '');
-        }
-    } else {
-        $spage->set_var('start_author_anchortag', '');
-        $spage->set_var('end_author_anchortag', '');
-        $spage->set_var('author_link', $author_name);
-    }
 
-    if ($A['sp_format'] <> 'blankpage') {
         if ($_CONF['hideprintericon'] == 0) {
             $icon_url = $_CONF['layout_url'] . '/images/print.' . $_IMAGE_TYPE;
             $attr = array('title' => $LANG_STATIC['printable_format']);
@@ -399,26 +404,22 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             );
             $spage->set_var('edit_icon', $icon);
         }
-    }
 
-    if ($A['commentcode'] >= 0 ) {
-        $delete_option = (SEC_hasRights('staticpages.edit') &&
-            SEC_hasAccess($A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon']) == 3 ? true : false);
-        require_once $_CONF['path_system'] . 'lib-comment.php';
-        $spage->set_var('commentbar',
-                        CMT_userComments($page, $A['sp_title'], 'staticpages',
-                                    $comment_order, $comment_mode, 0, $comment_page, false,
-                                    $delete_option, $A['commentcode']));
-    }
+        if ($A['commentcode'] >= 0 ) {
+            $delete_option = (SEC_hasRights('staticpages.edit') &&
+                SEC_hasAccess($A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon']) == 3 ? true : false);
+            require_once $_CONF['path_system'] . 'lib-comment.php';
+            $spage->set_var('commentbar',
+                            CMT_userComments($page, $A['sp_title'], 'staticpages',
+                                        $comment_order, $comment_mode, 0, $comment_page, false,
+                                        $delete_option, $A['commentcode']));
+        }
 
-    $content = SP_render_content(stripslashes($A['sp_content']), $A['sp_php'],
-                                 $query);
-    $spage->set_var('content', $content);
+        $spage->set_var('content', $content);
 
-    $spage->set_var('info_separator', 'hidden');
-    if ($A['sp_format'] <> 'blankpage') {
+        $spage->set_var('info_separator', 'hidden');
         if ($_SP_CONF['show_date'] == 1) {
             $curtime = COM_getUserDateTimeFormat($A['modified']);
             $lastupdate = $LANG_STATIC['lastupdated'] . ': ' . $curtime[0];
@@ -438,15 +439,13 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('sp_hits', $num_hits);
             $spage->set_var('hits', $hits);
         }
-    }
 
-    $retval .= $spage->finish($spage->parse('output', 'page'));
-    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_block',
-                                                     'footer'));
-    }
+        $retval .= $spage->finish($spage->parse('output', 'page'));
+        if ($A['sp_inblock'] == 1) {
+            $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_block',
+                                                         'footer'));
+        }
 
-    if ($A['sp_format'] <> 'blankpage') {
         if (!isset($_USER['noboxes'])) {
             if (COM_isAnonUser()) {
                 $_USER['noboxes'] = 0;
