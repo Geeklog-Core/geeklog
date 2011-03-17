@@ -95,7 +95,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     }
 
 
-    $article = new Template( $_CONF['path_layout'] );
+    $article = COM_newTemplate($_CONF['path_layout']);
     $article->set_file( array(
             'article'          => $storytpl,
             'bodytext'         => 'storybodytext.thtml',
@@ -105,10 +105,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
 
-    $article->set_var( 'xhtml', XHTML );
-    $article->set_var( 'site_url', $_CONF['site_url'] );
-    $article->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_name', $_CONF['site_name'] );
     $article->set_var( 'story_date', $story->DisplayElements('date') );
     $article->set_var( 'story_date_short', $story->DisplayElements('shortdate') );

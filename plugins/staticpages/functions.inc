@@ -320,13 +320,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         }
 
         $template_path = staticpages_templatePath();
-        $spage = new Template($template_path);
+        $spage = COM_newTemplate($template_path);
         $spage->set_file(array('page'     => 'staticpage.thtml',
                                'comments' => 'spcomments.thtml'));
-        $spage->set_var('xhtml', XHTML);
-        $spage->set_var('site_url', $_CONF['site_url']);
-        $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $spage->set_var('layout_url', $_CONF['layout_url']);
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
@@ -482,13 +478,8 @@ function SP_printPage($page, $A)
            $_IMAGE_TYPE;
 
     $template_path = staticpages_templatePath();
-    $print = new Template($template_path);
+    $print = COM_newTemplate($template_path);
     $print->set_file(array('print' => 'printable.thtml'));
-    $print->set_var('xhtml', XHTML);
-    $print->set_var('site_url', $_CONF['site_url']);
-    $print->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $print->set_var('layout_url', $_CONF['layout_url']);
-    $print->set_var('site_name', $_CONF['site_name']);
     $print->set_var('site_slogan', $_CONF['site_slogan']);
 
     $print->set_var('direction', $LANG_DIRECTION);
@@ -994,12 +985,8 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             }
 
             $template_path = staticpages_templatePath();
-            $spage = new Template($template_path);
+            $spage = COM_newTemplate($template_path);
             $spage->set_file(array('page' => 'centerblock.thtml'));
-            $spage->set_var('xhtml', XHTML);
-            $spage->set_var('site_url', $_CONF['site_url']);
-            $spage->set_var('site_admin_url', $_CONF['site_admin_url']);
-            $spage->set_var('layout_url', $_CONF['layout_url']);
 
             if ($_CONF['hideprintericon'] == 0) {
                 $icon_url = $_CONF['layout_url'] . '/images/print.'

@@ -209,12 +209,8 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
                 $cc = ' checked="checked"';
             }
             $retval = COM_startBlock($LANG08[10] . ' ' . $displayname);
-            $mail_template = new Template($_CONF['path_layout'] . 'profiles');
+            $mail_template = COM_newTemplate($_CONF['path_layout'] . 'profiles');
             $mail_template->set_file('form', 'contactuserform.thtml');
-            $mail_template->set_var('xhtml', XHTML);
-            $mail_template->set_var('site_url', $_CONF['site_url']);
-            $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-            $mail_template->set_var('layout_url', $_CONF['layout_url']);
             $mail_template->set_var('lang_description', $LANG08[26]);
             $mail_template->set_var('lang_username', $LANG08[11]);
             if (COM_isAnonUser()) {
@@ -455,12 +451,8 @@ function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
         $cc = ' checked="checked"';
     }
 
-    $mail_template = new Template($_CONF['path_layout'] . 'profiles');
+    $mail_template = COM_newTemplate($_CONF['path_layout'] . 'profiles');
     $mail_template->set_file('form', 'contactauthorform.thtml');
-    $mail_template->set_var('xhtml', XHTML);
-    $mail_template->set_var('site_url', $_CONF['site_url']);
-    $mail_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $mail_template->set_var('layout_url', $_CONF['layout_url']);
     $mail_template->set_var('start_block_mailstory2friend',
                             COM_startBlock($LANG08[17]));
     $mail_template->set_var('lang_title', $LANG08[31]);

@@ -136,14 +136,10 @@ function edituser($uid = '', $msg = '')
                               COM_getBlockTemplate('_admin_block', 'header'));
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form'      => 'edituser.thtml',
                                       'password'  => 'password.thtml',        
                                       'groupedit' => 'groupedit.thtml'));
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG_ADMIN['save']);
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
@@ -769,14 +765,10 @@ function batchdelete()
         array('sel' => 'recent', 'desc' => $LANG28[74], 'txt1' => $LANG28[75], 'txt2' => $LANG28[76])
     );
 
-    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file (array ('form' => 'batchdelete.thtml',
                                       'options' => 'batchdelete_options.thtml',
                                       'reminder' => 'reminder.thtml'));
-    $user_templates->set_var ( 'xhtml', XHTML );
-    $user_templates->set_var ('site_url', $_CONF['site_url']);
-    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var ('layout_url', $_CONF['layout_url']);
     $user_templates->set_var ('usr_type', $usr_type);
     $user_templates->set_var ('usr_time', $usr_time);
     $user_templates->set_var ('lang_instruction', $LANG28[56]);
@@ -981,12 +973,8 @@ function batchreminders()
             $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$userid'");
             $lasttime = COM_getUserDateTimeFormat ($lastlogin);
             if (file_exists ($_CONF['path_data'] . 'reminder_email.txt')) {
-                $template = new Template ($_CONF['path_data']);
+                $template = COM_newTemplate($_CONF['path_data']);
                 $template->set_file (array ('mail' => 'reminder_email.txt'));
-                $template->set_var ('xhtml', XHTML);
-                $template->set_var ('site_url', $_CONF['site_url']);
-                $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-                $template->set_var ('layout_url', $_CONF['layout_url']);
                 $template->set_var ('site_name', $_CONF['site_name']);
                 $template->set_var ('site_slogan', $_CONF['site_slogan']);
                 $template->set_var ('lang_username', $LANG04[2]);

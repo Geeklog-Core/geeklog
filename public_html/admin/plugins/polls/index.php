@@ -388,15 +388,11 @@ function editpoll ($pid = '')
     );
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $poll_templates = new Template ($_CONF['path']
+    $poll_templates = COM_newTemplate($_CONF['path']
                                     . 'plugins/polls/templates/admin/');
     $poll_templates->set_file (array ('editor' => 'polleditor.thtml',
                                       'question' => 'pollquestions.thtml',
                                       'answer' => 'pollansweroption.thtml'));
-    $poll_templates->set_var ( 'xhtml', XHTML );
-    $poll_templates->set_var ('site_url', $_CONF['site_url']);
-    $poll_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $poll_templates->set_var ('layout_url', $_CONF['layout_url']);
 
     if (!empty ($pid) AND ($access == 3) AND !empty ($T['owner_id'])) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']

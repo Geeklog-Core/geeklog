@@ -892,7 +892,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         header('X-FRAME-OPTIONS: ' . $_CONF['frame_options']);
     }
 
-    $header = new Template( $_CONF['path_layout'] );
+    $header = COM_newTemplate($_CONF['path_layout']);
     $header->set_file( array(
         'header'        => 'header.thtml',
         'menuitem'      => 'menuitem.thtml',
@@ -905,7 +905,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     $header->postprocess_fn = 'PLG_replaceTags';
     
     $header->set_var('doctype', $doctype);
-    $header->set_var('xhtml', XHTML);
     
     if (XHTML == '') {
         $header->set_var('xmlns', '');
@@ -1061,9 +1060,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
 
     $header->set_var( 'background_image', $_CONF['layout_url']
                                           . '/images/bg.' . $_IMAGE_TYPE );
-    $header->set_var( 'site_url', $_CONF['site_url'] );
-    $header->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $header->set_var( 'layout_url', $_CONF['layout_url'] );
     $header->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $header->set_var( 'site_name', $_CONF['site_name'] );
     $header->set_var( 'site_slogan', $_CONF['site_slogan'] );
@@ -1344,7 +1340,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     COM_hit();
 
     // Set template directory
-    $footer = new Template( $_CONF['path_layout'] );
+    $footer = COM_newTemplate($_CONF['path_layout']);
 
     // Set template file
     $footer->set_file( array(
@@ -1358,10 +1354,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     $footer->preprocess_fn = 'PLG_replaceTags';
 
     // Do variable assignments
-    $footer->set_var( 'xhtml', XHTML );
-    $footer->set_var( 'site_url', $_CONF['site_url']);
-    $footer->set_var( 'site_admin_url', $_CONF['site_admin_url']);
-    $footer->set_var( 'layout_url',$_CONF['layout_url']);
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $footer->set_var( 'site_name', $_CONF['site_name'] );
     $footer->set_var( 'site_slogan', $_CONF['site_slogan'] );
@@ -1561,15 +1553,11 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
         return $function( $title, $helpfile, $template );
     }
 
-    $block = new Template( $_CONF['path_layout'] );
+    $block = COM_newTemplate($_CONF['path_layout']);
     $block->set_file( 'block', $template );
     
     $block->postprocess_fn = 'PLG_replaceTags';
 
-    $block->set_var( 'xhtml', XHTML );
-    $block->set_var( 'site_url', $_CONF['site_url'] );
-    $block->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
 
     if( !empty( $helpfile )) {
@@ -1608,15 +1596,11 @@ function COM_endBlock( $template='blockfooter.thtml' )
         return $function( $template );
     }
 
-    $block = new Template( $_CONF['path_layout'] );
+    $block = COM_newTemplate($_CONF['path_layout']);
     $block->set_file( 'block', $template );
     
     $block->postprocess_fn = 'PLG_replaceTags';
 
-    $block->set_var( 'xhtml', XHTML );
-    $block->set_var( 'site_url', $_CONF['site_url'] );
-    $block->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->parse( 'endHTML', 'block' );
 
     return $block->finish( $block->get_var( 'endHTML' ));
@@ -2191,7 +2175,7 @@ function COM_showTopics($topic = '')
     $result = DB_query($sql);
 
     $retval = '';
-    $sections = new Template($_CONF['path_layout']);
+    $sections = COM_newTemplate($_CONF['path_layout']);
     if (isset($_BLOCK_TEMPLATE['topicoption'])) {
         $templates = explode(',', $_BLOCK_TEMPLATE['topicoption']);
         $sections->set_file(array('option'  => $templates[0],
@@ -2201,10 +2185,6 @@ function COM_showTopics($topic = '')
                                   'inactive' => 'topicoption_off.thtml'));
     }
 
-    $sections->set_var('xhtml', XHTML);
-    $sections->set_var('site_url', $_CONF['site_url']);
-    $sections->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sections->set_var('layout_url', $_CONF['layout_url']);
     $sections->set_var('block_name', str_replace('_', '-', 'section_block'));
 
     if ($_CONF['hide_home_link'] == 0) {
@@ -2332,7 +2312,7 @@ function COM_userMenu( $help='', $title='', $position='' )
 
     if( !COM_isAnonUser() )
     {
-        $usermenu = new Template( $_CONF['path_layout'] );
+        $usermenu = COM_newTemplate($_CONF['path_layout']);
         if( isset( $_BLOCK_TEMPLATE['useroption'] ))
         {
             $templates = explode( ',', $_BLOCK_TEMPLATE['useroption'] );
@@ -2344,10 +2324,6 @@ function COM_userMenu( $help='', $title='', $position='' )
            $usermenu->set_file( array( 'option' => 'useroption.thtml',
                                        'current' => 'useroption_off.thtml' ));
         }
-        $usermenu->set_var( 'xhtml', XHTML );
-        $usermenu->set_var( 'site_url', $_CONF['site_url'] );
-        $usermenu->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-        $usermenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $usermenu->set_var( 'block_name', str_replace( '_', '-', 'user_block' ));
 
         if( empty( $title ))
@@ -2418,12 +2394,8 @@ function COM_userMenu( $help='', $title='', $position='' )
     {
         $retval .= COM_startBlock( $LANG01[47], $help,
                            COM_getBlockTemplate( 'user_block', 'header', $position ));
-        $login = new Template( $_CONF['path_layout'] );
+        $login = COM_newTemplate($_CONF['path_layout']);
         $login->set_file( 'form', 'loginform.thtml' );
-        $login->set_var( 'xhtml', XHTML );
-        $login->set_var( 'site_url', $_CONF['site_url'] );
-        $login->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-        $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
         $login->set_var( 'lang_password', $LANG01[57] );
         $login->set_var( 'lang_forgetpassword', $LANG01[119] );
@@ -2543,7 +2515,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
 
-        $adminmenu = new Template( $_CONF['path_layout'] );
+        $adminmenu = COM_newTemplate($_CONF['path_layout']);
         if( isset( $_BLOCK_TEMPLATE['adminoption'] ))
         {
             $templates = explode( ',', $_BLOCK_TEMPLATE['adminoption'] );
@@ -2555,10 +2527,6 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
                                          'current' => 'adminoption_off.thtml' ));
         }
-        $adminmenu->set_var( 'xhtml', XHTML );
-        $adminmenu->set_var( 'site_url', $_CONF['site_url'] );
-        $adminmenu->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-        $adminmenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $adminmenu->set_var( 'block_name', str_replace( '_', '-', 'admin_block' ));
 
         if( empty( $title ))
@@ -5286,13 +5254,9 @@ function COM_makeList($listofitems, $classname = '')
 {
     global $_CONF;
 
-    $list = new Template($_CONF['path_layout']);
+    $list = COM_newTemplate($_CONF['path_layout']);
     $list->set_file(array('list'     => 'list.thtml',
                           'listitem' => 'listitem.thtml'));
-    $list->set_var( 'xhtml', XHTML );
-    $list->set_var('site_url', $_CONF['site_url']);
-    $list->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $list->set_var('layout_url', $_CONF['layout_url']);
 
     if (empty($classname)) {
         $list->set_var('list_class',      '');
@@ -6796,11 +6760,9 @@ function COM_Tooltip($hoverover = '', $text = '', $link = '', $title = '', $temp
         $hoverover = '<img alt="?" id="tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';   
     }
     
-    $tooltip = new Template($_CONF['path_layout'] .'tooltips/');
+    $tooltip = COM_newTemplate($_CONF['path_layout'] .'tooltips/');
     $tooltip->set_file(array('tooltip'    => $template . '.thtml'));    
     
-    $tooltip->set_var('xhtml', XHTML);
-    $tooltip->set_var('layout_url', $_CONF['layout_url']);
     $tooltip->set_var('class', $class);
     $tooltip->set_var('hoverover', $hoverover);
     $tooltip->set_var('text', $text);
@@ -7471,6 +7433,33 @@ function COM_checkInstalled()
         header('Content-Type: text/html; charset=' . $_CONF['default_charset']);
         die($display);
     }
+}
+
+/**
+* Provide support for drop-in replacable template engines
+*
+* @param    string  $root    Path to template root
+* @param    array   $options List of options to pass to constructor
+* @return   object           An ITemplate derved object
+*/
+function COM_newTemplate($root, $options = Array())
+{
+    global $_CONF;
+
+    if (function_exists('OVERRIDE_newTemplate')) {
+        if (is_string($options)) $options = Array('unknowns', $options);
+        $T = OVERRIDE_newTemplate($root, $options);
+    } else $T = null;
+    if (!is_object($T)) {
+        if (is_array($options) && array_key_exists('unknowns', $options)) $options = $options['unknowns'];
+        else $options = 'remove';
+        $T = new Template($root, $options);
+    }
+    $T->set_var('xhtml', XHTML);
+    $T->set_var('site_url', $_CONF['site_url']);
+    $T->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $T->set_var('layout_url', $_CONF['layout_url']);
+    return $T;
 }
 
 /**

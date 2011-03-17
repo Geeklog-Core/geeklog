@@ -743,12 +743,8 @@ function plugin_submit_calendar($mode = 'master')
     $retval = '';
 
     $retval .= COM_startBlock ($LANG_CAL_1[26], 'submitevent.html');
-    $eventform = new Template ($_CONF['path'] . 'plugins/calendar/templates/');
+    $eventform = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/');
     $eventform->set_file ('eventform', 'submitevent.thtml');
-    $eventform->set_var ('xhtml', XHTML);
-    $eventform->set_var ('site_url', $_CONF['site_url']);
-    $eventform->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $eventform->set_var ('layout_url', $_CONF['layout_url']);
     if ($mode != 'personal') {
         $eventform->set_var ('explanation', $LANG_CAL_1[27]);
         $eventform->set_var ('submit_url', '/submit.php');
@@ -931,12 +927,8 @@ function CALENDAR_listOld()
             'text' => $LANG_ADMIN['admin_home'])
     );
 
-    $cal_templates = new Template($_CONF['path'] . 'plugins/calendar/templates/admin');
+    $cal_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/admin');
     $cal_templates->set_file(array('form' => 'batchdelete.thtml'));
-    $cal_templates->set_var('xhtml', XHTML);
-    $cal_templates->set_var('site_url', $_CONF['site_url']);
-    $cal_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $cal_templates->set_var('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('usr_time', $usr_time);
     $cal_templates->set_var('lang_text_start', $LANG_CAL_ADMIN[28]);
     $cal_templates->set_var('lang_text_end', $LANG_CAL_ADMIN[29]);

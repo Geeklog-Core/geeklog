@@ -949,12 +949,8 @@ function plugin_submit_links()
 
     $retval = COM_startBlock ($LANG_LINKS_SUBMIT[1], 'submitlink.html');
 
-    $linkform = new Template($_CONF['path'] . 'plugins/links/templates');
+    $linkform = COM_newTemplate($_CONF['path'] . 'plugins/links/templates');
     $linkform->set_file('linkform', 'submitlink.thtml');
-    $linkform->set_var('xhtml', XHTML);
-    $linkform->set_var('site_url', $_CONF['site_url']);
-    $linkform->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $linkform->set_var('layout_url', $_CONF['layout_url']);
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
     $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);

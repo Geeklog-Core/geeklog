@@ -145,12 +145,8 @@ if ($A['count'] > 0) {
     } elseif ( $output == STORY_INVALID_SID ) {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
-        $story_template = new Template($_CONF['path_layout'] . 'article');
+        $story_template = COM_newTemplate($_CONF['path_layout'] . 'article');
         $story_template->set_file('article', 'printable.thtml');
-        $story_template->set_var('xhtml', XHTML);
-        $story_template->set_var('site_url', $_CONF['site_url']);
-        $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $story_template->set_var('layout_url', $_CONF['layout_url']);
         if (XHTML != '') {
             $story_template->set_var('xmlns',
                                      ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -279,13 +275,9 @@ if ($A['count'] > 0) {
 
         // Display whats related
 
-        $story_template = new Template($_CONF['path_layout'] . 'article');
+        $story_template = COM_newTemplate($_CONF['path_layout'] . 'article');
         $story_template->set_file('article','article.thtml');
 
-        $story_template->set_var('xhtml', XHTML);
-        $story_template->set_var('site_url', $_CONF['site_url']);
-        $story_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_template->set_var('story_id', $story->getSid());
         $story_template->set_var('story_title', $pagetitle);
         $story_options = array ();

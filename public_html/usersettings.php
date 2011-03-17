@@ -55,7 +55,7 @@ function edituser()
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo,remoteservice FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']} AND {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
 
-    $preferences = new Template ($_CONF['path_layout'] . 'preferences');
+    $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile'       => 'profile.thtml',
                                    'photo'         => 'userphoto.thtml',
                                    'username'      => 'username.thtml',
@@ -63,10 +63,6 @@ function edituser()
                                    'current_password'      => 'current_password.thtml',
                                    'resynch'      => 'resynch.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
-    $preferences->set_var('xhtml', XHTML);
-    $preferences->set_var('site_url', $_CONF['site_url']);
-    $preferences->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $preferences->set_var('layout_url', $_CONF['layout_url']);
 
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
     $navbar = new navbar;
@@ -395,7 +391,7 @@ function editpreferences()
         }
     }
 
-    $preferences = new Template ($_CONF['path_layout'] . 'preferences');
+    $preferences = COM_newTemplate($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('prefs' => 'displayprefs.thtml',
                                    'display' => 'displayblock.thtml',
                                    'exclude' => 'excludeblock.thtml',
@@ -407,11 +403,6 @@ function editpreferences()
                                    'privacy' => 'privacyblock.thtml',
                                    'editor' => 'editor.thtml'
                                   ));
-    $preferences->set_var ('xhtml', XHTML);
-    $preferences->set_var ('site_url', $_CONF['site_url']);
-    $preferences->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $preferences->set_var ('layout_url', $_CONF['layout_url']);
-
     $preferences->set_var ('user_name', $_USER['username']);
 
     $preferences->set_var ('lang_language', $LANG04[73]);

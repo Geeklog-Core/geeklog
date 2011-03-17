@@ -91,7 +91,7 @@ function staticpageeditor_form($A, $error = false)
     }
     $retval = '';
 
-    $sp_template = new Template($template_path);
+    $sp_template = COM_newTemplate($template_path);
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
 
@@ -127,11 +127,6 @@ function staticpageeditor_form($A, $error = false)
     } else {
         $sp_template->set_file('form', 'editor.thtml');
     }
-
-    $sp_template->set_var('xhtml', XHTML);
-    $sp_template->set_var('site_url', $_CONF['site_url']);
-    $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_template->set_var('layout_url', $_CONF['layout_url']);
 
     $sp_template->set_var('lang_mode', $LANG24[3]);
     $sp_template->set_var('comment_options',

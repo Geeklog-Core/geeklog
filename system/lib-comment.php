@@ -69,12 +69,8 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
     $nrows = DB_count( $_TABLES['comments'], array( 'sid', 'type' ),
                        array( $sid, $type ));
 
-    $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
+    $commentbar = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $commentbar->set_file( array( 'commentbar' => 'commentbar.thtml' ));
-    $commentbar->set_var( 'xhtml', XHTML );
-    $commentbar->set_var( 'site_url', $_CONF['site_url'] );
-    $commentbar->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $commentbar->set_var( 'layout_url', $_CONF['layout_url'] );
 
     $commentbar->set_var( 'lang_comments', $LANG01[3] );
     $commentbar->set_var( 'lang_refresh', $LANG01[39] );
@@ -220,15 +216,11 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $indent = 0;  // begin with 0 indent
     $retval = ''; // initialize return value
 
-    $template = new Template( $_CONF['path_layout'] . 'comment' );
+    $template = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $template->set_file( array( 'comment' => 'comment.thtml',
                                'thread'  => 'thread.thtml'  ));
 
     // generic template variables
-    $template->set_var( 'xhtml', XHTML );
-    $template->set_var( 'site_url', $_CONF['site_url'] );
-    $template->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'lang_authoredby', $LANG01[42] );
     $template->set_var( 'lang_on', $LANG01[36] );
     $template->set_var( 'lang_permlink', $LANG01[120] );
@@ -610,12 +602,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
     $start = $limit * ( $page - 1 );
 
-    $template = new Template( $_CONF['path_layout'] . 'comment' );
+    $template = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $template->set_file( array( 'commentarea' => 'startcomment.thtml' ));
-    $template->set_var( 'xhtml', XHTML );
-    $template->set_var( 'site_url', $_CONF['site_url'] );
-    $template->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-    $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'commentbar',
             CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode ));
     $template->set_var( 'sid', $sid );
@@ -828,12 +816,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             // Preview mode:
             if (($mode == $LANG03[14] || $mode == $LANG03[28] || $mode == $LANG03[34]) && !empty($title) && !empty($comment) ) {
-                $start = new Template($_CONF['path_layout'] . 'comment');
+                $start = COM_newTemplate($_CONF['path_layout'] . 'comment');
                 $start->set_file(array('comment' => 'startcomment.thtml'));
-                $start->set_var('xhtml', XHTML);
-                $start->set_var('site_url', $_CONF['site_url']);
-                $start->set_var('site_admin_url', $_CONF['site_admin_url']);
-                $start->set_var('layout_url', $_CONF['layout_url']);
                 $start->set_var('hide_if_preview', 'style="display:none"');
 
                 // Clean up all the vars
@@ -880,7 +864,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $mode = 'error';
             }
 
-            $comment_template = new Template($_CONF['path_layout'] . 'comment');
+            $comment_template = COM_newTemplate($_CONF['path_layout'] . 'comment');
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $comment_template->set_file('form', 'commentform_advanced.thtml');
                 
@@ -892,10 +876,6 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
             }
-            $comment_template->set_var('xhtml', XHTML);
-            $comment_template->set_var('site_url', $_CONF['site_url']);
-            $comment_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-            $comment_template->set_var('layout_url', $_CONF['layout_url']);
             $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
             if ($_CONF['show_fullname'] == 1) {
                 $comment_template->set_var('lang_username', $LANG_ACCESS['name']);
@@ -1415,12 +1395,8 @@ function CMT_reportAbusiveComment ($cid, $type)
         return $retval;
     }
 
-    $start = new Template($_CONF['path_layout'] . 'comment');
+    $start = COM_newTemplate($_CONF['path_layout'] . 'comment');
     $start->set_file(array('report' => 'reportcomment.thtml'));
-    $start->set_var('xhtml', XHTML);
-    $start->set_var('site_url', $_CONF['site_url']);
-    $start->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $start->set_var('layout_url', $_CONF['layout_url']);
     $start->set_var('lang_report_this', $LANG03[25]);
     $start->set_var('lang_send_report', $LANG03[10]);
     $start->set_var('cid', $cid);

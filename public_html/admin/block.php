@@ -110,12 +110,8 @@ function editdefaultblock ($A, $access)
     $token = SEC_createToken();
     $retval .= SEC_getTokenExpiryNotice($token);
 
-    $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
+    $block_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','defaultblockeditor.thtml');
-    $block_templates->set_var('xhtml', XHTML);
-    $block_templates->set_var('site_url', $_CONF['site_url']);
-    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('block_id', $A['bid']);
     // standard Admin strings
     $block_templates->set_var('lang_blocktitle', $LANG_ADMIN['title']);
@@ -257,12 +253,8 @@ function editblock ($bid = '')
 
     $token = SEC_createToken();
 
-    $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
+    $block_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
-    $block_templates->set_var('xhtml', XHTML);
-    $block_templates->set_var('site_url', $_CONF['site_url']);
-    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_start = COM_startBlock($LANG21[3], '',
                         COM_getBlockTemplate('_admin_block', 'header'));
     $block_start .= LB . SEC_getTokenExpiryNotice($token);

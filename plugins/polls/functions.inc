@@ -484,16 +484,12 @@ function POLLS_pollVote($pid, $showall = true, $displaytype = 0, $order = '', $m
             $nquestions = DB_numRows($questions );
 
             if ($nquestions > 0) {
-                $poll = new Template($_CONF['path']
+                $poll = COM_newTemplate($_CONF['path']
                                      . 'plugins/polls/templates/');
                 $poll->set_file(array('panswer'    => 'pollanswer.thtml',
                                       'block'      => 'pollblock.thtml',
                                       'pquestions' => 'pollquestions.thtml',
                                       'comments'   => 'pollcomments.thtml'));
-                $poll->set_var('xhtml', XHTML);
-                $poll->set_var('site_url', $_CONF['site_url']);
-                $poll->set_var('site_admin_url', $_CONF['site_admin_url']);
-                $poll->set_var('layout_url', $_CONF['layout_url']);
                 $poll->set_var('poll_id', $pid );
                 $poll->set_var('poll_topic', $P['topic'] );
                 $poll->set_var('num_votes', COM_numberFormat($P['voters']));
@@ -808,16 +804,12 @@ function POLLS_pollResults($pid, $scale=400, $order='', $mode='', $page = 1, $di
         }
 
         if ($nquestions > 0){
-            $poll = new Template($_CONF['path'] . 'plugins/polls/templates/' );
+            $poll = COM_newTemplate($_CONF['path'] . 'plugins/polls/templates/' );
             $poll->set_file(array('result' => 'pollresult.thtml',
                 'question' => 'pollquestion.thtml',
                 'comments' => 'pollcomments.thtml',
                 'votes_bar' => 'pollvotes_bar.thtml',
                 'votes_num' => 'pollvotes_num.thtml' ));
-            $poll->set_var('xhtml', XHTML);
-            $poll->set_var('site_url', $_CONF['site_url']);
-            $poll->set_var('site_admin_url', $_CONF['site_admin_url']);
-            $poll->set_var('layout_url', $_CONF['layout_url']);
             $poll->set_var('poll_topic', $P['topic']);
             $poll->set_var('poll_id', $pid);
             $poll->set_var('num_votes', COM_numberFormat($P['voters']));

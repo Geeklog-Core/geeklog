@@ -104,12 +104,8 @@ function editgroup($grp_id = '')
         return $retval;
     }
 
-    $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
+    $group_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor', 'groupeditor.thtml');
-    $group_templates->set_var('xhtml', XHTML);
-    $group_templates->set_var('site_url', $_CONF['site_url']);
-    $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $group_templates->set_var('layout_url', $_CONF['layout_url']);
 
     $group_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $group_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);
@@ -1051,12 +1047,8 @@ function editusers($group)
     $retval .= ADMIN_createMenu($menu_arr, $LANG_ACCESS['editgroupmsg'],
                 $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE);
 
-    $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
+    $groupmembers = COM_newTemplate($_CONF['path_layout'] . 'admin/group');
     $groupmembers->set_file(array('groupmembers' => 'groupmembers.thtml'));
-    $groupmembers->set_var('xhtml', XHTML);
-    $groupmembers->set_var('site_url', $_CONF['site_url']);
-    $groupmembers->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $groupmembers->set_var('layout_url', $_CONF['layout_url']);
     $groupmembers->set_var('group_listing_url', $group_listing_url);
     $groupmembers->set_var('phpself', $_CONF['site_admin_url'] . '/group.php');
     $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);

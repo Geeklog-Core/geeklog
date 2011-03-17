@@ -443,13 +443,9 @@ function SEC_getPermissionsHTML($perm_owner, $perm_group, $perm_members, $perm_a
 
     $retval = '';
 
-    $perm_templates = new Template($_CONF['path_layout'] . 'admin/common');
+    $perm_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/common');
     $perm_templates->set_file(array('editor' => 'edit_permissions.thtml'));
 
-    $perm_templates->set_var('xhtml', XHTML);
-    $perm_templates->set_var('site_url', $_CONF['site_url']);
-    $perm_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $perm_templates->set_var('layout_url', $_CONF['layout_url']);
     $perm_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $perm_templates->set_var('owner', $LANG_ACCESS['owner']);
     $perm_templates->set_var('lang_group', $LANG_ACCESS['group']);
@@ -1626,12 +1622,8 @@ function SEC_loginForm($use_config = array())
 
     $config = array_merge($default_config, $use_config);
     
-    $loginform = new Template($_CONF['path_layout'] . 'users');
+    $loginform = COM_newTemplate($_CONF['path_layout'] . 'users');
     $loginform->set_file('login', 'loginform.thtml');
-    $loginform->set_var('xhtml', XHTML);
-    $loginform->set_var('site_url', $_CONF['site_url']);
-    $loginform->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $loginform->set_var('layout_url', $_CONF['layout_url']);
 
     $loginform->set_var('start_block_loginagain',
                         COM_startBlock($config['title']));

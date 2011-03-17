@@ -145,15 +145,11 @@ class navbar  {
 
     function generate() {
         global $_CONF;
-        $navtemplate = new Template($_CONF['path_layout'] . 'navbar');
+        $navtemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
         $navtemplate->set_file (array (
             'navbar'       => 'navbar.thtml',
             'menuitem'     => 'menuitem.thtml'));
 
-        $navtemplate->set_var( 'xhtml', XHTML );
-        $navtemplate->set_var( 'site_url', $_CONF['site_url'] );
-        $navtemplate->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-        $navtemplate->set_var( 'layout_url', $_CONF['layout_url'] );
         if ($this->_parms != '') {
             $navtemplate->set_var( 'parms',  $this->_parms);
         }
@@ -187,14 +183,10 @@ class navbar  {
     
     function openBreadcrumbs() {
         global $_CONF;
-        $this->_bctemplate = new Template($_CONF['path_layout'] . 'navbar');
+        $this->_bctemplate = COM_newTemplate($_CONF['path_layout'] . 'navbar');
         $this->_bctemplate->set_file (array (
             'breadcrumbs'   => 'breadcrumbs.thtml',
             'link'          => 'breadcrumb_link.thtml'));
-        $this->_bctemplate->set_var( 'xhtml', XHTML );
-        $this->_bctemplate->set_var( 'site_url', $_CONF['site_url'] );
-        $this->_bctemplate->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-        $this->_bctemplate->set_var( 'layout_url', $_CONF['layout_url'] );
     }
     
     function add_breadcrumbs($url,$label,$title='') {

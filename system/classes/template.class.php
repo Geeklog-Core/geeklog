@@ -27,6 +27,7 @@
 // |          Kenji ITO          - geeklog AT mystral-kk DOT net               |
 // |          dengen             - taharaxp AT gmail DOT com                   |
 // |          Tom Homer          - websitemaster AT cogeco DOT net             |
+// |          Joe Mucchiello     - joe AT throwingdice DOT com                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This library is free software; you can redistribute it and/or             |
@@ -52,7 +53,19 @@
  *
  */
 
-class Template
+interface ITemplate {
+  function set_file($varname, $filename = '');
+  function set_block($parent, $varname, $name = '');
+  function set_var($varname, $value = '', $append = false);
+  function clear_var($varname);
+  function unset_var($varname);
+  function get_var($varname);
+  function parse($target, $varname, $append = false);
+  function finish($str);
+}
+ 
+ 
+class Template implements ITemplate
 {
  /**
   * Serialization helper, the name of this class.
@@ -982,6 +995,37 @@ function _postprocess($str)
     }
   }
 
+}
+
+
+class MultiRootTemplate extends Template {
+  
+  function Template($root = Array(), $unknowns = 'remove') {
+    if ($this->debug & 4) {
+      echo "<p><b>Template:</b> root = $root, unknowns = $unknowns</p>\n";
+    }
+    $this->set_root($root);
+    $this->set_unknowns($unknowns);
+  }
+
+  function set_root($A) {
+    $this->root = Array();
+	foreach ($A as $r) {
+	  if (path_exists($r)) {
+	    $this->root[] = $r;
+	  }
+	}
+  }
+  
+  function filename($name) {
+	if (file_exists($name)) return $name;
+	foreach ($this->root as $root) {
+	  $filename = $root . $name;
+	  if (file_exists($filename)) return $name;
+	}
+	$this->halt('file not found: ' . $name);
+  }
+  
 }
 
 ?>

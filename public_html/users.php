@@ -165,12 +165,8 @@ function newpasswordform ($uid, $requestid)
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    $pwform = new Template ($_CONF['path_layout'] . 'users');
+    $pwform = COM_newTemplate($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
-    $pwform->set_var ('xhtml', XHTML);
-    $pwform->set_var ('site_url', $_CONF['site_url']);
-    $pwform->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
     $pwform->set_var ('user_id', $uid);
     $pwform->set_var ('user_name', DB_getItem ($_TABLES['users'], 'username',
@@ -361,12 +357,8 @@ function newuserform ($msg = '')
                 . $msg
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
-    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform', 'registrationform.thtml');
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
     $user_templates->set_var('lang_instructions', $LANG04[23]);
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -414,12 +406,8 @@ function getpasswordform()
 
     $retval = '';
 
-    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
     $user_templates->set_file('form', 'getpasswordform.thtml');
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
     $user_templates->set_var('lang_instructions', $LANG04[26]);
     $user_templates->set_var('lang_username', $LANG04[2]);

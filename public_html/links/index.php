@@ -148,7 +148,7 @@ function links_list($message)
         }
     }
 
-    $linklist = new Template ($_CONF['path'] . 'plugins/links/templates/');
+    $linklist = COM_newTemplate($_CONF['path'] . 'plugins/links/templates/');
     $linklist->set_file (array ('linklist' => 'links.thtml',
                                 'catlinks' => 'categorylinks.thtml',
                                 'link'     => 'linkdetails.thtml',
@@ -158,10 +158,6 @@ function links_list($message)
                                 'actcol'   => 'categoryactivecol.thtml',
                                 'pagenav'  => 'pagenavigation.thtml',
                                 'catdrop'  => 'categorydropdown.thtml'));
-    $linklist->set_var('xhtml', XHTML);
-    $linklist->set_var('site_url', $_CONF['site_url']);
-    $linklist->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $linklist->set_var('layout_url', $_CONF['layout_url']);
     $linklist->set_var('blockheader', COM_startBlock($LANG_LINKS[114]));
 
     if ($_LI_CONF['linkcols'] > 0) {

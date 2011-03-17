@@ -295,13 +295,8 @@ function editfeed ($fid = 0, $type = '')
     $retval = '';
     $token = SEC_createToken();
 
-    $feed_template = new Template ($_CONF['path_layout'] . 'admin/syndication');
+    $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
     $feed_template->set_file ('editor', 'feededitor.thtml');
-
-    $feed_template->set_var ( 'xhtml', XHTML );
-    $feed_template->set_var ('site_url', $_CONF['site_url']);
-    $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $feed_template->set_var ('layout_url', $_CONF['layout_url']);
 
     $start_block = COM_startBlock($LANG33[24], '',
                         COM_getBlockTemplate('_admin_block', 'header'));
@@ -478,14 +473,8 @@ function newfeed ()
         }
         $selection .= '</select>' . LB;
 
-        $feed_template = new Template ($_CONF['path_layout']
-                                       . 'admin/syndication');
+        $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
         $feed_template->set_file ('type', 'selecttype.thtml');
-
-        $feed_template->set_var ( 'xhtml', XHTML );
-        $feed_template->set_var ('site_url', $_CONF['site_url']);
-        $feed_template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $feed_template->set_var ('layout_url', $_CONF['layout_url']);
 
         $feed_template->set_var ('type_selection', $selection);
 

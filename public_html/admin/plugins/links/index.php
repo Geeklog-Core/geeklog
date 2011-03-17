@@ -94,12 +94,8 @@ function editlink ($mode, $lid = '')
 
     $retval = '';
 
-    $link_templates = new Template($_CONF['path'] . 'plugins/links/templates/admin/');
+    $link_templates = COM_newTemplate($_CONF['path'] . 'plugins/links/templates/admin/');
     $link_templates->set_file('editor','linkeditor.thtml');
-    $link_templates->set_var( 'xhtml', XHTML );
-    $link_templates->set_var('site_url', $_CONF['site_url']);
-    $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $link_templates->set_var('layout_url',$_CONF['layout_url']);
 
     $link_templates->set_var('lang_pagetitle', $LANG_LINKS_ADMIN[28]);
     $link_templates->set_var('lang_link_list', $LANG_LINKS_ADMIN[53]);

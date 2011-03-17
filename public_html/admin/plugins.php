@@ -105,12 +105,8 @@ function plugin_info_installed($pi_name)
 
     $A = DB_fetchArray($result);
 
-    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'editor.thtml');
-    $plg_templates->set_var('xhtml', XHTML);
-    $plg_templates->set_var('site_url', $_CONF['site_url']);
-    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $plg_templates->set_var('layout_url', $_CONF['layout_url']);
     $plg_templates->set_var('start_block_editor', COM_startBlock ('', '', COM_getBlockTemplate ('_admin_block', 'header')));
     $plg_templates->set_var('title', $LANG32[13]);
     $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));
@@ -183,10 +179,8 @@ function plugin_info_uninstalled($pi_name)
     $params = PLG_getParams($pi_name);
 
     // Do template stuff
-    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'info.thtml');
-    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $plg_templates->set_var('xhtml', XHTML);
     $plg_templates->set_var('start_block_editor', COM_startBlock ('',
             '', COM_getBlockTemplate ('_admin_block', 'header')));
     $plg_templates->set_var('pi_icon', PLG_getIcon($pi_name));

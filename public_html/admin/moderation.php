@@ -83,14 +83,10 @@ function commandcontrol($token)
 
     $retval = '';
 
-    $admin_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
+    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/moderation');
     $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
                                        'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
-    $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
 
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));

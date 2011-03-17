@@ -123,12 +123,8 @@ function edittopic ($tid = '')
         SEC_setDefaultPermissions ($A, $_CONF['default_permissions_topic']);
         $access = 3;
     }
-    $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
+    $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file('editor','topiceditor.thtml');
-    $topic_templates->set_var( 'xhtml', XHTML );
-    $topic_templates->set_var('site_url', $_CONF['site_url']);
-    $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     if (!empty($tid) && SEC_hasRights('topic.edit')) {
         $delbutton = '<input type="submit" value="' . $LANG_ADMIN['delete']
                    . '" name="mode"%s' . XHTML . '>';
@@ -450,12 +446,8 @@ function listtopics()
     $retval .= COM_startBlock ($LANG27[8], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
-    $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
+    $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
-    $topic_templates->set_var( 'xhtml', XHTML );
-    $topic_templates->set_var('site_url', $_CONF['site_url']);
-    $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     $topic_templates->set_var('lang_newtopic', $LANG_ADMIN['create_new']);
     $topic_templates->set_var('lang_adminhome', $LANG27[18]);
     $topic_templates->set_var('lang_instructions', $LANG27[9]);

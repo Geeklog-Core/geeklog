@@ -582,7 +582,7 @@ class ListFactory {
         global $_CONF, $_IMAGE_TYPE, $LANG_ADMIN, $LANG09;
 
         // get all template fields.
-        $list_templates = new Template($_CONF['path_layout'] . 'lists/' . $this->_style);
+        $list_templates = COM_newTemplate($_CONF['path_layout'] . 'lists/' . $this->_style);
         $list_templates->set_file (array (
             'list' => 'list.thtml',
             'limit' => 'page_limit.thtml',
@@ -590,12 +590,6 @@ class ListFactory {
             'row' => 'item_row.thtml',
             'field' => 'item_field.thtml'
         ));
-
-        // insert std. values into the template
-        $list_templates->set_var('xhtml', XHTML);
-        $list_templates->set_var('site_url', $_CONF['site_url']);
-        $list_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $list_templates->set_var('layout_url', $_CONF['layout_url']);
 
         if (count($rows_arr) == 0)
         {

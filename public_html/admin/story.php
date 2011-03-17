@@ -317,7 +317,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     }
 
     // Load HTML templates
-    $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
+    $story_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/story');
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $advanced_editormode = true;
@@ -346,11 +346,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $story_templates->set_file(array('editor' => 'storyeditor.thtml'));
         $advanced_editormode = false;
     }
-    $story_templates->set_var('xhtml', XHTML);
-    $story_templates->set_var('site_url',       $_CONF['site_url']);
-    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $story_templates->set_var('layout_url',     $_CONF['layout_url']);
-    $story_templates->set_var('hour_mode',      $_CONF['hour_mode']);
+     $story_templates->set_var('hour_mode',      $_CONF['hour_mode']);
 
     if ($story->hasContent()) {
         $previewContent = STORY_renderArticle($story, 'p');

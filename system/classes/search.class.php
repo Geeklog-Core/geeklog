@@ -186,13 +186,9 @@ class Search {
         }
 
         $retval .= COM_startBlock($LANG09[1],'advancedsearch.html');
-        $searchform = new Template($_CONF['path_layout'].'search');
+        $searchform = COM_newTemplate($_CONF['path_layout'].'search');
         $searchform->set_file (array ('searchform' => 'searchform.thtml',
                                       'authors'    => 'searchauthors.thtml'));
-        $searchform->set_var('xhtml', XHTML);
-        $searchform->set_var('site_url', $_CONF['site_url']);
-        $searchform->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $searchform->set_var('layout_url', $_CONF['layout_url']);
         $searchform->set_var('search_intro', $LANG09[19]);
         $searchform->set_var('lang_keywords', $LANG09[2]);
         $searchform->set_var('lang_date', $LANG09[20]);

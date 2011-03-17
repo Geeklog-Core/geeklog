@@ -85,7 +85,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
         $form_url = $text_arr['form_url'];
     }
 
-    $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (
         array (
             'list' => 'list.thtml',
@@ -94,10 +94,6 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             'field' => 'field.thtml'
         )
     );
-    $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
@@ -281,7 +277,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
 
     # get all template fields.
-    $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
     $template_files = array(
             'list'   => ($inline_form ? 'inline.thtml' : 'list.thtml'),
             'header' => 'header.thtml',
@@ -292,11 +288,6 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     }
     $admin_templates->set_file($template_files);
 
-    # insert std. values into the template
-    $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
     $admin_templates->set_var('form_url', $form_url);
     $admin_templates->set_var('lang_edit', $LANG_ADMIN['edit']);
     $admin_templates->set_var('lang_deleteall', $LANG01[124]);
@@ -597,14 +588,10 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '')
 {
     global $_CONF;
 
-    $admin_templates = new Template($_CONF['path_layout'] . 'admin/lists');
+    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/lists');
     $admin_templates->set_file (
         array ('top_menu' => 'topmenu.thtml')
     );
-    $admin_templates->set_var('xhtml', XHTML);
-    $admin_templates->set_var('site_url', $_CONF['site_url']);
-    $admin_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $admin_templates->set_var('layout_url', $_CONF['layout_url']);
 
     $menu_fields = '';
     $attr = array('class' => 'admin-menu-item');

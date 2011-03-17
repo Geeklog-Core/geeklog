@@ -147,12 +147,8 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'uid', $uid);
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
-        $template = new Template ($_CONF['path_data']);
+        $template = COM_newTemplate($_CONF['path_data']);
         $template->set_file (array ('mail' => 'welcome_email.txt'));
-        $template->set_var ('xhtml', XHTML);
-        $template->set_var ('site_url', $_CONF['site_url']);
-        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('auth_info',
                             "$LANG04[2]: $username\n$LANG04[4]: $passwd");
         $template->set_var ('site_name', $_CONF['site_name']);
@@ -198,12 +194,8 @@ function USER_sendActivationEmail ($username, $useremail)
     global $_CONF, $_TABLES, $LANG04;
 
     if (file_exists ($_CONF['path_data'] . 'activation_email.txt')) {
-        $template = new Template ($_CONF['path_data']);
+        $template = COM_newTemplate($_CONF['path_data']);
         $template->set_file (array ('mail' => 'activation_email.txt'));
-        $template->set_var ('xhtml', XHTML);
-        $template->set_var ('site_url', $_CONF['site_url']);
-        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-        $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('site_name', $_CONF['site_name']);
         $template->set_var ('site_slogan', $_CONF['site_slogan']);
         $template->set_var ('lang_text1', $LANG04[15]);
@@ -890,16 +882,11 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $curtime = COM_getUserDateTimeFormat($A['regdate']);
     $A['regdate'] = $curtime[0];
 
-    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'users');
     $user_templates->set_file(array('profile' => 'profile.thtml',
                                     'email'     => 'email.thtml',
                                     'row'     => 'commentrow.thtml',
                                     'strow'   => 'storyrow.thtml'));
-    $user_templates->set_var('xhtml', XHTML);
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
-
     $user_templates->set_var('start_block_userprofile',
             COM_startBlock($LANG04[1] . ' ' . $display_name));
     $user_templates->set_var('end_block', COM_endBlock());

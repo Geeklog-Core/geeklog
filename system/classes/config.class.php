@@ -771,14 +771,10 @@ class config {
             }
         }
         
-        $t = new Template($_CONF['path_layout'] . 'admin/config');
+        $t = COM_newTemplate($_CONF['path_layout'] . 'admin/config');
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
 
-        $t->set_var('xhtml', XHTML);
-        $t->set_var('site_url', $_CONF['site_url']);
-        $t->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $t->set_var('layout_url', $_CONF['layout_url']);
         $t->set_var('gltoken_name', CSRF_TOKEN);
         $t->set_var('gltoken', SEC_createToken());
         
@@ -1097,7 +1093,7 @@ class config {
     {
         global $_CONF, $LANG_CONFIG;
 
-        $t = new Template($GLOBALS['_CONF']['path_layout'] . 'admin/config');
+        $t = COM_newTemplate($GLOBALS['_CONF']['path_layout'] . 'admin/config');
         $t -> set_file('element', 'config_element.thtml');
 
         $blocks = array('delete-button', 'text-element', 'placeholder-element',
@@ -1107,11 +1103,6 @@ class config {
         foreach ($blocks as $block) {
             $t->set_block('element', $block);
         }
-
-        $t->set_var('xhtml', XHTML);
-        $t->set_var('site_url', $_CONF['site_url']);
-        $t->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $t->set_var('layout_url', $_CONF['layout_url']);
 
         $t->set_var('lang_restore', $LANG_CONFIG['restore']);
         $t->set_var('lang_enable', $LANG_CONFIG['enable']);

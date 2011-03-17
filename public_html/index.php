@@ -179,12 +179,8 @@ if (!empty ($displayBlock)) {
     // Check if theme has added the template which allows the centerblock
     // to span the top over the rightblocks
     if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
-            $topspan = new Template($_CONF['path_layout']);
+            $topspan = COM_newTemplate($_CONF['path_layout']);
             $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
-            $topspan->set_var( 'xhtml', XHTML );
-            $topspan->set_var( 'site_url', $_CONF['site_url'] );
-            $topspan->set_var( 'site_admin_url', $_CONF['site_admin_url'] );
-            $topspan->set_var( 'layout_url', $_CONF['layout_url'] );
             $topspan->parse ('output', 'topspan');
             $display .= $topspan->finish ($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;

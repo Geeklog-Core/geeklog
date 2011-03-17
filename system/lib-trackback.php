@@ -360,13 +360,8 @@ function TRB_formatComment ($url, $title = '', $blog = '', $excerpt = '', $date 
     }
     $curtime = COM_getUserDateTimeFormat ($date);
 
-    $template = new Template ($_CONF['path_layout'] . 'trackback');
+    $template = COM_newTemplate($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('comment' => 'formattedcomment.thtml'));
-    $template->set_var ('xhtml', XHTML);
-    $template->set_var ('site_url', $_CONF['site_url']);
-    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $template->set_var ('layout_url', $_CONF['layout_url']);
-
     $template->set_var ('lang_from', $LANG_TRB['from']);
     $template->set_var ('lang_tracked_on', $LANG_TRB['tracked_on']);
     $template->set_var ('lang_readmore', $LANG_TRB['read_more']);
@@ -676,14 +671,9 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
         $trackback_url = TRB_makeTrackbackUrl ($sid, $type);
     }
 
-    $template = new Template ($_CONF['path_layout'] . 'trackback');
+    $template = COM_newTemplate($_CONF['path_layout'] . 'trackback');
     $template->set_file (array ('trackback' => 'trackback.thtml',
                                 'comment'   => 'trackbackcomment.thtml'));
-    $template->set_var ('xhtml', XHTML);
-    $template->set_var ('site_url', $_CONF['site_url']);
-    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
-    $template->set_var ('layout_url', $_CONF['layout_url']);
-
     $template->set_var ('lang_trackback', $LANG_TRB['trackback']);
     $template->set_var ('lang_trackback_url', $LANG_TRB['this_trackback_url']);
 
