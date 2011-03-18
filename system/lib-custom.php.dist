@@ -332,7 +332,7 @@ function CUSTOM_userForm ($msg = '')
     $submitbutton = '<input type="submit" value="Register Now!"' . XHTML . '>';
     $message = "<blockquote style=\"padding-top:10px;\"><b>Please complete the application below. Once you have completed the application, click the Register Now! button and the application will be processed immediately.</b></blockquote>";
 
-    $user_templates = new Template ($_CONF['path_layout'] . 'custom');
+    $user_templates = COM_newTemplate($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
     $user_templates->set_var( 'xhtml', XHTML );
     $user_templates->set_var('site_url', $_CONF['site_url']);
