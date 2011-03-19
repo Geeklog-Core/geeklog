@@ -19,23 +19,23 @@
         </tr>
         <tr>
             <td class="alignright"><b>{lang_subject}:</b></td>
-            <td><input type="text" name="subject" size="40"{xhtml}></td>
+            <td><input type="text" name="subject" value="{subject}" size="40"{xhtml}></td>
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_body}:</b></td>
-            <td><textarea name="message" rows="10" style="width:100%"></textarea></td>
+            <td><textarea name="message" rows="10" style="width:100%">{message}</textarea></td>
         </tr>
         <tr>
             <td class="alignright"><b>{lang_options}:</b></td>
-            <td><input type="checkbox" name="html"{xhtml}> {lang_HTML}</td>
+            <td><input type="checkbox" name="html"{html}{xhtml}> {lang_HTML}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="checkbox" name="priority"{xhtml}> {lang_urgent}</td>
+            <td><input type="checkbox" name="priority"{priority}{xhtml}> {lang_urgent}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td><input type="checkbox" name="overstyr"{xhtml}> {lang_ignoreusersettings}</td>
+            <td><input type="checkbox" name="overstyr"{overstyr}{xhtml}> {lang_ignoreusersettings}</td>
         </tr>
         <tr>
             <td colspan="2" class="aligncenter" style="padding-top:10px;">

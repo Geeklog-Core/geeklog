@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2010 by the following authors:                         |
+// | Copyright (C) 2001-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
 // |          Dirk Haun  - dirk AT haun-online DOT de                          |
@@ -135,7 +135,21 @@ function display_mailform($vars = array())
     $fromemail = substr($fromemail, 0, strcspn($fromemail, "\r\n"));
     $fromemail = htmlspecialchars(trim($fromemail), ENT_QUOTES);
     $mail_templates->set_var('site_mail', $fromemail);
-
+    if (isset($vars['subject'])) {
+        $mail_templates->set_var('subject', COM_applyFilter($vars['subject']));
+    }
+    if (isset($vars['message'])) {
+        $mail_templates->set_var('message', COM_applyFilter($vars['message']));
+    }
+    if (isset($vars['html']) && trim($vars['html']) == 'on') {
+        $mail_templates->set_var('html', ' checked="checked"');
+    }
+    if (isset($vars['priority']) && trim($vars['priority']) == 'on') {
+        $mail_templates->set_var('priority', ' checked="checked"');
+    }
+    if (isset($vars['overstyr']) && trim($vars['overstyr']) == 'on') {
+        $mail_templates->set_var('overstyr', ' checked="checked"');
+    }
     $mail_templates->set_var('lang_subject', $LANG31[4]);
     $mail_templates->set_var('lang_body', $LANG31[5]);
     $mail_templates->set_var('lang_sendto', $LANG31[6]);
@@ -174,9 +188,8 @@ function send_messages($vars)
 
     $retval = '';
 
-    if (empty($vars['fra']) OR empty($vars['fraepost']) OR
-            empty($vars['subject']) OR empty($vars['message']) OR
-            empty($vars['to_group']) OR (strpos($vars['fra'], '@') !== false)) {
+    if (empty($vars['fra']) || empty($vars['fraepost']) || empty($vars['subject']) ||
+        empty($vars['message']) || empty($vars['to_group']) || strpos($vars['fra'], '@') !== false) {
         $retval .= COM_showMessageText($LANG31[26]);
         $retval .= display_mailform($vars);
 

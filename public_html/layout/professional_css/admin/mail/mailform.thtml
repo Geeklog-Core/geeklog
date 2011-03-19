@@ -19,16 +19,16 @@
       <dd><input type="text" value="{site_mail}" size="40" name="fraepost" class="text" id="admin-mailform-fraepost"{xhtml}></dd>
 
       <dt><label for="admin-mailform-subject">{lang_subject}</label></dt>
-      <dd><input type="text" size="40" name="subject" class="text" id="admin-mailform-subject"{xhtml}></dd>
+      <dd><input type="text" value="{subject}" size="40" name="subject" class="text" id="admin-mailform-subject"{xhtml}></dd>
 
       <dt><label for="admin-mailform-message">{lang_body}</label></dt>
-      <dd><textarea rows="12" cols="44" name="message" id="admin-mailform-message"></textarea></dd>
+      <dd><textarea rows="12" cols="44" name="message" id="admin-mailform-message">{message}</textarea></dd>
 
       <dt><label for="admin-mailform-html">{lang_options}</label></dt>
       <dd>
-        <input type="checkbox" name="html" id="admin-mailform-html"{xhtml}>{lang_HTML}
-        <input type="checkbox" name="priority"{xhtml}>{lang_urgent}
-        <input type="checkbox" name="overstyr"{xhtml}>{lang_ignoreusersettings}
+        <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}
+        <input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}
+        <input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}
       </dd>
     </dl>
 
