@@ -3976,7 +3976,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
         if ($done_once) { 
             $comma = ', ';
         }
-        if ($description[$tag] != '') {
+        if (! empty($description[$tag])) {
            $retval .= $comma . COM_Tooltip('[' . $tag . ':]', $description[$tag], '', $LANG01[132],'information');
         } else {
             $retval .= $comma . '[' . $tag . ':]';
