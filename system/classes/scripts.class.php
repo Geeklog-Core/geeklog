@@ -414,16 +414,21 @@ class scripts {
         if ($this->javascript_set) {
             // Add Core JavaScript global variables
             $footercode = '<script type="text/javascript">' . LB;
-            $footercode .= "var geeklogSiteUrl = '" . $_CONF['site_url'] . "';" . LB;
-            $footercode .= "var geeklogLayoutUrl = '" . $_CONF['layout_url'] . "';" . LB;
-            $footercode .= "var geeklogAdminUrl = '" . $_CONF['site_admin_url'] . "';" . LB;
-            $footercode .= "var geeklogThemeName = '" . $_CONF['theme'] . "';" . LB;
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $footercode .= "var geeklogEditorBaseUrl = '" . $_CONF['site_url'] . "';" . LB;
             }
+            // Create config variable array to pass to JavaScript
+            $config_js = array();
+            $keys = array('site_url', 'site_admin_url', 'layout_url', 'path', 'path_html', 'path_layout', 
+                          'site_name', 'site_slogan',
+                          'theme', 'doctype', 'path_themes');
+            foreach($keys as $key){
+                $config_js[$key] = $_CONF[$key];
+            }            
+            $footercode .= "var GeeklogConfig = new Object(" . json_encode($config_js) . ");" . LB;
             $footercode .= '</script>' . LB;        
             
-            // Set JavaScript Library Files first incase other scripts need them
+            // Set JavaScript Library files first incase other scripts need them
             if ($this->jquery_cdn) {
                 $footercode .= '<script type="text/javascript" src="' . $this->jquery_cdn_file . '"></script>' . LB;
                 $this->library_files['jquery']['load'] = false; // Set to false so not reloaded
