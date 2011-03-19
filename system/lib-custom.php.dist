@@ -334,9 +334,6 @@ function CUSTOM_userForm ($msg = '')
 
     $user_templates = COM_newTemplate($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
-    $user_templates->set_var( 'xhtml', XHTML );
-    $user_templates->set_var('site_url', $_CONF['site_url']);
-    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('post_url', $post_url);
     $user_templates->set_var('startblock', COM_startBlock("Custom Registration Example"));
     $user_templates->set_var('message', $message);
