@@ -90,8 +90,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
     if( !empty( $query ))
     {
-        $introtext = COM_highlightQuery( COM_undoSpecialChars($introtext), $query );
-        $bodytext  = COM_highlightQuery( COM_undoSpecialChars($bodytext), $query );
+        $introtext = COM_highlightQuery($introtext, $query );
+        $bodytext  = COM_highlightQuery($bodytext, $query );
     }
 
 
