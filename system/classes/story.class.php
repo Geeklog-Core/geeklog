@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | story.class.php                                                           |
 // |                                                                           |
 // | Geeklog Story Abstraction.                                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2006-2010 by the following authors:                         |
+// | Copyright (C) 2006-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Michael Jervis, mike AT fuckingbrit DOT com                      |
 // +---------------------------------------------------------------------------+
@@ -752,7 +752,7 @@ class Story
          */
 
         // Get the related URLs
-        $this->_related = implode("\n", STORY_extractLinks("{$this->_introtext} {$this->_bodytext}"));
+        $this->_related = implode("\n", STORY_extractLinks($this->DisplayElements('introtext') . ' ' . $this->DisplayElements('bodytext')));
         $fields='';
         $values = '';
         reset($this->_dbFields); 
