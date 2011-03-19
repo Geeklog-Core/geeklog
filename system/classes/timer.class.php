@@ -72,7 +72,7 @@ class timerobject {
     /**
     * @access private
     */
-    private $_precision = 2;
+    var $_precision = 2;
 
     // PUBLIC METHODS
 
