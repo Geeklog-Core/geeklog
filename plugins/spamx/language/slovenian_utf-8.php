@@ -142,7 +142,7 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-X dejanja',
+    'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Obvestilna e-pošta',
     'logging' => 'Omogoèi shranjevanje v log',
     'timeout' => 'Timeout'

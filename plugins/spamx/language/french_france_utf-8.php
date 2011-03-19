@@ -140,7 +140,7 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-X Actions',
+    'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
     'timeout' => 'Timeout'

@@ -145,7 +145,7 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-X の動作',
+    'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'メールで通知する',
     'logging' => 'ログを有効にする',
     'timeout' => 'タイムアウト'
