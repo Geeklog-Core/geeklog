@@ -68,6 +68,25 @@ Static Pages Plugin
   search engines [Tom]
 
 
+Feb 20, 2011 (1.7.2)
+------------
+
+Note: This will be the last Geeklog version to work on PHP 4. We will provide
+security fixes for this version until 2012. Future versions of Geeklog will
+require PHP 5.2.0 or later. For details, please see
+http://www.geeklog.net/article.php/end-of-php4-support
+
+- PostgreSQL fixes:
+  * It wasn't possible for several Geeklog instances to share a Postgres
+    database (bug #0001251) [Rouslan]
+  * Fixed dbSave [Dirk]
+  * Fixed error reporting [Dirk]
+  * Fixed compatibility with PHP 4 [Dirk]
+- Fixed replacing the [imageX] tags when changing a story's id (bug #0001256)
+  [Dirk]
+- Fixed Static Pages plugin to work with PHP 4 (bug #0001239) [Tom]
+
+
 Jan 2, 2011 (1.7.1sr1)
 -----------
 

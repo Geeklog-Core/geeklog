@@ -16,6 +16,24 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes172">Geeklog 1.7.2</a></h2>
+
+<p><strong>Note:</strong> Geeklog 1.7.2 is the last Geeklog version to work on
+PHP 4. We will be providing security fixes, if required, for this version until
+2012. New features will only be added to Geeklog 1.8.0 and later versions,
+which will require at least PHP 5.2.0 to run. Please see <a href="http://www.geeklog.net/article.php/end-of-php4-support">the announcement</a> on geeklog.net
+for details.</p>
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>Fixed PostgreSQL support (multiple Geeklog instances sharing one Postgres
+    database; dbSave function; error reporting; PHP 4 compatibility).</li>
+<li>Fixed replacing the <code>[imageX]</code> tags when changing a story id.</li>
+<li>Fixed a PHP 4 compatibility issue in the Static Pages plugin.</li>
+</ul>
+
+
 <h2><a name="changes171sr1">Geeklog 1.7.1sr1</a></h2>
 
 <p>This release fixes an XSS in the admin's configuration panel, reported by
