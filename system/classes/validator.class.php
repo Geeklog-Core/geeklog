@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | validator.class.php                                                       |
 // |                                                                           |
 // | Used for validation of data                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010 by the following authors:                              |
+// | Copyright (C) 2010-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Akeda Bagus       - admin AT gedex DOT web DOT id                |
 // |                                                                           |
@@ -98,7 +98,7 @@ class validator {
 		static $instance = array();
 
 		if (!$instance) {
-			$instance[0] =& new validator();
+			$instance[0] = new validator();
 		}
 		return $instance[0];
 	}
