@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | url.class.php                                                             |
 // |                                                                           |
 // | class to allow for spider friendly URL's                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002-2009 by the following authors:                         |
+// | Copyright (C) 2002-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // +---------------------------------------------------------------------------+
@@ -45,11 +45,11 @@ class url {
     /**
     * @access private
     */
-    var $_arguments = array();		// Array of argument names
+    private $_arguments = array();  // Array of argument names
     /**
     * @access private
     */
-    var $_enabled = true;
+    private $_enabled = true;
     
     /**
     * Constructor

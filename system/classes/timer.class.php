@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | timer.class.php                                                           |
 // |                                                                           |
 // | Geeklog timer class.  Use this to do performance testing.                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
@@ -60,19 +60,19 @@ class timerobject {
     /**
     * @access private
     */
-    var $_starttime = '';
+    private $_starttime = '';
     /**
     * @access private
     */
-    var $_endtime = '';
+    private $_endtime = '';
     /**
     * @access private
     */
-    var $_elapsedtime = '';
+    private $_elapsedtime = '';
     /**
     * @access private
     */
-    var $_precision = 2;
+    private $_precision = 2;
 
     // PUBLIC METHODS
 

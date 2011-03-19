@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -49,20 +49,20 @@ require_once $_CONF['path_system'] . 'classes/listfactory.class.php';
 class Search {
 
     // PRIVATE VARIABLES
-    var $_query = '';
-    var $_topic = '';
-    var $_dateStart = null;
-    var $_dateEnd = null;
-    var $_author = '';
-    var $_type = '';
-    var $_keyType = '';
-    var $_names = array();
-    var $_url_rewrite = array();
-    var $_append_query = array();
-    var $_searchURL = '';
-    var $_wordlength;
-    var $_verbose = false; // verbose logging
-    var $_titlesOnly = false;
+    private $_query = '';
+    private $_topic = '';
+    private $_dateStart = null;
+    private $_dateEnd = null;
+    private $_author = '';
+    private $_type = '';
+    private $_keyType = '';
+    private $_names = array();
+    private $_url_rewrite = array();
+    private $_append_query = array();
+    private $_searchURL = '';
+    private $_wordlength;
+    private $_verbose = false; // verbose logging
+    private $_titlesOnly = false;
 
     /**
     * Constructor

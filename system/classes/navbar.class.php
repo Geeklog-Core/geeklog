@@ -1,16 +1,17 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +-------------------------------------------------------------------------+
-// | Geeklog 1.3                                                             |
+// | Geeklog 1.8                                                             |
 // +-------------------------------------------------------------------------+
 // | navbar.class.php                                                        |
 // |                                                                         |
 // | class to create and display a CSS based Navbar for site navigation      |
 // +-------------------------------------------------------------------------+
-// | Copyright (C) 2004 by Consult4Hire Inc.                                 |
+// | Copyright (C) 2004-2011 by Consult4Hire Inc.                            |
 // |                                                                         |
 // | Author:                                                                 |
-// | Blaine Lang                 -    blaine@portalparts.com                 |
+// | Blaine Lang                 -    blaine AT portalparts DOT com          |
 // +-------------------------------------------------------------------------+
 // |                                                                         |
 // | This program is free software; you can redistribute it and/or           |
@@ -28,7 +29,6 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.         |
 // |                                                                         |
 // +-------------------------------------------------------------------------+
-//
 
 /**
 * This class will allow you to setup and generate a CSS Tab Menu and breadcrumb link trail
@@ -86,23 +86,23 @@ class navbar  {
     /**
     * @access private
     */
-    var $_menuitems;      // Array
+    private $_menuitems;        // Array
     /**
     * @access private
     */
-    var $_selected = '';      // string
+    private $_selected = '';    // string
     /**
     * @access private
     */
-    var $_parms = '';      // string
+    private $_parms = '';       // string
     /**
     * @access private
     */
-    var $_onclick;      // Array
-    
-    var $_bctemplate = NULL;     // Template to use for Breadcrumbs
-    
-    var $_numbreadcrumbs = 0;   // Number of Breadcrumb links added
+    private $_onclick;          // Array
+
+    private $_bctemplate = NULL;    // Template to use for Breadcrumbs
+
+    private $_numbreadcrumbs = 0;   // Number of Breadcrumb links added
 
     /**
     * Constructor
