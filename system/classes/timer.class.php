@@ -60,15 +60,15 @@ class timerobject {
     /**
     * @access private
     */
-    private $_starttime = '';
+    var $_starttime = '';
     /**
     * @access private
     */
-    private $_endtime = '';
+    var $_endtime = '';
     /**
     * @access private
     */
-    private $_elapsedtime = '';
+    var $_elapsedtime = '';
     /**
     * @access private
     */
