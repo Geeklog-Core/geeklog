@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -207,7 +207,7 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var ('user_fullname', '');
     }
     
-    if ($A['remoteservice'] == '') {
+    if (empty($A['remoteservice'])) {
         $user_templates->set_var('lang_password', $LANG28[5]);
         $user_templates->set_var('lang_password_conf', $LANG28[39]);
         $user_templates->parse ('password_option', 'password', true);
