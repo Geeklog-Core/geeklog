@@ -355,7 +355,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
             if( $story->DisplayElements('comments') > 0 )
             {
-                $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '".$story->getsid()."' ORDER BY date desc LIMIT 1" );
+                $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username,fullname,{$_TABLES['comments']}.uid as cuid FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '".$story->getSid()."' ORDER BY date DESC LIMIT 1" );
                 $C = DB_fetchArray( $result );
 
                 $recent_post_anchortag = '<span class="storybyline">'
@@ -373,7 +373,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             {
                 $article->set_var( 'comments_with_count', $comments_with_count);
                 $recent_post_anchortag = COM_createLink($LANG01[60],
-                    $_CONF['site_url'] . '/comment.php?sid=' . $story->getsid()
+                    $_CONF['site_url'] . '/comment.php?sid=' . $story->getSid()
                         . '&amp;pid=0&amp;type=article');
             }
             if( $story->DisplayElements( 'commentcode' ) == 0 )
