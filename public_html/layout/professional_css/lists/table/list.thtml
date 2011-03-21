@@ -1,4 +1,6 @@
-<!-- /lists/table/list.thtml { -->
+
+<!-- lists/table/list.thtml { -->
+
                             {list_top}
                             <div class="admin-list-search">
                                 <form name="page_limit" style="display: inline;">
@@ -17,4 +19,5 @@
                             <br{xhtml}>
                             {google_paging}
                             {list_bottom}
-<!-- } /lists/table/list.thtml -->
+
+<!-- } lists/table/list.thtml -->

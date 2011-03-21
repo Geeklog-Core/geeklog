@@ -11,18 +11,18 @@ function FixHTML( leftblocksID, centerblocksID, rightblocksID ) {
   if ( document.body.getAttribute('class') || document.body.getAttribute('className') ) {
     var classValue = 'left-center-right';
 
-    /* HTMLのid属性の値をチェックします。 */
+    /* Check HTML id attribute. */
     if ( leftblocks && centerblocks && !rightblocks ) classValue = 'left-center';
     if ( !leftblocks && centerblocks && rightblocks ) classValue = 'center-right';
     if ( !leftblocks && centerblocks && !rightblocks ) classValue = 'center';
 
-    /* body要素のclass属性に「js_on」を設定します。 */
+    /* Set js_on to body class attribute  */
     classValue += ' js_on';
 
-    /* HTMLの構造によってbody要素のclass属性に値を設定します。 */
-    if ( is_old_ie ) {  /* IE7以前用 */
+    /* Set body class attribute by HTML structure. */
+    if ( is_old_ie ) {  /* IE7, IE6 */
       document.body.setAttribute('className', classValue);
-    } else {  /* Gecko, Opera, Safari, IE8他用 */
+    } else {  /* Gecko, Opera, Safari, IE8 and other */
       document.body.setAttribute('class', classValue);
     }
   }

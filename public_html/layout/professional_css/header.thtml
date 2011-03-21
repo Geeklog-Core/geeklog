@@ -50,7 +50,7 @@
 
         {left_blocks}
 
-        <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs <![endif]-->
+        <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
         <!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
         <!--[if !IE]> #centerblocks { <![endif]-->
         <!-- Center Block Container -->

@@ -1,9 +1,9 @@
-<!--[if !IE]> Win IE 6のバグを回避するために一部、条件コメントを使用しています。 <![endif]-->
-<!--[if !IE]> (複数の浮動要素を組み合わせた場合に、最後の浮動要素の内容が重複するバグ) <![endif]-->
+<!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
+<!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
 <!-- leftblocks.thtml { -->
 
     <!-- #leftblocks { -->
-    <!-- 左ブロックコンテナ -->
+    <!-- Left Blocks Container -->
     <div id="leftblocks">
       <div class="block-left" id="block-left-search">
         <h2>{button_search}</h2>

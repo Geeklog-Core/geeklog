@@ -1,5 +1,5 @@
 function delconfirm() {
-  if ( confirm("削除して良いですか？") ) {
+  if ( confirm("Delete?") ) {
     return true;
   } else {
     return false;
@@ -7,7 +7,7 @@ function delconfirm() {
 }
 
 function postconfirm() {
-  if ( confirm("送信して良いですか？") ) {
+  if ( confirm("Send?") ) {
     return true;
   } else {
     return false;

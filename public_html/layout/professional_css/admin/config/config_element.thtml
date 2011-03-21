@@ -1,9 +1,12 @@
+
+<!-- admin/config/config_element.thtml { -->
+
 <!-- BEGIN validation_error_block -->
 <div class="validation_error_block"><span></span>{validation_error_message}</div>
 <!-- END validation_error_block -->
 
 <!-- BEGIN delete-button -->
-<input type="button" class="del-link" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
+<input type="button" class="del-link button" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
 <!-- END delete-button -->
 
 <!-- BEGIN text-element -->
@@ -50,7 +53,7 @@
 <!-- BEGIN list-element -->
 <tr id="{name}" class="config_name"><td class="alignright" style="vertical-align:top">{display_name} {doc_link} {unset_link}</td>
 <td>
-<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);"{xhtml}>
+<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);" class="button"{xhtml}>
 {delete}
 <input type="hidden" value="true" name="{name}[placeholder]"{xhtml}>
 <table style="display:none" id="arr_table" class="{arr_table_class_list}">
@@ -73,3 +76,5 @@
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
 </td></tr>
 <!-- END unkeyed-add-button -->
+
+<!-- } admin/config/config_element.thtml -->

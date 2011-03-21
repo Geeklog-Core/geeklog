@@ -10,7 +10,7 @@ body {
   padding: 16px;
   background:#FFFFFF;
   color:#000000;
-  font-family: "Hiragino Mincho Pro", "ヒラギノ明朝 Pro W3", Osaka, "ＭＳ Ｐ明朝", Verdana, Arial, Helvetica, sans-serif;
+  font-family: arial,verdana,tahoma,helvetica,sans-serif;
 }
 
   h1#printable-story_title {

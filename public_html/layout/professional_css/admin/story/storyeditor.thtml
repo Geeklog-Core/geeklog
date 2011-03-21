@@ -135,16 +135,16 @@
       <dd><input type="text" size="40" maxlength="40" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="text"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
-      <dd{hide_meta}><textarea cols="80" rows="2" name="meta_description" id="admin-storyeditor-metadescription">{meta_description}</textarea></dd>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription">{meta_description}</textarea></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
-      <dd{hide_meta}><textarea cols="80" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords">{meta_keywords}</textarea></dd>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords">{meta_keywords}</textarea></dd>
 
       <dt><label for="admin-storyeditor-introtext">{lang_introtext}</label></dt>
-      <dd><textarea cols="80" rows="12" name="introtext" id="admin-storyeditor-introtext">{story_introtext}</textarea></dd>
+      <dd><textarea cols="70" rows="12" name="introtext" id="admin-storyeditor-introtext">{story_introtext}</textarea></dd>
 
       <dt><label for="admin-storyeditor-bodytext">{lang_bodytext}</label></dt>
-      <dd><textarea cols="80" rows="20" name="bodytext" id="admin-storyeditor-bodytext">{story_bodytext}</textarea></dd>
+      <dd><textarea cols="70" rows="20" name="bodytext" id="admin-storyeditor-bodytext">{story_bodytext}</textarea></dd>
 
       <dt><label for="admin-storyeditor-postmode">{lang_postmode}</label></dt>
       <dd>
@@ -172,9 +172,11 @@
       <dt>{lang_emails}</dt>
       <dd>{story_emails}</dd>
     </dl>
+  </div>
 
-    <hr{xhtml}>
-    
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
     <h3>{lang_accessrights}</h3>
 
     <dl>
@@ -189,7 +191,7 @@
       <dd class="description">{lang_perm_key}</dd>
       <dd class="description">{lang_permissions_msg}</dd>
     </dl>
-  </div>  
+  </fieldset>
 
   <ul class="submit">
     <li><input type="submit" value="{lang_save}" name="mode"{xhtml}></li>

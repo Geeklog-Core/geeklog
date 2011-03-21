@@ -1,25 +1,23 @@
 @charset "utf-8";
 
 /*==============================================================================
-  タイトル: 
-  著者    : 
-  説明    : 
+  Title       : 
+  Author      : 
+  Description : 
 ==============================================================================*/
 
 
 
 /*==============================================================================
-  [INFO] カスタムテーマスタイルシート(雛型)
-         ProfessionalCSSテーマをベースとしたカスタムテーマの作成を補助するCSSファイル(雛型)です。
-         [BASE]部分で、ProfessionalCSSテーマの基本的なスタイルを初期化しています。
-         [CUSTOM]部分で、カスタムテーマのスタイルを定義していきます。
-         サンプルとして、リキッドレイアウトのスタイルのみ定義してあります。
+  [INFO] Custom Style Sheet Sample
+         This is custom style sheet sample of professional_css.
+         [BASE] Reset basic style.
+         [CUSTOM] Set custom theme style for liquid style.
 ==============================================================================*/
 
 /*==============================================================================
-  [BASE] ProfessionalCSSテーマのスタイル初期化
-         ProfessionalCSSテーマの基本的なスタイルを初期化します。
-         (背景色: #FFFFFF, 前景色: #000000)
+  [BASE] Reset basic style.
+         background #FFFFFF, fore color: #000000)
 ==============================================================================*/
 
 /*--------------------------------------
@@ -39,7 +37,7 @@ div#container div#wrapper {
   width: auto;
 }
 
-/*----- ヘッダ -----*/
+/*----- Header -----*/
 div#container div#header {
   margin: 0;
   padding: 0;
@@ -52,7 +50,7 @@ div#container div#header div#header-content {
   padding: 0;
 }
 
-/*----- ナビゲーション -----*/
+/*----- Navigation -----*/
 div#container div#navigation {
   width: 100%;
   background: transparent;
@@ -62,7 +60,7 @@ div#container div#navigation div.navigation_content {
   width: auto;
 }
 
-/*----- フッタ -----*/
+/*----- Footer -----*/
 div#container div#footer {
   background: transparent;
   color: #000000;
@@ -84,7 +82,7 @@ div#container div#footer a:active {
   color: #ff0000;
 }
 
-/*----- ラッパー -----*/
+/*----- Wrapper -----*/
 body.left-center-right div#container div#wrapper,
 body.left-center div#container div#wrapper,
 body.center-right div#container div#wrapper,
@@ -119,24 +117,22 @@ div#rightblocks div.block-right {
 
 
 /*==============================================================================
-  [CUSTOM] カスタムテーマスタイル
-           カスタムテーマのスタイルを定義します。
+  [CUSTOM] Set custom theme style for liquid style.
 ==============================================================================*/
 
 /*--------------------------------------
   [CUSTOM] layout.css
-           リキッドレイアウトのサンプルです。
 
-             幅(全体)        : 80%
-             最小幅(全体)    : 800px
-             最大幅(全体)    : 80em
+             Width(All)         : 80%
+             Min Width(All)     : 800px
+             Max Width(All)     : 80em
 
-             幅(左ブロック)  : 20%
-             幅(中央ブロック): 60%
-             幅(右ブロック)  : 20%
+             Width(Left Block)  : 20%
+             Width(Center Block): 60%
+             Width(Right Block) : 20%
 ---------------------------------------*/
 
-/*----- コンテナ -----*/
+/*----- Container -----*/
 div#container {
   width: 80%;
   min-width: 800px;
@@ -144,7 +140,7 @@ div#container {
   margin: 0 auto;
 }
 
-/*----- 左ブロックコンテナ -----*/
+/*----- Left Block Container -----*/
 div#container div#wrapper div#leftblocks {
   width: 20%;
   margin: 0 80% 0 0;
@@ -154,7 +150,7 @@ body.js_off div#container div#wrapper div#leftblocks {
   margin: 0 -20% 0 0;
 }
 
-/*----- 中央ブロックコンテナ -----*/
+/*----- Center Block Container -----*/
 body.left-center-right div#container div#wrapper div#centerblocks {
   width: 57%;
   margin: 0 0 0 -80%;
@@ -186,7 +182,7 @@ body.js_off div#container div#wrapper div#centerblocks {
   padding: 0 1%;
 }
 
-/*----- 右ブロックコンテナ -----*/
+/*----- Right Block Container -----*/
 div#container div#wrapper div#rightblocks {
   width: 20%;
   margin: 0 0 0 -20%;

@@ -1,3 +1,6 @@
-<!-- /lists/inline/item_field.thtml { -->
+
+<!-- lists/inline/item_field.thtml { -->
+
                                     {field_text}
-<!-- } /lists/inline/item_field.thtml -->
+
+<!-- } lists/inline/item_field.thtml -->

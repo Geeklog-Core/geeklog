@@ -1,7 +1,10 @@
+
+<!-- /admin/config/configuration.thtml { -->
+
 <form method="post" action="{site_admin_url}/configuration.php" name="group">
-<input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
-<input type="hidden" value="" name="subgroup"{xhtml}>
-<input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  <input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
+  <input type="hidden" value="" name="subgroup"{xhtml}>
+  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
 </form>
 <table>
     <tr>
@@ -60,3 +63,5 @@
         </td>
     </tr>
 </table>
+
+<!-- } /admin/config/configuration.thtml -->
