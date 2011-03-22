@@ -1109,7 +1109,7 @@ function LINKS_sendNotification ($table, $A)
     if ($table == $_TABLES['linksubmission']) {
         $mailbody .= "$LANG_LINKS[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG_LINKS[114] <{$_CONF['site_url']}/links/index.php?category=" . urlencode ($A['category']) . ">\n\n";
+        $mailbody .= "$LANG_LINKS[114] <{$_CONF['site_url']}/links/index.php?category=" . rawurlencode ($A['category']) . ">\n\n";
     }
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG_LINKS_SUBMIT[11];
 
@@ -1174,7 +1174,7 @@ function plugin_getListField_links($fieldname, $fieldvalue, $A, $icon_arr)
                 }
                 $cat = COM_createLink($A['category'],
                         "{$_CONF['site_url']}/links/index.php?category="
-                        . urlencode($A['cid']));
+                        . rawurlencode($A['cid']));
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
                 break;
@@ -1200,7 +1200,7 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                 if ($access == 3) {
                     $retval = COM_createLink(
                         $icon_arr['edit'],
-                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;cid=" . urlencode($A['cid'])
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;cid=" . rawurlencode($A['cid'])
                     );
                 }
                 break;
@@ -1215,14 +1215,14 @@ function plugin_getListField_categories($fieldname, $fieldvalue, $A, $icon_arr)
                 $indent = ($A['indent'] - 1) * 20;
                 $cat = COM_createLink($A['category'],
                         "{$_CONF['site_url']}/links/index.php?category="
-                        . urlencode($A['cid']));
+                        . rawurlencode($A['cid']));
                 $retval = "<span style=\"padding-left:{$indent}px;\">$cat</span>";
                 break;
             case 'addchild';
                 if ($access == 3) {
                     $retval = COM_createLink(
                         $icon_arr['addchild'],
-                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;pid=" . urlencode($A['cid'])
+                        "{$_CONF['site_admin_url']}/plugins/links/category.php?mode=edit&amp;pid=" . rawurlencode($A['cid'])
                     );
                 }
                 break;
@@ -1423,7 +1423,7 @@ function links_breadcrumbs($root, $cid)
             if ($cid != $c) {
                 $content = stripslashes($A['category']);
                 $url = $_CONF['site_url'] . '/links/index.php?category='
-                                          . urlencode($A['cid']);
+                                          . rawurlencode($A['cid']);
                 $breadcrumb = COM_createLink($content, $url) . $separator
                             . $breadcrumb;
             } else {
@@ -1507,7 +1507,7 @@ function phpblock_topic_categories()
                 $A = DB_fetchArray($result);
                 $content = stripslashes($A['category']);
                 $url = $_CONF['site_url'] . '/links/index.php?category='
-                                          . urlencode($A['cid']);
+                                          . rawurlencode($A['cid']);
                 $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
             }
         }
