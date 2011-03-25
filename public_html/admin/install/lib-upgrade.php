@@ -500,6 +500,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             break;
 
         case '1.7.1':
+        case '1.7.2':
             require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.7.1_to_1.8.0.php';
             INST_updateDB($_SQL);
 
