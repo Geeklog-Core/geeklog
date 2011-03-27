@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Additional functions for install script.                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt.danger.west AT gmail DOT com                    |
 // |          Dirk Haun - dirk AT haun-online DOT de                           |
@@ -56,7 +56,7 @@ if (!defined('VERSION')) {
     * This constant defines Geeklog's version number. It will be written to
     * siteconfig.php and the database (in the latter case minus any suffix).
     */
-    define('VERSION', '1.8.0hg');
+    define('VERSION', '1.8.0b1');
 }
 if (!defined('XHTML')) {
     define('XHTML', ' /');
