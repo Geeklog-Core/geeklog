@@ -2781,27 +2781,33 @@ function PLG_resolveDependencies()
     // automatically resolve load order for enabled plugins
     $index = 2000; // how far through the load order to push back plugins
     $maxqueries = 50; // just in case...
-    $globalflag = false; // rememebr if we change the load order of any plugin
+    $globalflag = false; // remember if we change the load order of any plugin
     $flag = true; // set true if we need another pass in the while loop
-    while ($flag && $maxqueries) {
+    while ($flag && $maxqueries) { // Now check if the load order is correct
         $flag = false;
-        // Now check if the load order is correct
+        // get the load orders of all enabled plugins
+        $q = DB_query("SELECT pi_name, pi_load FROM {$_TABLES['plugins']} WHERE pi_enabled='1'");
+        $plo = array(); // Plugins Load Order
+        while ($a = DB_fetchArray($q)) {
+            $plo[] = $a;
+        }
         $params = array();
-        foreach ($_PLUGINS as $key => $pi_name) {
+        foreach ($plo as $key => $value) { // for each available plugin
             $maxqueries--;
-            $params = PLG_getParams($pi_name);
-            if (isset($params['requires']) && is_array($params['requires'])) {
-                // load order of the plugin
-                $p = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$pi_name}'");
-                $p = DB_fetchArray($p);
-                foreach ($params['requires'] as $rkey => $rvalue) {
+            $params = PLG_getParams($value['pi_name']); // get dependencies
+            if (isset($params['requires']) && is_array($params['requires'])) { // if any
+                foreach ($params['requires'] as $rkey => $rvalue) { // process each dependency
                     if (isset($rvalue['plugin'])) {
-                        // load order of the dependency
-                        $q = DB_query("SELECT pi_load FROM {$_TABLES['plugins']} WHERE pi_name='{$rvalue['plugin']}'");
-                        $q = DB_fetchArray($q);
-                        if ( $q['pi_load'] > $p['pi_load'] ) { // incorrect load order
+                        // get the load order of the required plugin
+                        foreach ($plo as $new_key => $new_value) {
+                            if ($new_value['pi_name'] == $rvalue['plugin']) {
+                                $dep_load = $new_value['pi_load'];
+                                break;
+                            }
+                        }
+                        if ( $dep_load > $value['pi_load'] ) { // incorrect load order
                             // move down the order
-                            DB_query("UPDATE {$_TABLES['plugins']} SET pi_load = '{$index}' WHERE pi_name = '{$pi_name}'");
+                            DB_query("UPDATE {$_TABLES['plugins']} SET pi_load = '{$index}' WHERE pi_name = '{$value['pi_name']}'");
                             $index++;
                             $flag = true;
                             $globalflag = true;
@@ -2810,8 +2816,8 @@ function PLG_resolveDependencies()
                 }
             }
         }
-        reorderplugins();
     }
+    reorderplugins();
     if ($globalflag == false) {
         return true; // no change
     } else {
