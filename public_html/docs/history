@@ -1,9 +1,29 @@
 Geeklog History/Changes:
 
-Apr ??, 2011 (1.8.0)
+Mar 27, 2011 (1.8.0b1)
 ------------
 
-- Clean up images directory (bug #0001276) [Tom]
+This release includes the results from the 2010 Google Summer of Code project
+to improve the Configuration (input validation, searching), implemented by
+Akeda Bagus.
+
+- Added a COM_newTemplate function to allow overriding template instantiation
+  (feature request #0001220, patch provided by Joe Mucchiello)
+- Fixed the "Mail user" form to not lose all filled-in values when an error
+  occured (bug #0001270) [Rouslan]
+- Clean up images directory and added new icons (bug #0001276) [Tom, Rouslan]
+- Added support for OAuth remote authentication, provided by Hiroshi Sakuramoto,
+  and added re-syncing of remote user data (feature request #0001191) [Tom]
+- Updated bigdump.php (as used in the install script's Migrate option) to the
+  latest version (feature request #0001143) [Rouslan]
+- Removed dependency on JavaScript from some admin pages (feature request
+  #0001243) [Rouslan]
+- Added support to check version dependencies with plugins and Geeklog, and
+  plugins with other plugins (feature request #0001154) [Rouslan]
+- Check database requirements before installing a plugin (feature request
+  #0001288) [Rouslan]
+- Using fopen() to locate a plugin's icon may not provide the expected result
+  (bug #0001265) [Rouslan]
 - A story's bodytext doesn't need to be evaluated when displaying the site's
   index page (patch #0001204, provided by LWC)
 - The status of the "Send me a copy of this email" option was lost when the
@@ -31,12 +51,14 @@ Apr ??, 2011 (1.8.0)
   no dedicated link element, as long as the guid looks like a URL [Dirk]
 - Added a noindex robots meta tag to printable story pages so they aren't
   indexed by search engines [Tom]
+- Autotags in Templates may not always display (bug #0001246) [Tom]
 - Handle $bulkimport flag in the CUSTOM_userCreate() sample code in
   lib-custom.php (bug #0001208) [Dirk]
   If you are using your own CUSTOM_userCreate(), please check that you handle
   this flag (set to true when doing a Batch User Import) correctly!
 - Set minimum required PHP version to PHP 5.2.0 and removed all code that
   ensured compatibility with PHP 4 (feature request #0001217) [Dirk]
+- Minor optimization and code cleanup in CMT_saveComment (bug #0000939) [Vinny]
 - Added a proper copyright header and license text (LGPLv2) to the template
   class (feature request #0001128) [Dirk]
 - Fixed check for availability of PECL::ZipArchive in the unpacker class
@@ -54,18 +76,30 @@ Calendar Plugin
 
 Links Plugin
 ------------
+- Fixed encoding of link categories in URLs (bug #0001173) [Tom]
+  Note: This fix changes the URLs of categories with spaces in their names
+  from using a '+' sign to using '%20'.
 - Fixed text above the list of links, which was referring to a menu entry that
   no longer exists (bug #0001216)
   
 Polls Plugin
 ------------
+- Updated the default poll (feature request #0001277) [Rouslan]
 - Fixed voters do not get counted correctly when updating a poll with multiple 
   questions. (patch #0001056, provided by Erisco)
 
 Static Pages Plugin
 -------------------
+- Removed unwanted piece of HTML on "empty" static pages (bug #0001192)
+  [Rouslan]
 - Added a noindex robots meta tag to printable pages so they aren't indexed by
   search engines [Tom]
+
+XMLSitemap Plugin
+-----------------
+- Removed an unused xmlsitemap.edit permission that existed in some installs
+  (left by all fresh installs with Geeklog version 1.6.0 through to 1.7.0)
+  [Dirk]
 
 
 Feb 20, 2011 (1.7.2)
