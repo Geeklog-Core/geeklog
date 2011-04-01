@@ -68,7 +68,7 @@ function staticpageeditor_form($A, $error = false)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
-           $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE;
+           $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
     $template_path = staticpages_templatePath('admin');
     if (!empty($sp_id) && $mode=='edit') {
@@ -94,6 +94,11 @@ function staticpageeditor_form($A, $error = false)
     $sp_template = COM_newTemplate($template_path);
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
+        
+        $js = '// Setup editor path for FCKeditor JS Functions
+            geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';
+        $_SCRIPTS->setJavaScript($js, true);        
+        $_SCRIPTS->setJavaScriptFile('staticpages_fckeditor', '/javascript/staticpages_fckeditor.js');
 
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);

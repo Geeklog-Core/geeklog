@@ -1,12 +1,7 @@
 <!-- Hide the Advanced Editor as JavaScript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
 <noscript>
-    <div class="pluginAlert" style="border:1px dashed #ccc;text-align:center;margin-top:10px;padding:15px;">{lang_nojavascript} </div>
+    <div class="pluginAlert" style="border:1px dashed #ccc;text-align:center;margin-top:10px;padding:15px;">{lang_nojavascript}</div>
 </noscript>
-<script type="text/javascript">
-    // Setup editor path for FCKeditor JS Functions
-    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
-</script>
-<script type="text/javascript" src="{site_url}/javascript/staticpages_fckeditor.js"></script>
 
   {start_block_editor}
   <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" onsubmit='set_postcontent();'>

@@ -672,17 +672,12 @@ function plugin_savesubmission_calendar($A)
 
 function plugin_getheadercode_calendar()
 {
-    global $_CONF;
-
-    $str = null;
+    global $_SCRIPTS;
 
     // use the CSS only if we are on the plugin's pages
     if (substr_count ($_SERVER['PHP_SELF'], '/calendar/') > 0) {
-        $str = '<link rel="stylesheet" type="text/css" href="'
-             . $_CONF['site_url'] . '/calendar/style.css"' . XHTML . '>';
+        $_SCRIPTS->setCSSFile('calendar', '/calendar/style.css', false);
     }
-
-    return $str;
 }
 
 /**
