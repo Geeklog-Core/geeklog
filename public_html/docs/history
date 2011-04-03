@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-Mar 27, 2011 (1.8.0b1)
-------------
+Apr 3, 2011 (1.8.0b1)
+-----------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
