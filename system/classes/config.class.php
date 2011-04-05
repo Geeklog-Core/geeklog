@@ -200,11 +200,13 @@ class config {
         $result = DB_query($sql);
         $tabs = array();
         $curr_group_name = '';
+        $curr_subgroup = '';
         while ($row = DB_fetchArray($result)) {
             // For backwards compatibility, add in a tab for plugins that support the old config
-            if ($row['type'] != 'tab' && $row['tab'] == '' && $row['group_name'] != $curr_group_name) {
+            if ($row['type'] != 'tab' && $row['tab'] == '' && ($row['group_name'] != $curr_group_name || $row['subgroup'] != $curr_subgroup)) {
                 $curr_group_name = $row['group_name'];
-                $tab_name = 'tab_default';
+                $curr_subgroup = $row['subgroup'];
+                $tab_name = 'tab_default_' . $curr_subgroup;
                 $tab_id = 0;
                 $this->conf_type['tab'][$row[2]][$tab_name] = "config.{$row[2]}.{$tab_name}";
                 $this->conf_type['tree'][$row[2]][$row[4]][$tab_name] = "config.{$row[2]}.{$tab_name}";
@@ -687,6 +689,7 @@ class config {
                   . "type = 'subgroup' AND group_name = '$group' "
                   . "ORDER BY subgroup";
         $retval = array();
+        
         $res = DB_query($q_string);
         while ($row = DB_fetchArray($res)) {
             // check if current user has access to current subgroup
