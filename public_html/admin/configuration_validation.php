@@ -48,7 +48,7 @@ $_CONF_VALIDATE['Core']['copyrightyear'] = array(
 );
 $_CONF_VALIDATE['Core']['url_rewrite'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), true));
+$_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), false));
 $_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
@@ -192,21 +192,21 @@ $_CONF_VALIDATE['Core']['aftersave_story'] = array(
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['aftersave_story'] = array(
-    'rule' => array('inList', array(-1, 0), true)
+    'rule' => array('inList', array(-1, 0), false)
 );
 $_CONF_VALIDATE['Core']['trackbackspeedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['check_trackback_link'] = array(
-    'rule' => array('inList', array(0, 1, 2, 3, 4, 5, 6, 7), true)
+    'rule' => array('inList', array(0, 1, 2, 3, 4, 5, 6, 7), false)
 );
 $_CONF_VALIDATE['Core']['multiple_trackbacks'] = array(
-    'rule' => array('inList', array(0, 1, 2), true)
+    'rule' => array('inList', array(0, 1, 2), false)
 );
 
 /* Subgroup Stories and Trackback, Tab Pingback */
 $_CONF_VALIDATE['Core']['pingback_enabled'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['pingback_excerpt'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['pingback_self'] = array(
-    'rule' => array('inList', array(0, 1, 2), true)
+    'rule' => array('inList', array(0, 1, 2), false)
 );
 $_CONF_VALIDATE['Core']['ping_enabled'] = array('rule' => 'boolean');
 
@@ -295,7 +295,7 @@ $_CONF_VALIDATE['Core']['submitloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['commentsloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['statsloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['searchloginrequired'] = array(
-    'rule' => array('inList', array(0, 1, 2), true)
+    'rule' => array('inList', array(0, 1, 2), false)
 );
 $_CONF_VALIDATE['Core']['profileloginrequired'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['emailuserloginrequired'] = array('rule' => 'boolean');
@@ -326,7 +326,7 @@ $_CONF_VALIDATE['Core']['comment_mode'] = array(
     'rule' => array('inList', array('flat', 'nested', 'nocomment', 'threaded'), true)
 );
 $_CONF_VALIDATE['Core']['comment_code'] = array(
-    'rule' => array('inList', array(0, -1), true)
+    'rule' => array('inList', array(0, -1), false)
 );
 $_CONF_VALIDATE['Core']['comment_edit'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['commentsubmission'] = array('rule' => 'boolean');
@@ -392,7 +392,7 @@ $_CONF_VALIDATE['Core']['week_start'] = array(
     'rule' => array('inList', array('Mon', 'Sun'), true)
 );
 $_CONF_VALIDATE['Core']['hour_mode'] = array(
-    'rule' => array('inList', array(12, 24), true)
+    'rule' => array('inList', array(12, 24), false)
 );
 $_CONF_VALIDATE['Core']['thousand_separator'] = array(
     'rule' => 'single_char',
@@ -421,7 +421,7 @@ $_CONF_VALIDATE['Core']['cookie_tzid'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['cookie_anon_name'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['cookie_ip'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['default_perm_cookie_timeout'] = array(
-    'rule' => array('inList', array(0, 3600, 7200, 10800, 28800, 86400, 604800, 2678400), true)
+    'rule' => array('inList', array(0, 3600, 7200, 10800, 28800, 86400, 604800, 2678400), false)
 );
 $_CONF_VALIDATE['Core']['session_cookie_timeout'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['cookiesecure'] = array('rule' => 'boolean');
@@ -448,7 +448,7 @@ $_CONF_VALIDATE['Core']['skip_html_filter_for_root'] = array('rule' => 'boolean'
 
 /* Subgroup Misc, Tab Censoring */
 $_CONF_VALIDATE['Core']['censormode'] = array(
-    'rule' => array('inList', array(0, 1, 2, 3), true)
+    'rule' => array('inList', array(0, 1, 2, 3), false)
 );
 
 /* Subgroup Misc, Tab Permissions */
