@@ -201,7 +201,7 @@ class validator {
  * @access public
  */
 	function between($check, $min, $max) {
-		$length = mb_strlen($check);
+		$length = MBYTE_strlen($check);
 		return ($length >= $min && $length <= $max);
 	}
     
@@ -549,7 +549,7 @@ class validator {
  * @access public
  */
 	function minLength($check, $min) {
-		$length = mb_strlen($check);
+		$length = MBYTE_strlen($check);
 		return ($length >= $min);
 	}
 
@@ -562,7 +562,7 @@ class validator {
  * @access public
  */
 	function maxLength($check, $max) {
-		$length = mb_strlen($check);
+		$length = MBYTE_strlen($check);
 		return ($length <= $max);
 	}
 
