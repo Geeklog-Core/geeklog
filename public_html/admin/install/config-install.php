@@ -198,7 +198,7 @@ function install_config()
     $c->add('title_trim_length',20,'text',3,15,NULL,1050,TRUE, $me, 15);
 
     // Subgroup: Users and Submissions
-    $c->add('sg_users', NULL, 'subgroup', 4, 0, NULL, 0, TRUE);
+    $c->add('sg_users', NULL, 'subgroup', 4, 0, NULL, 0, TRUE, $me, 0);
 
     $c->add('tab_users', NULL, 'tab', 4, 16, NULL, 0, TRUE, $me, 16);
     $c->add('fs_users', NULL, 'fieldset', 4, 16, NULL, 0, TRUE, $me, 16);
