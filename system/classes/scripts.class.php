@@ -279,13 +279,18 @@ class scripts {
     */     
     public function setJavaScriptFile($name, $file, $footer = true, $constant = false) {
         
+        // If header code make sure header not already set
+        if ($this->header_set && !$footer) {
+            return false;
+        }
+
         // Make sure valid name
         if (in_array(strtolower($name), $this->restricted_names, true)) {
             return false;
         }
-        
-        // If header code make sure header not already set
-        if ($this->header_set && !$footer) {
+
+        // Make sure file exists and is readable. We don't want any 403 or 404, right?
+        if (! is_file($name) || ! is_readable($name)) {
             return false;
         }
         
@@ -321,6 +326,11 @@ class scripts {
         if (in_array(strtolower($name), $this->restricted_names, true)) {
             return false;
         }        
+
+        // Make sure file exists and is readable. We don't want any 403 or 404, right?
+        if (! is_file($name) || ! is_readable($name)) {
+            return false;
+        }
         
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['constant'] = false;
@@ -351,6 +361,11 @@ class scripts {
             return false;
         }        
         
+        // Make sure file exists and is readable. We don't want any 403 or 404, right?
+        if (! is_file($name) || ! is_readable($name)) {
+            return false;
+        }
+
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['constant'] = $constant;
         $this->css_files[$name]['load'] = true;
