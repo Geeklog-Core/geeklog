@@ -4,13 +4,13 @@
 {navbar}
 </div>
 <div class="clearboth" style="min-width:600px;">
-<form action="{site_url}/usersettings.php" method="post" {enctype}>
     <div id="pe_preview" class="jsenabled_hide" style="display:none;">
         <fieldset style="margin-top:10px;">
             <legend>{lang_preview_title}</legend>
             {preview}
         </fieldset>
     </div>
+    <form action="{site_url}/usersettings.php" method="post" {enctype}>
     <div id="pe_namepass" class="jsenabled_show">
         <fieldset style="margin-top:10px;"><legend>{lang_name_legend}</legend>
             <table class="inputTable">
@@ -89,6 +89,6 @@
         <span style="padding-right:50px;"><input type="submit" name="btnsubmit" value="{lang_submit}"{xhtml}></span>
         <input type="submit" name="btncancel" value="{lang_cancel}"{xhtml}>
     </p>
-</form>
+    </form>
 </div>
 

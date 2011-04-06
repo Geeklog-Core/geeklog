@@ -7,14 +7,14 @@
 {navbar}
 </div>
 
-<form action="{site_url}/usersettings.php" method="post" {enctype} id="profile" class="linear">
-
 <div id="pe_preview" class="jsenabled_hide" style="display:none;">
   <fieldset>
     <legend>{lang_preview_title}</legend>
     {preview}
   </fieldset>
 </div>
+
+<form action="{site_url}/usersettings.php" method="post" {enctype} id="profile" class="linear">
 
 <div id="pe_namepass" class="jsenabled_show">
   <fieldset>
