@@ -279,6 +279,8 @@ class scripts {
     */     
     public function setJavaScriptFile($name, $file, $footer = true, $constant = false) {
         
+        global $_CONF;
+
         // If header code make sure header not already set
         if ($this->header_set && !$footer) {
             return false;
@@ -290,7 +292,8 @@ class scripts {
         }
 
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
-        if (! is_file($name) || ! is_readable($name)) {
+        $path = substr($_CONF['path_html'], 0, -1) . $file;
+        if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
         
@@ -316,7 +319,9 @@ class scripts {
     *
     */      
     private function setCSSFilePrivate($name, $file, $load = true) {
-        
+
+        global $_CONF;
+
         // If header code make sure header not already set
         if ($this->header_set) {
             return false;
@@ -328,7 +333,8 @@ class scripts {
         }        
 
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
-        if (! is_file($name) || ! is_readable($name)) {
+        $path = substr($_CONF['path_html'], 0, -1) . $file;
+        if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
         
@@ -351,6 +357,8 @@ class scripts {
     */      
     public function setCSSFile($name, $file, $constant = true) {
         
+        global $_CONF;
+
         // If header code make sure header not already set
         if ($this->header_set) {
             return false;
@@ -362,7 +370,8 @@ class scripts {
         }        
         
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
-        if (! is_file($name) || ! is_readable($name)) {
+        $path = substr($_CONF['path_html'], 0, -1) . $file;
+        if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
 
