@@ -6754,8 +6754,14 @@ function COM_getLanguageName()
 */
 function COM_Tooltip($hoverover = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'tooltip') 
 {
-    global $_CONF, $_IMAGE_TYPE;
+    global $_CONF, $_IMAGE_TYPE, $_SCRIPTS;
     
+    if (! defined('TOOLTIPS_FIXED')) {
+        define('TOOLTIPS_FIXED', true);
+        $_SCRIPTS->setJavaScriptLibrary('jquery');
+        $_SCRIPTS->setJavaScriptFile('fix_tooltips', '/javascript/fix_tooltips.js');
+    }
+
     if ($hoverover == '') {
         $hoverover = '<img alt="?" id="tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';   
     }
