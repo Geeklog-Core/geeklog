@@ -78,3 +78,7 @@
 .error_validation a {
     color: #FFFFBB;
 }
+#tooltip-content table td{
+    text-align:left;
+}
+
