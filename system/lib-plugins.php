@@ -2716,6 +2716,31 @@ function PLG_getDocumentationUrl($type, $file)
 }
 
 /**
+* Ask plugin for text for a Configuration tooltip
+*
+* @param    string  $group  plugin name or 'Core'
+* @param    string  $id     Id of config value
+* @return   mixed           Text to use regular tooltip, NULL to use config 
+*                           tooltip hack, or empty string when not available
+* @link     http://wiki.geeklog.net/index.php/PLG_getConfigTooltip
+* @since    Geeklog 1.8.0
+*
+*/
+function PLG_getConfigTooltip($group, $id)
+{
+    if ($group == 'Core') {
+        $retval = false;        
+    } else {
+        $args[1] = $id;
+        $function = 'plugin_getconfigtooltip_' . $group;
+
+        $retval = PLG_callFunctionForOnePlugin($function, $args);
+    }
+    
+    return $retval;
+}
+
+/**
 * Inform plugins when another plugin's state changed
 *
 * Unlike PLG_enableStateChange, this function is called after the state

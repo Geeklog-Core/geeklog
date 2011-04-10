@@ -488,4 +488,18 @@ function plugin_getdocumentationurl_spamx($file)
     return $retval;
 }
 
+/**
+* Provides text for a Configuration tooltip
+*
+* @param    string  $id     Id of config value
+* @return   mixed           Text to use regular tooltip, NULL to use config 
+*                           tooltip hack, or empty string when not available
+*
+*/
+function plugin_getconfigtooltip_spamx($id)
+{   
+    // Use config tooltip hack where tooltip is read from the config documentation
+    return;
+}
+
 ?>

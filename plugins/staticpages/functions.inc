@@ -1852,6 +1852,20 @@ function plugin_getdocumentationurl_staticpages($file)
 }
 
 /**
+* Provides text for a Configuration tooltip
+*
+* @param    string  $id     Id of config value
+* @return   mixed           Text to use regular tooltip, NULL to use config 
+*                           tooltip hack, or empty string when not available
+*
+*/
+function plugin_getconfigtooltip_staticpages($id)
+{   
+    // Use config tooltip hack where tooltip is read from the config documentation
+    return;
+}
+
+/**
 * Provide URL and ID for the link to a comment's parent
 *
 * NOTE: The Plugin API does not support $_CONF['url_rewrite'] here,

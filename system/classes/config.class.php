@@ -1159,12 +1159,7 @@ class config {
                 $on = $name;
             }
             if (! is_numeric($on)) {
-                $descUrl = $this->_get_ConfigHelp($group, $o);
-                if (! empty($descUrl)) {
-                    $t->set_var('doc_url', $descUrl);
-                    $t->set_var('doc_link',
-                            '(<a href="' . $descUrl . '" target="help" class="tooltip">?</a>)');
-                }
+                $this->_set_ConfigHelp($t, $group, $o);
             }
         }
         if ($type == "unset") {
@@ -1752,25 +1747,27 @@ class config {
     }
 
     /**
-    * Helper function: Get the URL to the help section for a config option
+    * Helper function: Set the URL to the help section for a config option
     *
+    * @param    string  $t          Template
     * @param    string  $group      'Core' or plugin name
     * @param    string  $option     name of the config option
-    * @return   string              full URL to help or empty string
     *
     */
-    function _get_ConfigHelp($group, $option)
+    function _set_ConfigHelp(&$t, $group, $option)
     {
         static $docUrl;
 
-        if (! isset($docUrl)) {
+        if (!isset($docUrl)) {
             $docUrl = array();
         }
 
         $retval = '';
 
-        if (! isset($docUrl[$group])) {
+        $configtext = PLG_getConfigTooltip($group, $option);
+        if (empty($configtext)) {
             if ($group == 'Core') {
+                $configtext = NULL;
                 if (!empty($GLOBALS['_CONF']['site_url']) &&
                         !empty($GLOBALS['_CONF']['path_html'])) {
                     $baseUrl = $GLOBALS['_CONF']['site_url'];
@@ -1785,19 +1782,33 @@ class config {
                     $url = 'http://www.geeklog.net/docs/english/config.html';
                 }
                 $docUrl['Core'] = $url;
-            } else { // plugin
+            } else { // plugin            
                 $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
             }
-        }
-        $retval = $docUrl[$group];
+            $descUrl = $docUrl[$group];
 
-        if (! empty($retval)) {
-            if (strpos($retval, '#') === false) {
-                $retval .= '#desc_' . $option;
-            }
+            if (!empty($descUrl)) {
+                if (strpos($descUrl, '#') === false) {
+                    $descUrl .= '#desc_' . $option;
+                }
+                
+                $t->set_var('doc_url', $descUrl);
+                
+                // Does hack need to be used?
+                if (gettype($configtext) == "NULL") {
+                    $t->set_var('doc_link',
+                            '(<a href="' . $descUrl . '" target="help" class="tooltip">?</a>)');                    
+                } else {
+                    $t->set_var('doc_link',
+                            '(<a href="' . $descUrl . '" target="help">?</a>)');
+                }
+            }              
+        } else {
+            $t->set_var('doc_url', '');
+            $retval = "(" . COM_Tooltip("?", $configtext, '', $option,'information') . ")";
+            $t->set_var('doc_link', $retval);            
         }
 
-        return $retval;
     }
     
     /**

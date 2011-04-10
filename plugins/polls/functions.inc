@@ -1420,6 +1420,20 @@ function plugin_getdocumentationurl_polls($file)
 }
 
 /**
+* Provides text for a Configuration tooltip
+*
+* @param    string  $id     Id of config value
+* @return   mixed           Text to use regular tooltip, NULL to use config 
+*                           tooltip hack, or empty string when not available
+*
+*/
+function plugin_getconfigtooltip_polls($id)
+{   
+    // Use config tooltip hack where tooltip is read from the config documentation
+    return;
+}
+
+/**
 * Provide URL and ID for the link to a comment's parent
 *
 * @return   array   array consisting of the base URL and the ID name
