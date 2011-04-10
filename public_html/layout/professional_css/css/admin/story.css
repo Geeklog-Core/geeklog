@@ -24,7 +24,7 @@ div#html_editor dl {
 
 
 /*--------------------------------------
-  Story  Editor(ノーマル Editor)
+  Story Editor
 --------------------------------------*/
 
 form#admin-storyeditor {
@@ -52,7 +52,7 @@ form#admin-storyeditor h3 {
 
 
 /*--------------------------------------
-  Story  Editor(アドバンスト Editor)
+  Story Advanced Editor
 --------------------------------------*/
 
 form#admin-storyeditor_advanced {
@@ -127,7 +127,7 @@ form#admin-storyeditor_advanced dl dd ul.navi li {
   padding: 0;
 }
 
-/* プレビュー */
+/* Preview */
 div#preview {
   margin: 1em 0 0 0;
   padding: 0;
