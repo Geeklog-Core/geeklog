@@ -2,7 +2,7 @@
 $(document).ready(function() {
     var fix_tooltips = function() {
         // fix each tooltip
-        $('.tooltip').each(function() {
+        $('.gl-tooltip').each(function() {
             // size of the viewport
             var $w = $(window);
             var viewport_height = parseInt($w.height());

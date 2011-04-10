@@ -15,16 +15,17 @@
   Tooltips 
 --------------------------------------*/
 
-a.tooltip {
+a.gl-tooltip {
     border-bottom: 1px dotted #000000; color: #000000; outline: none;
     text-decoration: none;
     position: relative;
 }
-a.tooltip span {
+a.gl-tooltip span {
     margin-left: -999em;
     position: absolute;
+    text-align: left;
 }
-a.tooltip:hover span {
+a.gl-tooltip:hover span {
     border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; 
     box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
     font-size: 1em; text-align: left; white-space:normal;
@@ -32,14 +33,14 @@ a.tooltip:hover span {
     position: absolute; left: 2.2em; top: 2.2em; z-index: 99;
     margin-left: 0; width: 250px;
 }
-a.tooltip:hover img.icon {
+a.gl-tooltip:hover img.icon {
     border: 0; margin: -15px 0 0 -51px;
     float: left; position: absolute;
 }
-a.tooltip img#tooltip-icon { 
+a.gl-tooltip img#gl-tooltip-icon { 
     border: 0;
 }
-a.tooltip:hover em {
+a.gl-tooltip:hover em {
     font-family: Candara, Tahoma, Geneva, sans, sans-serif; font-size: 1.2em; font-weight: bold;
     display: block; padding: 0.2em 0 0.6em 0.4em;
 }
