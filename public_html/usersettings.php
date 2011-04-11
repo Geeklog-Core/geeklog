@@ -74,7 +74,8 @@ function edituser()
     $navbar->set_selected($LANG_MYACCOUNT['pe_namepass']);
     $preferences->set_var ('navbar', $navbar->generate());
 
-    $preferences->set_var ('no_javascript_warning', $LANG04[150]);
+    //$preferences->set_var ('no_javascript_warning', $LANG04[150]);
+    $preferences->set_var('noscript', COM_NoScript());
 
     $preferences->set_var ('cssid1', 1);
     $preferences->set_var ('cssid2', 2);

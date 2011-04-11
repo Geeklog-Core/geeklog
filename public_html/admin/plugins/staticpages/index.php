@@ -67,7 +67,7 @@ if (!SEC_hasRights('staticpages.edit')) {
 function staticpageeditor_form($A, $error = false)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
-           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG24,
+           $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
            $LANG_postmodes, $MESSAGE, $_IMAGE_TYPE, $_SCRIPTS;
 
     $template_path = staticpages_templatePath('admin');
@@ -95,9 +95,19 @@ function staticpageeditor_form($A, $error = false)
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
         
-        $js = '// Setup editor path for FCKeditor JS Functions
-            geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';
-        $_SCRIPTS->setJavaScript($js, true);        
+        // Shouldn't really have to check if anonymous user but who knows...
+        if (COM_isAnonUser()) {
+            $link_message = "";
+        } else {
+            $link_message = $LANG01[138];    
+        } 
+        $sp_template->set_var('noscript', COM_NoScript(false, '', $link_message));        
+        
+        // Add JavaScript
+        $js = 'geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';
+        // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
+        $js .= 'document.getElementById("advanced_editor").style.display="";';                 
+        $_SCRIPTS->setJavaScript($js, true);
         $_SCRIPTS->setJavaScriptFile('staticpages_fckeditor', '/javascript/staticpages_fckeditor.js');
 
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);

@@ -1,12 +1,7 @@
 
 <!-- admin/story/storyeditor_advanced.thtml { -->
 
-<!-- Hide the Advanced Editor as Javascript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
-<noscript>
-  <p class="pluginAlert">
-    {lang_nojavascript}{no_javascript_return_link}
-  </p>
-</noscript>
+{noscript}
 
 <div id="advanced_editor" style="display: none;">
 {navbar}

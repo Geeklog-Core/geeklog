@@ -747,7 +747,7 @@ class config {
     function get_ui($grp, $sg='0', $change_result=null)
     {
         global $_CONF, $LANG_CONFIG, $LANG_configsubgroups, $LANG_tab, $LANG_fs,
-            $_SCRIPTS;
+            $_SCRIPTS, $LANG01;
 
         if(!array_key_exists($grp, $LANG_configsubgroups)) {
             $LANG_configsubgroups[$grp] = array();
@@ -778,6 +778,12 @@ class config {
         $t->set_file(array('main' => 'configuration.thtml',
                            'menugroup' => 'menu_element.thtml'));
 
+        $link_message = $LANG01[139];   
+        $t->set_var('noscript', COM_NoScript(false, '', $link_message));
+        // Hide the Configuration as Javascript is currently required. If JS is enabled then the JS below will un-hide it
+        $js .= 'document.getElementById("advanced_editor").style.display="";';                 
+        $_SCRIPTS->setJavaScript($js, true);        
+        
         $t->set_var('gltoken_name', CSRF_TOKEN);
         $t->set_var('gltoken', SEC_createToken());
         

@@ -6739,6 +6739,46 @@ function COM_getLanguageName()
 }
 
 /**
+* Returns text that will display if JavaScript is not enabled in the browser
+*
+* @param    boolean $warning            If true displays default JavaScript recommended warning message
+*                                       If false displays default JavaScript Required message
+* @param    string  $noscript_message   Used instead of default message
+* @param    string  $link_message       Secondary message that may contain a link
+* @return   string                      noscript html tag with message(s)
+*
+*/
+function COM_NoScript($warning = true, $noscript_message = '', $link_message = '')
+{
+    global $_CONF, $LANG01;
+    
+    $noscript = COM_newTemplate($_CONF['path_layout']);
+    $noscript->set_file(array('noscript' => 'noscript.thtml'));    
+    
+    if ($warning) {
+        if (empty($noscript_message)) {
+            $noscript_message =  $LANG01[136];
+        }
+    } else {
+        if (empty($noscript_message)) {
+            $noscript_message =  $LANG01[137];
+        }
+    }
+    $noscript->set_var('lang_nojavascript', $noscript_message);
+    
+    if (!empty($link_message)) {
+        $noscript->set_var('hide_link', '');
+        $noscript->set_var('no_javascript_return_link', $link_message);
+    } else {
+        $noscript->set_var('hide_link', ' style="display:none;"');
+        $noscript->set_var('no_javascript_return_link', '');
+    }
+    
+    $retval =  $noscript->finish($noscript->parse('output', 'noscript'));
+    return $retval;    
+}
+
+/**
 * Returns an text/image that will display a tooltip
 *
 * This tooltip is based on an example from http://downloads.sixrevisions.com/css-tooltips/index.html

@@ -1,5 +1,4 @@
-<noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
-
+{noscript}
 <div id="pe_navbar" style="display:none">
 {navbar}
 </div>

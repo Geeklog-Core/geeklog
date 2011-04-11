@@ -1,3 +1,5 @@
+                                {noscript}
+                                <div id="advanced_editor" style="display:none;">
                                 {start_block_postacomment}
                                             <form action="{form_url}" method="post" onsubmit='set_postcontent();'>
                                                 <table cellspacing="0" cellpadding="3" width="100%">
@@ -59,3 +61,4 @@
                                                 </table>
                                             </form>
                                 {end_block}
+                                </div>

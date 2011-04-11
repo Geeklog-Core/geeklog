@@ -1,7 +1,7 @@
 
 <!-- preferences/profile.thtml { -->
 
-<noscript><p class="pluginAlert">{no_javascript_warning}</p></noscript>
+{noscript}
 
 <div id="pe_navbar" style="display:none">
 {navbar}

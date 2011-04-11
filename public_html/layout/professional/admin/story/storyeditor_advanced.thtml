@@ -1,11 +1,4 @@
-<!-- Hide the Advanced Editor as Javascript is required. If JS is not enabled then the message below in the <nonscript> tags will be displayed -->
-<noscript>
-    <div class="pluginAlert aligncenter" style="border:1px dashed #ccc;margin-top:10px;padding:15px;">{lang_nojavascript}
-    <p>{no_javascript_return_link}</p>
-    </div>
-</noscript>
-
-<br{xhtml}>
+{noscript}
 <div id="advanced_editor" style="display:none;">
     {navbar}
     <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();'>
