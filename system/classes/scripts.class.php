@@ -270,7 +270,7 @@ class scripts {
     * Set JavaScript file to load
     *
     * @param    $name       name of JavaScript file
-    * @param    $file       location of file relative to public_html directory. Do not include '/' at beginning
+    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
     * @param    $footer     set to true to include script in footer, else script placed in header
     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
     * @access   public
@@ -312,7 +312,7 @@ class scripts {
     * This function is used to include any CSS needed by the JavaScript Libraries
     *
     * @param    $name       name of CSS file
-    * @param    $file       location of file relative to public_html directory. Do not include '/' at beginning
+    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
     * @param    $load       set to true to load script right away. Should only be loaded when related script is loaded
     * @access   private
     * @return   boolean 
@@ -349,7 +349,7 @@ class scripts {
     * Set CSS file to load
     *
     * @param    $name       name of CSS file
-    * @param    $file       location of file relative to public_html directory. Do not include '/' at beginning
+    * @param    $file       location of file relative to public_html directory. Include '/' at beginning
     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
     * @access   public
     * @return   boolean 
