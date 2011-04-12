@@ -1124,10 +1124,10 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
 
     case 'pi_dependencies':
             if (PLG_checkDependencies($A['pi_name'])) {
-                $retval = COM_Tooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+                $retval = COM_getTooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
             } else {
                 $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
-                $retval = COM_Tooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+                $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
             }
         break;
 
@@ -1412,10 +1412,10 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
 
     case 'pi_dependencies':
         if (PLG_checkDependencies($A['pi_name'])) {
-            $retval = COM_Tooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+            $retval = COM_getTooltip($LANG32[51], PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
         } else {
             $style = "display: inline; color: #a00; border-bottom: 1px dotted #a00;";
-            $retval = COM_Tooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
+            $retval = COM_getTooltip("<b class='notbold' style='$style'>{$LANG32[52]}</b>", PLG_printDependencies($A['pi_name'], $A['pi_gl_version']));
         }
         break;
 
