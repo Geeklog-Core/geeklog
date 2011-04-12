@@ -873,7 +873,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 } else {
                     $link_message = $LANG01[138];    
                 } 
-                $comment_template->set_var('noscript', COM_NoScript(false, '', $link_message));
+                $comment_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
                 
                 // Add JavaScript
                 $js = 'geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';

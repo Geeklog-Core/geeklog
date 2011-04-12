@@ -779,9 +779,9 @@ class config {
                            'menugroup' => 'menu_element.thtml'));
 
         $link_message = $LANG01[139];   
-        $t->set_var('noscript', COM_NoScript(false, '', $link_message));
+        $t->set_var('noscript', COM_getNoScript(false, '', $link_message));
         // Hide the Configuration as Javascript is currently required. If JS is enabled then the JS below will un-hide it
-        $js .= 'document.getElementById("advanced_editor").style.display="";';                 
+        $js = 'document.getElementById("advanced_editor").style.display="";';                 
         $_SCRIPTS->setJavaScript($js, true);        
         
         $t->set_var('gltoken_name', CSRF_TOKEN);
@@ -1811,7 +1811,7 @@ class config {
             }              
         } else {
             $t->set_var('doc_url', '');
-            $retval = "(" . COM_Tooltip("?", $configtext, '', $option,'information') . ")";
+            $retval = "(" . COM_getTooltip("?", $configtext, '', $option,'information') . ")";
             $t->set_var('doc_link', $retval);            
         }
 

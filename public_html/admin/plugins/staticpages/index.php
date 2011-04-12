@@ -101,7 +101,7 @@ function staticpageeditor_form($A, $error = false)
         } else {
             $link_message = $LANG01[138];    
         } 
-        $sp_template->set_var('noscript', COM_NoScript(false, '', $link_message));        
+        $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));        
         
         // Add JavaScript
         $js = 'geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';

@@ -3977,7 +3977,7 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
             $comma = ', ';
         }
         if (! empty($description[$tag])) {
-           $retval .= $comma . COM_Tooltip('[' . $tag . ':]', $description[$tag], '', $LANG01[132],'information');
+           $retval .= $comma . COM_getTooltip('[' . $tag . ':]', $description[$tag], '', $LANG01[132],'information');
         } else {
             $retval .= $comma . '[' . $tag . ':]';
         }
@@ -6748,7 +6748,7 @@ function COM_getLanguageName()
 * @return   string                      noscript html tag with message(s)
 *
 */
-function COM_NoScript($warning = true, $noscript_message = '', $link_message = '')
+function COM_getNoScript($warning = true, $noscript_message = '', $link_message = '')
 {
     global $_CONF, $LANG01;
     
@@ -6792,7 +6792,7 @@ function COM_NoScript($warning = true, $noscript_message = '', $link_message = '
 * @return   string              HTML tooltip
 *
 */
-function COM_Tooltip($hoverover = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'gl-tooltip') 
+function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $template = 'classic', $class = 'gl-tooltip') 
 {
     global $_CONF, $_IMAGE_TYPE, $_SCRIPTS;
     
