@@ -17,7 +17,7 @@
 <!-- BEGIN text-area -->
 <tr id="{name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
 <td>
-<textarea class="opt{error_class}" name="{name}" style="width:300px" cols="3">{value}</textarea>
+<textarea class="opt{error_class}" name="{name}" style="width:300px" cols="3" rows="3">{value}</textarea>
 {delete}{error_block}
 </td></tr>
 <!-- END text-area -->
