@@ -668,7 +668,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('lang_publishoptions',$LANG24[76]);
-    $story_templates->set_var('noscript', COM_NoScript(false, $LANG24[77], sprintf($LANG24[78],$_CONF['site_admin_url'], $sid)));
+    $story_templates->set_var('noscript', COM_getNoScript(false, $LANG24[77], sprintf($LANG24[78],$_CONF['site_admin_url'], $sid)));
     
     $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode'));
 
