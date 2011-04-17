@@ -1,4 +1,5 @@
-                                <noscript><div class="pluginAlert" style="padding:10px;">{no_javascript_warning}</div></noscript>
+                            {noscript}
+                            <div id="advanced_editor" style="display:none;">
                                 <form action="{site_admin_url}/plugins/polls/index.php" method="post">
                                     <table cellspacing="0" cellpadding="2" width="100%">
                                         <tr>
@@ -57,3 +58,4 @@
                                     <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
                                     </p>
                                 </form>
+                            </div>

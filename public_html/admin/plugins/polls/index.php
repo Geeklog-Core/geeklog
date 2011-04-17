@@ -423,6 +423,12 @@ function editpoll ($pid = '')
         $access = 3;
     }
     
+    $poll_templates->set_var('noscript', COM_getNoScript(false, '', $link_message));        
+    
+    // Add JavaScript
+    // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
+    $js = 'document.getElementById("advanced_editor").style.display="";';                 
+    $_SCRIPTS->setJavaScript($js, true);    
     $_SCRIPTS->setJavaScriptFile('polls_editor', '/polls/polls_editor.js');
 
     $poll_templates->set_var('lang_pollid', $LANG25[6]);
