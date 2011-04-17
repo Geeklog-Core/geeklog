@@ -4,7 +4,7 @@
   <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" onsubmit='set_postcontent();'>
       <table border="0" cellspacing="0" cellpadding="3" width="100%">
           <tr>
-              <td align="right">{lang_title}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_title}:</td>
               <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"{xhtml}></td>
           </tr>
           <tr>
@@ -12,14 +12,14 @@
               <td><input type="text" size="48" maxlength="255" name="sp_page_title" value="{sp_page_title}"{xhtml}></td>
           </tr> 
           <tr>
-              <td align="right">{lang_addtomenu}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_addtomenu}:</td>
               <td>
                   <input type="checkbox" name="sp_onmenu" {onmenu_checked}{xhtml}>&nbsp;&nbsp;{lang_label}:
                   <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}"{xhtml}>
               </td>
           </tr>
           <tr>
-              <td align="right">{lang_pageformat}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_pageformat}:</td>
               <td>
                   <select name="sp_format">
                       <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
@@ -30,7 +30,7 @@
               </td>
           </tr>
         <tr>
-            <td align="right">{lang_mode}:</td>
+            <td align="right" style="white-space:nowrap;">{lang_mode}:</td>
             <td>
                 <select name="commentcode">
                     {comment_options}
@@ -38,11 +38,11 @@
             </td>
         </tr>
         <tr>
-            <td align="right">{lang_postmode}:</td>
+            <td align="right" style="white-space:nowrap;">{lang_postmode}:</td>
             <td><select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
         </tr>
           <tr>
-            <td align="right">{lang_id}:</td>
+            <td align="right" style="white-space:nowrap;">{lang_id}:</td>
             <td><input type="text" dir="ltr" name="sp_id" size="40" maxlength="40" value="{sp_id}"{xhtml}></td>
           </tr>
           <tr>
@@ -50,11 +50,11 @@
             <td style="padding-bottom:15px;">{example_url}</td>
           </tr>
           <tr{hide_meta}>
-              <td valign="top" align="right">{lang_metadescription}:</td>
+              <td valign="top" align="right" style="white-space:nowrap;">{lang_metadescription}:</td>
             <td><textarea name="meta_description" style="width:100%" cols="45" rows="2">{meta_description}</textarea></td>
           </tr>
           <tr{hide_meta}>
-            <td valign="top" align="right">{lang_metakeywords}:</td>
+            <td valign="top" align="right" style="white-space:nowrap;">{lang_metakeywords}:</td>
             <td><textarea name="meta_keywords" style="width:100%" cols="45" rows="2">{meta_keywords}</textarea></td>
           </tr>              
            <tr>
@@ -83,15 +83,15 @@
                 </td>
              </tr>
           <tr>
-            <td align="right">{lang_draft}:</td>
+            <td align="right" style="white-space:nowrap;">{lang_draft}:</td>
             <td><input type="checkbox" name="draft_flag" {draft_flag_checked}{xhtml}></td>
           </tr>
           <tr>
-              <td align="right">{lang_lastupdated}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_lastupdated}:</td>
               <td>{sp_formateddate}</td>
           </tr>
           <tr>
-              <td align="right">{lang_hits}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_hits}:</td>
               <td>
                 <table cellspacing="0" cellpadding="0" width="100%">
                   <tr>
@@ -105,42 +105,42 @@
               <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
-              <td align="right" valign="top">{lang_template}:</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{lang_template}:</td>
               <td valign="top"><input type="checkbox" name="template_flag" {template_flag_checked}{xhtml}>&nbsp;&nbsp;{lang_template_flag_msg}</td>
           </tr>
           <tr>
-              <td align="right">{lang_use_template}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_use_template}:</td>
               <td>{use_template_selection}&nbsp;&nbsp;&nbsp;{lang_use_template_msg}</td>
           </tr>             
           <tr>
               <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
-              <td align="right" valign="top">{lang_centerblock}</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{lang_centerblock}</td>
               <td valign="top"><input type="checkbox" name="sp_centerblock" {centerblock_checked}{xhtml}>&nbsp;&nbsp;{lang_centerblock_msg}</td>
           </tr>
           <tr>
-              <td align="right">{lang_position}</td>
+              <td align="right" style="white-space:nowrap;">{lang_position}</td>
               <td>{pos_selection}&nbsp;&nbsp;&nbsp;{lang_topic}&nbsp;&nbsp;{topic_selection}</td>
           </tr>
           <tr>
               <td colspan="2"><hr{xhtml}></td>
           </tr>
           <tr>
-              <td align="right" valign="top">{inblock_msg}</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{inblock_msg}</td>
               <td valign="top"><input type="checkbox" name="sp_inblock" {inblock_checked}{xhtml}>&nbsp;&nbsp;{inblock_info}</td>
           </tr>
           <tr>
-              <td align="right" valign="top">{lang_centerblock_help}</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{lang_centerblock_help}</td>
               <td valign="top"><input type="text" name="sp_help" value="{centerblock_help}" size="50"{xhtml}>&nbsp;{lang_centerblock_include}<br{xhtml}>
               {lang_centerblock_desc}</td>
           </tr>
           <tr>
-              <td align="right" valign="top">{php_msg}</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{php_msg}</td>
               <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
           </tr>
           <tr>
-              <td align="right" valign="top">{exit_msg}</td>
+              <td align="right" valign="top style="white-space:nowrap;"">{exit_msg}</td>
               <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</td>
           </tr>
           <tr>
@@ -150,14 +150,14 @@
               <td colspan="2"><b>{lang_accessrights}<b></td>
           </tr>
           <tr>
-              <td align="right">{lang_owner}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
               <td>
                 {owner_link} {camera_icon}
                 <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
               </td>
           </tr>
           <tr>
-              <td align="right">{lang_group}:</td>
+              <td align="right" style="white-space:nowrap;">{lang_group}:</td>
               <td>
                   {group_dropdown}
               </td>

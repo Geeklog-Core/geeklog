@@ -3,27 +3,27 @@
     <form action="{site_admin_url}/plugins/links/category.php" method="post">
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr>
-                <td align="right">{lang_parent}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_parent}:</td>
                 <td><select name="pid">{category_options}</select></td>
             </tr>
             <tr>
-                <td align="right">{lang_category}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_category}:</td>
                 <td><input type="text" name="category" size="32" maxlength="32" value="{category_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_cid}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_cid}:</td>
                 <td><input type="text" name="cid" size="32" maxlength="32" value="{cid_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_description}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_description}:</td>
                 <td><input type="text" name="description" size="50" maxlength="255" value="{description_value}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_topic}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_topic}:</td>
                 <td>{topic_selection}<td>
             </tr>
             <tr>
-                <td align="right">{lang_num_links}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_num_links}:</td>
                 <td>{num_links}<td>
             </tr>
             <tr>
@@ -33,11 +33,11 @@
                 <td colspan="2"><b>{lang_accessrights}</b></td>
             </tr>
             <tr>
-                <td align="right">{lang_owner}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
                 <td>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></td>
             </tr>
             <tr>
-                <td align="right">{lang_group}:</td>
+                <td align="right" style="white-space:nowrap;">{lang_group}:</td>
                 <td>
                     {group_dropdown}
                 </td>

@@ -1,13 +1,13 @@
                             <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post">
                                 <table border="0" cellspacing="0" cellpadding="3">
                                     <tr>
-                                        <td align="right"><b>{lang_eventtitle}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_eventtitle}:</td>
                                         <td>
                                             <input type="text" size="48" maxlength="128" name="title" value="{event_title}"{xhtml}>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_eventtype}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_eventtype}:</td>
                                         <td>
                                             <select name="event_type">
                                                 <option value="">--</option>
@@ -16,7 +16,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right" valign="top"><b>{lang_eventstartdate}:</b></td>
+                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventstartdate}:</td>
                                         <td>
                                           <span dir="ltr">
                                             <select name="start_month">
@@ -30,7 +30,7 @@
                                             <select name="start_year">
                                                 {startyear_options}
                                             </select>&nbsp;&nbsp;
-                                            <b>{lang_starttime}: </b>
+                                            {lang_starttime}: 
                                             <select name="start_hour">
                                                 {starthour_options}
                                             </select>
@@ -43,7 +43,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right" valign="top"><b>{lang_eventenddate}:</b></td>
+                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventenddate}:</td>
                                         <td>
                                           <span dir="ltr">
                                             <select name="end_month">
@@ -57,7 +57,7 @@
                                             <select name="end_year">
                                                 {endyear_options}
                                             </select>&nbsp;&nbsp;
-                                            <b>{lang_endtime}: </b>
+                                            {lang_endtime}: 
                                             <select name="end_hour">
                                                 {endhour_options}
                                             </select>
@@ -70,45 +70,45 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_alldayevent}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_alldayevent}:</td>
                                         <td><input type="checkbox" name="allday" {allday_checked}{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right" valign="top"><b>{lang_location}:</b></td>
+                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_location}:</td>
                                         <td>
                                             <textarea name="location" cols="45" rows="2">{event_location}</textarea>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_addressline1}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_addressline1}:</td>
                                         <td><input type="text" name="address1" size="40" value="{event_address1}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_addressline2}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_addressline2}:</td>
                                         <td><input type="text" name="address2" size="40" value="{event_address2}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_city}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_city}:</td>
                                         <td><input type="text" name="city" size="40" maxlength="60" value="{event_city}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_state}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_state}:</td>
                                         <td><input type="text" name="state" size="40" value="{event_state}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_zipcode}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_zipcode}:</td>
                                         <td><input type="text" name="zipcode" size="5" maxlength="5" value="{event_zipcode}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_eventurl}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_eventurl}:</td>
                                         <td><input type="text" dir="ltr" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"{xhtml}> {lang_includehttp}</td>
                                     </tr>
                                     <tr>
-                                        <td align="right" valign="top"><b>{lang_eventdescription}:</b></td>
+                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventdescription}:</td>
                                         <td><textarea name="description" style="width:100%" rows="8">{event_description}</textarea></td>
                                     </tr>
                                     <tr valign="top">
-                                        <td align="right"><b>{lang_postmode}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_postmode}:</td>
                                         <td>
                                             <select name="postmode">
                                                 {post_options}
@@ -118,7 +118,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td align="right"><b>{lang_hits}:</b></td>
+                                        <td align="right" style="white-space:nowrap;">{lang_hits}:</td>
                                         <td>{hits}</td>
                                     </tr>
                                     <tr>
@@ -128,11 +128,11 @@
                                         <td colspan="2"><b>{lang_accessrights}</b></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_owner}:</td>
+                                        <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
                                         <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td align="right">{lang_group}:</td>
+                                        <td align="right" style="white-space:nowrap;">{lang_group}:</td>
                                         <td>
                                             {group_dropdown}
                                         </td>

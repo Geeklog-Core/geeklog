@@ -6,25 +6,25 @@
                                     <table border="0" cellspacing="0" cellpadding="2" width="100%">
 
                                         <tr>
-                                            <td align="right">{lang_linktitle}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_linktitle}:</td>
                                             <td>
                                                 <input type="text" size="48" maxlength="96" name="title" value="{link_title}"{xhtml}>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_linkid}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_linkid}:</td>
                                             <td>
                                                 <input type="text" dir="ltr" size="40" maxlength="40" name="lid" value="{link_id}"{xhtml}>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_linkurl}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_linkurl}:</td>
                                             <td>
                                                 <input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="{link_url}"{xhtml}> {lang_includehttp}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_category}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_category}:</td>
                                             <td>
                                                 <select name="categorydd">
                                                     {category_options}
@@ -33,15 +33,15 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_linkhits}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_linkhits}:</td>
                                             <td>
                                                 <input type="text" size="11" name="hits" value="{link_hits}"{xhtml}>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="right" valign="top">{lang_linkdescription}:</td>
+                                            <td align="right" valign="top" style="white-space:nowrap;">{lang_linkdescription}:</td>
                                             <td>
-                                                <textarea name="description" cols="50" rows="8">{link_description}</textarea>
+                                                <textarea name="description" style="width:100%" rows="8">{link_description}</textarea>
                                                 <br{xhtml}>
                                                 {lang_allowed_html}
                                             </td>
@@ -53,11 +53,11 @@
                                             <td colspan="2"><b>{lang_accessrights}</b></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_owner}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
                                             <td>{owner_name}<input type="hidden" name="owner_id" value="{link_ownerid}"{xhtml}></td>
                                         </tr>
                                         <tr>
-                                            <td align="right">{lang_group}:</td>
+                                            <td align="right" style="white-space:nowrap;">{lang_group}:</td>
                                             <td>
                                                 {group_dropdown}
                                             </td>

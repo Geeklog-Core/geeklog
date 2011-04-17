@@ -1,12 +1,12 @@
                                         <table id="po_{question_id}" {style} width="100%">
                                             <tr>
-                                                <td align="right" valign="top">{lang_question}:</td>
+                                                <td align="right" valign="top" style="white-space:nowrap;">{lang_question}:</td>
                                                 <td>
                                                     <input type="text" name="question[]" value="{question_text}" size="60" maxlength="255"{xhtml}>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" valign="top">{lang_answersvotes}:</td>
+                                                <td align="right" valign="top" style="white-space:nowrap;">{lang_answersvotes}:</td>
                                                 <td>
                                                     {answer_option}
                                                 </td>
