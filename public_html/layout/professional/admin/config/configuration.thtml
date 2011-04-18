@@ -1,5 +1,5 @@
 {noscript}
-<div id="advanced_editor" style="display:none;">
+<div id="geeklog_config_editor" style="display:none;">
     <form method="post" action="{site_admin_url}/configuration.php" name="group">
         <div>
             <input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
