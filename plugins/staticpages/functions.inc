@@ -323,6 +323,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         $spage = COM_newTemplate($template_path);
         $spage->set_file(array('page'     => 'staticpage.thtml',
                                'comments' => 'spcomments.thtml'));
+        
+        $spage->set_var('sp_id', $page);   
+        
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
@@ -435,6 +438,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('sp_hits', $num_hits);
             $spage->set_var('hits', $hits);
         }
+
+        // Call to plugins to set template variables
+        PLG_templateSetVars('staticpage', $spage); 
 
         $retval .= $spage->finish($spage->parse('output', 'page'));
         if ($A['sp_inblock'] == 1) {
