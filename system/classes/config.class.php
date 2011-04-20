@@ -1118,6 +1118,7 @@ class config {
         $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
 
         $t->set_var('name', $name);
+        $t->set_var('id_name', str_replace(array('[', ']'), array('_', ''), $name));
         $t->set_var('display_name', $display_name);
         
         // check tmp values
