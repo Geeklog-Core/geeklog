@@ -6,11 +6,11 @@
 <!-- END validation_error_block -->
 
 <!-- BEGIN delete-button -->
-<input type="button" class="del-link button" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
+<input type="button" class="del-link" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
 <!-- END delete-button -->
 
 <!-- BEGIN text-element -->
-<tr id="{name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
+<tr id="text_{id_name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
 <td>
 <input type="text" class="opt{error_class}" name="{name}" style="width:300px" value="{value}"{xhtml}>
 {delete}{error_block}
@@ -18,22 +18,22 @@
 <!-- END text-element -->
 
 <!-- BEGIN text-area -->
-<tr id="{name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
+<tr id="textarea_{id_name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
 <td>
-<textarea class="opt{error_class}" name="{name}" style="width:300px" cols="3">{value}</textarea>
+<textarea class="opt{error_class}" name="{name}" style="width:300px" cols="3" rows="3">{value}</textarea>
 {delete}{error_block}
 </td></tr>
 <!-- END text-area -->
 
 <!-- BEGIN placeholder-element -->
-<tr id="{name}" class="config_name"><td class="alignright">{display_name}</td><td>
+<tr id="placeholder_{id_name}" class="config_name"><td class="alignright">{display_name}</td><td>
 <input type="hidden" name="{name}" value="{value}"{xhtml}>
 {delete}
 </td></tr>
 <!-- END placeholder-element -->
 
 <!-- BEGIN select-element -->
-<tr{hide_row} id="{name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
+<tr{hide_row} id="select_{id_name}" class="config_name"><td class="alignright">{display_name} {doc_link} {unset_link}</td>
 <td>
 <select name="{name}" class="opt{error_class}">
   <!-- BEGIN select-options -->
@@ -45,7 +45,7 @@
 <!-- END select-element -->
 
 <!-- BEGIN unset-param -->
-<tr id="{name}" class="config_name"><td class="alignright">{display_name} {doc_link}</td>
+<tr id="unset_param_{id_name}" class="config_name"><td class="alignright">{display_name} {doc_link}</td>
 <td><a href="#{name}" class="restore_param">{lang_enable}</a></td>
 </tr>
 <!-- END unset-param -->
@@ -53,10 +53,10 @@
 <!-- BEGIN list-element -->
 <tr id="{name}" class="config_name"><td class="alignright" style="vertical-align:top">{display_name} {doc_link} {unset_link}</td>
 <td>
-<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);" class="button"{xhtml}>
+<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_table_{id_name}'), this);"{xhtml}>
 {delete}
 <input type="hidden" value="true" name="{name}[placeholder]"{xhtml}>
-<table style="display:none" id="arr_table" class="{arr_table_class_list}">
+<table style="display:none" id="arr_table_{id_name}" class="{arr_table_class_list}">
 <col width="100">
 <col width="100%">
 {my_elements}
@@ -66,13 +66,13 @@
 <!-- END list-element -->
 
 <!-- BEGIN keyed-add-button -->
-<tr id="{name}" class="config_name"><td colspan="2">
+<tr id="keyed_button_{id_name}" class="config_name"><td colspan="2">
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}><input style="width: 65px"{xhtml}>
 </td></tr>
 <!-- END keyed-add-button -->
 
 <!-- BEGIN unkeyed-add-button -->
-<tr id="{name}" class="config_name"><td colspan="2">
+<tr id="unkeyed_button_{id_name}" class="config_name"><td colspan="2">
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
 </td></tr>
 <!-- END unkeyed-add-button -->
