@@ -457,6 +457,7 @@ $j(function() {
         
         if ( dropDownShown ) {
             tabs.tabs('remove', tabsLength-1);
+            dropDownShown = false;
         }
         
         for ( tab in hiddenTabs ) {
