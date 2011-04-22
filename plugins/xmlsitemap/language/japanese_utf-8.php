@@ -54,13 +54,13 @@ $LANG_configsubgroups['xmlsitemap'] = array(
 );
 
 $LANG_tab['xmlsitemap'] = array(
-    'tab_main' => 'XMLSitemap Main Settings',
-    'tab_pri' => 'Priority',
-    'tab_freq' => 'Update frequency'
+    'tab_main' => 'XMLSitemapのメイン設定',
+    'tab_pri' => '優先度',
+    'tab_freq' => '更新頻度'
 );
 
 $LANG_fs['xmlsitemap'] = array(
-    'fs_main' => 'XMLSitemapの主要設定',
+    'fs_main' => 'XMLSitemapのメイン設定',
     'fs_pri' => '優先度（既定値 = 0.5、0.0 = 最低、1.0 = 最高）',
     'fs_freq' => '更新頻度'
 );
@@ -69,7 +69,7 @@ $LANG_fs['xmlsitemap'] = array(
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
-    9 => array('Forward to page' => 'item', 'Display List' => 'list', 'Display Home' => 'home', 'Display Admin' => 'admin'),
+    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     20 => array('常時' => 'always', '毎時間' => 'hourly', '毎日' => 'daily', '毎週' => 'weekly', '毎月' => 'monthly', '毎年' => 'yearly', '更新しない' => 'never')
 );

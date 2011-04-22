@@ -144,9 +144,9 @@ $LANG_confignames['polls'] = array(
     'delete_polls' => '所有者の削除と共に削除する',
     'aftersave' => 'アンケート保存後の画面遷移',
     'default_permissions' => 'パーミッション',
-    'autotag_permissions_poll' => '[poll: ] Permissions',
-    'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
-    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
+    'autotag_permissions_poll' => '[poll: ] パーミッション',
+    'autotag_permissions_poll_vote' => '[poll_vote: ] パーミッション',
+    'autotag_permissions_poll_result' => '[poll_result: ] パーミッション',
     'newpollsinterval' => 'アンケート投稿の間隔',
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
@@ -158,17 +158,17 @@ $LANG_configsubgroups['polls'] = array(
 );
 
 $LANG_tab['polls'] = array(
-    'tab_main' => 'General Polls Settings',
-    'tab_whatsnew' => 'What\'s New Block',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => 'アンケートのメイン設定',
+    'tab_whatsnew' => '新着情報ブロック',
+    'tab_permissions' => 'パーミッションのデフォルト',
+    'tab_autotag_permissions' => '自動タグのパーミッション'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
-    'fs_whatsnew' => 'What\'s New Block',
+    'fs_whatsnew' => '新着情報ブロック',
     'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => '自動タグのパーミッション'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -177,9 +177,9 @@ $LANG_configselects['polls'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
-    9 => array('作成したアンケートを表示する' => 'item', 'アンケート管理を表示する' => 'list', 'アンケート一覧を表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('アクセス不可' => 0, '利用する' => 2)
 );
 
 ?>
