@@ -2,14 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | oauthhelper.class.php                                                     |
 // | version: 1.0.0                                                            |
 // |                                                                           |
 // | Geeklog Distributed Authentication Module.                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010 by the following authors:                              |
+// | Copyright (C) 2010-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Hiroron          - hiroron AT hiroron DOT com                    |
 // +---------------------------------------------------------------------------+
@@ -205,15 +205,22 @@ class OAuthConsumerBaseClass {
         if (is_array($users)) {
             $sql = "UPDATE {$_TABLES['users']} SET ";
             if (!empty($users['fullname'])) {
-                $updatecolumns .= "fullname='{$users['fullname']}'";
+                $fn = addslashes($users['fullname']);
+                $updatecolumns .= "fullname='$fn'";
             }
             if (!empty($users['email'])) {
-                if (!empty($updatecolumns)) { $updatecolumns .= ", "; }
-                $updatecolumns .= "email='{$users['email']}'";
+                if (!empty($updatecolumns)) {
+                    $updatecolumns .= ", ";
+                }
+                $em = addslashes($users['email']);
+                $updatecolumns .= "email='$em'";
             }
             if (!empty($users['homepage'])) {
-                if (!empty($updatecolumns)) { $updatecolumns .= ", "; }
-                $updatecolumns .= "homepage='{$users['homepage']}'";
+                if (!empty($updatecolumns)) {
+                    $updatecolumns .= ", ";
+                }
+                $hp = addslashes($users['homepage']);
+                $updatecolumns .= "homepage='$hp'";
             }
             $sql = $sql . $updatecolumns . " WHERE uid={$_USER['uid']}";
 
@@ -336,9 +343,13 @@ class OAuthConsumerBaseClass {
             // COM_errorLog("userinfo[about]={$userinfo['about']}");
             // COM_errorLog("userinfo[location]={$userinfo['location']}");
             $sql = "UPDATE {$_TABLES['userinfo']} SET";
-            $sql .= !empty($userinfo['about']) ? " about = '{$userinfo['about']}'" : "";
+            if (! empty($userinfo['about'])) {
+                $sql .= " about = '" . addslashes($userinfo['about']) . "'";
+            }
             $sql .= (!empty($userinfo['about']) && !empty($userinfo['location'])) ? "," : "";
-            $sql .= !empty($userinfo['location']) ? " location = '{$userinfo['location']}'" : "";
+            if (! empty($userinfo['location'])) {
+                $sql .= " location = '" . addslashes($userinfo['location']) . "'";
+            }
             $sql .= " WHERE uid = {$uid}";
             // COM_errorLog("sql={$sql}");
             DB_query($sql);
