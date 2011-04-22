@@ -353,7 +353,8 @@ $j(function() {
     }
     
     function selectConf(confName) {
-        var conf = $j( document.getElementById(confName.substr(1)) );
+        confName = "config_" + confName.substr(1).replace('[', '_').replace(']', '');
+        var conf = $j( document.getElementById(confName) );
         
         conf.addClass('active-config');
     }
