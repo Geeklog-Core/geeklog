@@ -1,11 +1,35 @@
 Geeklog History/Changes:
 
-Apr 3, 2011 (1.8.0b1)
------------
+Apr 2?, 2011 (1.8.0b1)
+------------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
+
+- Sanitize OAuth user data (bug #0001322) [Dirk]
+- Fixed HTML errors in Configuration (bug #0001318, patch provided by dengen)
+  [Tom, Rouslan]
+- Fixed check for wrong edit permission in the Calendar plugin (bug #0001317,
+  patch provided by dengen)
+- Added missing jQuery widgets and effects (bug #0001312) [Tom]
+- Display a warning when JavaScript is required but disabled, e.g. in the
+  comment form with advanved editor enabled (bug #0001282) [Tom]
+- Make sure tooltips are always fully visible (bug #0001304) [Rouslan]
+- Added missing images/right_arrow.png for the OpenID login form (bug #0001311)
+  [Rouslan]
+- Don't load style.css if the theme doesn't use it (bug #0001309) [Rouslan]
+- Fixed nesting of forms in profile.thtml (bug #0001296) [Tom]
+- Fixed plugin install issue with plugins that did not support tabs (bug
+  #0001305) [Tom]
+- Fixed validation of Configuration list entries with numerical values (bug
+  #0001298) [Tom]
+- Fixed use of mb_strlen() instead of MBYTE_strlen() in the validator class
+  (bug #0001299, patch provided by mystral-kk)
+
+
+Apr 3, 2011 (1.8.0b1)
+-----------
 
 - Added a COM_newTemplate function to allow overriding template instantiation
   (feature request #0001220, patch provided by Joe Mucchiello)
