@@ -1,12 +1,14 @@
 Geeklog History/Changes:
 
-Apr 2?, 2011 (1.8.0b1)
+Apr 2?, 2011 (1.8.0b2)
 ------------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
 
+- Fixed post mode being switched when plain text comment was previewed or edited
+  (bug #0001324) [Tom]
 - Sanitize OAuth user data (bug #0001322) [Dirk]
 - Fixed HTML errors in Configuration (bug #0001318, patch provided by dengen)
   [Tom, Rouslan]
