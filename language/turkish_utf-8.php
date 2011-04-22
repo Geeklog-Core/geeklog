@@ -175,7 +175,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -381,7 +385,7 @@ $LANG04 = array(
     147 => 'Þifrenizi, emailinizi ve beni hatýrla özelliklerini düzenleyin. Doðrulama için þifrenizi veya e-mail adresinizi iki kez girmeniz gerekmektedir.',
     148 => 'Kullanýcý Bilgileri',
     149 => 'Diðer Kullanýcýlarýn da göreceði kullanýcý bilgilerinizi düzenleyin.<li>Ýmzanýz yorumlarýnýza ve forumda ki mesajlarýnýzýn altýna otomatik olarak eklenir</li><li>Kendiniz hakkýnda paylaþmak istediklerinizi BIO bölümüne yazabilirsiniz</li><li>PGP Anahtarý (Boþ Býrakabilirsiniz)</li>',
-    150 => 'DÝKKAT: Javascript recommended for enhanced functionality',
+    150 => '',
     156 => 'Hesabýmý Sil',
     157 => 'Delete Option',
     158 => 'Time Zone',

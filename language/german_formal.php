@@ -180,7 +180,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -386,7 +390,7 @@ $LANG04 = array(
     147 => 'Hier können Sie Ihr Passwort und Ihre E-Mail-Adresse ändern sowie bestimmen, wie lange Sie eingeloggt bleiben wollen. Passwort und E-Mail müssen zum Ändern zweimal eingegeben werden.',
     148 => 'Informationen über Sie',
     149 => 'Hier können Sie eingeben, was andere User über Sie sehen können:<li>Die Signatur wird an Kommentare angefügt</li><li>In der Biographie können Sie etwas über sich erzählen</li><li>Sie können Ihren PGP-Key hinterlegen</li>',
-    150 => 'Hinweis: JavaScript wird nicht benötigt, aber empfohlen',
+    150 => '',
     156 => 'Account löschen',
     157 => 'Löschen',
     158 => 'Zeitzone',

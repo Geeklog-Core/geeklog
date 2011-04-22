@@ -177,7 +177,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -383,7 +387,7 @@ $LANG04 = array(
     147 => 'עירכו את סיסמת החשבון, כתובת האימייל ואת הכניסה האוטומטית למערכת שלכם. תצטרכו להכניס את אותה סיסמה או כתובת אימייל פעמיים בשביל אימות.',
     148 => 'מידע משתמש',
     149 => "שנו את מידע המשתמש שלכם שיוצג למשתמשים אחרים.<ul><li>החתימה שלכם תתווסף לכל תגובה או הודעה בפורום שתכתבו\n</li><li>הביוגרפיה שלכם היא תקציר מסכם של עצמכם בשביל לחלוק בו</li><li>\nחלקו את מפתח ה-PHP שלכם</li></ul>",
-    150 => 'אזהרה: ה-Javascript מיועד לביצועים מוגברים',
+    150 => '',
     156 => 'מחיקת החשבון',
     157 => 'אפשרות מחיקה',
     158 => 'איזור זמן',

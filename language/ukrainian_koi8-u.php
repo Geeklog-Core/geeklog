@@ -179,7 +179,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -385,7 +389,7 @@ $LANG04 = array(
     147 => 'Редагувати ваш пароль, електронну адресу та опц╕ю автовходу. Вам необх╕дно повторити пароль чи електронну адресу дв╕ч╕ для п╕дтвердження.',
     148 => '╤нформац╕я про користувача',
     149 => 'Зм╕нити ╕нформац╕ю про вас, що буде доступна ╕ншим користувачам.<li>П╕дпис буде додано до ваших коментар╕в та пост╕в у форум╕</li><li>Б╕ограф╕я - це ваш короткий житт╓пис, яким ви хочете под╕литись з ╕ншими</li><li>Додати ваш ключ PGP</li>',
-    150 => 'Попередження: для розширено╖ функц╕ональност╕ необх╕дна п╕дтримка Javascript',
+    150 => '',
     156 => 'Вилучити обл╕ковий запис',
     157 => 'Опц╕я вилучення',
     158 => 'Time Zone',

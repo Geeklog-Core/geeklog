@@ -85,7 +85,7 @@ $LANG01 = array(
     33 => 'エラー。ログファイルに書き込めません。',
     34 => 'エラー',
     35 => 'ログアウト',
-    36 => '',
+    36 => 'on',
     37 => '-',
     38 => 'フィード',
     39 => '更新',
@@ -184,7 +184,11 @@ $LANG01 = array(
     132 => 'インフォメーション',
     133 => '重要',
     134 => 'ヘルプ',
-    135 => '警告'
+    135 => '警告',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -390,7 +394,7 @@ $LANG04 = array(
     147 => 'パスワード、メールアドレス、自動ログイン機能を編集します。パスワードとメールアドレスは確認のため、2回入力する必要があります。',
     148 => '個人情報',
     149 => '他のユーザにも読める個人情報を編集します。<ul><li>「署名」はコメントや掲示板の投稿に付加されます。</li><li>「自己紹介」は他のユーザにも読める短い自己紹介です。</li><li>「PGP公開鍵」を公開しましょう。</li></ul>',
-    150 => '警告: 操作性向上のために、Javascriptをオンにすることをお勧めします',
+    150 => '',
     156 => 'アカウント削除',
     157 => 'アカウント削除オプション',
     158 => 'タイムゾーン',
@@ -953,11 +957,11 @@ $LANG28 = array(
     57 => '幽霊ユーザ',
     58 => '一時的ユーザ',
     59 => '過去のユーザ',
-    60 => '',
+    60 => 'Users that registered more than ',
     61 => 'ヶ月以前に登録後、一度もログインしていないユーザ。',
-    62 => '',
+    62 => 'Users that registered more than ',
     63 => 'ヶ月以前に登録して24時間以内にログイン後、再びログインしていないユーザ。',
-    64 => '',
+    64 => 'Normal users, who simply did not visit your site since ',
     65 => 'ヶ月間、サイトを訪問していないユーザ。',
     66 => 'リストを更新',
     67 => '登録して何ヶ月経つか',

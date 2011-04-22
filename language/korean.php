@@ -176,7 +176,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -382,7 +386,7 @@ $LANG04 = array(
     147 => '비밀번호, 메일주소, 자동로그인 기능을 편집합니다.  비밀번호와 메일주소는 확인을 위해, 2회 입력할 필요가 있습니다.',
     148 => '개인정보',
     149 => '다른 사용자도 읽을 수 있는 개인정보를 편집합니다. <li> [서명]은 덧글과 게시판의 덧글에 들어있습니다 </li><li> [자기소개] 는 다른 사용자도 읽을 수 있는 짤막한 자기소개입니다 </li><li>[PGP 공개키]를 공개합시다<li>',
-    150 => '경고 : 조작성 향상을 위해서 Javasxript를 on으로 할 것을 권해 드립니다.',
+    150 => '',
     156 => '어카운트 삭제',
     157 => '어카운트 삭제옵션',
     158 => 'Time Zone',

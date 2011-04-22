@@ -178,7 +178,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -384,7 +388,7 @@ $LANG04 = array(
     147 => '修改你的用户密码，电信，和自动登入作用。你需要输入你的密码或电信地址两次来避免错误。',
     148 => '用户信息',
     149 => '修改要显示给其他用户的你的用户信息.<li>你的签名会显示在你的评论或论坛标语的下面</li><li>个人简历是用来分享你自己的简介</li><li>分享你得 PGP 钥匙</li>',
-    150 => '注意: 建议用Javascript 来提高功能',
+    150 => '',
     156 => '删除用户',
     157 => '删除选项',
     158 => '时区',
