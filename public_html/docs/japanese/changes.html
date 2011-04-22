@@ -10,11 +10,76 @@
 
 <body>
 <p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
-<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更点</div>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更履歴</div>
 
-<h1>変更点</h1>
+<h1><a name="changes">変更履歴</a></h1>
 
-<p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更点の詳細なリストは、<a href="history.html">ChangeLog</a>をご覧ください。<tt>docs/changed-files</tt>には、前回リリース以来変更されたファイルの一覧があります。</p>
+<p>このドキュメントでは最も重要な変更点や目につく変更点を簡潔に説明しています。変更履歴の詳細なリストは、<a href="history.html">ChangeLog</a>をご覧ください。<tt>docs/changed-files</tt>には、前回リリース以来変更されたファイルの一覧があります。</p>
+
+<h2><a name="changes180">Geeklog 1.8.0</a></h2>
+
+<p><strong>注意:</strong> Geeklog 1.8.0は<strong>PHP 5.2.0</strong>
+あるいはそれ以降のバージョンを要求します。わたしたちは一定期間、PHP 4をサポートする<a
+href="#changes1.7.2">Geeklog 1.7.2</a>を提供しますが、PHP 5.2またはそれ以降にできるだけはやく切り替えてください。</p>
+
+<p>詳細は、Geeklogホームページの<a href="http://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
+
+<h3>新機能と改善点</h3>
+
+<ul>
+<li>コンフィギュレーションは、入力チェック機能と検索機能を追加しました。これは
+    2010 Google Summer of CodeプロジェクトにおけるAkeda Bagusさんの成果です。</li>
+<li>GeeklogサイトにFacebookやTwitter, LinkedInのアカウントを利用してログインできる
+    OAuthサポート機能を追加しました。これは、Geeklog Japaneseの
+    Hiroshi Sakuramoto (Hiroron) さんの開発を元にしています。</li>
+<li>デフォルトテーマにアイコンが追加されました。(taken from the Tango, Gnome, and Humanity
+    icon themes).</li>
+<li>Geeklogの“公式”JavaScript libraryとして<a href="http://jquery.com/">jQuery</a>を搭載しました。</li>
+<li>自動タグにパーミッションとディスクリプション機能が追加されました。(tooltip).</li>
+<li>プラグイン管理画面が改造され、プラグインのロード順の設定が可能になりました。
+    また、他のプラグインへの 依存チェックを追加しました。</li>
+</ul>
+
+
+<h2><a name="changes172">Geeklog 1.7.2</a></h2>
+
+<p><strong>注意:</strong> Geeklog 1.7.2はPHP 4で動作する最後のGeeklogのバージョンです。必要な場合は、このバージョンのセキュリティ修正を2012年まで提供します。新しい機能はGeeklog 1.8.0とそれ以降にだけ追加し、これらの新しいリリースは最低でもPHP 5.2.0が動作に必要です。詳細はgeeklog.netの<a href="http://www.geeklog.net/article.php/end-of-php4-support">アナウンス</a>を参照してください。</p>
+
+<h3>バグ修正</h3>
+
+<ul>
+<li>PostgreSQLのサポートを修正しました。(Postgresのデータベースを共有する複数のGeeklogのインスタンス、dbSave関数、エラー報告、PHP 4の互換性)</li>
+<li>記事のIDを変更したときに<code>[imageX]</code>タグの置き換えを修正しました。</li>
+<li>静的ページプラグインのPHP 4の互換性の問題を修正しました。</li>
+</ul>
+
+
+<h2><a name="changes171sr1">Geeklog 1.7.1sr1</a></h2>
+
+<p>このリリースは管理者のコンフィギュレーションパネルのXSSを修正しています。このXSSの問題はYGN Ethical Hacker GroupのAung Khant氏から報告がありました。</p>
+
+
+<h2><a name="changes171">Geeklog 1.7.1</a></h2>
+
+<h3>新機能と改善点</h3>
+
+<ul>
+<li>静的ページのコンテンツを他の静的ページのテンプレートに設定できるようにしました。</li>
+<li>テーマに対して、ブロックの開始と終了で、独自の表示関数を用意しました。</li>
+<li><a href="theme.html#changes">テーマの変更点</a>も参照してください。</li>
+</ul>
+
+<h3>バグフィックス</h3>
+
+<ul>
+<li>Geeklog 1.7.0において、プラグインへのコメント投稿でタイプエラーがありました。
+    そのため、該当プラグインのコメントとして認識されませんでした。</li>
+<li>サイトのアドバンストエディタのモードを不可にした場合も、ユーザ毎のモードを残しました。</li>
+<li>マイアカウントの"Show & Hide Boxes"を修正しました。</li>
+<li>ブロック内の中括弧がエスケープされてしまってたとえばJavaScript codeが動作しなくなる問題があり、Geeklog 1.7.0での変更を戻しました。
+</li>
+<li>1.7.0 で<code>COM_refresh()</code>の際にContent-Type headerを送るようにするとコンフリクトする ので元に戻しました。(例 Forum)</li>
+</ul>
 
 <h2><a name="changes170">Geeklog 1.7.0</a></h2>
 
@@ -26,7 +91,7 @@
     再認証で成功すれば、編集内容を失うことなく操作を継続できます。</li>
 <li>Rootユーザにだけ選択が許可されていたHTML フィルターのスキップは、アクセス権として独立しました。</li>
 <li>デフォルトグループが追加されました。新規ユーザは、デフォルトグループに最初から属します。</li>
-<li>新着ブロックにのみ表示されていたプラグインのコメントが、ユーザのプロファイルにも表示されるようになりました。(新しいPlugin API 関数 - プラグインの変更が必要)。</li>
+<li>プラグインのコメントが、新着ブロックとユーザのプロファイルに表示できるようになりました。(新しいPlugin API 関数 - プラグインの変更が必要)。</li>
 <li>認証が必要なページの表示には、ログインフォームが表示されます。</li>
 <li>アドバンストエディタが有効なサイトでは、ユーザがマイアカウントの設定で有効にするか無効にするか選べるようになりました。</li>
 <li>記事コピーオプションが追加されました。(静的ページプラグインやカレンダープラグインのように)</li>
@@ -36,6 +101,8 @@
 <h3>その他の変更</h3>
 
 <ul>
+<li><b>Security:</b> 自動ログイン機能の辞書攻撃による脆弱性を修正しました。
+  この是弱性は元々、Nine SituationsグループのBookoo氏から報告されたものです。</li>
 <li>GeeklogのPHPとMySQLのシステム条件は、 <strong>PHP 4.4.0</strong>
     と <strong>MySQL 4.0.18</strong>に引き上げられました。</li>
 <li><a href="http://www.fckeditor.net/">FCKeditor</a> 2.6.6 にアップグレードして同梱しました。</li>
@@ -44,6 +111,15 @@
 
 <p>このリリースもまたGoogle Summer of Code 2010の学生たちのたくさんのパッチと開発を含んでいます。ありがとうございます！</p>
 
+
+<h2><a name="changes161sr2">Geeklog 1.6.1sr2</a></h2>
+
+<p>このリリースは管理者のコンフィギュレーションパネルのXSSを修正しています。このXSSの問題はYGN Ethical Hacker GroupのAung Khant氏から報告がありました。</p>
+
+
+<h2><a name="changes161sr1">Geeklog 1.6.1sr1</a></h2>
+
+<p>このリリースは自動ログイン機能の辞書攻撃による脆弱性を修正しています。この是弱性は元々、Nine SituationsグループのBookoo氏から報告がありました。</p>
 
 <h2><a name="changes161">Geeklog 1.6.1</a></h2>
 
@@ -138,6 +214,10 @@
 </ul>
 
 <p>今回のリリースには、Google Summer of Code 2009に参加した学生諸氏のパッチや開発が数多く含まれています。ありがとうございます!</p>
+
+<h2><a name="changes152sr6">Geeklog 1.5.2sr6</a></h2>
+
+<p>このリリースは自動ログイン機能の辞書攻撃による脆弱性を修正しています。この是弱性は元々、Nine SituationsグループのBookoo氏から報告がありました。</p>
 
 <h2><a name="changes152sr5">Geeklog 1.5.2sr5</a></h2>
 

@@ -3,18 +3,18 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="Content-Style-Type" content="text/css">
-  <title>設定方法 | Geeklogドキュメント</title>
+  <title>コンフィギュレーション | Geeklogドキュメント</title>
   <link rel="stylesheet" type="text/css" href="../docstyle.css" title="Dev Stylesheet">
   <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
 </head>
 
 <body>
 <p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
-<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 設定方法</div>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - コンフィギュレーション</div>
 
-<h1>Geeklogの設定方法</h1>
+<h1>Geeklogのコンフィギュレーション</h1>
 
-<h2>設定用ファイル</h2>
+<h2>コンフィギュレーション用ファイル</h2>
 
 <p>旧バージョンのGeeklogでは、<tt>config.php</tt>という主要な設定を網羅した巨大なファイルを使用していました。Geeklog 1.5.0では、設定の大部分はデータベースに記録され、管理者機能内の<b>コンフィギュレーション(Configuration)</b>からアクセスできるようになりました。</p>
 
@@ -25,9 +25,9 @@
 </ul>
 <p>この2つのファイルはGeeklogをインストールするときに更新されるだけなので、ふつう、手動で編集する必要はありません。</p>
 
-<h1>設定オプション</h1>
+<h1>コンフィギュレーションオプション</h1>
 
-<p>Geeklogの設定オプションは以下のようにグループ分けされています。</p>
+<p>Geeklogのコンフィギュレーションオプションは以下のようにグループ分けされています。</p>
 
 <ul>
 <li><a href="#site">サイト(Site)</a></li>
@@ -74,6 +74,10 @@
   <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br>
     <strong>注:</strong>実際にサイトを閉鎖するかどうかを決める設定は、<tt>siteconfig.php</tt>ファイルの中にあります。</td></tr>
 <tr>
+  <td valign="top"><a name="desc_owner_name">管理者名(owner_name)</a></td>
+  <td valign="top"></td>
+  <td valign="top">このサイトの管理者のなまえを入力します。これはcopyright noticeがセットされた場合に表示されます。, 他、サイト名が使用されます。</td></tr>
+<tr>
   <td valign="top"><a name="desc_copyrightyear">Copyrightの年数設定(copyrightyear)</a></td>
   <td valign="top"><i>(無効)</i></td>
   <td valign="top">サイトのフッタに表示するcopyrightの年を設定します。設定しない場合、現在の年が使われます。</td></tr>
@@ -81,7 +85,12 @@
   <td valign="top"><a name="desc_url_rewrite">URLリライト(url_rewrite)</a></td>
   <td valign="top">いいえ(false)</td>
   <td valign="top">はい(true)でURLリライトを行い、いいえ(false)で行わないようになります。<br>
-    下記の<a href="#url-rewrite">URLリライト</a>のセクションをご覧ください。</td></tr>
+    下記の<a href="#url-rewrite">URLリライト</a>のセクションを参照してください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cdn_hosted">CDNのjQueryを使う(cdn_hosted)</a></td>
+  <td valign="top">いいえ(false)</td>
+  <td valign="top">はい(true)でグーグルのCDNのjQueryとjQuery UIのソース利用を有効に、いいえ(false)で無効に設定します。
+   </td></tr>    
 <tr>
   <td valign="top"><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
   <td valign="top">無効にする</td>
@@ -467,7 +476,7 @@
   <td valign="top">どのメニュー項目をサイトのメニューバー（グローバルメニュー）に表示するかを指定します（使用するテーマにメニューバーを表示するための<code>{menu_elements}</code>テンプレート変数が使用されている場合）。<tt>'home'</tt>（トップページ）,
     <tt>'contribute'</tt>（記事投稿）, <tt>'search'</tt>（検索）, <tt>'stats'</tt>,
     <tt>'directory'</tt>（記事一覧）, <tt>'prefs'</tt>（マイアカウント）, <tt>'plugins'</tt>（プラグイン）,
-    <tt>'custom'</tt>（カスタム）を好きな数だけ好きな順序で組み合わせることができます。<tt>'plugins'</tt>（プラグイン）は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<tt>'custom'</tt>（カスタム）は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です（詳細は<tt>lib-custom.php</tt>をご覧ください。）。</td></tr>
+    <tt>'custom'</tt>（カスタム）を好きな数だけ好きな順序で組み合わせることができます。<tt>'plugins'</tt>（プラグイン）は<code>{plg_menu_elements}</code>テンプレート変数と同じで、各プラグインが提供するメニュー項目です。<tt>'custom'</tt>（カスタム）は<code>CUSTOM_menuEntries</code>カスタム関数が返すメニュー項目です（詳細は<tt>lib-custom.php</tt>を参照してください。）。</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_themes">テーマパス(path_themes)</a></td>
   <td valign="top">/path/to/geeklog/public_html/layout/</td>
@@ -522,7 +531,7 @@
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_sortmethod">ソート方法(sortmethod)</a></td>
-  <td valign="top">番号順(sortnum)</td>
+  <td valign="top">アルファベット順(alpha)</td>
   <td valign="top">アルファベット順(alpha) = 話題をアルファベット順にソートするか、<br>番号順(sortnum) = 話題をソート番号順にソートするかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_showstorycount">記事数を表示する(showstorycount)</a></td>
@@ -538,7 +547,7 @@
   <td valign="top">はい(1)にすると、セクションブロックに"Home"（トップページ）へのリンクが表示されなくなります。</td></tr>
 </table>
 
-<h3><a name="blocks_who">ブロック: オンラインメンバーブロック</a></h3>
+<h3><a name="blocks_who">ブロック: オンラインユーザブロック</a></h3>
 
 <table>
 <tr><th style="width:25%">項目(変数)</th>
@@ -547,11 +556,15 @@
 <tr>
   <td valign="top"><a name="desc_whosonline_threshold">セッションのしきい値(whosonline_threshold)</a></td>
   <td valign="top">300（秒）</td>
-  <td valign="top">オンラインメンバーブロックに表示された後、ユーザがどれくらいの間操作をしないとオンラインメンバーブロックに表示されなくなるかを決める秒数を指定します。</td></tr>
+  <td valign="top">オンラインユーザブロックに表示された後、ユーザがどれくらいの間操作をしないとオンラインユーザブロックに表示されなくなるかを決める秒数を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_whosonline_anonymous">ゲストユーザには表示しない(whosonline_anonymous)</a></td>
   <td valign="top">いいえ(0)</td>
   <td valign="top">はい(1)にすると、ゲストユーザに見えるのはオンライン中の登録メンバーの数だけで、名前は表示されません。ログインしたユーザだけがオンライン中の他のユーザの名前を見ることができます。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_whosonline_photo">whosonline_photo</a></td>
+  <td valign="top">いいえ(0)</td>
+  <td valign="top">有効(1)にするとユーザの写真があれば写真のサムネイルが表示され、なければ写真アイコンが表示されます。</td></tr>
 </table>
 
 <h3><a name="blocks_what">ブロック: 新着情報ブロック</a></h3>
@@ -561,17 +574,17 @@
     <th style="width:25%">デフォルト</th>
     <th style="width:50%">説明</th></tr>
 <tr>
-  <td valign="top"><a name="desc_newstoriesinterval">記事の"新着"の期間(newstoriesinterval)</a></td>
-  <td valign="top">86400(= 24時間)</td>
-  <td valign="top">記事が"新着"として表示される秒数を指定します。</td></tr>
+  <td valign="top"><a name="desc_newstoriesinterval">記事の"新着"期間(newstoriesinterval)</a></td>
+  <td valign="top">86400秒 (= 24時間)</td>
+  <td valign="top">記事が新着ブロックに表示される期間を秒数で指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_newcommentsinterval">コメントの"新着"の期間(newcommentsinterval)</a></td>
-  <td valign="top">172800(= 48時間)</td>
-  <td valign="top">コメントが"新着"として表示される秒数を指定します。</td></tr>
+  <td valign="top"><a name="desc_newcommentsinterval">コメントの"新着"期間(newcommentsinterval)</a></td>
+  <td valign="top">172800秒 (= 48時間)</td>
+  <td valign="top">コメントが新着ブロックに表示される期間を秒数で指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_newtrackbackinterval">トラックバックの"新着"の期間(newtrackbackinterval)</a></td>
-  <td valign="top">172800(= 48時間)</td>
-  <td valign="top">トラックバックが"新着"として表示される秒数を指定します。</td></tr>
+  <td valign="top"><a name="desc_newtrackbackinterval">トラックバックの"新着"期間(newtrackbackinterval)</a></td>
+  <td valign="top">172800秒 (= 48時間)</td>
+  <td valign="top">トラックバックが新着ブロックに表示される期間を秒数で指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_hidenewstories">新着記事を表示しない(hidenewstories)</a></td>
   <td valign="top">いいえ(0)</td>
@@ -589,9 +602,9 @@
   <td valign="top">いいえ(0)</td>
   <td valign="top">はい(1)にすると、新着情報ブロックにプラグインから渡される新着データが表示されなくなります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_title_trim_length">タイトル最大長(title_trim_length)</a></td>
+  <td valign="top"><a name="desc_title_trim_length">タイトルトリミング文字数(title_trim_length)</a></td>
   <td valign="top">20</td>
-  <td valign="top">新着情報ブロックに表示されるタイトルの長さの最大値を指定します。</td></tr>
+  <td valign="top">新着ブロックに表示するタイトルのトリミングの文字数を指定します。</td></tr>
 </table>
 
 
@@ -642,21 +655,76 @@
 <tr>
   <td valign="top"><a name="desc_custom_registration">カスタム登録を有効にする(custom_registration)</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
-  <td valign="top">はい(<code>true</code>)にすると、新規ユーザ登録の際、管理者が用意した独自のフォームが表示されます。フォームの具体例は、Geeklogに同梱されている<tt>lib-custom.php</tt>をご覧ください。</td></tr>
+  <td valign="top">はい(<code>true</code>)にすると、新規ユーザ登録の際、管理者が用意した独自のフォームが表示されます。フォームの具体例は、Geeklogに同梱されている<tt>lib-custom.php</tt>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_login_method_standard">ユーザログイン方法[standard]</a></td>
+  <td valign="top"><a name="desc_user_login_method_standard">ユーザログイン方法[standard]</a></td>
   <td valign="top"><code>はい(true)</code></td>
   <td valign="top">通常のログイン方法、つまり、サイトのデータベースにしか登録されてないユーザアカウントでログインを許可するかどうかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_login_method_openid">ユーザログイン方法[openid]</a></td>
+  <td valign="top"><a name="desc_user_login_method_openid">ユーザログイン方法[openid]</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
   <td valign="top"><a href="http://openid.net/">OpenID</a>を使用したログインを許可するかどうかを指定します。<code>はい(true)</code>にすると、通常のログイン入力欄の下に特別なOpenIDログイン用の入力欄が表示されます。<br>
     <strong>注:</strong> 現在サポートされているのは、OpenID 1.1だけです。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_login_method_3rdparty">ログイン方法[3rdparty]</a></td>
+  <td valign="top"><a name="desc_user_login_method_3rdparty">ログイン方法[3rdparty]</a></td>
   <td valign="top"><code>いいえ(false)</code></td>
   <td valign="top">はい(true)にすると、外部サービスに既にアカウントを持っているユーザがそのアカウント使ってGeeklogにログインできるようになります。現在サポートされているのは、LDAPとLiveJournalです。<br>
-    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<tt>system/classes/authentication</tt>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>をご覧ください。</td></tr>
+    特定のサービスを使ってログインできるようにするには、そのサービス用の認証クラスが<tt>system/classes/authentication</tt>に必要です。したがって、LDAPを用いたログインは許可するがLiveJournalを用いたログインは禁止したいという場合、単に不要なサービスの認証クラスを削除するだけでよいのです。詳細は、<a href="http://www.geeklog.net/article.php/remote-authentication">Geeklogにおけるリモート認証(Remote Authentication in Geeklog)</a>を参照してください。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>
+  <td valign="top"><code>いいえ(false)</code></td>
+  <td valign="top"><a href="http://oauth.net/">OAuth</a>によるログインを許可するかどうかを設定します。許可すると、通常のログインフォームの下にOAuthログインが表示されます。<br>
+    <strong>Note:</strong>現在はOAuth 1.0のみをサポートしています。現在可能なサポート: Facebook, TwitterそしてLinkedInの３つです。<br>ログインを有効にするには、
+    OAuthの設定には<tt>system/classes/oauth</tt>のauthorization classが必要です。あなたがもしFacebookのみで、Twitterだけにしたければ(逆もまた同様), 単に
+    欲しくないサービスのファイルを削除するだけです。あなたはさらにapplication key ($consumer_key) とapplication secret 
+    ($consumer_secret) の値をセットする必要があります。The PHP extenstion OpenSSL がロードされている必要があります。<br>
+    より詳しい情報は<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_facebook_login">facebook_login</a></td>
+  <td valign="top"><code>いいえ(false)</code></td>
+  <td valign="top">(<tt>はい(true)</tt>のとき、)FacebookのアカウントでGeeklogにOAuthでログインすることを伝えてログインさせます。管理者はFacebookのapplication IDとsecretを取得して設定しなければなりません。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_facebook_consumer_key">facebook_consumer_key</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">Facebook OAuth ログイン利用時には入力してください。Applicaiton作成およびApplication IDとApplication Secretの取得は、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_facebook_consumer_secret">facebook_consumer_secret</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">Facebook OAuth ログイン利用時には入力してください。Applicaiton作成およびApplication IDとApplication Secretの取得は、<a href="http://developers.facebook.com/setup/">Facebook Developers page</a>のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_linkedin_login">linkedin_login</a></td>
+  <td valign="top"><code>いいえ(false)</code></td>
+  <td valign="top">(<tt>はい(true)</tt>のとき、)LinkedInのアカウントでGeeklogにOAuthでログインすることを伝えてログインさせます。管理者はLinkedInのIDとsecretを取得して設定しなければなりません。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_linkedin_consumer_key">linkedin_consumer_key</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。Applicaiton作成およびAPI KeyとSecret Keyの取得は、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
+  のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_linkedin_consumer_secret">linkedin_consumer_secret</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">LinkedIn OAuth ログイン利用時には入力してください。Applicaiton作成およびAPI KeyとSecret Keyの取得は、<a href="https://www.linkedin.com/secure/developer">LinkedIn Developers page</a> 
+  のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_twitter_login">twitter_login</a></td>
+  <td valign="top"><code>いいえ(false)</code></td>
+  <td valign="top">(<tt>はい(true)</tt>のとき、)TwitterのアカウントでGeeklogにOAuthでログインすることを伝えてログインさせます。管理者はTwitterのconsumer keyとsecretを取得して設定しなければなりません。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_twitter_consumer_key">twitter_consumer_key</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">Twitter OAuth ログイン利用時には入力してください。Applicaiton作成およびConsumer KeyとConsumer Secretの取得は、<a href="https://twitter.com/apps">Twitter Application page</a> 
+  のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_twitter_consumer_secret">twitter_consumer_secret</a></td>
+  <td valign="top"><code>''</code></td>
+  <td valign="top">Twitter OAuth ログイン利用時には入力してください。Applicaiton作成およびConsumer KeyとConsumer Secretの取得は、<a href="https://twitter.com/apps">Twitter Application page</a> 
+  のApplicaitonを参照してください。<br>
+  より詳しい情報は、<a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a>まで。</td></tr>
 <tr>
   <td valign="top"><a name="desc_aftersave_user">ユーザ保存後の画面遷移(aftersave_user)</a></td>
   <td valign="top"><code>作成した項目を表示する(item)</code></td>
@@ -806,8 +874,8 @@
   <td valign="top">一度に表示するコメントの最大数を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_mode">表示モード(comment_mode)</a></td>
-  <td valign="top">ツリー(threaded)</td>
-  <td valign="top">コメントの表示方法として、「一覧」(flat)、「入れ子」(nested)、「ツリー」(threaded)、「表示しない」(表示しない)のうちのどれかを指定します。</td></tr>
+  <td valign="top">入れ子(nested)</td>
+  <td valign="top">コメントの表示方法として、一覧(flat)、入れ子(nested)、ツリー(threaded)、表示しない(nocomments)のうちのどれかを指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_comment_code">新規作成時のデフォルト(comment_code)</a></td>
   <td valign="top">はい(0)</td>
@@ -827,7 +895,7 @@
 <tr>
   <td valign="top"><a name="desc_article_comment_close_enabled">自動的にコメントの受付を停止する(デフォルト)(article_comment_close_enabled</a>)</td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">一定の期間が経過した後で記事がコメントの受付を停止するかどうかを指定します(次のオプションをご覧ください)。この設定は新規記事に対するデフォルトであり、記事ごとに変更することができます。</td></tr>
+  <td valign="top">一定の期間が経過した後で記事がコメントの受付を停止するかどうかを指定します(次のオプションを参照してください)。この設定は新規記事に対するデフォルトであり、記事ごとに変更することができます。</td></tr>
 <tr>
   <td valign="top"><a name="desc_article_comment_close_days">停止までの日数(デフォルト)(article_comment_close_days)</a></td>
   <td valign="top">30</td>
@@ -972,7 +1040,7 @@
     このオプションを有効にすると、（掲示板のスレッドなどの）複数ユーザの多数の写真を表示するページでは、スピードダウンする可能性があることに注意してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_gravatar_rating">Gravatar評価を許可(gravatar_rating)</a></td>
-  <td valign="top"><i>(無効)</i></td>
+  <td valign="top"><i>無効(disabled)</i></td>
   <td valign="top">gravatar.comへ投稿されたアバターは、（米国で）映画鑑賞用に使われている評価システム
 		<ul>
 			<li>G = General Audiences：一般向け</li>
@@ -1019,25 +1087,25 @@
   <td valign="top">en_GB</td>
   <td valign="top">Geeklogが使用する<a href="http://en.wikipedia.org/wiki/Locale">ロケール(Locale)</a>を指定します。これによって、月名などのローカライズされた情報の表示法を決めるときにPHPが使用する言語と国の両方が決まります。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_date">日付(date)</a></td>
+  <td valign="top"><a name="desc_date">日時(date)</a></td>
   <td valign="top">%A, %B %d %Y @ %I:%M %p %Z</td>
-  <td valign="top">記事も含めて、サイトのほとんどの場所で使用される日付のフォーマットを指定します。下記の<a href="#date_formats">日付のフォーマット</a>をご覧ください。</td></tr>
+  <td valign="top">記事も含めて、サイトのほとんどの場所で使用される日時のフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_daytime">日時(daytime)</a></td>
+  <td valign="top"><a name="desc_daytime">日時の短縮(daytime)</a></td>
   <td valign="top">%m/%d %I:%M%p</td>
-  <td valign="top">短い日付が必要なときのフォーマットを指定します。下記の<a href="#date_formats">日付のフォーマット</a>をご覧ください。</td></tr>
+  <td valign="top">日時の短縮表記が必要なときのフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_shortdate">日付短表記(shortdate)</a></td>
+  <td valign="top"><a name="desc_shortdate">日付(shortdate)</a></td>
   <td valign="top">%x</td>
-  <td valign="top">一番短い日付フォーマットを指定します。下記の<a href="#date_formats">日付のフォーマット</a>をご覧ください。</td></tr>
+  <td valign="top">日付のみのフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_dateonly">日付のみ(dateonly)</a></td>
+  <td valign="top"><a name="desc_dateonly">月日(dateonly)</a></td>
   <td valign="top">%d-%b</td>
-  <td valign="top">短い日付のフォーマット(日付のみ)で、「これからの予定」と「過去の記事」のブロックで使用されるフォーマットを指定します。下記の<a href="#date_formats">日付のフォーマット</a>をご覧ください。</td></tr>
+  <td valign="top">月日のフォーマット(月日のみ)で、「これからの予定」と「過去の記事」のブロックで使用されるフォーマットを指定します。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_timeonly">時間のみ(timeonly)</a></td>
+  <td valign="top"><a name="desc_timeonly">時刻(timeonly)</a></td>
   <td valign="top">%I:%M %p %Z</td>
-  <td valign="top">時間だけを表すフォーマットを指定します。「イベントの詳細」などのページで使われます。下記の<a href="#date_formats">日付のフォーマット</a>をご覧ください。</td></tr>
+  <td valign="top">時刻だけを表すフォーマットを指定します。「イベントの詳細」などのページで使われます。下記の<a href="#date_formats">日時のフォーマット</a>を参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_week_start">週の開始(week_start)</a></td>
   <td valign="top">日曜日(Sun)</td>
@@ -1080,7 +1148,7 @@
   <td valign="top">gl_session</td>
   <td valign="top">セッションIDを保存するクッキーの名前を指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cookie_name">長期保存クッキー名(cookie_name)</a></td>
+  <td valign="top"><a name="desc_cookie_name">パーマネントクッキー名(cookie_name)</a></td>
   <td valign="top">geeklog</td>
   <td valign="top">長期間保存されるクッキーの名前を指定します。</td></tr>
 <tr>
@@ -1118,15 +1186,15 @@
 <tr>
   <td valign="top"><a name="desc_cookie_path">クッキーのパス(cookie_path)</a></td>
   <td valign="top">/</td>
-  <td valign="top">クッキーが有効となるサーバ上のパスを指定します（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>をご覧ください。）。</td></tr>
+  <td valign="top">クッキーが有効となるサーバ上のパスを指定します（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiedomain">クッキーのドメイン(cookiedomain)</a></td>
   <td valign="top"><i>(空白)</i></td>
-  <td valign="top">クッキーが有効となるドメインを指定します。GeeklogはサイトのURLに基づき、正しいドメインを推測しようとします（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>をご覧ください。）。</td></tr>
+  <td valign="top">クッキーが有効となるドメインを指定します。GeeklogはサイトのURLに基づき、正しいドメインを推測しようとします（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookiesecure">セキュア(HTTPS)なクッキー(cookiesecure)</a></td>
   <td valign="top">いいえ(0)</td>
-  <td valign="top">サイトがHTTPSプロトコルを使用している場合に限って、はい(1)にしてください（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>をご覧ください。）。</td></tr>
+  <td valign="top">サイトがHTTPSプロトコルを使用している場合に限って、はい(1)にしてください（詳細は、<a href="http://www.php.net/manual/ja/function.setcookie.php">PHPマニュアル</a>を参照してください。）。</td></tr>
 </table>
 
 <h3><a name="misc_misc">その他: その他</a></h3>
@@ -1137,8 +1205,8 @@
     <th style="width:50%">説明</th></tr>
 <tr>
   <td valign="top"><a name="desc_notification">通知(notification)</a></td>
-  <td valign="top">空リスト（登録なし）</td>
-  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザが登録された場合に、サイトのメールアドレスに通知メールを送信するリストを指定します。この<tt>リスト</tt>に登録できるのは、
+  <td valign="top">array()</td>
+  <td valign="top">新規の記事・コメントが投稿された場合、トラックバック・ピングバックを受信した場合、新規ユーザが登録された場合に、サイトのメールアドレス<tt>$_CONF['site_email']</tt>に通知メールを送信するリストを指定します。この<tt>リスト</tt>に登録できるのは、
 		<ul>
 			<li><tt>story</tt></li>
 			<li><tt>comment</tt></li>
@@ -1150,8 +1218,8 @@
     <strong>例:</strong> <code>story と user</code> とすると、新規記事が投稿された場合とユーザが登録された場合に通知されます。たとえば、新規コメントが投稿された場合には、通知は来ません。</td></tr>
 <tr>
   <td valign="top"><a name="desc_cron_schedule_interval">Cronスケジュール間隔(cron_schedule_interval)</a></td>
-  <td valign="top">86400（秒）</td>
-  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは 86400秒 = 24時間です。<br>
+  <td valign="top">0（秒）</td>
+  <td valign="top">Geeklogは<a href="http://en.wikipedia.org/wiki/Cronjob">cronjob</a>、つまり、一定の間隔で行う作業を擬似的に行うことができます。実行されるPHPのコードは、プラグインか<tt>lib-custom.php</tt>中の<code>CUSTOM_runScheduledTask</code> 関数で指定します。ここで設定する値は、作業が行われる間隔を秒単位で指定します。デフォルトは0秒です。 例) 86400秒 = 24時間<br>
     この作業が行われるには、予定の時刻付近で誰かがサイトを訪問する必要があることに注意してください。訪問者がほとんどいないサイトでは、作業の開始がかなり遅れる可能性があります。<br>この機能を無効にするには、0を指定します。</td></tr>
 <tr>
   <td valign="top"><a name="desc_disable_autolinks">自動タグを無効にする(disable_autolinks)</a></td>
@@ -1342,7 +1410,7 @@
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
   <td valign="top">falseにするとGeeklogのサイトを閉鎖できます（メンテナンス作業中など）。<br>
-    <a href="#desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a>もご覧ください。</td></tr>
+    <a href="#desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a>も参照してください。</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
   <td valign="top">iso-8859-1</td>
@@ -1372,14 +1440,14 @@
 
 <p>Geeklogをローカライズするのは簡単です。文字列はすべて言語ファイルに格納されています。Geeklogに最初から同梱されているのはenglish.phpです。他の言語への翻訳に関心のある方は<a href="http://lists.geeklog.net/listinfo/geeklog-translations">Geeklog翻訳(geeklog-translations)</a>メーリングリストへの加入をお勧めします。Geeklogの翻訳に関する重要な情報はみなこのメーリングリストに投稿されます。</p>
 
-<h3><a name="date_formats">ロケールと日付のフォーマット</a></h3>
+<h3><a name="date_formats">ロケールと日時のフォーマット</a></h3>
 
-<p>ロケールと日付のフォーマットの設定はコンフィギュレーションで行えます。ロケールを設定するには、適切な文字列を設定するか空白のままにしておきます。後者の場合は、オペレーティングシステムのロケールの既定値が使用されます。日付のフォーマットはロケールによって処理が決まります。ロケール名はオペレーティングシステムに依存します。ほとんどのUNIX系のホストでは、ロケールコードは<i>/usr/share/locale/locale.alias</i> ファイルに記述されており、<i>locale -a</i> コマンドで利用可能なロケールすべてを表示できるシステムもあります。ロケールが存在しない場合は、<i>localedef</i> コマンドで作成できます。
+<p>ロケールと日時のフォーマットの設定はコンフィギュレーションで行えます。ロケールを設定するには、適切な文字列を設定するか空白のままにしておきます。後者の場合は、オペレーティングシステムのロケールの既定値が使用されます。日時のフォーマットはロケールによって処理が決まります。ロケール名はオペレーティングシステムに依存します。ほとんどのUNIX系のホストでは、ロケールコードは<i>/usr/share/locale/locale.alias</i> ファイルに記述されており、<i>locale -a</i> コマンドで利用可能なロケールすべてを表示できるシステムもあります。ロケールが存在しない場合は、<i>localedef</i> コマンドで作成できます。</p>
 
 <p>ロケールに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>、<br>
 <code>localdef</code> コマンドに関する詳細は、<a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a><br>を参照してください。</p>
 
-<h3>日付のフォーマット</h3>
+<h3>日時のフォーマット</h3>
 <p>（訳注：以下の表現は、<a href="http://jp.php.net/manual/ja/function.strftime.php">PHPマニュアル</a>の表現を参考に、一部を修正しています。）</p>
 
 <ul>

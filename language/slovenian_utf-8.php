@@ -178,7 +178,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -384,7 +388,7 @@ $LANG04 = array(
     147 => 'Uredi geslo svojega raèuna, e-naslov in funkcijo samodejne prijave. Za potrditev bo treba isto geslo ali e-naslov vnesti dvakrat.',
     148 => 'Uporabniške informacije',
     149 => 'Spremeni svoje uporabniške informacije, ki bodo vidne drugim uporabnikom.<li>Podpis bo dodan k vsem tvojim komentarjem in objavam na forumu</li><li>BIO je kratek povzetek o tebi, ki ga želiš deliti z drugimi</li><li>Deli z drugimi svoj kljuè PGP</li>',
-    150 => 'Opozorilo: Javascript priporoèen za razširjeno funkcionalnost',
+    150 => '',
     156 => 'Izbriši raèun',
     157 => 'Briši opcijo',
     158 => 'Èasovni pas',

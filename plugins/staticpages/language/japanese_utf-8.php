@@ -108,7 +108,7 @@ $LANG_STATIC = array(
     'select_php_none' => 'PHPを実行しない',
     'select_php_return' => 'PHPを実行する (return)',
     'select_php_free' => 'PHPを実行する',
-    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/japanese/staticpages.html#php\">関連ドキュメント</a> をご覧下さい。",
+    'php_not_activated' => "静的ページでPHPは使用しない設定になっています。詳細については <a href=\"{$_CONF['site_url']}/docs/japanese/staticpages.html#php\">関連ドキュメント</a> を参照してください。",
     'printable_format' => '印刷用フォーマット',
     'copy' => 'コピー',
     'limit_results' => '絞込検索',
@@ -117,16 +117,16 @@ $LANG_STATIC = array(
     'no_new_pages' => '-',
     'pages' => 'ページ',
     'comments' => 'コメント',
-    'template' => 'Template',
-    'use_template' => 'Use Template',
-    'template_msg' => 'When checked, this Static Page will be marked as a template.',
-    'none' => 'None',
-    'use_template_msg' => 'If this Static Page is not a template, you can assign it to use a template. If a selection is made then remember that the content of this page must follow the proper XML format.',
+    'template' => 'テンプレート',
+    'use_template' => '選択',
+    'template_msg' => 'チェックされた場合、静的ページはテンプレートとして利用されます。',
+    'none' => 'なし',
+    'use_template_msg' => 'この静的ページがテンプレートでなければ、テンプレートを選んで利用できます。利用する場合は、このページのコンテンツをXML形式で記述しなければならないので注意してください。',
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
-    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意。',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - 静的ページのコンテンツを表示。'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
@@ -148,7 +148,7 @@ $LANG_confignames['staticpages'] = array(
     'allow_php' => 'PHPを許可する',
     'sort_by' => 'センターブロックでのソート項目',
     'sort_menu_by' => 'メニューでのソート項目',
-    'sort_list_by' => 'ソート順',
+    'sort_list_by' => '管理者ページソート順',
     'delete_pages' => '所有者の削除と共に削除する',
     'in_block' => 'ページをブロックで囲む',
     'show_hits' => '閲覧数を表示する',
@@ -156,8 +156,8 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'HTMLフィルターを適用する',
     'censor' => '内容を検閲する',
     'default_permissions' => 'パーミッション',
-    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
-    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
+    'autotag_permissions_staticpage' => '[staticpage: ] パーミッション',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] パーミッション',
     'aftersave' => 'ページ保存後の画面遷移',
     'atom_max_items' => 'フィードに書き出す最大ページ数',
     'meta_tags' => 'メタタグを有効にする',
@@ -178,11 +178,11 @@ $LANG_configsubgroups['staticpages'] = array(
 );
 
 $LANG_tab['staticpages'] = array(
-    'tab_main' => 'Static Pages Main Settings',
-    'tab_whatsnew' => 'What\'s New Block',
-    'tab_search' => 'Search Results',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => '静的ページのメイン設定',
+    'tab_whatsnew' => '新着情報ブロック',
+    'tab_search' => '検索',
+    'tab_permissions' => 'パーミッションのデフォルト',
+    'tab_autotag_permissions' => '自動タグのパーミッション'
 );
 
 $LANG_fs['staticpages'] = array(
@@ -190,7 +190,7 @@ $LANG_fs['staticpages'] = array(
     'fs_whatsnew' => '新着情報ブロック',
     'fs_search' => '検索結果',
     'fs_permissions' => '静的ページのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => '自動タグのパーミッション'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -201,9 +201,9 @@ $LANG_configselects['staticpages'] = array(
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     4 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', '所有者' => 'author'),
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
-    9 => array('編集した静的ページを表示する' => 'item', '静的ページ管理を表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
+    13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1)
 );
 

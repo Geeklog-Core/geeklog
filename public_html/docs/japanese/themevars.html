@@ -63,9 +63,6 @@
 <tr><td><code>site_logo</code></td>
     <td><tt>http://www.example.com/layout/<br>professional/images/logo.png</tt></td>
     <td>現在のテーマの<tt>images</tt>ディレクトリ内にあるロゴ画像を指し、ロゴとして表示されることを想定しています。ふつう、GIF画像(<tt>logo.gif</tt>)ですが、画像タイプはテーマごとに変更することができます（たとえば、Professionalテーマでは、PNG画像を使用しているので、ロゴは <tt>logo.png</tt> になっています。）。<br><strong>訳注：</strong>画像タイプを変更するには、テーマの <tt>functions.php</tt> 内で、<br><code>$_IMAGE_TYPE = 'png';</code><br>のように定義します。もちろん、画像は自分で差し替えてください。</td></tr>
-<tr><td><code>css_url</code></td>
-    <td><tt>http://www.example.com/layout/<br>professional/style.css</tt></td>
-    <td>現在のテーマのスタイルシートを指します。</td></tr>
 <tr><td><code>theme</code></td>
     <td>professional</td>
     <td>現在のテーマ名です。</td></tr>
@@ -73,10 +70,10 @@
     <td>iso-8859-1</td>
     <td>現在の言語ファイルの文字セットです。</td></tr>
 <tr><td><code>lang_id</code></td>
-    <td><tt>en-GB</tt>
+    <td><tt>en-GB</tt></td>
     <td>サイトで使用されている言語を表すIDです。理想を言えば、これはISOの国/言語コードで、たとえば、イギリス英語なら en-GB となるべきでしょう。多言語サポートが有効になっている場合、この変数の値は<code>$_CONF['languages']</code>配列で使用されている言語ショートカット(ID)の値になります。それ以外の場合は、<code>$_CONF['locale']</code>から導き出されますが、ある程度の推測が含まれます。後者の場合、サイトのOSがUnix系でなければ（有効なISOコードではないので）、結果として、Germanのような値になることもあります。</td></tr>
 <tr><td><code>lang_attribute</code></td>
-    <td><tt>lang="en-GB"</tt>
+    <td><tt>lang="en-GB"</tt></td>
     <td>サイトないし現在のページの言語を示すため、HTMLヘッダ内で <pre>&lt;html {lang_attribute}&gt;</pre> のような形で使用される<a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML言語属性(HTML lang attribute)</a>とその値です。サイトの言語IDが<a href="http://www.w3.org/TR/html4/struct/dirlang.html#langcodes">有効な言語コード</a>でないように思える場合（上述の <code>{lang_id}</code> 変数の説明をご覧ください。）、この変数は<strong>空</strong>、つまり、セットされないことに注意してください。</td></tr>
 <tr><td><code>feed_url</code></td>
     <td><tt>&lt;link rel="alternate" type="application/rss+xml" hreflang="en-gb" href="http://www.example.com/backend/geeklog.rss" title="RSS Feed: Geeklog"&gt;</tt></td>

@@ -178,7 +178,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -384,7 +388,7 @@ $LANG04 = array(
     147 => '修改你的用戶密碼，電信，和自動登入作用。你需要輸入你的密碼或電信位址兩次來避免錯誤。',
     148 => '用戶資訊',
     149 => '修改要顯示給其他用戶的你的用戶資訊.<li>你的簽名會顯示在你的評論或論壇標語的下面</li><li>個人簡歷是用來分享你自己的簡介</li><li>分享你得 PGP 鑰匙</li>',
-    150 => '注意: 建議用Javascript 來提高功能',
+    150 => '',
     156 => '刪除用戶',
     157 => '刪除選項',
     158 => '時區',

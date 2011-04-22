@@ -181,7 +181,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -387,7 +391,7 @@ $LANG04 = array(
     147 => 'Pas uw wachtwoord, e-mail en logininstellingen van uw account aan. Uw moet hetzelfde wachtwoord of e-mailadres twee keer invullen ter bevestiging',
     148 => 'Gebruikersinformatie',
     149 => 'Wijzig uw gebruikersinformatie dat wordt weergegeven aan andere gebruikers.<li>De ondertekening zal worden toegevoegd aan elke reactie of forumpost die u hebt gemaakt</li><li>De BIO is een korte omschrijving van uzelf om met andere te delen</li><li>Deel uw PGP Key</li>',
-    150 => 'Waarschuwing: Javascript raadde aan voor versterkte functionaliteit',
+    150 => '',
     156 => 'Verwijder account',
     157 => 'Delete Option',
     158 => 'Time Zone',

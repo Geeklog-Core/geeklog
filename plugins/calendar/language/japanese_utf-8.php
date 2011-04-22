@@ -93,7 +93,7 @@ $LANG_CAL_1 = array(
     49 => 'このサイトにはイベントがないか、誰もイベントをクリックしていないかどちらかのようです。',
     50 => 'イベント',
     51 => '削除',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id alternate title] - イベントタイトルでイベントへのリンクを表示。アンカーテキストの指定は任意。'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -215,7 +215,7 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => '所有者の削除と共に削除する',
     'aftersave' => 'イベント保存後の画面遷移',
     'default_permissions' => 'パーミッション',
-    'autotag_permissions_event' => '[event: ] Permissions'
+    'autotag_permissions_event' => '[event: ] パーミッション'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -223,15 +223,15 @@ $LANG_configsubgroups['calendar'] = array(
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => 'カレンダのメイン設定',
+    'tab_permissions' => 'パーミッションのデフォルト',
+    'tab_autotag_permissions' => '自動タグのパーミッション'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'カレンダのメイン設定',
     'fs_permissions' => 'カレンダのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => '自動タグのパーミッション'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -239,9 +239,9 @@ $LANG_configselects['calendar'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('作成したイベントを表示する' => 'item', 'カレンダ管理を表示する' => 'list', 'カレンダを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('アクセス不可' => 0, '利用する' => 2)
 );
 
 ?>

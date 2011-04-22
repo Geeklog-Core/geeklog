@@ -176,7 +176,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -382,7 +386,7 @@ $LANG04 = array(
     147 => 'Muuda oma salasõna, E-postiaadressi või autologimist. Salasõna ja E-postiaadressi muutmisel pead sa vigade vältimiseks sisestama need topelt.',
     148 => 'Kasutaja info',
     149 => "Muuda teistele kasutajatele nähtavat kasutaja infot. \n    <li>Allkiri lisatakse sinu kommentaaridele</li>\n    <li>Bio on lühike sinu kirjeldus teistele</li>\n    <li>Jaga oma PGP võtit</li>",
-    150 => 'Märkus: mugavamaks kasutamiseks on soovitav JavaScript.',
+    150 => '',
     156 => 'Kustuta konto',
     157 => 'Kustutamisvalik',
     158 => 'Ajavöönd',

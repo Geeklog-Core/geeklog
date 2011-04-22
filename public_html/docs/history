@@ -12,9 +12,12 @@ Akeda Bagus.
 - Sanitize OAuth user data (bug #0001322) [Dirk]
 - Fixed HTML errors in Configuration (bug #0001318, patch provided by dengen)
   [Tom, Rouslan]
+- Added nowrape style to some admin templates for consistency (feature request
+  #0001321) [Tom]
 - Fixed check for wrong edit permission in the Calendar plugin (bug #0001317,
   patch provided by dengen)
 - Added missing jQuery widgets and effects (bug #0001312) [Tom]
+- Fixed missing / in the setJavaScriptFile method (bug #0001315) [Tom]
 - Display a warning when JavaScript is required but disabled, e.g. in the
   comment form with advanved editor enabled (bug #0001282) [Tom]
 - Make sure tooltips are always fully visible (bug #0001304) [Rouslan]
@@ -28,6 +31,9 @@ Akeda Bagus.
   #0001298) [Tom]
 - Fixed use of mb_strlen() instead of MBYTE_strlen() in the validator class
   (bug #0001299, patch provided by mystral-kk)
+
+- Updated Japanese language files and documentation, provided by the Geeklog.jp
+  group
 
 
 Apr 3, 2011 (1.8.0b1)

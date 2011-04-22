@@ -180,7 +180,11 @@ $LANG01 = array(
     132 => 'Information',
     133 => 'Critical',
     134 => 'Help',
-    135 => 'Warning'
+    135 => 'Warning',
+    136 => 'Warning: Javascript recommended for enhanced functionality',
+    137 => 'Warning: Javascript required to enable functionality',
+    138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
 );
 
 ###############################################################################
@@ -386,7 +390,7 @@ $LANG04 = array(
     147 => 'Izmeniti vašu lozinku, email, autologin opciju. Morate uneti identičnu lozinku ili email dva puta zbog potvrde.',
     148 => 'Korisničke Informacije',
     149 => 'Izmenite vaše korisničke informacije koje će biti prikazane drugim korisnicima.<li>Potpis će biti dodat na svaki komentar ili post na forumu koji objavite</li><li>Biografija predstavlja kratke informacije o Vama koje želite da podelite</li><li>Podelite Vaš PGP Ključ</li>',
-    150 => 'Upozorenje: Javascript se preporučuje zbog poboljšanih performansi.',
+    150 => '',
     156 => 'Obriši Nalog',
     157 => 'Obirši Opciju',
     158 => 'Vremenska Zona',
