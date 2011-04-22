@@ -778,7 +778,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         } else {
 
-            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+            if (empty($postmode) && $_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $postmode = 'html';
             } elseif (empty($postmode)) {
                 $postmode = $_CONF['postmode'];
