@@ -205,21 +205,21 @@ class OAuthConsumerBaseClass {
         if (is_array($users)) {
             $sql = "UPDATE {$_TABLES['users']} SET ";
             if (!empty($users['fullname'])) {
-                $fn = addslashes($users['fullname']);
+                $fn = addslashes(strip_tags($users['fullname']));
                 $updatecolumns .= "fullname='$fn'";
             }
             if (!empty($users['email'])) {
                 if (!empty($updatecolumns)) {
                     $updatecolumns .= ", ";
                 }
-                $em = addslashes($users['email']);
+                $em = addslashes(COM_applyFilter($users['email']));
                 $updatecolumns .= "email='$em'";
             }
             if (!empty($users['homepage'])) {
                 if (!empty($updatecolumns)) {
                     $updatecolumns .= ", ";
                 }
-                $hp = addslashes($users['homepage']);
+                $hp = addslashes(COM_applyFilter($users['homepage']));
                 $updatecolumns .= "homepage='$hp'";
             }
             $sql = $sql . $updatecolumns . " WHERE uid={$_USER['uid']}";
@@ -344,11 +344,11 @@ class OAuthConsumerBaseClass {
             // COM_errorLog("userinfo[location]={$userinfo['location']}");
             $sql = "UPDATE {$_TABLES['userinfo']} SET";
             if (! empty($userinfo['about'])) {
-                $sql .= " about = '" . addslashes($userinfo['about']) . "'";
+                $sql .= " about = '" . addslashes(strip_tags($userinfo['about'])) . "'";
             }
             $sql .= (!empty($userinfo['about']) && !empty($userinfo['location'])) ? "," : "";
             if (! empty($userinfo['location'])) {
-                $sql .= " location = '" . addslashes($userinfo['location']) . "'";
+                $sql .= " location = '" . addslashes(strip_tags($userinfo['location'])) . "'";
             }
             $sql .= " WHERE uid = {$uid}";
             // COM_errorLog("sql={$sql}");
