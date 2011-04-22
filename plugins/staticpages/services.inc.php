@@ -475,12 +475,30 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
 
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
-            PLG_itemSaved($sp_id, 'staticpages');
+            if (!$template_flag) {
+                PLG_itemSaved($sp_id, 'staticpages');
+            } else {
+                // If template then have to notify of all pages that use this template that a change to the page happened
+                $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
+                $result = DB_query($sql);
+                while ($A = DB_fetchArray($result)) {
+                    PLG_itemSaved($A['sp_id'], 'staticpages');
+                }
+            }
         } else {
             DB_change($_TABLES['comments'], 'sid', addslashes($sp_id),
                       array('sid', 'type'),
                       array(addslashes($sp_old_id), 'staticpages'));
-            PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
+            if (!$template_flag) {
+                PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
+            } else {
+                // If template then have to notify of all pages that use this template that a change to the page happened
+                $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
+                $result = DB_query($sql);
+                while ($A = DB_fetchArray($result)) {
+                    PLG_itemSaved($A['sp_id'], 'staticpages');
+                }                
+            }
         }
 
         $url = COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page='
