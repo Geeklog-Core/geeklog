@@ -48,12 +48,12 @@
 <!-- END unset-param -->
 
 <!-- BEGIN list-element -->
-<tr id="{name}" class="config_name"><td class="alignright" style="vertical-align:top">{display_name} {doc_link} {unset_link}</td>
+<tr id="config_{id_name}" class="config_name"><td class="alignright" style="vertical-align:top">{display_name} {doc_link} {unset_link}</td>
 <td>
-<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'config_{id_name}'), this);"{xhtml}>
+<input type="button" value="+" onclick="hide_show_tbl(selectChildByID(this.parentNode, 'arr_{id_name}'), this);"{xhtml}>
 {delete}
 <input type="hidden" value="true" name="{name}[placeholder]"{xhtml}>
-<table style="display:none" id="config_{id_name}" class="{arr_table_class_list}">
+<table style="display:none" id="arr_{id_name}" class="{arr_table_class_list}">
 <col width="100">
 <col width="100%">
 {my_elements}
@@ -63,13 +63,13 @@
 <!-- END list-element -->
 
 <!-- BEGIN keyed-add-button -->
-<tr id="config_{id_name}" class="config_name"><td colspan="2">
+<tr id="add_{id_name}" class="config_name"><td colspan="2">
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}><input style="width: 65px"{xhtml}>
 </td></tr>
 <!-- END keyed-add-button -->
 
 <!-- BEGIN unkeyed-add-button -->
-<tr id="config_{id_name}" class="config_name"><td colspan="2">
+<tr id="add_{id_name}" class="config_name"><td colspan="2">
 <input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
 </td></tr>
 <!-- END unkeyed-add-button -->
