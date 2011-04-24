@@ -378,12 +378,12 @@ $j(function() {
     }
     
     function getTotalTabsWidth() {
-        var totalWidth = 0;
+        var totalWidth = 10;
         var tabsWidth = tabs.width();
         var overflowAt = null;
         
         $j("#tabs > ul > li").each(function(idx) {
-            totalWidth += $j(this).width();
+            totalWidth += ($j(this).width() + 5);
             
             if (totalWidth >= tabsWidth && overflowAt === null) {
                 overflowAt = idx;
@@ -428,8 +428,8 @@ $j(function() {
             }
             
             for ( tab in hiddenTabs ) {
-                dropDown += '<li><a href="' + tab + '">' + 
-                            hiddenTabs[tab]['tab_title'] + '</a></li>';
+                dropDown = '<li><a href="' + tab + '">' + 
+                            hiddenTabs[tab]['tab_title'] + '</a></li>' + dropDown;
                             
                 var tabs_content = '<div id="' + tab.substr(1) + '" ' + 
                                    'class="ui-tabs-panel ui-widget-content ' +
@@ -462,7 +462,7 @@ $j(function() {
         }
         
         for ( tab in hiddenTabs ) {
-            tabs.tabs('add', tab, hiddenTabs[tab]['tab_title'], tabsLength);
+            tabs.tabs('add', tab, hiddenTabs[tab]['tab_title'], tabsLength-1);
             $j( tab ).html( hiddenTabs[tab]['tab_content'] );
         }
         hiddenTabs = {}
