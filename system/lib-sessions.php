@@ -499,10 +499,6 @@ function SESS_getUserDataFromId($userid)
         return $userdata;
     }
 
-    if (isset($myrow['passwd'])) {
-        unset($myrow['passwd']);
-    }
-
     return $myrow;
 }
 

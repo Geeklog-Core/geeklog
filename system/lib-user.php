@@ -129,6 +129,28 @@ function USER_deleteAccount ($uid)
 }
 
 /**
+* Create a new password and set in DB if User Id supplied
+*
+* @param    int      $uid   id of the user
+* @return   array    ['normal'] = human readable password, ['encrypted'] = encrypted password
+*
+*/
+function USER_createPassword ($uid = 0)
+{
+    global $_TABLES;
+
+    $passwd['normal'] = rand ();
+    $passwd['normal'] = md5 ($passwd['normal']);
+    $passwd['normal'] = substr ($passwd['normal'], 1, 8);
+    $passwd['encrypted'] = SEC_encryptPassword($passwd['normal']);
+    if ($uid > 1) { 
+        DB_change ($_TABLES['users'], 'passwd', $passwd['encrypted'], 'uid', $uid);
+    }
+    
+    return $passwd;
+}
+
+/**
 * Create a new password and send it to the user
 *
 * @param    string  $username   user's login name
@@ -138,13 +160,10 @@ function USER_deleteAccount ($uid)
 */
 function USER_createAndSendPassword ($username, $useremail, $uid)
 {
-    global $_CONF, $_TABLES, $LANG04;
+    global $_CONF, $LANG04;
 
-    $passwd = rand ();
-    $passwd = md5 ($passwd);
-    $passwd = substr ($passwd, 1, 8);
-    $passwd2 = SEC_encryptPassword($passwd);
-    DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'uid', $uid);
+    $passwords = USER_createPassword($uid);
+    $passwd = $passwords['normal'];
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = COM_newTemplate($_CONF['path_data']);

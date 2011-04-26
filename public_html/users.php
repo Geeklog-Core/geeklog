@@ -971,7 +971,7 @@ default:
                 SEC_setCookie($_CONF['cookie_name'], $_USER['uid'],
                               time() + $cooktime);
                 SEC_setCookie($_CONF['cookie_password'],
-                              SEC_encryptPassword($passwd), time() + $cooktime);
+                              $_USER['passwd'], time() + $cooktime);
             }
         } else {
             $userid = $_COOKIE[$_CONF['cookie_name']];

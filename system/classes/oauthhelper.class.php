@@ -249,6 +249,9 @@ class OAuthConsumerBaseClass {
         $users = $this->_getCreateUserInfo($info);
         $userinfo = $this->_getUpdateUserInfo($info);
         
+        $passwords = USER_createPassword();
+        $users['passwd2'] = $passwords['encrypted'];
+        
         $sql = "SELECT uid,status FROM {$_TABLES['users']} WHERE remoteusername = '{$users['remoteusername']}' AND remoteservice = '{$users['remoteservice']}'";
         // COM_errorLog("sql={$sql}");
         $result = DB_query($sql);
