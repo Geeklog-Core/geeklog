@@ -1,6 +1,6 @@
 function FixHTML( leftblocksID, centerblocksID, rightblocksID ) {
   var ua = navigator.userAgent.toLowerCase();
-  var is_old_ie = (ua.indexOf("msie") != -1) && (ua.indexOf("msie 8") == -1) && (ua.indexOf("opera") == -1);
+  var is_old_ie = (ua.indexOf("msie") != -1) && (ua.indexOf("msie 8") == -1) && (ua.indexOf("msie 9.0") == -1) && (ua.indexOf("opera") == -1);
 
   var leftblocks = document.getElementById(leftblocksID);
   var centerblocks = document.getElementById(centerblocksID);
@@ -20,9 +20,9 @@ function FixHTML( leftblocksID, centerblocksID, rightblocksID ) {
     classValue += ' js_on';
 
     /* Set body class attribute by HTML structure. */
-    if ( is_old_ie ) {  /* IE7, IE6 */
+    if ( is_old_ie ) {  /* IE8, IE7, IE6 */
       document.body.setAttribute('className', classValue);
-    } else {  /* Gecko, Opera, Safari, IE8 and other */
+    } else {  /* Gecko, Opera, Safari, IE9 and other */
       document.body.setAttribute('class', classValue);
     }
   }
