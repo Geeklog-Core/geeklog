@@ -63,6 +63,28 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
 
 
 /**
+ * Add passwords for OAuth and OpenID users
+ *
+ */
+function update_UsersFor180()
+{
+    global $_TABLES;
+    
+    $passwords = array();
+    
+    $sql = "SELECT uid FROM {$_TABLES['users']} WHERE (remoteservice IS NOT NULL OR remoteservice != '') AND passwd = ''";
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
+    for($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        
+        $passwords = USER_createPassword($A['uid']);
+    }    
+
+}
+
+/**
  * Add is new security rights for the new Group "Configuration Admin"
  *
  */
