@@ -267,18 +267,17 @@ class OAuthConsumerBaseClass {
             // initial login - create account
             $status = USER_ACCOUNT_ACTIVE;
 
-            // COM_errorLog("checking remoteusername for uniqueness");
-            // the likelihood that a remoteusername would not be unique within a given service is extremely unlikely
-            // but, i guess it's better to be safe than sorry
-            $checkName = DB_getItem($_TABLES['users'], 'username', "username='{$users['remoteusername']}'");
+            // COM_errorLog("checking remoteuser login name for uniqueness");
+            $checkName = DB_getItem($_TABLES['users'], 'username', "username='{$users['loginname']}'");
             if (!empty($checkName)) {
-                if (function_exists('CUSTOM_uniqueRemoteUsername')) {
-                    // COM_errorLog("CUSTOM_uniqueRemoteUserName function exists, calling it");
-                    $loginname = CUSTOM_uniqueRemoteUsername($loginname, $remoteservice);
-                }
-                if ($checkName == $loginname) {
-                    // COM_errorLog("remoteusername is not unique, using USER_uniqueUsername() to create one");
-                    $loginname = USER_uniqueUsername($loginname);
+                if ($checkName == $users['loginname']) {
+                    if (function_exists('CUSTOM_uniqueRemoteUsername')) {
+                        // COM_errorLog("CUSTOM_uniqueRemoteUserName function exists, calling it");
+                        $users['loginname'] = CUSTOM_uniqueRemoteUsername($users['loginname'], $users['remoteservice']);
+                    } else {
+                        // COM_errorLog("loginname is not unique, using USER_uniqueUsername() to create one");
+                        $users['loginname'] = USER_uniqueUsername($users['loginname']);
+                    }
                 }
             }
 

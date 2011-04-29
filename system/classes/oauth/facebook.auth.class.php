@@ -195,7 +195,7 @@ class facebookConsumer extends OAuthConsumerBaseClass {
 
     protected function _getCreateUserInfo($info) {
         $users = array(
-            'loginname'      => $info->id,
+            'loginname'      => $info->name,
             'email'          => $info->email,
             'passwd'         => '',
             'passwd2'        => '',
