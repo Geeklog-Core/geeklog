@@ -3,9 +3,9 @@
 
                                 <table width="100%" cellpadding="5" cellspacing="0" border="0" class="cal-header">
                                     <tr align="center" class="dayview_times">
-                                        <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
-                                        <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></td>
-                                        <td width="33%" align="center"><b>{lang_month}</b></td>
+                                        <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
+                                        <td align="center" style="width:33%"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=week">{lang_week}</a></td>
+                                        <td align="center" style="width:33%"><b>{lang_month}</b></td>
                                     </tr>
                                 </table><br{xhtml}>
                                 <table width="100%" cellpadding="5" cellspacing="1" border="0" class="cal-body">
@@ -16,7 +16,7 @@
                                                     <td class="cal-month" valign="top">
                                                         {previous_months_calendar}
                                                     </td>
-                                                    <td width="100%" class="cal-month" align="center">
+                                                    <td class="cal-month" align="center" style="width:100%">
                                                         <table border="0" cellpadding="5" cellspacing="0">
                                                             <tr>
                                                                 <td colspan="2" align="center">
@@ -64,17 +64,17 @@
                                     </tr>
                                     <tr>
                                         <td>&nbsp;</td>
-                                        <td width="15%" class="cal-day">{lang_sunday}</td>
-                                        <td width="14%" class="cal-day">{lang_monday}</td>
-                                        <td width="14%" class="cal-day">{lang_tuesday}</td>
-                                        <td width="14%" class="cal-day">{lang_wednesday}</td>
-                                        <td width="14%" class="cal-day">{lang_thursday}</td>
-                                        <td width="14%" class="cal-day">{lang_friday}</td>
-                                        <td width="15%" class="cal-day">{lang_saturday}</td>
+                                        <td class="cal-day" style="width:15%">{lang_sunday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_monday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_tuesday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_wednesday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_thursday}</td>
+                                        <td class="cal-day" style="width:14%">{lang_friday}</td>
+                                        <td class="cal-day" style="width:15%">{lang_saturday}</td>
                                     </tr>
                                     {cal_week}
                                 </table>
-                                <table align="center">
+                                <table style="margin-left:auto; margin-right:auto">
                                     <tr>
                                         <td>
                                             <form method="post" action="index.php">

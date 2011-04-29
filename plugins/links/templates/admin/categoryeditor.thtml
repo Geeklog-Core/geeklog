@@ -41,7 +41,7 @@
                 <td>
                     {group_dropdown}
                 </td>
-            <tr>
+            </tr>
             <tr>
                 <td colspan="2"><b>{lang_permissions}</b>:</td>
             </tr>

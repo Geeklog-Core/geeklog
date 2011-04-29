@@ -1,13 +1,13 @@
                             {search_menu}
                             <form action="{form_url}" method="post">
-                                {formfields_top}
-                                <table class="admin-list-table">
-                                    <tr style="background:#FFFFFF;">
-                                     {header_row}
-                                    </tr>
-                                    {item_row}
-                                </table>
                                 <div>
+                                    {formfields_top}
+                                    <table class="admin-list-table">
+                                        <tr style="background:#FFFFFF;">
+                                         {header_row}
+                                        </tr>
+                                        {item_row}
+                                    </table>
                                     <input style="padding:5px 0px 0px 9px;{show_deleteimage}" name="delbutton" alt="delbutton" type="image" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
                                     {formfields_bottom}
                                 </div>

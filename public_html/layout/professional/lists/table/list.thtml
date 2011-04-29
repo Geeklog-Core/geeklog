@@ -1,10 +1,10 @@
                             {list_top}
                             <div class="admin-list-search">
-                                <form name="page_limit" style="display: inline;">
+                                <form name="page_limit" style="display: inline;" action="#"><div style="display: inline;">
                                     <select name="page_limit_links" style="{show_limit}" onChange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
                                         {page_limit}
                                     </select>
-                                </form>
+                                </div></form>
                             </div>
                             <table class="admin-list-table" style="{show_sort}">
                                 <tr style="background:#FFFFFF;">

@@ -3,12 +3,12 @@
     <form name="groupusers" action="{phpself}" method="post" style="margin:0px;">
         <table cellspacing="0" cellpadding="0" class="pluginBG" style="width:100%; padding:15px;">
             <tr>
-                <td class="blocktitle" style="text-align:right; padding:5px 40px 5px 5px;">{LANG_sitemembers}</th>
-                <td>&nbsp;</th>
-                <td class="blocktitle" style="text-align:left; padding:5px 5px 5px 20px;">{LANG_grpmembers}</th>
+                <td class="blocktitle" style="text-align:right; padding:5px 40px 5px 5px;">{LANG_sitemembers}</td>
+                <td>&nbsp;</td>
+                <td class="blocktitle" style="text-align:left; padding:5px 5px 5px 20px;">{LANG_grpmembers}</td>
             </tr>
             <tr>
-                <td class="alignright" width="40%" style="padding-right:5px;">
+                <td class="alignright" style="padding-right:5px; width:40%;">
                     <select multiple="multiple" size="10" name="fieldFrom" style="width: 15em; height: 20em; padding: 2px;" ondblclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)">{sitemembers}</select>
                 </td>
                 <td class="aligncenter">
@@ -17,7 +17,7 @@
                     <input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)"{xhtml}>
                     <br{xhtml}><br{xhtml}>
                 </td>
-                <td width="40%" class="alignleft" style="padding-left:5px;">
+                <td class="alignleft" style="padding-left:5px; width:40%;">
                     <select multiple="multiple" size="10" name="fieldTo" style="width: 15em; height: 20em; padding: 2px;" ondblclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)">{group_list}</select>
                 </td>
             </tr>

@@ -1,8 +1,8 @@
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="cal-header">
   <tr align="center">
-    <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
-    <td width="33%" align="center"><b>{lang_week}</b></td>
-    <td width="33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}">{lang_month}</a></td>
+    <td style="width:33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}&amp;view=day">{lang_day}</a></td>
+    <td style="width:33%" align="center"><b>{lang_week}</b></td>
+    <td style="width:33%" align="center"><a href="{site_url}/calendar/index.php?mode={mode}">{lang_month}</a></td>
   </tr>
 </table>
 <br{xhtml}>
@@ -17,49 +17,49 @@
                                   <td colspan="2">&nbsp;</td>
                                 </tr>
                                 <tr class="{class1}">
-                                    <td width="80%" class="cal-weekview-dayformat">{day1}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent1}</td>
+                                    <td class="cal-weekview-dayformat" style="width:80%">{day1}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent1}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" valign="bottom" class="cal-dayview-times">{events_day1}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class2}">
-                                    <td class="cal-weekview-dayformat">{day2}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent2}</td>
+                                    <td class="cal-weekview-dayformat">{day2}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent2}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day2}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class3}">
-                                    <td class="cal-weekview-dayformat">{day3}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent3}</td>
+                                    <td class="cal-weekview-dayformat">{day3}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent3}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day3}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class4}">
-                                    <td class="cal-weekview-dayformat">{day4}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent4}</td>
+                                    <td class="cal-weekview-dayformat">{day4}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent4}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day4}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class5}">
-                                    <td class="cal-weekview-dayformat">{day5}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent5}</td>
+                                    <td class="cal-weekview-dayformat">{day5}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent5}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day5}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class6}">
-                                    <td class="cal-weekview-dayformat">{day6}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent6}</td>
+                                    <td class="cal-weekview-dayformat">{day6}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent6}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day6}</td>
                                 </tr>
                                 <tr><td colspan="2">&nbsp;</td></tr>
                                 <tr class="{class7}">
-                                    <td class="cal-weekview-dayformat">{day7}</td><td align="right" class="cal-weekview-addevent" nowrap="nowrap">{langlink_addevent7}</td>
+                                    <td class="cal-weekview-dayformat">{day7}</td><td align="right" class="cal-weekview-addevent" style="white-space:nowrap">{langlink_addevent7}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="cal-dayview-times">{events_day7}</td>

@@ -2,26 +2,26 @@
                                 <form action="{site_url}/users.php" method="post">
                                     <table cellspacing="0" cellpadding="3">
                                         <tr>
-                                            <td colspan="2" width="100%">{lang_instructions}</td>
+                                            <td colspan="2" style="width:100%">{lang_instructions}</td>
                                         </tr>
                                         <tr>
-                                            <td class="alignright" width="50%"><b>{lang_username}:</b></td>
-                                            <td width="50%"><input type="text" size="16" maxlength="16" name="username" value="{username}"{xhtml}></td>
+                                            <td class="alignright" style="width:50%"><b>{lang_username}:</b></td>
+                                            <td style="width:50%"><input type="text" size="16" maxlength="16" name="username" value="{username}"{xhtml}></td>
                                         </tr>
                                         <tr>
-                                            <td class="alignright" width="50%"><b>{lang_email}:</b></td>
-                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email" value="{email}"{xhtml}></td>
+                                            <td class="alignright" style="width:50%"><b>{lang_email}:</b></td>
+                                            <td style="width:50%"><input type="text" size="32" maxlength="96" name="email" value="{email}"{xhtml}></td>
                                         </tr>
                                         <tr>
-                                            <td class="alignright" width="50%"><b>{lang_email_conf}:</b></td>
-                                            <td width="50%"><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"{xhtml}></td>
+                                            <td class="alignright" style="width:50%"><b>{lang_email_conf}:</b></td>
+                                            <td style="width:50%"><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}"{xhtml}></td>
                                         </tr>
                                         <tr>
-                                            <td class="aligncenter warning" colspan="2" width="100%">{lang_warning}</td>
+                                            <td class="aligncenter warning" colspan="2" style="width:100%">{lang_warning}</td>
                                         </tr>
                                         {captcha}
                                         <tr>
-                                            <td class="aligncenter" colspan="2" width="100%">
+                                            <td class="aligncenter" colspan="2" style="width:100%">
                                                 <input type="hidden" name="mode" value="create"{xhtml}>
                                                 <input type="submit" value="{lang_register}"{xhtml}>
                                             </td>

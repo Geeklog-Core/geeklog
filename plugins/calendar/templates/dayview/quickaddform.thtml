@@ -1,7 +1,9 @@
                             <form action="{site_url}/calendar/index.php" method="post">
-                                <input type="hidden" name="view" value="addentry"{xhtml}>
-                                <input type="hidden" name="calendar_type" value="quickadd"{xhtml}>
-                                <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                <div>
+                                    <input type="hidden" name="view" value="addentry"{xhtml}>
+                                    <input type="hidden" name="calendar_type" value="quickadd"{xhtml}>
+                                    <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+                                </div>
                                 <table cellpadding="0" cellspacing="1" border="0" width="100%">
                                     <tr>
                                         <td>{lang_quickadd}</td>

@@ -39,7 +39,9 @@
                                 <tr>
                                     <td colspan="2">
                                         <form method="get" action="{site_admin_url}/plugins.php">
-                                            <input style="width: 100%" type="submit" value="{back}">
+                                            <div>
+                                                <input style="width: 100%" type="submit" value="{back}"{xhtml}>
+                                            </div>
                                         </form>
                                     </td>
                                 </tr>

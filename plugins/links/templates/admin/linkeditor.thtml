@@ -41,7 +41,7 @@
                                         <tr>
                                             <td align="right" valign="top" style="white-space:nowrap;">{lang_linkdescription}:</td>
                                             <td>
-                                                <textarea name="description" style="width:100%" rows="8">{link_description}</textarea>
+                                                <textarea name="description" style="width:100%" cols="45" rows="8">{link_description}</textarea>
                                                 <br{xhtml}>
                                                 {lang_allowed_html}
                                             </td>

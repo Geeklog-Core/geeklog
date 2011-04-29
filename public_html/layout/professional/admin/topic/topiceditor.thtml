@@ -26,11 +26,11 @@
                                     </tr>
                                     <tr{hide_meta}>
                                         <td valign="top" align="right">{lang_metadescription}:</td>
-                                        <td><textarea name="meta_description" style="width:100%" rows="2">{meta_description}</textarea></td>
+                                        <td><textarea name="meta_description" style="width:100%" cols="45" rows="2">{meta_description}</textarea></td>
                                     </tr>
                                     <tr{hide_meta}>
                                         <td valign="top" align="right">{lang_metakeywords}:</td>
-                                        <td><textarea name="meta_keywords" style="width:100%" rows="2">{meta_keywords}</textarea></td>
+                                        <td><textarea name="meta_keywords" style="width:100%" cols="45" rows="2">{meta_keywords}</textarea></td>
                                     </tr>                                     
                                     <tr>
                                         <td class="alignright">{lang_defaulttopic}:</td>
@@ -38,7 +38,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_archivetopic}:</td>
-                                        <td><input type="checkbox" name="is_archive" {archive_checked} {archive_disabled}{xhtml}> <span class="fieldhelp">{lang_archivetext}</td>
+                                        <td><input type="checkbox" name="is_archive" {archive_checked} {archive_disabled}{xhtml}> <span class="fieldhelp">{lang_archivetext}</span></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_num_stories}:</td>

@@ -96,9 +96,9 @@ class EditHeader extends BaseAdmin {
                  . XHTML . '> e.g. <tt>Mozilla</tt></td></tr>' . LB;
         $display .= '</table>' . LB;
         $display .= '<p><input type="submit" name="paction" value="'
-                 . $LANG_SX00['addentry'] . '"' . XHTML . '></p>';
+                 . $LANG_SX00['addentry'] . '"' . XHTML . '>';
         $display .= '<input type="hidden" name="' . CSRF_TOKEN
-                 . "\" value=\"{$token}\"" . XHTML . '>' . LB;
+                 . "\" value=\"{$token}\"" . XHTML . '></p>' . LB;
         $display .= '</form>' . LB;
 
         return $display;

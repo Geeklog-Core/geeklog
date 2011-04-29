@@ -140,7 +140,7 @@
               <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
           </tr>
           <tr>
-              <td align="right" valign="top style="white-space:nowrap;"">{exit_msg}</td>
+              <td align="right" valign="top" style="white-space:nowrap;">{exit_msg}</td>
               <td valign="top"><input type="checkbox" name="sp_nf" {exit_checked}{xhtml}>&nbsp;&nbsp;{exit_info}</td>
           </tr>
           <tr>

@@ -15,7 +15,9 @@
             <td>{lang_trackback_short} </td>
         </tr>
     </table>
-    {hidden_input_fields}
-    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    <div>
+        {hidden_input_fields}
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
     <p class="warningsmall aligncenter">{lang_may_take_a_while}</p>
 </form>

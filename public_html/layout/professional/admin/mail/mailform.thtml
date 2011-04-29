@@ -23,7 +23,7 @@
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_body}:</b></td>
-            <td><textarea name="message" rows="10" style="width:100%">{message}</textarea></td>
+            <td><textarea name="message" cols="45" rows="10" style="width:100%">{message}</textarea></td>
         </tr>
         <tr>
             <td class="alignright"><b>{lang_options}:</b></td>
