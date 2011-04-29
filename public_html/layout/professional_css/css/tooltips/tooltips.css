@@ -24,6 +24,7 @@ a.gl-tooltip span {
     margin-left: -999em;
     position: absolute;
     text-align: left;
+    width: 250px;
 }
 a.gl-tooltip:hover span {
     border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; 
