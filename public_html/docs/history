@@ -1,11 +1,26 @@
 Geeklog History/Changes:
 
-Apr 25, 2011 (1.8.0b2)
+??? ??, 2011 (1.8.0rc1)
 ------------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
+
+Changes since 1.8.0b2:
+- LinkedIn OAuth uses full names for the username now [Dirk]
+- Facebook OAuth uses full names for the username now [Tom]
+- Various HTML fixes (patch #0001333, provided by dengen)
+- Removed array_flip() calls from English language files (feature request
+  #0001336) [Rouslan]
+- Fixed tooltip flickr (bug #0001337, patch provided by dengen)
+- Added missing $LANG_VALIDATION['between'] language file entry [Rouslan]
+- Fixed OAuth and OpenID accounts logging out after 2 minutes of inactivity
+  (bug #0001334) [Tom]
+
+
+Apr 25, 2011 (1.8.0b2)
+------------
 
 Changes since 1.8.0b1:
 - Fixed post mode being switched when plain text comment was previewed or edited
