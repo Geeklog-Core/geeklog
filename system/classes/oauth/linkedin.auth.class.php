@@ -50,7 +50,7 @@ class linkedinConsumer extends OAuthConsumerBaseClass {
 
     protected function _getCreateUserInfo($info) {
         $users = array(
-            'loginname'      => $info->{'first-name'} . $info->{'last-name'},
+            'loginname'      => $info->{'first-name'} . ' ' . $info->{'last-name'},
             'email'          => '',
             'passwd'         => '',
             'passwd2'        => '',
@@ -60,7 +60,6 @@ class linkedinConsumer extends OAuthConsumerBaseClass {
             'remoteservice'  => 'oauth.linkedin',
             'remotephoto'    => $info->{'picture-url'},
         );
-        $users['loginname'] = str_replace(' ', '', $users['loginname']);
         return $users;
     }
 
