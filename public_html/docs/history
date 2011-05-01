@@ -1,7 +1,7 @@
 Geeklog History/Changes:
 
-??? ??, 2011 (1.8.0rc1)
-------------
+May 1, 2011 (1.8.0rc1)
+-----------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
@@ -13,7 +13,7 @@ Changes since 1.8.0b2:
 - Various HTML fixes (patch #0001333, provided by dengen)
 - Removed array_flip() calls from English language files (feature request
   #0001336) [Rouslan]
-- Fixed tooltip flickr (bug #0001337, patch provided by dengen)
+- Fixed tooltip flicker (bug #0001337, patch provided by dengen)
 - Added missing $LANG_VALIDATION['between'] language file entry [Rouslan]
 - Fixed OAuth and OpenID accounts logging out after 2 minutes of inactivity
   (bug #0001334) [Tom]
