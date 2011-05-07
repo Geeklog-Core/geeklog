@@ -367,12 +367,12 @@ function _postprocess($str)
 
     $str = $this->get_var($parent);
     $reg = "/[ \t]*<!--\s+BEGIN $varname\s+-->\s*?\n?(\s*.*?\n?)\s*<!--\s+END $varname\s+-->\s*?\n?/sm";
-    $matches = preg_match_all($reg, $str, $m);
+    $matches = preg_match($reg, $str, $m);
     if (($matches === false) || ($matches == 0)) {
         return false;
     }
-    $str = str_replace($m[0][0], '{' . $name . '}', $str);
-    $this->set_var($varname, $m[1][0]);
+    $str = str_replace($m[0], '{' . $name . '}', $str);
+    $this->set_var($varname, $m[1]);
     $this->set_var($parent, $str);
     return true;
   }
@@ -1011,7 +1011,7 @@ class MultiRootTemplate extends Template {
   function set_root($A) {
     $this->root = Array();
 	foreach ($A as $r) {
-	  if (path_exists($r)) {
+	  if (is_dir($r)) {
 	    $this->root[] = $r;
 	  }
 	}
