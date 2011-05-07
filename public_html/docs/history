@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May 1, 2011 (1.8.0rc1)
+May 8, 2011 (1.8.0rc1)
 -----------
 
 This release includes the results from the 2010 Google Summer of Code project
@@ -8,6 +8,8 @@ to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
 
 Changes since 1.8.0b2:
+- Speed up template class (patch #0001302, provided by mystral-kk)
+- Fixed wrong characters in Slovenian UTF-8 language file (fix provided by gape)
 - LinkedIn OAuth uses full names for the username now [Dirk]
 - Facebook OAuth uses full names for the username now [Tom]
 - Various HTML fixes (patch #0001333, provided by dengen)
