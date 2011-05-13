@@ -658,14 +658,24 @@ case 'week':
         $time_day1 = mktime (0, 0, 0, $month, $day + 1, $year);
         $time_day7 = mktime (0, 0, 0, $month, $day + 7, $year);
         $start_mname = strftime ('%B', $time_day1);
-        $eday = strftime ('%e', $time_day7);
+        // Check for Windows to find and replace the %e 
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $eday = strftime ('%#d', $time_day7);
+        } else {          
+            $eday = strftime ('%e', $time_day7);
+        }
         $end_mname = strftime ('%B', $time_day7);
         $end_ynum = strftime ('%Y', $time_day7);
         $date_range = $start_mname . ' ' . strftime ('%e', $time_day1);
     } else {
         $start_mname = strftime ('%B', mktime (0, 0, 0, $month, $day, $year));
         $time_day6 = mktime (0, 0, 0, $month, $day + 6, $year);
-        $eday = strftime ('%e', $time_day6);
+        // Check for Windows to find and replace the %e 
+        if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+            $eday = strftime ('%#d', $time_day6);
+        } else {        
+            $eday = strftime ('%e', $time_day6);
+        }
         $end_mname = strftime ('%B', $time_day6);
         $end_ynum = strftime ('%Y', $time_day6);
         $date_range = $start_mname . ' ' . $day;
