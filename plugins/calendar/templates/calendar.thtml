@@ -10,13 +10,13 @@
                                 </table><br{xhtml}>
                                 <table width="100%" cellpadding="5" cellspacing="1" border="0" class="cal-body">
                                     <tr align="center">
-                                        <td colspan="8" class="cal-month">
+                                        <td colspan="8">
                                             <table border="0" width="100%">
                                                 <tr>
                                                     <td class="cal-month" valign="top">
                                                         {previous_months_calendar}
                                                     </td>
-                                                    <td class="cal-month" align="center" style="width:100%">
+                                                    <td align="center" style="width:100%">
                                                         <table border="0" cellpadding="5" cellspacing="0">
                                                             <tr>
                                                                 <td colspan="2" align="center">
