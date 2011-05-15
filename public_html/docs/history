@@ -1,11 +1,19 @@
 Geeklog History/Changes:
 
-May 8, 2011 (1.8.0rc1)
------------
+May ??, 2011 (1.8.0)
+------------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
+
+Changes since 1.8.0rc1:
+- Fixed Calendar week view date range display on Windows (bug #0001340) [Tom]
+- Tweaked font size in Calendar (feature request #0001329) [Tom]
+
+
+May 8, 2011 (1.8.0rc1)
+-----------
 
 Changes since 1.8.0b2:
 - Speed up template class (patch #0001302, provided by mystral-kk)
