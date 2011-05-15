@@ -1765,9 +1765,18 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 break;
             case 'description':
             case 'excerpt':
-                $props[$p] = SP_render_content(stripslashes($A['sp_content']),
-                                                            $A['sp_php']);
-                break;
+                $retval = '';
+                $mode = '';
+                $args = array(
+                            'sp_id' => $sp_id,
+                            'mode'  => $mode
+                             );
+                $svc_msg = array();
+            
+                if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {     
+                    $props[$p] = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
+                }
+                break;                
             case 'id':
                 $props['id'] = $A['sp_id'];
                 break;
