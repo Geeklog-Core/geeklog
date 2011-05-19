@@ -1287,14 +1287,6 @@ function plugin_get_pluginname($plugin)
 
 // MAIN
 $display = '';
-if (isset($_POST['pluginenabler'])) { // JavaScript-triggered POST request
-    if (isset($_POST['updatethisplugin'])) {
-        // translate into a standard update request (see below)
-        $_POST['mode'] = $LANG32[34];
-        $_POST['pi_name'] = $_POST['updatethisplugin'];
-    }
-}
-
 $mode = '';
 if (isset($_POST['mode'])) {
     $mode = $_POST['mode'];
@@ -1329,8 +1321,8 @@ if ($mode == 'delete') {
         $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
     }
 
-} elseif ((($mode == $LANG32[34]) && !empty($LANG32[34])) && SEC_checkToken()) { // update
-    $pi_name = COM_applyFilter($_POST['pi_name']);
+} elseif ($mode == 'updatethisplugin' && SEC_checkToken()) { // update
+    $pi_name = COM_applyFilter($_GET['pi_name']);
     $display .= do_update($pi_name);
 
 } elseif ($mode == 'info_installed') {

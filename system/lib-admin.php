@@ -1112,12 +1112,13 @@ function ADMIN_getListField_plugins($fieldname, $fieldvalue, $A, $icon_arr, $tok
         } else {
             $retval = "{$LANG32[37]}: $pi_installed_version,&nbsp;{$LANG32[36]}: $plugin_code_version";
             if ($A['pi_enabled'] == 1) {
-                $retval .= " <b>{$LANG32[38]}</b>"
-                    . ' <input type="image" src="' . $_CONF['layout_url']
-                    . '/images/update.png" alt="[' . $LANG32[38]
-                    . ']" name="updatethisplugin" value="' . $A['pi_name']
-                    . '" onclick="submit()" title="' . $LANG32[42] . '"'
-                    . XHTML . '>';
+                $retval .= " <b>{$LANG32[38]}</b>";
+                $csrftok = '&amp;' . CSRF_TOKEN . '=' . $token;
+                $style = 'style="vertical-align: middle;"';
+                $img = $_CONF['layout_url'] . '/images/update.png';
+                $img = "<img $style alt=\"[" . $LANG32[38] . "]\" src=\"$img\"" . XHTML . ">";
+                $url = $_CONF['site_admin_url'] . '/plugins.php?mode=updatethisplugin&amp;pi_name=' . $A['pi_name'] . $csrftok;
+                $retval .= COM_CreateLink($img, $url, array('title' => $LANG32[42]));
             }
         }
         break;
