@@ -1174,22 +1174,24 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             }
 
             $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
-            // notify parent of new comment
-            // NOTE: This could be modified to send notifications to all parents in the comment tree
-            //       with only a modification to the below SELECT statement
-            if ($_CONF['allow_reply_notifications'] == 1) {
-                $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
-                $A = DB_fetchArray($result);
-                if ($A !== false) {
-                    CMT_sendReplyNotification($A);
-                }
-            }
         } else { //replying to non-existent comment or comment in wrong article
             COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                        . 'to reply to a non-existent comment or the pid/sid did not match');
             $ret = 4; // Cannot return here, tables locked!
         }
         DB_unlockTable($_TABLES['comments']);
+        
+        // notify parent of new comment
+        // Must occur after table unlock, only with valid $cid and $pid
+        // NOTE: This could be modified to send notifications to all parents in the comment tree
+        //       with only a modification to the below SELECT statement
+        if ($_CONF['allow_reply_notifications'] == 1 && $cid > 0 && $pid > 0) {
+        	$result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
+        	$A = DB_fetchArray($result);
+        	if ($A !== false) {
+        		CMT_sendReplyNotification($A);
+        	}
+        }
     } else {
         DB_lockTable ($_TABLES['comments']);
         $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
