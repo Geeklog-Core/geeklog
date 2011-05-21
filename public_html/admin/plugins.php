@@ -867,14 +867,21 @@ function plugin_upload()
                     $code_version = PLG_chkVersion($dirname);
                     if (! empty($code_version) &&
                             ($code_version != $pi_version)) {
-                        $result = PLG_upgrade($dirname);
-                        if ($result === true) {
-                            PLG_pluginStateChange($dirname, 'upgraded');
-                            $msg = 60; // successfully updated
-                        } else {
-                            $msg_with_plugin_name = true;
-                            $msg = $result; // message provided by the plugin
-                        }
+                        /**
+                        * At this point, we would have to call PLG_upgrade().
+                        * However, we've loaded the plugin's old functions.inc
+                        * (in lib-common.php). We can't load the new one here
+                        * now since that would result in duplicate function
+                        * definitions. Solution: Trigger a reload (with the new
+                        * functions.inc) and continue there.
+                        */
+                        $url = $_CONF['site_admin_url'] . '/plugins.php'
+                             . '?mode=continue_upgrade'
+                             . '&amp;codeversion=' . urlencode($code_version)
+                             . '&amp;piversion=' . urlencode($pi_version)
+                             . '&amp;plugin=' . urlencode($dirname);
+                        echo COM_refresh($url);
+                        exit;
                     } else {
                         $msg = 98; // successfully uploaded
                     }
@@ -900,6 +907,57 @@ function plugin_upload()
             $retval = COM_refresh($url);
         }
     }
+
+    return $retval;
+}
+
+/**
+* Continue a plugin upgrade that started in plugin_upload()
+*
+* @param    string  $plugin         plugin name
+* @param    string  $pi_version     current plugin version
+* @param    string  $code_version   plugin version to be upgraded to
+* @return   string                  HTML refresh
+* @see      function plugin_upload
+*
+*/
+function continue_upgrade($plugin, $pi_version, $code_version)
+{
+    global $_CONF, $_TABLES;
+
+    $retval = '';
+    $msg_with_plugin_name = false;
+
+    // simple sanity checks
+    if (empty($plugin) || empty($pi_version) || empty($code_version) ||
+            ($pi_version == $code_version)) {
+        $msg = 72;
+    } else {
+        // more sanity checks
+        $result = DB_query("SELECT pi_version, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '" . addslashes($plugin) . "'");
+        $A = DB_fetchArray($result);
+        if (!empty($A['pi_version']) && ($A['pi_enabled'] == 1) &&
+                ($A['pi_version'] == $pi_version) &&
+                ($A['pi_version'] != $code_version)) {
+            // continue upgrade process that started in plugin_upload()
+            $result = PLG_upgrade($plugin);
+            if ($result === true) {
+                PLG_pluginStateChange($plugin, 'upgraded');
+                $msg = 60; // successfully updated
+            } else {
+                $msg_with_plugin_name = true;
+                $msg = $result; // message provided by the plugin
+            }
+        } else {
+            $msg = 72;
+        }
+    }
+
+    $url = $_CONF['site_admin_url'] . '/plugins.php?msg=' . $msg;
+    if ($msg_with_plugin_name) {
+        $url .= '&amp;plugin=' . $plugin;
+    }
+    $retval = COM_refresh($url);
 
     return $retval;
 }
@@ -1372,6 +1430,10 @@ if ($mode == 'delete') {
     } else {
         $display = COM_refresh($_CONF['site_admin_url'] . '/plugins.php');
     }
+
+} elseif ($mode == 'continue_upgrade') {
+    $display .= continue_upgrade(COM_sanitizeFilename($_GET['plugin']),
+                                 $_GET['piversion'], $_GET['codeversion']);
 
 } elseif (isset($_FILES['plugin']) && SEC_checkToken() &&
         SEC_hasRights('plugin.install,plugin.upload')) {
