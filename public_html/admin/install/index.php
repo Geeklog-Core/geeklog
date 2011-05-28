@@ -1230,6 +1230,7 @@ if (INST_phpOutOfDate()) {
         $dbconfig_path = str_replace('db-config.php', '', $_PATH['db-config.php']);
 
         // Edit siteconfig.php and enter the correct GL path and system directory path
+        clearstatcache();
         $siteconfig_path = $_PATH['public_html/'] . 'siteconfig.php';
         $siteconfig_file = fopen($siteconfig_path, 'rb');
         $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));

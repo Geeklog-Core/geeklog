@@ -660,6 +660,7 @@ function INST_setDefaultCharset($siteconfig_path, $charset)
 {
     $result = true;
 
+    clearstatcache();
     $siteconfig_file = fopen($siteconfig_path, 'rb');
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);

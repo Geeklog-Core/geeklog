@@ -394,6 +394,7 @@ function INST_writeConfig($config_file, $db)
     }
 
     // Read in db-config.php so we can insert the DB information
+    clearstatcache();
     $dbconfig_file = fopen($config_file, 'rb');
     $dbconfig_data = fread($dbconfig_file, filesize($config_file));
     fclose($dbconfig_file);
@@ -1160,6 +1161,7 @@ function INST_setVersion($siteconfig_path)
 {
     global $_TABLES, $LANG_INSTALL;
 
+    clearstatcache();
     $siteconfig_file = fopen($siteconfig_path, 'rb');
     $siteconfig_data = fread($siteconfig_file, filesize($siteconfig_path));
     fclose($siteconfig_file);
