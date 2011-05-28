@@ -305,7 +305,7 @@ class SitemapXML
             $url
         );
 
-        return htmlspecialchars($url, ENT_QUOTES, $encoding);
+        return @htmlspecialchars($url, ENT_QUOTES, $encoding);
     }
 
     /**
