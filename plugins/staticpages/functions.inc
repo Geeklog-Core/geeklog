@@ -1243,6 +1243,38 @@ function plugin_upgrade_staticpages()
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.4.3':
+            require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+            $plugin_path = $_CONF['path'] . 'plugins/staticpages/';
+            require_once $plugin_path . 'install_defaults.php';
+
+            if (file_exists($plugin_path . 'config.php')) {
+                global $_DB_table_prefix, $_SP_CONF;
+
+                require_once $plugin_path . 'config.php';
+            }
+
+            if (!plugin_initconfig_staticpages()) {
+                echo 'There was an error upgrading the Static Pages plugin';
+                return false;
+            }
+
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '1.5.0';
+            break;
+
+        case '1.5.0':
+            // no db changes
+            $current_version = '1.5.1';
+            break;
+
         case '1.5.1':
             // no db changes
             $current_version = '1.6.0';
@@ -1284,6 +1316,7 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.3';
             break;
+
         case '1.6.3':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];

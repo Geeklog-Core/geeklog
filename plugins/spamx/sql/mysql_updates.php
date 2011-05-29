@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2010 by the following authors:                              |
+// | Copyright (C) 2010-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -50,7 +50,7 @@ $_UPDATES = array(
 );
 
 /**
- * Add is new security rights for the Group "Spamx Admin"
+ * Add in new security rights for the Group "Spamx Admin"
  *
  */
 function spamx_update_ConfigSecurity_1_2_1()

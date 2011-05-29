@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -33,6 +33,12 @@
 */
 
 $_UPDATES = array(
+
+    '1.4.3' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD commentcode tinyint(4) NOT NULL default '0' AFTER sp_label",
+        // disable comments on all existing static pages
+        "UPDATE {$_TABLES['staticpage']} SET commentcode = -1"
+    ),
 
     '1.6.0' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description TEXT NULL AFTER commentcode",

@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Polls      |
 // | plugin' PHP files.                                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -1149,18 +1149,50 @@ function plugin_upgrade_polls()
 
     require_once $_CONF['path'] . 'plugins/polls/sql/'
                                 . $_DB_dbms . '_updates.php';
-                                
-    require_once $_CONF['path'] . 'plugins/polls/install_updates.php';                                
+
+    require_once $_CONF['path'] . 'plugins/polls/install_updates.php';
 
     $current_version = $installed_version;
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.1.0':
+
+            require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+            $plugin_path = $_CONF['path'] . 'plugins/polls/';
+            require_once $plugin_path . 'install_defaults.php';
+
+            if (file_exists($plugin_path . 'config.php')) {
+                global $_DB_table_prefix, $_PO_CONF;
+
+                require_once $plugin_path . 'config.php';
+            }
+
+            if (!plugin_initconfig_polls()) {
+                echo 'There was an error upgrading the Polls plugin';
+                return false;
+            }
+
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                $_SQL = INST_checkInnodbUpgrade($_SQL);
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            polls_update_polltopics();
+
+            $current_version = '2.0.1';
+            break;
+
         case '2.0.1':
+            // no db changes
             $current_version = '2.0.2';
             break;
 
         case '2.0.2':
+            // no db changes
             $current_version = '2.1.0';
             break;
 
@@ -1171,9 +1203,9 @@ function plugin_upgrade_polls()
                     DB_query($sql);
                 }
             }
-            
-            update_ConfValues_2_1_0();            
-            
+
+            update_ConfValues_2_1_0();
+
             $current_version = '2.1.1';
             break;
 
@@ -1186,10 +1218,10 @@ function plugin_upgrade_polls()
             }
 
             update_ConfValues_2_1_1();
-            
+
             $current_version = '2.1.2';
             break;
-            
+
         case '2.1.2':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1199,11 +1231,11 @@ function plugin_upgrade_polls()
             }
 
             polls_update_ConfValues_2_1_2();
-            
+
             polls_update_ConfigSecurity_2_1_2();
-            
+
             $current_version = '2.1.3';
-            break;            
+            break;
 
         default:
             $done = true;
@@ -1211,7 +1243,7 @@ function plugin_upgrade_polls()
     }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'polls'");
-
+COM_errorLog("PO updated to $code_version");
     return true;
 }
 

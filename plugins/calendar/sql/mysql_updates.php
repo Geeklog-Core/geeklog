@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
@@ -27,12 +27,18 @@
 // +---------------------------------------------------------------------------+
 
 /**
-* MY SQL updates
+* MySQL updates
 *
 * @package Calendar
 */
 
 $_UPDATES = array(
+
+    '1.0.0' => array(
+        "ALTER TABLE {$_TABLES['events']} CHANGE state state varchar(40) default NULL",
+        "ALTER TABLE {$_TABLES['eventsubmission']} CHANGE state state varchar(40) default NULL",
+        "ALTER TABLE {$_TABLES['personal_events']} CHANGE state state varchar(40) default NULL"
+    ),
     
     '1.1.0' => array(
         "ALTER TABLE {$_TABLES['eventsubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER timeend"
@@ -47,6 +53,27 @@ $_UPDATES = array(
     )    
     
 );
+
+/**
+* Replace the old $_STATES array with a free-form text field
+*
+*/
+function calendar_update_move_states()
+{
+    global $_TABLES, $_STATES;
+
+    if (isset($_STATES) && is_array($_STATES)) {
+        $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
+                        $_TABLES['personal_events']);
+
+        foreach ($_STATES as $key => $state) {
+            foreach ($tables as $table) {
+                DB_change($table, 'state', addslashes($state),
+                                  'state', addslashes($key));
+            }
+        }
+    }
+}
 
 /**
  * Add is new security rights for the Group "Calendar Admin"

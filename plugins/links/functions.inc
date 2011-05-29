@@ -670,15 +670,15 @@ function plugin_upgrade_links()
 {
     global $_CONF, $_TABLES, $_LI_CONF, $_DB_dbms;
 
-    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',         
+    $installed_version = DB_getItem($_TABLES['plugins'], 'pi_version',
                                     "pi_name = 'links'");
     $code_version = plugin_chkVersion_links();
     if ($installed_version == $code_version) {
-        // nothing to do                                                       
-        return true; 
+        // nothing to do
+        return true;
     }
 
-    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';          
+    require_once $_CONF['path'] . 'plugins/links/autoinstall.php';
 
     if (! plugin_compatible_with_this_version_links('links')) {
         return 3002;
@@ -686,53 +686,89 @@ function plugin_upgrade_links()
 
     $inst_parms = plugin_autoinstall_links('links');
     $pi_gl_version = $inst_parms['info']['pi_gl_version'];
-    
+
     require_once $_CONF['path'] . 'plugins/links/sql/'
                                 . $_DB_dbms . '_updates.php';
-                                
-    require_once $_CONF['path'] . 'plugins/links/install_updates.php';                                
+
+    require_once $_CONF['path'] . 'plugins/links/install_updates.php';
 
     $current_version = $installed_version;
     $done = false;
     while (! $done) {
         switch ($current_version) {
+        case '1.0.1':
+            require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+            $plugin_path = $_CONF['path'] . 'plugins/links/';
+            require_once $plugin_path . 'install_defaults.php';
+
+            if (file_exists($plugin_path . 'config.php')) {
+                global $_DB_table_prefix, $_LI_CONF;
+
+                require_once $plugin_path . 'config.php';
+            }
+
+            if (!plugin_initconfig_links()) {
+                echo 'There was an error upgrading the Links plugin';
+                return false;
+            }
+
+            $li_config = config::get_instance();
+            $_LI_CONF = $li_config->get_config('links');
+
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                $_SQL = INST_checkInnodbUpgrade($_SQL);
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+            links_update_set_categories();
+
+            $current_version = '2.0.0';
+            break;
+
+        case '2.0.0':
+            // no db changes
+            $current_version = '2.0.1';
+            break;
+
         case '2.0.1': // Last version of old install (Geeklog 1.5.2)
             if (! isset($_LI_CONF['new_window'])) {
                 $c = config::get_instance();
                 $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
             }
-        
+
             if (! isset($_LI_CONF['category_permissions'])) {
                 $c = config::get_instance();
                 $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
                 $c->add('category_permissions', array (3, 2, 2, 2),
                         '@select', 0, 3, 12, 150, true, 'links');
-            }            
-            
+            }
+
             $current_version = '2.1.0';
-            break;    
+            break;
+
         case '2.1.0':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }
-            }            
+            }
 
             links_update_ConfValues_2_1_0();
-            
+
             links_update_ConfigSecurity_2_1_0();
-            
+
             $current_version = '2.1.1';
-            break;            
+            break;
 
         default:
             $done = true;
         }
-    }    
-    
-    
-    
+    }
+
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'links'");
 
     return true;

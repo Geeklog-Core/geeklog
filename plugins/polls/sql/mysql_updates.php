@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mysql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -33,6 +33,28 @@
 */
 
 $_UPDATES = array(
+
+    '1.1.0' => array(
+        "RENAME TABLE `{$_TABLES['pollquestions']}` TO `{$_TABLES['polltopics']}`;",
+        "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `question` `topic` VARCHAR( 255 )  NULL DEFAULT NULL",
+        "ALTER TABLE `{$_TABLES['polltopics']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL",
+        "ALTER TABLE `{$_TABLES['polltopics']}` ADD questions int(11) default '0' NOT NULL AFTER voters",
+        "ALTER TABLE `{$_TABLES['polltopics']}` ADD is_open tinyint(1) NOT NULL default '1' AFTER display",
+        "ALTER TABLE `{$_TABLES['polltopics']}` ADD hideresults tinyint(1) NOT NULL default '0' AFTER is_open",
+        "ALTER TABLE `{$_TABLES['pollanswers']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL",
+        "ALTER TABLE `{$_TABLES['pollanswers']}` ADD `qid` VARCHAR( 20 ) NOT NULL DEFAULT '0' AFTER `pid`;",
+        "ALTER TABLE `{$_TABLES['pollanswers']}` DROP PRIMARY KEY;",
+        "ALTER TABLE `{$_TABLES['pollanswers']}` ADD INDEX (pid, qid, aid);",
+        "ALTER TABLE `{$_TABLES['pollvoters']}` CHANGE `qid` `pid` VARCHAR( 20 ) NOT NULL",
+        "CREATE TABLE {$_TABLES['pollquestions']} (
+          qid mediumint(9) NOT NULL DEFAULT '0',
+          pid varchar(20) NOT NULL,
+          question varchar(255) NOT NULL,
+          PRIMARY KEY (qid, pid)
+        ) TYPE=MyISAM",
+        // in 1.4.1, "don't display poll" was equivalent to "closed"
+        "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0"
+    ),
 
     '2.1.0' => array(
         // These pid changes should have happened when upgrading from 2.0.2
@@ -68,7 +90,33 @@ $_UPDATES = array(
 );
 
 /**
- * Add is new security rights for the Group "Polls Admin"
+* Hook up pollquestions with polltopics
+*
+*/
+function polls_update_polltopics()
+{
+    global $_TABLES;
+
+    $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
+    $move_rst = DB_query($move_sql);
+    $count_move = DB_numRows($move_rst);
+    for ($i = 0; $i < $count_move; $i++) {
+        $A = DB_fetchArray($move_rst);
+        $A[1] = mysql_real_escape_string($A[1]);
+        $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
+    }
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+    }
+}
+
+/**
+ * Add in new security rights for the Group "Polls Admin"
  *
  */
 function polls_update_ConfigSecurity_2_1_2()
