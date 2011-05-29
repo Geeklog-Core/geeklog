@@ -67,8 +67,11 @@ $_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) V
  */
 function update_UsersFor180()
 {
-    global $_TABLES;
-    
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'lib-security.php';
+    require_once $_CONF['path_system'] . 'lib-user.php';
+
     $passwords = array();
     
     $sql = "SELECT uid FROM {$_TABLES['users']} WHERE (remoteservice IS NOT NULL OR remoteservice != '') AND passwd = ''";
