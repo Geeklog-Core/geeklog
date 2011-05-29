@@ -1,6 +1,6 @@
 Geeklog History/Changes:
 
-May ??, 2011 (1.8.0)
+May ??, 2011 (1.8.0rc2)
 ------------
 
 This release includes the results from the 2010 Google Summer of Code project
@@ -8,8 +8,24 @@ to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
 
 Changes since 1.8.0rc1:
+- Fixed updating the bundled plugins when upgrading from a Geeklog version
+  older than 1.5.0 (bug #0001354) [Dirk]
+- Fixed incomplete / corrupted siteconfig.php file after an update (bug
+  #0001353) [Dirk]
+- Suppress a warning in the XMLSitemap plugin when using an unsupported
+  character set [Dirk]
+- Fixed plugin update using a cached version of the plugin's old functions.inc
+  (bug #0001345) [Dirk]
+- Fixed plugin update option not reacting for some users (bug #0001344, patch
+  provided by dengen)
+- Fixed a wrong table lock that triggered an SQL error when sending a comment
+  notification email (cf. bug #0000939) [Vinny]
+- Static Pages plugin function plugin_getiteminfo_staticpages did not always
+  return correct data (bug #0001342) [Tom]
 - Fixed Calendar week view date range display on Windows (bug #0001340) [Tom]
 - Tweaked font size in Calendar (feature request #0001329) [Tom]
+
+- Updated Japanese language file, provided by the Geeklog.jp group
 
 
 May 8, 2011 (1.8.0rc1)
