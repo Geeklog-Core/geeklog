@@ -593,9 +593,6 @@ function upgrade_LinksPlugin()
     ) TYPE=MyISAM
     ";
 
-    $blockadmin_id = DB_getItem($_TABLES['groups'], 'grp_id',
-                                "grp_name='Block Admin'");
-
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date";
     $P_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(32) NOT NULL";
     $P_SQL[] = "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL";
