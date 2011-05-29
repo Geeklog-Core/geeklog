@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Polls plugin administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -423,7 +423,7 @@ function editpoll ($pid = '')
         $access = 3;
     }
     
-    $poll_templates->set_var('noscript', COM_getNoScript(false, '', $link_message));        
+    $poll_templates->set_var('noscript', COM_getNoScript(false, ''));        
     
     // Add JavaScript
     // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
