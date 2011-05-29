@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | migrate.php                                                               |
 // |                                                                           |
 // | Install Geeklog from a backup.                                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2009 by the following authors:                         |
+// | Copyright (C) 2008-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Matt West - matt AT mattdanger DOT net                           |
 // |          Dirk Haun - dirk AT haun-online DOT de                           |
@@ -80,6 +80,11 @@ function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
     foreach ($tablespec as $table => $fieldlist) {
         $fields = explode(',', str_replace(' ', '', $fieldlist));
         $index = array_shift($fields);
+
+        if (empty($_TABLES[$table]) || !DB_checkTableExists($table)) {
+            COM_errorLog("Table $table does not exist - skipping migration");
+            continue;
+        }
 
         $result = DB_query("SELECT $fieldlist FROM {$_TABLES[$table]}");
         $numRows = DB_numRows($result);
