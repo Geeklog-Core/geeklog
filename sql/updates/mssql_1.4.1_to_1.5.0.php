@@ -486,7 +486,7 @@ function upgrade_StaticpagesPlugin()
     $P_SQL = array();
     $P_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} ADD [commentcode] TINYINT NOT NULL default '0'";
     // disable comments on all existing static pages
-    $P_SQL[] = "UPDATE {$_TABLES['staticpage']} SET commentcode = 0";
+    $P_SQL[] = "UPDATE {$_TABLES['staticpage']} SET commentcode = -1";
     $P_SQL[] = "UPDATE {$_TABLES['plugins']} SET pi_version = '1.5.0', pi_gl_version = '1.5.0' WHERE pi_name = 'staticpages'";
 
     foreach ($P_SQL as $sql) {
