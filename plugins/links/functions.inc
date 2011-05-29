@@ -694,6 +694,7 @@ function plugin_upgrade_links()
 
     $current_version = $installed_version;
     $done = false;
+    $current_config = false;
     while (! $done) {
         switch ($current_version) {
         case '1.0.1':
@@ -724,6 +725,7 @@ function plugin_upgrade_links()
                 }
             }
             links_update_set_categories();
+            $current_config = true;
 
             $current_version = '2.0.0';
             break;
@@ -757,9 +759,11 @@ function plugin_upgrade_links()
                 }
             }
 
-            links_update_ConfValues_2_1_0();
+            if (! $current_config) {
+                links_update_ConfValues_2_1_0();
 
-            links_update_ConfigSecurity_2_1_0();
+                links_update_ConfigSecurity_2_1_0();
+            }
 
             $current_version = '2.1.1';
             break;

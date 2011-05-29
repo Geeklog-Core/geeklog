@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
@@ -1236,11 +1236,12 @@ function plugin_upgrade_staticpages()
 
     require_once $_CONF['path'] . 'plugins/staticpages/sql/'
                                 . $_DB_dbms . '_updates.php';
-                                
+
     require_once $_CONF['path'] . 'plugins/staticpages/install_updates.php';   
 
     $current_version = $installed_version;
     $done = false;
+    $current_config = false;
     while (! $done) {
         switch ($current_version) {
         case '1.4.3':
@@ -1266,6 +1267,7 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
+            $current_config = true;
 
             $current_version = '1.5.0';
             break;
@@ -1288,7 +1290,9 @@ function plugin_upgrade_staticpages()
                 }
             }
 
-            SP_update_ConfValues_1_6_0();
+            if (! $current_config) {
+                SP_update_ConfValues_1_6_0();
+            }
 
             $current_version = '1.6.1';
             break;
@@ -1301,11 +1305,13 @@ function plugin_upgrade_staticpages()
                 }
             }
 
-            SP_update_ConfValues_1_6_1();
+            if (! $current_config) {
+                SP_update_ConfValues_1_6_1();
+            }
 
             $current_version = '1.6.2';
             break;
-            
+
         case '1.6.2':
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
@@ -1324,10 +1330,12 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
-            
-            SP_update_ConfValues_1_6_3();
-            
-            sp_update_ConfigSecurity_1_6_3();
+
+            if (! $current_config) {
+                SP_update_ConfValues_1_6_3();
+
+                SP_update_ConfigSecurity_1_6_3();
+            }
 
             $current_version = '1.6.4';
             break;           

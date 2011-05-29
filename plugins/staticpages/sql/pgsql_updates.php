@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - websitemaster AT cogeco DOT net               |
 // +---------------------------------------------------------------------------+
@@ -54,7 +54,7 @@ $_UPDATES = array(
  * Add is new security rights for the Group "Static Page Admin"
  *
  */
-function sp_update_ConfigSecurity_1_6_3()
+function SP_update_ConfigSecurity_1_6_3()
 {
     global $_TABLES;
     

@@ -1520,11 +1520,12 @@ function plugin_upgrade_calendar()
 
     require_once $_CONF['path'] . 'plugins/calendar/sql/'
                                 . $_DB_dbms . '_updates.php';
-                                
-    require_once $_CONF['path'] . 'plugins/calendar/install_updates.php';                                   
+
+    require_once $_CONF['path'] . 'plugins/calendar/install_updates.php';
 
     $current_version = $installed_version;
     $done = false;
+    $current_config = false;
     while (! $done) {
         switch ($current_version) {
         case '1.0.0':
@@ -1551,6 +1552,7 @@ function plugin_upgrade_calendar()
                 }
             }
             calendar_update_move_states();
+            $current_config = true;
 
             $current_version = '1.0.2';
             break;
@@ -1583,13 +1585,15 @@ function plugin_upgrade_calendar()
                     DB_query($sql);
                 }
             }
-            
-            calendar_update_ConfValues_1_1_1();
-            
-            calendar_update_ConfigSecurity_1_1_1();
+
+            if (! $current_config) {
+                calendar_update_ConfValues_1_1_1();
+
+                calendar_update_ConfigSecurity_1_1_1();
+            }
 
             $current_version = '1.1.2';
-            break;            
+            break;
 
         default:
             $done = true;

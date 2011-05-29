@@ -1154,6 +1154,7 @@ function plugin_upgrade_polls()
 
     $current_version = $installed_version;
     $done = false;
+    $current_config = false;
     while (! $done) {
         switch ($current_version) {
         case '1.1.0':
@@ -1182,6 +1183,7 @@ function plugin_upgrade_polls()
                 }
             }
             polls_update_polltopics();
+            $current_config = true;
 
             $current_version = '2.0.1';
             break;
@@ -1204,7 +1206,9 @@ function plugin_upgrade_polls()
                 }
             }
 
-            update_ConfValues_2_1_0();
+            if (! $current_config) {
+                polls_update_ConfValues_2_1_0();
+            }
 
             $current_version = '2.1.1';
             break;
@@ -1217,7 +1221,9 @@ function plugin_upgrade_polls()
                 }
             }
 
-            update_ConfValues_2_1_1();
+            if (! $current_config) {
+                polls_update_ConfValues_2_1_1();
+            }
 
             $current_version = '2.1.2';
             break;
@@ -1230,9 +1236,11 @@ function plugin_upgrade_polls()
                 }
             }
 
-            polls_update_ConfValues_2_1_2();
+            if (! $current_config) {
+                polls_update_ConfValues_2_1_2();
 
-            polls_update_ConfigSecurity_2_1_2();
+                polls_update_ConfigSecurity_2_1_2();
+            }
 
             $current_version = '2.1.3';
             break;

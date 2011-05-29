@@ -96,7 +96,7 @@ function polls_update_ConfigSecurity_2_1_2()
 
 }
 
-function update_ConfValues_2_1_0()
+function polls_update_ConfValues_2_1_0()
 {
     global $_CONF, $_PO_DEFAULT;
 
@@ -111,7 +111,7 @@ function update_ConfValues_2_1_0()
     return true;
 }
 
-function update_ConfValues_2_1_1()
+function polls_update_ConfValues_2_1_1()
 {
     global $_CONF, $_PO_DEFAULT, $_PO_CONF;
 
