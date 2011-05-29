@@ -517,7 +517,7 @@ function upgrade_CalendarPlugin()
     }
 
     if (!plugin_initconfig_calendar()) {
-        echo 'There was an error upgrading the Polls plugin';
+        echo 'There was an error upgrading the Calendar plugin';
         return false;
     }
 
