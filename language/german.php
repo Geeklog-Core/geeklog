@@ -2089,7 +2089,7 @@ $LANG_configselects['Core'] = array(
     4 => array('Nichts checken' => 0, 'Site URL checken' => 1, 'Volle URL checken' => 2, 'Site URL und volle URL checken' => 3, 'Trackback IP mit Site IP vergleichen' => 4, 'IP und Site URL checken' => 5, 'IP und volle URL checken' => 6, 'IP, volle URL, und Site URL checken' => 7),
     5 => array('als Text' => 'plaintext', 'in HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
-    7 => array('Letzte Seite' => 'letzte', 'Erste Seite' => 'erste', 'Jede Seite' => 'alle'),
+    7 => array('Letzte Seite' => 'last', 'Erste Seite' => 'first', 'Jede Seite' => 'all'),
     8 => array('Rechts' => 'right', 'Links' => 'left'),
     9 => array('Auf Seite weiterleiten' => 'item', 'Liste anzeigen' => 'list', 'Home anzeigen' => 'home', 'Admin anzeigen' => 'admin'),
     10 => array('Keine' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
