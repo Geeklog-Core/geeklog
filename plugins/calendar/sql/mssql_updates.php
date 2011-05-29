@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | Upgrade SQL                                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
@@ -34,6 +34,12 @@
 
 $_UPDATES = array(
 
+    '1.0.0' => array(
+        "ALTER TABLE {$_TABLES['events']} ALTER COLUMN [state] varchar(40)",
+        "ALTER TABLE {$_TABLES['eventsubmission']} ALTER COLUMN [state] varchar(40)",
+        "ALTER TABLE {$_TABLES['personal_events']} ALTER COLUMN [state] varchar(40)"
+    ),
+
     '1.1.0' => array(
         "ALTER TABLE {$_TABLES['eventsubmission']} ADD [owner_id] [numeric](8, 0) NULL AFTER timeend"
     ),
@@ -47,6 +53,27 @@ $_UPDATES = array(
     )    
     
 );
+
+/**
+* Replace the old $_STATES array with a free-form text field
+*
+*/
+function calendar_update_move_states()
+{
+    global $_TABLES, $_STATES;
+
+    if (isset($_STATES) && is_array($_STATES)) {
+        $tables = array($_TABLES['events'], $_TABLES['eventsubmission'],
+                        $_TABLES['personal_events']);
+
+        foreach ($_STATES as $key => $state) {
+            foreach ($tables as $table) {
+                DB_change($table, 'state', addslashes($state),
+                                  'state', addslashes($key));
+            }
+        }
+    }
+}
 
 /**
  * Add is new security rights for the Group "Calendar Admin"

@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | mssql_updates.php                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010 by the following authors:                         |
+// | Copyright (C) 2008-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
@@ -34,6 +34,34 @@
 
 $_UPDATES = array(
 
+    '1.1.0' => array(
+        "ALTER TABLE {$_TABLES['pollquestions']} DROP CONSTRAINT [PK_gl_pollquestions];",
+        "EXEC sp_rename '{$_TABLES['pollquestions']}', '{$_TABLES['polltopics']}'",
+        "EXEC sp_rename '{$_TABLES['polltopics']}.question', 'topic', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['polltopics']} ALTER COLUMN [topic] VARCHAR( 255 ) NULL",
+        "EXEC sp_rename '{$_TABLES['polltopics']}.qid', 'pid', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD questions int default '0' NOT NULL",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD is_open tinyint NOT NULL default '1'",
+        "ALTER TABLE {$_TABLES['polltopics']} ADD hideresults tinyint NOT NULL default '0'",
+        "EXEC sp_rename '{$_TABLES['pollanswers']}.qid', 'pid', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['pollanswers']} ADD qid VARCHAR(20) NOT NULL default '0'",
+        "ALTER TABLE {$_TABLES['pollanswers']} DROP CONSTRAINT [PK_gl_pollanswers];",
+        "ALTER TABLE {$_TABLES['pollanswers']} ADD CONSTRAINT [PK_{$_TABLES['pollanswers']}] PRIMARY KEY CLUSTERED ([pid], [qid], [aid]) ON [PRIMARY];",
+        "EXEC sp_rename '{$_TABLES['pollvoters']}.qid', 'pid', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['pollvoters']} ALTER COLUMN [pid] VARCHAR( 20 ) NOT NULL",
+        "CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
+          [qid] [int] NOT NULL DEFAULT 0,
+          [pid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+          [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+          CONSTRAINT [PK_{$_TABLES['pollquestions']}] PRIMARY KEY  CLUSTERED
+	      (
+		    [qid]
+	      )  ON [PRIMARY]
+        ) ON [PRIMARY]",
+        // in 1.4.1, "don't display poll" was equivalent to "closed"
+        "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0"
+    ),
+
     '2.1.0' => array(
         // These pid changes should have happened when upgrading from 2.0.2
         // to 2.1.0 but were previously listed for an upgrade from 2.0.1 and
@@ -53,19 +81,47 @@ $_UPDATES = array(
 
         "EXEC sp_rename '{$_TABLES['polltopics']}.date', 'created', 'COLUMN'",
         "ALTER TABLE {$_TABLES['polltopics']} ADD modified [datetime] NULL AFTER created",
-        "UPDATE {$_TABLES['polltopics']} SET modified = created"        
+        "UPDATE {$_TABLES['polltopics']} SET modified = created"
     ),
 
     '2.1.2' => array(
         // Set new Tab column to whatever fieldset is
-        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'polls'",   
+        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'polls'",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_whatsnew', 'Access to configure polls what\'s new block', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_main', 'Access to configure general polls settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_permissions', 'Access to configure polls default permissions', 0)",
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_autotag_permissions', 'Access to configure polls autotag usage permissions', 0)"        
-    )    
-    
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_autotag_permissions', 'Access to configure polls autotag usage permissions', 0)"
+    )
+
 );
+
+/**
+* Hook up pollquestions with polltopics
+*
+*/
+function polls_update_polltopics()
+{
+    global $_TABLES;
+
+    $P_SQL = array();
+
+    $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
+    $move_rst = DB_query($move_sql);
+    $count_move = DB_numRows($move_rst);
+    for ($i = 0; $i < $count_move; $i++) {
+        $A = DB_fetchArray($move_rst);
+        $A[1] = str_replace("'", "''", $A[1]);
+        $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
+    }
+
+    foreach ($P_SQL as $sql) {
+        $rst = DB_query($sql);
+        if (DB_error()) {
+            echo "There was an error upgrading the polls, SQL: $sql<br>";
+            return false;
+        }
+    }
+}
 
 /**
  * Add is new security rights for the Group "Polls Admin"

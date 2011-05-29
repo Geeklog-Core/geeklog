@@ -34,6 +34,12 @@
 
 $_UPDATES = array(
 
+    '1.4.3' => array(
+        "ALTER TABLE {$_TABLES['staticpage']} ADD [commentcode] TINYINT NOT NULL default '0'",
+        // disable comments on all existing static pages
+        "UPDATE {$_TABLES['staticpage']} SET commentcode = -1"
+    ),
+
     '1.6.0' => array(
         "ALTER TABLE {$_TABLES['staticpage']} ADD meta_description [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER commentcode, ADD meta_keywords [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER meta_description"
     ),

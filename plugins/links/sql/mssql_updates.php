@@ -2,11 +2,11 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Links Plugin 2.0                                                          |
+// | Links Plugin 2.1                                                          |
 // +---------------------------------------------------------------------------+
 // | Installation SQL                                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -39,6 +39,34 @@
 
 $_UPDATES = array(
 
+    '1.0.1' => array(
+        "CREATE TABLE [dbo].[{$_TABLES['linkcategories']}] (
+          [cid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+          [pid] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+          [category] [varchar] (32) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+          [description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+          [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+          [created] [datetime] NULL ,
+          [modified] [datetime] NULL ,
+          [owner_id] [numeric](8, 0) NOT NULL ,
+          [group_id] [numeric](8, 0) NOT NULL ,
+          [perm_owner] [tinyint] NOT NULL ,
+          [perm_group] [tinyint] NOT NULL ,
+          [perm_members] [tinyint] NOT NULL ,
+          [perm_anon] [tinyint] NOT NULL
+        ) ON [PRIMARY]",
+        "ALTER TABLE [dbo].[{$_TABLES['linkcategories']}] ADD
+          CONSTRAINT [PK_{$_TABLES['linkcategories']}] PRIMARY KEY  CLUSTERED
+          (
+            [pid]
+          )  ON [PRIMARY]",
+        "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id INTEGER NOT NULL default '1'",
+        "EXEC sp_rename '{$_TABLES['linksubmission']}.category', 'cid', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['linksubmission']} ALTER COLUMN [cid] varchar(32) NOT NULL",
+        "EXEC sp_rename '{$_TABLES['links']}.category', 'cid', 'COLUMN'",
+        "ALTER TABLE {$_TABLES['links']} ALTER COLUMN [cid] varchar(32) NOT NULL"
+    ),
+
     '2.1.0' => array(
         // Set new Tab column to whatever fieldset is
         "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'links'",   
@@ -50,6 +78,46 @@ $_UPDATES = array(
     )    
     
 );
+
+/**
+* Add "root" category and fix categories
+*
+*/
+function links_update_set_categories()
+{
+    global $_TABLES, $_LI_CONF;
+
+    if (empty($_LI_CONF['root'])) {
+        $_LI_CONF['root'] = 'site';
+    }
+    $root = addslashes($_LI_CONF['root']);
+
+    DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$root}', 'root', 'Root', 'Website root', NULL, NOW(), NOW(), 5, 2, 3, 3, 2, 2)");
+
+    // get Links admin group number
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                           "grp_name = 'Links Admin'");
+
+    // loop through adding to category table, then update links table with cids
+    $result = DB_query("SELECT DISTINCT cid AS category FROM {$_TABLES['links']}");
+    $nrows = DB_numRows($result);
+    for ($i = 0; $i < $nrows; $i++) {
+
+        $A = DB_fetchArray($result);
+        $category = addslashes($A['category']);
+        $cid = $category;
+        $sql = "INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW(), 3, 3, 2, 2)";
+        DB_query($sql,0);
+        if ($cid != $category) { // still experimenting ...
+            $sql = "UPDATE {$_TABLES['links']} SET cid='{$cid}' WHERE cid='{$category}'";
+            DB_query($sql,0);
+        }
+        if (DB_error()) {
+            echo "Error inserting categories into linkcategories table";
+            return false;
+        }
+    }
+}
 
 /**
  * Add is new security rights for the Group "Links Admin"
