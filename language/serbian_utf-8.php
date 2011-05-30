@@ -2090,7 +2090,7 @@ $LANG_configselects['Core'] = array(
     4 => array('Ne Proveravaj Ništa' => 0, 'Proveri suprotni Sajt URL' => 1, 'Proveri kompletan URL' => 2, 'Proveri suprotni i kompletan URL' => 3, 'Porveri IP suprotnog Sajta' => 4, 'Proveri IP i Sajt URL' => 5, 'Proveri IP kompletan URL' => 6, 'Proveri IP, Kompletan URL, I Sajt URL' => 7),
     5 => array('Običan tekst' => 'plaintext', 'HTML Format' => 'html'),
     6 => array('12' => 12, '24' => 24),
-    7 => array('Last Page' => 'poslednja', 'First Page' => 'prva', 'Every Page' => 'sve'),
+    7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
     8 => array('Desno' => 'right', 'Levo' => 'left'),
     9 => array('Prebaci na stranicu' => 'item', 'Prikaži Listu' => 'list', 'Prikaži Naslovnu' => 'home', 'Prikaži Administraciju' => 'admin'),
     10 => array('Nijedna' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
