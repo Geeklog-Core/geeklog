@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | config.class.php                                                          |
 // |                                                                           |
 // | Controls the UI and database for configuration settings                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // |          Akeda Bagus       - admin AT gedex DOT web DOT id                |
@@ -623,7 +623,7 @@ class config {
             }
         }
 
-        $methods = array('standard', 'openid', '3rdparty');
+        $methods = array('standard', 'openid', '3rdparty', 'oauth');
         $methods_disabled = 0;
         foreach ($methods as $m) {
             if (isset($this->config_array['Core']['user_login_method'][$m]) &&
