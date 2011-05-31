@@ -335,7 +335,7 @@ function custom_validation_path_to_mogrify($rule, $ruleParams) {
     $ret = false;
     if ( isset($ruleParams[0]['path_to_mogrify']) && isset($_CONF['image_lib']) &&
          $_CONF['image_lib'] == 'imagemagick' &&
-         file_exists($ruleParams[0]['path_to_mogrify']) )
+         is_dir($ruleParams[0]['path_to_mogrify']) )
     {
         $ret = true;
     }
