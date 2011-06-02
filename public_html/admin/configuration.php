@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | configuration.php                                                         |
 // |                                                                           |
 // | Loads the administration UI and sends input to config.class               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2007-2010 by the following authors:                         |
+// | Copyright (C) 2007-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Aaron Blankstein  - kantai AT gmail DOT com                      |
 // |          Akeda Bagus       - admin AT gedex DOT web DOT id                |
@@ -335,7 +335,7 @@ function custom_validation_path_to_mogrify($rule, $ruleParams) {
     $ret = false;
     if ( isset($ruleParams[0]['path_to_mogrify']) && isset($_CONF['image_lib']) &&
          $_CONF['image_lib'] == 'imagemagick' &&
-         is_dir($ruleParams[0]['path_to_mogrify']) )
+         file_exists($ruleParams[0]['path_to_mogrify']) )
     {
         $ret = true;
     }
