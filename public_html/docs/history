@@ -1,13 +1,15 @@
 Geeklog History/Changes:
 
-May ??, 2011 (1.8.0rc2)
-------------
+Jun 2, 2011 (1.8.0rc2)
+-----------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
 
 Changes since 1.8.0rc1:
+- Fixed translation errors in the German, Serbian, and Slovenian language files
+  that affected the input validation for the Configuration [Dirk]
 - Fixed updating the bundled plugins when upgrading from a Geeklog version
   older than 1.5.0 (bug #0001354) [Dirk]
 - Fixed incomplete / corrupted siteconfig.php file after an update (bug
