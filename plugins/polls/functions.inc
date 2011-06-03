@@ -1251,7 +1251,7 @@ function plugin_upgrade_polls()
     }
 
     DB_query("UPDATE {$_TABLES['plugins']} SET pi_version = '$code_version', pi_gl_version = '$pi_gl_version' WHERE pi_name = 'polls'");
-COM_errorLog("PO updated to $code_version");
+
     return true;
 }
 
