@@ -438,23 +438,12 @@ class scripts {
         // Do we need to set JavaScript
         if ($this->javascript_set) {
             // Add Core JavaScript global variables
-            $footercode = '<script type="text/javascript">' . LB;
+            $footercode = '';
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+                $footercode = '<script type="text/javascript">' . LB;
                 $footercode .= "var geeklogEditorBaseUrl = '" . $_CONF['site_url'] . "';" . LB;
+                $footercode .= '</script>' . LB;
             }
-            // Create config variable array to pass to JavaScript
-            $config_js = array();
-            $keys = array('site_url', 'site_admin_url', 'layout_url', 'path', 'path_html', 'path_layout', 
-                          'site_name', 'site_slogan', 
-                          'theme', 'doctype', 'path_themes');
-            foreach($keys as $key){
-                $config_js[$key] = $_CONF[$key];
-            }            
-            
-            // Had to trim and add spaces to json_encode output since the data in the {} is seen by the template class as a template variable
-            //$footercode .= "var GeeklogConfig = new Object(" . json_encode($config_js) . ");" . LB;
-            $footercode .= "var GeeklogConfig = new Object({ ".trim(json_encode($config_js), '{}')." });" . LB;
-            $footercode .= '</script>' . LB;        
             
             // Set JavaScript Library files first incase other scripts need them
             if ($this->jquery_cdn) {
