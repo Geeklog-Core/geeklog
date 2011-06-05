@@ -28,6 +28,7 @@ Changes since 1.8.0rc1:
 - Tweaked font size in Calendar (feature request #0001329) [Tom]
 
 - Updated Japanese language file, provided by the Geeklog.jp group
+- Updated Italian translation for $LANG_VALIDATION [Rouslan]
 
 
 May 8, 2011 (1.8.0rc1)
