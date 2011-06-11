@@ -18,6 +18,67 @@
 
 <p><a href="../history">public_html/docs/history</a>をHTML化し、翻訳したものです。</p>
 
+<h2>Jun 2, 2011 (1.8.0rc2)</h2>
+
+<p>このリリースは2010 Google Summer of Codeプロジェクトの成果であるAkeda Bagusさんの
+コンフィギュレーションを含んでいます(入力値の整合チェックと検索)。</p>
+
+<p>1.8.0rc1からの変更:</p>
+<ul>
+<li>German, Serbian, Slovenian 言語ファイルのコンフィギュレーション関係を修正しました。[Dirk]</li>
+<li>パッケージ同梱プラグイがGeeklog 1.5.0より古い場合のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001354">#0001354</a>) [Dirk]</li>
+<li>アップデート後にsiteconfig.phpが不完全か壊れてしまうバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001353">#0001353</a>) [Dirk]</li>
+<li>XMLSitemapプラグインが、サポートしていない言語での利用の場合にワーニングを出力するのを抑制しました。 [Dirk]</li>
+<li>プラグインの古いfunctions.incのキャッシュバージョンのアップデートのバグを修正した。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001345">#0001345</a>) [Dirk]</li>
+<li>プラグインアップデートがユーザによってはできないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001344">#0001344</a>, パッチ提供: dengen)</li>
+<li>コメント通知メール送信時にSQLエラーの引き金となった間違ったテーブルロックを修正しました。(参照: バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000939">#0000939</a>) [Vinny]</li>
+<li>静的ページプラグインの関数plugin_getiteminfo_staticpagesが常に正しいリターンを返していなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001342">#0001342</a>) [Tom]</li>
+<li>Windowsで、Calendarプラグインの週ページのレンジ表示のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001340">#0001340</a>) [Tom]</li>
+<li>カレンダーのフォントサイズを修正しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001329">#0001329</a>) [Tom]</li>
+</ul>
+<ul>
+<li>日本語言語ファイルのアップグレード。提供: Geeklog Japaneseグループ</li>
+</ul>
+
+<h2>May 8, 2011 (1.8.0rc1)</h2>
+
+<p>1.8.0b2からの変更:</p>
+<ul>
+<li>template classのスピードアップを行いました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001302">#0001302</a>, 提供: mystral-kk)</li>
+<li>スロベニア語を修正しました。 (フィックスS 提供: gape)</li>
+<li>LinkedIn OAuthユーザの氏名をユーザ名にしました。 [Dirk]</li>
+<li>Facebook OAuthユーザの氏名をユーザ名にしました。 [Tom]</li>
+<li>HTMLを修正しました。(patch #0001333, 提供：dengen)</li>
+<li>英語の言語ファイルからのarray_flip()呼び出しを削除しました。(要望: <a href="http://project.geeklog.net/tracking/view.php?id=0001336">#0001336</a>) [Rouslan]</li>
+<li>ツールチップフリッカーのバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001337">#0001337</a>, パッチ提供: dengen)</li>
+<li>言語ファイルに$LANG_VALIDATION['between']が抜けていたのを修正しました。 [Rouslan]</li>
+<li>OAuth and OpenIDアカウントでログアウト後2分間の動作についてバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001334">#0001334</a>) [Tom]</li>
+</ul>
+
+<h2>Apr 25, 2011 (1.8.0b2)</h2>
+
+<p>1.8.0b1からの変更:</p>
+<ul>
+<li>プレーンテキストのコメントがプレビューまたは編集されたときに投稿モードが変更されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001324">#0001324</a>) [Tom]</li>
+<li>OAuthユーザデータのサニタイズエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001322">#0001322</a>) [Dirk]</li>
+<li>コンフィギュレーションのHTMLエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001318">#0001318</a>, パッチ提供: dengen) [Tom, Rouslan]</li>
+<li>プラグインの管理画面のタイトルセルにnowrapを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001321">#0001321</a>) [Tom]</li>
+<li>カレンダープラグインの編集のパーミッションチェックのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001317, パッチ提供: dengen)</li>
+<li>jQueryウィジェットと効果のミスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001312</a>) [Tom]</li>
+<li>setJavaScriptFile の/抜けの修正を行いました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001315">#0001315</a>) [Tom]</li>
+<li>アドバンストエディタを有効にしたときなど、JavaScript が無効であれば警告のコメントを表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001282">#0001282</a>) [Tom]</li>
+<li>ツールチップが常にすべて表示されるように変更しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001304">#0001304</a>) [Rouslan]</li>
+<li>OpenIDログイン時のimages/right_arrow.png　の画像抜けを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001311">#0001311</a>) [Rouslan]</li>
+<li>テーマがstyle.cssを使わない場合にはstyle.cssをロードしないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001309">#0001309</a>) [Rouslan]</li>
+<li>プロファイルのプレビューのフォームがネストされる不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001296">#0001296</a>) [Tom]</li>
+<li>タブをサポートしていないプラグインインストールの不具合を対応しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001305">#0001305</a>) [Tom]</li>
+<li>コンフィギュレーションのリストの入力データチェックで、数値が設定できないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001298">#0001298</a>) [Tom]</li>
+<li>コンフィギュレーションの入力文字数チェックで、MBYTE_strlen()ではなくmb_strlen() を使うよう、修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001299">#0001299</a>, パッチ提供: mystral-kk)</li>
+</ul>
+<ul>
+<li>日本語言語ファイルのアップグレード。提供: Geeklog Japaneseグループ</li>
+</ul>
+
 <h2>Apr 3, 2011 (1.8.0b1)</h2>
 
 <p>このリリースは2010 Google Summer of Codeプロジェクトの成果であるAkeda Bagusさんの
@@ -389,8 +450,7 @@
 <h3>カレンダープラグイン</h3>
 <ul>
   <li>投稿フォームに、CAPTCHAのサポートを追加しました。
-  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1091">#0001091</a>, patch
-  provided by tuxcanfly)</li>
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1091">#0001091</a>, パッチ提供: tuxcanfly)</li>
   <li>古くからあったイベント投稿エラー: "投稿(Submit)"ボタンのテキストが
   コア言語ファイルの $LANG12[8] と同じでなければ動かないというバグ。
   カレンダープラグインの言語ファイルを利用できるようにしました。
