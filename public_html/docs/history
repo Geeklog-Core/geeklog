@@ -1,11 +1,24 @@
 Geeklog History/Changes:
 
-Jun 2, 2011 (1.8.0rc2)
------------
+Jun 12, 2011 (1.8.0)
+------------
 
 This release includes the results from the 2010 Google Summer of Code project
 to improve the Configuration (input validation, searching), implemented by
 Akeda Bagus.
+
+Changes since 1.8.0rc2:
+- Fixed a path disclosure through JavaScript [Tom]
+  This issue was present in all previous 1.8.0 betas and release candidates,
+  so upgrading those to the final 1.8.0 is strongly recommended!
+
+- Updated Italian translation for $LANG_VALIDATION [Rouslan]
+- Updated Japanese language files and documentation, provided by the Geeklog.jp
+  group
+
+
+Jun 2, 2011 (1.8.0rc2)
+-----------
 
 Changes since 1.8.0rc1:
 - Fixed translation errors in the German, Serbian, and Slovenian language files
@@ -28,7 +41,6 @@ Changes since 1.8.0rc1:
 - Tweaked font size in Calendar (feature request #0001329) [Tom]
 
 - Updated Japanese language file, provided by the Geeklog.jp group
-- Updated Italian translation for $LANG_VALIDATION [Rouslan]
 
 
 May 8, 2011 (1.8.0rc1)
