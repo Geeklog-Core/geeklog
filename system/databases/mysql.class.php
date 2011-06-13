@@ -137,8 +137,11 @@ class database {
             $this->dbError();
         }
 
-        if ($this->_mysql_version >= 40100) {
-            if ($this->_charset == 'utf-8') {
+        if ($this->_charset == 'utf-8') {
+            if (($this->_mysql_version >= 50007) &&
+                    function_exists('mysql_set_charset')) {
+                @mysql_set_charset('utf-8', $this->_db);
+            } else {
                 @mysql_query ("SET NAMES 'utf8'", $this->_db);
             }
         }
