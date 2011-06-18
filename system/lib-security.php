@@ -113,7 +113,7 @@ function SEC_getUserGroups($uid='')
     $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
             . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
 
-    if ($result == -1) {
+    if ($result === false) {
         return $groups;
     }
 
