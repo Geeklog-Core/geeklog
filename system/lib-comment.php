@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-comment.php                                                           |
 // |                                                                           |
 // | Geeklog comment library.                                                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -377,18 +377,18 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // for threaded mode, add a link to comment parent
         if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 ) {
-            $result = DB_query( "SELECT title,pid FROM {$_TABLES['comments']} WHERE cid = '{$A['pid']}'" );
-            $P = DB_fetchArray( $result );
-            if( $P['pid'] != 0 ) {
-                $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
-                       . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
-                       . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
-                       . $P['pid'] . '&amp;format=threaded';
+            $pid = DB_getItem($_TABLES['comments'], 'pid',
+                              "cid = '{$A['pid']}'");
+            if ($pid != 0) {
+                $plink = $_CONF['site_url'] . '/comment.php?mode=display'
+                       . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
+                       . '&amp;order=' . $order . '&amp;pid=' . $pid
+                       . '&amp;format=threaded';
             } else {
-                $plink = $_CONF['site_url'] . '/comment.php?mode=view&amp;sid='
-                       . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
-                       . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
-                       . $A['pid'] . '&amp;format=threaded';
+                $plink = $_CONF['site_url'] . '/comment.php?mode=view'
+                       . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type
+                       . '&amp;order=' . $order . '&amp;cid=' . $A['pid']
+                       . '&amp;format=threaded';
             }
             $parent_link = COM_createLink($LANG01[44], $plink) . ' | ';
             $template->set_var('parent_link', $parent_link);
@@ -514,8 +514,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $reply_link = '';
         if ($ccode == 0) {
             $reply_link = $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
-                        . '&amp;pid=' . $A['cid'] . '&amp;title='
-                        . urlencode($A['title']) . '&amp;type=' . $A['type'];
+                        . '&amp;pid=' . $A['cid'] . '&amp;type=' . $A['type'];
             $reply_option = COM_createLink($LANG01[43], $reply_link,
                                            array('rel' => 'nofollow')) . ' | ';
             $template->set_var('reply_option', $reply_option);

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
 // | Let user comment on a story or plugin.                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -477,6 +477,7 @@ case 'unsubscribe':
     }
     $display = COM_refresh($_CONF['site_url'] . '/index.php');
     break;
+
 case $LANG_ADMIN['cancel']:
     if ($formtype == 'editsubmission') {
         $display = COM_refresh ( $_CONF['site_admin_url'] . '/moderation.php');        
@@ -484,6 +485,7 @@ case $LANG_ADMIN['cancel']:
         $display .= handleCancel();  // moved to function for readibility
     }
     break;
+
 default:  // New Comment
     $abort = false;
     $sid = '';
@@ -515,6 +517,15 @@ default:  // New Comment
     }
     if (!$abort) {
         if (!empty($sid) && !empty($type)) {
+            $pid = 0;
+            if (isset($_REQUEST['pid'])) {
+                $pid = COM_applyFilter($_REQUEST['pid'], true);
+            }
+            if (($pid > 0) && empty($title)) {
+                $atype = addslashes($type);
+                $title = DB_getItem($_TABLES['comments'], 'title',
+                                    "(cid = $pid) AND (type = '$atype')");
+            }
             if (empty($title)) {
                 if ($type == 'article') {
                     $title = $dbTitle;
@@ -530,10 +541,6 @@ default:  // New Comment
             }
             $noindex = '<meta name="robots" content="noindex"' . XHTML . '>'
                      . LB;
-            $pid = 0;
-            if (isset($_REQUEST['pid'])) {
-                $pid = COM_applyFilter($_REQUEST['pid'], true);
-            }
             $display .= COM_siteHeader('menu', $LANG03[1], $noindex)
                      . CMT_commentForm($title, '', $sid, $pid, $type, $mode,
                                        $postmode)
