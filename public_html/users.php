@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | users.php                                                                 |
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -484,6 +484,29 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
     exit;
 }
 
+/**
+* Helper function: When magic_quotes_gpc = On, everything in $_GET and $_POST
+* has already been auto-escaped. So we need to undo this before re-creating
+* the GET or POST request.
+*
+* NOTE: Assumes that is only being called when magic_quotes_gpc = On
+*
+* @param    ref     $value  value to un-escape
+* @return   mixed           un-escaped value or array of values
+* @see      COM_stripslashes
+*
+*/
+function stripslashes_gpc_recursive(&$value)
+{
+    if (is_array($value)) {
+        array_map('stripslashes_gpc_recursive', $value);
+    } else {
+        // don't use COM_stripslashes here - no need to check magic_quotes_gpc
+        $value = stripslashes($value);
+    }
+
+    return $value;
+}
 
 /**
 * Re-send a request after successful re-authentication
@@ -528,6 +551,7 @@ function resend_request()
             ((($method == 'POST') && !empty($postdata)) ||
              (($method == 'GET') && !empty($getdata)))) {
 
+        $magic = get_magic_quotes_gpc();
         $req = new HTTP_Request($returnurl);
         if ($method == 'POST') {
             $req->setMethod(HTTP_REQUEST_METHOD_POST);
@@ -536,6 +560,9 @@ function resend_request()
                 if ($key == CSRF_TOKEN) {
                     $req->addPostData($key, SEC_createToken());
                 } else {
+                    if ($magic) {
+                        $value = stripslashes_gpc_recursive($value);
+                    }
                     $req->addPostData($key, $value);
                 }
             }
@@ -554,6 +581,9 @@ function resend_request()
                 if ($key == CSRF_TOKEN) {
                     $req->addQueryString($key, SEC_createToken());
                 } else {
+                    if ($magic) {
+                        $value = stripslashes_gpc_recursive($value);
+                    }
                     $req->addQueryString($key, $value);
                 }
             }
