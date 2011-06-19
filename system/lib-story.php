@@ -1558,15 +1558,16 @@ function service_submit_story($args, &$output, &$svc_msg)
         if ($_CONF['maximagesperarticle'] > 0) {
             $errors = $story->insertImages();
             if (count($errors) > 0) {
-                $output = COM_siteHeader ('menu', $LANG24[54]);
-                $output .= COM_startBlock ($LANG24[54], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-                $output .= $LANG24[55] . '<p>';
-                for ($i = 1; $i <= count($errors); $i++) {
-                    $output .= current($errors) . '<br' . XHTML . '>';
-                    next($errors);
+                $output = COM_siteHeader('menu', $LANG24[54]);
+                $output .= COM_startBlock($LANG24[54], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                $output .= $LANG24[55] . LB . '<ul>' . LB;
+                foreach ($error as $err) {
+                    $output .= '<li>' . $err . '</li>' . LB;
                 }
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $output .= '</ul>' . LB;
+                $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                             'footer'));
                 $output .= storyeditor($sid);
                 $output .= COM_siteFooter();
                 echo $output;
