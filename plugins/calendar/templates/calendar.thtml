@@ -20,7 +20,7 @@
                                                         <table border="0" cellpadding="5" cellspacing="0">
                                                             <tr>
                                                                 <td colspan="2" align="center">
-                                                                    <form method="post" action="index.php">
+                                                                    <form method="post" action="{site_url}/calendar/index.php">
                                                                         <div>
                                                                             <input type="hidden" name="mode" value="{mode}"{xhtml}>
                                                                             <select name="month" onchange="this.form.submit()">
@@ -77,7 +77,7 @@
                                 <table style="margin-left:auto; margin-right:auto">
                                     <tr>
                                         <td>
-                                            <form method="post" action="index.php">
+                                            <form method="post" action="{site_url}/calendar/index.php">
                                                 <div>
                                                     <input type="submit" value="&lt;&lt;"{xhtml}>
                                                     <input type="hidden" name="month" value="{cal_prevmo_num}"{xhtml}>
@@ -94,7 +94,7 @@
                                         {master_calendar_option}
                                         </td>
                                         <td>
-                                            <form method="post" action="index.php">
+                                            <form method="post" action="{site_url}/calendar/index.php">
                                                 <div>
                                                     <input type="submit" value="&gt;&gt;"{xhtml}>
                                                     <input type="hidden" name="month" value="{cal_nextmo_num}"{xhtml}>
