@@ -109,8 +109,10 @@ function handleSubmit()
 
     $display = '';
 
-    $type = COM_applyFilter ($_POST['type']);
-    $sid = COM_applyFilter ($_POST['sid']);
+    $type = COM_applyFilter($_POST['type']);
+    $sid = COM_applyFilter($_POST['sid']);
+    $title = strip_tags(COM_stripslashes($_POST['title']));
+
     switch ( $type ) {
         case 'article':
             $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
@@ -121,7 +123,7 @@ function handleSubmit()
                 return COM_refresh($_CONF['site_url'] . '/index.php');
             }
 
-            $ret = CMT_saveComment ( strip_tags ($_POST['title']), 
+            $ret = CMT_saveComment ( $title,
                 $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
                 'article', COM_applyFilter ($_POST['postmode']));
 
@@ -132,7 +134,7 @@ function handleSubmit()
                 $display = COM_refresh($url);
             } elseif ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
                 $display .= COM_siteHeader ('menu', $LANG03[1])
-                         . CMT_commentForm ($_POST['title'], $_POST['comment'],
+                         . CMT_commentForm ($title, $_POST['comment'],
                            $sid, COM_applyFilter($_POST['pid']), $type,
                            $LANG03[14], COM_applyFilter($_POST['postmode']))
                          . COM_siteFooter();
@@ -145,7 +147,7 @@ function handleSubmit()
             }
             break;
         default: // assume plugin
-            if ( !($display = PLG_commentSave($type, strip_tags ($_POST['title']), 
+            if ( !($display = PLG_commentSave($type, $title,
                                 $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true),
                                 COM_applyFilter ($_POST['postmode']))) ) {
                 $display = COM_refresh ($_CONF['site_url'] . '/index.php');
