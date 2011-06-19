@@ -105,54 +105,53 @@ function handleCancel()
  */
 function handleSubmit()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03;
+    global $_CONF, $_TABLES, $LANG03;
 
     $display = '';
 
     $type = COM_applyFilter($_POST['type']);
     $sid = COM_applyFilter($_POST['sid']);
+    $pid = COM_applyFilter($_POST['pid'], true);
+    $postmode = COM_applyFilter($_POST['postmode']);
     $title = strip_tags(COM_stripslashes($_POST['title']));
 
-    switch ( $type ) {
-        case 'article':
-            $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
-                                       "sid = '$sid'" . COM_getPermSQL('AND')
-                                       . " AND (draft_flag = 0) AND (date <= NOW()) "
-                                       . COM_getTopicSQL('AND'));
-            if (!isset($commentcode) || ($commentcode != 0)) {
-                return COM_refresh($_CONF['site_url'] . '/index.php');
-            }
+    if ($type == 'article') {
 
-            $ret = CMT_saveComment ( $title,
-                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
-                'article', COM_applyFilter ($_POST['postmode']));
+        $commentcode = DB_getItem($_TABLES['stories'], 'commentcode',
+                    "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())"
+                    . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
+        if (!isset($commentcode) || ($commentcode != 0)) {
+            return COM_refresh($_CONF['site_url'] . '/index.php');
+        }
 
-            if ($ret == -1) {
-                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
-                                    . $sid);
-                $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
-                $display = COM_refresh($url);
-            } elseif ( $ret > 0 ) { // failure //FIXME: some failures should not return to comment form
-                $display .= COM_siteHeader ('menu', $LANG03[1])
-                         . CMT_commentForm ($title, $_POST['comment'],
-                           $sid, COM_applyFilter($_POST['pid']), $type,
-                           $LANG03[14], COM_applyFilter($_POST['postmode']))
-                         . COM_siteFooter();
-            } else { // success
-                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-                DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
-                COM_olderStuff (); // update comment count in Older Stories block
-                $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
-                    . "/article.php?story=$sid"));
-            }
-            break;
-        default: // assume plugin
-            if ( !($display = PLG_commentSave($type, $title,
-                                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true),
-                                COM_applyFilter ($_POST['postmode']))) ) {
-                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-            break;
+        $ret = CMT_saveComment($title, $_POST['comment'], $sid, $pid,
+                               'article', $postmode);
+        if ($ret == -1) {
+            $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                                   . $sid);
+            $url .= (strpos($url, '?') ? '&' : '?') . 'msg=15';
+            $display = COM_refresh($url);
+        } elseif ($ret > 0) { // failure
+            // FIXME: some failures should not return to comment form
+            $display .= COM_siteHeader('menu', $LANG03[1])
+                     . CMT_commentForm($title, $_POST['comment'], $sid, $pid,
+                                       $type, $LANG03[14], $postmode)
+                     . COM_siteFooter();
+        } else { // success
+            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+            DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+            COM_olderStuff(); // update comment count in Older Stories block
+            $display = COM_refresh(COM_buildUrl($_CONF['site_url']
+                                   . "/article.php?story=$sid"));
+        }
+
+    } else { // assume plugin
+
+        if (!($display = PLG_commentSave($type, $title, $_POST['comment'],
+                                         $sid, $pid, $postmode))) {
+            $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        }
+
     }
 
     return $display;
