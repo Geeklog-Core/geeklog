@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User-related functions needed in more than one place.                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -863,7 +863,7 @@ function USER_getAllowedTopics()
 function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 {
     global $_CONF, $_TABLES, $_USER, $_IMAGE_TYPE,
-           $LANG01, $LANG04, $LANG09, $LANG_LOGIN, $LANG_ADMIN;
+           $LANG01, $LANG04, $LANG09, $LANG28, $LANG_LOGIN, $LANG_ADMIN;
 
     $retval = '';
 
