@@ -470,8 +470,9 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         COM_errorLog("group size at beginning = " . count($groups), 1);
     }
     
+    $service = DB_getItem($_TABLES['users'], 'remoteservice', "uid = $uid");
     // If remote service then assume blank password
-    if ($A['remoteservice'] != '') {
+    if (! empty($service)) {
         $passwd = '';
         $passwd_conf = '';
     }
@@ -487,8 +488,6 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty($uid)) {
             $nameAndEmailOkay = false; // new users need an email address
         } else {
-            $service = DB_getItem($_TABLES['users'], 'remoteservice',
-                                  "uid = $uid");
             if (empty($service)) {
                 $nameAndEmailOkay = false; // not a remote user - needs email
             }
@@ -506,9 +505,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                                   "username = '$uname'");
         } else {
-            $uservice = DB_getItem ($_TABLES['users'], 'remoteservice', "uid = $uid");
-            if ($uservice != '') {
-                $uservice = addslashes($uservice);
+            if (! empty($service)) {
+                $uservice = addslashes($service);
                 $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                             "username = '$uname' AND uid <> $uid AND remoteservice = '$uservice'");
             } else {
@@ -557,8 +555,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty ($uid) || !empty ($passwd)) {
             $passwd = SEC_encryptPassword($passwd);
         } else {
-            if ($A['remoteservice'] != '') {
-                $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
+            if (! empty($service)) {
+                $passwd = DB_getItem($_TABLES['users'], 'passwd', "uid = $uid");
             }
         }
 
@@ -1277,10 +1275,18 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
         exit;
     } else {
+        $passwd = '';
+        if (isset($_POST['passwd'])) {
+            $passwd = $_POST['passwd'];
+        }
+        $passwd_conf = '';
+        if (isset($_POST['passwd_conf'])) {
+            $passwd = $_POST['passwd_conf'];
+        }
         $display = saveusers($uid, $_POST['username'], $_POST['fullname'],
-                    $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
-                    $_POST['regdate'], $_POST['homepage'], $_POST['groups'],
-                    $delphoto, $_POST['userstatus'], $_POST['oldstatus']);
+                    $passwd, $passwd_conf, $_POST['email'], $_POST['regdate'],
+                    $_POST['homepage'], $_POST['groups'], $delphoto,
+                    $_POST['userstatus'], $_POST['oldstatus']);
         if (!empty($display)) {
             $tmp = COM_siteHeader('menu', $LANG28[22]);
             $tmp .= $display;
