@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -283,6 +283,22 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             }
         }
         $result = $story->loadFromArgsArray($_POST);
+
+        // in preview mode, we now need to re-insert the images
+        if ($_CONF['maximagesperarticle'] > 0) {
+            $errors = $story->insertImages();
+            if (count($errors) > 0) {
+                $display .= COM_startBlock($LANG24[54], '',
+                                COM_getBlockTemplate('_msg_block', 'header'));
+                $display .= $LANG24[55] . LB . '<ul>' . LB;
+                foreach ($errors as $err) {
+                    $display .= '<li>' . $err . '</li>' . LB;
+                }
+                $display .= '</ul>' . LB;
+                $display .= COM_endBlock(COM_getBlockTemplate('_msg_block',
+                                                              'footer'));
+            }
+        }
     } else {
         $result = $story->loadFromDatabase($sid, $mode);
     }
