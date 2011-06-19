@@ -1,4 +1,4 @@
-                                            <form method="post" action="index.php">
+                                            <form method="post" action="{site_url}/calendar/index.php">
                                                 <div>
                                                     <input type="submit" name="action" value="{lang_mastercal}"{xhtml}>
                                                 </div>
