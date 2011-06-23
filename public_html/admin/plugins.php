@@ -76,6 +76,7 @@ if (!SEC_hasRights('plugin.edit')) {
 *
 * @param    string  $pi_name    Plugin name
 * @return   string              HTML for plugin editor form or error message
+* @todo     FIXME   Move that COM_errorLog message to the language files ...
 *
 */
 function plugin_info_installed($pi_name)
@@ -94,11 +95,9 @@ function plugin_info_installed($pi_name)
     if (DB_numRows($result) <> 1) {
         // Serious problem, we got a pi_name that doesn't exist
         // or returned more than one row
-        $retval .= COM_startBlock ($LANG32[13], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= COM_errorLog ('Error in editing plugin ' . $pi_name
-                . '. Either the plugin does not exist or there is more than one row with with same pi_name.  Bailing out to prevent trouble.');
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $msg = COM_errorLog('Error in editing plugin ' . $pi_name
+             . '. Either the plugin does not exist or there is more than one row with with same pi_name.  Bailing out to prevent trouble.');
+        $retval .= COM_showMessageText($msg, $LANG32[13]);
 
         return $retval;
     }

@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | syndication.php                                                           |
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2010 by the following authors:                         |
+// | Copyright (C) 2003-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
 // |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
@@ -516,10 +516,7 @@ function savefeed ($A)
     if (empty ($A['title']) || empty ($A['description']) ||
             empty ($A['filename'])) {
         $retval = COM_siteHeader ('menu', $LANG33[38])
-                . COM_startBlock ($LANG33[38], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG33[39]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . COM_showMessageText($LANG33[39], $LANG33[38])
                 . editfeed ($A['fid'], $A['type'])
                 . COM_siteFooter ();
         return $retval;
@@ -529,10 +526,7 @@ function savefeed ($A)
     $C = DB_fetchArray($result);
     if ($C['count'] > 0) {
         $retval = COM_siteHeader ('menu', $LANG33[52])
-                . COM_startBlock ($LANG33[52], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG33[51]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . COM_showMessageText($LANG33[51], $LANG33[52])
                 . editfeed ($A['fid'], $A['type'])
                 . COM_siteFooter ();
         return $retval;
@@ -540,10 +534,7 @@ function savefeed ($A)
 
     if ($A['limits'] <= 0) {
         $retval = COM_siteHeader ('menu', $LANG33[38])
-                . COM_startBlock ($LANG33[38], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG33[40]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . COM_showMessageText($LANG33[40], $LANG33[38])
                 . editfeed ($A['fid'], $A['type'])
                 . COM_siteFooter ();
         return $retval;
