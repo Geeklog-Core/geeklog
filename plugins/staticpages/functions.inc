@@ -1186,6 +1186,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
                     $sp_content = SP_returnStaticpage($sp_id, 'autotag');
                     $content = str_replace($autotag['tagstr'], $sp_content,
                                            $content);
+                    unset($recursive[$sp_id]);
                 }
             }
         }
