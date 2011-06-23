@@ -490,8 +490,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
-    if( $story->checkAccess() == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ))
-    {
+    if (($index != 'p') AND SEC_hasRights('story.edit') AND
+            ($story->checkAccess() == 3) AND
+            (SEC_hasTopicAccess($story->DisplayElements('tid')) == 3)) {
         $article->set_var( 'edit_link',
             COM_createLink($LANG01[4], $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $story->getSid())
