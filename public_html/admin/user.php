@@ -86,10 +86,7 @@ function edituser($uid = '', $msg = '')
     $retval = '';
 
     if (!empty ($msg)) {
-        $retval .= COM_startBlock ($LANG28[22], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . $MESSAGE[$msg]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($MESSAGE[$msg], $LANG28[22]);
     }
 
     if (!empty ($msg) && !empty ($uid) && ($uid > 1)) {
@@ -111,11 +108,9 @@ function edituser($uid = '', $msg = '')
         if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
             // the current admin user isn't Root but is trying to change
             // a root account.  Deny them and log it.
-            $retval .= COM_startBlock ($LANG28[1], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG_ACCESS['editrootmsg'];
+            $retval .= COM_showMessageText($LANG_ACCESS['editrootmsg'],
+                                           $LANG28[1]);
             COM_accessLog("User {$_USER['username']} tried to edit a Root account with insufficient privileges.");
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval;
         }
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
@@ -1062,11 +1057,9 @@ function importusers()
         }
     } else {
         // A problem occurred, print debug information
-        $retval = COM_siteHeader ('menu', $LANG28[22]);
-        $retval .= COM_startBlock ($LANG28[24], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $upload->printErrors(false);
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval = COM_siteHeader('menu', $LANG28[22])
+                . COM_showMessageText($upload->printErrors(false), $LANG28[24])
+                . COM_siteFooter();
 
         return $retval;
     }
