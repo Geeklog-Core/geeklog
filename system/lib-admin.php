@@ -1368,9 +1368,11 @@ function ADMIN_getListField_usergroups($fieldname, $fieldvalue, $A, $icon_arr, $
                 ($A['grp_name'] == 'Logged-in Users') ||
                 ($A['grp_name'] == 'Remote Users')) {
                 $retval = '<input type="checkbox" disabled="disabled"'
-                        . $checked . XHTML . '>'
-                        . '<input type="hidden" name="groups[]" value="'
-                        . $A['grp_id'] . '"' . $checked . XHTML . '>';
+                        . $checked . XHTML . '>';
+                if (! empty($checked)) {
+                    $retval .= '<input type="hidden" name="groups[]" value="'
+                            . $A['grp_id'] . '"' . $checked . XHTML . '>';
+                }
             } else {
                 $retval = '<input type="checkbox" name="groups[]" value="'
                         . $A['grp_id'] . '"' . $checked . XHTML . '>';
