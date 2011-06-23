@@ -119,26 +119,27 @@ function edituser($uid = '', $msg = '')
     } else {
         $A['uid'] = '';
         $uid = '';
-        $curtime =  COM_getUserDateTimeFormat();
+        $curtime = COM_getUserDateTimeFormat();
         $lastlogin = '';
         $lasttime = '';
         $A['status'] = USER_ACCOUNT_ACTIVE;
+    }
 
-        if (isset($_POST['username'])) {
-            $A['username'] = strip_tags($_POST['username']);
-        }
-        if (isset($_POST['fullname'])) {
-            $A['fullname'] = strip_tags($_POST['fullname']);
-        }
-        if (isset($_POST['email'])) {
-            $A['email'] = strip_tags($_POST['email']);
-        }
-        if (isset($_POST['homepage'])) {
-            $A['homepage'] = strip_tags($_POST['homepage']);
-        }
-        if (isset($_POST['userstatus'])) {
-            $A['status'] = COM_applyFilter($_POST['userstatus'], true);
-        }
+    // POST data can override, in case there was an error while editing a user
+    if (isset($_POST['username'])) {
+        $A['username'] = strip_tags($_POST['username']);
+    }
+    if (isset($_POST['fullname'])) {
+        $A['fullname'] = strip_tags($_POST['fullname']);
+    }
+    if (isset($_POST['email'])) {
+        $A['email'] = strip_tags($_POST['email']);
+    }
+    if (isset($_POST['homepage'])) {
+        $A['homepage'] = strip_tags($_POST['homepage']);
+    }
+    if (isset($_POST['userstatus'])) {
+        $A['status'] = COM_applyFilter($_POST['userstatus'], true);
     }
 
     $token = SEC_createToken();
@@ -317,6 +318,13 @@ function edituser($uid = '', $msg = '')
                 $selected .= ' ' . $def_grp;
             }
         }
+
+        // in case of an error we may have previously selected a different
+        // mix of groups already - reconstruct those from the POST data
+        if (isset($_POST['groups']) && (count($_POST['groups']) > 0)) {
+            $selected = implode(' ', $_POST['groups']);
+        }
+
         $thisUsersGroups = SEC_getUserGroups();
         $remoteGroup = DB_getItem($_TABLES['groups'], 'grp_id',
                                   "grp_name = 'Remote Users'");
@@ -707,7 +715,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
     } else {
         $retval = COM_siteHeader('menu', $LANG28[1]);
         $retval .= COM_showMessageText($LANG28[10]);
-        if (DB_count($_TABLES['users'], 'uid', $uid) > 0) {
+        if (!empty($uid) && ($uid > 1) &&
+                DB_count($_TABLES['users'], 'uid', $uid) > 0) {
             $retval .= edituser($uid);
         } else {
             $retval .= edituser();
