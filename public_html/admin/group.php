@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -86,20 +86,18 @@ function editgroup($grp_id = '')
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups();
-    if (! empty($grp_id) &&
-        ($grp_id > 0) &&
-        !in_array($grp_id, $thisUsersGroups) &&
-        !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $thisUsersGroups)) {
-        $retval .= COM_startBlock($LANG_ACCESS['groupeditor'], '',
-                           COM_getBlockTemplate('_msg_block', 'header'));
+    if (!empty($grp_id) && ($grp_id > 0) &&
+            !in_array($grp_id, $thisUsersGroups) &&
+            !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $thisUsersGroups)) {
         if (!SEC_inGroup('Root') && (DB_getItem($_TABLES['groups'],
                 'grp_name', "grp_id = $grp_id") == 'Root')) {
-            $retval .= $LANG_ACCESS['canteditroot'];
+            $retval .= COM_showMessageText($LANG_ACCESS['canteditroot'],
+                                           $LANG_ACCESS['groupeditor']);
             COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
         } else {
-            $retval .= $LANG_ACCESS['canteditgroup'];
+            $retval .= COM_showMessageText($LANG_ACCESS['canteditgroup'],
+                                           $LANG_ACCESS['groupeditor']);
         }
-        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
 
         return $retval;
     }
@@ -560,13 +558,11 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         if ($g_id > 0) {
             if (empty($grp_id) || ($grp_id != $g_id)) {
                 // there already is a group with that name - complain
-                $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
-                $retval .= COM_startBlock ($LANG_ACCESS['groupexists'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-                $retval .= $LANG_ACCESS['groupexistsmsg'];
-                $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                $retval .= editgroup ($grp_id);
-                $retval .= COM_siteFooter ();
+                $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor'])
+                        . COM_showMessageText($LANG_ACCESS['groupexistsmsg'],
+                                              $LANG_ACCESS['groupexists'])
+                        . editgroup($grp_id)
+                        . COM_siteFooter();
 
                 return $retval;
             }
@@ -685,13 +681,11 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
         }
     } else {
-        $retval .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
-        $retval .= COM_startBlock ($LANG_ACCESS['missingfields'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG_ACCESS['missingfieldsmsg'];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= editgroup ($grp_id);
-        $retval .= COM_siteFooter ();
+        $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor'])
+                . COM_showMessageText($LANG_ACCESS['missingfieldsmsg'],
+                                      $LANG_ACCESS['missingfields'])
+                . editgroup($grp_id)
+                . COM_siteFooter();
 
         return $retval;
     }
@@ -749,14 +743,11 @@ function listusers ($grp_id)
     $retval = '';
 
     $thisUsersGroups = SEC_getUserGroups ();
-    if (!empty ($grp_id) &&
-        ($grp_id > 0) &&
-        !in_array ($grp_id, $thisUsersGroups) &&
-        !SEC_groupIsRemoteUserAndHaveAccess( $grp_id, $thisUsersGroups)) {
-        $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG_ACCESS['cantlistgroup'];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (!empty ($grp_id) && ($grp_id > 0) &&
+            !in_array($grp_id, $thisUsersGroups) &&
+            !SEC_groupIsRemoteUserAndHaveAccess($grp_id, $thisUsersGroups)) {
+        $retval .= COM_showMessageText($LANG_ACCESS['cantlistgroup'],
+                                       $LANG_ACCESS['usergroupadmin']);
 
         return $retval;
     }
@@ -1014,15 +1005,14 @@ function editusers($group)
                 !SEC_groupIsRemoteUserAndHaveAccess($group, $thisUsersGroups))
             || (($grp_name == 'All Users') ||
                 ($grp_name == 'Logged-in Users'))) {
-        $retval .= COM_startBlock($LANG_ACCESS['usergroupadmin'], '',
-                                  COM_getBlockTemplate('_msg_block', 'header'));
         if (!SEC_inGroup('Root') && ($grp_name == 'Root')) {
-            $retval .= $LANG_ACCESS['canteditroot'];
+            $retval .= COM_showMessageText($LANG_ACCESS['canteditroot'],
+                                           $LANG_ACCESS['usergroupadmin']);
             COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
         } else {
-            $retval .= $LANG_ACCESS['canteditgroup'];
+            $retval .= COM_showMessageText($LANG_ACCESS['canteditgroup'],
+                                           $LANG_ACCESS['usergroupadmin']);
         }
-        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
 
         return $retval;
     }
