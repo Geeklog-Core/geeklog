@@ -123,6 +123,22 @@ function edituser($uid = '', $msg = '')
         $lastlogin = '';
         $lasttime = '';
         $A['status'] = USER_ACCOUNT_ACTIVE;
+
+        if (isset($_POST['username'])) {
+            $A['username'] = strip_tags($_POST['username']);
+        }
+        if (isset($_POST['fullname'])) {
+            $A['fullname'] = strip_tags($_POST['fullname']);
+        }
+        if (isset($_POST['email'])) {
+            $A['email'] = strip_tags($_POST['email']);
+        }
+        if (isset($_POST['homepage'])) {
+            $A['homepage'] = strip_tags($_POST['homepage']);
+        }
+        if (isset($_POST['userstatus'])) {
+            $A['status'] = COM_applyFilter($_POST['userstatus'], true);
+        }
     }
 
     $token = SEC_createToken();
@@ -1230,17 +1246,7 @@ if (isset ($_GET['direction'])) {
     $direction =  COM_applyFilter ($_GET['direction']);
 }
 
-if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
-        ($_POST['passwd'] != $_POST['passwd_conf'])) {
-    // entered passwords were different
-    $uid = COM_applyFilter ($_POST['uid'], true);
-    if ($uid > 1) {
-        $display .= COM_refresh ($_CONF['site_admin_url']
-                                 . '/user.php?mode=edit&amp;msg=67&amp;uid=' . $uid);
-    } else {
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=67');
-    }
-} elseif (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
+if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // delete
     $uid = COM_applyFilter($_POST['uid'], true);
     if ($uid <= 1) {
         COM_errorLog('Attempted to delete user uid=' . $uid);
