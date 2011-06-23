@@ -221,11 +221,9 @@ function listbackups()
                                     $listoptions, $form_arr);
         $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
     } else {
-        $retval .= COM_startBlock($LANG08[06], '',
-                            COM_getBlockTemplate('_msg_block', 'header'));
-        $retval .= $LANG_DB_BACKUP['no_access'];
+        $retval .= COM_showMessageText($LANG_DB_BACKUP['no_access'],
+                                       $LANG08[06]);
         COM_errorLog($_CONF['backup_path'] . ' is not writable.', 1);
-        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
     }
 
     return $retval;
@@ -282,19 +280,14 @@ function dobackup()
                 COM_errorLog("Command used for mysqldump: $log_command", 1);
             }
         } else {
-            $retval .= COM_startBlock($LANG08[06], '',
-                                COM_getBlockTemplate('_msg_block', 'header'));
-            $retval .= $LANG_DB_BACKUP['not_found'];
-            $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block',
-                                                         'footer'));
+            $retval .= COM_showMessageText($LANG_DB_BACKUP['not_found'],
+                                           $LANG08[06]);
             COM_errorLog('Backup Error: Bad path, mysqldump does not exist or open_basedir restriction in effect.', 1);
             COM_errorLog("Command used for mysqldump: $log_command", 1);
         }
     } else {
-        $retval .= COM_startBlock($MESSAGE[30], '',
-                            COM_getBlockTemplate('_msg_block', 'header'));
-        $retval .= $LANG_DB_BACKUP['path_not_found'];
-        $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG_DB_BACKUP['path_not_found'],
+                                       $MESSAGE[30]);
         COM_errorLog("Backup directory '" . $_CONF['backup_path'] . "' does not exist or is not a directory", 1);
     }
 

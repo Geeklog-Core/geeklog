@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
 // | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2005-2010 by the following authors:                         |
+// | Copyright (C) 2005-2011 by the following authors:                         |
 // |                                                                           |
 // | Author: Dirk Haun - dirk AT haun-online DOT de                            |
 // +---------------------------------------------------------------------------+
@@ -199,16 +199,9 @@ function deleteTrackbackComment ($id)
 * @return   string              HTML for the message block
 *
 */
-function showTrackbackMessage ($title, $message)
+function showTrackbackMessage($title, $message)
 {
-    $retval = '';
-
-    $retval .= COM_startBlock ($title, '',
-                               COM_getBlockTemplate ('_msg_block', 'header'))
-            . $message
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-
-    return $retval;
+    return COM_showMessageText($message, $title);
 }
 
 /**

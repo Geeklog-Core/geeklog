@@ -253,11 +253,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $_CONF['hour_mode'] = 12;
     }
 
-    if (!empty ($errormsg)) {
-        $display .= COM_startBlock($LANG24[25], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $errormsg;
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (!empty($errormsg)) {
+        $display .= COM_showMessageText($errormsg, $LANG24[25]);
     }
 
     if (!empty ($currenttopic)) {
@@ -288,47 +285,40 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         if ($_CONF['maximagesperarticle'] > 0) {
             $errors = $story->insertImages();
             if (count($errors) > 0) {
-                $display .= COM_startBlock($LANG24[54], '',
-                                COM_getBlockTemplate('_msg_block', 'header'));
-                $display .= $LANG24[55] . LB . '<ul>' . LB;
+                $msg = $LANG24[55] . LB . '<ul>' . LB;
                 foreach ($errors as $err) {
-                    $display .= '<li>' . $err . '</li>' . LB;
+                    $msg .= '<li>' . $err . '</li>' . LB;
                 }
-                $display .= '</ul>' . LB;
-                $display .= COM_endBlock(COM_getBlockTemplate('_msg_block',
-                                                              'footer'));
+                $msg .= '</ul>' . LB;
+                $display .= COM_showMessageText($msg, $LANG24[54]);
             }
         }
     } else {
         $result = $story->loadFromDatabase($sid, $mode);
     }
 
-    if( ($result == STORY_PERMISSION_DENIED) || ($result == STORY_NO_ACCESS_PARAMS) )
-    {
-        $display .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $LANG24[42];
-        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+    if (($result == STORY_PERMISSION_DENIED) ||
+            ($result == STORY_NO_ACCESS_PARAMS)) {
+        $display .= COM_showMessageText($LANG24[42],
+                                        $LANG_ACCESS['accessdenied']);
         COM_accessLog("User {$_USER['username']} tried to illegally access story $sid.");
         return $display;
-    } elseif( ($result == STORY_EDIT_DENIED) || ($result == STORY_EXISTING_NO_EDIT_PERMISSION) ) {
-        $display .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $LANG24[41];
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    } elseif (($result == STORY_EDIT_DENIED) ||
+            ($result == STORY_EXISTING_NO_EDIT_PERMISSION)) {
+        $display .= COM_showMessageText($LANG24[41],
+                                        $LANG_ACCESS['accessdenied']);
         $display .= STORY_renderArticle ($story, 'p');
         COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
         return $display;
-    } elseif( $result == STORY_INVALID_SID ) {
-        if( $mode == 'editsubmission' )
-        {
+    } elseif ($result == STORY_INVALID_SID) {
+        if ($mode == 'editsubmission') {
             // that submission doesn't seem to be there any more (may have been
             // handled by another Admin) - take us back to the moderation page
-            return COM_refresh( $_CONF['site_admin_url'] . '/moderation.php' );
+            return COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
         } else {
-            return COM_refresh( $_CONF['site_admin_url'] . '/story.php' );
+            return COM_refresh($_CONF['site_admin_url'] . '/story.php');
         }
-    } elseif( $result == STORY_DUPLICATE_SID) {
+    } elseif ($result == STORY_DUPLICATE_SID) {
         $display .= COM_showMessageText($LANG24[24]);
     }
 

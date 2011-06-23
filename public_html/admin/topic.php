@@ -96,10 +96,7 @@ function edittopic ($tid = '')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
-            $retval .= COM_startBlock ($LANG27[12], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG27[13];
-            $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_showMessageText($LANG27[13], $LANG27[12]);
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
             return $retval;
         }
@@ -613,13 +610,9 @@ function handleIconUpload($tid)
                                          'image/png'   => '.png'
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'topics')) {
-        $display = COM_siteHeader ('menu', $LANG27[29]);
-        $display .= COM_startBlock ($LANG27[29], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $upload->printErrors (false);
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                        'footer'));
-        $display .= COM_siteFooter ();
+        $display = COM_siteHeader('menu', $LANG27[29])
+                 . COM_showMessageText($upload->printErrors(false), $LANG27[29])
+                 . COM_siteFooter();
         COM_output($display);
         exit; // don't return
     }
@@ -654,13 +647,10 @@ function handleIconUpload($tid)
         $upload->uploadFiles ();
 
         if ($upload->areErrors ()) {
-            $display = COM_siteHeader ('menu', $LANG27[29]);
-            $display .= COM_startBlock ($LANG27[29], '',
-                    COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $upload->printErrors (false);
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                            'footer'));
-            $display .= COM_siteFooter ();
+            $display = COM_siteHeader('menu', $LANG27[29])
+                     . COM_showMessageText($upload->printErrors(false),
+                                           $LANG27[29])
+                     . COM_siteFooter();
             COM_output($display);
             exit; // don't return
         }
