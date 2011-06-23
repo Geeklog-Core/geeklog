@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | success.php                                                               |
 // |                                                                           |
 // | Page that is displayed upon a successful Geeklog installation or upgrade  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -94,13 +94,13 @@ if ($type == 'install') {
 $display .= '<h2>' . $LANG_SUCCESS[10] . '</h2>
 <p>' . $LANG_SUCCESS[11] . ' <strong>' . (($type == 'install') ? '3' : '2') . '</strong> ' . $LANG_SUCCESS[12] . ':</p>
 <ul>
-<li>' . $LANG_SUCCESS[13] . ' <tt>' . $_CONF['path_html'] . SUCCESS_getInstallPath() . '</tt>.</li>';
+<li>' . $LANG_SUCCESS[13] . ' <tt dir="ltr">' . $_CONF['path_html'] . SUCCESS_getInstallPath() . '</tt>.</li>';
 
 if ($type == 'install') {
     $display .= "<li><a href=\"{$_CONF['site_url']}/usersettings.php\">" . $LANG_SUCCESS[14] . ' <strong>' . $LANG_SUCCESS[7] . '</strong> ' . $LANG_SUCCESS[15] . '</a></li>';
 }
 
-$display .= '<li>' . $LANG_SUCCESS[16] . ' <tt>' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_SUCCESS[17] . ' <tt>' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_SUCCESS[18] . ' 644.</li>
+$display .= '<li>' . $LANG_SUCCESS[16] . ' <tt dir="ltr">' . $_CONF['path'] . 'db-config.php</tt> ' . $LANG_SUCCESS[17] . ' <tt dir="ltr">' . $_CONF['path_html'] . 'siteconfig.php</tt> ' . $LANG_SUCCESS[18] . ' 644.</li>
 </ul>';
 
 // note for those upgrading from Geeklog 1.2.5-1 or older
