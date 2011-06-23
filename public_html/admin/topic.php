@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -664,7 +664,26 @@ function handleIconUpload($tid)
             COM_output($display);
             exit; // don't return
         }
-        $filename = '/images/topics/' . $filename;
+        if (strpos($_CONF['path_images'], $_CONF['path_html']) === 0) {
+            $filename = substr($_CONF['path_images'],
+                               strlen($_CONF['path_html']) - 1)
+                      . 'topics/' . $filename;
+        } else {
+            /**
+            * Not really used when the 'path_images' is outside of the webroot.
+            * Let's at least extract the name of the images directory then.
+            */
+            $images = 'images';
+            $parts = explode('/', $_CONF['path_images']);
+            if (count($parts) > 1) {
+                $cnt = count($parts);
+                // e.g. from /path/to/myimages/ would extract "myimages"
+                if (empty($parts[$cnt - 1]) && !empty($parts[$cnt - 2])) {
+                    $images = $parts[$cnt - 2];
+                }
+                $filename = '/' . $images . '/topics/' . $filename;
+            }
+        }
     }
 
     return $filename;
