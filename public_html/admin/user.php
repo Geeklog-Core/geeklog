@@ -1281,7 +1281,7 @@ if (isset ($_POST['passwd']) && isset ($_POST['passwd_conf']) &&
         }
         $passwd_conf = '';
         if (isset($_POST['passwd_conf'])) {
-            $passwd = $_POST['passwd_conf'];
+            $passwd_conf = $_POST['passwd_conf'];
         }
         $display = saveusers($uid, $_POST['username'], $_POST['fullname'],
                     $passwd, $passwd_conf, $_POST['email'], $_POST['regdate'],
