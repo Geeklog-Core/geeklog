@@ -1563,7 +1563,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                 $output .= COM_startBlock($LANG24[54], '',
                                 COM_getBlockTemplate('_msg_block', 'header'));
                 $output .= $LANG24[55] . LB . '<ul>' . LB;
-                foreach ($error as $err) {
+                foreach ($errors as $err) {
                     $output .= '<li>' . $err . '</li>' . LB;
                 }
                 $output .= '</ul>' . LB;
