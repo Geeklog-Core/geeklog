@@ -1047,8 +1047,18 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 $spage->set_var('hits', $hits);
             }
 
-            $content = SP_render_content(stripslashes($S['sp_content']),
-                                         $S['sp_php']);
+            $SP_retval = '';
+            $mode = '';
+            $args = array(
+                        'sp_id' => $S['sp_id'],
+                        'mode'  => $mode
+                         );
+            $svc_msg = array();
+        
+            if (PLG_invokeService('staticpages', 'get', $args, $SP_retval, $svc_msg) == PLG_RET_OK) {  
+                $content = SP_render_content(stripslashes($SP_retval['sp_content']), $SP_retval['sp_php']);
+            }
+            
             $spage->set_var('content', $content);
             $retval .= $spage->finish($spage->parse('output', 'page'));
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title']) &&
