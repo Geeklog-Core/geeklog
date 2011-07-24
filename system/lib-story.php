@@ -80,8 +80,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $storytpl = 'storytext.thtml';
     }
 
-    $introtext = COM_undoSpecialChars($story->displayElements('introtext'));
-    $bodytext = COM_undoSpecialChars($story->displayElements('bodytext'));
+    $introtext = $story->displayElements('introtext');
+    $bodytext = $story->displayElements('bodytext');
     $readmore = empty($bodytext)?0:1;
     $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
     if (COM_onFrontpage()) {
