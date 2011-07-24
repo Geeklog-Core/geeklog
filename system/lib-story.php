@@ -138,7 +138,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         . '/users.php?mode=profile&amp;uid='
                         . $story->DisplayElements('uid');
             $article->set_var('start_contributedby_anchortag',
-                    '<a class="storybyline" href="' . $profileUrl . '">');
+                    '<a class="storybyline" href="' . $profileUrl
+                    . '" rel="author">');
             $article->set_var('end_contributedby_anchortag', '</a>');
             $article->set_var('contributedby_url', $profileUrl);
         }
