@@ -1,10 +1,10 @@
 <?php
 
 ###############################################################################
-# french_france_utf-8.php
+# french_france.php
 #
 # This is the French language file for the Geeklog Calendar plugin
-# Last update by ::Ben http://geeklog.fr May 10 2010 
+# Update for Geeklog 1.8.0 by ben AT geeklog DOT fr 
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
@@ -89,7 +89,7 @@ $LANG_CAL_1 = array(
     49 => 'Il semblerait qu\'il n\'y est aucun événement sur ce site ou que personne ne les ai découverts.',
     50 => 'Événements',
     51 => 'Effacer',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id titre alternatif] - Affiche un lien vers un évènement du calendrier en utilisant le titre de l\'évènement. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -109,7 +109,7 @@ $LANG_CAL_2 = array(
     10 => 'Évènement pour',
     11 => 'Calendrier général',
     12 => 'Mon calendrier',
-    25 => 'Back to ',
+    25 => '',
     26 => 'Toute la journée',
     27 => 'Semaine',
     28 => 'Calendrier perso de',
@@ -150,7 +150,7 @@ $LANG_CAL_ADMIN = array(
     14 => 'Date de début',
     15 => 'Date de fin',
     16 => '',
-    17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">go back to the event administration screen</a>.",
+    17 => "Vous essayez d\'accéder à un évènement auquel vous n\'avez pas accès.  Merci <a href=\"{$_CONF['site_admin_url']}/plugins/calendar/index.php\">de revenir à la page administrative des évènements</a>.",
     18 => '',
     19 => '',
     20 => 'Sauvegarder',
@@ -219,15 +219,14 @@ $LANG_configsubgroups['calendar'] = array(
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => 'Paramètres généraux du calendrier',
+    'tab_permissions' => 'Permissions par défaut',
+    'tab_autotag_permissions' => 'Permissions d\'usage des autotags'
 );
-
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Paramètres généraux du calendrier',
     'fs_permissions' => 'Permissions par défaut',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Permissions d\'usage des autotags'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -237,7 +236,7 @@ $LANG_configselects['calendar'] = array(
     6 => array('12H' => 12, '24H' => 24),
     9 => array('Afficher l\'évènement' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher le calendrier' => 'plugin', 'Afficher la page d\'acceuil' => 'home', 'Afficher le panneau administratif' => 'admin'),
     12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)
 );
 
 ?>
