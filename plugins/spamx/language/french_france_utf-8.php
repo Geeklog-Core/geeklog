@@ -8,6 +8,7 @@
  * Author        Tom Willett        tomw AT pigstye DOT net
  *
  * French translation provided by Alain Ponton.
+* Updated for Geeklog 1.8.0 by ben AT geeklog DOT fr
  *
  * Licensed under GNU General Public License
  */
@@ -127,7 +128,7 @@ $LANG_SX00 = array(
 
 // Define Messages that are shown when Spam-X module action is taken
 $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Message supprimé.';
-$PLG_spamx_MESSAGE8 = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
+$PLG_spamx_MESSAGE8 = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\'Administrateur.';
 
 // Messages for the plugin upgrade
 $PLG_spamx_MESSAGE3001 = 'Plugin upgrade not supported.';
@@ -140,7 +141,7 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'spamx_action' => 'Spam-X Actions',
+    'action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
     'timeout' => 'Timeout'
@@ -151,11 +152,11 @@ $LANG_configsubgroups['spamx'] = array(
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings'
+    'tab_main' => 'Paramètres principaux Spam-X'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings'
+    'fs_main' => 'Paramètres principaux Spam-X'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
