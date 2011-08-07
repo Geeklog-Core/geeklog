@@ -51,7 +51,7 @@ class TimeZoneConfig {
     * @static
     *
     */
-    function setSystemTimeZone($tz = '')
+    public static function setSystemTimeZone($tz = '')
     {
         global $_CONF;
 
@@ -94,7 +94,7 @@ class TimeZoneConfig {
     * @static
     *
     */
-    function setUserTimeZone()
+    public static function setUserTimeZone()
     {
         global $_CONF;
 
@@ -113,7 +113,7 @@ class TimeZoneConfig {
     * @static
     *
     */
-    function getUserTimeZone()
+    public static function getUserTimeZone()
     {
         global $_CONF, $_USER;
 
@@ -147,7 +147,7 @@ class TimeZoneConfig {
     * @static
     *
     */
-    function getTimeZoneDropDown($selected = '', $attributes = array())
+    public static function getTimeZoneDropDown($selected = '', $attributes = array())
     {
         $timezones = TimeZoneConfig::listAvailableTimeZones();
 
@@ -176,7 +176,7 @@ class TimeZoneConfig {
     * @static
     *
     */
-    function listAvailableTimeZones()
+    public static function listAvailableTimeZones()
     {
         $timezones = array();
 
@@ -265,7 +265,7 @@ class TimeZoneConfig {
     * @access   private
     *
     */
-    function _sort_by_timezone($tz1, $tz2)
+    static function _sort_by_timezone($tz1, $tz2)
     {
         $p1 = explode(',', $tz1);
         $p2 = explode(',', $tz2);
