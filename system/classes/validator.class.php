@@ -94,7 +94,7 @@ class validator {
  * @access public
  * @static
  */    
-    function &getInstance() {
+    public static function &getInstance() {
 		static $instance = array();
 
 		if (!$instance) {
