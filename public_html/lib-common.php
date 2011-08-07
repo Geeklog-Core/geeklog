@@ -5732,7 +5732,7 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
 */
 function COM_stripslashes( $text )
 {
-    if( get_magic_quotes_gpc() == 1 )
+    if( @get_magic_quotes_gpc() == 1 )
     {
         return( stripslashes( $text ));
     }
