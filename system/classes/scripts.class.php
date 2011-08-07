@@ -400,7 +400,7 @@ class scripts {
 
         // Set CSS Files
         foreach ($this->css_files as $file) {
-            if ($file['load']) {
+            if ($file['load'] && isset($file['file'])) {
                 $headercode .= '<link rel="stylesheet" type="text/css" href="' . $_CONF['site_url'] . $file['file'] . '" ' . XHTML . '>' . LB;
             }
         }  
