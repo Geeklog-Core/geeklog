@@ -638,7 +638,7 @@ case 'logout':
 
 case 'profile':
     $uid = COM_applyFilter ($_GET['uid'], true);
-    if (is_numeric ($uid) && ($uid > 0)) {
+    if (is_numeric ($uid) && ($uid > 1)) {
         $msg = 0;
         if (isset($_GET['msg'])) {
             $msg = COM_applyFilter($_GET['msg'], true);
