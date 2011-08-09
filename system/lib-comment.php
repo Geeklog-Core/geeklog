@@ -856,10 +856,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                         . $start->finish( $start->parse( 'output', 'comment' ))
                         . COM_endBlock ();
             } else if ($mode == $LANG03[14]) {
-                $retval .= COM_startBlock ($LANG03[17], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'))
-                    . $LANG03[12]
-                    . COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval .= COM_showMessageText($LANG03[12], $LANG03[17]);
                 $mode = 'error';
             }
 
