@@ -290,7 +290,7 @@ panel:</p>
 <tr class="r2">
   <td><a name="desc_timeout">timeout</a></td>
   <td>5</td>
-  <td>Timeout (in seconds) for contacting external services such as SLV.</td>
+  <td>Timeout (in seconds) for contacting external services such as SLV and SFS.</td>
 </tr>
 <tr>
   <td><a name="desc_notification_email">notification_email</a></td>
@@ -305,6 +305,30 @@ panel:</p>
     href="config.html#desc_spamx">$_CONF['spamx']</a> in Geeklog's main
     configuration is not set. I.e. <code>$_CONF['spamx']</code> takes
     precedence.</td>
+</tr>
+</table>
+
+<h3><a name="main">Modules</a></h3>
+
+<table>
+<tr><th style="width:25%">Variable</th>
+    <th style="width:25%">Default Value</th>
+    <th style="width:50%">Description</th>
+</tr>
+<tr>
+  <td><a name="desc_sfs_enabled">sfs_enabled</a></td>
+  <td><code>true</code></td>
+  <td>Whether the Stop Forum Spam (SFS) module is enabled or not. If enabled then email and ip addresses of new user registrations will be checked with StopForumSpam.com to see if they are spam.</td>
+</tr>
+<tr class="r2">
+  <td><a name="desc_snl_enabled">snl_enabled</a></td>
+  <td><code>true</code></td>
+  <td>Whether the Spam Number of Links (SNL) module is enabled or not. If enabled it will only allow a specified number of links in a post.</td>
+</tr>
+<tr>
+  <td><a name="desc_snl_num_links">snl_num_links</a></td>
+  <td>5</td>
+  <td>The maximum number of links allowed in a post before it is considered spam.</td>
 </tr>
 </table>
 

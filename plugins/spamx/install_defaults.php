@@ -68,6 +68,14 @@ $_SPX_DEFAULT['logging'] = true;
 // timeout for contacting external services, e.g. SLV
 $_SPX_DEFAULT['timeout'] = 5; // in seconds
 
+// If the module Stop Forum Spam is enabled
+$_SPX_DEFAULT['sfs_enabled'] = true;
+
+// If the module Spam Number of Links is enabled
+$_SPX_DEFAULT['snl_enabled'] = true;
+
+// The number of links the module Spam Number of Links allows in a post
+$_SPX_DEFAULT['snl_num_links'] = 5;
 
 /**
 * Initialize Spam-X plugin configuration
@@ -107,6 +115,16 @@ function plugin_initconfig_spamx()
                 'text', 0, 0, null, 40, $enable_email, 'spamx', 0);
         $c->add('spamx_action', $_SPX_DEFAULT['action'], 'text',
                 0, 0, null, 50, false, 'spamx', 0);
+        
+        $c->add('tab_modules', NULL, 'tab', 0, 0, NULL, 0, true, 'spamx', 10);
+        $c->add('fs_sfs', NULL, 'fieldset', 0, 0, NULL, 0, true, 'spamx', 10);
+        $c->add('sfs_enabled', $_SPX_DEFAULT['sfs_enabled'], 'select',
+                0, 0, 1, 10, true, 'spamx', 10);        
+        $c->add('fs_snl', NULL, 'fieldset', 0, 10, NULL, 0, true, 'spamx', 10);
+        $c->add('snl_enabled', $_SPX_DEFAULT['snl_enabled'], 'select', 
+                0, 10, 1, 10, true, 'spamx', 10);
+        $c->add('snl_num_links', $_SPX_DEFAULT['snl_num_links'], 'text', 
+                0, 10, NULL, 20, true, 'spamx', 10);     
 
     }
 

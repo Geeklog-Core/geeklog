@@ -268,6 +268,21 @@ function plugin_upgrade_spamx()
 
             $current_version = '1.2.2';
             break;
+            
+        case '1.2.2':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }            
+
+            if (! $current_config) {
+                spamx_update_ConfValues_1_2_2();  
+            }
+
+            $current_version = '1.3.0';
+            break;            
 
         default:
             $done = true;
@@ -529,6 +544,30 @@ function plugin_getconfigtooltip_spamx($id)
 {   
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
+}
+
+/**
+* Checks user registrations against stopforumspam.com to validate email and IP addresses
+*
+* @param    string  $type       Type of item
+* @param    string  $username   Type of item
+* @return   string              
+*
+*/
+function plugin_itemPreSave_spamx($type, $username)
+{
+    global $_CONF, $LANG_SX00;
+
+    if ($type == 'registration') {
+        require_once $_CONF['path'].'/plugins/spamx/SFS.Misc.class.php';
+        $EX = new SFS;
+        $res = $EX->execute($_POST['email'], $_SERVER['REMOTE_ADDR']);
+        if ($res > 0) {
+            return $LANG_SX00['invalid_email_or_ip'];
+        }
+    }
+
+    return '';
 }
 
 ?>

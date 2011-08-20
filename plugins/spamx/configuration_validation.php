@@ -39,5 +39,9 @@ $_CONF_VALIDATE['spamx']['logging'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['spamx']['timeout'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['spamx']['notification_email'] = array('rule' => 'email');
 $_CONF_VALIDATE['spamx']['spamx_action'] = array('rule' => 'numeric');
+// Modules
+$_CONF_VALIDATE['spamx']['sfs_enabled'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['spamx']['snl_enabled'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['spamx']['snl_num_links'] = array('rule' => 'numeric');
 
 ?>
