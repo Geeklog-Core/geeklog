@@ -80,8 +80,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $storytpl = 'storytext.thtml';
     }
 
-    $introtext = COM_undoSpecialChars($story->displayElements('introtext'));
-    $bodytext = COM_undoSpecialChars($story->displayElements('bodytext'));
+    $introtext = $story->displayElements('introtext');
+    $bodytext = $story->displayElements('bodytext');
     $readmore = empty($bodytext)?0:1;
     $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
     if (COM_onFrontpage()) {
@@ -138,7 +138,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                         . '/users.php?mode=profile&amp;uid='
                         . $story->DisplayElements('uid');
             $article->set_var('start_contributedby_anchortag',
-                    '<a class="storybyline" href="' . $profileUrl . '">');
+                    '<a class="storybyline" href="' . $profileUrl
+                    . '" rel="author">');
             $article->set_var('end_contributedby_anchortag', '</a>');
             $article->set_var('contributedby_url', $profileUrl);
         }
