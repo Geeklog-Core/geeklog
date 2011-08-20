@@ -91,7 +91,9 @@ class EditIPofUrl extends BaseAdmin {
 
     function link()
     {
-        return 'Edit IP of URL Blacklist';
+        global $LANG_SX00;
+
+        return $LANG_SX00['edit_ip_url_blacklist'];        
     }
 }
 

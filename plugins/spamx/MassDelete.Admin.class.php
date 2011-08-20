@@ -124,7 +124,9 @@ class MassDelete extends BaseAdmin {
 
     function link()
     {
-        return 'Mass Delete Spam Comments';
+        global $LANG_SX00;
+
+        return $LANG_SX00['mass_delete_spam_comments'];
     }
 
     /**

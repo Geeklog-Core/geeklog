@@ -106,7 +106,9 @@ class EditHeader extends BaseAdmin {
 
     function link()
     {
-        return "Edit HTTP Header Blacklist";
+        global $LANG_SX00;
+
+        return $LANG_SX00['edit_http_header_blacklist'];        
     }
 }
 

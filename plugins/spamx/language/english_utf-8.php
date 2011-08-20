@@ -50,6 +50,7 @@ $LANG_SX00 = array (
     'e1' => 'To Delete an entry click it.',
     'e2' => 'To Add an entry, enter it in the box and click Add.  Entries can use full Perl Regular Expressions.',
     'pblack' => 'Spam-X Personal Blacklist',
+    'sfseblack' => 'Spam-X SFS Email Blacklist',    
     'conmod' => 'Configure Spam-X Module Usage',
     'acmod' => 'Spam-X Action Modules',
     'exmod' => 'Spam-X Examine Modules',
@@ -123,6 +124,17 @@ $LANG_SX00 = array (
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
+    'invalid_email_or_ip'   => 'Invalid e-mail address or IP address has been blocked.',
+    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',    
+    'edit_personal_blacklist' => 'Edit Personal Blacklist',
+    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
+    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
+    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
+    'edit_ip_blacklist' => 'Edit IP Blacklist',
+    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
+    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
+    'edit_slv_whitelist' => 'Edit SLV Whitelist',
+
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
@@ -147,7 +159,10 @@ $LANG_confignames['spamx'] = array(
     'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
-    'timeout' => 'Timeout'
+    'timeout' => 'Timeout', 
+    'sfs_enabled' => 'Enable SFS',
+    'snl_enabled' => 'Enable SNL',
+    'snl_num_links' => 'Number of links'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -155,11 +170,14 @@ $LANG_configsubgroups['spamx'] = array(
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings'
+    'tab_main' => 'Spam-X Main Settings',
+    'tab_modules' => 'Modules'    
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Spam-X Main Settings'
+    'fs_main' => 'Spam-X Main Settings', 
+    'fs_sfs' => 'Stop Forum Spam (SFS)', 
+    'fs_snl' => 'Spam Number of Links (SNL)'
 );
 
 $LANG_configselects['spamx'] = array(

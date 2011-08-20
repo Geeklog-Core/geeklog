@@ -100,7 +100,9 @@ class EditBlackList extends BaseAdmin {
 
     function link()
     {
-        return 'Edit Personal Blacklist';
+        global $LANG_SX00;
+
+        return $LANG_SX00['edit_personal_blacklist'];        
     }
 }
 

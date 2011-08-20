@@ -93,7 +93,9 @@ class SLVwhitelist extends BaseAdmin {
 
     function link()
     {
-        return 'Edit SLV Whitelist';
+        global $LANG_SX00;
+
+        return $LANG_SX00['edit_slv_whitelist'];
     }
 }
 

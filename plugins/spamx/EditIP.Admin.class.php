@@ -92,7 +92,9 @@ class EditIP extends BaseAdmin {
 
     function link()
     {
-        return 'Edit IP Blacklist';
+        global $LANG_SX00;
+
+        return $LANG_SX00['edit_ip_blacklist'];        
     }
 }
 

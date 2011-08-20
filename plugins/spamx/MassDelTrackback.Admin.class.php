@@ -128,7 +128,7 @@ class MassDelTrackback extends BaseAdmin {
     {
         global $LANG_SX00;
 
-        return 'Mass Delete Trackback Spam';
+        return $LANG_SX00['mass_delete_trackback_spam'];
     }
 
     /**
