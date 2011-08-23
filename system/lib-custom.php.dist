@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-custom.php                                                            |
 // |                                                                           |
@@ -20,7 +20,7 @@
 // | not include lib-common.php in this file.                                  |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
 // |          Blaine Lang      - blaine AT portalparts DOT com                 |
@@ -236,7 +236,7 @@ function CUSTOM_userDelete($uid)
  * This function can now return any extra fields that need to be shown.
  * Output is then replaced in {customfields} -- This variable needs to be added
  * to your templates
- * Template: path_layout/users/profile/profile.thtml
+ * Template: path_layout/users/profile.thtml
  */
 function CUSTOM_userDisplay($uid)
 {
