@@ -1,5 +1,23 @@
 Geeklog History/Changes:
 
+Sep ??, 2011 (1.8.1)
+------------
+
+- [code] tag no longer escapes content properly (bug #0001368) [Dirk]
+- Center block Staticpage Display Issue (bug #0001370) [Tom]
+- LTR paths in installation's report (bug #0001219) [Dirk]
+- Story edit icons are displayed to (story admin + no topic admin) user. (bug
+  #0001210) [Dirk]
+- Topic image upload do not honor image path (bug #0001268) [Dirk]
+- Static Pages Plugin disables "read more" link in stories (bug #0001266) [Dirk]
+- Calendar plugin templates action URL error in two files (patch #0001360)
+  [Dirk]
+- Story preview doesn't display images (bug #0001367) [Dirk]
+- \"backslashes in the title\" (bug #0000941) [Dirk]
+- Links to submit a comment looks ugly (feature request #0001031) [Dirk]
+- Token expired causes PHP staticpages to be escaped (bug #0001230) [Dirk]
+
+
 Jun 12, 2011 (1.8.0)
 ------------
 
