@@ -1508,11 +1508,14 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
     // Call to plugins to set template variables in the footer
     PLG_templateSetVars( 'footer', $footer );
 
+    // Call any plugin that may want to include extra JavaScript functions
+    $plugin_footercode = PLG_getFooterCode();
+ 
     // Retrieve any JavaScript libraries, variables and functions
     $footercode = $_SCRIPTS->getFooter();
-    
-    // Call any plugin that may want to include extra JavaScript functions
-    $footercode .= PLG_getFooterCode();
+ 
+    // $_SCRIPTS code should be placed before plugin_footer_code but plugin_footer_code should still be allowed to set $_SCRIPTS
+    $footercode .= $plugin_footercode;
     
     $footer->set_var('plg_footercode', $footercode);
 
