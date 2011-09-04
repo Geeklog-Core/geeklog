@@ -16,6 +16,27 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes181">Geeklog 1.8.1</a></h2>
+
+<p>Geeklog 1.8.1 is a maintenance release and a recommended update for all
+users of Geeklog 1.8.0. There were no changes in the database, the templates,
+or the language files (other than some updated translations) in this release,
+so upgrades should be straightforward.</p>
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>Fixed a regression in Geeklog 1.8.0 that made the <code>[code]</code> and
+    <code>[raw]</code> tags not escape content properly.</li>
+<li>The admin's User Editor no longer loses changes when an error occured.</li>
+<li>Fixed images not being displayed in the story preview (when editing an
+    existing story).</li>
+<li>Plugins can now set <code>$_SCRIPTS</code> in the
+    <code>plugin_getFooter()</code> function.</li>
+<li>Fixed some warnings raised by PHP 5.4.</li>
+</ul>
+
+
 <h2><a name="changes180">Geeklog 1.8.0</a></h2>
 
 <p><strong>Note:</strong> Geeklog 1.8.0 now <strong>requires PHP 5.2.0</strong>

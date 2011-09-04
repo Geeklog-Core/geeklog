@@ -9,10 +9,43 @@ Nov ??, 2011 (1.9.0)
 - mysqli class (patch #0001303) [Dirk]
 
 
-Sep ??, 2011 (1.8.1)
-------------
+Sep 4, 2011 (1.8.1rc1)
+-----------
 
-(to be added when 1.8.1 is out)
+- Plugins can now set $_SCRIPTS in plugin_getFooter function (bug #0001383)
+  [Tom]
+- Attempts to display the user profile of the Anonymous user will now be
+  redirected to the site's main page (cf. bug #0001372) [Dirk]
+- Fixed some warnings raised by PHP 5.4 (statically calling non-static methods,
+  get_magic_quotes_gpc() being deprecated) [Dirk]
+- Fixed [code] and [raw] tags no longer escaping content properly (bug #0001368)
+  [Dirk]
+- The {contributedby_anchortag} variable now includes a rel="author" attribute
+  [Dirk]
+- Fixed display of center block staticpage if a staticpage template is used (bug
+  #0001370) [Tom]
+- The admin's user editor no longer loses changes when an error occured (cf. bug
+  #0000653) [Dirk]
+- Fixed text direction issue with the paths listed on success.php (bug #0001219)
+  [Dirk]
+- Don't display story edit icon when the user doesn't have all the necessary
+  permissions (bug #0001210) [Dirk]
+- Fixed uploading topic images when $_CONF['path_images'] was changed (bug
+  #0001268) [Dirk]
+- Fixed [staticpage_content:] autotag returning empty string for consecutive
+  calls (bug #0001266) [Dirk]
+- Fixed form action URLs in Calendar templates (patch #0001360, provided by
+  mystral-kk)
+- Fixed images not being displayed in story previews (bug #0001367) [Dirk]
+- Fixed backslashes in comment titles when magic_quotes_gpc = On (bug #0000941)
+  [Dirk]
+- Removed comment title from the URL to submit a comment (feature request
+  #0001031) [Dirk]
+- Expiry of the security token caused PHP static pages to be escaped (bug
+  #0001230) [Dirk]
+
+- New Dutch language file for the Spam-X plugin, provided by Zippo
+- Updated French language files, provided by Ben
 
 
 Jun 12, 2011 (1.8.0)
