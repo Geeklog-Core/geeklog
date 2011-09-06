@@ -574,7 +574,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         if (empty ($uid) || !empty ($passwd)) {
             $passwd = SEC_encryptPassword($passwd);
         } else {
-            if (! empty($service)) {
+            if (empty($service)) {
                 $passwd = DB_getItem($_TABLES['users'], 'passwd', "uid = $uid");
             }
         }
