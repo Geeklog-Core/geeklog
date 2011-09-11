@@ -9,9 +9,12 @@ Nov ??, 2011 (1.9.0)
 - mysqli class (patch #0001303) [Dirk]
 
 
-Sep 4, 2011 (1.8.1rc1)
------------
+Sep 11, 2011 (1.8.1rc1)
+------------
 
+- Updated jQuery version to 1.6.3 [Tom]
+- Fixed user passwords getting lost when saved from User Admin form (bug
+  #0001385) [Tom]
 - Plugins can now set $_SCRIPTS in plugin_getFooter function (bug #0001383)
   [Tom]
 - Attempts to display the user profile of the Anonymous user will now be
