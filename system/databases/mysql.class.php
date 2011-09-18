@@ -692,7 +692,24 @@ class database {
     function dbError($sql='')
     {
         if (mysql_errno()) {
-            $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . ". SQL in question: $sql");        
+            $fn = '';
+            $btr = debug_backtrace();
+            if (! empty($btr)) {
+                for ($i = 0; $i < 100; $i++) {
+                    $b = $btr[$i];
+                    if ($b['function'] == 'DB_query') {
+                        if (!empty($b['file']) && !empty($b['line'])) {
+                            $fn = $b['file'] . ':' . $b['line'];
+                        }
+                        break;
+                    }
+                }
+            }
+            if (empty($fn)) {
+                $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . ". SQL in question: $sql");
+            } else {
+                $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . " in $fn. SQL in question: $sql");
+            }
             if ($this->_display_error) {
                 return  @mysql_errno() . ': ' . @mysql_error();
             } else {
