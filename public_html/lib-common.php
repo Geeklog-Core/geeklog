@@ -7024,6 +7024,22 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                 ob_end_clean();
                 echo("$errcontext</body></html>");
             } else {
+                $btr = debug_backtrace();
+                if (! empty($btr)) {
+                    echo "<font size='1'><table class='xdebug-error' dir='ltr' border='1' cellspacing='0' cellpadding='1'>\n";
+                    echo "<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>\n";
+                    echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
+                    $i = 1;
+                    foreach ($btr as $b) {
+                        echo "<tr><td bgcolor='#eeeeec' align='right'>$i</td><td bgcolor='#eeeeec'>{$b['function']}</td><td bgcolor='#eeeeec'>{$b['file']}</td><td bgcolor='#eeeeec' align='right'>{$b['line']}</td></tr>\n";
+                        $i++;
+                        if ($i > 100) {
+                            echo "<tr><td bgcolor='#eeeeec' align='left' colspan='4'>Possible recursion - aborting.</td></tr>\n";
+                            break;
+                        }
+                    }
+                    echo "</table></font>\n";
+                }
                 echo('<pre>');
                 ob_start();
                 var_dump($errcontext);
