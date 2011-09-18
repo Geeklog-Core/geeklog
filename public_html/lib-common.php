@@ -7031,7 +7031,15 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                     echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
                     $i = 1;
                     foreach ($btr as $b) {
-                        echo "<tr><td bgcolor='#eeeeec' align='right'>$i</td><td bgcolor='#eeeeec'>{$b['function']}</td><td bgcolor='#eeeeec'>{$b['file']}</td><td bgcolor='#eeeeec' align='right'>{$b['line']}</td></tr>\n";
+                        $f = '';
+                        if (! empty($b['file'])) {
+                            $f = $b['file'];
+                        }
+                        $l = '';
+                        if (! empty($b['line'])) {
+                            $l = $b['line'];
+                        }
+                        echo "<tr><td bgcolor='#eeeeec' align='right'>$i</td><td bgcolor='#eeeeec'>{$b['function']}</td><td bgcolor='#eeeeec'>{$f}</td><td bgcolor='#eeeeec' align='right'>{$l}</td></tr>\n";
                         $i++;
                         if ($i > 100) {
                             echo "<tr><td bgcolor='#eeeeec' align='left' colspan='4'>Possible recursion - aborting.</td></tr>\n";
