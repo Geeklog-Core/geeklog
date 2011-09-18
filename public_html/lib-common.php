@@ -7031,6 +7031,9 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                     echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
                     $i = 1;
                     foreach ($btr as $b) {
+                        if ($b['function'] == 'COM_handleError') {
+                            continue;
+                        }
                         $f = '';
                         if (! empty($b['file'])) {
                             $f = $b['file'];
