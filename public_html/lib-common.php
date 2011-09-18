@@ -7025,15 +7025,17 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                 echo "$errcontext</body></html>";
             } else {
                 $btr = debug_backtrace();
-                if (! empty($btr)) {
+                if (count($btr) > 0) {
+                    if ($btr[0]['function'] == 'COM_handleError') {
+                        array_shift($btr);
+                    }
+                }
+                if (count($btr) > 0) {
                     echo "<font size='1'><table class='xdebug-error' dir='ltr' border='1' cellspacing='0' cellpadding='1'>\n";
                     echo "<tr><th align='left' bgcolor='#e9b96e' colspan='5'>Call Stack</th></tr>\n";
                     echo "<tr><th align='right' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>File</th><th align='right' bgcolor='#eeeeec'>Line</th></tr>\n";
                     $i = 1;
                     foreach ($btr as $b) {
-                        if ($b['function'] == 'COM_handleError') {
-                            continue;
-                        }
                         $f = '';
                         if (! empty($b['file'])) {
                             $f = $b['file'];
