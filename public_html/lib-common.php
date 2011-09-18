@@ -6994,27 +6994,27 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             if (!empty($_CONF['site_name'])) {
                 $title = $_CONF['site_name'] . ' - ' . $title;
             }
-            echo("<html><head><title>$title</title></head>\n<body>\n");
+            echo "<html><head><title>$title</title></head>\n<body>\n";
 
-            echo('<h1>An error has occurred:</h1>');
+            echo '<h1>An error has occurred:</h1>';
             if ($_CONF['rootdebug']) {
-                echo('<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
+                echo '<h2 style="color: red">This is being displayed as "Root Debugging" is enabled
                         in your Geeklog configuration.</h2><p>If this is a production
                         website you <strong><em>must disable</em></strong> this
                         option once you have resolved any issues you are
-                        investigating.</p>');
+                        investigating.</p>';
             } else {
-                echo('<p>(This text is only displayed to users in the group \'Root\')</p>');
+                echo '<p>(This text is only displayed to users in the group \'Root\')</p>';
             }
-            echo("<p>$errno - $errstr @ $errfile line $errline</p>");
+            echo "<p>$errno - $errstr @ $errfile line $errline</p>";
 
             if (!function_exists('SEC_inGroup') || !SEC_inGroup('Root')) {
                 if ('force' != ''.$_CONF['rootdebug']) {
                     $errcontext = COM_rootDebugClean($errcontext);
                 } else {
-                    echo('<h2 style="color: red">Root Debug is set to "force", this
+                    echo '<h2 style="color: red">Root Debug is set to "force", this
                     means that passwords and session cookies are exposed in this
-                    message!!!</h2>');
+                    message!!!</h2>';
                 }
             }
             if (@ini_get('xdebug.default_enable') == 1) {
@@ -7022,7 +7022,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                 var_dump($errcontext);
                 $errcontext = ob_get_contents();
                 ob_end_clean();
-                echo("$errcontext</body></html>");
+                echo "$errcontext</body></html>";
             } else {
                 $btr = debug_backtrace();
                 if (! empty($btr)) {
@@ -7040,12 +7040,12 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
                     }
                     echo "</table></font>\n";
                 }
-                echo('<pre>');
+                echo '<pre>';
                 ob_start();
                 var_dump($errcontext);
                 $errcontext = htmlspecialchars(ob_get_contents());
                 ob_end_clean();
-                echo("$errcontext</pre></body></html>");
+                echo "$errcontext</pre></body></html>";
             }
             exit;
         }
@@ -7083,7 +7083,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
         if (!empty($_CONF['site_name'])) {
             $title = $_CONF['site_name'] . ' - ' . $title;
         }
-        echo("
+        echo "
         <html>
             <head>
                 <title>{$title}</title>
@@ -7095,7 +7095,7 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             </div>
             </body>
         </html>
-        ");
+        ";
     }
 
     exit;
