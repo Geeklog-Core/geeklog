@@ -988,14 +988,30 @@ class database {
     {
         $msg = mssql_get_last_message();
         if (trim($msg)!='') {
+            $fn = '';
+            $btr = debug_backtrace();
+            if (! empty($btr)) {
+                for ($i = 0; $i < 100; $i++) {
+                    $b = $btr[$i];
+                    if ($b['function'] == 'DB_query') {
+                        if (!empty($b['file']) && !empty($b['line'])) {
+                            $fn = $b['file'] . ':' . $b['line'];
+                        }
+                        break;
+                    }
+                }
+                if (!empty($fn)) {
+                    $fn = ' in ' . $fn;
+                }
+            }
             if (substr($msg, 0, 7) == 'Caution') {
-                $this->_errorlog('SQL Warning: "' . $msg . '" SQL in question: ' . $sql);
+                $this->_errorlog('SQL Warning: "' . $msg . '"$fn. SQL in question: ' . $sql);
             } else if (substr($msg, 0, 25) == 'The object was renamed to') {
-                $this->_errorlog('Object Renamed: "' . $msg . '" SQL in question: ' . $sql);
+                $this->_errorlog('Object Renamed: "' . $msg . '"$fn. SQL in question: ' . $sql);
             } else if (substr($msg, 0, 25) == 'The COLUMN was renamed to') {
-                $this->_errorlog('Column Renamed: "' . $msg . '" SQL in question: ' . $sql);
+                $this->_errorlog('Column Renamed: "' . $msg . '"$fn. SQL in question: ' . $sql);
             } else {
-                $this->_errorlog($msg . ': ' . $msg . ". SQL in question: $sql");        
+                $this->_errorlog($msg . ': ' . $msg . "$fn. SQL in question: $sql");        
                 if (true ||$this->_display_error) {
                     return  $msg . ': ' . $sql;
                 } else {
