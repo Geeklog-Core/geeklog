@@ -1012,7 +1012,7 @@ class database {
                 $this->_errorlog('Column Renamed: "' . $msg . '"$fn. SQL in question: ' . $sql);
             } else {
                 $this->_errorlog($msg . ': ' . $msg . "$fn. SQL in question: $sql");        
-                if (true ||$this->_display_error) {
+                if ($this->_display_error) {
                     return  $msg . ': ' . $sql;
                 } else {
                     return 'An SQL error has occurred. Please see error.log for details.';
