@@ -596,6 +596,10 @@ function STORY_whatsRelated( $related, $uid, $tid )
         $rel = array ();
     }
 
+    foreach ($rel as &$value) {
+        $value = COM_checkWords($value);
+    }
+
     if( !COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
            ( $_CONF['searchloginrequired'] == 0 ))) {
         // add a link to "search by author"
@@ -615,7 +619,7 @@ function STORY_whatsRelated( $related, $uid, $tid )
     $related = '';
     if( count( $rel ) > 0 )
     {
-        $related = COM_checkWords( COM_makeList( $rel, 'list-whats-related' ));
+        $related = COM_makeList( $rel, 'list-whats-related' );
     }
 
     return( $related );
