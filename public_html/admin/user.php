@@ -610,13 +610,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                     $newphoto = preg_replace ('/' . $curusername . '/',
                                               $username, $curphoto, 1);
                     $imgpath = $_CONF['path_images'] . 'userphotos/';
-                    if (rename ($imgpath . $curphoto,
+                    if (@rename ($imgpath . $curphoto,
                                 $imgpath . $newphoto) === false) {
-                        $display = COM_siteHeader ('menu', $LANG28[22]);
-                        $display .= COM_errorLog ('Could not rename userphoto "'
+                        $retval .= COM_errorLog ('Could not rename userphoto "'
                                         . $curphoto . '" to "' . $newphoto . '".');
-                        $display .= COM_siteFooter ();
-                        return $display;
+                        return $retval;
                     }
                     $curphoto = $newphoto;
                 }
