@@ -7103,7 +7103,7 @@ function COM_rootDebugClean($array, $blank=false)
     $blankField = false;
     while(list($key, $value) = each($array)) {
         $lkey = strtolower($key);
-        if((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie') !== false)) {
+        if((strpos($lkey, 'pass') !== false) || (strpos($lkey, 'cookie') !== false) || (strpos($lkey, '_consumer_secret') !== false)) {
             $blankField = true;
         } else {
             $blankField = $blank;
