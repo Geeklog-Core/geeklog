@@ -1,5 +1,18 @@
 Geeklog History/Changes:
 
+Sep ??, 2011 (1.8.1)
+------------
+
+- Fixed deleting elements from Configuration arrays (bug #0001394, patch
+  provided by dengen)
+- Avoid censoring in What's Related block (bug #0001393) [Tom, Dirk]
+- Fixed error message display in admin's user editor when renaming the
+  userphoto failed [Dirk]
+- Don't display details of a failed MS SQL query by default [Dirk]
+
+- Updated Japanese language file, provided by the Geeklog.jp group
+
+
 Sep 11, 2011 (1.8.1rc1)
 ------------
 
