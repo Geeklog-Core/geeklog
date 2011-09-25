@@ -597,7 +597,13 @@ function STORY_whatsRelated( $related, $uid, $tid )
     }
 
     foreach ($rel as &$value) {
-        $value = COM_checkWords($value);
+        if (preg_match("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
+                       $value, $matches) === 1) {
+            $value = '<a href="' . $matches[1] . '">'
+                   . COM_checkWords($matches[2]) . '</a>';
+        } else {
+            $value = COM_checkWords($value);
+        }
     }
 
     if( !COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
