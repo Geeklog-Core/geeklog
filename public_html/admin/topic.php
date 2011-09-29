@@ -341,6 +341,12 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $tid = COM_sanitizeID($tid);
+    
+    // Check if tid is a restricted name
+    $restricted_tid = false;
+    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION) {
+        $restricted_tid = true;
+    }
 
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
@@ -358,7 +364,7 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
                 . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
-    } elseif (!empty($tid) && !empty($topic)) {
+    } elseif (!empty($tid) && !empty($topic) && !$restricted_tid) {
         if ($imageurl == '/images/topics/') {
             $imageurl = '';
         }
@@ -415,6 +421,10 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
         COM_olderStuff();
 
         $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
+    } elseif ($restricted_tid) {
+        $retval .= COM_siteHeader('menu', $LANG27[1]);
+        $retval .= COM_errorLog($LANG27[31], 2);
+        $retval .= COM_siteFooter();
     } else {
         $retval .= COM_siteHeader('menu', $LANG27[1]);
         $retval .= COM_errorLog($LANG27[7], 2);
