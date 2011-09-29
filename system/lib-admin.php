@@ -627,14 +627,14 @@ function ADMIN_createMenu($menu_arr, $text, $icon = '')
  */
 function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
-    global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE;
+    global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE, $_TABLES;
 
     $retval = false;
 
     $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                     $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 
-    if (($access > 0) && (hasBlockTopicAccess($A['tid']) > 0)) {
+    if (($access > 0) && (hasBlockMultiTopicAccess($A['bid']) > 0)) {
         switch ($fieldname) {
         case 'edit':
             if ($access == 3) {
@@ -689,6 +689,29 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
                         ."<area coords=\"30,0,43,20\" title=\"{$LANG21[57]}\" href=\"{$_CONF['site_admin_url']}/block.php?mode=move&amp;bid={$A['bid']}&amp;where=dn${csrftoken}\" alt=\"{$LANG21[57]}\"" . XHTML . ">"
                         ."</map>";
             }
+            break;
+            
+        case 'topic':
+            // Retrieve Topic options
+            $sql['mysql'] = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='{$A['bid']}'";
+            $sql['mssql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='{$A['bid']}' AND t.tid = ta.tid";
+            $sql['pgsql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='{$A['bid']}' AND t.tid = ta.tid";
+        
+            $result = DB_query($sql);
+            $A = DB_fetchArray($result);
+            $nrows = DB_numRows($result);
+            if ($A['tid'] == TOPIC_ALL_OPTION) {
+                $retval = $LANG21[7];                
+            } elseif ($A['tid'] == TOPIC_HOMEONLY_OPTION) {
+                $retval = $LANG21[43];    
+            } else {
+                if ($nrows > 1) {
+                    $retval = $LANG21[44]; // Multiple
+                } else {
+                    $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['tid']}'");
+                }
+            }
+            
             break;
 
         default:

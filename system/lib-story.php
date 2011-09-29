@@ -1127,6 +1127,41 @@ function plugin_moderationapprove_story_draft($sid)
 }
 
 /**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_story($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Story Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Story Admin'])) {
+            $new_group_id = $_GROUPS['Story Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Story Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Story with new group id
+        $sql = "UPDATE {$_TABLES['stories']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+   }
+}
+
+/**
 * Implements the [story:] autotag.
 *
 * @param    string  $op         operation to perform

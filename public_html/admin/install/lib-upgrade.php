@@ -478,6 +478,18 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $_SQL = '';
             break;
 
+        case '1.8.0':
+            // there were no database changes in 1.8.0
+        case '1.8.1':
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.8.1_to_1.9.0.php';
+            INST_updateDB($_SQL);
+            
+            update_BlockTopicAssignmentsFor190();
+            
+            $current_gl_version = '1.9.0';
+            $_SQL = '';
+            break;
+            
         default:
             $done = true;
         }

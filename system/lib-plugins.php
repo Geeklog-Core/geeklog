@@ -1281,8 +1281,10 @@ function PLG_userInfoChanged($uid)
 function PLG_groupChanged($grp_id, $mode)
 {
     global $_PLUGINS;
-
-    foreach ($_PLUGINS as $pi_name) {
+    
+    $all_plugins = array_merge($_PLUGINS, array('story', 'block', 'topic'));
+    
+    foreach ($all_plugins as $pi_name) {    
         $function = 'plugin_group_changed_' . $pi_name;
         if (function_exists($function)) {
             $function($grp_id, $mode);

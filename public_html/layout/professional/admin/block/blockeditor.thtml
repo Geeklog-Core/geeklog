@@ -18,11 +18,14 @@
                                             <td><input type="text" size="48" name="name" value="{block_name}"{xhtml}><br{xhtml}>{lang_nospaces}</td>
                                         </tr>
                                         <tr>
-                                            <td class="alignright">{lang_topic}:</td>
+                                            <td class="alignright" valign="top">{lang_topic}:</td>
                                             <td>
-                                                <select name="tid">
-                                                    <option value="all" {all_selected}>{lang_all}</option>
-                                                    <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
+                                                <span style="vertical-align:top;">                                       
+                                                    <input type="radio" name="topic_option" value="all" {all_checked}> {lang_all} 
+                                                    <input type="radio" name="topic_option" value="homeonly" {homeonly_checked}> {lang_homeonly}
+                                                    <input type="radio" name="topic_option" value="selectedtopics" {selectedtopics_checked}> 
+                                                </span>
+                                                <select name="tid[]" multiple="multiple" size="4">
                                                     {topic_options}
                                                 </select>
                                             </td>

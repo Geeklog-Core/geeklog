@@ -77,6 +77,7 @@ $_TABLES['stories']             = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
 $_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
 $_TABLES['tokens']              = $_DB_table_prefix . 'tokens';
+$_TABLES['topic_assignments']   = $_DB_table_prefix . 'topic_assignments';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['trackback']           = $_DB_table_prefix . 'trackback';
 $_TABLES['trackbackcodes']      = $_DB_table_prefix . 'trackbackcodes';

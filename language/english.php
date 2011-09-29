@@ -725,12 +725,12 @@ $LANG21 = array(
     41 => 'Right',
     42 => 'You must enter the block title and block order for Geeklog default blocks.',
     43 => 'Homepage Only',
-    44 => '',
+    44 => 'Multiple',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
     46 => 'Move',
     47 => '',
     48 => 'Block Name',
-    49 => ' (no spaces and must be unique)',
+    49 => '(no spaces)',
     50 => 'The Block Name can not be empty',
     51 => 'include http://',
     52 => 'If you leave this blank the help icon for this block will not be displayed',
@@ -884,7 +884,8 @@ $LANG27 = array(
     27 => 'Or Upload Topic Icon',
     28 => 'Maximum',
     29 => 'File Upload Errors',
-    30 => 'Stories in Topic'
+    30 => 'Stories in Topic', 
+    31 => 'You have used a restricted Topic ID. Please choose another one.'
 );
 
 ###############################################################################

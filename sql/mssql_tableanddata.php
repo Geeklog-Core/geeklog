@@ -370,6 +370,14 @@ CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
 ";
 
 $_SQL[] = "
+CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
+  [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+) ON [PRIMARY]
+";
+
+$_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['topics']}] (
     [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -512,7 +520,6 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['article_images']}] ADD
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['blocks']}] ADD
     CONSTRAINT [DF_{$_TABLES['blocks']}_type] DEFAULT ('normal') FOR [type],
-    CONSTRAINT [DF_{$_TABLES['blocks']}_tid] DEFAULT ('All') FOR [tid],
     CONSTRAINT [DF_{$_TABLES['blocks']}_blockorder] DEFAULT (1) FOR [blockorder],
     CONSTRAINT [DF_{$_TABLES['blocks']}_content] DEFAULT (null) FOR [content],
     CONSTRAINT [DF_{$_TABLES['blocks']}_rdfupdated] DEFAULT (getdate()) FOR [rdfupdated],
@@ -1287,13 +1294,13 @@ $_SQL[] = "
 set identity_insert {$_TABLES['blocks']} on;
 
 
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1,1,'user_block','gldefault','User Functions','all',30,'','',getdate(),1,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (2,1,'admin_block','gldefault','Admins Only','all',20,'','',getdate(),1,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,1,'section_block','gldefault','Topics','all',10,'','',getdate(),1,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'whats_new_block','gldefault','What''s New','all',30,'','',getdate(),0,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'first_block','normal','About Geeklog','homeonly',20,'<p><b>Welcome to Geeklog!</b></p><p>If you''re already familiar with Geeklog - and especially if you''re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/english/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/english/support.html\">support options</a>.</p>','',getdate(),0,'',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whosonline_block','phpblock','Who''s Online','all',10,'','',getdate(),0,'phpblock_whosonline',4,2,3,3,2,2);
-INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'older_stories','gldefault','Older Stories','all',40,'','',getdate(),1,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1,1,'user_block','gldefault','User Functions',30,'','',getdate(),1,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (2,1,'admin_block','gldefault','Admins Only',20,'','',getdate(),1,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,1,'section_block','gldefault','Topics',10,'','',getdate(),1,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,1,'whats_new_block','gldefault','What''s New',30,'','',getdate(),0,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,1,'first_block','normal','About Geeklog',20,'<p><b>Welcome to Geeklog!</b></p><p>If you''re already familiar with Geeklog - and especially if you''re not: There have been many improvements to Geeklog since earlier versions that you might want to read up on. Please read the <a href=\"docs/english/changes.html\">release notes</a>. If you need help, please see the <a href=\"docs/english/support.html\">support options</a>.</p>','',getdate(),0,'',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,1,'whosonline_block','phpblock','Who''s Online',10,'','',getdate(),0,'phpblock_whosonline',4,2,3,3,2,2);
+INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,1,'older_stories','gldefault','Older Stories',40,'','',getdate(),1,'',4,2,3,3,2,2);
 
 
 set identity_insert {$_TABLES['blocks']} off;
@@ -1504,6 +1511,14 @@ $_SQL[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, t
 $_SQL[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('security-reminder',2,'Geeklog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for the Admin account.</li>\r<li>Remove the install directory (you won''t need it any more).</li>\r</ol>',getdate(),'html')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('article', '::all', 'all', 'RSS-2.0', 10, 1, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rss', 'iso-8859-1', 'en-gb', 1, getdate(), NULL)";
+
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '1')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '2')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '3')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '4')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('homeonly', 'block', '5')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '6')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '7')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.png','A topic that contains general news related posts.','News, Post, Information',1,10,6,2,3,2,2,2)";
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.png','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";

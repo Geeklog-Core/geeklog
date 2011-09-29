@@ -213,6 +213,20 @@ require_once( $_CONF['path_system'] . 'lib-security.php' );
 require_once( $_CONF['path_system'] . 'lib-syndication.php' );
 
 /**
+* This is the topic library used to manage topics.
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib-topic.php' );
+
+/**
+* This is the block library used to manage blocks.
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib-block.php' );
+
+/**
  *These variables were taken out of the configuration and placed here since they
  *are necessary to change with the themes, not whole sites. They should now be
  *overridden by setting them to a different value than here in the theme's
@@ -1722,8 +1736,17 @@ function COM_topicList( $selection, $selected = '', $sortcol = 1, $ignorelang = 
     $topics = COM_topicArray($selection, $sortcol, $ignorelang);
     foreach ($topics as $tid => $topic) {
         $retval .= '<option value="' . $tid . '"';
-        if ($tid == $selected) {
-            $retval .= ' selected="selected"';
+        if (is_array($selected)) {
+             foreach ($selected as $multiselect_tid) {
+                if ($tid == $multiselect_tid) {
+                    $retval .= ' selected="selected"';
+                    break;
+                }
+             }
+        } else {
+            if ($tid == $selected) {
+                $retval .= ' selected="selected"';
+            }
         }
         $retval .= '>' . $topic . '</option>' . LB;
     }
@@ -3524,15 +3547,14 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, type, title, tid, blockorder, cast(content as text) as content, ";
+    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, tid, blockorder, cast(content as text) as content, ";
     $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
-    $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-    $blocksql['pgsql'] = 'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
+    $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
+    $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
 
-
-    $commonsql = "FROM {$_TABLES['blocks']} WHERE is_enabled = 1";
+    $commonsql = "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} t WHERE t.type = 'block' AND t.id = bid AND is_enabled = 1";
 
     if( $side == 'left' )
     {
@@ -3545,17 +3567,17 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( !empty( $topic ))
     {
-        $commonsql .= " AND (tid = '$topic' OR tid = 'all')";
+        $commonsql .= " AND (t.tid = '$topic' OR t.tid = 'all')";
     }
     else
     {
         if( COM_onFrontpage() )
         {
-            $commonsql .= " AND (tid = 'homeonly' OR tid = 'all')";
+            $commonsql .= " AND (t.tid = 'homeonly' OR t.tid = 'all')";
         }
         else
         {
-            $commonsql .= " AND (tid = 'all')";
+            $commonsql .= " AND (t.tid = 'all')";
         }
     }
 
