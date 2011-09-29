@@ -89,8 +89,6 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   PRIMARY KEY  (id))
 ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid,is_enabled, name, type, title, tid, blockorder, content, onleft, phpblockfn, owner_id, group_id, perm_owner, perm_group) VALUES ((SELECT NEXTVAL('{$_TABLES['blocks']}_bid_seq')),1,'polls_block','phpblock','Poll','all',30,'',0,'phpblock_polls',{$_USER['uid']},#group#,3,3)";
-
 
 // default poll
 

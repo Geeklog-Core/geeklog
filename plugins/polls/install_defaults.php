@@ -91,6 +91,14 @@ $_PO_DEFAULT['title_trim_length'] = 20;
 // Display Meta Tags for static pages (1 = show, 0 = don't) 
 $_PO_DEFAULT['meta_tags'] = 0;
 
+// Poll Block
+$_PO_DEFAULT['block_isleft'] = 0;
+$_PO_DEFAULT['block_order'] = 100;
+$_PO_DEFAULT['block_topic_option'] = TOPIC_ALL_OPTION;
+$_PO_DEFAULT['block_topic'] = array();
+$_PO_DEFAULT['block_enable'] = true;
+$_PO_DEFAULT['block_permissions'] = array (2, 2, 2, 2);
+
 // Define default permissions for new polls created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -123,7 +131,7 @@ $_PO_DEFAULT['autotag_permissions_poll_result'] = array (2, 2, 0, 0);
 */
 function plugin_initconfig_polls()
 {
-    global $_CONF, $_PO_CONF, $_PO_DEFAULT;
+    global $_CONF, $_PO_CONF, $_PO_DEFAULT, $_TABLES, $_GROUPS;
 
     if (is_array($_PO_CONF) && (count($_PO_CONF) > 1)) {
         $_PO_DEFAULT = array_merge($_PO_DEFAULT, $_PO_CONF);
@@ -177,7 +185,39 @@ function plugin_initconfig_polls()
         $c->add('autotag_permissions_poll_vote', $_PO_DEFAULT['autotag_permissions_poll_vote'], '@select', 
                 0, 10, 13, 10, true, 'polls', 10);       
         $c->add('autotag_permissions_poll_result', $_PO_DEFAULT['autotag_permissions_poll_result'], '@select', 
-                0, 10, 13, 10, true, 'polls', 10);       
+                0, 10, 13, 10, true, 'polls', 10);
+        
+        $c->add('tab_poll_block', NULL, 'tab', 0, 20, NULL, 0, true, 'polls', 20);
+        $c->add('fs_block_settings', NULL, 'fieldset', 0, 10, NULL, 0, true, 'polls', 20);
+        $c->add('block_enable', $_PO_DEFAULT['block_enable'], 'select', 
+                0, 10, 0, 10, true, 'polls', 20);
+        $c->add('block_isleft', $_PO_DEFAULT['block_isleft'], 'select', 
+                0, 10, 0, 20, true, 'polls', 20);
+        $c->add('block_order', $_PO_DEFAULT['block_order'], 'text',
+                0, 10, 0, 30, true, 'polls', 20);
+        $c->add('block_topic_option', $_PO_DEFAULT['block_topic_option'],'select',
+                0, 10, 16, 40, true, 'polls', 20);  
+        $c->add('block_topic', $_PO_DEFAULT['block_topic'], '%select',
+                0, 10, 17, 50, true, 'polls', 20);
+    
+        $c->add('fs_block_permissions', NULL, 'fieldset', 0, 20, NULL, 0, true, 'polls', 20);
+        $new_group_id = 0;
+        if (isset($_GROUPS['Polls Admin'])) {
+            $new_group_id = $_GROUPS['Polls Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }         
+        $c->add('block_group_id', $new_group_id,'select',
+                0, 20, 15, 10, TRUE, 'polls', 20);        
+        $c->add('block_permissions', $_PO_DEFAULT['block_permissions'], '@select', 
+                0, 20, 14, 20, true, 'polls', 20);       
     }
 
     return true;

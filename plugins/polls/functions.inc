@@ -404,7 +404,8 @@ function plugin_autouninstall_polls ()
                             'config.polls.tab_whatsnew',
                             'config.polls.tab_main',
                             'config.polls.tab_permissions',
-                            'config.polls.tab_autotag_permissions'),
+                            'config.polls.tab_autotag_permissions',
+                            'config.polls.tab_poll_block'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_polls'),
         /* give all vars with their name */
@@ -1244,6 +1245,23 @@ function plugin_upgrade_polls()
 
             $current_version = '2.1.3';
             break;
+            
+        case '2.1.3':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            if (! $current_config) {
+                polls_update_ConfValues_2_1_3();
+                
+                polls_update_ConfigSecurity_2_1_3();
+            }
+
+            $current_version = '2.1.4';
+            break;            
 
         default:
             $done = true;
@@ -1730,6 +1748,91 @@ function plugin_getwhatsnewcomment_polls($numreturn = 0, $uid = 0)
         }
         return $A;
     }
+}
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocks_polls($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+
+    // Check permissions first
+    if ($_PO_CONF['block_enable'] && SEC_hasAccess($owner_id, $_PO_CONF['block_group_id'], $_PO_CONF['block_permissions'][0], $_PO_CONF['block_permissions'][1], $_PO_CONF['block_permissions'][2], $_PO_CONF['block_permissions'][3])) {
+        // Check if right topic
+        if (($_PO_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_PO_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_PO_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_PO_CONF['block_topic']))) {
+            if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { // Create a block
+                $display = phpblock_polls();
+                
+                $retval[] = array('name'           => 'polls',
+                                  'type'           => 'dynamic',
+                                  'onleft'         => 1,
+                                  'title'          => $LANG_POLLS['poll'],
+                                  'blockorder'     => $_PO_CONF['block_order'],
+                                  'content'        => $display,
+                                  'allow_autotags' => false,
+                                  'help'           => '');
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_polls($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS, $_PO_CONF;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Polls Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Polls Admin'])) {
+            $new_group_id = $_GROUPS['Polls Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Polls Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Polls with new group id
+        $sql = "UPDATE {$_TABLES['polltopics']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+        
+        // Update Polls Block group if need be
+        if ($_PO_CONF['block_group_id'] == $grp_id) {
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_group_id', $new_group_id, 'polls');
+            
+        }
+   }
 }
 
 ?>
