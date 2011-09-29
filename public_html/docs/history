@@ -9,9 +9,25 @@ Nov ??, 2011 (1.9.0)
 - mysqli class (patch #0001303) [Dirk]
 
 
-Sep 4, 2011 (1.8.1rc1)
------------
+Sep ??, 2011 (1.8.1)
+------------
 
+- Fixed deleting elements from Configuration arrays (bug #0001394, patch
+  provided by dengen)
+- Avoid censoring in What's Related block (bug #0001393) [Tom, Dirk]
+- Fixed error message display in admin's user editor when renaming the
+  userphoto failed [Dirk]
+- Don't display details of a failed MS SQL query by default [Dirk]
+
+- Updated Japanese language file, provided by the Geeklog.jp group
+
+
+Sep 11, 2011 (1.8.1rc1)
+------------
+
+- Updated jQuery version to 1.6.3 [Tom]
+- Fixed user passwords getting lost when saved from User Admin form (bug
+  #0001385) [Tom]
 - Plugins can now set $_SCRIPTS in plugin_getFooter function (bug #0001383)
   [Tom]
 - Attempts to display the user profile of the Anonymous user will now be

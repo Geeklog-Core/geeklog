@@ -833,16 +833,33 @@ class database {
     */
     function dbError($sql = '')
     {
+        $fn = '';
+        $btr = debug_backtrace();
+        if (! empty($btr)) {
+            for ($i = 0; $i < 100; $i++) {
+                $b = $btr[$i];
+                if ($b['function'] == 'DB_query') {
+                    if (!empty($b['file']) && !empty($b['line'])) {
+                        $fn = $b['file'] . ':' . $b['line'];
+                    }
+                    break;
+                }
+            }
+            if (! empty($fn)) {
+                $fn = ' in ' . $fn;
+            }
+        }
+
         $result = pg_get_result($this->_db);
         if ($this->_pgsql_version >= 7.4) {
             // this provides a much more detailed error report
             if (pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)) {
                 $this->_errorlog('You have an error in your SQL query on line '
                     . pg_result_error_field($result, PGSQL_DIAG_SOURCE_LINE)
-                    . "\nSQL in question: $sql");
+                    . "$fn\nSQL in question: $sql");
                 $this->_errorlog('Error: '
                     . pg_result_error_field($result, PGSQL_DIAG_SQLSTATE)
-                    . "\nDescription: "
+                    . "$fn\nDescription: "
                     . pg_result_error_field($result, PGSQL_DIAG_MESSAGE_DETAIL));
                 if ($this->_display_error) {
                     $error = "An SQL error has occurred in the following SQL: $sql";
@@ -854,7 +871,7 @@ class database {
         } else {
             if (pg_result_error($result)) {
                 $this->_errorlog(pg_result_error($result)
-                    . ". SQL in question: $sql");        
+                    . "$fn. SQL in question: $sql");        
                 if ($this->_display_error) {
                     $error = 'Error ' . pg_result_error($result);
                 } else {
