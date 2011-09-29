@@ -1594,6 +1594,23 @@ function plugin_upgrade_calendar()
 
             $current_version = '1.1.2';
             break;
+            
+        case '1.1.2':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            if (! $current_config) {
+                calendar_update_ConfValues_1_1_2();
+
+                calendar_update_ConfigSecurity_1_1_2();
+            }
+
+            $current_version = '1.1.3';
+            break;            
 
         default:
             $done = true;
@@ -1674,7 +1691,8 @@ function plugin_autouninstall_calendar ()
                             'calendar.submit',
                             'config.calendar.tab_main',
                             'config.calendar.tab_permissions',
-                            'config.calendar.tab_autotag_permissions'),
+                            'config.calendar.tab_autotag_permissions', 
+                            'config.calendar.tab_events_block'),
         /* give the full name of the block, including 'phpblock_', etc */
         'php_blocks' => array('phpblock_calendar'),
         /* give all vars with their name */
@@ -2109,6 +2127,95 @@ function plugin_getconfigtooltip_calendar($id)
 {   
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
+}
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocks_calendar($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+
+    // Check permissions first
+    if ($_CA_CONF['block_enable'] && SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
+        // Check if right topic
+        if (($_CA_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_CA_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_CA_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_CA_CONF['block_topic']))) {
+            if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { // Create a block
+                $display = phpblock_calendar();
+                
+                $retval[] = array('name'           => 'polls',
+                                  'type'           => 'dynamic',
+                                  'onleft'         => 1,
+                                  'title'          => $LANG_CAL_1[50],
+                                  'blockorder'     => $_CA_CONF['block_order'],
+                                  'content'        => $display,
+                                  'allow_autotags' => false,
+                                  'help'           => '');
+            }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_calendar($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS, $_CA_CONF;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Polls Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Calendar Admin'])) {
+            $new_group_id = $_GROUPS['Calendar Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Calendar Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Events with new group id
+        $sql = "UPDATE {$_TABLES['events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+        
+        // Update Events with new group id
+        $sql = "UPDATE {$_TABLES['personal_events']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+        
+        // Update Events Block group if need be
+        if ($_CA_CONF['block_group_id'] == $grp_id) {
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_group_id', $new_group_id, 'calendar');
+            
+        }
+   }
 }
 
 ?>
