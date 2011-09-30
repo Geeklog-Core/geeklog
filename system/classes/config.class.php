@@ -1322,22 +1322,21 @@ class config {
                 } else if ( is_array($change_array[$param_name]) ) {
                     /* if array such as mail settings */
                     $_changed = false;
-                    if (count($this->config_array[$group][$param_name]) !=
-                            count($change_array[$param_name])) {
+                    if (count($this->config_array[$group][$param_name]) !=  count($change_array[$param_name])) {
                         $_changed = true;
                     }
                     foreach ( $change_array[$param_name] as $_param_name => $_param_value ) {
-                        if  ( $change_array[$param_name][$_param_name] != 
-                              $this->config_array[$group][$param_name][$_param_name] )
-                        {
-                            $_changed = true;
-                            if ( $this->_validates($param_name . '[' . $_param_name . ']', 
-                                 $group, $change_array[$param_name][$_param_name], $change_array[$param_name]) )
-                            {
-                                $this->changedArray[$group][$param_name][$_param_name] = true;
-                            }
-                        }
-                    }
+                         if (!isset($this->config_array[$group][$param_name][$_param_name])) {
+                             $_changed = true;
+                         } elseif ( $change_array[$param_name][$_param_name] != $this->config_array[$group][$param_name][$_param_name] ) {
+                             $_changed = true;
+                         }
+                         if ($_changed) {
+                             if ( $this->_validates($param_name . '[' . $_param_name . ']', $group, $change_array[$param_name][$_param_name], $change_array[$param_name]) ) {
+                                 $this->changedArray[$group][$param_name][$_param_name] = true;
+                             }
+                         }
+                     }
                     
                     if ( $_changed ) {
                         $pass_validation[$param_name] = $change_array[$param_name];
