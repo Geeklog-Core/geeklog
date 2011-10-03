@@ -2909,12 +2909,12 @@ function COM_checkWords( $Message )
             switch( $_CONF['censormode'])
             {
                 case 1: # Exact match
-                    $RegExPrefix = '(\s*)';
-                    $RegExSuffix = '(\W*)';
+                    $RegExPrefix = '(\s)';
+                    $RegExSuffix = '(\W)';
                     break;
 
                 case 2: # Word beginning
-                    $RegExPrefix = '(\s*)';
+                    $RegExPrefix = '(\s)';
                     $RegExSuffix = '(\w*)';
                     break;
 
