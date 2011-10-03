@@ -3,6 +3,7 @@ Geeklog History/Changes:
 Nov ??, 2011 (1.9.0)
 ------------
 
+- Log url on page error (feature request #0001377) [Dirk]
 - Add Stop Forum Spam and Spam Number of Links Modules to Spam-X (feature
   request #0001378) [Tom]
 - hardcoded strings in spamX plugin (patch #0000656) [Tom]
