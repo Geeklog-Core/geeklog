@@ -1,8 +1,10 @@
 Geeklog History/Changes:
 
-Sep ??, 2011 (1.8.1)
+Oct ??, 2011 (1.8.1)
 ------------
 
+- Fixed adding elements to empty Configuration arrays (bug #0001396) [Tom]
+- Blank out OAuth consumer key and secret in rootdebug dumps [Dirk]
 - Fixed deleting elements from Configuration arrays (bug #0001394, patch
   provided by dengen)
 - Avoid censoring in What's Related block (bug #0001393) [Tom, Dirk]

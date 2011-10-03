@@ -28,8 +28,19 @@ so upgrades should be straightforward.</p>
 <h3>Bugfixes</h3>
 
 <ul>
+<li>Fixed information leakage:
+<ul>
+    <li>The "<a href="config.html#desc_rootdebug">rootdebug</a>" option,
+        when enabled, also dumped the OAuth consumer key and secret. You now
+        have to additionally set the rootdebug option to "force" to make them
+        show up in the variable dump.</li>
+    <li>The MS SQL driver was displaying detailed SQL error messages by
+        default.</li>
+</ul></li>
 <li>Fixed a regression in Geeklog 1.8.0 that made the <code>[code]</code> and
     <code>[raw]</code> tags not escape content properly.</li>
+<li>Fixed some problems with adding and removing elements to/from arrays in
+    the Configuration.</li>
 <li>The admin's User Editor no longer loses changes when an error occured.</li>
 <li>Fixed images not being displayed in the story preview (when editing an
     existing story).</li>
