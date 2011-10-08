@@ -10,9 +10,10 @@ Nov ??, 2011 (1.9.0)
 - mysqli class (patch #0001303) [Dirk]
 
 
-Oct ??, 2011 (1.8.1)
-------------
+Oct 9, 2011 (1.8.1)
+-----------
 
+- Fixed exact match censoring option (bug #0001392) [Tom]
 - Fixed adding elements to empty Configuration arrays (bug #0001396) [Tom]
 - Blank out OAuth consumer key and secret in rootdebug dumps [Dirk]
 - Fixed deleting elements from Configuration arrays (bug #0001394, patch
