@@ -705,7 +705,9 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
             } elseif ($A['tid'] == TOPIC_HOMEONLY_OPTION) {
                 $retval = $LANG21[43];    
             } else {
-                if ($nrows > 1) {
+                if ($nrows == 0) {
+                    $retval = $LANG21[47]; // None
+                } elseif ($nrows > 1) {
                     $retval = $LANG21[44]; // Multiple
                 } else {
                     $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['tid']}'");

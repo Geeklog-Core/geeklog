@@ -102,6 +102,8 @@ function hasBlockMultiTopicAccess($id, $topic = false)
     }
     if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION) {
         $access = 3;
+    } elseif ($tid == '') { // No topic assigned, Can happen if topic gets deleted
+        $access = 3;
     } else {
         $access = SEC_hasTopicAccess ($tid);
         for ($i = 1; $i < $nrows; $i++) {
@@ -374,7 +376,7 @@ function editblock ($bid = '')
         $block_templates->set_var('selectedtopics_checked', 'checked');
     }
     $block_templates->set_var('topic_options',
-                              COM_topicList ('tid,topic', $A['tid'], 1, true));
+                              TOPIC_getListSelect($A['tid'], false));    
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
