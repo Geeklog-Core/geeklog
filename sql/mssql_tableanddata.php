@@ -261,7 +261,8 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [start_time] [numeric](10, 0) NOT NULL ,
     [remote_ip] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
-    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
+    [whos_online] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -388,6 +389,10 @@ CREATE TABLE [dbo].[{$_TABLES['topics']}] (
     [limitnews] [smallint] NULL ,
     [is_default] [tinyint] NOT NULL ,
     [archive_flag] [tinyint]  NULL ,
+    [parent_id] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [inherit] [tinyint] NOT NULL,
+    [hidden] [tinyint] NOT NULL,
+    [featured_article] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,

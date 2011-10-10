@@ -9,6 +9,14 @@ CREATE TABLE `{$_TABLES['topic_assignments']}` (
   PRIMARY KEY  (`tid`,`type`,`id`)
 ) ENGINE=MyISAM";
 
+// Add new Topic Columns used for Child Topics
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD parent_id varchar(20) NOT NULL default 'root' AFTER archive_flag";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD inherit tinyint(1) NOT NULL default '0' AFTER parent_id";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD hidden tinyint(1) NOT NULL default '0' AFTER inherit";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD featured_article varchar(40) default NULL AFTER hidden";
+
+// Update Session Table
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD whos_online tinyint(1) NOT NULL default '1' AFTER md5_sess_id";
 
 /**
  * Add new config options

@@ -9,6 +9,14 @@ CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
 ) ON [PRIMARY]
 ";
 
+// Add new Topic Columns used for Child Topics
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [parent_id] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL AFTER [archive_flag]";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [inherit] [tinyint] NOT NULL AFTER [parent_id]";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [hidden] [tinyint] NOT NULL AFTER [inherit]";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [featured_article] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL AFTER [hidden]";
+
+// Update Session Table
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD [whos_online] [tinyint] NOT NULL AFTER [md5_sess_id]";
 
 /**
  * Add new config options

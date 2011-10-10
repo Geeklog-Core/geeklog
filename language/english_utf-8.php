@@ -728,7 +728,7 @@ $LANG21 = array(
     44 => 'Multiple',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
     46 => 'Move',
-    47 => '',
+    47 => 'None',
     48 => 'Block Name',
     49 => '(no spaces)',
     50 => 'The Block Name can not be empty',
@@ -860,7 +860,7 @@ $LANG27 = array(
     3 => 'Topic Name',
     4 => 'Topic Image',
     5 => '(do not use spaces)',
-    6 => 'Deleting a topic deletes all stories and blocks associated with it',
+    6 => 'Deleting a topic deletes all stories and submissions associated with it.',
     7 => 'Please fill in the Topic ID and Topic Name fields',
     8 => 'Topic Manager',
     9 => 'To modify or delete a topic, click on that topic.  To create a new topic, click on "Create New" above. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.',
@@ -877,15 +877,21 @@ $LANG27 = array(
     20 => 'cancel',
     21 => 'delete',
     22 => 'Default',
-    23 => 'make this the default topic for new story submissions',
+    23 => 'Make this the default topic for new story submissions',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.',
+    26 => 'Make this the default topic for archived stories. Only one topic allowed',
     27 => 'Or Upload Topic Icon',
     28 => 'Maximum',
     29 => 'File Upload Errors',
     30 => 'Stories in Topic', 
-    31 => 'You have used a restricted Topic ID. Please choose another one.'
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden', 
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited', 
+    37 => 'Root'
 );
 
 ###############################################################################

@@ -1,1 +1,1 @@
-<li class="topicoption-off">{option_label} {option_count}</li>
+<li class="topicoption-off">{branch_spaces}{option_label} {option_count}</li>

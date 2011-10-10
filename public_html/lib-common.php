@@ -382,6 +382,7 @@ else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
 }
 
 // Handle Who's Online block
+/*
 if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
     // The following code handles anonymous users so they show up properly
     DB_delete($_TABLES['sessions'], array('remote_ip', 'uid'),
@@ -400,9 +401,9 @@ if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
     }
     while(( $result === false) && ( $tries < 5 ));
 }
-
+*/
 // Clear out any expired sessions
-DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
+DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
 
 /**
 *
@@ -462,6 +463,13 @@ else
     $topic = '';
 }
 
+/**
+* Build global array of Topics current user has access to
+*
+* @global array $_TOPICS
+*
+*/
+$_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
@@ -2171,8 +2179,8 @@ function COM_accessLog( $logentry )
 */
 function COM_showTopics($topic = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
-
+    global $_CONF, $_TABLES, $_TOPICS, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
+/*
     $langsql = COM_getLangSQL('tid');
     if (empty($langsql)) {
         $op = 'WHERE';
@@ -2199,7 +2207,7 @@ function COM_showTopics($topic = '')
         $sql .= ' ORDER BY sortnum';
     }
     $result = DB_query($sql);
-
+*/
     $retval = '';
     $sections = COM_newTemplate($_CONF['path_layout']);
     if (isset($_BLOCK_TEMPLATE['topicoption'])) {
@@ -2216,6 +2224,8 @@ function COM_showTopics($topic = '')
     if ($_CONF['hide_home_link'] == 0) {
         // Give a link to the homepage here since a lot of people use this for
         // navigating the site
+        
+        $start_branch = 1; // Sets indentation level for topics
 
         if (COM_onFrontpage()) {
             $sections->set_var('option_url', '');
@@ -2232,6 +2242,8 @@ function COM_showTopics($topic = '')
             $sections->set_var('topic_image', '');
             $retval .= $sections->parse('item', 'option');
         }
+    } else {
+        $start_branch = 2;
     }
 
     if ($_CONF['showstorycount']) {
@@ -2254,65 +2266,94 @@ function COM_showTopics($topic = '')
         }
     }
 
-    while ($A = DB_fetchArray($result)) {
-        $topicname = stripslashes($A['topic']);
-        $sections->set_var('option_url', $_CONF['site_url']
-                                         . '/index.php?topic=' . $A['tid']);
-        $sections->set_var('option_label', $topicname);
+    $start_topic = 2; // Do not display Root
+    $total_topic = count($_TOPICS);
+    $branch_level_skip = 0;
 
-        $countstring = '';
-        if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
-            $countstring .= '(';
-
-            if ($_CONF['showstorycount']) {
-                if (empty($storycount[$A['tid']])) {
-                    $countstring .= '0';
+    for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
+        
+        // Check if branch needs to be hidden due to a parent being hidden or a different language
+        if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
+            $branch_level_skip = 0;
+        }
+        
+        if ($branch_level_skip == 0) {
+            // Make sure to show topics for proper language only
+            $lang_id = COM_getLanguageId();
+            if (!$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {  
+                $branch_spaces = "";
+                for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
+                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
+                }
+                $sections->set_var('branch_spaces', $branch_spaces);
+                
+                $topicname = stripslashes($_TOPICS[$count_topic]['title']);
+                $sections->set_var('option_url', $_CONF['site_url']
+                                                 . '/index.php?topic=' . $_TOPICS[$count_topic]['id']);
+                $sections->set_var('option_label', $topicname);
+        
+                $countstring = '';
+                if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
+                    $countstring .= '(';
+        
+                    if ($_CONF['showstorycount']) {
+                        if (empty($storycount[$_TOPICS[$count_topic]['id']])) {
+                            $countstring .= '0';
+                        } else {
+                            $countstring .= COM_numberFormat($storycount[$_TOPICS[$count_topic]['id']]);
+                        }
+                    }
+        
+                    if ($_CONF['showsubmissioncount']) {
+                        if ($_CONF['showstorycount']) {
+                            $countstring .= '/';
+                        }
+                        if (empty($submissioncount[$_TOPICS[$count_topic]['id']])) {
+                            $countstring .= '0';
+                        } else {
+                            $countstring .= COM_numberFormat($submissioncount[$_TOPICS[$count_topic]['id']]);
+                        }
+                    }
+        
+                    $countstring .= ')';
+                }
+                $sections->set_var('option_count', $countstring);
+                $sections->set_var('option_attributes', '');
+        
+                $sql = "SELECT imageurl, meta_description FROM {$_TABLES['topics']} WHERE tid = '{$_TOPICS[$count_topic]['id']}'";
+                $result = DB_query($sql);
+                $A = DB_fetchArray($result);
+                
+                $topicimage = '';
+                if (! empty( $A['imageurl'])) {
+                    $imageurl = COM_getTopicImageUrl($A['imageurl']);
+                    $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
+                                . '" title="' . $topicname . '"' . XHTML . '>';
+                }
+                $sections->set_var('topic_image', $topicimage);
+        
+                $desc = trim($A['meta_description']);
+                $sections->set_var('topic_description', $desc);
+                $desc_escaped = htmlspecialchars($desc);
+                $sections->set_var('topic_description_escaped', $desc_escaped);
+                if (! empty($desc)) {
+                    $sections->set_var('topic_title_attribute',
+                                       'title="' . $desc_escaped . '"');
                 } else {
-                    $countstring .= COM_numberFormat($storycount[$A['tid']]);
+                    $sections->set_var('topic_title_attribute', '');
                 }
+        
+                if (($_TOPICS[$count_topic]['id'] == $topic) && ($page == 1)) {
+                    $retval .= $sections->parse('item', 'inactive');
+                }
+                else
+                {
+                    $retval .= $sections->parse('item', 'option');
+                }
+            } else {
+                // Different language or hidden, so flag this to skip if we have children
+                $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];
             }
-
-            if ($_CONF['showsubmissioncount']) {
-                if ($_CONF['showstorycount']) {
-                    $countstring .= '/';
-                }
-                if (empty($submissioncount[$A['tid']])) {
-                    $countstring .= '0';
-                } else {
-                    $countstring .= COM_numberFormat($submissioncount[$A['tid']]);
-                }
-            }
-
-            $countstring .= ')';
-        }
-        $sections->set_var('option_count', $countstring);
-        $sections->set_var('option_attributes', '');
-
-        $topicimage = '';
-        if (! empty( $A['imageurl'])) {
-            $imageurl = COM_getTopicImageUrl($A['imageurl']);
-            $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
-                        . '" title="' . $topicname . '"' . XHTML . '>';
-        }
-        $sections->set_var('topic_image', $topicimage);
-
-        $desc = trim($A['meta_description']);
-        $sections->set_var('topic_description', $desc);
-        $desc_escaped = htmlspecialchars($desc);
-        $sections->set_var('topic_description_escaped', $desc_escaped);
-        if (! empty($desc)) {
-            $sections->set_var('topic_title_attribute',
-                               'title="' . $desc_escaped . '"');
-        } else {
-            $sections->set_var('topic_title_attribute', '');
-        }
-
-        if (($A['tid'] == $topic) && ($page == 1)) {
-            $retval .= $sections->parse('item', 'inactive');
-        }
-        else
-        {
-            $retval .= $sections->parse('item', 'option');
         }
     }
 
@@ -4898,7 +4939,14 @@ function phpblock_whosonline()
         $byname .= ',remoteusername,remoteservice';
     }
 
-    $result = DB_query( "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byname},photo,showonline FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byname}" );
+    $sql = "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byname},photo,showonline 
+            FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']} 
+            WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid 
+            AND {$_TABLES['sessions']}.whos_online = 1 
+            AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time 
+            AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byname}";
+            
+    $result = DB_query($sql);
     $nrows = DB_numRows( $result );
 
     $num_anon = 0;
@@ -4951,7 +4999,7 @@ function phpblock_whosonline()
         }
     }
 
-    $num_anon += DB_count( $_TABLES['sessions'], 'uid', 1 );
+    $num_anon += DB_count($_TABLES['sessions'], array('uid', 'whos_online'), array(1, 1));
 
     if(( $_CONF['whosonline_anonymous'] == 1 ) &&
             COM_isAnonUser() )
@@ -6562,6 +6610,41 @@ function COM_getLanguage()
 
     // if all else fails, return the default language
     return $_CONF['language'];
+}
+
+/**
+* Determine the language of the object from the id
+*
+* @param    string  $id         id of object to retrieve language id from
+* @return   string              language ID, e.g 'en'; empty string on error
+*
+*/
+function COM_getLanguageIdForObject($id)
+{
+    global $_CONF;
+    
+    $lang_id = '';
+
+    if (!empty($id)) {
+        $loc = MBYTE_strrpos($id, '_');
+        if ($loc > 0 && (($loc + 1) < MBYTE_strlen($id))) {
+            $lang_id = MBYTE_substr($id, ($loc + 1));
+            // Now check if language actually exists
+            if (isset($_CONF['language_files'])) {
+                if (array_key_exists($lang_id, $_CONF['language_files']) === false) {
+                    // that looks like a misconfigured $_CONF['language_files'] array
+                    COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
+        
+                    $lang_id = ''; // not much we can do here ...
+                }
+            } else {
+                $lang_id = '';
+            }
+        }
+    }
+
+    return $lang_id;
+    
 }
 
 /**

@@ -10,6 +10,14 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
 )
 ";
 
+// Add new Topic Columns used for Child Topics
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN parent_id varchar(20) NOT NULL default 'root' AFTER archive_flag";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN inherit smallint NOT NULL default '0' AFTER parent_id";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN hidden smallint NOT NULL default '0' AFTER inherit";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN featured_article varchar(40) default NULL AFTER hidden";
+
+// Update Session Table
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN whos_online smallint NOT NULL default '1' AFTER md5_sess_id";
 
 /**
  * Add new config options

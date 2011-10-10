@@ -39,6 +39,130 @@ $_TOPIC_DEBUG = false;
 define("TOPIC_ALL_OPTION", 'all');
 define("TOPIC_HOMEONLY_OPTION", 'homeonly');
 define("TOPIC_SELECTED_OPTION", 'selectedtopics');
+define("TOPIC_ROOT", 'root');
+
+
+
+
+
+
+
+
+
+function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = array())
+{
+	global $_TABLES, $_CONF, $LANG27;
+	
+	$branch_level = $branch_level + 1;
+	
+	$total_topic = count($tree_array) + 1;
+	
+	if ($id == TOPIC_ROOT) { // Root
+      $tree_array[$total_topic]['id'] = TOPIC_ROOT;
+      $tree_array[$total_topic]['parent_id'] = '';
+      $tree_array[$total_topic]['branch_level'] = $branch_level;
+      $tree_array[$total_topic]['title'] = $LANG27[37];
+      $tree_array[$total_topic]['language_id'] = '';
+      $tree_array[$total_topic]['inherit'] = 1;
+      $tree_array[$total_topic]['hidden'] = 0;	
+      
+      $branch_level = $branch_level + 1;
+	}    
+	
+    if ($_CONF['sortmethod'] != 'alpha') {
+        $sql_sort = " ORDER BY sortnum";
+    } else {
+        $sql_sort = " ORDER BY topic ASC";
+    }
+	if ($parent) {
+		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . $sql_lang . COM_getPermSQL ('AND') . $sql_sort;
+	} else {
+		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . $sql_lang . COM_getPermSQL ('AND') . $sql_sort;
+	}
+
+	$result = DB_query ($sql);
+    $nrows  = DB_numRows ($result);
+    if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $total_topic = count($tree_array)+ 1;
+            
+            $tree_array[$total_topic]['id'] = $A['tid'];
+            $tree_array[$total_topic]['parent_id'] = $A['parent_id'];
+            $tree_array[$total_topic]['branch_level'] = $branch_level;
+            $tree_array[$total_topic]['title'] = stripslashes($A['topic']);
+            $tree_array[$total_topic]['language_id'] = COM_getLanguageIdForObject($A['tid']); // figure out language if need be
+            $tree_array[$total_topic]['inherit'] = $A['inherit'];
+            $tree_array[$total_topic]['hidden'] = $A['hidden'];    
+            
+            // See if this topic has any children
+            $tree_array = TOPIC_buildTree($tree_array[$total_topic]['id'], true, $branch_level, $tree_array);
+        }
+    }
+    
+    return $tree_array;
+}
+
+/**
+* This function creates a html options for Topics, for a single or multi select box
+*
+* @param    string/array    $selected_ids   Topics Ids to mark as selected
+* @param    boolean         $include_root   Include Root in list
+* @param    string          $remove_id      Id of topic to not include (includes any children)
+* @return   HTML string
+*
+*/
+function TOPIC_getListSelect ($selected_ids = array(), $include_root = true, $remove_id = '')
+{
+    global $_TOPICS, $_TABLES, $LANG_CAT;
+
+    $retval = '';
+    
+    if (!is_array($selected_ids)) {
+        $selected_ids = array($selected_ids);   
+    }
+    if ($include_root) {
+        $start_topic = 1;
+    } else {
+        $start_topic = 2;
+    }
+    $total_topic = count($_TOPICS);
+    $branch_level_skip = 0;
+
+    for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
+
+        // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
+        if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
+            $branch_level_skip = 0;
+        }        
+
+        if ($branch_level_skip == 0) {
+            $id =  $_TOPICS[$count_topic]['id'];
+            
+            if ($id != $remove_id) {
+                $title =  $_TOPICS[$count_topic]['title'];
+                
+                $branch_spaces = "";
+                for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
+                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
+                }
+                
+                $retval .= '<option value="' . $id . '"';
+                
+                if (in_array($id, $selected_ids)) {
+                    $retval .= ' selected="selected"';
+                }
+                
+                $retval .= '>' . $branch_spaces . $title . '</option>';
+            } else {
+                // Cannot pick child as parent so skip
+                $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];            
+            }
+        }
+    }    
+    
+    return $retval;
+}
 
 /**
 * Return a list of topics in an array

@@ -120,6 +120,9 @@ function SESS_sessionCheck()
                 $_USER = $userdata;
                 $_USER['auto_login'] = false;
             }
+        } elseif ($userid == 1) {
+            // Anonymous User has session so update any information
+            SESS_updateSessionTime($sessid, $_CONF['cookie_ip']);
         } else {
             // Session probably expired, now check permanent cookie
             if (isset ($_COOKIE[$_CONF['cookie_name']])) {
@@ -165,6 +168,11 @@ function SESS_sessionCheck()
                         }
                     }
                 }
+            } else {
+                // Anonymous user has session id but it has been expired and wiped from the db so reset
+                $userid = 1;
+                $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
             }
         }
     } else {
@@ -173,7 +181,6 @@ function SESS_sessionCheck()
         }
 
         // Check if the persistent cookie exists
-
         if (isset ($_COOKIE[$_CONF['cookie_name']])) {
             // Session cookie doesn't exist but a permanent cookie does.
             // Start a new session cookie;
@@ -221,6 +228,11 @@ function SESS_sessionCheck()
                     }
                 }
             }
+        } else {
+            // New Anonymous user so create new session and write cookie
+            $userid = 1;
+            $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+            SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);            
         }
     }
 
@@ -289,14 +301,20 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         }
     }
     // Remove the anonymous sesssion for this user
-    DB_delete($_TABLES['sessions'], array('uid', 'remote_ip'),
-                                    array(1, $remote_ip));
-
+    if ($userid > 1) {
+        // Retrieve any session variables that we need to add to the new logged in session
+        // To come
+        
+        // Delete record
+        DB_delete($_TABLES['sessions'], array('uid', 'remote_ip'),
+                                        array(1, $remote_ip));
+    }
+    
     // Create new session
     if (empty ($md5_sessid)) {
-        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip) VALUES ($sessid, $userid, $currtime, '$remote_ip')";
+        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip, whos_online) VALUES ($sessid, $userid, $currtime, '$remote_ip', 1)";
     } else {
-        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
+        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip, whos_online) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip', 1)";
     }
     $result = DB_query($sql);
     if ($result) {
@@ -416,9 +434,9 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
     $newtime = (string) time();
 
     if ($md5_based == 1) {
-        $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
+        $sql = "UPDATE {$_TABLES['sessions']} SET start_time = $newtime, whos_online = 1 WHERE (md5_sess_id = '$sessid')";
     } else {
-        $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (sess_id = '$sessid')";
+        $sql = "UPDATE {$_TABLES['sessions']} SET start_time = $newtime, whos_online = 1 WHERE (sess_id = '$sessid')";
     }
 
     $result = DB_query($sql);

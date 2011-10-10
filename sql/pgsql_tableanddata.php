@@ -257,6 +257,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   remote_ip varchar(39) NOT NULL default '',
   uid smallint NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
+  whos_online smallint NOT NULL default '1',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -409,6 +410,10 @@ CREATE TABLE {$_TABLES['topics']} (
   limitnews smallint default NULL,
   is_default smallint NOT NULL DEFAULT '0',
   archive_flag smallint NOT NULL DEFAULT '0',
+  parent_id varchar(20) NOT NULL default 'root',
+  inherit smallint NOT NULL default '0',
+  hidden smallint NOT NULL default '0',
+  featured_article varchar(40) default NULL,
   owner_id smallint NOT NULL default '1',
   group_id smallint NOT NULL default '1',
   perm_owner smallint NOT NULL default '3',

@@ -88,6 +88,9 @@ function edittopic ($tid = '')
         $A['tid'] = '';
         $A['topic'] = '';
         $A['sortnum'] = 0;
+        $A['parent_id'] = TOPIC_ROOT;
+        $A['inherit'] = 1;
+        $A['hidden'] = 0;
         $A['limitnews'] = ''; // leave empty!
         $A['is_default'] = 0;
         $A['archive_flag'] = 0;
@@ -134,6 +137,27 @@ function edittopic ($tid = '')
     }
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
+    
+    $topic_templates->set_var('lang_parent_id', $LANG27[32]);
+    $topic_templates->set_var('parent_id_options',
+                              TOPIC_getListSelect($A['parent_id'], true, $A['tid']));
+    
+    $topic_templates->set_var('lang_inherit', $LANG27[33]);
+    $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
+    if ($A['inherit'] == 1) {
+        $topic_templates->set_var ('inherit_checked', 'checked="checked"');
+    } else {
+        $topic_templates->set_var ('inherit_checked', '');
+    }
+    
+    $topic_templates->set_var('lang_hidden', $LANG27[35]);
+    $topic_templates->set_var('lang_hidden_info', $LANG27[36]);
+    if ($A['hidden'] == 1) {
+        $topic_templates->set_var ('hidden_checked', 'checked="checked"');
+    } else {
+        $topic_templates->set_var ('hidden_checked', '');
+    }    
+    
     $topic_templates->set_var('lang_donotusespaces', $LANG27[5]);
     $topic_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -265,7 +289,8 @@ function changetopicid($tid, $old_tid)
 {
     global $_TABLES;
 
-    DB_change($_TABLES['blocks'], 'tid', $tid, 'tid', $old_tid);
+    DB_change($_TABLES['topic_assignments'], 'tid', $tid, 'tid', $old_tid);
+    DB_change($_TABLES['topics'], 'parent_id', $tid, 'parent_id', $old_tid);
     DB_change($_TABLES['stories'], 'tid', $tid, 'tid', $old_tid);
     DB_change($_TABLES['storysubmission'], 'tid', $tid, 'tid', $old_tid);
     DB_change($_TABLES['syndication'], 'header_tid', $tid,
@@ -331,7 +356,7 @@ function changetopicid($tid, $old_tid)
 * @param    string  $is_archive     'on' if this is the archive topic
 * @return   string                  HTML redirect or error message
 */
-function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
+function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_description,$meta_keywords,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
 {
     global $_CONF, $_TABLES, $LANG27, $MESSAGE;
 
@@ -344,7 +369,7 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
     
     // Check if tid is a restricted name
     $restricted_tid = false;
-    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION) {
+    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION || $tid == TOPIC_ROOT) {
         $restricted_tid = true;
     }
 
@@ -364,73 +389,105 @@ function savetopic($tid,$topic,$imageurl,$meta_description,$meta_keywords,$sortn
                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
                 . COM_siteFooter();
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
-    } elseif (!empty($tid) && !empty($topic) && !$restricted_tid) {
-        if ($imageurl == '/images/topics/') {
-            $imageurl = '';
-        }
-        $topic = addslashes($topic);
-        $meta_description = addslashes(strip_tags($meta_description));
-        $meta_keywords = addslashes(strip_tags($meta_keywords));
-
-        if ($is_default == 'on') {
-            $is_default = 1;
-            DB_query ("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
-        } else {
-            $is_default = 0;
-        }
-
-        $is_archive = ($is_archive == 'on') ? 1 : 0;
-
-        $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
-        if ($is_archive) {
-            // $tid is the archive topic
-            // - if it wasn't already, mark all its stories "archived" now
-            if ($archivetid != $tid) {
-                DB_query ("UPDATE {$_TABLES['stories']} SET featured = 0, frontpage = 0, statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " WHERE tid = '$tid'");
-                DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
-            }
-        } else {
-            // $tid is not the archive topic
-            // - if it was until now, reset the "archived" status of its stories
-            if ($archivetid == $tid) {
-                DB_query ("UPDATE {$_TABLES['stories']} SET statuscode = 0 WHERE tid = '$tid'");
-                DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
-            }
-        }
-	
-        if (isset($_POST['old_tid'])) {
-            $old_tid = COM_applyFilter($_POST['old_tid']);
-            if (! empty($old_tid)) {
-                $old_tid = COM_sanitizeID($old_tid);
-                changetopicid($tid, $old_tid);
-
-                $old_tid = addslashes($old_tid);
-                DB_delete($_TABLES['topics'], 'tid', $old_tid);
-            }
-        }
-
-        DB_save($_TABLES['topics'],'tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
-
-        if ($old_tid != $tid) {
-            PLG_itemSaved($tid, 'topic', $old_tid);
-        } else {
-            PLG_itemSaved($tid, 'topic');
-        }
-        // update feed(s) and Older Stories block
-        COM_rdfUpToDateCheck('article', $tid);
-        COM_olderStuff();
-
-        $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
-    } elseif ($restricted_tid) {
-        $retval .= COM_siteHeader('menu', $LANG27[1]);
-        $retval .= COM_errorLog($LANG27[31], 2);
-        $retval .= COM_siteFooter();
     } else {
-        $retval .= COM_siteHeader('menu', $LANG27[1]);
-        $retval .= COM_errorLog($LANG27[7], 2);
-        $retval .= COM_siteFooter();
+        // Now check access to parent topic
+        if ($parent_id != TOPIC_ROOT) {
+            if (DB_count ($_TABLES['topics'], 'tid', $parent_id) > 0) {
+                $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$parent_id}'");
+                $A = DB_fetchArray ($result);
+                $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']);
+            }
+            $in_Group = SEC_inGroup($A['group_id']);
+        } else {
+            $access = 3;
+            $in_Group = true; 
+        }
+        if (($access < 3) || !$in_Group) {
+            $retval .= COM_siteHeader('menu', $MESSAGE[30])
+                    . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
+                    . COM_siteFooter();
+            COM_accessLog("User {$_USER['username']} tried to illegally assign topic $tid to $parent_id.");
+        } elseif (!empty($tid) && !empty($topic) && !$restricted_tid) {
+            if ($imageurl == '/images/topics/') {
+                $imageurl = '';
+            }
+            $topic = addslashes($topic);
+            $meta_description = addslashes(strip_tags($meta_description));
+            $meta_keywords = addslashes(strip_tags($meta_keywords));
+    
+            if ($is_default == 'on') {
+                $is_default = 1;
+                DB_query ("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
+            } else {
+                $is_default = 0;
+            }
+    
+            $is_archive = ($is_archive == 'on') ? 1 : 0;
+            
+            $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
+            if ($is_archive) {
+                // $tid is the archive topic
+                // - if it wasn't already, mark all its stories "archived" now
+                if ($archivetid != $tid) {
+                    DB_query ("UPDATE {$_TABLES['stories']} SET featured = 0, frontpage = 0, statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " WHERE tid = '$tid'");
+                    DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+                }
+            } else {
+                // $tid is not the archive topic
+                // - if it was until now, reset the "archived" status of its stories
+                if ($archivetid == $tid) {
+                    DB_query ("UPDATE {$_TABLES['stories']} SET statuscode = 0 WHERE tid = '$tid'");
+                    DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+                }
+            }
+            
+            $inherit = ($inherit == 'on') ? 1 : 0;
+            
+            $hidden = ($hidden == 'on') ? 1 : 0;
+            // Cannot hide root topics so switch if needed
+            if ($parent_id == TOPIC_ROOT && $hidden == 1) {
+                $hidden = 0;
+            }
+            
+            if (isset($_POST['old_tid'])) {
+                $old_tid = COM_applyFilter($_POST['old_tid']);
+                if (! empty($old_tid)) {
+                    $old_tid = COM_sanitizeID($old_tid);
+                    changetopicid($tid, $old_tid);
+    
+                    $old_tid = addslashes($old_tid);
+                    DB_delete($_TABLES['topics'], 'tid', $old_tid);
+                }
+            }
+    
+            DB_save($_TABLES['topics'],'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+    
+            // Update Topics Array to reflect any changes since not sure what is called after
+            $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
+            if ($old_tid != $tid) {
+                PLG_itemSaved($tid, 'topic', $old_tid);
+            } else {
+                PLG_itemSaved($tid, 'topic');
+            }
+            
+            // update feed(s) and Older Stories block
+            COM_rdfUpToDateCheck('article', $tid);
+            COM_olderStuff();
+    
+            $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
+        } elseif ($restricted_tid) {
+            $retval .= COM_siteHeader('menu', $LANG27[1]);
+            $retval .= COM_errorLog($LANG27[31], 2);
+            $retval .= COM_siteFooter();
+        } else {
+            $retval .= COM_siteHeader('menu', $LANG27[1]);
+            $retval .= COM_errorLog($LANG27[7], 2);
+            $retval .= COM_siteFooter();
+        }
     }
-
     return $retval;
 }
 
@@ -537,7 +594,7 @@ function listtopics()
 */
 function deleteTopic ($tid)
 {
-    global $_CONF, $_TABLES, $_USER;
+    global $_CONF, $_TABLES, $_USER, $_TOPICS;
 
     $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid ='$tid'");
     $A = DB_fetchArray ($result);
@@ -548,8 +605,8 @@ function deleteTopic ($tid)
         return COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
     }
 
-    // don't delete topic blocks - assign them to 'all' and disable them
-    DB_query ("UPDATE {$_TABLES['blocks']} SET tid = 'all', is_enabled = 0 WHERE tid = '$tid'");
+    // Update any child topics to root and un hide them
+    DB_query ("UPDATE {$_TABLES['topics']} SET parent_id = '" . TOPIC_ROOT. "', hidden = 0 WHERE parent_id = '$tid'");
 
     // same with feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
@@ -566,11 +623,18 @@ function deleteTopic ($tid)
                                          array($A['sid'], 'article'));
     }
 
+    // Notify of Delete topic mainly for centerblock assignments
+    PLG_itemDeleted($tid, 'topic');
+    
     // delete these
     DB_delete($_TABLES['stories'], 'tid', $tid);
     DB_delete($_TABLES['storysubmission'], 'tid', $tid);
+    DB_delete($_TABLES['topic_assignments'], 'tid', $tid);
     DB_delete($_TABLES['topics'], 'tid', $tid);
 
+    // Update Topics Array to reflect any changes since not sure what is called after
+    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
     // update feed(s) and Older Stories block
     COM_rdfUpToDateCheck('article');
     COM_olderStuff();
@@ -725,11 +789,25 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['is_archive'])) {
         $is_archive = $_POST['is_archive'];
     }
+    $inherit = '';
+    if (isset($_POST['inherit'])) {
+        $inherit = COM_applyFilter($_POST['inherit'], true);
+    }
+    $hidden = '';
+    if (isset($_POST['hidden'])) {
+        $hidden = COM_applyFilter($_POST['hidden'], true);
+    }
+    $parent_id = '';
+    if (isset($_POST['parent_id'])) {
+        $parent_id = COM_applyFilter($_POST['parent_id']);
+    }
+    
     $sortnum = 0;
     if (isset($_POST['sortnum'])) {
         $sortnum = COM_applyFilter($_POST['sortnum'], true);
     }
     $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic'],
+                          $inherit, $hidden, $parent_id,
                           $imageurl, $_POST['meta_description'],
                           $_POST['meta_keywords'], $sortnum,
                           COM_applyFilter($_POST['limitnews'], true),
