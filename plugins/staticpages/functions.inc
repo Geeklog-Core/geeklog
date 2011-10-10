@@ -1973,4 +1973,59 @@ function plugin_itemsaved_staticpages($id, $type, $old_id)
     }
 }
 
+/**
+* Callback function when an item was deleted
+*
+* @param    string  $id     ID of item being deleted
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @return   void
+* @see      PLG_itemDeleted
+*
+*/
+function plugin_itemdeleted_staticpages($id, $type)
+{
+    global $_TABLES;
+
+    // we're really only interested in Topic Deletes
+    if ($type == 'topic') {
+        DB_change($_TABLES['staticpage'], 'sp_tid', $id, 'sp_tid', TOPIC_ALL_OPTION);
+    }
+}
+
+
+/**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_staticpages($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS, $_PO_CONF;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Static Page Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Static Page Admin'])) {
+            $new_group_id = $_GROUPS['Static Page Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Staticpages with new group id
+        $sql = "UPDATE {$_TABLES['staticpage']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+   }
+}
+
 ?>
