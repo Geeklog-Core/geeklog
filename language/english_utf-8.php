@@ -891,7 +891,15 @@ $LANG27 = array(
     34 => 'Items of child topic are inherited',
     35 => 'Hidden', 
     36 => 'Topic will be hidden and cannot be viewed directly, only inherited', 
-    37 => 'Root'
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only', 
+    40 => 'Assign one or more topics.',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ', 
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ', 
+    44 => 'Inherit',
+    45 => 'Default'
 );
 
 ###############################################################################

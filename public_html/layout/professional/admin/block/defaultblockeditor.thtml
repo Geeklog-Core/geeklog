@@ -18,16 +18,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_topic}:</td>
-                                        <td>
-                                            <span style="vertical-align:top;">                                       
-                                                <input type="radio" name="topic_option" value="all" {all_checked}> {lang_all} 
-                                                <input type="radio" name="topic_option" value="homeonly" {homeonly_checked}> {lang_homeonly}
-                                                <input type="radio" name="topic_option" value="selectedtopics" {selectedtopics_checked}> 
-                                            </span>
-                                            <select name="tid[]" multiple="multiple" size="4">
-                                                {topic_options}
-                                            </select>
-                                        </td>
+                                        <td>{topic_selection}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_side}:</td>

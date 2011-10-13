@@ -395,6 +395,8 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
   tid varchar(20) NOT NULL,
   type varchar(30) NOT NULL,
   id varchar(40) NOT NULL,
+  inherit smallint NOT NULL default '1',
+  tdefault smallint NOT NULL default '0',   
   PRIMARY KEY  (tid,type,id)
 )
 ";
@@ -411,7 +413,7 @@ CREATE TABLE {$_TABLES['topics']} (
   is_default smallint NOT NULL DEFAULT '0',
   archive_flag smallint NOT NULL DEFAULT '0',
   parent_id varchar(20) NOT NULL default 'root',
-  inherit smallint NOT NULL default '0',
+  inherit smallint NOT NULL default '1',
   hidden smallint NOT NULL default '0',
   featured_article varchar(40) default NULL,
   owner_id smallint NOT NULL default '1',
@@ -811,13 +813,13 @@ $_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, int
 
 $_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('article', '::all', 'all', 'RSS-2.0', 10, 1, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rss', 'iso-8859-1', 'en-gb', 1, 'epoch', NULL)";
 
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '1')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '2')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '3')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '4')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('homeonly', 'block', '5')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '6')";
-$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '7')";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '1', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '2', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '3', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '4', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('homeonly', 'block', '5', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '6', 1, 0)";
+$_DATA[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '7', 1, 0)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.png','A topic that contains general news related posts.','News, Post, Information',1,10,6,2,3,2,2,2)";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.png','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";

@@ -634,7 +634,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
     $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'],
                     $A['perm_group'], $A['perm_members'], $A['perm_anon']);
 
-    if (($access > 0) && (hasBlockMultiTopicAccess($A['bid']) > 0)) {
+    if (($access > 0) && (TOPIC_hasMultiTopicAccess('block', $A['bid']) > 0)) {
         switch ($fieldname) {
         case 'edit':
             if ($access == 3) {

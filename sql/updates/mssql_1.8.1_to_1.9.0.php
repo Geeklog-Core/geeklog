@@ -5,7 +5,9 @@ $_SQL[] = "
 CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
   [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
   [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
+  [inherit] [tinyint] NOT NULL, 
+  [tdefault] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -34,7 +36,7 @@ function update_BlockTopicAssignmentsFor190()
     for( $i = 0; $i < $nrows; $i++ ) {
         $A = DB_fetchArray($result);
         
-        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('{$A['tid']}', 'block', '{$A['bid']}')";
+        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'block', '{$A['bid']}', 1, 0)";
         DB_query($sql);
     }
 

@@ -2269,6 +2269,7 @@ function COM_showTopics($topic = '')
     $start_topic = 2; // Do not display Root
     $total_topic = count($_TOPICS);
     $branch_level_skip = 0;
+    $lang_id = COM_getLanguageId();
 
     for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
         
@@ -2279,7 +2280,6 @@ function COM_showTopics($topic = '')
         
         if ($branch_level_skip == 0) {
             // Make sure to show topics for proper language only
-            $lang_id = COM_getLanguageId();
             if (!$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {  
                 $branch_spaces = "";
                 for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
@@ -3588,42 +3588,37 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, tid, blockorder, cast(content as text) as content, ";
+    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, ";
     $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
     $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
     $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
+    
+    
 
-    $commonsql = "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} t WHERE t.type = 'block' AND t.id = bid AND is_enabled = 1";
+    $commonsql = "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
 
-    if( $side == 'left' )
-    {
+    if( $side == 'left' ) {
         $commonsql .= " AND onleft = 1";
-    }
-    else
-    {
+    } else {
         $commonsql .= " AND onleft = 0";
     }
 
-    if( !empty( $topic ))
-    {
-        $commonsql .= " AND (t.tid = '$topic' OR t.tid = 'all')";
-    }
-    else
-    {
-        if( COM_onFrontpage() )
-        {
-            $commonsql .= " AND (t.tid = 'homeonly' OR t.tid = 'all')";
-        }
-        else
-        {
-            $commonsql .= " AND (t.tid = 'all')";
+    if(!empty($topic)) {
+        // Retrieve list of inherited topics
+        $tid_list = TOPIC_getChildList($topic);
+        // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
+        $commonsql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
+    } else {
+        if( COM_onFrontpage() ) {
+            $commonsql .= " AND (ta.tid = 'homeonly' OR ta.tid = 'all')";
+        } else {
+            $commonsql .= " AND (ta.tid = 'all')";
         }
     }
 
-    if( !empty( $_USER['boxes'] ))
-    {
+    if( !empty( $_USER['boxes'] )) {
         $BOXES = str_replace( ' ', ',', $_USER['boxes'] );
 
         $commonsql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";

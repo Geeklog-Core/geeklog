@@ -67,64 +67,6 @@ if (!SEC_hasRights('block.edit')) {
 
 
 /**
-* Check for block topic access (need to handle 'all' and 'homeonly' as
-* special cases)
-*
-* @param    string/array    $id     ID of block or topic to check if block topic access
-* @param    boolean         $flag   True if topic id(s)
-* @return   int                     returns 3 for read/edit 2 for read only 0 for no access
-*
-*/
-function hasBlockMultiTopicAccess($id, $topic = false)
-{
-    global $_TABLES;
-    
-    $access = 0;
-    
-    if ($topic) {
-        if (is_array($id)) {
-            $nrows = count($id);
-            $tid = $id[0];
-        } else {
-            $nrows = 1;
-            $tid = $id;
-        }
-    } else {
-        // Retrieve Topic options
-        $sql['mysql'] = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='$id'";
-        $sql['mssql'] = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='$id'";
-        $sql['pgsql'] = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='$id'";
-    
-        $result = DB_query($sql);
-        $A = DB_fetchArray($result);
-        $nrows = DB_numRows($result);
-        $tid = $A['tid'];
-    }
-    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION) {
-        $access = 3;
-    } elseif ($tid == '') { // No topic assigned, Can happen if topic gets deleted
-        $access = 3;
-    } else {
-        $access = SEC_hasTopicAccess ($tid);
-        for ($i = 1; $i < $nrows; $i++) {
-            if ($topic) {
-                $tid = $id[$i];
-            } else {
-                $A = DB_fetchArray($result);
-                $tid = $A['tid'];
-            }
-            $current_access = SEC_hasTopicAccess ($tid);
-            if ($access > $current_access) {
-                $access = $current_access;
-            }
-        }
-    }
-    
-    return $access;
-}
-
-
-/**
 * Shows default block editor
 *
 * Default blocks are those blocks that Geeklog requires to function
@@ -170,23 +112,10 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
-    $block_templates->set_var('lang_homeonly', $LANG21[43]);
-    if ($A['topic_option'] == TOPIC_ALL_OPTION) {
-        $block_templates->set_var('all_checked', 'checked');
-        $block_templates->set_var('homeonly_checked', '');
-        $block_templates->set_var('selectedtopics_checked', '');
-    } elseif ($A['topic_option'] == TOPIC_HOMEONLY_OPTION) {
-        $block_templates->set_var('all_checked', '');
-        $block_templates->set_var('homeonly_checked', 'checked');
-        $block_templates->set_var('selectedtopics_checked', '');
-    } else{
-        $block_templates->set_var('all_checked', '');
-        $block_templates->set_var('homeonly_checked', '');
-        $block_templates->set_var('selectedtopics_checked', 'checked');
-    }
-    $block_templates->set_var('topic_options',
-                              COM_topicList ('tid,topic', $A['tid'], 1, true));
-    $block_templates->set_var('lang_all', $LANG21[7]);
+    
+    $block_templates->set_var('topic_selection',
+                          TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));
+    
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
@@ -258,28 +187,9 @@ function editblock ($bid = '')
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
         
-        // Retrieve Topic options
-        $sql['mysql'] = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='$bid'";
-
-        $result = DB_query($sql);
-        $B = DB_fetchArray($result);
-        $nrows = DB_numRows($result);
-        if ($B['tid'] == TOPIC_ALL_OPTION || $B['tid'] == TOPIC_HOMEONLY_OPTION) {
-            $A['topic_option'] = $B['tid'];
-            $A['tid'] ='';
-        } else {
-            $A['topic_option'] = TOPIC_SELECTED_OPTION;
-            $A['tid'] = array();
-            $A['tid'][] = $B['tid'];
-            for ($i = 1; $i < $nrows; $i++) {
-                $B = DB_fetchArray($result);
-                $A['tid'][] = $B['tid'];
-            }
-        }
-        
         $access = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
         if (($access == 2) || ($access == 0) ||
-                (hasBlockMultiTopicAccess($bid) < 3)) {
+                (TOPIC_hasMultiTopicAccess('block', $bid) < 3)) {
             $retval .= COM_showMessageText($LANG21[45],
                                            $LANG_ACCESS['accessdenied']);
             COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
@@ -360,23 +270,10 @@ function editblock ($bid = '')
     $block_templates->set_var('block_name', $A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_nospaces', $LANG21[49]);
-    $block_templates->set_var('lang_all', $LANG21[7]);
-    $block_templates->set_var('lang_homeonly', $LANG21[43]);
-    if ($A['topic_option'] == TOPIC_ALL_OPTION) {
-        $block_templates->set_var('all_checked', 'checked');
-        $block_templates->set_var('homeonly_checked', '');
-        $block_templates->set_var('selectedtopics_checked', '');
-    } elseif ($A['topic_option'] == TOPIC_HOMEONLY_OPTION) {
-        $block_templates->set_var('all_checked', '');
-        $block_templates->set_var('homeonly_checked', 'checked');
-        $block_templates->set_var('selectedtopics_checked', '');
-    } else{
-        $block_templates->set_var('all_checked', '');
-        $block_templates->set_var('homeonly_checked', '');
-        $block_templates->set_var('selectedtopics_checked', 'checked');
-    }
-    $block_templates->set_var('topic_options',
-                              TOPIC_getListSelect($A['tid'], false));    
+    
+    $block_templates->set_var('topic_selection',
+                          TOPIC_getTopicSelectionControl ('block', $A['bid'], true, true));    
+
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
@@ -584,7 +481,7 @@ function listblocks()
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $topic_option, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags)
+function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled, $allow_autotags)
 {
     global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_USER;
 
@@ -615,14 +512,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
                 $perm_members, $perm_anon);
     }
     
-    // Figure out what needs to be passed to hasBlockMultiTopicAccess
-    if ($topic_option == TOPIC_ALL_OPTION || $topic_option == TOPIC_HOMEONLY_OPTION) {
-        $topic_list = $topic_option;
-    } else {
-        $topic_list = $tid;
-    }
-    
-    if (($access < 3) || !hasBlockMultiTopicAccess($topic_list, true) || !SEC_inGroup($group_id)) {
+    if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($group_id)) {
         $retval .= COM_siteHeader('menu', $MESSAGE[30])
                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
                 . COM_siteFooter();
@@ -729,6 +619,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
             COM_olderStuff ();
         }
         
+        TOPIC_saveTopicSelectionControl('block', $bid);
+        /*
         // Save Topic link(s)
         DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array('block', $bid));
         if (is_array($tid) && $topic_option == TOPIC_SELECTED_OPTION) {
@@ -741,7 +633,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $ti
                 DB_save ($_TABLES['topic_assignments'], 'tid,type,id', "'$topic_option', 'block', '$bid'");
             }
         }        
-
+        */
+        
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
         $retval .= COM_siteHeader('menu', $LANG21[32]);
@@ -892,7 +785,7 @@ function deleteBlock ($bid)
     $A = DB_fetchArray($result);
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
             $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-    if (($access < 3) || (hasBlockMultiTopicAccess($bid) < 3)) {
+    if (($access < 3) || (TOPIC_hasMultiTopicAccess('block', $bid) < 3)) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete block $bid.");
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php');
     }
@@ -946,14 +839,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_POST['content'])) {
         $content = $_POST['content'];
     }
-    $topic_option = TOPIC_ALL_OPTION;
-    if (isset ($_POST['topic_option'])) {
-        $topic_option = COM_applyFilter ($_POST['topic_option']);
-    }
-    $tid = array();
-    if (isset ($_POST['tid'])) {
-        $tid = $_POST['tid']; // to be sanitized later
-    }    
     $rdfurl = '';
     if (isset ($_POST['rdfurl'])) {
         $rdfurl = $_POST['rdfurl']; // to be sanitized later
@@ -980,7 +865,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
                     $help, $_POST['type'], $_POST['blockorder'], $content,
-                    $tid, $topic_option, $rdfurl, $rdfupdated,
+                    $rdfurl, $rdfupdated,
                     $rdflimit, $phpblockfn, $_POST['onleft'],
                     COM_applyFilter ($_POST['owner_id'], true),
                     COM_applyFilter ($_POST['group_id'], true),

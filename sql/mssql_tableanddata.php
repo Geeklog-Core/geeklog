@@ -374,7 +374,9 @@ $_SQL[] = "
 CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
   [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
   [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
+  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
+  [inherit] [tinyint] NOT NULL, 
+  [tdefault] [tinyint] NOT NULL
 ) ON [PRIMARY]
 ";
 
@@ -1517,13 +1519,13 @@ $_SQL[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, intr
 
 $_SQL[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('article', '::all', 'all', 'RSS-2.0', 10, 1, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rss', 'iso-8859-1', 'en-gb', 1, getdate(), NULL)";
 
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '1')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '2')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '3')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '4')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('homeonly', 'block', '5')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '6')";
-$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('all', 'block', '7')";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '1', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '2', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '3', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '4', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('homeonly', 'block', '5', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '6', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '7', 1, 0)";
 
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.png','A topic that contains general news related posts.','News, Post, Information',1,10,6,2,3,2,2,2)";
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.png','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";

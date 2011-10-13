@@ -6,12 +6,14 @@ CREATE TABLE `{$_TABLES['topic_assignments']}` (
   `tid` varchar(20) NOT NULL,
   `type` varchar(30) NOT NULL,
   `id` varchar(40) NOT NULL,
+  `inherit` tinyint(1) NOT NULL default '1',
+  `tdefault` tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (`tid`,`type`,`id`)
 ) ENGINE=MyISAM";
 
 // Add new Topic Columns used for Child Topics
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD parent_id varchar(20) NOT NULL default 'root' AFTER archive_flag";
-$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD inherit tinyint(1) NOT NULL default '0' AFTER parent_id";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD inherit tinyint(1) NOT NULL default '1' AFTER parent_id";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD hidden tinyint(1) NOT NULL default '0' AFTER inherit";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD featured_article varchar(40) default NULL AFTER hidden";
 
@@ -34,7 +36,7 @@ function update_BlockTopicAssignmentsFor190()
     for( $i = 0; $i < $nrows; $i++ ) {
         $A = DB_fetchArray($result);
         
-        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id) VALUES ('{$A['tid']}', 'block', '{$A['bid']}')";
+        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'block', '{$A['bid']}', 1, 0)";
         DB_query($sql);
     }
 
