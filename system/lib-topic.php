@@ -64,7 +64,8 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
       $tree_array[$total_topic]['title'] = $LANG27[37];
       $tree_array[$total_topic]['language_id'] = '';
       $tree_array[$total_topic]['inherit'] = 1;
-      $tree_array[$total_topic]['hidden'] = 0;	
+      $tree_array[$total_topic]['hidden'] = 0;
+      $tree_array[$total_topic]['access'] = 2;  // Read Access
       
       $branch_level = $branch_level + 1;
 	}    
@@ -75,9 +76,11 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
         $sql_sort = " ORDER BY topic ASC";
     }
 	if ($parent) {
-		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
+		// $sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
+		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . $sql_sort;
 	} else {
-		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
+		//$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
+		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . $sql_sort;
 	}
 
 	$result = DB_query ($sql);
@@ -94,6 +97,7 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
             $tree_array[$total_topic]['language_id'] = COM_getLanguageIdForObject($A['tid']); // figure out language if need be
             $tree_array[$total_topic]['inherit'] = $A['inherit'];
             $tree_array[$total_topic]['hidden'] = $A['hidden'];    
+            $tree_array[$total_topic]['access'] = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
             
             // See if this topic has any children
             $tree_array = TOPIC_buildTree($tree_array[$total_topic]['id'], true, $branch_level, $tree_array);
@@ -103,23 +107,34 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
     return $tree_array;
 }
 
+function TOPIC_getIndex($id)
+{
+	global $_TOPICS;
+	
+	$index = 0;
+	
+	// Find id in $_TOPICS
+    $total_topic = count($_TOPICS);
+    for ($count_topic = 1; $count_topic <= $total_topic ; $count_topic++) {
+        if ($_TOPICS[$count_topic]['id'] == $id) {
+            $index = $count_topic;
+            break;
+        }
+    }
+    
+    return $index;
+}
+
 function TOPIC_getChildList($id)
 {
 	global $_TOPICS;
 	
 	$retval = '';
-	// Find id in $_TOPICS
-	$id_found = false;
+
+    $start_topic = TOPIC_getIndex($id);
     $total_topic = count($_TOPICS);
-    for ($count_topic = 1; $count_topic <= $total_topic ; $count_topic++) {
-        if ($_TOPICS[$count_topic]['id'] == $id) {
-            $start_topic = $count_topic;
-            $id_found = true;
-            break;
-        }
-    }
-	
-    if ($id_found) {
+    
+    if ($start_topic > 0) {
         $retval = "'{$_TOPICS[$start_topic]['id']}'";
     
         $min_branch_level = $_TOPICS[$start_topic]['branch_level'];
@@ -133,8 +148,8 @@ function TOPIC_getChildList($id)
             }        
             
             if ($branch_level_skip == 0) {
-                // Make sure to show topics for proper language only
-                if (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
+                // Make sure to show topics for proper language and access level only
+                if ($_TOPICS[$count_topic]['access'] > 0 && (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == ''))))) {
                     
                     if ($_TOPICS[$count_topic]['inherit'] == 1) {
                         $retval .= ", '" . $_TOPICS[$count_topic]['id'] . "'";
@@ -143,7 +158,7 @@ function TOPIC_getChildList($id)
                         $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];
                     }
                 } else {
-                    // Nothing inherited beyond this point because of language or beyond passed id
+                    // Nothing inherited beyond this point because of language or access beyond passed id
                     $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];
                 }
             }
@@ -211,57 +226,80 @@ function TOPIC_getOtherListSelect ($type, $id, $selected_ids = array())
 /**
 * This function creates html options for Topics, for a single or multi select box
 *
-* @param    string/array    $selected_ids   Topics Ids to mark as selected
-* @param    boolean         $include_root   Include Root in list
-* @param    string          $remove_id      Id of topic to not include (includes any children) (used for selection of parent id)
+* @param    string/array    $selected_ids       Topics Ids to mark as selected
+* @param    boolean         $include_root_all   Include Nothing (0) or Root (1) or All (2) in list. 
+* @param    string          $remove_id          Id of topic to not include (includes any children) (used for selection of parent id)
 * @return   HTML string
 *
 */
-function TOPIC_getTopicListSelect ($selected_ids = array(), $include_root = true, $remove_id = '')
+function TOPIC_getTopicListSelect ($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '')
 {
-    global $_TOPICS, $_TABLES, $LANG_CAT;
+    global $_TOPICS, $_TABLES, $LANG21;
 
     $retval = '';
     
     if (!is_array($selected_ids)) {
         $selected_ids = array($selected_ids);   
     }
-    if ($include_root) {
+    if ($include_root_all > 0) {
         $start_topic = 1;
     } else {
         $start_topic = 2;
     }
     $total_topic = count($_TOPICS);
     $branch_level_skip = 0;
+    $lang_id = '';
+    if ($language_specific) {
+        $lang_id = COM_getLanguageId();
+    }
 
     for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
-
-        // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
-        if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
-            $branch_level_skip = 0;
-        }        
-
-        if ($branch_level_skip == 0) {
-            $id =  $_TOPICS[$count_topic]['id'];
-            
-            if ($id != $remove_id) {
+        
+        if ($count_topic == 1) {
+            // Deal with Root or All
+            if ($include_root_all == 1) {
+                $id =  $_TOPICS[$count_topic]['id'];
                 $title =  $_TOPICS[$count_topic]['title'];
                 
-                $branch_spaces = "";
-                for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
-                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
-                }
-                
-                $retval .= '<option value="' . $id . '"';
-                
-                if (in_array($id, $selected_ids)) {
-                    $retval .= ' selected="selected"';
-                }
-                
-                $retval .= '>' . $branch_spaces . $title . '</option>';
             } else {
-                // Cannot pick child as parent so skip
-                $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];            
+                $id = TOPIC_ALL_OPTION;
+                $title = $LANG21[7];
+            }
+            $retval .= '<option value="' . $id . '"';
+            
+            if (in_array($id, $selected_ids)) {
+                $retval .= ' selected="selected"';
+            }
+            
+            $retval .= '>' . $title . '</option>';
+        } else {
+            // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
+            if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
+                $branch_level_skip = 0;
+            }        
+    
+            if ($branch_level_skip == 0) {
+                $id =  $_TOPICS[$count_topic]['id'];
+                
+                if ($_TOPICS[$count_topic]['access'] > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
+                    $title =  $_TOPICS[$count_topic]['title'];
+                    
+                    $branch_spaces = "";
+                    for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
+                        $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
+                    }
+                    
+                    $retval .= '<option value="' . $id . '"';
+                    
+                    if (in_array($id, $selected_ids)) {
+                        $retval .= ' selected="selected"';
+                    }
+                    
+                    $retval .= '>' . $branch_spaces . $title . '</option>';
+                } else {
+                    // Cannot pick child as parent so skip
+                    $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];            
+                }
             }
         }
     }    
@@ -584,7 +622,6 @@ function TOPIC_getTopicSelectionControl ($type, $id, $show_options = false, $sho
         $topic_templates->set_var('lang_default', $LANG27[45]);
         $topic_templates->set_var('topic_default_hide', '0');
         $topic_info .= $LANG27[43];
-        // $topic_templates->set_var('default_options', TOPIC_getTopicListSelect($default, false));
         $topic_templates->set_var('inherit_options', TOPIC_getOtherListSelect($type, $id, $default));
     } else {
         $topic_templates->set_var('default_hide', 'display: none;');

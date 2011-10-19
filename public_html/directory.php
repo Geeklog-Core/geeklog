@@ -100,12 +100,7 @@ function DIR_topicList ($topic = 'all', $year = 0, $month = 0, $standalone = fal
     }
     $retval .= '><div>' . LB;
     $retval .= '<select name="topic" onchange="this.form.submit()">' . LB;
-    $retval .= '<option value="all"';
-    if ($topic == 'all') {
-        $retval .= ' selected="selected"';
-    }
-    $retval .= '>' . $LANG21[7] . '</option>' . LB;
-    $retval .= COM_topicList ('tid,topic', $topic);
+    $retval .= TOPIC_getTopicListSelect($topic, 2, true);
     $retval .= '</select>' . LB;
     $retval .= '<input type="hidden" name="year" value="' . $year . '"' . XHTML . '>';
     $retval .= '<input type="hidden" name="month" value="' . $month . '"' . XHTML . '>';
@@ -264,7 +259,7 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
     $sql['mysql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     $sql['mssql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
     $sql['pgsql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,EXTRACT(day from date) AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
-        if ($topic != 'all') {
+    if ($topic != 'all') {
         $sql['mysql'] .= " AND (tid = '$topic')";
         $sql['mssql'] .= " AND (tid = '$topic')";
         $sql['pgsql'] .= " AND (tid = '$topic')";
@@ -449,12 +444,15 @@ function DIR_displayAll ($topic, $list_current_month = false)
 
     $yresult = DB_query ($ysql);
     $numyears = DB_numRows ($yresult);
-
-    for ($i = 0; $i < $numyears; $i++) {
-        $Y = DB_fetchArray ($yresult);
-
-        $retval .= DIR_displayYear ($topic, $Y['year']);
-    }
+    if ($numyears > 0) {
+        for ($i = 0; $i < $numyears; $i++) {
+            $Y = DB_fetchArray ($yresult);
+    
+            $retval .= DIR_displayYear ($topic, $Y['year']);
+        }
+    } else {
+        $retval .= '<p>' . $LANG_DIR['no_articles'] . '</p>';
+    }    
 
     return $retval;
 }

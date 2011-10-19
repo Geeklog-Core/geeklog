@@ -140,7 +140,7 @@ function edittopic ($tid = '')
     
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
-                              TOPIC_getTopicListSelect($A['parent_id'], true, $A['tid']));
+                              TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid']));
     
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);

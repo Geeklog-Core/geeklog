@@ -2280,7 +2280,8 @@ function COM_showTopics($topic = '')
         
         if ($branch_level_skip == 0) {
             // Make sure to show topics for proper language only
-            if (!$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {  
+            //if ($_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
+            if ($_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
                 $branch_spaces = "";
                 for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
                     $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
@@ -3568,7 +3569,7 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $_TOPICS;
 
     $retval = '';
 
@@ -3605,7 +3606,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         $commonsql .= " AND onleft = 0";
     }
 
-    if(!empty($topic)) {
+    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $_TOPICS[TOPIC_getIndex($topic)]['access'] > 0) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($topic);
         // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
