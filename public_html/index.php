@@ -226,12 +226,12 @@ COM_rdfUpToDateCheck();
 COM_featuredCheck();
 
 // Scan for any stories that have expired and should be archived or deleted
-$asql = "SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} ";
-$asql .= 'WHERE (expire <= NOW()) AND (statuscode = ' . STORY_DELETE_ON_EXPIRE;
+$asql = "SELECT sid,ta.tid,title,expire,statuscode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta ";
+$asql .= "WHERE (expire <= NOW()) AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (statuscode = " . STORY_DELETE_ON_EXPIRE;
 if (empty ($archivetid)) {
     $asql .= ')';
 } else {
-    $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND tid != '$archivetid'";
+    $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '$archivetid'";
 }
 $expiresql = DB_query ($asql);
 while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
@@ -249,18 +249,21 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 if (empty ($topic)) {
-    $sql .= COM_getLangSQL ('tid', 'AND', 's');
+    $sql .= COM_getLangSQL ('ta.tid', 'AND', 'ta');
 }
 
 // if a topic was provided only select those stories.
 if (!empty($topic)) {
-    $sql .= " AND s.tid = '$topic' ";
+    // Retrieve list of inherited topics
+    $tid_list = TOPIC_getChildList($topic);
+    // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
+    $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))";
 } elseif (!$newstories) {
-    $sql .= " AND frontpage = 1 ";
+    $sql .= " AND frontpage = 1 AND ta.tdefault = 1";
 }
 
 if ($topic != $archivetid) {
-    $sql .= " AND s.tid != '{$archivetid}' ";
+    $sql .= " AND ta.tid != '{$archivetid}' ";
 }
 
 $sql .= COM_getPermSQL ('AND', 0, 2, 's');
@@ -270,10 +273,10 @@ if (!empty($U['aids'])) {
 }
 
 if (!empty($U['tids'])) {
-    $sql .= " AND s.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
+    $sql .= " AND ta.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
 }
 
-$sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
+$sql .= COM_getTopicSQL ('AND', 0, 'ta') . ' ';
 
 if ($newstories) {
     switch ($_DB_dbms) {
@@ -299,32 +302,35 @@ if ($_CONF['allow_user_photo'] == 1) {
 }
 
 $msql = array(); 
-$msql['mysql']="SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, "
+$msql['mysql']="SELECT STRAIGHT_JOIN s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
          . $userfields . ", t.topic, t.imageurl "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-         . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
+         . " ta.type = 'article' AND ta.id = s.sid AND"
+         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
-$msql['mssql']="SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
+$msql['mssql']="SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
          . " UNIX_TIMESTAMP(s.date) AS unixdate, "
          . 'UNIX_TIMESTAMP(s.expire) as expireunix, '
          . $userfields . ", t.topic, t.imageurl "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-         . $sql . "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
-$msql['pgsql']="SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate,
+         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u, "
+         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
+         . " ta.type = 'article' AND ta.id = s.sid AND"
+         . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
+$msql['pgsql']="SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             UNIX_TIMESTAMP(s.expire) as expireunix,
             {$userfields}, t.topic, t.imageurl
-            FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u,
-            {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND
-            {$sql} ORDER BY featured DESC, date DESC LIMIT {$limit} OFFSET {$offset}";
+            FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
+            {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND 
+            ta.type = 'article' AND ta.id = s.sid AND 
+            {$sql} GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT {$limit} OFFSET {$offset}";
 
 $result = DB_query ($msql);
 
 $nrows = DB_numRows ($result);
 
-$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} AS s WHERE" . $sql);
+$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql");
 $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 

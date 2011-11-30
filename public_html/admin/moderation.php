@@ -496,7 +496,11 @@ function moderation($mid, $action, $type, $count)
 
         case 'approve':
             if ($type == 'story') {
-                $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} WHERE sid = '$mid[$i]'");
+                $sql = "SELECT *, ta.tid 
+                    FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta 
+                    WHERE ta.type = 'article' AND ta.id = sid  AND sid = '$mid[$i]'";
+                
+                $result = DB_query ($sql);
                 $A = DB_fetchArray ($result);
                 $A['related'] = addslashes (implode ("\n", STORY_extractLinks ($A['introtext'])));
                 $A['owner_id'] = $A['uid'];
@@ -512,8 +516,8 @@ function moderation($mid, $action, $type, $count)
                 } else {
                     $frontpage = 1;
                 }
-                DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,related,date,show_topic_icon,commentcode,trackbackcode,postmode,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-                "'{$A['sid']}',{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontpage,{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+                DB_save ($_TABLES['stories'],'sid,uid,title,introtext,bodytext,related,date,show_topic_icon,commentcode,trackbackcode,postmode,frontpage,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+                "'{$A['sid']}',{$A['uid']},'{$A['title']}','{$A['introtext']}','{$A['bodytext']}','{$A['related']}','{$A['date']}','{$_CONF['show_topic_icon']}','{$_CONF['comment_code']}','{$_CONF['trackback_code']}','{$A['postmode']}',$frontpage,{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES['storysubmission'],"$id",$mid[$i]);
 
                 PLG_itemSaved($A['sid'], 'article');

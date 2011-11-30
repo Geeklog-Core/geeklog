@@ -140,7 +140,7 @@ function edittopic ($tid = '')
     
     $topic_templates->set_var('lang_parent_id', $LANG27[32]);
     $topic_templates->set_var('parent_id_options',
-                              TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid']));
+                              TOPIC_getTopicListSelect($A['parent_id'], 1, false, $A['tid'], true));
     
     $topic_templates->set_var('lang_inherit', $LANG27[33]);
     $topic_templates->set_var('lang_inherit_info', $LANG27[34]);
@@ -261,7 +261,7 @@ function edittopic ($tid = '')
     if (empty($tid)) {
         $num_stories = $LANG_ADMIN['na'];
     } else {
-        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE tid = '" . addslashes($tid) . "'" . COM_getPermSql('AND'));
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tid = '" . addslashes($tid) . "'" . COM_getPermSql('AND'));
         $N = DB_fetchArray( $nresult );
         $num_stories = COM_numberFormat($N['count']);
     }
@@ -291,8 +291,6 @@ function changetopicid($tid, $old_tid)
 
     DB_change($_TABLES['topic_assignments'], 'tid', $tid, 'tid', $old_tid);
     DB_change($_TABLES['topics'], 'parent_id', $tid, 'parent_id', $old_tid);
-    DB_change($_TABLES['stories'], 'tid', $tid, 'tid', $old_tid);
-    DB_change($_TABLES['storysubmission'], 'tid', $tid, 'tid', $old_tid);
     DB_change($_TABLES['syndication'], 'header_tid', $tid,
                                        'header_tid', $old_tid);
 
@@ -372,7 +370,31 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION || $tid == TOPIC_ROOT) {
         $restricted_tid = true;
     }
-
+    
+    // Make sure parent id exists
+    $parent_id_found = false;
+    if ($parent_id == DB_getItem($_TABLES['topics'], 'tid', "tid = '$parent_id'") || $parent_id == TOPIC_ROOT) {
+        $parent_id_found = true;
+    
+    }    
+    
+    // Check if parent archive topic, if so bail
+    $archive_parent = false;
+    $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');    
+    if ($parent_id == $archive_tid) {
+        $archive_parent = true;
+    }
+    
+    // If archive topic, make sure no child topics else bail
+    $archive_child = false;
+    $is_archive = ($is_archive == 'on') ? 1 : 0;
+    if ($is_archive) {
+        if ($tid == DB_getItem($_TABLES['topics'], 'parent_id', "parent_id = '$tid'")) {
+            $archive_child = true;
+        }
+    }
+    
+    
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
@@ -409,7 +431,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                     . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
                     . COM_siteFooter();
             COM_accessLog("User {$_USER['username']} tried to illegally assign topic $tid to $parent_id.");
-        } elseif (!empty($tid) && !empty($topic) && !$restricted_tid) {
+        } elseif (!empty($tid) && !empty($topic) && !$restricted_tid && !$archive_parent && !$archive_child && $parent_id_found) {
             if ($imageurl == '/images/topics/') {
                 $imageurl = '';
             }
@@ -424,20 +446,21 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 $is_default = 0;
             }
     
-            $is_archive = ($is_archive == 'on') ? 1 : 0;
-            
-            $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
             if ($is_archive) {
                 // $tid is the archive topic
                 // - if it wasn't already, mark all its stories "archived" now
-                if ($archivetid != $tid) {
+                if ($archive_tid != $tid) {
                     DB_query ("UPDATE {$_TABLES['stories']} SET featured = 0, frontpage = 0, statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " WHERE tid = '$tid'");
                     DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
                 }
+                
+                // Set hidden and inherit to false since archive topic now
+                $inherit = ''; 
+                $hidden = '';
             } else {
                 // $tid is not the archive topic
                 // - if it was until now, reset the "archived" status of its stories
-                if ($archivetid == $tid) {
+                if ($archive_tid == $tid) {
                     DB_query ("UPDATE {$_TABLES['stories']} SET statuscode = 0 WHERE tid = '$tid'");
                     DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
                 }
@@ -482,6 +505,18 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval .= COM_siteHeader('menu', $LANG27[1]);
             $retval .= COM_errorLog($LANG27[31], 2);
             $retval .= COM_siteFooter();
+        } elseif ($archive_parent) {
+            $retval .= COM_siteHeader('menu', $LANG27[1]);
+            $retval .= COM_errorLog($LANG27[46], 2);
+            $retval .= COM_siteFooter();            
+        } elseif ($archive_child) {
+            $retval .= COM_siteHeader('menu', $LANG27[1]);
+            $retval .= COM_errorLog($LANG27[47], 2);
+            $retval .= COM_siteFooter();
+        } elseif (!$parent_id_found) {
+            $retval .= COM_siteHeader('menu', $LANG27[1]);
+            $retval .= COM_errorLog($LANG27[48], 2);
+            $retval .= COM_siteFooter();            
         } else {
             $retval .= COM_siteHeader('menu', $LANG27[1]);
             $retval .= COM_errorLog($LANG27[7], 2);
@@ -610,25 +645,69 @@ function deleteTopic ($tid)
 
     // same with feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
+    
+    // Need to cycle through stories from topic
+    // Only delete story if only this one topic
+    // Make sure to check if this topic is default for story. If is make another topic default.
+    $object_tables[] = $_TABLES['stories'];
+    $object_tables[] = $_TABLES['storysubmission'];
+    $object_tables[] = $_TABLES['blocks'];
+    $object_tables_id[$_TABLES['stories']] = 'sid';
+    $object_tables_id[$_TABLES['storysubmission']] = 'sid';
+    $object_tables_id[$_TABLES['blocks']] = 'bid';
+    $object_type[$_TABLES['stories']] = 'article';
+    $object_type[$_TABLES['storysubmission']] = 'article';
+    $object_type[$_TABLES['blocks']] = 'block';
 
-    // delete comments, trackbacks, images associated with stories in this topic
-    $result = DB_query ("SELECT sid FROM {$_TABLES['stories']} WHERE tid = '$tid'");
-    $numStories = DB_numRows($result);
-    for ($i = 0; $i < $numStories; $i++) {
-        $A = DB_fetchArray($result);
-        STORY_deleteImages($A['sid']);
-        DB_delete($_TABLES['comments'], array('sid', 'type'),
-                                        array($A['sid'], 'article'));
-        DB_delete($_TABLES['trackback'], array('sid', 'type'),
-                                         array($A['sid'], 'article'));
+    foreach ($object_tables as $object_table) {
+        $sql = "SELECT {$object_tables_id[$object_table]}, ta.tdefault  
+            FROM $object_table, {$_TABLES['topic_assignments']} ta  
+            WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = {$object_tables_id[$object_table]} AND ta.tid = '$tid'";
+        $result = DB_query ($sql);
+        $numStories = DB_numRows($result);
+        for ($i = 0; $i < $numStories; $i++) {
+            $A = DB_fetchArray($result);
+            
+            // Now check if another topic exists for this story
+            $sql = "SELECT {$object_tables_id[$object_table]}, ta.tid 
+                FROM $object_table, {$_TABLES['topic_assignments']} ta  
+                WHERE ta.type = '{$object_type[$object_table]}' AND ta.id = {$object_tables_id[$object_table]}  
+                AND ta.tid <> '$tid' AND {$object_tables_id[$object_table]} = '{$A[$object_tables_id[$object_table]]}'";
+            $resultB = DB_query($sql);
+            $numTopics = DB_numRows($resultB);
+            if ($numTopics == 0) {
+                // Delete comments, trackbacks, images associated with stories in this topic since only topic
+                if ($object_table == $_TABLES['stories'] || $object_table == $_TABLES['storysubmission']) {
+                    STORY_deleteImages($A['sid']);
+                    DB_delete($_TABLES['comments'], array('sid', 'type'),
+                                                    array($A['sid'], 'article'));
+                    DB_delete($_TABLES['trackback'], array('sid', 'type'),
+                                                     array($A['sid'], 'article'));
+                    
+                    if ($object_table == $_TABLES['stories']) {
+                        PLG_itemDeleted($A['sid'], 'article');
+                    }
+                }
+                  
+                DB_delete($object_table, $object_tables_id[$object_table], $A[$object_tables_id[$object_table]]);
+            } else {
+                // Story still exists for other topics so make sure one is default
+                if ($object_table == $_TABLES['stories'] || $object_table == $_TABLES['storysubmission']) {
+                    if ($A['tdefault'] == 1) {
+                        $B = DB_fetchArray($resultB);
+                        
+                        $sql = "UPDATE {$_TABLES['topic_assignments']} SET tdefault = 1 WHERE type = 'article' AND tid = '{$B['tid']}' AND id = '{$B['sid']}'";
+                        DB_query($sql);                
+                    }
+                }
+            }
+        }
     }
-
-    // Notify of Delete topic mainly for centerblock assignments
+    
+    // Notify of Delete topic so other plugins can deal with their items without topics
     PLG_itemDeleted($tid, 'topic');
     
     // delete these
-    DB_delete($_TABLES['stories'], 'tid', $tid);
-    DB_delete($_TABLES['storysubmission'], 'tid', $tid);
     DB_delete($_TABLES['topic_assignments'], 'tid', $tid);
     DB_delete($_TABLES['topics'], 'tid', $tid);
 
@@ -806,7 +885,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset($_POST['sortnum'])) {
         $sortnum = COM_applyFilter($_POST['sortnum'], true);
     }
-    $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic'],
+    $display .= savetopic(COM_applyFilter($_POST['tid']), $_POST['topic_name'],
                           $inherit, $hidden, $parent_id,
                           $imageurl, $_POST['meta_description'],
                           $_POST['meta_keywords'], $sortnum,

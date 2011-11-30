@@ -224,6 +224,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
     $retval = '';
     $filter_str = '';
     $order_sql = '';
+    $group_by_sql = '';
     $limit = '';
     $prevorder = '';
     if (isset ($_GET['prevorder'])) { # what was the last sorting?
@@ -481,8 +482,12 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         else $use_fieldfunction = 1;
     } else $use_fieldfunction = 0;
 
+    if (!empty($query_arr['query_group'])){ # add group by to sql
+        $group_by_sql = " GROUP BY {$query_arr['query_group']}";
+    }
+    
     # SQL
-    $sql .= "$filter_str $order_sql $limit;";
+    $sql .= "$filter_str $group_by_sql $order_sql $limit;";
     // echo $sql;
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -692,28 +697,7 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
             break;
             
         case 'topic':
-            // Retrieve Topic options
-            $sql['mysql'] = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = 'block' AND id ='{$A['bid']}'";
-            $sql['mssql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='{$A['bid']}' AND t.tid = ta.tid";
-            $sql['pgsql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='{$A['bid']}' AND t.tid = ta.tid";
-        
-            $result = DB_query($sql);
-            $A = DB_fetchArray($result);
-            $nrows = DB_numRows($result);
-            if ($A['tid'] == TOPIC_ALL_OPTION) {
-                $retval = $LANG21[7];                
-            } elseif ($A['tid'] == TOPIC_HOMEONLY_OPTION) {
-                $retval = $LANG21[43];    
-            } else {
-                if ($nrows == 0) {
-                    $retval = $LANG21[47]; // None
-                } elseif ($nrows > 1) {
-                    $retval = $LANG21[44]; // Multiple
-                } else {
-                    $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['tid']}'");
-                }
-            }
-            
+            $retval = TOPIC_getTopicAdminColumn('block', $A['bid']);
             break;
 
         default:
@@ -909,13 +893,10 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
 {
     global $_CONF, $_TABLES, $LANG_ADMIN, $LANG24, $LANG_ACCESS, $_IMAGE_TYPE;
 
-    static $topics, $topic_access, $topic_anon;
+    static $topics;
 
     if (!isset($topics)) {
         $topics = array();
-    }
-    if (!isset($topic_access)) {
-        $topic_access = array();
     }
 
     $retval = '';
@@ -953,10 +934,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
                                 $A['perm_owner'], $A['perm_group'],
                                 $A['perm_members'], $A['perm_anon']);
         if ($access == 3) {
-            if (!isset($topic_access[$A['tid']])) {
-                $topic_access[$A['tid']] = SEC_hasTopicAccess($A['tid']);
-            }
-            if ($topic_access[$A['tid']] == 3) {
+            if (TOPIC_hasMultiTopicAccess('article', $A['sid']) == 3) {
                 $access = $LANG_ACCESS['edit'];
             } else {
                 $access = $LANG_ACCESS['readonly'];
@@ -994,12 +972,18 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     case 'ping':
-        if (!isset($topic_anon[$A['tid']])) {
-            $topic_anon[$A['tid']] = DB_getItem($_TABLES['topics'], 'perm_anon',
-                "tid = '" . addslashes($A['tid']) . "'");
+        // Allow ping if all topics allow anonymous access that story belongs too
+        $topic_anon = 0;
+        $tids = TOPIC_getTopicIdsForObject('article', $A['sid']);
+        foreach ($tids as $tid) {
+            $current_access = DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '" . addslashes($tid) . "'");
+            if ($topic_anon < $current_access) {
+                $topic_anon = $current_access;
+            }            
         }
+
         if (($A['draft_flag'] == 0) && ($A['unixdate'] < time()) &&
-                ($A['perm_anon'] != 0) && ($topic_anon[$A['tid']] != 0)) {
+                ($A['perm_anon'] != 0) && ($topic_anon != 0)) {
             $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
                      . $_IMAGE_TYPE . '" alt="' . $LANG24[21] . '" title="'
                      . $LANG24[21] . '"' . XHTML . '>';
@@ -1010,13 +994,9 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
             $retval = '';
         }
         break;
-
-    case 'tid':
-        if (!isset($topics[$A['tid']])) {
-            $topics[$A['tid']] = DB_getItem($_TABLES['topics'], 'topic',
-                                            "tid = '{$A['tid']}'");
-        }
-        $retval = $topics[$A['tid']];
+        
+    case 'topic_ids':
+        $retval = TOPIC_getTopicAdminColumn('article', $A['sid']);
         break;
 
     case 'username':
@@ -1284,10 +1264,8 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     default:
-        if (($fieldname == 3) &&
-                (($type == 'story') || ($type == 'story_draft'))) {
-            $retval = DB_getItem($_TABLES['topics'], 'topic',
-                                  "tid = '{$A[3]}'");
+        if (($fieldname == 3) && (($type == 'story') || ($type == 'story_draft'))) {
+            $retval = TOPIC_getTopicAdminColumn('article', $A[0]);
         } elseif (($fieldname == 2) && ($type == 'comment')) {
             $commenttext = COM_getTextContent($A['comment']);
             $excerpt = htmlspecialchars(COM_truncate($commenttext, 140, '...'));

@@ -196,8 +196,7 @@ class Search {
         $searchform->set_var('date_format', $LANG09[22]);
         $searchform->set_var('lang_topic', $LANG09[3]);
         $searchform->set_var('lang_all', $LANG09[4]);
-        $searchform->set_var('topic_option_list',
-                            COM_topicList ('tid,topic', $this->_topic));
+        $searchform->set_var('topic_option_list', TOPIC_getTopicListSelect($this->_topic, 2, true));
         $searchform->set_var('lang_type', $LANG09[5]);
         $searchform->set_var('lang_results', $LANG09[59]);
         $searchform->set_var('lang_per_page', $LANG09[60]);
@@ -328,12 +327,15 @@ class Search {
         $sql = 'SELECT s.sid AS id, s.title AS title, s.introtext AS description, ';
         $sql .= 'UNIX_TIMESTAMP(s.date) AS date, s.uid AS uid, s.hits AS hits, ';
         $sql .= 'CONCAT(\'/article.php?story=\',s.sid) AS url ';
-        $sql .= 'FROM '.$_TABLES['stories'].' AS s, '.$_TABLES['users'].' AS u ';
+        $sql .= 'FROM '.$_TABLES['stories'].' AS s, '.$_TABLES['users'].' AS u, '.$_TABLES['topic_assignments'].' AS ta ';
         $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
+        $sql .= 'AND ta.type = \'article\' AND ta.id = sid '; 
         $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
 
         if (!empty($this->_topic)) {
-            $sql .= 'AND (s.tid = \''.$this->_topic.'\') ';
+            $sql .= 'AND (ta.tid = \''.$this->_topic.'\') ';
+        } else {
+            $sql .= 'AND ta.tdefault = 1 ';
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (s.uid = \''.$this->_author.'\') ';
@@ -361,13 +363,16 @@ class Search {
             $sql .= 'CONCAT(\'/comment.php?mode=view&amp;cid=\',c.cid) AS url ';
         }
 
-        $sql .= 'FROM '.$_TABLES['users'].' AS u, '.$_TABLES['comments'].' AS c ';
+        $sql .= 'FROM '.$_TABLES['users'].' AS u, '.$_TABLES['topic_assignments'].' AS ta, '.$_TABLES['comments'].' AS c ';
         $sql .= 'LEFT JOIN '.$_TABLES['stories'].' AS s ON ((s.sid = c.sid) ';
-        $sql .= COM_getPermSQL('AND',0,2,'s').COM_getTopicSQL('AND',0,'s').COM_getLangSQL('sid','AND','s').') ';
+        $sql .= COM_getPermSQL('AND',0,2,'s').COM_getTopicSQL('AND',0,'ta').COM_getLangSQL('sid','AND','s').') ';
         $sql .= 'WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ';
+        $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid ';
 
         if (!empty($this->_topic)) {
-            $sql .= 'AND (s.tid = \''.$this->_topic.'\') ';
+            $sql .= 'AND (ta.tid = \''.$this->_topic.'\') ';
+        } else {
+            $sql .= 'AND ta.tdefault = 1 ';            
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (c.uid = \''.$this->_author.'\') ';

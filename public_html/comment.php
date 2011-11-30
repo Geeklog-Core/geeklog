@@ -116,11 +116,10 @@ function handleSubmit()
     $title = strip_tags(COM_stripslashes($_POST['title']));
 
     if ($type == 'article') {
-
         $commentcode = DB_getItem($_TABLES['stories'], 'commentcode',
                     "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())"
-                    . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
-        if (!isset($commentcode) || ($commentcode != 0)) {
+                    . COM_getPermSQL('AND'));
+        if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $sid) < 2)) { // Need read access of topics to post comment
             return COM_refresh($_CONF['site_url'] . '/index.php');
         }
 
@@ -509,8 +508,8 @@ default:  // New Comment
     if (($type == 'article') && !empty($sid)) {
         $dbTitle = DB_getItem($_TABLES['stories'], 'title',
                     "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
-                    . COM_getPermSQL('AND') . COM_getTopicSQL('AND'));
-        if ($dbTitle === null) {
+                    . COM_getPermSQL('AND'));
+        if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
             // no permissions, or no story of that title
             $display = COM_refresh($_CONF['site_url'] . '/index.php');
             $abort = true;

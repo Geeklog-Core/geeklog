@@ -40,14 +40,9 @@
                                         <td class="alignright">{lang_page_title}:</td>
                                         <td><input type="text" size="48" maxlength="128" name="page_title" value="{page_title}"{xhtml}></td>
                                     </tr>
-
                                     <tr>
-                                        <td class="alignright">{lang_topic}:</td>
-                                        <td>
-                                            <select name="tid">
-                                                {topic_options}
-                                            </select>
-                                        </td>
+                                        <td class="alignright" valign="top">{lang_topic}:</td>
+                                        <td>{topic_selection}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_show_topic_icon}:</td>

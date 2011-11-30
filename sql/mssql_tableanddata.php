@@ -294,7 +294,6 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
     [draft_flag] [tinyint] NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [datetime] NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [page_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -394,7 +393,6 @@ CREATE TABLE [dbo].[{$_TABLES['topics']}] (
     [parent_id] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     [inherit] [tinyint] NOT NULL,
     [hidden] [tinyint] NOT NULL,
-    [featured_article] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
     [perm_owner] [tinyint] NOT NULL ,
@@ -676,7 +674,6 @@ $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['statuscodes']}] ADD
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['stories']}] ADD
     CONSTRAINT [DF_{$_TABLES['stories']}_uid] DEFAULT (1) FOR [uid],
     CONSTRAINT [DF_{$_TABLES['stories']}_draft_flag] DEFAULT (0) FOR [draft_flag],
-    CONSTRAINT [DF_{$_TABLES['stories']}_tid] DEFAULT ('General') FOR [tid],
     CONSTRAINT [DF_{$_TABLES['stories']}_hits] DEFAULT (0) FOR [hits],
     CONSTRAINT [DF_{$_TABLES['stories']}_comments] DEFAULT (0) FOR [comments],
     CONSTRAINT [DF_{$_TABLES['stories']}_trackbacks] DEFAULT (0) FOR [trackbacks],
@@ -1513,9 +1510,9 @@ $_SQL[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (1,'Refresh
 $_SQL[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (0,'Normal')";
 $_SQL[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (10,'Archive')";
 
-$_SQL[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('welcome',2,0,'Geeklog',getdate(),'Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing Geeklog. Please take the time to read everything in the <a href=\"docs/english/index.html\">docs directory</a>. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>To log into your new Geeklog site, please use this account:\r<p>Username: <b>Admin</b><br>\rPassword: <b>password</b> <p><b>And don''t forget to <a href=\"usersettings.php\">change your password</a> after logging in!</b>','',100,1,0,'',1,0,0,'html',1,2,3,3,2,2,2)";
+$_SQL[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('welcome',2,0,getdate(),'Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing Geeklog. Please take the time to read everything in the <a href=\"docs/english/index.html\">docs directory</a>. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>To log into your new Geeklog site, please use this account:\r<p>Username: <b>Admin</b><br>\rPassword: <b>password</b> <p><b>And don''t forget to <a href=\"usersettings.php\">change your password</a> after logging in!</b>','',100,1,0,'',1,0,0,'html',1,2,3,3,2,2,2)";
 
-$_SQL[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('security-reminder',2,'Geeklog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for the Admin account.</li>\r<li>Remove the install directory (you won''t need it any more).</li>\r</ol>',getdate(),'html')";
+$_SQL[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, title, introtext, date, postmode) VALUES ('security-reminder',2,'Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for the Admin account.</li>\r<li>Remove the install directory (you won''t need it any more).</li>\r</ol>',getdate(),'html')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, header_tid, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('article', '::all', 'all', 'RSS-2.0', 10, 1, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rss', 'iso-8859-1', 'en-gb', 1, getdate(), NULL)";
 
@@ -1526,6 +1523,8 @@ $_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, 
 $_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('homeonly', 'block', '5', 1, 0)";
 $_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '6', 1, 0)";
 $_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('all', 'block', '7', 1, 0)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('Geeklog', 'article', 'welcome', 1, 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('Geeklog', 'article', 'security-reminder', 1, 1)";
 
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.png','A topic that contains general news related posts.','News, Post, Information',1,10,6,2,3,2,2,2)";
 $_SQL[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, meta_description, meta_keywords, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('Geeklog','Geeklog','/images/topics/topic_gl.png','A topic that contains posts about Geeklog.','Geeklog, Posts, Information',2,10,6,2,3,2,2,2)";

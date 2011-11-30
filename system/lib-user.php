@@ -999,20 +999,17 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('headline_last10comments', $LANG04[10]);
     $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
-    $result = DB_query("SELECT tid FROM {$_TABLES['topics']}"
-                       . COM_getPermSQL());
-    $nrows = DB_numRows($result);
-    $tids = array();
-    for ($i = 0; $i < $nrows; $i++) {
-        $T = DB_fetchArray($result);
-        $tids[] = $T['tid'];
-    }
+    $tids = TOPIC_getList();
     $topics = "'" . implode("','", $tids) . "'";
 
     // list of last 10 stories by this user
     if (count($tids) > 0) {
-        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL('AND');
-        $sql .= " ORDER BY unixdate DESC LIMIT 10";
+        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate 
+            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+            WHERE (uid = $uid) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL('AND') . " 
+            AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+            ORDER BY unixdate DESC LIMIT 10";
+            
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
     } else {

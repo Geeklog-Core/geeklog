@@ -30,7 +30,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_topicname}:</td>
-                                        <td><input type="text" size="48" name="topic" value="{topic_name}"{xhtml}></td>
+                                        <td><input type="text" size="48" name="topic_name" value="{topic_name}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_topicimage}:</td>

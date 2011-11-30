@@ -9,12 +9,8 @@
                                         <td><input type="text" size="36" maxlength="96" name="title" value="{story_title}"{xhtml}></td>
                                     </tr>
                                     <tr>
-                                        <td class="alignright"><b>{lang_topic}:</b></td>
-                                        <td>
-                                            <select name="tid">
-                                                {story_topic_options}
-                                            </select>
-                                        </td>
+                                        <td class="alignright" style="vertical-align:top;"><b>{lang_topic}:</b></td>
+                                        <td>{topic_selection}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;"><b>{lang_introtext}:</b></td>

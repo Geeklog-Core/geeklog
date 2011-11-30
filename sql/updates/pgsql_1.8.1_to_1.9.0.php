@@ -16,13 +16,42 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN parent_id varchar(20) NOT NULL default 'root' AFTER archive_flag";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN inherit smallint NOT NULL default '1' AFTER parent_id";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN hidden smallint NOT NULL default '0' AFTER inherit";
-$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN featured_article varchar(40) default NULL AFTER hidden";
 
 // Update Session Table
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN whos_online smallint NOT NULL default '1' AFTER md5_sess_id";
 
 /**
- * Add new config options
+ * Create Story and Submission Topic assignments
+ *
+ */
+function update_StoryTopicAssignmentsFor190()
+{
+    global $_TABLES;
+    
+    $story_tables[] = $_TABLES['stories'];
+    $story_tables[] = $_TABLES['storysubmission'];
+
+    foreach ($story_tables as $story_table) {
+        $sql = "SELECT * FROM $story_table";
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+    
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            
+            $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'article', '{$A['sid']}', 1, 1)";
+            DB_query($sql);
+        }
+        
+        // Remove tid from table
+        $sql = "ALTER TABLE $story_table DROP tid";
+        DB_query($sql);
+    }
+
+}
+
+/**
+ * Create Block Topic assignments
  *
  */
 function update_BlockTopicAssignmentsFor190()
@@ -34,7 +63,7 @@ function update_BlockTopicAssignmentsFor190()
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
-    for( $i = 0; $i < $nrows; $i++ ) {
+    for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         
         $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'block', '{$A['bid']}', 1, 0)";

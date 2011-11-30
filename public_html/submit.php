@@ -172,7 +172,9 @@ function submitstory($topic = '')
     $storyform->set_var('story_title', $story->EditElements('title'));
     $storyform->set_var('lang_topic', $LANG12[28]);
 
-    $tlist = COM_topicList('tid,topic', $story->EditElements('tid'));
+    
+    $tlist = TOPIC_getTopicListSelect($story->EditElements('tid'), 0, true);
+    $storyform->set_var('topic_selection', TOPIC_getTopicSelectionControl('article', $story->EditElements('tid')));
     if (empty($tlist)) {
         $retval .= COM_showMessage(101);
         return $retval;
@@ -351,8 +353,9 @@ function savesubmission($type, $A)
             return $retval;
         }
     }
+    
 
-    if (!empty ($A['title']) && !empty ($A['introtext'])) {
+    if (!empty($A['title']) && !empty($A['introtext']) && TOPIC_checkTopicSelectionControl()) {
         $retval = savestory ($A);
     } else {
         $retval .= COM_startBlock ($LANG12[22], '',

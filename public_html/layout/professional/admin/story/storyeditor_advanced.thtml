@@ -29,12 +29,8 @@
                 <td><textarea name="meta_keywords" style="width:100%" cols="45" rows="2">{meta_keywords}</textarea></td>
             </tr>            
             <tr>
-                <td class="alignright">{lang_topic}:</td>
-                <td>
-                    <select name="tid">
-                        {topic_options}
-                    </select>
-                </td>
+                <td class="alignright" valign="top">{lang_topic}:</td>
+                <td>{topic_selection}</td>
             </tr>
             <tr>
                 <td class="alignright">{lang_story_stats}:</td>

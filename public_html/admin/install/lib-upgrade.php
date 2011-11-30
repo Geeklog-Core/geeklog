@@ -486,6 +486,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
             
             update_BlockTopicAssignmentsFor190();
             
+            update_StoryTopicAssignmentsFor190();
+            
             $current_gl_version = '1.9.0';
             $_SQL = '';
             break;

@@ -115,7 +115,7 @@ class Story
     var $_postmode;
     var $_uid;
     var $_draft_flag;
-    var $_tid;
+    //var $_tid;
     var $_date;
     var $_hits;
     var $_numemails;
@@ -178,7 +178,7 @@ class Story
            'sid' => 1,
            'uid' => 1,
            'draft_flag' => 1,
-           'tid' => 1,
+           //'tid' => 1,
            'date' => 1,
            'title' => 1,
            'page_title' => 1, 
@@ -225,11 +225,11 @@ class Story
                 STORY_AL_NUMERIC,
                 '_uid'
               ),
-           'tid' => array
-              (
-                STORY_AL_ALPHANUM,
-                '_tid'
-              ),
+           //'tid' => array
+           //   (
+           //     STORY_AL_ALPHANUM,
+           //     '_tid'
+           //   ),
            'page_title' => array
               (
                 STORY_AL_ANYTHING,
@@ -442,23 +442,41 @@ class Story
 
         if (!empty($sid) && (($mode == 'edit') || ($mode == 'view') || ($mode == 'clone'))) {
             $sql = array();
-
-            $sql['mysql']
-            = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
+            /* Original
+            $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+            */
+            $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl 
+                FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta 
+                WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
 
-            $sql['mssql'] =
-                "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, " . " UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, " . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
-            $sql['pgsql'] =
-              "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, "
-                . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
+            $sql['mssql'] = "SELECT STRAIGHT_JOIN s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl 
+                FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta 
+                WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
+            
+            $sql['pgsql'] = "SELECT s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) as expireunix, UNIX_TIMESTAMP(s.comment_expire) as cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl 
+                FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta 
+                WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
         } elseif (!empty($sid) && ($mode == 'editsubmission')) {
+            /* Original
             $sql['mysql'] = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
             $sql['mssql'] = 'SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
             $sql['pgsql'] = 'SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
+            */                
+            $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, t.perm_owner, t.perm_group, t.perm_members, t.perm_anon 
+                FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta  
+                WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')  
+                AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
+                
+            $sql['mssql'] = $sql['mysql'];                 
+                
+            $sql['pgsql'] = "SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, t.perm_owner, t.perm_group, t.perm_members, t.perm_anon  
+                FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta  
+                WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')  
+                AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
         } elseif ($mode == 'edit') {
             $this->_sid = COM_makesid();
             $this->_old_sid = $this->_sid;
@@ -570,8 +588,9 @@ class Story
                 $access = SEC_hasAccess($story['owner_id'], $story['group_id'],
                             $story['perm_owner'], $story['perm_group'],
                             $story['perm_members'], $story['perm_anon']);
-
-                $this->_access = min($access, SEC_hasTopicAccess($this->_tid));
+                
+                //$this->_access = min($access, SEC_hasTopicAccess($this->_tid));
+                $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
 
                 if ($this->_access == 0) {
                     return STORY_PERMISSION_DENIED;
@@ -609,9 +628,16 @@ class Story
                 $this->_comment_expire = 0;
             }
 
+            /* Tom
             if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$this->_tid}'") == 1) {
                 $this->_frontpage = 0;
             } elseif (isset($_CONF['frontpage'])) {
+                $this->_frontpage = $_CONF['frontpage'];
+            } else {
+                $this->_frontpage = 1;
+            }
+            */
+            if (isset($_CONF['frontpage'])) {
                 $this->_frontpage = $_CONF['frontpage'];
             } else {
                 $this->_frontpage = 1;
@@ -669,12 +695,17 @@ class Story
     {
         global $_TABLES,$_DB_dbms;
 
-        if (DB_getItem($_TABLES['topics'], 'tid', 'archive_flag=1') == $this->_tid) {
-            $this->_featured = 0;
-            $this->_frontpage = 0;
-            $this->_statuscode = STORY_ARCHIVE_ON_EXPIRE;
+        
+        $tids = TOPIC_getTopicIdsForObject('topic');
+        $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag=1');
+        if (!empty($tids) && !empty($archive_tid)) {
+            if (in_array($archive_tid, $tids)) {
+                $this->_featured = 0;
+                $this->_frontpage = 0;
+                $this->_statuscode = STORY_ARCHIVE_ON_EXPIRE;
+            }
         }
-
+        
         /* if a featured, non-draft, that goes live straight away, unfeature
          * other stories in same topic:
          */
@@ -687,7 +718,11 @@ class Story
                 }
 
                 // un-feature any featured story in the same topic
-                DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND tid = '{$this->_tid}' AND date <= NOW()");
+                //DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE featured = 1 AND draft_flag = 0 AND tid = '{$this->_tid}' AND date <= NOW()");
+                $tids = TOPIC_getTopicIdsForObject('topic');
+                if (!empty($tids)) {
+                    DB_query("UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND (ta.tid IN ('" . implode( "','", $tids ) . "')) AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW()");
+                }
             }
         }
 
@@ -793,6 +828,9 @@ class Story
         $values = substr($values, 0, strlen($values) - 2);
 
         DB_save($_TABLES['stories'],$fields,$values);
+        
+        // Save Topics selected
+        TOPIC_saveTopicSelectionControl('article', $this->_sid);        
 
         if ($oldArticleExists) {
             /* Clean up the old story */
@@ -853,19 +891,16 @@ class Story
         $access = SEC_hasAccess($this->_owner_id, $this->_group_id, $this->_perm_owner, $this->_perm_group,
                                     $this->_perm_members, $this->_perm_anon);
 
-        if (($access < 3) || !SEC_hasTopicAccess($this->_tid) || !SEC_inGroup($this->_group_id)) {
+        //if (($access < 3) || !SEC_hasTopicAccess($this->_tid) || !SEC_inGroup($this->_group_id)) {
+        if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($this->_group_id)) {            
             return STORY_NO_ACCESS_PARAMS;
         }
 
         /* Load up the topic name and icon */
-        $topic = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='{$this->_tid}'");
+        $topic = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid='" . TOPIC_getTopicDefault('topic') . "'");
         $topic = DB_fetchArray($topic);
         $this->_topic = $topic['topic'];
         $this->_imageurl = $topic['imageurl'];
-
-        //$title = COM_stripSlashes( $array['title'] );
-        //$intro = COM_stripSlashes( $array['introtext'] );
-        //$body = COM_stripSlashes( $array['bodytext'] );
 
         /* Then load the title, intro and body */
         if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor') || ($array['postmode'] == 'wikitext')) {
@@ -914,8 +949,7 @@ class Story
 
         // Have we specified a permitted topic?
         if (!empty($topic)) {
-            $allowed
-            = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . addslashes($topic) . "'" . COM_getTopicSql('AND'));
+            $allowed = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . addslashes($topic) . "'" . COM_getTopicSql('AND'));
 
             if ($allowed != $topic) {
                 $topic = '';
@@ -984,7 +1018,9 @@ class Story
             $this->_plainTextLoadStory($array['title'], $array['introtext'], $array['bodytext']);
         }
 
-        $this->_tid = COM_applyFilter($array['tid']);
+        if (!TOPIC_checkTopicSelectionControl()) {
+            return STORY_EMPTY_REQUIRED_FIELDS;
+        }         
 
         if (empty($this->_title) || empty($this->_introtext)) {
             return STORY_EMPTY_REQUIRED_FIELDS;
@@ -1019,12 +1055,17 @@ class Story
             $this->_uid = $_USER['uid'];
         }
 
-        $tmptid = addslashes(COM_sanitizeID($this->_tid));
         
         // Remove any autotags the user doesn't have permission to use
         $this->_introtext = PLG_replaceTags($this->_introtext, '', true);
         $this->_bodytext = PLG_replaceTags($this->_bodytext, '', true);           
 
+        
+        
+        
+        
+        
+        /*
         $result = DB_query('SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM ' .
                             "{$_TABLES['topics']} WHERE tid = '{$tmptid}'" .
                             COM_getTopicSQL('AND'));
@@ -1033,20 +1074,33 @@ class Story
             // user doesn't have access to this topic - bail
             return STORY_NO_ACCESS_TOPIC;
         }
-
+        
         $T = DB_fetchArray($result);
+        */
+        
+       
+        if (!TOPIC_hasMultiTopicAccess('topic')) {
+            // user doesn't have access to one or more topics - bail
+            return STORY_NO_ACCESS_TOPIC;        
+        }
+
+        
+        
+        
 
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
             $this->_sid = addslashes($this->_sid);
-            $this->_tid = $tmptid;
             $this->_title = addslashes($this->_title);
             
             $this->_introtext = addslashes($this->_introtext);
             $this->_bodytext = addslashes($this->_bodytext);
             $this->_postmode = addslashes($this->_postmode);
-            DB_save($_TABLES['storysubmission'], 'sid,tid,uid,title,introtext,bodytext,date,postmode',
-                        "{$this->_sid},'{$this->_tid}',{$this->_uid},'{$this->_title}'," .
+            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode',
+                        "{$this->_sid},{$this->_uid},'{$this->_title}'," .
                         "'{$this->_introtext}','{$this->_bodytext}',NOW(),'{$this->_postmode}'");
+            
+            // Save Topics selected
+            TOPIC_saveTopicSelectionControl('article', $this->_sid);                  
 
             return STORY_SAVED_SUBMISSION;
         } else {
@@ -1077,12 +1131,15 @@ class Story
             } else {
                 $this->_owner_id = $_USER['uid'];
             }
+            
+            /*
             $this->_group_id = $T['group_id'];
             $this->_perm_owner = $T['perm_owner'];
             $this->_perm_group = $T['perm_group'];
             $this->_perm_members = $T['perm_members'];
             $this->_perm_anon = $T['perm_anon'];
-
+            */
+            
             $this->saveToDatabase();
 
             PLG_itemSaved($this->_sid, 'article');
@@ -1735,10 +1792,10 @@ class Story
      *
      * @param   $tid    int ID of the topic to set
      */
-    function setTid($tid)
-    {
-        $this->_tid = $tid;
-    }
+//    function setTid($tid)
+//    {
+//        $this->_tid = $tid;
+//    }
 
     /**
      * Perform a security check and return permission level.

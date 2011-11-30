@@ -206,12 +206,15 @@ function TRB_allowDelete ($sid, $type)
 
     if ($type == 'article') {
         $sid = addslashes ($sid);
-        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql ('AND', 0, 3) . COM_getTopicSql ('AND'));
-        $A = DB_fetchArray ($result);
+        
+        $sql = "SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql ('AND', 0, 3);
+        
+        $result = DB_query($sql);
+        $A = DB_fetchArray($result);
 
         if (SEC_hasRights ('story.edit') && (SEC_hasAccess ($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                    $A['perm_members'], $A['perm_anon']) == 3)) {
+                    $A['perm_members'], $A['perm_anon']) == 3) && TOPIC_hasMultiTopicAccess('article', $sid) == 3) {
             $allowed = true;
         } else {
             $allowed = false;

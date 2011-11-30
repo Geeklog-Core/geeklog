@@ -206,7 +206,6 @@ function editblock ($bid = '')
         $A['name'] = '';
         $A['type'] = 'normal';
         $A['title'] = '';
-        $A['topic_option'] = TOPIC_ALL_OPTION;
         $A['tid'] = '';
         $A['blockorder'] = 0;
         $A['content'] = '';
@@ -489,7 +488,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
 
     $title = addslashes (COM_stripslashes (strip_tags ($title)));
     $phpblockfn = addslashes (COM_stripslashes (trim ($phpblockfn)));
-    if (empty($title)) {
+    if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_siteHeader('menu', $LANG21[63])
                 . COM_showMessageText($LANG21[64], $LANG21[63])
                 . editblock($bid)
@@ -620,20 +619,6 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         }
         
         TOPIC_saveTopicSelectionControl('block', $bid);
-        /*
-        // Save Topic link(s)
-        DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array('block', $bid));
-        if (is_array($tid) && $topic_option == TOPIC_SELECTED_OPTION) {
-            foreach ($tid as $value) {
-                $value = COM_applyFilter($value);
-                DB_save ($_TABLES['topic_assignments'], 'tid,type,id', "'$value', 'block', '$bid'");
-            }
-        } else {
-            if ($topic_option == TOPIC_ALL_OPTION || $topic_option == TOPIC_HOMEONLY_OPTION) {
-                DB_save ($_TABLES['topic_assignments'], 'tid,type,id', "'$topic_option', 'block', '$bid'");
-            }
-        }        
-        */
         
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
@@ -790,7 +775,7 @@ function deleteBlock ($bid)
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php');
     }
 
-    DB_delete($_TABLES['topic_assignments'], array('type', 'id'), array('block', $bid));
+    TOPIC_deleteTopicAssignments('block', $bid);
     
     DB_delete ($_TABLES['blocks'], 'bid', $bid);
 

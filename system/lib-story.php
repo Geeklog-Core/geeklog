@@ -493,7 +493,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
     if (($index != 'p') AND SEC_hasRights('story.edit') AND
             ($story->checkAccess() == 3) AND
-            (SEC_hasTopicAccess($story->DisplayElements('tid')) == 3)) {
+            (TOPIC_hasMultiTopicAccess('article', $story->DisplayElements('sid')) == 3)) {
         $article->set_var( 'edit_link',
             COM_createLink($LANG01[4], $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $story->getSid())
@@ -732,6 +732,8 @@ function STORY_doDeleteThisStoryNow($sid)
                                      array($sid, 'article'));
     DB_delete($_TABLES['stories'], 'sid', $sid);
 
+    TOPIC_deleteTopicAssignments('article', $sid);
+    
     // notify plugins
     PLG_itemDeleted($sid, 'article');
 
@@ -761,26 +763,52 @@ function plugin_getwhatsnewcomment_story($numreturn = 0, $uid = 0)
 {
     global $_CONF, $_TABLES;
 
-    $topicsql = COM_getTopicSql ('AND', 0, $_TABLES['stories']);
+    $topicsql = COM_getTopicSql ('AND', 0, 'ta');
     
     $stwhere = '';
     if( !COM_isAnonUser() ) {
-        $stwhere .= "(({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
-        $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
-        $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL))";
+        $stwhere .= "((s.owner_id IS NOT NULL AND s.perm_owner IS NOT NULL) OR ";
+        $stwhere .= "(s.group_id IS NOT NULL AND s.perm_group IS NOT NULL) OR ";
+        $stwhere .= "(s.perm_members IS NOT NULL))";
     } else {
-        $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
+        $stwhere .= "(s.perm_anon IS NOT NULL)";
     }
     
     if ($uid > 0) {
-        $stwhere .= " AND ({$_TABLES['comments']}.uid = $uid)";
+        $stwhere .= " AND (c.uid = $uid)";
     }
     if ($numreturn == 0 ) {
-        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";          
-        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
-        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
+        $sql['mssql'] = "SELECT DISTINCT COUNT(*) AS dups, type, s.title, s.sid, max(c.date) AS lastdate 
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
+            , {$_TABLES['topic_assignments']} ta 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) 
+            GROUP BY c.sid,type, s.title, s.title, s.sid 
+            ORDER BY 5 DESC LIMIT 15";
+            
+        /*    Original
+        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) AS lastdate 
+            FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) 
+            AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid,type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid ORDER BY 5 DESC LIMIT 15";
+        */    
+        $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS dups, c.type, s.title, s.sid, max(c.date) AS lastdate 
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND','s') . ")
+            , {$_TABLES['topic_assignments']} ta 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) 
+            GROUP BY c.sid, c.type, s.title, s.title, s.sid 
+            ORDER BY 5 DESC LIMIT 15";
+            
+        $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS dups, type, s.title, s.sid, max(c.date) AS lastdate 
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
+            , {$_TABLES['topic_assignments']} ta 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND (c.date >= (NOW()+ INTERVAL '{$_CONF['newcommentsinterval']} SECOND')) AND ((({$stwhere}))) 
+            GROUP BY c.sid,type, s.title, s.title, s.sid 
+            ORDER BY 5 DESC LIMIT 15";
+            
     } else {
-        $sql = "SELECT {$_TABLES['stories']}.sid, {$_TABLES['comments']}.title, cid, UNIX_TIMESTAMP({$_TABLES['comments']}.date) AS unixdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.commentcode >= 0)" . $topicsql . COM_getLangSQL( 'sid', 'AND', $_TABLES['stories'] ) . ") WHERE ({$stwhere}) ORDER BY unixdate DESC LIMIT $numreturn";
+        $sql = "SELECT s.sid, c.title, cid, UNIX_TIMESTAMP(c.date) AS unixdate 
+            FROM {$_TABLES['comments']} c LEFT JOIN {$_TABLES['stories']} s ON ((s.sid = c.sid) AND type = 'article' " . COM_getPermSQL( 'AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.commentcode >= 0)" . COM_getLangSQL('sid', 'AND', 's') . ") 
+            , {$_TABLES['topic_assignments']} ta 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 {$topicsql} AND ({$stwhere}) ORDER BY unixdate DESC LIMIT $numreturn";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -826,7 +854,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
             $fields[] = 'introtext';
             break;
         case 'feed':
-            $fields[] = 'tid';
+            $fields[] = 'ta.tid';
             break;
         case 'id':
             $fields[] = 'sid';
@@ -862,12 +890,12 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     $where .= ' (draft_flag = 0) AND (date <= NOW())';
     if ($uid > 0) {
         $permSql = COM_getPermSql('AND', $uid)
-                 . COM_getTopicSql('AND', $uid);
+                 . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', $uid, 'ta');
     } else {
-        $permSql = COM_getPermSql('AND') . COM_getTopicSql('AND');
+        $permSql = COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0 , 'ta');
     }
     $sql = "SELECT " . implode(',', $fields)
-            . " FROM {$_TABLES['stories']}" . $where . $permSql;
+            . " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta" . $where . $permSql;
     if ($sid != '*') {
         $sql .= ' LIMIT 1';
     }
@@ -1005,6 +1033,8 @@ function plugin_moderationvalues_story()
 function plugin_moderationdelete_story($sid)
 {
     global $_TABLES;
+    
+    TOPIC_deleteTopicAssignments('article', $sid);
 
     DB_delete($_TABLES['storysubmission'], 'sid', $sid);
 
@@ -1037,7 +1067,7 @@ function plugin_itemlist_story()
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG29[35];
         $plugin->submissionhelpfile = 'ccstorysubmission.html';
-        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,ta.tid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSQL ('AND') . " ORDER BY date ASC";
         $plugin->addSubmissionHeading($LANG29[10]);
         $plugin->addSubmissionHeading($LANG29[14]);
         $plugin->addSubmissionHeading($LANG29[15]);
@@ -1105,7 +1135,7 @@ function plugin_itemlist_story_draft()
         $plugin = new Plugin();
         $plugin->submissionlabel = $LANG29[35] . ' (' . $LANG24[34] . ')';
         $plugin->submissionhelpfile = 'ccdraftsubmission.html';
-        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
+        $plugin->getsubmissionssql = "SELECT sid AS id,title,date,tid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND draft_flag = 1 " . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC";
         $plugin->addSubmissionHeading($LANG29[10]);
         $plugin->addSubmissionHeading($LANG29[14]);
         $plugin->addSubmissionHeading($LANG29[15]);
@@ -1324,7 +1354,7 @@ function service_submit_story($args, &$output, &$svc_msg)
     }
 
     /* - START: Set all the defaults - */
-
+    /*
     if (empty($args['tid'])) {
         // see if we have a default topic
         $topic = DB_getItem($_TABLES['topics'], 'tid',
@@ -1342,7 +1372,16 @@ function service_submit_story($args, &$output, &$svc_msg)
                 return PLG_RET_ERROR;
             }
         }
+    } */
+    
+    
+    
+    /* This is a solution for above but the above has issues  
+    if (!TOPIC_checkTopicSelectionControl()) {
+        $svc_msg['error_desc'] = 'No topics selected or available';
+        return PLG_RET_ERROR;        
     }
+   */
 
     if(empty($args['owner_id'])) {
         $args['owner_id'] = $_USER['uid'];
@@ -1458,7 +1497,14 @@ function service_submit_story($args, &$output, &$svc_msg)
     $result = $story->loadFromArgsArray($args);
 
     $sid = $story->getSid();
-
+    
+    // Check if topics selected if not prompt required field
+    if ($result == STORY_LOADED_OK) {
+        if (!TOPIC_checkTopicSelectionControl()) {
+            $result = STORY_EMPTY_REQUIRED_FIELDS;
+        }    
+    }
+    
     switch ($result) {
     case STORY_DUPLICATE_SID:
         $output .= COM_siteHeader ('menu', $LANG24[5]);
@@ -1674,11 +1720,11 @@ function service_delete_story($args, &$output, &$svc_msg)
 
     $sid = $args['sid'];
 
-    $result = DB_query ("SELECT tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
     $A = DB_fetchArray ($result);
     $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                              $A['perm_group'], $A['perm_members'], $A['perm_anon']);
-    $access = min ($access, SEC_hasTopicAccess ($A['tid']));
+    $access = min ($access, TOPIC_hasMultiTopicAccess('article', $sid));
     if ($access < 3) {
         COM_accessLog ("User {$_USER['username']} tried to illegally delete story $sid.");
         $output = COM_refresh ($_CONF['site_admin_url'] . '/story.php');
