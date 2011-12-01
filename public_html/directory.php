@@ -256,19 +256,32 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
     $end   = sprintf ('%04d-%02d-%02d 23:59:59', $year, $month, $lastday);
 
     $sql = array();
-    $sql['mysql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
-    $sql['mssql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
-    $sql['pgsql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,EXTRACT(day from date) AS mday FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $sql['mysql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,DATE_FORMAT(date, '%e') AS mday 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid ";
+        
+    $sql['mssql'] = $sql['mysql'];
+    
+    $sql['pgsql'] = "SELECT sid,title,UNIX_TIMESTAMP(date) AS day,EXTRACT(day from date) AS mday 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid ";
+    
     if ($topic != 'all') {
-        $sql['mysql'] .= " AND (tid = '$topic')";
-        $sql['mssql'] .= " AND (tid = '$topic')";
-        $sql['pgsql'] .= " AND (tid = '$topic')";
+        $sql['mysql'] .= " AND ta.tid = '$topic'";
+        $sql['mssql'] = $sql['mysql'];
+        $sql['pgsql'] .= " AND ta.tid = '$topic'";
+    } else {
+        $sql['mysql'] .= " AND ta.tdefault = 1";
+        $sql['mssql'] = $sql['mysql'];
+        $sql['pgsql'] .= " AND ta.tdefault = 1";
     }
-    $sql['mysql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $sql['mysql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
          . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";
-    $sql['mssql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $sql['mssql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
          . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";    
-    $sql['pgsql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $sql['pgsql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
          . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";
 
     $result = DB_query ($sql);
@@ -341,19 +354,35 @@ function DIR_displayYear ($topic, $year, $main = false)
     $end   = sprintf ('%04d-12-31 23:59:59', $year);
 
     $monthsql = array();
-    $monthsql['mysql'] = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
-    $monthsql['mssql'] = "SELECT MONTH(date) AS month,COUNT(sid) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
-    $monthsql['pgsql'] = "SELECT EXTRACT(Month from date) AS month,COUNT(sid) AS count FROM {$_TABLES['stories']} WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW())";
+    $monthsql['mysql'] = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid ";
+        
+    $monthsql['mssql'] = "SELECT MONTH(date) AS month,COUNT(sid) AS count 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid ";
+        
+    $monthsql['pgsql'] = "SELECT EXTRACT(Month from date) AS month,COUNT(sid) AS count 
+        FROM {$_TABLES['stories']} , {$_TABLES['topic_assignments']} ta 
+        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid ";
+    
     if ($topic != 'all') {
-        $monthsql['mysql'] .= " AND (tid = '$topic')";
-        $monthsql['mssql'] .= " AND (tid = '$topic')";
-        $monthsql['pgsql'] .= " AND (tid = '$topic')";
+        $monthsql['mysql'] .= " AND ta.tid = '$topic'";
+        $monthsql['mssql'] .= " AND ta.tid = '$topic'";
+        $monthsql['pgsql'] .= " AND ta.tid = '$topic'";
+    } else {
+        $monthsql['mysql'] .= " AND ta.tdefault = 1";
+        $monthsql['mssql'] .= " AND ta.tdefault = 1";
+        $monthsql['pgsql'] .= " AND ta.tdefault = 1";
     }
-    $monthsql['mysql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $monthsql['mysql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
-    $monthsql['mssql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $monthsql['mssql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
-    $monthsql['pgsql'] .= COM_getTopicSql ('AND') . COM_getPermSql ('AND')
+    $monthsql['pgsql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
 
     $msql = array();
@@ -434,9 +463,24 @@ function DIR_displayAll ($topic, $list_current_month = false)
             . '</h1> ' . DIR_topicList ($topic) . '</div>' . LB;
 
     $yearsql = array();
-    $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year,date FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
-    $yearsql['mssql'] = "SELECT YEAR(date) AS year FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
-    $yearsql['pgsql'] = "SELECT EXTRACT( YEAR from date) AS year FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getTopicSql ('AND') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year,date 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        WHERE (draft_flag = 0) AND (date <= NOW())  
+        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    
+    $yearsql['mssql'] = "SELECT YEAR(date) AS year 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        WHERE (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    
+    $yearsql['pgsql'] = "SELECT EXTRACT( YEAR from date) AS year 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        WHERE (draft_flag = 0) AND (date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
+    
     $ysql = array();
     $ysql['mysql'] = $yearsql['mysql'] . " GROUP BY YEAR(date) ORDER BY date DESC";
     $ysql['mssql'] = $yearsql['mssql'] . " GROUP BY YEAR(date) ORDER BY YEAR(date) DESC";
