@@ -323,22 +323,25 @@ function SEC_hasTopicAccess($tid)
 * @param        int     $perm_group     Permissions the gorup has
 * @param        int     $perm_members   Permissions logged in members have
 * @param        int     $perm_anon      Permissions anonymous users have
+* @param        int     $uid            User id or 0 = current user
 * @return       int 	returns 3 for read/edit 2 for read only 0 for no access
 *
 */
-function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
+function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon, $uid = 0)
 {
     global $_USER;
 
-    // Cache current user id
-    if (empty($_USER['uid'])) {
-        $uid = 1;
-    } else {
-        $uid = $_USER['uid'];
+    if ($uid == 0) {
+        // Cache current user id
+        if (empty($_USER['uid'])) {
+            $uid = 1;
+        } else {
+            $uid = $_USER['uid'];
+        }
     }
-
+    
     // If user is in Root group then return full access
-    if (SEC_inGroup('Root')) {
+    if (SEC_inGroup('Root', $uid)) {
         return 3;
     }
 
@@ -346,7 +349,7 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
     if ($uid == $owner_id) return $perm_owner;
 
     // Not private, if user is in group then give access
-    if (SEC_inGroup($group_id)) {
+    if (SEC_inGroup($group_id, $uid)) {
         return $perm_group;
     } else {
         if ($uid == 1) {
