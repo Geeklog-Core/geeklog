@@ -147,40 +147,6 @@ function find_feedFormats ()
 }
 
 /**
-* Return list of types available for article feeds
-*
-* @return   array   an array with id/name pairs for every feed
-*
-*/
-function get_articleFeeds()
-{
-    global $_CONF, $_TABLES, $LANG33;
-
-    $options = array ();
-
-    $sql = "SELECT tid,topic FROM {$_TABLES['topics']} WHERE perm_anon >= 2 ORDER BY ";
-    if ($_CONF['sortmethod'] == 'alpha') {
-        $sql .= 'topic ASC';
-    } else {
-        $sql .= 'sortnum';
-    }
-    $result = DB_query ($sql);
-    $num = DB_numRows ($result);
-
-    if ($num > 0) {
-        $options[] = array ('id' => '::all',       'name' => $LANG33[23]);
-        $options[] = array ('id' => '::frontpage', 'name' => $LANG33[53]);
-    }
-
-    for ($i = 0; $i < $num; $i++) {
-        $A = DB_fetchArray ($result);
-        $options[] = array ('id' => $A['tid'], 'name' => '-- ' . $A['topic']);
-    }
-
-    return $options;
-}
-
-/**
 * List all feeds
 *
 * @return   string  HTML with the list of all feeds
@@ -322,21 +288,23 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('lang_language', $LANG33[32]);
     $feed_template->set_var ('lang_topic', $LANG33[33]);
 
+    /*
     if ($A['header_tid'] == 'all') {
         $feed_template->set_var('all_selected', 'selected="selected"');
     } elseif ($A['header_tid'] == 'none') {
         $feed_template->set_var('none_selected', 'selected="selected"');
     }
-
+    */
+    
     $feed_template->set_var('lang_header_all', $LANG33[43]);
     $feed_template->set_var('lang_header_none', $LANG33[44]);
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
     
     
     
-    $feed_template->set_var('header_topic_options',
-                        COM_topicList('tid,topic', $A['header_tid'], 1, true));
-    // $feed_template->set_var('header_topic_options', TOPIC_getTopicListSelect($A['header_tid'], 2, true));
+    //$feed_template->set_var('header_topic_options',
+    //                    COM_topicList('tid,topic', $A['header_tid'], 1, true));
+    $feed_template->set_var('header_topic_options', TOPIC_getTopicListSelect($A['header_tid'], 6, true));
     
     
     $feed_template->set_var('lang_save', $LANG_ADMIN['save']);
@@ -410,7 +378,19 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_limits_what', $selection);
 
     if ($A['type'] == 'article') {
-        $options = get_articleFeeds();
+        $options[] = array ('id' => '::all',       'name' => $LANG33[23]);
+        $options[] = array ('id' => '::frontpage', 'name' => $LANG33[53]);        
+        
+        $selection = '<select name="topic">' . LB;
+        foreach ($options as $o) {
+            $selection .= '<option value="' . $o['id'] . '"';
+            if ($A['topic'] == $o['id']) {
+                $selection .= ' selected="selected"';
+            }
+            $selection .= '>' . $o['name'] . '</option>' . LB;
+        }
+        $selection .= TOPIC_getTopicListSelect($A['topic'], 0, false, '', false, 1);
+        $selection .= '</select>' . LB;    
     } else {
         $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
         if($result)
@@ -423,16 +403,17 @@ function editfeed ($fid = 0, $type = '')
             }
         }
         $options = PLG_getFeedNames ($A['type']);
-    }
-    $selection = '<select name="topic">' . LB;
-    foreach ($options as $o) {
-        $selection .= '<option value="' . $o['id'] . '"';
-        if ($A['topic'] == $o['id']) {
-            $selection .= ' selected="selected"';
+        
+        $selection = '<select name="topic">' . LB;
+        foreach ($options as $o) {
+            $selection .= '<option value="' . $o['id'] . '"';
+            if ($A['topic'] == $o['id']) {
+                $selection .= ' selected="selected"';
+            }
+            $selection .= '>' . $o['name'] . '</option>' . LB;
         }
-        $selection .= '>' . $o['name'] . '</option>' . LB;
+        $selection .= '</select>' . LB;        
     }
-    $selection .= '</select>' . LB;
     $feed_template->set_var ('feed_topic', $selection);
 
     if ($A['is_enabled'] == 1) {
