@@ -2623,14 +2623,15 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
                 if (empty($topicsql)) {
                     $modnum += DB_count($_TABLES['storysubmission']);
                 } else {
-                    $sresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . $topicsql);
+                    $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql;
+                    $sresult = DB_query($sql);
                     $S = DB_fetchArray($sresult);
                     $modnum += $S['count'];
                 }
             }
 
             if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
-                $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND draft_flag = 1";
+                $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND draft_flag = 1";
                 if (!empty($topicsql)) {
                     $sql .= $topicsql;
                 }
@@ -2676,7 +2677,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             }
             else
             {
-                $nresult = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . $topicsql . COM_getPermSql( 'AND' ));
+                $nresult = DB_query( "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql . COM_getPermSql( 'AND' ));
                 $N = DB_fetchArray( $nresult );
                 $numstories = $N['count'];
             }
@@ -3419,16 +3420,18 @@ function COM_olderStuff()
 
     $sql['mysql'] = "SELECT sid,ta.tid,title,comments,UNIX_TIMESTAMP(date) AS day 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-        WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1  
-        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
+        WHERE ta.type = 'article' AND ta.id = sid   
+        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+        GROUP BY sid 
         ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     
     $sql['mssql'] = $sql['mysql'];
     
-    $sql['pgsql'] = "SELECT sid,tid,title,comments,date_part('epoch',date) AS day 
+    $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-        WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        WHERE ta.type = 'article' AND ta.id = sid AND 
         AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
+        GROUP BY sid 
         ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
     $result = DB_query( $sql );
@@ -3625,6 +3628,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $blocksql['mysql'] .= $commonsql;
     $blocksql['mssql'] .= $commonsql;
     $blocksql['pgsql'] .= $commonsql;
+    
     $result = DB_query( $blocksql );
     $nrows = DB_numRows( $result );
 
@@ -4337,7 +4341,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
     if( $_CONF['hidenewstories'] == 0 )
     {
-        $where_sql = " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1";
+        $where_sql = " AND ta.type = 'article' AND ta.id = sid";
 
         $archsql = '';
         $archivetid = DB_getItem( $_TABLES['topics'], 'tid', "archive_flag=1" );
@@ -4346,13 +4350,13 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
 
         // Find the newest stories
-        $sql['mssql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+        $sql['mssql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
             WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
         
-        $sql['mysql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        $sql['mysql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
             WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
         
-        $sql['pgsql'] = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+        $sql['pgsql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
             WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );        
         
         $result = DB_query( $sql );
@@ -4476,7 +4480,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
         $sql['mysql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate 
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta 
-            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . " 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . " 
             GROUP BY t.sid, s.title 
             ORDER BY lastdate DESC LIMIT 15";
         
@@ -4484,7 +4488,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         
         $sql['pgsql'] = "SELECT DISTINCT COUNT(*) AS count,s.title,t.sid,max(t.date) AS lastdate 
             FROM {$_TABLES['trackback']} AS t, {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta  
-            WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (NOW()+ INTERVAL '{$_CONF['newtrackbackinterval']} SECOND'))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . " 
+            WHERE ta.type = 'article' AND ta.id = s.sid AND (t.type = 'article') AND (t.sid = s.sid) AND (t.date >= (NOW()+ INTERVAL '{$_CONF['newtrackbackinterval']} SECOND'))" . COM_getPermSQL('AND', 0, 2, 's') . " AND (s.draft_flag = 0) AND (s.trackbackcode = 0)" . $topicsql . COM_getLangSQL('sid', 'AND', 's') . " 
             GROUP BY t.sid, s.title 
             ORDER BY lastdate DESC LIMIT 15";
             
