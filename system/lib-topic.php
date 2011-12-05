@@ -37,6 +37,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-topic.php') !== false) {
 $_TOPIC_DEBUG = false;
 
 define("TOPIC_ALL_OPTION", 'all');
+define("TOPIC_NONE_OPTION", 'none');
 define("TOPIC_HOMEONLY_OPTION", 'homeonly');
 define("TOPIC_SELECTED_OPTION", 'selectedtopics');
 define("TOPIC_ROOT", 'root');
@@ -46,9 +47,31 @@ define("TOPIC_ROOT", 'root');
 
 
 
+/**
+* Return the topic tree structure in an array.
+*
 
+id              ID of topic
+parent_id       ID of parent topic
+branch_level    Level of branch in tree structure
+title           Title of topic
+language_id     Language of topic
+inherit         If topic inherits objects from child topics 
+hidden          If topic is hidden
+exclude         If topic is in current users exclude list (1), (0) if not in list
+access          Access current user has with topic 
+owner_id        ID of the owner of the topic
+group_id        ID of group topic belongs to
+perm_owner      Permissions the owner has
+perm_group      Permissions the gorup has
+perm_members    Permissions logged in members have
+perm_anon       Permissions anonymous users have
 
-
+*
+* @param        int         $uid     user id or 0 = current user
+* @return       array      
+*
+*/
 function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = array())
 {
 	global $_TABLES, $_CONF, $_USER, $LANG27;
@@ -58,15 +81,21 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
 	$total_topic = count($tree_array) + 1;
 	
 	if ($id == TOPIC_ROOT) { // Root
-      $tree_array[$total_topic]['id'] = TOPIC_ROOT;
-      $tree_array[$total_topic]['parent_id'] = '';
-      $tree_array[$total_topic]['branch_level'] = $branch_level;
-      $tree_array[$total_topic]['title'] = $LANG27[37];
-      $tree_array[$total_topic]['language_id'] = '';
-      $tree_array[$total_topic]['exclude'] = 0;
-      $tree_array[$total_topic]['inherit'] = 1;
-      $tree_array[$total_topic]['hidden'] = 0;
-      $tree_array[$total_topic]['access'] = 2;  // Read Access
+        $tree_array[$total_topic]['id'] = TOPIC_ROOT;
+        $tree_array[$total_topic]['parent_id'] = '';
+        $tree_array[$total_topic]['branch_level'] = $branch_level;
+        $tree_array[$total_topic]['title'] = $LANG27[37];
+        $tree_array[$total_topic]['language_id'] = '';
+        $tree_array[$total_topic]['inherit'] = 1;
+        $tree_array[$total_topic]['hidden'] = 0;
+        $tree_array[$total_topic]['exclude'] = 0;
+        $tree_array[$total_topic]['access'] = 2;  // Read Access 
+        $tree_array[$total_topic]['owner_id'] = SEC_getDefaultRootUser();
+        $tree_array[$total_topic]['group_id'] = 1;
+        $tree_array[$total_topic]['perm_owner'] = 2;
+        $tree_array[$total_topic]['perm_group'] = 2;
+        $tree_array[$total_topic]['perm_members'] = 2;
+        $tree_array[$total_topic]['perm_anon'] = 2;
       
       $branch_level = $branch_level + 1;
 	}    
@@ -77,10 +106,8 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
         $sql_sort = " ORDER BY topic ASC";
     }
 	if ($parent) {
-		// $sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
 		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE parent_id = '{$id}' " . $sql_sort;
 	} else {
-		//$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . COM_getPermSQL ('AND') . $sql_sort;
 		$sql = "SELECT * FROM {$_TABLES['topics']} WHERE tid = '{$id}' " . $sql_sort;
 	}
 
@@ -105,15 +132,22 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
             $tree_array[$total_topic]['branch_level'] = $branch_level;
             $tree_array[$total_topic]['title'] = stripslashes($A['topic']);
             $tree_array[$total_topic]['language_id'] = COM_getLanguageIdForObject($A['tid']); // figure out language if need be
+            $tree_array[$total_topic]['inherit'] = $A['inherit'];
+            $tree_array[$total_topic]['hidden'] = $A['hidden'];
             $tree_array[$total_topic]['exclude'] = 0;
             if (!empty($excluded_tids)) {
                 if (MBYTE_strpos($excluded_tids, $A['tid']) !== false) {
                     $tree_array[$total_topic]['exclude'] = 1;
                 }
             }
-            $tree_array[$total_topic]['inherit'] = $A['inherit'];
-            $tree_array[$total_topic]['hidden'] = $A['hidden'];    
-            $tree_array[$total_topic]['access'] = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+            $tree_array[$total_topic]['access'] = SEC_hasAccess($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']); // Current User Access
+            $tree_array[$total_topic]['owner_id'] = $A['owner_id'];
+            $tree_array[$total_topic]['group_id'] = $A['group_id'];
+            $tree_array[$total_topic]['perm_owner'] = $A['perm_owner'];
+            $tree_array[$total_topic]['perm_group'] = $A['perm_group'];
+            $tree_array[$total_topic]['perm_members'] = $A['perm_members'];
+            $tree_array[$total_topic]['perm_anon'] = $A['perm_anon'];
+            
             
             // See if this topic has any children
             $tree_array = TOPIC_buildTree($tree_array[$total_topic]['id'], true, $branch_level, $tree_array);
@@ -141,7 +175,15 @@ function TOPIC_getIndex($id)
     return $index;
 }
 
-function TOPIC_getChildList($id)
+/**
+* Return a list of child topic ids that the user has access to
+*
+* @param        string      $id      The id of the parent topic
+* @param        int         $uid     user id or 0 = current user
+* @return       string      
+*
+*/
+function TOPIC_getChildList($id, $uid = 0)
 {
 	global $_TOPICS;
 	
@@ -164,8 +206,15 @@ function TOPIC_getChildList($id)
             }        
             
             if ($branch_level_skip == 0) {
+                // Figure out acces to topic 
+                if ($uid == 0) {// Current User
+                    $specified_user_access = $_TOPICS[$count_topic]['access'];
+                } else {
+                    $specified_user_access = SEC_hasAccess($_TOPICS[$count_topic]['owner_id'], $_TOPICS[$count_topic]['group_id'], $_TOPICS[$count_topic]['perm_owner'], $_TOPICS[$count_topic]['perm_group'], $_TOPICS[$count_topic]['perm_members'], $_TOPICS[$count_topic]['perm_anon'], $uid);
+                }
+                
                 // Make sure to show topics for proper language and access level only
-                if ($_TOPICS[$count_topic]['access'] > 0 && (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == ''))))) {
+                if ($specified_user_access > 0 && (($min_branch_level < $_TOPICS[$count_topic]['branch_level']) && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == ''))))) {
                     
                     if ($_TOPICS[$count_topic]['inherit'] == 1) {
                         $retval .= ", '" . $_TOPICS[$count_topic]['id'] . "'";
@@ -262,13 +311,14 @@ function TOPIC_getOtherListSelect($type, $id, $selected_ids = array(), $tids = a
 * This function creates html options for Topics, for a single or multi select box
 *
 * @param    string/array    $selected_ids       Topics Ids to mark as selected
-* @param    boolean         $include_root_all   Include Nothing (0) or Root (1) or All (2) in list. 
+* @param    boolean         $include_root_all   Include Nothing (0) or Root (1) or All (2) or None (4) in list. 
 * @param    string          $remove_id          Id of topic to not include (includes any children) (used for selection of parent id)
-* @param    boolean         $remove_archive     Remove archive topic from list if any   
+* @param    boolean         $remove_archive     Remove archive topic from list if any
+* @param    int             $uid                User id or 0 = current user
 * @return   HTML string
 *
 */
-function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '', $remove_archive = false)
+function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1, $language_specific = false, $remove_id = '', $remove_archive = false, $uid = 0)
 {
     global $_TOPICS, $_TABLES, $LANG21;
 
@@ -298,22 +348,40 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
     for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
         
         if ($count_topic == 1) {
-            // Deal with Root or All
+            // Deal with Root or All and None
             if ($include_root_all == 1) {
                 $id =  $_TOPICS[$count_topic]['id'];
                 $title =  $_TOPICS[$count_topic]['title'];
                 
+                $retval .= '<option value="' . $id . '"';
+                if (in_array($id, $selected_ids)) {
+                    $retval .= ' selected="selected"';
+                }
+                $retval .= '>' . $title . '</option>';                
             } else {
-                $id = TOPIC_ALL_OPTION;
-                $title = $LANG21[7];
+                // Check for None
+                if ($include_root_all == 4 || $include_root_all == 6) {
+                    $id = TOPIC_NONE_OPTION;
+                    $title = $LANG21[47];
+                    
+                    $retval .= '<option value="' . $id . '"';
+                    if (in_array($id, $selected_ids)) {
+                        $retval .= ' selected="selected"';
+                    }
+                    $retval .= '>' . $title . '</option>';
+                }                 
+                // Check for All
+                if ($include_root_all == 2 || $include_root_all == 6) {
+                    $id = TOPIC_ALL_OPTION;
+                    $title = $LANG21[7];
+                    
+                    $retval .= '<option value="' . $id . '"';
+                    if (in_array($id, $selected_ids)) {
+                        $retval .= ' selected="selected"';
+                    }
+                    $retval .= '>' . $title . '</option>';
+                }
             }
-            $retval .= '<option value="' . $id . '"';
-            
-            if (in_array($id, $selected_ids)) {
-                $retval .= ' selected="selected"';
-            }
-            
-            $retval .= '>' . $title . '</option>';
         } else {
             // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
             if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
@@ -323,7 +391,14 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
             if ($branch_level_skip == 0) {
                 $id =  $_TOPICS[$count_topic]['id'];
                 
-                if ($archive_tid != $id && $_TOPICS[$count_topic]['access'] > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
+                if ($uid == 0) {// Current User
+                    $specified_user_access = $_TOPICS[$count_topic]['access'];
+                } else {
+                    $specified_user_access = SEC_hasAccess($_TOPICS[$count_topic]['owner_id'], $_TOPICS[$count_topic]['group_id'], $_TOPICS[$count_topic]['perm_owner'], $_TOPICS[$count_topic]['perm_group'], $_TOPICS[$count_topic]['perm_members'], $_TOPICS[$count_topic]['perm_anon'], $uid);
+                }
+                
+                // Make sure to show topics for proper language and access level only
+                if ($archive_tid != $id && $specified_user_access > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
                     $title =  $_TOPICS[$count_topic]['title'];
                     
                     $branch_spaces = "";

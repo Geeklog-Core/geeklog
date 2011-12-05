@@ -367,7 +367,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     
     // Check if tid is a restricted name
     $restricted_tid = false;
-    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION || $tid == TOPIC_ROOT) {
+    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_NONE_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION || $tid == TOPIC_ROOT) {
         $restricted_tid = true;
     }
     
