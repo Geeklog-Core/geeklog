@@ -22,8 +22,6 @@
             <td class="alignright">{lang_header_topic}:</td>
             <td>
                 <select name="header_tid">
-                <option value="none" {none_selected}>{lang_header_none}</option>
-                <option value="all" {all_selected}>{lang_header_all}</option>
                 {header_topic_options}
                 </select>
             </td>
