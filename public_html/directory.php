@@ -272,17 +272,13 @@ function DIR_displayMonth ($topic, $year, $month, $main = false)
         $sql['mysql'] .= " AND ta.tid = '$topic'";
         $sql['mssql'] = $sql['mysql'];
         $sql['pgsql'] .= " AND ta.tid = '$topic'";
-    } else {
-        $sql['mysql'] .= " AND ta.tdefault = 1";
-        $sql['mssql'] = $sql['mysql'];
-        $sql['pgsql'] .= " AND ta.tdefault = 1";
     }
     $sql['mysql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
-         . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";
+         . COM_getLangSQL ('sid', 'AND') . " GROUP BY sid ORDER BY date ASC";
     $sql['mssql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
-         . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";    
+         . COM_getLangSQL ('sid', 'AND') . " GROUP BY sid ORDER BY date ASC";    
     $sql['pgsql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
-         . COM_getLangSQL ('sid', 'AND') . " ORDER BY date ASC";
+         . COM_getLangSQL ('sid', 'AND') . " GROUP BY sid ORDER BY date ASC";
 
     $result = DB_query ($sql);
     $numrows = DB_numRows ($result);
@@ -354,17 +350,17 @@ function DIR_displayYear ($topic, $year, $main = false)
     $end   = sprintf ('%04d-12-31 23:59:59', $year);
 
     $monthsql = array();
-    $monthsql['mysql'] = "SELECT DISTINCT MONTH(date) AS month,COUNT(*) AS count 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-        WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
-        AND ta.type = 'article' AND ta.id = sid ";
+    $monthsql['mysql'] = "SELECT DISTINCT MONTH(s.date) AS month, COUNT(DISTINCT s.sid) AS count 
+        FROM {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta   
+        WHERE (s.date >= '$start') AND (s.date <= '$end') AND (s.draft_flag = 0) AND (s.date <= NOW()) 
+        AND ta.type = 'article' AND ta.id = s.sid ";
         
-    $monthsql['mssql'] = "SELECT MONTH(date) AS month,COUNT(sid) AS count 
+    $monthsql['mssql'] = "SELECT MONTH(date) AS month,COUNT(DISTINCT sid) AS count 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
         AND ta.type = 'article' AND ta.id = sid ";
         
-    $monthsql['pgsql'] = "SELECT EXTRACT(Month from date) AS month,COUNT(sid) AS count 
+    $monthsql['pgsql'] = "SELECT EXTRACT(Month from date) AS month,COUNT(DISTINCT sid) AS count 
         FROM {$_TABLES['stories']} , {$_TABLES['topic_assignments']} ta 
         WHERE (date >= '$start') AND (date <= '$end') AND (draft_flag = 0) AND (date <= NOW()) 
         AND ta.type = 'article' AND ta.id = sid ";
@@ -373,10 +369,6 @@ function DIR_displayYear ($topic, $year, $main = false)
         $monthsql['mysql'] .= " AND ta.tid = '$topic'";
         $monthsql['mssql'] .= " AND ta.tid = '$topic'";
         $monthsql['pgsql'] .= " AND ta.tid = '$topic'";
-    } else {
-        $monthsql['mysql'] .= " AND ta.tdefault = 1";
-        $monthsql['mssql'] .= " AND ta.tdefault = 1";
-        $monthsql['pgsql'] .= " AND ta.tdefault = 1";
     }
     $monthsql['mysql'] .= COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')
               . COM_getLangSQL ('sid', 'AND');
@@ -466,19 +458,19 @@ function DIR_displayAll ($topic, $list_current_month = false)
     $yearsql['mysql'] = "SELECT DISTINCT YEAR(date) AS year,date 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
         WHERE (draft_flag = 0) AND (date <= NOW())  
-        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        AND ta.type = 'article' AND ta.id = sid 
         " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
     
     $yearsql['mssql'] = "SELECT YEAR(date) AS year 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
         WHERE (draft_flag = 0) AND (date <= NOW()) 
-        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        AND ta.type = 'article' AND ta.id = sid 
         " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
     
     $yearsql['pgsql'] = "SELECT EXTRACT( YEAR from date) AS year 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
         WHERE (draft_flag = 0) AND (date <= NOW()) 
-        AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 
+        AND ta.type = 'article' AND ta.id = sid  
         " . COM_getTopicSql ('AND', 0, 'ta') . COM_getPermSql ('AND')  . COM_getLangSQL ('sid', 'AND');
     
     $ysql = array();
