@@ -96,7 +96,7 @@ function SYND_feedUpdateCheckAll( $frontpage_only, $update_info, $limit, $update
             $where .= ' AND frontpage = 1';
         }
 
-        $result = DB_query( "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+        $result = DB_query( "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 GROUP BY sid ORDER BY date DESC $limitsql" );
         $nrows = DB_numRows( $result );
 
         for( $i = 0; $i < $nrows; $i++ )
@@ -160,7 +160,8 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit, $updated_topic =
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
         WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0
         AND ta.type = 'article' AND ta.id = sid  
-        AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . " 
+        AND ta.tid = '$tid'" . COM_getTopicSQL('AND', 1, 'ta') . "
+        GROUP BY sid
         ORDER BY date DESC $limitsql";
         
     $result = DB_query($sql);
@@ -264,8 +265,8 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
         $topic = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
                                "tid = '$tid'" ));
         
-        // Retrieve list of inherited topics
-        $tid_list = TOPIC_getChildList($tid);        
+        // Retrieve list of inherited topics for anonymous user
+        $tid_list = TOPIC_getChildList($tid, 1);        
 
         //$sql = "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql";
         $sql = "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode 
@@ -410,7 +411,8 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
 
     $sql = "SELECT sid,ta.tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-        WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 $where AND perm_anon > 0 
+        WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid $where AND perm_anon > 0 
+        GROUP BY sid
         ORDER BY date DESC $limitsql";
     
     $result = DB_query($sql);
