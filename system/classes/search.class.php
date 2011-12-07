@@ -320,7 +320,7 @@ class Search {
     function _searchStories()
     {
         global $_TABLES, $_DB_dbms, $LANG09;
-
+        
         // Make sure the query is SQL safe
         $query = trim(addslashes($this->_query));
 
@@ -333,9 +333,9 @@ class Search {
         $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
 
         if (!empty($this->_topic)) {
-            $sql .= 'AND (ta.tid = \''.$this->_topic.'\') ';
-        } else {
-            $sql .= 'AND ta.tdefault = 1 ';
+            // Retrieve list of inherited topics
+            $tid_list = TOPIC_getChildList($this->_topic);
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (s.uid = \''.$this->_author.'\') ';
@@ -347,6 +347,8 @@ class Search {
         $sql .= $search_s->getDateRangeSQL('AND', 'date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_s->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
+        $sql .= " GROUP BY id";
+        
         $search_s->setSQL($sql);
         $search_s->setFTSQL($ftsql);
         $search_s->setRank(5);
@@ -365,14 +367,12 @@ class Search {
 
         $sql .= 'FROM '.$_TABLES['users'].' AS u, '.$_TABLES['topic_assignments'].' AS ta, '.$_TABLES['comments'].' AS c ';
         $sql .= 'LEFT JOIN '.$_TABLES['stories'].' AS s ON ((s.sid = c.sid) ';
-        $sql .= COM_getPermSQL('AND',0,2,'s').COM_getTopicSQL('AND',0,'ta').COM_getLangSQL('sid','AND','s').') ';
+        $sql .= COM_getPermSQL('AND',0,2,'s').COM_getLangSQL('sid','AND','s').') ';
         $sql .= 'WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.commentcode >= 0) AND (s.date <= NOW()) ';
-        $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid ';
+        $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid '.COM_getTopicSQL('AND',0,'ta');
 
         if (!empty($this->_topic)) {
-            $sql .= 'AND (ta.tid = \''.$this->_topic.'\') ';
-        } else {
-            $sql .= 'AND ta.tdefault = 1 ';            
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (c.uid = \''.$this->_author.'\') ';
@@ -384,6 +384,8 @@ class Search {
         $sql .= $search_c->getDateRangeSQL('AND', 'c.date', $this->_dateStart, $this->_dateEnd);
         list($sql, $ftsql) = $search_c->buildSearchSQL($this->_keyType, $query, $columns, $sql);
 
+        $sql .= " GROUP BY id";
+        
         $search_c->setSQL($sql);
         $search_c->setFTSQL($ftsql);
         $search_c->setRank(2);
