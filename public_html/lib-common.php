@@ -2252,7 +2252,6 @@ function COM_showTopics($topic = '')
         
         if ($branch_level_skip == 0) {
             // Make sure to show topics for proper language only
-            //if ($_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
             if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
                 $branch_spaces = "";
                 for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
@@ -4200,7 +4199,9 @@ function COM_emailUserTopics()
         $storysql['pgsql'] = "SELECT sid,uid,date AS day,title,introtext,postmode";
         $storysql['mssql'] = "SELECT sid,uid,date AS day,title,CAST(introtext AS text) AS introtext,CAST(bodytext AS text) AS introtext";
 
-        $commonsql = " FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
+        $commonsql = " FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+            WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}' 
+            AND ta.type = 'article' AND ta.id = sid ";
 
         $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
                   . COM_getPermSQL( 'WHERE', $U['uuid'] );
@@ -4226,13 +4227,14 @@ function COM_emailUserTopics()
             $TIDS = array_intersect( $TIDS, $ETIDS );
         }
 
-        if( count( $TIDS ) > 0)
-        {
-            $commonsql .= " AND (tid IN ('" . implode( "','", $TIDS ) . "'))";
+        if( count( $TIDS ) > 0) {
+            // We have list of Daily Digest topic ids that user has access too and that the user wants a report on
+             $commonsql .= " AND (ta.tid IN ('" . implode( "','", $TIDS ) . "'))";
         }
 
         $commonsql .= COM_getPermSQL( 'AND', $U['uuid'] );
-        $commonsql .= ' ORDER BY featured DESC, date DESC';
+        $commonsql .= ' GROUP BY sid 
+            ORDER BY featured DESC, date DESC';
 
         $storysql['mysql'] .= $commonsql;
         $storysql['mssql'] .= $commonsql;

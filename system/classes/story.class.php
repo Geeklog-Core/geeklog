@@ -465,7 +465,7 @@ class Story
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
             $sql['pgsql'] = 'SELECT  s.*, UNIX_TIMESTAMP(s.date) AS unixdate, '
                 . 'u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, ' . 't.perm_owner, t.perm_group, t.perm_members, t.perm_anon ' . 'FROM ' . $_TABLES['storysubmission'] . ' AS s, ' . $_TABLES['users'] . ' AS u, ' . $_TABLES['topics'] . ' AS t WHERE (s.uid = u.uid) AND' . ' (s.tid = t.tid) AND (sid = \'' . $sid . '\')';
-            */                
+            */
             $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl, t.group_id, t.perm_owner, t.perm_group, t.perm_members, t.perm_anon 
                 FROM {$_TABLES['storysubmission']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta  
                 WHERE (s.uid = u.uid) AND  (ta.tid = t.tid) AND (sid = '$sid')  
@@ -1060,32 +1060,10 @@ class Story
         $this->_introtext = PLG_replaceTags($this->_introtext, '', true);
         $this->_bodytext = PLG_replaceTags($this->_bodytext, '', true);           
 
-        
-        
-        
-        
-        
-        /*
-        $result = DB_query('SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM ' .
-                            "{$_TABLES['topics']} WHERE tid = '{$tmptid}'" .
-                            COM_getTopicSQL('AND'));
-
-        if (DB_numRows($result) == 0) {
-            // user doesn't have access to this topic - bail
-            return STORY_NO_ACCESS_TOPIC;
-        }
-        
-        $T = DB_fetchArray($result);
-        */
-        
-       
         if (!TOPIC_hasMultiTopicAccess('topic')) {
             // user doesn't have access to one or more topics - bail
             return STORY_NO_ACCESS_TOPIC;        
         }
-
-        
-        
         
 
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
@@ -1787,15 +1765,6 @@ class Story
         return $return;
     }
 
-    /**
-     * Set the TID to a new value.
-     *
-     * @param   $tid    int ID of the topic to set
-     */
-//    function setTid($tid)
-//    {
-//        $this->_tid = $tid;
-//    }
 
     /**
      * Perform a security check and return permission level.
