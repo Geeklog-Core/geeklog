@@ -17,11 +17,7 @@
       <dd><input type="text" size="36" maxlength="96" value="{story_title}" name="title" id="submitstory-title" class="text"{xhtml}></dd>
 
       <dt><label for="submitstory-tid">{lang_topic}</label></dt>
-      <dd>
-        <select name="tid" id="submitstory-tid">
-          {story_topic_options}
-        </select>
-      </dd>
+      <dd>{topic_selection}</dd>
 
       <dt><label for="introtext">{lang_introtext}</label></dt>
       <dd><textarea cols="45" rows="15" name="introtext" id="introtext">{story_introtext}</textarea></dd>

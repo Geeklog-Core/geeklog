@@ -25,11 +25,7 @@
       <dd><input type="text" size="36" maxlength="96" value="{story_title}" name="title" id="submitstory_advanced-title" class="text"{xhtml}></dd>
 
       <dt><label for="submitstory_advanced-tid">{lang_topic}</label></dt>
-      <dd>
-        <select name="tid" id="submitstory_advanced-tid">
-          {story_topic_options}
-        </select>
-      </dd>
+      <dd>{topic_selection}</dd>
 
       <dt><label for="introtext">{lang_story}</label></dt>
       <dd>

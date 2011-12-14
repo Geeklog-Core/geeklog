@@ -24,13 +24,7 @@
       <dd class="description">{lang_nospaces}</dd>
 
       <dt><label for="admin-blockeditor-tid">{lang_topic}</label></dt>
-      <dd>
-        <select name="tid" id="admin-blockeditor-tid">
-          <option value="all" {all_selected}>{lang_all}</option>
-          <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
-          {topic_options}
-        </select>
-      </dd>
+      <dd>{topic_selection}</dd>
 
       <dt><label for="admin-blockeditor-onleft">{lang_side}</label></dt>
       <dd>

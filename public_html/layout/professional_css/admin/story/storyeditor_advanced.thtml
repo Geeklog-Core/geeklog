@@ -29,11 +29,7 @@
       <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:95%" rows="2">{meta_keywords}</textarea></dd>
 
       <dt><label for="admin-storyeditor_advanced-tid">{lang_topic}</label></dt>
-      <dd>
-        <select name="tid" id="admin-storyeditor_advanced-tid">
-          {topic_options}
-        </select>
-      </dd>
+      <dd>{topic_selection}</dd>
 
       <dt>{lang_hits}</dt>
       <dd>{story_hits}</dd>
