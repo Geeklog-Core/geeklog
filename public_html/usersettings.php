@@ -624,10 +624,7 @@ function editpreferences()
     $preferences->parse ('privacy_block', 'privacy', true);
 
     // excluded items block
-    $permissions = COM_getPermSQL ('');
-    $preferences->set_var ('exclude_topic_checklist',
-        COM_checkList($_TABLES['topics'], 'tid,topic', $permissions, $A['tids'],
-                      'topics'));
+    $preferences->set_var ('exclude_topic_checklist', TOPIC_checkList($A['tids'], 'topics'));
 
     if (($_CONF['contributedbyline'] == 1) &&
         ($_CONF['hide_author_exclusion'] == 0)) {
@@ -676,10 +673,8 @@ function editpreferences()
         } elseif ($user_etids == '-') { // this means "no topics"
             $user_etids = '';
         }
-        $tmp = COM_checkList($_TABLES['topics'], 'tid,topic', $permissions,
-                             $user_etids, 'etids');
-        $preferences->set_var('email_topic_checklist',
-                str_replace($_TABLES['topics'], 'etids', $tmp));
+        $preferences->set_var ('email_topic_checklist', TOPIC_checkList($user_etids, 'etids'));
+        
         $preferences->parse('digest_block', 'digest', true);
     } else {
         $preferences->set_var('digest_block', '');

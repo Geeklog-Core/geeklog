@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2010 by the following authors:                         |
+// | Copyright (C) 2003-2011 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tom Homer        - tomhomer AT gmail DOT com                     |
 // +---------------------------------------------------------------------------+
@@ -68,7 +68,7 @@ perm_members    Permissions logged in members have
 perm_anon       Permissions anonymous users have
 
 *
-* @param        int         $uid     user id or 0 = current user
+
 * @return       array      
 *
 */
@@ -157,6 +157,13 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
     return $tree_array;
 }
 
+/**
+* Return the index of a topic in the TOPICS array that matches the topic id
+*
+* @param        string      $id      The id of the topic to find the index for
+* @return       int      
+*
+*/
 function TOPIC_getIndex($id)
 {
 	global $_TOPICS;
@@ -307,11 +314,86 @@ function TOPIC_getOtherListSelect($type, $id, $selected_ids = array(), $tids = a
     return $retval;
 }
 
+
+/**
+* Creates a <input> checklist for topics
+*
+* Creates a group of checkbox form fields with given arguments
+*
+* @param    string          $selected_ids       Value to set to CHECKED
+* @param    string          $fieldname          Name to use for the checkbox array
+* @param    boolean         $language_specific  If false include all topics for every language
+* @param    boolean         $remove_archive     Remove archive topic from list if any
+* @return   string                              HTML with Checkbox code
+*
+*/
+function TOPIC_checkList($selected_ids = '', $fieldname = '', $language_specific = false, $remove_archive = false)
+{
+    global $_TOPICS;
+
+    $retval = '<ul class="checkboxes-list">' . LB;
+
+    if (!empty($selected_ids)) {
+        $selected_ids = explode( ' ', $selected_ids );
+    } else {
+        $selected_ids = array();
+    }
+
+    $start_topic = 2;
+    $total_topic = count($_TOPICS);
+    $branch_level_skip = 0;
+    $lang_id = '';
+    if ($language_specific) {
+        $lang_id = COM_getLanguageId();
+    }
+    
+    // Retrieve Archive Topic if any
+    $archive_tid = '';
+    if ($remove_archive) {
+        $archive_tid = DB_getItem($_TABLES['topics'], 'tid', 'archive_flag = 1');
+    }
+
+    for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
+        // Check to see if we need to include id (this is done for stuff like topic edits that cannot include themselves or child as parent
+        if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
+            $branch_level_skip = 0;
+        }        
+
+        if ($branch_level_skip == 0) {
+            $id =  $_TOPICS[$count_topic]['id'];
+            
+            // Make sure to show topics for proper language and access level only
+            if ($archive_tid != $id && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
+                $title =  $_TOPICS[$count_topic]['title'];
+                
+                $branch_spaces = "";
+                for ($branch_count = $start_topic; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
+                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
+                }
+                $retval .= '<li>' . $branch_spaces . '<input type="checkbox" name="' . $fieldname . '[]" value="' . $id . '"';
+                
+                if (in_array($id, $selected_ids)) {
+                    $retval .= ' checked="checked"';
+                }
+                $retval .= XHTML . '><span>' . $title . '</span></li>' . LB;
+            } else {
+                // Cannot pick child as parent so skip
+                $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];            
+            }
+        }
+    }
+
+    $retval .= '</ul>' . LB;
+
+    return $retval;
+}
+
 /**
 * This function creates html options for Topics, for a single or multi select box
 *
 * @param    string/array    $selected_ids       Topics Ids to mark as selected
-* @param    boolean         $include_root_all   Include Nothing (0) or Root (1) or All (2) or None (4) in list. 
+* @param    int             $include_root_all   Include Nothing (0) or Root (1) or All (2) or None (4) in list.
+* @param    boolean         $language_specific  If false include all topics for every language
 * @param    string          $remove_id          Id of topic to not include (includes any children) (used for selection of parent id)
 * @param    boolean         $remove_archive     Remove archive topic from list if any
 * @param    int             $uid                User id or 0 = current user
@@ -483,6 +565,7 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
 
 /**
 * Check for topic access from a list of topics or for an object 
+* If multiple topics then will return the lowest access level found
 * (need to handle 'all' and 'homeonly' as special cases)
 *
 * @param    string          $type   Type of object to find topic access about. If 'topic' then will check post array for topic selection control 
