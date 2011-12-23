@@ -258,6 +258,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   uid smallint NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
   whos_online smallint NOT NULL default '1',
+  topic varchar(20) NOT NULL default '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);

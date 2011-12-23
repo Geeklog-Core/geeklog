@@ -19,6 +19,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN hidden smallint NOT NULL 
 
 // Update Session Table
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN whos_online smallint NOT NULL default '1' AFTER md5_sess_id";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN topic varchar(20) NOT NULL default '' AFTER whos_online";
 
 /**
  * Create Story and Submission Topic assignments

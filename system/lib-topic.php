@@ -42,11 +42,6 @@ define("TOPIC_HOMEONLY_OPTION", 'homeonly');
 define("TOPIC_SELECTED_OPTION", 'selectedtopics');
 define("TOPIC_ROOT", 'root');
 
-
-
-
-
-
 /**
 * Return the topic tree structure in an array.
 *
@@ -569,7 +564,7 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
 * (need to handle 'all' and 'homeonly' as special cases)
 *
 * @param    string          $type   Type of object to find topic access about. If 'topic' then will check post array for topic selection control 
-* @param    string/array    $id     ID of block or topic to check if block topic access
+* @param    string/array    $id     ID of object to check topic access for
 * @return   int                     returns 3 for read/edit 2 for read only 0 for no access
 *
 */
@@ -846,7 +841,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     if (!$from_db) {    
         TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
     } else {        
-        $sql['mysql'] = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
+        $sql = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
     
         $result = DB_query($sql);
         $B = DB_fetchArray($result);
@@ -1068,6 +1063,25 @@ function TOPIC_deleteTopicAssignments($type, $id)
 }
 
 /**
+* Add Topic Assignments for a specfic object  
+*
+* @param    string          $type   Type of object to find topic access about.  
+* @param    string/array    $id     ID of object
+* @return   nothing
+*
+*/
+function TOPIC_addTopicAssignments($type, $id, $tid = '')
+{
+    global $_TABLES;
+    
+    if ($tid == '') {
+        $tid = TOPIC_ALL_OPTION;
+    }
+    
+    DB_save ($_TABLES['topic_assignments'], 'tid,type,id,inherit,tdefault', "'$tid', '$type', '$id', 0 , 0");
+}
+
+/**
 * Return Topic list for Admin list Topic Column 
 * (need to handle 'all' and 'homeonly' as special cases)
 *
@@ -1082,10 +1096,8 @@ function TOPIC_getTopicAdminColumn($type, $id)
     
     $retval = '';
     
-    // Retrieve Topic options
-    $sql['mysql'] = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id = '$id'";
-    $sql['mssql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='$id' AND t.tid = ta.tid";
-    $sql['pgsql'] = "SELECT ta.tid, t.topic FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id ='$id' AND t.tid = ta.tid";
+    // Retrieve topic assignments
+    $sql = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id = '$id'";
 
     $result = DB_query($sql);
     $A = DB_fetchArray($result);
@@ -1105,6 +1117,73 @@ function TOPIC_getTopicAdminColumn($type, $id)
     }
     
     return $retval;
+}
+
+/**
+* Figure out the current topic for a plugin. If permissions or language wrong 
+* will find default else end with a '' topic (which is all). Needs to be run after 
+* lib-common.php so it can grab topic in url if need be.
+*
+* @param    string          $type   Type of object to find topic access about.  
+* @param    string/array    $id     ID of object
+* @return   void
+*
+*/
+function TOPIC_getTopic($type, $id)
+{
+    global $_TABLES, $topic;
+    
+    $find_another = false;
+    
+    // Double check
+    $topic = COM_applyFilter($topic);
+    
+    // Check Previous topic
+    if ($topic == '') {
+        // Blank could mean all topics or that we do not know topic
+        // retrieve previous topic
+        $last_topic = SESS_getVariable('topic');
+    } else {
+        $last_topic = $topic;
+    }
+    
+    if ($last_topic != '') {    
+        // see if object belongs to topic
+        $sql = "SELECT ta.* 
+            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
+            WHERE t.tid = ta.tid  
+            AND ta.type = '$type' AND ta.id = '$id' AND ta.tid = '$last_topic' 
+            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+    
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
+            $topic = $last_topic;
+        } else {
+            $find_another = true;
+        }
+    } else {
+        $find_another = true;
+    }
+    
+    if ($find_another) {
+        // Find another topic to set, most likely default
+        $sql = "SELECT ta.* 
+            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
+            WHERE t.tid = ta.tid  
+            AND ta.type = '$type' AND ta.id = '$id' 
+            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
+            ORDER by ta.tdefault DESC";
+    
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
+            $A = DB_fetchArray($result);
+            $topic = $A['tid'];
+        } else {
+            $topic = '';
+        }
+    }
 }
 
 /**

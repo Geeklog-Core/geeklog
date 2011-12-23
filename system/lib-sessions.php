@@ -240,6 +240,8 @@ function SESS_sessionCheck()
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
     }
 
+    $_USER['session_id'] = $sessid;
+    
     // Ensure $_USER is set to avoid warnings (path exposure...)
     if (isset($_USER)) {
         return $_USER;
@@ -518,6 +520,55 @@ function SESS_getUserDataFromId($userid)
     }
 
     return $myrow;
+}
+
+/**
+* Retrieves a session variable from the db
+*
+* @param        string      $variable   Variable name to retrieve
+* @return       string     data from variable
+*
+*/
+function SESS_getVariable($variable)
+{
+    global $_TABLES, $_CONF, $_USER;
+    
+    $session_id = $_USER['session_id'];
+
+    if ( $_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
+        $sql_where = "md5_sess_id = '$session_id'";
+    } else {
+        $sql_where = "sess_id = '$session_id'";
+    }
+
+    $retval = DB_getItem($_TABLES['sessions'], $variable, $sql_where);
+
+    return $retval;
+}
+
+/**
+* Updates a session variable from the db
+*
+* @param        string      $variable   Variable name to update
+* @param        string      $value      Value of variable
+* @return       boolean     always true for some reason
+*
+*/
+function SESS_setVariable($variable, $value)
+{
+    global $_TABLES, $_CONF, $_USER;
+    
+    $session_id = $_USER['session_id'];
+
+    if ( $_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
+        $sql = "UPDATE {$_TABLES['sessions']} SET $variable = '$value' WHERE (md5_sess_id = '$session_id')";
+    } else {
+        $sql = "UPDATE {$_TABLES['sessions']} SET $variable = '$value' WHERE (sess_id = '$session_id')";
+    }
+
+    $result = DB_query($sql);
+
+    return 1;
 }
 
 ?>

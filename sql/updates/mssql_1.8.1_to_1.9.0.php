@@ -18,6 +18,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [hidden] [tinyint] NOT NULL AFTE
 
 // Update Session Table
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD [whos_online] [tinyint] NOT NULL AFTER [md5_sess_id]";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD [topic] [varchar] (20) NOT NULL AFTER [whos_online]";
 
 /**
  * Create Story and Submission Topic assignments

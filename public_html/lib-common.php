@@ -220,6 +220,19 @@ require_once( $_CONF['path_system'] . 'lib-syndication.php' );
 require_once( $_CONF['path_system'] . 'lib-topic.php' );
 
 /**
+* Retrieve new topic or get last topic.
+*
+*/
+
+if (isset($_GET['topic'])) {
+    $topic = COM_applyFilter( $_GET['topic'] );
+} elseif (isset( $_POST['topic'])) {
+    $topic = COM_applyFilter( $_POST['topic'] );
+} else {
+    $topic = '';
+}
+
+/**
 * This is the block library used to manage blocks.
 *
 */
@@ -449,19 +462,6 @@ else
 */
 
 $_RIGHTS = explode( ',', SEC_getUserPermissions() );
-
-if( isset( $_GET['topic'] ))
-{
-    $topic = COM_applyFilter( $_GET['topic'] );
-}
-else if( isset( $_POST['topic'] ))
-{
-    $topic = COM_applyFilter( $_POST['topic'] );
-}
-else
-{
-    $topic = '';
-}
 
 /**
 * Build global array of Topics current user has access to
@@ -1249,6 +1249,9 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
             $header->parse( 'right_blocks', 'rightblocks', true );
         }
     }
+    
+    // Set last topic session variable
+    SESS_setVariable('topic', $topic);
 
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
@@ -3610,9 +3613,9 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         $commonsql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')) OR ta.tid = 'all')";
     } else {
         if( COM_onFrontpage() ) {
-            $commonsql .= " AND (ta.tid = 'homeonly' OR ta.tid = 'all')";
+            $commonsql .= " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
         } else {
-            $commonsql .= " AND (ta.tid = 'all')";
+            $commonsql .= " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
     }
 

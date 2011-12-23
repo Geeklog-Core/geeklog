@@ -259,6 +259,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   uid mediumint(8) NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
   whos_online tinyint(1) NOT NULL default '1',
+  topic varchar(20) NOT NULL default '',
   PRIMARY KEY  (sess_id),
   KEY sess_id (sess_id),
   KEY start_time (start_time),

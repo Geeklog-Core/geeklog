@@ -262,7 +262,8 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [remote_ip] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
     [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
-    [whos_online] [tinyint] NOT NULL
+    [whos_online] [tinyint] NOT NULL, 
+    [topic] [varchar] (20) NOT NULL
 ) ON [PRIMARY]
 ";
 
