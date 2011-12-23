@@ -23,7 +23,6 @@
                                         <td class="alignright">{lang_topic}:</td>
                                         <td>
                                             <select name="topic">
-                                                <option selected="selected" value="0">{lang_all}</option>
                                                 {topic_option_list}
                                             </select>
                                         </td>

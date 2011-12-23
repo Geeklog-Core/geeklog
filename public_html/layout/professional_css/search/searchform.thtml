@@ -26,7 +26,6 @@
       <dt><label for="advsearchform-topic">{lang_topic}</label></dt>
       <dd>
         <select name="topic" id="advsearchform-topic">
-          <option selected="selected" value="0">{lang_all}</option>
           {topic_option_list}
         </select>
       </dd>

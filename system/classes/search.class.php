@@ -83,6 +83,11 @@ class Search {
         }
         if (isset ($_GET['topic'])) {
             $this->_topic = COM_applyFilter ($_GET['topic']);
+        } else {
+            $last_topic = SESS_getVariable('topic');
+            if ($last_topic != '') {   
+                $this->_topic = $last_topic;
+            }
         }
         if (isset ($_GET['datestart'])) {
             $this->_dateStart = COM_applyFilter ($_GET['datestart']);
@@ -330,12 +335,17 @@ class Search {
         $sql .= 'FROM '.$_TABLES['stories'].' AS s, '.$_TABLES['users'].' AS u, '.$_TABLES['topic_assignments'].' AS ta ';
         $sql .= 'WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ';
         $sql .= 'AND ta.type = \'article\' AND ta.id = sid '; 
-        $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND') . COM_getLangSQL('sid', 'AND') . ' ';
+        $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND', 0, 'ta') . COM_getLangSQL('sid', 'AND') . ' ';
 
         if (!empty($this->_topic)) {
             // Retrieve list of inherited topics
-            $tid_list = TOPIC_getChildList($this->_topic);
-            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
+            if ($this->_topic == TOPIC_ALL_OPTION) {
+                // Stories do not have an all option so just return all stories that meet the requirements and permissions
+                //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."')) ";
+            } else {
+                $tid_list = TOPIC_getChildList($this->_topic);
+                $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
+            }
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (s.uid = \''.$this->_author.'\') ';
@@ -372,7 +382,12 @@ class Search {
         $sql .= 'AND ta.type = \'article\' AND ta.id = s.sid '.COM_getTopicSQL('AND',0,'ta');
 
         if (!empty($this->_topic)) {
-            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
+            if ($this->_topic == TOPIC_ALL_OPTION) {
+                // Stories do not have an all option so just return all story comments that meet the requirements and permissions
+                //$sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."')) ";
+            } else {
+                $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$this->_topic."'))) ";
+            }
         }
         if (!empty($this->_author)) {
             $sql .= 'AND (c.uid = \''.$this->_author.'\') ';
