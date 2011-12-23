@@ -59,7 +59,6 @@ CREATE TABLE {$_TABLES['staticpage']} (
   perm_anon int NOT NULL default '2',
   sp_centerblock int NOT NULL default '0',
   sp_help varchar(255) default '',
-  sp_tid varchar(20) NOT NULL default 'none',
   sp_where int NOT NULL default '1',
   sp_php int NOT NULL default '0',
   sp_nf int default '0',
@@ -70,7 +69,6 @@ CREATE TABLE {$_TABLES['staticpage']} (
   CREATE INDEX {$_TABLES['staticpage']}_created ON {$_TABLES['staticpage']}(created);
   CREATE INDEX {$_TABLES['staticpage']}_sp_onmenu ON {$_TABLES['staticpage']}(sp_onmenu);
   CREATE INDEX {$_TABLES['staticpage']}_sp_centerblock ON {$_TABLES['staticpage']}(sp_centerblock);
-  CREATE INDEX {$_TABLES['staticpage']}_sp_tid ON {$_TABLES['staticpage']}(sp_tid);
   CREATE INDEX {$_TABLES['staticpage']}_sp_where ON {$_TABLES['staticpage']}(sp_where);
 ";
 

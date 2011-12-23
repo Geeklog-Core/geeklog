@@ -248,28 +248,8 @@ function staticpageeditor_form($A, $error = false)
     } else {
         $sp_template->set_var('centerblock_checked', '');
     }
-    $sp_template->set_var('lang_topic', $LANG_STATIC['topic']);
-    $sp_template->set_var('lang_position', $LANG_STATIC['position']);
-    $current_topic = '';
-    if (isset($A['sp_tid'])) {
-        $current_topic = $A['sp_tid'];
-    }
-    if (empty($current_topic)) {
-        $current_topic = 'none';
-    }
-    $topics = COM_topicList('tid,topic', $current_topic, 1, true);
-    $alltopics = '<option value="all"';
-    if ($current_topic == 'all') {
-        $alltopics .= ' selected="selected"';
-    }
-    $alltopics .= '>' . $LANG_STATIC['all_topics'] . '</option>' . LB;
-    $notopic = '<option value="none"';
-    if ($current_topic == 'none') {
-        $notopic .= ' selected="selected"';
-    }
-    $notopic .= '>' . $LANG_STATIC['no_topic'] . '</option>' . LB;
-    $sp_template->set_var('topic_selection', '<select name="sp_tid">'
-                          . $alltopics . $notopic . $topics . '</select>');
+    
+    $sp_template->set_var('lang_position', $LANG_STATIC['position']); 
     $position = '<select name="sp_where">';
     $position .= '<option value="1"';
     if ($A['sp_where'] == 1) {
@@ -367,6 +347,11 @@ function staticpageeditor_form($A, $error = false)
     }
     $sp_template->set_var('sp_title', $title);
     $sp_template->set_var('sp_page_title', $page_title);
+    
+    $sp_template->set_var('lang_topic', $LANG_STATIC['topic']);
+    $sp_template->set_var('topic_selection',
+                          TOPIC_getTopicSelectionControl ('staticpages', $A['sp_id'], true, false, true));    
+    
     $sp_template->set_var('lang_metadescription',
                           $LANG_ADMIN['meta_description']);
     $sp_template->set_var('lang_metakeywords', $LANG_ADMIN['meta_keywords']);
@@ -718,7 +703,6 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 * @param string sp_old_id        original ID of this static page
 * @param string sp_centerblock   Flag to indicate display as a center block
 * @param string sp_help          Help URL that displays in the block
-* @param string sp_tid           topid id (for center block)
 * @param int    sp_where         position of center block
 * @param string sp_inblock       Flag: wrap page in a block (or not)
 * @param string postmode
@@ -731,7 +715,7 @@ function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hit
                           $sp_format, $sp_onmenu, $sp_label, $commentcode,
                           $owner_id, $group_id, $perm_owner, $perm_group,
                           $perm_members, $perm_anon, $sp_php, $sp_nf,
-                          $sp_old_id, $sp_centerblock, $sp_help, $sp_tid,
+                          $sp_old_id, $sp_centerblock, $sp_help,
                           $sp_where, $sp_inblock, $postmode, $meta_description,
                           $meta_keywords, $draft_flag, $template_flag, $template_id)
 {
@@ -763,7 +747,6 @@ function submitstaticpage($sp_id, $sp_title,$sp_page_title, $sp_content, $sp_hit
                 'sp_old_id' => $sp_old_id,
                 'sp_centerblock' => $sp_centerblock,
                 'sp_help' => $sp_help,
-                'sp_tid' => $sp_tid,
                 'sp_where' => $sp_where,
                 'sp_inblock' => $sp_inblock,
                 'postmode' => $postmode
@@ -858,7 +841,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             $_POST['perm_group'], $_POST['perm_members'], $_POST['perm_anon'],
             $_POST['sp_php'], $_POST['sp_nf'],
             COM_applyFilter($_POST['sp_old_id']), $_POST['sp_centerblock'],
-            $sp_help, COM_applyFilter($_POST['sp_tid']),
+            $sp_help,
             COM_applyFilter($_POST['sp_where'], true), $_POST['sp_inblock'],
             COM_applyFilter($_POST['postmode']), $_POST['meta_description'],
             $_POST['meta_keywords'], $_POST['draft_flag'], $_POST['template_flag'], $_POST['template_id']); 

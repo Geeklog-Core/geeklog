@@ -28,4 +28,29 @@ function SP_update_ConfValues_1_6_3()
     return true;
 }
 
+function SP_update_TopicAssignmentsFor_1_6_4()
+{
+    global $_TABLES;
+    
+    $sql = "SELECT * FROM {$_TABLES['staticpage']}";
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        
+        if ($A['sp_tid'] == 'all') {
+            $A['sp_tid'] == TOPIC_ALL_OPTION;
+        } elseif ($A['sp_tid'] == 'none') {
+            $A['sp_tid'] == TOPIC_HOMEONLY_OPTION;
+        }
+        
+        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['sp_tid']}', 'staticpages', '{$A['sp_id']}', 1, 0)";
+        DB_query($sql);
+    }
+
+    // Remove Topic Id from blocks table
+    $sql = "ALTER TABLE {$_TABLES['staticpage']} DROP `sp_tid`";    
+    DB_query($sql);}
+
 ?>

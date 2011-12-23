@@ -86,7 +86,7 @@ include_once $plugin_path . 'services.inc.php';
 */
 function plugin_getmenuitems_staticpages()
 {
-    global $_CONF, $_TABLES, $_SP_CONF;
+    global $_CONF, $_TABLES, $_SP_CONF, $topic;
 
     $order = '';
     if (!empty($_SP_CONF['sort_menu_by'])) {
@@ -101,8 +101,25 @@ function plugin_getmenuitems_staticpages()
             $order .= 'sp_id';
         }
     }
+    
+    if (!empty($topic)) {
+        $topic_sql = " AND (ta.tid = '$topic' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+    } else {
+        if (COM_onFrontpage()) {
+            $topic_sql = " AND (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+        } else {
+            $topic_sql = " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
+        }
+        $topic_sql .= COM_getTopicSQL('AND', 0, 'ta');
+    }
 
-    $result = DB_query("SELECT sp_id, sp_label FROM {$_TABLES['staticpage']} WHERE (sp_onmenu = 1) AND (draft_flag = 0) AND (template_flag = 0)" . COM_getPermSql('AND') . COM_getLangSql('sp_id', 'AND') . $order);
+    $sql = "SELECT sp.sp_id, sp.sp_label 
+        FROM {$_TABLES['staticpage']} sp, {$_TABLES['topic_assignments']} ta   
+        WHERE (sp.sp_onmenu = 1) AND (sp.draft_flag = 0) AND (sp.template_flag = 0)
+        AND ta.type = 'staticpages' AND ta.id = sp_id $topic_sql 
+        " . COM_getPermSql('AND', 0 , 2, 'sp') . COM_getLangSql('sp_id', 'AND', 'sp') . $order;
+
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
     $menuitems = array();
@@ -753,14 +770,25 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql = "SELECT sp.sp_id AS id, sp.sp_title AS title, sp.sp_content AS description, ";
     $sql .= "UNIX_TIMESTAMP(sp.created) AS date, sp.owner_id AS uid, sp.sp_hits AS hits, ";
     $sql .= "CONCAT('/staticpages/index.php?page=', sp.sp_id) AS url ";
-    $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u ";
-    $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0)";
-    $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
+    $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u, {$_TABLES['topic_assignments']} ta ";
+    $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0) ";
+    $sql .= "AND ta.type = 'staticpages' AND ta.id = sp.sp_id ";
+    $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND', 0, 'ta') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
     }
 
+    if (!empty($topic)) {
+        // Retrieve list of inherited topics
+        if ($topic == TOPIC_ALL_OPTION) {
+            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+        } else {
+            $tid_list = TOPIC_getChildList($topic);
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."'))) ";
+        }
+    }
+        
     if ($_SP_CONF['includesearchcenterblocks'] == 0) {
         $sql .='AND sp_centerblock = 0 ';
     }
@@ -791,15 +819,24 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         $sql .= "CONCAT('/comment.php?mode=view&amp;cid=',c.cid) AS url ";
     }
 
-    $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['comments']} AS c ";
+    $sql .= "FROM {$_TABLES['users']} AS u, {$_TABLES['topic_assignments']} ta , {$_TABLES['comments']} AS c ";
     $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
     $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sp_id','AND','s') . ") ";
     $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.template_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
+    $sql .= "AND ta.type = 'staticpages' AND ta.id = s.sp_id " . COM_getTopicSQL('AND',0,'ta');;
 
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
     }
 
+    if (!empty($topic)) {
+        if ($topic == TOPIC_ALL_OPTION) {
+            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+        } else {
+            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."'))) ";
+        }
+    }    
+    
     $search_c = new SearchCriteria('comments', array($LANG_STATIC['staticpages'],$LANG09[66]));
 
     $columns = array('title' => 'c.title', 'comment');
@@ -937,9 +974,9 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
     }
 
     if (empty ($topic)) {
-        $moresql .= "((sp_tid = 'none') OR (sp_tid = 'all'))";
+        $moresql .= "((ta.tid = '" . TOPIC_HOMEONLY_OPTION . "') OR (ta.tid = '" . TOPIC_ALL_OPTION . "'))";
     } else {
-        $moresql .= "((sp_tid = '{$topic}') OR (sp_tid = 'all'))";
+        $moresql .= "((ta.tid = '{$topic}') OR (ta.tid = '" . TOPIC_ALL_OPTION . "'))";
     }
 
     if ($_SP_CONF['sort_by'] == 'date') {
@@ -957,7 +994,12 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND (draft_flag = 0) AND (template_flag = 0)" . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_title,sp_content,sp_format,created,modified,sp_hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_inblock,sp_help 
+        FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta   
+        WHERE (sp_centerblock = 1) AND (draft_flag = 0) AND (template_flag = 0) 
+        AND ta.type = 'staticpages' AND ta.id = sp_id
+        " . COM_getLangSql('sp_id', 'AND') . ' AND ' . $moresql . $perms . " ORDER BY " . $sort;
+        
     $result = DB_query($spsql);
 
     $pages = DB_numRows($result);
@@ -1349,8 +1391,23 @@ function plugin_upgrade_staticpages()
             }
 
             $current_version = '1.6.4';
-            break;           
+            break;
+            
+        case '1.6.4':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
 
+            if (! $current_config) {
+                SP_update_TopicAssignmentsFor_1_6_4();
+            }
+
+            $current_version = '1.6.5';
+            break; 
+            
         default:
             $done = true;
         }
@@ -1967,10 +2024,12 @@ function plugin_itemsaved_staticpages($id, $type, $old_id)
 {
     global $_TABLES;
 
+    /* Not needed anymore since topic now stored in topic assignments
     // we're really only interested in Topic ID changes
     if (($type == 'topic') && !empty($old_id) && ($id != $old_id)) {
         DB_change($_TABLES['staticpage'], 'sp_tid', $id, 'sp_tid', $old_id);
     }
+    */
 }
 
 /**
@@ -1988,7 +2047,27 @@ function plugin_itemdeleted_staticpages($id, $type)
 
     // we're really only interested in Topic Deletes
     if ($type == 'topic') {
-        DB_change($_TABLES['staticpage'], 'sp_tid', $id, 'sp_tid', TOPIC_ALL_OPTION);
+        // Need to make sure at least one topic left. Default is all
+        
+        // Find all staticpages that are assigned to the deleted topic
+        $sql = "SELECT id FROM {$_TABLES['topic_assignments']} WHERE type = 'staticpages' AND tid ='$id'";
+        
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+    
+        for($i = 0; $i < $nrows; $i++) {        
+            $A = DB_fetchArray($result);
+            
+            // Now check if staticpage has at least 2 topics (1 will be deleted)
+            $sql = "SELECT id FROM {$_TABLES['topic_assignments']} WHERE type = 'staticpages' AND id ='{$A['id']}'";
+            $resultB = DB_query($sql);
+            $nrowsB = DB_numRows($resultB);
+        
+            if ($nrowsB < 2) {
+                // Only deleted topic assigned so add all topic default assignment
+                TOPIC_addTopicAssignments('staticpages', $A['id']);
+            }
+        }
     }
 }
 

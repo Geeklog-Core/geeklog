@@ -59,6 +59,8 @@ if (isset($_REQUEST['query'])) {
     $query = COM_applyfilter($_GET['query']);
 }
 
+TOPIC_getTopic('staticpages', $page);
+
 // from comments display refresh:
 if (isset($_REQUEST['order'])) {
     $comment_order = COM_applyFilter($_REQUEST['order']);

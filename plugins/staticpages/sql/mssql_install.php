@@ -62,7 +62,6 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [perm_anon] [tinyint] NOT NULL ,
     [sp_centerblock] [tinyint] NOT NULL ,
     [sp_help] [varchar] (256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [sp_tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [sp_where] [tinyint] NOT NULL ,
     [sp_php] [tinyint] NOT NULL ,
     [sp_nf] [tinyint] NULL ,

@@ -19,6 +19,10 @@
               </td>
           </tr>
           <tr>
+              <td class="alignright" valign="top">{lang_topic}:</td>
+              <td>{topic_selection}</td>
+          </tr>           
+          <tr>
               <td align="right" style="white-space:nowrap;">{lang_pageformat}:</td>
               <td>
                   <select name="sp_format">
@@ -121,7 +125,7 @@
           </tr>
           <tr>
               <td align="right" style="white-space:nowrap;">{lang_position}</td>
-              <td>{pos_selection}&nbsp;&nbsp;&nbsp;{lang_topic}&nbsp;&nbsp;{topic_selection}</td>
+              <td>{pos_selection}</td>
           </tr>
           <tr>
               <td colspan="2"><hr{xhtml}></td>
