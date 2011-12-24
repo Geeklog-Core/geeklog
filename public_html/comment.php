@@ -137,7 +137,7 @@ function handleSubmit()
                                        $type, $LANG03[14], $postmode)
                      . COM_siteFooter();
         } else { // success
-            $comments = DB_count($_TABLES['comments'], 'sid', $sid);
+            $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $sid));
             DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
             COM_olderStuff(); // update comment count in Older Stories block
             $display = COM_refresh(COM_buildUrl($_CONF['site_url']
@@ -390,6 +390,8 @@ $formtype = '';
 if (!empty ($_REQUEST['formtype'])) {
     $formtype = COM_applyFilter ($_REQUEST['formtype']);
 }
+
+
 switch ($mode) {
 case $LANG03[28]: // Preview Changes (for edit)
 case $LANG03[34]: // Preview Submission changes (for edit)
