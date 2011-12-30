@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<rss version="2.0" xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+<title>Geeklog Site</title>
+<link>http://192.168.1.201</link>
+<description>Another Nifty Geeklog Site</description>
+<managingEditor>admin@192.168.1.201</managingEditor>
+<webMaster>admin@192.168.1.201</webMaster>
+<copyright>Copyright 2011 Geeklog Site</copyright>
+<generator>Geeklog</generator>
+<pubDate>Sat, 24 Dec 2011 09:01:19 -0500</pubDate>
+<language>en-gb</language>
+<atom:link href="http://192.168.1.201/backend/geeklog.rss" rel="self" type="application/rss+xml" />
+<item>
+<title>Ha</title>
+<link>http://192.168.1.201/article.php?story=Ha</link>
+<guid isPermaLink="true">http://192.168.1.201/article.php?story=Ha</guid>
+<pubDate>Fri, 23 Dec 2011 15:30:59 -0500</pubDate>
+<comments>http://192.168.1.201/article.php?story=Ha#comments</comments>
+<dc:subject>Ha</dc:subject>
+<description>Ha Sto ...</description>
+<trackback:ping>http://192.168.1.201/trackback.php?id=Ha</trackback:ping>
+</item>
+<item>
+<title>Welcome to Geeklog!</title>
+<link>http://192.168.1.201/article.php?story=welcome</link>
+<guid isPermaLink="true">http://192.168.1.201/article.php?story=welcome</guid>
+<pubDate>Fri, 23 Dec 2011 15:28:51 -0500</pubDate>
+<comments>http://192.168.1.201/article.php?story=welcome#comments</comments>
+<dc:subject>Geeklog</dc:subject>
+<description>&lt;p&gt;Welcome and let me be the first to congratulate you on installing Geeklog. Please take the time to read everything in the &lt;a href=&quot;docs/english/index.html&quot;&gt;docs directory&lt;/a&gt;. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.&lt;/p&gt;&lt;p&gt;To log into your new Geeklog site, please use this account:&lt;/p&gt;&lt;p&gt;Username: &lt;b&gt;Admin&lt;/b&gt;&lt;br /&gt;Password: &lt;b&gt;password&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;And don't forget to &lt;a href=&quot;usersettings.php&quot;&gt;change your password&lt;/a&gt; after logging in!&lt;/b&gt; ...&lt;/p&gt;</description>
+<trackback:ping>http://192.168.1.201/trackback.php?id=welcome</trackback:ping>
+</item>
+</channel>
+</rss>

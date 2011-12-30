@@ -976,7 +976,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
 }
 
 /**
-* Retrieve default topic from selection
+* Retrieve topics from selection or retrieve topics for object from db
 *
 * @param    string          $type   Type of object to find topic access about. If 'topic' then will check post array for topic selection control 
 * @param    string/array    $id     ID of block or topic to check if block topic access
@@ -1134,6 +1134,7 @@ function TOPIC_getTopic($type, $id)
     global $_TABLES, $topic;
     
     $find_another = false;
+    $found = false;
     
     // Double check
     $topic = COM_applyFilter($topic);
@@ -1147,41 +1148,63 @@ function TOPIC_getTopic($type, $id)
         $last_topic = $topic;
     }
     
-    if ($last_topic != '') {    
-        // see if object belongs to topic
-        $sql = "SELECT ta.* 
-            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
-            WHERE t.tid = ta.tid  
-            AND ta.type = '$type' AND ta.id = '$id' AND ta.tid = '$last_topic' 
-            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
-    
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
+    // Special Cases
+    If ($type == 'comment') {
+        if ($id != '') {
+            // Find comment objects topic
+
+            
+            
+            
+            
+            
+            
+            
+        } else {
+            // If no id then probably a submit form
             $topic = $last_topic;
+            $found = true;
+        }
+    }
+    
+    
+    if (!$found) {
+        if ($last_topic != '') {    
+            // see if object belongs to topic
+            $sql = "SELECT ta.* 
+                FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
+                WHERE t.tid = ta.tid  
+                AND ta.type = '$type' AND ta.id = '$id' AND ta.tid = '$last_topic' 
+                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+        
+            $result = DB_query($sql);
+            $nrows = DB_numRows($result);
+            if ($nrows > 0) {
+                $topic = $last_topic;
+            } else {
+                $find_another = true;
+            }
         } else {
             $find_another = true;
         }
-    } else {
-        $find_another = true;
-    }
-    
-    if ($find_another) {
-        // Find another topic to set, most likely default
-        $sql = "SELECT ta.* 
-            FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
-            WHERE t.tid = ta.tid  
-            AND ta.type = '$type' AND ta.id = '$id' 
-            " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
-            ORDER by ta.tdefault DESC";
-    
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            $A = DB_fetchArray($result);
-            $topic = $A['tid'];
-        } else {
-            $topic = '';
+        
+        if ($find_another) {
+            // Find another topic to set, most likely default
+            $sql = "SELECT ta.* 
+                FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
+                WHERE t.tid = ta.tid  
+                AND ta.type = '$type' AND ta.id = '$id' 
+                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't') . "
+                ORDER by ta.tdefault DESC";
+        
+            $result = DB_query($sql);
+            $nrows = DB_numRows($result);
+            if ($nrows > 0) {
+                $A = DB_fetchArray($result);
+                $topic = $A['tid'];
+            } else {
+                $topic = '';
+            }
         }
     }
 }

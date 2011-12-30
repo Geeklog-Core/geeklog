@@ -110,8 +110,8 @@ function plugin_getmenuitems_staticpages()
         } else {
             $topic_sql = " AND (ta.tid = '" . TOPIC_ALL_OPTION . "')";
         }
-        $topic_sql .= COM_getTopicSQL('AND', 0, 'ta');
     }
+    $topic_sql .= COM_getTopicSQL('AND', 0, 'ta');
 
     $sql = "SELECT sp.sp_id, sp.sp_label 
         FROM {$_TABLES['staticpage']} sp, {$_TABLES['topic_assignments']} ta   

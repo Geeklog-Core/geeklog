@@ -794,6 +794,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             $output['title']        = $output['sp_title'];
             $output['page_title']   = $output['sp_page_title'];
             //$output['category']     = array($output['sp_tid']);
+            $output['category']     = TOPIC_getTopicIdsForObject('staticpages', $page);
             $output['content']      = $output['sp_content'];
             $output['content_type'] = 'html';
 
@@ -855,6 +856,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $output_item['title']        = $output_item['sp_title'];
                 $output_item['page_title']   = $output_item['sp_page_title'];
                 //$output_item['category']     = array($output_item['sp_tid']);
+                $output_item['category']     = TOPIC_getTopicIdsForObject('staticpages', $page);
                 $output_item['content']      = $output_item['sp_content'];
                 $output_item['content_type'] = 'html';
 

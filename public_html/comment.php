@@ -391,6 +391,12 @@ if (!empty ($_REQUEST['formtype'])) {
     $formtype = COM_applyFilter ($_REQUEST['formtype']);
 }
 
+// Get comment id, may not be there...will handle in function
+$cid = ''; 
+if (isset ($_REQUEST['cid'])) {
+    $cid = COM_applyFilter ($_REQUEST['cid']);
+}
+TOPIC_getTopic('comment', $cid);
 
 switch ($mode) {
 case $LANG03[28]: // Preview Changes (for edit)
