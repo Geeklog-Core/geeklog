@@ -257,9 +257,9 @@ function handleView($view = true)
     switch ( $type ) {
         case 'article':
             $sql = 'SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, '
-                 . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
-                 . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
-                 . COM_getTopicSQL('AND') . ' GROUP BY sid,owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
+                 . "perm_members, perm_anon FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE (sid = '$sid') "
+                 . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW()) AND ta.type = "article" AND ta.id = sid ' . COM_getPermSQL('AND') 
+                 . COM_getTopicSQL('AND', 0, 'ta') . ' GROUP BY sid, owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
             $result = DB_query ($sql);
             $B = DB_fetchArray ($result);
             $allowed = $B['count'];
