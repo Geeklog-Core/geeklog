@@ -81,11 +81,18 @@ if ($_CONF['lastlogin']) {
 }
 $data_arr[] = array('title' => $LANG10[27], 'stats' => COM_NumberFormat ($active_users));
 
-$topicsql = COM_getTopicSql ('AND');
+$topicsql = COM_getTopicSql ('AND', 0, 'ta');
 
 $id = array ('draft_flag', 'date');
 $values = array ('0', 'NOW()');
-$result = DB_query ("SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
+
+//$sql = "SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql;
+$sql = "SELECT COUNT(DISTINCT sid) AS count, SUM(comments) AS ccount 
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+    WHERE ta.type = 'article' AND ta.id = sid 
+    AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql;
+   
+$result = DB_query ($sql);
 $A = DB_fetchArray ($result);
 if (empty ($A['ccount'])) {
     $A['ccount'] = 0;
@@ -115,7 +122,13 @@ $display .= PLG_getPluginStats (1);
 
 // Detailed story statistics
 
-$result = DB_query("SELECT sid,title,hits FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY hits DESC LIMIT 10");
+//$sql = "SELECT sid,title,hits FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY hits DESC LIMIT 10";
+$sql = "SELECT sid,title,hits 
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+    WHERE ta.type = 'article' AND ta.id = sid 
+    AND (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " GROUP BY sid ORDER BY hits DESC LIMIT 10";
+
+$result = DB_query($sql);
 $nrows  = DB_numRows($result);
 
 if ($nrows > 0) {
@@ -145,8 +158,13 @@ if ($nrows > 0) {
 }
 
 // Top Ten Commented Stories
+// $sql = "SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
+$sql = "SELECT sid,title,comments 
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+    WHERE ta.type = 'article' AND ta.id = sid 
+    AND (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
 
-$result = DB_query("SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10");
+$result = DB_query($sql);
 $nrows  = DB_numRows($result);
 if ($nrows > 0) {
     $header_arr = array(
@@ -176,7 +194,13 @@ if ($nrows > 0) {
 // Top Ten Trackback Comments
 
 if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
-    $result = DB_query ("SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid,{$_TABLES['stories']}.sid,{$_TABLES['stories']}.title ORDER BY count DESC LIMIT 10");
+    // $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid,{$_TABLES['stories']}.sid,{$_TABLES['stories']}.title ORDER BY count DESC LIMIT 10";
+    $sql = "SELECT s.sid, s.title, COUNT(*) AS count 
+        FROM {$_TABLES['stories']} s,{$_TABLES['trackback']} AS t, {$_TABLES['topic_assignments']} ta 
+        WHERE ta.type = 'article' AND ta.id = s.sid 
+        AND (s.draft_flag = 0) AND (s.date <= NOW()) AND (s.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid, s.sid, s.title ORDER BY count DESC LIMIT 10";
+    
+    $result = DB_query ($sql);
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
         $header_arr = array(
@@ -205,8 +229,13 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
 }
 
 // Top Ten Emailed Stories
+// $sql = "SELECT sid,title,numemails FROM {$_TABLES['stories']} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10";
+$sql = "SELECT sid,title,numemails 
+    FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+    WHERE ta.type = 'article' AND ta.id = sid 
+    AND (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10";
 
-$result = DB_query("SELECT sid,title,numemails FROM {$_TABLES['stories']} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10");
+$result = DB_query($sql);
 $nrows = DB_numRows($result);
 
 if ($nrows > 0) {
