@@ -36,6 +36,9 @@ require_once $_CONF['path_system'] . 'classes/search.class.php';
 
 $searchObj = new Search();
 
+// Figure out topic to display
+TOPIC_getTopic('search');
+
 if (isset ($_GET['mode']) && ($_GET['mode'] == 'search')) {
     $display = COM_siteHeader('menu', $LANG09[11]);
     $display .= $searchObj->doSearch();

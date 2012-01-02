@@ -1129,7 +1129,7 @@ function TOPIC_getTopicAdminColumn($type, $id)
 * @return   void
 *
 */
-function TOPIC_getTopic($type, $id)
+function TOPIC_getTopic($type, $id = '')
 {
     global $_TABLES, $topic;
     
@@ -1147,26 +1147,40 @@ function TOPIC_getTopic($type, $id)
     } else {
         $last_topic = $topic;
     }
-    
+
+    // ***********************************
     // Special Cases
-    If ($type == 'comment') {
+    if ($type == 'comment') {
         if ($id != '') {
             // Find comment objects topic
+            $sql = "SELECT type, sid 
+                FROM {$_TABLES['comments']}  
+                WHERE cid = '$id'";
+        
+            $result = DB_query($sql);
+            $nrows = DB_numRows($result);
+            if ($nrows > 0) {
+                $A = DB_fetchArray($result);
+                
+                // Found comment object so now reset type and id variables
+                $type = $A['type'];
+                $id = $A['sid'];
 
-            
-            
-            
-            
-            
-            
-            
+            } else {
+                // Could not find comment so set topic to nothing (all)
+                $topic = '';
+                $found = true;
+            }
         } else {
             // If no id then probably a submit form
             $topic = $last_topic;
             $found = true;
         }
+    } elseif ($type == 'search') {
+        $topic = $last_topic;
+        $found = true;
     }
-    
+    // ***********************************
     
     if (!$found) {
         if ($last_topic != '') {    
