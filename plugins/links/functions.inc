@@ -768,6 +768,17 @@ function plugin_upgrade_links()
             $current_version = '2.1.1';
             break;
 
+        case '2.1.1':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '2.1.2';
+            break;
+            
         default:
             $done = true;
         }
@@ -1817,6 +1828,44 @@ function plugin_getconfigtooltip_links($id)
 {   
     // Use config tooltip hack where tooltip is read from the config documentation
     return;
+}
+
+/**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_links($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS, $_LI_CONF;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Links Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Links Admin'])) {
+            $new_group_id = $_GROUPS['Links Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Links Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Link tables with new group id
+        $sql = "UPDATE {$_TABLES['links']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+        
+        $sql = "UPDATE {$_TABLES['linkcategories']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+   }
 }
 
 ?>
