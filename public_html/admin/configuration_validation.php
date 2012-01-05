@@ -44,7 +44,7 @@ $_CONF_VALIDATE['Core']['microsummary_short'] = array('rule' => 'stringOrEmpty')
 $_CONF_VALIDATE['Core']['site_disabled_msg'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['copyrightyear'] = array(
     'rule' => 'copyrightyear',
-    'message' => isset($LANG_VALIDATION['year']) ? $LANG_VALIDATION['year'] : $LANG_VALIDATION['default']
+    'message' => isset($LANG_VALIDATION['yearOrRange']) ? $LANG_VALIDATION['yearOrRange'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['url_rewrite'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');

@@ -2150,6 +2150,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'This field does not match the comparison operation',
     'date' => 'This field must be in a date format',
     'year' => 'This field must be in a year format such as 2010',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'This field must be in a time format',
     'datetime' => 'This field must be in a datetime format',
     'boolean' => 'This field must be a boolean',

@@ -135,7 +135,7 @@ function configmanager_select_default_perm_cookie_timeout_helper()
 function custom_validation_copyrightyear($rule, $ruleParams) {
     $year = $ruleParams[0]['copyrightyear'];
     
-    return preg_match('/^\d{1,4}$/', $year);
+    return preg_match('/^\d{1,4}\s{0,1}\-{0,1}\s{0,1}\d{0,4}$/', $year);
 }
 
 /**
