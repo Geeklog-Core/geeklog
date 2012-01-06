@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td align="right" style="white-space:nowrap;">{lang_topic}:</td>
-                <td>{topic_selection}<td>
+                <td><select name="tid">{topic_selection}</select><td>
             </tr>
             <tr>
                 <td align="right" style="white-space:nowrap;">{lang_num_links}:</td>

@@ -1519,18 +1519,22 @@ function phpblock_topic_links()
 
     if (!empty($topic)) {
         $tid = addslashes($topic);
-        $result = DB_query("SELECT l.lid, l.title, l.url, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE c.tid='{$tid}' OR c.tid='all'" . COM_getPermSQL('AND', 0, 2, 'c'));
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $content = stripslashes($A['title']);
-                $url = COM_buildUrl($_CONF['site_url']
-                     . '/links/portal.php?what=link&amp;item=' . $A['lid']);
-                $retval .= COM_createLink($content, $url,
-                                          array('title' => $A['url']))
-                        . '<br' . XHTML . '>';
-            }
+        $topic_sql = "(c.tid='{$tid}' OR c.tid='" . TOPIC_ALL_OPTION . "') ";
+    } else {
+        $topic_sql = "(c.tid='" . TOPIC_ALL_OPTION . "') ";
+    }        
+        
+    $result = DB_query("SELECT l.lid, l.title, l.url, c.cid FROM {$_TABLES['links']} AS l LEFT JOIN {$_TABLES['linkcategories']} AS c ON l.cid=c.cid WHERE " . $topic_sql . COM_getPermSQL('AND', 0, 2, 'c'));
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $content = stripslashes($A['title']);
+            $url = COM_buildUrl($_CONF['site_url']
+                 . '/links/portal.php?what=link&amp;item=' . $A['lid']);
+            $retval .= COM_createLink($content, $url,
+                                      array('title' => $A['url']))
+                    . '<br' . XHTML . '>';
         }
     }
 
@@ -1551,16 +1555,21 @@ function phpblock_topic_categories()
 
     if (!empty($topic)) {
         $tid = addslashes($topic);
-        $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE tid='{$tid}' OR tid='all'" . COM_getPermSQL ('AND'));
-        $nrows = DB_numRows($result);
-        if ($nrows > 0) {
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $content = stripslashes($A['category']);
-                $url = $_CONF['site_url'] . '/links/index.php?category='
-                                          . rawurlencode($A['cid']);
-                $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
-            }
+        $topic_sql = "(tid='{$tid}' OR tid='" . TOPIC_ALL_OPTION . "') ";
+    } else {
+        $topic_sql = "(tid='" . TOPIC_ALL_OPTION . "') ";
+    } 
+    
+
+    $result = DB_query("SELECT category, cid FROM {$_TABLES['linkcategories']} WHERE " . $topic_sql . COM_getPermSQL ('AND'));
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $content = stripslashes($A['category']);
+            $url = $_CONF['site_url'] . '/links/index.php?category='
+                                      . rawurlencode($A['cid']);
+            $retval .= COM_createLink($content, $url) . '<br' . XHTML . '>';
         }
     }
 
