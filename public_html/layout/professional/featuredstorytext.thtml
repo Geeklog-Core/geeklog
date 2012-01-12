@@ -4,6 +4,7 @@
         {print_icon}
         {edit_icon}
     </span>
+    {breadcrumb_trail}
     <h1>{story_title_link}</h1>
     <div class="story-information">
         <p>{story_date}</p>

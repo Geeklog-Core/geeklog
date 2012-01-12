@@ -167,8 +167,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $article->set_var ('camera_icon', '');
         }
     }
-
+  
     $topicname = $story->DisplayElements('topic');
+    
     $article->set_var('story_topic_id', $story->DisplayElements('tid'));
     $article->set_var('story_topic_name', $topicname);
 
@@ -214,9 +215,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $article->set_var('lang_permalink', $LANG01[127]);
 
     $show_comments = true;
-
+    
     // n = Full display of article. p = 'Preview' mode.
-
     if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
         $attributes = ' class="non-ul"';
         $attr_array = array('class' => 'non-ul');
@@ -235,6 +235,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             )
         );
     } else {
+        $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
         $article->set_var('story_title_link', $story->DisplayElements('title'));
     }
 

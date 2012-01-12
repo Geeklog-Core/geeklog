@@ -2,6 +2,7 @@
 <!-- featuredstorytext.thtml { -->
 
 <div class="featuredstorytext">
+  {breadcrumb_trail}
   <h2>{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
 
   <ul class="icon">

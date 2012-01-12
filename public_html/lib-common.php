@@ -934,6 +934,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
     }
 
+    /* *************************************************** */
+    /* Tom - Not sure if this is needed anymore since topic is now retrieved from article.php
     // get topic if not on home page
     if( !isset( $_GET['topic'] ))
     {
@@ -965,7 +967,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
             $numrows = DB_numRows($result);
             if ($numrows == 1) {
                 $A = DB_fetchArray($result);
-                $topic = $A['tid'];
+                $topic = $A['tid']
             }
         }
     }
@@ -973,6 +975,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     {
         $topic = COM_applyFilter( $_GET['topic'] );
     }
+    */
+    /* *************************************************** */
 
     $feed_url = array();
     if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable

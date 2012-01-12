@@ -341,6 +341,11 @@ if ( $A = DB_fetchArray( $result ) ) {
         $story->_featured = 1;
     }
 
+    // Display breadcrumb trail
+    if (!empty($topic)) {
+        $display .= TOPIC_breadcrumbs('topic', $topic);
+    }
+
     // display first article
     $display .= STORY_renderArticle ($story, 'y');
 

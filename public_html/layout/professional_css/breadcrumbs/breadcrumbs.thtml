@@ -1,0 +1,5 @@
+<!-- Start of Breadcrumbs Navigation -->
+<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+    {breadcrumbs_list}
+</div>
+<!-- End of Breadcrumbs Navigation -->

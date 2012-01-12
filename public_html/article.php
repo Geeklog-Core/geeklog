@@ -102,6 +102,10 @@ if (empty ($sid)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
 }
+
+// Get topic
+TOPIC_getTopic('article', $sid);
+
 if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
     $order = '';
 }
