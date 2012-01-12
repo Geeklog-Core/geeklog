@@ -346,6 +346,8 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
+        
+        $spage->set_var('breadcrumb_trail', TOPIC_breadcrumbs('staticpages', $page));
 
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',
