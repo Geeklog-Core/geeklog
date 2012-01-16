@@ -1,1 +1,3 @@
+{block_start}
 {content}
+{block_end}

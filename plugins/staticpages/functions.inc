@@ -331,17 +331,18 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         if ($msg > 0) {
             $retval .= COM_showMessage($msg, 'staticpages');
         }
-        if ($A['sp_inblock'] == 1) {
-            $retval .= COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
-                            COM_getBlockTemplate('_staticpages_block', 'header'));
-        }
 
         $template_path = staticpages_templatePath();
         $spage = COM_newTemplate($template_path);
         $spage->set_file(array('page'     => 'staticpage.thtml',
                                'comments' => 'spcomments.thtml'));
         
-        $spage->set_var('sp_id', $page);   
+        $spage->set_var('sp_id', $page);
+        
+        if ($A['sp_inblock'] == 1) {
+            $spage->set_var('block_start', COM_startBlock(stripslashes($A['sp_title']), $A['sp_help'],
+                            COM_getBlockTemplate('_staticpages_block', 'header')));            
+        }        
         
         if (XHTML != '') {
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
@@ -464,13 +465,15 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         }
 
         // Call to plugins to set template variables
-        PLG_templateSetVars('staticpage', $spage); 
+        PLG_templateSetVars('staticpage', $spage);
+        
+        if ($A['sp_inblock'] == 1) {
+            $spage->set_var('block_end', COM_endBlock(COM_getBlockTemplate('_staticpages_block',
+                                                         'footer')));
+        }
+        
 
         $retval .= $spage->finish($spage->parse('output', 'page'));
-        if ($A['sp_inblock'] == 1) {
-            $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_block',
-                                                         'footer'));
-        }
 
         if (!isset($_USER['noboxes'])) {
             if (COM_isAnonUser()) {
@@ -1033,15 +1036,15 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 }
             }
 
-            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
-                && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
-                $retval .= COM_startBlock ($S['sp_title'], $S['sp_help'],
-                    COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
-            }
-
             $template_path = staticpages_templatePath();
             $spage = COM_newTemplate($template_path);
             $spage->set_file(array('page' => 'centerblock.thtml'));
+            
+            if (($S['sp_inblock'] == 1) && !empty ($S['sp_title'])
+                && (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
+               $spage->set_var('block_start', COM_startBlock ($S['sp_title'], $S['sp_help'],
+                    COM_getBlockTemplate ('_staticpages_centerblock', 'header')));                
+            }            
 
             if ($_CONF['hideprintericon'] == 0) {
                 $icon_url = $_CONF['layout_url'] . '/images/print.'
@@ -1109,11 +1112,13 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             }
             
             $spage->set_var('content', $content);
-            $retval .= $spage->finish($spage->parse('output', 'page'));
+            
             if (($S['sp_inblock'] == 1) && !empty ($S['sp_title']) &&
                     (($where != 0) || ($S['sp_format'] != 'blankpage'))) {
-                $retval .= COM_endBlock(COM_getBlockTemplate('_staticpages_centerblock', 'footer'));
+                $spage->set_var('block_end', COM_endBlock(COM_getBlockTemplate('_staticpages_centerblock', 'footer')));
             }
+            
+            $retval .= $spage->finish($spage->parse('output', 'page'));
 
             if ($where == 0) {
                 if ($S['sp_format'] == 'allblocks') {
