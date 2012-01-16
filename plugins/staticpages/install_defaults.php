@@ -121,6 +121,9 @@ $_SP_DEFAULT['comment_code'] = -1;
 // Whether to set the draft flag by default for new pages
 $_SP_DEFAULT['draft_flag'] = 0;
 
+// Whether to display breadcrumbs on staticpages
+$_SP_DEFAULT['disable_breadcrumbs_staticpages'] = 0;
+
 // Define default permissions for new pages created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -193,6 +196,8 @@ function plugin_initconfig_staticpages()
                 0, 0, 17, 125, true, 'staticpages', 0);
         $c->add('draft_flag', $_SP_DEFAULT['draft_flag'], 'select',
                 0, 0, 0, 127, true, 'staticpages', 0);
+        $c->add('disable_breadcrumbs_staticpages', $_SP_DEFAULT['disable_breadcrumbs_staticpages'], 'select',
+                0, 0, 0, 128, true, 'staticpages', 0);        
 
         $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'staticpages', 1);
         $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'staticpages', 1);

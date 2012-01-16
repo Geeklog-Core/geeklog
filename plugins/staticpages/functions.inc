@@ -347,7 +347,12 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         
-        $spage->set_var('breadcrumb_trail', TOPIC_breadcrumbs('staticpages', $page));
+        if ($_SP_CONF['disable_breadcrumbs_staticpages']) {
+            $breadcrumb_trail = '';
+        } else {
+            $breadcrumb_trail = TOPIC_breadcrumbs('staticpages', $page);
+        }
+        $spage->set_var('breadcrumb_trail', $breadcrumb_trail);
 
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',
@@ -1404,6 +1409,8 @@ function plugin_upgrade_staticpages()
             }
 
             if (! $current_config) {
+                SP_update_ConfValues_1_6_4();
+                
                 SP_update_TopicAssignmentsFor_1_6_4();
             }
 

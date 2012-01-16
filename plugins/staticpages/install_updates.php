@@ -51,6 +51,24 @@ function SP_update_TopicAssignmentsFor_1_6_4()
 
     // Remove Topic Id from blocks table
     $sql = "ALTER TABLE {$_TABLES['staticpage']} DROP `sp_tid`";    
-    DB_query($sql);}
+    DB_query($sql);
+}
+
+function SP_update_ConfValues_1_6_4()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Breadcrumbs
+    $c->add('disable_breadcrumbs_staticpages', $_SP_DEFAULT['disable_breadcrumbs_staticpages'], 'select',
+            0, 0, 0, 128, true, 'staticpages', 0);
+    
+    return true;
+}
 
 ?>
