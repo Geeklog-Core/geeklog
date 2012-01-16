@@ -1272,6 +1272,11 @@ function TOPIC_breadcrumbs($type, $id)
     
     $breadcrumbs_output = '';
     
+    // see if breadcrumbs is disabled
+    if (($_CONF['disable_breadcrumbs_topics'] && $type == 'topic') || ($_CONF['disable_breadcrumbs_articles'] && $type == 'article') || ($_CONF['disable_breadcrumbs_plugins'] && $type != 'topic' && $type != 'article') ) {
+        return $breadcrumbs_output;
+    }
+    
     $breadcrumb_t = COM_newTemplate($_CONF['path_layout'] . 'breadcrumbs/');
     $breadcrumb_t->set_file (array ('breadcrumbs_t' => 'breadcrumbs.thtml',
                                     'breadcrumb_child_t' => 'breadcrumb_child.thtml',

@@ -1999,7 +1999,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => "Default Search Method",
     'search_def_sort' => "Default Sort Order", 
     'autotag_permissions_story' => '[story: ] Permissions', 
-    'autotag_permissions_user' => '[user: ] Permissions'   
+    'autotag_permissions_user' => '[user: ] Permissions', 
+    'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
+    'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
+    'disable_breadcrumbs_plugins' => "Disable Plugins Breadcrumbs"
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2055,7 +2058,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
     'fs_webservices' => 'Webservices',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions', 
+    'fs_breadcrumbs' => 'Breadcrumbs'
 );
     
 $LANG_tab['Core'] = array(
@@ -2098,6 +2102,7 @@ $LANG_tab['Core'] = array(
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
     'tab_webservices' => 'Webservices',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(

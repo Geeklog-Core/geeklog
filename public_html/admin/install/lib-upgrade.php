@@ -484,6 +484,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
             require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.8.1_to_1.9.0.php';
             INST_updateDB($_SQL);
             
+            update_ConfValuesFor190();
+            
             update_BlockTopicAssignmentsFor190();
             
             update_StoryTopicAssignmentsFor190();

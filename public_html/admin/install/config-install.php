@@ -413,6 +413,12 @@ function install_config()
     $c->add('restrict_webservices',  0, 'select', 7, 40, 0, 1850, TRUE, $me, 40);
     $c->add('atom_max_stories',     10, 'text',   7, 40, 0, 1860, TRUE, $me, 40);
     
+    $c->add('tab_topics', NULL, 'tab', 7, 45, NULL, 0, TRUE, $me, 45);
+    $c->add('fs_breadcrumbs', NULL, 'fieldset', 7, 45, NULL, 0, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_topics', 0, 'select', 7, 45, 0, 2000, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2010, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);
+    
 }
 
 ?>

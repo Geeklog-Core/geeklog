@@ -76,4 +76,29 @@ function update_BlockTopicAssignmentsFor190()
     
 }
 
+
+/**
+ * Add new config options
+ *
+ */
+function update_ConfValuesFor190()
+{
+    global $_CONF, $_TABLES;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    $me = 'Core';
+    
+    // Breadcrumbs
+    $c->add('tab_topics', NULL, 'tab', 7, 45, NULL, 0, TRUE, $me, 45);
+    $c->add('fs_breadcrumbs', NULL, 'fieldset', 7, 45, NULL, 0, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_topics', 0, 'select', 7, 45, 0, 2000, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2010, TRUE, $me, 45);
+    $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);    
+    
+    return true;
+}
+
 ?>
