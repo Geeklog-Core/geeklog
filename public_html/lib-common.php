@@ -3705,7 +3705,7 @@ function COM_formatBlock( $A, $noboxes = false )
         $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
         $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-        $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date';
+        $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
 
         $commonsql = "FROM {$_TABLES['blocks']} WHERE name = '"
                    . $A['name'] . '_' . $lang . "'";
