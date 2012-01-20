@@ -1887,6 +1887,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => '每文章的最多圖像限度',
     'limitnews' => '每頁最多文章顯示',
     'minnews' => '每頁最少文章顯示',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => '顯示 "提交者"?',
     'hideviewscount' => '隱藏文章觀數?',
     'hideemailicon' => '隱藏電郵圖示?',

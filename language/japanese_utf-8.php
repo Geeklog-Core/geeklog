@@ -1893,6 +1893,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => '記事に配置する画像の最大数',
     'limitnews' => '1ページあたりの記事の表示数',
     'minnews' => '記事の最小表示数',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => '所有者を表示する',
     'hideviewscount' => '閲覧数を表示しない',
     'hideemailicon' => 'メールアイコンを表示しない',

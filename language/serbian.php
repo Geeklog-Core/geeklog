@@ -1889,6 +1889,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Max Slika po Tekstu',
     'limitnews' => 'Tekstova Po Strani',
     'minnews' => 'Min. Tekstova Po Strani',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Prikazi Autora?',
     'hideviewscount' => 'Sakrij Brojac Pregleda?',
     'hideemailicon' => 'Sakrij E-Mail Ikonu?',

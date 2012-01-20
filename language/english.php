@@ -1968,6 +1968,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => "Allowed Protocols",
     'disable_autolinks' => "Disable Autotags?",
     'clickable_links' => 'Make URLs clickable?',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Send compressed output?',
     'frame_options' => 'Protection against "clickjacking"',
     'censormode' => "Censor Mode?",

@@ -1889,6 +1889,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Max. Bilder pro Artikel',
     'limitnews' => 'Artikel pro Seite',
     'minnews' => 'Min. Artikel pro Seite',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Autor anzeigen?',
     'hideviewscount' => 'Anzeigezähler ausblenden?',
     'hideemailicon' => 'E-Mail-Symbol ausblenden?',

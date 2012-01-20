@@ -430,6 +430,7 @@ $_CONF_VALIDATE['Core']['cookiesecure'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['cron_schedule_interval'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['disable_autolinks'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['clickable_links'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['linktext_maxlen'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['compressed_output'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frame_options'] = array(
     'rule' => array('inList', array('', 'SAMEORIGIN', 'DENY'), true)

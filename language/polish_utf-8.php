@@ -1884,6 +1884,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Maks. liczba zdjęć w artykule',
     'limitnews' => 'Liczba artykułów na stronę',
     'minnews' => 'Min. liczba artykułów na stronę',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Pokaż "Autor"?"',
     'hideviewscount' => 'Ukryj liczbę odsłon?',
     'hideemailicon' => 'Ukryj ikonę emaila?',

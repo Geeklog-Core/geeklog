@@ -1887,6 +1887,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Največje število slik na članek',
     'limitnews' => 'Člankov na strani',
     'minnews' => 'Min. št. člankov na strani',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Prikaži "Piše"?',
     'hideviewscount' => 'Skrij število ogledov?',
     'hideemailicon' => 'Skrij ikono za E-Pošto?',

@@ -1884,6 +1884,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Max Images per Article',
     'limitnews' => 'Stories per Page',
     'minnews' => 'Min. Stories per Page',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Show "Contributed By"?"',
     'hideviewscount' => 'Hide Views Count?',
     'hideemailicon' => 'Hide E-Mail Icon?',

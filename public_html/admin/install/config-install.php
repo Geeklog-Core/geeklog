@@ -364,6 +364,7 @@ function install_config()
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE, $me, 31);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE, $me, 31);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE, $me, 31);
+    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);
     $c->add('compressed_output',0,'select',7,31,1,1756,TRUE, $me, 31);
     $c->add('frame_options','DENY','select',7,31,22,1758,TRUE, $me, 31);
 

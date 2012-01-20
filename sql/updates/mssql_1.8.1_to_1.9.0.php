@@ -98,6 +98,9 @@ function update_ConfValuesFor190()
     $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2010, TRUE, $me, 45);
     $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);    
     
+    // Max Link Text
+    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);   
+    
     return true;
 }
 
