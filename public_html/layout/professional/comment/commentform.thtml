@@ -1,15 +1,19 @@
                                 {start_block_postacomment}
+                                        <div id="commenteditform">
                                             <form action="{form_url}" method="post">
                                                 <table cellspacing="0" cellpadding="3" width="95%">
                                                     <tr>
-                                                        <td class="alignright"><b>{lang_username}:</b></td>
+                                                        <td class="alignright" style="width:7em"><b>{lang_username}:</b></td>
                                                         <td>
+                                                            <input type="hidden" name="order" value="{order}"{xhtml}>
+                                                            <input type="hidden" name="format" value="{format}"{xhtml}>
+                                                            <input type="hidden" name="cpage" value="{cpage}"{xhtml}>
                                                             {cid}
-                                                            <input type="hidden" name="sid" value="{sid}"{xhtml}>
-                                                            <input type="hidden" name="pid" value="{pid}"{xhtml}>
-                                                            <input type="hidden" name="type" value="{type}"{xhtml}>
+                                                            <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+                                                            <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
+                                                            <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
                                                             <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                                            <input type="hidden" name="uid" value="{uid}"{xhtml}>{username} <span{hidewhenediting}>[ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]</span>
+                                                            <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username} <span{hidewhenediting}>[ <a href="{action_url}" rel="nofollow">{lang_logoutorcreateaccount}</a> ]</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -18,7 +22,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright" style="vertical-align:top;"><b>{lang_comment}:</b></td>
-                                                        <td><textarea name="comment" rows="10" style="width:95%">{comment}</textarea></td>
+                                                        <td><textarea name="comment" cols="60" rows="10" style="width:95%">{comment}</textarea></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="alignright" style="vertical-align:top;"><b>{lang_postmode}:</b></td>
@@ -40,14 +44,15 @@
                                                             <li>{lang_instr_line3}</li>
                                                             <li>{lang_instr_line4}</li>
                                                             <li>{lang_instr_line5}</li></ul>
-                                                            <input type="submit" name="mode" value="{lang_preview}"{xhtml}>
+                                                            <input type="submit" name="{nprefix}mode" value="{lang_preview}"{xhtml}>
                                                             <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
                                                             {save_option} 
-                                                            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}> 
+                                                            <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}> 
                                                             {delete_option} 
                                                             {notification}
                                                         </td>
                                                     </tr>
                                                 </table>
                                             </form>
+                                        </div>
                                 {end_block}

@@ -4,11 +4,12 @@
     <b>{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</b> | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" rel="nofollow" class="commentbar1">{lang_login_logout}</a>
 </div>
 <table cellpadding="0" style="width:100%;" class="commentbar-line2"><tr><td>
-    <form action="{site_url}/comment.php" method="post" class="floatleft" style="display:inline;">
+    <form action="{editor_url}" method="post" class="floatleft" style="display:inline;">
         <div>
-            <input type="hidden" name="sid" value="{sid}"{xhtml}>
-            <input type="hidden" name="pid" value="0"{xhtml}>
-            <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+            {hidden_field_reply}
+            <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+            <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
+            <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
             <input type="hidden" name="title" value="{comment_title}"{xhtml}>
             <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}"{xhtml}>
         </div>
@@ -19,7 +20,8 @@
             {order_selector}
             {mode_selector}
             <input type="submit" value="{lang_refresh}"{xhtml}>
-            <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+            <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+            <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
         </div>
     </form>
 </td></tr></table>

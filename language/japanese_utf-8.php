@@ -238,7 +238,8 @@ $LANG03 = array(
     41 => 'こんにちは %s,',
     42 => '通知解除',
     43 => '返信の通知を解除する',
-    44 => 'あなたの名前'
+    44 => 'あなたの名前',
+    45 => "コメントをありがとうございます。 新たなコメント投稿のために {$_CONF['commentspeedlimit']} 秒以上お待ちください。"
 );
 
 ###############################################################################
@@ -1976,6 +1977,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => '停止までの日数(デフォルト)',
     'comment_close_rec_stories' => 'コメント可能な記事の最大数',
     'allow_reply_notifications' => '返信のメール通知を許可する',
+    'comment_on_same_page' => 'コンテンツのページ上でコメント投稿',
+    'show_comments_at_replying' => '返信時にコメントリストを表示',
     'search_style' => '検索結果表示スタイル',
     'search_limits' => '表示件数の選択オプション',
     'search_show_num' => '検索順の番号を表示する',

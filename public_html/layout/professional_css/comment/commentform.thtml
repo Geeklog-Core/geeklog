@@ -2,6 +2,7 @@
 <!-- comment/commentform.thtml { -->
 
 {start_block_postacomment}
+<div id="commenteditform">
 
 <form action="{form_url}" method="post" id="commentform" class="linear">
 
@@ -9,11 +10,14 @@
     <dl>
       <dt class="username">{lang_username}</dt>
       <dd class="username">{cid}
-         <input type="hidden" name="sid" value="{sid}"{xhtml}>
-         <input type="hidden" name="pid" value="{pid}"{xhtml}>
-         <input type="hidden" name="type" value="{type}"{xhtml}>
+         <input type="hidden" name="order" value="{order}"{xhtml}>
+         <input type="hidden" name="format" value="{format}"{xhtml}>
+         <input type="hidden" name="cpage" value="{cpage}"{xhtml}>
+         <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+         <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
+         <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
          <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-         <input type="hidden" name="uid" value="{uid}"{xhtml}>{username}
+         <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}
          <span{hidewhenediting}><a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a></span>
       </dd>
       <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
@@ -47,11 +51,11 @@
     </dl>
 
     <ul class="submit">
-      <li><input type="submit" name="mode" value="{lang_preview}" class="submit"{xhtml}></li>
+      <li><input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}></li>
       <li>
         <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
         {save_option} 
-        <input type="submit" value="{lang_cancel}" name="mode"{xhtml}> 
+        <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}> 
         {delete_option} 
         {notification}
       </li>
@@ -60,5 +64,6 @@
 
 </form>
 
+</div>
 {end_block}
 <!-- } comment/commentform.thtml -->

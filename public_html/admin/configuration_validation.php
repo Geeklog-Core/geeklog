@@ -335,6 +335,8 @@ $_CONF_VALIDATE['Core']['article_comment_close_enabled'] = array('rule' => 'bool
 $_CONF_VALIDATE['Core']['article_comment_close_days'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['comment_close_rec_stories'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['allow_reply_notifications'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['comment_on_same_page'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['show_comments_at_replying'] = array('rule' => 'boolean');
 
 /* Subgroup Images, Tab Image Library */
 $_CONF_VALIDATE['Core']['image_lib'] = array(
