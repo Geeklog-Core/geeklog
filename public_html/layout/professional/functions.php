@@ -7,6 +7,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 
 $_IMAGE_TYPE = 'png';
 
+// Add Theme CSS File to scripts class
+$_SCRIPTS->setCSSFile('theme', '/layout/' . $_CONF['theme'] . '/style.css');
+
 /*
  * For left/right block support there is no longer any need for the theme to
  * put code into functions.php to set specific templates for the left/right
