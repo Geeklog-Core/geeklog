@@ -1,5 +1,5 @@
 
-      <div class="notes">
+      <div class="notes" style="clear:both;">
         <h4>{lang_deleteaccount}</h4>
         <p class="last">{delete_text}</p>
        </div>
