@@ -2230,8 +2230,8 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
 
     // Get comment id, may not be there...will handle in function
     $cid = '';
-    if (isset ($_REQUEST['cid'])) {
-        $cid = COM_applyFilter ($_REQUEST['cid']);
+    if (isset($_REQUEST[CMT_CID])) {
+        $cid = COM_applyFilter($_REQUEST[CMT_CID]);
     }
     TOPIC_getTopic('comment', $cid);
 
@@ -2281,7 +2281,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
         if (empty($title)) {
             $title = PLG_getItemInfo($type, $sid, 'title');
             $title = str_replace ( '$', '&#36;', $title );
-            // CMT_commentForm expects non-htmlspecial chars for title...
+            // CMT_userComments expects non-htmlspecial chars for title...
             $title = str_replace ( '&amp;', '&', $title );
             $title = str_replace ( '&quot;', '"', $title );
             $title = str_replace ( '&lt;', '<', $title );
@@ -2403,7 +2403,19 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             break;
 
         default: // New Comment or Reply Comment
-            if (!empty($sid) && !empty($type)) {
+
+            $abort = false;
+            if (($type == 'article') && !empty($sid)) {
+                $dbTitle = DB_getItem($_TABLES['stories'], 'title',
+                            "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
+                            . COM_getPermSQL('AND'));
+                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
+                    // no permissions, or no story of that title
+                    $abort = true;
+                }
+            }
+
+            if (!$abort && !empty($sid) && !empty($type)) {
                 if (($pid > 0) && empty($title)) {
                     $atype = addslashes($type);
                     $title = DB_getItem($_TABLES['comments'], 'title',
@@ -2494,7 +2506,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
     $commentcode = DB_getItem($_TABLES['stories'], 'commentcode',
                 "(sid = '$id') AND (draft_flag = 0) AND (date <= NOW())"
                 . COM_getPermSQL('AND'));
-    if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $sid) < 2)) { // Need read access of topics to post comment
+    if (!isset($commentcode) || ($commentcode != 0 || TOPIC_hasMultiTopicAccess('article', $id) < 2)) { // Need read access of topics to post comment
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
 
@@ -2510,7 +2522,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
                                   $LANG03[14], $postmode)
                 . COM_siteFooter();
     } else { // success
-        $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $sid));
+        $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
         DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
         COM_olderStuff(); // update comment count in Older Stories block
         $retval = COM_refresh(COM_buildUrl($_CONF['site_url']
@@ -2574,7 +2586,7 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
     $retval = '';
 
     $sql = 'SELECT COUNT(*) AS count, commentcode, owner_id, group_id, perm_owner, perm_group, '
-         . "perm_members, perm_anon FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE (sid = '$sid') "
+         . "perm_members, perm_anon FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE (sid = '$id') "
          . 'AND (draft_flag = 0) AND (commentcode >= 0) AND (date <= NOW()) AND ta.type = "article" AND ta.id = sid ' . COM_getPermSQL('AND') 
          . COM_getTopicSQL('AND', 0, 'ta') . ' GROUP BY sid, owner_id, group_id, perm_owner, perm_group,perm_members, perm_anon ';
     $result = DB_query ($sql);
