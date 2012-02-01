@@ -312,16 +312,19 @@ function confirmAccountDelete ($form_reqid)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
-    // to change the password, email address, or cookie timeout,
-    // we need the user's current password
-    $current_password = DB_getItem($_TABLES['users'], 'passwd',
-                                   "uid = {$_USER['uid']}");
-    if (empty($_POST['old_passwd']) ||
-            (SEC_encryptPassword($_POST['old_passwd']) != $current_password)) {
-         return COM_refresh($_CONF['site_url']
-                            . '/usersettings.php?msg=84');
+    // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
+    if ($_USER['remoteservice'] == '') {
+        // to change the password, email address, or cookie timeout,
+        // we need the user's current password
+        $current_password = DB_getItem($_TABLES['users'], 'passwd',
+                                       "uid = {$_USER['uid']}");
+        if (empty($_POST['old_passwd']) ||
+                (SEC_encryptPassword($_POST['old_passwd']) != $current_password)) {
+             return COM_refresh($_CONF['site_url']
+                                . '/usersettings.php?msg=84');
+        }
     }
-
+    
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                                   'uid', $_USER['uid']);
