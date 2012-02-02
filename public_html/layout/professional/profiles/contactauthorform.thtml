@@ -25,7 +25,7 @@
             <td class="alignright" style="vertical-align:top;"><b>{lang_shortmessage}:</b></td>
             <td><textarea name="shortmsg" rows="10" style="width:100%">{shortmsg}</textarea></td>
         </tr>
-        <tr>
+        <tr{cc_enabled}>
             <td class="alignright"><b>{lang_cc}</b></td>
             <td><input type="checkbox" name="cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</td>
         </tr>

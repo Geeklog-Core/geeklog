@@ -138,7 +138,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
 
             $sent = COM_mail($to, $subject, $message, $from);
 
-            if ($sent && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
+            if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
                 $ccmessage = sprintf($LANG08[38], COM_getDisplayName($uid,
                                             $A['username'], $A['fullname']));
                 $ccmessage .= "\n------------------------------------------------------------\n\n" . $message;
@@ -238,9 +238,13 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
             } else {
                 $mail_template->set_var ('useremail', $_USER['email']);
             }
-            $mail_template->set_var('cc', $cc);
-            $mail_template->set_var('lang_cc', $LANG08[36]);
-            $mail_template->set_var('lang_cc_description', $LANG08[37]);
+            if (!$_CONF['mail_cc_enabled']) {
+                $mail_template->set_var('cc_enabled', ' style="display: none"');
+            } else {
+                $mail_template->set_var('cc', $cc);
+                $mail_template->set_var('lang_cc', $LANG08[36]);
+                $mail_template->set_var('lang_cc_description', $LANG08[37]);
+            }
             $mail_template->set_var('lang_subject', $LANG08[13]);
             $mail_template->set_var('subject', $subject);
             $mail_template->set_var('lang_message', $LANG08[14]);
@@ -376,7 +380,7 @@ function mailstory($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     $sent = COM_mail($mailto, $subject, $mailtext, $mailfrom);
 
-    if ($sent && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
+    if ($sent && $_CONF['mail_cc_enabled'] && isset($_POST['cc']) && ($_POST['cc'] == 'on')) {
         $ccmessage = sprintf($LANG08[38], $to);
         $ccmessage .= "\n------------------------------------------------------------\n\n" . $mailtext;
 
@@ -469,9 +473,13 @@ function mailstoryform ($sid, $cc=false, $to = '', $toemail = '', $from = '',
     $mail_template->set_var('toname', $to);
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
     $mail_template->set_var('toemail', $toemail);
-    $mail_template->set_var('cc', $cc);
-    $mail_template->set_var('lang_cc', $LANG08[36]);
-    $mail_template->set_var('lang_cc_description', $LANG08[37]);
+    if (!$_CONF['mail_cc_enabled']) {
+        $mail_template->set_var('cc_enabled', ' style="display: none"');
+    } else {
+        $mail_template->set_var('cc', $cc);
+        $mail_template->set_var('lang_cc', $LANG08[36]);
+        $mail_template->set_var('lang_cc_description', $LANG08[37]);
+    }
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
     $mail_template->set_var('shortmsg', htmlspecialchars($shortmsg));
     $mail_template->set_var('lang_warning', $LANG08[22]);
@@ -524,7 +532,7 @@ switch ($what) {
                                     . '/article.php?story=' . $sid));
         } else {
             $display .= COM_siteHeader ('menu', $LANG08[17])
-                     . mailstoryform ($sid, true)
+                     . mailstoryform ($sid, $_CONF['mail_cc_default'])
                      . COM_siteFooter ();
         }
         break;
@@ -589,7 +597,7 @@ switch ($what) {
                 $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             }
             $display .= COM_siteHeader ('menu', $LANG04[81])
-                     . contactform ($uid, true, $subject)
+                     . contactform ($uid, $_CONF['mail_cc_default'], $subject)
                      . COM_siteFooter ();
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
