@@ -21,6 +21,12 @@ $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD COLUMN hidden smallint NOT NULL 
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN whos_online smallint NOT NULL default '1' AFTER md5_sess_id";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD COLUMN topic varchar(20) NOT NULL default '' AFTER whos_online";
 
+// Password Updates
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ALTER COLUMN passwd TYPE varchar(128)";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD salt varchar(64) NOT NULL default ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD algorithm varchar(12) NOT NULL default 0";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD stretch int NOT NULL default 1";
+
 /**
  * Create Story and Submission Topic assignments
  *
@@ -98,6 +104,11 @@ function update_ConfValuesFor190()
     $c->add('disable_breadcrumbs_articles', 0, 'select', 7, 45, 0, 2010, TRUE, $me, 45);
     $c->add('disable_breadcrumbs_plugins', 0, 'select', 7, 45, 0, 2020, TRUE, $me, 45);    
     
+    // Password Update
+    $c->add('fs_pass', NULL, 'fieldset', 4, 42, NULL, 0, TRUE, $me, 18);
+    $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);
+    $c->add('pass_stretch', 4096, 'text', 4, 42, NULL, 810, TRUE, $me, 18);
+
     return true;
 }
 

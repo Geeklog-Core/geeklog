@@ -474,6 +474,7 @@ CREATE TABLE [dbo].[{$_TABLES['userprefs']}] (
 ) ON [PRIMARY]
 ";
 
+// *** FIXME *** password update
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['users']}] (
     [uid] [int] IDENTITY (1, 1) NOT NULL ,

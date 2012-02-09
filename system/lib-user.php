@@ -129,28 +129,6 @@ function USER_deleteAccount ($uid)
 }
 
 /**
-* Create a new password and set in DB if User Id supplied
-*
-* @param    int      $uid   id of the user
-* @return   array    ['normal'] = human readable password, ['encrypted'] = encrypted password
-*
-*/
-function USER_createPassword ($uid = 0)
-{
-    global $_TABLES;
-
-    $passwd['normal'] = rand ();
-    $passwd['normal'] = md5 ($passwd['normal']);
-    $passwd['normal'] = substr ($passwd['normal'], 1, 8);
-    $passwd['encrypted'] = SEC_encryptPassword($passwd['normal']);
-    if ($uid > 1) { 
-        DB_change ($_TABLES['users'], 'passwd', $passwd['encrypted'], 'uid', $uid);
-    }
-    
-    return $passwd;
-}
-
-/**
 * Create a new password and send it to the user
 *
 * @param    string  $username   user's login name
@@ -162,8 +140,8 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
 {
     global $_CONF, $LANG04;
 
-    $passwords = USER_createPassword($uid);
-    $passwd = $passwords['normal'];
+    $passwd = null;
+    SEC_updateUserPassword($password, $uid);
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = COM_newTemplate($_CONF['path_data']);
@@ -269,9 +247,11 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
     $values = "'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'";
 
     if (! empty($passwd)) {
-        $passwd = addslashes($passwd);
-        $fields .= ',passwd';
-        $values .= ",'$passwd'";
+        // Since no uid exists yet we can't use SEC_updateUserPassword and must handle things manually
+        $salt = SEC_generateSalt();
+        $passwd = SEC_encryptPassword($passwd, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']); 
+        $fields .= ',passwd,salt,algorithm,stretch';
+        $values .= ",'$passwd','$salt','" . $_CONF['pass_alg'] . "','" . $_CONF['pass_stretch'] . "'";
     }
     if (! empty($fullname)) {
         $fullname = addslashes($fullname);

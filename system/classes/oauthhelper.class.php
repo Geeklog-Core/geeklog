@@ -249,8 +249,7 @@ class OAuthConsumerBaseClass {
         $users = $this->_getCreateUserInfo($info);
         $userinfo = $this->_getUpdateUserInfo($info);
         
-        $passwords = USER_createPassword();
-        $users['passwd2'] = $passwords['encrypted'];
+        $users['passwd'] = SEC_generateRandomPassword();
         
         $sql = "SELECT uid,status FROM {$_TABLES['users']} WHERE remoteusername = '{$users['remoteusername']}' AND remoteservice = '{$users['remoteservice']}'";
         // COM_errorLog("sql={$sql}");
@@ -281,7 +280,7 @@ class OAuthConsumerBaseClass {
                 }
             }
 
-            $uid = USER_createAccount($users['loginname'], $users['email'], $users['passwd2'], $users['fullname'], $users['homepage'], $users['remoteusername'], $users['remoteservice']);
+            $uid = USER_createAccount($users['loginname'], $users['email'], $users['passwd'], $users['fullname'], $users['homepage'], $users['remoteusername'], $users['remoteservice']);
             // COM_errorLog("after creation, uid={$uid}");
 
             // COM_errorLog("updating users[]");

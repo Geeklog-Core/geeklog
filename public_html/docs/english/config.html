@@ -916,6 +916,25 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">How many seconds have to pass before another login attempt
     can be made after <code>$_CONF['login_attempts']</code> (see above) login
     attempts have failed.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pass_alg">pass_alg</a></td>
+  <td valign="top">sha1</td>
+  <td valign="top">Hash algorithm used to generate password hashes. Options
+    include 
+    <a href="http://en.wikipedia.org/wiki/Md5">md5</a>, 
+    <a href="http://en.wikipedia.org/wiki/SHA-1">sha1</a>, 
+    <a href="http://en.wikipedia.org/wiki/SHA-2">sha256</a>, 
+    <a href="http://en.wikipedia.org/wiki/SHA-2">sha512</a>, and 
+    <a href="http://en.wikipedia.org/wiki/Blowfish_(cipher)">blowfish</a>. 
+    sha1 is recommended for maximum portability between PHP versions, blowfish 
+    is considered the most secure</td></tr>
+<tr>
+  <td valign="top"><a name="desc_pass_stretch">pass_stretch</a></td>
+  <td valign="top">4096</td>
+  <td valign="top">The number of iterations of the hash algorithm that should 
+    be applied to the password. Must be greater than 0. See the 
+    <a href="http://en.wikipedia.org/wiki/Key_stretching">wikipedia article</a> 
+    for more information.</td></tr>
 </table>
 
 <h3><a name="users_usersub">Users and Submissions: User Submission</a></h3>

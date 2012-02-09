@@ -1961,6 +1961,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => "Password Speed Limit",
     'login_attempts' => "Max. Login Attempts",
     'login_speedlimit' => "Login Speed Limit",
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => "User HTML",
     'admin_html' => "Admin HTML",
     'advanced_html' => 'Additional HTML for Adv. Editor',
@@ -2059,7 +2061,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_block' => 'Block Default Permission',
     'fs_webservices' => 'Webservices',
     'fs_autotag_permissions' => 'Autotag Usage Permissions', 
-    'fs_breadcrumbs' => 'Breadcrumbs'
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
     
 $LANG_tab['Core'] = array(
@@ -2141,7 +2144,8 @@ $LANG_configselects['Core'] = array(
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
-    28 => array('No access' => 0, 'Use' => 2)
+    28 => array('No access' => 0, 'Use' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ################################################################################

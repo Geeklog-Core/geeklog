@@ -267,7 +267,8 @@ function checkDefaultPassword()
     // check to see if any account still has 'password' as its password.
     $pwdRoot = 0;
     $pwdUser = 0;
-    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . SEC_encryptPassword('password') . "'");
+    /* FIXME? the following will only work as long as the default admin password is stored in the DB using md5, no salt, and no (1) stretch */
+    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . SEC_encryptPassword('password', '', 0, 1) . "'");
     $numPwd = DB_numRows($result);
     if ($numPwd > 0) {
         for ($i = 0; $i < $numPwd; $i++) {

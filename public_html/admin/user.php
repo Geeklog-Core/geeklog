@@ -14,6 +14,7 @@
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vmf AT abtech DOT org                        |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -571,21 +572,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             }
         }
 
-        if (empty ($uid) || !empty ($passwd)) {
-            $passwd = SEC_encryptPassword($passwd);
-        } else {
-            if (empty($service)) {
-                $passwd = DB_getItem($_TABLES['users'], 'passwd', "uid = $uid");
-            }
-        }
-
         if (empty ($uid)) {
             if (empty ($passwd)) {
                 // no password? create one ...
-                $passwd = rand ();
-                $passwd = md5 ($passwd);
-                $passwd = substr ($passwd, 1, 8);
-                $passwd = SEC_encryptPassword($passwd);
+                $passwd = SEC_generateRandomPassword();
             }
 
             $uid = USER_createAccount ($username, $email, $passwd, $fullname,
@@ -621,7 +611,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             }
 
             $curphoto = addslashes ($curphoto);
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
+            if (!empty($passwd)) {
+                SEC_updateUserPassword($passwd, $uid);
+            }
             if ($_CONF['custom_registration'] AND (function_exists('CUSTOM_userSave'))) {
                 CUSTOM_userSave($uid);
             }
