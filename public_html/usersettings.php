@@ -312,13 +312,16 @@ function confirmAccountDelete ($form_reqid)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
-    // verify the password
-    if (empty($_POST['old_passwd']) ||
-            (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)) {
-         return COM_refresh($_CONF['site_url']
-                            . '/usersettings.php?msg=84');
+    // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
+    if ($_USER['remoteservice'] == '') {
+        // verify the password
+        if (empty($_POST['old_passwd']) ||
+                (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)) {
+             return COM_refresh($_CONF['site_url']
+                                . '/usersettings.php?msg=84');
+        }
     }
-
+    
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                                   'uid', $_USER['uid']);

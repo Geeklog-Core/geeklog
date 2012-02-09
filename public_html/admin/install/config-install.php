@@ -65,6 +65,8 @@ function install_config()
     $c->add('site_mail','','text',0,1,NULL,40,TRUE, $me, 1);
     $c->add('noreply_mail','','text',0,1,NULL,50,TRUE, $me, 1);
     $c->add('mail_settings',array ('backend' => 'mail', 'sendmail_path' => '/usr/bin/sendmail', 'sendmail_args' => '', 'host' => 'smtp.example.com','port' => '25', 'auth' => false, 'username' => 'smtp-username','password' => 'smtp-password'),'@text',0,1,NULL,160,TRUE, $me, 1);
+    $c->add('mail_cc_enabled', 1, 'select', 0, 1, 0, 180, TRUE, $me, 1);
+    $c->add('mail_cc_default', 0, 'select', 0, 1, 0, 190, TRUE, $me, 1);
 
     $c->add('tab_syndication', NULL, 'tab', 0, 2, NULL, 0, TRUE, $me, 2);
     $c->add('fs_syndication', NULL, 'fieldset', 0, 2, NULL, 0, TRUE, $me, 2);
@@ -369,6 +371,7 @@ function install_config()
     $c->add('cron_schedule_interval',0,'text',7,31,NULL,860,TRUE, $me, 31);
     $c->add('disable_autolinks',0,'select',7,31,0,1750,TRUE, $me, 31);
     $c->add('clickable_links',1,'select',7,31,1,1753,TRUE, $me, 31);
+    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);
     $c->add('compressed_output',0,'select',7,31,1,1756,TRUE, $me, 31);
     $c->add('frame_options','DENY','select',7,31,22,1758,TRUE, $me, 31);
 

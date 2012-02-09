@@ -1886,6 +1886,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'המספר המקסימלי של תמונות בכל מאמר',
     'limitnews' => 'מספר המאמרים בכל עמוד',
     'minnews' => 'מספר המאמרים המינימלי בכל עמוד',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'הצגת "הוגש על ידי"?"',
     'hideviewscount' => 'החבאת כמות צפיות?',
     'hideemailicon' => 'החבאת אייקון אימייל?',

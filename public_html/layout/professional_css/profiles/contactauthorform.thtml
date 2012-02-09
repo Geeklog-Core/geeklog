@@ -23,8 +23,8 @@
 
         <dt><label for="contactauthorform-shortmsg">{lang_shortmessage}</label></dt>
         <dd><textarea rows="8" cols="50" name="shortmsg" id="contactauthorform-shortmsg">{shortmsg}</textarea></dd>
-        <dt><label for="contactauthorform-cc">{lang_cc}</label></dt>
-        <dd><input type="checkbox" name="cc" id="contactauthorform-cc" checked="checked"{xhtml}>&nbsp;{lang_cc_description}</dd>
+        <dt{cc_enabled}><label for="contactauthorform-cc">{lang_cc}</label></dt>
+        <dd{cc_enabled}><input type="checkbox" name="cc" id="contactauthorform-cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</dd>
 
       </dl>
 

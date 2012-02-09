@@ -1885,6 +1885,7 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Piltide maksimum loo kohta',
     'limitnews' => 'Lugusid lehel',
     'minnews' => 'Min. lugusid lehel',
+    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => '"Näita postitajat?"',
     'hideviewscount' => 'Peida vaatamiste arv',
     'hideemailicon' => 'Peida link E-post?',

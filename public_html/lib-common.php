@@ -3705,7 +3705,7 @@ function COM_formatBlock( $A, $noboxes = false )
         $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
         $blocksql['mysql'] = "SELECT *,UNIX_TIMESTAMP(rdfupdated) AS date ";
-        $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date';
+        $blocksql['pgsql'] =  'SELECT *, date_part(\'epoch\', rdfupdated) AS date ';
 
         $commonsql = "FROM {$_TABLES['blocks']} WHERE name = '"
                    . $A['name'] . '_' . $lang . "'";
@@ -6054,7 +6054,13 @@ function COM_makeClickableLinks( $text )
 */
 function COM_makeClickableLinksCallback( $http, $link )
 {
-    $text = COM_truncate( $link, 50, '...', '10' );
+    global $_CONF;
+    
+    if ($_CONF['linktext_maxlen'] > 0) {
+        $text = COM_truncate( $link, $_CONF['linktext_maxlen'], '...', '10' );
+    } else {
+        $text = $link;        
+    }
 
     return "<a href=\"$http$link\">$text</a>";
 }
@@ -7044,10 +7050,18 @@ function COM_truncateHTML ( $htmltext, $maxlen, $filler = '', $endchars = 0 )
 function COM_truncate( $text, $maxlen, $filler = '', $endchars = 0 )
 {
     $newlen = $maxlen - MBYTE_strlen( $filler );
+    if( $newlen <= 0 ) {
+        $text = MBYTE_substr( $text, 0, $maxlen);
+    }
     $len = MBYTE_strlen( $text );
     if( $len > $maxlen )
     {
-        $text = MBYTE_substr( $text, 0, $newlen - $endchars ) . $filler . MBYTE_substr( $text, $len - $endchars, $endchars );
+        $startchars = $newlen - $endchars;
+        if ($startchars < $endchars) {
+            $text = MBYTE_substr( $text, 0, $newlen ) . $filler;
+        } else {
+            $text = MBYTE_substr( $text, 0, $newlen - $endchars ) . $filler . MBYTE_substr( $text, $len - $endchars, $endchars );
+        }
     }
 
     return $text;

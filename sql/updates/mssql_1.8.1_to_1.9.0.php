@@ -109,6 +109,13 @@ function update_ConfValuesFor190()
     $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);
     $c->add('pass_stretch', 4096, 'text', 4, 42, NULL, 810, TRUE, $me, 18);
 
+    // Max Link Text
+    $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);   
+    
+    // Email CC settings
+    $c->add('mail_cc_enabled', 1, 'select', 0, 1, 0, 180, TRUE, $me, 1);
+    $c->add('mail_cc_default', 0, 'select', 0, 1, 0, 190, TRUE, $me, 1);    
+    
     return true;
 }
 

@@ -1267,7 +1267,7 @@ function plugin_group_changed_topic($grp_id, $mode)
 */
 function TOPIC_breadcrumbs($type, $id)
 {
-    global $_CONF, $_TABLES, $LANG27;
+    global $_CONF, $_TABLES, $LANG27, $_TOPICS;
     
     
     $breadcrumbs_output = '';
@@ -1337,7 +1337,14 @@ function TOPIC_breadcrumbs($type, $id)
                     } else {
                         $url = $_CONF['site_url'] . '/index.php';
                     }
-                    if (is_array($url)) { // Do not have access to view page
+                    // double check access (users may have access to a subtopic but not a parent topic, this shouldn't really happen though)
+                    $topic_access = 0;
+                    $topic_index = TOPIC_getIndex($value['id']);
+                    if ($topic_index > 0 ) {
+                        $topic_access = $_TOPICS[$topic_index]['access'];   
+                    }
+                    
+                    if ($topic_access == 0) { // Do not have access to view page
                         $url = '';
                         $use_template = 'breadcrumb_nolink_t';
                     } else {

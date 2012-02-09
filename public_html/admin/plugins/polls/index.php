@@ -258,9 +258,13 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     $k = 0; // set up a counter to make sure we do assign a straight line of question id's
     // first dimension of array are the questions
     $num_questions = count($Q);
+    $num_total_votes = 0;
+    $num_questions_exist = 0;
     for ($i = 0; $i < $num_questions; $i++) {
         $Q[$i] = COM_stripslashes($Q[$i]);
         if (strlen($Q[$i]) > 0) { // only insert questions that exist
+            $num_questions_exist++;
+            
             $Q[$i] = addslashes($Q[$i]);
             DB_save($_TABLES['pollquestions'], 'qid, pid, question',
                                                "'$k', '$pid', '$Q[$i]'");
@@ -278,14 +282,21 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
                     $sql = "INSERT INTO {$_TABLES['pollanswers']} (pid, qid, aid, answer, votes, remark) VALUES "
                         . "('$pid', '$k', " . ($j+1) . ", '{$A[$i][$j]}', {$V[$i][$j]}, '{$R[$i][$j]}');";
                     DB_query($sql);
+                    
+                    $num_total_votes = $num_total_votes + $V[$i][$j];
                 }
             }
             $k++;
         }
     }
     
-    // determine the number of voters
-    $numvoters = DB_count($_TABLES['pollvoters'], 'pid', $pid);
+    // determine the number of voters (cannot use records in pollvoters table since they get deleted after a time $_PO_CONF['polladdresstime'])
+    if ($num_questions_exist > 0) {
+        $numvoters = $num_total_votes / $num_questions_exist;
+    } else {
+        // This shouldn't happen
+        $numvoters = $num_total_votes;
+    }
     
     // save topics after the questions so we can include question count into table
     $sql = "'$pid','$topic','$meta_description','$meta_keywords',$numvoters, $k, '$created_date', '" . date ('Y-m-d H:i:s');

@@ -77,13 +77,8 @@ class scripts {
         $this->header_set = false;
         $this->javascript_set = false;
         
-        $theme_path = '/layout/' . $_CONF['theme'];
-        
         $this->jquery_cdn = false;
         $this->jquery_ui_cdn = false;
-        
-        // Add Theme CSS File
-        $this->setCSSFilePrivate('theme', $theme_path . '/style.css');
         
         // Find available JavaScript libraries
         $this->findJavaScriptLibraries();     
@@ -97,7 +92,7 @@ class scripts {
         }            
         
         // Setup restricted names after setting main libraries (do not want plugins messing with them)
-        $this->restricted_names = array('fckeditor', 'core', 'jquery', 'theme');
+        $this->restricted_names = array('fckeditor', 'core', 'jquery');
         
     }
     
@@ -376,6 +371,7 @@ class scripts {
             return false;
         }
 
+        $this->css_files[$name]['name'] = $name;
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['constant'] = $constant;
         $this->css_files[$name]['load'] = true;
@@ -401,7 +397,12 @@ class scripts {
         // Set CSS Files
         foreach ($this->css_files as $file) {
             if ($file['load'] && isset($file['file'])) {
-                $headercode .= '<link rel="stylesheet" type="text/css" href="' . $_CONF['site_url'] . $file['file'] . '" ' . XHTML . '>' . LB;
+                $csslink = '<link rel="stylesheet" type="text/css" href="' . $_CONF['site_url'] . $file['file'] . '" ' . XHTML . '>' . LB;
+                if ($file['name'] == 'theme') { // load theme css first
+                    $headercode = $csslink . $headercode;
+                } else {
+                    $headercode .= $csslink;
+                }
             }
         }  
 
