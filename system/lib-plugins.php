@@ -2454,7 +2454,7 @@ function PLG_getBlocks($side, $topic='')
     }
 
     if (function_exists('CUSTOM_getBlocks')) {
-       $cust_items .= CUSTOM_getBlocks($side, $topic);
+       $cust_items = CUSTOM_getBlocks($side, $topic);
        if (is_array($cust_items)) {
           $ret = array_merge($ret, $cust_items);
        }
