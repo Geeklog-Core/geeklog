@@ -1587,7 +1587,7 @@ $LANG_SECTEST = array(
     'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.', 
     'remove_inst2'  => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
     'inst_removed'  => 'Good! You seem to have removed the install directory already.',
-    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on the default Admin user account.',
     'password_okay' => 'Good! You seem to have changed the default account password already.'
 );
 
@@ -2197,7 +2197,8 @@ $LANG_VALIDATION = array(
                          'directory where the binaries from the Netpbm package are kept',  
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'
+    'single_char' => 'This field must be a single character',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 ?>

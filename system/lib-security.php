@@ -729,7 +729,7 @@ function SEC_authenticate($username, $password, &$uid)
         $U = DB_fetchArray($result);
         $uid = $U['uid'];
         if ($U['status'] == USER_ACCOUNT_DISABLED) {
-            // banned, jump to here to save an md5 calc.
+            // banned, jump to here to save an password hash calc.
             return USER_ACCOUNT_DISABLED;
         } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
             return -1; // failed login
@@ -1071,6 +1071,11 @@ function SEC_getGroupDropdown ($group_id, $access)
     return $groupdd;
 }
 
+/**
+ * Class defining constants for encryptions algorithms. These values are stored
+ * in the user database to indicate the hash function the user's password is
+ * encrypted with.
+ */
 class HashFunction {
     const md5      = 0;
     const sha1     = 1;
@@ -1082,11 +1087,14 @@ class HashFunction {
 /**
 * Encrypt password
 *
-* For now, this is only a wrapper function to get all the direct calls to
-* md5() out of the core code so that we can switch to another method of
-* encoding / encrypting our passwords in some future release ...
+* Encrypts $password using the specified salt, hash algorithm, and stretch
+* count.
 *
 * @param    string  $password   the password to encrypt, in clear text
+* @param    string  $salt       salt to prepend to the password prior to hashing
+* @param    int     $algorithm  hash algorithm to use to encrypt the password
+* @param    int     $stretch    number of times hash function should be applied
+*                               to the password.
 * @return   string              encrypted password
 *
 */
@@ -1150,6 +1158,15 @@ function SEC_encryptPassword($password, $salt = '', $algorithm = null, $stretch 
     return $hash;
 }
 
+/**
+ * Generate password salt
+ *
+ * This function produces a random string of 22 characters from a 64 character set.
+ * The size is needed for password salting, but is useful any function that needs a
+ * random set of human readable characters.
+ *
+ * @return  string  generated salt
+ */
 function SEC_generateSalt() {
     static $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
 
@@ -1161,6 +1178,16 @@ function SEC_generateSalt() {
     return $salt;
 }
 
+/**
+ * Encrypt User Password
+ *
+ * Verify that the provided password authenticates the specified user (defualts
+ * to the current user).
+ *
+ * @param  string  $password  password to verify
+ * @param  int     $uid       user id to authenticate
+ * @return int     0 for success, non-zero for failure or error
+ */
 function SEC_encryptUserPassword($password, $uid = '') {
     global $_USER, $_CONF, $_TABLES;
 
@@ -1209,11 +1236,28 @@ function SEC_encryptUserPassword($password, $uid = '') {
     }
 }
 
+/**
+ * Generate Random Password
+ *
+ * Generates a random string of human readable characters.
+ *
+ * @return  string  generated random password
+ */
 function SEC_generateRandomPassword() {
     // SEC_generateSalt is used here as it creates a random string using readable characters
     return substr(SEC_generateSalt(), 0, 12);
 }
 
+/**
+ * Update User Password
+ *
+ * Updates the users password for current hash algorithm and stretch site settings.
+ * If not password is specified, a random password will be generated.
+ *
+ * @param  string  $password  Password to encrypt
+ * @param  int     $uid       User id to update
+ * @return int     0 for success, non-zero indicates error.
+ */
 function SEC_updateUserPassword(&$password = '', $uid = '') {
     global $_TABLES, $_CONF, $_USER;
 

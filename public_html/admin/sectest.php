@@ -250,10 +250,7 @@ function checkInstallDir()
 }
 
 /**
-* Check for accounts that still use the default password
-*
-* NOTE: If one of our users is also using "password" as their password, this
-*       test will also detect that, as it checks all accounts.
+* Check if the Admin account is still using the default password
 *
 * @return   string      text explaining the result of the test
 *
@@ -264,25 +261,8 @@ function checkDefaultPassword()
 
     $retval = '';
 
-    // check to see if any account still has 'password' as its password.
-    $pwdRoot = 0;
-    $pwdUser = 0;
-    /* FIXME? the following will only work as long as the default admin password is stored in the DB using md5, no salt, and no (1) stretch */
-    $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE passwd='" . SEC_encryptPassword('password', '', 0, 1) . "'");
-    $numPwd = DB_numRows($result);
-    if ($numPwd > 0) {
-        for ($i = 0; $i < $numPwd; $i++) {
-            list($uid) = DB_fetchArray($result);
-            if (SEC_inGroup('Root', $uid)) {
-                $pwdRoot++;
-            } else {
-                $pwdUser++;
-            }
-        }
-    }
-    if ($pwdRoot > 0) {
-        $retval .= '<li>' . sprintf($LANG_SECTEST['fix_password'], $pwdRoot)
-                . '</li>';
+    if (SEC_encryptUserPassword('password', 2) ==  0) {
+        $retval .= '<li>' . $LANG_SECTEST['fix_password'] . '</li>';
         $failed_tests++;
     } else {
         $retval .= '<li>' . $LANG_SECTEST['password_okay'] . '</li>';

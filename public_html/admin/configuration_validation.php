@@ -308,7 +308,8 @@ $_CONF_VALIDATE['Core']['login_speedlimit'] = array('rule' => 'numeric');
 /* Subgroup User and Submissions, Tab Login Settings, Fieldset Password */
 $_CONF_VALIDATE['Core']['pass_alg'] = array(
     'rule' => 'hash_function',
-    'message' => "Unsupported hash function selected" /* FIXME */
+    'message' => isset($LANG_VALIDATION['hash']) ? 
+                 $LANG_VALIDATION['hash'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['pass_stretch'] = array('rule' => array('comparison', '>', 0));
 
