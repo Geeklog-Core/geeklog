@@ -114,9 +114,7 @@ class SimpleActionHandler extends ActionHandler {
                 $openid_sreg_fullname = $this->query['openid_sreg_fullname'];
             }
             
-            $passwords = USER_createPassword();
-
-            USER_createAccount($openid_nickname, $openid_sreg_email, $passwords['encrypted'],
+            USER_createAccount($openid_nickname, $openid_sreg_email, SEC_generateRandomPassword(),
                     $openid_sreg_fullname, '', $this->query['openid_identity'],
                     'openid');
             $uid = DB_getItem($_TABLES['users'], 'uid', "remoteusername = '$openid_identity' AND remoteservice = 'openid'");

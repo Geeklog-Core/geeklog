@@ -246,6 +246,11 @@ function install_config()
     $c->add('login_attempts',3,'text',4,18,NULL,1690,TRUE, $me, 18);
     $c->add('login_speedlimit',300,'text',4,18,NULL,1700,TRUE, $me, 18);
 
+    // password options
+    $c->add('fs_pass', NULL, 'fieldset', 4, 42, NULL, 0, TRUE, $me, 18);
+    $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);
+    $c->add('pass_stretch', 4096, 'text', 4, 42, NULL, 810, TRUE, $me, 18);
+
     $c->add('tab_user_submission', NULL, 'tab', 4, 19, NULL, 0, TRUE, $me, 19);
     $c->add('fs_user_submission', NULL, 'fieldset', 4, 19, NULL, 0, TRUE, $me, 19);
     $c->add('usersubmission',0,'select',4,19,0,780,TRUE, $me, 19);

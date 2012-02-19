@@ -12,6 +12,7 @@ system/pear/System.php
 system/pear/Text
 system/pear/XML
 system/pear/scripts
+system/pear/LICENSE
 
 db-config.php
 public_html/siteconfig.php

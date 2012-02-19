@@ -82,7 +82,8 @@ function update_UsersFor180()
     for($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         
-        $passwords = USER_createPassword($A['uid']);
+        $passwd = null;
+        SEC_updateUserPassword($passwd, $A['uid']);
     }    
 
 }

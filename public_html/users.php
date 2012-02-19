@@ -738,9 +738,8 @@ case 'setnewpwd':
             $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
                                array ($uid, $reqid));
             if ($valid == 1) {
-                $passwd = SEC_encryptPassword($_POST['passwd']);
-                DB_change ($_TABLES['users'], 'passwd', "$passwd",
-                           "uid", $uid);
+                SEC_updateUserPassword($_POST['passwd'], $uid);
+
                 DB_delete ($_TABLES['sessions'], 'uid', $uid);
                 DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
                            'uid', $uid);

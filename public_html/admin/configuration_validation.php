@@ -305,6 +305,15 @@ $_CONF_VALIDATE['Core']['passwordspeedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['login_attempts'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['login_speedlimit'] = array('rule' => 'numeric');
 
+/* Subgroup User and Submissions, Tab Login Settings, Fieldset Password */
+$_CONF_VALIDATE['Core']['pass_alg'] = array(
+    'rule' => 'hash_function',
+    'message' => isset($LANG_VALIDATION['hash']) ? 
+                 $LANG_VALIDATION['hash'] : $LANG_VALIDATION['default']
+);
+$_CONF_VALIDATE['Core']['pass_stretch'] = array('rule' => array('comparison', '>', 0));
+
+
 /* Subgroup Users and Submissions, Tab User Submission */
 $_CONF_VALIDATE['Core']['usersubmission'] = array('rule' => 'boolean');
 

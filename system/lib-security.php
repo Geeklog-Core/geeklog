@@ -14,7 +14,7 @@
 // |          Mark Limburg     - mlimburg AT users DOT sourceforge DOT net     |
 // |          Vincent Furia    - vmf AT abtech DOT org                         |
 // |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
-// |          Dirk Haun        - dirk AT haun-online DOT de
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -729,9 +729,9 @@ function SEC_authenticate($username, $password, &$uid)
         $U = DB_fetchArray($result);
         $uid = $U['uid'];
         if ($U['status'] == USER_ACCOUNT_DISABLED) {
-            // banned, jump to here to save an md5 calc.
+            // banned, jump to here to save an password hash calc.
             return USER_ACCOUNT_DISABLED;
-        } elseif ($U['passwd'] != SEC_encryptPassword($password)) {
+        } elseif (SEC_encryptUserPassword($password, $uid) < 0) {
             return -1; // failed login
         } elseif ($U['status'] == USER_ACCOUNT_AWAITING_APPROVAL) {
             return USER_ACCOUNT_AWAITING_APPROVAL;
@@ -856,7 +856,7 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
                                                                  $service);
                     }
                 }
-                USER_createAccount($loginname, $authmodule->email, SEC_encryptPassword($passwd), $authmodule->fullname, $authmodule->homepage, $remoteusername, $remoteservice);
+                USER_createAccount($loginname, $authmodule->email, $passwd, $authmodule->fullname, $authmodule->homepage, $remoteusername, $remoteservice);
                 $uid = DB_getItem($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$remoteservice'");
                 // Store full remote account name:
                 DB_query("UPDATE {$_TABLES['users']} SET remoteusername='$remoteusername', remoteservice='$remoteservice', status=3 WHERE uid='$uid'");
@@ -1072,19 +1072,220 @@ function SEC_getGroupDropdown ($group_id, $access)
 }
 
 /**
+ * Class defining constants for encryptions algorithms. These values are stored
+ * in the user database to indicate the hash function the user's password is
+ * encrypted with.
+ */
+class HashFunction {
+    const md5      = 0;
+    const sha1     = 1;
+    const sha256   = 2;
+    const sha512   = 3;
+    const blowfish = 4;
+}
+
+/**
 * Encrypt password
 *
-* For now, this is only a wrapper function to get all the direct calls to
-* md5() out of the core code so that we can switch to another method of
-* encoding / encrypting our passwords in some future release ...
+* Encrypts $password using the specified salt, hash algorithm, and stretch
+* count.
 *
 * @param    string  $password   the password to encrypt, in clear text
+* @param    string  $salt       salt to prepend to the password prior to hashing
+* @param    int     $algorithm  hash algorithm to use to encrypt the password
+* @param    int     $stretch    number of times hash function should be applied
+*                               to the password.
 * @return   string              encrypted password
 *
 */
-function SEC_encryptPassword($password)
+function SEC_encryptPassword($password, $salt = '', $algorithm = null, $stretch = null)
 {
-    return md5($password);
+    global $_CONF;
+
+    /* grab defaults if not specified, default salt is empty */
+    if ( is_null($algorithm) ) {
+        $algorithm = $_CONF['pass_alg'];
+    }
+    if ( is_null($stretch) ) {
+        $stretch = $_CONF['pass_stretch'];
+    }
+
+    /* A stretch of less than one implies no encryption, do not allow that */
+    if ($stretch < 1) {
+        $stretch = 1;
+    }
+
+    /* encrypt password based on algorithm */
+    switch ($algorithm) {
+    case HashFunction::md5:
+        $hash = $password;
+        for ($i = 0; $i < $stretch; $i++) {
+            $hash = md5($hash . $salt, false);
+        }
+        break;
+
+    case HashFunction::sha1:
+        $hash = $password;
+        for ($i = 0; $i < $stretch; $i++) {
+            $hash = sha1($hash . $salt, false);
+        }
+        break;
+
+    case HashFunction::sha256:
+        if ($stretch < 1000) $stretch = 1000;
+        $salt = '$5$rounds=' . $stretch . '$' . $salt . '$';
+        $hash = crypt($password, $salt);
+        break;
+
+    case HashFunction::sha512:
+        if ($stretch < 1000) $stretch = 1000;
+        $salt = '$6$rounds=' . $stretch . '$' . $salt . '$';
+        $hash = crypt($password, $salt);
+        break;
+
+    case HashFunction::blowfish:
+        $stretch = log($stretch, 2);       /* blow fish crypt uses a log 2 number for cost */
+        if ($stretch < 4) $stretch = 4;    /* crypt defined minimum */
+        if ($stretch > 31) $stretch = 31;  /* crypt defined maximum */
+        $salt = '$2a$' . sprintf('%02d', $stretch) . '$' . $salt . '$';
+        $hash = crypt($password, $salt);
+        break;
+
+    default:  /* unrecognized algorithm error */
+        return -1;
+    }
+
+    return $hash;
+}
+
+/**
+ * Generate password salt
+ *
+ * This function produces a random string of 22 characters from a 64 character set.
+ * The size is needed for password salting, but is useful any function that needs a
+ * random set of human readable characters.
+ *
+ * @return  string  generated salt
+ */
+function SEC_generateSalt() {
+    static $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
+
+    $salt = '';
+    for ($i = 0; $i < 22; $i++) {
+        $salt .= $charset[mt_rand(0,61)];
+    }
+
+    return $salt;
+}
+
+/**
+ * Encrypt User Password
+ *
+ * Verify that the provided password authenticates the specified user (defualts
+ * to the current user).
+ *
+ * @param  string  $password  password to verify
+ * @param  int     $uid       user id to authenticate
+ * @return int     0 for success, non-zero for failure or error
+ */
+function SEC_encryptUserPassword($password, $uid = '') {
+    global $_USER, $_CONF, $_TABLES;
+
+    // if $uid is empty, assume current user
+    if (empty($uid)) {
+        $uid = $_USER['uid'];
+    }
+
+    // validate $uid nonempty and valid user (anonymous, uid = 1, not valid)
+    if (empty($uid) || $uid < 1) {
+        return -1;
+    }
+
+    /* get passwd, algorithm, stretch, and salt from $_USER if possible, else
+     * get them from the DB
+     */
+    if ( ( ($uid == $_USER['uid']) && isset($_USER['passwd']) &&
+           isset($_USER['algorithm']) && isset($_USER['stretch']) && isset($_USER['salt']) ) ) {
+        $passwd    = $_USER['passwd'];
+        $algorithm = $_USER['algorithm'];
+        $stretch   = $_USER['stretch'];
+        $salt      = $_USER['salt'];
+    } else {
+        $query = "SELECT passwd, salt, algorithm, stretch FROM " . $_TABLES['users']
+               . " WHERE uid = $uid";
+        $result = DB_query($query);
+        list($passwd, $salt, $algorithm, $stretch) = DB_fetchArray($result);
+    }
+
+    /* verify we have good data */
+    if (empty($passwd) || is_null($salt) || !is_numeric($algorithm) || empty($stretch)) {
+        return -1;
+    }
+
+    // calculate hash to verify password
+    $newhash = SEC_encryptPassword($password, $salt, $algorithm, $stretch);
+
+    /* if the hash checks out, update hash if needed and return success, otherwise return an error */
+    if ($newhash == $passwd) {
+        if ($algorithm != $_CONF['pass_alg'] || $stretch != $_CONF['pass_stretch'] || empty($salt)) {
+            SEC_updateUserPassword($password, $uid);
+        }
+        return 0;
+    } else {
+        return -255;
+    }
+}
+
+/**
+ * Generate Random Password
+ *
+ * Generates a random string of human readable characters.
+ *
+ * @return  string  generated random password
+ */
+function SEC_generateRandomPassword() {
+    // SEC_generateSalt is used here as it creates a random string using readable characters
+    return substr(SEC_generateSalt(), 0, 12);
+}
+
+/**
+ * Update User Password
+ *
+ * Updates the users password for current hash algorithm and stretch site settings.
+ * If not password is specified, a random password will be generated.
+ *
+ * @param  string  $password  Password to encrypt
+ * @param  int     $uid       User id to update
+ * @return int     0 for success, non-zero indicates error.
+ */
+function SEC_updateUserPassword(&$password = '', $uid = '') {
+    global $_TABLES, $_CONF, $_USER;
+
+    // if no password is specified, generate a random one
+    if (empty($password)) {
+        $password = SEC_generateRandomPassword();
+    }
+
+    // if $uid is empty, assume current user
+    if (empty($uid)) {
+        $uid = $_USER['uid'];
+    }
+
+    // validate $uid nonempty and valid user (anonymous, uid = 1, not valid)
+    if (empty($uid) || $uid < 1) {
+        return -1;
+    }
+
+    // update the database with the new password using algorithm and stretch from $_CONF
+    $salt = SEC_generateSalt();
+    $newhash = SEC_encryptPassword($password, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
+    $query = 'UPDATE ' . $_TABLES['users'] . " SET passwd = \"$newhash\", "
+        . "salt = \"$salt\", algorithm =\"" . $_CONF['pass_alg'] . '",' 
+        . 'stretch = ' . $_CONF['pass_stretch'] . " WHERE uid = $uid";
+    DB_query($query);
+
+    // return success
+    return 0;
 }
 
 /**

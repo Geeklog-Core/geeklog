@@ -435,6 +435,45 @@ function custom_validation_single_char($rule, $ruleParams) {
     return $ret;
 }
 
+/**
+ * Custom validation rule for hash function
+ *
+ * @param string $rule String of rule name
+ * @param array $ruleParams Parameter of validation
+ * @return boolean Success
+ *
+ */
+function custom_validation_hash_function($rule, $ruleParams) {
+    $ret = false;
+
+    switch ($ruleParams[0]['pass_alg']) {
+    case HashFunction::md5:
+        if (function_exists('md5')) $ret = true;
+        break;
+
+    case HashFunction::sha1:
+        if (function_exists('sha1')) $ret = true;
+        break;
+
+    case HashFunction::sha256:
+        if (CRYPT_SHA256 == 1) $ret = true;
+        break;
+
+    case HashFunction::sha512:
+        if (CRYPT_SHA512 == 1) $ret = true;
+        break;
+
+    case HashFunction::blowfish:
+        if (CRYPT_BLOWFISH == 1) $ret = true;
+        break;
+
+    default:
+        $ret = false;
+    }
+
+    return $ret;
+}
+
 // MAIN
 $display = '';
 

@@ -1587,7 +1587,7 @@ $LANG_SECTEST = array(
     'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.', 
     'remove_inst2'  => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
     'inst_removed'  => 'Good! You seem to have removed the install directory already.',
-    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on the default Admin user account.',
     'password_okay' => 'Good! You seem to have changed the default account password already.'
 );
 
@@ -1963,6 +1963,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => "Password Speed Limit",
     'login_attempts' => "Max. Login Attempts",
     'login_speedlimit' => "Login Speed Limit",
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => "User HTML",
     'admin_html' => "Admin HTML",
     'advanced_html' => 'Additional HTML for Adv. Editor',
@@ -2062,7 +2064,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_block' => 'Block Default Permission',
     'fs_webservices' => 'Webservices',
     'fs_autotag_permissions' => 'Autotag Usage Permissions', 
-    'fs_breadcrumbs' => 'Breadcrumbs'
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
     
 $LANG_tab['Core'] = array(
@@ -2144,7 +2147,8 @@ $LANG_configselects['Core'] = array(
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
-    28 => array('No access' => 0, 'Use' => 2)
+    28 => array('No access' => 0, 'Use' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ################################################################################
@@ -2193,7 +2197,8 @@ $LANG_VALIDATION = array(
                          'directory where the binaries from the Netpbm package are kept',  
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'
+    'single_char' => 'This field must be a single character',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 ?>

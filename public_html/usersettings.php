@@ -61,7 +61,7 @@ function edituser()
                                    'username'      => 'username.thtml',
                                    'password'      => 'password.thtml',
                                    'current_password'      => 'current_password.thtml',
-                                   'resynch'      => 'resynch.thtml',
+                                   'resynch'       => 'resynch.thtml',
                                    'deleteaccount' => 'deleteaccount.thtml'));
 
     include ($_CONF['path_system'] . 'classes/navbar.class.php');
@@ -314,12 +314,9 @@ function confirmAccountDelete ($form_reqid)
 
     // Do not check current password for remote users. At some point we should reauthenticate with the service when deleting the account
     if ($_USER['remoteservice'] == '') {
-        // to change the password, email address, or cookie timeout,
-        // we need the user's current password
-        $current_password = DB_getItem($_TABLES['users'], 'passwd',
-                                       "uid = {$_USER['uid']}");
+        // verify the password
         if (empty($_POST['old_passwd']) ||
-                (SEC_encryptPassword($_POST['old_passwd']) != $current_password)) {
+                (SEC_encryptUserPassword($_POST['old_passwd'], $_USER['uid']) < 0)) {
              return COM_refresh($_CONF['site_url']
                                 . '/usersettings.php?msg=84');
         }
@@ -926,12 +923,11 @@ function saveuser($A)
     // we need the user's current password
     $service = DB_getItem ($_TABLES['users'], 'remoteservice', "uid = {$_USER['uid']}"); 
     if ($service == '') {
-        $current_password = DB_getItem($_TABLES['users'], 'passwd',
-                                       "uid = {$_USER['uid']}");
         if (!empty ($A['passwd']) || ($A['email'] != $_USER['email']) ||
                 ($A['cooktime'] != $_USER['cookietimeout'])) {
+            // verify password
             if (empty($A['old_passwd']) ||
-                    (SEC_encryptPassword($A['old_passwd']) != $current_password)) {
+                    (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0)) {
     
                 return COM_refresh ($_CONF['site_url']
                                     . '/usersettings.php?msg=83');
@@ -1041,10 +1037,8 @@ function saveuser($A)
         if ($service == '') {
             if (!empty($A['passwd'])) {
                 if (($A['passwd'] == $A['passwd_conf']) &&
-                        (SEC_encryptPassword($A['old_passwd']) == $current_password)) {
-                    $passwd = SEC_encryptPassword($A['passwd']);
-                    DB_change($_TABLES['users'], 'passwd', "$passwd",
-                              "uid", $_USER['uid']);
+                        (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) == 0)) {
+                    SEC_updateUserPassword($A['passwd'], $_USER['uid']);
                     if ($A['cooktime'] > 0) {
                         $cooktime = $A['cooktime'];
                     } else {
@@ -1052,7 +1046,7 @@ function saveuser($A)
                     }
                     SEC_setCookie($_CONF['cookie_password'], $passwd,
                                   time() + $cooktime);
-                } elseif (SEC_encryptPassword($A['old_passwd']) != $current_password) {
+                } elseif (SEC_encryptUserPassword($A['old_passwd'], $_USER['uid']) < 0) {
                     return COM_refresh ($_CONF['site_url']
                                         . '/usersettings.php?msg=68');
                 } elseif ($A['passwd'] != $A['passwd_conf']) {
