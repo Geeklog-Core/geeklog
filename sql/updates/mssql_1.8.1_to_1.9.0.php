@@ -20,11 +20,11 @@ $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD [hidden] [tinyint] NOT NULL AFTE
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD [whos_online] [tinyint] NOT NULL AFTER [md5_sess_id]";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD [topic] [varchar] (20) NOT NULL AFTER [whos_online]";
 
-// Password Updates *** FIXME ***
-// $_SQL[] = "ALTER TABLE {$_TABLES['users']} MODIFY passwd varchar(128) NOT NULL default ''";
-// $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD salt varchar(64) NOT NULL default '' AFTER passwd";
-// $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD algorithm tinyint(3) NOT NULL default 0 AFTER salt";
-// $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD stretch int(8) unsigned NOT NULL default 1 AFTER algorithm";
+// Password Updates
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ALTER COLUMN [passwd] [varchar] (128) NOT NULL default ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD [salt] [varchar] (64) NOT NULL default '' AFTER [passwd]";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD [algorithm] [tinyint] NOT NULL default '0' AFTER [salt]";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD [stretch] [int] NOT NULL default '1' AFTER [algorithm]";
 
 /**
  * Create Story and Submission Topic assignments
