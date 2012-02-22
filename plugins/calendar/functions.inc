@@ -2158,7 +2158,7 @@ function plugin_getBlocks_calendar($side, $topic='')
                 
                 $retval[] = array('name'           => 'polls',
                                   'type'           => 'dynamic',
-                                  'onleft'         => 1,
+                                  'onleft'         => $_CA_CONF['block_isleft'],
                                   'title'          => $LANG_CAL_1[50],
                                   'blockorder'     => $_CA_CONF['block_order'],
                                   'content'        => $display,

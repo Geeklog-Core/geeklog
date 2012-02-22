@@ -1779,7 +1779,7 @@ function plugin_getBlocks_polls($side, $topic='')
                 
                 $retval[] = array('name'           => 'polls',
                                   'type'           => 'dynamic',
-                                  'onleft'         => 1,
+                                  'onleft'         => $_PO_CONF['block_isleft'],
                                   'title'          => $LANG_POLLS['poll'],
                                   'blockorder'     => $_PO_CONF['block_order'],
                                   'content'        => $display,
