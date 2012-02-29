@@ -115,6 +115,10 @@ function update_ConfValuesFor190()
     $c->add('fs_pass', NULL, 'fieldset', 4, 42, NULL, 0, TRUE, $me, 18);
     $c->add('pass_alg', 1, 'select', 4, 42, 29, 800, TRUE, $me, 18);
     $c->add('pass_stretch', 4096, 'text', 4, 42, NULL, 810, TRUE, $me, 18);
+    
+    // Comments    
+    $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
+    $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);      
 
     return true;
 }

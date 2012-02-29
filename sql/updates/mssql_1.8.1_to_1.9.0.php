@@ -114,7 +114,11 @@ function update_ConfValuesFor190()
     
     // Email CC settings
     $c->add('mail_cc_enabled', 1, 'select', 0, 1, 0, 180, TRUE, $me, 1);
-    $c->add('mail_cc_default', 0, 'select', 0, 1, 0, 190, TRUE, $me, 1);    
+    $c->add('mail_cc_default', 0, 'select', 0, 1, 0, 190, TRUE, $me, 1);
+
+    // Comments    
+    $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
+    $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);      
     
     return true;
 }
