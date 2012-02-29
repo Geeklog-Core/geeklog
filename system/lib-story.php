@@ -374,14 +374,25 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             else
             {
                 $article->set_var( 'comments_with_count', $comments_with_count);
-                $recent_post_anchortag = COM_createLink($LANG01[60],
-                    $_CONF['site_url'] . '/comment.php?sid=' . $story->getSid()
-                        . '&amp;pid=0&amp;type=article');
+                if ($_CONF['comment_on_same_page'] == true) {
+                    $recent_post_anchortag = COM_createLink($LANG01[60],
+                        $_CONF['site_url'] . '/article.php?story=' . $story->getSid()
+                            . '#commenteditform');
+                } else {
+                    $recent_post_anchortag = COM_createLink($LANG01[60],
+                        $_CONF['site_url'] . '/comment.php?sid=' . $story->getSid()
+                            . '&amp;pid=0&amp;type=article');
+                }
             }
             if( $story->DisplayElements( 'commentcode' ) == 0 )
             {
-                $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
-                            . $story->getSid() . '&amp;pid=0&amp;type=article';
+                if ($_CONF['comment_on_same_page'] == true) {
+                    $postCommentUrl = $_CONF['site_url'] . '/article.php?story='
+                                . $story->getSid() . '#commenteditform';
+                } else {
+                    $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
+                                . $story->getSid() . '&amp;pid=0&amp;type=article';
+                }
                 $article->set_var( 'post_comment_link',
                         COM_createLink($LANG01[60], $postCommentUrl,
                                        array('rel' => 'nofollow')));

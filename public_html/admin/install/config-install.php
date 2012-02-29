@@ -280,6 +280,8 @@ function install_config()
     $c->add('article_comment_close_days',30,'text',4,21,NULL,1686,TRUE, $me, 21);
     $c->add('comment_close_rec_stories',0,'text',4,21,NULL,1688,TRUE, $me, 21);
     $c->add('allow_reply_notifications',0,'select',4,21,0, 1689, TRUE, $me, 21);
+    $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
+    $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);
 
     // Subgroup: Images
     $c->add('sg_images', NULL, 'subgroup', 5, 0, NULL, 0, TRUE, $me, 0);

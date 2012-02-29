@@ -417,11 +417,36 @@ select {
 }
 .comment-edit {
   font-style: italic;
+  font-size: 0.85em;
+  color: #BBB;
   padding-top:1ex;
 }
 .comment-sig {
   color:#666666;
   padding-top:1ex;
+}
+.comment {
+  margin-bottom:5px;
+}
+.commentbody {
+  margin-top:5px;
+  margin-bottom:1em;
+}
+.commentthread {
+  margin-top:5px;
+  margin-bottom:5px;
+}
+#commentperview {
+  margin:0;
+  background:transparent;
+  border:1px dashed grey;
+  padding:5px 10px;
+}
+#commenteditform {
+  margin:0;
+  background:#F7F7F7;
+  border:1px solid #E7E7E7;
+  padding:10px;
 }
 /******************************************************************************/
 .edit-perm-down {

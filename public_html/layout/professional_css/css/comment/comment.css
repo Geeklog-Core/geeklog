@@ -16,14 +16,14 @@
 --------------------------------------*/
 
 /* Comment Block */
-div#comments {
+div.comments {
   margin: 0;
   padding: 0;
   text-align: center;
 }
 
 /* Comment Page Navigation */
-div#comments p.pagenav {
+div.comments p.pagenav {
   margin: 0;
   padding: 0;
   text-align: center;
@@ -36,53 +36,53 @@ div#comments p.pagenav {
 --------------------------------------*/
 
 /* Comment Information (Story Title | Comment Number | Username) */
-div#comments ul.status {
+div.comments ul.status {
   list-style-type: none;
   margin: 1em 0 0.5em 0;
   padding: 0;
 }
 
-div#comments ul.status li {
+div.comments ul.status li {
   display: inline;
   margin: 0 2px;
   padding: 0;
 }
 
-div#comments ul.status li a {
+div.comments ul.status li a {
   margin-left: 8px;
 }
 
 /* Comment Selecter Form  */
-div#comments form#commentbar-selector {
+div.comments form#commentbar-selector {
   display: inline;
 }
 
-div#comments form#commentbar-selector fieldset {
+div.comments form#commentbar-selector fieldset {
   display: inline;
 }
 
-div#comments form#commentbar-selector ul {
+div.comments form#commentbar-selector ul {
   margin: 0;
   padding: 0;
 }
 
-div#comments form#commentbar-selector ul li {
+div.comments form#commentbar-selector ul li {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
 /* Comment Submit Form  */
-div#comments form#commentbar-comment {
+div.comments form#commentbar-comment {
   display: inline;
 }
 
-div#comments form#commentbar-comment fieldset {
+div.comments form#commentbar-comment fieldset {
   display: inline;
 }
 
 /* Comment NOTE */
-div#comments p.disclaimer {
+div.comments p.disclaimer {
   margin: 0.5em 0 1em 0;
   padding: 0;
 }
@@ -94,7 +94,7 @@ div#comments p.disclaimer {
 --------------------------------------*/
 
 /* Individual Comment (Tree) */
-div#comments ul.thread {
+div.comments ul.thread {
   list-style-position: outside;
   list-style-type: none;
   margin: 0 0 0.5em 0;
@@ -103,83 +103,83 @@ div#comments ul.thread {
 }
 
 /* Individual Comment (Tree) Title */
-div#comments ul.thread li.title {
+div.comments ul.thread li.title {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
 /* Individual Comment (Tree) Auther */
-div#comments ul.thread li.author {
+div.comments ul.thread li.author {
   display: inline;
   margin: 0 0 0 8px;
   padding: 0;
 }
 
-div#comments ul.thread li.author:before {
+div.comments ul.thread li.author:before {
   content: " - ";
 }
 
 /* Individual Comment Level(Nested | Tree) */
-div#comments div.level-25,
-div#comments ul.level-25 {
+div.comments div.level-25,
+div.comments ul.level-25 {
   margin-left: 0;
 }
 
-div#comments div.level-25,
-div#comments ul.level-25 {
+div.comments div.level-25,
+div.comments ul.level-25 {
   margin-left: 16px;
 }
 
-div#comments div.level-50,
-div#comments ul.level-50 {
+div.comments div.level-50,
+div.comments ul.level-50 {
   margin-left: 32px;
 }
 
-div#comments div.level-100,
-div#comments ul.level-100 {
+div.comments div.level-100,
+div.comments ul.level-100 {
   margin-left: 48px;
 }
 
-div#comments div.level-125,
-div#comments ul.level-125 {
+div.comments div.level-125,
+div.comments ul.level-125 {
   margin-left: 64px;
 }
 
-div#comments div.level-150
-div#comments ul.level-150 {
+div.comments div.level-150
+div.comments ul.level-150 {
   margin-left: 80px;
 }
 
-div#comments div.level-175
-div#comments ul.level-175 {
+div.comments div.level-175
+div.comments ul.level-175 {
   margin-left: 96px;
 }
 
-div#comments div.level-200,
-div#comments ul.level-200 {
+div.comments div.level-200,
+div.comments ul.level-200 {
   margin-left: 112px;
 }
 
-div#comments div.level-225,
-div#comments ul.level-225 {
+div.comments div.level-225,
+div.comments ul.level-225 {
   margin-left: 128px;
 }
 
-div#comments div.level-250,
-div#comments ul.level-250 {
+div.comments div.level-250,
+div.comments ul.level-250 {
   margin-left: 144px;
 }
 
 /* Individual Comment  */
-div#comments div.block-comment-content {
+div.comments div.block-comment-content {
   margin: 0;
   padding: 0;
   text-align: left;
 }
 
 /* Comment Information  */
-div#comments div.block-comment-content ul.status {
+div.comments div.block-comment-content ul.status {
   list-style-position: outside;
   list-style-type: none;
   margin: 0;
@@ -187,7 +187,7 @@ div#comments div.block-comment-content ul.status {
 }
 
 /* Comment Title */
-div#comments div.block-comment-content ul.status li.title {
+div.comments div.block-comment-content ul.status li.title {
   display: block;
   margin: 1em 0 0.5em 0;
   padding: 4px;
@@ -196,44 +196,44 @@ div#comments div.block-comment-content ul.status li.title {
 }
 
 /* Comment Auther */
-div#comments div.block-comment-content ul.status li.author {
+div.comments div.block-comment-content ul.status li.author {
   display: block;
   margin: 0 0 1em 0;
   padding: 0;
 }
 
 /* Comment 本文 */
-div#comments div.block-comment-content div.comment {
+div.comments div.block-comment-content div.comment {
   margin: 0 0 1em 0;
   padding: 0;
 }
 
 /* Comment Navigation */
-div#comments div.block-comment-content ul.navi {
+div.comments div.block-comment-content ul.navi {
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
-div#comments div.block-comment-content ul.navi:before {
+div.comments div.block-comment-content ul.navi:before {
   content: "[";
 }
 
-div#comments div.block-comment-content ul.navi:after {
+div.comments div.block-comment-content ul.navi:after {
   content: "]";
 }
 
-div#comments div.block-comment-content ul.navi li {
+div.comments div.block-comment-content ul.navi li {
   display: inline;
   margin: 0 2px;
   padding: 0;
 }
 
 /* 永久Links */
-div#comments div.block-comment-content ul.navi li.permlink {
+div.comments div.block-comment-content ul.navi li.permlink {
   margin: 0 2px 0 0;
 }
 
-div#comments div.block-comment-content ul.navi li.permlink:before {
+div.comments div.block-comment-content ul.navi li.permlink:before {
   content: " | ";
 }
 

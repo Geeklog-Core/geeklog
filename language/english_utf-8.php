@@ -230,7 +230,8 @@ $LANG03 = array(
     41 => 'Hello %s,',
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications',
-    44 => 'Your Name'
+    44 => 'Your Name',
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
 );
 
 ###############################################################################
@@ -1994,6 +1995,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
+    'comment_on_same_page' => 'Comment on Same Page?',
+    'show_comments_at_replying' => 'Show Comments at Replying?',
     'search_style' => "Results List Style",
     'search_limits' => "Page Limits",
     'search_show_num' => "Show Result Number?",

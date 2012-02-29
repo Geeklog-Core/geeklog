@@ -65,9 +65,14 @@ $order = '';
 $query = '';
 $reply = '';
 $page = 0;
+$mode = '';
 if (isset ($_POST['mode'])) {
-    $sid = COM_applyFilter ($_POST['story']);
     $mode = COM_applyFilter ($_POST['mode']);
+} else if (isset ($_POST['format'])) {
+    $mode = COM_applyFilter ($_POST['format']);
+}
+if (!empty($mode)) {
+    $sid = COM_applyFilter ($_POST['story']);
     if (isset ($_POST['order'])) {
         $order = COM_applyFilter ($_POST['order']);
     }
@@ -98,6 +103,12 @@ if (isset ($_POST['mode'])) {
     }
 }
 
+if (!empty ($_REQUEST['sid'])) {
+    $sid = COM_applyFilter ($_REQUEST['sid']);
+}
+if (empty ($sid) && !empty ($_POST['cmt_sid'])) {
+    $sid = COM_applyFilter ($_POST['cmt_sid']);
+}
 if (empty ($sid)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
@@ -406,7 +417,6 @@ if ($A['count'] > 0) {
         if (($story->displayElements('commentcode') >= 0) and $show_comments) {
             $delete_option = (SEC_hasRights('story.edit') && ($story->getAccess() == 3)
                              ? true : false);
-            require_once ( $_CONF['path_system'] . 'lib-comment.php' );
             $story_template->set_var ('commentbar',
                     CMT_userComments ($story->getSid(), $story->displayElements('title'), 'article',
                                       $order, $mode, 0, $page, false, $delete_option, $story->displayElements('commentcode')));

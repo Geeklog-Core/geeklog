@@ -15,20 +15,22 @@
       <li>{mode_selector}</li>
       <li>
         {hidden_field}
-        <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+        <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+        <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
         <input type="submit" value="{lang_refresh}" class="submit"{xhtml}>
       </li>
     </ul>
   </div>  
 </form>
 
-<form action="{site_url}/comment.php" method="post" id="commentbar-comment" class="basic">
+<form action="{editor_url}" method="post" id="commentbar-comment" class="basic">
   <div class="user_basic">
     <ul class="submit">
       <li>
-        <input type="hidden" name="sid" value="{sid}"{xhtml}>
-        <input type="hidden" name="pid" value="0"{xhtml}>
-        <input type="hidden" name="type" value="{comment_type}"{xhtml}>
+        {hidden_field_reply}
+        <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+        <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
+        <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
         <input type="hidden" name="title" value="{comment_title}"{xhtml}>
         <input type="submit" name="reply" value="{lang_reply}" class="submit"{xhtml}>
       </li>
