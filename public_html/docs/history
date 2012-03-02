@@ -1,8 +1,28 @@
 Geeklog History/Changes:
 
-Nov ??, 2011 (1.9.0)
+Mar ??, 2012 (1.9.0)
 ------------
 
+- Feed items truncated when Length of entries is 1 (bug #0001431) [Tom]
+- Comments Form on same page as story (patch #0000728) [Dirk]
+- Allow other objects to be associated to Topics (feature request #0001155)
+  [Tom]
+- CC setting should be an admin option (patch #0001259) [Tom]
+- Delete account oauth (bug #0001417) [Tom]
+- When saving a Poll in the admin interface the vote count gets reset (bug
+  #0001419) [Tom]
+- Scripts class including theme's style.css (bug #0001407) [Tom]
+- Query failed: Syntax error "AS dateFROM" (bug #0001418) [Tom]
+- add $_CONF['linktext_maxlen'] to story configuration panel (patch #0001139)
+  [Tom]
+- Add Breadcrumb Support (feature request #0001062) [Tom]
+- Configuration Copyright Year can only accept a number (bug #0001416) [Tom]
+- Articles, Blocks, Topics and Core Plugins do not handle a Group being Deleted
+  (bug #0001397) [Tom]
+- stripslashes() expects parameter 1 to be string, array given lib-common.php
+  line 5754 (bug #0001413) [Tom]
+- Comment Count maybe off for Story after Comment Submission (bug #0001414)
+  [Tom]
 - Log url on page error (feature request #0001377) [Dirk]
 - Add Stop Forum Spam and Spam Number of Links Modules to Spam-X (feature
   request #0001378) [Tom]
