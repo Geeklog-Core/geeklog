@@ -1188,7 +1188,8 @@ function SEC_generateSalt() {
  * @param  int     $uid       user id to authenticate
  * @return int     0 for success, non-zero for failure or error
  */
-function SEC_encryptUserPassword($password, $uid = '') {
+function SEC_encryptUserPassword($password, $uid = '')
+{
     global $_USER, $_CONF, $_TABLES;
 
     // if $uid is empty, assume current user
@@ -1204,7 +1205,7 @@ function SEC_encryptUserPassword($password, $uid = '') {
     /* get passwd, algorithm, stretch, and salt from $_USER if possible, else
      * get them from the DB
      */
-    if ( ( ($uid == $_USER['uid']) && isset($_USER['passwd']) &&
+    if ( ( isset($_USER['uid']) && ($uid == $_USER['uid']) && isset($_USER['passwd']) &&
            isset($_USER['algorithm']) && isset($_USER['stretch']) && isset($_USER['salt']) ) ) {
         $passwd    = $_USER['passwd'];
         $algorithm = $_USER['algorithm'];
