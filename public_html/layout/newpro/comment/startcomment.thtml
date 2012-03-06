@@ -1,0 +1,14 @@
+
+<!-- comment/startcomment.thtml { -->
+
+<div id="{area_id}">
+  <div class="comments">
+    {commentbar}
+    {comments}
+
+    <p class="pagenav">{pagenav}</p>
+  </div>
+  {commenteditor}
+</div>
+
+<!-- } comment/startcomment.thtml -->

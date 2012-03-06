@@ -1,0 +1,9 @@
+
+<!-- blockheader-message.thtml { -->
+
+<div id="block-message">
+  <dl>
+    <dt class="title">{showhide}{block_title}{block_help}</dt>
+    <dd class="message">
+
+<!-- } blockheader-message.thtml -->

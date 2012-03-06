@@ -1,0 +1,20 @@
+
+<!-- comment/comment.thtml { -->
+
+<div class="block-comment-content level-{indent}">
+  <ul class="status">
+    <li class="title">{title}</li>
+    <li class="author">{lang_authoredby}{author_link}&nbsp;{lang_on}&nbsp;{date}</li>
+  </ul>
+
+  <div class="comment">{comments}</div>
+
+  <ul class="navi" {hide_if_preview}>
+    <li>{reply_option}</li>
+    <li>{parent_link}</li>
+    <li>{delete_option}</li>
+    <li class="permlink"><a href="{site_url}/comment.php?mode=view&amp;cid={cid}" rel="self bookmark">{lang_permlink}</a></li>
+  </ul>
+</div>
+
+<!-- } comment/comment.thtml -->

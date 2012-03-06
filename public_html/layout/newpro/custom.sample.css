@@ -1,0 +1,189 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : 
+  Author      : 
+  Description : 
+==============================================================================*/
+
+
+
+/*==============================================================================
+  [INFO] Custom Style Sheet Sample
+         This is custom style sheet sample of professional_css.
+         [BASE] Reset basic style.
+         [CUSTOM] Set custom theme style for liquid style.
+==============================================================================*/
+
+/*==============================================================================
+  [BASE] Reset basic style.
+         background #FFFFFF, fore color: #000000)
+==============================================================================*/
+
+/*--------------------------------------
+  [BASE] layout.css
+---------------------------------------*/
+
+body {
+  background: #FFFFFF;
+  color: #000000;
+}
+
+div#container {
+  background: transparent;
+}
+
+div#container div#wrapper {
+  width: auto;
+}
+
+/*----- Header -----*/
+div#container div#header {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+div#container div#header div#header-content {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/*----- Navigation -----*/
+div#container div#navigation {
+  width: 100%;
+  background: transparent;
+}
+
+div#container div#navigation div.navigation_content {
+  width: auto;
+}
+
+/*----- Footer -----*/
+div#container div#footer {
+  background: transparent;
+  color: #000000;
+}
+
+div#container div#footer-content {
+  width: auto;
+}
+
+div#container div#footer a,
+div#container div#footer a:link,
+div#container div#footer a:visited,
+div#container div#footer a:hover {
+  color: #0000ff;
+}
+
+div#container div#footer a:focus,
+div#container div#footer a:active {
+  color: #ff0000;
+}
+
+/*----- Wrapper -----*/
+body.left-center-right div#container div#wrapper,
+body.left-center div#container div#wrapper,
+body.center-right div#container div#wrapper,
+body.center div#container div#wrapper,
+body.js_off div#container div#wrapper {
+  background-image: none;
+}
+
+
+
+/*--------------------------------------
+  [BASE] form.css
+---------------------------------------*/
+
+div#leftblocks div#block-left-search {
+  border: none;
+  background: transparent;
+}
+
+
+
+/*--------------------------------------
+  [BASE] block.css
+---------------------------------------*/
+
+div#centerblocks p.welcome_msg,
+div#leftblocks div.block-left,
+div#rightblocks div.block-right {
+  border: none;
+}
+
+
+
+/*==============================================================================
+  [CUSTOM] Set custom theme style for liquid style.
+==============================================================================*/
+
+/*--------------------------------------
+  [CUSTOM] layout.css
+
+             Width(All)         : 80%
+             Min Width(All)     : 800px
+             Max Width(All)     : 80em
+
+             Width(Left Block)  : 20%
+             Width(Center Block): 60%
+             Width(Right Block) : 20%
+---------------------------------------*/
+
+/*----- Container -----*/
+div#container {
+  width: 80%;
+  min-width: 800px;
+  max-width: 80em;
+  margin: 0 auto;
+}
+
+/*----- Left Block Container -----*/
+div#container div#wrapper div#leftblocks {
+  width: 20%;
+  margin: 0 80% 0 0;
+}
+
+body.js_off div#container div#wrapper div#leftblocks {
+  margin: 0 -20% 0 0;
+}
+
+/*----- Center Block Container -----*/
+body.left-center-right div#container div#wrapper div#centerblocks {
+  width: 57%;
+  margin: 0 0 0 -80%;
+  padding: 0 1%;
+}
+
+body.left-center div#container div#wrapper div#centerblocks {
+  width: 77%;
+  margin: 0 0 0 -80%;
+  padding: 0 1%;
+}
+
+body.center-right div#container div#wrapper div#centerblocks {
+  width: 77%;
+  margin: 0 20% 0 0;
+  padding: 0 1%;
+}
+
+body.center div#container div#wrapper div#centerblocks {
+  width: 97%;
+  margin: 0;
+  padding: 0 1%;
+}
+
+body.js_off div#container div#wrapper div#centerblocks {
+  display: inline;  /* For Win IE 6 */
+  width: 57%;
+  margin: 0 0 0 20%;
+  padding: 0 1%;
+}
+
+/*----- Right Block Container -----*/
+div#container div#wrapper div#rightblocks {
+  width: 20%;
+  margin: 0 0 0 -20%;
+}

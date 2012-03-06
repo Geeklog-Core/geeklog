@@ -1,0 +1,6 @@
+
+<!-- adminoption_off.thtml { -->
+
+        <li class="adminoption_off">{option_label} ({option_count})</li>
+
+<!-- } adminoption_off.thtml -->

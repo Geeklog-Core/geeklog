@@ -1,0 +1,60 @@
+
+<!-- admin/user/edituser.thtml { -->
+
+<form action="{site_admin_url}/user.php" method="post" id="admin-edituser" class="compact">
+
+  <div class="admin_basic">
+    <dl>
+      <dt>{lang_userid}</dt>
+      <dd>{user_id}</dd>
+
+      <dt>{lang_regdate}</dt>
+      <dd>{user_regdate}</dd>
+
+      <dt>{lang_lastlogin}</dt>
+      <dd>{user_lastlogin}</dd>
+
+      <dt><label for="admin-edituser-username">{lang_username}</label></dt>
+      <dd><input type="text" size="16" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="text"{xhtml}> {remoteservice}<br{xhtml}></dd>
+      <dd class="user_photo">
+        {user_photo}
+        <label for="delete_photo">{lang_delete_photo}</label>{delete_photo_option}
+      </dd>
+
+      <dt><label for="admin-edituser-fullname">{lang_fullname}</label></dt>
+      <dd><input type="text" size="48" maxlength="80" value="{user_fullname}" name="fullname" id="admin-edituser-fullname" class="text"{xhtml}></dd>
+
+      {password_option}
+
+      <dt><label for="v-email">{lang_emailaddress}</label></dt>
+      <dd><input type="text" size="48" maxlength="255" value="{user_email}" name="email" id="admin-edituser-email" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-edituser-homepage">{lang_homepage}</label></dt>
+      <dd><input type="text" size="48" maxlength="255" value="{user_homepage}" name="homepage" id="admin-edituser-homepage" class="text"{xhtml}></dd>
+
+      <dt>{lang_user_status}</dt>
+      <dd>{user_status}</dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_securitygroups}</legend>
+    <dl>
+      {group_edit}
+    </dl>
+
+  </fieldset>
+
+
+    <p class="submit">
+      <input type="hidden" name="uid" value="{user_id}"{xhtml}>
+      <input type="hidden" name="regdate" value="{regdate_timestamp}"{xhtml}>
+      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
+      {delete_option}
+      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </p>
+
+</form>
+
+<!-- } admin/user/edituser.thtml -->

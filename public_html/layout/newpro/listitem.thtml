@@ -1,0 +1,6 @@
+
+<!-- listitem.thtml { -->
+
+        <li class="listitem">{list_item}</li>
+
+<!-- } listitem.thtml -->

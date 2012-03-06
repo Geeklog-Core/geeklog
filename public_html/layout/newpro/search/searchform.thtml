@@ -1,0 +1,59 @@
+<!-- search/searchform.thtml { -->
+
+<form action="{site_url}/search.php" method="get" id="advsearchform" class="compact">
+
+  <div class="user_basic">
+    <p class="message">{search_intro}</p>
+
+    <dl>
+      <dt><label for="advsearchform-query">{lang_keywords}</label></dt>
+      <dd>
+        <input type="text" size="35" maxlength="35" value="{query}" name="query" id="advsearchform-query" class="text"{xhtml}>
+        <select name="keyType" id="advsearchform-keyType">
+          <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
+          <option value="all"   selected="selected" {key_all_selected}>{lang_all_words}</option>
+          <option value="any" {key_any_selected}>{lang_any_word}</option>
+        </select>
+        <input type="checkbox" value="true" name="title"{title_checked}{xhtml}>{lang_titles}
+      </dd>
+
+      <dt><label for="advsearchform-datestart">{lang_date}</label></dt>
+      <dd>
+        <input type="text" size="10" maxlength="10" name="datestart" value="{datestart}" id="advsearchform-datestart" class="text"{xhtml}> {lang_to} <input type="text" size="10" maxlength="10" name="dateend" value="{dateend}" id="advsearchform-dateend" class="text"{xhtml}>
+      </dd>
+      <dd class="description">{date_format}</dd>
+
+      <dt><label for="advsearchform-topic">{lang_topic}</label></dt>
+      <dd>
+        <select name="topic" id="advsearchform-topic">
+          {topic_option_list}
+        </select>
+      </dd>
+
+      <dt><label for="advsearchform-type">{lang_type}</label></dt>
+      <dd>
+        <select name="type" id="advsearchform-type">
+          {plugin_types}
+        </select>
+      </dd>
+
+      {author_form_element}
+
+      <dt><label for="advsearchform-results">{lang_results}</label></dt>
+      <dd>
+        <select name="results" id="advsearchform-results">
+          {search_limits}
+        </select>
+        {lang_per_page}
+      </dd>
+    </dl>
+
+    <ul class="submit">
+      <li>
+        <input type="hidden" name="mode" value="search"{xhtml}>
+        <input type="submit" value="{lang_search}" class="submit"{xhtml}>
+      </li>
+    </ul>
+  </div>
+</form>
+<!-- } search/searchform.thtml -->

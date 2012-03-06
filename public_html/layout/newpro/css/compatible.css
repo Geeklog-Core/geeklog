@@ -1,0 +1,599 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : professional compatible Style
+  Author      : dengen - Yoshinori Tahara (http://www.trybase.com/~dengen/log/) and Geeklog Japanese
+  Description : For all layout
+                Add Professional style to ProfessionalCSS.
+  Apply       : All
+==============================================================================*/
+
+/* CLASSES ********************************************************************/
+
+/* Admin lists ****************************************************************/
+.admin-menu-icon {
+  float:left;
+  padding:5px;
+}
+.admin-menu {
+  /* the box around the menu */
+  padding:5px;
+  border:1px solid #EEEEEE;
+}
+.admin-menu-text {
+  /* the text below the links */
+  padding:5px;
+}
+.admin-menu-item {
+  /* a single link in the menu */
+  padding: 0px 5px 0px 5px;
+}
+.admin-list-smalltable {
+  text-align:left;
+  border-spacing:1px;
+}
+.admin-list-table {
+  width:100%;
+  text-align:left;
+  border-spacing:1px;
+}
+.admin-list-table form {
+  margin:0px;
+}
+.admin-list-search {
+  text-align:center;
+  margin-top:5px;
+  margin-bottom:5px;
+}
+.admin-list-field {
+  text-align:left;
+  padding-left:5px;
+  padding-right:5px;
+}
+.admin-list-headerfield {
+  text-align:left;
+  padding:3px 5px;
+}
+/* Menus in blocks ************************************************************/
+.blocklist ul {
+  list-style:none;
+  padding:0px;
+  margin:0px;
+}
+/* general alignment classes **************************************************/
+.alignleft {
+  text-align:left;
+}
+.alignright {
+  text-align:right;
+}
+.aligncenter {
+  text-align:center;
+}
+.aligntop {
+  vertical-align:top;
+}
+.floatright {
+  float:right;
+}
+.floatleft {
+  float:left;
+}
+.clearboth {
+  clear:both;
+}
+/* clear floats by applying the clearfix class to float-encasing block !*******/
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.clearfix {
+  display: inline-block;
+}
+
+/* Hides from IE-mac \*/
+* html .clearfix {height: 1%;}
+.clearfix {display: block;}
+/* End hide from IE-mac */
+/* general formatting classes *************************************************/
+.b {
+  font-weight:bold;
+}
+.ext-link {
+  background-color: transparent;
+  background: url(../images/external.png) center right no-repeat;
+  background-attachment: scroll;
+  padding-right: 13px;
+}
+.ext-link-rtl {
+}
+.feed-link {
+  background-color: transparent;
+  background: url(../images/feed.png) center right no-repeat;
+  background-attachment: scroll;
+  padding: 2px 16px 2px 0px;
+}
+.feed-link-rtl {
+}
+.strike {
+  text-decoration: line-through;
+}
+
+/* Comments *******************************************************************/
+.commentbar-line1 {
+  background:transparent;
+  color:#000000;
+  padding:3px 3px;
+  text-align:center;
+}
+.commentbar-line2 {
+  background:#E7E7E7;
+  text-align:center;
+  padding-left:3px;
+  padding-right:3px;
+}
+.commentbar-line3 {
+  background:#FFFFFF;
+  border-bottom:1px solid #FFFFFF;
+  border-top:1px solid #E7E7E7;
+  color:#000000;
+  padding:3px 3px;
+  text-align:center;
+}
+.commenttitle {
+  background:#F7F7F7;
+  border-bottom:1px solid #E7E7E7;
+  border-left:1px solid #E7E7E7;
+  border-right:1px solid #E7E7E7;
+  border-top:1px solid #E7E7E7;
+  font-weight:bold;
+  font-size:smaller;
+  padding:3px 0px 3px 10px;
+}
+.comment-edit {
+  font-style: italic;
+  padding-top:1ex;
+}
+.comment-sig {
+  color:#666666;
+  padding-top:1ex;
+}
+
+/******************************************************************************/
+.edit-perm-down {
+  text-align:center;
+}
+.edit-perm-up {
+  text-align:center;
+  padding-right:10px;
+  padding-left:10px;
+}
+.fieldhelp {
+  font-size:0.8em;
+  color:#666666;
+  padding-left:0.8em;
+  padding-right:0.8em;
+}
+
+/* Forms **********************************************************************/
+.form-description {
+  font-weight:bold;
+  float:left;
+  width:100px;
+  text-align:right;
+  padding-right:5px;
+  display:block;
+}
+.form-field {
+  padding-bottom:5px;
+  margin-left:105px;
+}
+.checkboxes-list {
+  /* this is used for example by COM_checkList */
+  list-style:none;
+  padding:0px;
+  margin:0px;
+}
+.checkboxes-list span {
+  /* space between the text and the checkbox */
+  padding-left:5px;
+}
+.checkboxes-list .gldefault {
+  /* default blocks in the user settings block list */
+  font-weight:bold;
+}
+.missing-field {
+  /* reserved for future use */
+}
+.required-field {
+  /* reserved for future use */
+}
+
+/******************************************************************************/
+.highlight {
+  color:#000000;
+  background-color:yellow;
+  text-decoration:none;
+}
+.inputTable td {
+  padding:4px;
+  vertical-align:top;
+}
+.inputTable label {
+  font-weight:bold;
+  float:right;
+  white-space:nowrap;
+}
+.moderation-cc {
+  width:100%;
+}
+.moderation-cc-row {
+  clear:both;
+  height:80px;
+  width:100%;
+}
+.moderation-cc-item {
+  float:left;
+  text-align:center;
+}
+.nowrap {
+  white-space:nowrap;
+}
+.pagenav {
+  text-align:center;
+}
+.row_center td {
+  text-align:center;
+}
+.searchauth {
+  background:transparent;
+  color:#000000;
+  text-align:left;
+}
+.searchdate {
+  background:transparent;
+  color:#000000;
+  text-align:right;
+}
+.searchform-box {
+  background:#E7E7E7;
+  text-align:right;
+  border-bottom:1px solid #CCCCCC;
+  height:52px;
+  padding:0px 4px 0px 1px;
+  margin:0px;
+}
+.searchform-elements {
+  display:inline;
+  position:relative;
+  top:6px;
+}
+.searchform-elements input {
+  font-size:0.9em;
+}
+.searchhits {
+  background:transparent;
+  color:#000000;
+  text-align:right;
+}
+.searchresult-byline {
+  color:green;
+}
+.site-slogan {
+  color:#ffffff;
+  background:transparent;
+}
+.sysmessage img {
+  border:none;
+  float:left;
+  padding-bottom:3px;
+  padding-right:5px;
+}
+/* Stats **********************************************************************/
+.stats-list-count {
+  text-align:right;
+  padding-left:5px;
+  padding-right:5px;
+}
+.stats-header-title {
+  text-align:left;
+  width:90%;
+  padding-left:5px;
+  padding-right:5px;
+}
+.stats-header-count {
+  text-align:left;
+  width:10%;
+  padding-left:5px;
+  padding-right:5px;
+}
+/* Story **********************************************************************/
+.story {
+  /* the frame around all elements of one story */
+  background:transparent;
+  color:#000000;
+}
+.story h1 {
+  /* the title of a story */
+  background:transparent;
+  color:#000000;
+  font-weight:bold;
+  padding-left:1px;
+}
+.story-body {
+  /* this is the actual content of the story */
+  padding:3px;
+}
+.story-featured {
+  /* the frame around all elements of a featured story */
+  background:transparent;
+  color:#000000;
+}
+.story-featured h1 {
+  /* the title of a featured story */
+  background:transparent;
+  color:#000000;
+  font-weight:bold;
+  font-size:1.4em;
+  padding-left:1px;
+}
+.story-icons {
+  /* print & mail icons in a storybox */
+  float:right;
+  padding-top:10px;
+}
+.story-icons a {
+  margin-left:5px;
+}
+.story-container {
+  /* frame around all stories & centerblocks*/
+  padding-right:9px;
+  width:100%;
+  vertical-align:top;
+}
+.story-footer {
+  /* the bottom of the story with edit-links etc */
+  padding:3px;
+  text-align:center;
+  clear:both;
+}
+.story-footer p {
+  padding:0px;
+  margin:0px;
+}
+.story-information {
+  /* the author, views and date of a story */
+  padding:3px;
+  font-size:0.85em;
+  background:transparent;
+  color:#000000;
+}
+.story-information p {
+  padding:0px;
+  margin:0px;
+}
+/******************************************************************************/
+#token-expirynotice {
+  padding:1em;
+  border:1px solid #CCCCCC;
+  background:#F7F7F7;
+}
+#token-expirytime {
+  font-weight:bold;
+}
+.topicoption,
+.topicoption-off {
+}
+.warning {
+  background:transparent;
+  color:#FF0000;
+  font-weight:bold;
+}
+.warningsmall {
+  background:transparent;
+  color:#FF0000;
+}
+
+/* Default Plugin CSS Declarations */
+/* Recommended CSS to be used by Plugin Authors - allows easier site themeing */
+
+.plugin {
+  color:#000000;
+  background-color:#EFEFEF;
+  font-weight:normal;
+  border:1px solid #CCCCCC;
+}
+.plugin th {
+  color:#000000;
+  background-color:#B7C1DC;
+  padding:5px;
+  text-align:left;
+}
+.plugin tr {
+  vertical-align:top;
+}
+.plugin td {
+  padding:2px 5px 2px 5px;
+}
+.pluginBG {
+  color:#FEFEFE;
+  background-color:#7398BA;
+}
+.pluginAltBG {
+  background-color:#7398BA;
+}
+.pluginAltBG td {
+  color:#FFFFFF
+}
+.pluginCellTitle {
+  color:#666666;
+  font-weight:bold;
+  background-color:#E6E6E6;
+  padding:5px;
+}
+.pluginCellFill {
+  background-color:#F8FAFD;
+}
+.pluginCellText {
+  color:#636363;
+  font-weight:normal;
+}
+.pluginHeader {
+  color:#204275;
+  font-weight:bolder;
+  padding-top:3px;
+  padding-bottom:3px;
+}
+.pluginFooter, .pluginFooter td {
+  background-color:#507AA1;
+  color:#FFFFFF;
+  }
+.pluginAlert {
+  padding:5px 15px 5px 15px;
+  color:#D8010E;
+  background-color:#FEF1B4;
+  font-weight:bold;
+}
+.pluginInfo {
+  padding:5px 15px 5px 15px;
+  color:#707070;
+  background-color:#FEF1B4;
+  font-weight:normal;
+}
+.pluginSubTable {
+  color:#000000;
+  background-color:#CCCCCC;
+  font-weight:normal;
+  border:1px solid #CCCCCC;
+}
+.pluginSubTable th {
+  color:#000000;
+  background-color:#C9D1E4;
+  padding:5px;
+  text-align:left;
+}
+.pluginSubTable tr {
+  vertical-align:top;
+}
+.pluginSolidOutline {
+  background-color:#CCCCCC;
+}
+.pluginSolidFill {
+  background-color:#1A3955;
+}
+.pluginTitle {
+  background-color:#507AA1;
+  color:#F5F9FF;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px;
+}
+.pluginCellSubTitle {
+  background-color:#F7F7F7;
+  color:#000000;
+  padding:4px;
+  padding-left:6px;
+  padding-right:6px;
+}
+.pluginTinyText {
+  font-size:0.70em;
+}
+.pluginSmallText {
+  font-size:0.8em;
+}
+.pluginMediumText {
+  font-size:1em;
+}
+.pluginLargeText {
+  font-size:1.25em;
+}
+.pluginAltText {
+  color:#FFFFFF;
+}
+.pluginRow1, .pluginRow1 td {
+  color:#000000;
+  background-color:#F7F7F7;
+  line-height:120%;
+}
+.pluginRow2, .pluginRow2 td {
+  color:#000000;
+  background-color:#E7E7E7;
+  line-height: 120%;
+}
+.pluginRow1 .pluginRollOver,
+.pluginRow2 .pluginRollOver,
+.pluginRollOver {
+  color:#000000;
+  background-color:#FFFFFF;
+  line-height:120%;
+}
+.pluginRow1 .pluginRollOut,
+.pluginRow2 .pluginRollOut,
+.pluginRollOut {
+  color:#000000;
+  background-color:#F7F7F7;
+  line-height:120%;
+}
+.pluginLinks A:link {
+  color:#000000;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+.pluginLinks A:visited {
+  color:#000000;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+.pluginLinks A:hover {
+  color:#000000;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:underline;
+}
+.pluginBreadCrumbs,
+.pluginBreadCrumbs A:link {
+  color:#FFFFFF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+.pluginBreadCrumbs A:visited {
+  color:#FFFFFF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+.pluginBreadCrumbs A:hover {
+  color:#FFFFFF;
+  font-style:normal;
+  font-weight:normal;
+  text-decoration:none;
+}
+a.pluginButton:link, a.pluginButton:visited {
+  color:#000000;
+  text-align:center;
+  padding-top:2px;
+  display:block;
+  height:19px;
+  text-decoration:none;
+  background-color:transparent;
+}
+a.pluginButton:hover {
+  color:blue;
+  text-align:center;
+  padding-top:2px;
+  background:center url(../navbar/images/button_over.gif);
+  background-repeat:repeat-x;
+  display:block;
+  height:19px;
+  text-decoration:none;
+  background-color:transparent;
+}
+
+/* End of Common Plugin CSS */
+

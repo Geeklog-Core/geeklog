@@ -1,0 +1,6 @@
+
+<!-- admin/moderation/ccitem.thtml { -->
+
+<li><a href="{page_url}"><img src="{page_image}" alt=""{xhtml}></a><a href="{page_url}">{option_label}</a></li>
+
+<!-- } admin/moderation/ccitem.thtml -->

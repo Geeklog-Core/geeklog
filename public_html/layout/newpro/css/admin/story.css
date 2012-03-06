@@ -1,0 +1,141 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Story  Editor Style (Admin Page)
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Story  editor style for admin.
+  Apply       : admin/story/storyeditor.thtml, admin/story/storyeditor_advanced.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Common Style 
+--------------------------------------*/
+
+div#text_editor dl {
+  margin-bottom: 0;
+}
+
+div#html_editor dl {
+  margin-bottom: 0;
+}
+
+
+
+/*--------------------------------------
+  Story Editor
+--------------------------------------*/
+
+form#admin-storyeditor {
+  width: 99%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+form#admin-storyeditor fieldset {
+  margin: 0 0 1em 0;
+  padding: 8px;
+  border: 1px solid #CCCCCC;
+}
+
+form#admin-storyeditor fieldset legend {
+  display: inline;
+  padding: 2px 4px;
+}
+
+form#admin-storyeditor h3 {
+  margin: 0 0 0.5em 0;
+  padding: 0.5em 0 0 0;
+}
+
+
+
+/*--------------------------------------
+  Story Advanced Editor
+--------------------------------------*/
+
+form#admin-storyeditor_advanced {
+  width: 99%;
+  margin-top: 1em;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+form#admin-storyeditor_advanced fieldset {
+  margin: 0 0 1em 0;
+  padding: 8px;
+  border: 1px solid #CCCCCC;
+}
+
+form#admin-storyeditor_advanced fieldset#admin-storyeditor_advanced-editor {
+  margin: 0;
+  padding: 0;
+  border: 0 none #CCCCCC;
+}
+
+form#admin-storyeditor_advanced div#text_editor,
+form#admin-storyeditor_advanced div#html_editor {
+  margin: 0 0 1em 0;
+  padding: 8px;
+  border: 1px solid #000000;
+}
+
+form#admin-storyeditor_advanced div#text_editor textarea,
+form#admin-storyeditor_advanced div#html_editor textarea {
+  width: 98%;
+}
+
+form#admin-storyeditor_advanced fieldset legend {
+  display: inline;
+  padding: 2px 4px;
+}
+
+form#admin-storyeditor_advanced fieldset#admin-storyeditor_advanced-editor legend {
+  display: none;
+  padding: 0;
+}
+
+form#admin-storyeditor_advanced fieldset#admin-storyeditor_advanced-editor dl dt {
+  float: none;
+  width: auto;
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+
+form#admin-storyeditor_advanced fieldset#admin-storyeditor_advanced-editor dl dd {
+  float: none;
+  width: auto;
+  margin: 0 0 0.5em 0;
+  padding: 0;
+}
+
+form#admin-storyeditor_advanced h3 {
+  margin: 0 0 0.5em 0;
+  padding: 0.5em 0 0 0;
+}
+
+/* Navigation */
+form#admin-storyeditor_advanced dl dd ul.navi {
+  margin: 0;
+  padding: 0;
+}
+
+form#admin-storyeditor_advanced dl dd ul.navi li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Preview */
+div#preview {
+  margin: 1em 0 0 0;
+  padding: 0;
+  border-top: 1px solid #E7E7E7;
+}
+
+div#preview div.storytext {
+  margin: 2em 0 0 0;
+  padding: 0;
+  border-bottom: none;
+}

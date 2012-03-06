@@ -1,0 +1,6 @@
+
+<!-- useroption_off.thtml { -->
+
+        <li class="useroption_off">{option_label}&nbsp;{option_count}</li>
+
+<!-- } useroption_off.thtml -->

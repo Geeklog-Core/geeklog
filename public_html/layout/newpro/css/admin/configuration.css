@@ -1,0 +1,96 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Configration Style (for admin)
+  Author      : Hiromi Ikeda as Jiro & Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Configration style for admin.
+  Apply       : admin/config/configuration.thtml, admin/config/config_element.thtml,
+                admin/config/menu_element.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Setting 
+--------------------------------------*/
+form#config-editor {
+  width: 99%;
+  margin-top: 0;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+form#config-editor fieldset {
+  margin: 0 0 1em 0;
+  padding: 8px;
+  border: 1px solid #CCCCCC;
+}
+
+form#config-editor fieldset legend {
+  display: inline;
+  padding: 2px 4px;
+}
+
+/* Setting Item */
+form#config-editor table.inputTable td {
+  padding: 5px;
+  font-size: 90%;
+}
+
+form#config-editor ul.submit {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+form#config-editor ul.submit li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Message */
+div#configuration div.pluginInfo {
+  overflow: auto;
+  height: 120px;
+  min-height: 50px;
+  max-height: 100px;
+  margin: 5px 0;
+  padding: 10px 20px;
+  border: 1px solid #CCCCCC;
+}
+
+
+/*--------------------------------------
+  Layout
+--------------------------------------*/
+form#config-editor {
+  width: 99%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Left Menu */
+div#config_menu {
+  float: left;
+  width: 160px;
+  margin-left: -6px;
+  padding: 0;
+  background: #F7F7F7;
+}
+
+div#config_menu div.block-center {
+  margin-right: 8px;
+  margin-left: 8px;
+}
+
+div#config_menu div.block-center h2 {
+  font-size: 110%;
+}
+
+/* Center Block */
+div#config_main {
+  float: left;
+  width: 620px;
+  padding: 0 0 0 8px;
+}

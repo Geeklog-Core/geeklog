@@ -1,0 +1,72 @@
+
+<!-- admin/block/defaultblockeditor.thtml { -->
+
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact">
+
+  <div class="admin_basic">
+    <dl>
+      <dt><label for="admin-blockeditor-title">{lang_blocktitle}</label></dt>
+      <dd><input type="text" name="title" value="{block_title}" size="48" id="admin-blockeditor-title" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
+      <dd><input type="checkbox" name="is_enabled" {is_enabled} id="admin-blockeditor-is_enabled"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
+      <dd><input type="text" name="help" value="{block_help}" size="48" maxlength="{max_url_length}" id="admin-blockeditor-help" class="text"{xhtml}></dd>
+      <dd class="description">{lang_includehttp}<br{xhtml}>
+                              {lang_explanation}</dd>
+
+      <dt><label for="admin-blockeditor-name">{lang_blockname}</label></dt>
+      <dd>{block_name}
+        <input type="hidden" name="name" value="{block_name}" id="admin-blockeditor-name" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-tid">{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label for="admin-blockeditor-onleft">{lang_side}</label></dt>
+      <dd><select name="onleft" id="admin-blockeditor-onleft">
+          <option value="1" {left_selected}>{lang_left}</option>
+          <option value="0" {right_selected}>{lang_right}</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
+      <dd><input type="text" size="4" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="text"{xhtml}>
+        0 - 9999</dd>
+
+      <dt><label for="admin-blockeditor-type">{lang_blocktype}</label></dt>
+      <dd>gldefault
+        <input type="hidden" name="type" value="gldefault" id="admin-blockeditor-type"{xhtml}></dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
+    <dl>
+      <dt>{lang_owner}</dt>
+      <dd>{owner_name}
+        <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
+
+      <dt><label for="group_id">{lang_group}</label></dt>
+      <dd>{group_dropdown}</dd>
+
+      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dd class="description">{lang_perm_key}</dd>
+      <dd>{permissions_editor}</dd>
+      <dd class="description">{permissions_msg}</dd>
+    </dl>
+  </fieldset>
+
+  <ul class="submit">
+    <li><input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}></li>
+    <li><input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}></li>
+    <li>
+        <input type="hidden" name="bid" value="{block_id}"{xhtml}>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      </li>
+    </ul>
+</form>
+
+<!-- } admin/block/defaultblockeditor.thtml -->
+

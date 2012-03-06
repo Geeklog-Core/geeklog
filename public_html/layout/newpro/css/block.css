@@ -1,0 +1,227 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Block Style
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Left, center and right block CSS files.
+  Apply       : header.thtml,
+                blockheader.thtml, blockfooter.thtml, blockservices.thtml,
+                blockheader-*.thtml, blockfooter-*.thtml
+                (leftblocks.thtml, loginform.thtml, listitem.thtml)
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Common
+--------------------------------------*/
+
+div#leftblocks ul,
+div#leftblocks ol,
+div#rightblocks ul,
+div#rightblocks ol {
+  padding-left: 0;
+}
+
+
+
+/*--------------------------------------
+  List Item
+    in Block
+--------------------------------------*/
+
+li.listitem {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Message Block
+    in system message
+--------------------------------------*/
+
+div#centerblocks div#block-message {
+  margin: 2em 0;
+  padding: 0;
+  border: 1px solid #000000;
+}
+
+div#centerblocks div#block-message dl {
+  margin: 0;
+  padding: 0;
+}
+
+/* Title */
+div#centerblocks div#block-message dl dt {
+  margin: 0;
+  padding: 8px;
+  background: #1A3955 url(../images/css/bg_message_title.gif) repeat-x 0 0;
+  color: #FFFFFF;
+  font-weight: bold;
+}
+
+/* Message */
+div#centerblocks div#block-message dl dd {
+  margin: 0;
+  padding: 8px;
+  background: #E7E7E7;
+  font-weight: bold;
+}
+
+
+
+/*--------------------------------------
+  Related Block
+    Article
+--------------------------------------*/
+
+/* Block */
+div.block-related {
+  margin: 0 0 2em 0;
+  padding: 0;
+}
+
+/* Block Title */
+div.block-related h3 {
+  margin: 0 0 0.5em 0;
+  padding: 0;
+  font-size: 100%;
+  font-weight: bold;
+}
+
+/* Block Contents */
+div.block-related div.block-related-content {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Center Block
+--------------------------------------*/
+
+/* Welcome Message */
+div#centerblocks p.welcome_msg {
+  margin: 0 0 2em 0;
+  padding: 1em 0;
+  border-bottom: 1px solid #CCC;
+}
+
+/* Welcome Message Link */
+div#centerblocks p.welcome_msg a,
+div#centerblocks p.welcome_msg a:link,
+div#centerblocks p.welcome_msg a:visited {
+}
+
+div#centerblocks p.welcome_msg a:hover,
+div#centerblocks p.welcome_msg a:focus,
+div#centerblocks p.welcome_msg a:active {
+}
+
+/* Block */
+div#centerblocks div.block-center {
+  margin: 0 0 1em 0;
+  padding: 0 0 2em 0;
+  border-bottom: 1px solid #CCC;
+}
+
+/* Block Title */
+div#centerblocks h2,
+div#centerblocks h3,
+div#centerblocks h4 {
+  margin: 0 0 1em 0;
+  padding: 0;
+  font-weight: bold;
+}
+
+div#centerblocks div.block-center h2 {
+  font-size: 125%;
+}
+
+div#centerblocks div.block-center h3 {
+  font-size: 110%;
+}
+
+div#centerblocks div.block-center h4 {
+  font-size: 100%;
+}
+
+/* Help Icon */
+div#centerblocks h2 img,
+div#centerblocks h3 img,
+div#centerblocks h4 img {
+  vertical-align: middle;
+}
+
+/* Block Content */
+div#centerblocks div.block-center div.block-center-content {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Left Block
+--------------------------------------*/
+
+/* Block */
+div#leftblocks div.block-left {
+  margin: 0 8px 0.5em 8px;
+  padding: 8px 0;
+}
+
+/* Block Title */
+div#leftblocks div.block-left h2 {
+  margin: 0 0 0.5em 0;
+  padding: 0 0 0.1em 0;
+  border-bottom: 1px solid #CCCCCC;
+  font-size: 110%;
+  font-weight: bold;
+}
+
+/* Help Icon */
+div#leftblocks div.block-left h2 img {
+  vertical-align: middle;
+}
+
+/* Block Content */
+div#leftblocks div.block-left div.block-left-content {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/*--------------------------------------
+  Right Block
+--------------------------------------*/
+
+/* Block */
+div#rightblocks div.block-right {
+  margin: 0 8px 0.5em 8px;
+  padding: 8px 0;
+}
+
+/* Block Title */
+div#rightblocks div.block-right h2 {
+  margin: 0 0 0.5em 0;
+  padding: 0 0 0.1em 0;
+  border-bottom: 1px solid #CCCCCC;
+  font-size: 110%;
+  font-weight: bold;
+}
+
+/* Help Icon */
+div#rightblocks div.block-right h2 img {
+  vertical-align: middle;
+}
+
+/* Block Content */
+div#rightblocks div.block-right div.block-right-content {
+  margin: 0;
+  padding: 0;
+}

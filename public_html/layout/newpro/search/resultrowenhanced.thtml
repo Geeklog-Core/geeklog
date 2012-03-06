@@ -1,0 +1,12 @@
+
+<!-- search/resultrowenhanced.thtml { -->
+
+<tr>
+  <td>
+    <table>
+      {data_cols}
+    </table>
+  </td>
+</tr>
+
+<!-- } search/resultrowenhanced.thtml -->

@@ -1,0 +1,8 @@
+
+<!-- preferences/userphoto.thtml { -->
+
+<dt><label for="profile-photo">{lang_userphoto}</label></dt>
+<dd><input type="file" name="photo" id="profile-photo"{xhtml}></dd>
+<dd id="userphoto-photo" class="description">{lang_userphoto_text}{display_photo}<br{xhtml}>{photo_max_dimensions}</dd>
+
+<!-- } preferences/userphoto.thtml -->

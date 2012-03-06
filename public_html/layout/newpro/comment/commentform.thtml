@@ -1,0 +1,69 @@
+
+<!-- comment/commentform.thtml { -->
+
+{start_block_postacomment}
+<div id="commenteditform">
+
+<form action="{form_url}" method="post" id="commentform" class="linear">
+
+  <div class="user_basic">
+    <dl>
+      <dt class="username">{lang_username}</dt>
+      <dd class="username">{cid}
+         <input type="hidden" name="order" value="{order}"{xhtml}>
+         <input type="hidden" name="format" value="{format}"{xhtml}>
+         <input type="hidden" name="cpage" value="{cpage}"{xhtml}>
+         <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+         <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
+         <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
+         <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+         <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}
+         <span{hidewhenediting}><a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a></span>
+      </dd>
+      <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
+      <dd class="title"><input type="text" size="32" value="{title}" maxlength="96" name="title" id="commentform-title" class="text"{xhtml}></dd>
+
+      <dt><label for="comment_text">{lang_comment}</label></dt>
+      <dd><textarea rows="10" cols="45" name="comment" id="comment_text">{comment}</textarea></dd>
+      <dd class="description">{allowed_html}</dd>
+
+      <dt><label for="commentform-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select name="postmode" id="commentform-postmode">
+          {postmode_options}
+        </select>
+      </dd>
+    </dl>
+
+    {captcha}
+
+    <dl class="importantstuff">
+      <dt>{lang_importantstuff}</dt>
+      <dd>
+        <ul>
+          <li>{lang_instr_line1}</li>
+          <li>{lang_instr_line2}</li>
+          <li>{lang_instr_line3}</li>
+          <li>{lang_instr_line4}</li>
+          <li>{lang_instr_line5}</li>
+        </ul>
+      </dd>
+    </dl>
+
+    <ul class="submit">
+      <li><input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}></li>
+      <li>
+        <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
+        {save_option} 
+        <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}> 
+        {delete_option} 
+        {notification}
+      </li>
+    </ul>
+  </div>
+
+</form>
+
+</div>
+{end_block}
+<!-- } comment/commentform.thtml -->

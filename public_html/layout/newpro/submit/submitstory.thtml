@@ -1,0 +1,52 @@
+
+<!-- submit/submitstory.thtml { -->
+
+<form action="{site_url}/submit.php" method="post" id="submitstory" class="compact">
+
+  <div class="user_basic">
+    <dl>
+      <dt>{lang_username}</dt>
+      <dd>{story_username}
+        <ul class="navi">
+          <li><a href="{status_url}" rel="nofollow">{lang_loginout}</a></li>
+          <li>{create_account}</li>
+        </ul>
+      </dd>
+
+      <dt><label for="submitstory-title">{lang_title}</label></dt>
+      <dd><input type="text" size="36" maxlength="96" value="{story_title}" name="title" id="submitstory-title" class="text"{xhtml}></dd>
+
+      <dt><label for="submitstory-tid">{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label for="introtext">{lang_introtext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="introtext" id="introtext">{story_introtext}</textarea></dd>
+
+      <dt><label for="bodytext">{lang_bodytext}</label></dt>
+      <dd><textarea cols="45" rows="15" name="bodytext" id="bodytext">{story_bodytext}</textarea></dd>
+
+      <dt><label for="submitstory-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select name="postmode" id="submitstory-postmode">
+          {story_postmode_options}
+        </select>
+      </dd>
+      <dd class="description">{allowed_html}</dd>
+    </dl>
+
+    {captcha}
+
+    <ul class="submit">
+      <li><input name="mode" type="submit" value="{lang_preview}" class="submit"{xhtml}></li>
+      <li>
+        <input type="hidden" name="type" value="story"{xhtml}>
+        <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
+        <input type="hidden" name="sid" value="{story_sid}"{xhtml}>
+        <input type="hidden" name="date" value="{story_date}"{xhtml}>
+        {save_button}
+      </li>
+    </ul>
+  </div>
+</form>
+
+<!-- } submit/submitstory.thtml -->

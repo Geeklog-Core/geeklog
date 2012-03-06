@@ -1,0 +1,10 @@
+
+<!-- search/resultauthdatehits.thtml { -->
+
+<tr>
+  <td>{data}</td>
+  <td>{data2}</td>
+  <td>{data3}</td>
+</tr>
+
+<!-- } search/resultauthdatehits.thtml -->

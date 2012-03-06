@@ -1,0 +1,85 @@
+
+<!-- admin/topic/topiceditor.thtml { -->
+
+<form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data" id="admin-topiceditor" class="compact">
+
+  <div class="admin_basic">
+    <dl>
+      <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
+      <dd><input type="text" size="20" maxlength="20" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="text"{xhtml}></dd>
+      <dd class="description">{lang_donotusespaces}</dd>
+      
+      <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
+      <dd><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></dd>
+      
+      <dt><label for="admin-topiceditor-hidden">{lang_hidden}</label></dt>
+      <dd><input type="checkbox" {hidden_checked} name="hidden" id="admin-topiceditor-hidden"{xhtml}><span class="fieldhelp">{lang_hidden_info}</span></dd>
+
+      <dt><label for="admin-topiceditor-parent_id">{lang_parent_id}</label></dt>
+      <dd>
+        <select name="parent_id" id="admin-topiceditor-parent_id">
+            {parent_id_options}
+        </select>
+      </dd>
+      
+      <dt><label for="sortnum">{lang_sortorder}</label></dt>
+      <dd>{sort_order}</dd>
+
+      <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
+      <dd><input type="text" size="3" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="text"{xhtml}><span class="fieldhelp">{lang_defaultis} {default_limit}</span></dd>
+
+      <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
+      <dd><input type="text" size="48" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-topiceditor-imageurl">{lang_topicimage}</label></dt>
+      <dd><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" value="{image_url}" name="imageurl" id="admin-topiceditor-imageurl" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-topiceditor-newicon">{lang_uploadimage}</label></dt>
+      <dd><input type="file" name="newicon" id="admin-topiceditor-newicon"{xhtml}></dd>
+      <dd class="description">{icon_max_dimensions}</dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
+      <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:100%" rows="2">{meta_description}</textarea></dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
+      <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:100%" rows="2">{meta_keywords}</textarea></dd>
+
+      <dt><label for="admin-topiceditor-is_default">{lang_defaulttopic}</label></dt>
+      <dd><input type="checkbox" {default_checked} name="is_default" id="admin-topiceditor-is_default"{xhtml}><span class="fieldhelp">{lang_defaulttext}</span></dd>
+
+      <dt><label for="admin-topiceditor-is_archive">{lang_archivetopic}</label></dt>
+      <dd><input type="checkbox" {archive_checked} {archive_disabled} name="is_archive" id="admin-topiceditor-is_archive"{xhtml}><span class="fieldhelp">{lang_archivetext}</span></dd>
+
+      <dt><label for="admin-topiceditor-num_stories">{lang_num_stories}</label></dt>
+      <dd>{num_stories}</dd>
+
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
+    <dl>
+      <dt>{lang_owner}</dt>
+      <dd>{owner_name}</dd>
+
+      <dt><label for="group_id">{lang_group}</label></dt>
+      <dd>{group_dropdown}</dd>
+
+      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dd>{permissions_editor}</dd>
+      <dd class="description">{lang_perm_key}</dd>
+      <dd class="description">{lang_permissions_msg}</dd>
+    </dl>
+  </fieldset>
+
+  <p class="description">{warning_msg}</p>
+
+  <ul class="submit">
+    <li><input type="hidden" name="owner_id" value="{owner_id}"{xhtml}><input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}><input type="submit" value="{lang_save}" name="mode"{xhtml}><input type="hidden" name="old_tid" value="{topic_id}"{xhtml}></li>
+    <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
+    <li>{delete_option}</li>
+  </ul>
+</form>
+
+<!-- } admin/topic/topiceditor.thtml -->

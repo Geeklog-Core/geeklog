@@ -1,0 +1,8 @@
+
+<!-- admin/lists/listitem.thtml { -->
+
+<tr class="admin-listitem{cssid}" onmouseover="this.className='admin-listitem_rollover'; return false;" onmouseout="this.className='admin-listitem{cssid}'; return false;">
+  {item_field}
+</tr>
+
+<!-- } admin/lists/listitem.thtml -->

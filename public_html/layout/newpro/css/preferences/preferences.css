@@ -1,0 +1,73 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : My Account Page Style 
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : My account page style.
+  Apply       : preferences/displayprefs.thtml, preferences/displayblock.thtml,
+                preferences/language.thtml, preferences/theme.thtml, preferences/commentblock.thtml,
+                preferences/privacyblock.thtml, preferences/excludeblock.thtml,
+                preferences/boxesblock.thtml, preferences/digestblock.thtml,
+                preferences/profile.thtml, preferences/username.thtml, preferences/userphoto.thtml,
+                preferences/deleteaccount.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  My Account Page 
+--------------------------------------*/
+
+form#profile {
+  width: 99%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+form#profile fieldset {
+  margin: 0 0 1em 0;
+  padding: 8px;
+  border: 1px solid #CCCCCC;
+}
+
+form#profile fieldset legend {
+  display: inline;
+  padding: 2px 4px;
+}
+
+/* Check List */
+form#displayprefs p.checklist {
+  margin: 0;
+  padding: 0;
+}
+
+form#profile ul.checkboxes-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+form#profile ul.checkboxes-list li {
+  display: inline;
+  margin-right: 0.5em;
+}
+
+/* Input Field */
+form#displayprefs dl {
+  margin-bottom: 0;
+}
+
+form#displayprefs dl dd input {
+  margin-right: 2px;
+}
+
+/* User Photo */
+form#profile dl dd.userphoto-photo img {
+  display: block;
+  margin: 8px;
+}
+
+/* Default */
+form#profile span.gldefault {
+  font-weight: bold;
+}

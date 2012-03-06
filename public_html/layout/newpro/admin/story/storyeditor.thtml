@@ -1,0 +1,215 @@
+
+<!-- admin/story/storyeditor.thtml { -->
+
+<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
+
+  <div class="admin_basic">
+    <dl>
+      <dt>{lang_author}</dt>
+      <dd>{story_author}</dd>
+
+      <dt><label for="admin-storyeditor-publish_month">{lang_date}</label></dt>
+      <dd>
+        <select name="publish_month" id="admin-storyeditor-publish_month">
+          {publish_month_options}
+        </select>
+        /
+        <select name="publish_day">
+          {publish_day_options}
+        </select>
+        /
+        <select name="publish_year">
+          {publish_year_options}
+        </select>&nbsp;&nbsp;
+
+        <select name="publish_hour">
+          {publish_hour_options}
+        </select>
+        :
+        <select name="publish_minute">
+          {publish_minute_options}
+        </select>
+
+        {publishampm_selection}
+      </dd>
+      <dd class="description">{publish_date_explanation}</dd>
+
+      <dt><label for="admin-storyeditor-title">{lang_title}</label></dt>
+      <dd><input type="text" size="48" maxlength="255" value="{story_title}" name="title" id="admin-storyeditor-title" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
+      <dd><input type="text" size="48" maxlength="255" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-storyeditor-tid">{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label for="admin-storyeditor-show_topic_icon">{lang_show_topic_icon}</label></dt>
+      <dd><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor-show_topic_icon"{xhtml}></dd>
+
+      <dt><label for="admin-storyeditor-draft_flag">{lang_draft}</label></dt>
+      <dd><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor-draft_flag"{xhtml}></dd>
+
+      <dt><label for="admin-storyeditor-archiveflag">{lang_archivetitle}</label></dt>
+      <dd>
+        {lang_enabled}&nbsp;
+        <input type="checkbox" value="1" {is_checked2} onclick="enablearchive(this);" name="archiveflag" id="admin-storyeditor-archiveflag"{xhtml}>
+        <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>
+        &nbsp;{lang_optiondelete}
+      </dd>
+
+      <dt><label for="admin-storyeditor-expire_month"></label></dt>
+      <dd>{lang_date}&nbsp;
+        <select name="expire_month" id="admin-storyeditor-expire_month">
+          {expire_month_options}
+        </select>
+        /
+        <select name="expire_day">
+          {expire_day_options}
+        </select>
+        /
+        <select name="expire_year">
+          {expire_year_options}
+        </select>&nbsp;&nbsp;
+
+        <select name="expire_hour">
+          {expire_hour_options}
+        </select>
+        :
+        <select name="expire_minute">
+          {expire_minute_options}
+        </select>
+        {expireampm_selection}
+      </dd>
+
+      <dt><label for="admin-storyeditor-featured">{lang_mode}</label></dt>
+      <dd>
+        {featured_options}
+        <select name="frontpage">
+          {frontpage_options}
+        </select>
+        <br{xhtml}>
+        <select name="commentcode">
+          {comment_options}
+        </select>
+        <select name="trackbackcode">
+          {trackback_options}
+        </select>
+      </dd>
+
+      <dt><label for="admin-storyeditor-featured">{lang_cmt_disable}:</label></dt>
+      <dd>
+        {lang_enabled}&nbsp;
+        <input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
+           &nbsp;
+           <span dir="ltr">
+           <select name="cmt_close_month">
+                   {cmt_close_month_options}
+           </select>
+           /
+           <select name="cmt_close_day">
+              {cmt_close_day_options}
+           </select>
+           /
+           <select name="cmt_close_year">
+              {cmt_close_year_options}
+           </select>&nbsp;&nbsp;
+
+           <select name="cmt_close_hour">
+               {cmt_close_hour_options}
+           </select>
+           :
+           <select name="cmt_close_minute">
+               {cmt_close_minute_options}
+           </select>
+               {cmt_close_ampm_selection}
+           <input type="hidden" name="cmt_close_second" value="{cmt_close_second}"{xhtml}>
+           </span>
+      </dd>
+
+      <dt><label for="admin-storyeditor-sid">{lang_sid}</label></dt>
+      <dd><input type="text" size="40" maxlength="40" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="text"{xhtml}></dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription">{meta_description}</textarea></dd>
+
+      <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
+      <dd{hide_meta}><textarea cols="70" rows="2" name="meta_keywords" id="admin-storyeditor-metakeywords">{meta_keywords}</textarea></dd>
+
+      <dt><label for="admin-storyeditor-introtext">{lang_introtext}</label></dt>
+      <dd><textarea cols="70" rows="12" name="introtext" id="admin-storyeditor-introtext">{story_introtext}</textarea></dd>
+
+      <dt><label for="admin-storyeditor-bodytext">{lang_bodytext}</label></dt>
+      <dd><textarea cols="70" rows="20" name="bodytext" id="admin-storyeditor-bodytext">{story_bodytext}</textarea></dd>
+
+      <dt><label for="admin-storyeditor-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select name="postmode" id="admin-storyeditor-postmode">
+          {post_options}
+        </select>
+      </dd>
+      <dd class="description">{lang_allowed_html}</dd>
+
+      <dt><label for="file1">{lang_images}</label></dt>
+      <dd>
+        {saved_images}
+        {image_form_elements}
+      </dd>
+
+      <dt>{lang_hits}</dt>
+      <dd>{story_hits}</dd>
+
+      <dt>{lang_comments}</dt>
+      <dd>{story_comments}</dd>
+
+      <dt>{lang_trackbacks}</dt>
+      <dd>{story_trackbacks}</dd>
+
+      <dt>{lang_emails}</dt>
+      <dd>{story_emails}</dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
+    <h3>{lang_accessrights}</h3>
+
+    <dl>
+      <dt>{lang_owner}</dt>
+      <dd>{owner_name}</dd>
+
+      <dt><label for="group_id">{lang_group}</label></dt>
+      <dd>{group_dropdown}</dd>
+
+      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dd>{permissions_editor}</dd>
+      <dd class="description">{lang_perm_key}</dd>
+      <dd class="description">{lang_permissions_msg}</dd>
+    </dl>
+  </fieldset>
+
+  <ul class="submit">
+    <li><input type="submit" value="{lang_save}" name="mode"{xhtml}></li>
+    <li><input type="submit" value="{lang_preview}" name="mode"{xhtml}></li>
+    <li><input type="submit" value="{lang_cancel}" name="mode"{xhtml}></li>
+    <li>{delete_option}</li>
+    <li>
+      <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
+      <input type="hidden" name="publish_second" value="{publish_second}"{xhtml}>
+      <input type="hidden" name="old_sid" value="{old_story_id}"{xhtml}>
+      <input type="hidden" name="editopt" value="default"{xhtml}>
+      <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+      <input type="hidden" name="expire_second" value="{expire_second}"{xhtml}>
+      <input type="hidden" name="hits" value="{story_hits}"{xhtml}>
+      <input type="hidden" name="comments" value="{story_comments}"{xhtml}>
+      <input type="hidden" name="trackbacks" value="{story_trackbacks}"{xhtml}>
+      <input type="hidden" name="numemails" value="{story_emails}"{xhtml}>
+      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      {submission_option}
+    </li>
+  </ul>
+</form>
+
+<!-- } admin/story/storyeditor.thtml -->

@@ -1,0 +1,80 @@
+/* Geeklog JQuery UI custom CSS */
+
+/* Tabs
+----------------------------------*/
+.ui-tabs { position: relative; padding: .2em; zoom: 1; margin-bottom: 10px;} /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+.ui-tabs .ui-tabs-nav { margin: 0; padding: .2em .2em 0; }
+.ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
+.ui-tabs .ui-tabs-nav li a { float: left; padding: .5em 1em; text-decoration: none; outline-style: none; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected { margin-bottom: 0; padding-bottom: 1px; }
+.ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a { cursor: text; }
+.ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+.ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
+.ui-tabs .ui-tabs-hide { display: none !important; }
+/* drop down */
+#tabs-dropdown { position: absolute; display: none; list-style: none; padding: 10px 0 5px 0; }
+#tabs-dropdown li, #tabs-dropdown li a { display: block; float: none; }
+#tabs-dropdown li { margin: 0; }
+#tabs-dropdown li a:hover { background-color: #2E6E9E; color: #FFF; }
+
+/* Autocomplete */
+.ui-autocomplete-category {
+    font-weight:bold;
+    padding:.2em .4em;
+    margin:.8em 0 .2em;
+    line-height:1.5;
+}
+
+/* Selected Conf Row */
+.active-config { background: yellow; }
+
+/* Tooltip Balloon */
+#tooltip-container {
+    border:1px solid #83B3D8;
+    -moz-box-shadow:#47708F 0 2px 6px;-webkit-box-shadow:#47708F 0 2px 6px;
+    background:#fff;
+    position:absolute;
+    left:0;
+    top:0;
+    display:none;
+    z-index: 20000;
+}
+#tooltip-content { background-color: #FFF; min-width: 175px; min-height: 50px; }
+
+/* Validation */
+.input_error { border: solid 1px red; }
+.validation_error_block {
+    color: red;
+    font-size: 10px;
+}
+.validation_error_block span {
+    display:block;
+    overflow:hidden;
+    text-indent:-99999px;
+    width: 16px;
+    height: 16px;
+    float:left;
+    margin:0 4px;
+    background: url("images/ui-icons_cd0a0a_256x240.png") 0 -144px;
+}
+.saved_message {
+    margin-top:5px;
+    margin-bottom:5px;
+    padding:10px 5px 8px 36px;
+    background: #C6F9C9 url("../images/success.png") 10px 50% no-repeat;
+    border: 2px solid #9BD39E;
+    overflow: auto;
+    font-weight: bold;
+    color: #333;
+}
+.error_validation {
+    background: #CF3333 url("../images/error.png") no-repeat 10px 50%;
+    border: 2px solid #990000;
+    color: #FFF;
+}
+.saved_message a {
+    color: #E17009;
+}
+.error_validation a {
+    color: #FFFFBB;
+}
