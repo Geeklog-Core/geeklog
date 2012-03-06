@@ -16,10 +16,15 @@
 
 /* Block */
 div#leftblocks div#block-left-search {
+  margin: 0;
+  padding: 0;
 }
 
 /* Form */
 div#leftblocks div#block-left-search form#searchform {
+  position: absolute;
+  top: 50px;
+  right: 20px;
   margin: 0;
   padding: 0;
 }
