@@ -11,7 +11,6 @@ $_IMAGE_TYPE = 'png';
 $_SCRIPTS->setCSSFile('theme', '/layout/' . $_CONF['theme'] . '/style.css');
 
 $_SCRIPTS->setJavaScriptFile('theme.confirm', '/layout/' . $_CONF['theme'] . '/javascript/confirm.js');
-$_SCRIPTS->setJavaScriptFile('theme.fix_html', '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js');
 
 /*
  * For left/right block support there is no longer any need for the theme to
