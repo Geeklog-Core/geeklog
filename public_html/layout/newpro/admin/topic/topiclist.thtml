@@ -1,0 +1,12 @@
+
+<!-- admin/topic/topiclist.thtml { -->
+
+<div id="admin-instructions">
+  {top_menu}
+</div>
+
+<ul id="admin-topiclist">
+  {list_row}
+</ul>
+
+<!-- } admin/topic/topiclist.thtml -->

@@ -1,0 +1,6 @@
+
+<!-- lists/inline/page_sort.thtml { -->
+
+<option{sort_selected} onmouseover="this.style.cursor='pointer';" value="{sort_href}">{sort_text}</option>
+
+<!-- } lists/inline/page_sort.thtml -->

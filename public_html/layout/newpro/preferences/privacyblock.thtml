@@ -1,0 +1,23 @@
+<!-- preferences/privacyblock.thtml { -->
+
+<fieldset>
+  <legend>{lang_privacy_title}</legend>
+
+  <dl class="notes">
+    <dt>{lang_privacy_help_title}</dt>
+    <dd>{lang_privacy_help}</dd>
+  </dl>
+
+  <dl>
+    <dt><label for="displayprefs-emailfromuser">{lang_emailfromuser}</label></dt>
+    <dd><input type="checkbox" {emailfromuser_checked} name="emailfromuser" id="displayprefs-emailfromuser"{xhtml}>{lang_emailfromuser_text}</dd>
+
+    <dt><label for="displayprefs-emailfromadmin">{lang_emailfromadmin}</label></dt>
+    <dd><input type="checkbox" {emailfromadmin_checked} name="emailfromadmin" id="displayprefs-emailfromadmin"{xhtml}>{lang_emailfromadmin_text}</dd>
+
+    <dt><label for="displayprefs-showonline">{lang_showonline}</label></dt>
+    <dd><input type="checkbox" {showonline_checked} name="showonline" id="displayprefs-showonline"{xhtml}>{lang_showonline_text}</dd>
+  </dl>
+</fieldset>
+
+<!-- } preferences/privacyblock.thtml -->

@@ -1,0 +1,12 @@
+
+<!-- admin/trackback/autodetectlist.thtml { -->
+
+<p class="trackback-message">{lang_trackback_explain}</p>
+
+<table class="admin-list">
+  <tbody>
+    {autodetect_items}
+  </tbody>
+</table>
+
+<!-- } admin/trackback/autodetectlist.thtml -->

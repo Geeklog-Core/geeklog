@@ -1,0 +1,10 @@
+
+<!-- admin/trackback/pingitem.thtml { -->
+
+<tr class="admin-listitem{cssid}">
+  <td><a href="{service_url}">{service_name}</a></td>
+  <td>{ping_result}</td>
+  <td>{resend}</td>
+</tr>
+
+<!-- } admin/trackback/pingitem.thtml -->

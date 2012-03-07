@@ -398,7 +398,7 @@ class scripts {
         foreach ($this->css_files as $file) {
             if ($file['load'] && isset($file['file'])) {
                 $csslink = '<link rel="stylesheet" type="text/css" href="' . $_CONF['site_url'] . $file['file'] . '" ' . XHTML . '>' . LB;
-                if ($file['name'] == 'theme') { // load theme css first
+                if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
                 } else {
                     $headercode .= $csslink;

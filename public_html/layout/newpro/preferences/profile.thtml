@@ -1,0 +1,107 @@
+
+<!-- preferences/profile.thtml { -->
+
+{noscript}
+
+<div id="pe_navbar" style="display:none">
+{navbar}
+</div>
+
+<div id="pe_preview" class="jsenabled_hide" style="display:none;">
+  <fieldset>
+    <legend>{lang_preview_title}</legend>
+    {preview}
+  </fieldset>
+</div>
+
+<form action="{site_url}/usersettings.php" method="post" {enctype} id="profile" class="linear">
+
+<div id="pe_namepass" class="jsenabled_show">
+  <fieldset>
+    <legend>{lang_name_legend}</legend>
+
+    <dl>
+      {username_option}
+
+      <dt><label for="profile-fullname">{lang_fullname}</label></dt>
+      <dd><input type="text" size="60" maxlength="80" value="{fullname_value}" name="fullname" id="profile-fullname" class="text"{xhtml}></dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <legend>{lang_password_email_legend}</legend>
+
+    <dl class="notes">
+      <dt>{lang_password_help_title}</dt>
+      <dd>{lang_password_help}</dd>
+      <dd><strong>{lang_enter_current_password}</strong></dd>
+    </dl>
+
+    <dl>
+      {password_option}
+      
+      {resynch_option}      
+
+      <dt><label for="cooktime">{lang_cooktime}</label></dt>
+      <dd>{cooktime_selector}</dd>
+
+      <dt><label for="profile-email">{lang_email}</label></dt>
+      <dd><input type="text" size="60" maxlength="96" value="{email_value}" name="email" id="profile-email" class="text"{xhtml}></dd>
+      <dd class="description">{lang_email_text}</dd>
+
+      <dt><label for="profile-email_conf">{lang_email_conf}</label></dt>
+      <dd><input type="text" size="60" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="text"{xhtml}></dd>
+
+      {current_password_option}
+
+      {delete_account_option}
+    </dl>
+  </fieldset>
+</div>
+
+<div id="pe_userinfo" class="jsenabled_hide">
+  <fieldset>
+    <legend>{lang_personal_info_legend}</legend>
+
+    <dl class="notes">
+      <dt>{lang_userinfo_help_title}</dt>
+      <dd>{lang_userinfo_help}</dd>
+    </dl>
+
+    <dl>
+      <dt><label for="profile-homepage">{lang_homepage}</label></dt>
+      <dd><input type="text" size="60" maxlength="96" value="{homepage_value}" name="homepage" id="profile-homepage" class="text"{xhtml}></dd>
+      <dd class="description">{lang_homepage_text}</dd>
+
+      <dt><label for="profile-location">{lang_location}</label></dt>
+      <dd><input type="text" size="60" maxlength="96" value="{location_value}" name="location" id="profile-location" class="text"{xhtml}></dd>
+      <dd class="description">{lang_location_text}</dd>
+
+      {userphoto_option}
+
+      <dt><label for="profile-sig">{lang_signature}{lang_signature_text}</label></dt>
+      <dd><textarea cols="45" rows="4" name="sig" id="profile-sig">{signature_value}</textarea></dd>
+
+      <dt><label for="profile-about">{lang_about}{lang_about_text}</label></dt>
+      <dd><textarea cols="45" rows="6" name="about" id="profile-about">{about_value}</textarea></dd>
+
+      <dt><label for="profile-pgpkey">{lang_pgpkey}{lang_pgpkey_text}</label></dt>
+      <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey">{pgpkey_value}</textarea></dd>
+    </dl>
+  </fieldset>
+</div>
+
+{prefs}
+
+<ul id="save_button" class="submit">
+  <li>
+    <input type="hidden" name="uid" value="{uid_value}"{xhtml}>
+    <input type="hidden" name="mode" value="saveuser"{xhtml}>
+    <input type="hidden" name="username" value="{username_value}"{xhtml}>
+    <input type="submit" name="btnsubmit" value="{lang_submit}" class="submit"{xhtml}>
+  </li>
+</ul>
+
+</form>
+
+<!-- } preferences/profile.thtml -->

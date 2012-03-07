@@ -1,0 +1,35 @@
+
+<!-- users/registrationform.thtml { -->
+
+{start_block}
+  <form action="{site_url}/users.php" method="post" id="registrationform" class="compact">
+    <fieldset>
+      <legend>{lang_register}</legend>
+
+      <p class="message">{lang_instructions}</p>
+
+      <dl>
+        <dt><label for="registrationform-username">{lang_username}</label></dt>
+        <dd><input type="text" size="16" maxlength="16" name="username" value="{username}" id="registrationform-username" class="text"{xhtml}></dd>
+        <dt><label for="registrationform-email">{lang_email}</label></dt>
+        <dd><input type="text" size="32" maxlength="96" name="email" value="{email}" id="registrationform-email" class="text"{xhtml}></dd>
+
+        <dt><label for="registrationform-email_conf">{lang_email_conf}</label></dt>
+        <dd><input type="text" size="32" maxlength="96" name="email_conf" value="{email_conf}" id="registrationform-email_conf" class="text"{xhtml}></dd>
+
+        <dd class="description">{lang_warning}</dd>
+      </dl>
+
+      {captcha}
+
+      <ul class="submit">
+        <li>
+          <input type="hidden" name="mode" value="create"{xhtml}>
+          <input type="submit" value="{lang_register}" class="submit"{xhtml}>
+        </li>
+      </ul>
+    </fieldset>
+  </form>                               
+{end_block}
+
+<!-- } users/registrationform.thtml -->

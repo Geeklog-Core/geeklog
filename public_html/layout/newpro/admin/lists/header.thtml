@@ -1,0 +1,6 @@
+
+<!-- admin/lists/header.thtml { -->
+
+<th class="{class}"{th_subtags}>{header_text}</th>
+
+<!-- } admin/lists/header.thtml -->

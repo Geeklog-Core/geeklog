@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+/*==============================================================================
+  Title       : Form Style
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Form style.
+  Apply       : leftblocks.thtml, loginform.thtml,
+                custom-memberlogin.thtml, customlogin-header.thtml, customlogin-footer.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Search Form
+--------------------------------------*/
+
+/* Block */
+div#leftblocks div#block-left-search {
+}
+
+/* Form */
+div#leftblocks div#block-left-search form#searchform {
+  margin: 0;
+  padding: 0;
+}
+
+div#leftblocks div#block-left-search form#searchform ul {
+  margin: 0;
+  padding: 0;
+}
+
+div#leftblocks div#block-left-search form#searchform ul li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+/* Form Input Field */
+div#leftblocks div#block-left-search form#searchform ul li input.text {
+  border: 1px solid #7B9EBD;
+}
+
+/* Form Button */
+div#leftblocks div#block-left-search form#searchform ul li input.form-button {
+}
+
+/* Search Option */
+div#leftblocks div#block-left-search form#searchform p {
+  margin: 0;
+  padding: 0;
+}
+
+
+/*--------------------------------------
+  Login Form
+--------------------------------------*/
+
+/* Form Item */
+form#loginform dl {
+  margin: 0;
+  padding: 0;
+}
+
+form#loginform dl dt {
+  margin: 0;
+  padding: 0;
+}
+
+form#loginform dl dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* Form Option Menu */
+form#loginform ul.navi {
+  list-style-position: outside;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+form#loginform ul.navi li {
+  margin: 0;
+  padding: 0;
+}
+

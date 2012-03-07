@@ -1,0 +1,47 @@
+
+<!-- admin/group/groupmembers.thtml { -->
+
+<script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
+
+<form name="groupusers" action="{phpself}?group={groupid}" method="post" id="admin-groupmembers" class="basic">
+
+  <div class="admin_basic">
+    <dl class="sitemembers">
+      <dt><label for="admin-groupmembers-fieldFrom">{LANG_sitemembers}</label></dt>
+      <dd>
+        <select multiple="multiple" size="10" onDblClick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" name="fieldFrom" id="admin-groupmembers-fieldFrom">
+          {sitemembers}
+        </select>
+      </dd>
+    </dl>
+
+    <ul class="move">
+      <li><input type="button" name="right" value="{LANG_add}" onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" class="submit"{xhtml}></li>
+      <li><input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" class="submit"{xhtml}></li>
+    </ul>
+
+    <dl class="grpmembers">
+      <dt><label for="admin-groupmembers-fieldTo">{LANG_grpmembers}</label></dt>
+      <dd>
+        <select multiple="multiple" size="10" onDblClick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" name="fieldTo" id="admin-groupmembers-fieldTo">
+          {group_list}
+        </select>
+      </dd>
+    </dl>
+
+    <ul class="submit">
+      <li><input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)" class="submit"{xhtml}></li>
+      <li>
+        <input type="hidden" name="mode" value="savegroupusers"{xhtml}>
+        <input type="hidden" name="groupmembers"{xhtml}>
+        <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+        <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+        <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)" class="submit"{xhtml}>
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      </li>
+    </ul>
+  </div>
+
+</form>
+
+<!-- } admin/group/groupmembers.thtml -->

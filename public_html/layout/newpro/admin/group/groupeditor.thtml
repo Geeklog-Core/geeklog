@@ -1,0 +1,73 @@
+
+<!-- admin/group/groupeditor.thtml { -->
+
+<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor" class="linear">
+
+  <div class="admin_basic">
+    <dl>
+      <dt><label for="admin-groupeditor-grp_name">{lang_groupname}</label></dt>
+      <dd>{groupname_static}<input type="{groupname_inputtype}" size="20" maxlength="50" value="{group_name}" name="grp_name" id="admin-groupeditor-grp_name" class="text"{xhtml}></dd>
+
+      <dt><label for="admin-groupeditor-grp_descr">{lang_description}</label></dt>
+      <dd><input type="text" size="40" maxlength="255" value="{group_description}" name="grp_descr" id="admin-groupeditor-grp_descr" class="text"{xhtml}></dd>
+
+    </dl>
+
+    <dl {hide_adminoption}>
+      <dt>{lang_admingroup}</dt>
+      <dd><input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}{xhtml}>
+          <span class="fieldhelp">{lang_admingrp_msg}</span>
+      </dd>
+    </dl>
+
+    <dl {hide_defaultoption}>
+      <dt>{lang_defaultgroup}</dt>
+      <dd>
+          <input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
+          <span class="fieldhelp">{lang_defaultgrp_msg}</span>
+      </dd>
+    </dl>
+
+    <dl id="applydefault_row"  {hide_defaultoption}>
+      <dt></dt>
+      <dd>
+        <div style="display:none" id="msg1">
+          <input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
+          <span class="fieldhelp">{lang_applydefault_msg}</span>
+        </div>
+      </dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_securitygroups}</legend>
+
+    <dl>
+      <dd class="description">{lang_securitygroupmsg}</dd>
+      <dd>{group_options}</dd>
+    </dl>
+  </fieldset>
+
+  <fieldset>
+    <legend>{lang_rights}</legend>  
+
+    <dl>
+      <dd class="description">{lang_rightsmsg}</dd>
+      <dd><table>{rights_options}</table></dd>
+    </dl>
+  </fieldset>
+
+  <ul class="submit">
+    <li><input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}></li>
+    <li>{delete_option}</li>
+    <li>
+      <input type="hidden" name="grp_gl_core" value="{group_core}"{xhtml}>
+      <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+      <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </li>
+  </ul>
+</form>
+
+<!-- } admin/group/groupeditor.thtml -->

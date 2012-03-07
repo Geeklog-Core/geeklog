@@ -1,0 +1,35 @@
+
+<!-- users/loginform.thtml { -->
+
+{start_block_loginagain}
+  <form action="{site_url}/users.php" method="post" id="userloginform" class="compact">
+    <fieldset>
+      <legend>{lang_login}</legend>
+
+      <p class="message">{lang_message}</p>
+
+      <dl>
+        <dt><label for="loginform-loginname">{lang_username}</label></dt>
+        <dd><input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}></dd>
+ 
+        {services}
+ 
+        <dt><label for="loginform-passwd">{lang_password}</label></dt>
+        <dd><input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}></dd>
+      </dl>
+ 
+      <ul class="submit">
+        <li><input type="submit" value="{lang_login}" class="submit"{xhtml}></li>
+      </ul>
+ 
+      <ul class="navi">
+        <li>{lang_newreglink}</li>
+        <li><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></li>
+      </ul>
+   </fieldset>
+  </form>
+  {openid_login}
+  {oauth_login}
+{end_block}
+
+<!-- } users/loginform.thtml -->

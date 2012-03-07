@@ -1552,6 +1552,13 @@ function PLG_collectTags($type = 'tagname')
     require_once $_CONF['path_system'] . 'lib-story.php';
     require_once $_CONF['path_system'] . 'lib-user.php';
 
+    if (! is_array($_PLUGINS)) {
+        /** as a side effect of parsing autotags in templates, we may end
+         *  up here from a call to COM_errorLog() during the install, i.e.
+         *  when Geeklog is not fully operational, so we need to catch this
+         */
+        $_PLUGINS = array();
+    }
     $all_plugins = array_merge($_PLUGINS, array('story', 'user'));
     
     $autolinkModules = array();

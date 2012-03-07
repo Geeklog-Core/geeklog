@@ -1,0 +1,12 @@
+
+<!-- admin/lists/topmenu.thtml { -->
+
+<div id="admin-instructions">
+  {icon}
+  <p id="menu_fields">
+    {menu_fields_pre}{menu_fields}{menu_fields_aft}
+  </p>
+  <p>{lang_instructions}</p>
+</div>
+
+<!-- } admin/lists/topmenu.thtml -->

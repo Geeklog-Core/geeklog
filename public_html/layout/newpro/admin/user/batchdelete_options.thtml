@@ -1,0 +1,7 @@
+
+<!-- admin/user/batchdelete_options.thtml { -->
+
+<dt><input type="radio" name="usr_type" value="{sel_id}"{selector} class="radio"{xhtml}>{lang_description}</dt>
+<dd>{lang_text_start}<input type="text" name="usr_time[{sel_id}]" value="{id_value}" size="3"{selector} class="text"{xhtml}>{lang_text_end}</dd>
+
+<!-- } admin/user/batchdelete_options.thtml -->

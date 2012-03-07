@@ -70,7 +70,6 @@ function update_UsersFor180()
     global $_CONF, $_TABLES;
 
     require_once $_CONF['path_system'] . 'lib-security.php';
-    require_once $_CONF['path_system'] . 'lib-user.php';
 
     $passwords = array();
     
@@ -81,8 +80,16 @@ function update_UsersFor180()
     for($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         
-        $passwd = null;
-        SEC_updateUserPassword($passwd, $A['uid']);
+	{  /* Formerlly USER_changePassword */
+		$passwd['normal'] = rand ();
+		$passwd['normal'] = md5 ($passwd['normal']);
+		$passwd['normal'] = substr ($passwd['normal'], 1, 8);
+		$passwd['encrypted'] = SEC_encryptPassword($passwd['normal'], '', HashFunction::md5, 1); /* use default md5 only */
+		if ($A['uid'] > 1) { 
+			DB_change ($_TABLES['users'], 'passwd', $passwd['encrypted'], 'uid', $A['uid']);
+		}
+	}
+
     }    
 
 }

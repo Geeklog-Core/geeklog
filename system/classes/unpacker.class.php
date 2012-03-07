@@ -53,6 +53,7 @@ class unpacker {
     					  'application/x-tar'            => 'tar',
     					  'application/x-gtar'           => 'tar',
     					  'application/x-gzip'           => 'tar',
+    					  'application/x-gzip-compressed'=> 'tar',
     					  'application/octet-stream'     => 'tar',
     					  'application/x-compress'       => 'tar',
     					  'application/x-compressed'     => 'tar');

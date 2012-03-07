@@ -1,0 +1,9 @@
+
+<!-- comment/thread.thtml { -->
+
+<ul class="thread level-{indent}">
+  <li class="title"><a href="{site_url}/comment.php?mode=display&amp;format=threaded&amp;order={order}&amp;pid={pid}">{title}</a></li>
+  <li class="author">{lang_authoredby}{start_author_anchortag}{author}{end_author_anchortag}&nbsp;{lang_on}&nbsp;{date}</li>
+</ul>
+
+<!-- } comment/thread.thtml -->
