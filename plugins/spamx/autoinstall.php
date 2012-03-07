@@ -64,12 +64,14 @@ function plugin_autoinstall_spamx($pi_name)
     $features = array(
         $pi_name . '.admin'                 => 'Full access to ' . $pi_display_name . ' plugin',
         $pi_name . '.skip'                  =>  'Skip checking posts for Spam', 
-        'config.' . $pi_name . '.tab_main'  => 'Access to configure Spam-x main settings'
+        'config.' . $pi_name . '.tab_main'  => 'Access to configure Spam-x main settings',
+        'config.' . $pi_name . '.tab_modules'  => 'Access to configure Spam-x modules'
     );
 
     $mappings = array(
         $pi_name . '.admin'                 => array($pi_admin),
-        'config.' . $pi_name . '.tab_main'  => array($pi_admin)
+        'config.' . $pi_name . '.tab_main'  => array($pi_admin),
+        'config.' . $pi_name . '.tab_modules'  => array($pi_admin)
     );
 
     $tables = array(
