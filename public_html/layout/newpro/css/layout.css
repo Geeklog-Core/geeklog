@@ -173,8 +173,14 @@ div#container div#leftblocks {
 
 div#container div#footer {
   clear: left;
-  padding: 16px;
-  border-top: 1px solid #1A3955;
+  padding: 12px;
+  border: 1px solid #656663;
+  background: #ededeb;
+  color: #223;
+
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
 }
 
 div#container div#footer-content {
