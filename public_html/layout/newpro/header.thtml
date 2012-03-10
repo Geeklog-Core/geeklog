@@ -22,7 +22,7 @@
       <!-- #header { -->
       <div id="header">
         <div id="header-content">
-          <h1 class="site_name"><a href="{site_url}"><img src="{site_logo}" width="151" height="56" alt="{site_name}"{xhtml}></a></h1>
+          <h1 class="site_name"><a href="{site_url}"><img src="{site_logo}" width="226" height="80" alt="{site_name}"{xhtml}></a></h1>
          <p class="site_slogan">{site_slogan}</p>
         </div>
       </div>

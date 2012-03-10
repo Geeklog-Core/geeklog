@@ -23,8 +23,8 @@ div#leftblocks div#block-left-search {
 /* Form */
 div#leftblocks div#block-left-search form#searchform {
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 95px;
+  right: 26px;
   margin: 0;
   padding: 0;
 }
@@ -42,7 +42,6 @@ div#leftblocks div#block-left-search form#searchform ul li {
 
 /* Form Input Field */
 div#leftblocks div#block-left-search form#searchform ul li input.text {
-  border: 1px solid #7B9EBD;
 }
 
 /* Form Button */
