@@ -235,20 +235,22 @@ function plugin_upgrade_spamx()
                 }
             }            
 
-            // Remove admin override since not needed anymore
-            $c = config::get_instance();
-            $c->del('admin_override', 'spamx');
-
-            // late fix: ensure 'notification_email' option can be disabled
-            $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = 'notification_email' AND group_name = 'spamx'");
-            list($value, $default_value) = DB_fetchArray($result);
-            if ($value != 'unset') {
-                if (substr($default_value, 0, 6) != 'unset:') {
-                    $unset = addslashes('unset:' . $default_value);
-                    DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = 'notification_email' AND group_name = 'spamx'");
+            if (! $current_config) {
+                // Remove admin override since not needed anymore
+                $c = config::get_instance();
+                $c->del('admin_override', 'spamx');
+    
+                // late fix: ensure 'notification_email' option can be disabled
+                $result = DB_query("SELECT value, default_value FROM {$_TABLES['conf_values']} WHERE name = 'notification_email' AND group_name = 'spamx'");
+                list($value, $default_value) = DB_fetchArray($result);
+                if ($value != 'unset') {
+                    if (substr($default_value, 0, 6) != 'unset:') {
+                        $unset = addslashes('unset:' . $default_value);
+                        DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = 'notification_email' AND group_name = 'spamx'");
+                    }
                 }
             }
-
+            
             $current_version = '1.2.1';
             break;
 
@@ -262,9 +264,9 @@ function plugin_upgrade_spamx()
 
             if (! $current_config) {
                 spamx_update_ConfValues_1_2_1();  
-
-                spamx_update_ConfigSecurity_1_2_1();
             }
+            
+            spamx_update_ConfigSecurity_1_2_1();
 
             $current_version = '1.2.2';
             break;
@@ -278,8 +280,19 @@ function plugin_upgrade_spamx()
             }            
 
             if (! $current_config) {
-                spamx_update_ConfValues_1_2_2();  
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Set new Tab column to whatever fieldset is
+                $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'spamx'";
+                DB_query($sql);
+                
+                // Rename the action config option since it is causes JavaScript issues in the config and IE 8
+                $sql = "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_name' WHERE name = 'action'";
+                DB_query($sql);   
+                
+                spamx_update_ConfValues_1_2_2();
             }
+            
+            spamx_update_ConfigSecurity_1_2_2();
 
             $current_version = '1.3.0';
             break;            

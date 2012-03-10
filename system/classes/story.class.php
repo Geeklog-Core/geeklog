@@ -909,9 +909,9 @@ class Story
         $this->_topic = $topic['topic'];
         $this->_imageurl = $topic['imageurl'];
 
-        /* Then load the title, intro and body */
+        /* Then load the title, page title, intro and body */
         if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor') || ($array['postmode'] == 'wikitext')) {
-            $this->_htmlLoadStory($array['title'], $array['introtext'], $array['bodytext']);
+            $this->_htmlLoadStory($array['title'], $array['page_title'], $array['introtext'], $array['bodytext']);
 
             if ($this->_postmode == 'adveditor') {
                 $this->_advanced_editor_mode = 1;
@@ -921,7 +921,7 @@ class Story
             }
         } else {
             $this->_advanced_editor_mode = 0;
-            $this->_plainTextLoadStory($array['title'], $array['introtext'], $array['bodytext']);
+            $this->_plainTextLoadStory($array['title'], $array['page_title'], $array['introtext'], $array['bodytext']);
         }
 
         if (empty($this->_title) || empty($this->_introtext)) {
@@ -1010,9 +1010,9 @@ class Story
             $array['bodytext'] = '';
         }
 
-        /* Then load the title, intro and body */
+        /* Then load the title, page title, intro and body */
         if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor')) {
-            $this->_htmlLoadStory($array['title'], $array['introtext'], $array['bodytext']);
+            $this->_htmlLoadStory($array['title'], $array['page_title'], $array['introtext'], $array['bodytext']);
 
             if ($this->_postmode == 'adveditor') {
                 $this->_advanced_editor_mode = 1;
@@ -1022,7 +1022,7 @@ class Story
             }
         } else {
             $this->_advanced_editor_mode = 0;
-            $this->_plainTextLoadStory($array['title'], $array['introtext'], $array['bodytext']);
+            $this->_plainTextLoadStory($array['title'], $array['page_title'], $array['introtext'], $array['bodytext']);
         }
 
         if (!TOPIC_checkTopicSelectionControl()) {
@@ -1076,12 +1076,13 @@ class Story
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
             $this->_sid = addslashes($this->_sid);
             $this->_title = addslashes($this->_title);
+            $this->_page_title = addslashes($this->_page_title);
             
             $this->_introtext = addslashes($this->_introtext);
             $this->_bodytext = addslashes($this->_bodytext);
             $this->_postmode = addslashes($this->_postmode);
-            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode',
-                        "{$this->_sid},{$this->_uid},'{$this->_title}'," .
+            DB_save($_TABLES['storysubmission'], 'sid,uid,title,page_title,introtext,bodytext,date,postmode',
+                        "{$this->_sid},{$this->_uid},'{$this->_title}','{$this->_page_title}'," .
                         "'{$this->_introtext}','{$this->_bodytext}',NOW(),'{$this->_postmode}'");
             
             // Save Topics selected
@@ -2112,7 +2113,7 @@ class Story
     }
 
     /**
-     * This is the importantest bit. This function must load the title, intro
+     * This is the importantest bit. This function must load the title, page title, intro
      * and body of the article from the post array, providing all appropriate
      * conversions of HTML mode content into the nice safe form that geeklog
      * can then (simply) spit back out into the page on render. After doing a
@@ -2121,13 +2122,14 @@ class Story
      * This DOES NOT ADDSLASHES! We do that on DB store, because we want to
      * keep our internal variables in "display mode", not in db mode or anything.
      *
-     * @param $title    string  posttitle, only had stripslashes if necessary
-     * @param $intro    string  introtext, only had stripslashes if necessary
-     * @param $body     string   bodytext, only had stripslashes if necessary
+     * @param $title		string  posttitle, only had stripslashes if necessary
+     * @param $page_title	string  pagetitle, only had stripslashes if necessary
+     * @param $intro    	string  introtext, only had stripslashes if necessary
+     * @param $body     	string   bodytext, only had stripslashes if necessary
      * @return nothing
      * @access private
      */
-    function _htmlLoadStory($title, $intro, $body)
+    function _htmlLoadStory($title, $page_title, $intro, $body)
     {
         global $_CONF;
 
@@ -2137,6 +2139,7 @@ class Story
         }
 
         $this->_title = htmlspecialchars(strip_tags(COM_checkWords($title)));
+        $this->_page_title = htmlspecialchars(strip_tags(COM_checkWords($page_title)));
 
         // Remove any autotags the user doesn't have permission to use
         $intro = PLG_replaceTags($intro, '', true);
@@ -2148,7 +2151,7 @@ class Story
 
     /**
      * This is the second most importantest bit. This function must load the
-     * title, intro and body of the article from the post array, removing all
+     * title, page title, intro and body of the article from the post array, removing all
      * HTML mode content into the nice safe form that geeklog can then (simply)
      * spit back out into the page on render. After doing a magic tags
      * replacement. And nl2br.
@@ -2156,15 +2159,17 @@ class Story
      * This DOES NOT ADDSLASHES! We do that on DB store, because we want to
      * keep our internal variables in "display mode", not in db mode or anything.
      *
-     * @param $title    string  posttitle, only had stripslashes if necessary
-     * @param $intro    string  introtext, only had stripslashes if necessary
-     * @param $body     string   bodytext, only had stripslashes if necessary
+     * @param $title    	string  posttitle, only had stripslashes if necessary
+     * @param $page_title	string  pagetitle, only had stripslashes if necessary
+     * @param $intro    	string  introtext, only had stripslashes if necessary
+     * @param $body     	string   bodytext, only had stripslashes if necessary
      * @return nothing
      * @access private
      */
-    function _plainTextLoadStory($title, $intro, $body)
+    function _plainTextLoadStory($title, $page_title, $intro, $body)
     {
         $this->_title = htmlspecialchars(strip_tags(COM_checkWords($title)));
+        $this->_page_title = htmlspecialchars(strip_tags(COM_checkWords($page_title)));
         
         // Remove any autotags the user doesn't have permission to use
         $intro = PLG_replaceTags($intro, '', true);

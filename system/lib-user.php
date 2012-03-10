@@ -867,6 +867,10 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
         COM_displayMessageAndAbort(30, '', 403, 'Forbidden');
     }
 
+    if ($A['status'] != USER_ACCOUNT_ACTIVE && !SEC_hasRights('user.edit')) {
+        return COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+    
     $display_name = COM_getDisplayName($uid, $A['username'], $A['fullname']);
     $display_name = htmlspecialchars($display_name);
 

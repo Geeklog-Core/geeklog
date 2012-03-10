@@ -40,11 +40,11 @@ $_UPDATES = array(
     ),
     
     '1.2.1' => array(
-        // Set new Tab column to whatever fieldset is
-        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'spamx'",   
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_main', 'Access to configure Spam-x main settings', 0)", 
-        // Rename the action config option since it is causes JavaScript issues in the config and IE 8
-        "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_name' WHERE name = 'action'"        
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_main', 'Access to configure Spam-x main settings', 0)" 
+    ),
+
+    '1.2.2' => array(
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.spamx.tab_modules', 'Access to configure Spam-x modules', 0)" 
     )    
     
 );
@@ -63,6 +63,32 @@ function spamx_update_ConfigSecurity_1_2_1()
 
     if ($group_id > 0) {
         $ft_names[] = 'config.spamx.tab_main';
+        
+        foreach ($ft_names as $name) {
+            $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         
+            if ($ft_id > 0) {
+                $sql = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($ft_id, $group_id)";
+                DB_query($sql);
+            }
+        }        
+    }    
+
+}
+
+/**
+ * Add in new security rights for the Group "Spamx Admin"
+ *
+ */
+function spamx_update_ConfigSecurity_1_2_2()
+{
+    global $_TABLES;
+    
+    // Add in security rights for Spam-x Admin
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
+                            "grp_name = 'Spamx Admin'");
+
+    if ($group_id > 0) {
+        $ft_names[] = 'config.spamx.tab_modules';
         
         foreach ($ft_names as $name) {
             $ft_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = '$name'");         

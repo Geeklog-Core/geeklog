@@ -17,7 +17,8 @@ function spamx_update_ConfValues_1_2_1()
 function spamx_update_ConfValues_1_2_2()
 {
     global $_CONF, $_SPX_DEFAULT;
-
+    
+    // Now add in new Config options
     require_once $_CONF['path_system'] . 'classes/config.class.php';
     
     $c = config::get_instance();
