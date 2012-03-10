@@ -86,44 +86,52 @@ div#container div#header p.site_slogan {
 --------------------------------------*/
 
 div#container div#navigation {
-  background: #E7E7E7;
-  text-align: left;
-}
+  background: #dbddd9 url('../images/css/menu_bg.png') repeat-x 0 0;
+  border: 1px solid #939490;
+  margin: auto;
+  width: 95%;
 
-div#container div#navigation div {
-  margin: 0 auto;
-  padding: 0;
-}
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
 
-div#container div#navigation div.navigation_content {
-  padding: 0.5em 8px;
+  -webkit-box-shadow: 0px 0px 2px 1px #aaa;
+  -moz-box-shadow: 0px 0px 2px 1px #aaa;
+  box-shadow: 0px 0px 2px 1px #aaa; 
 }
 
 /*  Navigation Menu List */
 div#container div#navigation ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-div#container div#navigation ul li {
-  display: inline;
-  margin: 0 2px;
+  margin: 0 1em;
   padding: 0;
 }
 
 /*  Navigation Menu(Normal) */
 div#container div#navigation ul li.menuitem {
+  float: left;
+  display: block;
 }
 
 div#container div#navigation ul li.menuitem a,
 div#container div#navigation ul li.menuitem a:link,
 div#container div#navigation ul li.menuitem a:visited {
+  float: left;
+  display: block;
+  height: 2.3em;
+  line-height: 2.2em;
+  padding: 0 0.8em;
+  border-left: 1px dotted #939490;
+  text-decoration: none;
+  color: #2E3436;
+  font-size: 13px;
 }
 
 div#container div#navigation ul li.menuitem a:hover,
 div#container div#navigation ul li.menuitem a:focus,
 div#container div#navigation ul li.menuitem a:active {
+  background: #ededeb url('../images/css/menu_bg_active.png') repeat-x 0 0;
+  text-decoration: underline;
 }
 
 /*  Navigation Menu(Last) */
@@ -133,6 +141,8 @@ div#container div#navigation ul li.last-child {
 div#container div#navigation ul li.last-child a,
 div#container div#navigation ul li.last-child a:link,
 div#container div#navigation ul li.last-child a:visited {
+  padding-right: 1em;
+  border-right: 1px dotted #939490;
 }
 
 div#container div#navigation ul li.last-child a:hover,

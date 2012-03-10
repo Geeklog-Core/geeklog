@@ -32,11 +32,10 @@
 
       <!-- #navigation { -->
       <div id="navigation">
-        <div class="navigation_content">
-          <ul>
-            {menu_elements}
-          </ul>
-        </div>
+        <ul>
+          {menu_elements}
+        </ul>
+        <div style="clear: both;"></div>
       </div>
       <!-- } #navigation -->
 
