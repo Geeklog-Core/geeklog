@@ -48,7 +48,7 @@
           <td>
             {left_blocks}
           </td>
-          <td>
+          <td id="centerblocks-wrapper">
             <!-- Center Block Container -->
             <div id="centerblocks">
               <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>

@@ -133,6 +133,10 @@ div#container div#rightblocks {
     width: 180px;
 }
 
+div#container td#centerblocks-wrapper {
+    width: 100%;
+}
+
 div#container div#centerblocks {
     width: 100%;
 }
