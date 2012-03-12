@@ -10,7 +10,10 @@ $_IMAGE_TYPE = 'png';
 // Add Theme CSS File to scripts class
 $_SCRIPTS->setCSSFile('theme', '/layout/' . $_CONF['theme'] . '/style.css.php');
 
+$_SCRIPTS->setJavaScriptLibrary('jquery');
+
 $_SCRIPTS->setJavaScriptFile('theme.confirm', '/layout/' . $_CONF['theme'] . '/javascript/confirm.js');
+$_SCRIPTS->setJavaScriptFile('theme.confirm', '/layout/' . $_CONF['theme'] . '/javascript/search.js');
 
 /*
  * For left/right block support there is no longer any need for the theme to

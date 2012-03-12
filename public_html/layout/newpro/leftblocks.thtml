@@ -8,15 +8,13 @@
       <div class="block-left" id="block-left-search">
         <div class="block-left-content">
           <form action="{site_url}/search.php" method="get" id="searchform" class="basic">
-            <ul>
-              <li><input type="text" size="16" maxlength="255" name="query" class="text"{xhtml}></li>
-              <li>
-                <input type="hidden" value="all" name="type"{xhtml}>
-                <input type="hidden" value="all" name="keyType"{xhtml}>
-                <input type="hidden" value="search" name="mode"{xhtml}>
-                <input type="submit" value="{button_search}" class="submit"{xhtml}>
-              </li>
-            </ul>
+            <div>
+              <input type="text" value="{button_search}" size="16" maxlength="255" name="query" class="text"{xhtml}>
+              <input type="submit" value="" title="{button_search}" class="submit"{xhtml}>
+              <input type="hidden" value="all" name="type"{xhtml}>
+              <input type="hidden" value="all" name="keyType"{xhtml}>
+              <input type="hidden" value="search" name="mode"{xhtml}>
+            </div>
           </form>
         </div>
       </div>
