@@ -24,6 +24,7 @@
           <li class="execution_textandtime">{execution_textandtime}</li>
         </ul>
         </div>
+        <div style="clear: both;"></div>
       </div>
       <!-- } #footer -->
 

@@ -180,7 +180,6 @@ div#container div#leftblocks {
 --------------------------------------*/
 
 div#container div#footer {
-  clear: left;
   padding: 12px;
   border: 1px solid #656663;
   background: #ededeb;
@@ -193,14 +192,6 @@ div#container div#footer {
 
 div#container div#footer-content {
   margin: 0 auto;
-}
-
-div#container div#footer-content:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
 }
 
 /*  Footer Link */
