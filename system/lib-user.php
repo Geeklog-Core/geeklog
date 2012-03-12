@@ -423,20 +423,22 @@ function USER_getPhoto ($uid = 0, $photo = '', $email = '', $width = 0)
         }
 
         $img = '';
-        if (empty ($photo) || ($photo == 'none')) {
+        if (empty($photo) || ($photo == 'none')) {
             // no photo - try gravatar.com, if allowed
             if ($_CONF['use_gravatar']) {
-                $img = 'http://www.gravatar.com/avatar.php?gravatar_id='
-                     . md5 ($email);
+                $img = 'http://www.gravatar.com/avatar/' . md5($email);
+                $parms = array();
                 if ($width > 0) {
-                    $img .= '&amp;size=' . $width;
+                    $parms[] = 's=' . $width;
                 }
-                if (!empty ($_CONF['gravatar_rating'])) {
-                    $img .= '&amp;rating=' . $_CONF['gravatar_rating'];
+                if (! empty($_CONF['gravatar_rating'])) {
+                    $parms[] = 'r=' . $_CONF['gravatar_rating'];
                 }
-                if (!empty ($_CONF['default_photo'])) {
-                    $img .= '&amp;default='
-                         . urlencode ($_CONF['default_photo']);
+                if (! empty($_CONF['default_photo'])) {
+                    $parms[] = 'd=' . urlencode($_CONF['default_photo']);
+                }
+                if (count($parms) > 0) {
+                    $img .= '?' . implode('&amp;', $parms);
                 }
             }
         } else {
