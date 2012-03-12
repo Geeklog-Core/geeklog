@@ -102,7 +102,7 @@
 }
 .ext-link {
   background-color: transparent;
-  background: url(../images/external.png) center right no-repeat;
+  background: url(./images/external.png) center right no-repeat;
   background-attachment: scroll;
   padding-right: 13px;
 }
@@ -110,7 +110,7 @@
 }
 .feed-link {
   background-color: transparent;
-  background: url(../images/feed.png) center right no-repeat;
+  background: url(./images/feed.png) center right no-repeat;
   background-attachment: scroll;
   padding: 2px 16px 2px 0px;
 }
@@ -585,7 +585,7 @@ a.pluginButton:hover {
   color:blue;
   text-align:center;
   padding-top:2px;
-  background:center url(../navbar/images/button_over.gif);
+  background:center url(./navbar/images/button_over.gif);
   background-repeat:repeat-x;
   display:block;
   height:19px;

@@ -55,7 +55,7 @@ div#centerblocks div#block-message dl {
 div#centerblocks div#block-message dl dt {
   margin: 0;
   padding: 8px;
-  background: #1A3955 url(../images/css/bg_message_title.gif) repeat-x 0 0;
+  background: #1A3955 url(./images/css/bg_message_title.gif) repeat-x 0 0;
   color: #FFFFFF;
   font-weight: bold;
 }
