@@ -45,8 +45,6 @@ $_UPDATES = array(
     ),
 
     '1.1.1' => array(
-        // Set new Tab column to whatever fieldset is
-        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'calendar'",   
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.calendar.tab_main', 'Access to configure general calendar settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.calendar.tab_permissions', 'Access to configure event default permissions', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.calendar.tab_autotag_permissions', 'Access to configure event autotag usage permissions', 0)"        
