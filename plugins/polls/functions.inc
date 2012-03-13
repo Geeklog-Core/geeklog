@@ -1238,10 +1238,15 @@ function plugin_upgrade_polls()
             }
 
             if (! $current_config) {
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Set new Tab column to whatever fieldset is
+                $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'polls'";
+                DB_query($sql);                
+        
                 polls_update_ConfValues_2_1_2();
-
-                polls_update_ConfigSecurity_2_1_2();
             }
+
+            polls_update_ConfigSecurity_2_1_2();
 
             $current_version = '2.1.3';
             break;
@@ -1256,9 +1261,9 @@ function plugin_upgrade_polls()
 
             if (! $current_config) {
                 polls_update_ConfValues_2_1_3();
-                
-                polls_update_ConfigSecurity_2_1_3();
             }
+            
+            polls_update_ConfigSecurity_2_1_3();
 
             $current_version = '2.1.4';
             break;            

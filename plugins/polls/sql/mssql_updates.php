@@ -85,8 +85,6 @@ $_UPDATES = array(
     ),
 
     '2.1.2' => array(
-        // Set new Tab column to whatever fieldset is
-        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'polls'",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_whatsnew', 'Access to configure polls what\'s new block', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_main', 'Access to configure general polls settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_permissions', 'Access to configure polls default permissions', 0)",
