@@ -1,34 +1,17 @@
-@charset "utf-8";
-
 /*==============================================================================
   Title       : Basic Layout Style
-  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Authors     : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+                Rouslan Placella <rouslan@placella.com>
   Description : Basic layout style.
-                JavaScript enabled
-              * Always set 'js_on' 
-              * 3 Column ( Left Block * Center Block * Right Block)...left-center-right
-              * 2 Column ( Left Block * Center Block)...left-center
-              * 2 Column ( Center Block * Right Block)...center-right
-              * 1 Column ( Center Block)...center
-
-            JavaScript Disenabled: HTML body class attribute is always 3 Column
-              * Always set 'js_off'
-
-            Block Width:
-              *  Container Width = 100%
-              *  Site Width[W] = 960px
-              *  Left   Block Width[L]         = 180px
-              *  Right  Block Width[R]         = 180px
-              *  Center Block Width(3 Column ) = [W] - [L] - [R] = 600px = 580px + left padding 10px + right padding 10px
-              *  Center Block Width(2 Column ) = [W] - [L] = 780px = 770px + left padding 10px
-              *  Center Block Width(2 Column ) = [W] - [R] = 780px = 770px + right padding 10px
-              *  Center Block Width(1 Column ) = [W] = 960px
 
   Apply       : storytext.thtml, storybodytext.thtml
                 featuredstorytext.thtml, featuredstorybodytext.thtml
 
 ==============================================================================*/
 
+body {
+  background: #eeeeec url('./images/css/bg.png') repeat-x 0 0;
+}
 
 /*--------------------------------------
    Container
@@ -37,10 +20,20 @@
 
 div#container {
   position: relative;
-  width: 100%;  /*  Container Width */
-  margin: 0;
-  padding: 0;
+  width: 960px;  /*  Site Width */
+  margin: 1em auto;
+  padding: 12px;
   text-align: left;
+  border: 1px solid #656663;
+  background: white;
+
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+
+  -webkit-box-shadow: 0px 0px 8px 1px #333;
+  -moz-box-shadow: 0px 0px 8px 1px #333;
+  box-shadow: 0px 0px 8px 1px #333; 
 }
 
 
@@ -49,13 +42,21 @@ div#container {
 --------------------------------------*/
 
 div#container div#header {
-  width: 100%;  /*  Container Width */
-  height: 80px;
-  background: transparent url(../images/css/bg_header.gif) repeat-x 0 0;
+  height: 120px;
+  border: 1px solid #656663;
+  background: transparent url('./images/css/bg_header.png') repeat-x 0 0;
+  margin-bottom: 12px;
+
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+
+  -webkit-box-shadow: 0px 0px 2px 1px #888;
+  -moz-box-shadow: 0px 0px 2px 1px #888;
+  box-shadow: 0px 0px 2px 1px #888; 
 }
 
 div#container div#header div#header-content {
-  width: 960px;  /*  Site Width[W] */
   margin: 0 auto;
   padding: 0;
 }
@@ -63,7 +64,7 @@ div#container div#header div#header-content {
 /*  Site Name */
 div#container div#header h1.site_name {
   display: inline;  /* For Win IE 6(Float Left Right Margin is too wide) */
-  margin: 12px 0 0 16px;
+  margin: 20px 0 0 16px;
   padding: 0;
   float: left;
 }
@@ -71,7 +72,7 @@ div#container div#header h1.site_name {
 /* Slogan */
 div#container div#header p.site_slogan {
   margin: 0;
-  padding: 16px 16px 0 16px;
+  padding: 10px 16px 0;
   color: #FFFFFF;
   text-align: right;
 }
@@ -83,46 +84,52 @@ div#container div#header p.site_slogan {
 --------------------------------------*/
 
 div#container div#navigation {
-  width: 100%;  /*  Container Width */
-  background: #E7E7E7;
-  text-align: left;
-}
+  background: #dbddd9 url('./images/css/menu_bg.png') repeat-x 0 0;
+  border: 1px solid #939490;
+  margin: auto;
+  width: 95%;
 
-div#container div#navigation div {
-  margin: 0 auto;
-  padding: 0;
-}
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
 
-div#container div#navigation div.navigation_content {
-  width: 944px;
-  padding: 0.5em 8px;
+  -webkit-box-shadow: 0px 0px 2px 1px #aaa;
+  -moz-box-shadow: 0px 0px 2px 1px #aaa;
+  box-shadow: 0px 0px 2px 1px #aaa; 
 }
 
 /*  Navigation Menu List */
 div#container div#navigation ul {
   list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-div#container div#navigation ul li {
-  display: inline;
-  margin: 0 2px;
+  margin: 0 1em;
   padding: 0;
 }
 
 /*  Navigation Menu(Normal) */
 div#container div#navigation ul li.menuitem {
+  float: left;
+  display: block;
 }
 
 div#container div#navigation ul li.menuitem a,
 div#container div#navigation ul li.menuitem a:link,
 div#container div#navigation ul li.menuitem a:visited {
+  float: left;
+  display: block;
+  height: 2.3em;
+  line-height: 2.2em;
+  padding: 0 0.8em;
+  border-left: 1px dotted #939490;
+  text-decoration: none;
+  color: #2E3436;
+  font-size: 13px;
 }
 
 div#container div#navigation ul li.menuitem a:hover,
 div#container div#navigation ul li.menuitem a:focus,
 div#container div#navigation ul li.menuitem a:active {
+  background: #ededeb url('./images/css/menu_bg_active.png') repeat-x 0 0;
+  text-decoration: underline;
 }
 
 /*  Navigation Menu(Last) */
@@ -132,6 +139,8 @@ div#container div#navigation ul li.last-child {
 div#container div#navigation ul li.last-child a,
 div#container div#navigation ul li.last-child a:link,
 div#container div#navigation ul li.last-child a:visited {
+  padding-right: 1em;
+  border-right: 1px dotted #939490;
 }
 
 div#container div#navigation ul li.last-child a:hover,
@@ -146,164 +155,43 @@ div#container div#navigation ul li.last-child a:active {
     Include contents Block level elements(div#leftblocks, div#centerblocks, div#rightblocks)
 --------------------------------------*/
 
-div#container div#wrapper {
-  overflow: visible;  /* Adjust floating element */
-  width: 960px;  /*  Site Width[W] */
-  margin: 0 auto;
-  padding: 0 0 2em 0;
+div#container table#wrapper {
+    width: 100%;
 }
 
-/* Content generated by the float clear */
-div#container div#wrapper:after {
-  content: "";
-  display: block;
-  clear: both;
-  height: 1px;
-  overflow: hidden;
+div#container div#rightblocks {
+    width: 180px;
 }
 
-/* Win IE 6(Adjust floating element) { \*/
-* html div#container div#wrapper {
-  height: 1%;
-  overflow: visible;
-}
-/* } Win IE 6(Adjust floating element) */
-
-/* JavaScript Enabled* 3 Column ( Left Block*  Center Block*  Right Block) Wrapper */
-body.left-center-right div#container div#wrapper {
+div#container td#centerblocks-wrapper {
+    width: 100%;
 }
 
-/* JavaScript Enabled* 2 Column ( Left Block*  Center Block) Wrapper */
-body.left-center div#container div#wrapper {
+div#container div#centerblocks {
+    width: 100%;
 }
 
-/* JavaScript Enabled* 2 Column ( Center Block*  Right Block) Wrapper */
-body.center-right div#container div#wrapper {
+div#container div#leftblocks {
+    width: 180px;
 }
-
-/* JavaScript Enabled* 1 Column ( Center Block) Wrapper */
-body.center div#container div#wrapper {
-}
-
-/* JavaScript Disenabled Wrapper */
-body.js_off div#container div#wrapper {
-}
-
-
-
-/*--------------------------------------
-   Left Block Container
-   display if Left Block is appeared.
---------------------------------------*/
-
-div#container div#wrapper div#leftblocks {
-  overflow: auto;
-  float: left;
-  width: 180px;  /*  Left Block Width[L] */
-  margin: 0 780px 0 0;  /*  Right Margin =  Site All Width[W] -  Left Block Width[L] */
-  padding: 0;
-}
-
-/* JavaScript Disenabled  Left Block Container */
-body.js_off div#container div#wrapper div#leftblocks {
-  float: left;
-  margin: 0 -180px 0 0;  /*  Right Margin = -( Left Block Width[L]) */
-}
-
-
-
-/*--------------------------------------
-   Center Block Container
-    div#centerblocks is always display.
---------------------------------------*/
-
-div#container div#wrapper div#centerblocks {
-  overflow: visible;
-}
-
-/* JavaScript Enabled* 3 Column ( Left Block*  Center Block*  Right Block)  Center Block Container */
-body.left-center-right div#container div#wrapper div#centerblocks {
-  float: left;
-  width: 580px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Block Width[R] -  Right Padding -  Left Padding */
-  margin: 0 0 0 -780px;  /*  Left Margin = -( Site All Width[W] -  Left Block Width[L]) */
-  padding: 0 10px;
-}
-
-/* JavaScript Enabled* 2 Column ( Left Block*  Center Block)  Center Block Container */
-body.left-center div#container div#wrapper div#centerblocks {
-  float: left;
-  width: 770px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Padding -  Left Padding */
-  margin: 0 0 0 -780px;  /*  Left Margin = -( Site All Width[W] -  Left Block Width[L]) */
-  padding: 0 0 0 10px;
-}
-
-/* JavaScript Enabled* 2 Column ( Center Block*  Right Block)  Center Block Container */
-body.center-right div#container div#wrapper div#centerblocks {
-  float: left;
-  width: 770px;  /*  Site All Width[W] -  Right Block Width[R] -  Right Padding -  Left Padding */
-  margin: 0 180px 0 0;  /*  Right Margin =  Right Block Width[R] */
-  padding: 0 10px 0 0;
-}
-
-/* JavaScript Enabled* 1 Column ( Center Block)  Center Block Container */
-body.center div#container div#wrapper div#centerblocks {
-  width: 960px;  /*  Center Block Width =  Site All Width[W] -  Right Padding -  Left Padding */
-  margin: 0;
-  padding: 0;
-}
-
-/* JavaScript Disenabled  Center Block Container */
-body.js_off div#container div#wrapper div#centerblocks {
-  display: inline;  /* Win IE 6(Float Left Right Margin is too wide) */
-  float: left;
-  width: 580px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Block Width[R] -  Right Padding -  Left Padding */
-  margin: 0 0 0 180px;  /*  Left Margin =  Left Block Width[L] */
-  padding: 0 10px;
-}
-
-
-
-/*--------------------------------------
-   Right Block Container
-    div#rightblocks display if Right Block is appeared.
---------------------------------------*/
-
-div#container div#wrapper div#rightblocks {
-  overflow: auto;
-  float: left;
-  width: 180px;  /*  Right Block Width[R] */
-  margin: 0 0 0 -180px;  /*  Left Margin = -( Right Block Width[R]) */
-}
-
-/* JavaScript Disenabled  Right Block Container */
-body.js_off div#container div#wrapper div#rightblocks {
-  float: right;
-  margin: 0;
-}
-
-
 
 /*--------------------------------------
    Footer Container
 --------------------------------------*/
 
 div#container div#footer {
-  clear: left;
-  padding: 16px;
-  border-top: 1px solid #1A3955;
+  padding: 12px;
+  border: 1px solid #656663;
+  background: #ededeb;
+  color: #223;
+
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
 }
 
 div#container div#footer-content {
-  width: 960px;  /*  Site Width[W] */
   margin: 0 auto;
-}
-
-div#container div#footer-content:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
 }
 
 /*  Footer Link */

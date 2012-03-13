@@ -1,5 +1,3 @@
-@charset "utf-8";
-
 /*==============================================================================
   Title       : Block Style
   Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
@@ -45,7 +43,18 @@ li.listitem {
 div#centerblocks div#block-message {
   margin: 2em 0;
   padding: 0;
-  border: 1px solid #000000;
+
+  border: 1px solid #939490;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+
+  -webkit-box-shadow: 0px 0px 4px 1px #aaa;
+  -moz-box-shadow: 0px 0px 4px 1px #aaa;
+  box-shadow: 0px 0px 4px 1px #aaa; 
+
+  background: #eeeeec url("./images/css/bg_message_title.png") repeat-x scroll 0 0;
 }
 
 div#centerblocks div#block-message dl {
@@ -57,16 +66,16 @@ div#centerblocks div#block-message dl {
 div#centerblocks div#block-message dl dt {
   margin: 0;
   padding: 8px;
-  background: #1A3955 url(../images/css/bg_message_title.gif) repeat-x 0 0;
-  color: #FFFFFF;
+  color: #222;
   font-weight: bold;
+  text-align: center;
+  line-height: 1.5em;
 }
 
 /* Message */
 div#centerblocks div#block-message dl dd {
   margin: 0;
   padding: 8px;
-  background: #E7E7E7;
   font-weight: bold;
 }
 

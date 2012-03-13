@@ -6,24 +6,15 @@
     <!-- Left Blocks Container -->
     <div id="leftblocks">
       <div class="block-left" id="block-left-search">
-        <h2>{button_search}</h2>
         <div class="block-left-content">
           <form action="{site_url}/search.php" method="get" id="searchform" class="basic">
-            <fieldset>
-              <legend>{button_search}</legend>
-              <ul>
-                <li><input type="text" size="16" maxlength="255" name="query" class="text"{xhtml}></li>
-                <li>
-                  <input type="hidden" value="all" name="type"{xhtml}>
-                  <input type="hidden" value="all" name="keyType"{xhtml}>
-                  <input type="hidden" value="search" name="mode"{xhtml}>
-                  <input type="submit" value="{button_search}" class="submit"{xhtml}>
-                </li>
-              </ul>
-              <ul>
-                <li><a href="{site_url}/search.php">{button_advsearch}</a></li>
-              </ul>
-            </fieldset>
+            <div>
+              <input type="text" value="{button_search}" size="16" maxlength="255" name="query" class="text"{xhtml}>
+              <input type="submit" value="" title="{button_search}" class="submit"{xhtml}>
+              <input type="hidden" value="all" name="type"{xhtml}>
+              <input type="hidden" value="all" name="keyType"{xhtml}>
+              <input type="hidden" value="search" name="mode"{xhtml}>
+            </div>
           </form>
         </div>
       </div>

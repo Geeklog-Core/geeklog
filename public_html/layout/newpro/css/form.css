@@ -1,5 +1,3 @@
-@charset "utf-8";
-
 /*==============================================================================
   Title       : Form Style
   Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
@@ -16,32 +14,47 @@
 
 /* Block */
 div#leftblocks div#block-left-search {
+  margin: 0;
+  padding: 0;
 }
 
 /* Form */
 div#leftblocks div#block-left-search form#searchform {
+  position: absolute;
+  top: 92px;
+  right: 26px;
   margin: 0;
   padding: 0;
 }
 
-div#leftblocks div#block-left-search form#searchform ul {
+div#leftblocks div#block-left-search form#searchform div {
   margin: 0;
   padding: 0;
+  background: transparent url('./images/css/search.png') no-repeat 0 0;
+  width: 180px;
+  height: 26px;
+  line-height: 26px;
+  padding: 2px 5px;
 }
 
-div#leftblocks div#block-left-search form#searchform ul li {
-  display: inline;
-  margin: 0;
-  padding: 0;
+div#leftblocks div#block-left-search form#searchform div input {
+  border: 0px solid transparent;
+  height: 25px;
+  background: transparent;
+  line-height: 25px;
 }
 
 /* Form Input Field */
-div#leftblocks div#block-left-search form#searchform ul li input.text {
-  border: 1px solid #7B9EBD;
+div#leftblocks div#block-left-search form#searchform div input.text {
+  float: left;
+  width: 145px;
 }
 
 /* Form Button */
-div#leftblocks div#block-left-search form#searchform ul li input.form-button {
+div#leftblocks div#block-left-search form#searchform div input.submit {
+  float: right;
+  width: 30px;
+  cursor: pointer;
 }
 
 /* Search Option */
