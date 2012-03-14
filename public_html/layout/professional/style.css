@@ -1117,6 +1117,37 @@ b.status_black {
   display:     inline;
   color:       black;
 }
-
 /* End of Common Plugin CSS */
+
+/* Third party login */
+form.third-party-login {
+  margin: 0.1em 0;
+}
+
+form.third-party-login div {
+  position: relative;
+}
+
+form.third-party-login div img {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+form.third-party-login div input {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+form.third-party-login div input.submit {
+  text-indent: 24px;
+  font-size: 12px;
+  height: 28px;
+}
+
+div.third-party-login {
+  width: 164px;
+}
 

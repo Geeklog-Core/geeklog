@@ -169,7 +169,7 @@ $LANG01 = array(
     125 => 'Are you sure you want to Delete all checked items?',
     126 => 'Select or de-select all items',
     127 => 'Permalink',
-    128 => 'Login with OpenID:',
+    128 => 'Login with OpenID',
     129 => 'Configuration',
     130 => 'Webservices',
     131 => 'No HTML is allowed',
@@ -180,7 +180,10 @@ $LANG01 = array(
     136 => 'Warning: Javascript recommended for enhanced functionality',
     137 => 'Warning: Javascript required to enable functionality',
     138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
-    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################

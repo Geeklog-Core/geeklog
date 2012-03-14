@@ -30,12 +30,16 @@
         </tr>
         <tr>
             <td>
-                {openid_login}
+                <div class="third-party-login">
+                    {oauth_login}
+                </div>
             </td>
         </tr>
         <tr>
             <td>
-                {oauth_login}
+                <div class="third-party-login">
+                    {openid_login}
+                </div>
             </td>
         </tr>
     </table>

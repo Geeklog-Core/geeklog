@@ -2365,7 +2365,7 @@ function COM_showTopics($topic = '')
 */
 function COM_userMenu( $help='', $title='', $position='' )
 {
-    global $_TABLES, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE;
+    global $_TABLES, $_CONF, $LANG01, $LANG04, $_BLOCK_TEMPLATE, $_SCRIPTS;
 
     $retval = '';
 
@@ -2502,19 +2502,23 @@ function COM_userMenu( $help='', $title='', $position='' )
 
         // OpenID remote authentification.
         if ($_CONF['user_login_method']['openid'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
+            $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
             $login->set_file('openid_login', 'loginform_openid.thtml');
             $login->set_var('lang_openid_login', $LANG01[128]);
             $login->set_var('input_field_size', 18);
             $login->set_var('app_url', $_CONF['site_url'] . '/users.php');
             $login->parse('output', 'openid_login');
-            $login->set_var('openid_login',
-                $login->finish($login->get_var('output')));
+            $login->set_var(
+                'openid_login',
+                $login->finish($login->get_var('output'))
+            );
         } else {
             $login->set_var('openid_login', '');
         }
 
         // OAuth remote authentification.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
+            $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
             $modules = SEC_collectRemoteOAuthModules();
             if (count($modules) == 0) {
                 $login->set_var('oauth_login', '');
@@ -2523,9 +2527,9 @@ function COM_userMenu( $help='', $title='', $position='' )
                 foreach ($modules as $service) {
                     $login->set_file('oauth_login', 'loginform_oauth.thtml');
                     $login->set_var('oauth_service', $service);
+                    $login->set_var('lang_oauth_service', $LANG01[$service]);
                     // for sign in image
-                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/login-with-' . $service . '.png');
-                    $login->set_var('oauth_sign_in_image_style', '');
+                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png');
                     $login->parse('output', 'oauth_login');
                     $html_oauth .= $login->finish($login->get_var('output'));
                 }
