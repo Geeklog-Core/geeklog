@@ -1397,10 +1397,15 @@ function plugin_upgrade_staticpages()
             }
 
             if (! $current_config) {
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Set new Tab column to whatever fieldset is
+                $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'staticpages'";
+                DB_query($sql);
+                
                 SP_update_ConfValues_1_6_3();
-
-                SP_update_ConfigSecurity_1_6_3();
             }
+            
+            SP_update_ConfigSecurity_1_6_3();
 
             $current_version = '1.6.4';
             break;
@@ -1415,9 +1420,9 @@ function plugin_upgrade_staticpages()
 
             if (! $current_config) {
                 SP_update_ConfValues_1_6_4();
-                
-                SP_update_TopicAssignmentsFor_1_6_4();
             }
+
+            SP_update_TopicAssignmentsFor_1_6_4();
 
             $current_version = '1.6.5';
             break; 

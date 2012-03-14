@@ -251,7 +251,7 @@ $LANG_configselects['calendar'] = array(
     14 => array('No access' => 0, 'Read-Only' => 2),
     15 => SEC_getUserGroups(),
     16 => array('All' => TOPIC_ALL_OPTION, 'Homepage Only' => TOPIC_HOMEONLY_OPTION, 'Select Topics' => TOPIC_SELECTED_OPTION),
-    17 => TOPIC_getList()    
+    17 => array_flip(TOPIC_getList())       
 );
 
 ?>

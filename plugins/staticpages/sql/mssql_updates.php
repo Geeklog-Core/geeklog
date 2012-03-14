@@ -61,8 +61,6 @@ $_UPDATES = array(
     ),
     
     '1.6.3' => array(
-        // Set new Tab column to whatever fieldset is
-        "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'staticpages'",   
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_main', 'Access to configure static pages main settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_whatsnew', 'Access to configure static pages what\'s new block', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.staticpages.tab_search', 'Access to configure static pages search results', 0)",

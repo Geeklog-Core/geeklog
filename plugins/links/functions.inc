@@ -736,16 +736,18 @@ function plugin_upgrade_links()
             break;
 
         case '2.0.1': // Last version of old install (Geeklog 1.5.2)
-            if (! isset($_LI_CONF['new_window'])) {
-                $c = config::get_instance();
-                $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
-            }
-
-            if (! isset($_LI_CONF['category_permissions'])) {
-                $c = config::get_instance();
-                $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
-                $c->add('category_permissions', array (3, 2, 2, 2),
-                        '@select', 0, 3, 12, 150, true, 'links');
+            if (! $current_config) {
+                if (! isset($_LI_CONF['new_window'])) {
+                    $c = config::get_instance();
+                    $c->add('new_window',false,'select',0,0,1,55,TRUE,'links');
+                }
+    
+                if (! isset($_LI_CONF['category_permissions'])) {
+                    $c = config::get_instance();
+                    $c->add('fs_cpermissions', NULL, 'fieldset', 0, 3, NULL, 0, true, 'links');
+                    $c->add('category_permissions', array (3, 2, 2, 2),
+                            '@select', 0, 3, 12, 150, true, 'links');
+                }
             }
 
             $current_version = '2.1.0';
@@ -760,10 +762,15 @@ function plugin_upgrade_links()
             }
 
             if (! $current_config) {
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Set new Tab column to whatever fieldset is
+                $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'links'";
+                DB_query($sql);
+                
                 links_update_ConfValues_2_1_0();
-
-                links_update_ConfigSecurity_2_1_0();
             }
+            
+            links_update_ConfigSecurity_2_1_0();
 
             $current_version = '2.1.1';
             break;

@@ -1587,10 +1587,15 @@ function plugin_upgrade_calendar()
             }
 
             if (! $current_config) {
+                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Set new Tab column to whatever fieldset is
+                $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'calendar'";
+                DB_query($sql);
+                
                 calendar_update_ConfValues_1_1_1();
-
-                calendar_update_ConfigSecurity_1_1_1();
             }
+            
+            calendar_update_ConfigSecurity_1_1_1();
 
             $current_version = '1.1.2';
             break;
@@ -1605,9 +1610,9 @@ function plugin_upgrade_calendar()
 
             if (! $current_config) {
                 calendar_update_ConfValues_1_1_2();
-
-                calendar_update_ConfigSecurity_1_1_2();
             }
+
+            calendar_update_ConfigSecurity_1_1_2();
 
             $current_version = '1.1.3';
             break;            
