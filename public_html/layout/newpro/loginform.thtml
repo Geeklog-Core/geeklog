@@ -2,9 +2,7 @@
 <!-- loginform.thtml { -->
 
 <form action="{site_url}/users.php" method="post" id="loginform" class="basic">
-  <fieldset>
-    <legend>{lang_login}</legend>
-
+  <div>
     <dl>
       <dt><label for="loginform-loginname">{lang_username}</label></dt>
       <dd><input type="text" size="12" value="" name="loginname" id="loginform-loginname" class="text"{xhtml}></dd>
@@ -18,14 +16,12 @@
     <ul class="submit">
       <li><input type="submit" value="{lang_login}" class="submit"{xhtml}></li>
     </ul>
-
-    <ul class="navi">
-      <li>{lang_signup}</li>
-      <li>{lang_forgetpassword}</li>
-    </ul>
-  </fieldset>
+  </div>
+  <ul class="navi">
+    <li>{lang_signup}</li>
+    <li>{lang_forgetpassword}</li>
+  </ul>
 </form>
-{openid_login}
 {oauth_login}
-
+{openid_login}
 <!-- } loginform.thtml -->
