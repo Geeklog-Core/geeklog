@@ -1774,12 +1774,13 @@ function plugin_getBlocks_polls($side, $topic='')
     $retval = array();
     
     $owner_id = SEC_getDefaultRootUser();
-
+    
     // Check permissions first
     if ($_PO_CONF['block_enable'] && SEC_hasAccess($owner_id, $_PO_CONF['block_group_id'], $_PO_CONF['block_permissions'][0], $_PO_CONF['block_permissions'][1], $_PO_CONF['block_permissions'][2], $_PO_CONF['block_permissions'][3])) {
         // Check if right topic
         if (($_PO_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_PO_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_PO_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_PO_CONF['block_topic']))) {
-            if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { // Create a block
+            if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { 
+                // Create a block
                 $display = phpblock_polls();
                 
                 $retval[] = array('name'           => 'polls',
@@ -1791,6 +1792,48 @@ function plugin_getBlocks_polls($side, $topic='')
                                   'allow_autotags' => false,
                                   'help'           => '');
             }
+        }
+    }
+    
+    return $retval;
+}
+
+/**
+* Gets config information for dynamic blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocksConfig_polls($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_PO_CONF, $LANG_POLLS;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+    
+    // Check permissions first
+    if (SEC_hasAccess($owner_id, $_PO_CONF['block_group_id'], $_PO_CONF['block_permissions'][0], $_PO_CONF['block_permissions'][1], $_PO_CONF['block_permissions'][2], $_PO_CONF['block_permissions'][3])) {
+        if (($side=='left' && $_PO_CONF['block_isleft'] == 1) || ($side=='right' && $_PO_CONF['block_isleft'] == 0)) { 
+            $retval[] = array('plugin'         => $LANG_POLLS['polls'],
+                              'name'           => 'polls',
+                              'title'          => $LANG_POLLS['poll'],
+                              'type'           => 'dynamic',
+                              'onleft'         => $_PO_CONF['block_isleft'],
+                              'blockorder'     => $_PO_CONF['block_order'],
+                              'allow_autotags' => false,
+                              'help'           => '',
+                              'enable'         => $_PO_CONF['block_enable'],
+                              'topic_option'   => $_PO_CONF['block_topic_option'],
+                              'topic'          => $_PO_CONF['block_topic'],
+                              'inherit'        => array()
+                              );
         }
     }
     
