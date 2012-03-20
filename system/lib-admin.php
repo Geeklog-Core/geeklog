@@ -710,6 +710,59 @@ function ADMIN_getListField_blocks($fieldname, $fieldvalue, $A, $icon_arr, $toke
 }
 
 /**
+ * used for the list of blocks in admin/block.php
+ *
+ */
+function ADMIN_getListField_dynamicblocks($fieldname, $fieldvalue, $A, $icon_arr)
+{
+    global $_CONF, $LANG_ADMIN, $LANG21, $_IMAGE_TYPE, $_TABLES;
+
+    $retval = false;
+    
+    switch ($fieldname) {
+    case 'title':
+        $retval = stripslashes($A['title']);
+        if (empty($retval)) {
+            $retval = '(' . $A['name'] . ')';
+        }
+        break;
+
+    case 'is_enabled':
+        if ($A['enable'] == 1) {
+            $retval = $LANG21[5]; // Yes
+        } else {
+            $retval = $LANG21[6]; // No
+        }
+        break;
+
+    case 'topic':
+        if ($A['topic_option'] == TOPIC_ALL_OPTION) {
+            $retval = $LANG21[7];                
+        } elseif ($A['topic_option'] == TOPIC_HOMEONLY_OPTION) {
+            $retval = $LANG21[43];    
+        } else {
+            $element_num = count($A['topic']);
+            
+            if ($element_num == 0) {
+                $retval = $LANG21[47]; // None
+            } elseif ($element_num > 1) {
+                $retval = $LANG21[44]; // Multiple
+            } else {
+                $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['topic'][0]}'");
+            }
+        }        
+
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
+    }
+
+    return $retval;
+}
+
+/**
  * used for the list of groups and in the group editor in admin/group.php
  *
  */
