@@ -1801,7 +1801,7 @@ function SEC_loginRequiredForm()
 */
 function SEC_loginForm($use_config = array())
 {
-    global $_CONF, $LANG01, $LANG04;
+    global $_CONF, $LANG01, $LANG04, $_SCRIPTS;
 
     $retval = '';
 
@@ -1896,6 +1896,7 @@ function SEC_loginForm($use_config = array())
     if (!$config['no_openid_login'] && $_CONF['user_login_method']['openid'] &&
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration']) {
+        $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $loginform->set_file('openid_login', '../loginform_openid.thtml');
         $loginform->set_var('lang_openid_login', $LANG01[128]);
         $loginform->set_var('input_field_size', 40);
@@ -1917,6 +1918,7 @@ function SEC_loginForm($use_config = array())
     if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] && 
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration']) {
+        $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $modules = SEC_collectRemoteOAuthModules();
         if (count($modules) == 0) {
             $loginform->set_var('oauth_login', '');
@@ -1925,9 +1927,9 @@ function SEC_loginForm($use_config = array())
             foreach ($modules as $service) {
                 $loginform->set_file('oauth_login', '../loginform_oauth.thtml');
                 $loginform->set_var('oauth_service', $service);
+                $loginform->set_var('lang_oauth_service', $LANG01[$service]);
                 // for sign in image
-                $loginform->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/login-with-' . $service . '.png');
-                $loginform->set_var('oauth_sign_in_image_style', '');
+                $loginform->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png');
                 $loginform->parse('output', 'oauth_login');
                 $html_oauth .= $loginform->finish($loginform->get_var('output'));
             }

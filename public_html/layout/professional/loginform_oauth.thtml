@@ -1,5 +1,6 @@
-<form action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
+<form class="third-party-login" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
   <div>
-    <input src="{oauth_sign_in_image}"{oauth_sign_in_image_style} type="image"{xhtml}>
+    <img alt="" src="{oauth_sign_in_image}"{xhtml}>
+    <input value="{lang_oauth_service}" type="submit" class="submit"{xhtml}>
   </div>
 </form>

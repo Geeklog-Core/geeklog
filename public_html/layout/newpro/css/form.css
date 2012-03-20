@@ -68,6 +68,15 @@ div#leftblocks div#block-left-search form#searchform p {
   Login Form
 --------------------------------------*/
 
+/* Input sizing */
+form#loginform input,
+form.third-party-login input {
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 /* Form Item */
 form#loginform dl {
   margin: 0;
@@ -84,11 +93,15 @@ form#loginform dl dd {
   padding: 0;
 }
 
+form#loginform input.submit {
+  height: 28px;
+  font-size: 12px;
+}
+
 /* Form Option Menu */
 form#loginform ul.navi {
   list-style-position: outside;
   list-style-type: none;
-  margin: 0;
   padding: 0;
 }
 
@@ -97,3 +110,27 @@ form#loginform ul.navi li {
   padding: 0;
 }
 
+/* Third party login */
+form.third-party-login {
+  margin: 0.1em 0;
+}
+
+form.third-party-login div {
+  position: relative;
+}
+
+form.third-party-login div img {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+form.third-party-login div input.submit {
+  text-indent: 24px;
+  font-size: 12px;
+  height: 28px;
+}
+
+div.third-party-login {
+  width: 164px;
+}
