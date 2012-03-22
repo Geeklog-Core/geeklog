@@ -2439,8 +2439,8 @@ function PLG_itemDisplay($id, $type)
 * Returns data for blocks on a given side and, potentially, for
 * a given topic.
 *
-* @param    string  $side   Side to get blocks for (right or left for now)
-* @param    string  $topic  Only get blocks for this topic
+* @param    string   $side   Side to get blocks for (right or left for now)
+* @param    string   $topic  Only get blocks for this topic
 * @return   array           array of block data
 * @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
 *
@@ -2467,6 +2467,43 @@ function PLG_getBlocks($side, $topic='')
        }
     }
 
+    return $ret;
+}
+
+/**
+* Gets Geeklog blocks from plugins
+*
+* Returns config data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string   $side   Side to get blocks for (right or left for now)
+* @param    string   $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function PLG_getBlocksConfig($side, $topic='')
+{
+    global $_PLUGINS;
+
+    $ret = array();
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_getBlocksConfig_' . $pi_name;
+        if (function_exists($function)) {
+            $items = $function($side, $topic, $config);
+            if (is_array($items)) {
+                $ret = array_merge($ret, $items);
+            }
+        }
+    }
+
+    if (function_exists('CUSTOM_getBlocksConfig')) {
+       $cust_items = CUSTOM_getBlocks($side, $topic, $config);
+       if (is_array($cust_items)) {
+          $ret = array_merge($ret, $cust_items);
+       }
+    }
+    
     return $ret;
 }
 

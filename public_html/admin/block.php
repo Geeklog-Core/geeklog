@@ -383,7 +383,8 @@ function listblocks()
 
     reorderblocks();
     
-    // writing the list
+    // Left
+    // Regular Blocks
     $header_arr = array(      # display 'text' and use table field 'field'
         array('text' => $LANG_ADMIN['edit'], 'field' => 'edit', 'sort' => false),
         array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
@@ -399,6 +400,7 @@ function listblocks()
 
     $text_arr = array(
         'has_extras' => true,
+		'title'      => "$LANG21[20] ($LANG21[40])",
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
@@ -419,13 +421,39 @@ function listblocks()
                     . XHTML . '>'
     );
 
-    $retval .= ADMIN_list(
+	$retval .= ADMIN_list(
         'blocks', 'ADMIN_getListField_blocks', $header_arr, $text_arr,
         $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
+    
 
-    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+    // Dynamic blocks 
+    $dyn_header_arr = array(      # display 'text' and use table field 'field'
+        array('text' => $LANG21[65], 'field' => 'blockorder', 'sort' => true),
+        array('text' => $LANG21[69], 'field' => 'plugin', 'sort' => true),
+        array('text' => $LANG_ADMIN['title'], 'field' => 'title', 'sort' => true),
+        array('text' => $LANG21[48], 'field' => 'name', 'sort' => true),
+        array('text' => $LANG_ADMIN['type'], 'field' => 'type', 'sort' => true),
+        array('text' => $LANG_ADMIN['topic'], 'field' => 'topic', 'sort' => true),
+        array('text' => $LANG_ADMIN['enabled'], 'field' => 'is_enabled', 'sort' => true)
+    );    
 
+	
+	$dyn_text_arr = array(
+        'title'      => "$LANG21[22] ($LANG21[40])",
+    );
+	
+	$leftblocks = PLG_getBlocksConfig('left', '', true);    
+	
+	// Sort Dynamic Blocks on Block Order
+    usort($leftblocks, "cmpDynamicBlocks");
+
+	$retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
+                    $leftblocks, '', $form_arr);
+	
+
+    // Right
+    // Regular Blocks	
     $query_arr = array(
         'table' => 'blocks',
         'sql' => "SELECT * FROM {$_TABLES['blocks']} WHERE onleft = 0",
@@ -435,7 +463,7 @@ function listblocks()
 
     $text_arr = array(
         'has_extras' => true,
-        'title'      => "$LANG21[19] ($LANG21[41])",
+        'title'      => "$LANG21[20] ($LANG21[41])",
         'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 
@@ -453,7 +481,34 @@ function listblocks()
         $query_arr, $defsort_arr, '', $token, '', $form_arr
     );
 
+	// Dynamic blocks
+	$dyn_text_arr = array(
+        'title'      => "$LANG21[22] ($LANG21[41])",
+    );
+	
+	$rightblocks = PLG_getBlocksConfig('right', '', true);
+	
+	// Sort Dynamic Blocks on Block Order
+    usort($rightblocks, "cmpDynamicBlocks");
+
+	$retval .= ADMIN_simpleList('ADMIN_getListField_dynamicblocks', $dyn_header_arr, $dyn_text_arr,
+                    $rightblocks, '', $form_arr);
+	
+	$retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+	
     return $retval;
+}
+
+/**
+* Used by listblocks function when sorting the dynamic block array using the 
+* usort function
+*
+* @return   boolean
+*
+*/
+function cmpDynamicBlocks($a, $b)
+{
+    return $a["blockorder"] > $b["blockorder"];
 }
 
 /**

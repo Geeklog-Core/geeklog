@@ -690,8 +690,8 @@ $LANG21 = array(
     2 => 'You do not have the necessary rights to edit this block.',
     3 => 'Block Editor',
     4 => 'There was a problem reading this feed (see error.log for details).',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'All',
     8 => 'Block Security Level',
     9 => 'Block Order',
@@ -705,12 +705,12 @@ $LANG21 = array(
     17 => 'Block Content',
     18 => 'Please fill in the Block Title and Content fields',
     19 => 'Block Manager',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'Block SecLev',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => 'Block Order',
-    24 => '',
-    25 => 'To modify or delete a block, click on that block\'s edit icon below.  To create a new block, click on "Create New" above. To move a block, click on the arrows or [R] and [L] boxes.',
+    24 => 'Dynamic',
+    25 => 'To modify or delete a regular block, click on that block\'s edit icon below.  To create a new regular block, click on "Create New" above. To move a regular block, click on the arrows or [R] and [L] boxes. To edit dynamic blocks check the plugin configuration that the block is related too.',
     26 => 'Layout Block',
     27 => 'PHP Block',
     28 => 'PHP Block Options',
@@ -753,7 +753,8 @@ $LANG21 = array(
     65 => 'Order',
     66 => 'Autotags',
     67 => 'Check to allow autotags',
-    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.'
+    68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################

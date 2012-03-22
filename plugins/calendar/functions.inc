@@ -2158,10 +2158,11 @@ function plugin_getBlocks_calendar($side, $topic='')
     if ($_CA_CONF['block_enable'] && SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
         // Check if right topic
         if (($_CA_CONF['block_topic_option'] == TOPIC_ALL_OPTION) || ($_CA_CONF['block_topic_option'] == TOPIC_HOMEONLY_OPTION && COM_onFrontpage()) || ($_CA_CONF['block_topic_option'] == TOPIC_SELECTED_OPTION && in_array($topic, $_CA_CONF['block_topic']))) {
-            if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { // Create a block
+            if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
+                // Create a block
                 $display = phpblock_calendar();
                 
-                $retval[] = array('name'           => 'polls',
+                $retval[] = array('name'           => 'events',
                                   'type'           => 'dynamic',
                                   'onleft'         => $_CA_CONF['block_isleft'],
                                   'title'          => $LANG_CAL_1[50],
@@ -2170,6 +2171,49 @@ function plugin_getBlocks_calendar($side, $topic='')
                                   'allow_autotags' => false,
                                   'help'           => '');
             }
+        }
+    }
+    
+    return $retval;
+}
+
+
+/**
+* Gets config information for dynamic blocks from plugins
+*
+* Returns data for blocks on a given side and, potentially, for
+* a given topic.
+*
+* @param    string  $side   Side to get blocks for (right or left for now)
+* @param    string  $topic  Only get blocks for this topic
+* @return   array           array of block data
+* @link     http://wiki.geeklog.net/index.php/Dynamic_Blocks
+*
+*/
+function plugin_getBlocksConfig_calendar($side, $topic='')
+{
+    global $_TABLES, $_CONF, $_CA_CONF, $LANG_CAL_1;
+    
+    $retval = array();
+    
+    $owner_id = SEC_getDefaultRootUser();
+    
+    // Check permissions first
+    if (SEC_hasAccess($owner_id, $_CA_CONF['block_group_id'], $_CA_CONF['block_permissions'][0], $_CA_CONF['block_permissions'][1], $_CA_CONF['block_permissions'][2], $_CA_CONF['block_permissions'][3])) {
+        if (($side=='left' && $_CA_CONF['block_isleft'] == 1) || ($side=='right' && $_CA_CONF['block_isleft'] == 0)) { 
+            $retval[] = array('plugin'         => $LANG_CAL_1[16],
+                              'name'           => 'events',
+                              'title'          => $LANG_CAL_1[50],
+                              'type'           => 'dynamic',
+                              'onleft'         => $_CA_CONF['block_isleft'],
+                              'blockorder'     => $_CA_CONF['block_order'],
+                              'allow_autotags' => false,
+                              'help'           => '',
+                              'enable'         => $_CA_CONF['block_enable'],
+                              'topic_option'   => $_CA_CONF['block_topic_option'],
+                              'topic'          => $_CA_CONF['block_topic'],
+                              'inherit'        => array()
+                              );
         }
     }
     
