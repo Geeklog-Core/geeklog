@@ -2,34 +2,44 @@
 <!-- users/loginform.thtml { -->
 
 {start_block_loginagain}
-  <form action="{site_url}/users.php" method="post" id="userloginform" class="compact">
+<div class="login-wrapper {remote_login_class}">
+  <div class="standard-login-panel {remote_login_class}">
+    <form action="{site_url}/users.php" method="post" id="userloginform" class="compact">
+      <fieldset>
+        <legend>{lang_login}</legend>
+
+        <p class="message">{lang_message}</p>
+
+          <input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>        
+          <label for="loginform-loginname">{lang_username}</label>
+          <div style="clear:both"></div>
+          {services}
+          <div style="clear:both"></div>
+          <input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}>
+          <label for="loginform-passwd">{lang_password}</label>
+          <div style="clear:both"></div>
+          <input type="submit" value="{lang_login}" class="submit"{xhtml}>
+          <div style="clear:both"></div>
+
+        <ul class="navi">
+          <li>{lang_newreglink}</li>
+          <li><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></li>
+        </ul>
+     </fieldset>
+    </form>
+  </div>
+  <div class="remote-login-panel {remote_login_class}">
     <fieldset>
-      <legend>{lang_login}</legend>
-
-      <p class="message">{lang_message}</p>
-
-      <dl>
-        <dt><label for="loginform-loginname">{lang_username}</label></dt>
-        <dd><input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}></dd>
- 
-        {services}
- 
-        <dt><label for="loginform-passwd">{lang_password}</label></dt>
-        <dd><input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}></dd>
-      </dl>
- 
-      <ul class="submit">
-        <li><input type="submit" value="{lang_login}" class="submit"{xhtml}></li>
-      </ul>
- 
-      <ul class="navi">
-        <li>{lang_newreglink}</li>
-        <li><a href="{site_url}/users.php?mode=getpassword" rel="nofollow">{lang_forgetpassword}</a></li>
-      </ul>
-   </fieldset>
-  </form>
-  {openid_login}
-  {oauth_login}
+      <legend>{lang_remote_login}</legend>
+      <p class="message">{lang_remote_login_desc}</p>
+        <div class="wrapper">
+          {oauth_login}
+          {openid_login}
+        </div>
+     </fieldset>
+  </div>
+  <div style="clear:both"></div>
+</div>
 {end_block}
 
 <!-- } users/loginform.thtml -->

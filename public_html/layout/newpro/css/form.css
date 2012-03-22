@@ -70,6 +70,7 @@ div#leftblocks div#block-left-search form#searchform p {
 
 /* Input sizing */
 form#loginform input,
+form#loginform select,
 form.third-party-login input {
   width: 100%;
   -webkit-box-sizing: border-box;
