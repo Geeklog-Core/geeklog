@@ -51,7 +51,7 @@ div.remote-login-panel div.wrapper{
 }
 
 div.standard-login-panel label {
-  margin-right: 1em;
+  margin: 0 1em;
   float: right;
   line-height: 1.8em;
 }
@@ -64,6 +64,12 @@ div.standard-login-panel select {
   width: 50%;
   float: right;
   height: 1.8em;
+}
+
+div.standard-login-panel.rtl input,
+div.standard-login-panel.rtl select,
+div.standard-login-panel.rtl label {
+  float: left;
 }
 
 div.standard-login-panel input.submit {
