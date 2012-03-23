@@ -72,17 +72,38 @@ $files = array(
     "tooltips/tooltips.css"
 );
 
+// Create directions for RTL support
+$left = 'left';
+$right = 'right';
+if ($_GET['dir'] == 'rtl') {
+    $left = 'right';
+    $right = 'left';
+}
+
 // Output the contents of each file
 foreach ($files as $file) {
     $css = file_get_contents("css/$file");
     $css = preg_replace("@/\*.*?\*/@sm", "", $css); // strip comments
     $css = preg_replace("@\s*\n+\s*@sm", "\n", $css); // strip indentation
+    // Replace {right} and {left} placeholders with actual values.
+    // Used for RTL support.
+    $css = preg_replace("@\{right\}@", $right, $css);
+    $css = preg_replace("@\{left\}@", $left, $css);
+    // Output
+    echo "\n/* $file */\n";
     echo $css;
 }
 
 // Also output the contents of the custom CSS file, if it's available
 if (is_readable("css/custom.css")) {
-    echo file_get_contents("css/custom.css");
+    $css = file_get_contents("css/custom.css");
+    // Replace {right} and {left} placeholders with actual values.
+    // Used for RTL support.
+    $css = preg_replace("@\{right\}@", $right, $css);
+    $css = preg_replace("@\{left\}@", $left, $css);
+    // Output
+    echo "\n/* $file */\n";
+    echo $css;
 }
 
 ?>

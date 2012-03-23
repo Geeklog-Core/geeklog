@@ -8,7 +8,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 $_IMAGE_TYPE = 'png';
 
 // Add Theme CSS File to scripts class
-$_SCRIPTS->setCSSFile('theme', '/layout/' . $_CONF['theme'] . '/style.css.php');
+$_SCRIPTS->setCSSFile('theme', '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION);
 
 $_SCRIPTS->setJavaScriptLibrary('jquery');
 
