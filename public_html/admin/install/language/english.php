@@ -157,7 +157,8 @@ $LANG_INSTALL = array(
     105 => 'Sorry, but the admin directory path you entered does not appear to be correct. Please go back and try again.',
     106 => 'PostgreSQL',
     107 => 'Database Password is required for production environments.',
-    108 => 'No Database Drivers found!'
+    108 => 'No Database Drivers found!',
+    109 => 'Emergency Rescue Tool'
 );
 
 // +---------------------------------------------------------------------------+

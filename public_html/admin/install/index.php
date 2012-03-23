@@ -956,6 +956,7 @@ $display .= '<head>
 <body dir="' . $LANG_DIRECTION . '">
     <div class="header-navigation-container">
         <div class="header-navigation-line">
+            <a href="rescue.php" class="header-navigation">' . $LANG_INSTALL[109] . '</a>&nbsp;&nbsp;&nbsp;
             <a href="' . $LANG_INSTALL[87] . '" class="header-navigation">' . $LANG_INSTALL[1] . '</a>&nbsp;&nbsp;&nbsp;
         </div>
     </div>
