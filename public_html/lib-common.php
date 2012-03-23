@@ -286,6 +286,50 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 */
 require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
+// Set language
+
+if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
+{
+    $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
+    if( is_file( $_CONF['path_language'] . $language . '.php' ) &&
+            ( $_CONF['allow_user_language'] == 1 ))
+    {
+        $_USER['language'] = $language;
+        $_CONF['language'] = $language;
+    }
+}
+else if( !empty( $_USER['language'] ))
+{
+    if( is_file( $_CONF['path_language'] . $_USER['language'] . '.php' ) &&
+            ( $_CONF['allow_user_language'] == 1 ))
+    {
+        $_CONF['language'] = $_USER['language'];
+    }
+}
+else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
+{
+    $_CONF['language'] = COM_getLanguage();
+}
+
+/**
+*
+* Language include
+*
+*/
+
+require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
+
+if (empty($LANG_DIRECTION)) {
+    // default to left-to-right
+    $LANG_DIRECTION = 'ltr';
+}
+
+COM_switchLocaleSettings();
+
+if( setlocale( LC_ALL, $_CONF['locale'] ) === false ) {
+    setlocale( LC_TIME, $_CONF['locale'] );
+}
+
 // Set theme
 
 $usetheme = '';
@@ -369,30 +413,6 @@ if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
 
-// Similarly set language
-
-if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
-{
-    $language = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_language']]);
-    if( is_file( $_CONF['path_language'] . $language . '.php' ) &&
-            ( $_CONF['allow_user_language'] == 1 ))
-    {
-        $_USER['language'] = $language;
-        $_CONF['language'] = $language;
-    }
-}
-else if( !empty( $_USER['language'] ))
-{
-    if( is_file( $_CONF['path_language'] . $_USER['language'] . '.php' ) &&
-            ( $_CONF['allow_user_language'] == 1 ))
-    {
-        $_CONF['language'] = $_USER['language'];
-    }
-}
-else if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
-{
-    $_CONF['language'] = COM_getLanguage();
-}
 
 // Handle Who's Online block
 /*
@@ -417,26 +437,6 @@ if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
 */
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
-
-/**
-*
-* Language include
-*
-*/
-
-require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
-
-if (empty($LANG_DIRECTION)) {
-    // default to left-to-right
-    $LANG_DIRECTION = 'ltr';
-}
-
-COM_switchLocaleSettings();
-
-if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
-{
-    setlocale( LC_TIME, $_CONF['locale'] );
-}
 
 /**
 * Global array of groups current user belongs to
