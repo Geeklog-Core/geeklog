@@ -14,7 +14,7 @@
 {rel_links}
 {plg_headercode}
   </head>
-  <body>
+  <body dir="{direction}">
 <!-- header.thtml { -->
 
 <!-- #container { -->
