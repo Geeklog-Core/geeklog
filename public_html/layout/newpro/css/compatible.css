@@ -286,16 +286,17 @@
 }
 .sysmessage {
   position: relative;
-  margin: 1em 1em 1em 4em;
+  margin: 1em;
+  margin-{left}: 4em;
 }
 .sysmessage img {
   position: absolute;
-  left: -3.1em;
+  {left}: -3.1em;
   top: -0.3em;
   border:none;
-  float:left;
+  float:{left};
   padding-bottom:3px;
-  padding-right:5px;
+  padding-{right}:5px;
 }
 /* Stats **********************************************************************/
 .stats-list-count {
