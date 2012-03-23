@@ -289,6 +289,10 @@ class scripts {
 
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
         $path = substr($_CONF['path_html'], 0, -1) . $file;
+        // Strip parameters
+        if (strrpos($path, '?') !== false) {
+            $path = substr($path, 0, strrpos($path, '?'));
+        }
         if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
@@ -367,6 +371,10 @@ class scripts {
         
         // Make sure file exists and is readable. We don't want any 403 or 404, right?
         $path = substr($_CONF['path_html'], 0, -1) . $file;
+        // Strip parameters
+        if (strrpos($path, '?') !== false) {
+            $path = substr($path, 0, strrpos($path, '?'));
+        }
         if (! is_file($path) || ! is_readable($path)) {
             return false;
         }
