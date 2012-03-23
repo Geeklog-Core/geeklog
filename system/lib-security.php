@@ -1801,10 +1801,11 @@ function SEC_loginRequiredForm()
 */
 function SEC_loginForm($use_config = array())
 {
-    global $_CONF, $LANG01, $LANG04, $_SCRIPTS;
+    global $_CONF, $LANG01, $LANG04, $_SCRIPTS, $LANG_DIRECTION;
 
     $retval = '';
 
+    $have_remote_login = false;
     $default_config = array(
         // display options
         'hide_forgotpw_link' => false,
@@ -1832,6 +1833,7 @@ function SEC_loginForm($use_config = array())
 
     $loginform->set_var('start_block_loginagain',
                         COM_startBlock($config['title']));
+    $loginform->set_var('lang_direction', $LANG_DIRECTION);
     $loginform->set_var('lang_message', $config['message']);
     if ($config['no_newreg_link'] || $_CONF['disable_new_user_registration']) {
         $loginform->set_var('lang_newreglink', '');
@@ -1852,6 +1854,8 @@ function SEC_loginForm($use_config = array())
         $loginform->set_var('forgetpassword_link', $forget);
     }
     $loginform->set_var('lang_login', $config['button_text']);
+    $loginform->set_var('lang_remote_login', $LANG04[167]);
+    $loginform->set_var('lang_remote_login_desc', $LANG04[168]);
     $loginform->set_var('end_block', COM_endBlock());
 
     // 3rd party remote authentification.
@@ -1896,6 +1900,7 @@ function SEC_loginForm($use_config = array())
     if (!$config['no_openid_login'] && $_CONF['user_login_method']['openid'] &&
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration']) {
+        $have_remote_login = true;
         $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $loginform->set_file('openid_login', '../loginform_openid.thtml');
         $loginform->set_var('lang_openid_login', $LANG01[128]);
@@ -1918,6 +1923,7 @@ function SEC_loginForm($use_config = array())
     if (!$config['no_oauth_login'] && $_CONF['user_login_method']['oauth'] && 
             ($_CONF['usersubmission'] == 0) &&
             !$_CONF['disable_new_user_registration']) {
+        $have_remote_login = true;
         $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
         $modules = SEC_collectRemoteOAuthModules();
         if (count($modules) == 0) {
@@ -1937,6 +1943,10 @@ function SEC_loginForm($use_config = array())
         }
     } else {
         $loginform->set_var('oauth_login', '');
+    }
+
+    if ($have_remote_login) {
+        $loginform->set_var('remote_login_class', 'remote-login-enabled');
     }
 
     if (! $config['no_plugin_vars']) {

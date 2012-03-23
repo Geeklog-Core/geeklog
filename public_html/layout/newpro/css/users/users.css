@@ -1,6 +1,7 @@
 /*==============================================================================
   Title       : Account Information Page Templates
-  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Authors     : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+                Rouslan Placella rouslan@placella.com
   Description : Account information page style.
   Apply       : users/profile.thtml, users/commentrow.thtml, users/storyrow.thtml,
                 users/loginform.thtml, users/registrationform.thtml,
@@ -11,24 +12,83 @@
 
 
 /*--------------------------------------
-  User Login Form 
+  User Login Form
 --------------------------------------*/
 
-form#userloginform ul.submit {
-  margin-bottom: 1em;
+div.login-wrapper {
+  width: 50%;
+  margin: auto;
+}
+
+div.login-wrapper.remote-login-enabled {
+  width: 95%;
+  margin: auto;
+}
+
+div.standard-login-panel {
+  width: 100%;
+}
+
+div.remote-login-panel {
+  display: none;
+}
+
+div.standard-login-panel.remote-login-enabled,
+div.remote-login-panel.remote-login-enabled {
+  display: block;
+  width: 47%;
+  margin-left:2%;
+  float: left;
+}
+
+div.remote-login-panel p.message {
+  margin: 0 0 1em;
+}
+
+div.remote-login-panel div.wrapper{
+  width: 164px;
+  margin: auto;
+}
+
+div.standard-login-panel label {
+  margin: 0 1em;
+  float: right;
+  line-height: 1.8em;
+}
+
+div.standard-login-panel input,
+div.standard-login-panel select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 50%;
+  float: right;
+  height: 1.8em;
+}
+
+div.standard-login-panel.rtl input,
+div.standard-login-panel.rtl select,
+div.standard-login-panel.rtl label {
+  float: left;
+}
+
+div.standard-login-panel input.submit {
+  height: 28px;
+  font-size: 12px;
 }
 
 /* Form Option Menu */
-form#userloginform ul.navi {
+div.standard-login-panel ul.navi {
   list-style-position: outside;
   list-style-type: none;
-  margin: 0;
+  margin: 1em 0 0;
   padding: 0;
 }
 
-form#userloginform ul.navi li {
+div.standard-login-panel ul.navi li {
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 
