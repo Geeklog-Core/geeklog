@@ -3,7 +3,7 @@
 
 {start_block_loginagain}
 <div class="login-wrapper {remote_login_class}">
-  <div class="standard-login-panel {remote_login_class} {lang_direction}">
+  <div class="standard-login-panel {remote_login_class}">
     <form action="{site_url}/users.php" method="post" id="userloginform" class="compact">
       <fieldset>
         <legend>{lang_login}</legend>

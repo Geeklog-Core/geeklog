@@ -1801,7 +1801,7 @@ function SEC_loginRequiredForm()
 */
 function SEC_loginForm($use_config = array())
 {
-    global $_CONF, $LANG01, $LANG04, $_SCRIPTS, $LANG_DIRECTION;
+    global $_CONF, $LANG01, $LANG04, $_SCRIPTS;
 
     $retval = '';
 
@@ -1833,7 +1833,6 @@ function SEC_loginForm($use_config = array())
 
     $loginform->set_var('start_block_loginagain',
                         COM_startBlock($config['title']));
-    $loginform->set_var('lang_direction', $LANG_DIRECTION);
     $loginform->set_var('lang_message', $config['message']);
     if ($config['no_newreg_link'] || $_CONF['disable_new_user_registration']) {
         $loginform->set_var('lang_newreglink', '');
