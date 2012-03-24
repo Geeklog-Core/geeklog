@@ -85,6 +85,7 @@ div#container div#navigation {
   background: #dbddd9 url('./images/css/menu_bg.png') repeat-x 0 0;
   border: 1px solid #939490;
   margin: auto;
+  margin-bottom: 12px;
   width: 95%;
 
   -webkit-border-radius: 8px;
@@ -155,6 +156,10 @@ div#container div#navigation ul li.last-child a:active {
 
 div#container table#wrapper {
     width: 100%;
+}
+
+div#container table#wrapper td {
+    padding: 0;
 }
 
 div#container div#rightblocks {

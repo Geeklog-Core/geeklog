@@ -41,7 +41,7 @@ li.listitem {
 --------------------------------------*/
 
 div#centerblocks div#block-message {
-  margin: 2em 0;
+  margin: 1.2em 0;
   padding: 0;
 
   border: 1px solid #939490;
@@ -112,11 +112,20 @@ div.block-related div.block-related-content {
   Center Block
 --------------------------------------*/
 
+div#centerblocks {
+  margin-bottom: 12px;
+  border-top: 1px solid #aaa;
+  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
 /* Welcome Message */
 div#centerblocks p.welcome_msg {
-  margin: 0 0 2em 0;
-  padding: 1em 0;
-  border-bottom: 1px solid #CCC;
+  margin: 0 0 1.2em 0;
+  padding: 10px 8px;
 }
 
 /* Welcome Message Link */
@@ -178,18 +187,28 @@ div#centerblocks div.block-center div.block-center-content {
 --------------------------------------*/
 
 /* Block */
+div#leftblocks {
+  margin-{right}: 8px;
+}
+
 div#leftblocks div.block-left {
-  margin: 0 8px 0.5em 8px;
-  padding: 8px 0;
+  margin-bottom: 12px;
+  border-top: 1px solid #aaa;
+  padding: 8px;
+  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 /* Block Title */
 div#leftblocks div.block-left h2 {
   margin: 0 0 0.5em 0;
   padding: 0 0 0.1em 0;
-  border-bottom: 1px solid #CCCCCC;
   font-size: 110%;
   font-weight: bold;
+  text-decoration: underline;
 }
 
 /* Help Icon */
@@ -203,25 +222,37 @@ div#leftblocks div.block-left div.block-left-content {
   padding: 0;
 }
 
-
+div#leftblocks ul {
+  margin: 0.8em 0;
+}
 
 /*--------------------------------------
   Right Block
 --------------------------------------*/
 
 /* Block */
+div#rightblocks {
+  margin-{left}: 8px;
+}
+
 div#rightblocks div.block-right {
-  margin: 0 8px 0.5em 8px;
-  padding: 8px 0;
+  margin-bottom: 12px;
+  border-top: 1px solid #aaa;
+  padding: 8px;
+  background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
+
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 /* Block Title */
 div#rightblocks div.block-right h2 {
   margin: 0 0 0.5em 0;
   padding: 0 0 0.1em 0;
-  border-bottom: 1px solid #CCCCCC;
   font-size: 110%;
   font-weight: bold;
+  text-decoration: underline;
 }
 
 /* Help Icon */
