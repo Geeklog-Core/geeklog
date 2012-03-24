@@ -28,6 +28,18 @@ body {
   text-align: center;  /* For Win IE 6(Margin auto layout) */
 }
 
+a:link {
+  color: #033987;
+  text-decoration: none;
+}
+a:visited {
+  color: #5c3566;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+
 /* Win IE 7 { */
 *:first-child+html body {
   font-size: small;
