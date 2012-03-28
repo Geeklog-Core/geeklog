@@ -52,7 +52,7 @@ function plugin_autoinstall_polls($pi_name)
         'pi_name'         => $pi_name,
         'pi_display_name' => $pi_display_name,
         'pi_version'      => '2.1.4',
-        'pi_gl_version'   => '1.8.0',
+        'pi_gl_version'   => '2.0.0',
         'pi_homepage'     => 'http://www.geeklog.net/'
     );
 
