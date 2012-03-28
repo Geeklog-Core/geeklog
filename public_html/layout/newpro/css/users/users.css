@@ -37,8 +37,8 @@ div.standard-login-panel.remote-login-enabled,
 div.remote-login-panel.remote-login-enabled {
   display: block;
   width: 47%;
-  margin-left:2%;
-  float: left;
+  margin-{left}:2%;
+  float: {left};
 }
 
 div.remote-login-panel p.message {
@@ -52,7 +52,7 @@ div.remote-login-panel div.wrapper{
 
 div.standard-login-panel label {
   margin: 0 1em;
-  float: right;
+  float: {right};
   line-height: 1.8em;
 }
 
@@ -62,14 +62,8 @@ div.standard-login-panel select {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   width: 50%;
-  float: right;
+  float: {right};
   height: 1.8em;
-}
-
-div.standard-login-panel.rtl input,
-div.standard-login-panel.rtl select,
-div.standard-login-panel.rtl label {
-  float: left;
 }
 
 div.standard-login-panel input.submit {

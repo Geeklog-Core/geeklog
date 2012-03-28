@@ -16,13 +16,14 @@
 div#leftblocks div#block-left-search {
   margin: 0;
   padding: 0;
+  border: 0;
 }
 
 /* Form */
 div#leftblocks div#block-left-search form#searchform {
   position: absolute;
   top: 92px;
-  right: 26px;
+  {right}: 26px;
   margin: 0;
   padding: 0;
 }
@@ -30,7 +31,7 @@ div#leftblocks div#block-left-search form#searchform {
 div#leftblocks div#block-left-search form#searchform div {
   margin: 0;
   padding: 0;
-  background: transparent url('./images/css/search.png') no-repeat 0 0;
+  background: transparent url('./images/css/search-{right}.png') no-repeat 0 0;
   width: 180px;
   height: 26px;
   line-height: 26px;
@@ -46,13 +47,13 @@ div#leftblocks div#block-left-search form#searchform div input {
 
 /* Form Input Field */
 div#leftblocks div#block-left-search form#searchform div input.text {
-  float: left;
+  float: {left};
   width: 145px;
 }
 
 /* Form Button */
 div#leftblocks div#block-left-search form#searchform div input.submit {
-  float: right;
+  float: {right};
   width: 30px;
   cursor: pointer;
 }
@@ -122,7 +123,7 @@ form.third-party-login div {
 
 form.third-party-login div img {
   position: absolute;
-  left: 6px;
+  {left}: 6px;
   top: 6px;
 }
 

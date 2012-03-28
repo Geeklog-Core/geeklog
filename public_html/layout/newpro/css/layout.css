@@ -23,7 +23,7 @@ div#container {
   width: 960px;  /*  Site Width */
   margin: 1em auto;
   padding: 12px;
-  text-align: left;
+  text-align: {left};
   border: 1px solid #656663;
   background: white;
 
@@ -64,9 +64,9 @@ div#container div#header div#header-content {
 /*  Site Name */
 div#container div#header h1.site_name {
   display: inline;  /* For Win IE 6(Float Left Right Margin is too wide) */
-  margin: 20px 0 0 16px;
+  margin: 20px 16px 0;
   padding: 0;
-  float: left;
+  float: {left};
 }
 
 /* Slogan */
@@ -74,10 +74,8 @@ div#container div#header p.site_slogan {
   margin: 0;
   padding: 10px 16px 0;
   color: #FFFFFF;
-  text-align: right;
+  text-align: {right};
 }
-
-
 
 /*--------------------------------------
   Gloval Navigation Container
@@ -87,6 +85,7 @@ div#container div#navigation {
   background: #dbddd9 url('./images/css/menu_bg.png') repeat-x 0 0;
   border: 1px solid #939490;
   margin: auto;
+  margin-bottom: 12px;
   width: 95%;
 
   -webkit-border-radius: 8px;
@@ -107,19 +106,19 @@ div#container div#navigation ul {
 
 /*  Navigation Menu(Normal) */
 div#container div#navigation ul li.menuitem {
-  float: left;
+  float: {left};
   display: block;
 }
 
 div#container div#navigation ul li.menuitem a,
 div#container div#navigation ul li.menuitem a:link,
 div#container div#navigation ul li.menuitem a:visited {
-  float: left;
+  float: {left};
   display: block;
   height: 2.3em;
   line-height: 2.2em;
   padding: 0 0.8em;
-  border-left: 1px dotted #939490;
+  border-{left}: 1px dotted #939490;
   text-decoration: none;
   color: #2E3436;
   font-size: 13px;
@@ -139,8 +138,8 @@ div#container div#navigation ul li.last-child {
 div#container div#navigation ul li.last-child a,
 div#container div#navigation ul li.last-child a:link,
 div#container div#navigation ul li.last-child a:visited {
-  padding-right: 1em;
-  border-right: 1px dotted #939490;
+  padding-{right}: 1em;
+  border-{right}: 1px dotted #939490;
 }
 
 div#container div#navigation ul li.last-child a:hover,
@@ -157,6 +156,10 @@ div#container div#navigation ul li.last-child a:active {
 
 div#container table#wrapper {
     width: 100%;
+}
+
+div#container table#wrapper td {
+    padding: 0;
 }
 
 div#container div#rightblocks {
@@ -220,7 +223,7 @@ div#container div#footer ul li {
 
 /* Copyright */
 div#container div#footer ul.copyright {
-  float: left;
+  float: {left};
 }
 div#container div#footer ul li.copyright_notice {
 }
@@ -232,8 +235,8 @@ div#container div#footer ul li.copyright_notice address {
 
 /* Powered by & Page Execution Time */
 div#container div#footer ul.site_info {
-  float: right;
-  text-align: right;
+  float: {right};
+  text-align: {right};
 }
 
 /* Powered by */
