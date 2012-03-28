@@ -413,28 +413,6 @@ if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
 
-
-// Handle Who's Online block
-/*
-if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
-    // The following code handles anonymous users so they show up properly
-    DB_delete($_TABLES['sessions'], array('remote_ip', 'uid'),
-                                    array($_SERVER['REMOTE_ADDR'], 1));
-
-    $tries = 0;
-    do
-    {
-        // Build a useless sess_id (needed for insert to work properly)
-        $sess_id = mt_rand();
-        $curtime = time();
-
-        // Insert anonymous user session
-        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '{$_SERVER['REMOTE_ADDR']}', 1)", 1 );
-        $tries++;
-    }
-    while(( $result === false) && ( $tries < 5 ));
-}
-*/
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
 
