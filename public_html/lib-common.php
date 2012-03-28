@@ -4793,67 +4793,67 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( $curpage > 1 )
     {
-        $retval .= COM_createLink($LANG05[7], $first_url . $last_url) . ' | ';
-        $pg = '';
-        if( ( $curpage - 1 ) > 1 )
-        {
-            $pg = $sep . $page_str . ( $curpage - 1 );
-        }
-        $retval .= COM_createLink($LANG05[6], $first_url . $pg . $last_url ) . ' | ';
-    }
-    else
-    {
-        $retval .= $LANG05[7] . ' | ' ;
-        $retval .= $LANG05[6] . ' | ' ;
-    }
-
+        $retval .= '<span>' . COM_createLink($LANG05[7], $first_url . $last_url ) . '</span> ' . ' | ';
+         $pg = '';
+         if( ( $curpage - 1 ) > 1 )
+         {
+             $pg = $sep . $page_str . ( $curpage - 1 );
+         }
+         $retval .= '<span>' . COM_createLink($LANG05[6], $first_url . $pg . $last_url ) . '</span> ' . ' | ';
+     }
+     else
+     {
+         $retval .= '<span>' . $LANG05[7] . '</span>' . ' | ';
+         $retval .= '<span>' . $LANG05[6] . '</span>' . ' | ';
+     }
+ 
     for( $pgcount = ( $curpage - 10 ); ( $pgcount <= ( $curpage + 9 )) AND ( $pgcount <= $num_pages ); $pgcount++ )
-    {
-        if( $pgcount <= 0 )
-        {
-            $pgcount = 1;
-        }
-
+     {
+         if( $pgcount <= 0 )
+         {
+             $pgcount = 1;
+         }
+ 
         if( $pgcount == $curpage )
-        {
-            $retval .= '<b>' . $pgcount . '</b> ';
-        }
-        else
-        {
-            $pg = '';
-            if( $pgcount > 1 )
-            {
-                $pg = $sep . $page_str . $pgcount;
-            }
-            $retval .= COM_createLink($pgcount, $first_url . $pg . $last_url) . ' ';
-        }
-    }
-
+         {
+             $retval .= '' . $pgcount . ' ';
+         }
+         else
+         {
+             $pg = '';
+             if( $pgcount > 1 )
+             {
+                 $pg = $sep . $page_str . $pgcount;
+             }
+             $retval .= COM_createLink($pgcount, $first_url . $pg . $last_url) . ' ';
+         }
+     }
+ 
     if( !empty( $open_ended ))
-    {
-        $retval .= '| ' . $open_ended;
-    }
-    else if( $curpage == $num_pages )
-    {
-        $retval .= '| ' . $LANG05[5] . ' ';
-        $retval .= '| ' . $LANG05[8];
-    }
-    else
-    {
-        $retval .= '| ' . COM_createLink($LANG05[5], $first_url . $sep
-                                         . $page_str . ($curpage + 1) . $last_url);
-        $retval .= ' | ' . COM_createLink($LANG05[8], $first_url . $sep
-                                          . $page_str . $num_pages . $last_url);
-    }
-
+     {
+         $retval .= '| ' . $open_ended;
+     }
+     else if( $curpage == $num_pages )
+     {
+         $retval .= '| ' . '<span>' . $LANG05[5] . '</span>' . ' ';
+         $retval .= '| ' . '<span>' . $LANG05[8] . '</span>';
+     }
+     else
+     {
+         $retval .= '| ' . '<span>' . COM_createLink($LANG05[5], $first_url . $sep
+                                          . $page_str . ($curpage + 1) . $last_url) . '</span> ';
+         $retval .= ' | ' . '<span>' . COM_createLink($LANG05[8], $first_url . $sep
+                                           . $page_str . $num_pages . $last_url) . '</span> ';
+     }
+ 
     if( !empty( $retval ))
-    {
-        if( !empty( $msg ))
-        {
-            $msg .=  ' ';
-        }
-        $retval = '<div class="pagenav">' . $msg . $retval . '</div>';
-    }
+     {
+         if( !empty( $msg ))
+         {
+             $msg .= ' ';
+         }
+         $retval = '<div class="gl-pagenav">' . $msg . $retval . '</div>';
+     }
 
     return $retval;
 }
