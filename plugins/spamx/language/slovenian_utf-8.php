@@ -52,6 +52,7 @@ $LANG_SX00 = array(
     'e1' => 'Da vpis izbrišeš, ga klikni.',
     'e2' => 'Da vpis dodaš, ga vnesi v okence in klikni Dodaj. Vnosi lahko uporabljajo polne izraze Perl Regular.',
     'pblack' => 'Osebna èrna lista Spam-X',
+    'sfseblack' => 'Spam-X SFS Email Blacklist',
     'conmod' => 'Konfiguriraj Spam-X Module Usage',
     'acmod' => 'Akcijski moduli Spam-X ',
     'exmod' => 'Preiskovalni moduli Spam-X ',
@@ -123,6 +124,16 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'Blokirano z IP URL-ja',
     'stats_header' => 'HTTP glave',
     'stats_deleted' => 'Objave, izbrisane kot spam',
+    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
+    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
+    'edit_personal_blacklist' => 'Edit Personal Blacklist',
+    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
+    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
+    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
+    'edit_ip_blacklist' => 'Edit IP Blacklist',
+    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
+    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
+    'edit_slv_whitelist' => 'Edit SLV Whitelist',
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV bela lista'
 );
@@ -145,7 +156,10 @@ $LANG_confignames['spamx'] = array(
     'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Obvestilna e-pošta',
     'logging' => 'Omogoèi shranjevanje v log',
-    'timeout' => 'Timeout'
+    'timeout' => 'Timeout',
+    'sfs_enabled' => 'Enable SFS',
+    'snl_enabled' => 'Enable SNL',
+    'snl_num_links' => 'Number of links'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -153,11 +167,14 @@ $LANG_configsubgroups['spamx'] = array(
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings'
+    'tab_main' => 'Spam-X Main Settings',
+    'tab_modules' => 'Modules'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Glavne nastavitve Spam-X'
+    'fs_main' => 'Glavne nastavitve Spam-X',
+    'fs_sfs' => 'Stop Forum Spam (SFS)',
+    'fs_snl' => 'Spam Number of Links (SNL)'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

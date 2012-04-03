@@ -27,15 +27,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------|
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), strtolower(__FILE__)) !== FALSE) {
-    die ('This file can not be used on its own.');
-}
-
 global $LANG32;
 
 $LANG_XMLSMAP = array(
-    'plugin'            => 'XMLSitemap',
-    'admin'		        => 'XMLSitemap Admin',
+    'plugin' => 'XMLSitemap',
+    'admin' => 'XMLSitemap Admin'
 );
 
 // Localization of the Admin Configuration UI
@@ -45,37 +41,37 @@ $LANG_configsections['xmlsitemap'] = array(
 );
 
 $LANG_confignames['xmlsitemap'] = array(
-    'sitemap_file'        => 'Nom du fichier Sitemap',
+    'sitemap_file' => 'Nom du fichier Sitemap',
     'mobile_sitemap_file' => 'Nom du fichier Sitemap Mobile',
-    'types'               => 'Contenu du sitemap',
-    'exclude'             => 'Plugins à exclure du sitemap',
-    'priorities'          => '',
-    'frequencies'         => '',
+    'types' => 'Contenu du sitemap',
+    'exclude' => 'Plugins à exclure du sitemap',
+    'priorities' => '',
+    'frequencies' => ''
 );
 
 $LANG_configsubgroups['xmlsitemap'] = array(
-    'sg_main' => 'Paramètres principaux',
+    'sg_main' => 'Paramètres principaux'
 );
 
 $LANG_tab['xmlsitemap'] = array(
     'tab_main' => 'Paramètres principaux XMLSitemap',
-    'tab_pri'  => 'Priorité',
-    'tab_freq' => 'Fréquence de mise à jour',
+    'tab_pri' => 'Priorité',
+    'tab_freq' => 'Fréquence de mise à jour'
 );
 
 $LANG_fs['xmlsitemap'] = array(
     'fs_main' => 'XMLSitemap paramètres principaux',
-    'fs_pri'  => 'Priorité (defaut = 0.5, basse = 0.0, haute = 1.0)',
-    'fs_freq' => 'Fréquence de mise à jour',
+    'fs_pri' => 'Priorité (defaut = 0.5, basse = 0.0, haute = 1.0)',
+    'fs_freq' => 'Fréquence de mise à jour'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['xmlsitemap'] = array(
     0 => array('Vrai' => 1, 'Faux' => 0),
-    1 => array('Vrai' => TRUE, 'Faux' => FALSE),
+    1 => array('Vrai' => true, 'Faux' => false),
     9 => array('Tranférer à la page' => 'item', 'Afficher la liste' => 'list', 'Afficher page d\'accueil' => 'home', 'Afficher page d\'administration' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture Ecriture' => 3),
-    20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never'),
+    20 => array('toujours' => 'always', 'Toutes les heures' => 'hourly', 'Quotidienne' => 'daily', 'Hebdomadaire' => 'weekly', 'mensuelle' => 'monthly', 'annuelle' => 'yearly', 'jamais' => 'never')
 );
 
 ?>

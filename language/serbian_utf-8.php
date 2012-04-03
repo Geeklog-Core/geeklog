@@ -184,7 +184,10 @@ $LANG01 = array(
     136 => 'Warning: Javascript recommended for enhanced functionality',
     137 => 'Warning: Javascript required to enable functionality',
     138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
-    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -234,7 +237,8 @@ $LANG03 = array(
     41 => 'Hello %s,',
     42 => 'Unsubscribe',
     43 => 'Unsubscribe from reply notifications',
-    44 => 'Your Name'
+    44 => 'Your Name',
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
 );
 
 ###############################################################################
@@ -690,8 +694,8 @@ $LANG21 = array(
     2 => 'Nemate potrebna prava za izmenu Bloka.',
     3 => 'Blok Editor',
     4 => 'Došlo je do problema prilikom čitanja ovog feed-a (pogledaj error.log za više detalja).',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'Svi',
     8 => 'Sigurnosni nivo Bloka',
     9 => 'Redosled Bloka',
@@ -705,11 +709,11 @@ $LANG21 = array(
     17 => 'Sadržaj Bloka',
     18 => 'Molimo popunite Naziv Bloka i polja sa sadržajem',
     19 => 'Blok Menadžer',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'Specijalni nivo Bloka',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => 'Zadatak Bloka',
-    24 => '',
+    24 => 'Dynamic',
     25 => 'Da biste modifikovali Blok ili ga izbrisali, kliknite dole na željeni link. Da biste napravili novi Blok, kliknite na "Kreiraj Novi" iznad.',
     26 => 'Izgled Bloka',
     27 => 'PHP Blok',
@@ -729,10 +733,10 @@ $LANG21 = array(
     41 => 'Desno',
     42 => 'Morate navesti Ime Bloka i Namenu Bloka za obične Geeklog blokove.',
     43 => 'Jedino na početnoj strani(Home/index)',
-    44 => '',
+    44 => 'Multiple',
     45 => "Pokušavate pristupati bloku za koji nemate prava pristupa. Ovaj pokušaj pristupa je zabeležen. Molimo <a href=\"{$_CONF['site_admin_url']}/block.php\">vratite se nazad</a>.",
     46 => 'Novi Blok',
-    47 => '',
+    47 => 'None',
     48 => 'Naziv Bloka',
     49 => ' (nema razmaka i mora biti jedinstven)',
     50 => 'The Block Name can not be empty',
@@ -753,7 +757,8 @@ $LANG21 = array(
     65 => 'Redosled',
     66 => 'Autotagovi',
     67 => 'Klikni da omogućiš autotagove',
-    68 => 'Feed za portal blog je previše dugačak za prikaz. Molimo podesite maximalan broj tekstova za import u samoj blok konfiguraciji ili u globalnim Geeklog Podešavanjima.'
+    68 => 'Feed za portal blog je previše dugačak za prikaz. Molimo podesite maximalan broj tekstova za import u samoj blok konfiguraciji ili u globalnim Geeklog Podešavanjima.',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################
@@ -887,7 +892,26 @@ $LANG27 = array(
     27 => 'Ili Uploaduj Ikonu Kategorije',
     28 => 'Makismalna veličina',
     29 => 'Greška Prilkom Uplod-a',
-    30 => 'Stories in Topic'
+    30 => 'Stories in Topic',
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden',
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only',
+    40 => 'Assign one or more topics. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
+    44 => 'Inherit',
+    45 => 'Default',
+    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1762,6 +1786,8 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => 'Administratorski URL',
     'site_mail' => 'E-Mail Sajta',
     'noreply_mail' => 'No-Reply E-Mail',
+    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => 'Ime Sajta',
     'site_slogan' => 'Slogan',
     'owner_name' => 'Owner Name',
@@ -1889,7 +1915,6 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Max Slika po Tekstu',
     'limitnews' => 'Tekstova Po Strani',
     'minnews' => 'Min. Tekstova Po Strani',
-    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Prikaži Autora?',
     'hideviewscount' => 'Sakrij Brojač Pregleda?',
     'hideemailicon' => 'Sakrij E-Mail Ikonu?',
@@ -1944,6 +1969,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'Ograničenje Brzine Lozinke',
     'login_attempts' => 'Max. Broj Pokušaja Prijave',
     'login_speedlimit' => 'Ograničenje Brzine Prijave',
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'Korisnički HTML',
     'admin_html' => 'Admin HTML',
     'advanced_html' => 'Additional HTML for Adv. Editor',
@@ -1951,6 +1978,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => 'Dozvoljeni Protokoli',
     'disable_autolinks' => 'Onemogući Autolikove?',
     'clickable_links' => 'Make URLs clickable?',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Send compressed output?',
     'frame_options' => 'Protection against "clickjacking"',
     'censormode' => 'Režim Cenzure?',
@@ -1972,6 +2000,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => 'Days to close comments (default)',
     'comment_close_rec_stories' => 'Number of most recent stories enabled for comments',
     'allow_reply_notifications' => 'Allow comment reply notifications?',
+    'comment_on_same_page' => 'Comment on Same Page?',
+    'show_comments_at_replying' => 'Show Comments at Replying?',
     'search_style' => 'Results List Style',
     'search_limits' => 'Page Limits',
     'search_show_num' => 'Show Result Number?',
@@ -1982,7 +2012,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Default Search Method',
     'search_def_sort' => 'Default Sort Order',
     'autotag_permissions_story' => '[story: ] Permissions',
-    'autotag_permissions_user' => '[user: ] Permissions'
+    'autotag_permissions_user' => '[user: ] Permissions',
+    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
+    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2038,7 +2071,9 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Kategorija Podrazumevane Dozvole',
     'fs_perm_block' => 'Blok Podrazumevane Dozvole',
     'fs_webservices' => 'Web Servisi',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
 
 $LANG_tab['Core'] = array(
@@ -2080,7 +2115,8 @@ $LANG_tab['Core'] = array(
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
-    'tab_webservices' => 'Webservices'
+    'tab_webservices' => 'Webservices',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2112,7 +2148,8 @@ $LANG_configselects['Core'] = array(
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
-    28 => array('No access' => 0, 'Use' => 2)
+    28 => array('No access' => 0, 'Use' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ###############################################################################
@@ -2127,6 +2164,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'This field does not match the comparison operation',
     'date' => 'This field must be in date format',
     'year' => 'This field must be in year format such as 2010',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'This field must be in time format',
     'datetime' => 'This field must be in datetime format',
     'boolean' => 'This field must be in boolean',
@@ -2157,7 +2195,8 @@ $LANG_VALIDATION = array(
     'path_to_netpbm' => 'You must set image library to netpbm and fill this field with directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'
+    'single_char' => 'This field must be a single character',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 

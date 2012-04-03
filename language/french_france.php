@@ -180,7 +180,10 @@ $LANG01 = array(
     136 => 'Warning: Javascript recommended for enhanced functionality',
     137 => 'Warning: Javascript required to enable functionality',
     138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
-    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -230,7 +233,8 @@ $LANG03 = array(
     41 => 'Hello %s,',
     42 => 'Se désabonner',
     43 => 'Se désabonner des notifications',
-    44 => 'Votre nom'
+    44 => 'Votre nom',
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
 );
 
 ###############################################################################
@@ -686,8 +690,8 @@ $LANG21 = array(
     2 => 'Vous n\'avez pas les droits nécessaires pour modifier ce block',
     3 => 'Editeur de block',
     4 => 'Un problème est survenu à la lecture de cet envoi. Voir error.log.',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'Tous',
     8 => 'niveau de sécurité du block',
     9 => 'Ordre du block',
@@ -701,11 +705,11 @@ $LANG21 = array(
     17 => 'Contenu du block',
     18 => 'Veuillez remplir les champs: titre, niveau de sécurité et contenu du block',
     19 => 'Contrôleur de block',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'Block niv. sec.',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => 'Block ordre',
-    24 => '',
+    24 => 'Dynamic',
     25 => 'Cliquez sur le lien ci-dessous pour modifier ou supprimer un block.  Cliquez sur le lien "Ajouter" pour créer un nouveau block.',
     26 => 'Block d\'affichage',
     27 => 'Block PHP',
@@ -725,10 +729,10 @@ $LANG21 = array(
     41 => 'Droit',
     42 => 'Vous devez saisir l\'ordre et le niveau de sécurité pour les blocks par défaut du système',
     43 => 'Accueil seulement',
-    44 => '',
+    44 => 'Multiple',
     45 => "Vous essayez d'accéder à un block auquel vous n'avez pas droit.  Cette tentative est enregistrée. Veuillez <a href=\'{$_CONF['site_admin_url']}/block.php\'>retourner à la page de contrôle des blocks</a>.",
     46 => 'Position',
-    47 => '',
+    47 => 'None',
     48 => 'Nom du block',
     49 => ' (Pas d\'espace et doit être unique)',
     50 => 'The Block Name can not be empty',
@@ -749,7 +753,8 @@ $LANG21 = array(
     65 => 'Ordre',
     66 => 'Autotags',
     67 => 'Vérifiez si vous acceptez les autotags',
-    68 => 'Le flux de ce site est trop long. Merci de préciser un nombre d\'articles maximum à importer (règlage du block ou configuration principale).'
+    68 => 'Le flux de ce site est trop long. Merci de préciser un nombre d\'articles maximum à importer (règlage du block ou configuration principale).',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################
@@ -883,7 +888,26 @@ $LANG27 = array(
     27 => 'Ou alors téléchargez votre icon pour cette catégorie',
     28 => 'Maximum',
     29 => 'Erreur de téléchargement',
-    30 => 'Articles dans la catégorie'
+    30 => 'Articles dans la catégorie',
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden',
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only',
+    40 => 'Assign one or more topics. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
+    44 => 'Inherit',
+    45 => 'Default',
+    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1758,6 +1782,8 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => 'URL de l\'administration',
     'site_mail' => 'Email du site',
     'noreply_mail' => 'Email No-Reply',
+    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => 'Nom du site',
     'site_slogan' => 'Slogan du site (optionnel)',
     'owner_name' => 'Owner Name',
@@ -1939,6 +1965,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'Intervalle minimum entre les requète d\'un nouveau mot de passe',
     'login_attempts' => 'Nombre maximum de tentatives de connexions',
     'login_speedlimit' => 'Intervalle minimum entre tentavives de connexions echouées',
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'HTML pour les membres',
     'admin_html' => 'HTML pour l\'administrateur',
     'advanced_html' => 'HTML additionnel pour l\'éditeur avancé',
@@ -1946,6 +1974,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => 'Protocoles autorisés',
     'disable_autolinks' => 'Désactiver les Autolinks',
     'clickable_links' => 'Rendre les URLs cliquables',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Envoyer l\'output compréssé',
     'frame_options' => 'Protection contre "clickjacking"',
     'censormode' => 'Mode censure',
@@ -1967,6 +1996,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => 'Nombre de jours pour clore les commenataires (par défaut)',
     'comment_close_rec_stories' => 'Nombre des articles les plus récents pour lesquels activer les commentaires',
     'allow_reply_notifications' => 'Permettre les notifications de réponse aux commentaires',
+    'comment_on_same_page' => 'Comment on Same Page?',
+    'show_comments_at_replying' => 'Show Comments at Replying?',
     'search_style' => 'Style de résultats',
     'search_limits' => 'Limites du nombre de pages',
     'search_show_num' => 'Montrer le nombre de résultats',
@@ -1977,7 +2008,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Méthode de recherche par défaut',
     'search_def_sort' => 'Ordre de recherche par défaut',
     'autotag_permissions_story' => '[story: ] Permissions',
-    'autotag_permissions_user' => '[user: ] Permissions'
+    'autotag_permissions_user' => '[user: ] Permissions',
+    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
+    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2033,7 +2067,9 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Block Default Permission',
     'fs_webservices' => 'Webservices',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
 
 $LANG_tab['Core'] = array(
@@ -2075,7 +2111,8 @@ $LANG_tab['Core'] = array(
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
-    'tab_webservices' => 'Webservices'
+    'tab_webservices' => 'Webservices',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2107,7 +2144,8 @@ $LANG_configselects['Core'] = array(
     25 => array('Nouveaux articles' => 'story', 'Nouveaux commentaires' => 'comment', 'Nouveaux Trackbacks' => 'trackback', 'Nouveaux Pingbacks' => 'pingback', 'Nouveaux membres' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Titre (asc)' => 'title|asc', 'Titre (desc)' => 'title|desc', 'Auteur (asc)' => 'uid|asc', 'Auteur (desc)' => 'uid|desc'),
-    28 => array('No access' => 0, 'Use' => 2)
+    28 => array('No access' => 0, 'Use' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ###############################################################################
@@ -2122,6 +2160,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'This field does not match the comparison operation',
     'date' => 'This field must be in date format',
     'year' => 'This field must be in year format such as 2010',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'This field must be in time format',
     'datetime' => 'This field must be in datetime format',
     'boolean' => 'This field must be in boolean',
@@ -2152,7 +2191,8 @@ $LANG_VALIDATION = array(
     'path_to_netpbm' => 'You must set image library to netpbm and fill this field with directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'
+    'single_char' => 'This field must be a single character',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 

@@ -157,7 +157,8 @@ $LANG_INSTALL = array(
     105 => 'Der Pfad, den Du f&uuml;r das Admin-Verzeichnis eingegeben hast, scheint nicht korrekt zu sein. Bitte &uuml;berpr&uuml;fe Deine Eingabe und versuche es dann noch einmal.',
     106 => 'PostgreSQL',
     107 => 'F&uuml;r den produktiven Einsatz wird ein Datenbank-Passwort ben&ouml;tigt!',
-    108 => 'Keine Datenbank-Treiber gefunden!'
+    108 => 'Keine Datenbank-Treiber gefunden!',
+    109 => 'Emergency Rescue Tool'
 );
 
 // +---------------------------------------------------------------------------+

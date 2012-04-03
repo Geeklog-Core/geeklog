@@ -158,6 +158,7 @@ $LANG_confignames['staticpages'] = array(
     'meta_tags' => 'Activer les Meta Tags',
     'comment_code' => 'Commentaires par défaut',
     'draft_flag' => 'Drapeux brouillon par défaut',
+    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'newstaticpagesinterval' => 'Interval des nouvelles pages statiques',
     'hidenewstaticpages' => 'Cacher les nouvelles pages statiques',
     'title_trim_length' => 'Couper la longueur des titres',
