@@ -3,7 +3,7 @@
 ###############################################################################
 # french_france_utf-8.php
 #
-# This is a french language version for GeekLog!
+# This is a french language version for Geeklog!
 # Updated for Geeklog 1.8.0 by ben AT geeklog DOT fr 
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -180,7 +180,10 @@ $LANG01 = array(
     136 => 'Avertissment : Javascript est recommandé pour profité des fonctions avancées.',
     137 => 'Avertissment : Javascript est nécessaire pour activé cette fonction.',
     138 => "Cliquez <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">ici</a> pour désactiver l\éditeur avancé et utiliser l\'éditeur par défaut qui ne nécessite pas JavaScript.",
-    139 => "Cliquez <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">ici</a> pour retourner à la page d\'accueil."
+    139 => "Cliquez <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">ici</a> pour retourner à la page d\'accueil.",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -230,7 +233,8 @@ $LANG03 = array(
     41 => 'Hello %s,',
     42 => 'Se désabonner',
     43 => 'Se désabonner des notifications',
-    44 => 'Votre nom'
+    44 => 'Votre nom',
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
 );
 
 ###############################################################################
@@ -386,7 +390,7 @@ $LANG04 = array(
     147 => 'Editez votre mot de passe, votre email ou la fonction auto login. Vous devrez inscrire votre mot de passe ou votre email deux fois pour le confirmer.',
     148 => 'Informations d\'utilisateur',
     149 => 'Modifiez les informations personnelles que les autres pourront voir :<ul><li>Votre site internet.<li>Votre lieu géographique.<li>La signature optionnelle qui sera ajoutée à toutes vos interventions sur ce site.</li><li>La BIO est une courte description de vous-même que vous désirez partager avec les autres.</li></ul>',
-    150 => 'Avertissement: Utiliser la fonction Javascript de votre navigateur pour de meilleurs résultats',
+    150 => '',
     156 => 'Effacer mon compte',
     157 => 'Suppression du compte (action irréversible)',
     158 => 'Time Zone',
@@ -401,7 +405,7 @@ $LANG04 = array(
 );
 
 ###############################################################################
-# Customize if need to modify the Tabbed navbar MyAccount panels used. Array index key matches preference div id
+# Customize if need to modify the Tabbed navbar MyAccount panels used.
 # Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
@@ -597,7 +601,7 @@ $LANG11 = array(
     3 => 'Version imprimable',
     4 => 'Options',
     5 => '',
-    6 => "Souscrire à '%s'"
+    6 => 'Souscrire à \'%s\''
 );
 
 ###############################################################################
@@ -686,8 +690,8 @@ $LANG21 = array(
     2 => 'Vous n\'avez pas les droits nécessaires pour modifier ce bloc',
     3 => 'Editeur de bloc',
     4 => 'Un problème est survenu à la lecture de cet envoi. Voir error.log.',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'Tous',
     8 => 'niveau de sécurité du bloc',
     9 => 'Ordre du bloc',
@@ -701,11 +705,11 @@ $LANG21 = array(
     17 => 'Contenu du bloc',
     18 => 'Veuillez remplir les champs: titre, niveau de sécurité et contenu du bloc',
     19 => 'Contrôleur de bloc',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'Bloc niv. sec.',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => 'Bloc ordre',
-    24 => '',
+    24 => 'Dynamic',
     25 => 'Cliquez sur le lien ci-dessous pour modifier ou supprimer un bloc.  Cliquez sur le lien "Ajouter" pour créer un nouveau bloc.',
     26 => 'Bloc d\'affichage',
     27 => 'Bloc PHP',
@@ -725,10 +729,10 @@ $LANG21 = array(
     41 => 'Droit',
     42 => 'Vous devez saisir l\'ordre et le niveau de sécurité pour les blocs par défaut du système',
     43 => 'Accueil seulement',
-    44 => '',
+    44 => 'Multiple',
     45 => "Vous essayez d'accéder à un bloc auquel vous n'avez pas droit.  Cette tentative est enregistrée. Veuillez <a href=\'{$_CONF['site_admin_url']}/bloc.php\'>retourner à la page de contrôle des blocs</a>.",
     46 => 'Position',
-    47 => '',
+    47 => 'None',
     48 => 'Nom du bloc',
     49 => ' (Pas d\'espace et doit être unique)',
     50 => 'Le nom du bloc ne doit pas être vide',
@@ -749,7 +753,8 @@ $LANG21 = array(
     65 => 'Ordre',
     66 => 'Autotags',
     67 => 'Vérifiez si vous acceptez les autotags',
-    68 => 'Le flux de ce site est trop long. Merci de préciser un nombre d\'articles maximum à importer (règlage du bloc ou configuration principale).'
+    68 => 'Le flux de ce site est trop long. Merci de préciser un nombre d\'articles maximum à importer (règlage du bloc ou configuration principale).',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################
@@ -883,7 +888,26 @@ $LANG27 = array(
     27 => 'Ou alors téléchargez votre icon pour cette catégorie',
     28 => 'Maximum',
     29 => 'Erreur de téléchargement',
-    30 => 'Articles dans la catégorie'
+    30 => 'Articles dans la catégorie',
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden',
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only',
+    40 => 'Assign one or more topics. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
+    44 => 'Inherit',
+    45 => 'Default',
+    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1180,7 +1204,7 @@ $LANG33 = array(
     50 => "URL du site ({$_CONF['site_url']})",
     51 => 'Le nom de fichier choisi est présentement utilisé par un autre flux. Merci de choisir un nom différent.',
     52 => 'Erreur: nom de fichier existant',
-	53 => 'All Frontpage Stories',
+    53 => 'All Frontpage Stories',
     54 => 'Please select the type of feed to create.',
     55 => 'Articles'
 );
@@ -1338,7 +1362,7 @@ $LANG_ACCESS = array(
     'edit' => 'Modifier',
     'none' => 'Rien',
     'accessdenied' => 'Accès réservé',
-    'storydenialmsg' => "vous n'avez pas le droit de lire cette article. Peut-être que vous n'tes pas membre de {$_CONF['site_name']}.  Vous pouvez <a href=users.php?mode=new>vous enregistrer</a> sur {$_CONF['site_name']} pour obtenir un compte membre!",
+    'storydenialmsg' => "vous n'avez pas le droit de lire cette article. Peut-être que vous n'tes pas membre de {$_CONF['site_name']}.  Vous pouvez <a href=\"{$_CONF['site_url']}/users.php?mode=new\">vous enregistrer</a> sur {$_CONF['site_name']} pour obtenir un compte membre!",
     'nogroupsforcoregroup' => 'Le groupe n\'inclue aucun autre groupe',
     'grouphasnorights' => 'Le groupe n\'a pas accès aux fonctions administratives',
     'newgroup' => 'Nouveau Groupe',
@@ -1376,7 +1400,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'Faire une sauvegarde',
     'backup_successful' => 'Sauvegarde de la base de donnée effectuée avec succès',
     'db_explanation' => 'Cliquez sur le bouton ci-dessous pour effectuer une sauvegarde de votre système',
-    'not_found' => "Chemin incorrect ou le fichier mysqldump n'est pas exécutable.<br'. XHTML . '>Vérifiez le paramètre <strong>mysqldump_path</strong> sur la page de configuration.<br". XHTML . '> Vérifiez le règlage <a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a> dans PHP.<br'. XHTML . ">Ce paramètre est actuellement positionné à : <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Chemin incorrect ou le fichier mysqldump n'est pas exécutable.<br'. XHTML . '>Vérifiez le paramètre <strong>mysqldump_path</strong> sur la page de configuration.<br" . XHTML . "> Vérifiez le règlage <a href=\"http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a> dans PHP.<br" . XHTML . ">Ce paramètre est actuellement positionné à : <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Sauvegarde échouée: la taille du fichier était de 0 octets.',
     'path_not_found' => "{$_CONF['backup_path']} n'existe pas ou n'est pas un répertoire.",
     'no_access' => "Erreur: le répertoire {$_CONF['backup_path']} n'est pas accessible.",
@@ -1445,126 +1469,126 @@ $LANG_LOGIN = array(
 # trackback.php
 
 $LANG_TRB = array(
-    'trackback'          => 'Trackback',
-    'from'               => 'de',
-    'tracked_on'         => 'Pisté sur',
-    'read_more'          => '[lire la suite]',
-    'intro_text'         => 'Voici ce que les autres ont à dire de \'%s\':',
-    'no_comments'        => 'Aucun Trackback pour l\'instant.',
+    'trackback' => 'Trackback',
+    'from' => 'de',
+    'tracked_on' => 'Pisté sur',
+    'read_more' => '[lire la suite]',
+    'intro_text' => 'Voici ce que les autres ont à dire de \'%s\':',
+    'no_comments' => 'Aucun Trackback pour l\'instant.',
     'this_trackback_url' => 'URL de Trackback :',
-    'num_comments'       => '%d Trackbacks',
-    'send_trackback'     => 'Envoyez un ping',
-    'preview'            => 'Pré-visualisez',
-    'editor_title'       => 'Envoyez un commentaire au sujet du Trackback',
-    'trackback_url'      => 'URL de Trackback',
-    'entry_url'          => 'URL de la soumission',
-    'entry_title'        => 'Titre de la soumission',
-    'blog_name'          => 'Nom du site',
-    'excerpt'            => 'Extrait',
-    'truncate_warning'   => 'Note: le site récepteur peut raccoucir votre extrait',
-    'button_send'        => 'Envoyez',
-    'button_preview'     => 'Pré-visualisez',
-    'send_error'         => 'Allo Houston... On a un problème',
+    'num_comments' => '%d Trackbacks',
+    'send_trackback' => 'Envoyez un ping',
+    'preview' => 'Pré-visualisez',
+    'editor_title' => 'Envoyez un commentaire au sujet du Trackback',
+    'trackback_url' => 'URL de Trackback',
+    'entry_url' => 'URL de la soumission',
+    'entry_title' => 'Titre de la soumission',
+    'blog_name' => 'Nom du site',
+    'excerpt' => 'Extrait',
+    'truncate_warning' => 'Note: le site récepteur peut raccoucir votre extrait',
+    'button_send' => 'Envoyez',
+    'button_preview' => 'Pré-visualisez',
+    'send_error' => 'Allo Houston... On a un problème',
     'send_error_details' => 'Erreur dans l\'envoi du commentaire de ce Trackback :',
-    'url_missing'        => 'Pas d\'URL de soumission',
-    'url_required'       => 'Merci d\'inscrire un URL pour cette soumission.',
-    'target_missing'     => 'Pas d\'URL de Trackback',
-    'target_required'    => 'Merci d\'inscrire un URL pour ce Trackback',
-    'error_socket'       => 'N\'a pu accédé aux données.',
-    'error_response'     => 'Réponse incomprise.',
-    'error_unspecified'  => 'Erreur non spécifique.',
-    'select_url'         => 'Sélectionnez un URL pour ce Trackback',
-    'not_found'          => 'L\'URL de ce Trackback est inconnu',
-    'autodetect_failed'  => 'Le système n\'a pu détecter l\'URL du Trackback que vous désirez commenter. Merci de l\'inscrire manuellement.',
-    'trackback_explain'  => 'Merci de sélectionner l\'URL vers lequel vous souhaitez envoyer votre Trackback à partir des liens ci-dessous, ou alors inscrivez-le manuellement <a href="%s"> en cliquant ici</a> si il ne s\'y trouve pas.',
+    'url_missing' => 'Pas d\'URL de soumission',
+    'url_required' => 'Merci d\'inscrire un URL pour cette soumission.',
+    'target_missing' => 'Pas d\'URL de Trackback',
+    'target_required' => 'Merci d\'inscrire un URL pour ce Trackback',
+    'error_socket' => 'N\'a pu accédé aux données.',
+    'error_response' => 'Réponse incomprise.',
+    'error_unspecified' => 'Erreur non spécifique.',
+    'select_url' => 'Sélectionnez un URL pour ce Trackback',
+    'not_found' => 'L\'URL de ce Trackback est inconnu',
+    'autodetect_failed' => 'Le système n\'a pu détecter l\'URL du Trackback que vous désirez commenter. Merci de l\'inscrire manuellement.',
+    'trackback_explain' => 'Merci de sélectionner l\'URL vers lequel vous souhaitez envoyer votre Trackback à partir des liens ci-dessous, ou alors inscrivez-le manuellement <a href="%s"> en cliquant ici</a> si il ne s\'y trouve pas.',
     'no_links_trackback' => 'Aucun lien trouvé. Vous ne pouvez commenter le Trackback lié à cette soumission.',
-    'pingback'           => 'Pingback',
-    'pingback_results'   => 'Résultat des Pingbacks',
-    'send_pings'         => 'Envoyez un ping',
-    'send_pings_for'     => 'Envoyez un ping pour "%s"',
-    'no_links_pingback'  => 'Aucun lien trouvé. Vous ne pouvez envoyer un Pingback lié à cette soumission.',
-    'pingback_success'   => 'Pingback envoyé.',
-    'no_pingback_url'    => 'Aucun URL lié à ce Pingback n\'a été identifié.',
-    'resend'             => 'Renvoi',
-    'ping_all_explain'   => 'Vous pouvez maintenant avertir les sites dont vous donné un lien (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), ou avertir que votre site à été modifié en lançant un ping aux répertoires de blog, ou encore envoyer un <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> au cas o&ugrave; vous ayez commenté les propos trouvés sur un autre site.',
-    'pingback_button'    => 'Envoyez un Pingback',
-    'pingback_short'     => 'Envoyez un Pingback à tous les sites liés à cette soumission.',
-    'pingback_disabled'  => '(Pingbacks désactivés)',
-    'ping_button'        => 'Envoyez un ping',
-    'ping_short'         => 'Envoyez un ping aux répertoires de blog.',
-    'ping_disabled'      => '(Pings désactivés)',
-    'trackback_button'   => 'Envoyez un Trackback',
-    'trackback_short'    => 'Envoyez un commentaire de Trackback.',
+    'pingback' => 'Pingback',
+    'pingback_results' => 'Résultat des Pingbacks',
+    'send_pings' => 'Envoyez un ping',
+    'send_pings_for' => 'Envoyez un ping pour "%s"',
+    'no_links_pingback' => 'Aucun lien trouvé. Vous ne pouvez envoyer un Pingback lié à cette soumission.',
+    'pingback_success' => 'Pingback envoyé.',
+    'no_pingback_url' => 'Aucun URL lié à ce Pingback n\'a été identifié.',
+    'resend' => 'Renvoi',
+    'ping_all_explain' => 'Vous pouvez maintenant avertir les sites dont vous donné un lien (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), ou avertir que votre site à été modifié en lançant un ping aux répertoires de blog, ou encore envoyer un <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> au cas o&ugrave; vous ayez commenté les propos trouvés sur un autre site.',
+    'pingback_button' => 'Envoyez un Pingback',
+    'pingback_short' => 'Envoyez un Pingback à tous les sites liés à cette soumission.',
+    'pingback_disabled' => '(Pingbacks désactivés)',
+    'ping_button' => 'Envoyez un ping',
+    'ping_short' => 'Envoyez un ping aux répertoires de blog.',
+    'ping_disabled' => '(Pings désactivés)',
+    'trackback_button' => 'Envoyez un Trackback',
+    'trackback_short' => 'Envoyez un commentaire de Trackback.',
     'trackback_disabled' => '(Trackbacks désactivés)',
-    'may_take_a_while'   => 'Merci de noter que l\'envoi de pings et de Pingbacks peut prendre un certain temps.',
-    'ping_results'       => 'Résultats des pings',
-    'unknown_method'     => 'Méthode de ping inconnue',
-    'ping_success'       => 'Ping envoyé.',
-    'error_site_name'    => 'Inscrire le nom du site.',
-    'error_site_url'     => 'Inscrire l\'URL du site.',
-    'error_ping_url'     => 'Inscrire un URL de ping valide.',
-    'no_services'        => 'Aucun répertoire de blog n\'a été configuré.',
-    'services_headline'  => 'Répertoire de blog',
-    'service_explain'    => 'Cliquez sur l\'icone correspondant au répertoire de blog que vous souhaitez modifier ou effacer. Cliquez sur Ajouter pour paramétrer un nouveau répertoire de blog.',
-    'service'            => 'Service',
-    'ping_method'        => 'Méthode de ping',
-    'service_website'    => 'Site web',
-    'service_ping_url'   => 'Je ping cet URL',
-    'ping_standard'      => 'Ping standard',
-    'ping_extended'      => 'Ping étendu',
-    'ping_unknown'       => '(méthode inconnue)',
-    'edit_service'       => 'éditez les répertoires de blog',
-    'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Préparez vos commentaires de Trackback pour <a href="%s">%s</a>.',
-    'editor_intro_none'  => 'Préparez vos commentaires de Trackback.',
-    'trackback_note'     => 'Si vous désirez envoyer un Trackback, voyez la liste des articles et cliquez sur "Envoyez un ping" correspondant à l\'article que vous souhaitez commenter. <a href="%s">Cliquez ici</a> pour envoyer un Trackback qui n\'est lié à aucun article.',
-    'pingback_explain'   => 'Inscrivez l\'URL à qui il faudra envoyer le Pingback. Le Pingback pointera en direction de la page d\'accueil de votre site.',
-    'pingback_url'       => 'URL du Pingback',
-    'site_url'           => 'URL du site',
-    'pingback_note'      => 'Si vous désirez envoyer un Pingback, consultez la liste des articles et cliquez sur "Envoyez un ping" correspondant à l\'article que vous souhaitez commenter. <a href="%s">Cliquez ici</a> pour envoyer un Pingback qui n\'est lié à aucun article.',
-    'pbtarget_missing'   => 'Aucun URL pour ce Pingback',
-    'pbtarget_required'  => 'Merci d\'inscrire un URL pour ce Pingback',
-    'pb_error_details'   => 'Une erreur est survenue dans l\'envoi de ce Pingback :',
-    'delete_trackback'   => 'Cliquez pour effacer ce Trackback: '
+    'may_take_a_while' => 'Merci de noter que l\'envoi de pings et de Pingbacks peut prendre un certain temps.',
+    'ping_results' => 'Résultats des pings',
+    'unknown_method' => 'Méthode de ping inconnue',
+    'ping_success' => 'Ping envoyé.',
+    'error_site_name' => 'Inscrire le nom du site.',
+    'error_site_url' => 'Inscrire l\'URL du site.',
+    'error_ping_url' => 'Inscrire un URL de ping valide.',
+    'no_services' => 'Aucun répertoire de blog n\'a été configuré.',
+    'services_headline' => 'Répertoire de blog',
+    'service_explain' => 'Cliquez sur l\'icone correspondant au répertoire de blog que vous souhaitez modifier ou effacer. Cliquez sur Ajouter pour paramétrer un nouveau répertoire de blog.',
+    'service' => 'Service',
+    'ping_method' => 'Méthode de ping',
+    'service_website' => 'Site web',
+    'service_ping_url' => 'Je ping cet URL',
+    'ping_standard' => 'Ping standard',
+    'ping_extended' => 'Ping étendu',
+    'ping_unknown' => '(méthode inconnue)',
+    'edit_service' => 'éditez les répertoires de blog',
+    'trackbacks' => 'Trackbacks',
+    'editor_intro' => 'Préparez vos commentaires de Trackback pour <a href="%s">%s</a>.',
+    'editor_intro_none' => 'Préparez vos commentaires de Trackback.',
+    'trackback_note' => 'Si vous désirez envoyer un Trackback, voyez la liste des articles et cliquez sur "Envoyez un ping" correspondant à l\'article que vous souhaitez commenter. <a href="%s">Cliquez ici</a> pour envoyer un Trackback qui n\'est lié à aucun article.',
+    'pingback_explain' => 'Inscrivez l\'URL à qui il faudra envoyer le Pingback. Le Pingback pointera en direction de la page d\'accueil de votre site.',
+    'pingback_url' => 'URL du Pingback',
+    'site_url' => 'URL du site',
+    'pingback_note' => 'Si vous désirez envoyer un Pingback, consultez la liste des articles et cliquez sur "Envoyez un ping" correspondant à l\'article que vous souhaitez commenter. <a href="%s">Cliquez ici</a> pour envoyer un Pingback qui n\'est lié à aucun article.',
+    'pbtarget_missing' => 'Aucun URL pour ce Pingback',
+    'pbtarget_required' => 'Merci d\'inscrire un URL pour ce Pingback',
+    'pb_error_details' => 'Une erreur est survenue dans l\'envoi de ce Pingback :',
+    'delete_trackback' => 'Cliquez pour effacer ce Trackback: '
 );
 
 ###############################################################################
 # directory.php
 
 $LANG_DIR = array(
-    'title'            => 'Liste des articles',
-    'title_year'       => 'Liste des articles en %d',
+    'title' => 'Liste des articles',
+    'title_year' => 'Liste des articles en %d',
     'title_month_year' => 'Liste des articles en %s %d',
-    'nav_top'          => 'Retour à la liste des articles',
-    'no_articles'      => 'Pas d\'articles.'
+    'nav_top' => 'Retour à la liste des articles',
+    'no_articles' => 'Pas d\'articles.'
 );
 
 ###############################################################################
 # admin/sectest.php
 
 $LANG_SECTEST = array(
-    'sectest'       => 'Geeklog vérification de la sécurité',
-    'results'       => 'Resultats de la vérification de la sécurité',
-    'okay'          => 'Tout semble être en ordre.',
-    'please_fix'    => 'Merci de corriger les problèmes ci-dessus avant d\'utiliser votre site!',
-    'please_note'   => 'Notez qu\'aucun site n\'est sécurisé à 100%. Ce script teste uniquement les problème évidents.',
+    'sectest' => 'Geeklog vérification de la sécurité',
+    'results' => 'Resultats de la vérification de la sécurité',
+    'okay' => 'Tout semble être en ordre.',
+    'please_fix' => 'Merci de corriger les problèmes ci-dessus avant d\'utiliser votre site!',
+    'please_note' => 'Notez qu\'aucun site n\'est sécurisé à 100%. Ce script teste uniquement les problème évidents.',
     'stay_informed' => 'Pour rester informé des nouvelles versions de Geeklog et des possibles problèmes de sécurité, nous vous suggérons de vous abonner (petit trafic) à la %s mailing list et/ou utiliser l\'option %s de l\'interface d\'administration de temps en temps pour vérifier les mises à jour disponibles.',
-    'public_html'   => '"public_html" ne devrait jamais faire partie de l\'URL de votre site.  Merci de lire le paragraphe a propos du public_html dans les %s et de changer votre paramètrage avant de continuer.',
-    'installation'  => 'Instructions d\'installation',
-    'directory'     => 'directory',
-    'failed_tmp'    => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
-    'fix_it'        => 'This is a security risk and should be fixed!',
-    'reachable'     => 'Your %s is reachable from the web.',
+    'public_html' => '"public_html" ne devrait jamais faire partie de l\'URL de votre site.  Merci de lire le paragraphe a propos du public_html dans les %s et de changer votre paramètrage avant de continuer.',
+    'installation' => 'Instructions d\'installation',
+    'directory' => 'directory',
+    'failed_tmp' => 'Failed to create a temporary file in your data directory. Check your directory permissions!',
+    'fix_it' => 'This is a security risk and should be fixed!',
+    'reachable' => 'Your %s is reachable from the web.',
     'not_reachable' => 'Good! Your %s is not reachable from the web.',
-    'not_sure'      => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
-    'remove_inst'   => 'You should really remove the install directory %s once you have your site up and running without any errors.', 
-    'remove_inst2'  => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
-    'inst_removed'  => 'Good! You seem to have removed the install directory already.',
-    'fix_password'  => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
+    'not_sure' => 'Got an HTTP result code %s when trying to test your %s. Not sure what to make of it ...',
+    'remove_inst' => 'You should really remove the install directory %s once you have your site up and running without any errors.',
+    'remove_inst2' => 'Keeping it around would allow malicious users the ability to destroy your current install, take over your site, or retrieve sensitive information.',
+    'inst_removed' => 'Good! You seem to have removed the install directory already.',
+    'fix_password' => 'You still have not changed the <strong>default password</strong> from "password" on %s Root user account(s).',
     'password_okay' => 'Good! You seem to have changed the default account password already.'
 );
 
-################################################################################
+###############################################################################
 # "What's New" Time Strings
 # 
 # For the first two strings, you can use the following placeholders.
@@ -1574,7 +1598,7 @@ $LANG_SECTEST = array(
 # %t    time, "2" (weeks)
 # %s    scale, "hrs", "weeks"
 
-$LANG_WHATSNEW = array( 
+$LANG_WHATSNEW = array(
     'new_string' => '%n %i',
     'new_last' => 'en %t %s',
     'minutes' => 'minutes',
@@ -1629,45 +1653,45 @@ $LANG_WEEK = array(
 # display administration lists and edit pages
 
 $LANG_ADMIN = array(
-    'search'        => 'Recherche ',
+    'search' => 'Recherche ',
     'limit_results' => 'Résultats ',
-    'submit'        => 'Soumettre',
-    'edit'          => 'Editer',
-    'edit_adv'      => 'Adv. Edit',
-    'admin_home'    => 'Menu administratif',
-    'create_new'    => 'Ajouter',
-    'create_new_adv'=> 'Nouveau (Avencé)',
-    'enabled'       => 'Activer',
-    'disabled'      => 'Désactiver',
-    'title'         => 'Titre',
-    'page_title'    => 'Titre de la page',
-    'type'          => 'Type',
-    'topic'         => 'Catégorie',
-    'info'          => 'Info',
-    'help_url'      => 'URL d\'aide',
-    'save'          => 'Sauvegarder',
-    'cancel'        => 'Annuler',
-    'install'       => 'Installer',
-    'delete'        => 'Effacer',
-    'deleteitem'    => 'Effacer',
-    'delete_sel'    => 'Delete selected',
-    'copy'          => 'Copier',
-    'no_results'    => '- Aucune entrée -',
-    'data_error'    => 'Il y a eu une erreur dans le traitement des données. Merci d\'en vérifier la source.',
-	'preview'       => 'Aperçu',
+    'submit' => 'Soumettre',
+    'edit' => 'Editer',
+    'edit_adv' => 'Adv. Edit',
+    'admin_home' => 'Menu administratif',
+    'create_new' => 'Ajouter',
+    'create_new_adv' => 'Nouveau (Avencé)',
+    'enabled' => 'Activer',
+    'disabled' => 'Désactiver',
+    'title' => 'Titre',
+    'page_title' => 'Titre de la page',
+    'type' => 'Type',
+    'topic' => 'Catégorie',
+    'info' => 'Info',
+    'help_url' => 'URL d\'aide',
+    'save' => 'Sauvegarder',
+    'cancel' => 'Annuler',
+    'install' => 'Installer',
+    'delete' => 'Effacer',
+    'deleteitem' => 'Effacer',
+    'delete_sel' => 'Delete selected',
+    'copy' => 'Copier',
+    'no_results' => '- Aucune entrée -',
+    'data_error' => 'Il y a eu une erreur dans le traitement des données. Merci d\'en vérifier la source.',
+    'preview' => 'Aperçu',
     'records_found' => 'Enregistrements ',
-    'addchild'      => 'Ajouter un décendant',
-    'list'          => 'lister',
-    'list_all'      => 'Lister tous',
+    'addchild' => 'Ajouter un décendant',
+    'list' => 'lister',
+    'list_all' => 'Lister tous',
     'meta_description' => 'Meta Description',
-    'meta_keywords' => 'Meta Keywords', 
-    'na'            => 'N/A',
-    'unavailable'   => 'N/A',
-    'warning'       => '!!!',
-    'token_expiry'  => 'Vous avez jusque %s pour saisir vos informations. Passé ce délais et pour des raisons de sécurité, vous perdrez votre saisie.',
+    'meta_keywords' => 'Meta Keywords',
+    'na' => 'N/A',
+    'unavailable' => 'N/A',
+    'warning' => '!!!',
+    'token_expiry' => 'Vous avez jusque %s pour saisir vos informations. Passé ce délais et pour des raisons de sécurité, vous perdrez votre saisie.',
     'token_expired' => 'Le délais de sécurité pour cette opératiton à expiré. Merci de vous identifier à nouveau pour continuer.',
-    'reauth_msg'    => 'Le délais de sécurité pour cette opératiton à expiré. Si vous souhaitez poursuivre l\'opération, merci de vous identifier à nouveau ci-dessous. Cela permettra de conserver vos dernières modifications.',
-    'authenticate'  => 'Authentification'
+    'reauth_msg' => 'Le délais de sécurité pour cette opératiton à expiré. Si vous souhaitez poursuivre l\'opération, merci de vous identifier à nouveau ci-dessous. Cela permettra de conserver vos dernières modifications.',
+    'authenticate' => 'Authentification'
 );
 
 # Localisation of the texts for the various drop-down menus that are actually
@@ -1675,26 +1699,26 @@ $LANG_ADMIN = array(
 # database.
 
 $LANG_commentcodes = array(
-    0   => 'Autoriser les commentaires',
-    -1  => 'Interdire les commentaires',
-	1   => 'Suspendre les commentaires'
+    0 => 'Autoriser les commentaires',
+    -1 => 'Interdire les commentaires',
+    1 => 'Suspendre les commentaires'
 );
 
 $LANG_commentmodes = array(
-    'flat'      => 'A plat',
-    'nested'    => 'Nichés',
-    'threaded'  => 'Regroupés',
+    'flat' => 'A plat',
+    'nested' => 'Nichés',
+    'threaded' => 'Regroupés',
     'nocomment' => 'Non affichés'
 );
 
 $LANG_cookiecodes = array(
-    0       => 'Non',
-    3600    => '1 heure',
-    7200    => '2 heures',
-    10800   => '3 heures',
-    28800   => '8 heures',
-    86400   => '1 jour',
-    604800  => '1 semaine',
+    0 => 'Non',
+    3600 => '1 heure',
+    7200 => '2 heures',
+    10800 => '3 heures',
+    28800 => '8 heures',
+    86400 => '1 jour',
+    604800 => '1 semaine',
     2678400 => '1 mois'
 );
 
@@ -1714,38 +1738,37 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Texte seul',
-    'html'      => 'Format HTML'
+    'html' => 'Format HTML'
 );
 
 $LANG_sortcodes = array(
-    'ASC'  => 'Anciens en premier',
+    'ASC' => 'Anciens en premier',
     'DESC' => 'Nouveaux en premier'
 );
 
 $LANG_trackbackcodes = array(
-    0  => 'Trackback activé',
+    0 => 'Trackback activé',
     -1 => 'Trackback désactivé'
 );
 
-################################################################################
+###############################################################################
 # Localization of the Admin Configuration UI
 
 $LANG_CONFIG = array(
-    'home'          => 'Accueil',
-    'admin_home'    => 'Administration du site',
-    'sections'      => 'Configuration',
-    'restore'       => 'Restaurer',
-    'add_element'   => 'Ajouter un élément',
-    'save_changes'  => 'Sauvegarder les changements',
-    'reset_form'    => 'Remise à zéro',
-    'changes_made'  => 'Les changements suivants ont été effectués',
-    'title'         => 'Panneau de Configuration',
-    'disable'       => 'Cliquer pour mettre hors de service',
-    'enable'        => 'Mettre en service',
+    'home' => 'Accueil',
+    'admin_home' => 'Administration du site',
+    'sections' => 'Configuration',
+    'restore' => 'Restaurer',
+    'add_element' => 'Ajouter un élément',
+    'save_changes' => 'Sauvegarder les changements',
+    'reset_form' => 'Remise à zéro',
+    'changes_made' => 'Les changements suivants ont été effectués',
+    'title' => 'Panneau de Configuration',
+    'disable' => 'Cliquer pour mettre hors de service',
+    'enable' => 'Mettre en service',
     'default_tab_name' => 'Principal',
     'search_configuration_label' => 'Configuration de la recherche',
     'error_validation_occurs' => 'Il y a des valeurs non valide dansd la configuration. MErci de corriger ces champs (cliquer sur les variables pour vous indiquer les champs posant des problèmes).'
-
 );
 
 $LANG_configsections['Core'] = array(
@@ -1759,8 +1782,11 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => 'URL de l\'administration',
     'site_mail' => 'Email du site',
     'noreply_mail' => 'Email No-Reply',
+    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => 'Nom du site',
     'site_slogan' => 'Slogan du site (optionnel)',
+    'owner_name' => 'Owner Name',
     'microsummary_short' => 'Microsummary',
     'path_log' => 'Logs',
     'path_language' => 'Langages',
@@ -1805,7 +1831,7 @@ $LANG_confignames['Core'] = array(
     'date' => 'Format de la date',
     'daytime' => 'Format Jour et heure',
     'shortdate' => 'Format date courte',
-    'dateonly' => 'Format date uniquement', 
+    'dateonly' => 'Format date uniquement',
     'timeonly' => 'Format heure uniquement',
     'week_start' => 'Début de semaine',
     'hour_mode' => 'Mode des heures',
@@ -1939,6 +1965,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'Intervalle minimum entre les requète d\'un nouveau mot de passe',
     'login_attempts' => 'Nombre maximum de tentatives de connexions',
     'login_speedlimit' => 'Intervalle minimum entre tentavives de connexions echouées',
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'HTML pour les membres',
     'admin_html' => 'HTML pour l\'administrateur',
     'advanced_html' => 'HTML additionnel pour l\'éditeur avancé',
@@ -1946,6 +1974,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => 'Protocoles autorisés',
     'disable_autolinks' => 'Désactiver les Autolinks',
     'clickable_links' => 'Rendre les URLs cliquables',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Envoyer l\'output compréssé',
     'frame_options' => 'Protection contre "clickjacking"',
     'censormode' => 'Mode censure',
@@ -1956,7 +1985,7 @@ $LANG_confignames['Core'] = array(
     'cdn_hosted' => 'Utiliser la version hébergée par un CDN de jQuery',
     'meta_tags' => 'Meta Tags',
     'meta_description' => 'Meta Description par défaut',
-    'meta_keywords' => 'Meta Keywords par défaut',    
+    'meta_keywords' => 'Meta Keywords par défaut',
     'default_permissions_block' => 'Permissions par défaut des Blocs',
     'default_permissions_story' => 'Permissions par défaut des articles',
     'default_permissions_topic' => 'Permissions par défaut des catégories',
@@ -1967,6 +1996,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => 'Nombre de jours pour clore les commenataires (par défaut)',
     'comment_close_rec_stories' => 'Nombre des articles les plus récents pour lesquels activer les commentaires',
     'allow_reply_notifications' => 'Permettre les notifications de réponse aux commentaires',
+    'comment_on_same_page' => 'Comment on Same Page?',
+    'show_comments_at_replying' => 'Show Comments at Replying?',
     'search_style' => 'Style de résultats',
     'search_limits' => 'Limites du nombre de pages',
     'search_show_num' => 'Montrer le nombre de résultats',
@@ -1977,7 +2008,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Méthode de recherche par défaut',
     'search_def_sort' => 'Ordre de recherche par défaut',
     'autotag_permissions_story' => '[story: ] Permissions',
-    'autotag_permissions_user' => '[user: ] Permissions'
+    'autotag_permissions_user' => '[user: ] Permissions',
+    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
+    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2033,7 +2067,9 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Topic Default Permission',
     'fs_perm_block' => 'Bloc Default Permission',
     'fs_webservices' => 'Webservices',
-    'fs_autotag_permissions' => 'Permissions d\'utilisation des autotags'
+    'fs_autotag_permissions' => 'Permissions d\'utilisation des autotags',
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
 
 $LANG_tab['Core'] = array(
@@ -2075,23 +2111,24 @@ $LANG_tab['Core'] = array(
     'tab_censoring' => 'Censure',
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
-    'tab_webservices' => 'Webservices'
+    'tab_webservices' => 'Webservices',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(
-    0 => array('Oui'=>1,'Non'=>0),
-    1 => array('Oui'=>TRUE,'Non'=>FALSE),
-    2 => array('Rejeté'=>0,'Conserver le dernier'=>1, 'Permettre les posts multiples'=>2),
-    3 => array_flip($LANG_trackbackcodes),
-    4 => array('Ne rien vérifier' => 0,'Vérifier l\'URL du site' => 1,'Vérifier l\'URL complète' => 2,'Vérifier l\'URL du site et l\'URL complète' => 3,'Comparer l\'IP et l\'IP du site' => 4,'Véricier l\'IP et l\'URL du site' => 5,'Vérifier l\IP et l\'URL complète' => 6,'Vérifier l\'IP, l\'UR complète et l\'URL du site' => 7),
+    0 => array('Oui' => 1, 'Non' => 0),
+    1 => array('Oui' => true, 'Non' => false),
+    2 => array('Rejeté' => 0, 'Conserver le dernier' => 1, 'Permettre les posts multiples' => 2),
+    3 => array('Trackback activé' => 0, 'Trackback désactivé' => -1),
+    4 => array('Ne rien vérifier' => 0, 'Vérifier l\'URL du site' => 1, 'Vérifier l\'URL complète' => 2, 'Vérifier l\'URL du site et l\'URL complète' => 3, 'Comparer l\'IP et l\'IP du site' => 4, 'Véricier l\'IP et l\'URL du site' => 5, 'Vérifier l\IP et l\'URL complète' => 6, 'Vérifier l\'IP, l\'UR complète et l\'URL du site' => 7),
     5 => array('Texte seul' => 'plaintext', 'Format HTML' => 'html'),
-    6 => array('12'=>'12','24'=>'24'),
+    6 => array('12' => 12, '24' => 24),
     7 => array('Dernière page' => 'last', 'Première page' => 'first', 'Toutes les pages' => 'all'),
-    8 => array('Droite'=>'right', 'Gauche'=>'left'),
+    8 => array('Droite' => 'right', 'Gauche' => 'left'),
     9 => array('Retour à la page' => 'item', 'Liste articles' => 'list', 'Page d\'accueil' => 'home', 'Page administration' => 'admin'),
-    10 => array('Aucune'=>'', 'Netpbm'=>'netpbm', 'ImageMagick'=>'imagemagick', 'gdLib' =>'gdlib'),
+    10 => array('Aucune' => '', 'Netpbm' => 'netpbm', 'ImageMagick' => 'imagemagick', 'gdLib' => 'gdlib'),
     11 => array('A plat' => 'flat', 'Nichés' => 'nested', 'Regroupés' => 'threaded', 'Non affichés' => 'nocomment'),
-    12 => array('Pas d\'accès'=>0, 'Lecture seule'=>2,'Lecture-Ecriture'=>3),
+    12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('Contourner' => 0, 'Permettre avec limitation' => 1, 'Permettre, pas de limitation' => 2),
     14 => array('Dimanche' => 'Sun', 'Lundi' => 'Mon'),
     15 => array('Numérique' => 'sortnum', 'Alphabétique' => 'alpha'),
@@ -2107,7 +2144,8 @@ $LANG_configselects['Core'] = array(
     25 => array('Nouveaux articles' => 'story', 'Nouveaux commentaires' => 'comment', 'Nouveaux Trackbacks' => 'trackback', 'Nouveaux Pingbacks' => 'pingback', 'Nouveaux membres' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Titre (asc)' => 'title|asc', 'Titre (desc)' => 'title|desc', 'Auteur (asc)' => 'uid|asc', 'Auteur (desc)' => 'uid|desc'),
-    28 => array('Pas d\'accès' => 0, 'Utilisation possible' => 2)
+    28 => array('Pas d\'accès' => 0, 'Utilisation possible' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ###############################################################################
@@ -2122,6 +2160,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'Ce champ ne s\'attisfait pas à l\'opération de comparaison',
     'date' => 'Ce champ doit être au format date',
     'year' => 'Ce champ doit être au format année comme 2011',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'Ce champ doit être au format horaire',
     'datetime' => 'Ce champ doit être au format date et heure',
     'boolean' => 'Ce champ doit être de type boléen',
@@ -2152,7 +2191,9 @@ $LANG_VALIDATION = array(
     'path_to_netpbm' => 'Vous devez sélectionner la librairie "netpbm" et compléter ce champ avec le nom du dossier contenant les binaires du package Netpbm',
     'language' => 'Le fichier langue n\'existe pas',
     'timezone' => 'Timezone non valide',
-    'single_char' => 'Ce champ doit être un seul caractère'
+    'single_char' => 'Ce champ doit être un seul caractère',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
+
 
 ?>

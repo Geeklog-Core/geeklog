@@ -47,7 +47,7 @@ $LANG_STATIC = array(
     'hits' => 'Clicks',
     'staticpagelist' => 'Liste des pages statiques',
     'url' => 'URL',
-    'edit' => 'Édition',
+    'edit' => 'Edit',
     'lastupdated' => 'Dernière mise à jour',
     'pageformat' => 'Format des pages',
     'leftrightblocks' => 'Blocs à gauche et à droite',
@@ -107,7 +107,6 @@ $LANG_STATIC = array(
     'select_php_free' => 'execute PHP',
     'php_not_activated' => "L'utilisation du php dans les pages statiques n'est pas activée. Reportez-vous à la <a href=\"{$_CONF['site_url']}/docs/english/staticpages.html#php\">documentation</a> (en anglais) pour plus de détails.",
     'printable_format' => 'Printable Format',
-    'edit' => 'Edit',
     'copy' => 'Copy',
     'limit_results' => 'Limit Results',
     'search' => 'Search',
@@ -122,7 +121,7 @@ $LANG_STATIC = array(
     'use_template_msg' => 'Si cette page statique n\'est pas un template, vous pouvez lui assigner d\'utiliser un template. Si une sélection est faite, vous devez fournir le contenu au format XML adapté. Reportez vous à la documentation si besoin.',
     'draft' => 'Brouillon',
     'draft_yes' => 'Oui',
-    'draft_no' => 'Non', 
+    'draft_no' => 'Non',
     'autotag_desc_staticpage' => '[staticpage: id titre alternatif] - Affiche un lien vers une page statique en utilisant le titre la page. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Affiche le contenu d\'une page statique.'
 );
@@ -154,13 +153,14 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'Filtrer le HTML',
     'censor' => 'Censurer le contenu',
     'default_permissions' => 'Permissions par défaut',
-    'autotag_permissions_staticpage' => '[staticpage: ] Permissions', 
+    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
     'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
     'aftersave' => 'Après la sauvegarde de la page',
     'atom_max_items' => 'Max. de pages dans le flux des Webservices',
     'meta_tags' => 'Activer les Meta Tags',
     'comment_code' => 'Commentaires par défaut',
     'draft_flag' => 'Drapeux brouillon par défaut',
+    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'newstaticpagesinterval' => 'Interval des nouvelles pages statiques',
     'hidenewstaticpages' => 'Cacher les nouvelles pages statiques',
     'title_trim_length' => 'Couper la longueur des titres',
@@ -168,7 +168,7 @@ $LANG_confignames['staticpages'] = array(
     'includephp' => 'Inclure les pages statiques avec du PHP',
     'includesearch' => 'Activer les pages statiques dans la recherche',
     'includesearchcenterblocks' => 'Inclure les pages statiques bloc central dans la recherche',
-    'includesearchphp' => 'Inclure les pages statiques avec du PHP dans la recherche'    
+    'includesearchphp' => 'Inclure les pages statiques avec du PHP dans la recherche'
 );
 
 $LANG_configsubgroups['staticpages'] = array(
@@ -179,15 +179,15 @@ $LANG_tab['staticpages'] = array(
     'tab_main' => 'Paramètres principaux des pages statiques',
     'tab_whatsnew' => 'Bloc Quoi de neuf',
     'tab_search' => 'Résultats des recherches',
-    'tab_permissions' => 'Permissions par défaut', 
-    'tab_autotag_permissions' => 'Permission d\'usage des autotags'     
+    'tab_permissions' => 'Permissions par défaut',
+    'tab_autotag_permissions' => 'Permission d\'usage des autotags'
 );
 
 $LANG_fs['staticpages'] = array(
     'fs_main' => 'Pages statiques paramètres principaux',
     'fs_whatsnew' => 'Bloc Quoi de neuf',
-    'fs_search' => 'Résultats de la recherche',    
-    'fs_permissions' => 'Default Permissions', 
+    'fs_search' => 'Résultats de la recherche',
+    'fs_permissions' => 'Default Permissions',
     'fs_autotag_permissions' => 'Permission d\'usage des autotags'
 );
 

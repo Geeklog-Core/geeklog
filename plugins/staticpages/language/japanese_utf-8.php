@@ -163,6 +163,7 @@ $LANG_confignames['staticpages'] = array(
     'meta_tags' => 'メタタグを有効にする',
     'comment_code' => '新規作成時のデフォルト',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
+    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'newstaticpagesinterval' => '静的ページの"新着"の期間',
     'hidenewstaticpages' => '新着ブロック表示',
     'title_trim_length' => 'タイトル最大長',
