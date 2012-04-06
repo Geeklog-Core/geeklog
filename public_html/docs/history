@@ -1,8 +1,17 @@
 Geeklog History/Changes:
 
-Mar ??, 2012 (1.9.0)
+May ??, 2012 (2.0.0)
 ------------
 
+- The part of the page navigator should do markup by a list. (feature request
+  #0001422) [Tom]
+- Failure when trying to report sitemap.xml write error (bug #0001412) [Vincent]
+- List dynamic blocks on admin blocks page (feature request #0001434) [Tom]
+- Admin Database command fails (bug #0001404) [Dirk]
+- DB Backup fails with MySQL 5.5 or later (bug #0001410) [Dirk]
+- Gravatar Image Requests (feature request #0001435) [Dirk]
+- Can't install plugin by uploading a tarball from a browser in Windows. (bug
+  #0001405) [Dirk]
 - Feed items truncated when Length of entries is 1 (bug #0001431) [Tom]
 - Comments Form on same page as story (patch #0000728) [Dirk]
 - Allow other objects to be associated to Topics (feature request #0001155)
