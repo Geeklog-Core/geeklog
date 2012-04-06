@@ -2053,6 +2053,8 @@ function COM_errorLog( $logentry, $actionid = '' )
                                  $logentry );
 
         $timestamp = @strftime( '%c' );
+        
+        $remoteaddress = $_SERVER['REMOTE_ADDR'];        
 
         if (!isset($_CONF['path_layout']) &&
                 (($actionid == 2) || empty($actionid))) {
@@ -2077,7 +2079,7 @@ function COM_errorLog( $logentry, $actionid = '' )
                 }
                 else
                 {
-                    fputs( $file, "$timestamp - $logentry \n" );
+                    fputs( $file, "$timestamp - $remoteaddress - $logentry \n" );
                 }
                 break;
 
@@ -2102,7 +2104,7 @@ function COM_errorLog( $logentry, $actionid = '' )
                 }
                 else
                 {
-                    fputs( $file, "$timestamp - $logentry \n" );
+                    fputs( $file, "$timestamp - $remoteaddress - $logentry \n" );
                     $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp,
                                    '', COM_getBlockTemplate( '_msg_block',
                                    'header' ))
