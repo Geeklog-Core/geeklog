@@ -196,9 +196,9 @@ function plugin_initconfig_polls()
         $c->add('block_order', $_PO_DEFAULT['block_order'], 'text',
                 0, 10, 0, 30, true, 'polls', 20);
         $c->add('block_topic_option', $_PO_DEFAULT['block_topic_option'],'select',
-                0, 10, 16, 40, true, 'polls', 20);  
+                0, 10, 15, 40, true, 'polls', 20);  
         $c->add('block_topic', $_PO_DEFAULT['block_topic'], '%select',
-                0, 10, 17, 50, true, 'polls', 20);
+                0, 10, NULL, 50, true, 'polls', 20);
     
         $c->add('fs_block_permissions', NULL, 'fieldset', 0, 20, NULL, 0, true, 'polls', 20);
         $new_group_id = 0;
@@ -215,7 +215,7 @@ function plugin_initconfig_polls()
             }
         }         
         $c->add('block_group_id', $new_group_id,'select',
-                0, 20, 15, 10, TRUE, 'polls', 20);        
+                0, 20, NULL, 10, TRUE, 'polls', 20);        
         $c->add('block_permissions', $_PO_DEFAULT['block_permissions'], '@select', 
                 0, 20, 14, 20, true, 'polls', 20);       
     }
