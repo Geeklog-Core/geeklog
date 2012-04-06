@@ -2267,4 +2267,85 @@ function plugin_group_changed_calendar($grp_id, $mode)
    }
 }
 
+
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (groud id, group name) pairs
+ *
+ */
+function plugin_configmanager_select_block_group_id_calendar()
+{
+    return SEC_getUserGroups();
+}
+
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (topic id, topic name) pairs
+ *
+ */
+function plugin_configmanager_select_block_topic_calendar()
+{
+    return array_flip(TOPIC_getList());
+}
+
+/**
+* Callback function when an item was saved
+*
+* @param    string  $id     (unused) ID of item being saved
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @param    string  $old_id (unused) previous ID of item, if != $id
+* @return   void
+* @see      PLG_itemSaved
+*
+*/
+function plugin_itemsaved_calendar($id, $type, $old_id)
+{
+    global $_TABLES, $_CA_CONF;
+
+    // we're really only interested in Topic ID changes
+    if (($type == 'topic') && !empty($old_id) && ($id != $old_id)) {
+        $key = array_search($old_id, $_CA_CONF['block_topic']);
+
+        if ($key > 0) {
+            // Update config
+            $_CA_CONF['block_topic'][$key] = $id;
+            
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
+        }        
+    }
+}
+
+/**
+* Callback function when an item was deleted
+*
+* @param    string  $id     ID of item being deleted
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @return   void
+* @see      PLG_itemDeleted
+*
+*/
+function plugin_itemdeleted_calendar($id, $type)
+{
+    global $_TABLES, $_CA_CONF;
+
+    // we're really only interested in Topic Deletes
+    if ($type == 'topic') {
+        $key = array_search($id, $_CA_CONF['block_topic']);
+
+        if ($key > 0) {
+            // delete item from config
+            unset($_CA_CONF['block_topic'][$key]);
+            
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_topic', $_CA_CONF['block_topic'], 'calendar');
+        }    
+        // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
+    }
+}
+
 ?>
