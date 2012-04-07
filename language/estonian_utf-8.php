@@ -401,7 +401,9 @@ $LANG04 = array(
     163 => 'Taasautoriseerimine ebaõnnestus',
     164 => 'Ületasid lubatud taasautoriseerimiste arvu. Tegevus on katkestatud ja viimati tehtud muutused läksid kahjuks kaduma.',
     165 => 'Kasuta keerukamat toimetajat',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################

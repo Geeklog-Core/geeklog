@@ -404,7 +404,9 @@ $LANG04 = array(
     163 => 'Die Wiederauthetifizierung klappte nicht',
     164 => 'Die maximale Anzahl für Wiederauthetifizierungsversuche wurde überschritten. Der Vorgang wurde abgebrochen und di eletzten Änderungen gingen verlohren, sorry.',
     165 => 'WYSIWYG-Editor',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################

@@ -401,7 +401,9 @@ $LANG04 = array(
     163 => 'La réauthentification a échouée',
     164 => 'Vous avez dépassé le nombre maximum de réauthentification. Désolé, l\'opération a été annulée et votre modifications ont été perdues.',
     165 => 'Utiliser l\'éditeur avancé',
-    166 => 'Re-synchroniser du compte à distance'
+    166 => 'Re-synchroniser du compte à distance',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################

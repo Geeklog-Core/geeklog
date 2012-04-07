@@ -402,7 +402,9 @@ $LANG04 = array(
     163 => 'האימות מחדש נכשל',
     164 => 'עברתם על מספר הפעמים המותר לאימות מחדש. הפעולה בוטלה ושינוייכם האחרונים נאבדו, מצטערים.',
     165 => 'שימוש בעורך מתקדם',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################
