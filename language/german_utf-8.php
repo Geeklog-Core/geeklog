@@ -895,7 +895,7 @@ $LANG27 = array(
     29 => 'Fehler beim Datei-Upload',
     30 => 'Artikel i.d. Kategorie',
     31 => 'You have used a restricted Topic ID. Please choose another one.',
-    32 => 'Parent Topic',
+    32 => 'Übergeordnete Kategorie',
     33 => 'Inherit',
     34 => 'Items of child topic are inherited',
     35 => 'Hidden',
@@ -1401,7 +1401,7 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Die 10 letzten Backups',
+    'last_ten_backups' => 'Datenbank-Backups',
     'do_backup' => 'Backup anlegen',
     'backup_successful' => 'Backup der Datenbank war erfolgreich.',
     'db_explanation' => 'Um ein neues Backup der Datenbank anzulegen, bitte auf Neu anlegen (s.o.) klicken. Ein Klick auf einen Dateinamen lädt das Backup herunter.',
