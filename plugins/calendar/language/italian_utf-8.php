@@ -207,7 +207,14 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Rimuovere gli Eventi se l\'Utente che li ha create é rimosso?',
     'aftersave' => 'Dopo aver Salvato l\'Evento',
     'default_permissions' => 'Permessi Predefiniti per Eventi',
-    'autotag_permissions_event' => '[event: ] Permessi'
+    'autotag_permissions_event' => '[event: ] Permessi',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -217,13 +224,16 @@ $LANG_configsubgroups['calendar'] = array(
 $LANG_tab['calendar'] = array(
     'tab_main' => 'General Calendar Settings',
     'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_autotag_permissions' => 'Autotag Usage Permissions',
+    'tab_events_block' => 'Events Block'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Impostazioni Predefinite per il Calendario',
     'fs_permissions' => 'Permessi Predefiniti',
-    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag'
+    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -233,7 +243,9 @@ $LANG_configselects['calendar'] = array(
     6 => array('12' => 12, '24' => 24),
     9 => array('Vai a pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Admin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Sola lettura' => 2, 'Lettura e Scrittura' => 3),
-    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
+    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

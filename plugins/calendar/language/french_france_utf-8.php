@@ -109,7 +109,7 @@ $LANG_CAL_2 = array(
     10 => 'Évènement pour',
     11 => 'Calendrier général',
     12 => 'Mon calendrier',
-    25 => '',
+    25 => 'Back to ',
     26 => 'Toute la journée',
     27 => 'Semaine',
     28 => 'Calendrier perso de',
@@ -211,7 +211,14 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'Supprimer les évènements avec leur propriétaire',
     'aftersave' => 'Après la sauvegarde d\un évènement',
     'default_permissions' => 'Permissions par défaut des évènements',
-    'autotag_permissions_event' => '[event: ] Permissions'
+    'autotag_permissions_event' => '[event: ] Permissions',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -221,12 +228,16 @@ $LANG_configsubgroups['calendar'] = array(
 $LANG_tab['calendar'] = array(
     'tab_main' => 'Paramètres généraux du calendrier',
     'tab_permissions' => 'Permissions par défaut',
-    'tab_autotag_permissions' => 'Permissions d\'usage des autotags'
+    'tab_autotag_permissions' => 'Permissions d\'usage des autotags',
+    'tab_events_block' => 'Events Block'
 );
+
 $LANG_fs['calendar'] = array(
     'fs_main' => 'Paramètres généraux du calendrier',
     'fs_permissions' => 'Permissions par défaut',
-    'fs_autotag_permissions' => 'Permissions d\'usage des autotags'
+    'fs_autotag_permissions' => 'Permissions d\'usage des autotags',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -236,7 +247,9 @@ $LANG_configselects['calendar'] = array(
     6 => array('12H' => 12, '24H' => 24),
     9 => array('Afficher l\'évènement' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher le calendrier' => 'plugin', 'Afficher la page d\'acceuil' => 'home', 'Afficher le panneau administratif' => 'admin'),
     12 => array('Aucun accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
-    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)
+    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>
