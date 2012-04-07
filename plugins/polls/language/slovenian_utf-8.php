@@ -38,6 +38,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'Ankete',
+    'poll' => 'Poll',
     'results' => 'Rezultati',
     'pollresults' => 'Rezultati anket',
     'votes' => 'glasov',
@@ -146,7 +147,14 @@ $LANG_confignames['polls'] = array(
     'newpollsinterval' => 'Interval za nove ankete',
     'hidenewpolls' => 'Nove ankete',
     'title_trim_length' => 'Krajšanje dolžine naslova',
-    'meta_tags' => 'Omogoèi Meta Tags'
+    'meta_tags' => 'Omogoèi Meta Tags',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -157,14 +165,17 @@ $LANG_tab['polls'] = array(
     'tab_main' => 'General Polls Settings',
     'tab_whatsnew' => 'What\'s New Block',
     'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_autotag_permissions' => 'Autotag Usage Permissions',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Splošne nastavitve anket',
     'fs_whatsnew' => 'Blok Kaj je novega',
     'fs_permissions' => 'Prednastavljene pravice',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -175,7 +186,9 @@ $LANG_configselects['polls'] = array(
     5 => array('Skrij' => 'hide', 'Prikaži - uporabi spremenjeni datum' => 'modified', 'Prikaži - uporabi ustvarjeni datum' => 'created'),
     9 => array('Naprej na anketo' => 'item', 'Prikaži skrbnikov seznam' => 'list', 'Prikaži javno stran' => 'plugin', 'Prikaži vstopno stran' => 'home', 'Prikaži skrbnikovo stran' => 'admin'),
     12 => array('Ni dostopa' => 0, 'Samo za branje' => 2, 'Branje-pisanje' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

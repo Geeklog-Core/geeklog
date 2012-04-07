@@ -36,6 +36,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'סקרים',
+    'poll' => 'Poll',
     'results' => 'תוצאות',
     'pollresults' => 'תוצאות סקרים',
     'votes' => 'הצבעות',
@@ -144,7 +145,14 @@ $LANG_confignames['polls'] = array(
     'newpollsinterval' => 'תוקף סקרים חדשים',
     'hidenewpolls' => 'סקרים חדשים',
     'title_trim_length' => 'אורך כותרות מקוצרות',
-    'meta_tags' => 'אפשרו תגיות Meta'
+    'meta_tags' => 'אפשרו תגיות Meta',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -155,14 +163,17 @@ $LANG_tab['polls'] = array(
     'tab_main' => 'General Polls Settings',
     'tab_whatsnew' => 'What\'s New Block',
     'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_autotag_permissions' => 'Autotag Usage Permissions',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'הגדרות סקר כלליות',
     'fs_whatsnew' => 'קוביית המידע מה חדש',
     'fs_permissions' => 'הרשאות ברירת המחדל',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -173,7 +184,9 @@ $LANG_configselects['polls'] = array(
     5 => array('החבאה' => 'hide', 'הצגה - שימוש בתאריך העדכון' => 'modified', 'הצגה - שימוש בתאריך היצירה' => 'created'),
     9 => array('הפניה לסקר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת רשימה ציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>
