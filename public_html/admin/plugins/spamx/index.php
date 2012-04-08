@@ -106,7 +106,7 @@ if (isset($_REQUEST['command'])) {
         $display .= $CM->display();
     }
 }
-$display .= COM_siteFooter(true);
+$display .= COM_siteFooter();
 
 COM_output($display);
 
