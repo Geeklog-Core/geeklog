@@ -403,7 +403,9 @@ $LANG04 = array(
     163 => 'Ponovno preverjanje pristnosti je spodletelo',
     164 => 'Preseženo je bilo število dovoljenih poskusov preverjanja pristnosti. Postopek je bil prekinjen in zadnje spremembe so žal izgubljene.',
     165 => 'Uporabi Napredni urejevalnik',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################

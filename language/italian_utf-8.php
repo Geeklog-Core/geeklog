@@ -402,7 +402,9 @@ $LANG04 = array(
     163 => 'Re-Autenticazione Fallita',
     164 => 'Hai superato il numero di tentativi consentiti per la re-autenticazione. Quest\'azione é stata annullata e le tue recenti modifiche sono state perse.',
     165 => 'Usa l\'Editor Avanzato',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################

@@ -28,37 +28,45 @@
 
 global $LANG32;
 
+###############################################################################
+# Array Format:
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
+###############################################################################
+
 $LANG_POLLS = array(
-    'polls'            => 'Sondages',
-    'results'          => 'Résultats',
-    'pollresults'      => 'Résultat des sondages',
-    'votes'            => 'votes',
-    'voters'           => 'votants',
-    'vote'             => 'Vote',
-    'pastpolls'        => 'Sondages anciens',
-    'savedvotetitle'   => 'Vote sauvegardé',
-    'savedvotemsg'     => 'Votre vote à été enregistré',
-    'pollstitle'       => 'Sondages dans le système',
-    'polltopics'       => 'Autres sondages',
-    'stats_top10'      => 'Top-10 des sondages',
-    'stats_topics'     => 'Titre du sondage',
-    'stats_votes'      => 'Votes',
-    'stats_none'       => 'Il n\'y a aucun sondage actif en ce moment, ou personne n\'a encore voté.',
-    'stats_summary'    => 'Sondages (réponses) dans sur le site',
-    'open_poll'        => 'Ouvert au vote',
-    'answer_all'       => 'Merci de répondre à toutes les questions du sondage',
-    'not_saved'        => 'Le résultat n\'a pas été sauvegardé',
-    'upgrade1'         => 'Vous avez installez une nouvelle version du plugin polls. Merci',
-    'upgrade2'         => 'd\'upgrader',
+    'polls' => 'Sondages',
+    'poll' => 'Poll',
+    'results' => 'Résultats',
+    'pollresults' => 'Résultat des sondages',
+    'votes' => 'votes',
+    'voters' => 'votants',
+    'vote' => 'Vote',
+    'pastpolls' => 'Sondages anciens',
+    'savedvotetitle' => 'Vote sauvegardé',
+    'savedvotemsg' => 'Votre vote à été enregistré',
+    'pollstitle' => 'Sondages dans le système',
+    'polltopics' => 'Autres sondages',
+    'stats_top10' => 'Top-10 des sondages',
+    'stats_topics' => 'Titre du sondage',
+    'stats_votes' => 'Votes',
+    'stats_none' => 'Il n\'y a aucun sondage actif en ce moment, ou personne n\'a encore voté.',
+    'stats_summary' => 'Sondages (réponses) dans sur le site',
+    'open_poll' => 'Ouvert au vote',
+    'answer_all' => 'Merci de répondre à toutes les questions du sondage',
+    'not_saved' => 'Le résultat n\'a pas été sauvegardé',
+    'upgrade1' => 'Vous avez installez une nouvelle version du plugin polls. Merci',
+    'upgrade2' => 'd\'upgrader',
     'editinstructions' => 'Saisir l\'identifiant du sondage (ID), et au moins une question et deux réponses.',
-    'pollclosed'       => 'Ce sondage est terminé.', 
-    'pollhidden'       => 'Vous avez déjà voté. Les résultats seront disponible lorsque le sondage sera terminé.',
-    'start_poll'       => 'Commencer le sondage',
-    'no_new_polls'     => 'Pas de nouveau sondage',
-    'autotag_desc_poll'              => '[poll: id titre alternatif] - Affiche un lien vers un sondage du module sondage en utilisant le titre du sondage. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
-    'autotag_desc_poll_vote'         => '[poll_vote: id class:poll-autotag showall:1] - Affiche un sondage pour permettre aux utilisateurs de voter. Class et showall ne sont pas requis. Class specifie la classe css à utiliser et si Showall vaut 1, affiche toutes les questions',
-    'autotag_desc_poll_result'       => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
-    'deny_msg'         => 'L\'accès à ce sondage n\'est pas possible. Soit il a été déplacé, soit vous n\'avez pas les permissions suffisantes pour y accéder.'
+    'pollclosed' => 'Ce sondage est terminé.',
+    'pollhidden' => 'Vous avez déjà voté. Les résultats seront disponible lorsque le sondage sera terminé.',
+    'start_poll' => 'Commencer le sondage',
+    'no_new_polls' => 'Pas de nouveau sondage',
+    'autotag_desc_poll' => '[poll: id titre alternatif] - Affiche un lien vers un sondage du module sondage en utilisant le titre du sondage. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Affiche un sondage pour permettre aux utilisateurs de voter. Class et showall ne sont pas requis. Class specifie la classe css à utiliser et si Showall vaut 1, affiche toutes les questions',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
+    'deny_msg' => 'L\'accès à ce sondage n\'est pas possible. Soit il a été déplacé, soit vous n\'avez pas les permissions suffisantes pour y accéder.'
 );
 
 ###############################################################################
@@ -115,7 +123,6 @@ $PLG_polls_MESSAGE20 = 'Votre sondage à été effacé avec succès.';
 $PLG_polls_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
-
 // Localization of the Admin Configuration UI
 $LANG_configsections['polls'] = array(
     'label' => 'Sondages',
@@ -135,11 +142,18 @@ $LANG_confignames['polls'] = array(
     'default_permissions' => 'Permissions par défaut du sondage',
     'autotag_permissions_poll' => '[poll: ] Permissions',
     'autotag_permissions_poll_vote' => '[poll_vote: ] Permissions',
-    'autotag_permissions_poll_result' => '[poll_result: ] Permissions', 
+    'autotag_permissions_poll_result' => '[poll_result: ] Permissions',
     'newpollsinterval' => 'Interval des nouveaux sondages',
     'hidenewpolls' => 'Nouveaux sondages',
     'title_trim_length' => 'Couper la longueur du titre',
-    'meta_tags' => 'Activé les Meta Tags'
+    'meta_tags' => 'Activé les Meta Tags',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -149,25 +163,31 @@ $LANG_configsubgroups['polls'] = array(
 $LANG_tab['polls'] = array(
     'tab_main' => 'Paramètres généraux des sondages',
     'tab_whatsnew' => 'Bloc Quoi de neuf',
-    'tab_permissions' => 'Permissions par défaut', 
-    'tab_autotag_permissions' => 'Permissions d\'usage des autotags'
+    'tab_permissions' => 'Permissions par défaut',
+    'tab_autotag_permissions' => 'Permissions d\'usage des autotags',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Sondages paramètres généraux',
     'fs_whatsnew' => 'Block Quoi de neuf',
-    'fs_permissions' => 'Permissions par défault'
+    'fs_permissions' => 'Permissions par défault',
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['polls'] = array(
     0 => array('Oui' => 1, 'Non' => 0),
-    1 => array('Oui' => TRUE, 'Non' => FALSE),
+    1 => array('Oui' => true, 'Non' => false),
     2 => array('Conserver l\'ordre saisi' => 'submitorder', 'Par nombre de votes' => 'voteorder'),
     5 => array('Cacher' => 'hide', 'Montrer - Utiliser la date modification' => 'modified', 'Montrer - Utiliser la date de création' => 'created'),
     9 => array('Afficher le sondage' => 'item', 'Montrer la liste admin' => 'list', 'Montrer la liste publique' => 'plugin', 'Accueil' => 'home', 'Montrer panneau Admin' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
-    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)
+    13 => array('Pas d\'accès' => 0, 'Utiliser' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>
