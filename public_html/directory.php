@@ -581,7 +581,7 @@ if (($year != 0) && ($month != 0)) {
     $display .= DIR_displayAll($topic, $conf_list_current_month);
 }
 
-$display .= COM_siteFooter (true);
+$display .= COM_siteFooter();
 
 COM_output($display);
 
