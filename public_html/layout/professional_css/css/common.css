@@ -409,10 +409,10 @@ ul.compact li {
 
 div.gl-pagenav b {
    display: inline-block;
-   margin: 8px;
-   padding: 8px;
+   margin: 4px;
+   padding: 4px;
    border: 1px solid #cccccc;
-   line-height: 1.7;
+   line-height: 1.5;
  }
  
 /* for IE6 { */
@@ -431,8 +431,8 @@ div.gl-pagenav b {
  
 div.gl-pagenav a {
    display: inline-block;
-   margin: 8px;
-   padding: 8px;
+   margin: 4px;
+   padding: 4px;
    background: #C8E0E0;
    border: 1px solid #40A0A0;
    text-decoration: none;
@@ -454,8 +454,8 @@ div.gl-pagenav a {
  
 div.gl-pagenav span {
    display: inline-block;
-   padding: 8px;
-   line-height: 1.7;
+   padding: 4px;
+   line-height: 1.5;
  }
  
 /* for IE6 { */

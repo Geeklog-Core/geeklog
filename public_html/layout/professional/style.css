@@ -1042,10 +1042,9 @@ a.pluginButton:hover {
 
 div.gl-pagenav b {
    display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   border: 1px solid #cccccc;
-   line-height: 1.7;
+   margin: 3px;
+   padding: 3px;
+   line-height: 1.5;
  }
  
 /* for IE6 { */
@@ -1064,10 +1063,8 @@ div.gl-pagenav b {
  
 div.gl-pagenav a {
    display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   background: #C8E0E0;
-   border: 1px solid #40A0A0;
+   margin: 3px;
+   padding: 3px;
    text-decoration: none;
  }
  
@@ -1087,8 +1084,8 @@ div.gl-pagenav a {
  
 div.gl-pagenav span {
    display: inline-block;
-   padding: 8px;
-   line-height: 1.7;
+   padding: 3px;
+   line-height: 1.5;
  }
  
 /* for IE6 { */
@@ -1112,7 +1109,7 @@ div.gl-pagenav span a {
    border: none;
    text-decoration: underline;
  }
- 
+  
 /* Common CSS for on-hover tooltip feature  *********************************************************************/
 a.gl-tooltip {
     border-bottom: 1px dotted #000000; color: #000000; outline: none;
