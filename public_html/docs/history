@@ -3,8 +3,9 @@ Geeklog History/Changes:
 May ??, 2012 (2.0.0)
 ------------
 
-- The part of the page navigator should do markup by a list. (feature request
-  #0001422) [Tom]
+- Improve strength of password hashing (feature request #0001384) [Vinny]
+- Add IP Address to entries in error.log [Tom]
+- Allow markup on page navigation (feature request #0001422) [Tom]
 - Failure when trying to report sitemap.xml write error (bug #0001412) [Vincent]
 - List dynamic blocks on admin blocks page (feature request #0001434) [Tom]
 - Admin Database command fails (bug #0001404) [Dirk]
@@ -14,29 +15,32 @@ May ??, 2012 (2.0.0)
   #0001405) [Dirk]
 - Feed items truncated when Length of entries is 1 (bug #0001431) [Tom]
 - Comments Form on same page as story (patch #0000728) [Dirk]
+- Allow Topics to have child Topics [Tom]
 - Allow other objects to be associated to Topics (feature request #0001155)
   [Tom]
+- Allow objects like Articles, Blocks and Staticpages to be associated with 
+  more than one Topic [Tom]
 - CC setting should be an admin option (patch #0001259) [Tom]
-- Delete account oauth (bug #0001417) [Tom]
+- Delete account OAuth (bug #0001417) [Tom]
 - When saving a Poll in the admin interface the vote count gets reset (bug
   #0001419) [Tom]
 - Scripts class including theme's style.css (bug #0001407) [Tom]
 - Query failed: Syntax error "AS dateFROM" (bug #0001418) [Tom]
-- add $_CONF['linktext_maxlen'] to story configuration panel (patch #0001139)
+- Add $_CONF['linktext_maxlen'] to story configuration panel (patch #0001139)
   [Tom]
 - Add Breadcrumb Support (feature request #0001062) [Tom]
 - Configuration Copyright Year can only accept a number (bug #0001416) [Tom]
 - Articles, Blocks, Topics and Core Plugins do not handle a Group being Deleted
   (bug #0001397) [Tom]
-- stripslashes() expects parameter 1 to be string, array given lib-common.php
+- Stripslashes() expects parameter 1 to be string, array given lib-common.php
   line 5754 (bug #0001413) [Tom]
 - Comment Count maybe off for Story after Comment Submission (bug #0001414)
   [Tom]
 - Log url on page error (feature request #0001377) [Dirk]
 - Add Stop Forum Spam and Spam Number of Links Modules to Spam-X (feature
   request #0001378) [Tom]
-- hardcoded strings in spamX plugin (patch #0000656) [Tom]
-- mysqli class (patch #0001303) [Dirk]
+- Hardcoded strings in spamX plugin (patch #0000656) [Tom]
+- MYSQLi class (patch #0001303) [Dirk]
 
 
 Oct 9, 2011 (1.8.1)
