@@ -1883,4 +1883,84 @@ function plugin_group_changed_polls($grp_id, $mode)
    }
 }
 
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (groud id, group name) pairs
+ *
+ */
+function plugin_configmanager_select_block_group_id_polls()
+{
+    return SEC_getUserGroups();
+}
+
+/**
+ * Config Manager function
+ *
+ * @return   array   Array of (topic id, topic name) pairs
+ *
+ */
+function plugin_configmanager_select_block_topic_polls()
+{
+    return array_flip(TOPIC_getList());
+}
+
+/**
+* Callback function when an item was saved
+*
+* @param    string  $id     (unused) ID of item being saved
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @param    string  $old_id (unused) previous ID of item, if != $id
+* @return   void
+* @see      PLG_itemSaved
+*
+*/
+function plugin_itemsaved_polls($id, $type, $old_id)
+{
+    global $_TABLES, $_PO_CONF;
+
+    // we're really only interested in Topic ID changes
+    if (($type == 'topic') && !empty($old_id) && ($id != $old_id)) {
+        $key = array_search($old_id, $_PO_CONF['block_topic']);
+
+        if ($key > 0) {
+            // Update config
+            $_PO_CONF['block_topic'][$key] = $id;
+            
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_topic', $_PO_CONF['block_topic'], 'polls');
+        }        
+    }
+}
+
+/**
+* Callback function when an item was deleted
+*
+* @param    string  $id     ID of item being deleted
+* @param    string  $type   type of item ('article', 'staticpages', ...)
+* @return   void
+* @see      PLG_itemDeleted
+*
+*/
+function plugin_itemdeleted_polls($id, $type)
+{
+    global $_TABLES, $_PO_CONF;
+
+    // we're really only interested in Topic Deletes
+    if ($type == 'topic') {
+        $key = array_search($id, $_PO_CONF['block_topic']);
+
+        if ($key > 0) {
+            // delete item from config
+            unset($_PO_CONF['block_topic'][$key]);
+            
+            // Now save it to the configuration
+            $c = config::get_instance();
+            $c->set('block_topic', $_PO_CONF['block_topic'], 'polls');
+        }    
+        // Note: All topics could get deleted from array which would mean the block would not display untill user adds more in config
+    }
+}
+
 ?>

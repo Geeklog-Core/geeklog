@@ -159,6 +159,7 @@ $LANG_confignames['staticpages'] = array(
     'meta_tags' => 'אפשרו תגיות Meta',
     'comment_code' => 'ברירת המחדל של תגובות',
     'draft_flag' => 'ברירת המחדל של סימון כטיוטה',
+    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
     'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
     'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
     'title_trim_length' => 'אורך קיצוץ כותרות',

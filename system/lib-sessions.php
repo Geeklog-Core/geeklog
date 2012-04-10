@@ -130,6 +130,10 @@ function SESS_sessionCheck()
                 if (empty ($userid) || ($userid == 'deleted')) {
                     unset ($userid);
                 } else {
+                    if ($_SESS_VERBOSE) {
+                        COM_errorLog("Got $userid as User ID from the permanent cookie",1);
+                    }
+                    
                     $userid = COM_applyFilter ($userid, true);
                     $cookie_password = '';
                     $userpass = '';
@@ -140,6 +144,10 @@ function SESS_sessionCheck()
                                                "uid = $userid");
                     }
                     if (empty($cookie_password) || ($cookie_password <> $userpass)) {
+                        if ($_SESS_VERBOSE) {
+                            COM_errorLog("Password comparison failed or cookie password missing",1);
+                        }
+                        
                         // Invalid or manipulated cookie data
                         SEC_setCookie($_CONF['cookie_session'], '',
                                       time() - 10000);
@@ -154,12 +162,18 @@ function SESS_sessionCheck()
                         }
                         COM_updateSpeedlimit('login');
                     } else if ($userid > 1) {
+                        if ($_SESS_VERBOSE) {
+                            COM_errorLog("Password comparison passed",1);
+                        }                        
                         // Check user status
                         $status = SEC_checkUserStatus ($userid);
                         if (($status == USER_ACCOUNT_ACTIVE) ||
                                 ($status == USER_ACCOUNT_AWAITING_ACTIVATION)) {
                             $user_logged_in = 1;
 
+                            if ($_SESS_VERBOSE) {
+                                COM_errorLog("Create new session and write cookie",1);
+                            }                               
                             $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                             $userdata = SESS_getUserDataFromId($userid);
@@ -169,6 +183,10 @@ function SESS_sessionCheck()
                     }
                 }
             } else {
+                if ($_SESS_VERBOSE) {
+                    COM_errorLog('perm cookie not found from lib-sessions.php',1);
+                }                
+                
                 // Anonymous user has session id but it has been expired and wiped from the db so reset
                 $userid = 1;
                 $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
@@ -192,6 +210,10 @@ function SESS_sessionCheck()
             if (empty ($userid) || ($userid == 'deleted')) {
                 unset ($userid);
             } else {
+                if ($_SESS_VERBOSE) {
+                    COM_errorLog("Got $userid as User ID from the permanent cookie",1);
+                }
+                
                 $userid = COM_applyFilter ($userid, true);
                 $cookie_password = '';
                 $userpass = '';
@@ -201,6 +223,10 @@ function SESS_sessionCheck()
                     $cookie_password = $_COOKIE[$_CONF['cookie_password']];
                 }
                 if (empty($cookie_password) || ($cookie_password <> $userpass)) {
+                    if ($_SESS_VERBOSE) {
+                        COM_errorLog("Password comparison failed or cookie password missing",1);
+                    }
+                    
                     // Invalid or manipulated cookie data
                     SEC_setCookie($_CONF['cookie_session'], '', time() - 10000);
                     SEC_setCookie($_CONF['cookie_password'], '', time() - 10000);
@@ -213,12 +239,19 @@ function SESS_sessionCheck()
                     }
                     COM_updateSpeedlimit('login');
                 } else if ($userid > 1) {
+                    if ($_SESS_VERBOSE) {
+                        COM_errorLog("Password comparison passed",1);
+                    }                        
+                    
                     // Check user status
                     $status = SEC_checkUserStatus($userid);
                     if (($status == USER_ACCOUNT_ACTIVE) ||
                             ($status == USER_ACCOUNT_AWAITING_ACTIVATION)) {
                         $user_logged_in = 1;
 
+                        if ($_SESS_VERBOSE) {
+                            COM_errorLog("Create new session and write cookie",1);
+                        }                        
                         // Create new session and write cookie
                         $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
@@ -229,6 +262,10 @@ function SESS_sessionCheck()
                 }
             }
         } else {
+            if ($_SESS_VERBOSE) {
+                COM_errorLog('perm cookie not found from lib-sessions.php',1);
+            }
+            
             // New Anonymous user so create new session and write cookie
             $userid = 1;
             $sessid = SESS_newSession($userid, $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
@@ -405,16 +442,17 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     }
 
     $result = DB_query($sql);
-    $row = DB_fetchArray($result);
-
+    $numrows = DB_numRows($result);
+    
     if ($_SESS_VERBOSE) {
         COM_errorLog("****Leaving SESS_getUserIdFromSession",1);
     }
 
-    if (!$row) {
-        return 0;
-    } else {
+    if ($numrows == 1) {
+        $row = DB_fetchArray($result);
         return $row['uid'];
+    } else {
+        return 0;
     }
 }
 

@@ -51,6 +51,7 @@ $LANG_SX00 = array(
     'e1' => 'Pour supprimer une entrée cliquez dessus.',
     'e2' => 'Pour ajouter une entrée, entrez-la dans la case et cliquez Ajouter.  Les entrées peuvent utiliser les expressions régulières complètes de Perl.',
     'pblack' => 'Liste Noire Personnelle Spam-X',
+    'sfseblack' => 'Spam-X SFS Email Blacklist',
     'conmod' => 'Configurer utilisation du module Spam-X',
     'acmod' => 'Modules Action de Spam-X',
     'exmod' => 'Modules Vérification de Spam-X',
@@ -122,6 +123,16 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'Blocked by IP of URL',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
+    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
+    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
+    'edit_personal_blacklist' => 'Edit Personal Blacklist',
+    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
+    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
+    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
+    'edit_ip_blacklist' => 'Edit IP Blacklist',
+    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
+    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
+    'edit_slv_whitelist' => 'Edit SLV Whitelist',
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLV Whitelist'
 );
@@ -141,10 +152,13 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'action' => 'Spam-X Actions',
+    'spamx_action' => 'Spam-X Actions',
     'notification_email' => 'Notification Email',
     'logging' => 'Enable Logging',
-    'timeout' => 'Timeout'
+    'timeout' => 'Timeout',
+    'sfs_enabled' => 'Enable SFS',
+    'snl_enabled' => 'Enable SNL',
+    'snl_num_links' => 'Number of links'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -152,11 +166,14 @@ $LANG_configsubgroups['spamx'] = array(
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Paramètres principaux Spam-X'
+    'tab_main' => 'Paramètres principaux Spam-X',
+    'tab_modules' => 'Modules'
 );
 
 $LANG_fs['spamx'] = array(
-    'fs_main' => 'Paramètres principaux Spam-X'
+    'fs_main' => 'Paramètres principaux Spam-X',
+    'fs_sfs' => 'Stop Forum Spam (SFS)',
+    'fs_snl' => 'Spam Number of Links (SNL)'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

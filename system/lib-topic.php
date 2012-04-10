@@ -1355,7 +1355,7 @@ function TOPIC_breadcrumbs($type, $id)
                     $breadcrumb_t->set_var('breadcrumb_child', $retval);
                     
                     if (!empty($retval)) {
-                        $breadcrumb_t->set_var('separator', htmlspecialchars($LANG27['breadcrumb_seperator']));
+                        $breadcrumb_t->set_var('separator', htmlspecialchars($LANG27['breadcrumb_separator']));
                     } else {
                         $breadcrumb_t->set_var('separator', '');
                     }

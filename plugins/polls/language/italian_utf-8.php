@@ -34,6 +34,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'Sondaggi',
+    'poll' => 'Poll',
     'results' => 'Risultati',
     'pollresults' => 'Risultati dei Sondaggi',
     'votes' => 'voti',
@@ -142,7 +143,14 @@ $LANG_confignames['polls'] = array(
     'newpollsinterval' => 'Intervallo per Nuovi Sondaggi',
     'hidenewpolls' => 'Nuovi Sondaggi',
     'title_trim_length' => 'Limita Lunghezza del Titolo',
-    'meta_tags' => 'Abilita Meta Tags'
+    'meta_tags' => 'Abilita Meta Tags',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -153,14 +161,17 @@ $LANG_tab['polls'] = array(
     'tab_main' => 'General Polls Settings',
     'tab_whatsnew' => 'What\'s New Block',
     'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_autotag_permissions' => 'Autotag Usage Permissions',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Impostazioni Generali per Sondaggi',
     'fs_whatsnew' => 'Blocco What\'s New',
     'fs_permissions' => 'Permessi Predefiniti',
-    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag'
+    'fs_autotag_permissions' => 'Permessi Predefiniti per Autotag',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -171,7 +182,9 @@ $LANG_configselects['polls'] = array(
     5 => array('Nascondi' => 'hide', 'Mostra - Usa la data di ultima modifica' => 'modified', 'Mostra - Usa la data di creazione' => 'created'),
     9 => array('Vai al Sondaggio' => 'item', 'Mostra Lista Ammin' => 'list', 'Mostra Lista Pubblica' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Sola Lettura' => 2, 'Lettura e Scrittura' => 3),
-    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
+    13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

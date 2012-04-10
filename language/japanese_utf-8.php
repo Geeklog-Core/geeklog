@@ -85,7 +85,7 @@ $LANG01 = array(
     33 => 'エラー。ログファイルに書き込めません。',
     34 => 'エラー',
     35 => 'ログアウト',
-    36 => '',
+    36 => 'on',
     37 => '-',
     38 => 'フィード',
     39 => '更新',
@@ -188,7 +188,10 @@ $LANG01 = array(
     136 => '警告: 強化機能のためにJavaScriptを推薦します',
     137 => '警告: JavaScriptが機能を有効にするのに必要です',
     138 => "JavaScriptを使わないようアドバンストエディタを無効にしてノーマルエディタを有効にするには<a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">こちら</a>をクリックしてください。",
-    139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック"
+    139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -406,7 +409,9 @@ $LANG04 = array(
     163 => '再認証エラー',
     164 => '再認証回数を超えました。残念ながら操作はアボートされ、今回の編集作業は失われました。',
     165 => 'アドバンストエディタを使う',
-    166 => 'リモートアカウントの再同期'
+    166 => 'リモートアカウントの再同期',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################
@@ -695,8 +700,8 @@ $LANG21 = array(
     2 => 'このブロックを編集する権限がありません。',
     3 => 'ブロックの編集',
     4 => 'フィードの読み込みでエラーが発生しました。（error.logを参照してください。）',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'すべて',
     8 => 'ブロックのセキュリティレベル',
     9 => '順序',
@@ -710,11 +715,11 @@ $LANG21 = array(
     17 => 'コンテンツ',
     18 => 'ブロックのタイトル・セキュリティレベル・コンテンツを入力してください。',
     19 => 'ブロック管理',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'セキュリティ',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => '順序',
-    24 => '',
+    24 => 'Dynamic',
     25 => 'ブロックの編集・削除は編集アイコンをクリック、ブロックの作成は上の「新規作成」をクリックしてください。ブロックの移動は、[↑][↓][R][L]をクリックしてください。 ',
     26 => 'レイアウト用ブロック',
     27 => 'PHPブロック',
@@ -734,10 +739,10 @@ $LANG21 = array(
     41 => '右',
     42 => 'ブロックのタイトルと表示順序を入力してください。',
     43 => 'ホームページのみ',
-    44 => '',
+    44 => 'Multiple',
     45 => "管理権限のないブロックを編集しようとしました。この行為は記録されます。<a href=\"{$_CONF['site_admin_url']}/block.php\">ブロックの編集</a>画面に戻ってください.",
     46 => '移動',
-    47 => '',
+    47 => 'None',
     48 => 'ブロックID',
     49 => '(半角英数字とハイフン)',
     50 => 'ブロックIDを入力してください。',
@@ -758,7 +763,8 @@ $LANG21 = array(
     65 => '順番',
     66 => '自動タグ',
     67 => '自動タグ使用許可',
-    68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。'
+    68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################
@@ -892,7 +898,26 @@ $LANG27 = array(
     27 => '話題アイコンアップロード',
     28 => '最大',
     29 => 'ファイルアップロード時にエラー',
-    30 => 'この話題の記事数'
+    30 => 'この話題の記事数',
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden',
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only',
+    40 => 'Assign one or more topics. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
+    44 => 'Inherit',
+    45 => 'Default',
+    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1767,6 +1792,8 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => '管理画面のURL',
     'site_mail' => 'サイトのメールアドレス',
     'noreply_mail' => 'No-Replyメールアドレス',
+    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => 'サイト名',
     'site_slogan' => 'スローガン',
     'owner_name' => '管理者名',
@@ -1894,7 +1921,6 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => '記事に配置する画像の最大数',
     'limitnews' => '1ページあたりの記事の表示数',
     'minnews' => '記事の最小表示数',
-    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => '所有者を表示する',
     'hideviewscount' => '閲覧数を表示しない',
     'hideemailicon' => 'メールアイコンを表示しない',
@@ -1949,6 +1975,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'パスワード入力間隔制限',
     'login_attempts' => 'ログイン回数制限',
     'login_speedlimit' => 'ログイン間隔制限',
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'ユーザHTML',
     'admin_html' => '管理者HTML',
     'advanced_html' => 'アドバンストエディタ用追加HTML',
@@ -1956,6 +1984,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => '許可されたプロトコル',
     'disable_autolinks' => '自動タグを無効にする',
     'clickable_links' => 'URLを自動リンクさせる',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'HTML出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止する',
     'censormode' => 'チェックする',
@@ -1989,7 +2018,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => '検索条件のデフォルト',
     'search_def_sort' => 'ソート順のデフォルト',
     'autotag_permissions_story' => '[story: ] パーミッション',
-    'autotag_permissions_user' => '[user: ] パーミッション'
+    'autotag_permissions_user' => '[user: ] パーミッション',
+    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
+    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2045,7 +2077,9 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => '話題のパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_perm_block' => 'ブロックのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_webservices' => 'Webサービス',
-    'fs_autotag_permissions' => '自動タグのパーミッション'
+    'fs_autotag_permissions' => '自動タグのパーミッション',
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
 
 $LANG_tab['Core'] = array(
@@ -2087,7 +2121,8 @@ $LANG_tab['Core'] = array(
     'tab_censoring' => 'バッドワードチェック',
     'tab_iplookup' => 'IP検索',
     'tab_permissions' => 'パーミッション',
-    'tab_webservices' => 'Webサービス'
+    'tab_webservices' => 'Webサービス',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2119,7 +2154,8 @@ $LANG_configselects['Core'] = array(
     25 => array('新着記事' => 'story', '新着コメント' => 'comment', '新着トラックバック' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザ' => 'user'),
     26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
     27 => array('閲覧数 (昇順)' => 'hits|asc', '閲覧数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
-    28 => array('アクセス不可' => 0, '利用する' => 2)
+    28 => array('アクセス不可' => 0, '利用する' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ###############################################################################
@@ -2134,6 +2170,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'このフィールドは比較操作に適合していません',
     'date' => 'このフィールドはdateフォーマットで入力してください',
     'year' => 'このフィールドはyearフォーマットで入力してください',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'このフィールドはdateフォーマットで入力してください',
     'datetime' => 'このフィールドはdatetimeフォーマットで入力してください',
     'boolean' => 'このフィールドはbooleanフォーマットで入力してください',
@@ -2164,7 +2201,8 @@ $LANG_VALIDATION = array(
     'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、このフィールドにNetpbmのパッケージソースへのパスを入力してください',
     'language' => '言語ファイルがありません',
     'timezone' => '無効なtimezoneです',
-    'single_char' => 'このフィールドには半角1文字を入力してください'
+    'single_char' => 'このフィールドには半角1文字を入力してください',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 

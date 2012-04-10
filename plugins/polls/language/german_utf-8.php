@@ -36,6 +36,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'Umfragen',
+    'poll' => 'Poll',
     'results' => 'Ergebnisse',
     'pollresults' => 'Umfrage-Ergebnisse',
     'votes' => 'Stimmen',
@@ -144,7 +145,14 @@ $LANG_confignames['polls'] = array(
     'newpollsinterval' => 'Zeitabstand neue Umfragen',
     'hidenewpolls' => 'Neue Umfragen',
     'title_trim_length' => 'Titel abschneiden nach',
-    'meta_tags' => 'Meta-Tags verwenden'
+    'meta_tags' => 'Meta-Tags verwenden',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -155,14 +163,17 @@ $LANG_tab['polls'] = array(
     'tab_main' => 'General Polls Settings',
     'tab_whatsnew' => 'What\'s New Block',
     'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_autotag_permissions' => 'Autotag Usage Permissions',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'Allgemeine Umfrageeinstellungen',
     'fs_whatsnew' => 'What\'s New Block',
     'fs_permissions' => 'Grundeinstellungen Rechte',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -173,7 +184,9 @@ $LANG_configselects['polls'] = array(
     5 => array('Verbergen' => 'hide', 'Anzeigen - Modifiziertes Datum benutzen' => 'modified', 'Anzeigen - Datum der Erstellung benutzen' => 'created'),
     9 => array('Zur Umfrage weiterleiten' => 'item', 'Admin Liste anzeigen' => 'list', 'Öffentliche Liste anzeigen' => 'plugin', 'Startseite' => 'home', 'Schaltzentrale' => 'admin'),
     12 => array('Kein Zugang' => 0, 'Nur lesen' => 2, 'Lesen-Schreiben' => 3),
-    13 => array('No access' => 0, 'Use' => 2)
+    13 => array('No access' => 0, 'Use' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

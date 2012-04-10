@@ -182,7 +182,10 @@ $LANG01 = array(
     136 => 'Warning: Javascript recommended for enhanced functionality',
     137 => 'Warning: Javascript required to enable functionality',
     138 => "Click <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">here</a> to disable the advanced editor and use the default editor which does not require JavaScript",
-    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage"
+    139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
+    'facebook' => 'Login with Facebook',
+    'twitter' => 'Login with Twitter',
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -232,7 +235,8 @@ $LANG03 = array(
     41 => 'Zdravo %s,',
     42 => 'Izpiši se',
     43 => 'Izpiši se od prejemanja obvestil o odgovorih',
-    44 => 'Tvoje ime'
+    44 => 'Tvoje ime',
+    45 => "Thank you for your comment. You must wait {$_CONF['commentspeedlimit']} seconds to post a new comment."
 );
 
 ###############################################################################
@@ -399,7 +403,9 @@ $LANG04 = array(
     163 => 'Ponovno preverjanje pristnosti je spodletelo',
     164 => 'Preseženo je bilo število dovoljenih poskusov preverjanja pristnosti. Postopek je bil prekinjen in zadnje spremembe so žal izgubljene.',
     165 => 'Uporabi Napredni urejevalnik',
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################
@@ -688,8 +694,8 @@ $LANG21 = array(
     2 => 'Za urejanje tega bloka nimaš potrebnih skrbniških pravic.',
     3 => 'Urejanje blokov',
     4 => 'Pri branju je nastala težava (za podrobnosti glej error.log).',
-    5 => '',
-    6 => '',
+    5 => 'Yes',
+    6 => 'No',
     7 => 'Vse',
     8 => 'Varnostna raven bloka',
     9 => 'Pravila bloka',
@@ -703,11 +709,11 @@ $LANG21 = array(
     17 => 'Vsebina bloka',
     18 => 'Izpolni polji Naslov bloka in Vsebina bloka',
     19 => 'Upravitelj bloka',
-    20 => '',
+    20 => 'Regular Blocks',
     21 => 'Varnostna raven bloka',
-    22 => '',
+    22 => 'Dynamic Blocks',
     23 => 'Pravila bloka',
-    24 => '',
+    24 => 'Dynamic',
     25 => 'Za spreminjanje ali izbris bloka klikni na njegovo spodnjo ikono za urejanje. Èe hoèeš ustvariti nov blok, klikni na "Ustvari" zgoraj. Èe hoèeš blok premakniti, klikni na pušèici ali v polji [R] in [L].',
     26 => 'Izgled bloka',
     27 => 'Blok PHP',
@@ -727,10 +733,10 @@ $LANG21 = array(
     41 => 'Desno',
     42 => 'Vnesi ime bloka in vrstni red za prednastavljene bloke Geekloga.',
     43 => 'Samo domaèa stran',
-    44 => '',
+    44 => 'Multiple',
     45 => "Do tega bloka nimaš dostopa. Poskus je bil zabeležen v bazo podatkov. Prosim, vrni se na <a href=\"{$_CONF['site_url']}/admin/block.php\">zaslon za skrbništvo blokov</a>.",
     46 => 'Premakni',
-    47 => '',
+    47 => 'None',
     48 => 'Ime bloka',
     49 => ' (brez presledkiov in imena ne smejo biti podvojena)',
     50 => 'Ime bloka ne more ostati prazno',
@@ -751,7 +757,8 @@ $LANG21 = array(
     65 => 'naroèilo',
     66 => 'Samodejni ukazi',
     67 => 'Potrdi za odobritev samodejnih ukazov',
-    68 => 'Združena vsebina tega bloka je predolga za prikaz. Prosim, v nastavitvah bloka nastavi najveèje število èlankov za uvoz ali nastavi najvišje število (global maximum) v nastavitvah Geekloga (Geeklog Configuration).'
+    68 => 'Združena vsebina tega bloka je predolga za prikaz. Prosim, v nastavitvah bloka nastavi najveèje število èlankov za uvoz ali nastavi najvišje število (global maximum) v nastavitvah Geekloga (Geeklog Configuration).',
+    69 => 'Plugin Name'
 );
 
 ###############################################################################
@@ -885,7 +892,26 @@ $LANG27 = array(
     27 => 'ali naloži ikono za rubriko',
     28 => 'Najveè',
     29 => 'Napake pri nalaganju datotek',
-    30 => 'Èlanki v rubriki'
+    30 => 'Èlanki v rubriki',
+    31 => 'You have used a restricted Topic ID. Please choose another one.',
+    32 => 'Parent Topic',
+    33 => 'Inherit',
+    34 => 'Items of child topic are inherited',
+    35 => 'Hidden',
+    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    37 => 'Root',
+    38 => 'All',
+    39 => 'Homepage Only',
+    40 => 'Assign one or more topics. ',
+    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
+    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
+    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
+    44 => 'Inherit',
+    45 => 'Default',
+    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
+    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1760,6 +1786,8 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => 'Adminov URL',
     'site_mail' => 'E-pošta strani',
     'noreply_mail' => 'No-Reply E-Mail',
+    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => 'Ime strani',
     'site_slogan' => 'Slogan',
     'owner_name' => 'Owner Name',
@@ -1887,7 +1915,6 @@ $LANG_confignames['Core'] = array(
     'maximagesperarticle' => 'Najveèje število slik na èlanek',
     'limitnews' => 'Èlankov na strani',
     'minnews' => 'Min. št. èlankov na strani',
-    'linktext_maxlen' => 'Max Link Text Length',
     'contributedbyline' => 'Prikaži "Piše"?',
     'hideviewscount' => 'Skrij število ogledov?',
     'hideemailicon' => 'Skrij ikono za E-Pošto?',
@@ -1942,6 +1969,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'Zahtevani èas med vpisi gesla',
     'login_attempts' => 'Najveèje število poizkusov prijave',
     'login_speedlimit' => 'Zahtevani èas med prijavami',
+    'pass_alg' => 'Password Hash Algorithm',
+    'pass_stretch' => 'Hash Stretch Count',
     'user_html' => 'Uporabnikov HTML',
     'admin_html' => 'Adminov HTML',
     'advanced_html' => 'Dodatni HTML za Adv. Editor',
@@ -1949,6 +1978,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => 'Dovoljeni protokoli',
     'disable_autolinks' => 'Onemogoèi samodejne povezave (Autotags)?',
     'clickable_links' => 'Naj se na URL klikne?',
+    'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Pošiljaj stisnjen izhod?',
     'frame_options' => 'Zašèiti proti "clickjackingu"',
     'censormode' => 'Naèin cenzor?',
@@ -1970,6 +2000,8 @@ $LANG_confignames['Core'] = array(
     'article_comment_close_days' => 'Dnevi do zaprtja komentarjev (prednastavljeno)',
     'comment_close_rec_stories' => 'Število najnovejših èlankov, omogoèenih za komentiranje',
     'allow_reply_notifications' => 'Dovoli obvestila o odgovorih na komentarje?',
+    'comment_on_same_page' => 'Comment on Same Page?',
+    'show_comments_at_replying' => 'Show Comments at Replying?',
     'search_style' => 'Slog seznama rezultatov',
     'search_limits' => 'Omejitve strani',
     'search_show_num' => 'Prikaži število rezultatov?',
@@ -1980,7 +2012,10 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => 'Prednastavljena metoda iskanja',
     'search_def_sort' => 'Prednastavljen vrstni red sortiranja',
     'autotag_permissions_story' => '[story: ] Permissions',
-    'autotag_permissions_user' => '[user: ] Permissions'
+    'autotag_permissions_user' => '[user: ] Permissions',
+    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
+    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2036,7 +2071,9 @@ $LANG_fs['Core'] = array(
     'fs_perm_topic' => 'Prednastavljena dovoljenja rubrike',
     'fs_perm_block' => 'Prednastavljena dovoljenja bloka',
     'fs_webservices' => 'Webservices',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'Autotag Usage Permissions',
+    'fs_breadcrumbs' => 'Breadcrumbs',
+    'fs_pass' => 'Password Settings'
 );
 
 $LANG_tab['Core'] = array(
@@ -2078,7 +2115,8 @@ $LANG_tab['Core'] = array(
     'tab_censoring' => 'Censoring',
     'tab_iplookup' => 'IP Lookup',
     'tab_permissions' => 'Permissions',
-    'tab_webservices' => 'Webservices'
+    'tab_webservices' => 'Webservices',
+    'tab_topics' => 'Topics'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2110,7 +2148,8 @@ $LANG_configselects['Core'] = array(
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
-    28 => array('No access' => 0, 'Use' => 2)
+    28 => array('No access' => 0, 'Use' => 2),
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
 );
 
 ###############################################################################
@@ -2125,6 +2164,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'This field does not match the comparison operation',
     'date' => 'This field must be in date format',
     'year' => 'This field must be in year format such as 2010',
+    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
     'time' => 'This field must be in time format',
     'datetime' => 'This field must be in datetime format',
     'boolean' => 'This field must be in boolean',
@@ -2155,7 +2195,8 @@ $LANG_VALIDATION = array(
     'path_to_netpbm' => 'You must set image library to netpbm and fill this field with directory where the binaries from the Netpbm package are kept',
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
-    'single_char' => 'This field must be a single character'
+    'single_char' => 'This field must be a single character',
+    'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
 

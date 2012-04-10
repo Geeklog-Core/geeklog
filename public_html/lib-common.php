@@ -413,28 +413,6 @@ if (empty($_IMAGE_TYPE)) {
     $_IMAGE_TYPE = 'gif';
 }
 
-
-// Handle Who's Online block
-/*
-if (COM_isAnonUser() && isset($_SERVER['REMOTE_ADDR'])) {
-    // The following code handles anonymous users so they show up properly
-    DB_delete($_TABLES['sessions'], array('remote_ip', 'uid'),
-                                    array($_SERVER['REMOTE_ADDR'], 1));
-
-    $tries = 0;
-    do
-    {
-        // Build a useless sess_id (needed for insert to work properly)
-        $sess_id = mt_rand();
-        $curtime = time();
-
-        // Insert anonymous user session
-        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '{$_SERVER['REMOTE_ADDR']}', 1)", 1 );
-        $tries++;
-    }
-    while(( $result === false) && ( $tries < 5 ));
-}
-*/
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
 
@@ -2075,6 +2053,8 @@ function COM_errorLog( $logentry, $actionid = '' )
                                  $logentry );
 
         $timestamp = @strftime( '%c' );
+        
+        $remoteaddress = $_SERVER['REMOTE_ADDR'];        
 
         if (!isset($_CONF['path_layout']) &&
                 (($actionid == 2) || empty($actionid))) {
@@ -2099,7 +2079,7 @@ function COM_errorLog( $logentry, $actionid = '' )
                 }
                 else
                 {
-                    fputs( $file, "$timestamp - $logentry \n" );
+                    fputs( $file, "$timestamp - $remoteaddress - $logentry \n" );
                 }
                 break;
 
@@ -2124,7 +2104,7 @@ function COM_errorLog( $logentry, $actionid = '' )
                 }
                 else
                 {
-                    fputs( $file, "$timestamp - $logentry \n" );
+                    fputs( $file, "$timestamp - $remoteaddress - $logentry \n" );
                     $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp,
                                    '', COM_getBlockTemplate( '_msg_block',
                                    'header' ))
@@ -4793,67 +4773,67 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if( $curpage > 1 )
     {
-        $retval .= COM_createLink($LANG05[7], $first_url . $last_url) . ' | ';
-        $pg = '';
-        if( ( $curpage - 1 ) > 1 )
-        {
-            $pg = $sep . $page_str . ( $curpage - 1 );
-        }
-        $retval .= COM_createLink($LANG05[6], $first_url . $pg . $last_url ) . ' | ';
-    }
-    else
-    {
-        $retval .= $LANG05[7] . ' | ' ;
-        $retval .= $LANG05[6] . ' | ' ;
-    }
-
+        $retval .= '<span>' . COM_createLink($LANG05[7], $first_url . $last_url ) . '</span> ' . ' | ';
+         $pg = '';
+         if( ( $curpage - 1 ) > 1 )
+         {
+             $pg = $sep . $page_str . ( $curpage - 1 );
+         }
+         $retval .= '<span>' . COM_createLink($LANG05[6], $first_url . $pg . $last_url ) . '</span> ' . ' | ';
+     }
+     else
+     {
+         $retval .= '<span>' . $LANG05[7] . '</span>' . ' | ';
+         $retval .= '<span>' . $LANG05[6] . '</span>' . ' | ';
+     }
+ 
     for( $pgcount = ( $curpage - 10 ); ( $pgcount <= ( $curpage + 9 )) AND ( $pgcount <= $num_pages ); $pgcount++ )
-    {
-        if( $pgcount <= 0 )
-        {
-            $pgcount = 1;
-        }
-
+     {
+         if( $pgcount <= 0 )
+         {
+             $pgcount = 1;
+         }
+ 
         if( $pgcount == $curpage )
-        {
-            $retval .= '<b>' . $pgcount . '</b> ';
-        }
-        else
-        {
-            $pg = '';
-            if( $pgcount > 1 )
-            {
-                $pg = $sep . $page_str . $pgcount;
-            }
-            $retval .= COM_createLink($pgcount, $first_url . $pg . $last_url) . ' ';
-        }
-    }
-
+         {
+             $retval .= '<span>' . $pgcount . '</span> ';
+         }
+         else
+         {
+             $pg = '';
+             if( $pgcount > 1 )
+             {
+                 $pg = $sep . $page_str . $pgcount;
+             }
+             $retval .= COM_createLink($pgcount, $first_url . $pg . $last_url) . ' ';
+         }
+     }
+ 
     if( !empty( $open_ended ))
-    {
-        $retval .= '| ' . $open_ended;
-    }
-    else if( $curpage == $num_pages )
-    {
-        $retval .= '| ' . $LANG05[5] . ' ';
-        $retval .= '| ' . $LANG05[8];
-    }
-    else
-    {
-        $retval .= '| ' . COM_createLink($LANG05[5], $first_url . $sep
-                                         . $page_str . ($curpage + 1) . $last_url);
-        $retval .= ' | ' . COM_createLink($LANG05[8], $first_url . $sep
-                                          . $page_str . $num_pages . $last_url);
-    }
-
+     {
+         $retval .= '| ' . $open_ended;
+     }
+     else if( $curpage == $num_pages )
+     {
+         $retval .= '| ' . '<span>' . $LANG05[5] . '</span>' . ' ';
+         $retval .= '| ' . '<span>' . $LANG05[8] . '</span>';
+     }
+     else
+     {
+         $retval .= '| ' . '<span>' . COM_createLink($LANG05[5], $first_url . $sep
+                                          . $page_str . ($curpage + 1) . $last_url) . '</span> ';
+         $retval .= ' | ' . '<span>' . COM_createLink($LANG05[8], $first_url . $sep
+                                           . $page_str . $num_pages . $last_url) . '</span> ';
+     }
+ 
     if( !empty( $retval ))
-    {
-        if( !empty( $msg ))
-        {
-            $msg .=  ' ';
-        }
-        $retval = '<div class="pagenav">' . $msg . $retval . '</div>';
-    }
+     {
+         if( !empty( $msg ))
+         {
+             $msg .= ' ';
+         }
+         $retval = '<div class="gl-pagenav">' . $msg . $retval . '</div>';
+     }
 
     return $retval;
 }

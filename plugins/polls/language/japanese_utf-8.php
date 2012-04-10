@@ -42,6 +42,7 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'アンケート',
+    'poll' => 'Poll',
     'results' => '結果',
     'pollresults' => '投票結果',
     'votes' => '投票',
@@ -150,7 +151,14 @@ $LANG_confignames['polls'] = array(
     'newpollsinterval' => 'アンケート投稿の間隔',
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
-    'meta_tags' => 'メタタグを有効にする'
+    'meta_tags' => 'メタタグを有効にする',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -161,14 +169,17 @@ $LANG_tab['polls'] = array(
     'tab_main' => 'アンケートのメイン設定',
     'tab_whatsnew' => '新着情報ブロック',
     'tab_permissions' => 'パーミッションのデフォルト',
-    'tab_autotag_permissions' => '自動タグのパーミッション'
+    'tab_autotag_permissions' => '自動タグのパーミッション',
+    'tab_poll_block' => 'Poll Block'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
     'fs_whatsnew' => '新着情報ブロック',
     'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => '自動タグのパーミッション'
+    'fs_autotag_permissions' => '自動タグのパーミッション',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -179,7 +190,9 @@ $LANG_configselects['polls'] = array(
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
     9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('アクセス不可' => 0, '利用する' => 2)
+    13 => array('アクセス不可' => 0, '利用する' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

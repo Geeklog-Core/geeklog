@@ -401,7 +401,9 @@ $LANG04 = array(
     163 => 'Re-Authentication Failed',
     164 => 'You have exceeded the number of allowed attempts for re-authentication. The operation has been aborted and your recent changes were lost, sorry.',
     165 => 'Use Advanced Editor', 
-    166 => 'Re-synch Remote Account'
+    166 => 'Re-synch Remote Account',
+    167 => 'Remote login',
+    168 => 'You may also login with one on of the below remote authentication services'
 );
 
 ###############################################################################
@@ -907,8 +909,8 @@ $LANG27 = array(
     45 => 'Default',
     46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
     47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.', 
-    48 => 'Parent Topic Id not found.', 
-    'breadcrumb_seperator' => '>'
+    48 => 'Parent Topic Id not found.',
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -2011,7 +2013,7 @@ $LANG_confignames['Core'] = array(
     'search_def_keytype' => "Default Search Method",
     'search_def_sort' => "Default Sort Order", 
     'autotag_permissions_story' => '[story: ] Permissions', 
-    'autotag_permissions_user' => '[user: ] Permissions', 
+    'autotag_permissions_user' => '[user: ] Permissions',
     'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
     'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
     'disable_breadcrumbs_plugins' => "Disable Plugins Breadcrumbs"

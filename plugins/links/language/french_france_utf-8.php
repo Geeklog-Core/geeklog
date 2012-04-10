@@ -26,36 +26,15 @@
 #
 ###############################################################################
 
-/**
- * This is the french language page for the Geeklog links Plug-in!
- *
- * @package Links
- * @subpackage Language
- * @filesource
- * @version 2.0
- * @since GL 1.4.0
- * @copyright Copyright &copy; 2005-2007
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @author Trinity Bays <trinity93 AT gmail DOT com>
- * @author Tony Bibbs <tony AT tonybibbs DOT com>
- * @author Tom Willett <twillett AT users DOT sourceforge DOT net>
- *
- */
-
 global $LANG32;
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:	$LANG - variable name
-#		  	XX - file id number
-#			YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
-/**
-* the link plugin's lang array
-* 
-* @global array $LANG_LINKS 
-*/
 $LANG_LINKS = array(
     10 => 'Soumissions',
     14 => 'Liens',
@@ -74,46 +53,34 @@ $LANG_LINKS = array(
     125 => 'Catégories',
     126 => 'Vous êtes ici :',
     'autotag_desc_link' => '[link: id titre alternatif] - Affiche un lien vers un lien du module de gestion des liens en utilisant le titre du lien. Un titre alternatif peut être spécifié mais n\'est pas nécessaire.',
-    'root' => 'Accueil' // title used for top level category
+    'root' => 'Accueil'
 );
 
 ###############################################################################
 # for stats
-/**
-* the link plugin's lang stats array
-* 
-* @global array $LANG_LINKS_STATS
-*/
+
 $LANG_LINKS_STATS = array(
     'links' => 'Liens enregistrés (nombre de clicks)',
     'stats_headline' => 'Liens les plus visités',
     'stats_page_title' => 'Liens',
     'stats_hits' => 'Clics',
-    'stats_no_hits' => 'Il semblerait qu\'il n\'y a pas encore de lien ou que personne n\'ai cliqué dessus.',
+    'stats_no_hits' => 'Il semblerait qu\'il n\'y a pas encore de lien ou que personne n\'ai cliqué dessus.'
 );
 
 ###############################################################################
 # for the search
-/**
-* the link plugin's lang search array
-* 
-* @global array $LANG_LINKS_SEARCH 
-*/
+
 $LANG_LINKS_SEARCH = array(
- 'results' => 'Résultat des liens',
- 'title' => 'Titre',
- 'date' => 'Date d\'ajout',
- 'author' => 'Soumis par',
- 'hits' => 'Clics'
+    'results' => 'Résultat des liens',
+    'title' => 'Titre',
+    'date' => 'Date d\'ajout',
+    'author' => 'Soumis par',
+    'hits' => 'Clics'
 );
 
 ###############################################################################
 # for the submission form
-/**
-* the link plugin's lang submit form array
-* 
-* @global array $LANG_LINKS_SUBMIT 
-*/
+
 $LANG_LINKS_SUBMIT = array(
     1 => 'Soumettez un lien',
     2 => 'Lien',
@@ -135,10 +102,9 @@ $PLG_links_MESSAGE1 = "Merci de soumettre un lien sur {$_CONF['site_name']}.  Vo
 $PLG_links_MESSAGE2 = 'Lien sauvegard&eacute; avec succès.';
 $PLG_links_MESSAGE3 = 'Lien effac&eacute; avec succès.';
 $PLG_links_MESSAGE4 = "Merci de soumettre un lien sur {$_CONF['site_name']}. Il apparaît d&eacute;sormais à la <a href={$_CONF['site_url']}/links/index.php>section des liens</a>.";
-$PLG_links_MESSAGE5 = "You do not have sufficient access rights to view this category.";
+$PLG_links_MESSAGE5 = 'You do not have sufficient access rights to view this category.';
 $PLG_links_MESSAGE6 = 'You do not have sufficient rights to edit this category.';
 $PLG_links_MESSAGE7 = 'Please enter a Category Name and Description.';
-
 $PLG_links_MESSAGE10 = 'Your category has been successfully saved.';
 $PLG_links_MESSAGE11 = 'You are not allowed to set the id of a category to "site" or "user" - these are reserved for internal use.';
 $PLG_links_MESSAGE12 = 'You are trying to make a parent category the child of it\'s own subcategory. This would create an orphan category, so please first move the child category or categories up to a higher level.';
@@ -153,12 +119,8 @@ $PLG_links_MESSAGE3001 = 'Plugin upgrade not supported.';
 $PLG_links_MESSAGE3002 = $LANG32[9];
 
 ###############################################################################
-# admin/link.php
-/**
-* the link plugin's lang admin array
-* 
-* @global array $LANG_LINKS_ADMIN 
-*/
+# admin/plugins/links/index.php
+
 $LANG_LINKS_ADMIN = array(
     1 => 'Editeur de lien',
     2 => 'ID',
@@ -211,50 +173,50 @@ $LANG_LINKS_ADMIN = array(
     61 => 'Liens daans la catégorie'
 );
 
-$LANG_LINKS_STATUS = array(
-    100 => "Continuer",
-    101 => "Switching Protocols",
-    200 => "OK",
-    201 => "Créé",
-    202 => "Accepté",
-    203 => "Non-Authoritative Information",
-    204 => "No Content",
-    205 => "Reset Content",
-    206 => "Partial Content",
-    300 => "Multiple Choices",
-    301 => "Moved Permanently",
-    302 => "Found",
-    303 => "See Other",
-    304 => "Not Modified",
-    305 => "Use Proxy",
-    307 => "Temporary Redirect",
-    400 => "Bad Request",
-    401 => "Unauthorized",
-    402 => "Payment Required",
-    403 => "Forbidden",
-    404 => "Not Found",
-    405 => "Method Not Allowed",
-    406 => "Not Acceptable",
-    407 => "Proxy Authentication Required",
-    408 => "Request Timeout",
-    409 => "Conflict",
-    410 => "Gone",
-    411 => "Length Required",
-    412 => "Precondition Failed",
-    413 => "Request Entity Too Large",
-    414 => "Request-URI Too Long",
-    415 => "Unsupported Media Type",
-    416 => "Requested Range Not Satisfiable",
-    417 => "Expectation Failed",
-    500 => "Internal Server Error",
-    501 => "Not Implemented",
-    502 => "Bad Gateway",
-    503 => "Service Unavailable",
-    504 => "Gateway Timeout",
-    505 => "HTTP Version Not Supported",
-    999 => "Connection Timed out"
-);
 
+$LANG_LINKS_STATUS = array(
+    100 => 'Continuer',
+    101 => 'Switching Protocols',
+    200 => 'OK',
+    201 => 'Créé',
+    202 => 'Accepté',
+    203 => 'Non-Authoritative Information',
+    204 => 'No Content',
+    205 => 'Reset Content',
+    206 => 'Partial Content',
+    300 => 'Multiple Choices',
+    301 => 'Moved Permanently',
+    302 => 'Found',
+    303 => 'See Other',
+    304 => 'Not Modified',
+    305 => 'Use Proxy',
+    307 => 'Temporary Redirect',
+    400 => 'Bad Request',
+    401 => 'Unauthorized',
+    402 => 'Payment Required',
+    403 => 'Forbidden',
+    404 => 'Not Found',
+    405 => 'Method Not Allowed',
+    406 => 'Not Acceptable',
+    407 => 'Proxy Authentication Required',
+    408 => 'Request Timeout',
+    409 => 'Conflict',
+    410 => 'Gone',
+    411 => 'Length Required',
+    412 => 'Precondition Failed',
+    413 => 'Request Entity Too Large',
+    414 => 'Request-URI Too Long',
+    415 => 'Unsupported Media Type',
+    416 => 'Requested Range Not Satisfiable',
+    417 => 'Expectation Failed',
+    500 => 'Internal Server Error',
+    501 => 'Not Implemented',
+    502 => 'Bad Gateway',
+    503 => 'Service Unavailable',
+    504 => 'Gateway Timeout',
+    505 => 'HTTP Version Not Supported',
+    999 => 'Connection Timed out'
+);
 
 // Localization of the Admin Configuration UI
 $LANG_configsections['links'] = array(
@@ -279,19 +241,19 @@ $LANG_confignames['links'] = array(
     'root' => 'ID de la catégorie Root',
     'default_permissions' => 'Permissions par défaut des liens',
     'category_permissions' => 'Permissions par défaut des catégories',
-    'autotag_permissions_link' => '[link: ] Permissions'    
+    'autotag_permissions_link' => '[link: ] Permissions'
 );
 
 $LANG_configsubgroups['links'] = array(
     'sg_main' => 'Paramètres principaux'
 );
 
-$LANG_fs['links'] = array(
-    'fs_public' => 'Paramètres de la liste publique des liens',
-    'fs_admin' => 'Paramètres administrateur des liens',
-    'fs_permissions' => 'Permissions des liens',
-    'fs_cpermissions' => 'Permissions des catégories', 
-    'tab_autotag_permissions' => 'Permissions d\'usage des autotags'
+$LANG_tab['links'] = array(
+    'tab_public' => 'Public Links List Settings',
+    'tab_admin' => 'Links Admin Settings',
+    'tab_permissions' => 'Link Permissions',
+    'tab_cpermissions' => 'Category Permissions',
+    'tab_autotag_permissions' => 'Autotag Usage Permissions'
 );
 
 $LANG_fs['links'] = array(
@@ -299,13 +261,13 @@ $LANG_fs['links'] = array(
     'fs_admin' => 'Paramètres de l\'administration des liens',
     'fs_permissions' => 'Permissions des liens',
     'fs_cpermissions' => 'Permissions des catégories',
-    'fs_autotag_permissions' => 'Permissions d\'usage des autotags'  
+    'fs_autotag_permissions' => 'Permissions d\'usage des autotags'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
 $LANG_configselects['links'] = array(
     0 => array('Oui' => 1, 'Non' => 0),
-    1 => array('Oui' => TRUE, 'Non' => FALSE),
+    1 => array('Oui' => true, 'Non' => false),
     9 => array('Afficher le lien' => 'item', 'Afficher la liste administrateur' => 'list', 'Afficher la liste publique' => 'plugin', 'Afficher page d\'accueil' => 'home', 'Afficher l\'interface Admin' => 'admin'),
     12 => array('Pas d\'accès' => 0, 'Lecture seule' => 2, 'Lecture-Ecriture' => 3),
     13 => array('Pas d\'accès' => 0, 'Utiliser' => 2)

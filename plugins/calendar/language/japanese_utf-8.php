@@ -215,7 +215,14 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => '所有者の削除と共に削除する',
     'aftersave' => 'イベント保存後の画面遷移',
     'default_permissions' => 'パーミッション',
-    'autotag_permissions_event' => '[event: ] パーミッション'
+    'autotag_permissions_event' => '[event: ] パーミッション',
+    'block_enable' => 'Enabled',
+    'block_isleft' => 'Display Block on Left',
+    'block_order' => 'Block Order',
+    'block_topic_option' => 'Topic Options',
+    'block_topic' => 'Topic',
+    'block_group_id' => 'Group',
+    'block_permissions' => 'Permissions'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -225,13 +232,16 @@ $LANG_configsubgroups['calendar'] = array(
 $LANG_tab['calendar'] = array(
     'tab_main' => 'カレンダのメイン設定',
     'tab_permissions' => 'パーミッションのデフォルト',
-    'tab_autotag_permissions' => '自動タグのパーミッション'
+    'tab_autotag_permissions' => '自動タグのパーミッション',
+    'tab_events_block' => 'Events Block'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'カレンダのメイン設定',
     'fs_permissions' => 'カレンダのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => '自動タグのパーミッション'
+    'fs_autotag_permissions' => '自動タグのパーミッション',
+    'fs_block_settings' => 'Block Settings',
+    'fs_block_permissions' => 'Block Permissions'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -241,7 +251,9 @@ $LANG_configselects['calendar'] = array(
     6 => array('12' => 12, '24' => 24),
     9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
-    13 => array('アクセス不可' => 0, '利用する' => 2)
+    13 => array('アクセス不可' => 0, '利用する' => 2),
+    14 => array('No access' => 0, 'Read-Only' => 2),
+    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

@@ -910,7 +910,7 @@ $LANG27 = array(
     46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
     47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.', 
     48 => 'Parent Topic Id not found.',
-    'breadcrumb_seperator' => '>'
+    'breadcrumb_separator' => '>'
 );
 
 ###############################################################################
@@ -1788,7 +1788,7 @@ $LANG_confignames['Core'] = array(
     'site_mail' => "Site E-Mail",
     'noreply_mail' => "No-Reply E-Mail",
     'mail_cc_enabled' => 'Allow to Send Carbon Copies',
-    'mail_cc_default' => '"Carbon Copy" on by Default',    
+    'mail_cc_default' => '"Carbon Copy" on by Default',
     'site_name' => "Site Name",
     'site_slogan' => "Slogan",
     'owner_name' => "Owner Name",
