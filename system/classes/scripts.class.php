@@ -129,9 +129,9 @@ class scripts {
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
         
         // Set jQuery UI CSS
-        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);
         $this->setCSSFilePrivate('jquery.ui.all', $theme_path . '/jquery_ui/jquery.ui.all.css', false);
         $this->setCSSFilePrivate('jquery.ui', $theme_path . '/jquery_ui/jquery-ui.css', false);
+        $this->setCSSFilePrivate('jquery.ui.geeklog', $theme_path . '/jquery_ui/jquery.ui.geeklog.css', false);        
 
         // Set jQuery UI Core
         $names[] = 'jquery.ui.core';
@@ -194,7 +194,7 @@ class scripts {
                 // If name is subset of jQuery. make sure all Core UI libraries are loaded
                 if (substr($name, 0, 7) == 'jquery.' && !$this->jquery_ui_cdn) {
                     // Check that file exists, if not use Google version
-                    if (!file_exists($_CONF['path'] . 'public_html/' . $this->library_files[$name]['file'])) {
+                    if (!file_exists($_CONF['path_html'] . $this->library_files[$name]['file'])) {
                         $this->jquery_ui_cdn = true;
                         
                         $this->css_files['jquery.ui']['load'] = true;
