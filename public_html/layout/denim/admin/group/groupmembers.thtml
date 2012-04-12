@@ -1,0 +1,41 @@
+
+<!-- admin/group/groupmembers.thtml { -->
+
+<script type="text/JavaScript" src="{site_url}/javascript/moveusers.js"></script>
+
+<form name="groupusers" action="{phpself}?group={groupid}" method="post" id="admin-groupmembers">
+
+  <div class="admin_basic clearfix" style="height:300px">
+    <div class="listmembers">
+      <div class="aligncenter"><label for="admin-groupmembers-fieldFrom">{LANG_sitemembers}</label></div>
+      <select multiple="multiple" ondblclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" name="fieldFrom" id="admin-groupmembers-fieldFrom" style="height:250px">
+        {sitemembers}
+      </select>
+    </div>
+
+    <div class="movemembers">
+      <div class="movebutton"><input type="button" name="right" value="{LANG_add}"    onclick="moveSelectedOptions(this.form['fieldFrom'],this.form['fieldTo'],false)" class="submit"{xhtml}></div>
+      <div class="movebutton"><input type="button" name="left"  value="{LANG_remove}" onclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" class="submit"{xhtml}></div>
+    </div>
+
+    <div class="listmembers">
+      <div class="aligncenter"><label for="admin-groupmembers-fieldTo">{LANG_grpmembers}</label></div>
+      <select multiple="multiple" ondblclick="moveSelectedOptions(this.form['fieldTo'],this.form['fieldFrom'],false)" name="fieldTo" id="admin-groupmembers-fieldTo" style="height:250px">
+        {group_list}
+      </select>
+    </div>
+  </div>
+
+  <div class="submit aligncenter">
+    <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)" class="submit"{xhtml}>
+    <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)" class="submit"{xhtml}>
+    <input type="hidden" name="mode" value="savegroupusers"{xhtml}>
+    <input type="hidden" name="groupmembers"{xhtml}>
+    <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+    <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  </div>
+
+</form>
+
+<!-- } admin/group/groupmembers.thtml -->

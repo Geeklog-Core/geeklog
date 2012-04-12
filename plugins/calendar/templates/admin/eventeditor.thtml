@@ -1,170 +1,129 @@
-                            <form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post">
-                                <table border="0" cellspacing="0" cellpadding="3">
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_eventtitle}:</td>
-                                        <td>
-                                            <input type="text" size="48" maxlength="128" name="title" value="{event_title}"{xhtml}>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_eventtype}:</td>
-                                        <td>
-                                            <select name="event_type">
-                                                <option value="">--</option>
-                                                {type_options}
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventstartdate}:</td>
-                                        <td>
-                                          <span dir="ltr">
-                                            <select name="start_month">
-                                                {startmonth_options}
-                                            </select>
-                                            /
-                                            <select name="start_day">
-                                                {startday_options}
-                                            </select>
-                                            /
-                                            <select name="start_year">
-                                                {startyear_options}
-                                            </select>&nbsp;&nbsp;
-                                            {lang_starttime}: 
-                                            <select name="start_hour">
-                                                {starthour_options}
-                                            </select>
-                                            :
-                                            <select name="start_minute">
-                                                {startminute_options}
-                                            </select>
-                                            {startampm_selection}
-                                          </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventenddate}:</td>
-                                        <td>
-                                          <span dir="ltr">
-                                            <select name="end_month">
-                                                {endmonth_options}
-                                            </select>
-                                            /
-                                            <select name="end_day">
-                                                {endday_options}
-                                            </select>
-                                            /
-                                            <select name="end_year">
-                                                {endyear_options}
-                                            </select>&nbsp;&nbsp;
-                                            {lang_endtime}: 
-                                            <select name="end_hour">
-                                                {endhour_options}
-                                            </select>
-                                            :
-                                            <select name="end_minute">
-                                                {endminute_options}
-                                            </select>
-                                            {endampm_selection}
-                                          </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_alldayevent}:</td>
-                                        <td><input type="checkbox" name="allday" {allday_checked}{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_location}:</td>
-                                        <td>
-                                            <textarea name="location" cols="45" rows="2">{event_location}</textarea>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_addressline1}:</td>
-                                        <td><input type="text" name="address1" size="40" value="{event_address1}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_addressline2}:</td>
-                                        <td><input type="text" name="address2" size="40" value="{event_address2}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_city}:</td>
-                                        <td><input type="text" name="city" size="40" maxlength="60" value="{event_city}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_state}:</td>
-                                        <td><input type="text" name="state" size="40" value="{event_state}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_zipcode}:</td>
-                                        <td><input type="text" name="zipcode" size="5" maxlength="5" value="{event_zipcode}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_eventurl}:</td>
-                                        <td><input type="text" dir="ltr" size="48"  maxlength="{max_url_length}" name="url" value="{event_url}"{xhtml}> {lang_includehttp}</td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" valign="top" style="white-space:nowrap;">{lang_eventdescription}:</td>
-                                        <td><textarea name="description" style="width:100%" cols="45" rows="8">{event_description}</textarea></td>
-                                    </tr>
-                                    <tr valign="top">
-                                        <td align="right" style="white-space:nowrap;">{lang_postmode}:</td>
-                                        <td>
-                                            <select name="postmode">
-                                                {post_options}
-                                            </select>
-                                            <br{xhtml}>
-                                            {lang_allowed_html}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_hits}:</td>
-                                        <td>{hits}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><hr{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><b>{lang_accessrights}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
-                                        <td>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" style="white-space:nowrap;">{lang_group}:</td>
-                                        <td>
-                                            {group_dropdown}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"><b>{lang_permissions}</b>:</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">{lang_perm_key}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            {permissions_editor} 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">{lang_permissions_msg}</td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td colspan="2">
-                                            <input type="submit" value="{lang_save}" name="mode"{xhtml}> 
-                                            <input type="submit" value="{lang_cancel}" name="mode"{xhtml}> 
-                                            <input type="hidden" name="eid" value="{event_id}"{xhtml}>
-                                            <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
-                                            {delete_option}
-                                            {submission_option}
-                                            <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
+
+<!-- plugins/calendar/templates/admin/eventeditor.thtml { -->
+
+<form action="{site_admin_url}/plugins/calendar/index.php" name="events" method="post" id="calendar-eventeditor" class="compact">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="calendar-eventeditor-title">{lang_eventtitle}</label></dt>
+      <dd><input type="text" maxlength="128" name="title" value="{event_title}" id="calendar-eventeditor-title" class="size6"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-event_type">{lang_eventtype}</label></dt>
+      <dd><select name="event_type" id="calendar-eventeditor-event_type">
+            <option value="">--</option>
+            {type_options}
+          </select></dd>
+
+      <dt><label>{lang_eventstartdate}</label></dt>
+      <dd><span dir="ltr">
+            <select name="start_month">
+                {startmonth_options}
+            </select>
+            /
+            <select name="start_day">
+                {startday_options}
+            </select>
+            /
+            <select name="start_year">
+                {startyear_options}
+            </select>&nbsp;&nbsp;
+            {lang_starttime}: 
+            <select name="start_hour">
+                {starthour_options}
+            </select>
+            :
+            <select name="start_minute">
+                {startminute_options}
+            </select>
+            {startampm_selection}
+          </span></dd>
+
+      <dt><label>{lang_eventenddate}</label></dt>
+      <dd><span dir="ltr">
+            <select name="end_month">
+                {endmonth_options}
+            </select>
+            /
+            <select name="end_day">
+                {endday_options}
+            </select>
+            /
+            <select name="end_year">
+                {endyear_options}
+            </select>&nbsp;&nbsp;
+            {lang_endtime}: 
+            <select name="end_hour">
+                {endhour_options}
+            </select>
+            :
+            <select name="end_minute">
+                {endminute_options}
+            </select>
+            {endampm_selection}
+          </span></dd>
+
+      <dt><label for="calendar-eventeditor-allday">{lang_alldayevent}</label></dt>
+      <dd><input type="checkbox" name="allday" id="calendar-eventeditor-allday" {allday_checked}{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-location">{lang_location}</label></dt>
+      <dd><textarea name="location" cols="45" rows="2" id="calendar-eventeditor-location" class="size6">{event_location}</textarea></dd>
+
+      <dt><label for="calendar-eventeditor-address1">{lang_addressline1}</label></dt>
+      <dd><input type="text" name="address1" value="{event_address1}" id="calendar-eventeditor-address1" class="size6"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-address2">{lang_addressline2}</label></dt>
+      <dd><input type="text" name="address2" value="{event_address2}" id="calendar-eventeditor-address2" class="size6"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-city">{lang_city}</label></dt>
+      <dd><input type="text" name="city"  maxlength="60" value="{event_city}" id="calendar-eventeditor-city" class="size6"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-state">{lang_state}</label></dt>
+      <dd><input type="text" name="state" value="{event_state}" id="calendar-eventeditor-state" class="size6"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-zipcode">{lang_zipcode}</label></dt>
+      <dd><input type="text" name="zipcode" maxlength="5" value="{event_zipcode}" id="calendar-eventeditor-zipcode" class="size1"{xhtml}></dd>
+
+      <dt><label for="calendar-eventeditor-url">{lang_eventurl}</label></dt>
+      <dd><input type="text" dir="ltr" name="url" maxlength="{max_url_length}" value="{event_url}" id="calendar-eventeditor-url" class="size6"{xhtml}> {lang_includehttp}</dd>
+
+      <dt><label for="calendar-eventeditor-description">{lang_eventdescription}</label></dt>
+      <dd><textarea name="description" cols="45" rows="8" id="calendar-eventeditor-description" class="wide">{event_description}</textarea></dd>
+
+      <dt><label for="calendar-eventeditor-postmode">{lang_postmode}</label></dt>
+      <dd><select name="postmode" id="calendar-eventeditor-postmode">
+            {post_options}
+          </select><br{xhtml}>{lang_allowed_html}</dd>
+
+      <dt><label>{lang_hits}</label></dt>
+      <dd>{hits}</dd>
+    </dl>
+
+    <fieldset>
+      <legend>{lang_accessrights}</legend>
+
+      <dl class="form_block">
+        <dt>{lang_owner}</dt>
+        <dd>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
+
+        <dt><label>{lang_group}</label></dt>
+        <dd>{group_dropdown}</dd>
+
+        <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+        <dd>{permissions_editor}</dd>
+        <dd class="description">{lang_perm_key}</dd>
+        <dd class="description">{lang_permissions_msg}</dd>
+      </dl>
+    </fieldset>
+
+    <div class="submit">
+      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}> 
+      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}> 
+      <input type="hidden" name="eid" value="{event_id}"{xhtml}>
+      <input type="hidden" name="hour_mode" value="{hour_mode}"{xhtml}>
+      {delete_option}
+      {submission_option}
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+<!-- } plugins/calendar/templates/admin/eventeditor.thtml -->

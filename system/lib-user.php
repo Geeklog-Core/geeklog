@@ -488,9 +488,8 @@ function USER_deletePhoto ($photo, $abortonerror = true)
         if (file_exists ($filetodelete)) {
             if (!@unlink ($filetodelete)) {
                 if ($abortonerror) {
-                    $display = COM_siteHeader ('menu', $LANG04[21])
-                             . COM_errorLog ("Unable to remove file $photo")
-                             . COM_siteFooter ();
+                    $display = COM_errorLog ("Unable to remove file $photo");
+                    $display = COM_createHTMLDocument($display, 'menu', $LANG04[21]);
                     echo $display;
                     exit;
                 } else {
@@ -851,9 +850,8 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
 
     if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
-        $retval .= COM_siteHeader('menu', $LANG_LOGIN[1]);
         $retval .= SEC_loginRequiredForm();
-        $retval .= COM_siteFooter();
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_LOGIN[1]);
 
         return $retval;
     }
@@ -877,7 +875,6 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $display_name = htmlspecialchars($display_name);
 
     if (! $preview) {
-        $retval .= COM_siteHeader('menu', $LANG04[1] . ' ' . $display_name);
         if ($msg > 0) {
             $retval .= COM_showMessage($msg, $plugin);
         }
@@ -1093,7 +1090,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $retval .= PLG_profileBlocksDisplay($uid);
 
     if (! $preview) {
-        $retval .= COM_siteFooter();
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[1] . ' ' . $display_name);
     }
 
     return $retval;

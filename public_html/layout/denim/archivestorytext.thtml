@@ -1,0 +1,36 @@
+
+<!-- archivestorytext.thtml { -->
+
+<div class="storytext archivestorytext">
+  {breadcrumb_trail}
+  <h2 class="story_title">{story_title_link}</h2>
+
+  <div class="story_icon">
+    {email_icon}{print_icon}{edit_icon}
+  </div>
+
+  <ul class="story_status">
+    <li>{story_date}</li>
+    <li>{lang_contributed_by} {start_contributedby_anchortag}{contributedby_author}{end_contributedby_anchortag}</li>
+    <li>{lang_views} {story_hits}</li>
+  </ul>
+
+  <div class="story_introtext">
+    <span class="story_image">{story_anchortag_and_image}</span>
+    {story_text_no_br}
+  </div>
+
+  <ul class="story_navi">
+    <li>{page_selector}</li>
+    <li>{readmore_link}</li>
+    <li>{post_comment_link}</li>
+  </ul>
+
+  <ul class="feedback">
+    <li>{plugin_itemdisplay}</li>
+    <li>{comments_with_count}</li>
+    <li>{trackbacks_with_count}</li>
+  </ul>
+</div>
+
+<!-- } archivestorytext.thtml -->

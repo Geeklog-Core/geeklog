@@ -1,0 +1,13 @@
+
+<!-- trackback/trackback.thtml { -->
+
+<div id="trackback">
+  <h3>{lang_trackback}</h3>
+  <div class="block-trackback-content">
+    <p>{lang_trackback_url}<br{xhtml}><span class="break-word">{trackback_url}</span></p>
+    <p class="trackback_comments_no_link">{lang_trackback_comments_no_link}</p>
+    {trackback_comments}
+  </div>
+</div>
+
+<!-- } trackback/trackback.thtml -->

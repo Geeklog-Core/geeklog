@@ -1,0 +1,44 @@
+
+<!-- profiles/contactauthorform.thtml { -->
+
+{start_block_mailstory2friend}
+  <form action="{site_url}/profiles.php" method="post" id="contactauthorform" class="compact">
+
+    <div class="user_basic">
+      <dl class="form_block">
+        <dt><label for="contactauthorform-title">{lang_title}</label></dt>
+        <dd>{story_link}</dd>
+
+        <dt><label for="contactauthorform-from">{lang_fromname}</label></dt>
+        <dd><input type="text" maxlength="96" value="{name}" name="from" id="contactauthorform-from" class="size4"{xhtml}></dd>
+
+        <dt><label for="contactauthorform-fromemail">{lang_fromemailaddress}</label></dt>
+        <dd><input type="text" maxlength="96" value="{email}" name="fromemail" id="contactauthorform-fromemail" class="size4"{xhtml}></dd>
+
+        <dt><label for="contactauthorform-to">{lang_toname}</label></dt>
+        <dd><input type="text" maxlength="96" value="{toname}" name="to" id="contactauthorform-to" class="size4"{xhtml}></dd>
+
+        <dt><label for="contactauthorform-toemail">{lang_toemailaddress}</label></dt>
+        <dd><input type="text" maxlength="96" value="{toemail}" name="toemail" id="contactauthorform-toemail" class="size4"{xhtml}></dd>
+
+        <dt><label for="contactauthorform-shortmsg">{lang_shortmessage}</label></dt>
+        <dd><textarea rows="8" cols="50" name="shortmsg" id="contactauthorform-shortmsg" class="wide">{shortmsg}</textarea></dd>
+        <dt{cc_enabled}><label for="contactauthorform-cc">{lang_cc}</label></dt>
+        <dd{cc_enabled}><input type="checkbox" name="cc" id="contactauthorform-cc"{cc}{xhtml}>&nbsp;{lang_cc_description}</dd>
+
+      </dl>
+
+      {captcha}
+
+      <p class="description">{lang_warning}</p>
+
+      <div class="submit">
+        <input type="hidden" name="sid" value="{story_id}"{xhtml}>
+        <input type="hidden" name="what" value="sendstory"{xhtml}>
+        <input type="submit" value="{lang_sendmessage}" onclick="return postconfirm();" onkeypress="return postconfirm();" class="submit"{xhtml}>
+      </div>
+    </div>
+  </form>
+{end_block}
+
+<!-- } profiles/contactauthorform.thtml -->

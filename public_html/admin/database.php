@@ -54,9 +54,8 @@ $display = '';
 
 // If user isn't a Root user or if the backup feature is disabled, bail.
 if (!SEC_inGroup('Root') OR ($_CONF['allow_mysqldump'] == 0)) {
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups'])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_DB_BACKUP['last_ten_backups']);
     COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
     COM_output($display);
     exit;
@@ -582,7 +581,6 @@ function optimize()
     $lastrun = DB_getItem($_TABLES['vars'], 'UNIX_TIMESTAMP(value)',
                           "name = 'lastoptimizeddb'");
 
-    $retval .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
     $retval .= COM_startBlock($LANG_DB_BACKUP['optimize_title']);
     $retval .= '<p>' . $LANG_DB_BACKUP['optimize_explain'] . '</p>' . LB;
     if (!empty($lastrun)) {
@@ -595,7 +593,6 @@ function optimize()
     $retval .= miniform_DoOrCancel($LANG_DB_BACKUP['optimize_button'],
                                    'dooptimize');
     $retval .= COM_endBlock();
-    // Note: COM_siteFooter is added in MAIN
 
     return $retval;
 }
@@ -728,20 +725,21 @@ $list_backups = true;
 
 switch ($mode) {
 case 'backup':
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['new_backup']);
+    $pagetitle = $LANG_DB_BACKUP['new_backup'];
     if (SEC_checkToken()) {
         $display .= dobackup();
     }
     break;
 
 case 'delete':
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
+    $pagetitle = $LANG_DB_BACKUP['last_ten_backups'];
     if (SEC_checkToken()) {
         $display .= deletebackups();
     }
     break;
 
 case 'optimize':
+    $pagetitle = $LANG_DB_BACKUP['optimize_title'];
     $display .= optimize();
     $list_backups = false;
     break;
@@ -751,26 +749,24 @@ case 'dooptimize':
     if (isset($_GET['startwith'])) {
         $startwith = COM_applyFilter($_GET['startwith']);
     }
+    $pagetitle = $LANG_DB_BACKUP['optimize_title'];
     if (!empty($startwith) || SEC_checkToken()) {
         $failures = 0;
         if (isset($_GET['failures'])) {
             $failures = COM_applyFilter($_GET['failures'], true);
         }
         $num_errors = dooptimize($startwith, $failures);
-        $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
         if ($num_errors == 0) {
             $display .= COM_showMessageText($LANG_DB_BACKUP['optimize_success']);
         } else {
             $display .= COM_showMessageText($LANG_DB_BACKUP['optimize_success']
                             . ' ' . $LANG_DB_BACKUP['table_issues']);
         }
-    } else {
-        $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['optimize_title']);
     }
     break;
 
 case 'innodb':
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['convert_title']);
+    $pagetitle = $LANG_DB_BACKUP['convert_title'];
     if (innodb_supported()) {
         $display .= innodb();
         $list_backups = false;
@@ -780,7 +776,7 @@ case 'innodb':
     break;
 
 case 'doinnodb':
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['convert_title']);
+    $pagetitle = $LANG_DB_BACKUP['convert_title'];
     if (innodb_supported()) {
         $startwith = '';
         if (isset($_GET['startwith'])) {
@@ -804,7 +800,7 @@ case 'doinnodb':
     break;
 
 default:
-    $display .= COM_siteHeader('menu', $LANG_DB_BACKUP['last_ten_backups']);
+    $pagetitle = $LANG_DB_BACKUP['last_ten_backups'];
     $display .= COM_showMessageFromParameter();
     break;
 }
@@ -814,7 +810,7 @@ if ($list_backups) {
     $display .= listbackups();
 }
 
-$display .= COM_siteFooter();
+$display = COM_createHTMLDocument($display, 'menu', $pagetitle);
 
 COM_output($display);
 

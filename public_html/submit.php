@@ -316,20 +316,18 @@ function savesubmission($type, $A)
 {
     global $_CONF, $_TABLES, $LANG12;
 
-    $retval = COM_siteHeader ();
-
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
 
     $last = COM_checkSpeedlimit ('submit');
 
     if ($last > 0) {
-        $retval .= COM_startBlock ($LANG12[26], '',
+        $retval = COM_startBlock ($LANG12[26], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[30]
             . $last
             . $LANG12[31]
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . COM_siteFooter ();
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval = COM_createHTMLDocument($retval);
 
         return $retval;
     }
@@ -358,12 +356,12 @@ function savesubmission($type, $A)
     if (!empty($A['title']) && !empty($A['introtext']) && TOPIC_checkTopicSelectionControl()) {
         $retval = savestory ($A);
     } else {
-        $retval .= COM_startBlock ($LANG12[22], '',
+        $retval = COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23] // return missing fields error
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . submissionform($type)
-            . COM_siteFooter ();
+            . submissionform($type);
+        $retval = COM_createHTMLDocument($retval);
     }
 
     return $retval;
@@ -396,10 +394,8 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             $msg = PLG_itemPreSave ($type, $_POST);
             if (!empty ($msg)) {
                 $_POST['mode'] =  $LANG12[32];
-                $display .= COM_siteHeader ('menu', $pagetitle)
-                         . COM_errorLog ($msg, 2)
-                         . submitstory ($topic)
-                         . COM_siteFooter();
+                $display = COM_errorLog ($msg, 2) . submitstory ($topic);
+                $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
                 COM_output($display);
                 exit;
             }
@@ -437,9 +433,8 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             break;
     }
     $noindex = '<meta name="robots" content="noindex"' . XHTML . '>' . LB;
-    $display .= COM_siteHeader ('menu', $pagetitle, $noindex);
     $display .= submissionform($type, $mode, $topic);
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $pagetitle, $noindex);
 }
 
 COM_output($display);

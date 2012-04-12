@@ -1,0 +1,39 @@
+
+<!-- admin/plugins/info.thtml { -->
+
+{start_block_editor}
+<form action="{site_admin_url}/plugins.php" method="post" class="compact">
+  <div class="admin_basic" id="admin-editor">
+    <dl class="form_block">
+      <dt id="title">{title}</dt>
+      <dd><img src="{pi_icon}" alt=""{xhtml}></dd>
+
+      <dt>{lang_pluginname}</dt>
+      <dd>{pi_display_name}</dd>
+
+      <dt>{lang_pluginhomepage}</dt>
+      <dd>{pi_homepage}</dd>
+
+      <dt>{lang_pluginversion}</dt>
+      <dd>{pi_version}</dd>
+
+      <dt>{lang_plugincodeversion}</dt>
+      <dd>{pi_codeversion}</dd>
+
+      <dt>{lang_dependencies}</dt>
+      <dd>{pi_dependencies}</dd>
+
+      <dt>{lang_load}</dt>
+      <dd>{pi_load}</dd>
+
+      <dt>{lang_enabled}</dt>
+      <dd>{pi_enabled}</dd>
+    </dl>
+    <div class="submit">
+      <input id="close" type="submit" value="{back}" {xhtml}>
+    </div>
+  </div>
+</form>
+{end_block}
+
+<!-- } admin/plugins/info.thtml -->

@@ -1,0 +1,14 @@
+<!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
+<!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
+<!--[if !IE]> rightblocks.thtml { <![endif]-->
+
+    <hr class="separator"{xhtml}>
+
+    <!--[if !IE]> #rightblocks { <![endif]-->
+    <!--[if !IE]> Right Blocks Container <![endif]-->
+    <div id="rightblocks">
+      {geeklog_blocks}
+    </div>
+    <!-- } #rightblocks -->
+
+<!-- } rightblocks.thtml -->

@@ -1,0 +1,19 @@
+
+<!-- preferences/boxesblock.thtml { -->
+
+<fieldset>
+  <legend>{lang_boxes_title}</legend>
+
+  <div class="linear">
+    <dl class="profile_notes">
+      <dt>{lang_boxes_help_title}</dt>
+      <dd>{lang_boxes}</dd>
+    </dl>
+  </div>
+
+  <div id="boxesblock">
+    {boxes_checklist}
+  </div>
+</fieldset>
+
+<!-- } preferences/boxesblock.thtml -->

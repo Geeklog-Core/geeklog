@@ -40,14 +40,10 @@ $searchObj = new Search();
 TOPIC_getTopic('search');
 
 if (isset ($_GET['mode']) && ($_GET['mode'] == 'search')) {
-    $display = COM_siteHeader('menu', $LANG09[11]);
-    $display .= $searchObj->doSearch();
+    $display = COM_createHTMLDocument($searchObj->doSearch(), 'menu', $LANG09[11]);
 } else {
-    $display = COM_siteHeader ('menu', $LANG09[1]);
-    $display .= $searchObj->showForm();
+    $display = COM_createHTMLDocument($searchObj->showForm(), 'menu', $LANG09[1]);
 }
-
-$display .= COM_siteFooter();
 
 COM_output($display);
 

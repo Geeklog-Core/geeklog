@@ -1,0 +1,12 @@
+
+<!-- admin/trackback/pinglist.thtml { -->
+
+<p class="trackback-message">{lang_results}</p>
+
+<table class="admin-list-table">
+  <tbody>
+    {ping_results}
+  </tbody>
+</table>
+
+<!-- } admin/trackback/pinglist.thtml -->

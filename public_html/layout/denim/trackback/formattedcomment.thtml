@@ -1,0 +1,15 @@
+
+<!-- trackback/formattedcomment.thtml { -->
+
+<div class="formattedcomment">
+  <ul class="trackback_status">
+    <li class="trackback_title"><a href="{trackback_url}">{trackback_title}</a> {trackback_from_blog_name}</li>
+    <li class="trackback_date">{lang_tracked_on} {trackback_date}</li>
+  </ul>
+
+  <p class="trackback_excerpt_readmore">{trackback_excerpt_readmore}</p>
+
+  <div class="trackback_option">{delete_option}</div>
+</div>
+
+<!-- } trackback/formattedcomment.thtml -->

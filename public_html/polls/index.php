@@ -148,16 +148,17 @@ if (! empty($pid)) {
     $nquestions = DB_numRows($questions);
 }
 if (empty($pid)) {
-    $display .= COM_siteHeader ('menu', $LANG_POLLS['pollstitle']);
     if ($msg > 0) {
         $display .= COM_showMessage($msg, 'polls');
     }
     $display .= polllist ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
 } else if ((isset($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset ($_COOKIE['poll-'.$pid])) {
     setcookie ('poll-'.$pid, implode('-',$aid), time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
-    $display .= COM_siteHeader() . POLLS_pollsave($pid, $aid);
+    $display .= POLLS_pollsave($pid, $aid);
+    $display = COM_createHTMLDocument($display);
 } elseif (! empty($pid)) {
     $result = DB_query ("SELECT topic, meta_description, meta_keywords FROM {$_TABLES['polltopics']} WHERE pid = '{$pid}'" . COM_getPermSQL('AND'));
     $A = DB_fetchArray ($result);
@@ -165,8 +166,8 @@ if (empty($pid)) {
     $polltopic = $A['topic'];
     if (empty($polltopic)) {
         // poll doesn't exist or user doesn't have access
-        $display .= COM_siteHeader('menu', $LANG_POLLS['pollstitle'])
-                 . COM_showMessageText(sprintf($LANG25[12], $pid));
+        $display .= COM_showMessageText(sprintf($LANG25[12], $pid));
+        $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
     } else {
         // Meta Tags
         $headercode = '';
@@ -176,7 +177,6 @@ if (empty($pid)) {
             $headercode = COM_createMetaTags($meta_description, $meta_keywords);
         }
 
-        $display .= COM_siteHeader('menu', $polltopic, $headercode);
         if ($msg > 0) {
             $display .= COM_showMessage($msg, 'polls');
         }
@@ -198,13 +198,12 @@ if (empty($pid)) {
         } else {
             $display .= POLLS_pollResults($pid, 400, $order, $mode, $page);
         }
+        $display = COM_createHTMLDocument($display, 'menu', $polltopic, $headercode);
     }
 } else {
-    $display .= COM_siteHeader('menu', $LANG_POLLS['pollstitle'])
-             . polllist();
+    $display .= polllist();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
 }
-
-$display .= COM_siteFooter();
 
 COM_output($display);
 

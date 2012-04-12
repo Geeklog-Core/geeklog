@@ -1,0 +1,37 @@
+
+<!-- comment/commentbar.thtml { -->
+
+<div class="commentbar_status">
+  {start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}
+  <span class="bar_separator">|</span>
+  {num_comments} {lang_comments}
+  <span class="bar_separator">|</span>
+  {user_nullname} <a href="{login_logout_url}" rel="nofollow">{lang_login_logout}</a>
+</div>
+
+<div id="commentbar">
+  <form action="{editor_url}" method="post" id="commentbar-comment">
+    <div class="submit">
+      <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit"{xhtml}>
+      <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+      <input type="hidden" name="{nprefix}pid" value="0"{xhtml}>
+      <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
+      <input type="hidden" name="title" value="{comment_title}"{xhtml}>
+      {hidden_field_reply}
+    </div>
+  </form>
+
+  <form action="{parent_url}" method="post" id="commentbar-selector">
+    <div>
+      {order_selector} {mode_selector}
+      <input type="submit" value="{lang_refresh}" class="submit"{xhtml}>
+      <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+      <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
+      {hidden_field}
+    </div>
+  </form>
+</div>
+
+<p class="disclaimer">{lang_disclaimer}</p>
+
+<!-- } comment/commentbar.thtml -->

@@ -57,9 +57,8 @@ require_once 'auth.inc.php';
 $display = '';
 
 if (!SEC_hasRights('block.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the block administration screen");
     COM_output($display);
     exit;
@@ -544,10 +543,9 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
     $title = addslashes (COM_stripslashes (strip_tags ($title)));
     $phpblockfn = addslashes (COM_stripslashes (trim ($phpblockfn)));
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
-        $retval .= COM_siteHeader('menu', $LANG21[63])
-                . COM_showMessageText($LANG21[64], $LANG21[63])
-                . editblock($bid)
-                . COM_siteFooter();
+        $retval .= COM_showMessageText($LANG21[64], $LANG21[63])
+                . editblock($bid);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[63]);
         return $retval;
     }
 
@@ -567,9 +565,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
     }
     
     if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($group_id)) {
-        $retval .= COM_siteHeader('menu', $MESSAGE[30])
-                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                . COM_siteFooter();
+        $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $retval = COM_createHTMLDocument($retval, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;
@@ -620,10 +617,9 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             // must start with phpblock_ as the prefix.  This will prevent
             // the arbitrary execution of code
             if (!(stristr($phpblockfn,'phpblock_'))) {
-                $retval .= COM_siteHeader('menu', $LANG21[37])
-                        . COM_showMessageText($LANG21[38], $LANG21[37])
-                        . editblock($bid)
-                        . COM_siteFooter();
+                $retval .= COM_showMessageText($LANG21[38], $LANG21[37])
+                        . editblock($bid);
+                $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[37]);
                 return $retval;
             }
             $content = '';
@@ -677,7 +673,6 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         
         return COM_refresh ($_CONF['site_admin_url'] . '/block.php?msg=11');
     } else {
-        $retval .= COM_siteHeader('menu', $LANG21[32]);
         if (empty($name)) {
             // empty block name
             $msgtxt = $LANG21[50];
@@ -698,8 +693,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $msgtxt = $LANG21[36];
         }
         $retval .= COM_showMessageText($msgtxt, $LANG21[32])
-                . editblock($bid)
-                . COM_siteFooter();
+                . editblock($bid);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[32]);
     }
 
     return $retval;
@@ -913,22 +908,17 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                     $_POST['perm_members'], $_POST['perm_anon'],
                     $is_enabled, $allow_autotags);
 } elseif ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu', $LANG21[3])
-             . editblock ($bid)
-             . COM_siteFooter ();
+    $display = COM_createHTMLDocument(editblock($bid), 'menu', $LANG21[3]);
 } elseif ($mode == 'move') {
-    $display .= COM_siteHeader('menu', $LANG21[19]);
     if(SEC_checkToken()) {
         $display .= moveBlock();
     }
     $display .= listblocks();
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG21[19]);
 } else {  // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu', $LANG21[19]);
     $display .= COM_showMessageFromParameter();
     $display .= listblocks();
-
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG21[19]);
 }
 
 COM_output($display);

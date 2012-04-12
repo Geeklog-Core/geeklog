@@ -1,36 +1,28 @@
-                            <form action="{site_url}/submit.php" method="post">
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
-                                    <tr>
-                                        <td align="right"><b>{lang_title}:</b></td>
-                                        <td><input type="text" size="48" maxlength="96" name="title"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right"><b>{lang_link}:</b></td>
-                                        <td><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right"><b>{lang_category}:</b></td>
-                                        <td>
-                                            <select name="categorydd">
-                                                {link_category_options}
-                                            </select> 
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right" valign="top"><b>{lang_description}:</b></td>
-                                        <td>
-                                            <textarea name="description" rows="8" cols="30" style="width:100%"></textarea>
-                                            <br{xhtml}>
-                                            {lang_allowed_html}                                             
-                                        </td>
-                                    </tr>
-                                    {captcha}
-                                    <tr>
-                                        <td align="center" colspan="2">
-                                            <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
-                                            <input type="hidden" name="type" value="links"{xhtml}>
-                                            <input type="submit" value="{lang_submit}"{xhtml}>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </form>
+
+<!-- links/submitlink.thtml { -->
+
+<form action="{site_url}/submit.php" method="post" id="submitlink" class="compact">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="submitlink-title">{lang_title}</label></dt>
+      <dd><input type="text" maxlength="96" name="title" id="submitlink-title" class="size6"{xhtml}></dd>
+
+      <dt><label for="submitlink-url">{lang_link}</label></dt>
+      <dd><input type="text" dir="ltr" maxlength="{max_url_length}" name="url" value="http://" id="submitlink-url" class="size6"{xhtml}></dd>
+
+      <dt><label for="submitlink-categorydd">{lang_category}</label></dt>
+      <dd><select name="categorydd" id="submitlink-categorydd">{link_category_options}</select></dd>
+
+      <dt><label for="submitlink-description">{lang_description}</label></dt>
+      <dd><textarea name="description" rows="8" cols="30" id="submitlink-description" class="wide"></textarea><br{xhtml}>{lang_allowed_html}</dd>
+    </dl>
+    {captcha}
+    <div class="submit">
+      <input type="hidden" name="mode" value="{lang_submit}"{xhtml}>
+      <input type="hidden" name="type" value="links"{xhtml}>
+      <input type="submit" value="{lang_submit}" class="submit"{xhtml}>
+    </div>
+  </div>
+</form>
+
+<!-- } links/submitlink.thtml -->

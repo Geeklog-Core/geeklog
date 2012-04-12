@@ -1,0 +1,14 @@
+
+<!-- article.thtml { -->
+
+<div class="article">
+{formatted_article}
+</div>
+
+{whats_related}
+{story_options}
+
+{trackback}
+{commentbar}
+
+<!-- } article.thtml -->

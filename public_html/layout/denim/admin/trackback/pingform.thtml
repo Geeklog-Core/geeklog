@@ -1,0 +1,29 @@
+
+<!-- admin/trackback/pingform.thtml { -->
+
+<p class="trackback-message">{lang_ping_explain}</p>
+
+{ping_results}
+
+<form action="{php_self}" method="post" id="pingform" class="compact">
+  <fieldset>
+    <legend></legend>
+
+    <dl class="form_block">
+      <dt>{pingback_button}</dt>
+      <dd>{lang_pingback_short}</dd>
+
+      <dt>{ping_button}</dt>
+      <dd>{lang_ping_short}</dd>
+
+      <dt>{trackback_button}{hidden_input_fields}</dt>
+      <dd>{lang_trackback_short}</dd>
+    </dl>
+
+    <p class="description">{lang_may_take_a_while}</p>
+    {hidden_input_fields}
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  </fieldset>
+</form>
+
+<!-- } admin/trackback/pingform.thtml -->

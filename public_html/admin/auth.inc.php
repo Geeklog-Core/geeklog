@@ -91,7 +91,6 @@ if ($status == USER_ACCOUNT_ACTIVE) {
 } else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAcess()) {
     COM_updateSpeedlimit('login');
 
-    $display .= COM_siteHeader('menu');
     $display .= COM_startBlock($LANG20[1]);
 
     if (!$_CONF['user_login_method']['standard']) {
@@ -120,8 +119,8 @@ if ($status == USER_ACCOUNT_ACTIVE) {
             .'</table></form>';
     }
 
-    $display .= COM_endBlock()
-             . COM_siteFooter();
+    $display .= COM_endBlock();
+    $display = COM_createHTMLDocument($display, 'menu');
     COM_output($display);
     exit;
 }

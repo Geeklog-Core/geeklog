@@ -690,17 +690,15 @@ if (isset($_POST['mode']) && ($_POST['mode'] == 'moderation') &&
         $mod_result = moderation($_POST['id'], $action, $_POST['type'],
                                  COM_applyFilter($_POST['count'], true));
     }
-    $display .= COM_siteHeader('menu', $LANG29[34])
-             .  COM_showMessageFromParameter()
+    $display .= COM_showMessageFromParameter()
              .  $mod_result;
 } else {
-    $display .= COM_siteHeader('menu', $LANG29[34])
-             .  COM_showMessageFromParameter()
+    $display .= COM_showMessageFromParameter()
              .  security_check_reminder()
              .  commandcontrol(SEC_createToken());
 }
 
-$display .= COM_siteFooter();
+$display = COM_createHTMLDocument($display, 'menu', $LANG29[34]);
 
 COM_output($display);
 

@@ -1,0 +1,6 @@
+
+<!-- lists/table/page_limit.thtml { -->
+
+<option{limit_selected} onmouseover="this.style.cursor='pointer';" value="{limit_href}">{limit_text}</option>
+
+<!-- } lists/table/page_limit.thtml -->

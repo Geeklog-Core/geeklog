@@ -1,94 +1,57 @@
+
+<!-- plugins/links/templates/admin/linkeditor.thtml { -->
+
 <p>{instructions}</p>
+<form action="{site_admin_url}/plugins/links/index.php" method="post" id="links-linkeditor" class="compact">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="links-linkeditor-title">{lang_linktitle}</label></dt>
+      <dd><input type="text" maxlength="96" name="title" value="{link_title}" id="links-linkeditor-title" class="size6"{xhtml}></dd>
 
-<br style="clear:both"{xhtml}>
+      <dt><label for="links-linkeditor-lid">{lang_linkid}</label></dt>
+      <dd><input type="text" dir="ltr" maxlength="40" id="links-linkeditor-lid" name="lid" value="{link_id}" class="size5"{xhtml}></dd>
 
-                                <form action="{site_admin_url}/plugins/links/index.php" method="post">
-                                    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+      <dt><label for="links-linkeditor-url">{lang_linkurl}</label></dt>
+      <dd><input type="text" dir="ltr" maxlength="{max_url_length}" id="links-linkeditor-url" name="url" value="{link_url}" class="size6"{xhtml}> {lang_includehttp}</dd>
 
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_linktitle}:</td>
-                                            <td>
-                                                <input type="text" size="48" maxlength="96" name="title" value="{link_title}"{xhtml}>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_linkid}:</td>
-                                            <td>
-                                                <input type="text" dir="ltr" size="40" maxlength="40" name="lid" value="{link_id}"{xhtml}>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_linkurl}:</td>
-                                            <td>
-                                                <input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="{link_url}"{xhtml}> {lang_includehttp}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_category}:</td>
-                                            <td>
-                                                <select name="categorydd">
-                                                    {category_options}
-                                                </select> &nbsp;
-                                                <a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_linkhits}:</td>
-                                            <td>
-                                                <input type="text" size="11" name="hits" value="{link_hits}"{xhtml}>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" valign="top" style="white-space:nowrap;">{lang_linkdescription}:</td>
-                                            <td>
-                                                <textarea name="description" style="width:100%" cols="45" rows="8">{link_description}</textarea>
-                                                <br{xhtml}>
-                                                {lang_allowed_html}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><hr{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_accessrights}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
-                                            <td>{owner_name}<input type="hidden" name="owner_id" value="{link_ownerid}"{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_group}:</td>
-                                            <td>
-                                                {group_dropdown}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_permissions}</b>:</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">{lang_perm_key}</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                {permissions_editor}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">{lang_permissions_msg}</td>
-                                        </tr>
-                                        <tr><td>&nbsp;</td></tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <input type="submit" value="{lang_save}" name="mode"{xhtml}>
-                                                <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
-                                                <input type="hidden" value="{link_id}" name="old_lid"{xhtml}>
-                                                {delete_option}
-                                                {submission_option}
-                                                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </form>
+      <dt><label for="links-linkeditor-categorydd">{lang_category}</label></dt>
+      <dd><select name="categorydd" id="links-linkeditor-categorydd">{category_options}</select> &nbsp;
+          <a href="{site_admin_url}/plugins/links/category.php?mode=edit">{lang_new_category}</a></dd>
+
+      <dt><label for="links-linkeditor-hits">{lang_linkhits}</label></dt>
+      <dd><input type="text" name="hits" id="links-linkeditor-hits" value="{link_hits}" class="size2"{xhtml}></dd>
+
+      <dt><label for="links-linkeditor-hits">{lang_linkdescription}</label></dt>
+      <dd><textarea name="description" cols="45" rows="8" id="links-linkeditor-hits" class="wide">{link_description}</textarea>
+          <br{xhtml}>{lang_allowed_html}</dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
+    <dl class="form_block">
+      <dt>{lang_owner}</dt>
+      <dd>{owner_name}<input type="hidden" name="owner_id" value="{link_ownerid}"{xhtml}></dd>
+
+      <dt><label>{lang_group}</label></dt>
+      <dd>{group_dropdown}</dd>
+
+      <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+      <dd>{permissions_editor}</dd>
+      <dd class="description">{lang_perm_key}</dd>
+      <dd class="description">{lang_permissions_msg}</dd>
+    </dl>
+  </fieldset>
+
+  <div class="submit">
+    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
+    <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+    <input type="hidden" value="{link_id}" name="old_lid"{xhtml}>
+    {delete_option}
+    {submission_option}
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  </div>
+</form>
+
+<!-- } plugins/links/templates/admin/linkeditor.thtml -->

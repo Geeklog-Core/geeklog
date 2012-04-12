@@ -1,0 +1,8 @@
+
+<!-- blockheader-config.thtml { -->
+
+<div class="block-config">
+    <h2 class="block-title">{block_title}{block_help}</h2>
+    <ul class="block-config-content">
+
+<!-- } blockheader-config.thtml -->

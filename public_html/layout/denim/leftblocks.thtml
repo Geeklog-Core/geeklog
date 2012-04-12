@@ -1,0 +1,35 @@
+<!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
+<!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
+<!-- leftblocks.thtml { -->
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #leftblocks { -->
+    <!-- Left Blocks Container -->
+    <div id="leftblocks">
+      <div class="block-left" id="block-left-search">
+        <h2 class="block-title">{button_search}</h2>
+        <div class="block-left-content">
+          <form action="{site_url}/search.php" method="get" id="searchform">
+            <fieldset class="noborder_fieldset">
+              <legend class="hidden_legend">{button_search}</legend>
+              <div class="searchform">
+                <input type="text" size="16" maxlength="255" name="query"{xhtml}>
+                <input type="submit" value="{button_search}" class="submit"{xhtml}>
+                <input type="hidden" value="all" name="type"{xhtml}>
+                <input type="hidden" value="all" name="keyType"{xhtml}>
+                <input type="hidden" value="search" name="mode"{xhtml}>
+              </div>
+              <div class="navi">
+                <a href="{site_url}/search.php">{button_advsearch}</a>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+
+      {geeklog_blocks}
+    </div>
+    <!--[if !IE]> } #leftblocks <![endif]-->
+
+<!-- } leftblocks.thtml -->

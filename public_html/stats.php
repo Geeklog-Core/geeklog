@@ -39,16 +39,12 @@ $display = '';
 
 if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {
-    $display = COM_siteHeader('menu', $LANG10[1]);
-    $display .= SEC_loginRequiredForm();
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument(SEC_loginRequiredForm(), 'menu', $LANG10[1]);
     COM_output($display);
     exit;
 }
 
 // MAIN
-
-$display .= COM_siteHeader('menu', $LANG10[1]);
 
 // Overall Site Statistics
 
@@ -265,7 +261,7 @@ if ($nrows > 0) {
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
-$display .= COM_siteFooter();
+$display = COM_createHTMLDocument($display, 'menu', $LANG10[1]);
 
 COM_output($display);
 

@@ -1,0 +1,43 @@
+<!-- admin/mail/mailform.thtml { -->
+
+<form action="{php_self}" method="post" id="admin-mailform" class="compact">
+
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="admin-mailform-to_group">{lang_to}</label></dt>
+	  <dd>
+        <select name="to_group" id="admin-mailform-to_group">
+          <option value="">{lang_selectgroup}</option>
+          {group_options}
+        </select>
+      </dd>
+
+      <dt><label for="admin-mailform-fra">{lang_from}</label></dt>
+      <dd><input type="text" value="{site_name}" name="fra" class="size4" id="admin-mailform-fra"{xhtml}></dd>
+
+      <dt><label for="admin-mailform-fraepost">{lang_replyto}</label></dt>
+      <dd><input type="text" value="{site_mail}" name="fraepost" class="size4" id="admin-mailform-fraepost"{xhtml}></dd>
+
+      <dt><label for="admin-mailform-subject">{lang_subject}</label></dt>
+      <dd><input type="text" value="{subject}" name="subject" class="size4" id="admin-mailform-subject"{xhtml}></dd>
+
+      <dt><label for="admin-mailform-message">{lang_body}</label></dt>
+      <dd><textarea rows="12" cols="44" name="message" id="admin-mailform-message" class="wide">{message}</textarea></dd>
+
+      <dt><label for="admin-mailform-html">{lang_options}</label></dt>
+      <dd>
+        <input type="checkbox" name="html" id="admin-mailform-html"{html}{xhtml}>{lang_HTML}
+        <input type="checkbox" name="priority"{priority}{xhtml}>{lang_urgent}
+        <input type="checkbox" name="overstyr"{overstyr}{xhtml}>{lang_ignoreusersettings}
+      </dd>
+    </dl>
+
+    <div class="submit">
+      <input type="hidden" name="mail" value="mail"{xhtml}>
+      <input type="submit" value="{lang_send}" onclick="return postconfirm()" class="submit"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+<!-- } admin/mail/mailform.thtml -->

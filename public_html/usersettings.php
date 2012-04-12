@@ -328,7 +328,6 @@ function confirmAccountDelete ($form_reqid)
 
     $retval = '';
 
-    $retval .= COM_siteHeader ('menu', $LANG04[97]);
     $retval .= COM_startBlock ($LANG04[97], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= '<p>' . $LANG04[98] . '</p>' . LB;
@@ -341,7 +340,7 @@ function confirmAccountDelete ($form_reqid)
             . '"' . XHTML . '>' . LB;
     $retval .= '</div></form>' . LB;
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $retval .= COM_siteFooter ();
+    $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[97]);
 
     return $retval;
 }
@@ -802,13 +801,12 @@ function handlePhotoUpload ($delete_photo = '')
                                          'image/png'   => '.png'
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
-        $display = COM_siteHeader ('menu', $LANG24[30]);
         $display .= COM_startBlock ($LANG24[30], '',
                 COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $upload->printErrors (false);
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                         'footer'));
-        $display .= COM_siteFooter ();
+        $display = COM_createHTMLDocument($display, 'menu', $LANG24[30]);
         COM_output($display);
         exit; // don't return
     }
@@ -865,13 +863,12 @@ function handlePhotoUpload ($delete_photo = '')
         $upload->uploadFiles ();
 
         if ($upload->areErrors ()) {
-            $display = COM_siteHeader ('menu', $LANG24[30]);
-            $display .= COM_startBlock ($LANG24[30], '',
+            $display = COM_startBlock ($LANG24[30], '',
                     COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $upload->printErrors (false);
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                             'footer'));
-            $display .= COM_siteFooter ();
+            $display = COM_createHTMLDocument($display, 'menu', $LANG24[30]);
             COM_output($display);
             exit; // don't return
         }
@@ -979,9 +976,8 @@ function saveuser($A)
                         $imgpath = $_CONF['path_images'] . 'userphotos/';
                         if (rename ($imgpath . $photo,
                                     $imgpath . $newphoto) === false) {
-                            $display = COM_siteHeader ('menu', $LANG04[21]);
-                            $display .= COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
-                            $display .= COM_siteFooter ();
+                            $display = COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
+                            $display = COM_createHTMLDocument($display, 'menu', $LANG04[21]);
 
                             return $display;
                         }
@@ -1478,18 +1474,16 @@ if (! COM_isAnonUser()) {
         // Go right into default
 
     default: // also if $mode == 'edit', 'preferences', or 'comments'
-        $display .= COM_siteHeader('menu', $LANG04[16]);
         $display .= COM_showMessageFromParameter();
         $display .= edituser();
-        $display .= COM_siteFooter();
+        $display = COM_createHTMLDocument($display, 'menu', $LANG04[16]);
         break;
     }
 } else {
-    $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($LANG04[70] . '!');
     $display .= '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>';
     $display .= COM_endBlock ();
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu');
 }
 
 COM_output($display);
