@@ -2066,6 +2066,44 @@ span.warning  em { color: #CE5C00; }
   text-decoration: none;
 }
 
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+.gl-pagenav {
+  text-align: center;
+  color: #CCC;
+}
+
+.gl-pagenav a {
+  display: inline-block;
+  margin: 1px;
+  padding: 2px 7px;
+  background: transparent;
+  border: 1px solid #E7E7E7;
+}
+
+.gl-pagenav a:hover {
+  background: #EEE;
+}
+
+.gl-pagenav span {
+  display: inline-block;
+  padding: 4px;
+  line-height: 1.7;
+  color: #999;
+}
+
+.gl-pagenav span a { 
+  margin: 0;
+  padding: 2px 0;
+  background: transparent;
+  border: none;
+}
+
+.gl-pagenav span a:hover {
+  background: transparent;
+}
+
 
 /* #Tabs (activate in tabs.js)
 ================================================== */
@@ -3875,85 +3913,4 @@ div.third-party-login {
 
 
 
-
-
-/*--------------------------------------
-  Page Navigation
---------------------------------------*/
-.gl-pagenav {
-  text-align:center;
-}
-
-div.gl-pagenav b {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   border: 1px solid #cccccc;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* foe IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav a {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   background: #C8E0E0;
-   border: 1px solid #40A0A0;
-   text-decoration: none;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span {
-   display: inline-block;
-   padding: 8px;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span a { 
-  margin: 0;
-   padding: 0;
-   background: transparent;
-   border: none;
-   text-decoration: underline;
- }
 

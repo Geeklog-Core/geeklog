@@ -135,6 +135,18 @@ fieldset .compact dd.description {
   float: none;
 }
 
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav a {
+  display: inline;
+  zoom: 1;
+}
+.gl-pagenav span {
+  display: inline;
+  zoom: 1;
+}
 
 /*--------------------------------------
   Admin Page

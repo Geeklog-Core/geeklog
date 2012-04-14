@@ -212,30 +212,6 @@ pre {
   overflow: auto;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*--------------------------------------
   Navigation
 --------------------------------------*/
@@ -252,6 +228,20 @@ pre {
   background: url(navbar/images/tabrightI.gif) no-repeat 0 0;
   background-position: 100% -42px;
   color: #FFF;
+}
+
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav a {
+  display: inline;
+  zoom: 1;
+}
+
+.gl-pagenav span {
+  display: inline;
+  zoom: 1;
 }
 
 /*--------------------------------------
