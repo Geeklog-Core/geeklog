@@ -7,6 +7,10 @@ fieldset,
 form, legend {
   margin: 0;
   padding: 0;
+  text-align: right;
+}
+label {
+  text-align: right;
 }
 
 body {
@@ -97,11 +101,11 @@ ul, ol, dl {
 
 dt {
   font-weight: bold;
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 dd {
-  margin-left: 20px;
+  margin-right: 20px;
 }
 
 ins {
@@ -119,7 +123,7 @@ textarea {
 
 th {
   font-weight: bold;
-  text-align: left;
+  text-align: right;
   margin: 0;
   background-color:#DAE0ED; /* compatible with professional */
 }
@@ -226,7 +230,7 @@ input[type="text"] {
 */
 
 option {
-  padding-right: 4px;  /* for Firefox */
+  padding-left: 4px;  /* for Firefox */
 }
 
 iframe[width="100%"] {
@@ -252,11 +256,11 @@ em {
 /* general alignment classes **************************************************/
 
 .alignleft {
-  text-align: left;
+  text-align: right;
 }
 
 .alignright {
-  text-align: right;
+  text-align: left;
 }
 
 .aligncenter {
@@ -268,11 +272,11 @@ em {
 }
 
 .floatright {
-  float: right;
+  float: left;
 }
 
 .floatleft {
-  float: left;
+  float: right;
 }
 
 .clearboth {
@@ -305,14 +309,14 @@ em {
 background-color: transparent;
   background: url(images/external.png) center right no-repeat;
   background-attachment: scroll;
-  padding-right: 13px;
+  padding-left: 13px;
 }
 
 .feed-link {
   background-color: transparent;
   background: url(images/feed.png) center right no-repeat;
   background-attachment: scroll;
-  padding: 2px 16px 2px 0px;
+  padding: 2px 0px 2px 16px;
 }
 
 .strike {
@@ -341,17 +345,17 @@ background-color: transparent;
 .form-description {
   /* used with calendar plugin */
   font-weight: bold;
-  float: left;
+  float: right;
   width: 100px;
-  text-align: right;
-  padding-right: 5px;
+  text-align: left;
+  padding-left: 5px;
   display: block;
 }
 
 .form-field {
   /* used with calendar plugin */
   padding-bottom: 5px;
-  margin-left: 105px;
+  margin-right: 105px;
 }
 
 .checkboxes-list {
@@ -363,7 +367,7 @@ background-color: transparent;
 
 .checkboxes-list span {
   /* space between the text and the checkbox */
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .checkboxes-list .gldefault {
@@ -409,29 +413,29 @@ background-color: transparent;
 
 .sysmessage img {
   border: none;
-  float: left;
+  float: right;
   margin-top: -4px;
   padding-bottom: 3px;
-  padding-right: 5px;
+  padding-left: 5px;
 }
 
 /* Stats **********************************************************************/
 
 .stats-list-count {
-  text-align: right;
+  text-align: left;
   padding-left: 5px;
   padding-right: 5px;
 }
 
 .stats-header-title {
-  text-align: left;
+  text-align: right;
   width: 90%;
   padding-left: 5px;
   padding-right: 5px;
 }
 
 .stats-header-count {
-  text-align: left;
+  text-align: right;
   width: 10%;
   padding-left: 5px;
   padding-right: 5px;
@@ -474,7 +478,7 @@ background-color: transparent;
   color: #000;
   background-color: #B7C1DC;
   padding: 5px;
-  text-align: left;
+  text-align: right;
 }
 
 .plugin tr {
@@ -553,7 +557,7 @@ background-color: transparent;
   color: #000;
   background-color: #C9D1E4;
   padding: 5px;
-  text-align: left;
+  text-align: right;
 }
 
 .pluginSubTable tr {
@@ -774,16 +778,16 @@ a.pluginButton:hover {
 --------------------------------------*/
 
 .compact dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 24%;
   margin: 0 0 1em 0;
-  padding: 0 1% 0 0;
+  padding: 0 0 0 1%;
   font-weight: normal;
 }
 
 .compact dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 1em 0;
   padding: 0;
@@ -791,7 +795,7 @@ a.pluginButton:hover {
 
 /* Description */
 .compact dd.description {
-  margin: -0.5em 0 1em 25%;
+  margin: -0.5em 25% 1em 0;
   padding: 0;
 }
 
@@ -846,9 +850,9 @@ a.pluginButton:hover {
 
 .profile_notes dt {
   margin: 0 0 0.5em 0;
-  padding: 0 0 0 24px;
+  padding: 0 24px 0 0;
   border-bottom: 1px solid #CCC;
-  background: url(images/icon_info.png) no-repeat 0 0;
+  background: url(images/icon_info.png) no-repeat top right;
   font-weight: bold;
   color: #666;
 }
@@ -866,7 +870,7 @@ a.pluginButton:hover {
 }
 
 .profile_notes li {
-  margin: 0 0 0 5px;
+  margin: 0 5px 0 0;
   padding: 0;
 }
 
@@ -900,10 +904,10 @@ ul.compact li {
     * Container Width = 100%
     * Header Width    = 100%
     * Site Width         [W] = 1280px
-    * Left   Block Width [L] =  180px = 160px + left padding 10px + right padding 10px
-    * Right  Block Width [R] =  280px = 260px + left padding 10px + right padding 10px
-    * Center Block Width(3 Column) = [W] - [L] - [R] =  820px = 1280px - 180px - 280px
-    * Center Block Width(2 Column) = [W] - [L]       = 1100px = 1280px - 180px
+    * Left   Block Width [L] =  280px = 260px + left padding 10px + right padding 10px
+    * Right  Block Width [R] =  180px = 160px + left padding 10px + right padding 10px
+    * Center Block Width(3 Column) = [W] - [L] - [R] =  820px = 1280px - 280px - 180px
+    * Center Block Width(2 Column) = [W] - [L]       = 1100px = 1280px - 280px
     * Center Block Width(2 Column) = [W] - [R]       = 1000px = 1280px - 280px
     * Center Block Width(1 Column) = [W]             = 1280px
     
@@ -943,9 +947,9 @@ ul.compact li {
 
 /*  Site Name */
 .site_name {
-  margin: 12px 0 0 16px;
+  margin: 12px 16px 0 0;
   padding: 0;
-  float: left;
+  float: right;
 }
 
 /* Slogan */
@@ -953,7 +957,7 @@ ul.compact li {
   margin: 0;
   padding: 16px 16px 0 16px;
   color: #FFFFFF;
-  text-align: right;
+  text-align: left;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
@@ -966,7 +970,7 @@ ul.compact li {
   background: #E7E7E7;
   border-bottom: 1px solid #C7C7C7;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  text-align: right;
   text-shadow: 0 1px 0 #FFF;
 /*  height: 30px;*/
 }
@@ -993,7 +997,7 @@ ul.compact li {
 }
 
 #navigation li {
-  float: left;
+  float: right;
   margin: 0 0px;
   padding: 0;
 }
@@ -1004,10 +1008,10 @@ ul.compact li {
   line-height: 30px;
   margin: 0 0px;
   padding: 0 7px;
-  border-right: 1px solid #D7D7D7;
+  border-left: 1px solid #D7D7D7;
 }
 #navigation li:first-child a {
-  border-left: 1px solid #D7D7D7;
+  border-right: 1px solid #D7D7D7;
 }
 
 /*  Navigation Menu(Normal) */
@@ -1111,8 +1115,8 @@ body.js_off #wrapper {
 body.js_off #leftblocks {
   overflow: auto;
   float: left;
-  width: 180px;  /* [L] */
-  margin: 0 0 0 -1140px;  /* Left Margin = -[W] */
+  width: 180px;  /* [R] */
+  margin: 0 0 0 -180px;  /* Left Margin = -[R] */
   padding: 0;
 }
 
@@ -1137,7 +1141,7 @@ body.js_off #centerblocks {
 body.left-center-right #main-content,
 body.js_off #main-content {
   width: 660px;  /* Main Content Width = [W] - [L] - [R] -  Right Padding 10px -  Left Padding 10px */
-  margin: 0 280px 0 180px;  /* Right Margin = [R] , Left Margin = [L] */
+  margin: 0 180px 0 280px;  /* Right Margin = [R] , Left Margin = [L] */
   padding: 0 10px;
 }
 
@@ -1150,7 +1154,7 @@ body.left-center #centerblocks {
 }
 body.left-center #main-content {
   width: 940px;  /* Center Block Width = [W] - [L] - Right Padding 10px - Left Padding 10px */
-  margin: 0 0 0 180px;  /* Left Margin = [L] */
+  margin: 0 180px 0 0;  /* Right Margin = [R] */
   padding: 0 10px;
 }
 
@@ -1163,7 +1167,7 @@ body.center-right #centerblocks {
 }
 body.center-right #main-content {
   width: 840px; /* Main Content Width = [W] - [R] - Right Padding 10px - Left Padding 10px */
-  margin: 0 280px 0 0;  /* Right Margin =  Right Block Width[R] */
+  margin: 0 0 0 280px;  /* Right Margin = [R] */
   padding: 0 10px;
 }
 
@@ -1188,16 +1192,16 @@ body.center #main-content {
 #rightblocks {
   overflow: auto;
   float: left;
-  width: 280px;  /*  Right Block Width[R] */
-  margin: 0 0 0 -280px;  /*  Left Margin = - ( Right Block Width[R] ) */
+  width: 280px;  /* [R] */
+  margin: 0 0 0 -1140px;  /* Left Margin = - [W] */
 }
 
 /* JavaScript Disenabled  Right Block Container */
 body.js_off #rightblocks {
   overflow: auto;
   float: left;
-  width: 280px;  /*  Right Block Width[R] */
-  margin: 0 0 0 -280px;  /*  Left Margin = - ( Right Block Width[R] ) */
+  width: 280px;  /* [R] */
+  margin: 0 0 0 -1140px;  /* Left Margin = -[W] */
 }
 
 /*--------------------------------------
@@ -1205,7 +1209,7 @@ body.js_off #rightblocks {
 --------------------------------------*/
 
 #footer {
-  clear: left;
+  clear: both;
   padding: 16px;
   border-top: 1px solid #CCC;
   font-size: 90%;
@@ -1219,18 +1223,18 @@ body.js_off #rightblocks {
 
 /* Copyright */
 .copyright {
-  float: left;
+  float: right;
   margin: 0;
-  padding-left: 8px;
+  padding-right: 8px;
   line-height: 1.4em;
 }
 
 /* Powered by & Page Execution Time */
 .site_info {
-  float: right;
-  text-align: right;
+  float: left;
+  text-align: left;
   margin: 0;
-  padding-right: 15px;
+  padding-left: 15px;
   line-height: 1.4em;
 }
 
@@ -1260,14 +1264,14 @@ body.js_off #rightblocks {
 #rightblocks ul {
   list-style-position: inside;
   margin: 0.7em 0;
-  padding-left: 0.5em;
+  padding-right: 0.5em;
 }
 
 #leftblocks ol,
 #rightblocks ol {
   list-style-position: inside;
   margin: 0.7em 0;
-  padding-left: 0.9em;
+  padding-right: 0.9em;
 }
 
 #leftblocks li,
@@ -1452,14 +1456,14 @@ h4 img {
 
 #leftblocks .noliststyle,
 #rightblocks .noliststyle {
-  padding-left: 0;
+  padding-right: 0;
 }
 
 #leftblocks .sideoption span,
 #rightblocks .sideoption span {
   color: #999;
   text-decoration: none;
-  margin-left: 3px;
+  margin-right: 3px;
 }
 
 #leftblocks .sideoption a,
@@ -1482,28 +1486,28 @@ h4 img {
 
 #leftblocks .branch_level2 a,
 #rightblocks .branch_level2 a {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 #leftblocks .branch_level3 a,
 #rightblocks .branch_level3 a {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 #leftblocks .branch_level4 a,
 #rightblocks .branch_level4 a {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 #leftblocks .sideoption_off.branch_level2,
 #rightblocks .sideoption_off.branch_level2 {
-  padding-left: 15px;
+  padding-right: 15px;
 }
 #leftblocks .sideoption_off.branch_level3,
 #rightblocks .sideoption_off.branch_level3 {
-  padding-left: 25px;
+  padding-right: 25px;
 }
 #leftblocks .sideoption_off.branch_level4,
 #rightblocks .sideoption_off.branch_level4 {
-  padding-left: 35px;
+  padding-right: 35px;
 }
 
 /*--------------------------------------
@@ -1564,7 +1568,7 @@ h4 img {
 
 /* Story Title */
 .story_title {
-  float: left;
+  float: right;
   margin: 0 0 1em 0;
   font-size: 140%;
   text-decoration: none;
@@ -1583,11 +1587,11 @@ h4 img {
 
 /* Icon(email, print, pdf) */
 .story_icon {
-  float: right;
+  float: left;
 }
 
 .story_icon img {
-  margin-left: 8px;
+  margin-right: 8px;
 }
 
 /* Story(Date, Auther, Display no.) */
@@ -1596,7 +1600,7 @@ h4 img {
   list-style-type: none;
   clear: both;
   margin: 0 0 1em 0;
-  padding-left: 1em;
+  padding-right: 1em;
   color: #999;
   font-size: 85%;
   line-height: 1.25;
@@ -1610,10 +1614,10 @@ h4 img {
 
 /* Topic Icon */
 .story_image {
-  float: right;
+  float: left;
   width: 48px;
   height: 48px;
-  margin: 0 0 10px 10px;
+  margin: 0 10px 10px 0;
 }
 
 /* Navigation */
@@ -1621,7 +1625,7 @@ h4 img {
   list-style-type: none;
   clear: both;
   margin: 0;
-  padding-left: 0;
+  padding-right: 0;
   text-align: center;
 }
 
@@ -1634,7 +1638,7 @@ h4 img {
 .feedback {
   list-style-type: none;
   margin: 0 0 0.5em 0;
-  padding-left: 0;
+  padding-right: 0;
   text-align: center;
 }
 
@@ -1650,7 +1654,7 @@ h4 img {
 
 /* Table */
 .storytext table {
-  text-align: left;
+  text-align: right;
   border-collapse: collapse;
 }
 
@@ -1736,13 +1740,13 @@ span.warning  em { color: #CE5C00; }
 .list-whats-related,
 .list-story-options {
   line-height: 1.7em;
-  margin: 0 0 0 20px;
+  margin: 0 20px 0 0;
   padding: 0;
 }
 
 /* Article Related Block */
 .block-related {
-  float: left;
+  float: right;
   width: 50%;
   margin: 0 0 1.5em 0;
 }
@@ -1781,12 +1785,12 @@ span.warning  em { color: #CE5C00; }
 
 /* Comment Submit Form  */
 #commentbar-comment {
-  float: left;
+  float: right;
   padding: 0.3em;
 }
 
 #commentbar-selector {
-  float: right;
+  float: left;
   padding: 0.3em;
 }
 
@@ -1821,7 +1825,7 @@ span.warning  em { color: #CE5C00; }
   list-style-type: none;
   margin: 0 0 0.5em 0;
   padding: 0;
-  text-align: left;
+  text-align: right;
 }
 
 /* Individual Comment (Tree) Title */
@@ -1834,7 +1838,7 @@ span.warning  em { color: #CE5C00; }
 /* Individual Comment (Tree) Auther */
 .thread_author {
   display: inline;
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 0;
   padding: 0;
 }
 
@@ -1846,20 +1850,20 @@ span.warning  em { color: #CE5C00; }
 .block-comment-content {
   margin: 0;
   padding: 0;
-  text-align: left;
+  text-align: right;
 }
 
 /* Individual Comment Level(Nested | Tree) */
-.level-0   { margin-left: 0; }
-.level-25  { margin-left: 16px; }
-.level-50  { margin-left: 32px; }
-.level-100 { margin-left: 48px; }
-.level-125 { margin-left: 64px; }
-.level-150 { margin-left: 80px; }
-.level-175 { margin-left: 96px; }
-.level-200 { margin-left: 112px; }
-.level-225 { margin-left: 128px; }
-.level-250 { margin-left: 144px; }
+.level-0   { margin-right: 0; }
+.level-25  { margin-right: 16px; }
+.level-50  { margin-right: 32px; }
+.level-100 { margin-right: 48px; }
+.level-125 { margin-right: 64px; }
+.level-150 { margin-right: 80px; }
+.level-175 { margin-right: 96px; }
+.level-200 { margin-right: 112px; }
+.level-225 { margin-right: 128px; }
+.level-250 { margin-right: 144px; }
 
 /* Comment Information  */
 .comment_status {
@@ -1927,12 +1931,12 @@ span.warning  em { color: #CE5C00; }
   margin-top: 0;
 }
 .ul-importantstuff {
-  margin: 0 0 0 1em;
+  margin: 0 1em 0 0;
   padding: 0;
 }
 
 .li-importantstuff {
-  margin: 0 0 0 8px;
+  margin: 0 8px 0 0;
   padding: 0;
 }
 
@@ -2066,6 +2070,44 @@ span.warning  em { color: #CE5C00; }
   text-decoration: none;
 }
 
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+.gl-pagenav {
+  text-align: center;
+  color: #CCC;
+}
+
+.gl-pagenav a {
+  display: inline-block;
+  margin: 1px;
+  padding: 2px 7px;
+  background: transparent;
+  border: 1px solid #E7E7E7;
+}
+
+.gl-pagenav a:hover {
+  background: #EEE;
+}
+
+.gl-pagenav span {
+  display: inline-block;
+  padding: 4px;
+  line-height: 1.7;
+  color: #999;
+}
+
+.gl-pagenav span a { 
+  margin: 0;
+  padding: 2px 0;
+  background: transparent;
+  border: none;
+}
+
+.gl-pagenav span a:hover {
+  background: transparent;
+}
+
 
 /* #Tabs (activate in tabs.js)
 ================================================== */
@@ -2149,7 +2191,7 @@ span.warning  em { color: #CE5C00; }
 #exclude_topic > .checkboxes-list > li,
 #boxesblock > .checkboxes-list > li {
   display: inline;
-  margin-right: 0.5em;
+  margin-left: 0.5em;
 }
 
 /*--------------------------------------
@@ -2166,7 +2208,7 @@ span.warning  em { color: #CE5C00; }
 .itemstatistics th {
   margin: 0;
   padding: 2px;
-  text-align: left;
+  text-align: right;
 }
 
 .itemstatistics td {
@@ -2253,15 +2295,15 @@ span.warning  em { color: #CE5C00; }
 }
 
 #profile-userprofile dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 25%;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
 #profile-userprofile dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -2271,7 +2313,7 @@ span.warning  em { color: #CE5C00; }
 dd#profile-user_photo {
   float: none;
   width: auto;
-  margin-left: 25%;
+  margin-right: 25%;
   margin-bottom: 1em;
 }
 
@@ -2304,15 +2346,15 @@ dd#profile-user_photo {
 }
 
 #profile-postingstats dt {
-  float: left;
-  clear: left;
+  float: right;
+  clear: right;
   width: 25%;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
 #profile-postingstats dd {
-  float: left;
+  float: right;
   width: 75%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -2349,9 +2391,9 @@ dd#profile-user_photo {
 }
 
 .admin-menu-icon {
-  float: left;
+  float: right;
   padding: 5px;
-  margin-right: 10px;
+  margin-left: 10px;
   width: 48px;
   height: 48px;
 }
@@ -2383,7 +2425,7 @@ dd#profile-user_photo {
 --------------------------------------*/
 
 .listmembers {
-  float: left;
+  float: right;
   width: 35%;
   height: 15em;
 }
@@ -2395,7 +2437,7 @@ dd#profile-user_photo {
 }
 
 .movemembers {
-  float: left;
+  float: right;
   width: 30%;
   padding-top: 5em;
   text-align: center;
@@ -2414,7 +2456,7 @@ dd#profile-user_photo {
 .admin-list-table {
   margin: 0;
   width: 100%;
-  text-align: left;
+  text-align: right;
   border-collapse: separate;
   border-spacing: 1px;
   border: none;
@@ -2490,7 +2532,7 @@ dd#profile-user_photo {
 
 .search-part {
   display: inline-block;
-  margin-right: 5px;
+  margin-left: 5px;
   white-space: nowrap;
 }
 
@@ -2516,7 +2558,7 @@ dd#profile-user_photo {
 }
 
 #admin-moderation li {
-  float: left;
+  float: right;
   width: 12.5%;
   height: 8em;
   margin: 0;
@@ -2614,7 +2656,7 @@ b.status_black {
 }
 
 #admin-topiclist li {
-  float: left;
+  float: right;
   width: 20%;
   height: 8em;
   margin: 0;
@@ -2641,7 +2683,7 @@ b.status_black {
 
 /* User Images */
 .userphoto {
-  margin: 0.5em 0.5em 0 0;
+  margin: 0.5em 0 0 0.5em;
 }
 
 /* Security Group Instructions */
@@ -2662,7 +2704,7 @@ b.status_black {
 --------------------------------------*/
 
 #config_menu {
-  float: left;
+  float: right;
   width: 280px;
   padding: 0 10px;
 }
@@ -2671,6 +2713,7 @@ b.status_black {
 #search-configuration-container {
   margin: 0 0 0.5em;
   padding: 8px 0;
+  text-align: right;
 }
 
 .block-config-title,
@@ -2684,7 +2727,7 @@ b.status_black {
 }
 
 .block-config-content {
-  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .configoption {
@@ -2725,7 +2768,7 @@ b.status_black {
 }
 
 #config_content {
-  float: left;
+  float: right;
   width: 820px;
   padding: 10px;
 }
@@ -2744,7 +2787,7 @@ b.status_black {
 
 #search-configuration {
   width: 90%;
-  margin: 10px 0 10px 5px;
+  margin: 10px 5px 10px 0;
 }
 
 .inputTable {
@@ -2754,7 +2797,7 @@ b.status_black {
 }
 
 .config_label {
-  float: left;
+  float: right;
   width: 35%;
   padding: .5em 0;
 }
@@ -2764,7 +2807,7 @@ b.status_black {
 }
 
 .config_input {
-  float: left;
+  float: right;
   width: 53%;
   
 }
@@ -2923,8 +2966,8 @@ b.status_black {
 /*		color: #777;*/
 		color: #555;
 /*		margin: 0;*/
-		margin-left: 0;
-		margin-right: 3px;
+		margin-right: 0;
+		margin-left: 3px;
 /*		width: 210px;*/
 		max-width: 100%;
 /*		display: block;*/
@@ -3256,7 +3299,7 @@ div.third-party-login {
 	  background: #E4EDF5;
 	  color: #336699;
 	  margin: 0.2em 0;
-	  margin-right: 0.4em;
+	  margin-left: 0.4em;
 	}
 
 	.configoption_off {
@@ -3269,7 +3312,7 @@ div.third-party-login {
 	  font-weight: bold;
 	  overflow: visible;
 	  margin: 0.2em 0;
-	  margin-right: 0.4em;
+	  margin-left: 0.4em;
 	  padding: 0 10px;
 	  height: 1.8em;
 	  line-height: 1.8em;
@@ -3376,13 +3419,13 @@ div.third-party-login {
 	--------------------------------------*/
 
 	#config_menu {
-	  float: left;
+	  float: right;
 	  width: 728px;
 	  padding: 0 10px;
 	}
 
 	#config_content {
-	  float: left;
+	  float: right;
 	  width: 728px;
 	  padding: 10px;
 	}
@@ -3428,19 +3471,19 @@ div.third-party-login {
 	}
 
 	#config_menu {
-	  float: left;
+	  float: right;
 	  width: 100%;
 	  padding: 0;
 	}
 
 	#config_content {
-	  float: left;
+	  float: right;
 	  width: 100%;
 	  padding: 10px 0;
 	}
 
 	.config_label {
-	  float: left;
+	  float: right;
 	  width: 100%;
 	  padding: 0;
 	  font-weight: bold;
@@ -3451,7 +3494,7 @@ div.third-party-login {
 	}
 
 	.config_input {
-	  float: left;
+	  float: right;
 	  width: 90%;
 	  
 	}
@@ -3494,7 +3537,7 @@ div.third-party-login {
 
 	/*  Site Name */
 	.site_name {
-	  margin: 20px 0 0 7px;
+	  margin: 20px 7px 0 0;
 	}
 	.site_name img {
 	  width:113px;
@@ -3570,7 +3613,7 @@ div.third-party-login {
 	--------------------------------------*/
 
 	.admin-list-search {
-	  text-align: left;
+	  text-align: right;
 	}
 	.search-part {
 	  display: block;
@@ -3593,7 +3636,7 @@ div.third-party-login {
 	#rightblocks,
 	body.js_off #rightblocks {
 	  clear: both;
-	  float: left;
+	  float: right;
 	  width: 100%;
 	  padding: 0 10px;
 	  padding: 0;
@@ -3626,7 +3669,7 @@ div.third-party-login {
 	  color:#EEEEEC;
 	  font-weight:bold;
 	  padding: 8px 5px;
-	  text-align:left;
+	  text-align:right;
 	  font-size: 16px;
 	  margin-left: -10px;
 	  margin-right: -10px;
@@ -3654,7 +3697,7 @@ div.third-party-login {
 	  color:#EEEEEC;
 	  font-weight:bold;
 	  padding: 8px 5px;
-	  text-align:left;
+	  text-align:right;
 	  font-size: 16px;
 	  margin-left: -10px;
 	  margin-right: -10px;
@@ -3780,8 +3823,8 @@ div.third-party-login {
 	.copyright {
 	  float: none;
 	  margin: 0 0 1em 0;
-	  padding-left: 0px;
-	  padding-right: 8px;
+	  padding-right: 0px;
+	  padding-left: 8px;
 	  line-height: 1.4em;
 	  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 	}
@@ -3789,10 +3832,10 @@ div.third-party-login {
 	/* Powered by & Page Execution Time */
 	.site_info {
 	  float: none;
-	  text-align: left;
+	  text-align: right;
 	  margin: 0;
-	  padding-left: 4px;
-	  padding-right: 8px;
+	  padding-right: 4px;
+	  padding-left: 8px;
 	  line-height: 1.4em;
 	  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 	}
@@ -3816,7 +3859,7 @@ div.third-party-login {
 	  width: 50%;
 	}
 	dd#profile-user_photo {
-	  margin-left: 50%;
+	  margin-right: 50%;
 	}
 
 	.loose {
@@ -3872,88 +3915,4 @@ div.third-party-login {
   background-color:#EBD8EE;
 }
 */
-
-
-
-
-
-/*--------------------------------------
-  Page Navigation
---------------------------------------*/
-.gl-pagenav {
-  text-align:center;
-}
-
-div.gl-pagenav b {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   border: 1px solid #cccccc;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* foe IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav a {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   background: #C8E0E0;
-   border: 1px solid #40A0A0;
-   text-decoration: none;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span {
-   display: inline-block;
-   padding: 8px;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span a { 
-  margin: 0;
-   padding: 0;
-   background: transparent;
-   border: none;
-   text-decoration: underline;
- }
 

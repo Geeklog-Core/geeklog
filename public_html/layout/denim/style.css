@@ -1163,7 +1163,7 @@ body.center-right #centerblocks {
 }
 body.center-right #main-content {
   width: 840px; /* Main Content Width = [W] - [R] - Right Padding 10px - Left Padding 10px */
-  margin: 0 280px 0 0;  /* Right Margin =  Right Block Width[R] */
+  margin: 0 280px 0 0;  /* Right Margin = [R] */
   padding: 0 10px;
 }
 
@@ -1188,16 +1188,16 @@ body.center #main-content {
 #rightblocks {
   overflow: auto;
   float: left;
-  width: 280px;  /*  Right Block Width[R] */
-  margin: 0 0 0 -280px;  /*  Left Margin = - ( Right Block Width[R] ) */
+  width: 280px;  /* [R] */
+  margin: 0 0 0 -280px;  /* Left Margin = -[R] */
 }
 
 /* JavaScript Disenabled  Right Block Container */
 body.js_off #rightblocks {
   overflow: auto;
   float: left;
-  width: 280px;  /*  Right Block Width[R] */
-  margin: 0 0 0 -280px;  /*  Left Margin = - ( Right Block Width[R] ) */
+  width: 280px;  /* [R] */
+  margin: 0 0 0 -280px;  /* Left Margin = -[R] */
 }
 
 /*--------------------------------------
