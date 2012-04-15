@@ -246,6 +246,10 @@ div#container div#wrapper div#centerblocks {
   overflow: visible;
 }
 
+div#container div#wrapper div#centerblocks-content {
+  padding: 0 8px;
+}
+
 /* JavaScript Enabled* 3 Column ( Left Block*  Center Block*  Right Block)  Center Block Container */
 body.left-center-right div#container div#wrapper div#centerblocks {
   float: {left};

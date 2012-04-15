@@ -52,5 +52,6 @@
         <!-- Center Block Container -->
         <div id="centerblocks">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+          <div id="centerblocks-content">
 
 <!-- } header.thtml -->

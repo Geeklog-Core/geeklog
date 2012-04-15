@@ -16,7 +16,7 @@
 /* Container */
 div#centerblocks div.storytext {
   margin: 0 0 1em 0;
-  padding: 0 8px 1em;
+  padding: 0 0 1em;
   border-bottom: 1px solid #ccc;
 }
 
@@ -130,7 +130,7 @@ div#centerblocks div.storytext ul.feedback li {
 /* Container */
 div#centerblocks div.featuredstorytext {
   margin: 0 0 1em 0;
-  padding: 0 8px 1em;
+  padding: 0 0 1em;
   border-bottom: 1px solid #ccc;
 }
 
@@ -244,7 +244,7 @@ div#centerblocks div.featuredstorytext ul.feedback li {
 /* Container */
 div#centerblocks div.archivestorytext {
   margin: 0 0 1em 0;
-  padding: 0 8px 1em;
+  padding: 0 0 1em;
   border-bottom: 1px solid #ccc;
 }
 
