@@ -3,6 +3,8 @@ Geeklog History/Changes:
 May ??, 2012 (2.0.0)
 ------------
 
+- Fixed path issue and changed the order of loading the jQuery css files 
+  in the Scripts class (bug #0001439) [Tom]
 - Improve strength of password hashing (feature request #0001384) [Vinny]
 - Add IP Address to entries in error.log [Tom]
 - Allow markup on page navigation (feature request #0001422) [Tom]
