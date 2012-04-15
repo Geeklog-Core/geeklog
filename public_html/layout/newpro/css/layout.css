@@ -279,7 +279,7 @@ body.js_off div#container div#wrapper div#centerblocks {
   display: inline;  /* Win IE 6(Float Left Right Margin is too wide) */
   float: {left};
   width: 580px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Block Width[R] -  Right Padding -  Left Padding */
-  margin-{left}: 180px;  /*  Left Margin =  Left Block Width[L] */
+  margin-{left}: 190px;  /*  Left Margin =  Left Block Width[L] */
 }
 
 
