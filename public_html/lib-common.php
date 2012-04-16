@@ -3815,7 +3815,7 @@ function COM_formatBlock( $A, $noboxes = false )
         // contains HTML and do not call nl2br() which would only add
         // unwanted <br> tags.
 
-        if (substr($blockcontent, 0, 1) != '<') {
+        if (substr(trim($blockcontent), 0, 1) != '<') {
             $blockcontent = nl2br($blockcontent);
         }
 
