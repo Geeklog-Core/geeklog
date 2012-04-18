@@ -11,6 +11,10 @@
     <li>{edit_icon}</li>
   </ul>
 
+  <div style="clear:both"></div>
+
+  <span class="story_image">{story_anchortag_and_image}</span>
+
   <ul class="status">
     <li>{story_date}</li>
     <li>
@@ -27,8 +31,9 @@
     </li>
   </ul>
 
+  <div style="clear:both"></div>
+
   <div class="story_introtext">
-    <span class="story_image">{story_anchortag_and_image}</span>
     {story_text_no_br}
   </div>
 

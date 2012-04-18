@@ -14,7 +14,7 @@
 {rel_links}
 {plg_headercode}
   </head>
-  <body dir="{direction}">
+  <body dir="{direction}" class="js_off">
 <!-- header.thtml { -->
 
 <!-- #container { -->
@@ -42,14 +42,16 @@
       <hr class="separator"{xhtml}>
 
       <!-- #wrapper { -->
-      <table id="wrapper">
-        <tr>
-          <td>
-            {left_blocks}
-          </td>
-          <td id="centerblocks-wrapper">
-            <!-- Center Block Container -->
-            <div id="centerblocks">
-              <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+      <div id="wrapper">
+
+        {left_blocks}
+
+        <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
+        <!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
+        <!--[if !IE]> #centerblocks { <![endif]-->
+        <!-- Center Block Container -->
+        <div id="centerblocks">
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
+          <div id="centerblocks-content">
 
 <!-- } header.thtml -->

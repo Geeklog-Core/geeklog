@@ -286,6 +286,97 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 */
 require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
+/**
+* Include the Scripts class
+*
+* This provides the ability to set css and javascript.
+*/
+
+require_once( $_CONF['path_system'] . 'classes/scripts.class.php' );
+$_SCRIPTS = new scripts();
+
+// Set theme
+
+$usetheme = '';
+if( isset( $_POST['usetheme'] ))
+{
+    $usetheme = COM_sanitizeFilename($_POST['usetheme'], true);
+}
+if( !empty( $usetheme ) && is_dir( $_CONF['path_themes'] . $usetheme ))
+{
+    $_CONF['theme'] = $usetheme;
+    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+}
+else if( $_CONF['allow_user_themes'] == 1 )
+{
+    if( isset( $_COOKIE[$_CONF['cookie_theme']] ) && empty( $_USER['theme'] ))
+    {
+        $theme = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_theme']], true);
+        if( is_dir( $_CONF['path_themes'] . $theme ))
+        {
+            $_USER['theme'] = $theme;
+        }
+    }
+
+    if( !empty( $_USER['theme'] ))
+    {
+        if( is_dir( $_CONF['path_themes'] . $_USER['theme'] ))
+        {
+            $_CONF['theme'] = $_USER['theme'];
+            $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+            $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+        }
+        else
+        {
+            $_USER['theme'] = $_CONF['theme'];
+        }
+    }
+}
+
+/**
+* Include theme functions file which may/may not do anything
+*/
+if (file_exists($_CONF['path_layout'] . 'functions.php')) {
+    require_once $_CONF['path_layout'] . 'functions.php';
+}
+
+/**
+ * Get the configuration values from the theme
+ */
+$func = "theme_config_" . $_CONF['theme'];
+if (function_exists($func)) {
+    $theme_config = $func();
+    $_CONF['doctype'] = $theme_config['doctype'];
+    $_IMAGE_TYPE = $theme_config['image_type'];
+}
+/**
+* themes can specify the default image type
+* fall back to 'gif' if they don't
+*/
+if (empty($_IMAGE_TYPE)) {
+    $_IMAGE_TYPE = 'gif';
+}
+
+/**
+* ensure XHTML constant is defined to avoid problems elsewhere
+*/
+if (! defined('XHTML')) {
+    switch ($_CONF['doctype']) {
+    case 'xhtml10transitional':
+    case 'xhtml10strict':
+        define('XHTML', ' /');
+        break;
+
+    default:
+        /**
+        * @ignore
+        */
+        define('XHTML', '');
+        break;
+    }
+}
+
 // Set language
 
 if( isset( $_COOKIE[$_CONF['cookie_language']] ) && empty( $_USER['language'] ))
@@ -330,88 +421,33 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false ) {
     setlocale( LC_TIME, $_CONF['locale'] );
 }
 
-// Set theme
-
-$usetheme = '';
-if( isset( $_POST['usetheme'] ))
-{
-    $usetheme = COM_sanitizeFilename($_POST['usetheme'], true);
-}
-if( !empty( $usetheme ) && is_dir( $_CONF['path_themes'] . $usetheme ))
-{
-    $_CONF['theme'] = $usetheme;
-    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-}
-else if( $_CONF['allow_user_themes'] == 1 )
-{
-    if( isset( $_COOKIE[$_CONF['cookie_theme']] ) && empty( $_USER['theme'] ))
-    {
-        $theme = COM_sanitizeFilename($_COOKIE[$_CONF['cookie_theme']], true);
-        if( is_dir( $_CONF['path_themes'] . $theme ))
-        {
-            $_USER['theme'] = $theme;
-        }
-    }
-
-    if( !empty( $_USER['theme'] ))
-    {
-        if( is_dir( $_CONF['path_themes'] . $_USER['theme'] ))
-        {
-            $_CONF['theme'] = $_USER['theme'];
-            $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-            $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-        }
-        else
-        {
-            $_USER['theme'] = $_CONF['theme'];
-        }
+/* Include scripts on behalf of the theme */
+$func = "theme_css_" . $_CONF['theme'];
+if (function_exists($func)) {
+    foreach ($func() as $file) {
+        $_SCRIPTS->setCssFile(md5($file), $file);
     }
 }
-
-
-/**
-* Include the Scripts class
-*
-* This provides the ability to set css and javascript.
-*/
-
-require_once( $_CONF['path_system'] . 'classes/scripts.class.php' );
-$_SCRIPTS = new scripts();
-
-/**
-* Include theme functions file which may/may not do anything
-*/
-if (file_exists($_CONF['path_layout'] . 'functions.php')) {
-    require_once $_CONF['path_layout'] . 'functions.php';
-}
-
-/**
-* ensure XHTML constant is defined to avoid problems elsewhere
-*/
-if (!defined('XHTML')) {
-    switch ($_CONF['doctype']) {
-    case 'xhtml10transitional':
-    case 'xhtml10strict':
-        define('XHTML', ' /');
-        break;
-
-    default:
-        /**
-        * @ignore
-        */
-        define('XHTML', '');
-        break;
+$func = "theme_js_libs_" . $_CONF['theme'];
+if (function_exists($func)) {
+    foreach ($func() as $name) {
+        $_SCRIPTS->setJavaScriptLibrary($name);
     }
 }
-
-/**
-* themes can specify the default image type
-* fall back to 'gif' if they don't
-*/
-if (empty($_IMAGE_TYPE)) {
-    $_IMAGE_TYPE = 'gif';
+$func = "theme_js_files_" . $_CONF['theme'];
+if (function_exists($func)) {
+    foreach ($func() as $file) {
+        $_SCRIPTS->setJavaScriptFile(md5($file), $file);
+    }
 }
+$func = "theme_init_" . $_CONF['theme'];
+if (function_exists($func)){
+    $func();
+}
+unset(
+    $theme_config,
+    $func
+);
 
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
@@ -4469,7 +4505,7 @@ function COM_formatBlock( $A, $noboxes = false )
         // contains HTML and do not call nl2br() which would only add
         // unwanted <br> tags.
 
-        if (substr($blockcontent, 0, 1) != '<') {
+        if (substr(trim($blockcontent), 0, 1) != '<') {
             $blockcontent = nl2br($blockcontent);
         }
 

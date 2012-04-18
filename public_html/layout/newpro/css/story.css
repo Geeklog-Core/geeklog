@@ -15,14 +15,14 @@
 
 /* Container */
 div#centerblocks div.storytext {
-  margin: 0 0 2em 0;
-  padding: 0;
-  border-bottom: 1px solid #E7E7E7;
+  margin: 0 0 1em 0;
+  padding: 0 0 1em;
+  border-bottom: 1px solid #ccc;
 }
 
 /* Story Title */
 div#centerblocks div.storytext h2 {
-  float: left;
+  float: {left};
   margin: 0 0 1em 0;
   padding: 0;
   font-size: 110%;
@@ -32,10 +32,10 @@ div#centerblocks div.storytext h2 {
 /* Icon(email to friends, print, pdf) */
 div#centerblocks div.storytext ul.icon {
   list-style-type: none;
-  float: right;
+  float: {right};
   margin: 0;
   padding: 0;
-  text-align: right;
+  text-align: {right};
 }
 
 div#centerblocks div.storytext ul.icon li{
@@ -48,9 +48,10 @@ div#centerblocks div.storytext ul.icon li{
 div#centerblocks div.storytext ul.status {
   list-style-position: outside;
   list-style-type: none;
-  clear: both;
   margin: 0 0 1em 0;
+  margin-{left}: 1em;
   padding: 0;
+  float: {left};
 }
 
 div#centerblocks div.storytext ul.status li {
@@ -83,8 +84,8 @@ div#centerblocks div.storytext div.story_introtext {
 }
 
 /* Topic Icon */
-div#centerblocks div.storytext div.story_introtext span.story_image {
-  float: right;
+div#centerblocks div.storytext span.story_image {
+  float: {left};
   width: 48px;
   height: 48px;
   margin: 0;
@@ -128,14 +129,14 @@ div#centerblocks div.storytext ul.feedback li {
 
 /* Container */
 div#centerblocks div.featuredstorytext {
-  margin: 0 0 2em 0;
-  padding: 0;
-  border-bottom: 1px solid #E7E7E7;
+  margin: 0 0 1em 0;
+  padding: 0 0 1em;
+  border-bottom: 1px solid #ccc;
 }
 
 /* Story Title */
 div#centerblocks div.featuredstorytext h2 {
-  float: left;
+  float: {left};
   margin: 0 0 1em 0;
   padding: 0;
   font-size: 110%;
@@ -145,10 +146,10 @@ div#centerblocks div.featuredstorytext h2 {
 /* Icon(email to friends, print, pdf) */
 div#centerblocks div.featuredstorytext ul.icon {
   list-style-type: none;
-  float: right;
+  float: {right};
   margin: 0;
   padding: 0;
-  text-align: right;
+  text-align: {right};
 }
 
 div#centerblocks div.featuredstorytext ul.icon li{
@@ -161,9 +162,10 @@ div#centerblocks div.featuredstorytext ul.icon li{
 div#centerblocks div.featuredstorytext ul.status {
   list-style-position: outside;
   list-style-type: none;
-  clear: both;
-  margin: 0 0 1em 0;
+  margin: 0;
+  margin-{left}: 1em;
   padding: 0;
+  float: {left};
 }
 
 div#centerblocks div.featuredstorytext ul.status li {
@@ -196,8 +198,8 @@ div#centerblocks div.featuredstorytext div.story_introtext {
 }
 
 /* Topic Icon */
-div#centerblocks div.featuredstorytext div.story_introtext span.story_image {
-  float: right;
+div#centerblocks div.featuredstorytext span.story_image {
+  float: {left};
   width: 48px;
   height: 48px;
   margin: 0;
@@ -241,14 +243,14 @@ div#centerblocks div.featuredstorytext ul.feedback li {
 
 /* Container */
 div#centerblocks div.archivestorytext {
-  margin: 0 0 2em 0;
-  padding: 0;
-  border-bottom: 1px solid #E7E7E7;
+  margin: 0 0 1em 0;
+  padding: 0 0 1em;
+  border-bottom: 1px solid #ccc;
 }
 
 /* Story Title */
 div#centerblocks div.archivestorytext h2 {
-  float: left;
+  float: {left};
   margin: 0 0 1em 0;
   padding: 0;
   font-size: 110%;
@@ -258,10 +260,10 @@ div#centerblocks div.archivestorytext h2 {
 /* Icon(email to friends, print, pdf) */
 div#centerblocks div.archivestorytext ul.icon {
   list-style-type: none;
-  float: right;
+  float: {right};
   margin: 0;
   padding: 0;
-  text-align: right;
+  text-align: {right};
 }
 
 div#centerblocks div.archivestorytext ul.icon li{
@@ -274,9 +276,10 @@ div#centerblocks div.archivestorytext ul.icon li{
 div#centerblocks div.archivestorytext ul.status {
   list-style-position: outside;
   list-style-type: none;
-  clear: both;
   margin: 0 0 1em 0;
+  margin-{left}: 1em;
   padding: 0;
+  float: {left};
 }
 
 div#centerblocks div.archivestorytext ul.status li {
@@ -309,8 +312,8 @@ div#centerblocks div.archivestorytext div.story_introtext {
 }
 
 /* Topic Icon */
-div#centerblocks div.archivestorytext div.story_introtext span.story_image {
-  float: right;
+div#centerblocks div.archivestorytext span.story_image {
+  float: {left};
   width: 48px;
   height: 48px;
   margin: 0;
