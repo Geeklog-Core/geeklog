@@ -1,8 +1,11 @@
-<span style="vertical-align:top;{options_hide}">                 
+
+<!-- admin/common/edit_topics.thtml { -->
+
+<span style="vertical-align:top;{options_hide}">
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
-    <input type="radio" name="topic_option" value="all" {all_checked}> {lang_all} 
+    <input type="radio" name="topic_option" value="all" {all_checked}> {lang_all}
     <input type="radio" name="topic_option" value="homeonly" {homeonly_checked}> {lang_homeonly}
-    <span style="{topic_option_hide}"><input type="radio" name="topic_option" value="selectedtopics" {selectedtopics_checked}></span> 
+    <span style="{topic_option_hide}"><input type="radio" name="topic_option" value="selectedtopics" {selectedtopics_checked}></span>
 </span>
 <span style="vertical-align:top;{topic_hide}">
     <select name="tid[]" multiple="multiple" size="4">
@@ -18,7 +21,7 @@
 </span>
 <span style="vertical-align:top;{default_hide}">
     <input type="hidden" name="topic_default_hide" value="{topic_default_hide}"{xhtml}>
-    {lang_default}:
+    <span style="vertical-align:top;">{lang_default}:</span>
     <select name="default_tid">
         {default_options}
     </select>
@@ -26,3 +29,5 @@
 <span style="{info_hide}">
     <p>{topic_info}</p>
 </span>
+
+<!-- } admin/common/edit_topics.thtml -->
