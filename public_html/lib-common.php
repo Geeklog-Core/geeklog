@@ -1585,6 +1585,20 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 }
 
 
+/**
+* Create and return the HTML document
+*
+* @param    string  $content    Main content for the page
+* @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
+* @param    string  $pagetitle  Optional content for the page's <title>
+* @param    string  $headercode Optional code to go into the page's <head>
+* @param    boolean $rightblock Whether or not to show blocks on right hand side default is no
+* @param    array   $custom     An array defining custom function to be used to format Rightblocks
+* @see      function COM_siteHeader
+* @see      function COM_siteFooter
+* @return   string              Formated HTML document
+*
+*/
 function COM_createHTMLDocument( &$content = '', $what = 'menu', $pagetitle = '', $headercode = '', $rightblock = -1, $custom = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
