@@ -22,7 +22,7 @@ table.itemstatistics {
 table.itemstatistics tr th {
   margin: 0;
   padding: 2px;
-  text-align: left;
+  text-align: {left};
 }
 
 table.itemstatistics tr td {

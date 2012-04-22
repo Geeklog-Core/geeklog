@@ -37,7 +37,7 @@ ul.navbar-breadcrumbs li a {
   overflow: hidden;  /* Adjust floating element */
   margin-bottom: 1em;
   padding-top: 16px;
-  padding-left: 8px;
+  padding-{left}: 8px;
   background: #F4F4F4;
   border-top: 1px solid #CCCCCC;
   border-bottom: 1px solid #24618E;
@@ -67,7 +67,7 @@ ul.navbar-breadcrumbs li a {
 }
 
 #navcontainer li {
-  float: left;
+  float: {left};
   margin: 0;
   padding: 0;
 }
@@ -75,14 +75,17 @@ ul.navbar-breadcrumbs li a {
 #navcontainer a {
   display: block;
   margin: 0;
-  padding: 0 0 0 5px;
+  padding: 0;
+  padding-{left}: 5px;
   background: url(./navbar/images/tableftJ.gif) no-repeat 0 0;
   text-decoration: none;
 }
 
 #navcontainer a span {
   display: block;
-  padding: 4px 8px 4px 3px;
+  padding: 4px;
+  padding-{right}: 8px;
+  padding-{left}: 3px;
   color: #24618E;
   background: url(./navbar/images/tabrightJ.gif) no-repeat 100% 0;
 }

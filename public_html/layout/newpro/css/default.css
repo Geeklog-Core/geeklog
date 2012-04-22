@@ -176,14 +176,14 @@ ul {
   list-style-type: disc;
   display: block;
   margin: 1.12em 0;
-  padding-left: 40px;
+  padding-{left}: 40px;
 }
 
 ol {
   list-style-type: decimal;
   display: block;
   margin: 1.12em 0;
-  padding-left: 40px;
+  padding-{left}: 40px;
 }
 
 li {
@@ -226,7 +226,7 @@ dt {
 
 dd {
   display: block;
-  margin-left: 40px;
+  margin-{left}: 40px;
 }
 
 

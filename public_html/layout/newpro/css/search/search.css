@@ -43,7 +43,8 @@ dl#searchresults-found dt {
 
 dl#searchresults-found dd {
   display: inline;
-  margin: 0 0 0 4px;
+  margin: 0;
+  margin-{left}: 4px;
   padding: 0;
 }
 
@@ -83,7 +84,7 @@ table.searchblock tr.resultrow2 {
 table.searchblock tr th {
   margin: 0;
   padding: 2px;
-  text-align: left;
+  text-align: {left};
 }
 
 table.searchblock tr td {

@@ -37,7 +37,7 @@ ul#admin-moderation:after {
 /* } Win IE 6(Adjust floating element) */
 
 ul#admin-moderation li {
-  float: left;
+  float: {left};
   width: 20%;
   height: 8em;
   margin: 0;

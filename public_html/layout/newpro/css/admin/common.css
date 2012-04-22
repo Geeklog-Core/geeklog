@@ -35,8 +35,9 @@ div#admin-instructions:after {
 
 /* Icon */
 div#admin-instructions img {
-  float: left;
-  margin: 0 8px 8px 0;
+  float: {left};
+  margin: 0 0 8px 0;
+  margin-{right}: 8px;
   padding: 0;
   width: 48px;
   height: 48px;
@@ -74,7 +75,7 @@ table#admin-permissions th {
   padding: 4px;
   border: 1px solid #ffffff;
   background: #dae0ed;
-  text-align: left;
+  text-align: {left};
 }
 
 table#admin-permissions td {

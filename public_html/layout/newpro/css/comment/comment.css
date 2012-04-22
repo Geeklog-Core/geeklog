@@ -97,7 +97,7 @@ div.comments ul.thread {
   list-style-type: none;
   margin: 0 0 0.5em 0;
   padding: 0;
-  text-align: left;
+  text-align: {left};
 }
 
 /* Individual Comment (Tree) Title */
@@ -110,7 +110,8 @@ div.comments ul.thread li.title {
 /* Individual Comment (Tree) Auther */
 div.comments ul.thread li.author {
   display: inline;
-  margin: 0 0 0 8px;
+  margin: 0;
+  margin-{left}: 8px;
   padding: 0;
 }
 
@@ -121,59 +122,59 @@ div.comments ul.thread li.author:before {
 /* Individual Comment Level(Nested | Tree) */
 div.comments div.level-25,
 div.comments ul.level-25 {
-  margin-left: 0;
+  margin-{left}: 0;
 }
 
 div.comments div.level-25,
 div.comments ul.level-25 {
-  margin-left: 16px;
+  margin-{left}: 16px;
 }
 
 div.comments div.level-50,
 div.comments ul.level-50 {
-  margin-left: 32px;
+  margin-{left}: 32px;
 }
 
 div.comments div.level-100,
 div.comments ul.level-100 {
-  margin-left: 48px;
+  margin-{left}: 48px;
 }
 
 div.comments div.level-125,
 div.comments ul.level-125 {
-  margin-left: 64px;
+  margin-{left}: 64px;
 }
 
 div.comments div.level-150
 div.comments ul.level-150 {
-  margin-left: 80px;
+  margin-{left}: 80px;
 }
 
 div.comments div.level-175
 div.comments ul.level-175 {
-  margin-left: 96px;
+  margin-{left}: 96px;
 }
 
 div.comments div.level-200,
 div.comments ul.level-200 {
-  margin-left: 112px;
+  margin-{left}: 112px;
 }
 
 div.comments div.level-225,
 div.comments ul.level-225 {
-  margin-left: 128px;
+  margin-{left}: 128px;
 }
 
 div.comments div.level-250,
 div.comments ul.level-250 {
-  margin-left: 144px;
+  margin-{left}: 144px;
 }
 
 /* Individual Comment  */
 div.comments div.block-comment-content {
   margin: 0;
   padding: 0;
-  text-align: left;
+  text-align: {left};
 }
 
 /* Comment Information  */
@@ -261,11 +262,11 @@ form#commentform dl dt.username {
 
 form#commentform dl dd.username {
   display: inline;
-  margin-left: 8px;
+  margin-{left}: 8px;
 }
 
 form#commentform dl dd.username a {
-  margin-left: 8px;
+  margin-{left}: 8px;
 }
 
 form#commentform dl dd.username a:before {
@@ -289,7 +290,8 @@ form#commentform dl.importantstuff dd ul {
 }
 
 form#commentform dl.importantstuff dd ul li {
-  margin: 0 0 0 8px;
+  margin: 0;
+  margin-{left}: 8px;
   padding: 0;
 }
 
@@ -306,11 +308,11 @@ form#commentform_advanced dl dt.username {
 
 form#commentform_advanced dl dd.username {
   display: inline;
-  margin-left: 8px;
+  margin-{left}: 8px;
 }
 
 form#commentform_advanced dl dd.username a {
-  margin-left: 8px;
+  margin-{left}: 8px;
   padding: 0 2px;
 }
 
@@ -335,6 +337,7 @@ form#commentform_advanced dl.importantstuff dd ul {
 }
 
 form#commentform_advanced dl.importantstuff dd ul li {
-  margin: 0 0 0 8px;
+  margin: 0;
+  margin-{left}: 8px;
   padding: 0;
 }

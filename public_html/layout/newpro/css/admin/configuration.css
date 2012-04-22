@@ -70,9 +70,9 @@ form#config-editor {
 
 /* Left Menu */
 div#config_menu {
-  float: left;
+  float: {left};
   width: 160px;
-  margin-left: -6px;
+  margin-{left}: -6px;
   padding: 0;
   background: #F7F7F7;
 }
@@ -88,7 +88,7 @@ div#config_menu div.block-center h2 {
 
 /* Center Block */
 div#config_main {
-  float: left;
+  float: {left};
   width: 620px;
-  padding: 0 0 0 8px;
+  padding-{left}: 8px;
 }
