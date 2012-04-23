@@ -1,6 +1,5 @@
 /* Prevents the tooltips from disappearing outside the viewport */
 var fix_tooltips = function() {
-console.log(1);
     var $w = $(window);
     // fix each tooltip
     $('a.gl-tooltip').each(function() {
