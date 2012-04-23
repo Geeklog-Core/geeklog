@@ -1,0 +1,264 @@
+/*==============================================================================
+  Title       : ProfessionalCSS_en
+  Version     : 1.51 for Geeklog1.7.1
+  Author      : Fumito Arakawa as Phize (http://phize.net/) & Geeklog Japanese
+                & Ivy (http://www.ivywe.co.jp)
+  Description : Geeklog Theme Maker by using CSS 2.0 eliminate table tags
+==============================================================================*/
+
+
+
+/*==============================================================================
+  Index:
+
+    *Pofile
+    *Install
+    *File and Directory
+    *Template Files: Comments
+    *CSS: CSS File Structure/Order
+    *CSS: Property Order
+    *Customize
+    *History
+==============================================================================*/
+
+
+
+/*==============================================================================
+  Pofile
+==============================================================================*/
+
+Geeklog Theme using HTML 4.01 Transitional+CSS 2.0 and eliminate table tags.
+Design is based on professional.
+
+If JavaScript is enabled, body class item is changed by Geeklog layout column.
+So we can set multi column layout.
+If JavaScript is not enabled, body class item is fixed as 3 column layout.
+
+It is base theme for new design theme.
+
+
+
+/*==============================================================================
+  Install
+==============================================================================*/
+
+ProfessionalCSS_en Theme upload
+
+  +layout            -- copy -->   +layout
+    +Professional_CSS
+
+
+
+/*==============================================================================
+  CSS: CSS File Structure/Order
+==============================================================================*/
+
++layout -------------------- Geeklog directory
+  +ProfessionalCSS_en --------- 'ProfessionalCSS_en' theme directory
+    +admin
+    +article
+    +comment
+    +forum
+    +navbar
+    +preferences
+    +profiles
+    +search
+    +stats
+    +submit
+    +trackback
+    +users
+    +css ------------------- CSS
+    | |                        
+    | |
+    | +plugin -------------- for Plugins
+    |  |                       
+    |  +forum.css ---------- for Forum Plugin
+    |
+    +images ---------------- Images
+    | |
+    | +css ----------------- Images for ProfessionalCSS_en
+    |
+    +javascript ------------ JavaScript
+    | |
+    | +fix_html.js --------- Geeklog body Class Attribute
+    |
+    +README ---------------- 'ProfessionalCSS_en' README(this file)
+    |
+    +style.css ------------ CSS import
+    |
+    +custom.css ----------- for Customize
+    |
+    +custom.sample.css ---- Sample for Customize
+
+
+
+/*==============================================================================
+  Template Files: Comments
+==============================================================================*/
+
+Template files (.thtml) are added comments.
+
+  File Name
+
+      <!-- dir/file.thtml { -->
+                 ...
+      <!-- } dir/file.thtml -->
+
+
+/*==============================================================================
+  CSS: CSS File Structure/Order
+==============================================================================*/
+
++style.css -------------------------- called from header.thtml
+  +css/default.css ------------------ Default Style
+                                        W3C CSS 2.1 Appendix D
+                                        URI: http://www.w3.org/TR/2004/CR-CSS21-20040225/sample.html
+  +css/common.css ------------------- Common Style
+
+  +css/layout.css ------------------- Base Layout Style
+
+  +css/block.css -------------------- Block Style
+  +css/option.css ------------------- Option Menu Style
+  +css/form.css --------------------- Form Style
+  +css/story.css -------------------- Story Style
+
+  +css/article/article.css ---------- Article Style
+  +css/comment/comment.css ---------- Comment Style
+  +css/navbar/navbar.css ------------ Navigation Style
+  +css/preferences/preferences.css -- Preference Style
+  +css/search/search.css ------------ Search Style
+  +css/stats/stats.css -------------- Stats Style
+  +css/submit/submit.css ------------ Submit Style
+  +css/tooltips/tooltips.css -------- Tooltips Style
+  +css/trackback/trackback.css ------ Trackback Style
+  +css/users/users.css -------------- Myaccount Style
+
+  Admin Style
+  +css/admin.css -------------------- Import Style Sheet(for admin)
+    +css/admin/common.css ----------- Common Style(for admin)
+    +css/admin/block.css ------------ Block Editor Style(for admin)
+    +css/admin/group.css ------------ Group Editor Style(for admin)
+    +css/admin/lists.css ------------ List Style(for admin)
+    +css/admin/moderation.css ------- Moderation Style(for admin)
+    +css/admin/plugins.css ---------- Plugins Editor Style(for admin)
+    +css/admin/story.css ------------ Story Editor Style(for admin)
+    +css/admin/topic.css ------------ Topic Editor Style(for admin)
+    +css/admin/trackback.css -------- Trackback Editor Style(for admin)
+    +css/admin/user.css ------------- User Editor Style(for admin)
+    +css/admin/configuration.css ---- Configuration Editor Style(for admin)
+
+  Plugin Style
+  +css/plugin.css ------------------- Import Style
+    +css/plugin/japanize.css ---------Japanize Plugin Style
+
+  Custom Style
+  +custom.css ----------------------- Custom Style
+                                      custom.sample.css is added as sample.
+
+
+
+/*==============================================================================
+    *CSS: Property Order
+==============================================================================*/
+
+CSS Property Order
+
+  *display
+  *visibility
+  *overflow
+  *list-style
+  *position
+  *float
+  *clear
+  *top right bottom left
+  *width
+  *height
+  *margin
+  *padding
+  *border
+  *background
+    color
+    image
+    repeat
+    position
+    attachement
+  *color
+  *font
+    style
+    variant
+    weight
+    size
+    line-height
+    family
+  *text-decoration
+  *text-align
+  *vertical-align
+  *white-space
+  *other text
+  *quotes
+  *content
+
+
+
+/*==============================================================================
+  Customize
+==============================================================================*/
+
+ProfessionalCSS can design site by only CSS files 'custom.css' without change other CSS files or template files.
+
+SAMPLE custom.css: custom.sample.css
+
+If custom.sample.css copy custom.css, can use as base of theme.
+Set images in the custom.css on images/custom/ not images/css/.
+
+
+
+/*==============================================================================
+  History
+==============================================================================*/
+
+Ver.1.51(2010-11-30)
+changed: 
+ header.thtml 
+ css/layout.css 
+ css/common.css 
+
+Ver.1.5(2010-11-25)
+changed: 
+ css/layout.css 
+ header.thtml 
+ footer.thtml
+
+Ver.1.01(2010-10-25)
+changed: 
+ field legend tag
+
+Ver.1.0(2010-10-24)
+changed: 
+ admin/*
+
+Ver.0.2(2010-10-16)
+changed: 
+ admin/group/groupeditor.thtml
+ comment/commentform.thtml
+ comment/commentform_advanced.thtml
+
+Ver.0.1.4(2010-08-02)
+changed: 
+ css/form.css
+
+Ver.0.1.3(2010-07-25)
+changed: 
+ css/common.css
+ css/default.css
+
+Ver.0.1.2(2010-06-15)
+changed: 
+ css/compatible.css 
+ css/default.css changed.
+
+Ver.0.1.1(2010-05-26)
+file added: images/upload.png
+admin/group/groupeditor.thtml changed.
+
+Ver.0.1(2010-05-10) release for Geeklog 1.7.0

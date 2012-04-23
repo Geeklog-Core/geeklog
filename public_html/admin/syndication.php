@@ -49,9 +49,8 @@ require_once 'auth.inc.php';
 $display = '';
 
 if (!SEC_hasRights('syndication.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
     COM_output($display);
     exit;
@@ -344,7 +343,7 @@ function editfeed ($fid = 0, $type = '')
     $selection = '<select name="format">' . LB;
     foreach ($formats as $f) {
         // if one changes this format below ('name-version'), also change parsing
-        // in COM_siteHeader. It uses explode( "-" , $string )
+        // in COM_createHTMLDocument. It uses explode( "-" , $string )
         $selection .= '<option value="' . $f['name'] . '-' . $f['version']
                    . '"';
         if ($A['format'] == $f['name'] . '-' . $f['version']) {
@@ -447,9 +446,8 @@ function newfeed ()
     if (count($plugins) == 0) {
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
-        $retval = COM_siteHeader ('menu', $LANG33[11])
-                . editfeed (0, 'article')
-                . COM_siteFooter ();
+        $retval = editfeed (0, 'article');
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[11]);
     } else {
         $selection = '<select name="type">' . LB;
         $selection .= '<option value="article">' . $LANG33[55]
@@ -468,13 +466,12 @@ function newfeed ()
         $feed_template->set_var ('lang_explain', $LANG33[54]);
         $feed_template->set_var ('lang_go', $LANG33[1]);
 
-        $retval .= COM_siteHeader ('menu', $LANG33[11]);
         $retval .= COM_startBlock ($LANG33[36], '',
                 COM_getBlockTemplate ('_admin_block', 'header'));
         $retval .= $feed_template->finish ($feed_template->parse ('output',
                                                                   'type'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-        $retval .= COM_siteFooter ();
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[11]);
     }
 
     return $retval;
@@ -502,28 +499,25 @@ function savefeed ($A)
     }
     if (empty ($A['title']) || empty ($A['description']) ||
             empty ($A['filename'])) {
-        $retval = COM_siteHeader ('menu', $LANG33[38])
-                . COM_showMessageText($LANG33[39], $LANG33[38])
-                . editfeed ($A['fid'], $A['type'])
-                . COM_siteFooter ();
+        $retval = COM_showMessageText($LANG33[39], $LANG33[38])
+                . editfeed ($A['fid'], $A['type']);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[38]);
         return $retval;
     }
 
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}' AND (fid <> '{$A['fid']}')");
     $C = DB_fetchArray($result);
     if ($C['count'] > 0) {
-        $retval = COM_siteHeader ('menu', $LANG33[52])
-                . COM_showMessageText($LANG33[51], $LANG33[52])
-                . editfeed ($A['fid'], $A['type'])
-                . COM_siteFooter ();
+        $retval = COM_showMessageText($LANG33[51], $LANG33[52])
+                . editfeed ($A['fid'], $A['type']);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[52]);
         return $retval;
     }
 
     if ($A['limits'] <= 0) {
-        $retval = COM_siteHeader ('menu', $LANG33[38])
-                . COM_showMessageText($LANG33[40], $LANG33[38])
-                . editfeed ($A['fid'], $A['type'])
-                . COM_siteFooter ();
+        $retval = COM_showMessageText($LANG33[40], $LANG33[38])
+                . editfeed ($A['fid'], $A['type']);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[38]);
         return $retval;
     }
     if ($A['limits_in'] == 1) {
@@ -613,16 +607,14 @@ if ($mode == 'edit') {
     if (empty ($_REQUEST['fid'])) {
         $display .= newfeed ();
     } else {
-        $display .= COM_siteHeader ('menu', $LANG33[24])
-                 . editfeed (COM_applyFilter($_REQUEST['fid']))
-                 . COM_siteFooter ();
+        $display .= editfeed (COM_applyFilter($_REQUEST['fid']));
+        $display = COM_createHTMLDocument($display, 'menu', $LANG33[24]);
     }
 }
 elseif (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
-    $display .= COM_siteHeader ('menu', $LANG33[24])
-             . editfeed (0, COM_applyFilter($_REQUEST['type']))
-             . COM_siteFooter ();
+    $display .= editfeed (0, COM_applyFilter($_REQUEST['type']));
+    $display = COM_createHTMLDocument($display, 'menu', $LANG33[24]);
 }
 elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken())
 {
@@ -637,10 +629,9 @@ elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC
 }
 else
 {
-    $display .= COM_siteHeader('menu', $LANG33[10]);
     $display .= COM_showMessageFromParameter();
     $display .= listfeeds();
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG33[10]);
 }
 
 COM_output($display);

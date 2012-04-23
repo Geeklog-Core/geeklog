@@ -1,0 +1,67 @@
+{doctype}
+<html{html_attribute}{xmlns}>
+
+<head profile="http://www.w3.org/2003/g/data-view">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
+<title>{page_title_and_site_name}</title>
+<meta http-equiv="Content-Script-Type" content="text/javascript"{xhtml}>
+<meta http-equiv="Content-Style-Type" content="text/css"{xhtml}>
+<meta http-equiv="imagetoolbar" content="no"{xhtml}>
+
+<!-- Mobile Specific Metas -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes"{xhtml}>
+
+<!-- Favicons -->
+<link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
+<link rel="apple-touch-icon" href="{layout_url}/images/apple-touch-icon.png">
+
+<!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
+<link rel="start contents" href="{site_url}"{xhtml}>
+<!--[if lt IE 9]><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
+{feed_url}
+{rel_links}
+{plg_headercode}
+<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/ie6style.css"{xhtml}><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/ie7style.css"{xhtml}><![endif]-->
+<!--[if IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/ie8style.css"{xhtml}><![endif]-->
+</head>
+
+<body dir="{direction}" class="{layout_columns}">
+
+<!-- header.thtml { -->
+
+  <!-- #container { -->
+  <div id="container">
+
+    <!-- #header { -->
+    <div id="header">
+      <div id="header-content">
+        <h1 class="site_name"><a href="{site_url}"><img src="{site_logo}" width="151" height="56" alt="{site_name}"{xhtml}></a></h1>
+        <p class="site_slogan">{site_slogan}</p>
+      </div>
+    </div>
+    <!-- } #header -->
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #navigation { -->
+    <div id="navigation">
+      <div class="navigation_content">
+        <ul id="navigation_ul">
+          {menu_elements}
+        </ul>
+      </div>
+    </div>
+    <!-- } #navigation -->
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #wrapper { -->
+    <div id="wrapper">
+
+      <!-- Center Block Container -->
+      <div id="centerblocks">
+        <div id="main-content">
+          <p class="welcome_msg">{welcome_msg_jp}&nbsp;{datetime}</p>
+
+<!-- } header.thtml -->

@@ -1,73 +1,54 @@
+
+<!-- plugins/links/templates/admin/categoryeditor.thtml { -->
+
 <p>{instructions}</p>
-<br style="clear:both"{xhtml}>
-    <form action="{site_admin_url}/plugins/links/category.php" method="post">
-        <table border="0" cellspacing="0" cellpadding="2" width="100%">
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_parent}:</td>
-                <td><select name="pid">{category_options}</select></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_category}:</td>
-                <td><input type="text" name="category" size="32" maxlength="32" value="{category_value}"{xhtml}></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_cid}:</td>
-                <td><input type="text" name="cid" size="32" maxlength="32" value="{cid_value}"{xhtml}></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_description}:</td>
-                <td><input type="text" name="description" size="50" maxlength="255" value="{description_value}"{xhtml}></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_topic}:</td>
-                <td><select name="tid">{topic_selection}</select><td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_num_links}:</td>
-                <td>{num_links}<td>
-            </tr>
-            <tr>
-                <td colspan="2"><hr{xhtml}></td>
-            </tr>
-            <tr>
-                <td colspan="2"><b>{lang_accessrights}</b></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_owner}:</td>
-                <td>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></td>
-            </tr>
-            <tr>
-                <td align="right" style="white-space:nowrap;">{lang_group}:</td>
-                <td>
-                    {group_dropdown}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2"><b>{lang_permissions}</b>:</td>
-            </tr>
-            <tr>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <td colspan="2">{lang_perm_key}</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    {permissions_editor}
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">{lang_permissions_msg}<td>
-            </tr>
-            <tr><td>&nbsp;</td></tr>
-            <tr>
-                <td colspan="2">
-                    <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}> 
-                    <input type="submit" value="{lang_save}" name="mode"{xhtml}> 
-                    <input type="submit" value="{lang_cancel}" name="mode"{xhtml}>
-                    {delete_option}
-                    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                </td>
-            </tr>
-        </table>
-    </form>
+<form action="{site_admin_url}/plugins/links/category.php" method="post" id="links-categoryeditor" class="compact">
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="links-categoryeditor-pid">{lang_parent}</label></dt>
+      <dd><select name="pid" id="links-categoryeditor-pid">{category_options}</select></dd>
+
+      <dt><label for="links-categoryeditor-category">{lang_category}</label></dt>
+      <dd><input type="text" name="category" maxlength="32" id="links-categoryeditor-category" value="{category_value}" class="size4"{xhtml}></dd>
+
+      <dt><label for="links-categoryeditor-cid">{lang_cid}</label></dt>
+      <dd><input type="text" name="cid" maxlength="32" id="links-categoryeditor-cid" value="{cid_value}" class="size4"{xhtml}></dd>
+
+      <dt><label for="links-categoryeditor-description">{lang_description}</label></dt>
+      <dd><input type="text" name="description" maxlength="255" id="links-categoryeditor-description" value="{description_value}" class="size6"{xhtml}></dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label>{lang_num_links}</label></dt>
+      <dd>{num_links}</dd>
+    </dl>
+  </div>
+
+  <fieldset>
+    <legend>{lang_accessrights}</legend>
+
+    <dl class="form_block">
+      <dt>{lang_owner}</dt>
+      <dd>{owner_name}<input type="hidden" name="owner_id" value="{cat_ownerid}"{xhtml}></dd>
+
+      <dt><label>{lang_group}</label></dt>
+      <dd>{group_dropdown}</dd>
+
+      <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+      <dd>{permissions_editor}</dd>
+      <dd class="description">{lang_perm_key}</dd>
+      <dd class="description">{lang_permissions_msg}</dd>
+    </dl>
+  </fieldset>
+
+  <div class="submit">
+    <input type="hidden" value="{old_cid_value}" name="old_cid"{xhtml}> 
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}> 
+    <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+    {delete_option}
+  </div>
+</form>
+
+<!-- } plugins/links/templates/admin/categoryeditor.thtml -->

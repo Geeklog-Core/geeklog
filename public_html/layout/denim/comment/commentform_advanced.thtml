@@ -1,0 +1,74 @@
+
+<!-- comment/commentform_advanced.thtml { -->
+
+{noscript}
+<div id="advanced_editor" style="display:none;">
+  {start_block_postacomment}
+  <div id="commenteditform">
+    <form action="{form_url}" method="post" onsubmit='set_postcontent();' id="commentform_advanced" class="compact">
+      <div class="user_basic">
+        <dl class="form_block">
+          <dt class="dt-commentform-username">{lang_username}</dt>
+          <dd class="dd-commentform-username">{cid}
+             <input type="hidden" name="order" value="{order}"{xhtml}>
+             <input type="hidden" name="format" value="{format}"{xhtml}>
+             <input type="hidden" name="cpage" value="{cpage}"{xhtml}>
+             <input type="hidden" name="{nprefix}sid" value="{sid}"{xhtml}>
+             <input type="hidden" name="{nprefix}pid" value="{pid}"{xhtml}>
+             <input type="hidden" name="{nprefix}type" value="{type}"{xhtml}>
+             <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+             <input type="hidden" name="{nprefix}uid" value="{uid}"{xhtml}>{username}&nbsp;
+             <span{hidewhenediting}>[<a href="{action_url}" rel="nofollow" class="logoutorcreateaccount">{lang_logoutorcreateaccount}</a>]</span>
+          </dd>
+          <dt class="title"><label for="commentform-title">{lang_title}</label></dt>
+          <dd class="title"><input type="text" value="{title}" maxlength="96" name="title" id="commentform-title" class="size6"{xhtml}></dd>
+    
+          <dt><label for="comment_text">{lang_comment}</label></dt>
+          <dd>
+            <div id="text_editor" style="display: {show_texteditor};">
+              <textarea cols="45" rows="10" name="comment" id="comment_text" class="wide">{comment}</textarea>
+            </div>
+            <div id="html_editor" style="display: {show_htmleditor};">
+              <textarea cols="45" rows="10" name="comment_html" id="comment_html" class="wide">{comment}</textarea>
+            </div>
+          </dd>
+          <dd class="description">{allowed_html}</dd>
+    
+          <dt><label for="sel_editmode">{lang_postmode}</label></dt>
+          <dd>
+            <select id="sel_editmode" name="postmode" onchange="change_editmode(this);">
+              {postmode_options}
+            </select>
+          </dd>
+        </dl>
+    
+        {captcha}
+    
+        <dl class="importantstuff clearfix">
+          <dt>{lang_importantstuff}</dt>
+          <dd>
+            <ul class="ul-importantstuff">
+              <li class="li-importantstuff">{lang_instr_line1}</li>
+              <li class="li-importantstuff">{lang_instr_line2}</li>
+              <li class="li-importantstuff">{lang_instr_line3}</li>
+              <li class="li-importantstuff">{lang_instr_line4}</li>
+              <li class="li-importantstuff">{lang_instr_line5}</li>
+            </ul>
+          </dd>
+        </dl>
+    
+        <div class="submit">
+          <input type="submit" name="{nprefix}mode" value="{lang_preview}" class="submit"{xhtml}>
+          <input type="hidden" name="formtype" value="{formtype}"{xhtml}>
+          {save_option} 
+          <input type="submit" value="{lang_cancel}" name="{nprefix}mode"{xhtml}>
+          {delete_option} 
+          {notification}
+        </div>
+      </div>
+    </form>
+  </div>
+  {end_block}
+</div>
+
+<!-- } comment/commentform_advanced.thtml -->

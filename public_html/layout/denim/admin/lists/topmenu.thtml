@@ -1,0 +1,12 @@
+
+<!-- admin/lists/topmenu.thtml { -->
+
+<div id="admin-topmenu" class="clearfix">
+  {icon}
+  <div id="admin-menu-fields">
+    {menu_fields_pre}{menu_fields}{menu_fields_aft}
+  </div>
+  <div id="instructions">{lang_instructions}</div>
+</div>
+
+<!-- } admin/lists/topmenu.thtml -->

@@ -1,0 +1,24 @@
+
+<!-- lists/inline/list.thtml { -->
+
+                            {list_top}
+                            <div class="admin-list-search">
+                                 <form name="page_limit" style="display: inline;">
+                                <select name="page_limit_links" style="{show_limit}" onchange="window.location=document.page_limit.page_limit_links.options[document.page_limit.page_limit_links.selectedIndex].value">
+                                    {page_limit}
+                                </select>
+                                </form>
+
+                                 <form name="page_sort"  style="display: inline;">
+                                <select name="page_sort_links" style="{show_sort}" onchange="window.location=document.page_sort.page_sort_links.options[document.page_sort.page_sort_links.selectedIndex].value">
+                                    {page_sort}
+                                </select>
+                                </form>
+                            </div>
+                            {item_row}
+                            <p class="aligncenter" style="{show_message}"><strong>{message}</strong></p>
+                            <br{xhtml}>
+                            {google_paging}
+                            {list_bottom}
+
+<!-- } lists/inline/list.thtml -->

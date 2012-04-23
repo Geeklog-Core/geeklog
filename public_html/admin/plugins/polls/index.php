@@ -51,9 +51,8 @@ $_POLL_VERBOSE = false;
 $display = '';
 
 if (!SEC_hasRights('polls.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the poll administration screen.");
     COM_output($display);
     exit;
@@ -179,12 +178,11 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     // check if any question was entered
     if (empty($topic) or (count($Q) == 0) or (strlen($Q[0]) == 0) or
             (strlen($A[0][0]) == 0)) {
-        $retval .= COM_siteHeader ('menu', $LANG25[5]);
         $retval .= COM_startBlock ($LANG21[32], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG25[2];
         $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval .= COM_siteFooter ();
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG25[5]);
         return $retval;
     }
 
@@ -221,9 +219,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
                                  $perm_group, $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
-        $display .= COM_siteHeader('menu', $MESSAGE[30])
-                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                 . COM_siteFooter();
+        $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
         COM_output($display);
         exit;
@@ -607,13 +604,12 @@ if (isset ($_REQUEST['mode'])) {
 }
 
 if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu', $LANG25[5]);
     $pid = '';
     if (isset ($_GET['pid'])) {
         $pid = COM_applyFilter ($_GET['pid']);
     }
     $display .= editpoll ($pid);
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG25[5]);
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
     $pid = COM_applyFilter($_POST['pid']);
     $old_pid = '';
@@ -654,13 +650,12 @@ if ($mode == 'edit') {
                         $_POST['perm_owner'], $_POST['perm_group'],
                         $_POST['perm_members'], $_POST['perm_anon']);
     } else {
-        $display .= COM_siteHeader ('menu', $LANG25[5]);
         $display .= COM_startBlock ($LANG21[32], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG25[17];
         $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= editpoll ();
-        $display .= COM_siteFooter ();
+        $display = COM_createHTMLDocument($display, 'menu', $LANG25[5]);
     }
 } elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $pid = '';
@@ -678,7 +673,6 @@ if ($mode == 'edit') {
     }
 } else { // 'cancel' or no mode at all
 
-    $display .= COM_siteHeader ('menu', $LANG25[18]);
     if (isset ($_REQUEST['msg'])) {
         $msg = COM_applyFilter ($_REQUEST['msg'], true);
         if ($msg > 0) {
@@ -686,7 +680,7 @@ if ($mode == 'edit') {
         }
     }
     $display .= listpolls();
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG25[18]);
 }
 
 COM_output($display);

@@ -27,19 +27,26 @@
 // +---------------------------------------------------------------------------+
 
     window.onload = function() {
+        var bar = 1;
+        if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+            bar = 0;
+        }
+
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = geeklogEditorBasePath;
         oFCKeditor1.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
-        oFCKeditor1.ToolbarSet = 'editor-toolbar2' ;
+        oFCKeditor1.ToolbarSet = 'editor-toolbar' + (bar + 1) ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
         var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = geeklogEditorBasePath ;
         oFCKeditor2.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
-        oFCKeditor2.ToolbarSet = 'editor-toolbar2' ;
+        oFCKeditor2.ToolbarSet = 'editor-toolbar' + (bar + 1) ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
+
+        document.getElementById('fckeditor_toolbar_selector').options[bar].selected = true;
     }
 
     function change_editmode(obj) {

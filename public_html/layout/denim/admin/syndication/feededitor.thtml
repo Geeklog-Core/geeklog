@@ -1,0 +1,70 @@
+
+<!-- admin/syndication/feededitor.thtml { -->
+
+{start_feed_editor}
+<form action="{site_admin_url}/syndication.php" method="post" id="admin-feededitor" class="compact">
+
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="admin-feededitor-title">{lang_feedtitle}</label></dt>
+      <dd><input type="text" value="{feed_title}" name="title" id="admin-feededitor-title" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-feededitor-is_enabled">{lang_enabled}</label></dt>
+      <dd><input type="checkbox" {is_enabled} name="is_enabled" id="admin-feededitor-is_enabled"{xhtml}></dd>
+
+      <dt>{lang_type}</dt>
+      <dd>{feed_type_display}</dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd>{feed_topic}</dd>
+
+      <dt><label for="admin-feededitor-header_tid">{lang_header_topic}</label></dt>
+      <dd>
+        <select name="header_tid" id="admin-feededitor-header_tid">
+          {header_topic_options}
+        </select>
+      </dd>
+
+      <dt><label>{lang_format}</label></dt>
+      <dd>{feed_format}</dd>
+
+      <dt><label for="admin-feededitor-limits">{lang_limits}</label></dt>
+      <dd><input type="text" value="{feed_limits}" name="limits" id="admin-feededitor-limits" class="size1"{xhtml}> {feed_limits_what}</dd>
+
+      <dt><label for="admin-feededitor-content_length">{lang_content_length}</label></dt>
+      <dd><input type="text" value="{feed_content_length}" name="content_length" id="admin-feededitor-content_length" class="size1"{xhtml}></dd>
+      <dd class="description">{lang_clen_explain}</dd>
+
+      <dt><label for="admin-feededitor-description">{lang_description}</label></dt>
+      <dd><textarea cols="45" rows="8" name="description" id="admin-feededitor-description" class="wide">{feed_description}</textarea></dd>
+
+      <dt><label for="admin-feededitor-feedlogo">{lang_feedlogo}</label></dt>
+      <dd><input type="text" maxlength="255" value="{feed_logo}" name="feedlogo" id="admin-feededitor-feedlogo" class="size5"{xhtml}></dd>
+      <dd class="description">{lang_feedlogo_explain}</dd>
+  
+      <dt><label for="admin-feededitor-filename">{lang_filename}</label></dt>
+      <dd><input type="text" value="{feed_filename}" name="filename" id="admin-feededitor-filename" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-feededitor-charset">{lang_charset}</label></dt>
+      <dd><input type="text" value="{feed_charset}" name="charset" id="admin-feededitor-charset" class="size3"{xhtml}></dd>
+
+      <dt><label for="admin-feededitor-language">{lang_language}</label></dt>
+      <dd><input type="text" value="{feed_language}" name="language" id="admin-feededitor-language" class="size3"{xhtml}></dd>
+
+      <dt>{lang_updated}</dt>
+      <dd>{feed_updated}</dd>
+    </dl>
+
+    <div class="submit">
+      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <input type="hidden" name="fid" value="{feed_id}"{xhtml}>
+      <input type="hidden" name="type" value="{feed_type}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      {delete_option}
+    </div>
+  </div>
+</form>
+{end_block}
+
+<!-- } admin/syndication/feededitor.thtml -->

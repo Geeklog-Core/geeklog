@@ -151,12 +151,11 @@ if ($A['count'] > 0) {
     }
 
     if ($output == STORY_PERMISSION_DENIED) {
-        $display .= COM_siteHeader ('menu', $LANG_ACCESS['accessdenied'])
-                 . COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+        $display = COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG_ACCESS['storydenialmsg']
-                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                 . COM_siteFooter ();
+                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['accessdenied']);
     } elseif ( $output == STORY_INVALID_SID ) {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
@@ -272,8 +271,6 @@ if ($A['count'] > 0) {
                 header('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
             }
         }
-        
-        $display .= COM_siteHeader('menu', $pagetitle, $headercode);
 
         if (isset($_GET['msg'])) {
             $msg = COM_applyFilter($_GET['msg'], true);
@@ -446,8 +443,8 @@ if ($A['count'] > 0) {
         } else {
             $story_template->set_var ('trackback', '');
         }
-        $display .= $story_template->finish ($story_template->parse ('output', 'article'));
-        $display .= COM_siteFooter ();
+        $display = COM_createHTMLDocument($story_template->finish ($story_template->parse ('output', 'article')),
+                   'menu', $pagetitle, $headercode);
     }
 } else {
     $display .= COM_refresh($_CONF['site_url'] . '/index.php');

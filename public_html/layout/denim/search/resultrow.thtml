@@ -1,0 +1,8 @@
+
+<!-- search/resultrow.thtml { -->
+
+<tr class="resultrow{cssid}">
+  {data_cols}
+</tr>
+
+<!-- } search/resultrow.thtml -->

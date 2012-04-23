@@ -27,15 +27,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-$j = jQuery.noConflict();
-
 // custome autocomplete with categories
 var minLength = 10;
-$j.widget("custom.search_config", $j.ui.autocomplete, {
+$.widget("custom.search_config", $.ui.autocomplete, {
     _renderMenu: function( ul, items ) {
         var self = this,
         currentCategory = "";
-        $j.each( items, function( index, item ) {
+        $.each( items, function( index, item ) {
             if ( index > minLength ) {
                 return false;
             } else {
@@ -51,40 +49,40 @@ $j.widget("custom.search_config", $j.ui.autocomplete, {
 
 // currently selected tab
 var selectedTab;
-$j(function() {
+$(function() {
     // start bootstrap
     var bootstrap = true;
     
     // dropdown menu when tabs overflow
     var dropDown = '';
     // init tabs
-    var tabs = $j("#tabs").tabs({
+    var tabs = $("#tabs").tabs({
         tabTemplate : 
             '<li><a href="#{href}">#{label}</a></li>',
         select: function(e, ui) {
-            if ( $j(ui.tab).attr('href') == '#tab-dropdown' ) {
-                var container = $j(ui.tab).parent();
+            if ( $(ui.tab).attr('href') == '#tab-dropdown' ) {
+                var container = $(ui.tab).parent();
                 
-                if ( $j('#tabs-dropdown').length ) {
-                    $j('#tabs-dropdown').toggle();
+                if ( $('#tabs-dropdown').length ) {
+                    $('#tabs-dropdown').toggle();
                 } else {
                     container.append( dropDown ).removeClass('ui-tabs-selected ui-state-active');
                     
                     // show it and the positioning!
-                    $j('#tabs-dropdown').show().position({
-                        of: $j(ui.tab),
+                    $('#tabs-dropdown').show().position({
+                        of: $(ui.tab),
                         my: 'right top',
                         at: 'right top',
-                        offset: '0 ' + $j(ui.tab).parent().height()
+                        offset: '0 ' + $(ui.tab).parent().height()
                     });
                 }
                 
                 return false;
             } else {
-                $j('#tabs-dropdown').hide().parent().removeClass('ui-tabs-selected ui-state-active');
-                $j('.ui-tabs-panel').addClass('ui-tabs-hide');
+                $('#tabs-dropdown').hide().parent().removeClass('ui-tabs-selected ui-state-active');
+                $('.ui-tabs-panel').addClass('ui-tabs-hide');
             }
-            selectedTab = $j(ui.tab).attr('href');
+            selectedTab = $(ui.tab).attr('href');
         }
     });
     // tabs were getting overflow
@@ -93,31 +91,31 @@ $j(function() {
     var lastTabsWidth = 0;
     
     // init autocomplete
-    $j('#search-configuration').search_config({
+    $('#search-configuration').search_config({
         delay: 0,
         source: autocomplete_data,
         focus: function(event, ui) {
-            $j('#search-configuration').val(ui.item.label);
+            $('#search-configuration').val(ui.item.label);
             
             return false;
         },
         select: function(event, ui) {
-            $j('#search-configuration').val(ui.item.label);
-            $j('#tab-id').val(ui.item.tab_id);
+            $('#search-configuration').val(ui.item.label);
+            $('#tab-id').val(ui.item.tab_id);
             
             document.group.conf_group.value = ui.item.group;
             document.group.subgroup.value = ui.item.subgroup;
             
             // we need this input for #search-configuration value
             // after submitted
-            if ( $j(document.group['search-configuration-cached']).length ) {
-                $j(document.group['search-configuration-cached']).val(ui.item.label);
-                $j(document.group['tab-id-cached']).val(ui.item.tab_id);
+            if ( $(document.group['search-configuration-cached']).length ) {
+                $(document.group['search-configuration-cached']).val(ui.item.label);
+                $(document.group['tab-id-cached']).val(ui.item.tab_id);
             } else {
                 search_label = '<input type="hidden" name="search-configuration-cached" value="'+ui.item.label+'">';
                 tab_id = '<input type="hidden" name="tab-id-cached" value="'+ui.item.label+'">';
-                $j(document.group).append( search_label);
-                $j(document.group).append( tab_id );
+                $(document.group).append( search_label);
+                $(document.group).append( tab_id );
             }
             
             document.group.action = frmGroupAction + '?' + 'tab-' + ui.item.tab_id + '#' + ui.item.value;
@@ -131,52 +129,54 @@ $j(function() {
     var tooltipCachedPage = '';
     var tooltipHideDelay = 300;
     var tooltipHideTimer = null;
-    var tooltipContainer = $j(
+    var tooltipContainer = $(
         '<div id="tooltip-container">' +
-            '<div id="tootip-loading"><img src="'+ imgSpinner +'" /> Loading...</div>' +
+//            '<div id="tootip-loading"><img src="'+ imgSpinner +'" /> Loading...</div>' +
             '<div id="tooltip-header"></div>' +
             '<div id="tooltip-content"></div>' +
             '<div id="tooltip-tip"></div>' +
         '</div>'
     );
-    $j('body').append(tooltipContainer);
-    $j('.tooltip').live('mouseover', function() {
-        var attrTarget = $j(this).attr('target');
-        var attrHref = $j(this).attr('href');
-        
-        if ( attrTarget != 'help' && !attrHref ) return;
-        var confVar = attrHref.substr(attrHref.indexOf('#')+1);
+    $('body').append(tooltipContainer);
+
+    $('.tooltip').live('mouseover touchend', function() {
+        var attrHref = glConfigDocUrl;
+        var jqobj = $(this);
+
+        var confVar = jqobj.attr('id');
         
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
         
-        var pos = $j(this).offset();
-        var height = $j(this).height();
+        var pos = jqobj.parent().offset();
+        var tabs_pos = $('#tabs').offset();
+        var height = jqobj.height();
         
         tooltipContainer.css({
-            left: pos.left + 'px',
-            top: (pos.top + height + 5) + 'px'
+            left: (tabs_pos.left + 8) + 'px',
+            top: (pos.top + height + 5) + 'px',
+            width: ($('#tabs').width() - 12) + 'px'
         });
         
-        $j('#tootip-loading').show();
-        $j.get(attrHref, function(data) {
-            $j('#tootip-loading').hide();
+//        $('#tootip-loading').show();
+        $.get(attrHref, function(data) {
+            $('#tootip-loading').hide();
             if (data.indexOf(confVar) > 0) {
-                var a = $j(data).find('a[name=' + confVar + ']');
-                var row = a.parent().parent().html();
-                $j('#tooltip-content').html(
-                    '<table>' +
-                        '<thead><tr>' +
-                            '<th>Variable</th>' +
-                            '<th>Default Value</th>' +
-                            '<th>Description</th>' +
-                        '</tr></thead>' +
-                    '<tbody>' +
-                        row +
-                    '</tbody>' +
-                    '</table>'
+                var a = $(data).find('a[name=' + confVar + ']');
+                var ths = a.parent().parent().parent().children("tr:first").children("th");
+                var tds = a.parent().parent().children("td");
+                tds.eq(0).children("a").attr('href', attrHref + '#' + confVar);
+                tds.eq(0).children("a").attr('target', 'help');
+                $('#tooltip-content').html(
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(0).html() + '</div>' + 
+                    '<div id="tooltip-variable" class="tooltip-doc">'        + tds.eq(0).html() + '</div></div>' + 
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(1).html() + '</div>' + 
+                    '<div id="tooltip-default" class="tooltip-doc">'         + tds.eq(1).html() + '</div></div>' + 
+                    '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(2).html() + '</div>' + 
+                    '<div id="tooltip-description" class="tooltip-doc">'     + tds.eq(2).html() + '</div></div>' + 
+                    '<a href="javascript:void(0);" id="tooltip-close">X</a>'
                 );
             } else {
-                $j('#tooltip-content').html(
+                $('#tooltip-content').html(
                     '<span>Help page is not found.</span>'
                 )
             }
@@ -184,37 +184,41 @@ $j(function() {
         
         tooltipContainer.show();
     });
-    $j('.tooltip').live('mouseout', function() {
+    $('.tooltip').live('mouseout', function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
         
         tooltipHideTimer = setTimeout(function() {
             tooltipContainer.hide();
         }, tooltipHideDelay);
     });
-    $j('#tooltip-container').mouseover(function() {
+    $('#tooltip-container').mouseover(function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
     });
-    $j('#tooltip-container').mouseout(function() {
+    $('#tooltip-container').mouseout(function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
         
         tooltipHideTimer = setTimeout(function() {
             tooltipContainer.hide();
         }, tooltipHideDelay);
     });
-    
+    $('#tooltip-close').live('click touchout', function() {
+        if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
+        tooltipContainer.hide();
+    });
+
     // check overflow on resize
-    $j(window).resize(function() {
+    $(window).resize(function() {
         tabsOverflowHandler();
     });
     
     // click event handler
-    $j(document.body).click(function(e) {
-        var target = $j(e.target);
+    $(document.body).click(function(e) {
+        var target = $(e.target);
         var targetParent = target.parent();
         
-        if ( $j('#tabs-dropdown').length ) {
+        if ( $('#tabs-dropdown').length ) {
             if ( target.is('a') && target.attr('href') == '#tab-dropdown' ) {
-                $j('#tabs-dropdown').toggle();
+                $('#tabs-dropdown').toggle();
                 
                 e.preventDefault();
                 return false;
@@ -225,11 +229,11 @@ $j(function() {
             if ( targetParent.parent().attr('id') == 'tabs-dropdown' ) return dropDownHandler(e);
             
         }
-        $j('#tabs-dropdown').hide();
-        $j('.config_name', tabs).removeClass('active-config');
+        $('#tabs-dropdown').hide();
+        $('.config_name', tabs).removeClass('active-config');
         
         if ( target.is('input') || target.is('select') || target.is('textarea') ) {
-            var tr = $j(target, tabs).parent().parent();
+            var tr = $(target, tabs).parent();
             
             // save changes
             if ( target.attr('id') == 'save_changes' || target.attr('id') == 'form_reset' ) {
@@ -250,7 +254,7 @@ $j(function() {
                     selectTab( '#tab-' + autocomplete_data[key].tab_id, target.attr('href') );
                     if ( selectedTab === undefined ) {
                         var idx = tabs.tabs('option', 'selected');
-                        selectedTab = $j("#tabs > ul > li:eq(" + idx + ") a").attr('href');
+                        selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
                     }
                     break;
                 }
@@ -275,12 +279,12 @@ $j(function() {
     });
     
     // dropdown click
-    $j('#tabs-dropdown').live('click', function(e) {
+    $('#tabs-dropdown').live('click', function(e) {
         dropDownHandler(e);
     });
     
     function dropDownHandler(e) {
-        var target = $j(e.target);
+        var target = $(e.target);
         
         if ( target.is('a') || target.is('li')  ) {
             selectTabInHiddenTabs( target.attr('href') );
@@ -296,8 +300,8 @@ $j(function() {
         var foundInTabs = false;
         
         // first search in ordinary tabs
-        $j("#tabs > ul > li").each(function(idx) {
-            var a = $j('a', this);
+        $("#tabs > ul > li").each(function(idx) {
+            var a = $('a', this);
             
             if (a.attr('href') == href) {
                 tabs.tabs('select', idx);
@@ -331,13 +335,13 @@ $j(function() {
      * Select tab that reside in drop down by href
      */
     function selectTabInHiddenTabs(href) {
-        $j('.ui-tabs-nav li.ui-state-default').each(function() {
-            $j(this).removeClass('ui-tabs-selected');
-            $j(this).removeClass('ui-state-active');
+        $('.ui-tabs-nav li.ui-state-default').each(function() {
+            $(this).removeClass('ui-tabs-selected');
+            $(this).removeClass('ui-state-active');
         });
-        $j('.ui-tabs-panel', tabs).addClass('ui-tabs-hide');
+        $('.ui-tabs-panel', tabs).addClass('ui-tabs-hide');
         
-        $j( href ).removeClass('ui-tabs-hide');
+        $( href ).removeClass('ui-tabs-hide');
         selectedTab = href;
     }
     
@@ -348,13 +352,12 @@ $j(function() {
         selectTab(tab, conf);
         if ( selectedTab === undefined ) {
             var idx = tabs.tabs('option', 'selected');
-            selectedTab = $j("#tabs > ul > li:eq(" + idx + ") a").attr('href');
+            selectedTab = $("#tabs > ul > li:eq(" + idx + ") a").attr('href');
         }
     }
     
     function selectConf(confName) {
-        confName = "#config_" + confName.substr(1).replace('[', '_').replace(']', '');
-        var conf = $j(confName);
+        var conf = $("input[name='" + confName.substr(1) + "[nameholder]" + "']").parent();
         
         conf.addClass('active-config');
     }
@@ -362,19 +365,24 @@ $j(function() {
     function tabsOverflowHandler() {
         var total = getTotalTabsWidth();
         
-        $j('#tabs-dropdown').hide();
+        //$('#tabs-dropdown').hide();
         if ( total.overflowAt !== null ) {
             createDropDownTab(total.overflowAt, total.width);
-        } else if ( !bootstrap && (hiddenTabs.length || tabs.width() > lastTabsWidth) ) {
-            reinitDropDownTab();
+            lastTabsWidth = tabs.width();
+        } else if ( !bootstrap && (tabs.width() > lastTabsWidth) ) {
+            var hidden_exists = false;
+            for (var k in hiddenTabs) {hidden_exists = true; break;}
+            if ( hidden_exists ) {
+                reinitDropDownTab();
+                lastTabsWidth = tabs.width();
+                tabsOverflowHandler();
+            }
         }
         
         // select the selected tab
         if ( selectedTab ) {
             selectTab( selectedTab, false );    
         }
-        
-        lastTabsWidth = tabs.width();
     }
     
     function getTotalTabsWidth() {
@@ -382,8 +390,8 @@ $j(function() {
         var tabsWidth = tabs.width();
         var overflowAt = null;
         
-        $j("#tabs > ul > li").each(function(idx) {
-            totalWidth += ($j(this).width() + 5);
+        $("#tabs > ul > li").each(function(idx) {
+            totalWidth += ($(this).width() + 5);
             
             if (totalWidth >= tabsWidth && overflowAt === null) {
                 overflowAt = idx;
@@ -395,14 +403,14 @@ $j(function() {
     
     function createDropDownTab(idxAfter, totalWidth) {
         var tabsLength = tabs.tabs('length');
-        
+
         dropDown = '';
         if ( idxAfter > 0 ) {
             idxAfter -= 1;
             
             // remove tabs after the dropdown
             for ( var i = tabsLength-1; i >= idxAfter; i-- ) {
-                var currenTab = $j('li:eq('+i+') a', tabs);
+                var currenTab = $('li:eq('+i+') a', tabs);
                 
                 if ( currenTab.length ) {
                     var currenTabHref = currenTab.attr('href');
@@ -411,7 +419,7 @@ $j(function() {
                     if ( currenTabHref == '#tab-dropdown' ) {
                         tabs.tabs('remove', i);
                     } else {
-                        var currenTabContent = $j( currenTabHref );
+                        var currenTabContent = $( currenTabHref );
                     
                         hiddenTabs[currenTabHref] = {  
                             'tab_title': currenTab.text(),
@@ -423,7 +431,7 @@ $j(function() {
                 }
             }
             
-            if ( $j('a[href=#tab-dropdown]', tabs).length ) {
+            if ( $('a[href=#tab-dropdown]', tabs).length ) {
                 tabs.tabs('remove', tabs.tabs('length')-1);
             }
             
@@ -438,16 +446,17 @@ $j(function() {
                                    '</div>';
                 
                 // append the tab if not exists
-                if ( !$j(tab).length ) {
+                if ( !$(tab).length ) {
                     tabs.append( tabs_content );
                 }
             }
             
             if ( dropDown.length ) {
-                dropDown = '<ul id="tabs-dropdown" class="ui-widget-content ui-corner-bottom">' + 
+                dropDown = '<ul id="tabs-dropdown" class="ui-widget-content">' + 
                             dropDown + '</ul>';
             }
         }
+
         dropDownShown = true;
         tabs.tabs('add', '#tab-dropdown', 'More..', idxAfter);
         dropDownTabIdx  = idxAfter;
@@ -463,14 +472,9 @@ $j(function() {
         
         for ( tab in hiddenTabs ) {
             tabs.tabs('add', tab, hiddenTabs[tab]['tab_title'], tabsLength-1);
-            $j( tab ).html( hiddenTabs[tab]['tab_content'] );
+            $( tab ).html( hiddenTabs[tab]['tab_content'] );
         }
         hiddenTabs = {}
-        
-        var total = getTotalTabsWidth();
-        if ( total.overflowAt !== null ) {
-            tabsOverflowHandler();
-        }
     }
     
     function restore(el, param){
@@ -515,10 +519,11 @@ $j(function() {
         tab.setAttribute("name", "tab");
         
         // get tr id
-        var tr = $j(this).parent().parent();
+        /*
+        var tr = $(this).parent().parent();
         var id = '';
         if ( tr.is('tr') ) id = '#' + tr.attr('id');
-        
+        */
         document.group.appendChild(tab);
         document.group.appendChild(namev);
         document.group.appendChild(action);
@@ -526,11 +531,11 @@ $j(function() {
         document.group.submit();
     }
     
-    // runs overflow handler once in bootstrap
-    tabsOverflowHandler();
-    
     // get selected tab and config if passed on url
     getSelectedConf();
+    
+    // runs overflow handler once in bootstrap
+    tabsOverflowHandler();
     
     // end bootstrap
     bootstrap = false;
@@ -539,165 +544,95 @@ $j(function() {
 /**
  * functions to handle element 
  */
-function handleAdd(self, array_type, array_name) {
-    if (array_type.charAt(0) == "*") {
-        handleAddWithName(self, array_type, array_name, self.nextSibling.value);
+function handleAdd(self, arr_type, arr_name) {
+    var index = "#numeric#"; // numeric index
+    if (arr_type.charAt(0) == "*") {
+        index = $(self).next("input").val(); // named index
+        index = index.replace(/^\s+|\s+$/g, ""); // trim space
+        if (index == "") return;
+    }
+    arr_type = arr_type.substring(1);
+    var char = arr_type.charAt(0);
+    if (char == "*" || char == "%") {
+        add_array(arr_name, index, arr_type);
     } else {
-        handleAddWithName(self, array_type, array_name, self.parentNode.parentNode.parentNode.rows.length - 1);
+        add_element(arr_name, index, arr_type);
     }
 }
 
-function handleAddWithName(self, array_type, array_name, name) {
-    array_type = array_type.substring(1);
-    if (array_type.charAt(0) == "*" || array_type.charAt(0) == "%") {
-        add_array(self.parentNode.parentNode.parentNode, array_name, name, (array_type.charAt(0) == "*"), array_type, '1');
-    } else if (array_type == "text") {
-        add_element(self.parentNode.parentNode.parentNode, array_name, name, 'text', '', '1');
-    } else if (array_type == "placeholder") {
-        add_element(self.parentNode.parentNode.parentNode, array_name, name, 'hidden', '1', '1');
-    } else if (array_type == "select") {
-        add_select(self.parentNode.parentNode.parentNode, array_name, name - 1, '1');
+function add_array(arr_name, index, arr_type) {
+    var new_obj = cloneSkeleton(arr_name);
+    new_obj.children("div:first").text(index);
+    new_id = "arr_" + arr_name + "_" + index;
+    sub_id = arr_name + "[" + index + "]";
+    new_obj.children("input.hide_show_toggle").attr("onclick", "hide_show_toggle('" + new_id + "', this);");
+    new_obj.children("input[type='hidden']").attr("name", sub_id + "[nameholder]");
+
+    var sub_obj = new_obj.children("div:[id='arr_" + arr_name + "_" + "placeholder']");
+    sub_obj.attr("id", new_id);
+    sub_obj.children("div:first").children("input[type='hidden']").attr("name", sub_id + "[nameholder]");
+    sub_obj.children("div:last").attr("id", "add_" + arr_name + "_" + index);
+    sub_obj.children("div:last").children("input.add_ele_input").attr("onclick", "handleAdd(this, '" + arr_type + "', '" + sub_id + "')");
+}
+
+function add_element(arr_name, index, arr_type) {
+    var default_value = (arr_type == "text") ? '' : '1';
+    if (index == "#numeric#") {
+        var new_obj = cloneSkeleton(arr_name);
+        if (arr_type != "select") {
+            new_obj.children(".opt").attr("value", default_value);
+        }
+        reindexNumericIndex(arr_name);
+    } else {
+        arr_id_name = arr_name;
+        arr_id_name = arr_id_name.replace("[", "_").replace("]", "");
+        var new_obj = cloneSkeleton(arr_id_name);
+        new_obj.children("div:first").text(index);
+        new_obj.children("input[type='hidden']").attr("name", arr_name + "[" + index + "]" + "[nameholder]");
+        new_obj.children(".opt").attr("name", arr_name + "[" + index + "]");
+        new_obj.children(".opt").attr("value", default_value);
     }
 }
 
-function add_select(tbl, arr_name, index, deletable) {
-    var newRow = tbl.insertRow(tbl.rows.length - 1);
-    titleCell = newRow.insertCell(0);
-    paramCell = newRow.insertCell(1);
-    titleCell.className = "alignright";
-    titleCell.appendChild(document.createTextNode(index));
-    dropDown = tbl.getElementsByTagName('tr')[0].getElementsByTagName('td')[1].getElementsByTagName('select')[0].cloneNode(true);
-    dropDown.name = arr_name + "[" + index + "]";
-    paramCell.appendChild(dropDown);
-    
-    if (deletable) {
-        paramCell.appendChild(document.createTextNode("\n"));
-        deleteButton = document.createElement("input");
-        deleteButton.type = "button";
-        deleteButton.value = "x";
-        deleteButton.onclick =
-        function(){
-            gl_cfg_remove(this)
-        };
-        paramCell.appendChild(deleteButton);
-    }
+function cloneSkeleton(arr_name) {
+    return $("#arr_" + arr_name + " div:first")
+            .clone(true)
+            .insertBefore("#add_" + arr_name)
+            .removeAttr("style"); // remove an attribute: style="display:none;"
 }
 
-function add_element(tbl, arr_name, index, disp_type, def_val, deletable) {
-    var newRow = tbl.insertRow(tbl.rows.length - 1);
-    titleCell = newRow.insertCell(0);
-    paramCell = newRow.insertCell(1);
-    titleCell.className = "alignright";
-    titleCell.appendChild(document.createTextNode(index));
-    inputBox = document.createElement("input");
-    inputBox.type = disp_type;
-    inputBox.name = arr_name + "[" + index + "]";
-    inputBox.value = def_val;
-    paramCell.appendChild(inputBox);
-    
-    if (deletable) {
-        deleteButton = document.createElement("input");
-        deleteButton.type = "button";
-        deleteButton.value = "x";
-        deleteButton.onclick =
-        function(){
-            gl_cfg_remove(this)
-        };
-        paramCell.appendChild(deleteButton);
-    }
+function reindexNumericIndex(arr_name) {
+    var elements = $("#arr_" + arr_name + " div.config_name");
+    var length = elements.length;
+    elements.each(function() {
+        var element = $(this);
+        var i = element.index();
+        // skip "Add Element" button element and "placeholder" element
+        if (i > 0 && i < length - 1) { 
+            i--;
+            element.children("div:first").text(i);
+            element.children(".opt").attr("name", arr_name + "[" + i + "]");
+        }
+    });
 }
 
 function gl_cfg_remove(self) {
-    var tableRow = self.parentNode.parentNode;
-    var tableBody = tableRow.parentNode;
-    var table = tableBody.parentNode;
-    var index = 0;
-    tableBody.removeChild(tableRow);
+    var element_div = self.parentNode;
+    var elements_div = element_div.parentNode;
+    var elements_obj = $(elements_div);
+    $(element_div).remove();
     
     // reindex numerical lists
-    if (table.className.match(new RegExp('(\\s|^)numerical_config_list(\\s|$)'))) {
-        for (var i = 0; i < tableBody.childNodes.length; i += 1) {
-            if (tableBody.childNodes[i].tagName == "TR"
-                && tableBody.childNodes[i].childNodes[0].childNodes[0].nodeName == "#text") 
-            {
-                var textNode = tableBody.childNodes[i].childNodes[0].childNodes[0];
-                if (!isNaN(parseInt(textNode.nodeValue))) {
-                    textNode.nodeValue = '' + index;
-                    index += 1;
-                }
-            }
-        }
+    if (elements_obj.attr("class") == "numerical_config_list") {
+        var arr_name = elements_obj.attr("id");
+        arr_name = arr_name.replace(/^arr_/, "");
+        reindexNumericIndex(arr_name);
     }
 }
 
-function add_array(tbl, arr_name, arr_index, key_names, arr_type, deletable) {
-    var newRow = tbl.insertRow(tbl.rows.length - 1);
-    labelCell = newRow.insertCell(0);
-    arrayCell = newRow.insertCell(1);
-
-    labelCell.appendChild(document.createTextNode(arr_index));
-    labelCell.className = "alignright";
-
-    arrLink = document.createElement("input");
-    arrLink.type = "button";
-    arrLink.onclick =
-    function(){
-        hide_show_tbl(selectChildByID(this.parentNode, 'arr_table'), this);
-    };
-    arrLink.value = "+";
-    arrayCell.appendChild(arrLink);
-
-    ele_place_holder = document.createElement("input");
-    ele_place_holder.type = "hidden";
-    ele_place_holder.name = arr_name + "[" + arr_index + "][placeholder]";
-    ele_place_holder.value = "true";
-    arrayCell.appendChild(ele_place_holder);
-
-    arrayCell.appendChild(document.createTextNode(" "));
-
-    if (deletable) {
-        deleteButton = document.createElement("input");
-        deleteButton.type = "button";
-        deleteButton.value = "x";
-        deleteButton.onclick = function(){
-        gl_cfg_remove(this);
-        };
-        arrayCell.appendChild(deleteButton);
-    }
-
-    arrTable = document.createElement("table");
-    arrTable.style.display = "none";
-    arrTable.id = "arr_table";
-
-    add_ele_cell = arrTable.insertRow(0).insertCell(0);
-    add_ele_cell.colspan = 2;
-    add_ele_press = document.createElement("input");
-    add_ele_press.type = "button";
-    add_ele_press.value = "Add Element";
-    
-    if (! key_names) {
-        add_ele_press.onclick = function(){
-            handleAdd(this, arr_type, arr_name + "[" + arr_index + "]");
-        };
-        add_ele_cell.appendChild(add_ele_press);
-    } else {
-        add_ele_press.onclick = function(){
-            handleAdd(this, arr_type, arr_name + "[" + arr_index + "]");
-        };
-    
-        add_ele_cell.appendChild(add_ele_press);
-        arr_index_box = document.createElement("input");
-        arr_index_box.type = "text";
-        arr_index_box.style.width = "65px";
-        add_ele_cell.appendChild(arr_index_box);
-    }
-
-    arrayCell.appendChild(arrTable);
-}
-
-function hide_show_tbl(tbl, button) {
-    tbl.style.display = (tbl.style.display != 'none' ? 'none' : '' );
-    button.value = (button.value != '+' ? '+' : '-' );
+function toggleHidden(id, button) {
+    $("#" + id).toggle(button.value == '+');
+    button.value = (button.value != '+' ? '+' : '-');
 }
 
 function open_group(group_var) {
@@ -709,13 +644,4 @@ function open_subgroup(group_var,sg_var) {
     document.group.conf_group.value = group_var;
     document.group.subgroup.value = sg_var;
     document.group.submit();
-}
-
-function selectChildByID(parent, ID) {
-    for(i=0; i < parent.childNodes.length; i++){
-        child = parent.childNodes[i];
-        if (child.id == ID) {
-            return child;
-        }
-    }
 }

@@ -1,17 +1,14 @@
-                                        <table id="po_{question_id}" {style} width="100%">
-                                            <tr>
-                                                <td align="right" valign="top" style="white-space:nowrap;">{lang_question}:</td>
-                                                <td>
-                                                    <input type="text" name="question[]" value="{question_text}" size="60" maxlength="255"{xhtml}>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td align="right" valign="top" style="white-space:nowrap;">{lang_answersvotes}:</td>
-                                                <td>
-                                                    {answer_option}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2"><hr{xhtml}></td>
-                                            </tr>
-                                        </table>
+
+<!-- plugins/polls/templates/admin/pollquestions.thtml { -->
+<div id="po_{question_id}" {style} class="wide">
+  <dl class="form_block">
+    <dt><label>{lang_question}</label></dt>
+    <dd><input type="text" dir="ltr" name="question[]" value="{question_text}" maxlength="255" class="size5"{xhtml}></dd>
+
+    <dt><label>{lang_answersvotes}</label></dt>
+    <dd>{answer_option}</dd>
+  </dl>
+</div>
+
+<hr class="separator"{xhtml}>
+<!-- } plugins/polls/templates/admin/pollquestions.thtml -->

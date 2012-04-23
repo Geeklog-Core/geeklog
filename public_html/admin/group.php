@@ -61,9 +61,8 @@ $display = '';
 
 // Make sure user has rights to access this page
 if (!SEC_hasRights('group.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the group administration screen.");
     COM_output($display);
     exit;
@@ -558,11 +557,10 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         if ($g_id > 0) {
             if (empty($grp_id) || ($grp_id != $g_id)) {
                 // there already is a group with that name - complain
-                $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor'])
-                        . COM_showMessageText($LANG_ACCESS['groupexistsmsg'],
+                $retval .= COM_showMessageText($LANG_ACCESS['groupexistsmsg'],
                                               $LANG_ACCESS['groupexists'])
-                        . editgroup($grp_id)
-                        . COM_siteFooter();
+                        . editgroup($grp_id);
+                $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
 
                 return $retval;
             }
@@ -601,9 +599,8 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         if (empty($grp_id) || ($grp_id < 1)) {
             // "this shouldn't happen"
             COM_errorLog("Internal error: invalid group id");
-            $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor']);
             $retval .= COM_showMessage(95);
-            $retval .= COM_siteFooter();
+            $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
 
             return $retval;
         }
@@ -681,11 +678,10 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             return COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
         }
     } else {
-        $retval .= COM_siteHeader('menu', $LANG_ACCESS['groupeditor'])
-                . COM_showMessageText($LANG_ACCESS['missingfieldsmsg'],
+        $retval .= COM_showMessageText($LANG_ACCESS['missingfieldsmsg'],
                                       $LANG_ACCESS['missingfields'])
-                . editgroup($grp_id)
-                . COM_siteFooter();
+                . editgroup($grp_id);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
 
         return $retval;
     }
@@ -1216,19 +1212,16 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_REQUEST['grp_id'])) {
         $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     }
-    $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupeditor']);
     $display .= editgroup ($grp_id);
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['groupeditor']);
 } elseif ($mode == 'listusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $display .= COM_siteHeader ('menu', $LANG_ACCESS['groupmembers']);
     $display .= listusers ($grp_id);
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['groupmembers']);
 } elseif ($mode == 'editusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
-    $display .= COM_siteHeader ('menu', $LANG_ACCESS['usergroupadmin']);
     $display .= editusers ($grp_id);
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['usergroupadmin']);
 } else { // 'cancel' or no mode at all
     $show_all_groups = false;
     if (isset($_POST['q'])) {
@@ -1240,10 +1233,9 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             ($_REQUEST['chk_showall'] == 1)) {
         $show_all_groups = true;
     }
-    $display .= COM_siteHeader('menu', $LANG28[38]);
     $display .= COM_showMessageFromParameter();
     $display .= listgroups($show_all_groups);
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG28[38]);
 }
 
 COM_output($display);

@@ -120,7 +120,7 @@ class config {
     }
 
     /**
-     * This mthod will return an instance of the config class. If an
+     * This method will return an instance of the config class. If an
      * instance with the given group/reference name does not exist, then it
      * will create a new one. This function insures    that there is only one
      * instance for a given group name.
@@ -793,7 +793,13 @@ class config {
         $js .= $this->_UI_js_image_spinner();        
         $js .= "var frmGroupAction = '" . $_CONF['site_admin_url'] . "/configuration.php';";
         $_SCRIPTS->setJavaScript($js, true);
-        $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
+
+        if ($_CONF['support_theme_2.0'] == true) {
+            $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
+        } else {
+            $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/ver.1.8/admin.configuration.js');
+        }
+
         
         $t->set_var('search_configuration_label', $LANG_CONFIG['search_configuration_label']);
         if (isset($_POST['search-configuration-cached'])) {
@@ -874,28 +880,56 @@ class config {
                 if ($e['type'] == 'fieldset' AND $e['fieldset'] != $current_fs) {
                     $fs_flag = true;
                     if ($current_fs != '') {
-                        $tab_contents .= '</table></fieldset><!-- END fieldset -->';
+
+                        if ($_CONF['support_theme_2.0'] == true) {
+                            $tab_contents .= '</div></fieldset><!-- END fieldset -->';
+                        } else {
+                            $tab_contents .= '</table></fieldset><!-- END fieldset -->';
+                        }
+
                         $table_flag = false;
                     }
-                    // $tab_contents .= '<!-- BEGIN fieldset --><fieldset style="margin-top:10px;"><legend>{fs_display}</legend>';
-                    $tab_contents .= '<!-- BEGIN fieldset --><fieldset style="margin-top:10px;"><legend>' . $LANG_fs[$grp][$e['display_name']] . '</legend>';
+                    $tab_contents .= '<!-- BEGIN fieldset --><fieldset><legend>' . $LANG_fs[$grp][$e['display_name']] . '</legend>';
                     $current_fs = $e['fieldset'];
                 }
                 if (!$table_flag) {
-                    $tab_contents .= '<table class="inputTable">';
+
+                    if ($_CONF['support_theme_2.0'] == true) {
+                        $tab_contents .= '<div class="inputTable">';
+                    } else {
+                        $tab_contents .= '<table class="inputTable">';
+                    }
+
                     $table_flag = true;
                 }
-                $tab_contents .=
-                    $this->_UI_get_conf_element($grp, $name,
-                                               $e['display_name'],
-                                               $e['type'],
-                                               $e['value'],
-                                               $e['selectionArray'], false,
-                                               $e['reset']);
+
+                if ($_CONF['support_theme_2.0'] == true) {
+                    $tab_contents .=
+                        $this->_UI_get_conf_element_2($grp, $name,
+                                                   $e['display_name'],
+                                                   $e['type'],
+                                                   $e['value'],
+                                                   $e['selectionArray'], false,
+                                                   $e['reset']);
+                } else {
+                    $tab_contents .=
+                        $this->_UI_get_conf_element($grp, $name,
+                                                   $e['display_name'],
+                                                   $e['type'],
+                                                   $e['value'],
+                                                   $e['selectionArray'], false,
+                                                   $e['reset']);
+                }
             }
+
             if ($table_flag) {
-                $tab_contents .= '</table>';
+                if ($_CONF['support_theme_2.0'] == true) {
+                    $tab_contents .= '</div>';
+                } else {
+                    $tab_contents .= '</table>';
+                }
             }
+
             if ($fs_flag) {
                 $tab_contents .= '</fieldset><!-- END fieldset -->';
             }
@@ -917,7 +951,6 @@ class config {
         $_SCRIPTS->setJavaScriptLibrary('jquery.ui.autocomplete');
         $_SCRIPTS->setJavaScriptLibrary('jquery.ui.tabs');
         
-        $display  = COM_siteHeader('none', $LANG_CONFIG['title']);
         $t->set_var('config_menu',$this->_UI_configmanager_menu($grp,$sg));
         
         // message box
@@ -936,7 +969,7 @@ class config {
         }
         
         $display .= $t->finish($t->parse("OUTPUT", "main"));
-        $display .= COM_siteFooter(false);
+        $display = COM_createHTMLDocument($display, 'none', $LANG_CONFIG['title'], '', false);
 
         return $display;
     }
@@ -1073,9 +1106,8 @@ class config {
     {
         global $_USER, $MESSAGE;
 
-        $display = COM_siteHeader('menu', $MESSAGE[30])
-                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                 . COM_siteFooter();
+        $display = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally access the config administration screen.");
 
         return $display;
@@ -1262,6 +1294,202 @@ class config {
     }
 
     /**
+     * Get a parsed config element based on group $group, name $name,
+     * type $type, value to be shown $val and label $display_name to be shown  
+     * on the left based on language.
+     * 
+     * @param  string $group Configuration group.
+     * @param  string $name Configuration name on table.
+     * @param  string $display_name Configuration display name based on language.
+     * @param  string $type Configuration type such as select, text, textarea, @select, etc.
+     * @param  string $val Value of configuration
+     * @param  mixed  $selectionArray Array of option of select element
+     * @param  bool   $deleteable If configuration is deleteable
+     * @param  bool   $allow_reset Allow set and unset of configuration
+     * @return
+     */
+    function _UI_get_conf_element_2($group, $name, $display_name, $type, $val,
+                                  $selectionArray = null , $deletable = false,
+                                  $allow_reset = false)
+    {
+        global $_CONF, $LANG_CONFIG;
+
+        $t = COM_newTemplate($GLOBALS['_CONF']['path_layout'] . 'admin/config');
+        $t -> set_file('element', 'config_element_2.thtml');
+
+        $blocks = array('delete-button', 'text-element', 'placeholder-element',
+                        'select-element', 'list-element', 'unset-param',
+                        'keyed-add-button', 'unkeyed-add-button', 'text-area',
+                        'validation_error_block');
+        foreach ($blocks as $block) {
+            $t->set_block('element', $block);
+        }
+
+        $t->set_var('lang_restore', $LANG_CONFIG['restore']);
+        $t->set_var('lang_enable', $LANG_CONFIG['enable']);
+        $t->set_var('lang_add_element', $LANG_CONFIG['add_element']);
+
+        $t->set_var('name', $name);
+        $t->set_var('id_name', str_replace(array('[', ']'), array('_', ''), $name));
+        $t->set_var('display_name', $display_name);
+        
+        // check tmp values
+        if ( isset($this->tmpValues[$group][$name]) ) {
+            $val = $this->tmpValues[$group][$name];
+        }
+        
+        if (!is_array($val)) {
+            if (is_float($val)) {
+                /**
+                * @todo FIXME: for Locales where the comma is the decimal
+                *              separator, patch output to a decimal point
+                *              to prevent it being cut off by COM_applyFilter
+                */
+                $t->set_var('value', str_replace(',', '.', $val));
+            } else {
+                $t->set_var('value', htmlspecialchars($val));
+            }
+        }
+        
+        // if there is a error message to shown
+        if ( isset($this->validationErrors[$group][$name]) ) {
+            $t->set_var('validation_error_message', $this->validationErrors[$group][$name]);
+            $t->set_var('error_block', $t->parse('output', 'validation_error_block'));
+            $t->set_var('error_class', ' input_error');
+            $t->set_var('value', $this->validationErrorValues[$group][$name]);
+        } else {
+            $t->set_var('error_class', '');
+            $t->set_var('error_block', '');
+        }
+        
+        if ($deletable) {
+            $t->set_var('delete', $t->parse('output', 'delete-button'));
+        } else {
+            if ($allow_reset) {
+                $t->set_var('unset_link',
+                        "(<a href=\"#{$name}\" class=\"unset_param\" title='"
+                        . $LANG_CONFIG['disable'] . "'>X</a>)");
+            }
+            if (($a = strrchr($name, '[')) !== FALSE) {
+                $on = substr($a, 1, -1);
+                $o = str_replace(array('[', ']'), array('_', ''), $name);
+            } else {
+                $o = $name;
+                $on = $name;
+            }
+            if (! is_numeric($on)) {
+                $this->_set_ConfigHelp($t, $group, $o);
+            }
+        }
+        // if $name is like "blah[0]", separate name and index
+        $n = explode('[', $name);
+        $index = null;
+        $nc = count($n);
+        if ($nc > 1) {
+            $i = explode(']', $n[$nc-1]);
+            $index = $i[0];
+        }
+        if (!empty($index) && ($index == 'placeholder' || $display_name == 'skeleton')) {
+            $t->set_var('hide_row', ' style="display:none;"');
+        }
+
+        $prefix = substr($type, 0, 1);
+        if ($type == "unset") {
+            return $t->finish($t->parse('output', 'unset-param'));
+        } elseif ($type == "text") {
+            return $t->finish($t->parse('output', 'text-element'));
+        } elseif ($type == "textarea") {
+            return $t->finish($t->parse('output', 'text-area'));
+        } elseif ($type == "placeholder") {
+            return $t->finish($t->parse('output', 'placeholder-element'));
+        } elseif ($type == 'select') {
+
+            // if $name is like "blah[0]", separate name and index
+            $n = explode('[', $name);
+            $name = $n[0];
+            $type_name = $type . '_' . $name;
+            if ($group == 'Core') {
+                $fn = 'configmanager_' . $type_name . '_helper';
+            } else {
+                $fn = 'plugin_configmanager_' . $type_name . '_' . $group;
+            }
+            if (function_exists($fn)) {
+                if ($index === null) {
+                    $selectionArray = $fn();
+                } else {
+                    $selectionArray = $fn($index);
+                }
+            } else if (is_array($selectionArray)) {
+                // leave sorting to the function otherwise
+                uksort($selectionArray, 'strcasecmp');
+            }
+            if (! is_array($selectionArray)) {
+                return $t->finish($t->parse('output', 'text-element'));
+            }
+
+            $t->set_block('select-element', 'select-options', 'myoptions');
+            foreach ($selectionArray as $sName => $sVal) {
+                if (is_bool($sVal)) {
+                    $t->set_var('opt_value', $sVal ? 'b:1' : 'b:0');
+                } else {
+                    $t->set_var('opt_value', $sVal);
+                }
+                $t->set_var('opt_name', $sName);
+                $t->set_var('selected', ($val == $sVal ? 'selected="selected"' : ''));
+                $t->parse('myoptions', 'select-options', true);
+            }
+            return $t->parse('output', 'select-element');
+        } elseif ($prefix == '@') {
+            $result = '';
+            foreach ($val as $valkey => $valval) {
+                $result .= config::_UI_get_conf_element_2($group,
+                                $name . '[' . $valkey . ']',
+                                $display_name . '[' . $valkey . ']',
+                                substr($type, 1), $valval, $selectionArray,
+                                false);
+            }
+            return $result;
+        } elseif ($prefix == '*' || $prefix == '%') {
+            $t->set_var('arr_name', $name);
+            $t->set_var('array_type', $type);
+            $button = $t->parse('output', ($prefix == '*' ?
+                                           'keyed-add-button' :
+                                           'unkeyed-add-button'));
+            $t->set_var('my_add_element_button', $button);
+            $result = "";
+
+            $base_type = str_replace(array('*', '%'), '', $type);
+            if (in_array($base_type, array('select', 'text', 'placeholder'))) {
+                $result .= config::_UI_get_conf_element_2($group,
+                                $name . '[placeholder]', 'skeleton',
+                                substr($type, 1), 'placeholder', $selectionArray,
+                                true);
+            }
+
+            if ($display_name == 'skeleton') {
+                $val = array();
+            }
+            if (!is_array($val)) {
+                $val = array();
+            }
+
+            foreach ($val as $valkey => $valval) {
+                $result .= config::_UI_get_conf_element_2($group,
+                                $name . '[' . $valkey . ']', $valkey,
+                                substr($type, 1), $valval, $selectionArray,
+                                true);
+            }
+            $t->set_var('my_elements', $result);
+            // if the values are indexed numerically, add a class to the div
+            // for identification. The UI code can take advantage of it
+            $t->set_var('arr_class_list', ($prefix == '%' ?
+                                           'numerical_config_list' :
+                                           'named_config_list'));
+            return $t->parse('output', 'list-element');
+        }
+    }
+
+    /**
      * This function takes $_POST input and evaluates it
      *
      * @param  array(string=>mixed)      $change_array this is the $_POST array
@@ -1405,7 +1633,7 @@ class config {
             $is_num = true;
             $max_key = -1;
             foreach ($input_val as $key => $val) {
-                if ($key !== 'placeholder') {
+                if ($key !== 'placeholder' && $key !== 'nameholder') {
                     $r[$key] = $this->_validate_input($config, $group, $val);
                     if (is_numeric($key)) {
                         if ($key > $max_key) {
@@ -1591,12 +1819,19 @@ class config {
                     $group_display = $LANG_configsections[$group]['label'];
                 }
                 // Create a menu item for each config group - disable the link for the current selected one
-                if ($conf_group == $group) {
-                    $link = "<div>$group_display</div>";
+                if ($_CONF['support_theme_2.0'] == true) {
+                    if ($conf_group == $group) {
+                        $link = "<li class=\"configoption_off\">$group_display</li>";
+                    } else {
+                        $link = "<li class=\"configoption\"><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></li>";
+                    }
                 } else {
-                    $link = "<div><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></div>";
+                    if ($conf_group == $group) {
+                        $link = "<div>$group_display</div>";
+                    } else {
+                        $link = "<div><a href=\"#\" onclick='open_group(\"$group\");return false;'>$group_display</a></div>";
+                    }
                 }
-
                 if ($group == 'Core') {
                     $retval .= $link;
                 } else {
@@ -1610,8 +1845,13 @@ class config {
             $retval .= $link;
         }
 
-        $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
-                . $LANG_ADMIN['admin_home'] . '</a></div>';
+        if ($_CONF['support_theme_2.0'] == true) {
+            $retval .= '<li class="configoption"><a href="' . $_CONF['site_admin_url'] . '">'
+                    . $LANG_ADMIN['admin_home'] . '</a></li>';
+        } else {
+            $retval .= '<div><a href="' . $_CONF['site_admin_url'] . '">'
+                    . $LANG_ADMIN['admin_home'] . '</a></div>';
+        }
         $retval .= COM_endBlock(COM_getBlockTemplate('configmanager_block',
                                                      'footer'));
 
@@ -1637,10 +1877,18 @@ class config {
                     $group_display = $sgname;
                 }
                 // Create a menu item for each sub config group - disable the link for the current selected one
-                if ($sgroup == $sg) {
-                    $retval .= "<div>$group_display</div>";
+                if ($_CONF['support_theme_2.0'] == true) {
+                    if ($sgroup == $sg) {
+                        $retval .= "<li class=\"configoption_off\">$group_display</li>";
+                    } else {
+                        $retval .= "<li class=\"configoption\"><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\");return false;'>$group_display</a></li>";
+                    }
                 } else {
-                    $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\");return false;'>$group_display</a></div>";
+                    if ($sgroup == $sg) {
+                        $retval .= "<div>$group_display</div>";
+                    } else {
+                        $retval .= "<div><a href=\"#\" onclick='open_subgroup(\"$conf_group\",\"$sgroup\");return false;'>$group_display</a></div>";
+                    }
                 }
                 $i++;
             }
@@ -1766,6 +2014,7 @@ class config {
     */
     function _set_ConfigHelp(&$t, $group, $option)
     {
+        global $_CONF, $_SCRIPTS;
         static $docUrl;
 
         if (!isset($docUrl)) {
@@ -1778,22 +2027,27 @@ class config {
         if (empty($configtext)) {
             if ($group == 'Core') {
                 $configtext = NULL;
-                if (!empty($GLOBALS['_CONF']['site_url']) &&
-                        !empty($GLOBALS['_CONF']['path_html'])) {
-                    $baseUrl = $GLOBALS['_CONF']['site_url'];
-                    $doclang = COM_getLanguageName();
-                    $cfg = 'docs/' . $doclang . '/config.html';
-                    if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
-                        $url = $baseUrl . '/' . $cfg;
+            }
+            if (empty($docUrl[$group])) {
+                if ($group == 'Core') {
+                    if (!empty($GLOBALS['_CONF']['site_url']) &&
+                            !empty($GLOBALS['_CONF']['path_html'])) {
+                        $baseUrl = $GLOBALS['_CONF']['site_url'];
+                        $doclang = COM_getLanguageName();
+                        $cfg = 'docs/' . $doclang . '/config.html';
+                        if (file_exists($GLOBALS['_CONF']['path_html'] . $cfg)) {
+                            $url = $baseUrl . '/' . $cfg;
+                        } else {
+                            $url = $baseUrl . '/docs/english/config.html';
+                        }
                     } else {
-                        $url = $baseUrl . '/docs/english/config.html';
+                        $url = 'http://www.geeklog.net/docs/english/config.html';
                     }
-                } else {
-                    $url = 'http://www.geeklog.net/docs/english/config.html';
+                    $docUrl['Core'] = $url;
+                } else { // plugin            
+                    $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
                 }
-                $docUrl['Core'] = $url;
-            } else { // plugin            
-                $docUrl[$group] = PLG_getDocumentationUrl($group, 'config');
+                $_SCRIPTS->setJavaScript('var glConfigDocUrl = "' . $docUrl[$group] . '";', true);
             }
             $descUrl = $docUrl[$group];
 
@@ -1804,13 +2058,24 @@ class config {
                 
                 $t->set_var('doc_url', $descUrl);
                 
-                // Does hack need to be used?
-                if (gettype($configtext) == "NULL") {
-                    $t->set_var('doc_link',
-                            '(<a href="' . $descUrl . '" target="help" class="tooltip">?</a>)');                    
+                if ($_CONF['support_theme_2.0'] == true) {
+                    // Does hack need to be used?
+                    if (gettype($configtext) == "NULL") {
+                        $t->set_var('doc_link',
+                                '(<a href="javascript:void(0);" id="desc_' . $option . '" class="tooltip">?</a>)');
+                    } else {
+                        $t->set_var('doc_link',
+                                '(<a href="javascript:void(0);" id="desc_' . $option . '">?</a>)');
+                    }
                 } else {
-                    $t->set_var('doc_link',
-                            '(<a href="' . $descUrl . '" target="help">?</a>)');
+                    // Does hack need to be used?
+                    if (gettype($configtext) == "NULL") {
+                        $t->set_var('doc_link',
+                                '(<a href="' . $descUrl . '" target="help" class="tooltip">?</a>)');
+                    } else {
+                        $t->set_var('doc_link',
+                                '(<a href="' . $descUrl . '" target="help">?</a>)');
+                    }
                 }
             }              
         } else {

@@ -1226,4 +1226,64 @@ div.third-party-login {
   width: 164px;
 }
 
+/* Admin basic form ***********************************************************/
+.admin_basic {
+  padding: 0.5em 2em;
+}
+.form_block {
+  margin: 0;
+  padding: 0;
+}
+.form_block:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 1px;
+  overflow: hidden;
+}
+.compact dt {
+  float: left;
+  clear: left;
+  width: 15%;
+  margin: 0 0 1em 0;
+  padding: 0 1% 0 0;
+  font-weight: normal;
+  text-align: right;
+}
+.compact dt:after {
+  content: ":";
+}
+.compact dt label {
+  font-weight: normal;
+}
+.compact dd {
+  float: left;
+  width: 84%;
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+.compact dd.description {
+  margin: -0.5em 0 1em 16%;
+  padding: 0;
+}
+.compact p.description {
+  margin: 0 0 1em 0;
+  padding: 0;
+}
+.wide {
+  width: 98%;
+}
+.separator {
+  display: none;
+}
+.size1  { width:  60px; }
+.size2  { width: 120px; }
+.size3  { width: 180px; }
+.size4  { width: 240px; }
+.size5  { width: 300px; }
+.size6  { width: 360px; }
+.size7  { width: 420px; }
+.size8  { width: 480px; }
+.size9  { width: 540px; }
+.size10 { width: 600px; }
 

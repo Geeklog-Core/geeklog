@@ -1390,10 +1390,9 @@ function SEC_checkToken()
         $files = serialize($_FILES);
     }
 
-    $display = COM_siteHeader('menu', $LANG20[1])
-             . COM_showMessageText($LANG_ADMIN['token_expired'])
-             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files)
-             . COM_siteFooter();
+    $display = COM_showMessageText($LANG_ADMIN['token_expired'])
+             . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
+    $display = COM_createHTMLDocument($display, 'menu', $LANG20[1]);
 
     COM_output($display);
     exit;

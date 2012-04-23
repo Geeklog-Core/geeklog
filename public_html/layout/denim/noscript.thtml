@@ -1,0 +1,10 @@
+<!-- noscript.thtml { -->
+
+<noscript>    
+    <div class="pluginAlert aligncenter" style="border:1px dashed #ccc;margin-top:10px;padding:15px;">{lang_nojavascript}    
+        <p{hide_link}>{no_javascript_return_link}</p>
+        <br{xhtml}>    
+    </div>    
+</noscript>
+
+<!-- } noscript.thtml -->

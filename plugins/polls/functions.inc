@@ -118,10 +118,9 @@ function plugin_savecomment_polls($title, $comment, $id, $pid, $postmode)
 
     $ret = CMT_saveComment ($title, $comment, $id, $pid, 'polls', $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
-        $retval .= COM_siteHeader('menu', $LANG03[1])
-                . CMT_commentForm ($title, $comment, $id, $pid, 'polls',
-                                   $LANG03[14], $postmode)
-                . COM_siteFooter();
+        $retval .= CMT_commentForm ($title, $comment, $id, $pid, 'polls',
+                                   $LANG03[14], $postmode);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1]);
     } else { // success
         $retval = COM_refresh ($_CONF['site_url']
                                 . "/polls/index.php?pid=$id");

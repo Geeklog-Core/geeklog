@@ -1,6 +1,6 @@
 FCKConfig.ToolbarSets["editor-toolbar1"] = [
-    ['Source','-','Undo','Redo','-','Link','Unlink','-','Bold','Italic',
-    '-','JustifyLeft','JustifyCenter','JustifyRight',
+    ['Source','-','Undo','Redo','-','Link','Unlink','-','Bold','Italic'],
+    ['JustifyLeft','JustifyCenter','JustifyRight',
     '-','OrderedList','UnorderedList','Outdent','Indent','FitWindow','About']
 ] ;
 

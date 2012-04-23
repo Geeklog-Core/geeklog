@@ -1,0 +1,10 @@
+
+<!-- admin/topic/topiclist.thtml { -->
+
+{top_menu}
+
+<table id="admin-topiclist" cellspacing="0" cellpadding="2" style="width:100%">
+  {list_row}
+</table>
+
+<!-- } admin/topic/topiclist.thtml -->
