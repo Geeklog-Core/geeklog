@@ -14,9 +14,10 @@
 
 /* User Images */
 form#admin-edituser dl dd.user_photo {
-  float: left;
+  float: {left};
   width: 75%;
-  margin: 0 0 0.5em 25%;
+  margin: 0 0 0.5em 0;
+  margin-{left}: 25%;
   padding: 0;
 }
 

@@ -10,7 +10,7 @@
 
 /* Admin lists ****************************************************************/
 .admin-menu-icon {
-  float:left;
+  float:{left};
   padding:5px;
 }
 .admin-menu {
@@ -24,15 +24,15 @@
 }
 .admin-menu-item {
   /* a single link in the menu */
-  padding: 0px 5px 0px 5px;
+  padding: 0px 5px;
 }
 .admin-list-smalltable {
-  text-align:left;
+  text-align:{left};
   border-spacing:1px;
 }
 .admin-list-table {
   width:100%;
-  text-align:left;
+  text-align:{left};
   border-spacing:1px;
 }
 .admin-list-table form {
@@ -44,12 +44,12 @@
   margin-bottom:5px;
 }
 .admin-list-field {
-  text-align:left;
+  text-align:{left};
   padding-left:5px;
   padding-right:5px;
 }
 .admin-list-headerfield {
-  text-align:left;
+  text-align:{left};
   padding:3px 5px;
 }
 /* Menus in blocks ************************************************************/
@@ -60,10 +60,10 @@
 }
 /* general alignment classes **************************************************/
 .alignleft {
-  text-align:left;
+  text-align:{left};
 }
 .alignright {
-  text-align:right;
+  text-align:{right};
 }
 .aligncenter {
   text-align:center;
@@ -72,10 +72,10 @@
   vertical-align:top;
 }
 .floatright {
-  float:right;
+  float:{right};
 }
 .floatleft {
-  float:left;
+  float:{left};
 }
 .clearboth {
   clear:both;
@@ -104,7 +104,7 @@
   background-color: transparent;
   background: url(./images/external.png) center right no-repeat;
   background-attachment: scroll;
-  padding-right: 13px;
+  padding-{right}: 13px;
 }
 .ext-link-rtl {
 }
@@ -112,7 +112,8 @@
   background-color: transparent;
   background: url(./images/feed.png) center right no-repeat;
   background-attachment: scroll;
-  padding: 2px 16px 2px 0px;
+  padding: 2px 0;
+  padding-{right}: 16px;
 }
 .feed-link-rtl {
 }
@@ -143,13 +144,11 @@
 }
 .commenttitle {
   background:#F7F7F7;
-  border-bottom:1px solid #E7E7E7;
-  border-left:1px solid #E7E7E7;
-  border-right:1px solid #E7E7E7;
-  border-top:1px solid #E7E7E7;
+  border:1px solid #E7E7E7;
   font-weight:bold;
   font-size:smaller;
-  padding:3px 0px 3px 10px;
+  padding: 3px 0px;
+  padding-{left}: 10px;
 }
 .comment-edit {
   font-style: italic;
@@ -179,15 +178,15 @@
 /* Forms **********************************************************************/
 .form-description {
   font-weight:bold;
-  float:left;
+  float:{left};
   width:100px;
-  text-align:right;
-  padding-right:5px;
+  text-align:{right};
+  padding-{right}:5px;
   display:block;
 }
 .form-field {
   padding-bottom:5px;
-  margin-left:105px;
+  margin-{left}:105px;
 }
 .checkboxes-list {
   /* this is used for example by COM_checkList */
@@ -222,7 +221,7 @@
 }
 .inputTable label {
   font-weight:bold;
-  float:right;
+  float:{right};
   white-space:nowrap;
 }
 .moderation-cc {
@@ -234,7 +233,7 @@
   width:100%;
 }
 .moderation-cc-item {
-  float:left;
+  float:{left};
   text-align:center;
 }
 .nowrap {
@@ -249,19 +248,21 @@
 .searchauth {
   background:transparent;
   color:#000000;
-  text-align:left;
+  text-align:{left};
 }
 .searchdate {
   background:transparent;
   color:#000000;
-  text-align:right;
+  text-align:{right};
 }
 .searchform-box {
   background:#E7E7E7;
-  text-align:right;
+  text-align:{right};
   border-bottom:1px solid #CCCCCC;
   height:52px;
-  padding:0px 4px 0px 1px;
+  padding:0px;
+  padding-{right}: 4px;
+  padding-{left}: 1px;
   margin:0px;
 }
 .searchform-elements {
@@ -275,7 +276,7 @@
 .searchhits {
   background:transparent;
   color:#000000;
-  text-align:right;
+  text-align:{right};
 }
 .searchresult-byline {
   color:green;
@@ -300,18 +301,18 @@
 }
 /* Stats **********************************************************************/
 .stats-list-count {
-  text-align:right;
+  text-align:{right};
   padding-left:5px;
   padding-right:5px;
 }
 .stats-header-title {
-  text-align:left;
+  text-align:{left};
   width:90%;
   padding-left:5px;
   padding-right:5px;
 }
 .stats-header-count {
-  text-align:left;
+  text-align:{left};
   width:10%;
   padding-left:5px;
   padding-right:5px;
@@ -327,7 +328,7 @@
   background:transparent;
   color:#000000;
   font-weight:bold;
-  padding-left:1px;
+  padding-{left}:1px;
 }
 .story-body {
   /* this is the actual content of the story */
@@ -344,19 +345,19 @@
   color:#000000;
   font-weight:bold;
   font-size:1.4em;
-  padding-left:1px;
+  padding-{left}:1px;
 }
 .story-icons {
   /* print & mail icons in a storybox */
-  float:right;
+  float:{right};
   padding-top:10px;
 }
 .story-icons a {
-  margin-left:5px;
+  margin-{left}:5px;
 }
 .story-container {
   /* frame around all stories & centerblocks*/
-  padding-right:9px;
+  padding-{right}:9px;
   width:100%;
   vertical-align:top;
 }
@@ -416,7 +417,7 @@
   color:#000000;
   background-color:#B7C1DC;
   padding:5px;
-  text-align:left;
+  text-align:{left};
 }
 .plugin tr {
   vertical-align:top;
@@ -479,7 +480,7 @@
   color:#000000;
   background-color:#C9D1E4;
   padding:5px;
-  text-align:left;
+  text-align:{left};
 }
 .pluginSubTable tr {
   vertical-align:top;

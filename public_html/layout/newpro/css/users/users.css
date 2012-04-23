@@ -136,15 +136,15 @@ dl#profile-userprofile:after {
 /* Win IE 6(Adjust floating element) */
 
 dl#profile-userprofile dt {
-  float: left;
-  clear: left;
+  float: {left};
+  clear: {left};
   width: 25%;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
 dl#profile-userprofile dd {
-  float: left;
+  float: {left};
   width: 75%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -154,7 +154,7 @@ dl#profile-userprofile dd {
 dl#profile-userprofile dd#profile-user_photo {
   float: none;
   width: auto;
-  margin-left: 25%;
+  margin-{left}: 25%;
   padding: 8px;
 }
 
@@ -187,15 +187,15 @@ dl#profile-postingstats {
 }
 
 dl#profile-postingstats dt {
-  float: left;
-  clear: left;
+  float: {left};
+  clear: {left};
   width: 25%;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
 dl#profile-postingstats dd {
-  float: left;
+  float: {left};
   width: 75%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -205,7 +205,7 @@ dl#profile-postingstats dd {
 ul#profile-all_postings_by {
   list-style-position: outside;
   list-style-type: none;
-  clear: left;
+  clear: {left};
   margin: 0;
   padding: 1em 0 0 0;
 }

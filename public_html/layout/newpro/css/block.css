@@ -18,7 +18,7 @@ div#leftblocks ul,
 div#leftblocks ol,
 div#rightblocks ul,
 div#rightblocks ol {
-  padding-left: 0;
+  padding-{left}: 0;
 }
 
 

@@ -57,7 +57,7 @@ form#admin-groupmembers fieldset {
 }
 
 form#admin-groupmembers dl {
-  float: left;
+  float: {left};
   width: 30%;
   margin: 0 0 1em 0;
   padding: 0;
@@ -81,7 +81,7 @@ form#admin-groupmembers dl dd select {
 form#admin-groupmembers ul.move {
   list-style-position: outside;
   list-style-type: none;
-  float: left;
+  float: {left};
   width: 40%;
   margin: 3.5em 0 0 0;
   padding: 0;
@@ -94,6 +94,6 @@ form#admin-groupmembers ul.move li {
 }
 
 form#admin-groupmembers ul.submit {
-  clear: left;
+  clear: {left};
   text-align: center;
 }

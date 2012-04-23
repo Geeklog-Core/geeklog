@@ -47,7 +47,7 @@ form#profile ul.checkboxes-list {
 
 form#profile ul.checkboxes-list li {
   display: inline;
-  margin-right: 0.5em;
+  margin-{right}: 0.5em;
 }
 
 /* Input Field */
@@ -56,7 +56,7 @@ form#displayprefs dl {
 }
 
 form#displayprefs dl dd input {
-  margin-right: 2px;
+  margin-{right}: 2px;
 }
 
 /* User Photo */

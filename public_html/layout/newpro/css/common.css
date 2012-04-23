@@ -120,7 +120,7 @@ input.submit {
 }
 
 option {
-  padding-right: 4px;  /* Firefox */
+  padding-{right}: 4px;  /* Firefox */
 }
 
 iframe[width="100%"] {
@@ -144,7 +144,7 @@ hr.separator {
 .speech {
   overflow: hidden;
   position: absolute;
-  left: -999px;
+  {left}: -999px;
   width: 0;
   height: 0;
 }
@@ -251,15 +251,15 @@ form.compact dl:after {
 /* } Win IE 6(Float Adjustment) */
 
 form.compact dl dt {
-  float: left;
-  clear: left;
+  float: {left};
+  clear: {left};
   width: 25%;
   margin: 0 0 0.5em 0;
   padding: 0;
 }
 
 form.compact dl dd {
-  float: left;
+  float: {left};
   width: 75%;
   margin: 0 0 0.5em 0;
   padding: 0;
@@ -273,7 +273,7 @@ form.compact dl dd.description {
 
 /* Win IE 6(Float left and right margin too wide) { */
 * html form.compact dl dd.description {
-  margin-left: 12.5%;
+  margin-{left}: 12.5%;
 }
 /* } Win IE 6 */
 

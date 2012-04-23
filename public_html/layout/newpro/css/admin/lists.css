@@ -93,7 +93,7 @@ table.admin-list tr.admin-listitem_rollover {
 table.admin-list tr th {
   margin: 0;
   padding: 2px;
-  text-align: left;
+  text-align: {left};
 }
 
 table.admin-list tr td {
