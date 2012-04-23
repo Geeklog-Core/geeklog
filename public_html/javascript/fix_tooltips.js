@@ -1,11 +1,11 @@
 /* Prevents the tooltips from disappearing outside the viewport */
 var fix_tooltips = function() {
     var $w = $(window);
+    // size of the viewport
+    var viewport_height = parseInt($w.height());
+    var viewport_width  = parseInt($w.width());
     // fix each tooltip
     $('a.gl-tooltip').each(function() {
-        // size of the viewport
-        var viewport_height = parseInt($w.height());
-        var viewport_width  = parseInt($w.width());
          // cache the tooltip element
         var $s = $(this).find('span');
         // estimate the bottom and right coordinates of the tooltip
