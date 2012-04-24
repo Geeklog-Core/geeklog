@@ -563,11 +563,12 @@ function TOPIC_getList($sortcol = 0, $ignorelang = true, $title = true)
 * (need to handle 'all' and 'homeonly' as special cases)
 *
 * @param    string          $type   Type of object to find topic access about. If 'topic' then will check post array for topic selection control 
-* @param    string/array    $id     ID of object to check topic access for
+* @param    string/array    $id     ID of object to check topic access for (not requried if $type is 'topic')
+* @param    string/array    $tid    ID of topic to check topic access for (not requried and not used if $type is 'topic')
 * @return   int                     returns 3 for read/edit 2 for read only 0 for no access
 *
 */
-function TOPIC_hasMultiTopicAccess($type, $id = '')
+function TOPIC_hasMultiTopicAccess($type, $id = '', $tid = '')
 {
     global $_TABLES;
     
@@ -604,7 +605,10 @@ function TOPIC_hasMultiTopicAccess($type, $id = '')
     } else {
         // Retrieve Topic options
         $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
-    
+        if ($tid != '') {
+            $sql .=  " AND tid = '$tid'";
+        }
+        
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
         $nrows = DB_numRows($result);
@@ -623,6 +627,7 @@ function TOPIC_hasMultiTopicAccess($type, $id = '')
                 $A = DB_fetchArray($result);
                 $tid = $A['tid'];
             }
+
             $current_access = SEC_hasTopicAccess($tid);
             if ($access > $current_access) {
                 $access = $current_access;
@@ -1285,10 +1290,12 @@ function TOPIC_breadcrumbs($type, $id)
                                     'breadcrumb_t' => 'breadcrumb.thtml'));        
     
     if ($type == 'topic') {
-        $sql = "SELECT tid FROM {$_TABLES['topics']} WHERE tid = '{$id}'";
+        $sql = "SELECT tid FROM {$_TABLES['topics']} 
+            WHERE tid = '{$id}'" . COM_getPermSQL('AND', 0, 2);
     } else {
         // Retrieve all topics assignments that point to this object
-        $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '{$type}' AND id = '{$id}'";
+        $sql = "SELECT ta.tid FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
+            WHERE ta.type = '{$type}' AND ta.id = '{$id}' and t.tid = ta.tid" . COM_getPermSQL('AND', 0, 2, 't');
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);

@@ -596,7 +596,14 @@ class Story
                             $story['perm_members'], $story['perm_anon']);
                 
                 //$this->_access = min($access, SEC_hasTopicAccess($this->_tid));
-                $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
+                //$this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
+                if ($mode != 'view') {
+                    // When editing an article they need access to all topics article is assigned to plus edit access to article itself
+                    $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid));
+                } else {
+                    // When viewing a article we only care about if it has access to the current topic and article
+                    $this->_access = min($access, TOPIC_hasMultiTopicAccess('article', $sid, $topic));
+                }
 
                 if ($this->_access == 0) {
                     return STORY_PERMISSION_DENIED;
@@ -634,15 +641,6 @@ class Story
                 $this->_comment_expire = 0;
             }
 
-            /* Tom
-            if (DB_getItem($_TABLES['topics'], 'archive_flag', "tid = '{$this->_tid}'") == 1) {
-                $this->_frontpage = 0;
-            } elseif (isset($_CONF['frontpage'])) {
-                $this->_frontpage = $_CONF['frontpage'];
-            } else {
-                $this->_frontpage = 1;
-            }
-            */
             if (isset($_CONF['frontpage'])) {
                 $this->_frontpage = $_CONF['frontpage'];
             } else {
