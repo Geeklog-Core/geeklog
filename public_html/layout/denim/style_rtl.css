@@ -587,7 +587,6 @@ background-color: transparent;
   color: #000;
   background: #FFFF8F;
   line-height: 120%;
-
 }
 
 .pluginRow1 .pluginRollOut,
@@ -689,12 +688,12 @@ a.pluginButton:hover {
 }
 
 .noborder_fieldset {
- margin: 0;
- border: none;
+  margin: 0;
+  border: none;
 }
 
 .hidden_legend {
- display: none;
+  display: none;
 }
 
 /* Basic editor */
@@ -854,15 +853,11 @@ ul.compact li {
 }
 
 /*==============================================================================
-  JavaScript enabled
-    * Always set 'js_on'
+  Layout Pattern:
     * 3 Column ( Left Block * Center Block * Right Block )...left-center-right
     * 2 Column ( Left Block * Center Block )              ...left-center
     * 2 Column ( Center Block * Right Block )             ...center-right
     * 1 Column ( Center Block )                           ...center
-
-  JavaScript Disenabled: HTML body class attribute is always 3 Column
-    * Always set 'js_off'
 
   Block Width:
     * Container Width = 100%
@@ -1023,8 +1018,7 @@ ul.compact li {
   display if Left Block is appeared.
 --------------------------------------*/
 
-#leftblocks,
-body.js_off #leftblocks {
+#leftblocks {
   overflow: auto;
   float: left;
   width: 180px;  /* [R] */
@@ -1043,15 +1037,13 @@ body.js_off #leftblocks {
 }
 
 /* JavaScript Enabled* 3 Column ( Left Block*  Center Block*  Right Block)  Center Block Container */
-body.left-center-right #centerblocks,
-body.js_off #centerblocks {
+body.left-center-right #centerblocks {
   float: left;
   width: 100%;
   margin: 0;
   padding: 0;
 }
-body.left-center-right #main-content,
-body.js_off #main-content {
+body.left-center-right #main-content {
   width: 660px;  /* Main Content Width = [W] - [L] - [R] -  Right Padding 10px -  Left Padding 10px */
   margin: 0 180px 0 280px;  /* Right Margin = [R] , Left Margin = [L] */
   padding: 0 10px;
@@ -1101,8 +1093,7 @@ body.center #main-content {
   #rightblocks display if Right Block is appeared.
 --------------------------------------*/
 
-#rightblocks,
-body.js_off #rightblocks {
+#rightblocks {
   overflow: auto;
   float: left;
   width: 280px;  /* [R] */
@@ -1539,7 +1530,6 @@ h4 img {
 }
 
 .article {
-/*  font-size: 115%;*/
   font-size: 100%;
 }
 
@@ -1580,35 +1570,35 @@ h4 img {
 
 .gl-tooltip:link,
 .gl-tooltip:visited {
-    color: #2661A2;
-    outline: none;
-    text-decoration: none;
-    position: relative;
+  color: #2661A2;
+  outline: none;
+  text-decoration: none;
+  position: relative;
 }
 .gl-tooltip span {
-    margin-left: -999em;
-    position: absolute;
-    text-align: left;
-    width: 250px;
+  margin-left: -999em;
+  position: absolute;
+  text-align: left;
+  width: 250px;
 }
 .gl-tooltip:hover span {
-    border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px;
-    box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
-    font-size: 1em; text-align: left; white-space:normal;
-    font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
-    position: absolute; left: 2.2em; top: 2.2em; z-index: 99;
-    margin-left: 0; width: 250px;
+  border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px;
+  box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
+  font-size: 1em; text-align: left; white-space:normal;
+  font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
+  position: absolute; left: 2.2em; top: 2.2em; z-index: 99;
+  margin-left: 0; width: 250px;
 }
 .gl-tooltip:hover img.icon {
-    border: 0; margin: -15px 0 0 -51px;
-    float: left; position: absolute;
+  border: 0; margin: -15px 0 0 -51px;
+  float: left; position: absolute;
 }
 #gl-tooltip-icon {
-    border: 0;
+  border: 0;
 }
 .gl-tooltip:hover em {
-    font-family: Candara, Tahoma, Geneva, sans, sans-serif; font-size: 1.2em; font-weight: bold;
-    display: block; padding: 0.2em 0 0.6em 0.4em;
+  font-family: Candara, Tahoma, Geneva, sans, sans-serif; font-size: 1.2em; font-weight: bold;
+  display: block; padding: 0.2em 0 0.6em 0.4em;
 }
 span.classic     { padding: 0.8em 1em; }
 span.custom      { padding: 0.5em 0.8em 0.8em 2em; }
@@ -1863,86 +1853,86 @@ span.warning  em { color: #CE5C00; }
 }
 
 #navlist {
-    display: block;
-    margin: 0 0 20px 0;
-    padding: 0;
-    border-bottom: solid 1px #ddd;
-    list-style: none;
+  display: block;
+  margin: 0 0 20px 0;
+  padding: 0;
+  border-bottom: solid 1px #ddd;
+  list-style: none;
 }
 
 .li-navlist {
-    display: block;
-    width: auto;
-    height: 30px;
-    padding: 0;
-    float: left;
-    margin-bottom: 0;
+  display: block;
+  width: auto;
+  height: 30px;
+  padding: 0;
+  float: left;
+  margin-bottom: 0;
 }
 
 .a-navlist {
-    display: block;
-    text-decoration: none;
-    width: auto;
-    height: 29px;
-    padding: 0px 12px;
-    line-height: 30px;
-    border: solid 1px #ddd;
-    border-width: 1px 1px 0 0;
-    margin: 0;
-    background: #f5f5f5;
+  display: block;
+  text-decoration: none;
+  width: auto;
+  height: 29px;
+  padding: 0px 12px;
+  line-height: 30px;
+  border: solid 1px #ddd;
+  border-width: 1px 1px 0 0;
+  margin: 0;
+  background: #f5f5f5;
 }
 
 .li-navlist #current {
-    background: #fff;
-    height: 30px;
-    position: relative;
-    top: -4px;
-    padding-top: 4px;
-    border-left-width: 1px;
-    margin: 0 0 0 -1px;
-    color: #111;
-    -moz-border-radius-topleft: 3px;
-    -webkit-border-top-left-radius: 3px;
-    border-top-left-radius: 3px;
-    -moz-border-radius-topright: 3px;
-    -webkit-border-top-right-radius: 3px;
-    border-top-right-radius: 3px;
+  background: #fff;
+  height: 30px;
+  position: relative;
+  top: -4px;
+  padding-top: 4px;
+  border-left-width: 1px;
+  margin: 0 0 0 -1px;
+  color: #111;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .li-navlist:first-child a#current {
-    margin-left: 0;
+  margin-left: 0;
 }
 
 .li-navlist:first-child a {
-    border-width: 1px 1px 0 1px;
-    -moz-border-radius-topleft: 3px;
-    -webkit-border-top-left-radius: 3px;
-    border-top-left-radius: 3px;
+  border-width: 1px 1px 0 1px;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
 }
 
 .li-navlist:last-child a {
-    -moz-border-radius-topright: 3px;
-    -webkit-border-top-right-radius: 3px;
-    border-top-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 /* Clearfixing tabs for beautiful stacking */
 #navlist:before,
 #navlist:after {
-    content: "";
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    width: 0;
-    height: 0;
+  content: "";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
 }
 
 #navlist:after {
-    clear: both;
+  clear: both;
 }
 
 #navlist {
-    zoom: 1;
+  zoom: 1;
 }
 
 .a-navlist:link,
@@ -2534,7 +2524,7 @@ b.status_black {
   padding: 0 0 0.1em 0;
   display: block;
   border-bottom: 1px solid #CCC;
-  font-size: 105%; /****************************/
+  font-size: 105%;
   font-weight: bold;
 }
 
@@ -2838,15 +2828,11 @@ div.third-party-login {
 
 	/* 2 Columns right-bar */
 	/*==============================================================================
-      JavaScript enabled
-        * Always set 'js_on'
+      Layout Pattern:
         * 3 Column ( Left Block * Center Block * Right Block )...left-center-right
         * 2 Column ( Left Block * Center Block )              ...left-center
         * 2 Column ( Center Block * Right Block )             ...center-right
         * 1 Column ( Center Block )                           ...center
-
-      JavaScript Disenabled: HTML body class attribute is always 3 Column
-        * Always set 'js_off'
 
       Block Width:
         * Container Width = 100%
@@ -2888,8 +2874,7 @@ div.third-party-login {
 	   display if Left Block is appeared.
 	--------------------------------------*/
 
-	#leftblocks,
-	body.js_off #leftblocks {
+	#leftblocks {
 	  float: right;
 	  width: 280px;  /* [L] */
 	  margin: 0;
@@ -2919,17 +2904,10 @@ div.third-party-login {
 	  padding: 0 10px;
 	}
 
-	body.js_off #centerblocks {
-	  width: 580px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding */
-	  margin: 0 180px;  /* Left Margin = -( [W] - [L] ) */
-	  padding: 0 10px;
-	}
-
 	body.left-center-right #centerblocks,
 	body.left-center #centerblocks,
 	body.center-right #centerblocks,
-	body.center #centerblocks,
-	body.js_off #centerblocks {
+	body.center #centerblocks {
 	  float: none;
 	  width: 100%;
 	  margin: 0;
@@ -2938,8 +2916,7 @@ div.third-party-login {
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content,
-	body.js_off #main-content {
+	body.center-right #main-content {
 	  float: left;
 	  width: 660px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding */
 	  margin: 0;
@@ -2951,8 +2928,7 @@ div.third-party-login {
 	    #rightblocks display if Right Block is appeared.
 	--------------------------------------*/
 
-	#rightblocks,
-	body.js_off #rightblocks {
+	#rightblocks {
 	  overflow: auto;
 	  clear: right;
 	  float: right;
@@ -3129,8 +3105,7 @@ div.third-party-login {
 	   display if Left Block is appeared.
 	--------------------------------------*/
 
-	#leftblocks,
-	body.js_off #leftblocks {
+	#leftblocks {
 	  width: 200px;  /* [L] */
 	}
 
@@ -3141,8 +3116,7 @@ div.third-party-login {
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content,
-	body.js_off #main-content {
+	body.center-right #main-content {
 	  width: 528px; /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding */
 	}
 
@@ -3155,8 +3129,7 @@ div.third-party-login {
 	    #rightblocks display if Right Block is appeared.
 	--------------------------------------*/
 
-	#rightblocks,
-	body.js_off #rightblocks {
+	#rightblocks {
 	  width: 200px;  /* [R] */
 	}
 
@@ -3334,16 +3307,14 @@ div.third-party-login {
 	body.left-center-right #centerblocks,
 	body.left-center #centerblocks,
 	body.center-right #centerblocks,
-	body.center #centerblocks,
-	body.js_off #centerblocks {
+	body.center #centerblocks {
 	  width: auto;
 	  padding: 0 10px;
 	}
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content,
-	body.js_off #main-content {
+	body.center-right #main-content {
 	  width: 100%;
 	  padding: 0;
 	}
@@ -3381,9 +3352,7 @@ div.third-party-login {
 	--------------------------------------*/
 
 	#leftblocks,
-	body.js_off #leftblocks,
-	#rightblocks,
-	body.js_off #rightblocks {
+	#rightblocks {
 	  clear: both;
 	  float: right;
 	  width: 100%;
