@@ -1272,7 +1272,7 @@ function plugin_group_changed_topic($grp_id, $mode)
 */
 function TOPIC_breadcrumbs($type, $id)
 {
-    global $_CONF, $_TABLES, $LANG27, $_TOPICS;
+    global $_CONF, $_TABLES, $LANG27, $_TOPICS, $topic;
     
     
     $breadcrumbs_output = '';
@@ -1296,6 +1296,10 @@ function TOPIC_breadcrumbs($type, $id)
         // Retrieve all topics assignments that point to this object
         $sql = "SELECT ta.tid FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
             WHERE ta.type = '{$type}' AND ta.id = '{$id}' and t.tid = ta.tid" . COM_getPermSQL('AND', 0, 2, 't');
+            
+            if (!$_CONF['multiple_breadcrumbs']) {
+                $sql .= " AND ta.tid = '{$topic}'";        
+            }
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
