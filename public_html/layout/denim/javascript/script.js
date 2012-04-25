@@ -35,16 +35,23 @@ $(function() {
   $('#navigation_ul').tinyNav({
     active: 'selected'
   });
+  var istouch = ('ontouchstart' in window);
+  if (istouch) {
+    var obj = $('.block-title');
+    $(".block-left-content").css("display", "none");
+    $(".block-right-content").css("display", "none");
+    obj.live('touchstart', function() {
+      this.touched = true;
+    });
+    obj.live('touchmove', function() {
+      this.touchmoved = true;
+    });
+    obj.live('touchend', function() {
+      if (this.touched && !this.touchmoved) {
+        $(this).next().toggle();
+      }
+      this.touched = false;
+      this.touchmoved = false;
+    });
+  }
 });
-
-/*
-$(function() {
-//  $(".block-left-content").css("display", "none");
-//  $(".block-right-content").css("display", "none");
-
-  $('.block-title').live('click touchend', function() {
-      $(this).next().toggle();
-  });
-
-});
-*/
