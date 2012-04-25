@@ -413,9 +413,8 @@ if ($topic)
             . '/index.php?display=microsummary" title="Microsummary"' . XHTML
             . '>';
 }
-$display = COM_siteHeader('menu', '', $header) . $display;
 
-$display .= COM_siteFooter (true); // The true value enables right hand blocks.
+$display = COM_createHTMLDocument($display, 'menu', '', $header, true);
 
 // Output page
 COM_output($display);

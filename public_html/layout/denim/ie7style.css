@@ -1,0 +1,224 @@
+@charset "utf-8";
+
+fieldset {
+  padding-top: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+ul, ol {
+  margin-left: 45px;
+}
+
+
+/*--------------------------------------
+  Basic Form
+--------------------------------------*/
+
+.form_block {
+  margin-top: 7px;
+}
+
+/*--------------------------------------
+  1 Column Form
+--------------------------------------*/
+
+.linear {
+  clear: left;
+}
+
+/*--------------------------------------
+  2 Culumn Form
+--------------------------------------*/
+
+.compact dd {
+  float: none;
+}
+
+/* Description */
+.compact dd.description {
+  margin-left: 23.4%;
+}
+
+.compact fieldset dd.description,
+fieldset .compact dd.description {
+  margin-left: 25%;
+}
+
+/*--------------------------------------
+  Profile Notes
+--------------------------------------*/
+
+.profile_notes {
+  border: 1px solid #CCC;
+}
+
+/*--------------------------------------
+  System Message Block
+--------------------------------------*/
+
+/* Title */
+#block-message dt {
+  border: 1px solid #32567B;
+}
+
+/* Message */
+#block-message dd {
+  font-weight: bold;
+  border-bottom: 1px solid #BEBEBE;
+  border-left:   1px solid #BEBEBE;
+  border-right:  1px solid #BEBEBE;
+}
+
+
+
+/*--------------------------------------
+  Story
+--------------------------------------*/
+
+/* Container */
+.storytext {
+  position: relative;
+}
+
+/* Story Title */
+.story_title {
+  float: none;
+}
+
+/* Icon(email, print, pdf) */
+.story_icon {
+  float: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+/*--------------------------------------
+  Comment Bar
+--------------------------------------*/
+
+#commentbar {
+  position: relative;
+}
+
+/* Comment Submit Form  */
+#commentbar-comment {
+  float: none;
+  text-align:left;
+}
+
+#commentbar-selector {
+  float: none;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  padding: 0.3em;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu {
+  border: 1px solid #DDD;
+  overflow: auto;
+}
+
+/*--------------------------------------
+  Navigation
+--------------------------------------*/
+
+#navcontainer {
+  float: none;
+}
+
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav a {
+  display: inline;
+  zoom: 1;
+}
+.gl-pagenav span {
+  display: inline;
+  zoom: 1;
+}
+
+/*--------------------------------------
+  Admin Page
+--------------------------------------*/
+
+/* Table */
+.admin-list-table {
+  border-collapse: collapse;
+}
+
+.admin-list-table th,
+.admin-list-table td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/* Permission */
+.admin-list-smalltable {
+  border-collapse: collapse;
+}
+
+.admin-list-smalltable th,
+.admin-list-smalltable td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+
+
+#admin-moderation:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+#admin-moderation {
+  overflow: auto;
+}
+
+
+
+/*--------------------------------------
+  Profile
+--------------------------------------*/
+
+#profile-userprofile dd {
+  width: auto;
+  float: none;
+}
+
+/*--------------------------------------
+  Article Page
+--------------------------------------*/
+
+/* Article Related Block */
+.block-related {
+  width: 49.5%;
+}
+
+
+/*--------------------------------------
+  Polls Plugin
+--------------------------------------*/
+
+#leftblocks .poll-questions ul,
+#rightblocks .poll-questions ul {
+  margin-left: -20px;
+}
+

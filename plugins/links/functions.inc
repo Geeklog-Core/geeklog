@@ -983,13 +983,12 @@ function plugin_savesubmission_links($A)
             && ($A['url'] != 'http://')) {
         $retval = plugin_save_submit_links($A);
     } else {
-        $retval .= COM_siteHeader()
-            . COM_startBlock ($LANG12[22], '',
+        $retval .= COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . plugin_submit_links()
-            . COM_siteFooter ();
+            . plugin_submit_links();
+        $retval = COM_createHTMLDocument($retval);
     }
 
     return $retval;
@@ -1061,10 +1060,9 @@ function plugin_save_submit_links($A)
     $msg = PLG_itemPreSave('links', $A);
     if (! empty($msg)) {
         COM_updateSpeedlimit('submit');
-        $retval .= COM_siteHeader('menu')
-                . COM_errorLog($msg, 2)
-                . plugin_submit_links()
-                . COM_siteFooter();
+        $retval .= COM_errorLog($msg, 2)
+                . plugin_submit_links();
+        $retval = COM_createHTMLDocument($retval, 'menu');
 
         return $retval;
     }
@@ -1085,8 +1083,8 @@ function plugin_save_submit_links($A)
                        COM_getBlockTemplate('_msg_block', 'header'))
                 . $LANG12[23]
                 . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
-                . submissionform('links')
-                . COM_siteFooter();
+                . submissionform('links');
+        $retval = COM_createHTMLDocument($retval);
 
         return $retval;
     }

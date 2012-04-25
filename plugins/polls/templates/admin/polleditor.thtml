@@ -1,61 +1,67 @@
-                            {noscript}
-                            <div id="advanced_editor" style="display:none;">
-                                <form action="{site_admin_url}/plugins/polls/index.php" method="post">
-                                    <table cellspacing="0" cellpadding="2" width="100%">
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_pollid}:</td>
-                                            <td><input type="text" dir="ltr" name="pid" value="{poll_id}" size="40" maxlength="40"{xhtml}> {lang_donotusespaces}</td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" valign="top" style="white-space:nowrap;">{lang_topic}:</td>
-                                            <td><input type="text" name="topic" value="{poll_topic}" size="50" maxlength="255"{xhtml}><br{xhtml}>{poll_topic_info}</td>
-                                        </tr>
-                                        <tr{hide_meta}>
-                                            <td valign="top" align="right" style="white-space:nowrap;">{lang_metadescription}:</td>
-                                        <td><textarea name="meta_description" cols="45" rows="2" style="width:100%">{meta_description}</textarea></td>
-                                        </tr>
-                                        <tr{hide_meta}>
-                                            <td valign="top" align="right" style="white-space:nowrap;">{lang_metakeywords}:</td>
-                                            <td><textarea name="meta_keywords" cols="45" rows="2" style="width:100%">{meta_keywords}</textarea></td>
-                                        </tr>                                          
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_mode}:</td>
-                                            <td>
-                                                <select name="commentcode">
-                                                    {comment_options}
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_appearsonhomepage}:</td>
-                                            <td><input type="checkbox" name="mainpage" {poll_display}{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_openforvoting}:</td>
-                                            <td><input type="checkbox" name="open" {poll_open}{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right" style="white-space:nowrap;">{lang_hideresults}:</td>
-                                            <td><input type="checkbox" name="hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</td>
-                                        </tr>
-                                    </table>
-                                    <div id="po_navbar" class="jsenabled_show">
-                                        {navbar}
-                                    </div>
-                                    {question_list}
-                                    <h2>{lang_accessrights}</h2>
-                                    <p>{lang_owner}: {owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></p>
-                                    <p>{lang_group}: {group_dropdown}</p>
-                                    <h2>{lang_permissions}</h2>
-                                    <p>{lang_perm_key}</p>
-                                    <div>{permissions_editor}</div>
-                                    <p>{lang_permissions_msg}</p>
-                                    <p>
-                                    <input type="submit" name="mode" value="{lang_save}"{xhtml}>
-                                    <input type="submit" name="mode" value="{lang_cancel}"{xhtml}>
-                                    {delete_option}
-                                    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
-                                    <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
-                                    </p>
-                                </form>
-                            </div>
+
+<!-- plugins/polls/templates/admin/polleditor.thtml { -->
+
+{noscript}
+<div id="advanced_editor" style="display:none;">
+  <form action="{site_admin_url}/plugins/polls/index.php" method="post" id="polls-polleditor" class="compact">
+    <div class="admin_basic">
+      <dl class="form_block">
+        <dt><label for="polls-polleditor-pid">{lang_pollid}</label></dt>
+        <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="40" id="polls-polleditor-pid" class="size5"{xhtml}> {lang_donotusespaces}</dd>
+
+        <dt><label for="polls-polleditor-topic">{lang_topic}</label></dt>
+        <dd><input type="text" name="topic" value="{poll_topic}" maxlength="255" id="polls-polleditor-topic" class="size6"{xhtml}><br{xhtml}>{poll_topic_info}</dd>
+
+        <dt{hide_meta}><label for="polls-polleditor-meta_description">{lang_metadescription}</label></dt>
+        <dd{hide_meta}><textarea name="meta_description" cols="45" rows="2" id="polls-polleditor-meta_description" class="wide">{meta_description}</textarea></dd>
+
+        <dt{hide_meta}><label for="polls-polleditor-meta_keywords">{lang_metakeywords}</label></dt>
+        <dd{hide_meta}><textarea name="meta_keywords" cols="45" rows="2" id="polls-polleditor-meta_keywords" class="wide">{meta_keywords}</textarea></dd>
+
+        <dt><label for="polls-polleditor-commentcode">{lang_mode}</label></dt>
+        <dd><select name="commentcode" id="polls-polleditor-commentcode">{comment_options}</select></dd>
+
+        <dt><label for="polls-polleditor-mainpage">{lang_appearsonhomepage}</label></dt>
+        <dd><input type="checkbox" name="mainpage" id="polls-polleditor-mainpage" {poll_display}{xhtml}></dd>
+
+        <dt><label for="polls-polleditor-open">{lang_openforvoting}</label></dt>
+        <dd><input type="checkbox" name="open" id="polls-polleditor-open" {poll_open}{xhtml}></dd>
+
+        <dt><label for="polls-polleditor-hideresults">{lang_hideresults}</label></dt>
+        <dd><input type="checkbox" name="hideresults" id="polls-polleditor-hideresults" {poll_hideresults}{xhtml}> {poll_hideresults_explain}</dd>
+      </dl>
+
+      <div id="po_navbar" class="jsenabled_show">
+        {navbar}
+      </div>
+      {question_list}
+
+      <fieldset>
+        <legend>{lang_accessrights}</legend>
+
+        <dl class="form_block">
+          <dt>{lang_owner}</dt>
+          <dd>{owner_name}<input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
+
+          <dt><label>{lang_group}</label></dt>
+          <dd>{group_dropdown}</dd>
+
+          <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+          <dd>{permissions_editor}</dd>
+          <dd class="description">{lang_perm_key}</dd>
+          <dd class="description">{lang_permissions_msg}</dd>
+        </dl>
+      </fieldset>
+
+      <div class="submit">
+        <input type="submit" name="mode" value="{lang_save}" class="submit"{xhtml}>
+        <input type="submit" name="mode" value="{lang_cancel}" class="submit"{xhtml}>
+        {delete_option}
+        <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+        <input type="hidden" value="{poll_id}" name="old_pid"{xhtml}>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- } plugins/polls/templates/admin/polleditor.thtml -->

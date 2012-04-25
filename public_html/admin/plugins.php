@@ -63,9 +63,8 @@ if (!defined('UPLOAD_ERR_EXTENSION'))  { define('UPLOAD_ERR_EXTENSION',  8); }
 $display = '';
 
 if (!SEC_hasRights('plugin.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the plugin administration screen.");
     COM_output($display);
     exit;
@@ -368,9 +367,7 @@ function do_update($pi_name)
         $retval = COM_showMessageText($LANG32[12], $LANG32[13]);
     }
 
-    $retval = COM_siteHeader('menu', $LANG32[13])
-            . $retval
-            . COM_siteFooter();
+    $retval = COM_createHTMLDocument($retval, 'menu', $LANG32[13]);
 
     return $retval;
 }
@@ -668,7 +665,7 @@ function plugin_show_uploadform($token)
         // Show the errors
         $retval .= '<p>' . $LANG32[65] . '</p>' . LB . '<div><ul>' . LB;
         foreach ($errors as $key => $value) {
-            $retval .= "<li>$value</li>";
+            $retval .= "<li class=\"url\">$value</li>";
         }
         $retval .= '</ul></div>' . LB;
     }
@@ -975,7 +972,6 @@ function plugin_main($message = '', $token = '')
 
     $retval = '';
 
-    $retval .= COM_siteHeader('menu', $LANG32[5]);
     if (!empty($message)) {
         $retval .= COM_showMessageText($message);
     } else {
@@ -994,7 +990,7 @@ function plugin_main($message = '', $token = '')
     // Show the upload form or an error message
     $retval .= plugin_show_uploadform($token);
 
-    $retval .= COM_siteFooter();
+    $retval = COM_createHTMLDocument($retval, 'menu', $LANG32[5]);
 
     return $retval;
 }
@@ -1383,14 +1379,12 @@ if ($mode == 'delete') {
     $display .= do_update($pi_name);
 
 } elseif ($mode == 'info_installed') {
-    $display .= COM_siteHeader('menu', $LANG32[13]);
     $display .= plugin_info_installed(COM_applyFilter($_GET['pi_name']));
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG32[13]);
 
 } elseif ($mode == 'info_uninstalled') {
-    $display .= COM_siteHeader('menu', $LANG32[13]);
     $display .= plugin_info_uninstalled(COM_applyFilter($_GET['pi_name']));
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG32[13]);
 
 } elseif ($mode == 'toggle') {
     SEC_checkToken();

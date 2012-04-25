@@ -1,0 +1,9 @@
+
+<!-- blockservices.thtml { -->
+
+      <div class="form_part">
+        <label for="service">{lang_service}</label>
+        {select_service}
+      </div>
+
+<!-- } blockservices.thtml -->

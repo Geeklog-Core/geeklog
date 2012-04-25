@@ -1,0 +1,25 @@
+
+<!-- preferences/excludeblock.thtml { -->
+
+<fieldset>
+  <legend>{lang_exclude_title}</legend>
+
+  <div class="linear">
+    <dl class="profile_notes">
+      <dt>{lang_excluded_items_title}</dt>
+      <dd>{lang_excluded_items}</dd>
+    </dl>
+  </div>
+
+  <div class="compact">
+    <dl class="form_block">
+      <dt><label>{lang_topics}</label></dt>
+      <dd><div id="exclude_topic">{exclude_topic_checklist}</div></dd>
+
+      <dt><label>{lang_authors}</label></dt>
+      <dd>{exclude_author_checklist}</dd>
+    </dl>
+  </div>
+</fieldset>
+
+<!-- } preferences/excludeblock.thtml -->

@@ -64,9 +64,8 @@ require_once '../../auth.inc.php';
 $display = '';
 
 if (!SEC_hasRights('links.edit')) {
-    $display .= COM_siteHeader('menu', $MESSAGE[30])
-             . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-             . COM_siteFooter();
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
     COM_accessLog("User {$_USER['username']} tried to illegally access the links administration screen.");
     COM_output($display);
     exit;
@@ -311,9 +310,8 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
-        $display .= COM_siteHeader('menu', $MESSAGE[30])
-                 . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                 . COM_siteFooter();
+        $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
         COM_output($display);
         exit;
@@ -348,14 +346,13 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         );
 
     } else { // missing fields
-        $retval .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[1]);
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
         if (DB_count ($_TABLES['links'], 'lid', $old_lid) > 0) {
             $retval .= editlink ('edit', $old_lid);
         } else {
             $retval .= editlink ('edit', '');
         }
-        $retval .= COM_siteFooter();
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_LINKS_ADMIN[1]);
 
         return $retval;
     }
@@ -534,19 +531,16 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             $_POST['perm_owner'], $_POST['perm_group'],
             $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[1]);
     $display .= editlink ($mode, COM_applyFilter ($_GET['id']));
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[1]);
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader ('menu', $LANG_LINKS_ADMIN[1]);
     if (empty ($_GET['lid'])) {
         $display .= editlink ($mode);
     } else {
         $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
     }
-    $display .= COM_siteFooter ();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[1]);
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu', $LANG_LINKS_ADMIN[11]);
     if (isset($_GET['msg'])) {
         $msg = COM_applyFilter($_GET['msg'], true);
         if ($msg > 0) {
@@ -554,7 +548,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         }
     }
     $display .= listlinks();
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[11]);
 }
 
 COM_output($display);

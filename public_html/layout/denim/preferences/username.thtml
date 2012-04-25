@@ -1,0 +1,8 @@
+
+<!-- preferences/username.thtml { -->
+
+<dt><label for="profile-new_username">{lang_username}</label></dt>
+<dd><input type="text" maxlength="16" value="{new_username_value}" name="new_username" id="profile-new_username" class="size3"{xhtml}></dd>
+<dd class="description">{lang_username_text}</dd>
+
+<!-- } preferences/username.thtml -->

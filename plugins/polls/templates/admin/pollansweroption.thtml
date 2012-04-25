@@ -1,3 +1,8 @@
-<div style="margin-bottom:4px;"><input type="text" name="answer[{question_id}][]" value="{answer_text}" size="30" maxlength="255"{xhtml}> /
-<input type="text" name="votes[{question_id}][]" value="{answer_votes}" size="5"{xhtml}> /
-<input type="text" name="remark[{question_id}][]" value="{remark_text}" size="50" maxlength="255"{xhtml}></div>
+
+<!-- plugins/polls/templates/admin/pollansweroption.thtml { -->
+<div style="margin-bottom:1.5em;">
+  <input type="text" name="answer[{question_id}][]" value="{answer_text}" maxlength="255" class="size3"{xhtml}> /
+  <input type="text" name="votes[{question_id}][]" value="{answer_votes}" class="size1"{xhtml}> /
+  <input type="text" name="remark[{question_id}][]" value="{remark_text}" maxlength="255" class="size5"{xhtml}>
+</div>
+<!-- } plugins/polls/templates/admin/pollansweroption.thtml -->

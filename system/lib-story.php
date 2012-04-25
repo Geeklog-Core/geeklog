@@ -1299,9 +1299,8 @@ function service_submit_story($args, &$output, &$svc_msg)
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $_GROUPS;
 
     if (!SEC_hasRights('story.edit')) {
-        $output .= COM_siteHeader('menu', $MESSAGE[30])
-                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                . COM_siteFooter();
+        $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
 
         return PLG_RET_AUTH_FAILED;
     }
@@ -1521,32 +1520,28 @@ function service_submit_story($args, &$output, &$svc_msg)
     
     switch ($result) {
     case STORY_DUPLICATE_SID:
-        $output .= COM_siteHeader ('menu', $LANG24[5]);
         $output .= COM_errorLog ($LANG24[24], 2);
         if (!$args['gl_svc']) {
             $output .= storyeditor ($sid);
         }
-        $output .= COM_siteFooter ();
+        $output = COM_createHTMLDocument($output, 'menu', $LANG24[5]);
         return PLG_RET_ERROR;
     case STORY_EXISTING_NO_EDIT_PERMISSION:
-        $output .= COM_siteHeader('menu', $MESSAGE[30])
-                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                . COM_siteFooter ();
+        $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_NO_ACCESS_PARAMS:
-        $output .= COM_siteHeader('menu', $MESSAGE[30])
-                . COM_showMessageText($MESSAGE[29], $MESSAGE[30])
-                . COM_siteFooter ();
+        $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_EMPTY_REQUIRED_FIELDS:
-        $output .= COM_siteHeader('menu');
         $output .= COM_errorLog($LANG24[31],2);
         if (!$args['gl_svc']) {
             $output .= storyeditor($sid);
         }
-        $output .= COM_siteFooter();
+        $output = COM_createHTMLDocument($output, 'menu');
         return PLG_RET_ERROR;
     default:
         break;
@@ -1611,11 +1606,10 @@ function service_submit_story($args, &$output, &$svc_msg)
                     'image/png'   => '.png'
                     ));
             if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-                $output = COM_siteHeader ('menu', $LANG24[30]);
-                $output .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
+                $output = COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
                 $output .= $upload->printErrors (false);
                 $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                $output .= COM_siteFooter ();
+                $output = COM_createHTMLDocument($output, 'menu', $LANG24[30]);
                 echo $output;
                 exit;
             }
@@ -1645,12 +1639,11 @@ function service_submit_story($args, &$output, &$svc_msg)
             $upload->uploadFiles();
 
             if ($upload->areErrors()) {
-                $retval = COM_siteHeader('menu', $LANG24[30]);
-                $retval .= COM_startBlock ($LANG24[30], '',
+                $retval = COM_startBlock ($LANG24[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
                 $retval .= $upload->printErrors(false);
                 $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-                $retval .= COM_siteFooter();
+                $output = COM_createHTMLDocument($output, 'menu', $LANG24[30]);
                 echo $retval;
                 exit;
             }
@@ -1665,7 +1658,6 @@ function service_submit_story($args, &$output, &$svc_msg)
         if ($_CONF['maximagesperarticle'] > 0) {
             $errors = $story->insertImages();
             if (count($errors) > 0) {
-                $output = COM_siteHeader('menu', $LANG24[54]);
                 $output .= COM_startBlock($LANG24[54], '',
                                 COM_getBlockTemplate('_msg_block', 'header'));
                 $output .= $LANG24[55] . LB . '<ul>' . LB;
@@ -1676,7 +1668,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                 $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
                                                              'footer'));
                 $output .= storyeditor($sid);
-                $output .= COM_siteFooter();
+                $output = COM_createHTMLDocument($output, 'menu', $LANG24[54]);
                 echo $output;
                 exit;
             }

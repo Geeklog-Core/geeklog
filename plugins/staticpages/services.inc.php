@@ -69,12 +69,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $output = '';
 
     if (!SEC_hasRights('staticpages.edit')) {
-        $output = COM_siteHeader('menu', $LANG_STATIC['access_denied']);
         $output .= COM_startBlock($LANG_STATIC['access_denied'], '',
                                   COM_getBlockTemplate('_msg_block', 'header'));
         $output .= $LANG_STATIC['access_denied_msg'];
         $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        $output .= COM_siteFooter();
+        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['access_denied']);
 
         return PLG_RET_AUTH_FAILED;
     }
@@ -313,12 +312,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     }
 
     if ($duplicate_id) {
-        $output .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
         $output .= COM_errorLog ($LANG_STATIC['duplicate_id'], 2);
         if (!$args['gl_svc']) {
             $output .= staticpageeditor ($sp_id);
         }
-        $output .= COM_siteFooter ();
+        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['staticpageeditor']);
         $svc_msg['error_desc'] = 'Duplicate ID';
         return PLG_RET_ERROR;
     } elseif (!empty ($sp_title) && !empty ($sp_content)  && TOPIC_checkTopicSelectionControl() && TOPIC_hasMultiTopicAccess('topic') == 3) {
@@ -520,12 +518,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $svc_msg['id'] = $sp_id;
         return PLG_RET_OK;
     } else {
-        $output .= COM_siteHeader ('menu', $LANG_STATIC['staticpageeditor']);
         $output .= COM_errorLog ($LANG_STATIC['no_title_or_content'], 2);
         if (!$args['gl_svc']) {
             $output .= staticpageeditor ($sp_id);
         }
-        $output .= COM_siteFooter ();
+        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['staticpageeditor']);
         return PLG_RET_ERROR;
     }
 }
@@ -558,12 +555,11 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     $sp_id = $args['sp_id'];
 
     if (!SEC_hasRights ('staticpages.delete')) {
-        $output = COM_siteHeader ('menu', $LANG_STATIC['access_denied']);
         $output .= COM_startBlock ($LANG_STATIC['access_denied'], '',
                                     COM_getBlockTemplate ('_msg_block', 'header'));
         $output .= $LANG_STATIC['access_denied_msg'];
         $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $output .= COM_siteFooter ();
+        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['access_denied']);
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
         } else {
@@ -761,24 +757,18 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                                           "sp_id = '$page'");
                 }
                 if ($failflg) {
-                    if ($mode !== 'autotag') {
-                        $output = COM_siteHeader('menu');
-                    }
                     $output .= SEC_loginRequiredForm();
                     if ($mode !== 'autotag') {
-                        $output .= COM_siteFooter(true);
+                        $output = COM_createHTMLDocument($output, 'menu', '', '', true);
                     }
                 } else {
-                    if ($mode !== 'autotag') {
-                        $output = COM_siteHeader('menu');
-                    }
                     $output .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate('_msg_block', 'header'));
                     $output .= $LANG_STATIC['deny_msg'];
                     $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
                                                                  'footer'));
                     if ($mode !== 'autotag') {
-                        $output .= COM_siteFooter(true);
+                        $output = COM_createHTMLDocument($output, 'menu', '', '', true);
                     }
                 }
             }

@@ -1,0 +1,8 @@
+
+<!-- admin/user/reminder.thtml { -->
+
+<div id="reminder-submit" class="submit">
+  <input type="submit" name="mode" value="{action_reminder}" class="submit"{xhtml}>&nbsp;{lang_reminder}
+</div>
+
+<!-- } admin/user/reminder.thtml -->

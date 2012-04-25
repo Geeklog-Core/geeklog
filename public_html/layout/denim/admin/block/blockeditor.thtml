@@ -1,0 +1,118 @@
+
+<!-- admin/block/blockeditor.thtml { -->
+
+{start_block_editor}
+<form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact">
+
+  <div class="admin_basic">
+    <dl class="form_block">
+      <dt><label for="admin-blockeditor-title">{lang_blocktitle}</label></dt>
+      <dd><input type="text" value="{block_title}" name="title" id="admin-blockeditor-title" class="size5"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-is_enabled">{lang_enabled}</label></dt>
+      <dd><input type="checkbox" {is_enabled} name="is_enabled" id="admin-blockeditor-is_enabled"{xhtml}></dd>
+
+      <dt><label for="admin-blockeditor-help">{lang_blockhelpurl}</label></dt>
+      <dd>
+        <input type="text" value="{block_help}" name="help" id="admin-blockeditor-help" class="size5"{xhtml}>
+      </dd>
+      <dd class="description">{lang_includehttp}</dd>
+      <dd class="description">{lang_explanation}</dd>
+
+      <dt><label for="admin-blockeditor-name">{lang_blockname}</label></dt>
+      <dd><input type="text" value="{block_name}" name="name" id="admin-blockeditor-name" class="size5"{xhtml}></dd>
+      <dd class="description">{lang_nospaces}</dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label for="admin-blockeditor-onleft">{lang_side}</label></dt>
+      <dd>
+        <select name="onleft" id="admin-blockeditor-onleft">
+          <option value="1" {left_selected}>{lang_left}</option>
+          <option value="0" {right_selected}>{lang_right}</option>
+        </select>
+      </dd>
+
+      <dt><label for="admin-blockeditor-blockorder">{lang_blockorder}</label></dt>
+      <dd><input type="text" value="{block_order}" name="blockorder" id="admin-blockeditor-blockorder" class="size1"{xhtml}></dd>
+      <dd class="description">0-9999</dd>
+
+      <dt><label for="admin-blockeditor-type">{lang_blocktype}</label></dt>
+      <dd>
+        <select name="type" id="admin-blockeditor-type">
+          <option value="normal" {normal_selected}>{lang_normalblock}</option>
+          <option value="phpblock" {php_selected}>{lang_phpblock}</option>
+          <option value="portal" {portal_selected}>{lang_portalblock}</option>
+        </select>
+      </dd>
+    </dl>
+
+    <fieldset>
+      <legend>{lang_phpblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-phpblockfn">{lang_blockfunction}</label></dt>
+        <dd><input type="text" maxlength="50" value="{block_phpblockfn}" name="phpblockfn" id="admin-blockeditor-phpblockfn" class="size5"{xhtml}></dd>
+        <dd class="description">{lang_phpblockwarning}</dd>
+      </dl>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_portalblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-rdfurl">{lang_rdfurl}</label></dt>
+        <dd><input type="text" maxlength="{max_url_length}" value="{block_rdfurl}" name="rdfurl" id="admin-blockeditor-rdfurl" class="size5"{xhtml}></dd>
+
+        <dt><label for="admin-blockeditor-rdflimit">{lang_rdflimit}</label></dt>
+        <dd><input type="text" maxlength="3" value="{block_rdflimit}" name="rdflimit" id="admin-blockeditor-rdflimit" class="size1"{xhtml}></dd>
+
+        <dt><label for="admin-blockeditor-rdfupdated">{lang_lastrdfupdate}</label></dt>
+        <dd><input type="text" value="{block_rdfupdated}" name="rdfupdated" id="admin-blockeditor-rdfupdated" class="size3"{xhtml}></dd>
+      </dl>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_normalblockoptions}</legend>
+
+      <dl class="form_block">
+        <dt><label for="admin-blockeditor-content">{lang_blockcontent}</label></dt>
+        <dd><textarea cols="40" rows="12" name="content" id="admin-blockeditor-content" class="wide">{block_content}</textarea></dd>
+        <dt>{lang_autotags}</dt>
+        <dd><input type="checkbox" name="allow_autotags" {allow_autotags}{xhtml}>({lang_use_autotags})</dd>
+      </dl>
+
+      <p class="description">{lang_allowed_html}</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_accessrights}</legend>
+
+      <dl class="form_block">
+        <dt>{lang_owner}</dt>
+        <dd>{owner_username}</dd>
+
+        <dt><label>{lang_group}</label></dt>
+        <dd>{group_dropdown}</dd>
+
+        <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+        <dd>{permissions_editor}</dd>
+        <dd class="description">{lang_perm_key}</dd>
+        <dd class="description">{lang_permissions_msg}</dd>
+      </dl>
+    </fieldset>
+
+    <div class="submit">
+      <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
+      <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+      <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}>
+      <input type="hidden" name="bid" value="{block_bid}"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+      {delete_option}
+    </div>
+  </div>
+
+</form>
+{end_block}
+<!-- } admin/block/blockeditor.thtml -->

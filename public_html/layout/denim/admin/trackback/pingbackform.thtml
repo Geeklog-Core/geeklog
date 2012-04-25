@@ -1,0 +1,25 @@
+
+<!-- admin/trackback/pingbackform.thtml { -->
+
+<form action="{site_admin_url}/trackback.php" method="post" id="pingbackform" class="compact">
+  <fieldset>
+    <legend>ピングバックを送信</legend>  <!-- Geeklog Japanse -->
+
+    <p class="form_message">{lang_explain}</p>
+
+    <dl class="form_block">
+      <dt><label for="pingbackform-target">{lang_pingback_url}</label></dt>
+      <dd><input type="text" maxlength="{max_url_length}" value="{target_url}" name="target" id="pingbackform-target" class="size6"{xhtml}></dd>
+
+      <dt>{lang_site_url}</dt>
+      <dd><span class="url">{site_url}</span></dd>
+    </dl>
+
+    <div class="submit">
+      <input type="submit" value="{lang_send}" name="mode[2]" class="submit"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </fieldset>
+</form>
+
+<!-- } admin/trackback/pingbackform.thtml -->

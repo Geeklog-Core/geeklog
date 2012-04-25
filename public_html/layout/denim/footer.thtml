@@ -1,0 +1,45 @@
+
+<!-- footer.thtml { -->
+
+        </div>
+      </div>
+
+      {left_blocks}
+
+      {right_blocks}
+
+    </div>
+    <!-- } #wrapper -->
+
+    <hr class="separator"{xhtml}>
+
+    <!-- #footer { -->
+    <div id="footer" class="clearfix">
+      <div id="footer-content">
+        <p class="copyright">{copyright_notice}</p>
+        <p class="site_info">
+          <span class="powered_by">{powered_by}&nbsp;<a href="http://www.geeklog.net/">Geeklog</a></span><br{xhtml}>
+          <span class="execution_textandtime">{execution_textandtime}</span>
+        </p>
+      </div>
+    </div>
+    <!-- } #footer -->
+
+  </div>
+  <!-- } #container -->
+
+  {plg_footercode}
+
+  <!-- Depending on the situation, HTML body element's class attribute to specify a value by JavaScript
+       The argument from the left, the right block container, the middle block left the right block id attribute value -->
+  <script type="text/javascript">
+  <!--
+    FixHTML('leftblocks', 'centerblocks', 'rightblocks');
+  -->
+  </script>
+
+<!-- } footer.thtml -->
+
+</body>
+
+</html>

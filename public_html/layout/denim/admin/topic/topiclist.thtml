@@ -1,0 +1,10 @@
+
+<!-- admin/topic/topiclist.thtml { -->
+
+{top_menu}
+
+<ul id="admin-topiclist" class="clearfix">
+{list_row}
+</ul>
+
+<!-- } admin/topic/topiclist.thtml -->

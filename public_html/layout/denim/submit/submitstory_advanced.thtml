@@ -1,0 +1,57 @@
+
+<!-- submit/submitstory_advanced.thtml { -->
+
+<script type="text/javascript">
+  <!--
+  // Setup editor path for FCKeditor JS Functions
+  geeklogEditorBasePath = "{site_url}/fckeditor/";
+  -->
+</script>
+<script type="text/JavaScript" src="{site_url}/javascript/submitstory_fckeditor.js"></script>
+
+<form action="{site_url}/submit.php" method="post" onSubmit='set_postcontent();' id="submitstory" class="compact">
+
+  <div class="user_basic">
+    <dl class="form_block">
+      <dt>{lang_username}</dt>
+      <dd>{story_username} [ <a href="{status_url}" rel="nofollow">{lang_loginout}</a>{separator}{create_account} ]</dd>
+
+      <dt><label for="submitstory_advanced-title">{lang_title}</label></dt>
+      <dd><input type="text" maxlength="96" value="{story_title}" name="title" id="submitstory_advanced-title" class="size5"{xhtml}></dd>
+
+      <dt><label>{lang_topic}</label></dt>
+      <dd>{topic_selection}</dd>
+
+      <dt><label for="introtext">{lang_story}</label></dt>
+      <dd>
+        <div class="text_editor" style="display: {show_texteditor};">
+          <textarea cols="45" rows="15" name="introtext" id="introtext" class="wide">{story_introtext}</textarea>
+        </div>
+        <div class="html_editor" style="display: {show_htmleditor};">
+          <textarea cols="45" rows="15" name="introhtml" id="introhtml" class="wide">{story_introtext}</textarea>
+        </div>
+      </dd>
+ 
+      <dt><label for="submitstory_advanced-postmode">{lang_postmode}</label></dt>
+      <dd>
+        <select name="postmode" id="sel_editmode" {change_editormode}>
+          {story_postmode_options}
+        </select>
+      </dd>
+      <dd class="description">{allowed_html}</dd>
+    </dl>
+
+    {captcha}
+
+    <div class="submit">
+      <input name="mode" type="submit" value="{lang_preview}" class="submit"{xhtml}>
+      <input type="hidden" name="type" value="story"{xhtml}>
+      <input type="hidden" name="uid" value="{story_uid}"{xhtml}>
+      <input type="hidden" name="sid" value="{story_sid}"{xhtml}>
+      <input type="hidden" name="date" value="{story_date}"{xhtml}>
+      {save_button}
+    </div>
+  </div>
+</form>
+
+<!-- } submit/submitstory_advanced.thtml -->

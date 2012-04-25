@@ -46,9 +46,8 @@ $display = '';
 
 if (COM_isAnonUser() && (($_CONF['loginrequired'] == 1) ||
                          ($_CONF['directoryloginrequired'] == 1))) {
-    $display = COM_siteHeader('menu', $LANG_DIR['title']);
-    $display .= SEC_loginRequiredForm();
-    $display .= COM_siteFooter();
+    $display = COM_createHTMLDocument(SEC_loginRequiredForm(),
+                                      'menu', $LANG_DIR['title']);
     COM_output($display);
     exit;
 }
@@ -560,28 +559,25 @@ if (($year != 0) && ($month != 0)) {
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader('menu', $title,
-                               DIR_canonicalLink($topic, $year, $month));
-    $display .= DIR_displayMonth ($topic, $year, $month, true);
+    $display = DIR_displayMonth ($topic, $year, $month, true);
     $display .= DIR_navBar ($topic, $year, $month);
+    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year, $month), true);
 } else if ($year != 0) {
     $title = sprintf ($LANG_DIR['title_year'], $year);
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader('menu', $title, DIR_canonicalLink($topic, $year));
-    $display .= DIR_displayYear($topic, $year, true);
+    $display = DIR_displayYear($topic, $year, true);
     $display .= DIR_navBar($topic, $year);
+    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year), true);
 } else {
     $title = $LANG_DIR['title'];
     if ($topic != 'all') {
         $title .= ': ' . $topicName;
     }
-    $display .= COM_siteHeader('menu', $title, DIR_canonicalLink($topic));
-    $display .= DIR_displayAll($topic, $conf_list_current_month);
+    $display = DIR_displayAll($topic, $conf_list_current_month);
+    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic));
 }
-
-$display .= COM_siteFooter();
 
 COM_output($display);
 

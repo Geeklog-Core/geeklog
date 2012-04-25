@@ -202,10 +202,9 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     $ret = CMT_saveComment($title, $comment, $id, $pid, 'staticpages',
                            $postmode);
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
-        $retval .= COM_siteHeader('menu', $LANG03[1])
-                . CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
-                                  $LANG03[14], $postmode)
-                . COM_siteFooter();
+        $retval .= CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
+                                  $LANG03[14], $postmode);
+        $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1]);
     } else { // success
         $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
                             . $id);
@@ -324,9 +323,9 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         }
 
         if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-            $retval .= COM_siteHeader('menu', $page_title, $headercode);
+            $what = 'menu';
         } else {
-            $retval .= COM_siteHeader('none', $page_title, $headercode);
+            $what = 'none';
         }
         if ($msg > 0) {
             $retval .= COM_showMessage($msg, 'staticpages');
@@ -485,13 +484,15 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         }
 
         if (($A['sp_format'] == 'allblocks') && ($_USER['noboxes'] != 1)) {
-            $retval .= COM_siteFooter(true);
+            $rightblock = true;
         } elseif (($A['sp_format'] == 'leftblocks') ||
                   ($A['sp_format'] == 'noblocks')) {
-            $retval .= COM_siteFooter(false);
+            $rightblock = false;
         } else {
-            $retval .= COM_siteFooter();
+            $rightblock = -1;
         }
+
+        $retval = COM_createHTMLDocument($retval, $what, $page_title, $headercode, $rightblock);
     }
 
     return $retval;
@@ -1020,12 +1021,12 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             if ($where == 0) {
                 switch ($S['sp_format']) {
                 case 'noblocks':
-                    $retval .= COM_siteHeader('none');
+                    $what = 'none';
                     break;
 
                 case 'allblocks':
                 case 'leftblocks':
-                    $retval .= COM_siteHeader('menu');
+                    $what = 'menu';
                     break;
                 }
                 if (isset($_GET['msg'])) {
@@ -1122,10 +1123,11 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
 
             if ($where == 0) {
                 if ($S['sp_format'] == 'allblocks') {
-                    $retval .= COM_siteFooter(true);
+                    $rightblock = true;
                 } elseif ($S['sp_format'] != 'blankpage') {
-                    $retval .= COM_siteFooter();
+                    $rightblock = -1;
                 }
+                $retval = COM_createHTMLDocument($retval, $what, '', '', $rightblock);
             }
 
             // increment hit counter for page

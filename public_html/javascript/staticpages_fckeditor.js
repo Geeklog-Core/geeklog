@@ -28,13 +28,20 @@
 
 
     window.onload = function() {
+        var bar = 1;
+        if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+            bar = 0;
+        }
+
         var oFCKeditor1 = new FCKeditor( 'sp_content' ) ;
         oFCKeditor1.BasePath = geeklogEditorBasePath;
         oFCKeditor1.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
-        oFCKeditor1.ToolbarSet = 'editor-toolbar2' ;
+        oFCKeditor1.ToolbarSet = 'editor-toolbar' + (bar + 1) ;
         oFCKeditor1.Height = 400 ;
         oFCKeditor1.AutoGrowMax = 1200        
         oFCKeditor1.ReplaceTextarea() ;
+
+        document.getElementById('fckeditor_toolbar_selector').options[bar].selected = true;
     }
 
    function changeToolbar(toolbar) {

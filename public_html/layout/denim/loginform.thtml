@@ -1,0 +1,35 @@
+
+<!-- loginform.thtml { -->
+
+<form action="{site_url}/users.php" method="post" id="loginform">
+  <fieldset class="noborder_fieldset">
+    <legend class="hidden_legend">{lang_login}</legend>
+
+    <div class="loginform">
+      <div class="form_part">
+        <label for="loginform-loginname">{lang_username}</label>
+        <input type="text" value="" name="loginname" id="loginform-loginname" class="size3"{xhtml}>
+      </div>
+
+      {services}
+
+      <div class="form_part">
+        <label for="loginform-passwd">{lang_password}</label>
+        <input type="password" name="passwd" id="loginform-passwd" class="size3"{xhtml}>
+      </div>
+    </div>
+
+    <div class="submit">
+      <input type="submit" value="{lang_login}" class="submit"{xhtml}>
+    </div>
+
+    <div class="navi">
+      <div>{lang_signup}</div>
+      <div>{lang_forgetpassword}</div>
+    </div>
+  </fieldset>
+</form>
+{oauth_login}
+{openid_login}
+
+<!-- } loginform.thtml -->

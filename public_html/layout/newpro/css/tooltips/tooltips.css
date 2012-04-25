@@ -21,7 +21,7 @@ a.gl-tooltip {
     position: relative;
 }
 a.gl-tooltip span {
-    margin-left: -999em;
+    margin-{left}: -999em;
     position: absolute;
     text-align: {left};
     width: 250px;
@@ -34,7 +34,7 @@ a.gl-tooltip:hover span {
     -webkit-box-shadow: 2px 2px 8px #666;
     -moz-box-shadow: 2px 2px 8px #666;
     font-size: 1em;
-    text-align: left;
+    text-align: {left};
     white-space:normal;
     font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
     position: absolute;

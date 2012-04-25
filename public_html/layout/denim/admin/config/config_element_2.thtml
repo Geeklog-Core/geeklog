@@ -1,0 +1,83 @@
+<!-- BEGIN validation_error_block -->
+<div class="validation_error_block"><span></span>{validation_error_message}</div>
+<!-- END validation_error_block -->
+
+
+<!-- BEGIN delete-button -->
+<input type="button" class="del-link" value="x" onclick="gl_cfg_remove(this);"{xhtml}>
+<!-- END delete-button -->
+
+
+<!-- BEGIN text-element -->
+<div{hide_row} class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+<input type="text" class="opt{error_class}" name="{name}" value="{value}"{xhtml}>
+{delete}{error_block}
+</div>
+<!-- END text-element -->
+
+
+<!-- BEGIN text-area -->
+<div class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+<textarea class="opt{error_class}" name="{name}" cols="3" rows="3">{value}</textarea>
+{delete}{error_block}
+</div>
+<!-- END text-area -->
+
+
+<!-- BEGIN placeholder-element -->
+<div{hide_row} class="config_name"><div class="config_label">{display_name}</div>
+<input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+<input type="hidden" class="opt{error_class}" name="{name}" value="{value}"{xhtml}>
+{delete}
+</div>
+<!-- END placeholder-element -->
+
+
+<!-- BEGIN select-element -->
+<div{hide_row} class="config_name"><div class="config_label">{display_name} {doc_link} {unset_link}</div>
+<input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+<select name="{name}" class="opt{error_class}">
+  <!-- BEGIN select-options -->
+    <option {selected} value="{opt_value}">{opt_name}</option>
+  <!-- END select-options -->
+</select>
+{delete}{error_block}
+</div>
+<!-- END select-element -->
+
+
+<!-- BEGIN unset-param -->
+<div class="config_name"><div class="config_label">{display_name} {doc_link}</div>
+<div class="restore"><a href="#{name}" class="restore_param">{lang_enable}</a></div>
+</div>
+<!-- END unset-param -->
+
+
+<!-- BEGIN list-element -->
+<div{hide_row} class="config_name"><div class="config_label" style="vertical-align:top">{display_name} {doc_link} {unset_link}</div>
+<input type="button" value="+" class="toggle_hidden" onclick="toggleHidden('arr_{id_name}', this);"{xhtml}>
+{delete}
+<input type="hidden" value="true" name="{name}[nameholder]"{xhtml}>
+<div style="display:none" id="arr_{id_name}" class="{arr_class_list}">
+{my_elements}
+{my_add_element_button}
+</div>
+</div>
+<!-- END list-element -->
+
+
+<!-- BEGIN keyed-add-button -->
+<div id="add_{id_name}" class="config_name">
+<input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
+<input type="text" style="width: 65px"{xhtml}>
+</div>
+<!-- END keyed-add-button -->
+
+
+<!-- BEGIN unkeyed-add-button -->
+<div id="add_{id_name}" class="config_name">
+<input type="button" value="{lang_add_element}" class="add_ele_input" onclick="handleAdd(this, '{array_type}', '{arr_name}')"{xhtml}>
+</div>
+<!-- END unkeyed-add-button -->

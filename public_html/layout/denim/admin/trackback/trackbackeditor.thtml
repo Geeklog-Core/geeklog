@@ -1,0 +1,35 @@
+
+<!-- admin/trackback/trackbackeditor.thtml { -->
+
+<form action="{site_admin_url}/trackback.php" method="post" id="trackbackeditor" class="compact">
+
+  <div class="admin_basic">
+    <p class="form_message">{lang_explain}</p>
+
+    <dl class="form_block">
+      <dt><label for="trackbackeditor-target">{lang_trackback_url}</label></dt>
+      <dd><input type="text" maxlength="{max_url_length}" value="{target_url}" name="target" id="trackbackeditor-target" class="size6"{xhtml}></dd>
+
+      <dt><label for="trackbackeditor-blog_name">{lang_blog_name}</label></dt>
+      <dd><input type="text" maxlength="80" value="{blog_name}" name="blog_name" id="trackbackeditor-blog_name" class="size6"{xhtml}></dd>
+
+      <dt><label for="trackbackeditor-url">{lang_entry_url}</label></dt>
+      <dd><input type="text" maxlength="{max_url_length}" value="{url}" name="url" id="trackbackeditor-url" class="size6"{xhtml}></dd>
+
+      <dt><label for="trackbackeditor-title">{lang_title}</label></dt>
+      <dd><input type="text" maxlength="255" value="{title}" name="title" id="trackbackeditor-title" class="size6"{xhtml}></dd>
+
+      <dt><label for="trackbackeditor-excerpt">{lang_excerpt}</label></dt>
+      <dd><textarea cols="45" rows="8" name="excerpt" id="trackbackeditor-excerpt" class="wide">{excerpt}</textarea></dd>
+      <dd class="description">{lang_excerpt_truncated}</dd>
+    </dl>
+
+    <div class="submit">
+      <input type="submit" value="{lang_send}" name="mode[0]" class="submit"{xhtml}>
+      <input type="submit" value="{lang_preview}" name="mode[1]" class="submit"{xhtml}>
+      <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
+  </div>
+</form>
+
+<!-- } admin/trackback/trackbackeditor.thtml -->

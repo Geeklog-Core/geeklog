@@ -1,0 +1,73 @@
+
+<!-- admin/group/groupeditor.thtml { -->
+
+<form action="{site_admin_url}/group.php" method="post" id="admin-groupeditor">
+
+  <div class="admin_basic compact">
+    <dl class="form_block">
+      <dt><label for="admin-groupeditor-grp_name">{lang_groupname}</label></dt>
+      <dd>{groupname_static}<input type="{groupname_inputtype}" maxlength="50" value="{group_name}" name="grp_name" id="admin-groupeditor-grp_name" class="size3"{xhtml}></dd>
+
+      <dt><label for="admin-groupeditor-grp_descr">{lang_description}</label></dt>
+      <dd><input type="text" maxlength="255" value="{group_description}" name="grp_descr" id="admin-groupeditor-grp_descr" class="size5"{xhtml}></dd>
+
+    </dl>
+
+    <dl class="form_block" {hide_adminoption}>
+      <dt>{lang_admingroup}</dt>
+      <dd><input type="checkbox" name="chk_grpadmin" value="1" {chk_adminuse}{xhtml}>
+          <span class="fieldhelp">{lang_admingrp_msg}</span>
+      </dd>
+    </dl>
+
+    <dl class="form_block" {hide_defaultoption}>
+      <dt>{lang_defaultgroup}</dt>
+      <dd>
+          <input type="checkbox" name="chk_grpdefault" id="chk1" onclick="showHide('msg1')" value="1" {chk_defaultuse}{xhtml}>
+          <span class="fieldhelp">{lang_defaultgrp_msg}</span>
+      </dd>
+    </dl>
+
+    <dl id="applydefault_row" class="form_block" {hide_defaultoption}>
+      <dt></dt>
+      <dd>
+        <div style="display:none" id="msg1">
+          <input type="checkbox" name="chk_applydefault" id="chk2" value="1"{xhtml}>
+          <span class="fieldhelp">{lang_applydefault_msg}</span>
+        </div>
+      </dd>
+    </dl>
+  </div>
+
+  <div class="linear">
+    <fieldset>
+      <legend>{lang_securitygroups}</legend>
+
+      <dl class="form_block">
+        <dd class="description">{lang_securitygroupmsg}</dd>
+        <dd><div class="fieldset-table-wrapper">{group_options}</div></dd>
+      </dl>
+    </fieldset>
+
+    <fieldset>
+      <legend>{lang_rights}</legend>
+
+      <dl class="form_block">
+        <dd class="description">{lang_rightsmsg}</dd>
+        <dd><div class="fieldset-table-wrapper"><table id="rights_options">{rights_options}</table></div></dd>
+      </dl>
+    </fieldset>
+  </div>
+
+  <div class="submit">
+    <input type="submit" value="{lang_save}" name="mode" class="submit"{xhtml}>
+    {delete_option}
+    <input type="hidden" name="grp_gl_core" value="{group_core}"{xhtml}>
+    <input type="hidden" name="grp_id" value="{group_id}"{xhtml}>
+    <input type="hidden" name="chk_showall" value="{show_all}"{xhtml}>
+    <input type="submit" value="{lang_cancel}" name="mode" class="submit"{xhtml}>
+    <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+  </div>
+</form>
+
+<!-- } admin/group/groupeditor.thtml -->
