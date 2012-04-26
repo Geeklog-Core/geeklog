@@ -124,13 +124,6 @@
     color: #FFFFBB;
 }
 
-
-
-
-
-
-
-
 /*
 * Customize for Geeklog New Theme
 *
@@ -216,3 +209,22 @@
   background: #FFF;
   border: 1px solid #DDD;
 }
+
+
+
+/*
+* Support for Right-To-Left Languages
+*
+*/
+body[dir="rtl"] .ui-tabs .ui-tabs-nav li {
+  float: right;
+}
+body[dir="rtl"] .ui-tabs .ui-tabs-nav li a {
+  float: right;
+}
+body[dir="rtl"] #tooltip-close {
+  top: 1px;
+  right: auto;
+  left: 1px;
+}
+
