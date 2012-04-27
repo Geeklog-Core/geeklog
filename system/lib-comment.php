@@ -916,6 +916,11 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             // Remove any autotags the user doesn't have permission to use
             $commenttext = PLG_replaceTags($commenttext, '', true);
 
+            // Autotags can now be used in templates when an article is rendered
+            // for this reason, replace [, ] in order to prevent garbled characters
+            $commenttext = str_replace('[','&#91;',$commenttext);
+            $commenttext = str_replace(']','&#93;',$commenttext);
+
             $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 

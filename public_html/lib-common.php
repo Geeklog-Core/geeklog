@@ -4768,9 +4768,10 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
             $comma = ', ';
         }
         if (! empty($description[$tag])) {
-           $retval .= $comma . COM_getTooltip('[' . $tag . ':]', $description[$tag], '', $LANG01[132],'information');
+           $desc = str_replace(array('[',']'), array('&#91;', '&#93;'), $description[$tag]);
+           $retval .= $comma . COM_getTooltip('&#91;' . $tag . ':&#93;', $desc, '', $LANG01[132],'information');
         } else {
-            $retval .= $comma . '[' . $tag . ':]';
+           $retval .= $comma . '&#91;' . $tag . ':&#93;';
         }
         $done_once = true;
     }
