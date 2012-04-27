@@ -19,7 +19,7 @@
 
     <div id="config_content">
 
-        <div class="saved_message pluginInfo{error_validation_class}" style="display:{show_changeblock}">
+        <div class="saved_message{error_validation_class}" style="display:{show_changeblock}">
             {lang_changes_made}
             {lang_error_validation_occurs}
             {change_block}

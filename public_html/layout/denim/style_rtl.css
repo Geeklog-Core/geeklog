@@ -1945,6 +1945,7 @@ span.warning  em { color: #CE5C00; }
 .gl-pagenav {
   text-align: center;
   color: #CCC;
+  margin: 0 0 1.5em;
 }
 
 .gl-pagenav a {
@@ -1957,6 +1958,7 @@ span.warning  em { color: #CE5C00; }
 
 .gl-pagenav a:hover {
   background: #EEE;
+  border: 1px solid #CCC;
 }
 
 .gl-pagenav span {
@@ -1975,6 +1977,7 @@ span.warning  em { color: #CE5C00; }
 
 .gl-pagenav span a:hover {
   background: transparent;
+  border: none;
 }
 
 /*--------------------------------------
@@ -2609,7 +2612,7 @@ b.status_black {
 }
 
 .config_name {
-  clear: left;
+  clear: right;
   margin: 5px 0;
   padding: 5px;
 }
