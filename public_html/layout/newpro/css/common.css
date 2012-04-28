@@ -229,7 +229,6 @@ form.compact p.message {
 }
 
 form.compact dl {
-  overflow: hidden;  /* Floating Item */
   margin: 0 0 1em 0;
   padding: 0;
 }
