@@ -46,9 +46,9 @@ div#centerblocks div#block-message {
 
   border: 1px solid #939490;
 
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 
   -webkit-box-shadow: 0px 0px 4px 1px #aaa;
   -moz-box-shadow: 0px 0px 4px 1px #aaa;
@@ -117,9 +117,9 @@ div#centerblocks {
   border-top: 1px solid #aaa;
   background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
 
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* Welcome Message */
@@ -197,9 +197,9 @@ div#leftblocks div.block-left {
   padding: 8px;
   background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
 
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* Block Title */
@@ -241,9 +241,9 @@ div#rightblocks div.block-right {
   padding: 8px;
   background: #fff url("./images/css/block_bg.png") repeat-x scroll 0 0;
 
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  border-radius: 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 
 /* Block Title */
