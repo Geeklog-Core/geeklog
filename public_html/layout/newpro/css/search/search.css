@@ -23,7 +23,38 @@ body.js_off form#advsearchform textarea {
   width: auto;
 }
 
+#advsearchform dt {
+  text-align: {right};
+  margin: 0;
+}
+#advsearchform dd {
+  padding-bottom: 0.4em;
+}
 
+#advsearchform label {
+  height: 2em;
+  line-height: 2em;
+  padding-{right}: 2em;
+}
+
+#advsearchform #advsearchform-query {
+  width: 55%;
+}
+
+#advsearchform select,
+#advsearchform input {
+  width: 25%;
+  vertical-align: middle;
+}
+
+#advsearchform span {
+  padding: 0 0.4em;
+}
+
+#advsearchform ul .submit {
+  width: 41.25%; /* 55% * 75% */
+  margin-left: 25%;
+}
 
 /*--------------------------------------
   Search Result
