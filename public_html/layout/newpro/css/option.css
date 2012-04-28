@@ -18,6 +18,7 @@ li.adminoption {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
 
 /* Menu Enabled Menu Link */
@@ -36,6 +37,7 @@ li.adminoption_off {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
 
 
@@ -49,6 +51,7 @@ li.topicoption {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
 
 /* Menu Enabled Menu Link */
@@ -67,6 +70,7 @@ li.topicoption_off {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
 
 
@@ -80,6 +84,7 @@ li.useroption {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
 
 /* Menu Enabled Menu Link */
@@ -98,4 +103,5 @@ li.useroption_off {
   list-style: none outside;
   margin: 0;
   padding: 0;
+  color: #333;
 }
