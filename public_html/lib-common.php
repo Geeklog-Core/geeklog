@@ -7676,7 +7676,7 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
     $tooltip->set_var('text', $text);
     $tooltip->set_var('title', $title);
     if ($link == '') {
-        $link = '#';
+        $link = 'javascript:void(0);';
         $cursor = 'help';
     } else {
         $cursor = 'pointer';
