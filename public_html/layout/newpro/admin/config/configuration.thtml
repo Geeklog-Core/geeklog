@@ -14,7 +14,7 @@
             </td>
             <td style="vertical-align:top; width: 100%">
             
-                <div class="saved_message pluginInfo{error_validation_class}" style="display:{show_changeblock}">
+                <div class="saved_message {error_validation_class}" style="display:{show_changeblock}">
                     {lang_changes_made}
                     {lang_error_validation_occurs}
                     {change_block}
