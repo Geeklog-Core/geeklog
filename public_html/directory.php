@@ -561,7 +561,7 @@ if (($year != 0) && ($month != 0)) {
     }
     $display = DIR_displayMonth ($topic, $year, $month, true);
     $display .= DIR_navBar ($topic, $year, $month);
-    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year, $month), true);
+    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year, $month));
 } else if ($year != 0) {
     $title = sprintf ($LANG_DIR['title_year'], $year);
     if ($topic != 'all') {
@@ -569,7 +569,7 @@ if (($year != 0) && ($month != 0)) {
     }
     $display = DIR_displayYear($topic, $year, true);
     $display .= DIR_navBar($topic, $year);
-    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year), true);
+    $display = COM_createHTMLDocument($display, 'menu', $title, DIR_canonicalLink($topic, $year));
 } else {
     $title = $LANG_DIR['title'];
     if ($topic != 'all') {
