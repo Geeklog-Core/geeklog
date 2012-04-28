@@ -951,50 +951,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
     }
 
-    /* *************************************************** */
-    /* Tom - Not sure if this is needed anymore since topic is now retrieved from article.php
-    // get topic if not on home page
-    if( !isset( $_GET['topic'] ))
-    {
-        if( isset( $_GET['story'] ))
-        {
-            $sid = COM_applyFilter( $_GET['story'] );
-        }
-        elseif( isset( $_GET['sid'] ))
-        {
-            $sid = COM_applyFilter( $_GET['sid'] );
-        }
-        elseif( isset( $_POST['story'] ))
-        {
-            $sid = COM_applyFilter( $_POST['story'] );
-        }
-        if( empty( $sid ) && $_CONF['url_rewrite'] &&
-                ( strpos( $_SERVER['PHP_SELF'], 'article.php' ) !== false ))
-        {
-            COM_setArgNames( array( 'story', 'mode' ));
-            $sid = COM_applyFilter( COM_getArgument( 'story' ));
-        }
-        if(!empty($sid)) {
-            // Need to grab default topic if topic not known but story is
-            $sql = "SELECT ta.tid 
-                FROM {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta 
-                WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 
-                AND sid='$sid'";
-            $result = DB_query($sql);
-            $numrows = DB_numRows($result);
-            if ($numrows == 1) {
-                $A = DB_fetchArray($result);
-                $topic = $A['tid']
-            }
-        }
-    }
-    else
-    {
-        $topic = COM_applyFilter( $_GET['topic'] );
-    }
-    */
-    /* *************************************************** */
-
     $feed_url = array();
     if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable
     {
@@ -1672,50 +1628,6 @@ function COM_createHTMLDocument( &$content = '', $what = 'menu', $pagetitle = ''
     } else {
         $header->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
     }
-
-    /* *************************************************** */
-    /* Tom - Not sure if this is needed anymore since topic is now retrieved from article.php
-    // get topic if not on home page
-    if( !isset( $_GET['topic'] ))
-    {
-        if( isset( $_GET['story'] ))
-        {
-            $sid = COM_applyFilter( $_GET['story'] );
-        }
-        elseif( isset( $_GET['sid'] ))
-        {
-            $sid = COM_applyFilter( $_GET['sid'] );
-        }
-        elseif( isset( $_POST['story'] ))
-        {
-            $sid = COM_applyFilter( $_POST['story'] );
-        }
-        if( empty( $sid ) && $_CONF['url_rewrite'] &&
-                ( strpos( $_SERVER['PHP_SELF'], 'article.php' ) !== false ))
-        {
-            COM_setArgNames( array( 'story', 'mode' ));
-            $sid = COM_applyFilter( COM_getArgument( 'story' ));
-        }
-        if(!empty($sid)) {
-            // Need to grab default topic if topic not known but story is
-            $sql = "SELECT ta.tid 
-                FROM {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta 
-                WHERE ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1 
-                AND sid='$sid'";
-            $result = DB_query($sql);
-            $numrows = DB_numRows($result);
-            if ($numrows == 1) {
-                $A = DB_fetchArray($result);
-                $topic = $A['tid']
-            }
-        }
-    }
-    else
-    {
-        $topic = COM_applyFilter( $_GET['topic'] );
-    }
-    */
-    /* *************************************************** */
 
     $feed_url = array();
     if( $_CONF['backend'] == 1 ) // add feed-link to header if applicable
