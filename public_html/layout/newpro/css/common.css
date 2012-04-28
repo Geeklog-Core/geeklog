@@ -106,6 +106,10 @@ a img {
 input,
 select,
 textarea {
+  box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   font-family: arial,verdana,tahoma,helvetica,sans-serif;
 /*    font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Osaka, "ＭＳ Ｐゴシック", Verdana, Arial, Helvetica, sans-serif;  */
 }
@@ -113,6 +117,10 @@ textarea {
 
 /* Text Field */
 input.text {
+}
+
+input[type="checkbox"] {
+  margin: 0 0.3em;
 }
 
 /* Submit Button */
