@@ -108,7 +108,7 @@ class navbar  {
     * Constructor
     *
     */
-    function navbar()
+    function __construct()
     {
     }
 
@@ -157,7 +157,7 @@ class navbar  {
         for ($i=1; $i <= count($this->_menuitems); $i++)  {
             $label = key($this->_menuitems);
             $linkurl = current($this->_menuitems);
-            if ( is_array($this->_onclick) AND array_key_exists($label,$this->_onclick) ) {
+            if ( is_array($this->_onclick) && array_key_exists($label,$this->_onclick) ) {
                 $onclick = " onclick='{$this->_onclick[$label]}'";
                 $navtemplate->set_var( 'onclick', $onclick);
                 $navtemplate->set_var( 'link', ($linkurl == '') ? '#' : $linkurl);
