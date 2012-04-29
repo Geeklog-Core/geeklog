@@ -1343,7 +1343,9 @@ h4 img {
 }
 
 #leftblocks .sideoption span,
-#rightblocks .sideoption span {
+#rightblocks .sideoption span,
+#leftblocks .sideoption_off span,
+#rightblocks .sideoption_off span {
   color: #999;
   text-decoration: none;
   margin-right: 3px;
@@ -3442,6 +3444,10 @@ div.third-party-login {
 	  margin-top: 10px;
 	  margin-bottom: 10px;
 	  padding: 0px;
+	  text-align:center;
+	}
+
+	#searchform .searchform {
 	  text-align:center;
 	}
 
