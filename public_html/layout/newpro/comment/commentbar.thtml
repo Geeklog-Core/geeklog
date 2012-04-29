@@ -3,7 +3,7 @@
 
 <ul class="status">
   <li>{start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}</li>
-  <li>{num_comments}{lang_comments}</li>
+  <li>{num_comments} {lang_comments}</li>
   <li>{user_nullname}<a href="{login_logout_url}" rel="nofollow">{lang_login_logout}</a></li>
 </ul>
 
