@@ -1,5 +1,5 @@
 {doctype}
-<html{html_attribute}{xmlns}>
+<html{lang_attribute}{xmlns}>
 
 <head profile="http://www.w3.org/2003/g/data-view">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"{xhtml}>
