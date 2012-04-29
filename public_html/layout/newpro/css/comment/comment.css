@@ -232,11 +232,6 @@ div.comments div.block-comment-content ul.navi li.permlink {
   margin: 0 2px 0 0;
 }
 
-div.comments div.block-comment-content ul.navi li.permlink:before {
-  content: " | ";
-}
-
-
 
 /*--------------------------------------
   迷惑報告Form 
