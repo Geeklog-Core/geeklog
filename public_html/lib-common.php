@@ -6464,7 +6464,7 @@ function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
 */
 function COM_stripslashes($text)
 {
-    if (@get_magic_quotes_gpc() == 1) {
+    if (@get_magic_quotes_gpc()) {
         if (is_array($text)) {
             return(array_map('stripslashes', $text));
         } else {
