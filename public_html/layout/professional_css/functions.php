@@ -58,7 +58,7 @@ function theme_css_professional_css()
     global $_CONF, $LANG_DIRECTION;
     return array(
         array(
-            '/layout/' . $_CONF['theme'] . '/style.css'
+            'file' => '/layout/' . $_CONF['theme'] . '/style.css'
         )
     );
 }
