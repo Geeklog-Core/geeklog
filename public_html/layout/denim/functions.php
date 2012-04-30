@@ -39,11 +39,6 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-$_CONF['support_theme_2.0'] = true; // support new theme format for the later Geeklog2.0
-
-$_CONF['left_blocks_in_footer'] = 1;
-
-
 /**
  * Return the configuration values for the theme
  */
@@ -94,7 +89,11 @@ function theme_js_files_denim()
  */
 function theme_init_denim()
 {
-    global $_BLOCK_TEMPLATE;
+    global $_BLOCK_TEMPLATE, $_CONF;
+
+    $_CONF['support_theme_2.0'] = true; // support new theme format for the later Geeklog2.0
+
+    $_CONF['left_blocks_in_footer'] = 1;
 
     /*
      * For left/right block support there is no longer any need for the theme to
