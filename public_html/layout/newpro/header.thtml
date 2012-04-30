@@ -14,7 +14,7 @@
 {rel_links}
 {plg_headercode}
   </head>
-  <body dir="{direction}" class="js_off">
+  <body dir="{direction}" class="{layout_columns}">
 <!-- header.thtml { -->
 
 <!-- #container { -->

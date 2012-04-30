@@ -79,8 +79,7 @@ function theme_js_files_newpro()
     global $_CONF;
     return array(
         '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/search.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js'
+        '/layout/' . $_CONF['theme'] . '/javascript/search.js'
     );
 }
 
@@ -89,7 +88,9 @@ function theme_js_files_newpro()
  */
 function theme_init_newpro()
 {
-    global $_BLOCK_TEMPLATE;
+    global $_BLOCK_TEMPLATE, $_CONF;
+
+    $_CONF['support_theme_2.0'] = true; // support new theme format for the later Geeklog2.0
 
     /*
      * For left/right block support there is no longer any need for the theme to

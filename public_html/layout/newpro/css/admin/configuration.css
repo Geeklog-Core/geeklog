@@ -6,89 +6,83 @@
                 admin/config/menu_element.thtml
 ==============================================================================*/
 
-
-
 /*--------------------------------------
-  Setting 
+  Admin Configration
 --------------------------------------*/
-form#config-editor {
-  width: 99%;
-  margin-top: 0;
-  margin-right: auto;
-  margin-left: auto;
+
+#geeklog_config_editor td.block-featured-left {
+  width: 18%;
 }
 
-form#config-editor fieldset {
-  margin: 0 0 1em 0;
-  padding: 8px;
-  border: 1px solid #CCCCCC;
+
+#search-configuration {
+  width: 90%;
 }
 
-form#config-editor fieldset legend {
-  display: inline;
-  padding: 2px 4px;
+.block-config,
+#search-configuration-container {
+  margin: 0 0 0.5em;
+  padding: 8px 0;
+  text-align: left;
 }
 
-/* Setting Item */
-form#config-editor table.inputTable td {
-  padding: 5px;
-  font-size: 90%;
+.block-config-content {
+  padding-left: 5px;
 }
 
-form#config-editor ul.submit {
-  display: inline;
+.configoption {
+  list-style: none outside;
+  color: #999;
   margin: 0;
   padding: 0;
 }
 
-form#config-editor ul.submit li {
-  display: inline;
+.configoption_off {
+  list-style: none outside;
+  color: #333;
+}
+
+.configoption a {
+
+}
+
+.configoption a:hover {
+
+}
+
+.inputTable {
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* Message */
-div#configuration div.pluginInfo {
-  overflow: auto;
-  height: 120px;
-  min-height: 50px;
-  max-height: 100px;
+.config_label {
+  float: left;
+  width: 35%;
+  padding: .5em 0;
+}
+
+.restore {
+  padding: .5em 0;
+}
+
+.config_input {
+  float: left;
+  width: 53%;
+  
+}
+
+.config_name {
+  clear: left;
   margin: 5px 0;
-  padding: 10px 20px;
-  border: 1px solid #CCCCCC;
+  padding: 5px;
 }
 
-
-/*--------------------------------------
-  Layout
---------------------------------------*/
-form#config-editor {
-  width: 99%;
-  margin-right: auto;
-  margin-left: auto;
+.config_name input[type="text"],
+.config_name textarea {
+  width: 53%;
 }
-
-/* Left Menu */
-div#config_menu {
-  float: {left};
-  width: 160px;
-  margin-{left}: -6px;
-  padding: 0;
-  background: #F7F7F7;
-}
-
-div#config_menu div.block-center {
-  margin-right: 8px;
-  margin-left: 8px;
-}
-
-div#config_menu div.block-center h2 {
-  font-size: 110%;
-}
-
-/* Center Block */
-div#config_main {
-  float: {left};
-  width: 620px;
-  padding-{left}: 8px;
+.config_name select {
+  width: 54.5%;
+  max-width: none;
 }
