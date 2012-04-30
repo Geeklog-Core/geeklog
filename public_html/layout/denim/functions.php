@@ -58,7 +58,12 @@ function theme_css_denim()
     global $_CONF, $LANG_DIRECTION;
 
     $cssfile = ($LANG_DIRECTION == 'rtl') ? '/style_rtl.css' : '/style.css';
-    return array('/layout/' . $_CONF['theme'] . $cssfile);
+    return array(
+        array(
+            'file'       => '/layout/' . $_CONF['theme'] . $cssfile,
+            'attributes' => array('media' => 'screen')
+        )
+    );
 }
 
 /**

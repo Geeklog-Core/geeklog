@@ -1412,6 +1412,12 @@ h4 img {
   line-height: 1.5em;
 }
 
+input[type="text"].search {
+  background: url(images/search.png) 127px center no-repeat #FFF;
+  padding-right: 24px;
+  width: 120px;
+  color: #999;
+}
 
 /*--------------------------------------
   Login Form
@@ -2434,6 +2440,10 @@ b.status_black {
   width: 85%;
 }
 
+#text_editor dd.description {
+  margin-right: 15%;
+}
+
 #admin-storyeditor-introtext,
 #admin-storyeditor-bodytext {
   width: 98%;
@@ -3061,6 +3071,10 @@ div.third-party-login {
 	  line-height: 1.8em;
 	  color: #336699;
 	}
+
+    #text_editor dd.description {
+      margin-right: 0;
+    }
 }
 
 

@@ -424,8 +424,12 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false ) {
 /* Include scripts on behalf of the theme */
 $func = "theme_css_" . $_CONF['theme'];
 if (function_exists($func)) {
-    foreach ($func() as $file) {
-        $_SCRIPTS->setCssFile(md5($file), $file);
+    foreach ($func() as $info) {
+        $file = $info['file'];
+        $name = md5($file);
+        $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
+        $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
+        $_SCRIPTS->setCssFile($name, $file, $constant, $attributes);
     }
 }
 $func = "theme_js_libs_" . $_CONF['theme'];
