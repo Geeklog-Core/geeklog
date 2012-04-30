@@ -13,7 +13,6 @@
 
 <!-- Favicons -->
 <link rel="shortcut icon" href="{layout_url}/images/favicon.ico"{xhtml}>
-<link rel="apple-touch-icon" href="{layout_url}/images/apple-touch-icon.png">
 
 <!-- <meta http-equiv="Pragma" content="no-cache"{xhtml}> -->
 <link rel="start contents" href="{site_url}"{xhtml}>
@@ -62,6 +61,6 @@
       <!-- Center Block Container -->
       <div id="centerblocks">
         <div id="main-content">
-          <p class="welcome_msg">{welcome_msg_jp}&nbsp;{datetime}</p>
+          <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
 
 <!-- } header.thtml -->
