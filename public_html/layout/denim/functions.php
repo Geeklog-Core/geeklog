@@ -46,7 +46,7 @@ function theme_config_denim()
 {
     return array(
         'image_type' => 'png',
-        'doctype'    => 'html401strict'
+        'doctype'    => 'xhtml10transitional'
     );
 }
 
