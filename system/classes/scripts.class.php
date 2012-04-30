@@ -339,6 +339,7 @@ class scripts {
         }
         
         $this->css_files[$name]['file'] = $file;
+        $this->css_files[$name]['extra'] = '';
         $this->css_files[$name]['constant'] = false;
         $this->css_files[$name]['load'] = $load;
         
@@ -351,11 +352,12 @@ class scripts {
     * @param    $name       name of CSS file
     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
+    * @param    $attributes (optional) array of extra attributes
     * @access   public
     * @return   boolean 
     *
-    */      
-    public function setCSSFile($name, $file, $constant = true) {
+    */
+    public function setCSSFile($name, $file, $constant = true, $attributes = array()) {
         
         global $_CONF;
 
@@ -379,13 +381,19 @@ class scripts {
             return false;
         }
 
+        $extra = '';
+        foreach ($attributes as $key => $value) {
+            $extra .= " $key=\"$value\"";
+        }
+
         $this->css_files[$name]['name'] = $name;
         $this->css_files[$name]['file'] = $file;
+        $this->css_files[$name]['extra'] = $extra;
         $this->css_files[$name]['constant'] = $constant;
         $this->css_files[$name]['load'] = true;
         
         return true;
-    }    
+    }
 
     /**
     * Returns header code (JavaScript and CSS) to include in the Head of the webpage
@@ -405,14 +413,15 @@ class scripts {
         // Set CSS Files
         foreach ($this->css_files as $file) {
             if ($file['load'] && isset($file['file'])) {
-                $csslink = '<link rel="stylesheet" type="text/css" href="' . $_CONF['site_url'] . $file['file'] . '" ' . XHTML . '>' . LB;
+                $csslink = '<link rel="stylesheet" type="text/css" href="'
+                         . $_CONF['site_url'] . $file['file'] . '"' . $file['extra'] . XHTML . '>' . LB;
                 if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
                 } else {
                     $headercode .= $csslink;
                 }
             }
-        }  
+        }
 
         // Set JavaScript (do this before file incase variables are needed)
         if (isset($this->scripts['header'])) {

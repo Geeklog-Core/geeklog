@@ -57,7 +57,9 @@ function theme_css_newpro()
 {
     global $_CONF, $LANG_DIRECTION;
     return array(
-        '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION
+        array(
+            'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION
+        )
     );
 }
 
