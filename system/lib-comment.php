@@ -2073,7 +2073,7 @@ function CMT_handleView($format, $order, $page, $view = true)
     if ($cid <= 0) {
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
-    
+
     $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
     $A = DB_fetchArray( DB_query($sql) );
     $sid   = $A['sid'];
@@ -2085,7 +2085,7 @@ function CMT_handleView($format, $order, $page, $view = true)
     if (!$display) {
         return COM_refresh($_CONF['site_url'] . '/index.php');
     }
-
+    
     $display = COM_showMessageFromParameter() . $display;
     $display = COM_createHTMLDocument($display, 'menu', $title);
 
@@ -2407,7 +2407,10 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                 $dbTitle = DB_getItem($_TABLES['stories'], 'title',
                             "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
                             . COM_getPermSQL('AND'));
-                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
+                global $topic;
+
+                // if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
+                if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, $topic) < 2) { // Make sure have at least read access to current topic of article to post comment
                     // no permissions, or no story of that title
                     $abort = true;
                 }
@@ -2588,7 +2591,7 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
     $A = DB_fetchArray ($result);
     $allowed = $A['count'];
 
-    if ($allowed == 1) {
+    if ($allowed > 0) { // Was equal 1 but when multiple topics in play the comment could belong to more than onetopic creating a higher count
         $delete_option = (SEC_hasRights('story.edit') &&
             (SEC_hasAccess($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
