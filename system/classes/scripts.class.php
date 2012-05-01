@@ -117,7 +117,7 @@ class scripts {
                      
         
         // Find available jQuery library files
-        $version_jQuery = '1.6.3';
+        $version_jQuery = '1.7.2'; // '1.6.3';
         $this->jquery_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $version_jQuery .'/jquery.min.js';
         $name = 'jquery';
         $this->library_files[$name]['file'] = 'javascript/jquery.min.js';
@@ -125,7 +125,7 @@ class scripts {
 
         // jQuery UI
         // When upgrading jQuery UI include the redmond theme
-        $version_jQuery_ui = '1.8.11';
+        $version_jQuery_ui = '1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
         
         // Set jQuery UI CSS
