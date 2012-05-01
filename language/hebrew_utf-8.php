@@ -2012,6 +2012,7 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => 'ברירת המחדל של סדר מיון',
     'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
+    'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
     'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
