@@ -1413,7 +1413,7 @@ h4 img {
 }
 
 input[type="text"].search {
-  background: url(images/search.png) 127px center no-repeat #FFF;
+  background: url(images/search.png) right center no-repeat #FFF;
   padding-right: 24px;
   width: 120px;
   color: #999;
