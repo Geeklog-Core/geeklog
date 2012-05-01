@@ -453,7 +453,7 @@ function listusers()
 
     $query_arr = array('table' => 'users',
                        'sql' => $sql,
-                       'query_fields' => array('username', 'email', 'fullname'),
+                       'query_fields' => array('username', 'email', 'fullname', 'homepage'),
                        'default_filter' => "AND {$_TABLES['users']}.uid > 1");
 
     $retval .= ADMIN_list('user', 'ADMIN_getListField_users', $header_arr,
