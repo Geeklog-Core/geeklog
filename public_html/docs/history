@@ -3,6 +3,14 @@ Geeklog History/Changes:
 May ??, 2012 (2.0.0)
 ------------
 
+- Created the function COM_createHTMLDocument which replaces COM_siteHeader and 
+  COM_siteFooter (feature request #0001358) [Dengen]
+- Fixed issue with $_CONF['left_blocks_in_footer'] and hiding the blocks 
+  (bug #0001316) [Dengen]
+- Created a new theme called denim which is based on Responsive Web Design [Dengen]
+- Created a new theme called modern_curve which will eventual replace the 
+  professional theme (feature request #0001255) [Rouslan]
+- Added Emergency Rescue Tool written by Suprsidr to Geeklog Install [Tom]
 - Fixed path issue and changed the order of loading the jQuery css files 
   in the Scripts class (bug #0001439) [Tom]
 - Improve strength of password hashing (feature request #0001384) [Vinny]
