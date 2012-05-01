@@ -600,7 +600,9 @@ class database
             $result_type = MYSQLI_ASSOC;
         }
 
-        return $recordset->fetch_array($result_type);
+        $result = $recordset->fetch_array($result_type);
+
+        return ($result === NULL) ? false : $result;
     }
 
     /**
