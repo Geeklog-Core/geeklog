@@ -1541,6 +1541,7 @@ input[type="text"].search {
 .storytext table {
   text-align: left;
   border-collapse: collapse;
+  margin: 1em 0.5em;
 }
 
 .storytext tr {
@@ -2334,6 +2335,10 @@ dd#profile-user_photo {
 
 .admin-list-field {
   padding: 4px;
+}
+
+.admin-list-field a {
+  padding: 4px 6px;
 }
 
 .search-part {
@@ -3404,6 +3409,8 @@ div.third-party-login {
 	  margin-left: -10px;
 	  margin-right: -10px;
 	  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+	  border-top: 1px solid #6F99C7;
+	  border-bottom: 1px solid #1F364F;
 	}
 	h2.block-title {
 	  margin-top: 0;
@@ -3445,7 +3452,6 @@ div.third-party-login {
 
 	#block-left-search > .block-left-content {
 	  background: #E7E7E7;
-	  border-bottom: 1px solid #CCC;
 	  padding: 10px;
 	  margin: 0px;
 	}
@@ -3469,10 +3475,12 @@ div.third-party-login {
 
 	#leftblocks .sideoption a,
 	#rightblocks .sideoption a,
+	#leftblocks .sideoption a:hover,
+	#rightblocks .sideoption a:hover,
 	#leftblocks .sideoption_off,
 	#rightblocks .sideoption_off {
 	  background-color: #FFF;
-	  border: 1px solid #999;
+	  border: 1px solid #CCC;
 	  color: #222;
 	  display: block;
 	  font-size: 16px;
@@ -3480,6 +3488,7 @@ div.third-party-login {
 	  margin-bottom: -1px;
 	  padding: 4px 10px;
 	  text-decoration: none;
+	  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	}
 
 	#leftblocks .sideoption_off,
@@ -3545,7 +3554,9 @@ div.third-party-login {
 	#footer {
 	  background-color: transparent;
 	  background: #284564;
-	  color: #999
+	  color: #999;
+	  border: none;
+	  margin-top: -1px;
 	}
 
 	#footer-content {
@@ -3578,6 +3589,14 @@ div.third-party-login {
 	#footer a:active {
 	  color: #999;
 	  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+	}
+
+	/*--------------------------------------
+	  Story
+	--------------------------------------*/
+
+	.story_icon {
+	  display: none;
 	}
 
 	/*--------------------------------------
