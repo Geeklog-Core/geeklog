@@ -78,7 +78,7 @@
           </div>
           <textarea cols="45" rows="14" name="bodytext" id="bodytext" class="wide">{story_bodytext}</textarea>
         </dd>
-        <dd id="editor_mode" style="margin-left:15%;">{lang_allowed_html}</dd>
+        <dd class="description">{lang_allowed_html}</dd>
       </dl>
     </div>
 
