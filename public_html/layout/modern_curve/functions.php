@@ -42,7 +42,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
 /**
  * Return the configuration values for the theme
  */
-function theme_config_newpro()
+function theme_config_modern_curve()
 {
     return array(
         'image_type' => 'png',
@@ -53,7 +53,7 @@ function theme_config_newpro()
 /**
  * Return an array of CSS files to be loaded
  */
-function theme_css_newpro()
+function theme_css_modern_curve()
 {
     global $_CONF, $LANG_DIRECTION;
     return array(
@@ -66,7 +66,7 @@ function theme_css_newpro()
 /**
  * Return an array of JS libraries to be loaded
  */
-function theme_js_libs_newpro()
+function theme_js_libs_modern_curve()
 {
     return array(
         'jquery'
@@ -76,7 +76,7 @@ function theme_js_libs_newpro()
 /**
  * Return an array of JS files to be loaded
  */
-function theme_js_files_newpro()
+function theme_js_files_modern_curve()
 {
     global $_CONF;
     return array(
@@ -88,7 +88,7 @@ function theme_js_files_newpro()
 /**
  * Do any other initialisation here
  */
-function theme_init_newpro()
+function theme_init_modern_curve()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
 
