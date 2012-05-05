@@ -277,25 +277,29 @@ function plugin_upgrade_spamx()
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }
-            }            
+            }
 
             if (! $current_config) {
-                // Update to Config Tables must be performed here and not in regualar SQL update array since if config is current then they shouldn't be run   
+                // Update to Config Tables must be performed here and not in regular SQL update array since if config is current then they shouldn't be run   
                 // Set new Tab column to whatever fieldset is
                 $sql = "UPDATE {$_TABLES['conf_values']} SET tab = fieldset WHERE group_name = 'spamx'";
                 DB_query($sql);
-                
+
                 // Rename the action config option since it is causes JavaScript issues in the config and IE 8
-                $sql = "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_name' WHERE name = 'action'";
+                $sql = "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_action' WHERE name = 'action' AND group_name = 'spamx'";
+                DB_query($sql);
+
+                // in an earlier update we accidentally renamed the 'action' option to 'spamx_name' - fix that
+                $sql = "UPDATE {$_TABLES['conf_values']} SET name = 'spamx_action' WHERE name = 'spamx_name' AND group_name = 'spamx'";
                 DB_query($sql);   
-                
+
                 spamx_update_ConfValues_1_2_2();
             }
-            
+
             spamx_update_ConfigSecurity_1_2_2();
 
             $current_version = '1.3.0';
-            break;            
+            break;
 
         default:
             $done = true;
