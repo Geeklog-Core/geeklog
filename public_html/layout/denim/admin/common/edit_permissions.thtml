@@ -1,24 +1,24 @@
 
 <!-- admin/common/edit_permissions.thtml { -->
 
-<table id="admin-permissions" class="admin-list-smalltable">
+<table id="admin-permissions">
   <thead>
     <tr>
-      <th colspan="2" class="edit-perm-up admin-list-headerfield">{lang_owner}</th>
-      <th colspan="2" class="edit-perm-up admin-list-headerfield">{lang_group}</th>
-      <th class="edit-perm-up admin-list-headerfield">{lang_members}</th>
-      <th class="edit-perm-up admin-list-headerfield">{lang_anonymous}</th>
+      <th colspan="2">{lang_owner}</th>
+      <th colspan="2">{lang_group}</th>
+      <th>{lang_members}</th>
+      <th>{lang_anonymous}</th>
     </tr>
   </thead>
 
   <tbody>
     <tr class="pluginRow1">
-      <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
-      <td class="edit-perm-down admin-list-field"><b>E</b><br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
-      <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
-      <td class="edit-perm-down admin-list-field"><b>E</b><br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
-      <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
-      <td class="edit-perm-down admin-list-field"><b>R</b><br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_owner[]" value="2"{owner_r_checked}{xhtml}></td>
+      <td>E<br{xhtml}><input type="checkbox" name="perm_owner[]" value="1"{owner_e_checked}{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_group[]" value="2"{group_r_checked}{xhtml}></td>
+      <td>E<br{xhtml}><input type="checkbox" name="perm_group[]" value="1"{group_e_checked}{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_members[]" value="2"{members_checked}{xhtml}></td>
+      <td>R<br{xhtml}><input type="checkbox" name="perm_anon[]" value="2"{anon_checked}{xhtml}></td>
     </tr>
   </tbody>
 </table>

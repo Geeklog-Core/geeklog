@@ -85,8 +85,6 @@ pre {
   border: 1px solid #CCC;
 }
 
-
-
 /*--------------------------------------
   System Message Block
 --------------------------------------*/
@@ -103,8 +101,6 @@ pre {
   border-left:   1px solid #BEBEBE;
   border-right:  1px solid #BEBEBE;
 }
-
-
 
 /*--------------------------------------
   Story
@@ -167,7 +163,6 @@ pre {
   float: none;
 }
 
-
 /*--------------------------------------
   Admin Page
 --------------------------------------*/
@@ -195,10 +190,22 @@ pre {
 }
 
 /*--------------------------------------
-  Admin Top Menu Style
+  Permission Style
 --------------------------------------*/
 
+#admin-permissions {
+  border-collapse: separate;
+}
 
+#admin-permissions th,
+#admin-permissions td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
 
 #admin-moderation:after {
   content: ".";
@@ -254,7 +261,6 @@ pre {
   margin-right: 0.5em;
 }
 
-
 /*--------------------------------------
   Story Editor
 --------------------------------------*/
@@ -281,7 +287,6 @@ pre {
   line-height: 1.25;
 }
 
-
 /*--------------------------------------
    Center Block Container
     #centerblocks is always display.
@@ -299,7 +304,6 @@ body.left-center #centerblocks {
 #comment_text {
   width: 95%;
 }
-
 
 /*--------------------------------------
   Article Page

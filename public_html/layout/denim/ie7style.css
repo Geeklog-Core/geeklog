@@ -72,8 +72,6 @@ fieldset .compact dd.description {
   border-right:  1px solid #BEBEBE;
 }
 
-
-
 /*--------------------------------------
   Story
 --------------------------------------*/
@@ -175,10 +173,22 @@ fieldset .compact dd.description {
 }
 
 /*--------------------------------------
-  Admin Top Menu Style
+  Permission Style
 --------------------------------------*/
 
+#admin-permissions {
+  border-collapse: separate;
+}
 
+#admin-permissions th,
+#admin-permissions td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
 
 #admin-moderation:after {
   content: ".";
@@ -191,8 +201,6 @@ fieldset .compact dd.description {
 #admin-moderation {
   overflow: auto;
 }
-
-
 
 /*--------------------------------------
   Profile
