@@ -698,7 +698,7 @@ if (isset($_POST['mode']) && ($_POST['mode'] == 'moderation') &&
              .  commandcontrol(SEC_createToken());
 }
 
-$display = COM_createHTMLDocument($display, 'menu', $LANG29[34]);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG29[34]));
 
 COM_output($display);
 

@@ -58,7 +58,7 @@ $display = '';
 
 if (!SEC_hasRights('block.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the block administration screen");
     COM_output($display);
     exit;
@@ -545,7 +545,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_showMessageText($LANG21[64], $LANG21[63])
                 . editblock($bid);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[63]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG21[63]));
         return $retval;
     }
 
@@ -566,7 +566,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
     
     if (($access < 3) || !TOPIC_hasMultiTopicAccess('topic') || !SEC_inGroup($group_id)) {
         $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $retval = COM_createHTMLDocument($retval, 'menu', $MESSAGE[30]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
         return $retval;
@@ -619,7 +619,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             if (!(stristr($phpblockfn,'phpblock_'))) {
                 $retval .= COM_showMessageText($LANG21[38], $LANG21[37])
                         . editblock($bid);
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[37]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG21[37]));
                 return $retval;
             }
             $content = '';
@@ -694,7 +694,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
         }
         $retval .= COM_showMessageText($msgtxt, $LANG21[32])
                 . editblock($bid);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG21[32]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG21[32]));
     }
 
     return $retval;
@@ -908,17 +908,17 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                     $_POST['perm_members'], $_POST['perm_anon'],
                     $is_enabled, $allow_autotags);
 } elseif ($mode == 'edit') {
-    $display = COM_createHTMLDocument(editblock($bid), 'menu', $LANG21[3]);
+    $display = COM_createHTMLDocument(editblock($bid), array('pagetitle' => $LANG21[3]));
 } elseif ($mode == 'move') {
     if(SEC_checkToken()) {
         $display .= moveBlock();
     }
     $display .= listblocks();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG21[19]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG21[19]));
 } else {  // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
     $display .= listblocks();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG21[19]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG21[19]));
 }
 
 COM_output($display);

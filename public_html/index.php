@@ -414,7 +414,7 @@ if ($topic)
             . '>';
 }
 
-$display = COM_createHTMLDocument($display, 'menu', '', $header, true);
+$display = COM_createHTMLDocument($display, array('headercode' => $header, 'rightblock' => true));
 
 // Output page
 COM_output($display);

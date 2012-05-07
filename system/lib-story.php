@@ -1300,7 +1300,7 @@ function service_submit_story($args, &$output, &$svc_msg)
 
     if (!SEC_hasRights('story.edit')) {
         $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $MESSAGE[30]));
 
         return PLG_RET_AUTH_FAILED;
     }
@@ -1524,16 +1524,16 @@ function service_submit_story($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             $output .= storyeditor ($sid);
         }
-        $output = COM_createHTMLDocument($output, 'menu', $LANG24[5]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[5]));
         return PLG_RET_ERROR;
     case STORY_EXISTING_NO_EDIT_PERMISSION:
         $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_NO_ACCESS_PARAMS:
         $output .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $output = COM_createHTMLDocument($output, 'menu', $MESSAGE[30]);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         return PLG_RET_PERMISSION_DENIED;
     case STORY_EMPTY_REQUIRED_FIELDS:
@@ -1541,7 +1541,7 @@ function service_submit_story($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             $output .= storyeditor($sid);
         }
-        $output = COM_createHTMLDocument($output, 'menu');
+        $output = COM_createHTMLDocument($output);
         return PLG_RET_ERROR;
     default:
         break;
@@ -1609,7 +1609,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                 $output = COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
                 $output .= $upload->printErrors (false);
                 $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                $output = COM_createHTMLDocument($output, 'menu', $LANG24[30]);
+                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
                 echo $output;
                 exit;
             }
@@ -1643,7 +1643,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                             COM_getBlockTemplate ('_msg_block', 'header'));
                 $retval .= $upload->printErrors(false);
                 $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-                $output = COM_createHTMLDocument($output, 'menu', $LANG24[30]);
+                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
                 echo $retval;
                 exit;
             }
@@ -1668,7 +1668,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                 $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
                                                              'footer'));
                 $output .= storyeditor($sid);
-                $output = COM_createHTMLDocument($output, 'menu', $LANG24[54]);
+                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[54]));
                 echo $output;
                 exit;
             }

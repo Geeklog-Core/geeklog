@@ -416,7 +416,7 @@ case 'edit':
                 $display .= COM_startBlock ($LANG_CAL_2[38])
                          . editpersonalevent ($A)
                          . COM_endBlock ();
-                $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_2[38]);
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_2[38]));
             } else {
                 $display = COM_refresh ($_CONF['site_url'] . '/index.php');
             }
@@ -714,7 +714,7 @@ default:
     }
 
     $display .= COM_endBlock();
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
 
 } // end switch
 

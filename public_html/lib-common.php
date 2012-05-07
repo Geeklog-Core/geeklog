@@ -36,6 +36,7 @@
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR);
 
+
 /**
 * This is the common library for Geeklog.  Through our code, you will see
 * functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
@@ -1548,36 +1549,66 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 /**
 * Create and return the HTML document
 *
-* @param    string  $content    Main content for the page
-* @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
-* @param    string  $pagetitle  Optional content for the page's <title>
-* @param    string  $headercode Optional code to go into the page's <head>
-* @param    boolean $rightblock Whether or not to show blocks on right hand side default is no
-* @param    array   $custom     An array defining custom function to be used to format Rightblocks
+* @param    string  $content        Main content for the page
+* @param    array   $information    An array defining variables to be used when creating the output
+*                       string  'what'          If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
+*                       string  'pagetitle'     Optional content for the page's <title>
+*                       string  'breadcrumbs'   Optional content for the page's <title>
+*                       string  'headercode'    Optional code to go into the page's <head>
+*                       boolean 'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
+*                       array   'custom'        An array defining custom function to be used to format Rightblocks
 * @see      function COM_siteHeader
 * @see      function COM_siteFooter
 * @return   string              Formated HTML document
 *
 */
-function COM_createHTMLDocument( &$content = '', $what = 'menu', $pagetitle = '', $headercode = '', $rightblock = -1, $custom = '' )
+function COM_createHTMLDocument(&$content = '', $information = array())
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_DIRECTION,
            $_IMAGE_TYPE, $topic, $_COM_VERBOSE, $_SCRIPTS, $_PAGE_TIMER;
 
-    // If the theme does not support the CSS layout then call the legacy functions.
+   // Retrieve required variables from information array
+   if (isset($information['what'])) {
+       $what = $information['what'];
+   } else {
+       $what = 'menu';
+   }
+   if (isset($information['pagetitle'])) {
+       $pagetitle = $information['pagetitle'];
+   } else {
+       $pagetitle = '';
+   }
+   if (isset($information['headercode'])) {
+       $headercode = $information['headercode'];
+   } else {
+       $headercode = '';
+   }
+   if (isset($information['breadcrumbs'])) {
+       $breadcrumbs = $information['breadcrumbs'];
+   } else {
+       $breadcrumbs = '';
+   }
+   if (isset($information['rightblock'])) {
+       $rightblock = $information['rightblock'];
+   } else {
+       $rightblock = -1;
+   } 
+   if (isset($information['custom'])) {
+       $custom = $information['custom'];
+   } else {
+       $custom = '';
+   }  
 
-    if ($_CONF['support_theme_2.0'] != true)
-    {
+    // If the theme does not support the CSS layout then call the legacy functions.
+    if ($_CONF['support_theme_2.0'] != true) {
         return COM_siteHeader($what, $pagetitle, $headercode) . $content
              . COM_siteFooter($rightblock, $custom);
     }
 
     // If the theme implemented this for us then call their version instead.
-
     $function = $_CONF['theme'] . '_createHTMLDocument';
 
-    if( function_exists( $function ))
-    {
+    if( function_exists($function)) {
         return $function( $content, $what, $pagetitle, $headercode, $rightblock, $custom );
     }
 
@@ -7104,7 +7135,7 @@ function COM_getImgSizeAttributes( $file )
 function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $http_text = 'OK')
 {
     $display = COM_showMessage( $msg, $plugin );
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30], '', true);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30], 'rightblock' => true));
 
     if( $http_status != 200 )
     {

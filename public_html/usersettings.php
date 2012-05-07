@@ -340,7 +340,7 @@ function confirmAccountDelete ($form_reqid)
             . '"' . XHTML . '>' . LB;
     $retval .= '</div></form>' . LB;
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[97]);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[97]));
 
     return $retval;
 }
@@ -806,7 +806,7 @@ function handlePhotoUpload ($delete_photo = '')
         $display .= $upload->printErrors (false);
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                         'footer'));
-        $display = COM_createHTMLDocument($display, 'menu', $LANG24[30]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
         COM_output($display);
         exit; // don't return
     }
@@ -868,7 +868,7 @@ function handlePhotoUpload ($delete_photo = '')
             $display .= $upload->printErrors (false);
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                             'footer'));
-            $display = COM_createHTMLDocument($display, 'menu', $LANG24[30]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
             COM_output($display);
             exit; // don't return
         }
@@ -977,7 +977,7 @@ function saveuser($A)
                         if (rename ($imgpath . $photo,
                                     $imgpath . $newphoto) === false) {
                             $display = COM_errorLog ('Could not rename userphoto "' . $photo . '" to "' . $newphoto . '".');
-                            $display = COM_createHTMLDocument($display, 'menu', $LANG04[21]);
+                            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[21]));
 
                             return $display;
                         }
@@ -1476,14 +1476,14 @@ if (! COM_isAnonUser()) {
     default: // also if $mode == 'edit', 'preferences', or 'comments'
         $display .= COM_showMessageFromParameter();
         $display .= edituser();
-        $display = COM_createHTMLDocument($display, 'menu', $LANG04[16]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[16]));
         break;
     }
 } else {
     $display .= COM_startBlock ($LANG04[70] . '!');
     $display .= '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>';
     $display .= COM_endBlock ();
-    $display = COM_createHTMLDocument($display, 'menu');
+    $display = COM_createHTMLDocument($display);
 }
 
 COM_output($display);

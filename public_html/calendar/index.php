@@ -46,7 +46,7 @@ $display = '';
 if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_CA_CONF['calendarloginrequired'] == 1))) {
     $display .= SEC_loginRequiredForm();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_1[41]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_1[41]));
     COM_output($display);
     exit;
 }
@@ -387,7 +387,7 @@ if ($mode == 'personal' AND $_CA_CONF['personalcalendars'] == 0) {
     // User is trying to use the personal calendar feature even though it isn't
     // turned on.
     $display .= $LANG_CAL_2[37];
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
     COM_output($display);
     exit;
 }
@@ -609,7 +609,7 @@ case 'day':
         $cal_templates->set_var('quickadd_form','');
     }
     $display .= $cal_templates->parse('output', 'dayview');
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
     break;
 
 case 'week':
@@ -782,12 +782,12 @@ case 'week':
     }
 
     $display .= $cal_templates->parse('output','week');
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
     break;
 
 case 'addentry':
     $display .= plugin_submit_calendar($mode);
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
     break;
 
 case 'savepersonal':
@@ -1057,7 +1057,7 @@ $cal_templates->parse('add_event_option','addevent',true);
 $cal_templates->parse('output','calendar');
 $display .= $cal_templates->finish($cal_templates->get_var('output'));
 
-$display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
 break;
 
 } // end switch

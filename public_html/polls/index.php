@@ -152,7 +152,7 @@ if (empty($pid)) {
         $display .= COM_showMessage($msg, 'polls');
     }
     $display .= polllist ();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
 } else if ((isset($_POST['aid']) && (count($_POST['aid']) == $nquestions)) && !isset ($_COOKIE['poll-'.$pid])) {
     setcookie ('poll-'.$pid, implode('-',$aid), time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
@@ -167,7 +167,7 @@ if (empty($pid)) {
     if (empty($polltopic)) {
         // poll doesn't exist or user doesn't have access
         $display .= COM_showMessageText(sprintf($LANG25[12], $pid));
-        $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
     } else {
         // Meta Tags
         $headercode = '';
@@ -198,11 +198,11 @@ if (empty($pid)) {
         } else {
             $display .= POLLS_pollResults($pid, 400, $order, $mode, $page);
         }
-        $display = COM_createHTMLDocument($display, 'menu', $polltopic, $headercode);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $polltopic, 'headercode' => $headercode));
     }
 } else {
     $display .= polllist();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_POLLS['pollstitle']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
 }
 
 COM_output($display);

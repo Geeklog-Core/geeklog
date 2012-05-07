@@ -62,7 +62,7 @@ $display = '';
 // Make sure user has rights to access this page
 if (!SEC_hasRights('group.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the group administration screen.");
     COM_output($display);
     exit;
@@ -560,7 +560,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
                 $retval .= COM_showMessageText($LANG_ACCESS['groupexistsmsg'],
                                               $LANG_ACCESS['groupexists'])
                         . editgroup($grp_id);
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_ACCESS['groupeditor']));
 
                 return $retval;
             }
@@ -600,7 +600,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
             // "this shouldn't happen"
             COM_errorLog("Internal error: invalid group id");
             $retval .= COM_showMessage(95);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_ACCESS['groupeditor']));
 
             return $retval;
         }
@@ -681,7 +681,7 @@ function savegroup($grp_id, $grp_name, $grp_descr, $grp_admin, $grp_gl_core, $gr
         $retval .= COM_showMessageText($LANG_ACCESS['missingfieldsmsg'],
                                       $LANG_ACCESS['missingfields'])
                 . editgroup($grp_id);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_ACCESS['groupeditor']);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_ACCESS['groupeditor']));
 
         return $retval;
     }
@@ -1213,15 +1213,15 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     }
     $display .= editgroup ($grp_id);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['groupeditor']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ACCESS['groupeditor']));
 } elseif ($mode == 'listusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= listusers ($grp_id);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['groupmembers']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ACCESS['groupmembers']));
 } elseif ($mode == 'editusers') {
     $grp_id = COM_applyFilter ($_REQUEST['grp_id'], true);
     $display .= editusers ($grp_id);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_ACCESS['usergroupadmin']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ACCESS['usergroupadmin']));
 } else { // 'cancel' or no mode at all
     $show_all_groups = false;
     if (isset($_POST['q'])) {
@@ -1235,7 +1235,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= COM_showMessageFromParameter();
     $display .= listgroups($show_all_groups);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[38]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[38]));
 }
 
 COM_output($display);

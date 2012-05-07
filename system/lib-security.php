@@ -1392,7 +1392,7 @@ function SEC_checkToken()
 
     $display = COM_showMessageText($LANG_ADMIN['token_expired'])
              . SECINT_authform($returnurl, $method, $postdata, $getdata, $files);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG20[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG20[1]));
 
     COM_output($display);
     exit;

@@ -395,7 +395,7 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
             if (!empty ($msg)) {
                 $_POST['mode'] =  $LANG12[32];
                 $display = COM_errorLog ($msg, 2) . submitstory ($topic);
-                $display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
                 COM_output($display);
                 exit;
             }
@@ -434,7 +434,7 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
     }
     $noindex = '<meta name="robots" content="noindex"' . XHTML . '>' . LB;
     $display .= submissionform($type, $mode, $topic);
-    $display = COM_createHTMLDocument($display, 'menu', $pagetitle, $noindex);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'headercode' => $noindex));
 }
 
 COM_output($display);

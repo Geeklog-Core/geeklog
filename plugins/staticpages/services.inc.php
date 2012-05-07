@@ -73,7 +73,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                                   COM_getBlockTemplate('_msg_block', 'header'));
         $output .= $LANG_STATIC['access_denied_msg'];
         $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['access_denied']);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
 
         return PLG_RET_AUTH_FAILED;
     }
@@ -316,7 +316,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             $output .= staticpageeditor ($sp_id);
         }
-        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['staticpageeditor']);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
         $svc_msg['error_desc'] = 'Duplicate ID';
         return PLG_RET_ERROR;
     } elseif (!empty ($sp_title) && !empty ($sp_content)  && TOPIC_checkTopicSelectionControl() && TOPIC_hasMultiTopicAccess('topic') == 3) {
@@ -522,7 +522,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (!$args['gl_svc']) {
             $output .= staticpageeditor ($sp_id);
         }
-        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['staticpageeditor']);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['staticpageeditor']));
         return PLG_RET_ERROR;
     }
 }
@@ -559,7 +559,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
                                     COM_getBlockTemplate ('_msg_block', 'header'));
         $output .= $LANG_STATIC['access_denied_msg'];
         $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $output = COM_createHTMLDocument($output, 'menu', $LANG_STATIC['access_denied']);
+        $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
         } else {
@@ -759,7 +759,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 if ($failflg) {
                     $output .= SEC_loginRequiredForm();
                     if ($mode !== 'autotag') {
-                        $output = COM_createHTMLDocument($output, 'menu', '', '', true);
+                        $output = COM_createHTMLDocument($output, array('rightblock' => true));
                     }
                 } else {
                     $output .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
@@ -768,7 +768,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                     $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
                                                                  'footer'));
                     if ($mode !== 'autotag') {
-                        $output = COM_createHTMLDocument($output, 'menu', '', '', true);
+                        $output = COM_createHTMLDocument($output, array('rightblock' => true));
                     }
                 }
             }

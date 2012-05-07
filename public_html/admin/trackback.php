@@ -56,7 +56,7 @@ $display = '';
 
 if (!SEC_hasRights('story.ping')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the trackback administration screen.");
     COM_output($display);
     exit;
@@ -629,7 +629,7 @@ function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $
     $retval .= $template->finish ($template->get_var ('output'));
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG_TRB['edit_service']);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_TRB['edit_service']));
 
     return $retval;
 }
@@ -914,7 +914,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
             $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
         }
     }
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['trackback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
 } else if ($mode == 'new') {
     $type = COM_applyFilter ($_REQUEST['type']);
     if (empty ($type)) {
@@ -928,7 +928,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
         $blog = TRB_filterBlogname ($_CONF['site_name']);
 
         $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
-        $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['trackback']);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
@@ -942,7 +942,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
         $display .= COM_startBlock ($LANG_TRB['pingback_results'])
                   . sendPingbacks ($type, $id)
                   . COM_endBlock ();
-        $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['pingback']);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
@@ -1054,7 +1054,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
     $display .= $template->finish ($template->get_var ('output'));
 
     $display .= COM_endBlock ();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['send_pings']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['send_pings']));
 } else if ($mode == 'pretrackback') {
     $id = COM_applyFilter ($_REQUEST['id']);
     if (empty ($id)) {
@@ -1075,7 +1075,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
                                getHelpUrl() . '#trackback')
              . prepareAutodetect($type, $id, $fulltext)
              . COM_endBlock();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['trackback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
 } else if ($mode == 'autodetect') {
     $id = COM_applyFilter ($_REQUEST['id']);
     $url = $_REQUEST['url'];
@@ -1103,7 +1103,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
                                           $LANG_TRB['autodetect_failed']);
     }
     $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['trackback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
 } else if (($mode == 'fresh') || ($mode == 'preview')) {
     $display .= COM_showMessageFromParameter();
 
@@ -1159,7 +1159,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
 
     $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
 
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['trackback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['trackback']));
 } elseif (($mode == 'deleteservice') && SEC_checkToken()) {
     $pid = COM_applyFilter ($_POST['service_id'], true);
     if ($pid > 0) {
@@ -1189,11 +1189,11 @@ if (($mode == 'delete') && SEC_checkToken()) {
 } else if ($mode == 'listservice') {
     $display .= COM_showMessageFromParameter();
     $display .= listServices();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['services_headline']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['services_headline']));
 } else if ($mode == 'freepb') {
     $display .= COM_showMessageFromParameter();
     $display .= pingbackForm ();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['pingback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
 } else if ($mode == 'sendpingback') {
     $target = COM_applyFilter ($_POST['target']);
     if (empty ($target)) {
@@ -1212,7 +1212,7 @@ if (($mode == 'delete') && SEC_checkToken()) {
         }
     }
     $display .= pingbackForm ($target);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_TRB['pingback']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_TRB['pingback']));
 } else {
     $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
 }

@@ -128,7 +128,7 @@ if (is_file($pathToImage)) {
     header('Status: 404 Not Found');
 
     if ($mode == 'show') {
-        echo COM_createHTMLDocument($display, 'menu');
+        echo COM_createHTMLDocument($display);
     }
 }
 

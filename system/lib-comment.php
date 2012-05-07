@@ -1607,7 +1607,7 @@ function CMT_sendReport($cid, $type)
 
     if (COM_isAnonUser()) {
         $retval = SEC_loginRequiredForm();
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[27]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[27]));
 
         return $retval;
     }
@@ -2087,7 +2087,7 @@ function CMT_handleView($format, $order, $page, $view = true)
     }
     
     $display = COM_showMessageFromParameter() . $display;
-    $display = COM_createHTMLDocument($display, 'menu', $title);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $title));
 
     return $display;
 }
@@ -2303,7 +2303,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                             $sid, $pid, $type, $commentmode, $postmode,
                             $format, $order, $cpage);
             if ($is_comment_page) {
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[14]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[14]));
             }
             break;
 
@@ -2343,7 +2343,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             if ($is_comment_page) {
                 $retval .= CMT_reportAbusiveComment(COM_applyFilter($_GET[CMT_CID], true),
                                                     COM_applyFilter($_GET[CMT_TYPE]));
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[27]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[27]));
             }
             break;
 
@@ -2366,7 +2366,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
         case 'edit':
             $retval .= CMT_handleEdit($commentmode, $postmode, $format, $order, $page);
             if ($is_comment_page) {
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
             }
             break;
 
@@ -2439,7 +2439,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             }
             if ($is_comment_page) {
                 $noindex = '<meta name="robots" content="noindex"' . XHTML . '>';
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1], $noindex);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1], 'headercode' => $noindex));
             }
             break;
     }
@@ -2518,7 +2518,7 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         // FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'article',
                                   $LANG03[14], $postmode);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
     } else { // success
         $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
         DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);

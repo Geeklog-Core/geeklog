@@ -83,7 +83,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
                             COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG08[39] . $last . $LANG08[40]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[81]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
         
         return $retval;
     }
@@ -119,7 +119,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
             if (!empty ($msg)) {
                 $retval = COM_errorLog ($msg, 2)
                         . contactform ($uid, $cc, $subject, $message);
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[81]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
 
                 return $retval;
             }
@@ -155,7 +155,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
             $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             $retval = COM_errorLog ($LANG08[3], 2)
                     . contactform ($uid, $cc, $subject, $message);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[81]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
         }
     } else {
         $subject = strip_tags ($subject);
@@ -163,7 +163,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
         $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
         $retval = COM_errorLog ($LANG08[4], 2)
                 . contactform ($uid, $cc, $subject, $message);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[81]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
     }
 
     return $retval;
@@ -528,7 +528,7 @@ switch ($what) {
                                     . '/article.php?story=' . $sid));
         } else {
             $display = mailstoryform ($sid, $_CONF['mail_cc_default']);
-            $display = COM_createHTMLDocument($display, 'menu', $LANG08[17]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
         }
         break;
 
@@ -547,7 +547,7 @@ switch ($what) {
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
                                 $_POST['shortmsg'], 52);
-                $display = COM_createHTMLDocument($display, 'menu', $LANG08[17]);
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
 
             } else if (empty($_POST['to']) || empty($_POST['from']) ||
                     empty($_POST['shortmsg'])) {
@@ -557,7 +557,7 @@ switch ($what) {
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
                                 $_POST['shortmsg']);
-                $display = COM_createHTMLDocument($display, 'menu', $LANG08[17]);
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
             } else {
                 $msg = PLG_itemPreSave('emailstory', $_POST['shortmsg']);
                 if (!empty($msg)) {
@@ -567,7 +567,7 @@ switch ($what) {
                                 COM_applyFilter($_POST['from']),
                                 COM_applyFilter($_POST['fromemail']),
                                 $_POST['shortmsg']);
-                    $display = COM_createHTMLDocument($display, 'menu', $LANG08[17]);
+                    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG08[17]));
                 } else {
                     $display .= mailstory($sid, $_POST['to'], $_POST['toemail'],
                         $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
@@ -590,7 +590,7 @@ switch ($what) {
                 $subject = htmlspecialchars (trim ($subject), ENT_QUOTES);
             }
             $display = contactform ($uid, $_CONF['mail_cc_default'], $subject);
-            $display = COM_createHTMLDocument($display, 'menu', $LANG04[81]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[81]));
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }

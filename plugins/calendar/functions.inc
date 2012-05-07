@@ -443,7 +443,7 @@ function plugin_savesubmission_calendar($A)
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
             . plugin_submit_calendar ($A['calendar_type']);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_1[27]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_1[27]));
 
         return $retval;
     }
@@ -513,7 +513,7 @@ function plugin_savesubmission_calendar($A)
     if (! empty($msg)) {
         $retval .= COM_errorLog($msg, 2)
             . plugin_submit_calendar($A['calendar_type']);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_1[27]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_1[27]));
 
         return $retval;
     }

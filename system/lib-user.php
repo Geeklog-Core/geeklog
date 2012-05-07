@@ -489,7 +489,7 @@ function USER_deletePhoto ($photo, $abortonerror = true)
             if (!@unlink ($filetodelete)) {
                 if ($abortonerror) {
                     $display = COM_errorLog ("Unable to remove file $photo");
-                    $display = COM_createHTMLDocument($display, 'menu', $LANG04[21]);
+                    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[21]));
                     echo $display;
                     exit;
                 } else {
@@ -851,7 +851,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     if (COM_isAnonUser() &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
         $retval .= SEC_loginRequiredForm();
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_LOGIN[1]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_LOGIN[1]));
 
         return $retval;
     }
@@ -1090,7 +1090,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $retval .= PLG_profileBlocksDisplay($uid);
 
     if (! $preview) {
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[1] . ' ' . $display_name);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[1] . ' ' . $display_name));
     }
 
     return $retval;

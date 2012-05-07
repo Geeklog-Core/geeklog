@@ -63,7 +63,7 @@ $display = '';
 
 if (!SEC_hasRights('story.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the story administration screen.");
     COM_output($display);
     exit;
@@ -961,7 +961,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
 } else if (($mode == $LANG_ADMIN['preview']) && !empty ($LANG_ADMIN['preview'])) {
     $display .= storyeditor(COM_applyFilter($_POST['sid']), 'preview', '', '');
-    $display = COM_createHTMLDocument($display, 'menu', $LANG24[5]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
 } elseif (($mode == 'edit') || ($mode == 'clone')) {
     $sid = '';
@@ -973,11 +973,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $topic = COM_applyFilter ($_GET['topic']);
     }
     $display .= storyeditor($sid, $mode, '', $topic);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG24[5]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
 } else if ($mode == 'editsubmission') {
     $display .= storyeditor (COM_applyFilter ($_GET['id']), $mode);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG24[5]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
 } else if (($mode == $LANG_ADMIN['save']) && !empty ($LANG_ADMIN['save']) && SEC_checkToken()) {
     submitstory ();
@@ -1000,7 +1000,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         }
         $display .= COM_showMessageFromParameter();
         $display .= liststories($current_topic);
-        $display = COM_createHTMLDocument($display, 'menu', $LANG24[22]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[22]));
     }
     COM_output($display);
 }

@@ -51,7 +51,7 @@ $display = '';
 
 if (!SEC_inGroup('Root')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the security check.");
     COM_output($display);
     exit;
@@ -369,7 +369,7 @@ $display .= '<p>' . sprintf($LANG_SECTEST['stay_informed'], $ml, $versioncheck)
          . '</p>';
 
 $display .= COM_endBlock();
-$display = COM_createHTMLDocument($display, 'menu', $LANG_SECTEST['sectest']);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_SECTEST['sectest']));
 
 COM_output($display);
 

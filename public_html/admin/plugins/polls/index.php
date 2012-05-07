@@ -52,7 +52,7 @@ $display = '';
 
 if (!SEC_hasRights('polls.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the poll administration screen.");
     COM_output($display);
     exit;
@@ -182,7 +182,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG25[2];
         $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG25[5]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG25[5]));
         return $retval;
     }
 
@@ -220,7 +220,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
         $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
         COM_output($display);
         exit;
@@ -609,7 +609,7 @@ if ($mode == 'edit') {
         $pid = COM_applyFilter ($_GET['pid']);
     }
     $display .= editpoll ($pid);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG25[5]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
 } elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save'])) {
     $pid = COM_applyFilter($_POST['pid']);
     $old_pid = '';
@@ -655,7 +655,7 @@ if ($mode == 'edit') {
         $display .= $LANG25[17];
         $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= editpoll ();
-        $display = COM_createHTMLDocument($display, 'menu', $LANG25[5]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
     }
 } elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {
     $pid = '';
@@ -680,7 +680,7 @@ if ($mode == 'edit') {
         }
     }
     $display .= listpolls();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG25[18]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[18]));
 }
 
 COM_output($display);

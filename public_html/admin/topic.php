@@ -56,7 +56,7 @@ $display = '';
 
 if (!SEC_hasRights('topic.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
     COM_output($display);
     exit;
@@ -407,7 +407,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
         $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $retval = COM_createHTMLDocument($retval, 'menu', $MESSAGE[30]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
     } else {
         // Now check access to parent topic
@@ -426,7 +426,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
         }
         if (($access < 3) || !$in_Group) {
             $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-            $retval = COM_createHTMLDocument($retval, 'menu', $MESSAGE[30]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
             COM_accessLog("User {$_USER['username']} tried to illegally assign topic $tid to $parent_id.");
         } elseif (!empty($tid) && !empty($topic) && !$restricted_tid && !$archive_parent && !$archive_child && $parent_id_found) {
             if ($imageurl == '/images/topics/') {
@@ -500,19 +500,19 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
         } elseif ($restricted_tid) {
             $retval .= COM_errorLog($LANG27[31], 2);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG27[1]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         } elseif ($archive_parent) {
             $retval .= COM_errorLog($LANG27[46], 2);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG27[1]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         } elseif ($archive_child) {
             $retval .= COM_errorLog($LANG27[47], 2);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG27[1]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         } elseif (!$parent_id_found) {
             $retval .= COM_errorLog($LANG27[48], 2);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG27[1]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         } else {
             $retval .= COM_errorLog($LANG27[7], 2);
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG27[1]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         }
     }
     return $retval;
@@ -756,7 +756,7 @@ function handleIconUpload($tid)
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'topics')) {
         $display = COM_showMessageText($upload->printErrors(false), $LANG27[29]);
-        $display = COM_createHTMLDocument($display, 'menu', $LANG27[29]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[29]));
         COM_output($display);
         exit; // don't return
     }
@@ -793,7 +793,7 @@ function handleIconUpload($tid)
         if ($upload->areErrors ()) {
             $display = COM_showMessageText($upload->printErrors(false),
                                            $LANG27[29]);
-            $display = COM_createHTMLDocument($display, 'menu', $LANG27[29]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[29]));
             COM_output($display);
             exit; // don't return
         }
@@ -891,11 +891,11 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $tid = COM_applyFilter($_GET['tid']);
     }
     $display .= edittopic($tid);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG27[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[1]));
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
     $display .= listtopics();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG27[8]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 }
 
 COM_output($display);

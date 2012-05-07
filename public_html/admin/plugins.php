@@ -64,7 +64,7 @@ $display = '';
 
 if (!SEC_hasRights('plugin.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the plugin administration screen.");
     COM_output($display);
     exit;
@@ -367,7 +367,7 @@ function do_update($pi_name)
         $retval = COM_showMessageText($LANG32[12], $LANG32[13]);
     }
 
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG32[13]);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG32[13]));
 
     return $retval;
 }
@@ -990,7 +990,7 @@ function plugin_main($message = '', $token = '')
     // Show the upload form or an error message
     $retval .= plugin_show_uploadform($token);
 
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG32[5]);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG32[5]));
 
     return $retval;
 }
@@ -1380,11 +1380,11 @@ if ($mode == 'delete') {
 
 } elseif ($mode == 'info_installed') {
     $display .= plugin_info_installed(COM_applyFilter($_GET['pi_name']));
-    $display = COM_createHTMLDocument($display, 'menu', $LANG32[13]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG32[13]));
 
 } elseif ($mode == 'info_uninstalled') {
     $display .= plugin_info_uninstalled(COM_applyFilter($_GET['pi_name']));
-    $display = COM_createHTMLDocument($display, 'menu', $LANG32[13]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG32[13]));
 
 } elseif ($mode == 'toggle') {
     SEC_checkToken();

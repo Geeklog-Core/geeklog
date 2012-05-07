@@ -120,7 +120,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     }
 
     $display .= COM_endBlock();
-    $display = COM_createHTMLDocument($display, 'menu');
+    $display = COM_createHTMLDocument($display);
     COM_output($display);
     exit;
 }

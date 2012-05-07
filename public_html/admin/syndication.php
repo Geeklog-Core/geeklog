@@ -50,7 +50,7 @@ $display = '';
 
 if (!SEC_hasRights('syndication.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
     COM_output($display);
     exit;
@@ -447,7 +447,7 @@ function newfeed ()
         // none of the installed plugins are supporting feeds
         // - go directly to the feed editor
         $retval = editfeed (0, 'article');
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[11]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
     } else {
         $selection = '<select name="type">' . LB;
         $selection .= '<option value="article">' . $LANG33[55]
@@ -471,7 +471,7 @@ function newfeed ()
         $retval .= $feed_template->finish ($feed_template->parse ('output',
                                                                   'type'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[11]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
     }
 
     return $retval;
@@ -501,7 +501,7 @@ function savefeed ($A)
             empty ($A['filename'])) {
         $retval = COM_showMessageText($LANG33[39], $LANG33[38])
                 . editfeed ($A['fid'], $A['type']);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[38]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
         return $retval;
     }
 
@@ -510,14 +510,14 @@ function savefeed ($A)
     if ($C['count'] > 0) {
         $retval = COM_showMessageText($LANG33[51], $LANG33[52])
                 . editfeed ($A['fid'], $A['type']);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[52]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[52]));
         return $retval;
     }
 
     if ($A['limits'] <= 0) {
         $retval = COM_showMessageText($LANG33[40], $LANG33[38])
                 . editfeed ($A['fid'], $A['type']);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG33[38]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
         return $retval;
     }
     if ($A['limits_in'] == 1) {
@@ -608,13 +608,13 @@ if ($mode == 'edit') {
         $display .= newfeed ();
     } else {
         $display .= editfeed (COM_applyFilter($_REQUEST['fid']));
-        $display = COM_createHTMLDocument($display, 'menu', $LANG33[24]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[24]));
     }
 }
 elseif (($mode == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= editfeed (0, COM_applyFilter($_REQUEST['type']));
-    $display = COM_createHTMLDocument($display, 'menu', $LANG33[24]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[24]));
 }
 elseif (($mode == $LANG_ADMIN['save']) && !empty($LANG_ADMIN['save']) && SEC_checkToken())
 {
@@ -631,7 +631,7 @@ else
 {
     $display .= COM_showMessageFromParameter();
     $display .= listfeeds();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG33[10]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG33[10]));
 }
 
 COM_output($display);

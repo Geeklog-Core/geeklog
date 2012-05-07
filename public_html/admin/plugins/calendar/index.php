@@ -52,7 +52,7 @@ $display = '';
 // Ensure user even has the rights to access this page
 if (!SEC_hasRights('calendar.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
 
     // Log attempt to access.log
     COM_accessLog("User {$_USER['username']} tried to illegally access the event administration screen.");
@@ -387,7 +387,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
         $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $retval = COM_createHTMLDocument($retval, 'menu', $MESSAGE[30]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog ("User {$_USER['username']} tried to illegally submit or edit event $eid.");
         return $retval;
     }
@@ -433,7 +433,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG_CAL_ADMIN[23];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_ADMIN[2]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_ADMIN[2]));
 
         return $retval;
     }
@@ -445,7 +445,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG_CAL_ADMIN[24];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_ADMIN[2]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_ADMIN[2]));
 
         return $retval;
     }
@@ -455,7 +455,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG_CAL_ADMIN[25];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_ADMIN[2]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_ADMIN[2]));
 
             return $retval;
         }
@@ -565,7 +565,7 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $retval .= $LANG_CAL_ADMIN[10];
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_CAL_ADMIN[2]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_ADMIN[2]));
 
         return $retval;
     }
@@ -636,7 +636,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $A = DB_fetchArray ($result);
     $A['hits'] = 0;
     $display .= CALENDAR_editEvent ($mode, $A);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[1]));
 } else if ($mode == 'clone') {
     $eid = COM_applyFilter ($_REQUEST['eid']);
     $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
@@ -645,7 +645,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $A['eid'] = COM_makesid ();
     $A['owner_id'] = $_USER['uid'];
     $display .= CALENDAR_editEvent ($mode, $A);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[1]));
 } else if ($mode == 'edit') {
     $eid = '';
     if (isset ($_REQUEST['eid'])) {
@@ -666,7 +666,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         $A = DB_fetchArray ($result);
     }
     $display .= CALENDAR_editEvent ($mode, $A);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[1]));
 } else if ($mode == 'batchdelete') {
     // list_old
     if (isset ($_REQUEST['msg'])) {
@@ -676,18 +676,18 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         );
     }
     $display .= CALENDAR_listOld();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[11]));
 } elseif (($mode == 'batchdeleteexec') && SEC_checkToken()) {
     $msg = CALENDAR_deleteOld();
     $display .= COM_showMessage($msg) . CALENDAR_listOld();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[11]));
 } else { // 'cancel' or no mode at all
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
                                                       true), 'calendar');
     }
     $display .= CALENDAR_listevents();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_CAL_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_ADMIN[11]));
 }
 
 COM_output($display);

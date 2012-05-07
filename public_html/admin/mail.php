@@ -50,7 +50,7 @@ $display = '';
 // Make sure user has access to this page
 if (! SEC_hasRights('user.mail')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the mail administration screen.");
     COM_output($display);
     exit;
@@ -302,7 +302,7 @@ if (isset($_POST['mail']) && ($_POST['mail'] == 'mail') && SEC_checkToken()) {
     $display .= display_mailform();
 }
 
-$display = COM_createHTMLDocument($display, 'menu', $LANG31[1]);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG31[1]));
 
 COM_output($display);
 

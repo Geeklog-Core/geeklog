@@ -55,7 +55,7 @@ $display = '';
 // If user isn't a Root user or if the backup feature is disabled, bail.
 if (!SEC_inGroup('Root') OR ($_CONF['allow_mysqldump'] == 0)) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_DB_BACKUP['last_ten_backups']);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_DB_BACKUP['last_ten_backups']));
     COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
     COM_output($display);
     exit;
@@ -810,7 +810,7 @@ if ($list_backups) {
     $display .= listbackups();
 }
 
-$display = COM_createHTMLDocument($display, 'menu', $pagetitle);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle));
 
 COM_output($display);
 

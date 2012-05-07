@@ -204,7 +204,7 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
                                   $LANG03[14], $postmode);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG03[1]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
     } else { // success
         $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
                             . $id);
@@ -492,7 +492,7 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $rightblock = -1;
         }
 
-        $retval = COM_createHTMLDocument($retval, $what, $page_title, $headercode, $rightblock);
+        $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'headercode' => $headercode, 'rightblock' => $rightblock));
     }
 
     return $retval;
@@ -1127,7 +1127,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 } elseif ($S['sp_format'] != 'blankpage') {
                     $rightblock = -1;
                 }
-                $retval = COM_createHTMLDocument($retval, $what, '', '', $rightblock);
+                $retval = COM_createHTMLDocument($retval, array('what' => $what, 'rightblock' => $rightblock));
             }
 
             // increment hit counter for page

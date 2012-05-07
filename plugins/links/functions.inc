@@ -1062,7 +1062,7 @@ function plugin_save_submit_links($A)
         COM_updateSpeedlimit('submit');
         $retval .= COM_errorLog($msg, 2)
                 . plugin_submit_links();
-        $retval = COM_createHTMLDocument($retval, 'menu');
+        $retval = COM_createHTMLDocument($retval);
 
         return $retval;
     }

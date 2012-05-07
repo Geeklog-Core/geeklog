@@ -65,7 +65,7 @@ $display = '';
 
 if (!SEC_hasRights('links.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the links administration screen.");
     COM_output($display);
     exit;
@@ -311,7 +311,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
     }
     if (($access < 3) || !SEC_inGroup($group_id)) {
         $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
         COM_output($display);
         exit;
@@ -352,7 +352,7 @@ function savelink ($lid, $old_lid, $cid, $categorydd, $url, $description, $title
         } else {
             $retval .= editlink ('edit', '');
         }
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG_LINKS_ADMIN[1]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_LINKS_ADMIN[1]));
 
         return $retval;
     }
@@ -532,14 +532,14 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
             $_POST['perm_members'], $_POST['perm_anon']);
 } else if ($mode == 'editsubmission') {
     $display .= editlink ($mode, COM_applyFilter ($_GET['id']));
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[1]));
 } else if ($mode == 'edit') {
     if (empty ($_GET['lid'])) {
         $display .= editlink ($mode);
     } else {
         $display .= editlink ($mode, COM_applyFilter ($_GET['lid']));
     }
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[1]));
 } else { // 'cancel' or no mode at all
     if (isset($_GET['msg'])) {
         $msg = COM_applyFilter($_GET['msg'], true);
@@ -548,7 +548,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         }
     }
     $display .= listlinks();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
 }
 
 COM_output($display);

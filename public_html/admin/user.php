@@ -62,7 +62,7 @@ $display = '';
 // Make sure user has access to this page
 if (!SEC_hasRights('user.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the user administration screen.");
     COM_output($display);
     exit;
@@ -697,7 +697,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         } else {
             $retval .= COM_errorLog ('Error in saveusers in '
                                      . $_CONF['site_admin_url'] . '/user.php');
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG28[22]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[22]));
             echo $retval;
             exit;
         }
@@ -709,7 +709,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         } else {
             $retval .= edituser();
         }
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG28[1]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[1]));
         COM_output($retval);
         exit;
     }
@@ -1071,7 +1071,7 @@ function importusers()
     } else {
         // A problem occurred, print debug information
         $retval = COM_showMessageText($upload->printErrors(false), $LANG28[24]);
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG28[22]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[22]));
 
         return $retval;
     }
@@ -1152,7 +1152,7 @@ function importusers()
     $retval .= '<p>' . sprintf ($LANG28[32], $successes, $failures);
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG28[24]);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[24]));
 
     return $retval;
 }
@@ -1199,7 +1199,7 @@ function display_batchAddform()
             . "\" value=\"{$token}\"" . XHTML . '></div></form>' . LB;
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $retval = COM_createHTMLDocument($retval, 'menu', $LANG28[24]);
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG28[24]));
 
     return $retval;
 }
@@ -1281,7 +1281,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
                     $_POST['homepage'], $_POST['groups'], $delphoto,
                     $_POST['userstatus'], $_POST['oldstatus']);
         if (!empty($display)) {
-            $display = COM_createHTMLDocument($display, 'menu', $LANG28[22]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[22]));
         }
     }
 } elseif ($mode == 'edit') {
@@ -1298,26 +1298,26 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) { // del
         exit;
     }
     $display .= edituser($uid, $msg);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[1]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[1]));
 } elseif (($mode == 'import') && SEC_checkToken()) {
     $display .= importusers();
 } elseif ($mode == 'importform') {
     $display .= display_batchAddform();
 } elseif ($mode == 'batchdelete') {
     $display .= batchdelete();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[54]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[54]));
 } elseif (($mode == $LANG28[78]) && !empty($LANG28[78]) && SEC_checkToken()) {
     $msg = batchreminders();
     $display .= COM_showMessage($msg) . batchdelete();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[11]));
 } elseif (($mode == 'batchdeleteexec') && SEC_checkToken()) {
     $msg = batchdeleteexec();
     $display .= COM_showMessage($msg) . batchdelete();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[11]));
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
     $display .= listusers();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG28[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG28[11]));
 }
 
 COM_output($display);

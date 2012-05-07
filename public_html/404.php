@@ -48,7 +48,7 @@ if (isset($_SERVER['SCRIPT_URI'])) {
 $display .= sprintf($LANG_404[2], $url);
 $display .= $LANG_404[3];
 $display .= COM_endBlock();
-$display = COM_createHTMLDocument($display, 'menu', $LANG_404[1]);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_404[1]));
 
 COM_output($display);
 

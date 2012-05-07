@@ -65,7 +65,7 @@ $display = '';
 
 if (!SEC_hasRights('links.edit')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("User {$_USER['username']} tried to illegally access the link category administration screen.");
     COM_output($display);
     exit;
@@ -529,7 +529,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
 
         $display .= COM_showMessage($msg, 'links');
         $display .= links_list_categories($root);
-        $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[11]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
     } else {
         COM_accessLog("User {$_USER['username']} tried to illegally delete link category $cid and failed CSRF checks.");
         echo COM_refresh($_CONF['site_admin_url'] . '/index.php');
@@ -547,7 +547,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
 
     $display .= COM_showMessage ($msg, 'links');
     $display .= links_list_categories($root);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
 
 // edit category
 } else if ($mode == 'edit') {
@@ -560,7 +560,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
         $cid = strip_tags(COM_stripslashes($_GET['cid']));
     }
     $display .= links_edit_category($cid, $pid);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[56]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[56]));
 
 // nothing, so list categories
 } else {
@@ -571,7 +571,7 @@ if ((($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) || ($mo
         }
     }
     $display .= links_list_categories($root);
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS_ADMIN[11]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS_ADMIN[11]));
 }
 
 COM_output($display);

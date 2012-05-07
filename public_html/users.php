@@ -91,7 +91,7 @@ function emailpassword ($username, $msg = 0)
             $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=1");
         }
     } else {
-        $retval = COM_createHTMLDocument(defaultform($LANG04[17]), 'menu', $LANG04[17]);
+        $retval = COM_createHTMLDocument(defaultform($LANG04[17]), array('pagetitle' => $LANG04[17]));
     }
 
     return $retval;
@@ -144,7 +144,7 @@ function requestpassword($username)
         $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
         COM_updateSpeedlimit ('password');
     } else {
-        $retval = COM_createHTMLDocument(defaultform($LANG04[17]), 'menu', $LANG04[17]);
+        $retval = COM_createHTMLDocument(defaultform($LANG04[17]), array('pagetitle' => $LANG04[17]));
     }
 
     return $retval;
@@ -225,7 +225,7 @@ function createuser ($username, $email, $email_conf)
                 $ret = CUSTOM_userCheck ($username, $email);
                 if (!empty ($ret)) {
                     // no, it's not okay with the custom userform
-                    $retval = COM_createHTMLDocument(CUSTOM_userForm ($ret['string']), 'menu');
+                    $retval = COM_createHTMLDocument(CUSTOM_userForm($ret['string']));
 
                     return $retval;
                 }
@@ -239,7 +239,7 @@ function createuser ($username, $email, $email_conf)
                 } else {
                     $retval .= newuserform ($msg);
                 }
-                $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[22]);
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[22]));
 
                 return $retval;
             }
@@ -266,7 +266,7 @@ function createuser ($username, $email, $email_conf)
             } else {
                 $retval .= newuserform ($LANG04[19]);
             }
-            $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[22]);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[22]));
         }
     } else if ($email !== $email_conf) {
         $msg = $LANG04[125];
@@ -275,7 +275,7 @@ function createuser ($username, $email, $email_conf)
         } else {
             $retval .= newuserform ($msg);
         }
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[22]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[22]));
     } else { // invalid username or email address
 
         if ((empty ($username)) || (strlen($username) > 16)) {
@@ -288,7 +288,7 @@ function createuser ($username, $email, $email_conf)
         } else {
             $retval .= newuserform ($msg);
         }
-        $retval = COM_createHTMLDocument($retval, 'menu', $LANG04[22]);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[22]));
     }
 
     return $retval;
@@ -463,7 +463,7 @@ function displayLoginErrorAndAbort($msg, $message_title, $message_text)
                                  COM_getBlockTemplate('_msg_block', 'header'))
                 . $message_text
                 . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, 'menu', $message_title);
+        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $message_title));
 
         header($_SERVER['SERVER_PROTOCOL'] . ' 403 Forbidden');
         header('Status: 403 Forbidden');
@@ -664,7 +664,7 @@ case 'create':
                             COM_getBlockTemplate ('_msg_block', 'header'))
                  . $LANG04[122]
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display = COM_createHTMLDocument($display, 'menu', $LANG04[22]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[22]));
     } else {
         $email = COM_applyFilter ($_POST['email']);
         $email_conf = COM_applyFilter ($_POST['email_conf']);
@@ -686,7 +686,7 @@ case 'getpassword':
     } else {
         $display .= getpasswordform ();
     }
-    $display = COM_createHTMLDocument($display, 'menu', $LANG04[25]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
     break;
 
 case 'newpwd':
@@ -698,11 +698,11 @@ case 'newpwd':
                            array ($uid, $reqid));
         if ($valid == 1) {
             $display .= newpasswordform ($uid, $reqid);
-            $display = COM_createHTMLDocument($display, 'menu', $LANG04[92]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[92]));
         } else { // request invalid or expired
             $display .= COM_showMessage (54);
             $display .= getpasswordform ();
-            $display = COM_createHTMLDocument($display, 'menu', $LANG04[25]);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
         }
     } else {
         // this request doesn't make sense - ignore it
@@ -733,7 +733,7 @@ case 'setnewpwd':
             } else { // request invalid or expired
                 $display .= COM_showMessage (54);
                 $display .= getpasswordform ();
-                $display = COM_createHTMLDocument($display, 'menu', $LANG04[25]);
+                $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[25]));
             }
         } else {
             // this request doesn't make sense - ignore it
@@ -753,7 +753,7 @@ case 'emailpasswd':
                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display = COM_createHTMLDocument($display, 'menu', $LANG12[26]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG12[26]));
     } else {
         $username = COM_applyFilter ($_POST['username']);
         $email = COM_applyFilter ($_POST['email']);
@@ -786,7 +786,8 @@ case 'new':
         }
     }
 
-    $display = COM_createHTMLDocument($display, 'menu', $LANG04[22]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG04[22]));
+    
     break;
 
 case 'tokenexpired':
@@ -1128,7 +1129,7 @@ default:
             break;
         }
 
-        $display = COM_createHTMLDocument($display, 'menu');
+        $display = COM_createHTMLDocument($display);
     }
     break;
 }

@@ -53,7 +53,7 @@ $display = '';
 if (!SEC_hasRights('spamx.admin')) {
     // Someone is trying to illegally access this page
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-    $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
     COM_accessLog("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}", 1);
     COM_output($display);
     exit;
@@ -104,7 +104,7 @@ if (isset($_REQUEST['command'])) {
         $display .= $CM->display();
     }
 }
-$display = COM_createHTMLDocument($display, 'menu', $LANG_SX00['plugin_name']);
+$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_SX00['plugin_name']));
 
 COM_output($display);
 

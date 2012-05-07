@@ -118,7 +118,7 @@ function links_list($message)
         $A = DB_fetchArray($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) < 2) {
             $display .= COM_showMessage (5, 'links');
-            $display = COM_createHTMLDocument($display, 'menu', $page_title);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
             COM_output($display);
             exit;
         }
@@ -126,7 +126,7 @@ function links_list($message)
         // check existent
         if ( !isset($A['owner_id']) ) {
             $display .= COM_showMessage (16, 'links');
-            $display = COM_createHTMLDocument($display, 'menu', $page_title);
+            $display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
             COM_output($display);
             exit;
         }
@@ -335,7 +335,7 @@ function links_list($message)
     $linklist->set_var ('blockfooter',COM_endBlock());
     $linklist->parse ('output', 'linklist');
     $display .= $linklist->finish ($linklist->get_var ('output'));
-    $display = COM_createHTMLDocument($display, 'menu', $page_title);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $page_title));
 
     return $display;
 }
@@ -443,7 +443,7 @@ if (($mode == 'report') && !COM_isAnonUser()) {
 if (COM_isAnonUser() &&
     (($_CONF['loginrequired'] == 1) || ($_LI_CONF['linksloginrequired'] == 1))) {
     $display .= SEC_loginRequiredForm();
-    $display = COM_createHTMLDocument($display, 'menu', $LANG_LINKS[114]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LINKS[114]));
 } else {
     $display .= links_list($message);
 }

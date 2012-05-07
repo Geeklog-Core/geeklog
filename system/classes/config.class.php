@@ -968,8 +968,8 @@ class config {
             $t->set_var('error_validation_class', ' error_validation');
         }
         
-        $display .= $t->finish($t->parse("OUTPUT", "main"));
-        $display = COM_createHTMLDocument($display, 'none', $LANG_CONFIG['title'], '', false);
+        $display = $t->finish($t->parse("OUTPUT", "main"));
+        $display = COM_createHTMLDocument($display, array('what' => 'none', 'pagetitle' => $LANG_CONFIG['title'], 'rightblock' => false));
 
         return $display;
     }
@@ -1107,7 +1107,7 @@ class config {
         global $_USER, $MESSAGE;
 
         $display = COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
-        $display = COM_createHTMLDocument($display, 'menu', $MESSAGE[30]);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
         COM_accessLog("User {$_USER['username']} tried to illegally access the config administration screen.");
 
         return $display;
