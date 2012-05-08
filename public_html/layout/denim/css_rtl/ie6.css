@@ -1,0 +1,325 @@
+@charset "utf-8";
+
+fieldset {
+  padding-top: 0;
+  width: auto;
+}
+
+textarea {
+  overflow: auto;
+}
+
+ul, ol {
+  margin-left: 45px;
+}
+
+pre {
+  width: 95%;  /* Win IE 6(overflow property set auto: wide width max) */
+}
+
+/* Win IE 6(Adjust floating element) { \*/
+#wrapper {
+  height: 1%;
+  overflow: visible;
+}
+/* } Win IE 6(Adjust floating element) */
+
+/*--------------------------------------
+  Basic Form
+--------------------------------------*/
+
+.form_block {
+  margin-top: 7px;
+}
+
+.wide {
+  width: 95%;
+}
+
+/*--------------------------------------
+  1 Column Form
+--------------------------------------*/
+
+.linear {
+  clear: left;
+}
+
+/*--------------------------------------
+  2 Culumn Form
+--------------------------------------*/
+
+.compact dd {
+/*  float: none;*/
+}
+
+/* Win IE 6(Float Adjustment) { \*/
+.compact dl {
+  height: 1%;
+  overflow: visible;
+}
+/* } Win IE 6(Float Adjustment) */
+
+/* Description */
+.compact dd.description {
+  margin-left: 23.4%;
+}
+
+/* Win IE 6(Float left and right margin too wide) { */
+.compact dd.description {
+  margin-left: 12.5%;
+}
+/* } Win IE 6 */
+
+.compact fieldset dd.description {
+  margin-left: 25%;
+}
+.compact fieldset dd.description {
+  margin-left: 12.5%;
+}
+
+/*--------------------------------------
+  Profile Notes
+--------------------------------------*/
+
+.profile_notes {
+  border: 1px solid #CCC;
+}
+
+/*--------------------------------------
+  System Message Block
+--------------------------------------*/
+
+/* Title */
+#block-message dt {
+  border: 1px solid #32567B;
+}
+
+/* Message */
+#block-message dd {
+  font-weight: bold;
+  border-bottom: 1px solid #BEBEBE;
+  border-left:   1px solid #BEBEBE;
+  border-right:  1px solid #BEBEBE;
+}
+
+/*--------------------------------------
+  Story
+--------------------------------------*/
+
+/* Container */
+.storytext {
+  position: relative;
+}
+
+/* Story Title */
+.story_title {
+  float: none;
+}
+
+/* Icon(email, print, pdf) */
+.story_icon {
+  float: none;
+  position: absolute;
+  top: 0;
+  right: 10px;
+}
+
+/*--------------------------------------
+  Comment Bar
+--------------------------------------*/
+
+#commentbar {
+  position: relative;
+}
+
+/* Comment Submit Form  */
+#commentbar-comment {
+  float: none;
+  text-align:left;
+}
+
+#commentbar-selector {
+  float: none;
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  padding: 0.3em;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu {
+  border: 1px solid #DDD;
+  overflow: auto;
+}
+
+/*--------------------------------------
+  Navigation
+--------------------------------------*/
+
+#navcontainer {
+  float: none;
+}
+
+/*--------------------------------------
+  Admin Page
+--------------------------------------*/
+
+/* Table */
+.admin-list-table {
+  border-collapse: collapse;
+}
+
+.admin-list-table th,
+.admin-list-table td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/* Permission */
+.admin-list-smalltable {
+  border-collapse: collapse;
+}
+
+.admin-list-smalltable th,
+.admin-list-smalltable td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/*--------------------------------------
+  Permission Style
+--------------------------------------*/
+
+#admin-permissions {
+  border-collapse: separate;
+}
+
+#admin-permissions th,
+#admin-permissions td {
+  border-bottom: 1px solid #FFF;
+  border-right: 1px solid #FFF;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-moderation:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+#admin-moderation {
+  overflow: auto;
+}
+
+/*--------------------------------------
+  Navigation
+--------------------------------------*/
+
+.a-navlist:hover .label-navlist {
+  color: #FFF;
+}
+
+.a-navlist:hover .label-navlist {
+  background-position: 100% -42px;
+}
+
+#current .label-navlist {
+  background: url(../navbar/images/tabrightI.gif) no-repeat 0 0;
+  background-position: 100% -42px;
+  color: #FFF;
+}
+
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav a {
+  display: inline;
+  zoom: 1;
+}
+
+.gl-pagenav span {
+  display: inline;
+  zoom: 1;
+}
+
+/*--------------------------------------
+  My Account Page
+--------------------------------------*/
+
+#exclude_topic .checkboxes-list li,
+#boxesblock .checkboxes-list li {
+  display: inline;
+  margin-right: 0.5em;
+}
+
+/*--------------------------------------
+  Story Editor
+--------------------------------------*/
+
+#admin-storyeditor-introtext,
+#admin-storyeditor-bodytext {
+  width: 95%;
+}
+
+/*--------------------------------------
+  Trackback
+--------------------------------------*/
+
+.block-trackback-content p {
+  margin: 0 0 1em 0;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#instructions p {
+  margin: 0 0 5px 0;
+  line-height: 1.25;
+}
+
+/*--------------------------------------
+   Center Block Container
+    #centerblocks is always display.
+--------------------------------------*/
+
+/* JavaScript Enabled* 2 Column ( Left Block*  Center Block)  Center Block Container */
+body.left-center #centerblocks {
+  width: 769px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Padding -  Left Padding */
+}
+
+/*--------------------------------------
+  Comment Submit Form
+--------------------------------------*/
+
+#comment_text {
+  width: 95%;
+}
+
+/*--------------------------------------
+  Article Page
+--------------------------------------*/
+
+/* Article Related Block */
+.block-related {
+  width: 49.5%;
+}
+
+/*--------------------------------------
+  Polls Plugin
+--------------------------------------*/
+
+#leftblocks .poll-questions ul,
+#rightblocks .poll-questions ul {
+  margin-left: -20px;
+}
+

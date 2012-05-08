@@ -57,10 +57,9 @@ function theme_css_denim()
 {
     global $_CONF, $LANG_DIRECTION;
 
-    $cssfile = ($LANG_DIRECTION == 'rtl') ? '/style_rtl.css' : '/style.css';
     return array(
         array(
-            'file'       => '/layout/' . $_CONF['theme'] . $cssfile,
+            'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.css',
             'attributes' => array('media' => 'screen')
         )
     );
@@ -82,9 +81,6 @@ function theme_js_files_denim()
     global $_CONF;
 
     return array(
-        //'/layout/' . $_CONF['theme'] . '/javascript/tabs.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/app.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/tinynav.min.js',
         '/layout/' . $_CONF['theme'] . '/javascript/script.js'
     );
 }

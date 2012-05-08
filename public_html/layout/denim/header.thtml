@@ -20,9 +20,9 @@
 {feed_url}
 {rel_links}
 {plg_headercode}
-<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/ie6style.css"{xhtml}><![endif]-->
-<!--[if IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/ie7style.css"{xhtml}><![endif]-->
-<!--[if IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/ie8style.css"{xhtml}><![endif]-->
+<!--[if lt IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie6.css"{xhtml}><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie7.css"{xhtml}><![endif]-->
+<!--[if IE 8]><link rel="stylesheet" type="text/css" href="{layout_url}/css_{direction}/ie8.css"{xhtml}><![endif]-->
 </head>
 
 <body dir="{direction}" class="{layout_columns}">
