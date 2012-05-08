@@ -232,7 +232,7 @@ pre {
 }
 
 #current .label-navlist {
-  background: url(navbar/images/tabrightI.gif) no-repeat 0 0;
+  background: url(../navbar/images/tabrightI.gif) no-repeat 0 0;
   background-position: 100% -42px;
   color: #FFF;
 }

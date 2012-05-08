@@ -1,0 +1,35 @@
+@charset "utf-8";
+
+
+/*--------------------------------------
+  Profile Notes
+--------------------------------------*/
+
+.profile_notes {
+  border: 1px solid #CCC;
+}
+
+/*--------------------------------------
+  System Message Block
+--------------------------------------*/
+
+/* Title */
+#block-message dt {
+  border: 1px solid #32567B;
+}
+
+/* Message */
+#block-message dd {
+  font-weight: bold;
+  border-bottom: 1px solid #BEBEBE;
+  border-left:   1px solid #BEBEBE;
+  border-right:  1px solid #BEBEBE;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu {
+  border: 1px solid #DDD;
+}

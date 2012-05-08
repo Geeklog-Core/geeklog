@@ -435,14 +435,14 @@ input::-moz-focus-inner {
 
 .ext-link {
 background-color: transparent;
-  background: url(images/external.png) center right no-repeat;
+  background: url(../images/external.png) center right no-repeat;
   background-attachment: scroll;
   padding-right: 13px; /* rtl */
 }
 
 .feed-link {
   background-color: transparent;
-  background: url(images/feed.png) center right no-repeat;
+  background: url(../images/feed.png) center right no-repeat;
   background-attachment: scroll;
   padding: 2px 16px 2px 0px; /* rtl */
 }
@@ -813,7 +813,7 @@ a.pluginButton:hover {
   color: blue;
   text-align: center;
   padding-top: 2px;
-  background:center url(navbar/images/button_over.gif);
+  background:center url(../navbar/images/button_over.gif);
   background-repeat: repeat-x;
   display: block;
   height: 19px;
@@ -982,7 +982,7 @@ a.pluginButton:hover {
   margin: 0 0 0.5em 0;
   padding: 0 0 0 24px; /* rtl */
   border-bottom: 1px solid #CCC;
-  background: url(images/icon_info.png) no-repeat 0 0; /* rtl */
+  background: url(../images/icon_info.png) no-repeat 0 0; /* rtl */
   font-weight: bold;
   color: #666;
 }
@@ -1062,7 +1062,7 @@ ul.compact li {
 #header {
   width: 100%;  /* Container Width */
   height: 80px;
-  background: transparent url(images/css/bg_header.gif) repeat-x 0 0;
+  background: transparent url(../images/css/bg_header.gif) repeat-x 0 0;
 }
 
 #header-content {
@@ -1541,7 +1541,7 @@ h4 img {
 }
 
 input[type="text"].search {
-  background: url(images/search.png) left center no-repeat #FFF; /* rtl */
+  background: url(../images/search.png) left center no-repeat #FFF; /* rtl */
   padding-left: 24px; /* rtl */
   width: 120px;
   color: #999;
@@ -3607,3 +3607,20 @@ b.status_black {
 	  width: 33.33%;
 	}
 }
+
+/* for testing */
+/*
+#wrapper {
+  background-color:#EDEED8;
+}
+#leftblocks {
+  background-color:#DAE0ED;
+}
+#rightblocks {
+  background-color:#D9EDE5;
+}
+#centerblocks {
+  background-color:#EBD8EE;
+}
+*/
+
