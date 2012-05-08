@@ -453,6 +453,10 @@ unset(
     $theme_config,
     $func
 );
+// if the themes supported version of the theme engine not found assume lowest version
+if (!isset($_CONF['supported_version_theme'])) {
+    $_CONF['supported_version_theme'] = '1.8.1';
+}
 
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
@@ -1599,8 +1603,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
        $custom = '';
    }  
 
-    // If the theme does not support the CSS layout then call the legacy functions.
-    if ($_CONF['support_theme_2.0'] != true) {
+    // If the theme does not support the CSS layout then call the legacy functions (Geeklog 1.8.1 and older).
+    if ($_CONF['supported_version_theme'] == '1.8.1') {
         return COM_siteHeader($what, $pagetitle, $headercode) . $content
              . COM_siteFooter($rightblock, $custom);
     }
@@ -2012,6 +2016,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     
     $headercode = $_SCRIPTS->getHeader() . $headercode;
     $header->set_var( 'plg_headercode', $headercode );
+    
+    $header->set_var( 'breadcrumb_trail', $breadcrumbs );
 
     COM_hit();
 

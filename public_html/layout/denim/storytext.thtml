@@ -2,7 +2,6 @@
 <!-- storytext.thtml { -->
 
 <div class="storytext">
-  {breadcrumb_trail}
   <h2 class="story_title">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
 
   <div class="story_icon">

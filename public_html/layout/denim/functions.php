@@ -96,7 +96,7 @@ function theme_init_denim()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
 
-    $_CONF['support_theme_2.0'] = true; // support new theme format for the later Geeklog2.0
+    $_CONF['supported_version_theme'] = '2.0.0'; // support new theme format for the later Geeklog 2.0
 
     $_CONF['left_blocks_in_footer'] = 1;
 

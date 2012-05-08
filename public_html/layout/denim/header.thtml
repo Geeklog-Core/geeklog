@@ -62,5 +62,6 @@
       <div id="centerblocks">
         <div id="main-content">
           <p class="welcome_msg">{welcome_msg}&nbsp;{datetime}</p>
-
+          {breadcrumb_trail}
+          
 <!-- } header.thtml -->

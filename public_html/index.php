@@ -334,6 +334,8 @@ $data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} AS s, {$_
 $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
+$breadcrumbs = '';
+
 if ( $A = DB_fetchArray( $result ) ) {
     $story = new Story();
     $story->loadFromArray($A);
@@ -341,11 +343,15 @@ if ( $A = DB_fetchArray( $result ) ) {
         $story->_featured = 1;
     }
 
+    
     // Display breadcrumb trail
     if (!empty($topic)) {
-        $display .= TOPIC_breadcrumbs('topic', $topic);
+        $breadcrumbs = TOPIC_breadcrumbs('topic', $topic);
+        if ($_CONF['supported_version_theme'] == '1.8.1') {
+            $display .= $breadcrumbs;
+        }
     }
-
+    
     // display first article
     $display .= STORY_renderArticle ($story, 'y');
 
@@ -414,7 +420,7 @@ if ($topic)
             . '>';
 }
 
-$display = COM_createHTMLDocument($display, array('headercode' => $header, 'rightblock' => true));
+$display = COM_createHTMLDocument($display, array('breadcrumbs' => $breadcrumbs, 'headercode' => $header, 'rightblock' => true));
 
 // Output page
 COM_output($display);

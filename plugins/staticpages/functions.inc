@@ -347,12 +347,13 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
             $spage->set_var('xmlns', ' xmlns="http://www.w3.org/1999/xhtml"');
         }
         
-        if ($_SP_CONF['disable_breadcrumbs_staticpages']) {
-            $breadcrumb_trail = '';
-        } else {
-            $breadcrumb_trail = TOPIC_breadcrumbs('staticpages', $page);
+        $breadcrumb_trail = '';
+        if ($_CONF['supported_version_theme'] == '1.8.1') {
+            if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
+                $breadcrumb_trail = TOPIC_breadcrumbs('staticpages', $page);
+            }
         }
-        $spage->set_var('breadcrumb_trail', $breadcrumb_trail);
+        $spage->set_var('breadcrumb_trail', $breadcrumb_trail); // Still need to keep this template variable incase main theme does not support 2.0.0 theme engine. Once we drop support of theme engine 1.9.1 then remove
 
         $author_name = COM_getDisplayName($A['owner_id']);
         $author_username = DB_getItem($_TABLES['users'], 'username',
@@ -491,8 +492,13 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
         } else {
             $rightblock = -1;
         }
+        
+        $breadcrumbs = '';
+        if (!$_SP_CONF['disable_breadcrumbs_staticpages']) {
+            $breadcrumbs = TOPIC_breadcrumbs('staticpages', $page);
+        }
 
-        $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'headercode' => $headercode, 'rightblock' => $rightblock));
+        $retval = COM_createHTMLDocument($retval, array('what' => $what, 'pagetitle' => $page_title, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headercode, 'rightblock' => $rightblock));
     }
 
     return $retval;

@@ -237,7 +237,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             )
         );
     } else {
-        $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
+        if ($_CONF['supported_version_theme'] == '1.8.1') {
+            $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
+        }
         $article->set_var('story_title_link', $story->DisplayElements('title'));
     }
 

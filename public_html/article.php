@@ -444,7 +444,10 @@ if ($A['count'] > 0) {
             $story_template->set_var ('trackback', '');
         }
         $display = $story_template->finish ($story_template->parse ('output', 'article'));
-        $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'headercode' => $headercode));
+        
+        $breadcrumbs = TOPIC_breadcrumbs('article', $story->getSid());
+        
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headercode));
     }
 } else {
     $display .= COM_refresh($_CONF['site_url'] . '/index.php');
