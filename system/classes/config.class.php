@@ -63,6 +63,12 @@ class config {
     var $conf_type;
     
     /**
+     * Whether support new theme format for the later Geeklog 2.0 or not
+     * @var boolean
+     */
+    var $flag_version_2;
+    
+    /**
      * List of validation rules. Append entries for validation as 
      * ('field_name' => '/^perl_compat_regexp$/') that have to match
      * with preg_match(). Use these rules with config::_validates()
@@ -111,7 +117,8 @@ class config {
     /**
      * Constructor
      */
-    function __construct() {
+    function __construct()
+    {
         $this->config_array = array();
         
         $this->conf_tab_arr = null;
@@ -794,7 +801,9 @@ class config {
         $js .= "var frmGroupAction = '" . $_CONF['site_admin_url'] . "/configuration.php';";
         $_SCRIPTS->setJavaScript($js, true);
 
-        if ($_CONF['support_theme_2.0'] == true) {
+        $this->flag_version_2 = version_compare($_CONF['supported_version_theme'], '2.0.0', '>=');
+
+        if ($this->flag_version_2 == true) {
             $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/admin.configuration.js');
         } else {
             $_SCRIPTS->setJavaScriptFile('admin.configuration', '/javascript/ver.1.8/admin.configuration.js');
@@ -881,7 +890,7 @@ class config {
                     $fs_flag = true;
                     if ($current_fs != '') {
 
-                        if ($_CONF['support_theme_2.0'] == true) {
+                        if ($this->flag_version_2 == true) {
                             $tab_contents .= '</div></fieldset><!-- END fieldset -->';
                         } else {
                             $tab_contents .= '</table></fieldset><!-- END fieldset -->';
@@ -894,7 +903,7 @@ class config {
                 }
                 if (!$table_flag) {
 
-                    if ($_CONF['support_theme_2.0'] == true) {
+                    if ($this->flag_version_2 == true) {
                         $tab_contents .= '<div class="inputTable">';
                     } else {
                         $tab_contents .= '<table class="inputTable">';
@@ -903,7 +912,7 @@ class config {
                     $table_flag = true;
                 }
 
-                if ($_CONF['support_theme_2.0'] == true) {
+                if ($this->flag_version_2 == true) {
                     $tab_contents .=
                         $this->_UI_get_conf_element_2($grp, $name,
                                                    $e['display_name'],
@@ -923,7 +932,7 @@ class config {
             }
 
             if ($table_flag) {
-                if ($_CONF['support_theme_2.0'] == true) {
+                if ($this->flag_version_2 == true) {
                     $tab_contents .= '</div>';
                 } else {
                     $tab_contents .= '</table>';
@@ -1819,7 +1828,7 @@ class config {
                     $group_display = $LANG_configsections[$group]['label'];
                 }
                 // Create a menu item for each config group - disable the link for the current selected one
-                if ($_CONF['support_theme_2.0'] == true) {
+                if ($this->flag_version_2 == true) {
                     if ($conf_group == $group) {
                         $link = "<li class=\"configoption_off\">$group_display</li>";
                     } else {
@@ -1845,7 +1854,7 @@ class config {
             $retval .= $link;
         }
 
-        if ($_CONF['support_theme_2.0'] == true) {
+        if ($this->flag_version_2 == true) {
             $retval .= '<li class="configoption"><a href="' . $_CONF['site_admin_url'] . '">'
                     . $LANG_ADMIN['admin_home'] . '</a></li>';
         } else {
@@ -1877,7 +1886,7 @@ class config {
                     $group_display = $sgname;
                 }
                 // Create a menu item for each sub config group - disable the link for the current selected one
-                if ($_CONF['support_theme_2.0'] == true) {
+                if ($this->flag_version_2 == true) {
                     if ($sgroup == $sg) {
                         $retval .= "<li class=\"configoption_off\">$group_display</li>";
                     } else {
@@ -2014,7 +2023,7 @@ class config {
     */
     function _set_ConfigHelp(&$t, $group, $option)
     {
-        global $_CONF, $_SCRIPTS;
+        global $_SCRIPTS;
         static $docUrl;
 
         if (!isset($docUrl)) {
@@ -2058,7 +2067,7 @@ class config {
                 
                 $t->set_var('doc_url', $descUrl);
                 
-                if ($_CONF['support_theme_2.0'] == true) {
+                if ($this->flag_version_2 == true) {
                     // Does hack need to be used?
                     if (gettype($configtext) == "NULL") {
                         $t->set_var('doc_link',
