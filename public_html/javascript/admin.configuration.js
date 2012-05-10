@@ -531,12 +531,15 @@ $(function() {
         document.group.submit();
     }
     
-    // get selected tab and config if passed on url
-    getSelectedConf();
+    // initialize selected tab
+    selectedTab = $("#tabs > ul > li:eq(0) a").attr('href');
     
     // runs overflow handler once in bootstrap
     tabsOverflowHandler();
     
+    // get selected tab and config if passed on url
+    getSelectedConf();
+
     // end bootstrap
     bootstrap = false;
 });
