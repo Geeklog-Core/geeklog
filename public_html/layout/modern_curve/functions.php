@@ -80,6 +80,7 @@ function theme_js_files_modern_curve()
 {
     global $_CONF;
     return array(
+        '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
         '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
         '/layout/' . $_CONF['theme'] . '/javascript/search.js'
     );
