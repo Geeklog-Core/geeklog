@@ -474,9 +474,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             $emailicon = '<img src="' . $_CONF['layout_url'] . '/images/mail.'
                 . $_IMAGE_TYPE . '" alt="' . $LANG01[64] . '" title="'
                 . $LANG11[2] . '"' . XHTML . '>';
-            $article->set_var( 'email_icon',
-                COM_createLink($emailicon, $emailUrl)
-            );
+            $article->set_var( 'email_icon', COM_createLink($emailicon, $emailUrl));
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
             $article->set_var( 'lang_email_story_alt', $LANG01[64] );
@@ -510,21 +508,15 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     if (($index != 'p') AND SEC_hasRights('story.edit') AND
             ($story->checkAccess() == 3) AND
             (TOPIC_hasMultiTopicAccess('article', $story->DisplayElements('sid')) == 3)) {
-        $article->set_var( 'edit_link',
-            COM_createLink($LANG01[4], $_CONF['site_admin_url']
-                . '/story.php?mode=edit&amp;sid=' . $story->getSid())
-            );
-        $article->set_var( 'edit_url', $_CONF['site_admin_url']
-                . '/story.php?mode=edit&amp;sid=' . $story->getSid() );
+        $editUrl = $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+            . $story->getSid();
+        $editiconhtml = '<img src="' . $_CONF['layout_url']
+            . '/images/edit.' . $_IMAGE_TYPE . '" alt="' . $LANG01[4]
+            . '" title="' . $LANG01[4] . '"' . XHTML . '>';
+        $article->set_var( 'edit_link', COM_createLink($LANG01[4], $editUrl) );
+        $article->set_var( 'edit_url', $editUrl );
         $article->set_var( 'lang_edit_text',  $LANG01[4] );
-        $editicon = $_CONF['layout_url'] . '/images/edit.' . $_IMAGE_TYPE;
-        $editiconhtml = '<img src="' . $editicon . '" alt="' . $LANG01[4] . '" title="' . $LANG01[4] . '"' . XHTML . '>';
-        $article->set_var( 'edit_icon',
-            COM_createLink(
-                $editiconhtml,
-                $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid=' . $story->getSid()
-            )
-        );
+        $article->set_var( 'edit_icon', COM_createLink($editiconhtml, $editUrl) );
         $article->set_var( 'edit_image', $editiconhtml);
     }
 
