@@ -158,7 +158,10 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
         $hidden = '';
         $commentmode = COM_applyFilter($_REQUEST[CMT_MODE]);
         $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
-        $pid = COM_applyFilter($_REQUEST[CMT_PID], true);
+        $pid = 0;
+        if (isset($_REQUEST[CMT_PID])) {
+            $pid = COM_applyFilter($_REQUEST[CMT_PID], true);
+        }
         if (in_array($commentmode, array('view', $LANG03[28], $LANG03[34], $LANG03[14], 'edit'))) {
             $hidden .= '<input type="hidden" name="' . CMT_CID . '" value="' . $cid . '"' . XHTML . '>';
             $hidden .= '<input type="hidden" name="' . CMT_PID . '" value="' . $cid . '"' . XHTML . '>';
@@ -283,7 +286,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         return '';
     }
 
-    $commentmode = COM_applyFilter($_REQUEST[CMT_MODE]);
+    $commentmode = '';
+    if (isset($_REQUEST[CMT_MODE])) {
+        $commentmode = COM_applyFilter($_REQUEST[CMT_MODE]);
+    }
     $submit = (($commentmode == $LANG03[29]) || ($commentmode == $LANG03[35]));
     $token = '';
     if ($delete_option && !$preview && !$submit) {
