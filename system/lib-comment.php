@@ -2424,6 +2424,9 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                 }
                 if (empty($title)) {
                     $title = PLG_getItemInfo($type, $sid, 'title');
+                    if (is_array($title)) {
+                        $title = '';
+                    }
                     $title = str_replace ( '$', '&#36;', $title );
                     // CMT_commentForm expects non-htmlspecial chars for title...
                     $title = str_replace ( '&amp;', '&', $title );
