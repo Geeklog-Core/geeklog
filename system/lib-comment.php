@@ -157,7 +157,10 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
         $commentbar->set_var( 'editor_url', $comment_url . '#commenteditform' );
         $hidden = '';
         $commentmode = COM_applyFilter($_REQUEST[CMT_MODE]);
-        $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
+        $cid = 0;
+        if (isset($_REQUEST[CMT_CID])) {        
+            $cid = COM_applyFilter($_REQUEST[CMT_CID], true);
+        }
         $pid = 0;
         if (isset($_REQUEST[CMT_PID])) {
             $pid = COM_applyFilter($_REQUEST[CMT_PID], true);
@@ -2187,7 +2190,7 @@ function CMT_handleEdit($mode='', $postmode='', $format, $order, $page)
  */
 function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG_ADMIN, $topic, $_PLUGINS;
 
     $commentmode = '';
     if (!empty($_REQUEST[CMT_MODE])) {
@@ -2409,11 +2412,16 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
         default: // New Comment or Reply Comment
 
             $abort = false;
-            if (($type == 'article') && !empty($sid)) {
+            // Check to make sure comment type exists
+            if ($type != 'article' && !in_array($type, $_PLUGINS)) {
+                $abort = true;
+            }
+            
+            // Check article permissions
+            if (!$abort && ($type == 'article') && !empty($sid)) {
                 $dbTitle = DB_getItem($_TABLES['stories'], 'title',
                             "(sid = '$sid') AND (draft_flag = 0) AND (date <= NOW()) AND (commentcode = 0)"
                             . COM_getPermSQL('AND'));
-                global $topic;
 
                 // if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid) < 2) { // Make sure have at least read access to topics to post comment
                 if ($dbTitle === null || TOPIC_hasMultiTopicAccess('article', $sid, $topic) < 2) { // Make sure have at least read access to current topic of article to post comment
@@ -2430,8 +2438,11 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                 }
                 if (empty($title)) {
                     $title = PLG_getItemInfo($type, $sid, 'title');
-                    if (is_array($title)) {
-                        $title = '';
+                    
+                    // Check title, if for some reason blank assume no access allowed to plugin item (therefore cannot add comment) so return to homepage
+                    if (is_array($title) || empty($title) || ($title == false)) {
+                        echo COM_refresh($_CONF['site_url'] . '/index.php');
+                        exit;
                     }
                     $title = str_replace ( '$', '&#36;', $title );
                     // CMT_commentForm expects non-htmlspecial chars for title...
