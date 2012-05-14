@@ -839,6 +839,9 @@ class Story
         if ($oldArticleExists) {
             /* Clean up the old story */
             DB_delete($_TABLES['stories'], 'sid', $checksid);
+            
+            // Delete Topic Assignments for this old article id since we just created new ones
+            TOPIC_deleteTopicAssignments('article', $checksid);            
         }
 
         if ($this->type == 'submission') {
