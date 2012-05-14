@@ -480,6 +480,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                 $result = DB_query($sql);            
             }
             
+            // Delete Topic Assignments for this old staticpage since we just created new ones
+            TOPIC_deleteTopicAssignments('staticpages', $sp_old_id);              
+            
             DB_delete($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
 
