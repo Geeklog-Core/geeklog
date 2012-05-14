@@ -348,8 +348,13 @@ function staticpageeditor_form($A, $error = false)
     $sp_template->set_var('sp_page_title', $page_title);
     
     $sp_template->set_var('lang_topic', $LANG_STATIC['topic']);
-    $sp_template->set_var('topic_selection',
-                          TOPIC_getTopicSelectionControl ('staticpages', $A['sp_id'], true, false, true));    
+    if ($mode != 'clone') {
+        $sp_template->set_var('topic_selection',
+                              TOPIC_getTopicSelectionControl ('staticpages', $A['sp_id'], true, false, true));
+    } else {
+        $sp_template->set_var('topic_selection',
+                              TOPIC_getTopicSelectionControl ('staticpages', $A['clone_sp_id'], true, false, true));
+    }
     
     $sp_template->set_var('lang_metadescription',
                           $LANG_ADMIN['meta_description']);
@@ -638,6 +643,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
             $A['sp_id'] = COM_makesid();
+            $A['clone_sp_id'] = $sp_id; // need this so we can load the correct topics
             $A['owner_id'] = $_USER['uid'];
             $A['unixdate'] = time();
             $A['sp_hits'] = 0;
