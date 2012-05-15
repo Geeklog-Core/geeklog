@@ -119,6 +119,13 @@ div.comments ul.thread li.author:before {
   content: " - ";
 }
 
+/* Individual Comment  */
+div.comments div.block-comment-content {
+  margin: 0;
+  padding: 0;
+  text-align: {left};
+}
+
 /* Individual Comment Level(Nested | Tree) */
 div.comments div.level-25,
 div.comments ul.level-25 {
@@ -168,13 +175,6 @@ div.comments ul.level-225 {
 div.comments div.level-250,
 div.comments ul.level-250 {
   margin-{left}: 144px;
-}
-
-/* Individual Comment  */
-div.comments div.block-comment-content {
-  margin: 0;
-  padding: 0;
-  text-align: {left};
 }
 
 /* Comment Information  */
