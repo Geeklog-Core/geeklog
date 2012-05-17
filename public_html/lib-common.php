@@ -3248,6 +3248,8 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 
     if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAcess())        
     {
+        $link_array = array();
+
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
 
