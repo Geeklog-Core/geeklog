@@ -16,7 +16,7 @@
   </ul>
 
   <div class="story_introtext">
-    <span class="story_image">{story_anchortag_and_image}</span>
+    <span class="story_image">{story_anchortag_and_image_no_align}</span>
     {story_text_no_br}
   </div>
 

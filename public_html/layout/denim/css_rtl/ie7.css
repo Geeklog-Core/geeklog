@@ -1,4 +1,3 @@
-@charset "utf-8";
 
 fieldset {
   padding-top: 0;
@@ -9,9 +8,12 @@ textarea {
 }
 
 ul, ol {
-  margin-left: 45px;
+  margin-right: 45px; /* rtl */
 }
 
+.clearfix {
+  zoom: 1;
+}
 
 /*--------------------------------------
   Basic Form
@@ -19,6 +21,32 @@ ul, ol {
 
 .form_block {
   margin-top: 7px;
+  zoom: 1;
+}
+
+fieldset .form_block:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 1px;
+  overflow: hidden;
+}
+fieldset .form_block {
+  zoom: 1;
+}
+
+/*--------------------------------------
+  2 Culumn Form
+--------------------------------------*/
+
+/* Description */
+.compact dd.description {
+  margin-right: 23.4%; /* rtl */
+}
+
+.compact fieldset dd.description,
+fieldset .compact dd.description {
+  margin-right: 25%; /* rtl */
 }
 
 /*--------------------------------------
@@ -26,25 +54,13 @@ ul, ol {
 --------------------------------------*/
 
 .linear {
-  clear: left;
-}
-
-/*--------------------------------------
-  2 Culumn Form
---------------------------------------*/
-
-.compact dd {
-  float: none;
+  clear: right; /* rtl */
 }
 
 /* Description */
-.compact dd.description {
-  margin-left: 23.4%;
-}
-
-.compact fieldset dd.description,
-fieldset .compact dd.description {
-  margin-left: 25%;
+.linear dd.description {
+  margin: 0 0 1em 0;
+  padding: 0;
 }
 
 /*--------------------------------------
@@ -83,19 +99,18 @@ fieldset .compact dd.description {
 
 /* Story Title */
 .story_title {
-  float: none;
+  line-height: 1.3em;
+  margin-bottom: 0px;
 }
 
 /* Icon(email, print, pdf) */
 .story_icon {
-  float: none;
-  position: absolute;
-  top: 0;
-  right: 0;
+  width: 75px;
+  text-align: left; /* rtl */
 }
 
 /*--------------------------------------
-  Comment Bar
+  Comment Block
 --------------------------------------*/
 
 #commentbar {
@@ -105,24 +120,18 @@ fieldset .compact dd.description {
 /* Comment Submit Form  */
 #commentbar-comment {
   float: none;
-  text-align:left;
+}
+
+#commentbar-comment div.submit {
+  text-align: right; /* rtl */
 }
 
 #commentbar-selector {
   float: none;
   position: absolute;
   top: 3px;
-  right: 3px;
+  left: 3px; /* rtl */
   padding: 0.3em;
-}
-
-/*--------------------------------------
-  Admin Top Menu Style
---------------------------------------*/
-
-#admin-topmenu {
-  border: 1px solid #DDD;
-  overflow: auto;
 }
 
 /*--------------------------------------
@@ -131,6 +140,24 @@ fieldset .compact dd.description {
 
 #navcontainer {
   float: none;
+  zoom: 1;
+}
+
+#navcontainer:after {
+  content: "";
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+#navlist {
+  zoom: 1;
+}
+
+.label-navlist {
+  white-space: nowrap;
 }
 
 /*--------------------------------------
@@ -147,6 +174,15 @@ fieldset .compact dd.description {
 }
 
 /*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#admin-topmenu {
+  border: 1px solid #DDD;
+  overflow: auto;
+}
+
+/*--------------------------------------
   Admin Page
 --------------------------------------*/
 
@@ -158,7 +194,7 @@ fieldset .compact dd.description {
 .admin-list-table th,
 .admin-list-table td {
   border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-left: 1px solid #FFF; /* rtl */
 }
 
 /* Permission */
@@ -169,7 +205,12 @@ fieldset .compact dd.description {
 .admin-list-smalltable th,
 .admin-list-smalltable td {
   border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-left: 1px solid #FFF; /* rtl */
+}
+
+.search-part {
+  display: inline;
+  white-space: normal;
 }
 
 /*--------------------------------------
@@ -177,17 +218,17 @@ fieldset .compact dd.description {
 --------------------------------------*/
 
 #admin-permissions {
-  border-collapse: separate;
+  border-collapse: collapse;
 }
 
 #admin-permissions th,
 #admin-permissions td {
-  border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-bottom: 1px solid transparent;
+  border-left: 1px solid transparent; /* rtl */
 }
 
 /*--------------------------------------
-  Admin Top Menu Style
+  Moderation Page
 --------------------------------------*/
 
 #admin-moderation:after {
@@ -200,6 +241,20 @@ fieldset .compact dd.description {
 
 #admin-moderation {
   overflow: auto;
+  width: 100%;
+}
+
+#admin-moderation li {
+  width: 12.48%;
+}
+
+/*--------------------------------------
+  Article Page
+--------------------------------------*/
+
+/* Article Related Block */
+.block-related {
+  width: 49.5%;
 }
 
 /*--------------------------------------
@@ -212,21 +267,140 @@ fieldset .compact dd.description {
 }
 
 /*--------------------------------------
-  Article Page
---------------------------------------*/
-
-/* Article Related Block */
-.block-related {
-  width: 49.5%;
-}
-
-
-/*--------------------------------------
   Polls Plugin
 --------------------------------------*/
 
 #leftblocks .poll-questions ul,
 #rightblocks .poll-questions ul {
-  margin-left: -20px;
+  margin-right: -20px; /* rtl */
+}
+
+/* Smaller than standard 1280 (devices and browsers) */
+@media only screen and (max-width: 1192px) { 
+
+	/*--------------------------------------
+	   Center Block Container
+--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 659px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding - 1 */
+}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 16.61%;
+	}
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 979px) {
+
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 527px; /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding - 1 */
+	}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 19.98%;
+	}
+}
+
+
+@media only screen and (max-width: 979px) {
+
+	/*--------------------------------------
+	  2 Culumn Form
+	--------------------------------------*/
+
+	.compact fieldset dd.description,
+	fieldset .compact dd.description {
+	  margin-right: 0; /* rtl */
+	}
+
+/*--------------------------------------
+	  Admin Configration
+--------------------------------------*/
+
+	.configoption {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	.configoption_off {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	.configoption a {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	ul.block-config-content {
+	  margin-right: 0; /* rtl */
+	}
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 100%;
+	  padding: 0;
+	}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 24.94%;
+	}
+
+	/*--------------------------------------
+	  Left And Right Block
+	--------------------------------------*/
+
+	#config_menu .block-title {
+	  margin-left: 0;
+	  margin-right: 0;
+	}
+
+	#search-configuration-container label {
+	  margin-left: 0;
+	  margin-right: 0;
+	}
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 33.24%;
+	}
 }
 

@@ -1,4 +1,3 @@
-@charset "utf-8";
 
 fieldset {
   padding-top: 0;
@@ -10,19 +9,22 @@ textarea {
 }
 
 ul, ol {
-  margin-left: 45px;
+  margin-left: 45px; /* rtl */
 }
 
 pre {
   width: 95%;  /* Win IE 6(overflow property set auto: wide width max) */
 }
 
-/* Win IE 6(Adjust floating element) { \*/
+.clearfix {
+  zoom: 1;
+}
+
+/* Adjust floating element */
 #wrapper {
   height: 1%;
   overflow: visible;
 }
-/* } Win IE 6(Adjust floating element) */
 
 /*--------------------------------------
   Basic Form
@@ -30,6 +32,7 @@ pre {
 
 .form_block {
   margin-top: 7px;
+  zoom: 1;
 }
 
 .wide {
@@ -37,20 +40,8 @@ pre {
 }
 
 /*--------------------------------------
-  1 Column Form
---------------------------------------*/
-
-.linear {
-  clear: left;
-}
-
-/*--------------------------------------
   2 Culumn Form
 --------------------------------------*/
-
-.compact dd {
-/*  float: none;*/
-}
 
 /* Win IE 6(Float Adjustment) { \*/
 .compact dl {
@@ -61,20 +52,32 @@ pre {
 
 /* Description */
 .compact dd.description {
-  margin-left: 23.4%;
+  margin-left: 23.4%; /* rtl */
 }
 
-/* Win IE 6(Float left and right margin too wide) { */
 .compact dd.description {
-  margin-left: 12.5%;
+  margin-left: 12.5%; /* rtl */
 }
-/* } Win IE 6 */
 
 .compact fieldset dd.description {
-  margin-left: 25%;
+  margin-left: 25%; /* rtl */
 }
 .compact fieldset dd.description {
-  margin-left: 12.5%;
+  margin-left: 12.5%; /* rtl */
+}
+
+/*--------------------------------------
+  1 Column Form
+--------------------------------------*/
+
+.linear {
+  clear: left; /* rtl */
+}
+
+/* Description */
+.linear dd.description {
+  margin: 0 0 1em 0;
+  padding: 0;
 }
 
 /*--------------------------------------
@@ -83,6 +86,33 @@ pre {
 
 .profile_notes {
   border: 1px solid #CCC;
+}
+
+/*--------------------------------------
+  Header Container
+--------------------------------------*/
+
+/* Site Name */
+.type1 .site_name {
+  margin: 20px 0 0 4px; /* rtl */
+}
+
+/*--------------------------------------
+  Gloval Navigation Container
+--------------------------------------*/
+
+#navigation_ul {
+  display: block;
+  border-left: 1px solid #D7D7D7; /* rtl */
+  zoom: 1;
+}
+
+/*--------------------------------------
+  Center Block Container
+--------------------------------------*/
+
+#centerblocks {
+  float: left; /* rtl */
 }
 
 /*--------------------------------------
@@ -103,6 +133,18 @@ pre {
 }
 
 /*--------------------------------------
+  Admin Option
+  Topic Menu
+  User Menu
+--------------------------------------*/
+
+#leftblocks .sideoption,
+#rightblocks .sideoption {
+  margin: 0;
+  padding: 0;
+}
+
+/*--------------------------------------
   Story
 --------------------------------------*/
 
@@ -113,19 +155,18 @@ pre {
 
 /* Story Title */
 .story_title {
-  float: none;
+  line-height: 1.3em;
+  margin-bottom: 0px;
 }
 
 /* Icon(email, print, pdf) */
 .story_icon {
-  float: none;
-  position: absolute;
-  top: 0;
-  right: 10px;
+  width: 75px;
+  text-align: right; /* rtl */
 }
 
 /*--------------------------------------
-  Comment Bar
+  Comment Block
 --------------------------------------*/
 
 #commentbar {
@@ -135,15 +176,60 @@ pre {
 /* Comment Submit Form  */
 #commentbar-comment {
   float: none;
-  text-align:left;
+}
+
+#commentbar-comment div.submit {
+  text-align: left; /* rtl */
 }
 
 #commentbar-selector {
   float: none;
   position: absolute;
   top: 3px;
-  right: 3px;
+  right: 3px; /* rtl */
   padding: 0.3em;
+}
+#commentbar-selector {
+  padding-right: 1em; /* rtl */
+}
+
+#comment_text {
+  width: 95%;
+}
+
+/*--------------------------------------
+  Navigation
+--------------------------------------*/
+
+#navcontainer {
+  float: none;
+}
+
+#navlist {
+  margin-bottom: -8px;
+  zoom: 1;
+}
+
+.label-navlist {
+  white-space: nowrap;
+}
+
+.li-navlist a {
+  display: inline-block;
+  zoom: 1;
+}
+
+/*--------------------------------------
+  Page Navigation
+--------------------------------------*/
+
+.gl-pagenav a {
+  display: inline;
+  zoom: 1;
+}
+.gl-pagenav span {
+  display: inline;
+  zoom: 1;
 }
 
 /*--------------------------------------
@@ -153,14 +239,6 @@ pre {
 #admin-topmenu {
   border: 1px solid #DDD;
   overflow: auto;
-}
-
-/*--------------------------------------
-  Navigation
---------------------------------------*/
-
-#navcontainer {
-  float: none;
 }
 
 /*--------------------------------------
@@ -175,7 +253,7 @@ pre {
 .admin-list-table th,
 .admin-list-table td {
   border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-right: 1px solid #FFF; /* rtl */
 }
 
 /* Permission */
@@ -186,7 +264,12 @@ pre {
 .admin-list-smalltable th,
 .admin-list-smalltable td {
   border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-right: 1px solid #FFF; /* rtl */
+}
+
+.search-part {
+  display: inline;
+  white-space: normal;
 }
 
 /*--------------------------------------
@@ -194,17 +277,17 @@ pre {
 --------------------------------------*/
 
 #admin-permissions {
-  border-collapse: separate;
+  border-collapse: collapse;
 }
 
 #admin-permissions th,
 #admin-permissions td {
   border-bottom: 1px solid #FFF;
-  border-right: 1px solid #FFF;
+  border-right: 1px solid #FFF; /* rtl */
 }
 
 /*--------------------------------------
-  Admin Top Menu Style
+  Moderation Page
 --------------------------------------*/
 
 #admin-moderation:after {
@@ -217,38 +300,20 @@ pre {
 
 #admin-moderation {
   overflow: auto;
+  width: 100%;
+}
+
+#admin-moderation li {
+  width: 12.48%;
 }
 
 /*--------------------------------------
-  Navigation
+  Article Page
 --------------------------------------*/
 
-.a-navlist:hover .label-navlist {
-  color: #FFF;
-}
-
-.a-navlist:hover .label-navlist {
-  background-position: 100% -42px;
-}
-
-#current .label-navlist {
-  background: url(../navbar/images/tabrightI.gif) no-repeat 0 0;
-  background-position: 100% -42px;
-  color: #FFF;
-}
-
-/*--------------------------------------
-  Page Navigation
---------------------------------------*/
-
-.gl-pagenav a {
-  display: inline;
-  zoom: 1;
-}
-
-.gl-pagenav span {
-  display: inline;
-  zoom: 1;
+/* Article Related Block */
+.block-related {
+  width: 49.5%;
 }
 
 /*--------------------------------------
@@ -258,12 +323,34 @@ pre {
 #exclude_topic .checkboxes-list li,
 #boxesblock .checkboxes-list li {
   display: inline;
-  margin-right: 0.5em;
+  margin-right: 0.5em; /* rtl */
+}
+
+/*--------------------------------------
+  Profile
+--------------------------------------*/
+
+#profile-userprofile dd {
+  width: auto;
+  float: none;
+}
+
+/*--------------------------------------
+  Admin Top Menu Style
+--------------------------------------*/
+
+#instructions p {
+  margin: 0 0 5px 0;
+  line-height: 1.25;
 }
 
 /*--------------------------------------
   Story Editor
 --------------------------------------*/
+
+#text_editor dd.description {
+  margin-left: 7.5%; /* rtl */
+}
 
 #admin-storyeditor-introtext,
 #admin-storyeditor-bodytext {
@@ -279,47 +366,156 @@ pre {
 }
 
 /*--------------------------------------
-  Admin Top Menu Style
---------------------------------------*/
-
-#instructions p {
-  margin: 0 0 5px 0;
-  line-height: 1.25;
-}
-
-/*--------------------------------------
-   Center Block Container
-    #centerblocks is always display.
---------------------------------------*/
-
-/* JavaScript Enabled* 2 Column ( Left Block*  Center Block)  Center Block Container */
-body.left-center #centerblocks {
-  width: 769px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Padding -  Left Padding */
-}
-
-/*--------------------------------------
-  Comment Submit Form
---------------------------------------*/
-
-#comment_text {
-  width: 95%;
-}
-
-/*--------------------------------------
-  Article Page
---------------------------------------*/
-
-/* Article Related Block */
-.block-related {
-  width: 49.5%;
-}
-
-/*--------------------------------------
   Polls Plugin
 --------------------------------------*/
 
 #leftblocks .poll-questions ul,
 #rightblocks .poll-questions ul {
-  margin-left: -20px;
+  margin-left: -20px; /* rtl */
+}
+
+/* Smaller than standard 1280 (devices and browsers) */
+@media only screen and (max-width: 1192px) { 
+
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 659px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding - 1 */
+	}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 16.61%;
+	}
+}
+
+/* Tablet Portrait size to standard 960 (devices and browsers) */
+@media only screen and (min-width: 768px) and (max-width: 979px) {
+
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 527px; /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding - 1 */
+	}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 19.98%;
+	}
+}
+
+@media only screen and (max-width: 979px) {
+
+	/*--------------------------------------
+	  2 Culumn Form
+	--------------------------------------*/
+
+	.compact fieldset dd.description,
+	fieldset .compact dd.description {
+	  margin-left: 0; /* rtl */
+	}
+
+	/*--------------------------------------
+	  Admin Configration
+	--------------------------------------*/
+
+	.configoption {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	.configoption_off {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	.configoption a {
+	  display: inline;
+	  zoom: 1;
+	}
+
+	ul.block-config-content {
+	  margin-left: 0; /* rtl */
+	}
+}
+
+/* All Mobile Sizes (devices and browser) */
+@media only screen and (max-width: 767px) {
+
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
+
+	body.left-center-right #main-content,
+	body.left-center #main-content,
+	body.center-right #main-content {
+	  width: 100%;
+	  padding: 0;
+	}
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 24.94%;
+	}
+
+	/*--------------------------------------
+	  Header Container
+	--------------------------------------*/
+
+	/*  Site Name */
+	.type1 .site_name {
+	  margin: 6px 0 0 4px; /* rtl */
+	}
+
+	/*--------------------------------------
+	  Left And Right Block
+	--------------------------------------*/
+
+	#config_menu .block-title {
+	  margin-left: 0;
+	  margin-right: 0;
+	}
+
+	#search-configuration-container label {
+	  margin-left: 0;
+	  margin-right: 0;
+	}
+
+	/*--------------------------------------
+	  Gloval Navigation Container
+	--------------------------------------*/
+
+	#navigation_ul {
+	  display: none;
+	}
+}
+
+/* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
+@media only screen and (max-width: 479px) {
+
+	/*--------------------------------------
+	  Moderation Page
+	--------------------------------------*/
+
+	#admin-moderation li {
+	  width: 33.24%;
+	}
 }
 
