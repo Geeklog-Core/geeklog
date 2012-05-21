@@ -267,6 +267,14 @@ fieldset .compact dd.description {
 }
 
 /*--------------------------------------
+  Admin Configration
+--------------------------------------*/
+
+.block-config-content {
+  margin-left: 0;
+}
+
+/*--------------------------------------
   Polls Plugin
 --------------------------------------*/
 
@@ -280,13 +288,13 @@ fieldset .compact dd.description {
 
 	/*--------------------------------------
 	   Center Block Container
---------------------------------------*/
+	--------------------------------------*/
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
 	body.center-right #main-content {
 	  width: 659px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding - 1 */
-}
+	}
 
 	/*--------------------------------------
 	  Moderation Page
@@ -331,9 +339,9 @@ fieldset .compact dd.description {
 	  margin-right: 0; /* rtl */
 	}
 
-/*--------------------------------------
+	/*--------------------------------------
 	  Admin Configration
---------------------------------------*/
+	--------------------------------------*/
 
 	.configoption {
 	  display: inline;

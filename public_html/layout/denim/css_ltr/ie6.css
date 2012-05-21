@@ -35,8 +35,31 @@ pre {
   zoom: 1;
 }
 
+.form_block input,
+.form_block textarea {
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 0; /* rtl */
+  margin-right: 3px; /* rtl */
+}
+
 .wide {
   width: 95%;
+}
+
+.wide,
+.size1,
+.size2,
+.size3,
+.size4,
+.size5,
+.size6,
+.size7,
+.size8,
+.size9,
+.size10 {
+  border: 1px solid #ccc;
 }
 
 /*--------------------------------------
@@ -96,6 +119,9 @@ pre {
 .type1 .site_name {
   margin: 20px 0 0 4px; /* rtl */
 }
+.type2 .site_name {
+  margin: 12px 0 0 8px; /* rtl */
+}
 
 /*--------------------------------------
   Gloval Navigation Container
@@ -145,6 +171,23 @@ pre {
 }
 
 /*--------------------------------------
+  Search Form
+--------------------------------------*/
+
+input.search {
+  border: 1px solid #ccc;
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 0; /* rtl */
+  margin-right: 3px; /* rtl */
+  background: url(../images/search.png) left center no-repeat #FFF; /* rtl */
+  padding-left: 24px; /* rtl */
+  width: 120px;
+  color: #222;
+}
+
+/*--------------------------------------
   Story
 --------------------------------------*/
 
@@ -156,7 +199,7 @@ pre {
 /* Story Title */
 .story_title {
   line-height: 1.3em;
-  margin-bottom: 0px;
+  margin-bottom: 4px;
 }
 
 /* Icon(email, print, pdf) */
@@ -366,6 +409,45 @@ pre {
 }
 
 /*--------------------------------------
+  Admin Configration
+--------------------------------------*/
+
+.block-config-content {
+  margin-left: 0;
+}
+
+.configoption a:link,
+.configoption a:visited,
+.configoption a:hover {
+  color: #222222;
+  text-decoration: none;
+}
+
+#search-configuration,
+.opt {
+  border: 1px solid #ccc;
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 5px; /* rtl */
+  margin-right: 3px; /* rtl */
+}
+
+input.opt,
+textarea.opt {
+  width: 53%;
+}
+
+select.opt {
+  width: 54%;
+}
+
+.toggle_hidden,
+.del-link {
+  width: 25px;
+}
+
+/*--------------------------------------
   Polls Plugin
 --------------------------------------*/
 
@@ -504,6 +586,19 @@ pre {
 
 	#navigation_ul {
 	  display: none;
+	}
+
+	/*--------------------------------------
+	  Admin Configration
+	--------------------------------------*/
+
+	input.opt,
+	textarea.opt {
+	  width: 98%;
+	}
+
+	select.opt {
+	  width: 99%;
 	}
 }
 

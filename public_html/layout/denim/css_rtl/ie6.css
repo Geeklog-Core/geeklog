@@ -35,8 +35,31 @@ pre {
   zoom: 1;
 }
 
+.form_block input,
+.form_block textarea {
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 3px; /* rtl */
+  margin-right: 0; /* rtl */
+}
+
 .wide {
   width: 95%;
+}
+
+.wide,
+.size1,
+.size2,
+.size3,
+.size4,
+.size5,
+.size6,
+.size7,
+.size8,
+.size9,
+.size10 {
+  border: 1px solid #ccc;
 }
 
 /*--------------------------------------
@@ -96,6 +119,9 @@ pre {
 .type1 .site_name {
   margin: 20px 4px 0 0; /* rtl */
 }
+.type2 .site_name {
+  margin: 12px 8px 0 0; /* rtl */
+}
 
 /*--------------------------------------
   Gloval Navigation Container
@@ -145,6 +171,23 @@ pre {
 }
 
 /*--------------------------------------
+  Search Form
+--------------------------------------*/
+
+input.search {
+  border: 1px solid #ccc;
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 3px; /* rtl */
+  margin-right: 0; /* rtl */
+  background: url(../images/search.png) right center no-repeat #FFF; /* rtl */
+  padding-right: 24px; /* rtl */
+  width: 120px;
+  color: #222;
+}
+
+/*--------------------------------------
   Story
 --------------------------------------*/
 
@@ -156,7 +199,7 @@ pre {
 /* Story Title */
 .story_title {
   line-height: 1.3em;
-  margin-bottom: 0px;
+  margin-bottom: 4px;
 }
 
 /* Icon(email, print, pdf) */
@@ -366,6 +409,45 @@ pre {
 }
 
 /*--------------------------------------
+  Admin Configration
+--------------------------------------*/
+
+.block-config-content {
+  margin-left: 0;
+}
+
+.configoption a:link,
+.configoption a:visited,
+.configoption a:hover {
+  color: #222222;
+  text-decoration: none;
+}
+
+#search-configuration,
+.opt {
+  border: 1px solid #ccc;
+  padding: 4px;
+  outline: none;
+  font-size: 13px;
+  margin-left: 3px; /* rtl */
+  margin-right: 5px; /* rtl */
+}
+
+input.opt,
+textarea.opt {
+  width: 53%;
+}
+
+select.opt {
+  width: 54%;
+}
+
+.toggle_hidden,
+.del-link {
+  width: 25px;
+}
+
+/*--------------------------------------
   Polls Plugin
 --------------------------------------*/
 
@@ -431,7 +513,7 @@ pre {
 
 	/*--------------------------------------
 	  Admin Configration
---------------------------------------*/
+	--------------------------------------*/
 
 	.configoption {
 	  display: inline;
@@ -456,9 +538,9 @@ pre {
 /* All Mobile Sizes (devices and browser) */
 @media only screen and (max-width: 767px) {
 
-/*--------------------------------------
-   Center Block Container
---------------------------------------*/
+	/*--------------------------------------
+	   Center Block Container
+	--------------------------------------*/
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
@@ -482,11 +564,11 @@ pre {
 	/*  Site Name */
 	.type1 .site_name {
 	  margin: 6px 4px 0 0; /* rtl */
-}
+	}
 
-/*--------------------------------------
+	/*--------------------------------------
 	  Left And Right Block
---------------------------------------*/
+	--------------------------------------*/
 
 	#config_menu .block-title {
 	  margin-left: 0;
@@ -496,23 +578,36 @@ pre {
 	#search-configuration-container label {
 	  margin-left: 0;
 	  margin-right: 0;
-}
+	}
 
-/*--------------------------------------
+	/*--------------------------------------
 	  Gloval Navigation Container
---------------------------------------*/
+	--------------------------------------*/
 
 	#navigation_ul {
 	  display: none;
+	}
+
+	/*--------------------------------------
+	  Admin Configration
+	--------------------------------------*/
+
+	input.opt,
+	textarea.opt {
+	  width: 98%;
+	}
+
+	select.opt {
+	  width: 99%;
 	}
 }
 
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {
 
-/*--------------------------------------
+	/*--------------------------------------
 	  Moderation Page
---------------------------------------*/
+	--------------------------------------*/
 
 	#admin-moderation li {
 	  width: 33.24%;
