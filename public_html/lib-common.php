@@ -36,7 +36,6 @@
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_USER_ERROR);
 
-
 /**
 * This is the common library for Geeklog.  Through our code, you will see
 * functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
@@ -7142,6 +7141,8 @@ function COM_getImgSizeAttributes( $file )
 */
 function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $http_text = 'OK')
 {
+    global $MESSAGE;
+
     $display = COM_showMessage( $msg, $plugin );
     $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30], 'rightblock' => true));
 
