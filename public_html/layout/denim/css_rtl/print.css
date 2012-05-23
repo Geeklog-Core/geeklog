@@ -1,0 +1,186 @@
+/* STYLESHEET FOR PRINTOUTS */
+
+body, div,
+p, blockquote, pre, code,
+dl, dt, dd,
+fieldset,
+form, legend {
+  margin: 0;
+  padding: 0;
+  text-align: right; /* rtl */
+}
+
+label {
+  text-align: right; /* rtl */
+}
+
+body {
+  background-color: #FFF;
+  border: none;
+  color: #000;
+  font-size: small; /* 10pt */
+  font-family: verdana, arial, sans-serif;
+  font-weight: normal; 
+  line-height: 1.3em;
+}
+
+img {
+  border: none;
+  text-align: right; /* rtl */
+}
+
+a:link, a:visited, a:active {
+  color: #105CB6;
+  text-decoration: none;
+}
+a:hover {
+  color: #3388ff;
+  text-decoration: underline;
+}
+
+p {
+  padding-bottom: 1em;
+}
+
+ul {
+  margin: 0.5em 2.5em 0.5em 0; /* rtl */
+  padding: 0;
+}
+
+ol {
+  margin: 0.5em 2.5em 0.5em 0; /* rtl */
+  padding-right: 0.5em; /* rtl */
+}
+
+li {
+  margin: 0.5em 0;
+  padding: 0;
+}
+
+dl {
+  margin: 1em 0;
+}
+
+dt {
+  margin: 0.5em 0;
+}
+
+dd {
+  margin: 0.5em 2.5em 0.5em 0; /* rtl */
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Trebuchet MS', sans-serif;
+}
+h1 {
+  font-size: 2em;
+  margin: 16px 0;
+}
+h2 {
+  font-size: 1.5em;
+  margin: 14px 0;
+  font-weight: normal;
+}
+h3 {
+  font-size: 1.2em;
+  margin: 14px 0;
+}
+h4 {
+  font-size: 1em;
+  margin: 15px 0;
+}
+h5 {
+  font-size: 0.8em;
+  margin: 16px 0;
+}
+h6 {
+  font-size: 0.7em;
+  margin: 18px 0;
+}
+
+.hidden {
+  display: none;
+}
+
+table {
+  font-family: verdana, arial, sans-serif;
+  text-align: right; /* rtl */
+  border-collapse: collapse;
+  margin: 1em 0.5em;
+}
+
+tr {
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+}
+
+th,
+td {
+  margin: 0;
+  padding: 0.2em 0.6em;
+  vertical-align: middle;
+  line-height: 160%;
+  border: 1px solid #000;
+}
+
+th {
+  text-align: right; /* rtl */
+  font-weight: bold;
+  background: #F5F5F5;
+}
+
+@media screen {
+  #wrapper {
+    margin: 100px;
+  }
+}
+
+@media print {
+  #wrapper {
+    margin: 0px;
+  }
+}
+
+#wrapper div#header {
+  width: 100%;
+}
+
+#print div#header h2 {
+  font-size: 1.5em;
+  font-weight: bold; 
+  line-height: 1.5em;
+
+  padding: 5px 0px;
+  border-top: 1px solid #CCC;
+  border-bottom: 1px solid #CCC;
+}
+
+@media print {
+  #print div#header h2 {
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+  }
+}
+
+#print div#header p {
+  font-size: 0.9em;
+  text-align: left; /* rtl */
+  padding: 2px 0;
+}
+
+#print div#story {
+  padding: 1em 0;
+}
+
+#print div#footer {
+  font-size: 0.85em;
+  padding: 5px 0px;
+  border-top: 1px solid #CCC;
+}
+
+@media print {
+  #print div#footer {
+    border-top: 1px solid #000;
+  }
+}

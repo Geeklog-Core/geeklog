@@ -60,7 +60,7 @@ function theme_css_denim()
     return array(
         array(
             'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.css',
-            'attributes' => array('media' => 'screen')
+            'attributes' => array('media' => 'all')
         )
     );
 }
