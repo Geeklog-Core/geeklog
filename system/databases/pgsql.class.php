@@ -836,7 +836,7 @@ class database {
         $fn = '';
         $btr = debug_backtrace();
         if (! empty($btr)) {
-            for ($i = 0; $i < 100; $i++) {
+            for ($i = 0; $i < count($btr); $i++) {
                 $b = $btr[$i];
                 if ($b['function'] == 'DB_query') {
                     if (!empty($b['file']) && !empty($b['line'])) {
