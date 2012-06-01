@@ -173,8 +173,8 @@ function submitstory($topic = '')
     $storyform->set_var('lang_topic', $LANG12[28]);
 
     
-    $tlist = TOPIC_getTopicListSelect($story->EditElements('tid'), 0, true);
-    $storyform->set_var('topic_selection', TOPIC_getTopicSelectionControl('article', $story->EditElements('tid')));
+    $tlist = TOPIC_getTopicSelectionControl('article', '', false, false, false);
+    $storyform->set_var('topic_selection', $tlist);
     if (empty($tlist)) {
         $retval .= COM_showMessage(101);
         return $retval;

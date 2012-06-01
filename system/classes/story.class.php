@@ -1077,13 +1077,12 @@ class Story
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
             $this->_sid = addslashes($this->_sid);
             $this->_title = addslashes($this->_title);
-            $this->_page_title = addslashes($this->_page_title);
             
             $this->_introtext = addslashes($this->_introtext);
             $this->_bodytext = addslashes($this->_bodytext);
             $this->_postmode = addslashes($this->_postmode);
-            DB_save($_TABLES['storysubmission'], 'sid,uid,title,page_title,introtext,bodytext,date,postmode',
-                        "{$this->_sid},{$this->_uid},'{$this->_title}','{$this->_page_title}'," .
+            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode',
+                        "{$this->_sid},{$this->_uid},'{$this->_title}'," .
                         "'{$this->_introtext}','{$this->_bodytext}',NOW(),'{$this->_postmode}'");
             
             // Save Topics selected
