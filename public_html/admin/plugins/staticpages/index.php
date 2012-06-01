@@ -59,11 +59,11 @@ if (!SEC_hasRights('staticpages.edit')) {
 /**
 * Displays the static page editor form
 *
-* @param    array   $A  Data to display
-* @return   string      HTML for the static page editor
+* @param    array   $A      Data to display
+* @return   string          HTML for the static page editor
 *
 */
-function staticpageeditor_form($A, $error = false)
+function staticpageeditor_form($A)
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $_SP_CONF, $mode, $sp_id,
            $LANG21, $LANG_STATIC, $LANG_ACCESS, $LANG_ADMIN, $LANG01, $LANG24,
@@ -349,8 +349,14 @@ function staticpageeditor_form($A, $error = false)
     
     $sp_template->set_var('lang_topic', $LANG_STATIC['topic']);
     if ($mode != 'clone') {
+        // want to use default topic selection if new staticpage so pass in blank id
+        $topic_sp_id = $A['sp_id'];
+        if (empty($sp_id) && $mode=='edit') { // means new
+            $topic_sp_id = '';    
+        }
+
         $sp_template->set_var('topic_selection',
-                              TOPIC_getTopicSelectionControl ('staticpages', $A['sp_id'], true, false, true));
+                              TOPIC_getTopicSelectionControl ('staticpages',  $topic_sp_id, true, false, true));
     } else {
         $sp_template->set_var('topic_selection',
                               TOPIC_getTopicSelectionControl ('staticpages', $A['clone_sp_id'], true, false, true));

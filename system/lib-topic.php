@@ -836,15 +836,19 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     
     // Do they have any access to topics first?
     
-    
     // Retrieve Topic options
     $from_db = true;
     if (empty($type) || empty($id)) {
-        $from_db = false;
+        $from_db = false; 
     }
     if (!$from_db) {    
         TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
-    } else {        
+        
+        // Figure out if we need to set the default topic for the list
+        if ($topic_option == TOPIC_SELECTED_OPTION AND empty($tids)) {
+            $tids = (DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND')));
+        }
+    } else {    
         $sql = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
     
         $result = DB_query($sql);
