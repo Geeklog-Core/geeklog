@@ -207,6 +207,10 @@ body.center-right div#container div#wrapper {
 body.center div#container div#wrapper {
 }
 
+/* JavaScript Disenabled Wrapper */
+body.js_off div#container div#wrapper {
+}
+
 
 
 /*--------------------------------------
@@ -220,6 +224,12 @@ div#container div#wrapper div#leftblocks {
   width: 180px;  /*  Left Block Width[L] */
   margin-{right}: 780px;  /*  Right Margin =  Site All Width[W] -  Left Block Width[L] */
   padding: 0;
+}
+
+/* JavaScript Disenabled  Left Block Container */
+body.js_off div#container div#wrapper div#leftblocks {
+  float: {left};
+  margin-{right}: -180px;  /*  Right Margin = -( Left Block Width[L]) */
 }
 
 /*--------------------------------------
@@ -263,6 +273,16 @@ body.center div#container div#wrapper div#centerblocks {
   padding: 0;
 }
 
+/* JavaScript Disenabled  Center Block Container */
+body.js_off div#container div#wrapper div#centerblocks {
+  display: inline;  /* Win IE 6(Float Left Right Margin is too wide) */
+  float: {left};
+  width: 580px;  /*  Center Block Width =  Site All Width[W] -  Left Block Width[L] -  Right Block Width[R] -  Right Padding -  Left Padding */
+  margin-{left}: 190px;  /*  Left Margin =  Left Block Width[L] */
+}
+
+
+
 /*--------------------------------------
    Right Block Container
     div#rightblocks display if Right Block is appeared.
@@ -274,6 +294,14 @@ div#container div#wrapper div#rightblocks {
   width: 180px;  /*  Right Block Width[R] */
   margin-{left}: -180px;  /*  Left Margin = -( Right Block Width[R]) */
 }
+
+/* JavaScript Disenabled  Right Block Container */
+body.js_off div#container div#wrapper div#rightblocks {
+  float: {right};
+  margin: 0;
+}
+
+
 
 /*--------------------------------------
    Footer Container

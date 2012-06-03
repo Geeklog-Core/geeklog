@@ -8,7 +8,7 @@ function FixHTML(leftblocksID, centerblocksID, rightblocksID) {
     // 'className' for IE8, IE7, IE6
     var classattr = (is_old_ie) ? 'className' : 'class';
 
-    if (document.body.getAttribute(classattr) != '') return;
+    if (document.body.getAttribute(classattr) != 'js_off') return;
 
     var leftblocks   = document.getElementById(leftblocksID);
     var centerblocks = document.getElementById(centerblocksID);

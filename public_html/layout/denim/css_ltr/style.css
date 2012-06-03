@@ -1208,7 +1208,8 @@ ul.compact li {
   display if Left Block is appeared.
 --------------------------------------*/
 
-#leftblocks {
+#leftblocks,
+body.js_off #leftblocks {
   overflow: auto;
   float: left;
   width: 180px;  /* [L] */ /* rtl */
@@ -1228,7 +1229,8 @@ ul.compact li {
 }
 
 /* 3 Column ( left-center-right ) */
-body.left-center-right #main-content {
+body.left-center-right #main-content,
+body.js_off #main-content {
   width: 660px;  /* Main Content Width = [W] - [L] - [R] -  Right Padding 10px -  Left Padding 10px */
   margin: 0 280px 0 180px;  /* Right Margin = [R] , Left Margin = [L] */ /* rtl */
   padding: 0 10px;
@@ -1258,7 +1260,8 @@ body.center #main-content {
   display if Right Block is appeared.
 --------------------------------------*/
 
-#rightblocks {
+#rightblocks,
+body.js_off #rightblocks {
   overflow: auto;
   float: left;
   width: 280px;  /* [R] */
@@ -2892,7 +2895,8 @@ b.status_black {
 	   display if Left Block is appeared.
 	--------------------------------------*/
 
-	#leftblocks {
+	#leftblocks,
+	body.js_off #leftblocks {
 	  float: right;
 	  width: 280px;  /* [L] */
 	  margin: 0;
@@ -2908,9 +2912,16 @@ b.status_black {
 	  width: auto;
 	}
 
+	body.js_off #centerblocks {
+	  width: 100%;
+	  margin: 0;
+	  padding: 0;
+	}
+
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content {
+	body.center-right #main-content,
+	body.js_off #main-content {
 	  float: left;
 	  width: 660px;  /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding */
 	  margin: 0;
@@ -2922,7 +2933,8 @@ b.status_black {
 	    #rightblocks display if Right Block is appeared.
 	--------------------------------------*/
 
-	#rightblocks {
+	#rightblocks,
+	body.js_off #rightblocks {
 	  overflow: auto;
 	  clear: right;
 	  float: right;
@@ -3103,7 +3115,8 @@ b.status_black {
 	   display if Left Block is appeared.
 	--------------------------------------*/
 
-	#leftblocks {
+	#leftblocks,
+	body.js_off #leftblocks {
 	  width: 200px;  /* [L] */
 	}
 
@@ -3113,7 +3126,8 @@ b.status_black {
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content {
+	body.center-right #main-content,
+	body.js_off #main-content {
 	  width: 528px; /* Center Block Width = [W] - [L] - [R] - Right Padding - Left Padding */
 	}
 
@@ -3126,7 +3140,8 @@ b.status_black {
 	    #rightblocks display if Right Block is appeared.
 	--------------------------------------*/
 
-	#rightblocks {
+	#rightblocks,
+	body.js_off #rightblocks {
 	  width: 200px;  /* [R] */
 	}
 
@@ -3321,14 +3336,16 @@ b.status_black {
 	   Center Block Container
 	--------------------------------------*/
 
-	#centerblocks {
+	#centerblocks,
+    body.js_off #centerblocks {
 	  width: auto;
 	  padding: 0 10px;
 	}
 
 	body.left-center-right #main-content,
 	body.left-center #main-content,
-	body.center-right #main-content {
+	body.center-right #main-content,
+	body.js_off #main-content {
 	  width: 100%;
 	  padding: 0;
 	}
@@ -3366,7 +3383,9 @@ b.status_black {
 	--------------------------------------*/
 
 	#leftblocks,
-	#rightblocks {
+	body.js_off #leftblocks,
+	#rightblocks,
+	body.js_off #rightblocks {
 	  clear: both;
 	  float: left; /* rtl */
 	  width: 100%;

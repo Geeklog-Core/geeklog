@@ -1305,6 +1305,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     $headercode = $_SCRIPTS->getHeader() . $headercode;
     $header->set_var( 'plg_headercode', $headercode );
 
+    $header->set_var( 'layout_columns', 'js_off' );
+
     // The following lines allow users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
     // prove useful at times ...
