@@ -16,6 +16,43 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="../history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a
 list of files that have been changed since the last release.</p>
 
+<h2><a name="changes200">Geeklog 2.0.0</a></h2>
+
+<p><strong>Note:</strong> Geeklog 2.0.0 manages topics differently. Topic 
+assignments for articles and blocks are now stored in their own database table. 
+This means the article and block tables have changed slightly. Plugins that 
+modify blocks directly or have a centerblock may not be compatible with 
+Geeklog 2.0.0. Please check to see if the plugins you have installed are 
+compatible before you upgrade. If they are not then disable them if you still 
+wish to upgrade. We expect most plugin authors to upgrade their plugins to 
+support Geeklog 2.0.0 soon after the release.</p>
+
+<p>The theme engine has also been updated. Geeklog 2.0.0 introduces 
+a new function that allows a page to be generated all at once instead of in specific   
+parts as it was before. Only themes and 
+plugins that have been updated to use the new function for display can take 
+advantage of the new features this brings to Geeklog and themes.
+</p>
+
+<p>This Geeklog release now ships with jQuery 1.7.2 and jQuery UI 1.8.20.</p>
+
+<h3>New Features and Improvements</h3>
+
+<ul>
+<li>Improved strength of password hashing.</li>
+<li>Allow Topics to have child Topics.</li>
+<li>Allow Articles, Blocks and other Plugin objects to be associated with more than one Topic.</li>
+<li>Topic Breadcrumb support.</li>
+<li>Emergency Rescue Tool is included with the Geeklog Install.</li>
+<li>Added support for MySQLi.</li>
+<li>Add Stop Forum Spam and Spam Number of Links Modules to Spam-X.</li>
+<li>A new theme called Denim which is based on Responsive Web Design.</li>
+<li>A new theme called Modern Curve.</li>
+<li>Comments Form on same page as article.</li>
+
+</ul>
+
+
 <h2><a name="changes181">Geeklog 1.8.1</a></h2>
 
 <p>Geeklog 1.8.1 is a maintenance release and a recommended update for all
