@@ -88,7 +88,7 @@ if ($status == USER_ACCOUNT_ACTIVE) {
     }
     echo $display;
     exit;
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAcess()) {
+} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit','OR') && (count(PLG_getAdminOptions()) == 0) && !SEC_hasConfigAccess()) {
     COM_updateSpeedlimit('login');
 
     $display .= COM_startBlock($LANG20[1]);

@@ -273,17 +273,29 @@ function SEC_isModerator()
 
 /**
 * Checks to see if current user has access to a configuration
-* 
+*
 * @return   boolean     returns if user has any config. rights
 */
-function SEC_hasConfigAcess() {
+function SEC_hasConfigAccess()
+{
     global $_CONF_FT;
-    
+
     if (SEC_hasRights($_CONF_FT, 'OR')) {
         return true;
     }
-    
+
     return false;
+}
+
+/**
+* Deprecated - use SEC_hasConfigAccess instead
+*
+* @deprecated since Geeklog 2.0.0
+* @see SEC_hasConfigAccess
+*/
+function SEC_hasConfigAcess()
+{
+    return SEC_hasConfigAccess();
 }
 
 /**

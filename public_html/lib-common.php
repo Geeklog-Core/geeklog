@@ -3247,7 +3247,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
     $plugin_options = PLG_getAdminOptions();
     $num_plugins = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAcess())        
+    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAccess())        
     {
         $link_array = array();
 
@@ -3337,7 +3337,7 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
             }
         }
 
-        if (SEC_hasConfigAcess()) {
+        if (SEC_hasConfigAccess()) {
             $url = $_CONF['site_admin_url'] . '/configuration.php';
             $adminmenu->set_var('option_url', $url);
             $adminmenu->set_var('option_label', $LANG01[129]);
