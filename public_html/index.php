@@ -249,7 +249,7 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 if (empty ($topic)) {
-    $sql .= COM_getLangSQL ('ta.tid', 'AND', 'ta');
+    $sql .= COM_getLangSQL ('tid', 'AND', 'ta');
 }
 
 // if a topic was provided only select those stories.
