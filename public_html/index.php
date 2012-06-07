@@ -256,6 +256,11 @@ if (empty ($topic)) {
 if (!empty($topic)) {
     // Retrieve list of inherited topics
     $tid_list = TOPIC_getChildList($topic);
+    
+    // Could have empty list if $topic does not exist or does not have permission so let it equal topic and will error out properly at end
+    if (empty($tid_list)) {
+        $tid_list = "'" . $topic . "'";
+    }
     // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
     $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))";
 } elseif (!$newstories) {
