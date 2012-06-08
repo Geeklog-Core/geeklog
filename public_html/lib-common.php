@@ -4290,7 +4290,16 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         $commonsql .= " AND onleft = 0";
     }
 
-    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $_TOPICS[TOPIC_getIndex($topic)]['access'] > 0) {
+    // Figure out topic access
+    $topic_access = 0;
+    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION) {
+        $topic_index = TOPIC_getIndex($topic);
+        if ($topic_index > 0) {
+            $topic_access = $_TOPICS[$topic_index]['access'];
+        }
+    }
+    
+    if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $topic_access > 0) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($topic);
         // Get list of blocks to display (except for dynamic). This includes blocks for all topics, and child blocks that are inherited
