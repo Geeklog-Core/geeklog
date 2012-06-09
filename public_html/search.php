@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
 // | search.php                                                                |
 // |                                                                           |
 // | Geeklog search tool.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2009 by the following authors:                         |
+// | Copyright (C) 2000-2012 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -39,10 +39,12 @@ $searchObj = new Search();
 // Figure out topic to display
 TOPIC_getTopic('search');
 
-if (isset ($_GET['mode']) && ($_GET['mode'] == 'search')) {
-    $display = COM_createHTMLDocument($searchObj->doSearch(), array('pagetitle' => $LANG09[11]));
+if (isset($_GET['mode']) && ($_GET['mode'] == 'search')) {
+    $content = $searchObj->doSearch();
+    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[11]));
 } else {
-    $display = COM_createHTMLDocument($searchObj->showForm(), array('pagetitle' => $LANG09[1]));
+    $content = $searchObj->showForm();
+    $display = COM_createHTMLDocument($content, array('pagetitle' => $LANG09[1]));
 }
 
 COM_output($display);
