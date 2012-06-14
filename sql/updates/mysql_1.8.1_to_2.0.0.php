@@ -118,6 +118,9 @@ function update_ConfValuesFor200()
     // Comments    
     $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
     $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);    
+    
+    // Microsummary
+    $c->del('microsummary_short', 'Core');
 
     return true;
 }

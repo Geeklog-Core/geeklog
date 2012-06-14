@@ -37,82 +37,16 @@ require_once $_CONF['path_system'] . 'lib-story.php';
 
 $newstories = false;
 $displayall = false;
-$microsummary = false;
 if (isset ($_GET['display'])) {
     if (($_GET['display'] == 'new') && (empty ($topic))) {
         $newstories = true;
     } else if (($_GET['display'] == 'all') && (empty ($topic))) {
         $displayall = true;
-    } else if ($_GET['display'] == 'microsummary') {
-        $microsummary = true;
     }
 }
 
 // Retrieve the archive topic - currently only one supported
 $archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag=1");
-
-// Microsummary support:
-// see: http://wiki.mozilla.org/Microsummaries
-if( $microsummary )
-{   
-    $sql = " (date <= NOW()) AND (draft_flag = 0)";
-
-    if (empty ($topic)) {
-        $sql .= COM_getLangSQL ('tid', 'AND', 's');
-    }
-    
-    // if a topic was provided only select those stories.
-    if (!empty($topic)) {
-        $sql .= " AND s.tid = '$topic' ";
-    } elseif (!$newstories) {
-        $sql .= " AND frontpage = 1 ";
-    }
-    
-    if ($topic != $archivetid) {
-        $sql .= " AND s.tid != '{$archivetid}' ";
-    }
-    
-    $sql .= COM_getPermSQL ('AND', 0, 2, 's');
-    $sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
-    $msql = array();
-    $msql['mysql']="SELECT STRAIGHT_JOIN s.title "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-         . $sql . "ORDER BY featured DESC, date DESC LIMIT 0, 1";
-         
-    $msql['mssql']="SELECT STRAIGHT_JOIN s.title "
-         . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-         . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-         . $sql . "ORDER BY featured DESC, date DESC LIMIT 0, 1";
-         
-      $msql['pgsql']="SELECT s.title "
-     . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, "
-     . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
-     . $sql . "ORDER BY featured DESC, date DESC LIMIT 1 OFFSET 0";
-         
-    $result = DB_query ($msql);
-
-    if ( $A = DB_fetchArray( $result ) ) {
-        $pagetitle = $_CONF['microsummary_short'].$A['title'];
-    } else {
-        if( empty( $pagetitle ))
-        {
-            if( empty( $topic ))
-            {
-                $pagetitle = $_CONF['site_slogan'];
-            }
-            else
-            {
-                $pagetitle = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
-                                                       "tid = '$topic'" ));
-            }
-        }
-        $pagetitle = $_CONF['site_name'] . ' - ' . $pagetitle;
-    }    
-    header('Content-Type: text/plain; charset=' . COM_getCharset());
-    die($pagetitle);
-}
-
 
 $page = 1;
 if (isset ($_GET['page'])) {
