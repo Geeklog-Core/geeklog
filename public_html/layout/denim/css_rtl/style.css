@@ -6,11 +6,6 @@ fieldset,
 form, legend {
   margin: 0;
   padding: 0;
-  text-align: right; /* rtl */
-}
-
-label {
-  text-align: right; /* rtl */
 }
 
 body {
@@ -1210,10 +1205,10 @@ ul.compact li {
 
 #leftblocks,
 body.js_off #leftblocks {
-  overflow: auto;
-  float: left;
+  overflow: visible;
+  float: right; /* rtl */
   width: 180px;  /* [R] */ /* rtl */
-  margin: 0 0 0 -180px;  /* Left Margin = -[R] */ /* rtl */
+  margin: 0 -1140px 0 0;  /* Right Margin = -[W] */ /* rtl */
   padding: 0;
 }
 
@@ -1224,7 +1219,7 @@ body.js_off #leftblocks {
 #centerblocks {
   overflow: visible;
   line-height: 1.5em;
-  float: left;
+  float: right; /* rtl */
   width: 100%;
 }
 
@@ -1263,9 +1258,9 @@ body.center #main-content {
 #rightblocks,
 body.js_off #rightblocks {
   overflow: auto;
-  float: left;
+  float: right; /* rtl */
   width: 280px;  /* [R] */
-  margin: 0 0 0 -1140px;  /* Left Margin = - [W] */ /* rtl */
+  margin: 0 -280px 0 0;  /* Left Margin = -[R] */ /* rtl */
 }
 
 /*--------------------------------------
@@ -1273,7 +1268,7 @@ body.js_off #rightblocks {
 --------------------------------------*/
 
 #footer {
-  clear: both; /* rtl */
+  clear: right; /* rtl */
   padding: 16px;
   border-top: 1px solid #CCC;
   font-size: 90%;

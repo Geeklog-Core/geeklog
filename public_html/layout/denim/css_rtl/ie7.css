@@ -120,18 +120,18 @@ fieldset .compact dd.description {
 /* Comment Submit Form  */
 #commentbar-comment {
   float: none;
-}
-
-#commentbar-comment div.submit {
-  text-align: right; /* rtl */
+  position: absolute;
+  top: 3px;
+  right: 3px; /* rtl */
+  padding: 0.3em;
 }
 
 #commentbar-selector {
   float: none;
-  position: absolute;
-  top: 3px;
-  left: 3px; /* rtl */
-  padding: 0.3em;
+}
+
+#commentbar-selector div {
+  text-align: left; /* rtl */
 }
 
 /*--------------------------------------

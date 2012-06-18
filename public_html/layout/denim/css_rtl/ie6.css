@@ -219,21 +219,17 @@ input.search {
 /* Comment Submit Form  */
 #commentbar-comment {
   float: none;
-}
-
-#commentbar-comment div.submit {
-  text-align: right; /* rtl */
+  position: absolute;
+  top: 3px;
+  right: 3px; /* rtl */
+  padding: 0.3em;
 }
 
 #commentbar-selector {
   float: none;
-  position: absolute;
-  top: 3px;
-  left: 3px; /* rtl */
-  padding: 0.3em;
 }
-#commentbar-selector {
-  padding-left: 1em; /* rtl */
+#commentbar-selector div {
+  text-align: left; /* rtl */
 }
 
 #comment_text {
@@ -453,7 +449,7 @@ select.opt {
 
 #leftblocks .poll-questions ul,
 #rightblocks .poll-questions ul {
-  margin-left: -20px; /* rtl */
+  margin-right: -20px; /* rtl */
 }
 
 /* Smaller than standard 1280 (devices and browsers) */

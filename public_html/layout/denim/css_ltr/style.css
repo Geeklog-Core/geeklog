@@ -6,11 +6,6 @@ fieldset,
 form, legend {
   margin: 0;
   padding: 0;
-  text-align: left; /* rtl */
-}
-
-label {
-  text-align: left; /* rtl */
 }
 
 body {
@@ -1210,8 +1205,8 @@ ul.compact li {
 
 #leftblocks,
 body.js_off #leftblocks {
-  overflow: auto;
-  float: left;
+  overflow: visible;
+  float: left; /* rtl */
   width: 180px;  /* [L] */ /* rtl */
   margin: 0 0 0 -1140px;  /* Left Margin = -[W] */ /* rtl */
   padding: 0;
@@ -1224,7 +1219,7 @@ body.js_off #leftblocks {
 #centerblocks {
   overflow: visible;
   line-height: 1.5em;
-  float: left;
+  float: left; /* rtl */
   width: 100%;
 }
 
@@ -1263,7 +1258,7 @@ body.center #main-content {
 #rightblocks,
 body.js_off #rightblocks {
   overflow: auto;
-  float: left;
+  float: left; /* rtl */
   width: 280px;  /* [R] */
   margin: 0 0 0 -280px;  /* Left Margin = -[R] */ /* rtl */
 }

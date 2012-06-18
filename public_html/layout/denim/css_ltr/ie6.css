@@ -219,21 +219,17 @@ input.search {
 /* Comment Submit Form  */
 #commentbar-comment {
   float: none;
-}
-
-#commentbar-comment div.submit {
-  text-align: left; /* rtl */
+  position: absolute;
+  top: 3px;
+  left: 3px; /* rtl */
+  padding: 0.3em;
 }
 
 #commentbar-selector {
   float: none;
-  position: absolute;
-  top: 3px;
-  right: 3px; /* rtl */
-  padding: 0.3em;
 }
-#commentbar-selector {
-  padding-right: 1em; /* rtl */
+#commentbar-selector div {
+  text-align: right; /* rtl */
 }
 
 #comment_text {
