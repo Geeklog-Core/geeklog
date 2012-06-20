@@ -1333,13 +1333,25 @@ function TOPIC_breadcrumbs($type, $id)
                         } else {
                             $breadcrumb_a[]['id'] = TOPIC_ROOT;
                             end($breadcrumb_a);
-                            $breadcrumb_a[key($breadcrumb_a)]['title'] = $_CONF['site_name'];
+                            
+                            if ($_CONF['breadcrumb_root_site_name']) {
+                                $rootname = $_CONF['site_name'];
+                            } else {
+                                $rootname = $LANG27['breadcrumb_root'];
+                            }
+                            $breadcrumb_a[key($breadcrumb_a)]['title'] = $rootname;
                         }
                     }
                 } else {
                     $breadcrumb_a[]['id'] = TOPIC_ROOT;
                     end($breadcrumb_a);
-                    $breadcrumb_a[key($breadcrumb_a)]['title'] = $_CONF['site_name'];
+                    
+                    if ($_CONF['breadcrumb_root_site_name']) {
+                        $rootname = $_CONF['site_name'];
+                    } else {
+                        $rootname = $LANG27['breadcrumb_root'];
+                    }
+                    $breadcrumb_a[key($breadcrumb_a)]['title'] = $rootname;
                 }
                 
                 $retval = '';
