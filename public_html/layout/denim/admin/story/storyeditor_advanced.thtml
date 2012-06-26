@@ -109,9 +109,8 @@
           </div>
           <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml" class="wide">{story_bodytext}</textarea>
         </dd>
+        <dd class="description">{lang_allowed_html}</dd>
       </dl>
-
-      <p id="editor_mode" class="description">{lang_allowed_html}</p>
     </div>
   </div>
 
