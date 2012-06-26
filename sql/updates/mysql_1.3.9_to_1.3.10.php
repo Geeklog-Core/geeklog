@@ -178,7 +178,7 @@ function install_spamx_plugin ()
                 . " name varchar(20) NOT NULL default '',"
                 . " value varchar(255) NOT NULL default '',"
                 . " INDEX spamx_name (name)"
-                . ") TYPE=MyISAM";
+                . ") ENGINE=MyISAM";
 
     // SpamX plugin information, 'spamx.admin' feature, SpamX Admin group
     $_SPX_PLUGIN = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";

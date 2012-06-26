@@ -15,7 +15,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['trackback']} (
   INDEX trackback_url(url), 
   INDEX trackback_date(date), 
   INDEX trackback_type(type)
-) TYPE=MyISAM";
+) ENGINE=MyISAM";
 
 $_SQL[] = "CREATE TABLE {$_TABLES['pingservice']} (
   pid smallint(5) unsigned NOT NULL auto_increment,
@@ -26,13 +26,13 @@ $_SQL[] = "CREATE TABLE {$_TABLES['pingservice']} (
   is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (pid),
   INDEX pingservice_is_enabled(is_enabled)
-) TYPE=MyISAM";
+) ENGINE=MyISAM";
 
 $_SQL[] = "CREATE TABLE {$_TABLES['trackbackcodes']} (
   code tinyint(4) NOT NULL default '0',
   name varchar(32) default NULL,
   PRIMARY KEY  (code)
-) TYPE=MyISAM ";
+) ENGINE=MyISAM ";
 
 // a weblog directory to ping (which, in turn, pings others)
 $_SQL[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'Ping-O-Matic', 'http://pingomatic.com/', 'http://rpc.pingomatic.com/', 'weblogUpdates.ping', 1)";

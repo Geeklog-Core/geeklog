@@ -19,7 +19,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['syndication']} (
   INDEX syndication_type(type),
   INDEX syndication_is_enabled(is_enabled),
   INDEX syndication_updated(updated)
-) TYPE=MyISAM";
+) ENGINE=MyISAM";
 
 // remove unused entry (moved to 'syndication' table)
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";

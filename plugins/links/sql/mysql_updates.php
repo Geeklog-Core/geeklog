@@ -56,7 +56,7 @@ $_UPDATES = array(
           perm_anon tinyint(1) unsigned NOT NULL default '2',
           PRIMARY KEY (cid),
           KEY links_pid (pid)
-        ) TYPE=MyISAM",
+        ) ENGINE=MyISAM",
         "ALTER TABLE {$_TABLES['linksubmission']} ADD owner_id mediumint(8) unsigned NOT NULL default '1' AFTER date",
         "ALTER TABLE {$_TABLES['linksubmission']} CHANGE category cid varchar(32) NOT NULL",
         "ALTER TABLE {$_TABLES['links']} CHANGE category cid varchar(32) NOT NULL"

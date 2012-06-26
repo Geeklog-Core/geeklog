@@ -51,7 +51,7 @@ $_UPDATES = array(
           pid varchar(20) NOT NULL,
           question varchar(255) NOT NULL,
           PRIMARY KEY (qid, pid)
-        ) TYPE=MyISAM",
+        ) ENGINE=MyISAM",
         // in 1.4.1, "don't display poll" was equivalent to "closed"
         "UPDATE {$_TABLES['polltopics']} SET is_open = 0 WHERE display = 0"
     ),

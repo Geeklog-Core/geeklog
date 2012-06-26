@@ -12,6 +12,6 @@ CREATE TABLE {$_TABLES['article_images']} (
   ai_img_num tinyint(2) unsigned NOT NULL,
   ai_filename varchar(128) NOT NULL,
   PRIMARY KEY (ai_sid,ai_img_num)
-) TYPE=MyISAM
+) ENGINE=MyISAM
 ";
 ?>

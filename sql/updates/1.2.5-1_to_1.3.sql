@@ -2,7 +2,7 @@ CREATE TABLE access (
   acc_ft_id mediumint(8) NOT NULL default '0',
   acc_grp_id mediumint(8) NOT NULL default '0',
   PRIMARY KEY  (acc_ft_id,acc_grp_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 ALTER TABLE blocks ADD name varchar(48) NOT NULL default '';
 ALTER TABLE blocks DROP seclev;
@@ -19,7 +19,7 @@ CREATE TABLE cookiecodes (
   cc_value int(8) unsigned NOT NULL default '0',
   cc_descr varchar(20) NOT NULL default '',
   PRIMARY KEY  (cc_value)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 ALTER TABLE events MODIFY location varchar(128) default NULL;
 ALTER TABLE events ADD event_type varchar(40) NOT NULL default '';
@@ -55,14 +55,14 @@ CREATE TABLE features (
   ft_gl_core tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (ft_id),
   KEY ft_name (ft_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
                         
 CREATE TABLE group_assignments (
   ug_main_grp_id mediumint(8) NOT NULL default '0',
   ug_uid mediumint(8) unsigned default NULL,
   ug_grp_id mediumint(8) unsigned default NULL,
   KEY ug_main_grp_id (ug_main_grp_id)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE groups (
   grp_id mediumint(8) NOT NULL auto_increment,
@@ -71,7 +71,7 @@ CREATE TABLE groups (
   grp_gl_core tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (grp_id),
   KEY grp_name (grp_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 ALTER TABLE links ADD group_id mediumint(8) unsigned NOT NULL default '1';
 ALTER TABLE links ADD owner_id mediumint(8) unsigned NOT NULL default '0';
@@ -105,7 +105,7 @@ CREATE TABLE personal_events (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   PRIMARY KEY  (eid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE plugins (
   pi_name varchar(30) NOT NULL default '',
@@ -114,7 +114,7 @@ CREATE TABLE plugins (
   pi_enabled tinyint(3) unsigned NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
   PRIMARY KEY  (pi_name)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
                                                                                                         
 ALTER TABLE stories ADD numemails mediumint(8) unsigned NOT NULL default '0';
 ALTER TABLE stories ADD owner_id mediumint(8) NOT NULL default '0';
