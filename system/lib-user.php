@@ -141,7 +141,7 @@ function USER_createAndSendPassword ($username, $useremail, $uid)
     global $_CONF, $LANG04;
 
     $passwd = null;
-    SEC_updateUserPassword($password, $uid);
+    SEC_updateUserPassword($passwd, $uid);
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = COM_newTemplate($_CONF['path_data']);
