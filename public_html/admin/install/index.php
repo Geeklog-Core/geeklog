@@ -274,7 +274,7 @@ function INST_installEngine($install_type, $install_step)
             require_once $_CONF['path_system'] . 'lib-database.php';
 
             $req_string = 'index.php?mode=' . $install_type
-                        . '&step=3&dbconfig_path=' . $dbconfig_path
+                        . '&step=3&dbconfig_path=' . urlencode($dbconfig_path)
                         . '&install_plugins=' . $install_plugins
                         . '&language=' . $language
                         . '&site_name=' . urlencode($site_name)
