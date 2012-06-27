@@ -779,7 +779,7 @@ function INST_innodbSupported()
 {
     $retval = false;
 
-    $result = DB_query("SHOW TABLE TYPES");
+    $result = DB_query("SHOW ENGINES");
     $numEngines = DB_numRows($result);
     for ($i = 0; $i < $numEngines; $i++) {
         $A = DB_fetchArray($result);
