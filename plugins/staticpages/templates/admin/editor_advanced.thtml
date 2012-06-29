@@ -19,6 +19,9 @@
         <dt><label for="sp-advanced_editor-sp_label">{lang_label}</label></dt>
         <dd><input type="text" name="sp_label" maxlength="64" value="{sp_label}" id="sp-advanced_editor-sp_label" class="size5"{xhtml}></dd>
 
+        <dt><label>{lang_topic}</label></dt>
+        <dd>{topic_selection}</dd>
+        
         <dt><label for="sp-advanced_editor-sp_format">{lang_pageformat}</label></dt>
         <dd><select name="sp_format" id="sp-advanced_editor-sp_format">
               <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
@@ -107,9 +110,6 @@
 
         <dt><label>{lang_position}</label></dt>
         <dd>{pos_selection}</dd>
-
-        <dt><label>{lang_topic}</label></dt>
-        <dd>{topic_selection}</dd>
       </dl>
 
       <hr style="margin-bottom: 15px;"{xhtml}>

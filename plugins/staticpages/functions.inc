@@ -1133,7 +1133,10 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
                 } elseif ($S['sp_format'] != 'blankpage') {
                     $rightblock = -1;
                 }
-                $retval = COM_createHTMLDocument($retval, array('what' => $what, 'rightblock' => $rightblock));
+                
+                if ($S['sp_format'] != 'blankpage') {
+                    $retval = COM_createHTMLDocument($retval, array('what' => $what, 'rightblock' => $rightblock));
+                }
             }
 
             // increment hit counter for page
