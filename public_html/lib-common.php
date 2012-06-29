@@ -2712,7 +2712,10 @@ function COM_featuredCheck()
         if ($numB > 1) {
             // OK, we have two or more featured stories in a topic, fix that
             $B = DB_fetchArray($resultB);
-            $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
+            $sql = array();
+            $sql['mysql'] = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
+            $sql['mssql'] = $sql['mysql']; // I hope ...
+            $sql['pgsql'] = "UPDATE {$_TABLES['stories']} AS s SET featured = 0 FROM {$_TABLES['topic_assignments']} WHERE s.featured = 1 AND s.draft_flag = 0 AND {$_TABLES['topic_assignments']}.tid = '{$A['tid']}' AND {$_TABLES['topic_assignments']}.type = 'article' AND {$_TABLES['topic_assignments']}.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
             DB_query($sql);            
         }
     }
