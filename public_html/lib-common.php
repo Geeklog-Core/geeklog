@@ -4279,12 +4279,13 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
     $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
-    
-    
 
-    $commonsql = "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
-    if( $side == 'left' ) {
+    $commonsql = '';
+    if ($side == 'left') {
         $commonsql .= " AND onleft = 1";
     } else {
         $commonsql .= " AND onleft = 0";
@@ -4298,7 +4299,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
             $topic_access = $_TOPICS[$topic_index]['access'];
         }
     }
-    
+
     if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $topic_access > 0) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($topic);
