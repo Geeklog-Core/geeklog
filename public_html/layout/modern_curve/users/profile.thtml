@@ -31,9 +31,7 @@
 {end_block}
 
 {start_block_last10comments}
-  <table>
-    {comment_row}
-  </table>
+  {comment_row}
 {end_block}
 
 {start_block_postingstats}
