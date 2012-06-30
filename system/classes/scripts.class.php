@@ -86,13 +86,8 @@ class scripts {
         // Automatically set Common library since we have not updated core yet to set it when needed
         $this->setJavaScriptLibrary('common');
         
-        // Check to see if advanced editor is needed, this should be setup as a library at some point like common
-        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-            $this->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-        }            
-        
         // Setup restricted names after setting main libraries (do not want plugins messing with them)
-        $this->restricted_names = array('fckeditor', 'core', 'jquery');
+        $this->restricted_names = array('core', 'jquery');
         
     }
     
