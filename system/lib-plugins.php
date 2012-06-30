@@ -2490,7 +2490,7 @@ function PLG_getBlocksConfig($side, $topic='')
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_getBlocksConfig_' . $pi_name;
         if (function_exists($function)) {
-            $items = $function($side, $topic, $config);
+            $items = $function($side, $topic);
             if (is_array($items)) {
                 $ret = array_merge($ret, $items);
             }
@@ -2498,7 +2498,7 @@ function PLG_getBlocksConfig($side, $topic='')
     }
 
     if (function_exists('CUSTOM_getBlocksConfig')) {
-       $cust_items = CUSTOM_getBlocks($side, $topic, $config);
+       $cust_items = CUSTOM_getBlocks($side, $topic);
        if (is_array($cust_items)) {
           $ret = array_merge($ret, $cust_items);
        }
