@@ -1,3 +1,6 @@
+
+<!-- breadcrumbs/breadcrumbs.thtml { -->
+
 <!-- Start of Breadcrumbs Navigation -->
 <p>
 <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
@@ -5,3 +8,5 @@
 </div>
 </p>
 <!-- End of Breadcrumbs Navigation -->
+
+<!-- } breadcrumbs/breadcrumbs.thtml -->

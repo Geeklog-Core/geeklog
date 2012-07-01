@@ -69,6 +69,7 @@ function theme_css_professional_css()
 function theme_js_libs_professional_css()
 {
     return array(
+        'jquery'
     );
 }
 
@@ -89,7 +90,9 @@ function theme_js_files_professional_css()
  */
 function theme_init_professional_css()
 {
-    global $_BLOCK_TEMPLATE;
+    global $_BLOCK_TEMPLATE, $_CONF;
+
+    $_CONF['supported_version_theme'] = '2.0.0'; // support new theme format for the later Geeklog 2.0
 
     /*
      * For left/right block support there is no longer any need for the theme to

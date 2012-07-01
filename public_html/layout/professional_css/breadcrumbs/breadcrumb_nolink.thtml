@@ -1,3 +1,8 @@
+
+<!-- breadcrumbs/breadcrumb_nolink.thtml { -->
+
     <span itemprop="title">{name}</span> {separator}
 {breadcrumb_child}
+
+<!-- } breadcrumbs/breadcrumb_nolink.thtml -->
 

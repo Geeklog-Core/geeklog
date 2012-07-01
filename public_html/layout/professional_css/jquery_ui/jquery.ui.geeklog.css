@@ -39,7 +39,31 @@
     display:none;
     z-index: 20000;
 }
-#tooltip-content { background-color: #FFF; min-width: 175px; min-height: 50px; }
+
+#tooltip-content {
+    background-color: #FFF;
+    min-width: 175px;
+    min-height: 50px;
+}
+
+.tooltip-block {
+    border-bottom:1px solid #83B3D8;
+    width: 100%;
+}
+.tooltip-title {
+    font-weight: bold;
+    background: #E7E7E7;
+    margin: 0;
+    padding: 2px;
+    
+}
+.tooltip-doc {
+    min-height: 1em;
+    padding: 4px 2px;
+}
+#tooltip-close {
+    display: none;
+}
 
 /* Validation */
 .input_error { border: solid 1px red; }
@@ -58,7 +82,6 @@
     background: url("images/ui-icons_cd0a0a_256x240.png") 0 -144px;
 }
 .saved_message {
-    margin-top:5px;
     margin-bottom:5px;
     padding:10px 5px 8px 36px;
     background: #C6F9C9 url("../images/success.png") 10px 50% no-repeat;

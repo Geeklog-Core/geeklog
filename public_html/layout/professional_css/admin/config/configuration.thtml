@@ -10,22 +10,22 @@
     <table>
         <tr>
             <td class="block-featured-left" style="vertical-align:top;">
+                <div id="search-configuration-container">
+                    <div class="block-center">
+                        <h2><label for="search-configuration">{search_configuration_label}</label></h2>
+                        <input name="search-configuration" id="search-configuration" value="{search_configuration_value}"{xhtml}>
+                        <input name="tab-id" id="tab-id" type="hidden" value="{tab_id_value}"{xhtml}>
+                    </div>
+                </div>
                 <div class="block-bg-left"> {config_menu} </div>
             </td>
             <td style="vertical-align:top; width: 100%">
             
-                <div class="saved_message pluginInfo{error_validation_class}" style="display:{show_changeblock}">
+                <div class="saved_message {error_validation_class}" style="display:{show_changeblock}">
                     {lang_changes_made}
                     {lang_error_validation_occurs}
                     {change_block}
                 </div>
-                
-                <div id="search-configuration-container" style="text-align: right">
-                    <label for="search-configuration">{search_configuration_label}</label>
-                    <input name="search-configuration" id="search-configuration" value="{search_configuration_value}"{xhtml}>
-                    <input name="tab-id" id="tab-id" type="hidden" value="{tab_id_value}"{xhtml}>
-                </div>
-    
                 <form action="{site_admin_url}/configuration.php" method="post" name="subgroup">
                 <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>
                 <input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>

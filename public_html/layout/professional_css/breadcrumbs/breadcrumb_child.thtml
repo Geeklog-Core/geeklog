@@ -1,3 +1,8 @@
+
+<!-- breadcrumbs/breadcrumb_child.thtml { -->
+
 <span itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
     {breadcrumb}
 </span>
+
+<!-- } breadcrumbs/breadcrumb_child.thtml -->

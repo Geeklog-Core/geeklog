@@ -27,7 +27,6 @@ body {
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 12px;
   line-height: 1.25;
-  text-align: center;  /* For Win IE 6(Margin auto layout) */
 }
 
 /* Win IE 7 { */
@@ -219,7 +218,6 @@ form.compact p.message {
 }
 
 form.compact dl {
-  overflow: hidden;  /* Floating Item */
   margin: 0 0 1em 0;
   padding: 0;
 }

@@ -84,3 +84,27 @@ form#loginform ul.navi li {
   padding: 0;
 }
 
+/* Third party login */
+form.third-party-login {
+  margin: 0.1em 0;
+}
+
+form.third-party-login div {
+  position: relative;
+}
+
+form.third-party-login div img {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+}
+
+form.third-party-login div input.submit {
+  text-indent: 24px;
+  font-size: 12px;
+  height: 28px;
+}
+
+div.third-party-login {
+  width: 164px;
+}
