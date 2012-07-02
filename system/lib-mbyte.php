@@ -224,7 +224,8 @@ function MBYTE_eregi($pattern, $str, $regs = NULL)
     if ($mb_enabled) {
         $result = mb_eregi($pattern, $str, $regs);
     } else {
-        $result = eregi($pattern, $str, $regs);
+        $pattern = addcslashes($pattern, "/");
+        $result = preg_match("/$pattern/i", $str, $regs);
     }
 
     return $result;
@@ -240,7 +241,8 @@ function MBYTE_eregi_replace($pattern, $replace, $str)
     if ($mb_enabled) {
         $result = mb_eregi_replace($pattern, $replace, $str);
     } else {
-        $result = eregi_replace($pattern, $replace, $str);
+        $pattern = addcslashes($pattern, "/");
+        $result = preg_replace("/$pattern/i", $replace, $str);
     }
 
     return $result;
