@@ -9,7 +9,6 @@
 
     <ul class="submit">
       <li>
-<input type="hidden" name="usr_type" value="{usr_type}"><input type="hidden" name="usr_time[{usr_type}]" value="{usr_time}"{xhtml}>
         <input type="hidden" name="mode" value="batchdelete"{xhtml}>
         <input type="hidden" name="usr_type" value="{usr_type}"{xhtml}>
         <input type="hidden" name="usr_time[{usr_type}]" value="{usr_time}"{xhtml}>

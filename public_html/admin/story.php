@@ -214,7 +214,7 @@ function liststories($current_topic = '')
     $query_arr = array(
         'table' => 'stories',
         'sql' => $sql,
-        'query_group' => 'sid',
+        'query_group' => "sid,{$_TABLES['users']}.username,{$_TABLES['users']}.fullname",
         'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
         'default_filter' => $excludetopics . COM_getPermSQL('AND')
     );

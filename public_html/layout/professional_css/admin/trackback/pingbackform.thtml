@@ -3,8 +3,6 @@
 
 <form action="{site_admin_url}/trackback.php" method="post" id="pingbackform" class="compact">
   <fieldset>
-    <legend>ピングバックを送信</legend>  <!-- Geeklog Japanse -->
-
     <p class="message">{lang_explain}</p>
 
     <dl>

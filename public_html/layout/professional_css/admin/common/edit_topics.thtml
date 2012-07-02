@@ -1,3 +1,6 @@
+
+<!-- admin/common/edit_topics.thtml { -->
+
 <span style="vertical-align:top;{options_hide}">                 
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
     <input type="radio" name="topic_option" value="all" {all_checked}> {lang_all} 
@@ -26,3 +29,5 @@
 <span style="{info_hide}">
     <p>{topic_info}</p>
 </span>
+
+<!-- } admin/common/edit_topics.thtml -->

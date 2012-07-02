@@ -2712,7 +2712,10 @@ function COM_featuredCheck()
         if ($numB > 1) {
             // OK, we have two or more featured stories in a topic, fix that
             $B = DB_fetchArray($resultB);
-            $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
+            $sql = array();
+            $sql['mysql'] = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta SET s.featured = 0 WHERE s.featured = 1 AND s.draft_flag = 0 AND ta.tid = '{$A['tid']}' AND ta.type = 'article' AND ta.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
+            $sql['mssql'] = $sql['mysql']; // I hope ...
+            $sql['pgsql'] = "UPDATE {$_TABLES['stories']} AS s SET featured = 0 FROM {$_TABLES['topic_assignments']} WHERE s.featured = 1 AND s.draft_flag = 0 AND {$_TABLES['topic_assignments']}.tid = '{$A['tid']}' AND {$_TABLES['topic_assignments']}.type = 'article' AND {$_TABLES['topic_assignments']}.id = s.sid AND s.date <= NOW() AND s.sid <> '{$B['sid']}'";
             DB_query($sql);            
         }
     }
@@ -4279,12 +4282,13 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     $blocksql['mysql'] = "SELECT b.*,UNIX_TIMESTAMP(rdfupdated) AS date ";
     $blocksql['pgsql'] = 'SELECT b.*, date_part(\'epoch\', rdfupdated) AS date ';
-    
-    
 
-    $commonsql = "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['mysql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['mssql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id = bid AND is_enabled = 1";
+    $blocksql['pgsql'] .= "FROM {$_TABLES['blocks']} b, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'block' AND ta.id::integer = bid AND is_enabled = 1";
 
-    if( $side == 'left' ) {
+    $commonsql = '';
+    if ($side == 'left') {
         $commonsql .= " AND onleft = 1";
     } else {
         $commonsql .= " AND onleft = 0";
@@ -4298,7 +4302,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
             $topic_access = $_TOPICS[$topic_index]['access'];
         }
     }
-    
+
     if(!empty($topic) && $topic != TOPIC_ALL_OPTION && $topic != TOPIC_HOMEONLY_OPTION && $topic_access > 0) {
         // Retrieve list of inherited topics
         $tid_list = TOPIC_getChildList($topic);

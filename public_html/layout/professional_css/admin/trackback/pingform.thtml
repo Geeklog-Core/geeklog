@@ -7,8 +7,6 @@
 
 <form action="{php_self}" method="post" id="pingform" class="compact">
   <fieldset>
-    <legend></legend>
-
     <dl>
       <dt>{pingback_button}</dt>
       <dd>{lang_pingback_short}</dd>

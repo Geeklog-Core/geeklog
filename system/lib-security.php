@@ -1292,8 +1292,8 @@ function SEC_updateUserPassword(&$password = '', $uid = '') {
     // update the database with the new password using algorithm and stretch from $_CONF
     $salt = SEC_generateSalt();
     $newhash = SEC_encryptPassword($password, $salt, $_CONF['pass_alg'], $_CONF['pass_stretch']);
-    $query = 'UPDATE ' . $_TABLES['users'] . " SET passwd = \"$newhash\", "
-        . "salt = \"$salt\", algorithm =\"" . $_CONF['pass_alg'] . '",' 
+    $query = 'UPDATE ' . $_TABLES['users'] . " SET passwd = '$newhash', "
+        . "salt = '$salt', algorithm ='" . $_CONF['pass_alg'] . "', " 
         . 'stretch = ' . $_CONF['pass_stretch'] . " WHERE uid = $uid";
     DB_query($query);
 

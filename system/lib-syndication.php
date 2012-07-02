@@ -413,7 +413,7 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
     $sql = "SELECT sid,ta.tid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified,commentcode,trackbackcode 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
         WHERE draft_flag = 0 AND date <= NOW() AND ta.type = 'article' AND ta.id = sid $where AND perm_anon > 0 
-        GROUP BY sid
+        GROUP BY sid,ta.tid
         ORDER BY date DESC $limitsql";
     
     $result = DB_query($sql);

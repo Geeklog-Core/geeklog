@@ -1,6 +1,6 @@
 
 <!-- topicoption_off.thtml { -->
 
-        <li class="topicoption_off">{option_label}&nbsp;{option_count}</li>
+        <li class="topicoption_off">{branch_spaces}{option_label}&nbsp;{option_count}</li>
 
 <!-- } topicoption_off.thtml -->

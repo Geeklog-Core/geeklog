@@ -263,7 +263,7 @@ $msql['pgsql']="SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND 
             ta.type = 'article' AND ta.id = s.sid AND 
-            {$sql} GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT {$limit} OFFSET {$offset}";
+            {$sql} GROUP BY s.sid,ta.tid,u.uid,t.topic,t.imageurl ORDER BY featured DESC, date DESC LIMIT {$limit} OFFSET {$offset}";
 
 $result = DB_query ($msql);
 

@@ -908,7 +908,8 @@ $LANG27 = array(
     46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
     47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
     48 => 'Parent Topic Id not found.',
-    'breadcrumb_separator' => '>'
+    'breadcrumb_separator' => '>',
+    'breadcrumb_root' => 'Home'
 );
 
 ###############################################################################
@@ -2013,7 +2014,8 @@ $LANG_confignames['Core'] = array(
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
-    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs'
+    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs',
+    'breadcrumb_root_site_name' => 'Site Name as Breadcrumb Root?'
 );
 
 $LANG_configsubgroups['Core'] = array(

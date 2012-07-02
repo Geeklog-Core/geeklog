@@ -43,8 +43,8 @@ $_UPDATES = array(
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_public', 'Access to configure public links list settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_admin', 'Access to configure links admin settings', 0)",
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_permissions', 'Access to configure link permissions', 0)",
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_cpermissions', 'Access to configure link\'s category permissions', 0)",
-        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_autotag_permissions', 'Access to configure link\'s autotag usage permissions', 0)"        
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_cpermissions', 'Access to configure link''s category permissions', 0)",
+        "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.links.tab_autotag_permissions', 'Access to configure link''s autotag usage permissions', 0)"        
     )    
     
 );

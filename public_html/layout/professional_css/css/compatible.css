@@ -145,10 +145,7 @@
 }
 .commenttitle {
   background:#F7F7F7;
-  border-bottom:1px solid #E7E7E7;
-  border-left:1px solid #E7E7E7;
-  border-right:1px solid #E7E7E7;
-  border-top:1px solid #E7E7E7;
+  border:1px solid #E7E7E7;
   font-weight:bold;
   font-size:smaller;
   padding:3px 0px 3px 10px;

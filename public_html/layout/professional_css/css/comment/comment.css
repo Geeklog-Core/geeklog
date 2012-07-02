@@ -128,8 +128,8 @@ div.comments div.block-comment-content {
 }
 
 /* Individual Comment Level(Nested | Tree) */
-div.comments div.level-25,
-div.comments ul.level-25 {
+div.comments div.level-0,
+div.comments ul.level-0 {
   margin-left: 0;
 }
 

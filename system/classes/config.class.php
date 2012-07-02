@@ -2004,7 +2004,7 @@ class config {
     {
         global $_DB, $_DB_dbms;
 
-        if ($_DB_dbms == 'mssql') {
+        if (($_DB_dbms == 'mssql') || ($_DB_dbms == 'pgsql')) {
             $sql = str_replace("\\'", "''", $sql);
             $sql = str_replace('\\"', '"', $sql);
             $_DB->dbQuery($sql, 0, 1);
