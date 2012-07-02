@@ -1024,6 +1024,7 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 $comment_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
                 
                 // Add JavaScript
+                $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
                 $js = 'geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";';
                 // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
                 $js .= 'document.getElementById("advanced_editor").style.display="";';                 

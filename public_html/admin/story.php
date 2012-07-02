@@ -771,6 +771,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
             document.getElementById("advanced_editor").style.display=""
         </script>';     
         
+        $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
         $_SCRIPTS->setJavaScriptFile('advanced_editor', '/javascript/advanced_editor.js');
         $_SCRIPTS->setJavaScriptFile('storyeditor_fckeditor', '/javascript/storyeditor_fckeditor.js');        
     }
