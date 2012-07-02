@@ -442,7 +442,7 @@ function listblocks()
         'title'      => "$LANG21[22] ($LANG21[40])",
     );
 	
-	$leftblocks = PLG_getBlocksConfig('left', '', true);    
+	$leftblocks = PLG_getBlocksConfig('left', '');    
 	
 	// Sort Dynamic Blocks on Block Order
     usort($leftblocks, "cmpDynamicBlocks");
@@ -485,7 +485,7 @@ function listblocks()
         'title'      => "$LANG21[22] ($LANG21[41])",
     );
 	
-	$rightblocks = PLG_getBlocksConfig('right', '', true);
+	$rightblocks = PLG_getBlocksConfig('right', '');
 	
 	// Sort Dynamic Blocks on Block Order
     usort($rightblocks, "cmpDynamicBlocks");
