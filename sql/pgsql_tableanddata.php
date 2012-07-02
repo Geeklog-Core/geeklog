@@ -211,7 +211,7 @@ CREATE TABLE {$_TABLES['groups']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['maillist']} (
   code SERIAL, 
-  name char(32) default NULL,
+  name varchar(32) default NULL,
   PRIMARY KEY (code)
 )
 ";
@@ -244,8 +244,8 @@ CREATE TABLE {$_TABLES['plugins']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['postmodes']} (
-  code char(10) NOT NULL default '',
-  name char(32) default NULL,
+  code varchar(10) NOT NULL default '',
+  name varchar(32) default NULL,
   PRIMARY KEY (code)
 )
 ";
@@ -267,8 +267,8 @@ CREATE TABLE {$_TABLES['sessions']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['sortcodes']} (
-  code char(4) NOT NULL default '0',
-  name char(32) default NULL,
+  code varchar(4) NOT NULL default '0',
+  name varchar(32) default NULL,
   PRIMARY KEY (code)
 )
 ";
@@ -288,7 +288,7 @@ CREATE TABLE {$_TABLES['speedlimit']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['statuscodes']} (
   code int NOT NULL default '0',
-  name char(32) default NULL,
+  name varchar(32) default NULL,
   PRIMARY KEY (code)
 )
 ";
