@@ -1010,6 +1010,10 @@ class Story
         if (!isset($array['bodytext'])) {
             $array['bodytext'] = '';
         }
+        
+        if (!isset($array['page_title'])) {
+            $array['page_title'] = '';
+        }
 
         /* Then load the title, page title, intro and body */
         if (($array['postmode'] == 'html') || ($array['postmode'] == 'adveditor')) {
