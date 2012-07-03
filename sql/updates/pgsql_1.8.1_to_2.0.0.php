@@ -27,6 +27,14 @@ $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD salt varchar(64) NOT NULL default
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD algorithm varchar(12) NOT NULL default 0";
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD stretch int NOT NULL default 1";
 
+// use varchars, not fixed-size char fields
+$_SQL[] = "ALTER TABLE {$_TABLES['maillist']} ALTER COLUMN name TYPE varchar(32)";
+$_SQL[] = "ALTER TABLE {$_TABLES['postmodes']} ALTER COLUMN code TYPE varchar(10)";
+$_SQL[] = "ALTER TABLE {$_TABLES['postmodes']} ALTER COLUMN name TYPE varchar(32)";
+$_SQL[] = "ALTER TABLE {$_TABLES['sortcodes']} ALTER COLUMN code TYPE varchar(4)";
+$_SQL[] = "ALTER TABLE {$_TABLES['sortcodes']} ALTER COLUMN name TYPE varchar(32)";
+$_SQL[] = "ALTER TABLE {$_TABLES['statuscodes']} ALTER COLUMN name TYPE varchar(32)";
+
 /**
  * Create Story and Submission Topic assignments
  *
