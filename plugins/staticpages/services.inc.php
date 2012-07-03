@@ -662,13 +662,28 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         if (! empty($perms)) {
             $perms = ' AND ' . $perms;
         }
+        
+        // Topic Permissions
+        $topic_perms = COM_getTopicSQL('', 0, 'ta');
+        if ($topic_perms != "") {
+            $topic_perms = " AND (" . $topic_perms . "";
+    
+            if (COM_onFrontpage()) {
+                $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
+            } else {
+                $topic_perms .= " OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+            }
+        }
+        $topic_perms .= " GROUP BY sp_id";        
+        
         $sql = array();
         $sql['mysql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_help,sp_php,"
-                      . "sp_inblock FROM {$_TABLES['staticpage']} "
-                      . "WHERE (sp_id = '$page')" . $perms;
+                      . "sp_inblock FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
+                      . "WHERE (sp_id = '$page')" . $perms
+                      . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
         $sql['mssql'] = "SELECT sp_title,sp_page_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
                       . "created,modified,sp_format,commentcode,"
@@ -676,15 +691,17 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "CAST(meta_keywords AS text) AS meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,perm_members,"
                       . "perm_anon,sp_help,sp_php,sp_inblock "
-                      . "FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')"
-                      . $perms;
+                      . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta WHERE (sp_id = '$page')"
+                      . $perms
+                      . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
         $sql['pgsql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,"
                       . "created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_help,sp_php,"
-                      . "sp_inblock FROM {$_TABLES['staticpage']} "
-                      . "WHERE (sp_id = '$page')" . $perms;
+                      . "sp_inblock FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
+                      . "WHERE (sp_id = '$page')" . $perms
+                      . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
         $result = DB_query($sql);
         $count = DB_numRows($result);
 
