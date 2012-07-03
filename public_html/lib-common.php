@@ -4248,13 +4248,12 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
 *
 * @param        string      $side       Side to get blocks for (right or left for now)
 * @param        string      $topic      Only get blocks for this topic
-* @param        string      $name       Block name (not used)
 * @see function COM_showBlock
 * @return   string  HTML Formated blocks
 *
 */
 
-function COM_showBlocks( $side, $topic='', $name='all' )
+function COM_showBlocks( $side, $topic='' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $_TOPICS;
 
@@ -4339,7 +4338,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
 
     // Check and see if any plugins have blocks to show
-    $pluginBlocks = PLG_getBlocks( $side, $topic, $name );
+    $pluginBlocks = PLG_getBlocks( $side, $topic );
     $blocks = array_merge( $blocks, $pluginBlocks );
 
     // sort the resulting array by block order
