@@ -108,8 +108,8 @@
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt=""{xhtml}>
           </div>
           <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml" class="wide">{story_bodytext}</textarea>
+          <div id="editor_mode">{lang_allowed_html}</div>
         </dd>
-        <dd class="description">{lang_allowed_html}</dd>
       </dl>
     </div>
   </div>
