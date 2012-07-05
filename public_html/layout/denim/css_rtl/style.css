@@ -2719,6 +2719,9 @@ b.status_black {
   width: 280px;
   padding: 0 10px;
 }
+body.center-right #config_menu {
+  width: 200px;
+}
 
 .block-config,
 #search-configuration-container {
@@ -2779,6 +2782,9 @@ b.status_black {
   float: right; /* rtl */
   width: 820px;
   padding: 10px;
+}
+body.center-right #config_content {
+  width: 600px;
 }
 
 #geeklog_config_editor:after {
@@ -2960,9 +2966,15 @@ b.status_black {
 	#config_menu {
 	  width: 210px;
 	}
+	body.center-right #config_menu {
+	  width: 150px;
+	}
 
 	#config_content {
 	  width: 710px;
+	}
+	body.center-right #config_content {
+	  width: 470px;
 	}
 
 	.table-wrapper {
@@ -3157,11 +3169,17 @@ b.status_black {
 	  width: 728px;
 	  padding: 0 10px;
 	}
+	body.center-right #config_menu {
+	  width: 508px;
+	}
 
 	#config_content {
 	  float: right; /* rtl */
 	  width: 728px;
 	  padding: 10px;
+	}
+	body.center-right #config_content {
+	  width: 508px;
 	}
 
 	.block-config,
@@ -3208,11 +3226,17 @@ b.status_black {
 	  width: 100%;
 	  padding: 0;
 	}
+	body.center-right #config_menu {
+	  width: 100%;
+	}
 
 	#config_content {
 	  float: right; /* rtl */
 	  width: 100%;
 	  padding: 10px 0;
+	}
+	body.center-right #config_content {
+	  width: 100%;
 	}
 
 	.config_label {
