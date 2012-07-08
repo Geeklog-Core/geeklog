@@ -27,13 +27,14 @@
 require_once '../../siteconfig.php';
 require_once $_CONF['path'].'db-config.php';
 require_once $_CONF['path_system'].'lib-database.php';
+require_once $_CONF['path_system'].'lib-security.php';
 
 if (!defined('LB')) {
-	define('LB', "\n");
+    define('LB', "\n");
 }
 
 if (!defined('CRLB')) {
-	define('CRLB', "\r\n");
+    define('CRLB', "\r\n");
 }
 
 // This
@@ -41,30 +42,30 @@ $self = basename(__FILE__);
 
 // The conf_values we're making available to edit.
 $configs = array(
-	'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
-	'path_themes', 'path_images', 'path_log', 'path_language', 'backup_path',
-	'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
+    'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
+    'path_themes', 'path_images', 'path_log', 'path_language', 'backup_path',
+    'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
 );
 
 // Start it off
 if (get_magic_quotes_gpc()) {
-	$_GET  = array_map('stripslashes', $_GET);
-	$_POST = array_map('stripslashes', $_POST);
+    $_GET  = array_map('stripslashes', $_GET);
+    $_POST = array_map('stripslashes', $_POST);
 }
 
 $lang = 'english';
 
 if (isset($_POST['lang'])) {
-	$lang = preg_replace('/[^0-9_a-z-]/i', '', $_POST['lang']);
+    $lang = preg_replace('/[^0-9_a-z-]/i', '', $_POST['lang']);
 } else if (isset($_GET['lang'])) {
-	$lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
+    $lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
 }
 
 $langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
 
 if (!file_exists($langfile)) {
-	$lang = 'english';
-	$langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
+    $lang = 'english';
+    $langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
 }
 
 require_once $langfile;
@@ -99,44 +100,63 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
 }
 
 function s($index) {
-	global $self, $LANG_RESCUE;
-	
-	return str_replace('{{SELF}}', $self, $LANG_RESCUE[$index]);
+    global $self, $LANG_RESCUE;
+    
+    return str_replace('{{SELF}}', $self, $LANG_RESCUE[$index]);
 }
 
 function e($index) {
-	echo s($index);
+    echo s($index);
 }
 
 function langSelector() {
-	global $lang, $LANG_CHARSET;
-	
-	$retval = '<form action="" method="post">' . LB
-			. '<div>' . LB
-			. '<select name="lang">' . LB;
-	$files = glob(dirname(__FILE__) . '/language/*.php');
-	
-	if ($files !== FALSE) {
-		foreach ($files as $file) {
-			$file = str_replace('.php', '', basename($file));
-			$selected = ($file === $lang) ? ' selected="selected"' : '';
-			$retval .= '<option value="' . $file . '"' . $selected . '>'
-					.  $file . '</option>' . LB;
-		}
-	}
-	
-	$retval .= '</select>' . LB
-			.  '<input type="submit" name="submit" value="' . s(41) . '" />' . LB
-			.  '</div>' . LB
-			.  '</form>' . LB;
-	
-	return $retval;
+    global $lang, $LANG_CHARSET;
+    
+    $retval = '<form action="" method="post">' . LB
+            . '<div>' . LB
+            . '<select name="lang">' . LB;
+    $files = glob(dirname(__FILE__) . '/language/*.php');
+    
+    if ($files !== FALSE) {
+        foreach ($files as $file) {
+            $file = str_replace('.php', '', basename($file));
+            $selected = ($file === $lang) ? ' selected="selected"' : '';
+            $retval .= '<option value="' . $file . '"' . $selected . '>'
+                    .  $file . '</option>' . LB;
+        }
+    }
+    
+    $retval .= '</select>' . LB
+            .  '<input type="submit" name="submit" value="' . s(41) . '" />' . LB
+            .  '</div>' . LB
+            .  '</form>' . LB;
+    
+    return $retval;
+}
+
+function encryptPassword($password) {
+    global $_TABLES;
+    
+    $version = preg_replace('/[^0-9.]/', '', VERSION);
+    
+    if (version_compare($version, '2.0.0', '<')) {
+        $retval = SEC_encryptPassword($password);
+    } else {
+        $salt      = DB_getItem($_TABLES['users'], 'salt', "uid = 2");
+        $algorithm = DB_getItem($_TABLES['conf_values'], 'value', "name = 'pass_alg'");
+        $stretch   = DB_getItem($_TABLES['conf_values'], 'value', "name = 'pass_stretch'");
+        $algorithm = unserialize($algorithm);
+        $stretch   = unserialize($stretch);
+        $retval = SEC_encryptPassword($password, $salt, $algorithm, $stretch);
+    }
+    
+    return $retval;
 }
 
 function render($renderType, $args = array()) {
     global $_TABLES, $self, $configs, $LANG_CHARSET, $LANG_DIRECTION, $lang;
-	
-	header('Content-Type: text/html; charset=' . $LANG_CHARSET);
+    
+    header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html dir="<?php echo isset($LANG_DIRECTION) ? $LANG_DIRECTION : 'ltr'; ?>">
@@ -173,7 +193,7 @@ function render($renderType, $args = array()) {
                         document.getElementById('loginForm')['gl_password'].focus();
                     </script>
                     <input type="submit" value="<?php e(9); ?>" onclick="this.disabled=true;this.form.submit();" />
-					<input type="hidden" name="lang" value="<?php echo $lang; ?>" />
+                    <input type="hidden" name="lang" value="<?php echo $lang; ?>" />
                 </form>
                 <?php if (! empty($args['incorrectPassword'])): ?>
                 <div class="error">
@@ -208,7 +228,7 @@ function render($renderType, $args = array()) {
             $passwd = md5($passwd);
             $passwd = substr($passwd, 1, 8);
             $username = DB_getItem($_TABLES['users'], 'username', "uid = '2'");
-            $sql = sprintf("UPDATE %s SET passwd = '%s' WHERE username = '%s'", $_TABLES['users'], md5($passwd), $username);
+            $sql = sprintf("UPDATE %s SET passwd = '%s' WHERE username = '%s'", $_TABLES['users'], encryptPassword($passwd), $username);
             if (!(DB_query($sql))) {
                 $url = $self . '?view=options&amp;args=result:error|statusMessage:' . urlencode(s(17)) . '&amp;lang=' . urlencode($lang);
                 echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
@@ -458,19 +478,17 @@ function printHtmlStyle() {
 function printJs() {
 ?>
 <script type="text/javascript">
-    //The following does not work correctly in IE and I don't care!
     function toggle(objId){
-        var o = document.getElementById(objId);
-        if (o.style.display == 'none') {
-            o.style.display = 'block';
-        }
-        else {
-            o.style.display = 'none';
-        }
-        //IE does not support getElementsByName for <div>
-        var others = document.getElementsByName('options');
-        for (var i = 0; i < others.length; i++) {
-            if (others[i] != o) {
+        var o = document.getElementById(objId),
+            i, others;
+        
+        o.style.display = (o.style.display === 'none') ? 'block' : 'none';
+        others = document.getElementsByTagName('div');
+        
+        for (i = 0; i < others.length; i++) {
+            if (((others[i].id === 'plugins') || (others[i].id === 'blocks') ||
+                 (others[i].id === 'conf') || (others[i].id === 'pass')) &&
+                (others[i].id !== objId)) {
                 others[i].style.display = 'none';
             }
         }
@@ -479,10 +497,10 @@ function printJs() {
     //The following does not work in IE and I don't care!
     function toggleRadio(checked, elements){
         var radios = elements;
+        
         if (checked) {
             radios[0].click();
-        }
-        else {
+        } else {
             radios[1].click();
         }
     }
