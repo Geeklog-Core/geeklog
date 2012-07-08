@@ -1,4 +1,5 @@
 <?php
+
 // +---------------------------------------------------------------------------+
 // | Geeklog Emergency Rescue Tool                                             |
 // +---------------------------------------------------------------------------+
@@ -27,13 +28,47 @@ require_once '../../siteconfig.php';
 require_once $_CONF['path'].'db-config.php';
 require_once $_CONF['path_system'].'lib-database.php';
 
+if (!defined('LB')) {
+	define('LB', "\n");
+}
+
+if (!defined('CRLB')) {
+	define('CRLB', "\r\n");
+}
+
 // This
 $self = basename(__FILE__);
 
 // The conf_values we're making available to edit.
-$configs = array('site_url', 'site_admin_url', 'path_html', 'path_themes', 'path_log', 'path_language', 'theme');
+$configs = array(
+	'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
+	'path_themes', 'path_images', 'path_log', 'path_language', 'backup_path',
+	'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
+);
 
 // Start it off
+if (get_magic_quotes_gpc()) {
+	$_GET  = array_map('stripslashes', $_GET);
+	$_POST = array_map('stripslashes', $_POST);
+}
+
+$lang = 'english';
+
+if (isset($_POST['lang'])) {
+	$lang = preg_replace('/[^0-9_a-z-]/i', '', $_POST['lang']);
+} else if (isset($_GET['lang'])) {
+	$lang = preg_replace('/[^0-9_a-z-]/i', '', $_GET['lang']);
+}
+
+$langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
+
+if (!file_exists($langfile)) {
+	$lang = 'english';
+	$langfile = dirname(__FILE__) . '/language/' . $lang . '.php';
+}
+
+require_once $langfile;
+
 if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_DB_pass)) {
     /* Already logged in, got a cookie */
     $view = (isset($_REQUEST['view']) && $_REQUEST['view'] != '') ? trim($_REQUEST['view']) : 'options';
@@ -52,10 +87,10 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
     /* Login attempt */
     if ($_POST['gl_password'] == $_DB_pass) {
         setcookie("GLEMERGENCY", md5($_DB_pass), 0);
-        $url = $self.'?view=options&args=result:success|statusMessage:'.urlencode('Login successful');
-        print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+        $url = $self . '?view=options&amp;args=result:success|statusMessage:' . urlencode(s(0)) . '&amp;lang=' . urlencode($lang);
+        echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
     } else {
-        render('passwordForm', array('incorrectPassword'=>1));
+        render('passwordForm', array('incorrectPassword' => 1));
         exit;
     }
 } else {
@@ -63,212 +98,243 @@ if (! empty($_COOKIE['GLEMERGENCY']) && trim($_COOKIE['GLEMERGENCY']) == md5($_D
     exit;
 }
 
+function s($index) {
+	global $self, $LANG_RESCUE;
+	
+	return str_replace('{{SELF}}', $self, $LANG_RESCUE[$index]);
+}
+
+function e($index) {
+	echo s($index);
+}
+
+function langSelector() {
+	global $lang, $LANG_CHARSET;
+	
+	$retval = '<form action="" method="post">' . LB
+			. '<div>' . LB
+			. '<select name="lang">' . LB;
+	$files = glob(dirname(__FILE__) . '/language/*.php');
+	
+	if ($files !== FALSE) {
+		foreach ($files as $file) {
+			$file = str_replace('.php', '', basename($file));
+			$selected = ($file === $lang) ? ' selected="selected"' : '';
+			$retval .= '<option value="' . $file . '"' . $selected . '>'
+					.  $file . '</option>' . LB;
+		}
+	}
+	
+	$retval .= '</select>' . LB
+			.  '<input type="submit" name="submit" value="' . s(41) . '" />' . LB
+			.  '</div>' . LB
+			.  '</form>' . LB;
+	
+	return $retval;
+}
 
 function render($renderType, $args = array()) {
-    global $_TABLES, $self, $configs;
+    global $_TABLES, $self, $configs, $LANG_CHARSET, $LANG_DIRECTION, $lang;
+	
+	header('Content-Type: text/html; charset=' . $LANG_CHARSET);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<html dir="<?php echo isset($LANG_DIRECTION) ? $LANG_DIRECTION : 'ltr'; ?>">
     <head>
-        <title>Geeklog Emergency Rescue Tool</title>
+        <title><?php e(1); ?></title>
         <?php printHtmlStyle(); ?>
         <?php printJs(); ?>
     </head>
     <body>
         <div class="main center">
         <div class="header-navigation-container">
-            <div class="header-navigation-line">    
-                <a href="index.php" class="header-navigation">Geeklog Install</a>&nbsp;&nbsp;&nbsp;
+            <div class="header-navigation-line">
+                <a href="index.php" class="header-navigation"><?php e(2); ?></a>&nbsp;&nbsp;&nbsp;<?php echo langSelector(); ?>&nbsp;&nbsp;
             </div>
         </div>          
-        <h1>Geeklog Emergency Rescue Tool</h1>
+        <h1><?php e(3); ?></h1>
         <div class="box important">
-            <p>Do not forget to <b>delete this <?php print $self; ?> file and the install directory once you are done!</b>
-               If other users guess the password, they can seriously harm your geeklog installation!
-            <p>
+            <p><?php e(4); ?></p>
         </div>
         <?php if (! empty($args['statusMessage'])): ?>
-        <div class="box <?php print trim($args['result']); ?>">
-            <b>Status:</b>
-            <?php print $args['statusMessage']; ?>
+        <div class="box <?php echo trim($args['result']); ?>">
+            <strong><?php e(5); ?>:</strong>
+            <?php echo $args['statusMessage']; ?>
         </div>
         <?php endif; ?>
         <?php if ($renderType == 'passwordForm'): ?>
-        <h2>You are attempting to access a secure section.  You can't
-            proceed until you pass the security check.</h2>
+        <h2><?php e(6); ?></h2>
         <div class="password_form">
             <div class="box">
-                <span class="message">In order to verify you, we require you to enter your database password.  This is
-                    the password that is stored in geeklog's db-config.php</span>
+                <span class="message"><?php e(7); ?></span>
                 <form id="loginForm" method="post">
-                    Password:<input type="password" name="gl_password"/>
+                    <?php e(8); ?>:<input type="password" name="gl_password" />
                     <script type="text/javascript">
                         document.getElementById('loginForm')['gl_password'].focus();
                     </script>
-                    <input type="submit" value="Verify Me" onclick="this.disabled=true;this.form.submit();"/>
+                    <input type="submit" value="<?php e(9); ?>" onclick="this.disabled=true;this.form.submit();" />
+					<input type="hidden" name="lang" value="<?php echo $lang; ?>" />
                 </form>
                 <?php if (! empty($args['incorrectPassword'])): ?>
                 <div class="error">
-                    Password incorrect!
+                    <?php e(10); ?>
                 </div>
                 <?php endif; ?>
             </div>
         </div>
         <?php elseif ($renderType == 'handleRequest'):
             $sql = sprintf("%s %s SET %s = '%s' WHERE %s = '%s'", $args['operation'], $_TABLES[$args['table']], $args['field'], trim($_POST['value']), $args['where'], trim($_POST['target']));
-            $enable = (trim($_POST['value']))?'enabling ':'disabling ';
-            $success = (DB_query($sql))?'success ':'error ';
-            $url = $self.'?view=options&args=result:'.$success.'|statusMessage:'.urlencode($success.$enable.trim($_POST['target']));
-            print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+            $enable = (trim($_POST['value'])) ? s(11) : s(12);
+            $success = (DB_query($sql)) ? s(13) : s(14);
+            $url = $self . '?view=options&amp;args=result:' . urlencode($success) . '|statusMessage:' . urlencode($success . $enable . trim($_POST['target'])) . '&amp;lang=' . urlencode($lang);
+            echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
         ?>
         <?php elseif ($renderType == 'updateConfigs'):
             foreach ($configs as $config){
                 $sql = sprintf("UPDATE %s SET value = '%s' WHERE name = '%s'", $_TABLES['conf_values'], serialize($_POST[$config]), $config);
-                if(DB_query($sql)){
+                if (DB_query($sql)) {
                     continue;
-                }else{
-                    $url = $self.'?view=options&args=result:error|statusMessage:'.urlencode('There was an error updating configs');
-                    print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+                } else {
+                    $url = $self.'?view=options&amp;args=result:error|statusMessage:' . urlencode(s(15)) . '&amp;lang=' . urlencode($lang);
+                    echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . 'LB';
                     exit;
                 }
             }
-            $url = $self.'?view=options&args=result:success|statusMessage:'.urlencode('Updating configs completed successfully');
-            print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+            $url = $self.'?view=options&amp;args=result:success|statusMessage:' . urlencode(s(16)) . '&amp;lang=' . urlencode($lang);
+            echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . 'LB';
         ?>
         <?php elseif ($renderType == 'updateEmail'):
-            $passwd = rand ();
-            $passwd = md5 ($passwd);
-            $passwd = substr ($passwd, 1, 8);
+            $passwd = rand();
+            $passwd = md5($passwd);
+            $passwd = substr($passwd, 1, 8);
             $username = DB_getItem($_TABLES['users'], 'username', "uid = '2'");
             $sql = sprintf("UPDATE %s SET passwd = '%s' WHERE username = '%s'", $_TABLES['users'], md5($passwd), $username);
-            if(!(DB_query($sql))){
-                $url = $self.'?view=options&args=result:error|statusMessage:'.urlencode('There was an error updating your password');
-                print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+            if (!(DB_query($sql))) {
+                $url = $self . '?view=options&amp;args=result:error|statusMessage:' . urlencode(s(17)) . '&amp;lang=' . urlencode($lang);
+                echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>" . LB;
                 exit;
             }
             $email = DB_getItem($_TABLES['users'], 'email', "uid = '2'");
             $site_url = unserialize(DB_getItem($_TABLES['conf_values'], 'value', "name = 'site_url'"));
             $to  = $email;
-            $subject = 'Geeklog password request';
+            $subject = s(18);
             $message = sprintf('
             <html>
             <head>
-              <title>Requested Password</title>
+              <title>' . s(19) . '</title>
             </head>
             <body>
-              <p>Someone (hopefully you) has accessed the emergency password request form and a new password:"%s" for your account "%s" on %s, has been generated.</p>
-              <p>If it was not you, please check the security of your site. Make sure to remove the Emergency Rescue Form /admin/rescue.php</p>
+              <p>' . s(20) . '</p>
+              <p>' . s(21) . '</p>
             </body>
             </html>
             ', $passwd, $username, $site_url);
-            $headers  = 'MIME-Version: 1.0' . "\r\n";
-            $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+            $headers  = 'MIME-Version: 1.0' . CRLB;
+            $headers .= 'Content-type: text/html; charset=' . $LANG_CHARSET . CRLB;
             $headers .= 'X-Mailer: PHP/' . phpversion();
-            if(mail($to, $subject, $message, $headers)){
-                $url = $self.'?view=options&args=result:success|statusMessage:'.urlencode('New password has been sent to the recorded email address');
-                print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+            if (mail($to, $subject, $message, $headers)) {
+                $url = $self.'?view=options&amp;args=result:success|statusMessage:' . urlencode(s(22)) . '&amp;lang=' . urlencode($lang);
+                echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
                 exit;
-            }else{
-                $url = $self.'?view=options&args=result:error|statusMessage:'.urlencode('There was an error sending email with the subject: '.$subject);
-                print "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
+            } else {
+                $url = $self.'?view=options&amp;args=result:error|statusMessage:' . urlencode(s(23) . $subject) . '&amp;lang=' . urlencode($lang);
+                echo "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
                 exit;
             }
         ?>
         <?php elseif ($renderType == 'phpinfo'): ?>
-        <h2>PHP Information </h2>
-        <ul><li><a href="javascript:self.location.href='<?php print $self; ?>';"> Reset</a></li></ul>
+        <h2><?php e(24); ?></h2>
+        <ul><li><a href="javascript:self.location.href='<?php echo $self . '?lang=' . urlencode($lang); ?>';"> <?php e(25); ?></a></li></ul>
         <div class="info">
             <?php phpinfo(); ?>
         </div>
-        <ul><li><a href="javascript:self.location.href='<?php print $self; ?>';"> Reset</a></li></ul>
+        <ul><li><a href="javascript:self.location.href='<?php echo $self . '?lang=' . urlencode($lang); ?>';"> <?php e(25); ?></a></li></ul>
         <?php elseif ($renderType == 'options'): ?>
-        <h2>System Information </h2>
+        <h2><?php e(26); ?></h2>
         <div class="info">
             <ul>
-                <li>PHP version: <?php print phpversion(); ?> <a href="<?php print $self; ?>?view=phpinfo"> <small>phpinfo</small></a></li>
-                <li>Geeklog version <?php print VERSION; ?></li>
+                <li><?php e(27); ?>: <?php echo phpversion(); ?> <a href="<?php echo $self; ?>?view=phpinfo<?php echo '&amp;lang=' . urlencode($lang); ?>"> <small>phpinfo</small></a></li>
+                <li><?php e(28); ?> <?php echo VERSION; ?></li>
             </ul>
         </div>
-        <h2>Options </h2>
-        <p style="margin-left:5px;">If you happen to install a plugin or addon that brings down your geeklog site, you can remedy the problem with the options below.</p>
+        <h2><?php e(29); ?></h2>
+        <p style="margin-left:5px;"><?php e(30); ?></p>
         <ul class="option">
-            <li><a href="javascript:toggle('plugins')">Enable/Disable Plugins</a></li>
-            <li><a href="javascript:toggle('blocks')">Enable/Disable Blocks</a></li>
-            <li><a href="javascript:toggle('conf')">Edit Select $_CONF Values</a></li>
-            <li><a href="javascript:toggle('pass')">Reset Admin Password</a></li>
+            <li><a href="javascript:toggle('plugins')"><?php e(31); ?></a></li>
+            <li><a href="javascript:toggle('blocks')"><?php e(32); ?></a></li>
+            <li><a href="javascript:toggle('conf')"><?php e(33); ?></a></li>
+            <li><a href="javascript:toggle('pass')"><?php e(34); ?></a></li>
         </ul>
-        <div id="plugins" name="options" class="box option" style="display:none;">
-            <h3>Here you can enable/disable any plugin that is currently installed on your geeklog website.</h3>
+        <div id="plugins" name="options" class="box option" style="display: none;">
+            <h3><?php e(35); ?></h3>
             <form id="plugin-operator" method="post">
                 <select name="target" onchange="toggleRadio(this.options[this.selectedIndex].getAttribute('class') == 'disabled', this.form.elements['value']);">
-                    <option selected="selected" value="">Select a plugin</option>
+                    <option selected="selected" value=""><?php e(36); ?></option>
                     <?php
-                    $result = DB_query( "SELECT * FROM {$_TABLES['plugins']}");
+                    $result = DB_query("SELECT * FROM {$_TABLES['plugins']}");
                     while ($A = DB_fetchArray($result)){
-                        $class = ($A['pi_enabled'] == 0)?'class="disabled"':'';
-                        echo '<option '.$class.' value="'.$A['pi_name'].'">'.$A['pi_name'].'</option>'."\n";
+                        $class = ($A['pi_enabled'] == 0) ? 'class="disabled"' : '';
+                        echo '<option ' . $class . ' value="' . $A['pi_name'] . '">' . $A['pi_name'] . '</option>'."\n";
                     }
                     ?>
                 </select>
-                <input type="radio" name="value" value="1"/>Enable
-                <input type="radio" name="value" value="0" checked="checked"/>Disable<br />
-                <input type="hidden" name="view" value="handleRequest"/>
-                <input type="hidden" name="args" value="operation:UPDATE|table:plugins|field:pi_enabled|where:pi_name"/>
-                <input type="submit" value="Go" onclick="this.disabled=true;this.form.submit();"/>
+                <input type="radio" name="value" id="enable_plugin" value="1" /><label for="enable_plugin"><?php e(37); ?></label>
+                <input type="radio" name="value" id="disable_plugin" value="0" checked="checked" /><label for="disable_plugin"><?php e(38); ?></label><br />
+                <input type="hidden" name="view" value="handleRequest" />
+                <input type="hidden" name="args" value="operation:UPDATE|table:plugins|field:pi_enabled|where:pi_name" />
+                <input type="submit" value="<?php e(41); ?>" onclick="this.disabled=true;this.form.submit();" />
             </form>
             <p>&nbsp;</p>
         </div>
-        <div id="blocks" name="options" class="box option" style="display:none;">
-            <h3>Here you can enable/disable any block that is currently installed on your geeklog website.</h3>
+        <div id="blocks" name="options" class="box option" style="display: none;">
+            <h3><?php e(39); ?></h3>
             <form id="block-operator" method="post">
                 <select name="target" onchange="toggleRadio(this.options[this.selectedIndex].getAttribute('class') == 'disabled', this.form.elements['value']);">
-                    <option selected="selected" value="">Select a block</option>
+                    <option selected="selected" value=""><?php e(40); ?></option>
                     <?php
-                    $result = DB_query( "SELECT * FROM {$_TABLES['blocks']}");
+                    $result = DB_query("SELECT * FROM {$_TABLES['blocks']}");
                     while ($A = DB_fetchArray($result)){
-                        $class = ($A['is_enabled'] == 0)?'class="disabled"':'';
-                        echo '<option '.$class.' value="'.$A['name'].'">'.$A['title'].'</option>'."\n";
+                        $class = ($A['is_enabled'] == 0) ? 'class="disabled"' : '';
+                        echo '<option ' . $class . ' value="' . $A['name'] . '">' . $A['title'] . '</option>'."\n";
                     }
                     ?>
                 </select>
-                <input type="radio" name="value" value="1"/>Enable
-                <input type="radio" name="value" value="0" checked="checked"/>Disable<br />
-                <input type="hidden" name="table" value="blocks"/>
-                <input type="hidden" name="view" value="handleRequest"/>
-                <input type="hidden" name="args" value="operation:UPDATE|table:blocks|field:is_enabled|where:name"/>
-                <input type="submit" value="Go" onclick="this.disabled=true;this.form.submit();"/>
+                <input type="radio" name="value" id="enable_block" value="1" /><label for="enable_block"><?php e(37); ?></label>
+                <input type="radio" name="value" id="disable_block" value="0" checked="checked" /><label for="disable_block"><?php e(38); ?></label><br />
+                <input type="hidden" name="table" value="blocks" />
+                <input type="hidden" name="view" value="handleRequest" />
+                <input type="hidden" name="args" value="operation:UPDATE|table:blocks|field:is_enabled|where:name" />
+                <input type="submit" value="<?php e(41); ?>" onclick="this.disabled=true;this.form.submit();" />
             </form>
             <p>&nbsp;</p>
         </div>
-        <div id="conf" name="options" class="box option" style="display:none;">
-            <h3>You can edit some key $_CONF options.</h3>
-            <form id="config-operator" method="POST" action="<?php print $self.'?view=updateConfigs'; ?>"/>
+        <div id="conf" name="options" class="box option" style="display: none;">
+            <h3><?php e(42); ?></h3>
+            <form id="config-operator" method="post" action="<?php echo $self . '?view=updateConfigs' . '&amp;lang=' . urlencode($lang); ?>" />
                 <?php
-                    foreach ($configs as $config){
+                    foreach ($configs as $config) {
                         $sql = "SELECT value FROM {$_TABLES['conf_values']} WHERE name ='{$config}' LIMIT 1";
                         $res = DB_query($sql);
                         $row = DB_fetchArray($res);
                 ?>
-                        <fieldset><legend><?php print $config; ?>:</legend><input type="text" size="80" id="<?php print $config; ?>" name="<?php print $config; ?>" value="<?php print unserialize($row['value']); ?>"/></fieldset>
+                        <fieldset><legend><?php echo $config; ?>:</legend><input type="text" size="80" id="<?php echo $config; ?>" name="<?php echo $config; ?>" value="<?php echo unserialize($row['value']); ?>" /></fieldset>
                 <?php
                     }
                 ?>
-                <input type="submit" value="Go" onclick="this.disabled=true;this.form.submit();"/>
+                <input type="submit" value="<?php e(41); ?>" onclick="this.disabled=true;this.form.submit();" />
             </form>
             <p>&nbsp;</p>
         </div>
-        <div id="pass" name="options" class="box option" style="display:none;">
-            <h3>Here you can reset your geeklog root/admin password.</h3>
-            <form id="config-operator" method="POST" action="<?php print $self.'?view=updateEmail'; ?>"/>
-                <input type="submit" value="Email my password" onclick="this.disabled=true;this.form.submit();"/>
+        <div id="pass" name="options" class="box option" style="display: none;">
+            <h3><?php e(43); ?></h3>
+            <form id="config-operator" method="post" action="<?php echo $self . '?view=updateEmail' . '&amp;lang=' . urlencode($lang); ?>" />
+                <input type="submit" value="<?php e(44); ?>" onclick="this.disabled=true;this.form.submit();" />
             </form>
             <p>&nbsp;</p>
         </div>
         <?php endif; ?>
         <div class="box important">
-            <p>Do not forget to <b>delete this <?php print $self; ?> file and the install directory once you are done!</b>
-                If other users guess the password, they can seriously harm your geeklog installation!
-             <p>
+            <p><?php e(4); ?></p>
         </div>
         </div>
     </body>
