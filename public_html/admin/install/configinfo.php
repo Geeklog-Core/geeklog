@@ -79,7 +79,7 @@ foreach ($_CONF as $option => $value) {
         ob_end_clean();
     } elseif (is_bool($value)) {
         $value = ($value === false) ? 'false' : 'true';
-    } elseif (eregi('[a-z]+html', $option)) {
+    } elseif (preg_match('/[a-z]+html/i', $option)) {
         $value = htmlentities($value);
     } elseif (!isset($value)) {
         $value = '&nbsp;';
