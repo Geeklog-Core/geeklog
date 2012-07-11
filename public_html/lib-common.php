@@ -7283,7 +7283,7 @@ function COM_getLanguageFromBrowser()
 
     $retval = '';
 
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) AND is_array($_CONF['language_files'])) {
         $accept = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
         foreach ($accept as $l) {
             $l = explode(';', trim($l));
