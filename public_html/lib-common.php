@@ -6861,8 +6861,8 @@ function COM_dateDiff( $interval, $date1, $date2 )
     switch( $interval )
     {
         case "y":
-            list($year1, $month1, $day1) = explode('-', date('Y-m-d', $date1));
-            list($year2, $month2, $day2) = explode('-', date('Y-m-d', $date2));
+            list($year1, $month1, $day1) = split('-', date('Y-m-d', $date1));
+            list($year2, $month2, $day2) = split('-', date('Y-m-d', $date2));
             $time1 = (date('H',$date1)*3600) + (date('i',$date1)*60) + (date('s',$date1));
             $time2 = (date('H',$date2)*3600) + (date('i',$date2)*60) + (date('s',$date2));
             $diff = $year2 - $year1;
@@ -6879,8 +6879,8 @@ function COM_dateDiff( $interval, $date1, $date2 )
             }
             break;
         case "m":
-            list($year1, $month1, $day1) = explode('-', date('Y-m-d', $date1));
-            list($year2, $month2, $day2) = explode('-', date('Y-m-d', $date2));
+            list($year1, $month1, $day1) = split('-', date('Y-m-d', $date1));
+            list($year2, $month2, $day2) = split('-', date('Y-m-d', $date2));
             $time1 = (date('H',$date1)*3600) + (date('i',$date1)*60) + (date('s',$date1));
             $time2 = (date('H',$date2)*3600) + (date('i',$date2)*60) + (date('s',$date2));
             $diff = ($year2 * 12 + $month2) - ($year1 * 12 + $month1);
