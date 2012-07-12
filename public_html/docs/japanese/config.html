@@ -65,6 +65,10 @@
   <td valign="top">Another Nifty Geeklog Site</td>
   <td valign="top">サイトのスローガンを指定します。HTMLの&lt;title&gt;フィールドに追加されます。</td></tr>
 <tr>
+  <td valign="top"><a name="desc_microsummary_short">マイクロサマリ接頭子(microsummary_short)</a></td>
+  <td valign="top">GL:</td>
+  <td valign="top"><a href="http://wiki.mozilla.org/Microsummaries">マイクロサマリ(microsummary)</a>用の接頭子を指定します。</td></tr>
+<tr>
   <td valign="top"><a name="desc_site_disabled_msg">サイト閉鎖用メッセージ(site_disabled_msg)</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
   <td valign="top">Geeklogのサイトを一時的に閉鎖するときに表示するメッセージを指定します。メッセージが"http:"で始まる場合、サイトの訪問者はそのURLへリダイレクトされます。<br>
@@ -143,6 +147,12 @@
 <tr><td valign="top"><a name="desc_mail_settings_password">パスワード(password)</a></td>
     <td valign="top">smtp-password</td>
     <td valign="top">送信方法で'smtp'を選択した場合に、SMTPアカウントのパスワードを指定します。</td></tr>
+<tr><td valign="top"><a name="desc_mail_cc_enabled">cc_enabled</a></td>
+    <td valign="top">True</td>
+    <td valign="top">ユーザが自分自身にCCメールを送信する機能を有効にします。</td></tr>
+<tr><td valign="top"><a name="desc_mail_cc_default">cc_default</a></td>
+    <td valign="top">False</td>
+    <td valign="top">ユーザが自分自身にCCメールを送信するデフォルトチェックをONにします</td></tr>
 </table>
 
 <h3><a name="site_syndication">サイト: フィード</a></h3>
@@ -1236,6 +1246,10 @@
   <td valign="top">はい(true)</td>
   <td valign="top">
     テキストモードの記事内のURLに自動的にリンクを張るかどうかを指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_linktext_maxlen">クリッカブルリンクの長さ(linktext_maxlen)</a></td>
+  <td valign="top">50</td>
+  <td valign="top">クリッカブルリンクURL表示の最大文字数を指定します。もし0なら短縮しません。</td></tr>    
 <tr>
   <td valign="top"><a name="desc_compressed_output">HTML出力を圧縮して送信する(disable_compressed_output) </a></td>
   <td valign="top">いいえ(false)</td>

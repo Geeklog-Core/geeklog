@@ -32,7 +32,7 @@
 
     <ul>
         <li>ディレクトリ: フォルダと同じです。</li>
-        <li>パス: Webサーバ上で、ファイルやディレクトリが実際にある場所です。Windows上でパスはドライブ文字(<code>c:/inetpub/wwwroot/</code>)で始まり、*nix系OS上でパスは <code>/var/www/</code> のようにルート(<code>/</code>)から始まります。</li>
+        <li>パス: Webサーバー上で、ファイルやディレクトリが実際にある場所です。Windows上でパスはドライブ文字(<code>c:/inetpub/wwwroot/</code>)で始まり、*nix系OS上でパスは <code>/var/www/</code> のようにルート(<code>/</code>)から始まります。</li>
         <li><a name="public_html">public_html</a>: URLでアクセスされる、公開領域の一般的なディレクトリ名(その他: htdocs, www)です。</li>
         <li><acronym title="Uniform Resource Locator">URL</acronym>: Uniform Resource LocatorはWeb上の情報の特定の部分を表すアドレス(<code>http://www.foo.com/</code>)です。</li>
     </ul>
@@ -42,7 +42,7 @@
 
     <h3><a name="preinstall">必要なソフトウェア</a></h3>
 
-        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHPのバージョン4.3.0以降が必要です（訳注：PHPの4.x系列は2008年8月でセキュリティ対応を含めた保守は終了しています。PHP 5.2系列はバージョンは5.2.17が最後のリリースでセキュリティ対応を含めた保守は終了しています。2011年2月12日の時点でPHP 5.3系列の最新バージョンは5.3.5です）。また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL 4.0.18</a>以降か、<a href="http://www.microsoft.com/sql/default.mspx">Microsoft SQL Server 2000</a>以降が必要です。(訳注: MySQLはMySQL 5.1より前のバージョンのサポートは終了しています。2011年2月12日の時点でMySQL 5.1系列のバージョンは5.1.55、MySQL 5.5系列のバージョンは5.5.9です。)</p>
+        <p>Geeklogをインストールして使用するには、ApacheやMicrosoft IISなどのWebサーバとPHP 5.2.0以降が必要です。また、データベースとして、<a href="http://dev.mysql.com/downloads/">MySQL</a> 4.0.18以降か、(<a href="http://mariadb.org/">MariaDB</a> 5.1以降も可), <a href="http://www.postgresql.org/download/">PostgreSQL</a> 7以降 (7.4以降), または<a href="http://www.microsoft.com/sqlserver/">Microsoft SQL Server 2000</a>以降が必要です。</p>
 
     <h3><a name="things_you_should_know">必要な技術力</a></h3>
 
@@ -51,7 +51,7 @@
         <li>Webディレクトリのルート（ドキュメントルート）のパス(<a href="#glossary">パスとは?</a>)を見つけ出す方法を理解している。</li>
         <li>ダウンロードしたGeeklogのターボール（圧縮ファイル）を展開（解凍）できる。</li>
         <li>データベースを新規作成するか、既存のデータベースにアクセスできる。</li>
-        <li>WebサーバにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。</li>
+        <li>WebサーバーにSSHやFTPでアクセスして、いくつかのファイルとディレクトリのパーミッションを変更できる。</li>
     </ul>
     
 
@@ -65,13 +65,13 @@
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
             <p><code>tar -zxvf geeklog-1.8.0.tar.gz</code> </p>
             
-            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
+            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。(訳註: ExpLZH)</p>
         </li>
         <li>
-            <p>MySQLやMicrosoft SQLを使用し、空のデータベースと変更権限のあるユーザを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
+            <p>MySQLや、PostgreSQL、Microsoft SQLを使用し、空のデータベースと変更権限のあるユーザーを作成します。ホスティング会社がデータベースを作成してアカウントを作成している場合もあるので、必要ならホスティング会社に尋ねてみてください。</p>
         </li>
         <li>
-            <p><code>geeklog-1.8.0/public_html/</code> ディレクトリの中身をWebサーバのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
+            <p><code>geeklog-1.8.0/public_html/</code> ディレクトリの中身をWebサーバーのドキュメントルートに転送します。ドキュメントルートには、"public_html"や"htdocs"、"www"などの名前がつけられていることが多いです。</p>
         
             <p>次に、<code>geeklog-1.8.0/</code> ディレクトリの中身の残りをドキュメントルートの親ディレクトリ（お勧め!）かWebからアクセスできないディレクトリに転送します。インストールウィザードはこれらの場所を自動的に検出しようとします。検出できない場合は、インストールの過程でパスを入力するよう要求されます。インターネットからのアクセスを防ぐセキュリティ対策としてこのような仕様になっています。</p>
             
@@ -111,7 +111,7 @@
             <p>次のコマンドを実行して、ダウンロードしたターボールを展開（解凍）します。</p>
             <p><code>tar -zxvf geeklog-1.8.0.tar.gz</code> </p>
             
-            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
+            <p><strong>注意:</strong> WinZipを使用すると、そのバージョンによっては、ファイルが壊れると報告しているユーザーがいます。こうなるとインストールの最中にエラーになるので、ローカルでファイルを解凍する必要がある場合は、WinZipの代わりに<a href="http://www.7-zip.org/">7-Zip</a>や<a href="http://www.rarlab.com/">WinRAR</a>を使うことを強くお勧めします。</p>
         </li>
         <li>
             <p><code>geeklog-1.8.0/</code> ディレクトリの中身を、現在インストールしているバージョンの同じディレクトリに転送します。たとえば、現在のバージョンを <code>/usr/home/www/geeklog/</code> にインストールしているなら、新しいバージョンも <code>/usr/home/www/geeklog/</code> に転送します。</p>
@@ -140,13 +140,13 @@
 
 <h2><a name="migrate">移行</a></h2>
 
-<p>インストール・スクリプトの「移行」オプションは、他のサーバやドメイン名からサイトの移動の手助けとなります。これはデータベースに保持されている構成情報を更新と、記事にようなコンテンツに含まれる(変更するGeeklogサイトのドメイン名やURLである)URLも更新できます。</p>
+<p>インストール・スクリプトの「移行」オプションは、他のサーバーやドメイン名からサイトの移動の手助けとなります。これはデータベースに保持されている構成情報を更新と、記事にようなコンテンツに含まれる(変更するGeeklogサイトのドメイン名やURLである)URLも更新できます。</p>
 
-<p>「移行」をクリックした後は、いつものように(新しい)データベース・サーバの認証情報を入力しなければなりません。移行オプションは自動的に検出するので、テーブルの接頭子を入力する必要はないことに注意してください。</p>
+<p>「移行」をクリックした後は、いつものように(新しい)データベース・サーバーの認証情報を入力しなければなりません。移行オプションは自動的に検出するので、テーブルの接頭子を入力する必要はないことに注意してください。</p>
 
-<p>次に、あなたのコンピュータからデータベースのバックアップをアップロードするか、サーバ(のGeeklogの<tt>backups</tt>ディレクトリ)に既に存在するバックアップから取り込むか、既に他の手段で取り込んでいる場合に現在のデータベースを使用するか、オプションから選択します。</p>
+<p>次に、あなたのコンピュータからデータベースのバックアップをアップロードするか、サーバー(のGeeklogの<tt>backups</tt>ディレクトリ)に既に存在するバックアップから取り込むか、既に他の手段で取り込んでいる場合に現在のデータベースを使用するか、オプションから選択します。</p>
 
-<p><strong>注意:</strong> あなたのコンピュータからバックアップをアップロードするには、バックアップ・ファイルの大きさがサーバのアップロードの制限の最大値以下の場合だけ動作します。許可されている最大のサイズは、このオプションを選択すると表示されます。バックアップ・ファイルの大きさが制限を越えている場合はバックアップ・ファイルを圧縮する(zipやgzipが使用できます)か、他の2つのオプションを使用してください。</p>
+<p><strong>注意:</strong> あなたのコンピュータからバックアップをアップロードするには、バックアップ・ファイルの大きさがサーバーのアップロードの制限の最大値以下の場合だけ動作します。許可されている最大のサイズは、このオプションを選択すると表示されます。バックアップ・ファイルの大きさが制限を越えている場合はバックアップ・ファイルを圧縮する(zipやgzipが使用できます)か、他の2つのオプションを使用してください。</p>
 
 <h2><a name="installprob">よくある問題と解決法</a></h2>
 
@@ -200,16 +200,16 @@
                 <p><strong>エラー:</strong> <code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in /path/to/geeklog/system/databases/mysql.class.php on line 104<br>
 Cannnot connect to DB server</code></p>
 
-                <p><strong>答え:</strong> まず最初に、 <code>siteconfig.php</code> 中のデータベースの設定が正しいか確認してください。特にMySQLユーザのアカウント名とパスワード、データベース名、MySQLサーバ名。</p>
+                <p><strong>答え:</strong> まず最初に、 <code>siteconfig.php</code> 中のデータベースの設定が正しいか確認してください。特にMySQLユーザーのアカウント名とパスワード、データベース名、MySQLサーバー名。</p>
 
-                <p>自分でサーバを運営しているなら、MySQLのユーザに適切な権限を与える必要があるかもしれません。その場合は、管理者としてMySQLサーバにログインし、次のコマンドを発行してください:</p>
+                <p>自分でサーバーを運営しているなら、MySQLのユーザーに適切な権限を与える必要があるかもしれません。その場合は、管理者としてMySQLサーバーにログインし、次のコマンドを発行してください:</p>
 
                 <p><code>GRANT ALL PRIVILEGES ON <strong>[database_name]</strong> TO <strong>[user@host]</strong> IDENTIFIED BY '<strong>[password]</strong>';<br>
                 FLUSH PRIVILEGES;</code></p>
                 
                 <p><strong>[小文字]</strong> の部分は適切な値に置き換えてください。</p>
                 
-                <p>データベースの権限をもっと制限したい、あるいは制限する必要がある場合でも、少なくとも ALTER, CREATE, DELETE, INSERT, SELECT, UPDATE 権限をデータベースユーザに与える必要があります。ALTER と CREATE 権限は、Geeklogのインストールとアップグレード、プラグインやアッドオン(add-ons)のインストールを行うときしか必要ではありません。</p>
+                <p>データベースの権限をもっと制限したい、あるいは制限する必要がある場合でも、少なくとも ALTER, CREATE, DELETE, INSERT, SELECT, UPDATE 権限をデータベース・ユーザーに与える必要があります。ALTER と CREATE 権限は、Geeklogのインストールとアップグレード、プラグインやアッドオン(add-ons)のインストールを行うときしか必要ではありません。</p>
             </li>
             <li>
                 <p><strong>エラー:</strong> <code>Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440</code></p>

@@ -127,16 +127,16 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'URLのIPによってブロックされました',
     'stats_header' => 'HTTPヘッダ',
     'stats_deleted' => 'スパム投稿削除数',
-    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
-    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
-    'edit_personal_blacklist' => 'Edit Personal Blacklist',
-    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
-    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
-    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
-    'edit_ip_blacklist' => 'Edit IP Blacklist',
-    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
-    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
-    'edit_slv_whitelist' => 'Edit SLV Whitelist',
+    'invalid_email_or_ip' => '不正なe-mailアドレスまたはIPアドレスがブロックされました。',
+    'email_ip_spam' => '%s または %s 登録を試みますが、スパマーだと思われます。',
+    'edit_personal_blacklist' => 'パーソナルブラックリスト編集',
+    'mass_delete_spam_comments' => 'スパムコメント一括削除',
+    'mass_delete_trackback_spam' => 'トラックバックスパム一括削除',
+    'edit_http_header_blacklist' => 'HTTPヘッダブラックリスト編集',
+    'edit_ip_blacklist' => 'IPブラックリスト編集',
+    'edit_ip_url_blacklist' => 'URLのIPブラックリスト編集',
+    'edit_sfs_blacklist' => 'SFS Emailブラックリスト編集',
+    'edit_slv_whitelist' => 'SLV ホワイトリスト編集',
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'SLVホワイトリスト'
 );
@@ -158,11 +158,11 @@ $LANG_configsections['spamx'] = array(
 $LANG_confignames['spamx'] = array(
     'spamx_action' => 'Spam-Xアクション',
     'notification_email' => 'メールで通知する',
-    'logging' => 'ログを有効にする',
+    'logging' => 'ログを有効化',
     'timeout' => 'タイムアウト',
-    'sfs_enabled' => 'Enable SFS',
-    'snl_enabled' => 'Enable SNL',
-    'snl_num_links' => 'Number of links'
+    'sfs_enabled' => 'SFSを有効化',
+    'snl_enabled' => 'SNLを有効化',
+    'snl_num_links' => 'リンク数'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -176,8 +176,8 @@ $LANG_tab['spamx'] = array(
 
 $LANG_fs['spamx'] = array(
     'fs_main' => 'Spam-Xの設定',
-    'fs_sfs' => 'Stop Forum Spam (SFS)',
-    'fs_snl' => 'Spam Number of Links (SNL)'
+    'fs_sfs' => '掲示板スパムを中止(SFS)',
+    'fs_snl' => 'リンクのスパム数(SNL)'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

@@ -12,16 +12,132 @@
 
 <body>
 <p><a href="http://www.geeklog.jp" style="background:transparent"><img src="../images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90"></a></p>
-<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更履歴</div>
+<div class="menu"><a href="index.html">Geeklogドキュメント</a> - 変更詳細履歴</div>
 
-<h1>Geeklogの変更履歴</h1>
+<h1>Geeklogの変更詳細履歴</h1>
 
 <p><a href="../history">public_html/docs/history</a>をHTML化し、翻訳したものです。</p>
 
-<h2>Jun 2, 2011 (1.8.0rc2)</h2>
+
+<h2>May ??, 2012 (2.0.0)</h2>
+
+<ul>
+    <li>COM_siteHeaderとCOM_siteFooterを置き換える関数としてCOM_createHTMLDocumentに変更されました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001358">#0001358</a>) [Dengen]</li>
+    <li>$_CONF['left_blocks_in_footer']を有効にしたとき、ブロックを表示しないモードが正しく動作しないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001316">#0001316</a>) [Dengen]</li>
+    <li>Responsive Web DesignのテーマDenimを追加しました。[Dengen]</li>
+    <li>professionalを置き換えるテーマとしてmodern_curveを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001255">#0001255</a>) [Rouslan]</li>
+    <li>Emergency Rescue Toolをインストールディレクトリに追加しました。[Tom]</li>
+    <li>jQuery css filesのロード順をScripts classで変更しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001439">#0001439</a>) [Tom]</li>
+    <li>パスワードの暗号化の強度を高めました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001384">#0001384</a>) [Vinny]</li>
+    <li>error.logにIPアドレスを追加しました。 [Tom]</li>
+    <li>ページナビゲーションにマークアップを許可しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001422">#0001422</a>) [Tom]</li>
+    <li>sitemap.xml 書き込みエラーを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001412">#0001412</a>) [Vinny]</li>
+    <li>ダイナミックブロックリスト機能をブロック管理ページに追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001434">#0001434</a>) [Tom]</li>
+    <li>管理者向けにDatabase コマンドエラーを表示するようにしました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001404">#0001404</a>) [Dirk]</li>
+    <li>MySQL 5.5 以降で発生するDB バックアップエラーを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001410">#0001410</a>) [Dirk]</li>
+    <li>Gravatar Image リクエスト (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001435">#0001435</a>) [Dirk]</li>
+    <li>アップロードによるインストールがWindowsのブラウザからできなかったバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001405">#0001405</a>) [Dirk]</li>
+    <li>要素がひとつしかない場合にフィードが作成されないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001431">#0001431</a>) [Tom]</li>
+    <li>コメントを同一ページで行うようにしました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000728">#0000728</a>, provided by dengen)</li>
+    <li>話題を階層化しました。 [Tom]</li>
+    <li>話題への関連付けを他のオブジェクトにも広げました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001155">#0001155</a>)  [Tom]</li>
+    <li>記事、ブロック、静的ページを複数の話題を選択できるようにしました。[Tom]</li>
+    <li>管理者用にCC設定モードを追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001259">#0001259</a>) [Tom]</li>
+    <li>OAuthのアカウント削除ができないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
+    <li>アンケートプラグインの管理画面で保存するとき投票数がリセットされるバグを修正しました。 (バグ  <a href="http://project.geeklog.net/tracking/view.php?id=0001419">#0001419</a>) [Tom]</li>
+    <li>Scripts class がテーマのstyle.cssをincludeするバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001407">#0001407</a>) [Tom]</li>
+    <li>Queryエラー: Syntax error &quot;AS dateFROM&quot; を修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001418">#0001418</a>) [Tom]</li>
+    <li>記事のコンフィギュレーションパネルに$_CONF['linktext_maxlen']を追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001139">#0001139</a>)  [Tom]</li>
+    <li>パンくずリストを追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001062">#0001062</a>) [Tom]</li>
+    <li>コンフィギュレーションのCopyright Yearは数字のみの入力に制限しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001416">#0001416</a>) [Tom]</li>
+    <li>記事とブロック、話題と、コアプラグインは削除されたグループを扱えないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001397">#0001397</a>) [Tom]</li>
+    <li>lib-common.php  line 5754で定義された配列によりStripslashes() がパラメーター1がストリングであると予想されるバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001413">#0001413</a>) [Tom]</li>
+    <li>コメント投稿後のコメント数がなくなるバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001414">#0001414</a>)  [Tom]</li>
+    <li>SQL errorsの表示に、function名とline numberを追加しました。  (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001377">#0001377</a>) [Dirk]</li>
+    <li>Spam-XへForum SpamとLinks ModulesのSpam数を追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001378">#0001378</a>) [Tom]</li>
+    <li>Spam-X pluginの言語を分離しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000656">#0000656</a>) [Tom]</li>
+    <li>MySQLi へのサポートを追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001303">#0001303</a>, provided by mystral-kk)</li>
+</ul>
+<p>最新開発状況は本家<a href="http://project.geeklog.net/cgi-bin/hgwebdir.cgi/geeklog/">リポジトリ</a>を。</p>
+
+
+<h2>Oct 9, 2011 (1.8.1)</h2>
+
+<ul>
+<li>バッドワードチェックの完全一致のオプションの問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001392">#0001392</a>) [Tom]
+<li>空のコンフィギュレーション配列に要素を追加する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001396">#0001396</a>) [Tom]
+<li>RootデバッグオプションでOAuthのコンシューマー・キーとコンシューマー・シークレットを削除 [Dirk]
+<li>コンフィギュレーション配列から要素を削除する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001394">#0001394</a>で、dengen氏からパッチを提供)</li>
+<li>関連情報ブロックのバッドワードチェックを回避 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001393">#0001393</a>) [Tom, Dirk]
+<li>管理者のユーザの編集でユーザの写真の名前の変更に失敗したときにエラーメッセージを表示した問題を修正 [Dirk]</li>
+<li>初期状態で失敗したMS SQLの問い合わせの詳細を表示しない [Dirk]
+</ul>
+
+<ul>
+<li>Geeklog.jpグループからの提供により、日本語の言語ファイルを更新しました。</li>
+</ul>
+
+<h2>Sep 11, 2011 (1.8.1rc1)</h2>
+
+<ul>
+<li>jQuery version を 1.6.3にアップデートしました。 [Tom]</li>
+<li>ユーザ管理画面でユーザ情報を編集するとパスワード情報を空にして保存する不具合を修正しました。(バグ
+  <a href="http://project.geeklog.net/tracking/view.php?id=0001385">#0001385</a>) [Tom]</li>
+<li>プラグインは、plugin_getFooter関数で$_SCRIPTSをセットするようにしました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001383">#0001383</a>)
+  [Tom]</li>
+<li>ユーザプロファイル表示がゲストに許可されていないとき、サイトのメインページに
+   リダイレクトするようにしました。(cf. バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001372">#0001372</a>) [Dirk]</li>
+<li>PHP 5.4による警告メッセージが出ないようにしました。(静的呼び出しの非静的方法、
+  get_magic_quotes_gpc()で警告されていました。) [Dirk]</li>
+<li>[code] と [raw] タグはコンテンツをエスケープしません。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001368">#0001368</a>)
+  [Dirk]</li>
+<li>テーマ変数{contributedby_anchortag} に属性 rel="author" が追加されました。
+  [Dirk]</li>
+<li>静的ページテンプレートが使用されているとき、センターブロックに表示する
+  バグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001370">#0001370</a>) [Tom]</li>
+<li>管理者のユーザ編集画面で、エラーが発生したとき、編集内容が失われないようにしました。(cf. バグ
+  <a href="http://project.geeklog.net/tracking/view.php?id=0000653">#0000653</a>) [Dirk]</li>
+<li>success.phpでリストされたパスの方向のバグを修正しました。
+  [Dirk]</li>
+<li>記事の編集アイコンを、すべての記事編集権限がないときには表示しないようにしました。
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001210">#0001210</a>) [Dirk]</li>
+<li>$_CONF['path_images']が変更されたとき、話題画像のアップロードの不具合を修正しました。 (バグ
+  <a href="http://project.geeklog.net/tracking/view.php?id=0001268">#0001268</a>) [Dirk]</li>
+<li>自動タグ [staticpage_content:] は連続する呼び出しで空を返す不具合を修正しました。
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001266">#0001266</a>) [Dirk]</li>
+<li>Calendarプラグインのテンプレートにおけるform action URLの不具合を修正しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001360">#0001360</a>, 提供
+  mystral-kk)</li>
+<li>画像が記事プレビューで表示されない不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001367">#0001367</a>) [Dirk]</li>
+<li>magic_quotes_gpc = Onのとき、コメントのタイトルにバックスラッシュが入る不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000941">#0000941</a>)
+  [Dirk]</li>
+<li>カレンダープラグイン（Calendar）のテンプレートのURLの不具合を修正しました。(要望
+  <a href="http://project.geeklog.net/tracking/view.php?id=0001031">#0001031</a>) [Dirk]</li>
+<li>PHPに起因する静的ページのセキュリティトークン切れを回避させました。(バグ
+  <a href="http://project.geeklog.net/tracking/view.php?id=0001230">#0001230</a>) [Dirk]</li>
+</ul>
+
+<ul>
+  <li>Spam-X プラグイン用にオランダ言語ファイルが新たに追加されました。（提供: Zippo）</li>
+  <li>日本語言語ファイルのアップグレード。(提供: Geeklog.jp グループ)</li>
+</ul>
+
+
+<h2>Jun 12, 2011 (1.8.0)</h2>
 
 <p>このリリースは2010 Google Summer of Codeプロジェクトの成果であるAkeda Bagusさんの
 コンフィギュレーションを含んでいます(入力値の整合チェックと検索)。</p>
+
+<p>1.8.0rc2からの変更:</p>
+<ul>
+<li>JavaScriptのpath disclosureを修正 [Tom]<br />
+この問題は1.8.0のbetaおよびリリース候補すべてに含まれているので、このバージョンにアップグレードすることを強く推奨します!</li>
+</ul>
+<ul>
+<li>イタリア語翻訳の更新 $LANG_VALIDATION [Rouslan]</li>
+<li>日本語言語ファイルとドキュメントのアップグレード。提供: Geeklog Japaneseグループ</li>
+</ul>
+
+<h2>Jun 2, 2011 (1.8.0rc2)</h2>
 
 <p>1.8.0rc1からの変更:</p>
 <ul>
@@ -48,7 +164,7 @@
 <li>スロベニア語を修正しました。 (フィックスS 提供: gape)</li>
 <li>LinkedIn OAuthユーザの氏名をユーザ名にしました。 [Dirk]</li>
 <li>Facebook OAuthユーザの氏名をユーザ名にしました。 [Tom]</li>
-<li>HTMLを修正しました。(patch #0001333, 提供：dengen)</li>
+<li>HTMLを修正しました。 (パッチ #0001333, 提供：dengen)</li>
 <li>英語の言語ファイルからのarray_flip()呼び出しを削除しました。(要望: <a href="http://project.geeklog.net/tracking/view.php?id=0001336">#0001336</a>) [Rouslan]</li>
 <li>ツールチップフリッカーのバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001337">#0001337</a>, パッチ提供: dengen)</li>
 <li>言語ファイルに$LANG_VALIDATION['between']が抜けていたのを修正しました。 [Rouslan]</li>
@@ -213,7 +329,7 @@
 
 <p>このリリースでは以下のセキュリティの問題に対処しました:</p>
 
-<p>YGN Ethical Hacker GroupのAung Khant氏が管理者のコンフィギュレーションパネルにXSSが存在すると報告がありました。</p>
+<p>YGN Ethical Hacker GroupのAung Khant氏が管理者のコンフィギュレーションパネルにXSSが存在すると報告があり、修正しました。</p>
 
 <h2>Oct 31, 2010 (1.7.1)</h2>
 

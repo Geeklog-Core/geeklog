@@ -154,7 +154,7 @@ $LANG01 = array(
     102 => '',
     103 => 'データベース',
     104 => ':',
-    105 => 'グループメール',
+    105 => 'メール',
     106 => '閲覧数',
     107 => 'GLバージョンテスト',
     108 => 'キャッシュをクリア',
@@ -177,7 +177,7 @@ $LANG01 = array(
     125 => '選択されたアイテムを削除してよいですか?',
     126 => 'すべて選択または選択を解除',
     127 => 'パーマリンク',
-    128 => 'OpenIDログイン:',
+    128 => 'OpenIDログイン',
     129 => 'コンフィギュレーション',
     130 => 'Webサービス',
     131 => 'HTMLは使えません',
@@ -189,9 +189,9 @@ $LANG01 = array(
     137 => '警告: JavaScriptが機能を有効にするのに必要です',
     138 => "JavaScriptを使わないようアドバンストエディタを無効にしてノーマルエディタを有効にするには<a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">こちら</a>をクリックしてください。",
     139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック",
-    'facebook' => 'Login with Facebook',
-    'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn'
+    'facebook' => 'Facebookでログイン',
+    'twitter' => 'Twitterでログイン',
+    'linkedin' => 'LinkedInでログイン'
 );
 
 ###############################################################################
@@ -271,7 +271,7 @@ $LANG04 = array(
     20 => 'このメールアドレスは有効なアドレスではないようです',
     21 => 'エラー',
     22 => '新規登録',
-    23 => "{$_CONF['site_name']}にユーザアカウントを登録すると、コメントや記事の投稿をあなたの名前で投稿できます。そうでなければゲストユーザとしてしか投稿できません。なお、サイト上でメールアドレスが表示されることはありませんのでご安心ください。ユーザ名は30文字以内で、半角・全角どちらも利用できます。",
+    23 => "{$_CONF['site_name']}にユーザアカウントを登録すると、コメントや記事の投稿をあなたの名前で投稿できます。そうでなければゲストユーザとしてしか投稿できません。なお、サイト上でメールアドレスが表示されることはありません。",
     24 => 'パスワードはここに入力されたメールアドレス宛てに送信されます。',
     25 => 'パスワード再設定',
     26 => 'ご登録頂いているユーザ名またはメールアドレスの<strong>どちらかを入力</strong>して「送信」ボタンを押してください。ご登録のメールアドレス宛にパスワード再設定用のURLを記載したメールが送信されます。',
@@ -303,7 +303,7 @@ $LANG04 = array(
     52 => 'デフォルト:',
     53 => 'その日の記事を毎晩メールで受け取る。',
     54 => '読みたくない投稿者名と話題をチェックしてください。',
-    55 => 'すべてのチェックをはずした場合は、デフォルトが反映されます。一つでもチェックした場合、デフォルトは無視されますので、読みたいものを全部チェックするようにしてください。 デフォルトは強調表示されている話題です。',
+    55 => 'すべてのチェックをはずした場合は、デフォルトが反映されます。ひとつでもチェックした場合、デフォルトは無視されますので、読みたいものを全部チェックするようにしてください。 デフォルトは強調表示されている話題です。',
     56 => '投稿者名',
     57 => '表示モード',
     58 => 'ソート順',
@@ -410,13 +410,12 @@ $LANG04 = array(
     164 => '再認証回数を超えました。残念ながら操作はアボートされ、今回の編集作業は失われました。',
     165 => 'アドバンストエディタを使う',
     166 => 'リモートアカウントの再同期',
-    167 => 'Remote login',
-    168 => 'You may also login with one on of the below remote authentication services'
+    167 => 'リモートログイン',
+    168 => 'リモート認証サービスによるログインも可能です。'
 );
 
 ###############################################################################
 # Customize if need to modify the Tabbed navbar MyAccount panels used.
-# Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -715,11 +714,11 @@ $LANG21 = array(
     17 => 'コンテンツ',
     18 => 'ブロックのタイトル・セキュリティレベル・コンテンツを入力してください。',
     19 => 'ブロック管理',
-    20 => 'Regular Blocks',
+    20 => '標準ブロック',
     21 => 'セキュリティ',
-    22 => 'Dynamic Blocks',
+    22 => 'ダイナミックブロック',
     23 => '順序',
-    24 => 'Dynamic',
+    24 => 'ダイナミック',
     25 => 'ブロックの編集・削除は編集アイコンをクリック、ブロックの作成は上の「新規作成」をクリックしてください。ブロックの移動は、[↑][↓][R][L]をクリックしてください。 ',
     26 => 'レイアウト用ブロック',
     27 => 'PHPブロック',
@@ -739,12 +738,12 @@ $LANG21 = array(
     41 => '右',
     42 => 'ブロックのタイトルと表示順序を入力してください。',
     43 => 'ホームページのみ',
-    44 => 'Multiple',
+    44 => 'マルチプル',
     45 => "管理権限のないブロックを編集しようとしました。この行為は記録されます。<a href=\"{$_CONF['site_admin_url']}/block.php\">ブロックの編集</a>画面に戻ってください.",
     46 => '移動',
-    47 => 'None',
+    47 => 'なし',
     48 => 'ブロックID',
-    49 => '(半角英数字とハイフン)',
+    49 => '(スペース不可)',
     50 => 'ブロックIDを入力してください。',
     51 => 'http://を含む',
     52 => '空欄のままにしておくと、このブロックに対するヘルプのアイコンは表示されません',
@@ -764,7 +763,7 @@ $LANG21 = array(
     66 => '自動タグ',
     67 => '自動タグ使用許可',
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
-    69 => 'Plugin Name'
+    69 => 'プラグイン名'
 );
 
 ###############################################################################
@@ -801,7 +800,7 @@ $LANG24 = array(
     28 => '<p><strong>プレビュー</strong>: 画像付きの記事をプレビューする場合、プレビューボタンをクリックしないで一旦ドラフトモードで保存してください。プレビューボタンは画像がない場合にのみクリックしてください。</p>',
     29 => 'トラックバック数',
     30 => 'ファイルのアップロード時にエラーが発生しました',
-    31 => 'タイトルと冒頭文を入力してください',
+    31 => 'タイトルと冒頭文を入力し、話題を少なくともひとつ選択してください',
     32 => '注目記事',
     33 => '注目記事は最後に指定した1件が指定されます',
     34 => 'ドラフト',
@@ -874,7 +873,7 @@ $LANG27 = array(
     3 => '話題名',
     4 => '話題アイコンファイル指定',
     5 => '(半角英数字とハイフン)',
-    6 => '話題を削除すると、関連した記事・ブロックもすべて削除されます。',
+    6 => '話題を削除すると、その話題の記事・投稿・ブロックもすべて削除されます。',
     7 => '話題IDと話題名を入力してください',
     8 => '話題管理',
     9 => '話題とは、記事カテゴリのことです。話題の編集・削除は各話題名を、新しい話題の作成は「新規作成」リンクをクリックしてください。カッコ内はあなたのアクセスレベルです。アスタリスク(*)付きの話題は、記事投稿時のデフォルトです。',
@@ -891,7 +890,7 @@ $LANG27 = array(
     20 => 'キャンセル',
     21 => '削除',
     22 => 'デフォルト',
-    23 => 'この話題を新規記事投稿の際のデフォルトにします。',
+    23 => 'この話題を新規記事投稿の際のデフォルトに設定できます。',
     24 => '(*)',
     25 => 'アーカイブ',
     26 => 'この話題をアーカイブ記事用の話題にします。アーカイブ記事用の話題に設定できるのはひとつだけです。',
@@ -899,27 +898,26 @@ $LANG27 = array(
     28 => '最大',
     29 => 'ファイルアップロード時にエラー',
     30 => 'この話題の記事数',
-    31 => 'You have used a restricted Topic ID. Please choose another one.',
-    32 => 'Parent Topic',
-    33 => 'Inherit',
-    34 => 'Items of child topic are inherited',
-    35 => 'Hidden',
-    36 => 'Topic will be hidden and cannot be viewed directly, only inherited',
+    31 => '制限されたトピックIDを使用しました。他のIDにしてください。',
+    32 => '親の話題',
+    33 => '継承',
+    34 => '子の話題は継承される',
+    35 => '隠された',
+    36 => '話題は継承され、隠されて直接閲覧されません',
     37 => 'Root',
-    38 => 'All',
-    39 => 'Homepage Only',
-    40 => 'Assign one or more topics. ',
-    41 => 'If "All" is selected then the item will appear for all topics. If "Homepage Only" is selected then item will appear just on the homepage. Else you must select at least one topic to assign the item too. ',
-    42 => 'Inherit contains the list of assigned topics. If the topic is selected then the item will be inherited by the parent topic. You must save your item first before anything is listed in the inherit box. ',
-    43 => 'Default contains the list of assigned topics. This is the default topic that will be used when displaying the item if the actually topic the user is in is not found. ',
-    44 => 'Inherit',
-    45 => 'Default',
-    46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
-    47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
-    48 => 'Parent Topic Id not found.',
+    38 => 'すべて',
+    39 => 'ホームページのみ',
+    40 => '記事はひとつ以上の話題にアサインします。',
+    41 => 'もし "すべて" が選ばれたらそのアイテムはすべての話題で表示されます。もし、 "ホームページのみ" が選ばれたらホームページにのみ表示。そうでなければ少なくともひとつ以上の話題を選択してください。 ',
+    42 => '記事はアサインした話題に親の話題があれば親の話題も継承します。記事の保存の前に、継承リストを保存しなければなりません。デフォルトではアサインされた話題のリストを含みます。',
+    43 => 'デフォルトではアサインされた話題のリストを含みます。 ', 
+    44 => '継承する',
+    45 => 'デフォルト',
+    46 => '親の話題に、アーカイブの話題は設定できません。他の親の話題を選んでください。',
+    47 => 'アーカイブの話題は子の話題を持てません。アーカイブ話題に設定する前に子の話題を解除してください。',
+    48 => '親の話題IDが見つかりません。',
     'breadcrumb_separator' => '>',
-    'breadcrumb_root' => 'Home'
-);
+    'breadcrumb_root' => 'Home');
 
 ###############################################################################
 # admin/user.php
@@ -1051,7 +1049,7 @@ $LANG29 = array(
 # admin/mail.php
 
 $LANG31 = array(
-    1 => 'グループメール送信',
+    1 => 'メール送信',
     2 => '送信者名',
     3 => '返信先',
     4 => '件名',
@@ -1062,7 +1060,7 @@ $LANG31 = array(
     9 => 'オプション',
     10 => 'HTML',
     11 => '緊急!',
-    12 => 'グループメールを送信する',
+    12 => 'メールを送信する',
     13 => '入力しなおす',
     14 => 'ユーザの受信許可設定を無視して送る',
     15 => '送信中にエラーが発生。宛先: ',
@@ -1601,29 +1599,29 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
-# For the first two strings, you can use the following placeholders.
-# Order them so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc.
-# %t    time, "2" (weeks)
-# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
+    # This here determines the order of the sentence "No new stories in 2 hrs"
+    # order it so it makes sense in your language:
+    # %i    item, "Stories"
+    # %n    amount, "2", "20" etc
+    # %t    time, "2" (weeks)
+    # %s    scale, "hrs", "weeks"
     'new_string' => '新着%i %n件(%t%s)',
-    'new_last' => '(%t%s)',
+    'new_last'    => '新着(%t%s)',
+    # other strings
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
     'weeks' => '週',
     'months' => 'ヶ月',
     'years' => '年',
-    'minute' => '分',
-    'hour' => '時間',
-    'day' => '日',
-    'week' => '週',
-    'month' => 'ヶ月',
-    'year' => '年'
+    'minute'      => '分',
+    'hour'        => '時',
+    'day'         => '日',
+    'week'        => '週',
+    'month'       => '月',
+    'year'        => '年'
 );
 
 ###############################################################################
@@ -1793,8 +1791,8 @@ $LANG_confignames['Core'] = array(
     'site_admin_url' => '管理画面のURL',
     'site_mail' => 'サイトのメールアドレス',
     'noreply_mail' => 'No-Replyメールアドレス',
-    'mail_cc_enabled' => 'Allow to Send Carbon Copies',
-    'mail_cc_default' => '"Carbon Copy" on by Default',
+    'mail_cc_enabled' => 'CC(カーボンコピー)を許可する',
+    'mail_cc_default' => 'CC(カーボンコピー)をデフォルトにする',
     'site_name' => 'サイト名',
     'site_slogan' => 'スローガン',
     'owner_name' => '管理者名',
@@ -1976,8 +1974,8 @@ $LANG_confignames['Core'] = array(
     'passwordspeedlimit' => 'パスワード入力間隔制限',
     'login_attempts' => 'ログイン回数制限',
     'login_speedlimit' => 'ログイン間隔制限',
-    'pass_alg' => 'Password Hash Algorithm',
-    'pass_stretch' => 'Hash Stretch Count',
+    'pass_alg' => 'パスワード暗号化アルゴリズム',
+    'pass_stretch' => '暗号化ストレッチカウント',
     'user_html' => 'ユーザHTML',
     'admin_html' => '管理者HTML',
     'advanced_html' => 'アドバンストエディタ用追加HTML',
@@ -1985,7 +1983,7 @@ $LANG_confignames['Core'] = array(
     'allowed_protocols' => '許可されたプロトコル',
     'disable_autolinks' => '自動タグを無効にする',
     'clickable_links' => 'URLを自動リンクさせる',
-    'linktext_maxlen' => 'Max Link Text Length',
+    'linktext_maxlen' => 'クリッカブルリンクの長さ',
     'compressed_output' => 'HTML出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止する',
     'censormode' => 'チェックする',
@@ -2020,12 +2018,11 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => 'ソート順のデフォルト',
     'autotag_permissions_story' => '[story: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
-    'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
-    'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
-    'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
-    'disable_breadcrumbs_plugins' => 'Disable Plugins Breadcrumbs',
-    'breadcrumb_root_site_name' => 'Site Name as Breadcrumb Root?'
-);
+    'multiple_breadcrumbs' => 'マルチプルパンくずリスト',
+    'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
+    'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする。',
+    'disable_breadcrumbs_plugins' => 'プラグインのパンくずリストを無効にする。',
+    'breadcrumb_root_site_name' => 'サイト名をパンくずリストのルートにする?');
 
 $LANG_configsubgroups['Core'] = array(
     'sg_site' => 'サイト',
@@ -2081,8 +2078,8 @@ $LANG_fs['Core'] = array(
     'fs_perm_block' => 'ブロックのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_webservices' => 'Webサービス',
     'fs_autotag_permissions' => '自動タグのパーミッション',
-    'fs_breadcrumbs' => 'Breadcrumbs',
-    'fs_pass' => 'Password Settings'
+    'fs_breadcrumbs' => 'パンくずリスト',
+    'fs_pass' => 'パスワード設定'
 );
 
 $LANG_tab['Core'] = array(
@@ -2173,7 +2170,7 @@ $LANG_VALIDATION = array(
     'comparison' => 'このフィールドは比較操作に適合していません',
     'date' => 'このフィールドはdateフォーマットで入力してください',
     'year' => 'このフィールドはyearフォーマットで入力してください',
-    'yearOrRange' => 'This field must be in a year format such as 2010 or range like 2010 - 2012',
+    'yearOrRange' => 'このフィールドは年のフォーマットで入力してください。例) 2010 または 2010 - 2012',
     'time' => 'このフィールドはdateフォーマットで入力してください',
     'datetime' => 'このフィールドはdatetimeフォーマットで入力してください',
     'boolean' => 'このフィールドはbooleanフォーマットで入力してください',
@@ -2203,10 +2200,9 @@ $LANG_VALIDATION = array(
     'path_to_mogrify' => '画像処理ライブラリimagemagickのセットアップを行い、このフィールドにmogrifyが可能になるようパスを入力してください',
     'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、このフィールドにNetpbmのパッケージソースへのパスを入力してください',
     'language' => '言語ファイルがありません',
-    'timezone' => '無効なtimezoneです',
+    'timezone' => '無効なタイムゾーンです',
     'single_char' => 'このフィールドには半角1文字を入力してください',
-    'hash' => 'This field must be a hash function supported by your version of PHP'
+    'hash' => 'このフィールドはあなたのバージョンのPHPによるhash関数が必要です。'
 );
-
 
 ?>

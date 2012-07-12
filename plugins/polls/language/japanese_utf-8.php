@@ -69,8 +69,8 @@ $LANG_POLLS = array(
     'start_poll' => '投稿する',
     'no_new_polls' => '新しいアンケートはありません',
     'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
-    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - アンケートの投票リンクを表示。Class と showall は必須ではありません。Class は css class を。Showall が 1ならすべての投票を表示',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - 投票結果を表示。Class は必須ではありません。Claはcss classを指定します',
     'deny_msg' => 'このアンケートへアクセスできません。(このアンケートは移動したか削除されているか、あるいはアクセス権がありません。)'
 );
 
@@ -152,13 +152,13 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
     'meta_tags' => 'メタタグを有効にする',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'block_enable' => '有効',
+    'block_isleft' => '左ブロックで表示する',
+    'block_order' => 'ブロックの順番',
+    'block_topic_option' => '話題オプション',
+    'block_topic' => '話題',
+    'block_group_id' => 'グループ',
+    'block_permissions' => 'パーミッション'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -170,7 +170,7 @@ $LANG_tab['polls'] = array(
     'tab_whatsnew' => '新着情報ブロック',
     'tab_permissions' => 'パーミッションのデフォルト',
     'tab_autotag_permissions' => '自動タグのパーミッション',
-    'tab_poll_block' => 'Poll Block'
+    'tab_poll_block' => 'アンケートブロック'
 );
 
 $LANG_fs['polls'] = array(
@@ -178,8 +178,8 @@ $LANG_fs['polls'] = array(
     'fs_whatsnew' => '新着情報ブロック',
     'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
     'fs_autotag_permissions' => '自動タグのパーミッション',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_block_settings' => 'ブロックの設定',
+    'fs_block_permissions' => 'ブロックのパーミッション'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -192,7 +192,7 @@ $LANG_configselects['polls'] = array(
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
+    15 => array('すべて' => 'TOPIC_ALL_OPTION', 'ホームページのみ' => 'TOPIC_HOMEONLY_OPTION', '話題を選択する' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

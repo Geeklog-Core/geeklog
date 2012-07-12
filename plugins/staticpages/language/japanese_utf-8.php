@@ -69,7 +69,7 @@ $LANG_STATIC = array(
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
-    'no_title_or_content' => '<b>タイトル</b>と<b>内容</b>を記入してください。',
+    'no_title_or_content' => 'タイトルと冒頭文を入力し、話題を少なくともひとつ選択してください。',
     'no_such_page_anon' => 'ログインしてください。',
     'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
@@ -125,8 +125,8 @@ $LANG_STATIC = array(
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
-    'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意。',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - 静的ページのコンテンツを表示。'
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - 静的ページのコンテンツを表示します。'
 );
 
 $PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
@@ -163,7 +163,7 @@ $LANG_confignames['staticpages'] = array(
     'meta_tags' => 'メタタグを有効にする',
     'comment_code' => '新規作成時のデフォルト',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
-    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
+    'disable_breadcrumbs_staticpages' => 'パンくずリストを無効にする',
     'newstaticpagesinterval' => '静的ページの"新着"の期間',
     'hidenewstaticpages' => '新着ブロック表示',
     'title_trim_length' => 'タイトル最大長',
