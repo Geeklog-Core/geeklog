@@ -1,6 +1,30 @@
 Geeklog History/Changes:
 
-May ??, 2012 (2.0.0)
+Jul 13, 2012 (2.0.0b2)
+------------
+
+- rescue.php: add to $config array (feature request #0001463) [Tom]
+- Crash with multi-lingual setups (bug #0001465) [Yoshinori]
+- Theme: professional_css and modern_curve: Comment submit button always display
+  (bug #0001464) [Yoshinori]
+- Staticpage Menu items only visible to logged-in users (bug #0001461) [Tom]
+- Page title inconsistency when anonymous users submit (bug #0001458) [Tom]
+- They can have a block and page headers and footers as blankpage will make a
+  static page to indexpage (bug #0001460) [Tom]
+- Fails to upgrade Geeklog with MySQL-5.5.x (bug #0001456) [Tom]
+- $dbconfig_path is not escaped (bug #0001457) [Tom]
+- Use of microsummaries (bug #0001455) [Dirk]
+- add sub-topics (feature request #0001175) [Tom]
+- Breadcrumb Root not to use Site Name (feature request #0001454) [Tom]
+- Multiple breadcrumbs in stories (bug #0001441) [Tom]
+- PUBLIC_HTML/index.php?display=microsummary (bug #0001451) [Tom]
+- Typo in function name: SEC_hasConfigAcess (bug #0001446) [Dirk]
+- PUBLIC_HTML/index.php?topic=aaaa (bug #0001452) [Tom]
+- Bugs crash site and to enable multiple languages (bug #0001450) [Dirk]
+- Default Topic for new articles is not selected (bug #0001448) [Tom]
+
+
+May 24, 2012 (2.0.0b1)
 ------------
 
 - Created the function COM_createHTMLDocument which replaces COM_siteHeader and 
