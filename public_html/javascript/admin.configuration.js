@@ -340,7 +340,7 @@ $(function() {
             $(this).removeClass('ui-state-active');
         });
         $('.ui-tabs-panel', tabs).addClass('ui-tabs-hide');
-        
+        href = href.substring(href.lastIndexOf('#'));
         $( href ).removeClass('ui-tabs-hide');
         selectedTab = href;
     }
