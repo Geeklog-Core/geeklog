@@ -103,7 +103,7 @@
           <dd>{owner_link} {camera_icon}
               <input type="hidden" name="owner_id" value="{owner_id}"{xhtml}></dd>
 
-          <dt><label>{lang_group}</label></dt>
+          <dt><label for="group_id">{lang_group}</label></dt>
           <dd>{group_dropdown}</dd>
 
           <dt><label for="admin-permissions">{lang_permissions}</label></dt>

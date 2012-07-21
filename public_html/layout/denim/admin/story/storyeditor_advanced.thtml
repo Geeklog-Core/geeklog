@@ -265,7 +265,7 @@
       <dt>{lang_owner}</dt>
       <dd>{owner_name}</dd>
 
-      <dt><label>{lang_group}</label></dt>
+      <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
 
       <dt><label for="admin-permissions">{lang_permissions}</label></dt>

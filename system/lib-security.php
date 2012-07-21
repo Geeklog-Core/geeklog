@@ -1063,7 +1063,7 @@ function SEC_getGroupDropdown ($group_id, $access)
     if ($access == 3) {
         $usergroups = SEC_getUserGroups ();
 
-        $groupdd .= '<select name="group_id">' . LB;
+        $groupdd .= '<select id="group_id" name="group_id">' . LB;
         foreach ($usergroups as $ug_name => $ug_id) {
             $groupdd .= '<option value="' . $ug_id . '"';
             if ($group_id == $ug_id) {
@@ -1076,7 +1076,7 @@ function SEC_getGroupDropdown ($group_id, $access)
         // They can't set the group then
         $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
                                 "grp_id = '$group_id'")
-                 . '<input type="hidden" name="group_id" value="' . $group_id
+                 . '<input type="hidden" id="group_id" name="group_id" value="' . $group_id
                  . '"' . XHTML . '>';
     }
 
