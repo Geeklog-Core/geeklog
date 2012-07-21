@@ -45,7 +45,7 @@ function MBYTE_languageList ($charset = 'utf-8')
 
     $language = array ();
     $fd = opendir ($_CONF['path_language']);
-	
+    
     while (($file = @readdir ($fd)) !== false) {
         if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
                 && is_file ($_CONF['path_language'] . $file)
@@ -77,7 +77,7 @@ function MBYTE_languageList ($charset = 'utf-8')
         }
     }
     asort ($language);
-	
+    
     return $language;	
 }
 
@@ -97,11 +97,15 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
                 // Normal situation in live environment
                 if (function_exists('mb_eregi_replace')) {
                     $mb_enabled = mb_internal_encoding('UTF-8');
+                    mb_regex_encoding('UTF-8');
+                    mb_regex_set_options('l');
                 }
             } elseif ($test == 'test') {
                 // Just for tests, true if we want function to exist
                 if ($enabled) {
                     $mb_enabled = mb_internal_encoding('UTF-8');
+                    mb_regex_encoding('UTF-8');
+                    mb_regex_set_options('l');
                 }
             } elseif ($test == 'test-reset') {
                 // Just for tests, allow resetting $mb_enabled
@@ -119,7 +123,7 @@ function MBYTE_checkEnabled($test = '', $enabled = true)
 function MBYTE_strlen($str)
 {
     static $mb_enabled;
-	
+    
     if (!isset($mb_enabled)) {
         $mb_enabled = MBYTE_checkEnabled();
     }
@@ -214,7 +218,7 @@ function MBYTE_strtolower($str)
     return $result;
 }
 
-function MBYTE_eregi($pattern, $str, $regs = NULL)
+function MBYTE_eregi($pattern, $str, &$regs = NULL)
 {
     static $mb_enabled;
 
@@ -224,7 +228,21 @@ function MBYTE_eregi($pattern, $str, $regs = NULL)
     if ($mb_enabled) {
         $result = mb_eregi($pattern, $str, $regs);
     } else {
-        $result = eregi($pattern, $str, $regs);
+        $result = preg_match('/' . addcslashes($pattern, '/') . '/i', $str, $regs);
+
+        if ($regs === NULL) {
+            $result = 1;
+        } else {
+            if ($result === 1) {
+                $result = strlen($regs[0]);
+
+                if ($result === 0) {
+                    $result = 1;
+                }
+            } else if ($result === 0) {
+                $result = FALSE;
+            }
+        }
     }
 
     return $result;
@@ -240,7 +258,7 @@ function MBYTE_eregi_replace($pattern, $replace, $str)
     if ($mb_enabled) {
         $result = mb_eregi_replace($pattern, $replace, $str);
     } else {
-        $result = eregi_replace($pattern, $replace, $str);
+        $result = preg_replace('/' . addcslashes($pattern, '/') . '/i', $replace, $str);
     }
 
     return $result;

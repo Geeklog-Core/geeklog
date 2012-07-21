@@ -367,7 +367,7 @@ class database {
                 $testSQL=substr($sql,0,$isIn);
                 
                 $limitclause=trim($limitclause);
-                eregi("limit ([^,]+),(.*)", $limitclause,$arrayStr); 
+                MBYTE_eregi("limit ([^,]+),(.*)", $limitclause,$arrayStr); 
                 
                 $left=trim($arrayStr[1]);
                 $rightStr=trim($arrayStr[2]);
@@ -1047,7 +1047,7 @@ class database {
                 $rightStr=ltrim(substr($string,$startLoc+8,strlen($string)));
 
                 //eregi("\((.*),([^\)]+\))", $rightStr,$left); 
-                 eregi("\(([^,]+),([^\)]+\))", $rightStr,$left); 
+                 MBYTE_eregi("\(([^,]+),([^\)]+\))", $rightStr,$left); 
                 
               
                  
@@ -1073,7 +1073,7 @@ class database {
                     $replaceString='DATE_SUB(' . $firstParm . ',' . $left[2] . ')';
                     }
  
-                $secondParmArray=split(" ",$secondParm);
+                $secondParmArray = explode(' ',$secondParm);
                 $intervalTime=$secondParmArray[1];
                 $typeForInterval=$secondParmArray[2];
                 if($intervalTime>0){
