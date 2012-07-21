@@ -21,8 +21,8 @@
       <dt><label for="links-linkeditor-hits">{lang_linkhits}</label></dt>
       <dd><input type="text" name="hits" id="links-linkeditor-hits" value="{link_hits}" class="size2"{xhtml}></dd>
 
-      <dt><label for="links-linkeditor-hits">{lang_linkdescription}</label></dt>
-      <dd><textarea name="description" cols="45" rows="8" id="links-linkeditor-hits" class="wide">{link_description}</textarea>
+      <dt><label for="links-linkeditor-description">{lang_linkdescription}</label></dt>
+      <dd><textarea name="description" cols="45" rows="8" id="links-linkeditor-description" class="wide">{link_description}</textarea>
           <br{xhtml}>{lang_allowed_html}</dd>
     </dl>
   </div>
