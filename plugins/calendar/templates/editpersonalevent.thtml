@@ -99,7 +99,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_zipcode}:</b></td>
-                                        <td><input type="text" name="zipcode" size="5" maxlength="5" value="{event_zipcode}"{xhtml}></td>
+                                        <td><input type="text" name="zipcode" size="16" maxlength="16" value="{event_zipcode}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td align="right"><b>{lang_link}:</b></td>

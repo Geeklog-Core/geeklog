@@ -44,8 +44,15 @@ $_UPDATES = array(
         // Delete Events block since moved to dynamic
         "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_calendar'", 
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.calendar.tab_events_block', 'Access to configure events block', 0)"
-    )    
-    
+    ),
+
+    // Pgsql doesn't support the change of a column definition, so the update task
+    // will be done calendar_update_Zipcode_1_1_2().
+//  '1.1.3' => array(
+//      "ALTER TABLE {$_TABLES['events']} CHANGE zipcode zipcode varchar(16) default NULL",
+//      "ALTER TABLE {$_TABLES['eventsubmission']} CHANGE zipcode zipcode varchar(16) default NULL",
+//      "ALTER TABLE {$_TABLES['personal_events']} CHANGE zipcode zipcode varchar(16) default NULL",
+//  ),
 );
 
 /**
@@ -94,6 +101,30 @@ function calendar_update_ConfigSecurity_1_1_2()
         DB_query($sql);    
     }    
 
+}
+
+/**
+ * Modify zipcode field
+ *
+ */
+function calendar_update_Zipcode_1_1_2()
+{
+    global $_TABLES;
+    
+    $tables = array(
+        $_TABLES['events'], $_TABLES['eventsubmission'], $_TABLES['personal_events'], 
+    );
+    
+    foreach ($tables as $t) {
+        $sql = "ALTER TABLE {$t} RENAME zipcode TO zipcode2 ";
+        DB_query($sql);
+        $sql = "ALTER TABLE {$t} ADD COLUMN zipcode varchar(16) default NULL ";
+        DB_query($sql);
+        $sql = "UPDATE {$t} SET zipcode = zipcode2 ";
+        DB_query($sql);
+        $sql = "ALTER TABLE {$t} DROP COLUMN zipcode2 ";
+        DB_query($sql);
+    }
 }
 
 ?>

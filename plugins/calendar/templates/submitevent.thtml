@@ -82,7 +82,7 @@
                                 <div class="form-field"><input type="text" name="state" size="40"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_zipcode}:</div>
-                                <div class="form-field"><input type="text" name="zipcode" size="5" maxlength="5"{xhtml}></div>
+                                <div class="form-field"><input type="text" name="zipcode" size="16" maxlength="16"{xhtml}></div>
                                 <div class="clear-left"></div>
                                 <div class="form-description">{lang_link}:</div>
                                 <div class="form-field"><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" name="url" value="http://"{xhtml}></div>

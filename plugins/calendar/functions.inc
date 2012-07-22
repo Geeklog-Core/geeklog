@@ -1611,7 +1611,8 @@ function plugin_upgrade_calendar()
             }
 
             calendar_update_ConfigSecurity_1_1_2();
-
+            calendar_update_Zipcode_1_1_2();
+            
             $current_version = '1.1.3';
             break;            
 

@@ -54,8 +54,13 @@ $_UPDATES = array(
         // Delete Events block since moved to dynamic
         "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_calendar'", 
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.calendar.tab_events_block', 'Access to configure events block', 0)"
-    )    
+    ),
     
+    '1.1.3' => array(
+        "ALTER TABLE {$_TABLES['events']} ALTER COLUMN [zipcode] varchar(16)",
+        "ALTER TABLE {$_TABLES['eventsubmission']} ALTER COLUMN [zipcode] varchar(16)",
+        "ALTER TABLE {$_TABLES['personal_events']} ALTER COLUMN [zipcode] varchar(16)"
+    ),
 );
 
 /**
@@ -125,6 +130,15 @@ function calendar_update_ConfigSecurity_1_1_2()
         DB_query($sql);    
     }    
 
+}
+
+/**
+ * Modify zipcode field
+ *
+ */
+function calendar_update_Zipcode_1_1_2()
+{
+    // Nothing to do
 }
 
 ?>
