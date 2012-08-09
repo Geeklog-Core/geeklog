@@ -34,14 +34,83 @@ function postconfirm() {
 }
 
 
-/*! http://tinynav.viljamis.com v1.03 by @viljamis */
-(function(a,i,g){a.fn.tinyNav=function(j){var c=a.extend({active:"selected",header:!1},j);return this.each(function(){g++;var h=a(this),d="tinynav"+g,e=".l_"+d,b=a("<select/>").addClass("tinynav "+d);if(h.is("ul,ol")){c.header&&b.append(a("<option/>").text("Navigation"));var f='<option value="">Jump to...</option>';h.addClass("l_"+d).find("a").each(function(){f+='<option value="'+a(this).attr("href")+'">'+a(this).text()+"</option>"});b.append(f);c.header||b.find(":eq("+a(e+" li").index(a(e+" li."+c.active))+")").attr("selected",!0);
-b.change(function(){i.location.href=a(this).val()});a(e).after(b)}})}})(jQuery,this,0);
+/* http://tinynav.viljamis.com v1.03 by @viljamis */
+/* Modified by dengen */
+(function ($, window, i) {
+  $.fn.tinyNav = function (options) {
+
+    // Default settings
+    var settings = $.extend({
+      'active' : 'selected',  // String: Set the "active" class
+      'header' : true,        // Boolean: Show header instead of the active item
+      'string' : 'Navigation' // String: String for header
+    }, options);
+
+    return this.each(function () {
+
+      // Used for namespacing
+      i++;
+
+      var $nav = $(this),
+        // Namespacing
+        namespace = 'tinynav',
+        namespace_i = namespace + i,
+        l_namespace_i = '.l_' + namespace_i,
+        $select = $('<select/>').addClass(namespace + ' ' + namespace_i);
+
+      if ($nav.is('ul,ol')) {
+
+        if (settings.header) {
+          $select.append(
+            $('<option/>').text(settings.string)
+          );
+        }
+
+        // Build options
+        var options = '';
+
+        $nav
+          .addClass('l_' + namespace_i)
+          .find('a')
+          .each(function () {
+            options += '<option value="' + $(this).attr('href') + '">';
+            for (j = 0; j < $(this).parents('ul, ol').length - 1; j++) { 
+               options += '&emsp;';
+            }
+            options += $(this).text() + '</option>';
+          });
+
+        // Append options into a select
+        $select.append(options);
+
+        // Select the active item
+        if (!settings.header) {
+          $select
+            .find(':eq(' + $(l_namespace_i + ' li')
+            .index($(l_namespace_i + ' li.' + settings.active)) + ')')
+            .attr('selected', true);
+        }
+
+        // Change window location
+        $select.change(function () {
+          window.location.href = $(this).val();
+        });
+
+        // Inject select
+        $(l_namespace_i).after($select);
+
+      }
+
+    });
+
+  };
+})(jQuery, this, 0);
 
 
 $(function() {
   $('#navigation_ul').tinyNav({
-    active: 'selected'
+    active: 'selected',
+    string: 'Jump to...'
   });
   var istouch = ('ontouchstart' in window);
   if (istouch) {
