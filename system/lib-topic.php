@@ -958,6 +958,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     } else {
         $topic_templates->set_var('inherit_hide', 'display: none;');
         $topic_templates->set_var('topic_inherit_hide', '1');
+        $topic_templates->set_var('inherit_options', '<option value="dummy">dummy</option>');
     }
     
     if ($show_default) {
@@ -972,6 +973,7 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     } else {
         $topic_templates->set_var('default_hide', 'display: none;');
         $topic_templates->set_var('topic_default_hide', '1');
+        $topic_templates->set_var('default_options', '<option value="dummy">dummy</option>');
     }
 
     $topic_templates->set_var('info_hide', '');
