@@ -657,7 +657,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (! empty($perms)) {
                 $perms .= ' AND';
             }
-            $perms .= '(draft_flag = 0)';
+            $perms .= '(draft_flag = 0) AND (template_flag = 0)';
         }
         if (! empty($perms)) {
             $perms = ' AND ' . $perms;
