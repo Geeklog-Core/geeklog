@@ -3581,6 +3581,11 @@ body.center-right #config_content {
 	  max-width: 410px;
 	}
 
+	input[type="text"].search {
+	  background: url(../images/search-l.png) right center no-repeat #FFF; /* rtl */
+	  background-size: 24px auto;
+	}
+
 	.loginform {
 	  width: 180px;
 	  margin: 0 auto;
