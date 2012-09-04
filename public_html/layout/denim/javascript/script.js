@@ -114,21 +114,29 @@ $(function() {
   });
   var istouch = ('ontouchstart' in window);
   if (istouch) {
-    var obj = $('.block-title');
-    $(".block-left-content").css("display", "none");
-    $(".block-right-content").css("display", "none");
-    obj.live('touchstart', function() {
-      this.touched = true;
-    });
-    obj.live('touchmove', function() {
-      this.touchmoved = true;
-    });
-    obj.live('touchend', function() {
-      if (this.touched && !this.touchmoved) {
-        $(this).next().toggle();
-      }
-      this.touched = false;
-      this.touchmoved = false;
-    });
+    var ua = navigator.userAgent;
+    var istablet = ((ua.indexOf('Android') > 0 && ua.indexOf('Mobile') == -1)
+                       || ua.indexOf('iPad') > 0 || ua.indexOf('SC-01C') > 0);
+    if (!istablet) {
+      var obj = $('.block-title');
+      obj.addClass("show");
+      $(".block-left-content").css("display", "none");
+      $(".block-right-content").css("display", "none");
+      obj.live('touchstart', function() {
+        this.touched = true;
+      });
+      obj.live('touchmove', function() {
+        this.touchmoved = true;
+      });
+      obj.live('touchend', function() {
+        if (this.touched && !this.touchmoved) {
+          $(this).next().toggle();
+          $(this).toggleClass("show");
+          $(this).toggleClass("hide");
+        }
+        this.touched = false;
+        this.touchmoved = false;
+      });
+    }
   }
 });

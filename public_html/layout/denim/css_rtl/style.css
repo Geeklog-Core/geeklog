@@ -3446,6 +3446,20 @@ body.center-right #config_content {
 	  border-top: 1px solid #6F99C7;
 	  border-bottom: 1px solid #1F364F;
 	}
+
+	h2.show,
+	#block-left-search > h2.show {
+	  background: url(../images/arrow-down.png) no-repeat #3B6998;
+	  background-size: 36px auto;
+	  background-position: right 50%;
+	}
+	h2.hide,
+	#block-left-search > h2.hide {
+	  background: url(../images/arrow-up.png) no-repeat #3B6998;
+	  background-size: 36px auto;
+	  background-position: right 50%;
+	}
+
 	h2.block-title {
 	  margin-top: 0;
 	  margin-bottom: 0;
