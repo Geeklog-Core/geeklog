@@ -949,7 +949,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         'rightblocks'   => 'rightblocks.thtml'
         ));
     
-    $header->postprocess_fn = 'PLG_replaceTags';
+    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted 
+    $header->preprocess_fn = 'PLG_replaceTags';
     
     $header->set_var('doctype', $doctype);
     
@@ -1659,7 +1660,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         'rightblocks'   => 'rightblocks.thtml'
         ));
     
-    $header->postprocess_fn = 'PLG_replaceTags';
+    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted
+    $header->preprocess_fn = 'PLG_replaceTags';
     
     $header->set_var('doctype', $doctype);
     
@@ -1860,7 +1862,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Call to plugins to set template variables in the header
     PLG_templateSetVars( 'header', $header );
-
+    
     if( $_CONF['left_blocks_in_footer'] == 1 )
     {
         $header->set_var( 'left_blocks', '' );
