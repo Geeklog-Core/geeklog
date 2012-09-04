@@ -5505,7 +5505,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
  
         if( $pgcount == $curpage )
          {
-             $retval .= '<span>' . $pgcount . '</span> ';
+             $retval .= '<b>' . $pgcount . '</b> ';
          }
          else
          {
