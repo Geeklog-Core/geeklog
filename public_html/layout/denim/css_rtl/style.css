@@ -1257,7 +1257,7 @@ body.center #main-content {
 
 #rightblocks,
 body.js_off #rightblocks {
-  overflow: auto;
+  overflow: visible;
   float: right; /* rtl */
   width: 280px;  /* [R] */
   margin: 0 -280px 0 0;  /* Left Margin = -[R] */ /* rtl */
@@ -2936,7 +2936,6 @@ body.center-right #config_content {
 
 	#rightblocks,
 	body.js_off #rightblocks {
-	  overflow: auto;
 	  clear: right;
 	  float: right;
 	  width: 280px;  /* [R] */
