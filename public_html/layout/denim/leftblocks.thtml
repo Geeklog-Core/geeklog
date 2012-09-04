@@ -9,7 +9,9 @@
             <fieldset class="noborder_fieldset">
               <legend class="hidden_legend">{button_search}</legend>
               <div class="searchform">
-                <input type="text" class="search" size="16" maxlength="255" name="query" placeholder="{button_search}"{xhtml}>
+                <input type="text" class="search" size="16" maxlength="255" value="{button_search}" name="query"
+                  onfocus="if (this.value == '{button_search}') this.value = ''"
+                  onblur="if (this.value == '') this.value = '{button_search}'"{xhtml}>
                 <input type="submit" value="{button_search}" class="submit" style="display:none;"{xhtml}>
                 <input type="hidden" value="all" name="type"{xhtml}>
                 <input type="hidden" value="all" name="keyType"{xhtml}>
