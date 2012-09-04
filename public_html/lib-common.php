@@ -272,6 +272,14 @@ if (COM_isAnonUser()) {
     $_USER['advanced_editor'] = $_CONF['advanced_editor'];
 }
 
+
+/**
+* Ulf Harnhammar's kses class
+*
+*/
+
+require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
+
 /**
 * Multibyte functions
 *
@@ -3723,13 +3731,11 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
     global $_CONF, $_USER;
 
-    require_once $_CONF['path_system'] . 'classes/htmLawed/htmLawed.php';
-
     // replace any \ with &#092; (HTML equiv)
     $str = str_replace('\\', '&#092;', COM_stripslashes($str) );
 
     // Get rid of any newline characters
-    $str = str_replace( "\n", '', $str );
+    $str = preg_replace( "/\n/", '', $str );
 
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace( '$', '&#36;', $str );
@@ -3806,22 +3812,15 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     // strip_tags() gets confused by HTML comments ...
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
-    $config = array(
-        'comment'        => 3,	// Allow HTML comment
-        'css_expression' => 1,	// Allow dynamic CSS expression in "style" attributes
-    );
-
+    $filter = new kses4;
     if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( count( $_CONF['allowed_protocols'] ) > 0 ))
     {
-        $schemes = $_CONF['allowed_protocols'];
+        $filter->SetProtocols( $_CONF['allowed_protocols'] );
     }
     else
     {
-        $schemes = array('http:', 'https:', 'ftp:');
+        $filter->SetProtocols( array( 'http:', 'https:', 'ftp:' ));
     }
-
-    $schemes = str_replace(':', '', implode(', ', $schemes));
-    $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
 
     if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
             empty( $_CONF['admin_html'] ))
@@ -3840,27 +3839,14 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         }
     }
 
-    $elements = array();
-    $spec     = array();
-
     foreach( $html as $tag => $attr )
     {
-        if (is_array($attr) AND (count($attr) > 0)) {
-            $spec[] = $tag . '=' . implode(', ', array_keys($attr));
-        } else {
-            $spec[] = $tag . '=-*';
-        }
-
-        $elements[] = $tag;
+        $filter->AddHTML( $tag, $attr );
     }
-
-    $config['elements'] = implode(', ', $elements);
-    $spec = implode('; ', $spec);
-
     /* Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
      * of the above noted // strip_tags() gets confused by HTML comments ...
      */
-    $str = htmLawed($str, $config, $spec);
+    $str = $filter->Parse( $str );
     $str = str_replace('[raw2]','<!--raw--><span class="raw">', $str);
     $str = str_replace('[/raw2]','</span><!--/raw-->', $str);
 
