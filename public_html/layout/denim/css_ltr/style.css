@@ -3527,8 +3527,10 @@ body.center-right #config_content {
 	#rightblocks .sideoption a:hover,
 	#leftblocks .sideoption_off,
 	#rightblocks .sideoption_off {
-	  background-color: #FFF;
-	  border: 1px solid #CCC;
+	  background: url(../images/arrow-right.png) no-repeat #F7F7F7;
+	  background-size: 24px auto;
+	  background-position: right 50%;
+	  border: 1px solid #CACACA;
 	  color: #222;
 	  display: block;
 	  font-size: 16px;
