@@ -2134,12 +2134,17 @@ span.warning  em { color: #CE5C00; }
   margin: 0 0 1.5em;
 }
 
-.gl-pagenav a {
+.gl-pagenav a,
+.gl-pagenav b {
   display: inline-block;
   margin: 1px;
   padding: 2px 7px;
   background: transparent;
   border: 1px solid #E7E7E7;
+}
+
+.gl-pagenav b {
+  color: #222;
 }
 
 .gl-pagenav a:hover {
