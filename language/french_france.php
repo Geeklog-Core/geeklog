@@ -2142,7 +2142,7 @@ $LANG_configselects['Core'] = array(
     18 => array('Non autorisé' => 0, 'Autorisé (Exact Match)' => 1, 'Autorisé (Word Beginning)' => 2, 'Autorisé (Word Fragment)' => 3),
     19 => array('Google' => 'google', 'Table' => 'table'),
     20 => array('Phrase exacte' => 'phrase', 'Tous les mots' => 'all', 'Un de ces mots' => 'any'),
-    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict'),
+    21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Désactivé' => 0, 'Activé' => 1, 'Activé (Par défaut pour la page principale seulement)' => 2),
     24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
