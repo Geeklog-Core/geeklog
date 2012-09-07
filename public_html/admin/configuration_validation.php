@@ -218,7 +218,7 @@ $_CONF_VALIDATE['Core']['theme'] = array(
 );
 $_CONF_VALIDATE['Core']['doctype'] = array(
     'rule' => array('inList', array(
-        'html401strict', 'html401transitional', 'xhtml10strict', 'xhtml10transitional'
+        'html401strict', 'html401transitional', 'xhtml10strict', 'xhtml10transitional', 'html5', 'xhtml5'
     ), true)
 );
 $_CONF_VALIDATE['Core']['path_themes'] = array(

@@ -365,6 +365,7 @@ if (! defined('XHTML')) {
     switch ($_CONF['doctype']) {
     case 'xhtml10transitional':
     case 'xhtml10strict':
+    case 'xhtml5':
         define('XHTML', ' /');
         break;
 
@@ -925,6 +926,11 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
 
     case 'xhtml10strict':
         $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+        break;
+
+    case 'html5':
+    case 'xhtml5':
+        $doctype = '<!DOCTYPE html>';
         break;
 
     default: // fallback: HTML 4.01 Transitional w/o system identifier
@@ -1636,6 +1642,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     case 'xhtml10strict':
         $doctype = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+        break;
+
+    case 'html5':
+    case 'xhtml5':
+        $doctype = '<!DOCTYPE html>';
         break;
 
     default: // fallback: HTML 4.01 Transitional w/o system identifier
