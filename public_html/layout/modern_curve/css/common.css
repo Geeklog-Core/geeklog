@@ -420,78 +420,44 @@ ul.compact li {
   Page Navigation
 --------------------------------------*/
 .gl-pagenav {
-  text-align:center;
+  text-align: center;
+  color: #CCC;
+  margin: 0 0 1.5em;
 }
 
-div.gl-pagenav b {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   border: 1px solid #cccccc;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* foe IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav b {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav a {
-   display: inline-block;
-   margin: 8px;
-   padding: 8px;
-   background: #e4ecf5;
-   border: 1px solid #204a87;
-   text-decoration: none;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav a {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span {
-   display: inline-block;
-   padding: 8px;
-   line-height: 1.7;
- }
- 
-/* for IE6 { */
- * html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE6 } */
- 
-/* for IE7 { */
- *:first-child+html div.gl-pagenav span {
-   display: inline;
-   zoom: 1;
- }
- /* for IE7 } */
- 
-div.gl-pagenav span a { 
+.gl-pagenav a,
+.gl-pagenav b {
+  display: inline-block;
+  margin: 1px;
+  padding: 2px 7px;
+  background: transparent;
+  border: 1px solid #E7E7E7;
+}
+
+.gl-pagenav b {
+  color: #222;
+}
+
+.gl-pagenav a:hover {
+  background: #EEE;
+  border: 1px solid #CCC;
+}
+
+.gl-pagenav span {
+  display: inline-block;
+  padding: 4px;
+  line-height: 1.7;
+  color: #999;
+}
+
+.gl-pagenav span a { 
   margin: 0;
-   padding: 0;
-   background: transparent;
-   border: none;
-   text-decoration: underline;
- }
+  padding: 2px 0;
+  background: transparent;
+  border: none;
+}
+
+.gl-pagenav span a:hover {
+  background: transparent;
+  border: none;
+}
