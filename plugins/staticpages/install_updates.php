@@ -40,12 +40,14 @@ function SP_update_TopicAssignmentsFor_1_6_4()
         $A = DB_fetchArray($result);
         
         if ($A['sp_tid'] == 'all') {
-            $A['sp_tid'] == TOPIC_ALL_OPTION;
-        } elseif ($A['sp_tid'] == 'none') {
-            $A['sp_tid'] == TOPIC_HOMEONLY_OPTION;
+            $A['sp_tid'] = TOPIC_ALL_OPTION;
+        } elseif ($A['sp_tid'] == 'none' AND $A['sp_centerblock'] == 1) { // If center block enabled and none then homepage
+            $A['sp_tid'] = TOPIC_HOMEONLY_OPTION;
+        } elseif ($A['sp_tid'] == 'none' AND $A['sp_centerblock'] == 0) { // If center block disabled and none then all
+            $A['sp_tid'] = TOPIC_ALL_OPTION;
         }
         
-        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['sp_tid']}', 'staticpages', '{$A['sp_id']}', 1, 0)";
+        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['sp_tid']}', 'staticpages', '{$A['sp_id']}', 1, 1)";
         DB_query($sql);
     }
 
