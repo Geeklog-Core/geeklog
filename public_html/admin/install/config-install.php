@@ -375,6 +375,7 @@ function install_config()
     $c->add('linktext_maxlen',50,'text',7,31,NULL,1754,TRUE, $me,31);
     $c->add('compressed_output',0,'select',7,31,1,1756,TRUE, $me, 31);
     $c->add('frame_options','DENY','select',7,31,22,1758,TRUE, $me, 31);
+    $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
 
     $c->add('tab_debug', NULL, 'tab', 7, 32, NULL, 0, TRUE, $me, 32);
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE, $me, 32);

@@ -1258,6 +1258,10 @@
   <td valign="top"><a name="desc_frame_options">"クリックジャッキング"を防止する(frame_options) </a></td>
   <td valign="top">Strict(DENY)</td>
   <td valign="top"><a href="http://en.wikipedia.org/wiki/Clickjacking">クリックジャッキング</a>を防止します。HTTPレスポンスヘッダであるX-FRAME-OPTIONSにより、サイトはフレーム内で表示されることがなくなります。ただし、ブラウザが<tt>X-FRAME-OPTIONS</tt>に対応する場合のみ有効です。X-FRAME-OPTIONSには、フレーム内表示を一切許可しない Strict(DENY)、同一サイトでのフレーム内表示のみ許可する Same Origin(SAMEORIGIN)、すべてのフレーム内表示を許可する (disabled)('')があります。このオプションを<em>(disabled)にしない</em>ことを強く推奨します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_page_navigation_max_pages">page_navigation_max_pages</a></td>
+  <td valign="top">7</td>
+  <td valign="top">Maximum number of pages to show for the page navigation. Minimum of 3 pages to a maximum of 20 pages allowed.</td></tr>     
 </table>
 
 <h3><a name="misc_debug">その他: デバッグ</a></h3>

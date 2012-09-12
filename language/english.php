@@ -1983,6 +1983,7 @@ $LANG_confignames['Core'] = array(
     'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Send compressed output?',
     'frame_options' => 'Protection against "clickjacking"',
+    'page_navigation_max_pages' => 'Max Pages for Navigation',
     'censormode' => "Censor Mode?",
     'censorreplace' => "Censor Replace Text",
     'censorlist' => "Censor List",
@@ -2210,6 +2211,7 @@ $LANG_VALIDATION = array(
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
     'single_char' => 'This field must be a single character',
+    'page_navigation_max_pages' => 'This field must be between 2 - 21', 
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 

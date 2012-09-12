@@ -446,6 +446,11 @@ $_CONF_VALIDATE['Core']['compressed_output'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['frame_options'] = array(
     'rule' => array('inList', array('', 'SAMEORIGIN', 'DENY'), true)
 );
+$_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
+    'rule' => array('range', 2, 21),
+    'message' => isset($LANG_VALIDATION['page_navigation_max_pages']) ? 
+                 $LANG_VALIDATION['page_navigation_max_pages'] : $LANG_VALIDATION['default']
+);
 
 /* Subgroup Misc, Tab Debug */
 $_CONF_VALIDATE['Core']['rootdebug'] = array('rule' => 'boolean');

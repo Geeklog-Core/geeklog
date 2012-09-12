@@ -124,6 +124,9 @@ function update_ConfValuesFor200()
     
     // Breadcrumb Root Site Name
     $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);    
+    
+    // Page Navigation
+    $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
 
     return true;
 }
