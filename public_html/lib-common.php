@@ -5522,7 +5522,6 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
     $page_navigation->parse('page_navigation_start', 'page_navigation_start');
     
-    $_CONF['page_navigation_max_pages'] = 7;
     $page_nav_split = intval($_CONF['page_navigation_max_pages'] / 2);
     $page_start = $curpage - $page_nav_split;
     if (intval($_CONF['page_navigation_max_pages'] / 2) == ($_CONF['page_navigation_max_pages'] / 2)) { // For even number Max Pages
