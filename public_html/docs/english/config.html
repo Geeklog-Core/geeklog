@@ -777,7 +777,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br>
     <strong>Note:</strong> Currently only OAuth 1.0 is support. Current login methods supported: Facebook, Twitter and LinkedIn.<br>Please note that to enable login for a 
     specific method, you need an  authorization class in <tt>system/classes/oauth</tt>. If you only want to allow Facebook but not Twitter users (or vice versa), simply
-    remove the class file for the unwanted service(s). You must also update the class file(s) with the application key ($consumer_key) and application secret 
+    remove the class file for the unwanted service(s) or use the config options below. You must also update the config options below with the correct key and secret string 
     ($consumer_secret) values. The PHP extenstion OpenSSL is required to be loaded.<br>
     See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
 <tr>
