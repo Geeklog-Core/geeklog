@@ -1,3 +1,0 @@
-<!-- Start of Page Navigation -->
-<div class="gl-pagenav">{message}{page_navigation_start}{pages}{page_navigation_end}</div> 
-<!-- End of Page Navigation -->
