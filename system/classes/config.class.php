@@ -289,6 +289,7 @@ class config {
                 [$tabs[$row[2]][$row[4]][$row[5]]][$row[5]][$row[0]] = $row[0];
             }
         }
+        $this->_post_initconfig();
         $this->_post_configuration();
 
         return $this->config_array;
@@ -352,7 +353,6 @@ class config {
                "name = '{$escaped_name}' AND group_name = '{$escaped_grp}'";
         $this->_DB_escapedQuery($sql);
         $this->config_array[$group][$name] = $value;
-        $this->_post_configuration();
     }
 
     /**
@@ -605,31 +605,30 @@ class config {
 
     /**
      * Changes any config settings that depend on other configuration settings.
-     * Called by config::initConfig and config::set
+     * Called by config::initConfig
+     * 
+     * @return voif
+     */
+    function _post_initconfig()
+    {
+        global $_USER;
+
+        $theme = $this->config_array['Core']['theme'];
+        if ($this->config_array['Core']['allow_user_themes'] == 1 && !empty($_USER['theme'])) {
+            $theme = $_USER['theme'];
+        }
+        $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
+        $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
+    }
+
+    /**
+     * Changes any config settings that depend on other configuration settings.
+     * Called by config::initConfig and config::updateConfig
      * 
      * @return voif
      */
     function _post_configuration()
     {
-        global $_USER;
-
-        if (empty($_USER['theme'])) {
-            if (! empty($this->config_array['Core']['theme'])) {
-                $theme = $this->config_array['Core']['theme'];
-            }
-        } else {
-            $theme = $_USER['theme'];
-        }
-
-        if (! empty($theme)) {
-            if (! empty($this->config_array['Core']['path_themes'])) {
-                $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
-            }
-            if (! empty($this->config_array['Core']['site_url'])) {
-                $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
-            }
-        }
-
         $methods = array('standard', 'openid', '3rdparty', 'oauth');
         $methods_disabled = 0;
         foreach ($methods as $m) {
@@ -1525,12 +1524,20 @@ class config {
             $this->config_array['Core']['language'] = unserialize($value);
 
             /**
-             * Same with $_CONF['cookiedomain'], which is overwritten in
+             * Same with $_CONF['cookiedomain'], which is overwritten
              * in lib-sessions.php (if empty).
              */
             $value = DB_getItem($_TABLES['conf_values'], 'value',
                                 "group_name='Core' AND name='cookiedomain'");
             $this->config_array['Core']['cookiedomain'] = unserialize($value);
+
+            /**
+             * Same with $_CONF['doctype'], which is overwritten
+             * with the theme's configuration in lib-common.php.
+             */
+            $value = DB_getItem($_TABLES['conf_values'], 'value',
+                                "group_name='Core' AND name='doctype'");
+            $this->config_array['Core']['doctype'] = unserialize($value);
         }
         
         $this->_extract_permissible_conf($change_array, $group, $change_array['sub_group']);
@@ -1595,6 +1602,7 @@ class config {
                 $this->set($param, $val, $group);
                 $success_array[$param] = true;
             }
+            $this->_post_configuration();
         } else {
             // temporaly save the changed values
             foreach ( $pass_validation as $param => $val ) {
