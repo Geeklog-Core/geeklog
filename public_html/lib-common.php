@@ -5462,11 +5462,14 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     if (function_exists('CUSTOM_printPageNavigation')) {
         return CUSTOM_printPageNavigation($base_url, $curpage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
     }
-    
-    $retval = '';
+
+    if ($num_pages < 2) {
+        return '';
+    }
+
     $first_url = '';
-    $last_url = '';    
-    
+    $last_url = '';
+
     if (is_array($base_url)) {
         $first_url = current($base_url);
         $last_url = end($base_url);
@@ -5474,117 +5477,94 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $first_url = $base_url;
     }
 
-    if ($num_pages < 2) {
-        return;
-    }
-
     if (!$do_rewrite) {
-        $hasargs = strstr($first_url, '?');
-        if ($hasargs) {
-            $sep = '&amp;';
-        } else {
-            $sep = '?';
-        }
+        $sep = strstr($first_url, '?') ? '&amp;' : '?';
     } else {
         $sep = '/';
         $page_str = '';
     }
-    
-    $page_navigation = COM_newTemplate($_CONF['path_layout'] . 'page_navigation/');
-    $page_navigation->set_file(array('page_navigation'  => 'page_navigation.thtml',
-        'page_navigation_start'      => 'page_navigation_start.thtml',
-        'page_navigation_end'        => 'page_navigation_end.thtml',
-        'page'                       => 'page.thtml',
-        'page_current'               => 'page_current.thtml',
-        'page_open_ended'            => 'page_navigation_open_ended.thtml'));    
-    
+
+    $page_navigation = COM_newTemplate($_CONF['path_layout'] . 'page_navigation');
+    $page_navigation->set_file(array('page_navigation' => 'page_navigation.thtml',
+        'page_navigation_start' => 'page_navigation_start.thtml',
+        'page_navigation_end'   => 'page_navigation_end.thtml',
+        'page'                  => 'page.thtml',
+        'page_current'          => 'page_current.thtml',
+        'page_open_ended'       => 'page_navigation_open_ended.thtml'));
 
     $page_navigation->set_var('lang_first', $LANG05[7]);
     $page_navigation->set_var('lang_previous', $LANG05[6]);
     $page_navigation->set_var('lang_next', $LANG05[5]);
     $page_navigation->set_var('lang_last', $LANG05[8]);
-    
+
     if ($curpage > 1) {
-         $pg = '';
-         if (($curpage - 1) > 1) {
-             $pg = $sep . $page_str . ( $curpage - 1 );
-         }
-         
-         $page_navigation->set_var('start_first_anchortag', '<a href="' . $first_url . $last_url . '">');
-         $page_navigation->set_var('end_first_anchortag', '</a>');
-         $page_navigation->set_var('start_previous_anchortag', '<a href="' . $first_url . $pg . $last_url . '">');
-         $page_navigation->set_var('end_previous_anchortag', '</a>');
+        $pg = '';
+        if (($curpage - 1) > 1) {
+            $pg = $sep . $page_str . ($curpage - 1);
+        }
+        $page_navigation->set_var('start_first_anchortag', '<a href="' . $first_url . $last_url . '">');
+        $page_navigation->set_var('end_first_anchortag', '</a>');
+        $page_navigation->set_var('start_previous_anchortag', '<a href="' . $first_url . $pg . $last_url . '">');
+        $page_navigation->set_var('end_previous_anchortag', '</a>');
     } else {
-        $page_navigation->set_var('start_first_anchortag', '');         
+        $page_navigation->set_var('start_first_anchortag', '');
         $page_navigation->set_var('end_first_anchortag', '');
         $page_navigation->set_var('start_previous_anchortag', '');
         $page_navigation->set_var('end_previous_anchortag', '');
     }
     $page_navigation->parse('page_navigation_start', 'page_navigation_start');
-    
-    $page_nav_split = intval($_CONF['page_navigation_max_pages'] / 2);
-    $page_start = $curpage - $page_nav_split;
-    if (intval($_CONF['page_navigation_max_pages'] / 2) == ($_CONF['page_navigation_max_pages'] / 2)) { // For even number Max Pages
-        if ($page_start <= 0) {
-            $page_end = $curpage + $page_nav_split - $page_start;
-            $page_start = 1;
-        } else {
-            $page_end = $curpage + $page_nav_split - 1;
-        }
-    } else { // For odd number Max Pages
-        if ($page_start <= 0) {
-            $page_end = $curpage + $page_nav_split - $page_start + 1;
-            $page_start = 1;
-        } else {
-            $page_end = $curpage + $page_nav_split;
-        }
-    }
-    if ($page_end > $num_pages) {
-        $page_start = $curpage - $page_nav_split - ($page_end - $num_pages);
-        $page_end = $num_pages;
-    }
-    if ($page_start <= 0) {
+
+    $page_nav_left = intval($_CONF['page_navigation_max_pages'] / 2);
+    $page_nav_right = $_CONF['page_navigation_max_pages'] - $page_nav_left - 1;
+    $page_start = $curpage - $page_nav_left;
+    $odd = 0;
+    if ($page_start < 1) {
+        $odd = 1 - $page_start;
         $page_start = 1;
     }
- 
-    for ($pgcount = $page_start; ($pgcount <= $page_end) AND ($pgcount <= $num_pages); $pgcount++) {
+    $page_end = $curpage + $page_nav_right + $odd;
+    if ($page_end > $num_pages) {
+        $odd = $page_end - $num_pages;
+        $page_end = $num_pages;
+        if ($page_start - $odd >= 1) {
+            $page_start = $page_start - $odd;
+        }
+    }
+    for ($pgcount = $page_start; $pgcount <= $page_end; $pgcount++) {
         if ($pgcount == $curpage) {
-             $page_navigation->set_var('page_number', $pgcount);
-             $page_navigation->parse('pages', 'page_current', true);
-        } else {
-             $pg = '';
-             if ($pgcount > 1) {
-                 $pg = $sep . $page_str . $pgcount;
-             }
-            $page_navigation->set_var('page_number', COM_createLink($pgcount, $first_url . $pg . $last_url));
-            $page_navigation->parse( 'pages', 'page', true );
-         }
-     }
- 
-     if (!empty($open_ended)) {
+            $page_navigation->set_var('page_number', $pgcount);
+            $page_navigation->parse('pages', 'page_current', true);
+            continue;
+        }
+        $pg = '';
+        if ($pgcount > 1) {
+            $pg = $sep . $page_str . $pgcount;
+        }
+        $page_navigation->set_var('page_number', COM_createLink($pgcount, $first_url . $pg . $last_url));
+        $page_navigation->parse('pages', 'page', true);
+    }
+
+    if (!empty($open_ended)) {
         $page_navigation->set_var('open_ended', $open_ended);
         $page_navigation->parse('page_navigation_end', 'page_open_ended');
-     } else {
-         if ( $curpage == $num_pages ) {
+    } else {
+        if ($curpage == $num_pages) {
             $page_navigation->set_var('start_next_anchortag', '');
             $page_navigation->set_var('end_next_anchortag', '');
-            $page_navigation->set_var('start_last_anchortag', '');         
-            $page_navigation->set_var('end_last_anchortag', '');        
-         }  else  {
-             $page_navigation->set_var('start_next_anchortag', '<a href="' . $first_url . $sep . $page_str . ($curpage + 1) . $last_url . '">');
-             $page_navigation->set_var('end_next_anchortag', '</a>');
-             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
-             $page_navigation->set_var('end_last_anchortag', '</a>');         
-         }
-         $page_navigation->parse('page_navigation_end', 'page_navigation_end');
-     }
-     
-     if (!empty($retval)) {
-         if (!empty($msg)) {
-             $msg .= ' ';
-         }
-         $page_navigation->set_var('message', $msg);
-     }
+            $page_navigation->set_var('start_last_anchortag', '');
+            $page_navigation->set_var('end_last_anchortag', '');
+        } else {
+            $page_navigation->set_var('start_next_anchortag', '<a href="' . $first_url . $sep . $page_str . ($curpage + 1) . $last_url . '">');
+            $page_navigation->set_var('end_next_anchortag', '</a>');
+            $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
+            $page_navigation->set_var('end_last_anchortag', '</a>');
+        }
+        $page_navigation->parse('page_navigation_end', 'page_navigation_end');
+    }
+
+    if (!empty($msg)) {
+        $page_navigation->set_var('message', $msg . ' ');
+    }
 
     return $page_navigation->finish($page_navigation->parse('output', 'page_navigation'));
 }
