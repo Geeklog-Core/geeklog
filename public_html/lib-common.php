@@ -5463,7 +5463,6 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         return CUSTOM_printPageNavigation($base_url, $curpage, $num_pages, $page_str, $do_rewrite, $msg, $open_ended);
     }
     
-    $retval = '';
     $first_url = '';
     $last_url = '';    
     
@@ -5579,11 +5578,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
          $page_navigation->parse('page_navigation_end', 'page_navigation_end');
      }
      
-     if (!empty($retval)) {
-         if (!empty($msg)) {
-             $msg .= ' ';
-         }
-         $page_navigation->set_var('message', $msg);
+     if (!empty($msg)) {
+         $page_navigation->set_var('message', $msg . ' ');
      }
 
     return $page_navigation->finish($page_navigation->parse('output', 'page_navigation'));
