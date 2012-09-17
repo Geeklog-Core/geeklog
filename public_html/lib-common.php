@@ -5469,7 +5469,6 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     $first_url = '';
     $last_url = '';
-
     if (is_array($base_url)) {
         $first_url = current($base_url);
         $last_url = end($base_url);
@@ -5484,13 +5483,12 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $page_str = '';
     }
 
-    $page_navigation = COM_newTemplate($_CONF['path_layout'] . 'page_navigation');
-    $page_navigation->set_file(array('page_navigation' => 'page_navigation.thtml',
-        'page_navigation_start' => 'page_navigation_start.thtml',
-        'page_navigation_end'   => 'page_navigation_end.thtml',
-        'page'                  => 'page.thtml',
-        'page_current'          => 'page_current.thtml',
-        'page_open_ended'       => 'page_navigation_open_ended.thtml'));
+    $page_navigation = COM_newTemplate($_CONF['path_layout']);
+    $page_navigation->set_file('page_navigation', 'page_navigation.thtml');
+    $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended');
+    foreach ($blocks as $block) {
+        $page_navigation->set_block('page_navigation', $block);
+    }
 
     $page_navigation->set_var('lang_first', $LANG05[7]);
     $page_navigation->set_var('lang_previous', $LANG05[6]);
@@ -5512,7 +5510,6 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $page_navigation->set_var('start_previous_anchortag', '');
         $page_navigation->set_var('end_previous_anchortag', '');
     }
-    $page_navigation->parse('page_navigation_start', 'page_navigation_start');
 
     $page_nav_left = intval($_CONF['page_navigation_max_pages'] / 2);
     $page_nav_right = $_CONF['page_navigation_max_pages'] - $page_nav_left - 1;
@@ -5533,7 +5530,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     for ($pgcount = $page_start; $pgcount <= $page_end; $pgcount++) {
         if ($pgcount == $curpage) {
             $page_navigation->set_var('page_number', $pgcount);
-            $page_navigation->parse('pages', 'page_current', true);
+            $page_navigation->parse('pages', 'page-current', true);
             continue;
         }
         $pg = '';
@@ -5543,10 +5540,12 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
         $page_navigation->set_var('page_number', COM_createLink($pgcount, $first_url . $pg . $last_url));
         $page_navigation->parse('pages', 'page', true);
     }
+    $page_navigation->set_var('page', '');
+    $page_navigation->set_var('page-current', '');
 
     if (!empty($open_ended)) {
         $page_navigation->set_var('open_ended', $open_ended);
-        $page_navigation->parse('page_navigation_end', 'page_open_ended');
+        $page_navigation->set_var('nav-end', '');
     } else {
         if ($curpage == $num_pages) {
             $page_navigation->set_var('start_next_anchortag', '');
@@ -5559,7 +5558,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
             $page_navigation->set_var('end_last_anchortag', '</a>');
         }
-        $page_navigation->parse('page_navigation_end', 'page_navigation_end');
+        $page_navigation->set_var('nav-open-ended', '');
     }
 
     if (!empty($msg)) {
