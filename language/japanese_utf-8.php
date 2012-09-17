@@ -1986,6 +1986,7 @@ $LANG_confignames['Core'] = array(
     'linktext_maxlen' => 'クリッカブルリンクの長さ',
     'compressed_output' => 'HTML出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止する',
+    'page_navigation_max_pages' => 'ページナビゲーションのページ数',
     'censormode' => 'チェックする',
     'censorreplace' => '置き換えるワード',
     'censorlist' => 'バッドワード',
@@ -2202,6 +2203,7 @@ $LANG_VALIDATION = array(
     'language' => '言語ファイルがありません',
     'timezone' => '無効なタイムゾーンです',
     'single_char' => 'このフィールドには半角1文字を入力してください',
+    'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドはあなたのバージョンのPHPによるhash関数が必要です。'
 );
 
