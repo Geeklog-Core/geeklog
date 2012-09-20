@@ -1315,7 +1315,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                    . 'to submit a comment with invalid $title and/or $comment.');
         return $ret = 5;
     } 
-    
+
     if (($_CONF['commentsubmission'] == 1) && !SEC_hasRights('comment.submit')) {
         // comment into comment submission table enabled
         if (isset($name)) {
@@ -1326,6 +1326,8 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                    . "VALUES ('$sid',$uid,'$comment','$type',NOW(),'$title',$pid,'{$_SERVER['REMOTE_ADDR']}')");
         }
 
+        $cid = DB_insertId('',$_TABLES['commentsubmissions'].'_cid_seq');
+        
         $ret = -1; // comment queued
     } elseif ($pid > 0) {
         DB_lockTable ($_TABLES['comments']);
@@ -1381,6 +1383,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,$rht2,$rht3,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }
+        
         $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
         DB_unlockTable($_TABLES['comments']);
     }
@@ -1954,7 +1957,6 @@ function CMT_approveModeration($cid)
     $newcid = DB_insertId('','comments_cid_seq');
 
     DB_delete($_TABLES['commentsubmissions'], 'cid', $cid);
-
     DB_change($_TABLES['commentnotifications'], 'cid', $newcid, 'mid', $cid);
 
     // notify of new published comment
