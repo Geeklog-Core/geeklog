@@ -5523,8 +5523,9 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     if ($page_end > $num_pages) {
         $odd = $page_end - $num_pages;
         $page_end = $num_pages;
-        if ($page_start - $odd >= 1) {
-            $page_start = $page_start - $odd;
+        $page_start = $page_start - $odd;
+        if ($page_start < 1) {
+            $page_start = 1;
         }
     }
     for ($pgcount = $page_start; $pgcount <= $page_end; $pgcount++) {
