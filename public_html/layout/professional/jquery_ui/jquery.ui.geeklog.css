@@ -78,3 +78,8 @@
 .error_validation a {
     color: #FFFFBB;
 }
+
+/* Layout helpers */
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+    display: block;
+}
