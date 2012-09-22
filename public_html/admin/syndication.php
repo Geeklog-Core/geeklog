@@ -287,22 +287,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('lang_language', $LANG33[32]);
     $feed_template->set_var ('lang_topic', $LANG33[33]);
 
-    /*
-    if ($A['header_tid'] == 'all') {
-        $feed_template->set_var('all_selected', 'selected="selected"');
-    } elseif ($A['header_tid'] == 'none') {
-        $feed_template->set_var('none_selected', 'selected="selected"');
-    }
-    */
-    
-    $feed_template->set_var('lang_header_all', $LANG33[43]);
-    $feed_template->set_var('lang_header_none', $LANG33[44]);
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
-    
-    
-    
-    //$feed_template->set_var('header_topic_options',
-    //                    COM_topicList('tid,topic', $A['header_tid'], 1, true));
     $feed_template->set_var('header_topic_options', TOPIC_getTopicListSelect($A['header_tid'], 6, true));
     
     

@@ -21,8 +21,6 @@
       <dt><label for="admin-feededitor-header_tid">{lang_header_topic}</label></dt>
       <dd>
         <select name="header_tid" id="admin-feededitor-header_tid">
-          <option value="none" {none_selected}>{lang_header_none}</option>
-          <option value="all" {all_selected}>{lang_header_all}</option>
           {header_topic_options}
         </select>
       </dd>
