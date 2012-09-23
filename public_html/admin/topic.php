@@ -366,8 +366,28 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
     
     // Check if tid is a restricted name
     $restricted_tid = false;
-    if ($tid == TOPIC_ALL_OPTION || $tid == TOPIC_NONE_OPTION || $tid == TOPIC_HOMEONLY_OPTION || $tid == TOPIC_SELECTED_OPTION || $tid == TOPIC_ROOT) {
+    if (!strcasecmp($tid, TOPIC_ALL_OPTION) || !strcasecmp($tid, TOPIC_NONE_OPTION) || !strcasecmp($tid, TOPIC_HOMEONLY_OPTION) || !strcasecmp($tid, TOPIC_SELECTED_OPTION) || !strcasecmp($tid, TOPIC_ROOT)) {
         $restricted_tid = true;
+    }
+    
+    // Check if tid is used by another topic
+    $duplicate_tid = false;
+    $old_tid = '';
+    if (isset($_POST['old_tid'])) {
+        $old_tid = COM_applyFilter($_POST['old_tid']);
+        if (!empty($old_tid)) {
+            $old_tid = COM_sanitizeID($old_tid);
+            // See if new topic id
+            if (strcasecmp($tid, $old_tid)) {
+                if (!strcasecmp($tid, DB_getItem($_TABLES['topics'], 'tid', "tid = '$tid'"))) {
+                    $duplicate_tid = true;
+                }
+            }
+        } else {
+            if (!strcasecmp($tid, DB_getItem($_TABLES['topics'], 'tid', "tid = '$tid'"))) {
+                $duplicate_tid = true;
+            }            
+        }
     }
     
     // Make sure parent id exists
@@ -428,7 +448,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $MESSAGE[30]));
             COM_accessLog("User {$_USER['username']} tried to illegally assign topic $tid to $parent_id.");
-        } elseif (!empty($tid) && !empty($topic) && !$restricted_tid && !$archive_parent && !$archive_child && $parent_id_found) {
+        } elseif (!empty($tid) && !empty($topic) && !$restricted_tid && !$duplicate_tid && !$archive_parent && !$archive_child && $parent_id_found) {
             if ($imageurl == '/images/topics/') {
                 $imageurl = '';
             }
@@ -471,10 +491,9 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 $hidden = 0;
             }
             
-            if (isset($_POST['old_tid'])) {
-                $old_tid = COM_applyFilter($_POST['old_tid']);
-                if (! empty($old_tid)) {
-                    $old_tid = COM_sanitizeID($old_tid);
+            // If not a new topic and id change then...
+            if (!empty($old_tid)) {
+                if ($tid != $old_tid) {
                     changetopicid($tid, $old_tid);
     
                     $old_tid = addslashes($old_tid);
@@ -483,7 +502,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             }
     
             DB_save($_TABLES['topics'],'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
-    
+            
             // Update Topics Array to reflect any changes since not sure what is called after
             $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
     
@@ -500,6 +519,9 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
         } elseif ($restricted_tid) {
             $retval .= COM_errorLog($LANG27[31], 2);
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
+        } elseif ($duplicate_tid) {
+            $retval .= COM_errorLog($LANG27[49], 2);
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG27[1]));
         } elseif ($archive_parent) {
             $retval .= COM_errorLog($LANG27[46], 2);
