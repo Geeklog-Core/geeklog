@@ -349,37 +349,20 @@ $LANG_HELP = array(
     'plugin_upload' => 'アップロードするプラグインの圧縮ファイル(.zip, .tar.gz, .tgzファーマット)を選んでインストールしてください。'
 );
 
-// which texts to use as labels, so they don't have to be translated again
-$LANG_LABEL = array(
-    'site_name'      => $LANG_INSTALL[32],
-    'site_slogan'    => $LANG_INSTALL[33],
-    'db_type'        => $LANG_INSTALL[34],
-    'db_host'        => $LANG_INSTALL[39],
-    'db_name'        => $LANG_INSTALL[40],
-    'db_user'        => $LANG_INSTALL[41],
-    'db_pass'        => $LANG_INSTALL[42],
-    'db_prefix'      => $LANG_INSTALL[43],
-    'site_url'       => $LANG_INSTALL[45],
-    'site_admin_url' => $LANG_INSTALL[47],
-    'site_mail'      => $LANG_INSTALL[48],
-    'noreply_mail'   => $LANG_INSTALL[49],
-    'utf8'           => $LANG_INSTALL[92],
-    'migrate_file'   => $LANG_MIGRATE[6],
-    'plugin_upload'  => $LANG_PLUGINS[10]
-);
-
+// +---------------------------------------------------------------------------+
 // rescue.php
+
 $LANG_RESCUE = array(
-     0 => 'ログインに成功しました。',
-     1 => 'Geeklog緊急レスキューツール',
-     2 => 'インストーラーへ',
-     3 => 'Geeklog緊急レスキューツール',
-     4 => '終了したら、<strong>必ずこのファイル( {{SELF}} )とinstallディレクトリを削除してください!</strong>  他のユーザーがパスワードの推測に成功した場合、インストールしているGeeklogが重大な被害を被る可能性があります。',	// Don't change or remove "{{SELF}}"
-     5 => '状態',
-     6 => 'これからセキュリティで保護されたセクションにアクセスします。セキュリティ・チェックに合格しなければ、先に進むことはできません。',
-     7 => '本人確認のために、データベースのパスワードを入力する必要があります。パスワードはGeeklogの "非公開領域/db-config.php" に保存されています。',
-     8 => 'パスワード',
-     9 => '確認する',
+    0 => 'ログインに成功しました。',
+    1 => 'Geeklog緊急レスキューツール',
+    2 => 'インストーラーへ',
+    3 => 'Geeklog緊急レスキューツール',
+    4 => '終了したら、<strong>必ずこのファイル( {{SELF}} )とinstallディレクトリを削除してください!</strong>  他のユーザーがパスワードの推測に成功した場合、インストールしているGeeklogが重大な被害を被る可能性があります。',
+    5 => '状態',
+    6 => 'これからセキュリティで保護されたセクションにアクセスします。セキュリティ・チェックに合格しなければ、先に進むことはできません。',
+    7 => '本人確認のために、データベースのパスワードを入力する必要があります。パスワードはGeeklogの "非公開領域/db-config.php" に保存されています。',
+    8 => 'パスワード',
+    9 => '確認する',
     10 => 'パスワードが不正です!',
     11 => '有効化 ',
     12 => '無効化 ',
@@ -414,7 +397,26 @@ $LANG_RESCUE = array(
     41 => '実行',
     42 => '主要な$_CONF変数を編集できます。',
     43 => 'Geeklogのroot/adminパスワードをリセットできます。',
-    44 => 'パスワードをメールで送信する',
+    44 => 'パスワードをメールで送信する'
+);
+
+// which texts to use as labels, so they don't have to be translated again
+$LANG_LABEL = array(
+    'site_name'      => $LANG_INSTALL[32],
+    'site_slogan'    => $LANG_INSTALL[33],
+    'db_type'        => $LANG_INSTALL[34],
+    'db_host'        => $LANG_INSTALL[39],
+    'db_name'        => $LANG_INSTALL[40],
+    'db_user'        => $LANG_INSTALL[41],
+    'db_pass'        => $LANG_INSTALL[42],
+    'db_prefix'      => $LANG_INSTALL[43],
+    'site_url'       => $LANG_INSTALL[45],
+    'site_admin_url' => $LANG_INSTALL[47],
+    'site_mail'      => $LANG_INSTALL[48],
+    'noreply_mail'   => $LANG_INSTALL[49],
+    'utf8'           => $LANG_INSTALL[92],
+    'migrate_file'   => $LANG_MIGRATE[6],
+    'plugin_upload'  => $LANG_PLUGINS[10]
 );
 
 ?>

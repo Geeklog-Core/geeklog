@@ -416,6 +416,7 @@ $LANG04 = array(
 
 ###############################################################################
 # Customize if need to modify the Tabbed navbar MyAccount panels used.
+# Array index key matches preference div id
 
 $LANG_MYACCOUNT = array(
     'pe_preview' => 'プレビュー',
@@ -910,14 +911,16 @@ $LANG27 = array(
     40 => '記事はひとつ以上の話題にアサインします。',
     41 => 'もし "すべて" が選ばれたらそのアイテムはすべての話題で表示されます。もし、 "ホームページのみ" が選ばれたらホームページにのみ表示。そうでなければ少なくともひとつ以上の話題を選択してください。 ',
     42 => '記事はアサインした話題に親の話題があれば親の話題も継承します。記事の保存の前に、継承リストを保存しなければなりません。デフォルトではアサインされた話題のリストを含みます。',
-    43 => 'デフォルトではアサインされた話題のリストを含みます。 ', 
+    43 => 'デフォルトではアサインされた話題のリストを含みます。 ',
     44 => '継承する',
     45 => 'デフォルト',
     46 => '親の話題に、アーカイブの話題は設定できません。他の親の話題を選んでください。',
     47 => 'アーカイブの話題は子の話題を持てません。アーカイブ話題に設定する前に子の話題を解除してください。',
     48 => '親の話題IDが見つかりません。',
+    49 => 'This Topic ID is already being used. Please choose another one.',
     'breadcrumb_separator' => '>',
-    'breadcrumb_root' => 'Home');
+    'breadcrumb_root' => 'Home'
+);
 
 ###############################################################################
 # admin/user.php
@@ -1599,29 +1602,29 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    # This here determines the order of the sentence "No new stories in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Stories"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
     'new_string' => '新着%i %n件(%t%s)',
-    'new_last'    => '新着(%t%s)',
-    # other strings
+    'new_last' => '新着(%t%s)',
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
     'weeks' => '週',
     'months' => 'ヶ月',
     'years' => '年',
-    'minute'      => '分',
-    'hour'        => '時',
-    'day'         => '日',
-    'week'        => '週',
-    'month'       => '月',
-    'year'        => '年'
+    'minute' => '分',
+    'hour' => '時',
+    'day' => '日',
+    'week' => '週',
+    'month' => '月',
+    'year' => '年'
 );
 
 ###############################################################################
@@ -2023,7 +2026,8 @@ $LANG_confignames['Core'] = array(
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする。',
     'disable_breadcrumbs_plugins' => 'プラグインのパンくずリストを無効にする。',
-    'breadcrumb_root_site_name' => 'サイト名をパンくずリストのルートにする?');
+    'breadcrumb_root_site_name' => 'サイト名をパンくずリストのルートにする?'
+);
 
 $LANG_configsubgroups['Core'] = array(
     'sg_site' => 'サイト',
@@ -2206,5 +2210,6 @@ $LANG_VALIDATION = array(
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドはあなたのバージョンのPHPによるhash関数が必要です。'
 );
+
 
 ?>

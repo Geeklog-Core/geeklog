@@ -911,6 +911,7 @@ $LANG27 = array(
     46 => 'Your parent topic cannot be the Archive topic. Please choose a different Parent Topic.',
     47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
     48 => 'Parent Topic Id not found.',
+    49 => 'This Topic ID is already being used. Please choose another one.',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'Home'
 );
@@ -1982,6 +1983,7 @@ $LANG_confignames['Core'] = array(
     'linktext_maxlen' => 'Max Link Text Length',
     'compressed_output' => 'Pošiljaj stisnjen izhod?',
     'frame_options' => 'Zašèiti proti "clickjackingu"',
+    'page_navigation_max_pages' => 'Max Pages for Navigation',
     'censormode' => 'Naèin cenzor?',
     'censorreplace' => 'Tekst namesto cenzuriranega',
     'censorlist' => 'seznam cenzur',
@@ -2199,6 +2201,7 @@ $LANG_VALIDATION = array(
     'language' => 'Language file does not exist',
     'timezone' => 'Invalid timezone',
     'single_char' => 'This field must be a single character',
+    'page_navigation_max_pages' => 'This field must be between 2 - 21',
     'hash' => 'This field must be a hash function supported by your version of PHP'
 );
 
