@@ -1,5 +1,30 @@
 Geeklog History/Changes:
 
+Sep ??, 2012 (2.0.0rc1)
+------------
+
+- You can create a new topic with the same id as another topic (bug #0001472)
+  [Tom]
+- Feed Editor Field "Header-link in topic" Displays None and All Selections
+  Twice (bug #0001481) [Tom]
+- Error when switching themes (bug #0001473) [Yoshinori]
+- Config Options for Page Navigation (feature request #0001474) [Tom]
+- When upgrading Staticpages Plugin for Geeklog 2.0.0 Topic Assignments are not
+  set properly (bug #0001475) [Tom]
+- Autotags works at  block  always without Denim (bug #0001471) [Tom]
+- The part of the page navigator should do markup by a list. (feature request
+  #0001422) [Tom]
+- Staticpage Template page should display Access Denied message (bug #0001468)
+  [Tom]
+- Calendar plugin install sql zipcode size is too small (feature request
+  #0001449) [Tom]
+- Get rid of the ereg functions (patch #0000967) [Tom]
+- Rework COM_siteHeader and COM_siteFooter (feature request #0001358)
+  [Yoshinori]
+- "More ..." link in the configuration doesn't work in IE6-7 (bug #0001466)
+  [Tom]
+
+
 Jul 13, 2012 (2.0.0b2)
 ------------
 
