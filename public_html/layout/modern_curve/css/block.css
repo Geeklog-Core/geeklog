@@ -191,6 +191,7 @@ div#leftblocks {
   margin-{right}: 8px;
 }
 
+div#leftblocks div.block-list,
 div#leftblocks div.block-left {
   margin-bottom: 12px;
   border-top: 1px solid #aaa;
@@ -203,6 +204,7 @@ div#leftblocks div.block-left {
 }
 
 /* Block Title */
+div#leftblocks div.block-list h2,
 div#leftblocks div.block-left h2 {
   margin: 0 0 0.5em 0;
   padding: 0 0 0.1em 0;
@@ -211,11 +213,13 @@ div#leftblocks div.block-left h2 {
 }
 
 /* Help Icon */
+div#leftblocks div.block-list h2 img,
 div#leftblocks div.block-left h2 img {
   vertical-align: middle;
 }
 
 /* Block Content */
+div#leftblocks div.block-list div.block-list-content,
 div#leftblocks div.block-left div.block-left-content {
   margin: 0;
   padding: 0;
@@ -234,6 +238,7 @@ div#rightblocks {
   margin-{left}: 8px;
 }
 
+div#rightblocks div.block-list,
 div#rightblocks div.block-right {
   margin-bottom: 12px;
   border-top: 1px solid #aaa;
@@ -246,6 +251,7 @@ div#rightblocks div.block-right {
 }
 
 /* Block Title */
+div#rightblocks div.block-list h2,
 div#rightblocks div.block-right h2 {
   margin: 0 0 0.5em 0;
   padding: 0 0 0.1em 0;
@@ -254,11 +260,13 @@ div#rightblocks div.block-right h2 {
 }
 
 /* Help Icon */
+div#rightblocks div.block-list h2 img,
 div#rightblocks div.block-right h2 img {
   vertical-align: middle;
 }
 
 /* Block Content */
+div#rightblocks div.block-list div.block-list-content,
 div#rightblocks div.block-right div.block-right-content {
   margin: 0;
   padding: 0;

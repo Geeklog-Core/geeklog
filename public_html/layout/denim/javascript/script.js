@@ -122,6 +122,7 @@ $(function() {
       obj.addClass("show");
       $(".block-left-content").css("display", "none");
       $(".block-right-content").css("display", "none");
+      $(".block-list-content").css("display", "none");
       obj.live('touchstart', function() {
         this.touched = true;
       });

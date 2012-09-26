@@ -1434,7 +1434,8 @@ h4 img {
 
 /* Block */
 .block-left,
-.block-right {
+.block-right,
+.block-list {
   margin: 0 8px 0.5em 8px;
   padding: 8px 0;
   font-size: 95%;
@@ -3431,7 +3432,8 @@ body.center-right #config_content {
 	}
 
 	.block-left,
-	.block-right {
+	.block-right,
+	.block-list {
 	    font-size: 100%;
 	    margin: 0 10px;
 	    padding: 0;
@@ -3498,7 +3500,8 @@ body.center-right #config_content {
 	}
 
 	.block-left-content,
-	.block-right-content {
+	.block-right-content,
+	.block-list-content {
 	  padding: 10px 0;
 	  text-shadow: 0 1px 0 #FFF;
 	}
