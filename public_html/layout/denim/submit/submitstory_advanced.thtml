@@ -26,7 +26,7 @@
             </div>
           </dd>
      
-          <dt><label for="submitstory_advanced-postmode">{lang_postmode}</label></dt>
+          <dt><label for="sel_editmode">{lang_postmode}</label></dt>
           <dd>
             <select name="postmode" id="sel_editmode" {change_editormode}>
               {story_postmode_options}
