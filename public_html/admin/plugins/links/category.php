@@ -273,7 +273,8 @@ function links_edit_category($cid, $pid)
     $T->set_var('topic_selection', '<select name="tid">' . $alltopics
                                    . $topics . '</select>');
     */
-    $T->set_var('topic_selection', TOPIC_getTopicListSelect($A['tid'], 2, true));        
+    $T->set_var('topic_selection', '<select name="tid" id="tid">'
+        . TOPIC_getTopicListSelect($A['tid'], 2, true) . '</select>');
     
 
     if (empty($cid)) {

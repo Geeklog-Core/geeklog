@@ -17,7 +17,7 @@
       <dt><label for="links-categoryeditor-description">{lang_description}</label></dt>
       <dd><input type="text" name="description" maxlength="255" id="links-categoryeditor-description" value="{description_value}" class="size6"{xhtml}></dd>
 
-      <dt><label>{lang_topic}</label></dt>
+      <dt><label for="tid">{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
 
       <dt><label>{lang_num_links}</label></dt>
