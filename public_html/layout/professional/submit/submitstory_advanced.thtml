@@ -1,6 +1,6 @@
 {noscript}
 <div id="advanced_editor" style="display:none;">
-    <form action="{site_url}/submit.php" method="post" onsubmit='set_postcontent();'>
+    <form action="{site_url}/submit.php" method="post" onsubmit="set_postcontent();">
         <table cellspacing="0" cellpadding="3">
             <tr>
                 <td class="alignright"><b>{lang_username}:</b></td>

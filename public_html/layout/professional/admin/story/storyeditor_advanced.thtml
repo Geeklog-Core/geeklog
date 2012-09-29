@@ -1,7 +1,7 @@
 {noscript}
 <div id="advanced_editor" style="display:none;">
     {navbar}
-    <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit='set_postcontent();'>
+    <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();">
         <table id='adveditor' cellspacing="0" cellpadding="3" style="width:100%; margin-top:10px; border:1px solid #ECE9D8;">
             <tr>
                 <td style="width:20%;" class="alignright">{lang_author}:</td>
