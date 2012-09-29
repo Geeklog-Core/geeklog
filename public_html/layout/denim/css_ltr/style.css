@@ -2847,6 +2847,10 @@ body.center-right #config_content {
   max-width: none;
 }
 
+.admin-table-changer {
+  display: none;
+}
+
 
 /* #Media Queries
 ================================================== */
@@ -2993,6 +2997,31 @@ body.center-right #config_content {
 
 	.admin-list-table {
 	  width: 900px;
+	}
+
+	.table-wrapper-fit {
+	  width: 100%;
+	  overflow: visible;
+	}
+	.table-wrapper-fit > .admin-list-table {
+	  width: 100%;
+	}
+
+	.admin-table-changer {
+	  display: block;
+	  text-align: right; /* rtl */
+	  margin-right: 2px;
+	  margin-bottom: 2px;
+	}
+	a.admin-list-table-changer {
+	  width: 50px;
+	  text-align: center;
+	  font-size: 85%;
+	  padding: 2px 6px;
+	  color: #444;
+	}
+	a.admin-list-table-changer:hover {
+	  text-decoration: none;
 	}
 }
 
@@ -3200,6 +3229,11 @@ body.center-right #config_content {
 	.fieldset-table-wrapper {
 	  overflow: scroll;
 	  width: 502px; /* 502 = 528 - 13 - 13 */
+	}
+
+	.table-wrapper-fit {
+	  width: 100%;
+	  overflow: visible;
 	}
 }
 

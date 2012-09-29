@@ -140,4 +140,31 @@ $(function() {
       });
     }
   }
+
+  var iswide = false;
+  var classname1 = 'table-wrapper';
+  var classname2 = 'table-wrapper-fit';
+  var btntext1 = 'Fit';
+  var btntext2 = 'Expand';
+  
+  if (istouch && !istablet) iswide = true;
+  $('.table-wrapper').before('<div class="admin-table-changer">'
+    + '<a class="admin-list-table-changer button" href="javascript:void(0);">'
+    + (iswide ? btntext1 : btntext2)
+    + '</a></div>');
+  var tablechanger = $('.admin-list-table-changer');
+  if (!iswide) {
+    $('.' + classname1).attr('class', classname2);
+    tablechanger.text(btntext2);
+  }
+  tablechanger.live('click', function() {
+    if (iswide) {
+      $('.' + classname1).attr('class', classname2);
+      tablechanger.text(btntext2);
+    } else {
+      $('.' + classname2).attr('class', classname1);
+      tablechanger.text(btntext1);
+    }
+    iswide = !iswide;
+  });
 });
