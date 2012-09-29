@@ -12,7 +12,7 @@
         <br{xhtml}>
         <select name="keyType" id="advsearchform-keyType">
           <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
-          <option value="all"   selected="selected" {key_all_selected}>{lang_all_words}</option>
+          <option value="all" {key_all_selected}>{lang_all_words}</option>
           <option value="any" {key_any_selected}>{lang_any_word}</option>
         </select>
         <span>

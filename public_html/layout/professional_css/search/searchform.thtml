@@ -11,7 +11,7 @@
         <input type="text" size="35" maxlength="35" value="{query}" name="query" id="advsearchform-query" class="text"{xhtml}>
         <select name="keyType" id="advsearchform-keyType">
           <option value="phrase" {key_phrase_selected}>{lang_exact_phrase}</option>
-          <option value="all"   selected="selected" {key_all_selected}>{lang_all_words}</option>
+          <option value="all" {key_all_selected}>{lang_all_words}</option>
           <option value="any" {key_any_selected}>{lang_any_word}</option>
         </select>
         <input type="checkbox" value="true" name="title"{title_checked}{xhtml}>{lang_titles}
