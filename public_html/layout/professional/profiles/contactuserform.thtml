@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <td class="alignright" style="vertical-align:top;"><b>{lang_message}</b></td>
-            <td><textarea name="message" rows="10" style="width:100%">{message}</textarea></td>
+            <td><textarea name="message" rows="10" cols="50" style="width:100%">{message}</textarea></td>
         </tr>
         <tr{cc_enabled}>
             <td class="alignright"><b>{lang_cc}</b></td>
