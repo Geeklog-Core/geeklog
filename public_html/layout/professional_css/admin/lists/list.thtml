@@ -17,7 +17,7 @@
 </table>
 
 <ul class="admin-list-navi" style="{show_deleteimage}">
-  <li><input type="image" name="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}></li>
+  <li><input type="image" name="delbutton" alt="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}></li>
 </ul>
 
 {formfields_bottom}

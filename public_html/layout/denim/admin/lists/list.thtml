@@ -18,7 +18,7 @@
 </div>
 
 <div class="admin-list-navi" style="{show_deleteimage}">
-  <input type="image" name="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
+  <input type="image" name="delbutton" alt="delbutton" src="{layout_url}/images/deleteitem.png" title="{lang_deleteall}" onclick="return confirm('{lang_delconfirm}');"{xhtml}>
 </div>
 
 <div>
