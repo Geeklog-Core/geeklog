@@ -6,7 +6,7 @@
   <p id="menu_fields">
     {menu_fields_pre}{menu_fields}{menu_fields_aft}
   </p>
-  <p>{lang_instructions}</p>
+  <div id="instructions">{lang_instructions}</div>
 </div>
 
 <!-- } admin/lists/topmenu.thtml -->

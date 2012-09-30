@@ -52,7 +52,7 @@ div#admin-instructions p#menu_fields:after {
   content: "]";
 }
 
-div#admin-instructions p {
+div#admin-instructions div {
   margin: 0;
   padding: 0;
 }

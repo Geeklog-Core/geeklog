@@ -17,7 +17,7 @@
         </select>
         <span>
           {lang_titles} <input type="checkbox" value="true" name="title"{title_checked}{xhtml}>
-        <span>
+        </span>
       </dd>
 
       <dt><label for="advsearchform-datestart">{lang_date}</label></dt>

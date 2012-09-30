@@ -1,7 +1,7 @@
 
 <!-- admin/story/storyeditor.thtml { -->
 
-<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
+<form action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
 
   <div class="admin_basic">
     <dl>
@@ -40,7 +40,7 @@
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
       <dd><input type="text" size="48" maxlength="255" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="text"{xhtml}></dd>
 
-      <dt><label for="admin-storyeditor-tid">{lang_topic}</label></dt>
+      <dt>{lang_topic}</dt>
       <dd>{topic_selection}</dd>
 
       <dt><label for="admin-storyeditor-show_topic_icon">{lang_show_topic_icon}</label></dt>
@@ -82,7 +82,7 @@
         {expireampm_selection}
       </dd>
 
-      <dt><label for="admin-storyeditor-featured">{lang_mode}</label></dt>
+      <dt>{lang_mode}</dt>
       <dd>
         {featured_options}
         <select name="frontpage">
@@ -97,7 +97,7 @@
         </select>
       </dd>
 
-      <dt><label for="admin-storyeditor-featured">{lang_cmt_disable}:</label></dt>
+      <dt>{lang_cmt_disable}:</dt>
       <dd>
         {lang_enabled}&nbsp;
         <input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
@@ -150,7 +150,7 @@
       </dd>
       <dd class="description">{lang_allowed_html}</dd>
 
-      <dt><label for="file1">{lang_images}</label></dt>
+      <dt>{lang_images}</dt>
       <dd>
         {saved_images}
         {image_form_elements}
@@ -182,7 +182,7 @@
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
 
-      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dt>{lang_permissions}</dt>
       <dd>{permissions_editor}</dd>
       <dd class="description">{lang_perm_key}</dd>
       <dd class="description">{lang_permissions_msg}</dd>

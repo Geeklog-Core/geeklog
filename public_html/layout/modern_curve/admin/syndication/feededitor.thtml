@@ -15,7 +15,7 @@
       <dt>{lang_type}</dt>
       <dd>{feed_type_display}</dd>
 
-      <dt><label for="topic">{lang_topic}</label></dt>
+      <dt>{lang_topic}</dt>
       <dd>{feed_topic}</dd>
 
       <dt><label for="admin-feededitor-header_tid">{lang_header_topic}</label></dt>
@@ -25,7 +25,7 @@
         </select>
       </dd>
 
-      <dt><label for="format">{lang_format}</label></dt>
+      <dt>{lang_format}</dt>
       <dd>{feed_format}</dd>
 
       <dt><label for="admin-feededitor-limits">{lang_limits}</label></dt>

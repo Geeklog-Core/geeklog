@@ -90,14 +90,14 @@
   <fieldset>
     <legend>{lang_accessrights}</legend>
 
-    <dl>
+    <dl class="form_block">
       <dt>{lang_owner}</dt>
       <dd>{owner_username}</dd>
 
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
 
-      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dt>{lang_permissions}</dt>
       <dd>{permissions_editor}</dd>
       <dd class="description">{lang_perm_key}</dd>
       <dd class="description">{lang_permissions_msg}</dd>

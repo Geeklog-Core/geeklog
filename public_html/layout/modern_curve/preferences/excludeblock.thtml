@@ -10,10 +10,10 @@
   </dl>
 
   <dl>
-    <dt><label for="gl_topics">{lang_topics}</label></dt>
+    <dt>{lang_topics}</dt>
     <dd>{exclude_topic_checklist}</dd>
 
-    <dt><label for="selauthors">{lang_authors}</label></dt>
+    <dt>{lang_authors}</dt>
     <dd>{exclude_author_checklist}</dd>
   </dl>
 </fieldset>

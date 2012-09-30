@@ -3,9 +3,11 @@
 {noscript}
 <div id="geeklog_config_editor" style="display:none;">
     <form method="post" action="{site_admin_url}/configuration.php" name="group">
+    <div>
       <input type="hidden" value="{open_group}" name="conf_group"{xhtml}>
       <input type="hidden" value="" name="subgroup"{xhtml}>
       <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+    </div>
     </form>
     <table>
         <tr>
@@ -27,9 +29,11 @@
                     {change_block}
                 </div>
                 <form action="{site_admin_url}/configuration.php" method="post" name="subgroup">
-                <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>
-                <input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>
-                <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                <div>
+                  <input type="hidden" name="conf_group" value="{open_group}"{xhtml}>
+                  <input type="hidden" name="sub_group" value="{open_sg}"{xhtml}>
+                  <input type="hidden" name="{gltoken_name}" value="{gltoken}"{xhtml}>
+                </div>
     
                 <div id="tabs">
                 
@@ -53,12 +57,12 @@
                 
                 </div>
     
-    
-                <input type="hidden" name="form_submit" value="true"{xhtml}>
                 <div id="bottom_buttons" class="aligncenter">
                     <input type="submit" id="save_changes" value="{lang_save_changes}"{xhtml}>
                     <input type="submit" id="form_reset" name="form_reset" value="{lang_reset_form}"{xhtml}>
+                    <input type="hidden" name="form_submit" value="true"{xhtml}>
                 </div>
+
                 </form>
     
             </td>

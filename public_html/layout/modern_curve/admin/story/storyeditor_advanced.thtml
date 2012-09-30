@@ -6,7 +6,7 @@
 <div id="advanced_editor" style="display: none;">
 {navbar}
 
-<form  name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();" id="admin-storyeditor_advanced" class="compact">
+<form action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onsubmit="set_postcontent();" id="admin-storyeditor_advanced" class="compact">
 
   <div class="admin_basic">
     <dl>
@@ -23,12 +23,12 @@
       <dd><input type="text" size="40" maxlength="40" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="text"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
-      <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:95%" rows="2">{meta_description}</textarea></dd>
+      <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:95%" cols="70" rows="2">{meta_description}</textarea></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
-      <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:95%" rows="2">{meta_keywords}</textarea></dd>
+      <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:95%" cols="70" rows="2">{meta_keywords}</textarea></dd>
 
-      <dt><label for="admin-storyeditor_advanced-tid">{lang_topic}</label></dt>
+      <dt><label>{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
 
       <dt>{lang_hits}</dt>
@@ -64,8 +64,8 @@
         <dt><label for="introtext">{lang_introtext}</label></dt>
         <dd>
           <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');"{xhtml}></li>
+            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('introtext','larger');" alt="expand button"{xhtml}></li>
+            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('introtext','smaller');" alt="collapse button"{xhtml}></li>
           </ul>
           <textarea cols="45" rows="14" name="introtext" id="introtext">{story_introtext}</textarea>
         </dd>
@@ -75,13 +75,13 @@
         </dt>
         <dd>
           <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');"{xhtml}></li>
+            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeTextAreaSize('bodytext','larger');" alt="expand button"{xhtml}></li>
+            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeTextAreaSize('bodytext','smaller');" alt="collapse button"{xhtml}></li>
           </ul>
           <textarea cols="45" rows="14" name="bodytext" id="bodytext">{story_bodytext}</textarea>
         </dd>
       </dl>
-      <p id="editor_mode" class="description">{lang_allowed_html}</p>
+      <div class="description">{lang_allowed_html}</div>
     </div>
 
     <div id="html_editor" style="display: {show_htmleditor};">
@@ -89,8 +89,8 @@
         <dt><label for="introhtml">{lang_introtext}</label></dt>
         <dd>
           <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');"{xhtml}></li>
+            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('introhtml','larger');" alt="expand button"{xhtml}></li>
+            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('introhtml','smaller');" alt="collapse button"{xhtml}></li>
             <li>
               {lang_toolbar}
               <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
@@ -107,14 +107,14 @@
         <dt><label for="bodyhtml">{lang_bodytext}</label></dt>
         <dd>
           <ul class="navi">
-            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');"{xhtml}></li>
-            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"{xhtml}></li>
+            <li><img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" onclick="changeHTMLTextAreaSize('bodyhtml','larger');" alt=""{xhtml}></li>
+            <li><img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');" alt=""{xhtml}></li>
           </ul>
           <textarea cols="45" rows="20" name="bodyhtml" id="bodyhtml">{story_bodytext}</textarea>
         </dd>
       </dl>
 
-      <p id="editor_mode" class="description">{lang_allowed_html}</p>
+      <div id="editor_mode" class="description">{lang_allowed_html}</div>
     </div>
   </div>
 
@@ -156,7 +156,7 @@
     <legend>{lang_publishoptions}</legend>
 
     <dl>
-      <dt><label for="admin-storyeditor_advanced-featured">{lang_mode}</label></dt>
+      <dt>{lang_mode}</dt>
       <dd>
         {featured_options}
         <select name="frontpage">
@@ -169,7 +169,7 @@
           {trackback_options}
         </select>
       </dd>
-      <dt><label for="admin-storyeditor-featured">{lang_cmt_disable}</label></dt>
+      <dt>{lang_cmt_disable}</dt>
       <dd>
         {lang_enabled}&nbsp;
         <input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
@@ -207,7 +207,7 @@
     <legend>{lang_images}</legend>
 
     <dl>
-      <dt><label for="file1">{lang_images}</label></dt>
+      <dt>{lang_images}</dt>
       <dd>
         {saved_images}
         {image_form_elements}
@@ -273,7 +273,7 @@
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
 
-      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dt>{lang_permissions}</dt>
       <dd>{permissions_editor}</dd>
       <dd class="description">{lang_perm_key}</dd>
       <dd class="description">{lang_permissions_msg}</dd>

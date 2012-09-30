@@ -1,7 +1,7 @@
 
 <!-- admin/lists/searchmenu.thtml { -->
 
-<form action="{form_url}" method="post" id="admin-topmenu" class="basic">
+<form action="{form_url}" method="post" class="admin-topmenu basic">
   <fieldset>
     <legend>{lang_search}</legend>
 
@@ -10,12 +10,12 @@
 	</ul>
 
     <dl>
-      <dt><label for="admin-topmenu-q">{lang_search}</label></dt>
-      <dd><input type="text" size="20" value="{last_query}" name="q" id="admin-topmenu-q" class="text"{xhtml}></dd>
+      <dt>{lang_search}</dt>
+      <dd><input type="text" size="20" value="{last_query}" name="q" class="text"{xhtml}></dd>
 
-      <dt><label for="admin-topmenu-query_limit">{lang_limit_results}</label></dt>
+      <dt>{lang_limit_results}</dt>
       <dd>
-        <select name="query_limit" id="admin-topmenu-query_limit">
+        <select name="query_limit">
           <option value="10" {10_selected}>10</option>
           <option value="20" {20_selected}>20</option>
           <option value="50" {50_selected}>50</option>
