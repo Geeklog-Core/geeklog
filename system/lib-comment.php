@@ -2464,7 +2464,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             }
             // deliberate fall-through
         case 'edit':
-            $retval .= CMT_handleEdit($commentmode, $postmode, $format, $order, $page);
+            $retval .= CMT_handleEdit($commentmode, $postmode, $format, $order, $cpage);
             if ($is_comment_page) {
                 $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
             }
