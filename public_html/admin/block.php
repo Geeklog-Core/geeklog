@@ -908,7 +908,8 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
                     $_POST['perm_members'], $_POST['perm_anon'],
                     $is_enabled, $allow_autotags);
 } elseif ($mode == 'edit') {
-    $display = COM_createHTMLDocument(editblock($bid), array('pagetitle' => $LANG21[3]));
+    $tmp = editblock($bid);
+    $display = COM_createHTMLDocument($tmp, array('pagetitle' => $LANG21[3]));
 } elseif ($mode == 'move') {
     if(SEC_checkToken()) {
         $display .= moveBlock();
