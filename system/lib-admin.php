@@ -159,7 +159,8 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
             }
             for ($j = 0; $j < count($header_arr); $j++) {
                 $fieldname = $header_arr[$j]['field'];
-                if (isset($data_arr[$i][$fieldname])) {
+                if (isset($data_arr[$i][$fieldname]) &&
+                        !empty($data_arr[$i][$fieldname])) {
                     $fieldvalue = strval($data_arr[$i][$fieldname]);
                 } else {
                     $fieldvalue = '';
