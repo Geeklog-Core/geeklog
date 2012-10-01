@@ -231,6 +231,7 @@ function plugin_showstats_polls ($showsitestats)
         $data_arr = array();
         $text_arr = array('has_menu' => false,
                           'title'    => $LANG_POLLS['stats_top10'],
+                          'form_url' => $_CONF['site_url'] . '/stats.php'
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);

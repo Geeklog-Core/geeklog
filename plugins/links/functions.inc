@@ -316,6 +316,7 @@ function plugin_showstats_links ($showsitestats)
         $data_arr = array();
         $text_arr = array('has_menu' => false,
                           'title'    => $LANG_LINKS_STATS['stats_headline'],
+                          'form_url' => $_CONF['site_url'] . '/stats.php'
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);

@@ -328,7 +328,9 @@ function show_newplugins($token)
                     array('text' => $LANG32[22], 'field' => 'install_link')
     );
 
-    $text_arr = array('title' => $LANG32[14]);
+    $text_arr = array('title'    => $LANG32[14],
+                      'form_url' => $_CONF['site_admin_url'] . '/plugins.php'
+    );
     $retval .= ADMIN_simpleList('ADMIN_getListField_newplugins', $header_arr, $text_arr, $data_arr);
 
     return $retval;

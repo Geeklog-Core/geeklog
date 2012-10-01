@@ -70,6 +70,7 @@ function plugin_showstats_spamx($showsitestats)
         $data_arr = array();
         $text_arr = array('has_menu'     => false,
                           'title'        => $LANG_SX00['stats_headline'],
+                          'form_url'     => $_CONF['site_url'] . '/stats.php'
         );
         $data_arr = array(
             array('label' => $LANG_SX00['stats_pblacklist'],

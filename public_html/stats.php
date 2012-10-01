@@ -55,6 +55,7 @@ $header_arr = array(
 $data_arr = array();
 $text_arr = array('has_menu'     =>  false,
                   'title'        => $LANG10[1],
+                  'form_url'     => $_CONF['site_url'] . '/stats.php'
 );
 
 $totalhits = DB_getItem ($_TABLES['vars'], 'value', "name = 'totalhits'");
@@ -135,6 +136,7 @@ if ($nrows > 0) {
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
                       'title'        => $LANG10[7],
+                      'form_url'     => $_CONF['site_url'] . '/stats.php'
     );
 
     for ($i = 0; $i < $nrows; $i++) {
@@ -170,6 +172,7 @@ if ($nrows > 0) {
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
                       'title'        => $LANG10[11],
+                      'form_url'     => $_CONF['site_url'] . '/stats.php'
     );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
@@ -206,6 +209,7 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
         $data_arr = array();
         $text_arr = array('has_menu'     =>  false,
                           'title'        => $LANG10[25],
+                          'form_url'     => $_CONF['site_url'] . '/stats.php'
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray ($result);
@@ -242,6 +246,7 @@ if ($nrows > 0) {
     $data_arr = array();
     $text_arr = array('has_menu'     =>  false,
                       'title'        => $LANG10[22],
+                      'form_url'     => $_CONF['site_url'] . '/stats.php'
     );
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);

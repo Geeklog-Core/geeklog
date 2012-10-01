@@ -16,9 +16,9 @@
       <dd class="description">{lang_includehttp}<br{xhtml}>
                               {lang_explanation}</dd>
 
-      <dt><label for="admin-blockeditor-name">{lang_blockname}</label></dt>
+      <dt>{lang_blockname}</dt>
       <dd>{block_name}
-        <input type="hidden" name="name" value="{block_name}" id="admin-blockeditor-name" class="size5"{xhtml}></dd>
+        <input type="hidden" name="name" value="{block_name}" class="size5"{xhtml}></dd>
 
       <dt><label>{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
@@ -34,9 +34,9 @@
       <dd><input type="text" name="blockorder" value="{block_order}" id="admin-blockeditor-blockorder" class="size1"{xhtml}>
         0 - 9999</dd>
 
-      <dt><label for="admin-blockeditor-type">{lang_blocktype}</label></dt>
+      <dt>{lang_blocktype}</dt>
       <dd>gldefault
-        <input type="hidden" name="type" value="gldefault" id="admin-blockeditor-type"{xhtml}></dd>
+        <input type="hidden" name="type" value="gldefault"{xhtml}></dd>
     </dl>
 
     <fieldset>
@@ -50,7 +50,7 @@
         <dt><label for="group_id">{lang_group}</label></dt>
         <dd>{group_dropdown}</dd>
 
-        <dt><label for="admin-permissions">{lang_permissions}</label></dt>
+        <dt><label>{lang_permissions}</label></dt>
         <dd>{permissions_editor}</dd>
         <dd class="description">{lang_perm_key}</dd>
         <dd class="description">{permissions_msg}</dd>

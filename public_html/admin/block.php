@@ -440,6 +440,7 @@ function listblocks()
 	
 	$dyn_text_arr = array(
         'title'      => "$LANG21[22] ($LANG21[40])",
+        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 	
 	$leftblocks = PLG_getBlocksConfig('left', '');    
@@ -483,6 +484,7 @@ function listblocks()
 	// Dynamic blocks
 	$dyn_text_arr = array(
         'title'      => "$LANG21[22] ($LANG21[41])",
+        'form_url'   => $_CONF['site_admin_url'] . '/block.php'
     );
 	
 	$rightblocks = PLG_getBlocksConfig('right', '');

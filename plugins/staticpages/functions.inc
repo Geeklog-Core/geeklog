@@ -708,7 +708,8 @@ function plugin_showstats_staticpages($showsitestats)
         );
         $data_arr = array();
         $text_arr = array('has_menu' => false,
-                          'title'    => $LANG_STATIC['stats_headline']
+                          'title'    => $LANG_STATIC['stats_headline'],
+                          'form_url' => $_CONF['site_url'] . '/stats.php'
         );
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);

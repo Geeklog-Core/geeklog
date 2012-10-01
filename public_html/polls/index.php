@@ -80,7 +80,8 @@ function polllist()
 
         $text_arr = array('has_menu' =>  false,
                           'title' => $LANG_POLLS['pollstitle'], 'instructions' => "",
-                          'icon' => '', 'form_url' => '');
+                          'icon' => '', 'form_url' => '',
+                          'form_url' => $_CONF['site_url'] . '/polls/index.php');
 
         $query_arr = array('table' => 'polltopics',
                            'sql' => $sql = "SELECT *,UNIX_TIMESTAMP(created) AS unixdate, display "
