@@ -18,7 +18,7 @@
       <dd><input type="text" size="16" maxlength="16" value="{username}" name="username" id="admin-edituser-username" class="text"{xhtml}> {remoteservice}<br{xhtml}></dd>
       <dd class="user_photo">
         {user_photo}
-        <label for="delete_photo">{lang_delete_photo}</label>{delete_photo_option}
+        {lang_delete_photo}{delete_photo_option}
       </dd>
 
       <dt><label for="admin-edituser-fullname">{lang_fullname}</label></dt>
@@ -26,7 +26,7 @@
 
       {password_option}
 
-      <dt><label for="v-email">{lang_emailaddress}</label></dt>
+      <dt><label for="admin-edituser-email">{lang_emailaddress}</label></dt>
       <dd><input type="text" size="48" maxlength="255" value="{user_email}" name="email" id="admin-edituser-email" class="text"{xhtml}></dd>
 
       <dt><label for="admin-edituser-homepage">{lang_homepage}</label></dt>

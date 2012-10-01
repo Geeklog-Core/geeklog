@@ -22,7 +22,7 @@
         </select>
       </dd>
       
-      <dt><label for="sortnum">{lang_sortorder}</label></dt>
+      <dt>{lang_sortorder}</dt>
       <dd>{sort_order}</dd>
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
@@ -39,10 +39,10 @@
       <dd class="description">{icon_max_dimensions}</dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
-      <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:100%" rows="2">{meta_description}</textarea></dd>
+      <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:100%" cols="70" rows="2">{meta_description}</textarea></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metakeywords">{lang_metakeywords}</label></dt>
-      <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:100%" rows="2">{meta_keywords}</textarea></dd>
+      <dd{hide_meta}><textarea name="meta_keywords" id="admin-storyeditor-metakeywords" style="width:100%" cols="70" rows="2">{meta_keywords}</textarea></dd>
 
       <dt><label for="admin-topiceditor-is_default">{lang_defaulttopic}</label></dt>
       <dd><input type="checkbox" {default_checked} name="is_default" id="admin-topiceditor-is_default"{xhtml}><span class="fieldhelp">{lang_defaulttext}</span></dd>
@@ -50,7 +50,7 @@
       <dt><label for="admin-topiceditor-is_archive">{lang_archivetopic}</label></dt>
       <dd><input type="checkbox" {archive_checked} {archive_disabled} name="is_archive" id="admin-topiceditor-is_archive"{xhtml}><span class="fieldhelp">{lang_archivetext}</span></dd>
 
-      <dt><label for="admin-topiceditor-num_stories">{lang_num_stories}</label></dt>
+      <dt>{lang_num_stories}</dt>
       <dd>{num_stories}</dd>
 
     </dl>
@@ -66,7 +66,7 @@
       <dt><label for="group_id">{lang_group}</label></dt>
       <dd>{group_dropdown}</dd>
 
-      <dt><label for="perm_owner">{lang_permissions}</label></dt>
+      <dt>{lang_permissions}</dt>
       <dd>{permissions_editor}</dd>
       <dd class="description">{lang_perm_key}</dd>
       <dd class="description">{lang_permissions_msg}</dd>

@@ -10,10 +10,8 @@
 
       <dl>
         <dt><label for="loginform-loginname">{lang_username}</label></dt>
-        <dd><input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}></dd>
- 
-        {services}
- 
+        <dd><input type="text" size="16" name="loginname" id="loginform-loginname" class="text"{xhtml}>
+        {services}</dd>
         <dt><label for="loginform-passwd">{lang_password}</label></dt>
         <dd><input type="password" size="16" name="passwd" id="loginform-passwd" class="text"{xhtml}></dd>
       </dl>

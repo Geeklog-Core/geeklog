@@ -1,9 +1,7 @@
 
 <!-- admin/topic/topiclist.thtml { -->
 
-<div id="admin-instructions">
-  {top_menu}
-</div>
+{top_menu}
 
 <ul id="admin-topiclist">
   {list_row}

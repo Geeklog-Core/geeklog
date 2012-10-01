@@ -16,48 +16,48 @@
 --------------------------------------*/
 
 /* Search  | Refine */
-form#admin-topmenu {
+form.admin-topmenu {
   margin: 0 0 1em 0;
   text-align: center;
 }
 
-form#admin-topmenu ul.filter {
+form.admin-topmenu ul.filter {
   display: inline;
   margin: 0 auto;
   padding: 0;
 }
 
-form#admin-topmenu ul.filter li {
+form.admin-topmenu ul.filter li {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
-form#admin-topmenu dl {
+form.admin-topmenu dl {
   display: inline;
   margin: 0 auto;
   padding: 0;
 }
 
-form#admin-topmenu dl dt {
+form.admin-topmenu dl dt {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
-form#admin-topmenu dl dd {
+form.admin-topmenu dl dd {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
-form#admin-topmenu ul.submit {
+form.admin-topmenu ul.submit {
   display: inline;
   margin: 0;
   padding: 0;
 }
 
-form#admin-topmenu ul.submit li {
+form.admin-topmenu ul.submit li {
   display: inline;
   margin: 0;
   padding: 0;

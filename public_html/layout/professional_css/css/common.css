@@ -265,7 +265,8 @@ form.compact dl dd.description {
 }
 /* } Win IE 6 */
 
-form.compact p.description {
+form.compact p.description,
+form.compact div.description {
   margin: 0 0 1em 0;
   padding: 0;
 }
@@ -327,7 +328,8 @@ form.linear dl dd.description {
   padding: 0;
 }
 
-form.linear p.description {
+form.linear p.description,
+form.linear div.description {
   margin: 0 0 1em 0;
   padding: 0;
 }
