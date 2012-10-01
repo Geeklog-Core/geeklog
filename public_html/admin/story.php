@@ -672,7 +672,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
     $story_templates->set_var('lang_publishoptions',$LANG24[76]);
     $story_templates->set_var('noscript', COM_getNoScript(false, $LANG24[77], sprintf($LANG24[78],$_CONF['site_admin_url'], $sid)));
     
-    $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode'));
+    $postmode = $story->EditElements('postmode');
+    if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+        if ($story->EditElements('advanced_editor_mode') == 1 OR $story->EditElements('postmode') == 'adveditor') {
+            $postmode = '';
+        }
+    }
+    $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$postmode);
 
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
