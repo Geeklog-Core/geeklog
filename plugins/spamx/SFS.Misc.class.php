@@ -92,26 +92,39 @@ class SFS extends BaseCommand {
             $_SPX_CONF['timeout'] = 5; // seconds
         }
 
-        $ctx = stream_context_create(array( 
-            'http' => array( 
-                'timeout' => $_SPX_CONF['timeout'] 
-                ) 
-            ) 
-        );
-        
-        if ($this->_verbose) {
-            SPAMX_log ("Sending to SFS: $query");
-        }        
+		require_once 'HTTP/Request.php';
 
-        $result = file_get_contents($query, 0, $ctx);
-        $result = unserialize($result);
-        if (!$result) {
-            if ($this->_verbose) {
-                SPAMX_log ("SFS: no spam detected");
-            }
-            return 0;     // invalid data, assume ok
+		$req = new HTTP_Request(
+			$query,
+			array(
+				'timeout' => $_SPX_CONF['timeout'],
+			)
+		);
+
+        if ($this->_verbose) {
+            SPAMX_log('Sending to SFS: ' . $query);
         }
 
+		if ($req->sendRequest() === TRUE) {
+			$result = $req->getResponseBody();
+
+			if ($result === FALSE) {
+				return 0;	// Response body is not set, assume ok
+			}
+
+			$result = unserialize($result);
+
+	        if (!$result) {
+	            if ($this->_verbose) {
+	                SPAMX_log ("SFS: no spam detected");
+	            }
+
+	            return 0;	// Invalid data, assume ok
+	        }
+		} else {
+			return 0;		// PEAR Error, assume ok
+		}
+		
         if ($result['email']['appears'] == 1)
             $value_arr[] = "('email', '$db_email')";
         if ($result['ip']['appears'] == 1)
