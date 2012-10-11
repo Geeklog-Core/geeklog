@@ -88,6 +88,10 @@ $_CONF_VALIDATE['Core']['rdf_limit'] = array(
 );
 $_CONF_VALIDATE['Core']['rdf_storytext'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['syndication_max_headlines'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['comment_feeds_article_tag'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['comment_feeds_article_tag_position'] = array(
+    'rule' => array('inList', array('start', 'end', 'none'), true)
+); 
 
 /* Subgroup Site, Tab Paths */
 $_CONF_VALIDATE['Core']['path_html'] = array(

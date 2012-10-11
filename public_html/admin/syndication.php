@@ -309,11 +309,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('feed_content_length', $A['content_length']);
     $feed_template->set_var ('feed_filename', $A['filename']);
     $feed_template->set_var ('feed_type', $A['type']);
-    if ($A['type'] == 'article') {
-        $feed_template->set_var('feed_type_display', $LANG33[55]);
-    } else {
-        $feed_template->set_var('feed_type_display', ucwords($A['type']));
-    }
+    $feed_template->set_var('feed_type_display', ucwords($A['type']));
     $feed_template->set_var ('feed_charset', $A['charset']);
     $feed_template->set_var ('feed_language', $A['language']);
 
@@ -360,44 +356,29 @@ function editfeed ($fid = 0, $type = '')
     $selection .= '</select>' . LB;
     $feed_template->set_var ('feed_limits', $limits);
     $feed_template->set_var ('feed_limits_what', $selection);
-
-    if ($A['type'] == 'article') {
-        $options[] = array ('id' => '::all',       'name' => $LANG33[23]);
-        $options[] = array ('id' => '::frontpage', 'name' => $LANG33[53]);        
-        
-        $selection = '<select name="topic">' . LB;
-        foreach ($options as $o) {
-            $selection .= '<option value="' . $o['id'] . '"';
-            if ($A['topic'] == $o['id']) {
-                $selection .= ' selected="selected"';
-            }
-            $selection .= '>' . $o['name'] . '</option>' . LB;
-        }
-        $selection .= TOPIC_getTopicListSelect($A['topic'], 0, false, '', false, 1);
-        $selection .= '</select>' . LB;    
-    } else {
+      
+    if ($A['type'] != 'article' AND $A['type'] != 'comment') {
         $result = DB_query("SELECT pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name='{$A['type']}'");
-        if($result)
-        {
+        if ($result) {
             $P = DB_fetchArray($result);
-            if($P['pi_enabled'] == 0)
-            {
+            if($P['pi_enabled'] == 0) {
                 echo COM_refresh($_CONF['site_admin_url'].'/syndication.php?msg=80');
                 exit;
             }
         }
-        $options = PLG_getFeedNames ($A['type']);
-        
-        $selection = '<select name="topic">' . LB;
-        foreach ($options as $o) {
-            $selection .= '<option value="' . $o['id'] . '"';
-            if ($A['topic'] == $o['id']) {
-                $selection .= ' selected="selected"';
-            }
-            $selection .= '>' . $o['name'] . '</option>' . LB;
-        }
-        $selection .= '</select>' . LB;        
     }
+    $options = PLG_getFeedNames ($A['type']);
+    
+    $selection = '<select name="topic">' . LB;
+    foreach ($options as $o) {
+        $selection .= '<option value="' . $o['id'] . '"';
+        if ($A['topic'] == $o['id']) {
+            $selection .= ' selected="selected"';
+        }
+        $selection .= '>' . $o['name'] . '</option>' . LB;
+    }
+    $selection .= '</select>' . LB;        
+
     $feed_template->set_var ('feed_topic', $selection);
 
     if ($A['is_enabled'] == 1) {
@@ -428,36 +409,28 @@ function newfeed ()
     $retval = '';
 
     $plugins = PLG_supportingFeeds ();
-    if (count($plugins) == 0) {
-        // none of the installed plugins are supporting feeds
-        // - go directly to the feed editor
-        $retval = editfeed (0, 'article');
-        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
-    } else {
-        $selection = '<select name="type">' . LB;
-        $selection .= '<option value="article">' . $LANG33[55]
+    
+    $selection = '<select name="type">' . LB;
+    foreach ($plugins as $p) {
+        $selection .= '<option value="' . $p . '">' . ucwords ($p)
                    . '</option>' . LB;
-        foreach ($plugins as $p) {
-            $selection .= '<option value="' . $p . '">' . ucwords ($p)
-                       . '</option>' . LB;
-        }
-        $selection .= '</select>' . LB;
-
-        $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
-        $feed_template->set_file ('type', 'selecttype.thtml');
-
-        $feed_template->set_var ('type_selection', $selection);
-
-        $feed_template->set_var ('lang_explain', $LANG33[54]);
-        $feed_template->set_var ('lang_go', $LANG33[1]);
-
-        $retval .= COM_startBlock ($LANG33[36], '',
-                COM_getBlockTemplate ('_admin_block', 'header'));
-        $retval .= $feed_template->finish ($feed_template->parse ('output',
-                                                                  'type'));
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
     }
+    $selection .= '</select>' . LB;
+
+    $feed_template = COM_newTemplate($_CONF['path_layout'] . 'admin/syndication');
+    $feed_template->set_file ('type', 'selecttype.thtml');
+
+    $feed_template->set_var ('type_selection', $selection);
+
+    $feed_template->set_var ('lang_explain', $LANG33[54]);
+    $feed_template->set_var ('lang_go', $LANG33[1]);
+
+    $retval .= COM_startBlock ($LANG33[36], '',
+            COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= $feed_template->finish ($feed_template->parse ('output',
+                                                              'type'));
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[11]));
 
     return $retval;
 }

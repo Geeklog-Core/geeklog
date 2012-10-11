@@ -469,8 +469,14 @@ function PLG_getCommentUrlId($type)
  */
 function PLG_commentDelete($type, $cid, $id)
 {
+    global $_CONF;
+    
     $args[1] = $cid;
     $args[2] = $id;
+    
+    if ($type == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+    }      
 
     return PLG_callFunctionForOnePlugin('plugin_deletecomment_' . $type, $args);
 }
@@ -489,11 +495,17 @@ function PLG_commentDelete($type, $cid, $id)
  */
 function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
 {
+    global $_CONF;
+    
     $args[1] = $title;
     $args[2] = $comment;
     $args[3] = $id;
     $args[4] = $pid;
     $args[5] = $postmode;
+    
+    if ($type == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+    }    
 
     return PLG_callFunctionForOnePlugin('plugin_savecomment_' . $type, $args);
 }
@@ -514,6 +526,8 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
  */
 function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $view)
 {
+    global $_CONF;
+    
     $args[1] = $id;
     $args[2] = $cid;
     $args[3] = $title;
@@ -521,6 +535,10 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
     $args[5] = $format;
     $args[6] = $page;
     $args[7] = $view;
+    
+    if ($type == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+    }      
 
     return PLG_callFunctionForOnePlugin('plugin_displaycomment_' . $type, $args);
 }
@@ -1719,11 +1737,18 @@ function PLG_replaceTags($content, $plugin = '', $remove = false)
 */
 function PLG_supportingFeeds()
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
+    require_once $_CONF['path_system'] . 'lib-story.php';
+    require_once $_CONF['path_system'] . 'lib-comment.php';
+    
     $plugins = array();
+    
+    $plugintypes[] = 'article';
+    $plugintypes[] = 'comment';       
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
 
-    foreach ($_PLUGINS as $pi_name) {
+    foreach ($plugintypes as $pi_name) {
         $function = 'plugin_getfeednames_' . $pi_name;
         if (function_exists($function)) {
             $feeds = $function();
@@ -1755,16 +1780,21 @@ function PLG_supportingFeeds()
 */
 function PLG_getFeedNames($plugin)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $feeds = array();
-
-    if ($plugin == 'custom')
-    {
+    
+    if ($plugin == 'custom') {
         $function = 'CUSTOM_getfeednames';
         if (function_exists($function)) {
             $feeds = $function();
         }
+    } elseif ($plugin == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $feeds = plugin_getfeednames_article();
+    } elseif ($plugin == 'comment') {
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+        $feeds = plugin_getfeednames_comment();
     } else {
         if (in_array($plugin, $_PLUGINS)) {
             $function = 'plugin_getfeednames_' . $plugin;
@@ -1773,8 +1803,6 @@ function PLG_getFeedNames($plugin)
             }
         }
     }
-
-
 
     return $feeds;
 }
@@ -1798,7 +1826,7 @@ function PLG_getFeedNames($plugin)
 */
 function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $feedVersion)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $content = array();
 
@@ -1807,6 +1835,12 @@ function PLG_getFeedContent($plugin, $feed, &$link, &$update_data, $feedType, $f
         if (function_exists($function)) {
             $content = $function($feed, $link, $update_data, $feedType, $feedVersion);
         }
+    } elseif ($plugin == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $content = plugin_getfeedcontent_article($feed, $link, $update_data, $feedType, $feedVersion);
+    } elseif ($plugin == 'comment') {
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+        $content = plugin_getfeedcontent_comment($feed, $link, $update_data, $feedType, $feedVersion);        
     } else {
         if (in_array($plugin, $_PLUGINS)) {
             $function = 'plugin_getfeedcontent_' . $plugin;
@@ -1950,7 +1984,7 @@ function PLG_getFeedExtensionTags($contentType, $feedType, $feedVersion, $topic,
 */
 function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $updated_type = '', $updated_topic = '', $updated_id = '')
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $is_current = true;
 
@@ -1960,6 +1994,14 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
             $is_current = $function ($feed, $topic, $update_data, $limit,
                             $updated_type, $updated_topic, $updated_id);
         }
+    } elseif ($plugin == 'article') {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $is_current = plugin_feedupdatecheck_article($feed, $topic, $update_data, $limit,
+                                $updated_type, $updated_topic, $updated_id);
+    } elseif ($plugin == 'comment') {
+        require_once $_CONF['path_system'] . 'lib-comment.php';
+        $is_current = plugin_feedupdatecheck_comment($feed, $topic, $update_data, $limit,
+                                $updated_type, $updated_topic, $updated_id);                
     } else {
         if (in_array($plugin, $_PLUGINS)) {
             $function = 'plugin_feedupdatecheck_' . $plugin;

@@ -184,6 +184,24 @@
     <td valign="top">0</td>
     <td valign="top">記事を（ポータルブロックに）<em>インポート</em>するときの最大文字数を指定します。ブロックメニューでポータルブロックごとに設定することもできます。<br>
     0 にするとすべての記事がインポートされます。</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_article_tag">comment_feeds_article_tag</a></td>
+    <td valign="top"><xmp><p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n</xmp></td>
+    <td valign="top">The string used to enter a tag about the article for the comment:<br><br>
+    This must take three strings, in the order:<br>
+    Article URL - the url to the article<br>
+    Article title - the title of the article<br>
+    Article Author tag, the result of evaluating 'article_author_tag'<br>
+    Comment author tag, the result of evaluating 'comment_author_tag'<br><br>
+    This is generated with a sprintf command, so each item is indicated by a %s. If you want either of the last two to be blank, set article_author_tag and/or comment_author_tag to be empty strings.</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_article_tag_position">comment_feeds_article_tag_position</a></td>
+    <td valign="top">end</td>
+    <td valign="top">The position of the article_tag in the comment body. This indicates where the article tag, when formatted, should be inserted into the comment. This may be start, end or none.</td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_article_author_tag">comment_feeds_article_author_tag</a></td>
+    <td valign="top"></td>
+    <td valign="top">A tag to link to the article author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string. An example of an Article Author Tag would be: <xmp> Written By: <a href=\"%s\">%s</a></xmp></td></tr>
+<tr><td valign="top"><a name="desc_comment_feeds_comment_author_tag">comment_feeds_comment_author_tag</a></td>
+    <td valign="top"><xmp>, Comment By: <a href=\"%s\">%s</a></xmp></td>
+    <td valign="top">A tag to link to the comment author's profile, and display their name. This is included in the 'article_tag', if you don't want anything in the 'article_tag' then set it to the empty string.</td></tr>    
 </table>
 
 <h3><a name="site_paths">サイト: パス</a></h3>

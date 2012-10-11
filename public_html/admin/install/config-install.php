@@ -75,6 +75,12 @@ function install_config()
     $c->add('rdf_storytext',1,'text',0,2,NULL,1410,TRUE, $me, 2);
     $c->add('rdf_language','en-gb','text',0,2,NULL,1420,TRUE, $me, 2);
     $c->add('syndication_max_headlines',0,'text',0,2,NULL,1430,TRUE, $me, 2);
+    
+    $c->add('fs_syndication_comment', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 2);
+    $c->add('comment_feeds_article_tag', "<p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n", 'text', 0, 3, NULL, 10, TRUE, $me, 2);
+    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);        
+    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);        
+    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);     
 
     $c->add('tab_paths', NULL, 'tab', 0, 3, NULL, 0, TRUE, $me, 3);
     $c->add('fs_paths', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 3);

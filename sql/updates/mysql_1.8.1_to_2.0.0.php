@@ -127,6 +127,13 @@ function update_ConfValuesFor200()
     
     // Page Navigation
     $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
+    
+    // Add in Comment Syndication
+    $c->add('fs_syndication_comment', NULL, 'fieldset', 0, 3, NULL, 0, TRUE, $me, 2);
+    $c->add('comment_feeds_article_tag', "<p>[Original Article: <a href=\"%s\">%s</a>%s%s]\n", 'text', 0, 3, NULL, 10, TRUE, $me, 2);
+    $c->add('comment_feeds_article_tag_position', 'end', 'select', 0, 3, 30, 20, TRUE, $me, 2);        
+    $c->add('comment_feeds_article_author_tag', '', 'text', 0, 3, NULL, 30, TRUE, $me, 2);        
+    $c->add('comment_feeds_comment_author_tag', ", Comment By: <a href=\"%s\">%s</a>", 'text', 0, 3, NULL, 40, TRUE, $me, 2);        
 
     return true;
 }
