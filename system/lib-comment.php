@@ -1350,12 +1350,16 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             }
 
             $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
+
         } else { //replying to non-existent comment or comment in wrong article
             COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                        . 'to reply to a non-existent comment or the pid/sid did not match');
             $ret = 4; // Cannot return here, tables locked!
         }
         DB_unlockTable($_TABLES['comments']);
+        
+        // Update Comment Feeds
+        COM_rdfUpToDateCheck('comment');        
         
         // notify parent of new comment
         // Must occur after table unlock, only with valid $cid and $pid
@@ -1386,6 +1390,9 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         
         $cid = DB_insertId('',$_TABLES['comments'].'_cid_seq');
         DB_unlockTable($_TABLES['comments']);
+        
+        // Update Comment Feeds
+        COM_rdfUpToDateCheck('comment');
     }
 
     // save user notification information
@@ -1540,6 +1547,9 @@ function CMT_deleteComment ($cid, $sid, $type)
            . "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
         DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
            . "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");
+        
+        // Update Comment Feeds
+        COM_rdfUpToDateCheck('comment');
     } else {
         COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to delete a comment that doesn\'t exist as described.');
@@ -1771,8 +1781,11 @@ function CMT_handleEditSubmit($mode = null)
             return COM_refresh($_CONF['site_url'] . '/index.php');
         }
         //save edit information for published comment
+        // Update any feeds
         if ($mode != $LANG03[35]) {
             DB_save($_TABLES['commentedits'],'cid,uid,time',"$cid,$uid,NOW()");
+            
+            COM_rdfUpToDateCheck('comment');
         } else {
             return COM_refresh (COM_buildUrl ($_CONF['site_admin_url'] . "/moderation.php"));
         }
@@ -1967,6 +1980,9 @@ function CMT_approveModeration($cid)
             CMT_sendReplyNotification($B);
         }
     }
+    
+    // Update Comment Feeds
+    COM_rdfUpToDateCheck('comment');
 
     return $A['sid'];
 }
