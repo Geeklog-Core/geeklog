@@ -2613,6 +2613,12 @@ function CMT_getCommentUrlId($type)
     return $retval;
 }
 
+/*
+ * Implement *some* of the Plugin API functions for comments. While comments
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+
 /**
 * Do we support comment feeds? (use plugin api)
 *
