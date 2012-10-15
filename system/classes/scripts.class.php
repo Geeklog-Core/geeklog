@@ -451,10 +451,11 @@ class scripts {
         // Do we need to set JavaScript
         if ($this->javascript_set) {
             // Add Core JavaScript global variables
-            $footercode = '';
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-                $footercode = '<script type="text/javascript">' . LB;
-                $footercode .= "var geeklogEditorBaseUrl = '" . $_CONF['site_url'] . "';" . LB;
+                $footercode .= '<script type="text/javascript">' . LB;
+                $footercode .= 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB;
+                // Setup editor path for FCKeditor JS Functions
+                $footercode .= 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";' . LB;
                 $footercode .= '</script>' . LB;
             }
             

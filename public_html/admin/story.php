@@ -731,84 +731,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
         $fileinputs .= $LANG24[28] . '<br' . XHTML . '>';
     }
     
-    // *****************************************    
     // Add JavaScript
-    if (!$advanced_editormode) {
-        $js = '<script type="text/javascript">
-        //<![CDATA[
-        function enablearchive(obj) {
-            var f = obj.form;           // all elements have their parent form in "form"
-            var disable = obj.checked;  // Disable when checked
-            if (f.elements["archiveflag"].checked==true && f.elements["storycode11"].checked==false) {
-                f.elements["storycode10"].checked=true;
-            }
-            f.elements["storycode10"].disabled=!disable;
-            f.elements["storycode11"].disabled=!disable;
-            f.elements["expire_month"].disabled=!disable;
-            f.elements["expire_day"].disabled=!disable;
-            f.elements["expire_year"].disabled=!disable;
-            f.elements["expire_hour"].disabled=!disable;
-            f.elements["expire_minute"].disabled=!disable;
-            f.elements["expire_ampm"].disabled=!disable;
-        }
-            
-            function enablecmtclose(obj) {
-            var f = obj.form;           // all elements have their parent form in "form"
-            var disable = obj.checked;  // Disable when checked
-        
-            f.elements["cmt_close_month"].disabled=!disable;
-            f.elements["cmt_close_day"].disabled=!disable;
-            f.elements["cmt_close_year"].disabled=!disable;
-            f.elements["cmt_close_hour"].disabled=!disable;
-            f.elements["cmt_close_minute"].disabled=!disable;
-            f.elements["cmt_close_ampm"].disabled=!disable;
-            
-        }
-        //]]>
-        </script>' . LB;
-    } else {
-        $js = '<script type="text/javascript">
-            // Setup editor path for FCKeditor JS Functions
-            geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";
-        </script>' . LB;
-
-        $js .= '<!-- Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it -->
-        <script type="text/javascript">
-            document.getElementById("advanced_editor").style.display=""
-        </script>';     
-        
+    $_SCRIPTS->setJavaScriptFile('story_editor', '/javascript/story_editor.js');
+    if ($advanced_editormode) {
         $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-        $_SCRIPTS->setJavaScriptFile('advanced_editor', '/javascript/advanced_editor.js');
-        $_SCRIPTS->setJavaScriptFile('storyeditor_fckeditor', '/javascript/storyeditor_fckeditor.js');        
+        // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
+        $js = 'document.getElementById("advanced_editor").style.display="";';
+        $_SCRIPTS->setJavaScript($js, true);
+        $_SCRIPTS->setJavaScriptFile('storyeditor_fckeditor', '/javascript/storyeditor_fckeditor.js');
     }
-    
-    $js .= '<script type="text/javascript">
-    <!-- This code will only be executed by a browser that supports Javascript -->
-    var jstest = ' . $js_showarchivedisabled . ';
-    var jstest2 = ' . $js_showcmtclosedisabled . ';
-    if (jstest) {
-        document.frmstory.expire_month.disabled=true;
-        document.frmstory.expire_day.disabled=true;
-        document.frmstory.expire_year.disabled=true;
-        document.frmstory.expire_hour.disabled=true;
-        document.frmstory.expire_minute.disabled=true;
-        document.frmstory.expire_ampm.disabled=true;
-        document.frmstory.storycode10.disabled=true;
-        document.frmstory.storycode11.disabled=true;
-    }
-    if (jstest2) {
-        document.frmstory.cmt_close_month.disabled=true;
-        document.frmstory.cmt_close_day.disabled=true;
-        document.frmstory.cmt_close_year.disabled=true;
-        document.frmstory.cmt_close_hour.disabled=true;
-        document.frmstory.cmt_close_minute.disabled=true;
-        document.frmstory.cmt_close_ampm.disabled=true;
-    }
-    </script>';    
-    
-    $_SCRIPTS->setJavaScript($js);
-    
-    // *****************************************
     
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);

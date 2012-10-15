@@ -1,7 +1,7 @@
 
 <!-- admin/story/storyeditor.thtml { -->
 
-<form action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
+<form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
 
   <div class="admin_basic">
     <dl>

@@ -6,7 +6,7 @@
 // | Version 1.1    Date: Jun 4, 2006                                          |
 // | Authors:   Blaine Lang - blaine@portalparts.com                           |
 // |                                                                           |
-// | Javascript functions for Geeklog Advanced Editor                          |
+// | Javascript functions for Geeklog Story Editor                             |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -42,6 +42,42 @@
         f.elements["expire_minute"].disabled=!disable;
         f.elements["expire_ampm"].disabled=!disable;
     }
+
+    function enablecmtclose(obj) {
+        var f = obj.form;               // all elements have their parent form in "form"
+        var disable = obj.checked;      // Disable when checked
+        f.elements["cmt_close_month"].disabled=!disable;
+        f.elements["cmt_close_day"].disabled=!disable;
+        f.elements["cmt_close_year"].disabled=!disable;
+        f.elements["cmt_close_hour"].disabled=!disable;
+        f.elements["cmt_close_minute"].disabled=!disable;
+        f.elements["cmt_close_ampm"].disabled=!disable;
+    }
+
+    $(function() {
+        var cmt_close_flag = $("input[name='cmt_close_flag']").attr("checked");
+        var s = $("select");
+        if (cmt_close_flag !== "checked") {
+            s.filter("[name='cmt_close_month']").attr("disabled","disabled");
+            s.filter("[name='cmt_close_day']").attr("disabled","disabled");
+            s.filter("[name='cmt_close_year']").attr("disabled","disabled");
+            s.filter("[name='cmt_close_hour']").attr("disabled","disabled");
+            s.filter("[name='cmt_close_minute']").attr("disabled","disabled");
+            s.filter("[name='cmt_close_ampm']").attr("disabled","disabled");
+        }
+
+        var archiveflag = $("input[name='archiveflag']").attr("checked");
+        if (archiveflag !== "checked") {
+            s.filter("[name='expire_month']").attr("disabled","disabled");
+            s.filter("[name='expire_day']").attr("disabled","disabled");
+            s.filter("[name='expire_year']").attr("disabled","disabled");
+            s.filter("[name='expire_hour']").attr("disabled","disabled");
+            s.filter("[name='expire_minute']").attr("disabled","disabled");
+            s.filter("[name='expire_ampm']").attr("disabled","disabled");
+            s.filter("[name='storycode10']").attr("disabled","disabled");
+            s.filter("[name='storycode11']").attr("disabled","disabled");
+        }
+    });
 
     function showhideEditorDiv(option,selindex) {
         var obj = document.getElementById('adveditor');

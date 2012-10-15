@@ -187,7 +187,7 @@ function edittopic ($tid = '')
         $topic_templates->set_var('sort_order', '<input type="text" size="3" maxlength="3" name="sortnum" value="' . $A['sortnum'] . '"' . XHTML . '>');
     } else {
         $topic_templates->set_var('lang_sortorder', $LANG27[14]);
-        $topic_templates->set_var('sort_order', $LANG27[15]);
+        $topic_templates->set_var('sort_order', $LANG27[15] . '<input type="hidden" name="sortnum" value="' . $A['sortnum'] . '"' . XHTML . '>');
     }
     $topic_templates->set_var('lang_storiesperpage', $LANG27[11]);
     if ($A['limitnews'] == 0) {
