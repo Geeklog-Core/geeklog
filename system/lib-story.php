@@ -746,11 +746,32 @@ function STORY_doDeleteThisStoryNow($sid)
     PLG_itemDeleted($sid, 'article');
 
     // update RSS feed and Older Stories block
-    COM_rdfUpToDateCheck();
+    COM_rdfUpToDateCheck('article');
+    COM_rdfUpToDateCheck('comment');
+    STORY_updateLastArticlePublished();
     COM_olderStuff();
     CMT_updateCommentcodes();
 }
 
+/**
+* Updates last_article_publish variables stored in vars table.
+*
+* Note: Used when insert/update/delete an article. last_article_publish is used to 
+*       determine new articles and if feeds need to be updated. 
+*
+*/
+function STORY_updateLastArticlePublished()
+{
+    global$_TABLES;
+
+    //Set new latest article published in feed
+    $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
+    $result = DB_query($sql);
+    
+    $A = DB_fetchArray($result);
+    DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
+    
+}
 
 /*
  * Implement *some* of the Plugin API functions for stories. While stories
@@ -1163,7 +1184,9 @@ function plugin_moderationapprove_story_draft($sid)
     PLG_itemSaved($sid, 'article');
 
     // update feeds
-    COM_rdfUpToDateCheck();
+    COM_rdfUpToDateCheck('article');
+    COM_rdfUpToDateCheck('comment');
+    STORY_updateLastArticlePublished();
 
     // update Older Stories block
     COM_olderStuff();
@@ -1832,6 +1855,8 @@ function service_submit_story($args, &$output, &$svc_msg)
 
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck('article', $story->DisplayElements('tid'), $sid);
+        COM_rdfUpToDateCheck('comment');
+        STORY_updateLastArticlePublished();
         COM_olderStuff();
         CMT_updateCommentcodes();
 

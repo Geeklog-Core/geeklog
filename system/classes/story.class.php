@@ -1133,7 +1133,9 @@ class Story
             $this->saveToDatabase();
 
             PLG_itemSaved($this->_sid, 'article');
-            COM_rdfUpToDateCheck();
+            COM_rdfUpToDateCheck('article');
+            COM_rdfUpToDateCheck('comment');
+            STORY_updateLastArticlePublished();
             COM_olderStuff();
 
             return STORY_SAVED;

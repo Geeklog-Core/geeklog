@@ -494,6 +494,28 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 */
 $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
+// Figure out if we need to update article feeds. Check last article date punlished in feed
+$sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
+$result = DB_query($sql);
+$A = DB_fetchArray($result);
+if (DB_getItem($_TABLES['vars'], 'value', "name='last_article_publish'") != $A['date']) {
+    //Set new latest article published
+    DB_query("UPDATE {$_TABLES['vars']} SET value='{$A['date']}' WHERE name='last_article_publish'");
+
+    // We need to see if there are currently two featured articles (because of future article).
+    // Can only have one but you can have one current featured article
+    // and one for the future...this check will set the latest one as featured
+    // solely
+    COM_featuredCheck();
+    
+    // Geeklog now allows for articles to be published in the future.  Because of
+    // this, we need to check to see if we need to rebuild the RDF file in the case
+    // that any such articles have now been published. Need to do this for comments
+    // as well since article can have comments
+    COM_rdfUpToDateCheck('article');
+    COM_rdfUpToDateCheck('comment');
+}
+
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
 // +---------------------------------------------------------------------------+
@@ -2650,38 +2672,30 @@ function COM_rdfUpToDateCheck( $updated_type = '', $updated_topic = '', $updated
 {
     global $_CONF, $_TABLES;
 
-    if( $_CONF['backend'] > 0 )
-    {
-        if( !empty( $updated_type ) && ( $updated_type != 'article' ))
-        {
+    if ($_CONF['backend'] > 0) {
+        if (!empty( $updated_type)) {
             // when a plugin's feed is to be updated, skip Geeklog's own feeds
-            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE (is_enabled = 1) AND (type <> 'article')";
-        }
-        else
-        {
+            $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE (is_enabled = 1) AND (type = '{$updated_type}')";
+        } else {
             $sql = "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE is_enabled = 1";
         }
         $result = DB_query( $sql );
         $num = DB_numRows( $result );
-        for( $i = 0; $i < $num; $i++)
-        {
+        
+        for ($i = 0; $i < $num; $i++) {
             $A = DB_fetchArray( $result );
 
             $is_current = true;
-            if( $A['type'] == 'article' )
-            {
+            if ($A['type'] == 'article') {
                 $is_current = SYND_feedUpdateCheck( $A['topic'],
                                 $A['update_info'], $A['limits'],
                                 $updated_topic, $updated_id );
-            }
-            else
-            {
+            } else {
                 $is_current = PLG_feedUpdateCheck( $A['type'], $A['fid'],
                                 $A['topic'], $A['update_info'], $A['limits'],
                                 $updated_type, $updated_topic, $updated_id );
             }
-            if( !$is_current )
-            {
+            if (!$is_current) {
                 SYND_updateFeed( $A['fid'] );
             }
         }

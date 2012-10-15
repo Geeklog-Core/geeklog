@@ -148,17 +148,6 @@ if ($limit < 1) {
     $limit = 1;
 }
 
-// Geeklog now allows for articles to be published in the future.  Because of
-// this, we need to check to see if we need to rebuild the RDF file in the case
-// that any such articles have now been published
-COM_rdfUpToDateCheck();
-
-// For similar reasons, we need to see if there are currently two featured
-// articles.  Can only have one but you can have one current featured article
-// and one for the future...this check will set the latest one as featured
-// solely
-COM_featuredCheck();
-
 // Scan for any stories that have expired and should be archived or deleted
 $asql = "SELECT sid,ta.tid,title,expire,statuscode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta ";
 $asql .= "WHERE (expire <= NOW()) AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (statuscode = " . STORY_DELETE_ON_EXPIRE;

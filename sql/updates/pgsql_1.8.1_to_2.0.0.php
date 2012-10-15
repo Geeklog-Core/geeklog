@@ -35,6 +35,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['sortcodes']} ALTER COLUMN code TYPE varchar(4)
 $_SQL[] = "ALTER TABLE {$_TABLES['sortcodes']} ALTER COLUMN name TYPE varchar(32)";
 $_SQL[] = "ALTER TABLE {$_TABLES['statuscodes']} ALTER COLUMN name TYPE varchar(32)";
 
+// New Geeklog variable for Article content syndication
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_publish','') ";
+
 /**
  * Create Story and Submission Topic assignments
  *
