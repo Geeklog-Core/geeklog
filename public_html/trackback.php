@@ -71,7 +71,12 @@ if (empty ($type)) {
 if ($type == 'article') {
     // check if they have access to this story
     $sid = addslashes ($id);
-    $result = DB_query("SELECT trackbackcode FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
+    
+    $sql = "SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+            WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" 
+            . COM_getPermSql('AND') . " AND ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 " . COM_getTopicSql('AND', 0 , 'ta');
+    
+    $result = DB_query($sql);
     if (DB_numRows ($result) == 1) {
         $A = DB_fetchArray ($result);
         if ($A['trackbackcode'] == 0) {
