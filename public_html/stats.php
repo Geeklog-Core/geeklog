@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.6                                                               |
+// | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
 // | stats.php                                                                 |
 // |                                                                           |
 // | Geeklog system statistics page.                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2010 by the following authors:                         |
+// | Copyright (C) 2000-2012 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
@@ -83,7 +83,6 @@ $topicsql = COM_getTopicSql ('AND', 0, 'ta');
 $id = array ('draft_flag', 'date');
 $values = array ('0', 'NOW()');
 
-//$sql = "SELECT COUNT(*) AS count,SUM(comments) AS ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql;
 $sql = "SELECT COUNT(DISTINCT sid) AS count, SUM(comments) AS ccount 
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
     WHERE ta.type = 'article' AND ta.id = sid 
@@ -119,7 +118,6 @@ $display .= PLG_getPluginStats (1);
 
 // Detailed story statistics
 
-//$sql = "SELECT sid,title,hits FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY hits DESC LIMIT 10";
 $sql = "SELECT sid,title,hits 
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
     WHERE ta.type = 'article' AND ta.id = sid 
@@ -142,7 +140,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $A['title'] = stripslashes(str_replace('$','&#36;',$A['title']));
-        $A['sid'] = COM_createLink($A['title'],  COM_buildUrl ($_CONF['site_url']
+        $A['sid'] = COM_createLink($A['title'], COM_buildUrl($_CONF['site_url']
                   . "/article.php?story={$A['sid']}"));
         $A['hits'] = COM_NumberFormat ($A['hits']);
         $data_arr[$i] = $A;
@@ -156,7 +154,6 @@ if ($nrows > 0) {
 }
 
 // Top Ten Commented Stories
-// $sql = "SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10";
 $sql = "SELECT sid,title,comments 
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
     WHERE ta.type = 'article' AND ta.id = sid 
@@ -193,7 +190,6 @@ if ($nrows > 0) {
 // Top Ten Trackback Comments
 
 if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
-    // $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid,{$_TABLES['stories']}.sid,{$_TABLES['stories']}.title ORDER BY count DESC LIMIT 10";
     $sql = "SELECT s.sid, s.title, COUNT(*) AS count 
         FROM {$_TABLES['stories']} s,{$_TABLES['trackback']} AS t, {$_TABLES['topic_assignments']} ta 
         WHERE ta.type = 'article' AND ta.id = s.sid 
@@ -229,7 +225,6 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
 }
 
 // Top Ten Emailed Stories
-// $sql = "SELECT sid,title,numemails FROM {$_TABLES['stories']} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10";
 $sql = "SELECT sid,title,numemails 
     FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
     WHERE ta.type = 'article' AND ta.id = sid 
