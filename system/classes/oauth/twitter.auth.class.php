@@ -40,10 +40,10 @@ require_once 'HTTP/OAuth/Consumer.php';
 class twitterConsumer extends OAuthConsumerBaseClass {
     public $consumer_key = ''; // <-- Consumer key
     public $consumer_secret = '';  // <-- Consumer secret
-    public $url_requestToken = 'https://twitter.com/oauth/request_token';
-    public $url_authorize = 'https://twitter.com/oauth/authenticate';
-    public $url_accessToken = 'https://twitter.com/oauth/access_token';
-    public $url_userinfo = 'http://twitter.com/account/verify_credentials.xml';
+    public $url_requestToken = 'https://api.twitter.com/oauth/request_token';
+    public $url_authorize = 'https://api.twitter.com/oauth/authenticate';
+    public $url_accessToken = 'https://api.twitter.com/oauth/access_token';
+    public $url_userinfo = 'http://api.twitter.com/1/account/verify_credentials.xml';
 
     protected function _getCreateUserInfo($info) {
         $users = array(
