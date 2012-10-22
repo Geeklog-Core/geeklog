@@ -1938,6 +1938,10 @@ $LANG_confignames['Core'] = array(
     'rdf_storytext' => 'Lugude pikkus lõimedes',
     'rdf_language' => 'Lõime keel',
     'syndication_max_headlines' => 'Maks. pealkirju lõimedes (portaalplokid)',
+    'comment_feeds_article_tag' => 'Article Tag',
+    'comment_feeds_article_tag_position' => 'Article Tag Position',
+    'comment_feeds_article_author_tag' => 'Article Author Tag',
+    'comment_feeds_comment_author_tag' => 'Comment Author Tag',
     'copyrightyear' => 'autorikaitse aasta',
     'image_lib' => 'pilditeek',
     'path_to_mogrify' => 'Mogrify asukoht',
@@ -2060,6 +2064,7 @@ $LANG_fs['Core'] = array(
     'fs_story' => 'Lugu',
     'fs_theme_advanced' => 'Keerukamad häälestused',
     'fs_syndication' => 'Lõimed',
+    'fs_syndication_comment' => 'Comment Syndication',
     'fs_imagelib' => 'Pilditeek',
     'fs_upload' => 'Üleslaadimine',
     'fs_articleimg' => 'Pildid lugudes',
@@ -2152,7 +2157,8 @@ $LANG_configselects['Core'] = array(
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
-    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
 );
 
 ###############################################################################

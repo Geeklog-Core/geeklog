@@ -1939,6 +1939,10 @@ $LANG_confignames['Core'] = array(
     'rdf_storytext' => 'אורך המאמרים בהזנה',
     'rdf_language' => 'שפת ההזנה',
     'syndication_max_headlines' => 'הכמות המקסימלית של כותרות (בקוביות מידע של פורטל)',
+    'comment_feeds_article_tag' => 'Article Tag',
+    'comment_feeds_article_tag_position' => 'Article Tag Position',
+    'comment_feeds_article_author_tag' => 'Article Author Tag',
+    'comment_feeds_comment_author_tag' => 'Comment Author Tag',
     'copyrightyear' => 'שנת זכויות היוצרים',
     'image_lib' => 'ספריית התמונות',
     'path_to_mogrify' => 'נתיב ל-Mogrify',
@@ -2061,6 +2065,7 @@ $LANG_fs['Core'] = array(
     'fs_story' => 'מאמר',
     'fs_theme_advanced' => 'הגדרות מתקדמות',
     'fs_syndication' => 'סינדיקציה',
+    'fs_syndication_comment' => 'Comment Syndication',
     'fs_imagelib' => 'ספריית התמונות',
     'fs_upload' => 'העלאה',
     'fs_articleimg' => 'תמונות במאמרים',
@@ -2153,7 +2158,8 @@ $LANG_configselects['Core'] = array(
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
-    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
 );
 
 ###############################################################################

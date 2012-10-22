@@ -1946,6 +1946,10 @@ $LANG_confignames['Core'] = array(
     'rdf_storytext' => 'エントリの長さ',
     'rdf_language' => 'フィードの言語',
     'syndication_max_headlines' => 'インポートする記事の最大数',
+    'comment_feeds_article_tag' => 'Article Tag',
+    'comment_feeds_article_tag_position' => 'Article Tag Position',
+    'comment_feeds_article_author_tag' => 'Article Author Tag',
+    'comment_feeds_comment_author_tag' => 'Comment Author Tag',
     'copyrightyear' => 'Copyrightの年数設定',
     'image_lib' => '画像処理ライブラリ',
     'path_to_mogrify' => 'Mogrifyへのパス',
@@ -2068,6 +2072,7 @@ $LANG_fs['Core'] = array(
     'fs_story' => '記事',
     'fs_theme_advanced' => 'テーマの拡張設定',
     'fs_syndication' => 'フィード',
+    'fs_syndication_comment' => 'Comment Syndication',
     'fs_imagelib' => '画像処理ライブラリ',
     'fs_upload' => 'アップロード',
     'fs_articleimg' => '記事の画像',
@@ -2160,7 +2165,8 @@ $LANG_configselects['Core'] = array(
     26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
     27 => array('閲覧数 (昇順)' => 'hits|asc', '閲覧数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
     28 => array('アクセス不可' => 0, '利用する' => 2),
-    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
 );
 
 ###############################################################################

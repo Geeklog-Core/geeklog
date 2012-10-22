@@ -1939,6 +1939,10 @@ $LANG_confignames['Core'] = array(
     'rdf_storytext' => 'Lunghezza di articoli nei Flussi',
     'rdf_language' => 'Lingua dei Flussi',
     'syndication_max_headlines' => 'Massimo Numero di Titoli (portal blocks)',
+    'comment_feeds_article_tag' => 'Article Tag',
+    'comment_feeds_article_tag_position' => 'Article Tag Position',
+    'comment_feeds_article_author_tag' => 'Article Author Tag',
+    'comment_feeds_comment_author_tag' => 'Comment Author Tag',
     'copyrightyear' => 'Copyright Anno',
     'image_lib' => 'Libreria d\'Immagini',
     'path_to_mogrify' => 'Percorso per Mogrify',
@@ -2061,6 +2065,7 @@ $LANG_fs['Core'] = array(
     'fs_story' => 'Articolo',
     'fs_theme_advanced' => 'Impostazioni Avanzate',
     'fs_syndication' => 'Pubblicazione',
+    'fs_syndication_comment' => 'Comment Syndication',
     'fs_imagelib' => 'Libreria delle Immagini',
     'fs_upload' => 'Carica',
     'fs_articleimg' => 'Immagini negli Articoli',
@@ -2153,7 +2158,8 @@ $LANG_configselects['Core'] = array(
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Visite (asc)' => 'hits|asc', 'Visite (desc)' => 'hits|desc', 'Data (asc)' => 'date|asc', 'Data (desc)' => 'date|desc', 'Titolo (asc)' => 'title|asc', 'Titolo (desc)' => 'title|desc', 'Autore (asc)' => 'uid|asc', 'Autore (desc)' => 'uid|desc'),
     28 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
-    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4)
+    29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
 );
 
 ###############################################################################
