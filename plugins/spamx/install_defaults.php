@@ -69,10 +69,10 @@ $_SPX_DEFAULT['logging'] = true;
 $_SPX_DEFAULT['timeout'] = 5; // in seconds
 
 // If the module Stop Forum Spam is enabled
-$_SPX_DEFAULT['sfs_enabled'] = true;
+$_SPX_DEFAULT['sfs_enabled'] = false;
 
 // If the module Spam Number of Links is enabled
-$_SPX_DEFAULT['snl_enabled'] = true;
+$_SPX_DEFAULT['snl_enabled'] = false;
 
 // The number of links the module Spam Number of Links allows in a post
 $_SPX_DEFAULT['snl_num_links'] = 5;
