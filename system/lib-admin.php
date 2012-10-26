@@ -1495,4 +1495,113 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
     return $retval;
 }
 
+/**
+ * used for the list of topics in admin/topic.php
+ *
+ */
+function ADMIN_getListField_topics($fieldname, $fieldvalue, $A, $icon_arr, $token)
+{
+    global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27;
+    
+    $retval = false;
+
+    $access = SEC_hasAccess($A['owner_id'],     $A['group_id'],
+                            $A['perm_owner'],   $A['perm_group'],
+                            $A['perm_members'], $A['perm_anon']);
+
+    switch($fieldname) {
+    case 'edit':
+        if ($access == 3) {
+            $editurl = $_CONF['site_admin_url']
+                     . '/topic.php?mode=edit&amp;tid=' . $A['tid'];
+            $retval = COM_createLink($icon_arr['edit'], $editurl);
+        }
+        break;
+
+    case 'sortnum':
+        if ($_CONF['sortmethod'] == 'sortnum') {
+            $style   = 'style="vertical-align: middle;"';
+            $upimg   = $_CONF['layout_url'] . '/images/admin/up.png';
+            $dnimg   = $_CONF['layout_url'] . '/images/admin/down.png';
+            $url     = $_CONF['site_admin_url'] . '/topic.php?mode=change_sortnum'
+                     . '&amp;tid=' . $A['tid']
+                     . '&amp;' . CSRF_TOKEN . '=' . $token
+                     . '&amp;where=';
+            $retval .= COM_CreateLink("<img $style alt=\"+\" src=\"$upimg\"" . XHTML . ">",
+                                      $url . 'up' , array('title' => $LANG32[44]));
+            $retval .= '&nbsp;' . $fieldvalue . '&nbsp;';
+            $retval .= COM_CreateLink("<img $style alt=\"-\" src=\"$dnimg\"" . XHTML . ">",
+                                      $url . 'dn' , array('title' => $LANG32[45]));
+        } else {
+            $retval = $fieldvalue;
+        }
+        break;
+
+    case 'image':
+        $retval = '';
+        if (!empty($A['imageurl'])) {
+            $imageurl = COM_getTopicImageUrl ($A['imageurl']);
+            $image_tag = '<img src="' . $imageurl
+              . '" width="24" height="24" id="topic-' . $A['tid']
+              . '" class="admin-topic-image" alt=""' . XHTML . '>';
+            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
+            $retval = COM_createLink($image_tag, $url);
+        }
+        break;
+
+    case 'topic':
+        $default = ($A['is_default'] == 1) ? $LANG27[24] : '';
+
+        $level = -1;
+        $tid = $A['tid'];
+        while ($tid !== TOPIC_ROOT) {
+            $tid = DB_getItem($_TABLES['topics'], 'parent_id', "tid = '$tid'");
+            $level++;
+        }
+        $level *= 15;
+
+        $content = '<span style="margin-left:' . $level .'px">' . $fieldvalue . '</span>';
+        $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
+        $retval = COM_createLink($content, $url) . $default;
+        break;
+
+    case 'access':
+        $retval = $LANG_ACCESS['readonly'];
+        if ($access == 3) {
+            $retval = $LANG_ACCESS['edit'];
+        }
+        break;
+
+    case 'inherit':
+    case 'hidden':
+        $yes = empty($LANG27[50]) ? 'Yes' : $LANG27[50];
+        $no  = empty($LANG27[50]) ? 'No'  : $LANG27[51];
+        $retval = ($fieldvalue == 1) ? $yes : $no;
+        break;
+
+    case 'story':
+        // Retrieve list of inherited topics
+        $tid_list = TOPIC_getChildList($A['tid']);
+
+        // Calculate number of stories in topic, includes any inherited ones
+        $sql = "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta "
+             . "WHERE (draft_flag = 0) AND (date <= NOW()) "
+             . COM_getPermSQL('AND')
+             . "AND ta.type = 'article' AND ta.id = sid "
+             . "AND (ta.tid IN({$tid_list}) "
+             . "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$A['tid']}'))) "
+             . "GROUP BY sid";
+
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        $retval = COM_numberFormat($nrows);
+        break;
+
+    default:
+        $retval = $fieldvalue;
+        break;
+    }
+
+    return $retval;
+}
 ?>

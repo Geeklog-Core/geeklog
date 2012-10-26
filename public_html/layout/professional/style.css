@@ -1287,3 +1287,7 @@ div.third-party-login {
 .size9  { width: 540px; }
 .size10 { width: 600px; }
 
+.admin-topic-image {
+  margin: 0 5px 0 0;
+  vertical-align: middle;
+}

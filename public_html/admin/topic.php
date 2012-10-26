@@ -634,6 +634,152 @@ function listtopics()
     return $retval;
 }
 
+
+/**
+* Displays a list of topics
+*
+* Lists all the topics and their icons.
+*
+* @param    string      $token  Security token to use in list
+* @return   string      HTML for the topic list
+*
+*/
+function draft_listTopics($token)
+{
+    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN;
+
+    require_once $_CONF['path_system'] . 'lib-admin.php';
+
+    global $_SCRIPTS;
+    $_SCRIPTS->setJavaScriptFile('admin.topic', '/javascript/admin.topic.js');
+
+
+    $retval = '';
+
+    $retval .= COM_startBlock($LANG27[8], '',
+                              COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $menu_arr = array(
+        array('url'  => $_CONF['site_admin_url'] . '/topic.php?mode=edit',
+              'text' => $LANG_ADMIN['create_new']),
+        array('url'  => $_CONF['site_admin_url'],
+              'text' => $LANG_ADMIN['admin_home'])
+    );
+
+    $retval .= ADMIN_createMenu($menu_arr, $LANG27[9],
+                              $_CONF['layout_url'] . "/images/icons/topic.png");
+
+    $header_arr[] = array('text' => $LANG_ADMIN['edit'],    'field' => 'edit',    'sort' => false);
+    $header_arr[] = array('text' => $LANG27[10],            'field' => 'sortnum', 'sort' => true);
+    $header_arr[] = array('text' => $LANG27[53],            'field' => 'image',   'sort' => false);
+    $header_arr[] = array('text' => $LANG27[3],             'field' => 'topic',   'sort' => false);
+    $header_arr[] = array('text' => $LANG27[2],             'field' => 'tid',     'sort' => true);
+    $header_arr[] = array('text' => $LANG27[52],            'field' => 'story',   'sort' => false);
+    $header_arr[] = array('text' => $LANG_ACCESS['access'], 'field' => 'access',  'sort' => false);
+    $header_arr[] = array('text' => $LANG27[33],            'field' => 'inherit', 'sort' => false);
+    $header_arr[] = array('text' => $LANG27[35],            'field' => 'hidden',  'sort' => false);
+
+    $defsort_arr = array('field' => 'sortnum', 'direction' => 'asc');
+
+    $text_arr    = array('has_extras' => true,
+                         'form_url'   => $_CONF['site_admin_url'] . '/topic.php'
+    );
+
+    $query_arr   = array('table'          => 'topics',
+                         'sql'            => "SELECT * FROM {$_TABLES['topics']} WHERE 1=1 ",
+                         'query_fields'   => array('topic'),
+                         'default_filter' => COM_getPermSql('AND')
+    );
+
+    $retval .= ADMIN_list('topics', 'ADMIN_getListField_topics', $header_arr,
+                           $text_arr, $query_arr, $defsort_arr, '', $token);
+
+    $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
+
+    return $retval;
+}
+
+/**
+* Get topic child tree array
+*
+* @return   array  Topic array
+*
+*/
+function getTopicChildTreeArray($sel_id = TOPIC_ROOT, $tarray = array(), $orderby = "ASC")
+{
+    global $_CONF, $_TABLES;
+
+    $field = ($_CONF['sortmethod'] == 'sortnum') ? 'sortnum' : 'topic';
+    $sql = "SELECT * FROM {$_TABLES['topics']} "
+         . "WHERE parent_id = '$sel_id' ORDER BY $field $orderby";
+    $result = DB_query($sql);
+    if (DB_numRows($result) == 0) return $tarray;
+    while ($A = DB_fetchArray($result)) {
+        array_push($tarray, $A);
+        $tarray = getTopicChildTreeArray($A['tid'], $tarray, $orderby);
+    }
+
+    return $tarray;
+}
+
+/**
+* Re-order all topics in steps of 10
+*
+* @return   void
+*
+*/
+function reorderTopics()
+{
+    global $_TABLES;
+
+    $order = 0;
+    $A = getTopicChildTreeArray();
+    foreach ($A as $B) {
+        $order += 10;
+        if ($B['sortnum'] != $order) {
+            DB_query("UPDATE {$_TABLES['topics']} SET sortnum = '$order' WHERE tid = '{$B['tid']}'");
+        }
+    }
+}
+
+/**
+* Move topic UP and Down
+*
+* @param    string  $tid        Topic ID
+* @param    string  $where      Where to move the topic specified by $tid.
+*                               Valid values are "up" and "dn", which stand for
+*                               move 'Up' or 'Down' through the sort number.
+* @return   void
+*
+*/
+function moveTopics($tid, $where)
+{
+    global $_TABLES;
+
+    if (empty($tid) || empty($where)) return;
+
+    $sortnum   = DB_getItem($_TABLES['topics'], 'sortnum',   "tid = '$tid'");
+    $parent_id = DB_getItem($_TABLES['topics'], 'parent_id', "tid = '$tid'");
+
+    if (empty($sortnum) || empty($parent_id)) return;
+
+    if ($where == 'up') {
+        $A = getTopicChildTreeArray(TOPIC_ROOT, array(), 'DESC');
+        foreach ($A as $B) {
+            $order = $B['sortnum'] - 1;
+            if (($B['sortnum'] < $sortnum) && ($B['parent_id'] == $parent_id)) break;
+        }
+    } else {
+        $A = getTopicChildTreeArray(TOPIC_ROOT, array(), 'ASC');
+        foreach ($A as $B) {
+            $order = $B['sortnum'] + 1;
+            if (($B['sortnum'] > $sortnum) && ($B['parent_id'] == $parent_id)) break;
+        }
+    }
+
+    DB_query("UPDATE {$_TABLES['topics']} SET sortnum = $order WHERE tid = '$tid'");
+}
+
 /**
 * Delete a topic
 *
@@ -914,9 +1060,23 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     }
     $display .= edittopic($tid);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[1]));
+
+
+} elseif ($mode == 'change_sortnum' && SEC_checkToken()) {
+    $display .= COM_showMessageFromParameter();
+    moveTopics(COM_applyFilter($_GET['tid']), COM_applyFilter($_GET['where']));
+    reorderTopics();
+    $display .= draft_listTopics(SEC_createToken());
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
+
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
-    $display .= listtopics();
+
+//    $display .= listtopics();
+
+    reorderTopics();
+    $display .= draft_listTopics(SEC_createToken());
+
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 }
 

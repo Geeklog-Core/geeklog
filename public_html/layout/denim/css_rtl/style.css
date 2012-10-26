@@ -2407,6 +2407,11 @@ dd#profile-user_photo {
   color: #CCC;
 }
 
+.admin-topic-image {
+  margin: 0 5px 0 0;
+  vertical-align: middle;
+}
+
 /*--------------------------------------
   Group Editor
 --------------------------------------*/
