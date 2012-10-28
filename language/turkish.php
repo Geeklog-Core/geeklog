@@ -909,6 +909,10 @@ $LANG27 = array(
     47 => 'An Archive Topic cannot have any child topics. Please remove any child topics before making a topic the Archive Topic.',
     48 => 'Parent Topic Id not found.',
     49 => 'This Topic ID is already being used. Please choose another one.',
+    50 => 'Yes',
+    51 => 'No',
+    52 => 'Story',
+    53 => 'Image',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'Home'
 );

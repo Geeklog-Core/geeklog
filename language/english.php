@@ -870,7 +870,6 @@ $LANG27 = array(
     6 => 'Deleting a topic deletes all stories, submissions and blocks associated with it (as long as they are only associated with that deleted topic).',
     7 => 'Please fill in the Topic ID and Topic Name fields',
     8 => 'Topic Manager',
-//    9 => 'To modify or delete a topic, click on that topic.  To create a new topic, click on "Create New" above. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.',
     9 => 'To modify or delete a topic, click on that topic\'s edit icon below. To create a new topic, click on "Create New" above. The asterisk(*) denotes the default topic.',
     10 => 'Sort Order',
     11 => 'Stories/Page',
