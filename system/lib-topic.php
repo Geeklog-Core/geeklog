@@ -177,7 +177,8 @@ function TOPIC_getIndex($id)
 }
 
 /**
-* Return a list of child topic ids that the user has access to
+* Return a list of child topic ids that the user has access to. 
+* Includes the parent topic in the list as well.
 *
 * @param        string      $id      The id of the parent topic
 * @param        int         $uid     user id or 0 = current user
