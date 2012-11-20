@@ -365,7 +365,7 @@ function prepare_link_item($A, &$template)
     $template->set_var('link_name_encoded', rawurlencode($title));
     $template->set_var('link_hits', COM_numberFormat($A['hits']));
     $template->set_var('link_description',
-                       PLG_replaceTags( nl2br(stripslashes($A['description'])) ));
+                       PLG_replaceTags( COM_nl2br(stripslashes($A['description'])) ));
 
     $attr = array('title' => $actualUrl);
     if (substr($actualUrl, 0, strlen($_CONF['site_url'])) != $_CONF['site_url']) {

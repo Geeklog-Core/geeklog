@@ -75,7 +75,7 @@ foreach ($_CONF as $option => $value) {
     if (is_array($value)) {
         ob_start();
         print_r($value);
-        $value=nl2br(ob_get_contents());
+        $value = COM_nl2br(ob_get_contents());
         ob_end_clean();
     } elseif (is_bool($value)) {
         $value = ($value === false) ? 'false' : 'true';

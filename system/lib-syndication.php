@@ -299,11 +299,11 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLe
             {
                 if( !empty($storytext) )
                 {
-                    $storytext = nl2br($storytext);
+                    $storytext = COM_nl2br($storytext);
                 }
                 if( !empty($fulltext) )
                 {
-                    $fulltext = nl2br($fulltext);
+                    $fulltext = COM_nl2br($fulltext);
                 }
             }
 
@@ -439,11 +439,11 @@ function SYND_getFeedContentAll($frontpage_only, $limit, &$link, &$update, $cont
         {
             if( !empty($storytext) )
             {
-                $storytext = nl2br($storytext);
+                $storytext = COM_nl2br($storytext);
             }
             if( !empty($fulltext) )
             {
-                $fulltext = nl2br($fulltext);
+                $fulltext = COM_nl2br($fulltext);
             }
         }
         

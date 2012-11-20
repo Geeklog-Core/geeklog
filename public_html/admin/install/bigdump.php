@@ -268,7 +268,7 @@ if (!$error && isset($_REQUEST["start"]) && isset($_REQUEST["foffset"]) && preg_
       // Execute query if end of query detected (; as last character) AND NOT in parents
       if (preg_match("/;$/",trim($dumpline)) && !$inparents) {
         if (!TESTMODE && !mysql_query(trim($query), $dbconnection)) {
-          echo INST_getAlertMsg($LANG_BIGDUMP[17] . $linenumber . ': ' . trim($dumpline) . '.<br ' . XHTML . '>' . $LANG_BIGDUMP[18] . trim(nl2br(htmlentities($query))) . '<br ' . XHTML . '>' . $LANG_BIGDUMP[19] . mysql_error());
+          echo INST_getAlertMsg($LANG_BIGDUMP[17] . $linenumber . ': ' . trim($dumpline) . '.<br ' . XHTML . '>' . $LANG_BIGDUMP[18] . trim(COM_nl2br(htmlentities($query))) . '<br ' . XHTML . '>' . $LANG_BIGDUMP[19] . mysql_error());
           $error=true;
           break;
         }

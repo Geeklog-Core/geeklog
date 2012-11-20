@@ -2807,13 +2807,13 @@ function COM_errorLog( $logentry, $actionid = '' )
             case 2:
                 $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp, '',
                                COM_getBlockTemplate( '_msg_block', 'header' ))
-                        . nl2br( $logentry )
+                        . COM_nl2br($logentry)
                         . COM_endBlock( COM_getBlockTemplate( '_msg_block',
                                                               'footer' ));
                 break;
 
             case 3:
-                $retval = nl2br($logentry);
+                $retval = COM_nl2br($logentry);
                 break;
 
             default:
@@ -2829,7 +2829,7 @@ function COM_errorLog( $logentry, $actionid = '' )
                     $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp,
                                    '', COM_getBlockTemplate( '_msg_block',
                                    'header' ))
-                            . nl2br( $logentry )
+                            . COM_nl2br($logentry)
                             . COM_endBlock( COM_getBlockTemplate( '_msg_block',
                                                                   'footer' ));
                 }
@@ -4511,11 +4511,11 @@ function COM_formatBlock( $A, $noboxes = false )
         $blockcontent = stripslashes($A['content']);
 
         // Hack: If the block content starts with a '<' assume it
-        // contains HTML and do not call nl2br() which would only add
+        // contains HTML and do not call COM_nl2br() which would only add
         // unwanted <br> tags.
 
         if (substr(trim($blockcontent), 0, 1) != '<') {
-            $blockcontent = nl2br($blockcontent);
+            $blockcontent = COM_nl2br($blockcontent);
         }
 
         // autotags are only(!) allowed in normal blocks
@@ -8411,6 +8411,20 @@ function COM_newTemplate($root, $options = Array())
     $T->set_var('site_admin_url', $_CONF['site_admin_url']);
     $T->set_var('layout_url', $_CONF['layout_url']);
     return $T;
+}
+
+/**
+ * Replaces all newlines in a string with <br> or <br />,
+ * depending on the detected setting.
+ * 
+ * @param    string    $string  The string to modify
+ * @return   string             The modified string
+ */
+function COM_nl2br($string) {
+    $tag = '<br' . XHTML . '>';
+    $find = array("\r\n", "\n\r", "\r", "\n");
+    $replace = array($tag."\r\n", $tag."\n\r", $tag."\r", $tag."\n");
+    return str_replace($find, $replace, $string);
 }
 
 /**

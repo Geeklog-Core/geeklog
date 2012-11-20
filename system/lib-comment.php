@@ -557,8 +557,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $text = str_replace('<div class="comment-edit">', '', $text);
         $text = str_replace('</div><!-- /COMMENTEDIT -->', '', $text);
         if (preg_match('/<.*>/', $text) == 0) {
-//          $A['comment'] = '<p>' . nl2br($A['comment']) . '</p>';
-            $A['comment'] = '<div class="commentbody">' . nl2br($A['comment']) . '</div>';
+            $A['comment'] = '<div class="commentbody">' . COM_nl2br($A['comment']) . '</div>';
         }
 
         // highlight search terms if specified
@@ -1829,7 +1828,7 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
         $comment = htmlspecialchars(COM_checkWords(COM_stripslashes($comment)));
         $newcomment = COM_makeClickableLinks ($comment);
         if (strcmp ($comment, $newcomment) != 0) {
-            $comment = nl2br ($newcomment);
+            $comment = COM_nl2br($newcomment);
         }
     }
     
@@ -1856,7 +1855,7 @@ function CMT_prepareText($comment, $postmode, $type, $edit = false, $cid = null)
         if (!empty ($sig)) {
             $comment .= '<!-- COMMENTSIG --><div class="comment-sig">';
             if ( $postmode == 'html') {
-                $comment .= '---<br' . XHTML . '>' . nl2br($sig);
+                $comment .= '---<br' . XHTML . '>' . COM_nl2br($sig);
             } else {
                 $comment .=  '---' . LB . $sig;
             }

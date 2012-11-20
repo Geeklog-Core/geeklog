@@ -1674,7 +1674,7 @@ class Story
         {
         case 'introtext':
             if ($this->_postmode == 'plaintext') {
-                $return = nl2br($this->_introtext);
+                $return = COM_nl2br($this->_introtext);
             } elseif ($this->_postmode == 'wikitext') {
                 $return = COM_renderWikiText($this->_editUnescape($this->_introtext));
             } else {
@@ -1686,7 +1686,7 @@ class Story
 
         case 'bodytext':
             if (($this->_postmode == 'plaintext') && !(empty($this->_bodytext))) {
-                $return = nl2br($this->_bodytext);
+                $return = COM_nl2br($this->_bodytext);
             } elseif (($this->_postmode == 'wikitext') && !(empty($this->_bodytext))) {
                 $return = COM_renderWikiText($this->_editUnescape($this->_bodytext));
             } elseif (!empty($this->_bodytext)) {
@@ -2160,7 +2160,7 @@ class Story
      * title, page title, intro and body of the article from the post array, removing all
      * HTML mode content into the nice safe form that geeklog can then (simply)
      * spit back out into the page on render. After doing a magic tags
-     * replacement. And nl2br.
+     * replacement. And COM_nl2br.
      *
      * This DOES NOT ADDSLASHES! We do that on DB store, because we want to
      * keep our internal variables in "display mode", not in db mode or anything.
