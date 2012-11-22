@@ -103,9 +103,10 @@ function USER_deleteAccount ($uid)
     DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET owner_id = 1 WHERE owner_id = $uid");
 
-    // delete story submissions
+    // delete submissions
     DB_delete ($_TABLES['storysubmission'], 'uid', $uid);
-
+    DB_delete ($_TABLES['commentsubmissions'], 'uid', $uid); // Includes article and plugin submissions
+    
     // delete user photo, if enabled & exists
     if ($_CONF['allow_user_photo'] == 1) {
         $photo = DB_getItem ($_TABLES['users'], 'photo', "uid = $uid");
