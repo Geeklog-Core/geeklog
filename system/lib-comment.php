@@ -2224,7 +2224,7 @@ function CMT_handleEdit($mode='', $postmode='', $format, $order, $page)
     // Filemgmt plugin is doing special processing.
     // Therefore, I support specially, against my better judgment.
     // May should delete this code part.
-    if ($type == 'filemgmt') {
+    if ($type == 'filemgmt' AND $mode != 'editsubmission') {
         $sid = 'fileid_' . $sid;
     }
 
