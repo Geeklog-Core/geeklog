@@ -983,7 +983,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $user_templates->set_var('headline_last10comments', $LANG04[10]);
     $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
-    $tids = TOPIC_getList();
+    $tids = TOPIC_getList(0, TRUE, FALSE);
     $topics = "'" . implode("','", $tids) . "'";
 
     // list of last 10 stories by this user
