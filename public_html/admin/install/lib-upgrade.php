@@ -785,7 +785,8 @@ function INST_innodbSupported()
         $A = DB_fetchArray($result);
 
         if (strcasecmp($A['Engine'], 'InnoDB') == 0) {
-            if (strcasecmp($A['Support'], 'yes') == 0) {
+            if ((strcasecmp($A['Support'], 'yes') == 0) ||
+                (strcasecmp($A['Support'], 'default') == 0)) {
                 $retval = true;
             }
             break;
