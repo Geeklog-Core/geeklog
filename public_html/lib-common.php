@@ -1587,7 +1587,7 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 * @param    array   $information    An array defining variables to be used when creating the output
 *                       string  'what'          If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 *                       string  'pagetitle'     Optional content for the page's <title>
-*                       string  'breadcrumbs'   Optional content for the page's <title>
+*                       string  'breadcrumbs'   Optional content for the page's breadcrumb
 *                       string  'headercode'    Optional code to go into the page's <head>
 *                       boolean 'rightblock'    Whether or not to show blocks on right hand side default is no (-1)
 *                       array   'custom'        An array defining custom function to be used to format Rightblocks
@@ -1643,7 +1643,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $function = $_CONF['theme'] . '_createHTMLDocument';
 
     if( function_exists($function)) {
-        return $function( $content, $what, $pagetitle, $headercode, $rightblock, $custom );
+        return $function(&$content, $information);
     }
 
     // If we reach here then either we have the default theme OR
