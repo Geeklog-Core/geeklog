@@ -226,17 +226,26 @@ class SearchCriteria {
 
     function getDateRangeSQL( $type = 'WHERE', $column, $datestart, $dateend )
     {
-        if (!empty($datestart) && !empty($dateend))
-        {
-            $delim = substr($datestart, 4, 1);
-            if (!empty($delim))
-            {
-                $DS = explode($delim, $datestart);
-                $DE = explode($delim, $dateend);
-                $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-                $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-                return " $type (UNIX_TIMESTAMP($column) BETWEEN '$startdate' AND '$enddate') ";
+        if (!empty($datestart) || !empty($dateend)) {
+            // Do some date checking and fill in missing dates
+            $delim = '-';
+            if (empty($datestart) || (strtotime($datestart) == false)) {
+                $datestart = "0000-00-00";
+            } else {
+                $datestart = date('Y-m-d', strtotime($datestart));
             }
+            if (empty($dateend) || (strtotime($dateend) == false)) {
+                $dateend = date('Y-m-d');
+            } else {
+                $dateend = date('Y-m-d', strtotime($dateend));
+            }
+            
+            $DS = explode($delim, $datestart);
+            $DE = explode($delim, $dateend);
+            $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+            $enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
+            
+            return " $type (UNIX_TIMESTAMP($column) BETWEEN '$startdate' AND '$enddate') ";
         }
 
         return '';
