@@ -1643,7 +1643,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     $function = $_CONF['theme'] . '_createHTMLDocument';
 
     if( function_exists($function)) {
-        return $function(&$content, $information);
+        return $function($content, $information);
     }
 
     // If we reach here then either we have the default theme OR
