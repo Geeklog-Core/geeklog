@@ -122,7 +122,7 @@ $LANG_STATIC = array(
     'draft_yes' => 'Yes',
     'draft_no' => 'No', 
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'Your comment has been submitted for review and will be published when approved by a moderator.';
