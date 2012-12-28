@@ -1324,7 +1324,10 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
         // FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'article',
                                   $LANG03[14], $postmode);
-        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+
+        if (!defined('COMMENT_ON_SAME_PAGE')) {
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+        }
     } else { // success
         $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
         DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
