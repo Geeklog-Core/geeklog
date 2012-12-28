@@ -1545,16 +1545,16 @@ function CMT_deleteComment ($cid, $sid, $type)
            . "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
         DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
            . "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");
+        DB_unlockTable ($_TABLES['comments']);
         
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
     } else {
+        DB_unlockTable ($_TABLES['comments']);
         COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to delete a comment that doesn\'t exist as described.');
         return $ret = 2;
     }
-
-    DB_unlockTable ($_TABLES['comments']);
 
     return $ret;
 }
