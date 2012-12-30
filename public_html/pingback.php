@@ -312,7 +312,7 @@ function PNB_getSid ($url)
     // okay, so we have a SID - but are they allowed to access the story?
     if (!empty ($sid)) {
         $testsid = addslashes ($sid);
-        $result = DB_query ("SELECT trackbackcode FROM {$_TABLES['stories']} WHERE sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
+        $result = DB_query ("SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND sid = '$testsid'" . COM_getPermSql ('AND') . COM_getTopicSql ('AND', 0, ta));
         if (DB_numRows ($result) == 1) {
             $A = DB_fetchArray ($result);
             if ($A['trackbackcode'] == 0) {
