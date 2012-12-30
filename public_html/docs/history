@@ -1,7 +1,28 @@
 Geeklog History/Changes:
 
-Sep ??, 2012 (2.0.0rc1)
+Dec 30, 2012 (1.8.2)
 ------------
+
+- A remote service user now bypasses current password check when account is
+  deleted (bug #0001417) [Tom]
+- Fixed Twitter OAuth login error after Twitter deactived some old URLs (bug
+  #0001497) [Tom]
+- $dbconfig_path was not escaped in the install script (bug #0001457, patch
+  provided by mystral-kk)
+- COM_stripslashes will now handle arrays; this was a problem during
+  re-authentication after a security token expired (bug #0001413) [suprsidr]
+- The comment count for a story could be wrong if there was a different object
+  with the same id and a comment (bug #0001414) [Tom]
+- Feeds with the full story text still had a '...' at the end (bug #0001431)
+  [Jeff Rivett, Tom]
+- Allow MIME type application/x-gzip-compressed when uploading a plugin for
+  installation (bug #0001405) [Dirk]
+- Fixed compatibility with MySQL 5.5 (bugs #0001410, #0001456). This also
+  raises the minimum supported MySQL version to 4.1.2 [Dirk, Tom]
+
+
+Oct 2, 2012 (2.0.0rc1)
+-----------
 
 - You can create a new topic with the same id as another topic (bug #0001472)
   [Tom]
