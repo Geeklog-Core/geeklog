@@ -8420,7 +8420,12 @@ function COM_newTemplate($root, $options = Array())
  * @param    string    $string  The string to modify
  * @return   string             The modified string
  */
-function COM_nl2br($string) {
+function COM_nl2br($string)
+{
+    if (! defined('XHTML')) {
+        define('XHTML', '');
+    }
+
     $tag = '<br' . XHTML . '>';
     $find = array("\r\n", "\n\r", "\r", "\n");
     $replace = array($tag."\r\n", $tag."\n\r", $tag."\r", $tag."\n");
