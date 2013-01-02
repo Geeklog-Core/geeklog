@@ -1327,6 +1327,10 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
 
         if (!defined('COMMENT_ON_SAME_PAGE')) {
             $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+        } else {
+            if (!COMMENT_ON_SAME_PAGE) {
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+            }
         }
     } else { // success
         $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));

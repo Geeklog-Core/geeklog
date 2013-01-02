@@ -215,7 +215,14 @@ function plugin_savecomment_staticpages($title, $comment, $id, $pid, $postmode)
     if ($ret > 0) { // failure //FIXME: some failures should not return to comment form
         $retval .= CMT_commentForm($title, $comment, $id, $pid, 'staticpages',
                                   $LANG03[14], $postmode);
-        $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+        
+        if (!defined('COMMENT_ON_SAME_PAGE')) {
+            $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+        } else {
+            if (!COMMENT_ON_SAME_PAGE) {
+                $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG03[1]));
+            }
+        }            
     } else { // success
         $url = COM_buildUrl($_CONF['site_url'] . '/staticpages/index.php?page='
                             . $id);
