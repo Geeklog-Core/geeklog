@@ -196,7 +196,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         } else {
             $args['perm_anon'] = COM_applyBasicFilter($args['perm_anon'], true);
         }
-
+ 
         if (!isset($args['sp_onmenu'])) {
             $args['sp_onmenu'] = '';
         } elseif (($args['sp_onmenu'] == 'on') && empty($args['sp_label'])) {
@@ -253,6 +253,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $sp_label = '';
     if (!empty($args['sp_label'])) {
         $sp_label = $args['sp_label'];
+    } else {
+        // If empty but menu on then use title as default
+        if ($sp_onmenu == 'on') {
+            $sp_label = $sp_title;
+        }
     }
     $meta_description = $args['meta_description'];
     $meta_keywords = $args['meta_keywords'];    
