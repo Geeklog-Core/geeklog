@@ -427,7 +427,7 @@ function custom_validation_single_char($rule, $ruleParams) {
             break;
         }
         
-        if ( preg_match('/^[\w.,;\-]{1}$/i', $paramValue) ) {
+        if ( preg_match('/^[\s\w.,;\-]{1}$/i', $paramValue) ) {
             $ret = true;
         }
     }
