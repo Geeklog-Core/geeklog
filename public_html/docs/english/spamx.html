@@ -59,7 +59,8 @@ dropped in and it will be added to the plugin.</p>
 <li><a href="#ip">IP Filter</a></li>
 <li><a href="#ipofurl">IP of URL Filter</a></li>
 <li><a href="#header">HTTP Header Filter</a></li>
-<!-- <li><a href="#honeypot">Project Honeypot Filter</a></li> -->
+<li><a href="#sfs">Stop Forum Spam (SFS)</a></li>
+<li><a href="#snl">Spam Number of Links (SNL)</a></li>
 </ul>
 
 <h3><a name="slv">Spam Link Verification (SLV)</a></h3>
@@ -157,33 +158,29 @@ posts made by this user agent, you would enter:</p>
 </table>
 <p>This would block all posts from user agents beginning with "libwww-perl".</p>
 
-<!-- Currently not shipped with Geeklog
+<h3><a name="sfs">Stop Forum Spam (SFS)</a></h3>
 
-<h3><a name="honeypot">Project Honeypot http:BL Filter</a></h3>
+<p>Stop Forum Spam is a centralized, server-based service that provides lists of 
+ips, usernames and email addresses of know spammers of forums and blogs. With this 
+module enabled, on new user registrations the ip of the user and email address 
+will be checked against the SFS database. If found the Geeklog user account will 
+not be created.</p>
 
-<p><a href="http://www.projecthoneypot.org" title="visit the project honey pot site">ProjectHoneypot.org</a>
-    is a new service providing a way of trapping malicious web users with
-    <a href="http://en.wikipedia.org/wiki/Honeypot_%28computing%29" title="view the wikipedia definition of a Honeypot">honeypots</a>.
-    Essentially this provides traps for email address harvesting bots, spammers,
-    and people trying to exploit web sites. Using the honeypots, the project
-    gathers and maintains an active blacklist of IP addresses categorised by
-    threat type, level and activity.</p>
+<p>SFS is a free service and can be found at <a
+href="http://www.stopforumspam.com/">www.stopforumspam.com</a>.
 
-<p>With the ProjectHoneyPot filter module, you can block posts from known bad
-    ip addresses as identified by the <a href="http://www.projecthoneypot.org/httpbl_configure.php">http:BL</a>
-    blacklist.
-    </p>
-    <p>In order to do so, you must first <a href="http://www.projecthoneypot.org/create_account.php">Register with projectHoneyPot</a>,
-        <a href="http://www.projecthoneypot.org/manage_honey_pots.php">install a honeypot</a> or
-        <a href="http://www.projecthoneypot.org/manage_quicklink.php">quick link</a> and
-        <a href="http://www.projecthoneypot.org/httpbl_configure.php">get an access key</a>
-        for the http:BL.</p>
-    <p>Once you have done this, and inserted appropriate details into the Spam-X
-        config.php file, http:BL blocking will be used for all filtered content
-    automatically.</p>
+<p><strong><a name="sfsprivacy">Privacy Notice:</a></strong>
+Enabling SFS means that user information (ip and email address) from your site 
+is being sent to a third party. In some legislations you may have to inform your 
+users about this fact - please check with your local privacy laws.</p>
 
--->
+<h3><a name="snl">Spam Number of Links (SNL)</a></h3>
 
+<p>With this module enabled you can limit the number of links that appear in a 
+post and user profile. To enable the module and set the number of links you need 
+to update the Spam-X configuration. If enabled you should allow at least 1 link 
+to take into account when a user creates a profile since Homepage is a default 
+user field.</p>
 
 <h2><a name="action">Action Modules</a></h2>
 
@@ -323,12 +320,12 @@ panel:</p>
 <tr class="r2">
   <td><a name="desc_snl_enabled">snl_enabled</a></td>
   <td><code>true</code></td>
-  <td>Whether the Spam Number of Links (SNL) module is enabled or not. If enabled it will only allow a specified number of links in a post.</td>
+  <td>Whether the Spam Number of Links (SNL) module is enabled or not. If enabled it will only allow a specified number of links in a post or when a user creates or updates their profile.</td>
 </tr>
 <tr>
   <td><a name="desc_snl_num_links">snl_num_links</a></td>
   <td>5</td>
-  <td>The maximum number of links allowed in a post before it is considered spam.</td>
+  <td>The maximum number of links allowed in a post or profile before it is considered spam.</td>
 </tr>
 </table>
 
