@@ -651,7 +651,7 @@ function TOPIC_checkTopicSelectionControl()
 {
     global $_TABLES;
 
-    $topic_options_hide = 1;
+    $topic_options_hide = 0;
     if (isset ($_POST['topic_options_hide'])) {
         $topic_options_hide = COM_applyFilter($_POST['topic_options_hide'], true);
     }
@@ -783,7 +783,7 @@ function TOPIC_saveTopicSelectionControl($type, $id)
 */
 function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_tids, &$default_tid)
 {
-    $topic_options_hide = 1;
+    $topic_options_hide = 0;
     if (isset ($_POST['topic_options_hide'])) {
         $topic_options_hide = COM_applyFilter($_POST['topic_options_hide'], true);
     }
@@ -833,7 +833,12 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     $tids = array();
     $inherit_tids = array();
     $default_tid = '';
-    $topic_option = '';
+    // Set Default Topic Option
+    if ($show_options) {
+        $topic_option = TOPIC_ALL_OPTION; // Default to all topics so things will work similar to how topics handled before Geeklog 2.0.0
+    } else {
+        $topic_option = TOPIC_SELECTED_OPTION;
+    }
     
     // Do they have any access to topics first?
     
