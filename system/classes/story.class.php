@@ -936,12 +936,10 @@ class Story
 
     /**
      * Sets up basic data for a new user submission story
-     *
-     * @param   string   Topic the user picked before heading to submission
      */
-    function initSubmission($topic)
+    function initSubmission()
     {
-        global $_USER, $_CONF, $_TABLES;
+        global $_USER, $_CONF, $_TABLES, $topic;
 
         if (COM_isAnonUser()) {
             $this->_uid = 1;

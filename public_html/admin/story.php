@@ -234,11 +234,10 @@ function liststories($current_topic = '')
 * @param    string      $sid            ID of story to edit
 * @param    string      $mode           'preview', 'edit', 'editsubmission', 'clone'
 * @param    string      $errormsg       a message to display on top of the page
-* @param    string      $currenttopic   topic selection for drop-down menu
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
+function storyeditor($sid = '', $mode = '', $errormsg = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
            $MESSAGE, $_SCRIPTS;
@@ -251,16 +250,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '', $currenttopic = '')
 
     if (!empty($errormsg)) {
         $display .= COM_showMessageText($errormsg, $LANG24[25]);
-    }
-
-    if (!empty ($currenttopic)) {
-        $allowed = DB_getItem ($_TABLES['topics'], 'tid',
-                                "tid = '" . addslashes ($currenttopic) . "'" .
-                                COM_getTopicSql ('AND'));
-
-        if ($allowed != $currenttopic) {
-            $currenttopic = '';
-        }
     }
 
     $story = new Story();
@@ -844,6 +833,9 @@ if (isset($_REQUEST['editopt'])){
     }
 }
 
+// Get last topic (this is needed in case Story Admin clicks on Contribute menu top link)
+TOPIC_getTopic();
+
 $display = '';
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $sid = COM_applyFilter ($_POST['sid']);
@@ -884,11 +876,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_GET['sid'])) {
         $sid = COM_applyFilter ($_GET['sid']);
     }
-    $topic = '';
-    if (isset ($_GET['topic'])) {
-        $topic = COM_applyFilter ($_GET['topic']);
-    }
-    $display .= storyeditor($sid, $mode, '', $topic);
+    $display .= storyeditor($sid, $mode, '');
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[5]));
     COM_output($display);
 } else if ($mode == 'editsubmission') {

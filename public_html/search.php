@@ -37,7 +37,7 @@ require_once $_CONF['path_system'] . 'classes/search.class.php';
 $searchObj = new Search();
 
 // Figure out topic to display
-TOPIC_getTopic('search');
+TOPIC_getTopic();
 
 if (isset($_GET['mode']) && ($_GET['mode'] == 'search')) {
     $content = $searchObj->doSearch();

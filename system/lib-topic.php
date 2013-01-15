@@ -828,7 +828,7 @@ function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_ti
 */
 function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show_inherit = false, $show_default = false)
 {
-    global $_CONF, $LANG27, $_TABLES;
+    global $_CONF, $LANG27, $_TABLES, $topic;
     
     $tids = array();
     $inherit_tids = array();
@@ -847,12 +847,19 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
     if (empty($type) || empty($id)) {
         $from_db = false; 
     }
-    if (!$from_db) {    
-        TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
-        
-        // Figure out if we need to set the default topic for the list
-        if ($topic_option == TOPIC_SELECTED_OPTION AND empty($tids)) {
-            $tids = (DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND')));
+    if (!$from_db) {
+         // see if a selection control variable is_a set. If not then first time for display of control
+        if (isset($_POST['topic_options_hide'])) {
+            TOPIC_getDataTopicSelectionControl($topic_option, $tids, $inherit_tids, $default_tid);
+        } else {
+            // Figure out if we set current topic for first display or use default topic
+            if ($topic_option == TOPIC_SELECTED_OPTION AND empty($tids)) {
+                if ($topic == '') {
+                    $tids = (DB_getItem($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL('AND')));
+                } else {
+                    $tids = $topic;
+                }
+            }
         }
     } else {    
         $sql = "SELECT * FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
@@ -1138,14 +1145,15 @@ function TOPIC_getTopicAdminColumn($type, $id)
 /**
 * Figure out the current topic for a plugin. If permissions or language wrong 
 * will find default else end with a '' topic (which is all). Needs to be run after 
-* lib-common.php so it can grab topic in url if need be.
+* lib-common.php so it can grab topic in url if need be. Also if pass blank $type
+* and $id then return just last topic
 *
 * @param    string          $type   Type of object to find topic access about.  
 * @param    string/array    $id     ID of object
 * @return   void
 *
 */
-function TOPIC_getTopic($type, $id = '')
+function TOPIC_getTopic($type = '', $id = '')
 {
     global $_TABLES, $topic;
     
@@ -1166,7 +1174,10 @@ function TOPIC_getTopic($type, $id = '')
 
     // ***********************************
     // Special Cases
-    if ($type == 'comment') {
+    if ($type == '') { // used by search, submit, etc to find last topic
+        $topic = $last_topic;
+        $found = true;
+    } elseif ($type == 'comment') {
         if ($id != '') {
             // Find comment objects topic
             $sql = "SELECT type, sid 
@@ -1192,9 +1203,6 @@ function TOPIC_getTopic($type, $id = '')
             $topic = $last_topic;
             $found = true;
         }
-    } elseif ($type == 'search') {
-        $topic = $last_topic;
-        $found = true;
     }
     // ***********************************
     
