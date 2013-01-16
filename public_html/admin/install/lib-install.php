@@ -560,7 +560,7 @@ function INST_getUploadError($mFile)
         $mRetval = false;
 
     }
-    
+
     return $mRetval;
 }
 
@@ -910,7 +910,7 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
             if (DB_error()) {
                 COM_errorLog('Error adding plugin default data', 1);
                 PLG_uninstall($plugin);
-            
+
                 return false;
             }
         }
@@ -1039,7 +1039,7 @@ function INST_fixPathsAndUrls($path, $path_html, $site_url, $site_admin_url)
         // if we had to fix the site's URL, chances are that cookie domain
         // and path are also wrong and the user won't be able to log in
         $config->set('cookiedomain', '');
-        $config->set('cookie_path', '/');
+        $config->set('cookie_path', INST_guessCookiePath($site_url));
     }
     if (! empty($site_admin_url) &&
             ($_CONF['site_admin_url'] != $site_admin_url)) {
@@ -1305,6 +1305,31 @@ function INST_dbPasswordCheck($site_url, $db)
     } else {
         return false;
     }
+}
+
+/**
+* Returns a cookie path for a site URL
+*
+* @param   string  $site_url    site URL
+* @return  string               a cookie path
+*/
+function INST_guessCookiePath($site_url)
+{
+    $retval = '/';
+
+    if (preg_match('|(^https?://[^/]+)|i', $site_url, $match)) {
+        $path = substr($site_url, strlen($match[1]));
+
+        if (($path !== '') AND ($path !== FALSE)) {
+            $retval = $path;
+
+            if (substr($retval, -1) !== '/') {
+                $retval .= '/';
+            }
+        }
+    }
+
+    return $retval;
 }
 
 ?>

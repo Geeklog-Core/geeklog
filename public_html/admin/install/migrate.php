@@ -353,7 +353,7 @@ if (INST_phpOutOfDate()) {
 
         // Check if there are any files in the backups directory
         if (count($backup_files) > 0) { 
-            
+
             $display .= '<select name="backup_file">' . LB
                 . '<option value="">' . $LANG_MIGRATE[10] . '</option>' . LB;
 
@@ -369,7 +369,7 @@ if (INST_phpOutOfDate()) {
                     . ')</option>' . LB;
 
             }
-            
+
             $display .= '</select>' . LB;
 
         } else { 
@@ -380,7 +380,7 @@ if (INST_phpOutOfDate()) {
 
         $display .= '</span>' . LB
             . '<span id="migration-upload">' . LB ;
-                
+
         // Check if the user's PHP configuration has 'file_uploads' enabled
         $file_uploads = ini_get('file_uploads') ? true : false;
 
@@ -390,7 +390,7 @@ if (INST_phpOutOfDate()) {
         if ($file_uploads && $is_writable) {
 
             $display .= '<input class="input_file" type="file" name="backup_file"' . XHTML . '><br' . XHTML . '>' . LB;
-        
+
         }
 
         $display .= '</span>' . LB
@@ -400,7 +400,7 @@ if (INST_phpOutOfDate()) {
         if ($file_uploads) { 
 
             if ($is_writable) {
-    
+
                 $display .= INST_getAlertMsg($LANG_MIGRATE[12] . ini_get('upload_max_filesize') . $LANG_MIGRATE[13] . ini_get('upload_max_filesize') . $LANG_MIGRATE[14], 'notice');
 
             } else {
@@ -562,7 +562,7 @@ if (INST_phpOutOfDate()) {
                 } else {
 
                     if (!move_uploaded_file($backup_file['tmp_name'], $backup_dir . $backup_file['name'])) { // If able to save the uploaded file
-    
+
                         $display .= $LANG_MIGRATE[19] . $backup_file['name'] . $LANG_MIGRATE[20] . $backup_dir . '.' . LB;
 
                     } else {
@@ -846,8 +846,8 @@ if (INST_phpOutOfDate()) {
         // reset cookie domain and path as wrong values may prevent login
         $config->set('cookiedomain', '');
         $_CONF['cookiedomain'] = '';
-        $config->set('cookie_path', '/');
-        $_CONF['cookie_path'] = '/';
+        $config->set('cookie_path', INST_guessCookiePath($_CONF['site_url']));
+        $_CONF['cookie_path'] = INST_guessCookiePath($_CONF['site_url']);
 
         // check the default theme
         $theme = '';
@@ -891,7 +891,7 @@ if (INST_phpOutOfDate()) {
         $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
         $num_plugins = DB_numRows($result);
         for ($i = 0; $i < $num_plugins; $i++) { // Look in the plugins directories to ensure that those plugins exist. 
-        
+
             $plugin = DB_fetchArray($result);
 
             if (!file_exists($_CONF['path'] . 'plugins/' . $plugin['pi_name'])) { // If plugin does not exist
@@ -958,13 +958,13 @@ if (INST_phpOutOfDate()) {
 
             }
         }
-        
+
         // Topic images
         $missing_topic_images = false;
         $result = DB_query("SELECT `imageurl` FROM {$_TABLES['topics']}");
         $num_topic_images = DB_numRows($result);
         for ($i = 0; $i < $num_topic_images; $i++) {
-        
+
             $topic_image = DB_fetchArray($result);
             if (!file_exists($html_path . $topic_image['imageurl'])) { // If topic image does not exist
 
@@ -973,9 +973,9 @@ if (INST_phpOutOfDate()) {
 
                 $missing_topic_images = true;
                 $missing_images = true;
-            
+
             }
-        
+
         }
 
         // Userphoto images
@@ -983,16 +983,16 @@ if (INST_phpOutOfDate()) {
         $result = DB_query("SELECT `photo` FROM {$_TABLES['users']} WHERE `photo` != NULL AND `photo` != ''");
         $num_userphoto_images = DB_numRows($result);
         for ($i = 0; $i < $num_userphoto_images; $i++) {
-        
+
             $userphoto_image = DB_fetchArray($result);
             if (!file_exists($html_path . 'images/userphotos/' . $userphoto_image['photo'])) { // If userphoto image does not exist
-            
+
                 // Log the error
                 COM_errorLog($LANG_MIGRATE[26] . $LANG_MIGRATE[29] . $userphoto_image['photo'] . $LANG_MIGRATE[30] . $_TABLES['users'] . $LANG_MIGRATE[31] . $html_path . 'images/userphotos/'); 
 
                 $missing_userphoto_images = true;
                 $missing_images = true;
-        
+
             }
 
         }
@@ -1044,7 +1044,7 @@ if (INST_phpOutOfDate()) {
 
             // Topic images
             if ($missing_topic_images) { 
-            
+
                 $display .= INST_getAlertMsg($LANG_MIGRATE[34] . ' <code>' . $html_path . 'images/topics/</code> ' . $LANG_MIGRATE[35], 'notice');
 
             }
