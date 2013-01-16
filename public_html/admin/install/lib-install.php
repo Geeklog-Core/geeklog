@@ -825,9 +825,6 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
 
         foreach ($_SQL as $sql) {
             $sql = str_replace('#group#', $admin_group_id, $sql);
-            if ($use_innodb) {
-                $sql = str_replace('MyISAM', 'InnoDB', $sql);
-            }
             DB_query($sql);
             if (DB_error()) {
                 COM_errorLog('Error creating plugin table', 1);

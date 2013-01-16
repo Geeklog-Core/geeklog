@@ -1185,7 +1185,7 @@ function plugin_upgrade_polls()
 
             if (isset($_UPDATES[$current_version])) {
                 $_SQL = $_UPDATES[$current_version];
-                $_SQL = INST_checkInnodbUpgrade($_SQL);
+
                 foreach ($_SQL as $sql) {
                     DB_query($sql);
                 }

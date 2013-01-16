@@ -736,7 +736,6 @@ function INST_updateDB($_SQL)
 {
     global $progress, $use_innodb, $_DB, $_DB_dbms;
 
-    $_SQL = INST_checkInnodbUpgrade($_SQL);
     foreach ($_SQL as $sql) {
         $progress .= "executing " . $sql . "<br" . XHTML . ">\n";
         if ($_DB_dbms == 'mssql') {
@@ -746,28 +745,6 @@ function INST_updateDB($_SQL)
         }
     }
 }
-
-/**
- * Check InnoDB Upgrade
- *
- * @param   array   $_SQL   List of SQL queries
- * @return  array           InnoDB table style if chosen
- *
- */
-function INST_checkInnodbUpgrade($_SQL)
-{
-    global $use_innodb;
-
-    if ($use_innodb) {
-        $statements = count($_SQL);
-        for ($i = 0; $i < $statements; $i++) {
-            $_SQL[$i] = str_replace('MyISAM', 'InnoDB', $_SQL[$i]);
-        }
-    }
-
-    return $_SQL;
-}
-
 
 /**
  * Check for InnoDB table support (usually as of MySQL 4.0, but may be
