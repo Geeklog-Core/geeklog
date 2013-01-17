@@ -16,3 +16,10 @@ $('#searchform input[name=query]').focusout(function() {
         $(this).val(this.defaultValue);
     }
 });
+
+// Removes the text if there has been no input
+$("#searchform input:submit").click(function () {
+    if ($("#searchform input[name='query']").val() === this.title) {
+        $("#searchform input[name='query']").val('');
+    }
+});
