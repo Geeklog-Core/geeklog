@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.8                                                               |
+// | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
 // | mysqli.class.php                                                          |
 // |                                                                           |
 // | mysql database class with MySQLi extension                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2011 by the following authors:                         |
+// | Copyright (C) 2000-2013 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // |          Kenji Ito, geeklog AT mystral-kk DOT net                         |
@@ -48,6 +48,7 @@ class database
     private $_errorlog_fn = '';
     private $_charset = '';
     private $_mysql_version = 0;
+    private $_use_innodb = FALSE;
 
     /**
     * Logs messages
@@ -76,6 +77,8 @@ class database
     */
     private function _connect()
     {
+        global $_TABLES, $use_innodb;
+
         if ($this->_verbose) {
             $this->_errorlog("\n*** Inside database->_connect ***");
         }
@@ -110,6 +113,19 @@ class database
             }
         }
 
+        // Checks if db engine is InnoDB.  During the installation
+        // $_TABLES['vars'] is not yet created, so we use $use_innodb instead.
+        if (isset($use_innodb)) {
+            $this->_use_innodb = (boolean) $use_innodb;
+        } else {
+            $result = $this->dbQuery("SELECT value FROM {$_TABLES['vars']} WHERE (name = 'database_engine')");
+
+            if (($result !== FALSE) AND ($this->dbNumRows($result) == 1)) {
+                $A = $this->dbFetchArray($result, FALSE);
+                $this->_use_innodb = (strcasecmp($A['value'], 'InnoDB') === 0);
+            }
+        }
+
         if ($this->_verbose) {
             $this->_errorlog("\n***leaving database->_connect***");
         }
@@ -138,6 +154,7 @@ class database
         $this->_errorlog_fn = $errorlogfn;
         $this->_charset = strtolower($charset);
         $this->_mysql_version = 0;
+        $this->_use_innodb = FALSE;
 
         $this->_connect();
     }
@@ -157,7 +174,7 @@ class database
     */
     public function setVerbose($flag)
     {
-        $this->_verbose = (bool) $flag;
+        $this->_verbose = (boolean) $flag;
     }
 
     /**
@@ -172,7 +189,7 @@ class database
     */
     public function setDisplayError($flag)
     {
-        $this->_display_error = (bool) $flag;
+        $this->_display_error = (boolean) $flag;
     }
 
     /**
@@ -201,7 +218,9 @@ class database
     */
     public function setErrorFunction($functionname)
     {
-        $this->_errorlog_fn = $functionname;
+        if (is_callable($functionname)) {
+            $this->_errorlog_fn = $functionname;
+        }
     }
 
     /**
@@ -219,6 +238,38 @@ class database
         if ($this->_verbose) {
             $this->_errorlog("\n***inside database->dbQuery***");
             $this->_errorlog("\n*** sql to execute is $sql ***");
+        }
+
+        // Modifies "CREATE TABLE" SQL
+        if (preg_match('/create\s+table\s/i', $sql)) {
+            $p = strrpos($sql, ')');
+
+            if ($p !== FALSE) {
+                $option = substr($sql, $p + 1);
+
+                if (($option !== '') AND ($option !== FALSE)) {
+                    // Replaces engine type
+                    $sql    = substr($sql, 0, $p + 1);
+                    $option = rtrim($option, " \t\n\r\0\x0b;");
+                    $option = str_ireplace('type', 'ENGINE', $option);
+
+                    if ($this->_use_innodb === TRUE) {
+                        $option = str_ireplace('MyISAM', 'InnoDB', $option);
+                    }
+                } else {
+                    // Appends engine type
+                    $option = ' ENGINE='
+                            . (($this->_use_innodb === TRUE) ? 'InnoDB' : 'MyISAM');
+                }
+
+                // Appends default charset if necessary
+                if (($this->_charset === 'utf-8') AND
+                        !preg_match('/DEFAULT\s+(CHARSET|CHARACTER\s+SET)/i', $option)) {
+                    $option .= ' DEFAULT CHARSET=utf8';
+                }
+
+                $sql .= $option;
+            }
         }
 
         // Run query

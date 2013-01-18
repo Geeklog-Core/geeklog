@@ -421,7 +421,7 @@ function INST_installEngine($install_type, $install_step)
                 require_once $dbconfig_path;
                 require_once $siteconfig_path;
                 require_once $_CONF['path_system'] . 'lib-database.php';
-                
+
                 if($_DB_dbms=='pgsql')
                 {
                     //Create a func to check if plpgsql is already installed
@@ -518,6 +518,7 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('path_themes', $html_path . 'layout/');
                         $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
                         $config->set('path_pear', $_CONF['path_system'] . 'pear/');
+                        $config->set('cookie_path', INST_guessCookiePath(urldecode($site_url)));
                         $config->set_default('default_photo', urldecode($site_url) . '/default.jpg');
 
                         $lng = INST_getDefaultLanguage($gl_path . 'language/', $language, $utf8);
@@ -939,10 +940,10 @@ $use_innodb = false;
 
 // $display holds all the outputted HTML and content
 if (defined('XHTML')) {
-	$display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    $display = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">';
 } else {
-	$display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+    $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>';
 }
 
@@ -1216,7 +1217,7 @@ if (INST_phpOutOfDate()) {
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[25] . '"' . XHTML .'>' . LB
                 . '<input type="submit" name="install_type" class="button big-button" value="' . $LANG_INSTALL[16] . '"' . XHTML .'>' . LB
                 . '</form> </div> <br' . XHTML . '>' . LB;
-   
+
         }
         break;
 
