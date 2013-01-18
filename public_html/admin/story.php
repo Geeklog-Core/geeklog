@@ -833,8 +833,6 @@ if (isset($_REQUEST['editopt'])){
     }
 }
 
-// Get last topic (this is needed in case Story Admin clicks on Contribute menu top link)
-TOPIC_getTopic();
 
 $display = '';
 if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
