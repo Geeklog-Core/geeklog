@@ -1144,9 +1144,9 @@ function TOPIC_getTopicAdminColumn($type, $id)
 
 /**
 * Figure out the current topic for a plugin. If permissions or language wrong 
-* will find default else end with a '' topic (which is all). Needs to be run after 
-* lib-common.php so it can grab topic in url if need be. Also if pass blank $type
-* and $id then return just last topic
+* will find default else end with a '' topic (which is all). Needs to be run  
+* on page that is affected by the topic after lib-common.php so it can grab 
+* topic in url if need be. Also if pass blank $type and $id then return just last topic
 *
 * @param    string          $type   Type of object to find topic access about.  
 * @param    string/array    $id     ID of object
@@ -1163,7 +1163,7 @@ function TOPIC_getTopic($type = '', $id = '')
     // Double check
     $topic = COM_applyFilter($topic);
     
-    // Check Previous topic
+    // Check and return Previous topic
     if ($topic == '') {
         // Blank could mean all topics or that we do not know topic
         // retrieve previous topic
@@ -1208,17 +1208,29 @@ function TOPIC_getTopic($type = '', $id = '')
     
     if (!$found) {
         if ($last_topic != '') {    
-            // see if object belongs to topic
-            $sql = "SELECT ta.* 
+            // see if object belongs to topic or any child inherited topics
+            $tid_list = TOPIC_getChildList($last_topic);
+            
+            $sql = "SELECT ta.tid 
                 FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
                 WHERE t.tid = ta.tid  
-                AND ta.type = '$type' AND ta.id = '$id' AND ta.tid = '$last_topic' 
-                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't');
+                AND ta.type = '$type' AND ta.id = '$id' 
+                AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$last_topic}')))
+                " . COM_getLangSQL('tid', 'AND', 't') . COM_getPermSQL('AND', 0, 2, 't')
+                . " ORDER BY tdefault DESC, tid ASC"; // Order by default first and then tid alphabetically since no defined sort order of topics. This needs to be the same as when topics are displayed (index.php)
         
             $result = DB_query($sql);
             $nrows = DB_numRows($result);
             if ($nrows > 0) {
-                $topic = $last_topic;
+                $A = DB_fetchArray($result);
+                $topic = $A['tid']; // Default topic if returned else first topic in order by tid
+                
+                // Need to check if topic assignment exists for last topic if so make that the topic instead
+                while ($A = DB_fetchArray($result)) {
+                    if ($last_topic == $A['tid']) {
+                        $topic = $A['tid'];
+                    }
+                } 
             } else {
                 $find_another = true;
             }
