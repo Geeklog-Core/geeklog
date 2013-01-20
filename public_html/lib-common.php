@@ -8427,6 +8427,68 @@ function COM_nl2br($string)
 }
 
 /**
+* Returns the ISO-639-1 language code
+*
+* @param   string   $langName
+* @return  string
+*/
+function COM_getLangIso639Code($langName = NULL)
+{
+    $mapping = array(
+        // GL language name   => ISO-639-1
+        'afrikaans'           => 'af',
+        'bosnian'             => 'bs',
+        'bulgarian'           => 'bg',
+        'catalan'             => 'ca',
+        'chinese_simplified'  => 'zh-cn',
+        'chinese_traditional' => 'zh',
+        'croatian'            => 'hr',
+        'czech'               => 'cs',
+        'danish'              => 'da',
+        'dutch'               => 'nl',
+        'english'             => 'en',
+        'estonian'            => 'et',
+        'farsi'               => 'fa',
+        'finnish'             => 'fi',
+        'french_canada'       => 'fr-ca',
+        'french_france'       => 'fr',
+        'german'              => 'de',
+        'german_formal'       => 'de',
+        'hebrew'              => 'he',
+        'hellenic'            => 'el',
+		'indonesian'          => 'id',
+        'italian'             => 'it',
+        'japanese'            => 'ja',
+        'korean'              => 'ko',
+        'norwegian'           => 'no',	// Norwegian (nynorsk)
+//		'norwegian'           => 'nb',	// Norwegian (Bokmal)
+        'polish'              => 'pl',
+        'portuguese'          => 'pt',
+        'portuguese_brazil'   => 'pt-br',
+        'romanian'            => 'ro',
+        'russian'             => 'ru',
+        'serbian'             => 'sr',
+        'slovak'              => 'sk',
+        'slovenian'           => 'sl',
+        'spanish'             => 'es',
+        'spanish_argentina'   => 'es',
+        'swedish'             => 'sv',
+        'turkish'             => 'tr',
+        'ukrainian'           => 'uk',
+		'ukrainian_koi8-u'    => 'uk',
+    );
+
+    if ($langName === NULL) {
+        $langName = COM_getLanguage();
+    }
+
+    $langName = strtolower($langName);
+    $langName = str_replace('_utf-8', '', $langName);
+
+    return isset($mapping[$langName]) ? $mapping[$langName] : 'en';
+}
+
+/**
 * Now include all plugin functions
 */
 foreach ($_PLUGINS as $pi_name) {

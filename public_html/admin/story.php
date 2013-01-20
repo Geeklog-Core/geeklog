@@ -240,7 +240,7 @@ function liststories($current_topic = '')
 function storyeditor($sid = '', $mode = '', $errormsg = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $LANG_ADMIN,
-           $MESSAGE, $_SCRIPTS;
+           $MESSAGE, $_SCRIPTS, $LANG_DIRECTION, $LANG_MONTH, $LANG_WEEK;
 
     $display = '';
 
@@ -721,7 +721,18 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
     
     // Add JavaScript
+    $_SCRIPTS->setJavaScript(
+        "var geeklog = { siteUrl: '" . $_CONF['site_url'] . "', "
+        . '  lang: { '
+        . "    calendar: '" . 'Click and select a date' . "',"	// Should be translated
+        . "    code: '" . COM_getLangIso639Code() . "'"
+        . '  }'
+        . ' };',
+        TRUE
+    );
     $_SCRIPTS->setJavaScriptFile('story_editor', '/javascript/story_editor.js');
+    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+
     if ($advanced_editormode) {
         $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
         // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it

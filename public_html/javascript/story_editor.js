@@ -160,3 +160,104 @@
         editorInstance.ToolbarSet.Expand() ;
     }
     */
+
+// Adds jQuery UI datepicker to year/month/day selectors
+jQuery(function () {
+    var $ = jQuery,
+        names = ['publish', 'expire', 'cmt_close'],
+        name,
+        imgUrl = geeklog.siteUrl + '/images/calendar.png',
+        title = geeklog.lang.calendar,
+        langCode = geeklog.lang.code,
+        i, len, inputName, timeStamp;
+    
+    var getTimeStampFromSelectors = function (name) {
+        var y = $("select[name='" + name + "_year']").val(),
+            m = '0' + $("select[name='" + name + "_month']").val(),
+            d = $("select[name='" + name + "_day']").val();
+        
+        m = m.substr(m.length - 2, 2);
+        
+        return y + '-' + m + '-' + d;
+    };
+    
+    // Converts ISO-639-1 code to that used in jQuery UI datepicker
+    switch (geeklog.lang.code) {
+        case 'en':
+            geeklog.lang.code = 'en-GB';
+            break;
+        
+        case 'fr-ca':
+            geeklog.lang.code = 'fr';
+            break;
+        
+        case 'nb':
+            geeklog.lang.code = 'no';
+            break;
+        
+        case 'pt-br':
+            geeklog.lang.code = 'pt-BR';
+            break;
+        
+        case 'zh-cn':
+            geeklog.lang.code = 'zh-CN';
+            break;
+        
+        case 'zh':
+            geeklog.lang.code = 'zh-TW';
+            break;
+    }
+    
+    // Set default options for datepickers
+    $.datepicker.setDefaults({
+        autoSize: true,
+        buttonImage: imgUrl,
+        buttonImageOnly: true,
+        buttonText: title,
+        dateFormat: 'yy-mm-dd',
+        showOn: 'button'
+    });
+    
+    for (i = 0, len = names.length; i < len; i++) {
+        // Creates an invisible input field for a datepicker
+        name = names[i];
+        inputId = name + '_value_hidden';
+        $("select[name='" + name + "_month']")
+            .before('<span>&nbsp;</span><input type="text" id="' + inputId + '" style="display: none;" value="' + getTimeStampFromSelectors(name) + '" />&nbsp;');
+        
+        // Attaches a datepicker to the input field
+        $('#' + inputId).datepicker();
+        
+        // Sets default locale
+        $.datepicker.setDefaults($.datepicker.regional[geeklog.lang.code]);
+        
+        // Resets date format
+        $.datepicker.setDefaults({
+            dateFormat: 'yy-mm-dd'
+        });
+        
+        // When a date is selected, then it is reflected back to selectors
+        $('#' + inputId).change(function () {
+            var inputId = $(this).attr('id');
+            var name = inputId.substr(0, inputId.indexOf('_value_hidden'));
+            var d = $(this).val();
+            
+            $("select[name='" + name + "_month']").val(parseInt(d.substr(5, 2), 10));
+            $("select[name='" + name + "_year']").val(parseInt(d.substr(0, 4)), 10);
+            $("select[name='" + name + "_day']").val(d.substr(8, 2));
+        });
+        
+        // When month, day or year selectors are changed, then their values are
+        // reflected back to the input field
+        $("select[name^='" + name + "_']").change(function () {
+            var selectorName = $(this).attr('name'),
+                inputId, d;
+            
+            selectorName = selectorName.substr(0, selectorName.lastIndexOf('_'));
+            inputId = selectorName + '_value_hidden';
+            d = getTimeStampFromSelectors(selectorName);
+            $('#' + inputId).val(d);
+            $('#' + inputId).datepicker('setDate', d);
+        });
+    }
+});
