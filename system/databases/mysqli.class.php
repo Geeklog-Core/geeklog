@@ -344,8 +344,8 @@ class database
                 $retval .= ' WHERE ';
 
                 for ($i = 1; $i <= $num_ids; $i ++) {
-                    $retval .= current($id) . " = '"
-                            .  $this->dbEscape(current($value)) . "'";
+                    $retval .= current($id) . " = "
+                            .  $this->dbEscapeString(current($value));
                     if ($i !== $num_ids) {
                         $retval .= " AND ";
                     }
@@ -765,15 +765,6 @@ class database
         return $this->_db->server_info;
     }
 
-    public function dbEscape($value, $is_numeric = FALSE)
-    {
-        if (!$is_numeric) {
-            $value = $this->_db->escape_string($value);
-        }
-
-        return $value;
-    }
-
     public function dbStartTransaction()
     {
         return $this->_db->autocommit(FALSE);
@@ -788,6 +779,25 @@ class database
     {
         return $this->_db->rollback();
     }
+
+    /**
+    * Escapes a string so that it can be safely used in a query
+    *
+    * @param   string   $str          a string to be escaped
+    * @param   boolean  $isEnclose    whether to enclose the string with "'"
+    * @return  string
+    */
+    public function dbEscapeString($str, $isEnclose = TRUE)
+    {
+        $retval = $this->_db->real_escape_string($str);
+
+        if ($isEnclose) {
+            $retval = "'" . $retval . "'";
+        }
+
+        return $retval;
+    }
+
 }
 
 ?>

@@ -1176,7 +1176,25 @@ class database {
         $v = $this->dbFetchArray($q, true);
         return $v[0];
     }
-    
+
+    /**
+    * Escapes a string so that it can be safely used in a query
+    *
+    * @param   string   $str          a string to be escaped
+    * @param   boolean  $isEnclose    whether to enclose the string with "'"
+    * @return  string
+    */
+    function dbEscapeString($str, $isEnclose = TRUE)
+    {
+        $retval = str_replace("'", "''", $str);
+
+        if ($isEnclose) {
+            $retval = "'" . $retval . "'";
+        }
+
+        return $retval;
+    }
+
 }//end class
 
 ?>

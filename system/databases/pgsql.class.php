@@ -911,6 +911,24 @@ class database {
         return $v['server'];
     }
 
+    /**
+    * Escapes a string so that it can be safely used in a query
+    *
+    * @param   string   $str          a string to be escaped
+    * @param   boolean  $isEnclose    whether to enclose the string with "'"
+    * @return  string
+    */
+    function dbEscapeString($str, $isEnclose = TRUE)
+    {
+        $retval = pg_escape_string($this->_db, $str);
+
+        if ($isEnclose) {
+            $retval = "'" . $retval . "'";
+        }
+
+        return $retval;
+    }
+
 }
 
 ?>
