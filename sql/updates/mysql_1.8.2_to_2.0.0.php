@@ -39,18 +39,12 @@ function update_StoryTopicAssignmentsFor200()
     
     $story_tables[] = $_TABLES['stories'];
     $story_tables[] = $_TABLES['storysubmission'];
-
-    foreach ($story_tables as $story_table) {
-        $sql = "SELECT * FROM $story_table";
-        $result = DB_query($sql);
-        $nrows = DB_numRows($result);
     
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            
-            $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'article', '{$A['sid']}', 1, 1)";
-            DB_query($sql);
-        }
+    foreach ($story_tables as $story_table) {
+        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault)
+                SELECT tid, 'article' AS type, sid, 1 AS inherit, 1 AS tdefault
+                FROM $story_table";
+        DB_query($sql);   
         
         // Remove tid from table
         $sql = "ALTER TABLE $story_table DROP tid";
@@ -66,20 +60,14 @@ function update_StoryTopicAssignmentsFor200()
 function update_BlockTopicAssignmentsFor200()
 {
     global $_TABLES;
-    
-    $sql = "SELECT * FROM {$_TABLES['blocks']}";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
 
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        
-        $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault) VALUES ('{$A['tid']}', 'block', '{$A['bid']}', 1, 0)";
-        DB_query($sql);
-    }
+    $sql = "INSERT INTO {$_TABLES['topic_assignments']} (tid, type, id, inherit, tdefault)
+            SELECT tid, 'block' AS type, bid, 1 AS inherit, 0 AS tdefault
+            FROM {$_TABLES['blocks']}";
+    DB_query($sql);
 
     // Remove Topic Id from blocks table
-    $sql = "ALTER TABLE {$_TABLES['blocks']} DROP `tid`";    
+    $sql = "ALTER TABLE {$_TABLES['blocks']} DROP tid";    
     DB_query($sql);
     
 }
