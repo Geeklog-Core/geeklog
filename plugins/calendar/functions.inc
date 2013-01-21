@@ -684,7 +684,7 @@ function plugin_getheadercode_calendar()
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $_SCRIPTS;
 
     if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
@@ -732,6 +732,21 @@ function plugin_submit_calendar($mode = 'master')
         exit;
     }
     // otherwise non-admin or admin-personal. do personal form or public submission.
+	
+    // Loads jQuery UI datepicker
+    $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
+
+    $langCode = COM_getLangIso639Code();
+    $toolTip  = 'Click and select a date';	// Should be translated
+    $imgUrl   = $_CONF['site_url'] . '/images/calendar.png';
+
+    $_SCRIPTS->setJavaScript(
+        "jQuery(function () {"
+        . "  geeklog.datepicker.set('start', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "  geeklog.datepicker.set('end', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "});", TRUE, TRUE
+    );
 
     $retval = '';
 

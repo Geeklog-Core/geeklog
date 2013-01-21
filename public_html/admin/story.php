@@ -719,19 +719,25 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
         $fileinputs .= $LANG24[28] . '<br' . XHTML . '>';
     }
-    
+
     // Add JavaScript
-    $_SCRIPTS->setJavaScript(
-        "var geeklog = { siteUrl: '" . $_CONF['site_url'] . "', "
-        . '  lang: { '
-        . "    calendar: '" . 'Click and select a date' . "',"	// Should be translated
-        . "    code: '" . COM_getLangIso639Code() . "'"
-        . '  }'
-        . ' };',
-        TRUE
-    );
     $_SCRIPTS->setJavaScriptFile('story_editor', '/javascript/story_editor.js');
+
+    // Loads jQuery UI datepicker
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');
+    $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
+
+    $langCode = COM_getLangIso639Code();
+    $toolTip  = 'Click and select a date';	// Should be translated
+    $imgUrl   = $_CONF['site_url'] . '/images/calendar.png';
+
+    $_SCRIPTS->setJavaScript(
+        "jQuery(function () {"
+        . "  geeklog.datepicker.set('publish', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "  geeklog.datepicker.set('expire', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "  geeklog.datepicker.set('cmt_close', '{$langCode}', '{$toolTip}', '{$imgUrl}');"
+        . "});", TRUE, TRUE
+    );
 
     if ($advanced_editormode) {
         $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
