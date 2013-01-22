@@ -344,8 +344,7 @@ class database
                 $retval .= ' WHERE ';
 
                 for ($i = 1; $i <= $num_ids; $i ++) {
-                    $retval .= current($id) . " = "
-                            .  $this->dbEscapeString(current($value));
+                    $retval .= current($id) . " = '" . current($value) . "'";
                     if ($i !== $num_ids) {
                         $retval .= " AND ";
                     }
