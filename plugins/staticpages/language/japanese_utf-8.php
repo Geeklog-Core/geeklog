@@ -46,46 +46,46 @@ $LANG_STATIC = array(
     'date' => '最終更新日',
     'title' => 'タイトル',
     'page_title' => 'ページタイトル',
-    'content' => '内容',
-    'hits' => '閲覧数',
+    'content' => 'コンテンツ',
+    'hits' => '表示回数',
     'staticpagelist' => '静的ページ管理',
     'url' => 'URL',
     'edit' => '編集',
     'lastupdated' => '最終更新日:',
     'pageformat' => 'レイアウト',
-    'leftrightblocks' => 'ヘッダ・フッタ・左右ブロックあり',
-    'blankpage' => '全画面表示（ヘッダ・フッタ・ブロックなし）',
-    'noblocks' => 'ヘッダ・フッタあり（ブロックなし）',
-    'leftblocks' => 'ヘッダ・フッタ・左ブロックあり（右ブロックなし）',
-    'addtomenu' => 'ヘッダメニュー',
+    'leftrightblocks' => 'ヘッダー・フッター・左右ブロックあり',
+    'blankpage' => '全画面表示(ヘッダー・フッター・ブロックなし)',
+    'noblocks' => 'ヘッダー・フッターあり(ブロックなし)',
+    'leftblocks' => 'ヘッダー・フッター・左ブロックあり(右ブロックなし)',
+    'addtomenu' => 'ヘッダーメニュー',
     'label' => 'メニュー名',
     'nopages' => '静的ページがありません',
     'save' => '保存',
     'preview' => 'プレビュー',
     'delete' => '削除',
     'cancel' => 'キャンセル',
-    'access_denied' => '申し訳ありませんが、先にログインしてください。',
-    'access_denied_msg' => 'チェックするとアクセス権がない場合に画面が自動的に遷移してログイン画面が表示されます。チェックをしない場合には「権限がない」というメッセージが表示されます。',
+    'access_denied' => '先にログインしてください。',
+    'access_denied_msg' => 'チェックするとアクセス権がない場合に画面が自動的に遷移してログイン画面を表示します。チェックをしない場合には「権限がない」というメッセージを表示します。',
     'all_html_allowed' => 'すべてのHTMLが利用できます。',
     'results' => '静的ページ検索結果',
     'author' => '所有者',
-    'no_title_or_content' => 'タイトルと冒頭文を入力し、話題を少なくともひとつ選択してください。',
+    'no_title_or_content' => 'タイトルとコンテンツを入力し、話題を少なくとも1つ選択してください。',
     'no_such_page_anon' => 'ログインしてください。',
-    'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト（{$_CONF['site_name']}）のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
+    'no_page_access_msg' => "この問題は、まだログインしていないか、そもそもこのサイト({$_CONF['site_name']})のメンバーではないためだと考えられます。{$_CONF['site_name']}に<a href=\"{$_CONF['site_url']}/users.php?mode=new\"> メンバー登録</a>するか、適切なアクセス権を管理者から取得してください。",
     'php_msg' => 'PHP: ',
-    'php_warn' => '<br' . XHTML . '>注意: このオプションを有効にすると、あなたのページに含まれるPHPコードが実行されます。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
+    'php_warn' => '<br' . XHTML . '>注意: このオプションを有効にすると、あなたのページが含んでいるPHPコードを実行します。静的ページPHPを利用する場合には、あらかじめ管理画面「グループ:Static Page Admin」で、権限「staticpages.PHP」にチェックしてください。PHPを使う場合、通常(return)なしの「PHPを実行する」モードで利用します。利用には細心の注意を払ってください。',
     'exit_msg' => 'ログイン要求: ',
-    'exit_info' => 'チェックすると、閲覧権限がない場合にログイン要求画面が表示されます。<br' . XHTML . '>　　　チェックをしない場合には「権限がない」というメッセージが表示されます。',
-    'deny_msg' => 'ページへのアクセスは拒否されました。ページが移動または削除されたか、権限がないかのいずれかです。',
-    'stats_headline' => '静的ページ（上位10件）',
+    'exit_info' => 'チェックすると表示する権限がない場合にログイン要求画面を表示します。<br' . XHTML . '> チェックをしない場合には「権限がない」というメッセージを表示します。',
+    'deny_msg' => 'このページにアクセスできません。ページを移動や削除しているか、アクセス権がありません。',
+    'stats_headline' => '静的ページ(上位10件)',
     'stats_page_title' => 'タイトル',
-    'stats_hits' => '閲覧数',
-    'stats_no_hits' => '静的ページがないか、閲覧者がいないかのどちらかです。',
+    'stats_hits' => '表示回数',
+    'stats_no_hits' => 'サイトに静的ページがないか、静的ページを表示した人がいません。',
     'id' => 'ID',
-    'duplicate_id' => '指定したIDはすでに使われています。別のIDをご使用ください。',
+    'duplicate_id' => '指定したIDは既に使われています。別のIDをご使用ください。',
     'instructions' => '静的ページの編集・削除は編集アイコンをクリック、静的ページのコピーはコピーアイコンをクリックしてください。静的ページの作成は上の「新規作成」をクリックしてください。',
     'centerblock' => 'センターエリア: ',
-    'centerblock_msg' => 'チェックすると、トップページまたは話題のトップページのセンターエリアに表示されます。',
+    'centerblock_msg' => 'チェックすると、トップページまたは話題のトップページのセンターエリアに表示します。',
     'topic' => '話題: ',
     'position' => '表示エリア: ',
     'all_topics' => 'すべて',
@@ -101,7 +101,7 @@ $LANG_STATIC = array(
     'centerblock_bottom' => '下部',
     'centerblock_entire' => 'ページ全体',
     'inblock_msg' => 'ブロックで囲む: ',
-    'inblock_info' => 'タイトルが表示され、コンテンツがブロックで囲まれます。',
+    'inblock_info' => 'タイトルを表示して、コンテンツをブロックで囲みます。',
     'title_edit' => '編集',
     'title_copy' => 'コピーを作成',
     'title_display' => 'ページを表示する',
@@ -119,23 +119,23 @@ $LANG_STATIC = array(
     'comments' => 'コメント',
     'template' => 'テンプレート',
     'use_template' => '選択',
-    'template_msg' => 'チェックされた場合、静的ページはテンプレートとして利用されます。',
+    'template_msg' => 'チェックした場合、静的ページをテンプレートとしてします。',
     'none' => 'なし',
     'use_template_msg' => 'この静的ページがテンプレートでなければ、テンプレートを選んで利用できます。利用する場合は、このページのコンテンツをXML形式で記述しなければならないので注意してください。',
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - 静的ページのコンテンツを表示します。'
+    'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。'
 );
 
-$PLG_staticpages_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
+$PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
 $PLG_staticpages_MESSAGE19 = '静的ページを保存しました。';
 $PLG_staticpages_MESSAGE20 = '静的ページを削除しました。';
-$PLG_staticpages_MESSAGE21 = 'このページはありません。ページを作成するには、下のフォームにすべてを入力してください。ミスオペレーションならキャンセルボタンをクリックして戻ってください。';
+$PLG_staticpages_MESSAGE21 = 'このページはまだ存在しません。ページを作成するには、下のフォームにすべてを入力してください。何かの間違いでしたらキャンセルボタンをクリックしてください。';
 
 // Messages for the plugin upgrade
-$PLG_staticpages_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
+$PLG_staticpages_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';
 $PLG_staticpages_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -146,15 +146,15 @@ $LANG_configsections['staticpages'] = array(
 
 $LANG_confignames['staticpages'] = array(
     'allow_php' => 'PHPを許可する',
-    'sort_by' => 'センターブロックでのソート項目',
-    'sort_menu_by' => 'メニューでのソート項目',
-    'sort_list_by' => '管理者ページソート順',
+    'sort_by' => 'センターブロックの並べ替え',
+    'sort_menu_by' => 'メニューの並べ替え',
+    'sort_list_by' => '管理者ページの並べ替え',
     'delete_pages' => '所有者の削除と共に削除する',
     'in_block' => 'ページをブロックで囲む',
-    'show_hits' => '閲覧数を表示する',
+    'show_hits' => '表示回数を表示する',
     'show_date' => '日時を表示する',
     'filter_html' => 'HTMLフィルターを適用する',
-    'censor' => '内容を検閲する',
+    'censor' => 'コンテンツを検閲する',
     'default_permissions' => 'パーミッション',
     'autotag_permissions_staticpage' => '[staticpage: ] パーミッション',
     'autotag_permissions_staticpage_content' => '[staticpage_content: ] パーミッション',
@@ -164,11 +164,11 @@ $LANG_confignames['staticpages'] = array(
     'comment_code' => '新規作成時のデフォルト',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'disable_breadcrumbs_staticpages' => 'パンくずリストを無効にする',
-    'newstaticpagesinterval' => '静的ページの"新着"の期間',
+    'newstaticpagesinterval' => '静的ページの"新着"期間',
     'hidenewstaticpages' => '新着ブロック表示',
     'title_trim_length' => 'タイトル最大長',
     'includecenterblocks' => 'センターブロックの静的ページを含む',
-    'includephp' => '静的ページPHPを含む',
+    'includephp' => 'PHPモードの静的ページを含む',
     'includesearch' => '静的ページを検索する',
     'includesearchcenterblocks' => 'センターブロックの静的ページを含む',
     'includesearchphp' => '静的ページPHPを含む'
@@ -190,8 +190,8 @@ $LANG_fs['staticpages'] = array(
     'fs_main' => '静的ページのメイン設定',
     'fs_whatsnew' => '新着情報ブロック',
     'fs_search' => '検索結果',
-    'fs_permissions' => '静的ページのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => '自動タグのパーミッション'
+    'fs_permissions' => '静的ページのパーミッションのデフォルト([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
+    'fs_autotag_permissions' => '自動タグのパーミッション([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -202,7 +202,7 @@ $LANG_configselects['staticpages'] = array(
     3 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', 'ラベル' => 'label'),
     4 => array('日付' => 'date', 'ページID' => 'id', 'タイトル' => 'title', '所有者' => 'author'),
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
-    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('ページを表示' => 'item', 'リストを表示' => 'list', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     17 => array('コメント有効' => 0, 'コメント無効' => -1)

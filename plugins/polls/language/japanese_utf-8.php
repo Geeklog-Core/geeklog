@@ -53,7 +53,7 @@ $LANG_POLLS = array(
     'savedvotemsg' => 'テーマ:',
     'pollstitle' => 'アンケート一覧',
     'polltopics' => '他のアンケートを見る',
-    'stats_top10' => 'アンケート（上位10件）',
+    'stats_top10' => 'アンケート(上位10件)',
     'stats_topics' => 'アンケートの質問',
     'stats_votes' => '投票',
     'stats_none' => 'このサイトにはアンケートがないか、まだ誰も投票していないようです。',
@@ -61,17 +61,17 @@ $LANG_POLLS = array(
     'open_poll' => '投票可否',
     'answer_all' => '残りのすべての質問にお答えください',
     'not_saved' => '結果は保存されませんでした',
-    'upgrade1' => 'アンケートプラグインの新しいバージョンがインストールされました。',
+    'upgrade1' => 'アンケートプラグインの新しいバージョンをインストールしました。',
     'upgrade2' => 'アップグレードしてください。',
     'editinstructions' => 'アンケートIDを入力してください。少なくとも1つの質問と2つの回答を用意してください。',
     'pollclosed' => 'このアンケートは投票を終了しました。',
-    'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開されます。',
+    'pollhidden' => 'あなたは既に投票済みです。このアンケートの結果は投票終了後に公開します。',
     'start_poll' => '投稿する',
     'no_new_polls' => '新しいアンケートはありません',
     'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
     'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - アンケートの投票リンクを表示。Class と showall は必須ではありません。Class は css class を。Showall が 1ならすべての投票を表示',
     'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - 投票結果を表示。Class は必須ではありません。Claはcss classを指定します',
-    'deny_msg' => 'このアンケートへアクセスできません。(このアンケートは移動したか削除されているか、あるいはアクセス権がありません。)'
+    'deny_msg' => 'このアンケートにアクセスできません。(このアンケートを移動や削除しているか、アクセス権がありません。)'
 );
 
 ###############################################################################
@@ -81,7 +81,7 @@ $LANG25 = array(
     1 => 'モード',
     2 => 'テーマと質問と少なくとも1つの回答を入力してください。',
     3 => '作成日時',
-    4 => 'アンケート（ %s ）が保存されました',
+    4 => 'アンケート( %s )を保存しました',
     5 => 'アンケートの編集',
     6 => 'アンケートID',
     7 => '(スペースを含まないこと)',
@@ -98,8 +98,8 @@ $LANG25 = array(
     18 => 'アンケート管理',
     19 => 'アンケートの編集・削除は編集アイコンをクリック、アンケートの作成は上の「新規作成」をクリックしてください。',
     20 => '投票者',
-    21 => 'アクセスが拒否されました',
-    22 => "管理権限のないアンケートを編集しようとしました。この行為は記録されます。<a href=\"{$_CONF['site_admin_url']}/poll.php\">投票の管理画面</a>に戻ってください。",
+    21 => 'アクセスできません',
+    22 => "管理権限のないアンケートを編集しようとしました。このアクセスを記録しました。<a href=\"{$_CONF['site_admin_url']}/poll.php\">投票の管理画面</a>に戻ってください。",
     23 => '新規アンケート',
     24 => '管理画面',
     25 => 'はい',
@@ -109,23 +109,23 @@ $LANG25 = array(
     29 => '検索条件',
     30 => '表示件数',
     31 => '質問',
-    32 => '質問のテキストを削除すると、アンケートから質問が削除されます。',
+    32 => 'この質問をアンケートから削除するには、質問のテキストを削除してください。',
     33 => '投票可能',
     34 => 'テーマ:',
     35 => 'このアンケートにはさらにもう',
     36 => '件、質問があります。',
     37 => '投票時は結果非公開',
     38 => 'アンケート実施中は、オーナーとルート管理者だけが結果を見ることができます。',
-    39 => 'テーマは1つ以上の質問がある場合に表示されます。',
+    39 => 'テーマは1つ以上の質問がある場合に表示します。',
     40 => 'アンケートの結果を見る'
 );
 
-$PLG_polls_MESSAGE15 = 'コメントは投稿されました。管理者の承認をお待ちください。';
-$PLG_polls_MESSAGE19 = 'アンケートが登録されました。';
-$PLG_polls_MESSAGE20 = 'アンケートは削除されました。';
+$PLG_polls_MESSAGE15 = 'あなたのコメントはスタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
+$PLG_polls_MESSAGE19 = 'アンケートを登録しました。';
+$PLG_polls_MESSAGE20 = 'アンケートを削除しました。';
 
 // Messages for the plugin upgrade
-$PLG_polls_MESSAGE3001 = 'プラグインのアップグレードはサポートされていません。';
+$PLG_polls_MESSAGE3001 = 'プラグインはアップグレードをサポートしていません。';
 $PLG_polls_MESSAGE3002 = $LANG32[9];
 
 // Localization of the Admin Configuration UI
@@ -148,7 +148,7 @@ $LANG_confignames['polls'] = array(
     'autotag_permissions_poll' => '[poll: ] パーミッション',
     'autotag_permissions_poll_vote' => '[poll_vote: ] パーミッション',
     'autotag_permissions_poll_result' => '[poll_result: ] パーミッション',
-    'newpollsinterval' => 'アンケート投稿の間隔',
+    'newpollsinterval' => 'アンケートの"新着"期間',
     'hidenewpolls' => '新着アンケート',
     'title_trim_length' => 'タイトル最大長',
     'meta_tags' => 'メタタグを有効にする',
@@ -176,10 +176,10 @@ $LANG_tab['polls'] = array(
 $LANG_fs['polls'] = array(
     'fs_main' => 'アンケートのメイン設定',
     'fs_whatsnew' => '新着情報ブロック',
-    'fs_permissions' => 'アンケートのパーミッションのデフォルト（[0]所有者 [1]グループ [2]メンバー [3]ゲスト）',
-    'fs_autotag_permissions' => '自動タグのパーミッション',
+    'fs_permissions' => 'アンケートのパーミッションのデフォルト([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
+    'fs_autotag_permissions' => '自動タグのパーミッション([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
     'fs_block_settings' => 'ブロックの設定',
-    'fs_block_permissions' => 'ブロックのパーミッション'
+    'fs_block_permissions' => 'ブロックのパーミッション ([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -188,7 +188,7 @@ $LANG_configselects['polls'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('登録順' => 'submitorder', '得票順' => 'voteorder'),
     5 => array('表示しない' => 'hide', '編集日付によって表示する' => 'modified', '作成日付によって表示する' => 'created'),
-    9 => array('ページを表示する' => 'item', 'リストを表示する' => 'list', 'プラグイントップを表示する' => 'plugin', 'ホームを表示する' => 'home', '管理画面トップを表示する' => 'admin'),
+    9 => array('ページを表示' => 'item', 'リストを表示' => 'list', 'プラグイントップを表示' => 'plugin', 'ホームを表示' => 'home', '管理画面のトップを表示' => 'admin'),
     12 => array('アクセス不可' => 0, '表示' => 2, '表示・編集' => 3),
     13 => array('アクセス不可' => 0, '利用する' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
