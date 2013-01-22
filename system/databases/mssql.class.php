@@ -1181,16 +1181,11 @@ class database {
     * Escapes a string so that it can be safely used in a query
     *
     * @param   string   $str          a string to be escaped
-    * @param   boolean  $isEnclose    whether to enclose the string with "'"
     * @return  string
     */
-    function dbEscapeString($str, $isEnclose = TRUE)
+    function dbEscapeString($str)
     {
         $retval = str_replace("'", "''", $str);
-
-        if ($isEnclose) {
-            $retval = "'" . $retval . "'";
-        }
 
         return $retval;
     }

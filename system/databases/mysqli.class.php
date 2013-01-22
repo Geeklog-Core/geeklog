@@ -784,16 +784,11 @@ class database
     * Escapes a string so that it can be safely used in a query
     *
     * @param   string   $str          a string to be escaped
-    * @param   boolean  $isEnclose    whether to enclose the string with "'"
     * @return  string
     */
-    public function dbEscapeString($str, $isEnclose = TRUE)
+    public function dbEscapeString($str)
     {
         $retval = $this->_db->real_escape_string($str);
-
-        if ($isEnclose) {
-            $retval = "'" . $retval . "'";
-        }
 
         return $retval;
     }
