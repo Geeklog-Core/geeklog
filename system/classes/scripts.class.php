@@ -206,7 +206,6 @@ class scripts {
                     $this->library_files['jquery.ui.widget']['load'] = true;
                     $this->library_files['jquery.ui.position']['load'] = true;
                     $this->library_files['jquery.ui.mouse']['load'] = true;
-                    $this->library_files['jquery-ui-i18n']['load'] = true;
                     
                     if ($_CONF['cdn_hosted']) {
                         $this->jquery_cdn = true;
