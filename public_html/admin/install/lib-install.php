@@ -68,12 +68,6 @@ if (!defined('SUPPORTED_MYSQL_VER')) {
     define('SUPPORTED_MYSQL_VER', '4.1.3');
 }
 
-$_REQUEST = array_merge($_GET, $_POST);
-
-// this is not ideal but will stop PHP 5.3.0ff from complaining ...
-$system_timezone = @date_default_timezone_get();
-date_default_timezone_set($system_timezone);
-
 $language = INST_getLanguage();
 // Include the language file
 require_once 'language/' . $language . '.php'; 
@@ -88,6 +82,34 @@ if ($LANG_DIRECTION == 'rtl') {
     $form_label_dir = 'form-label-left';
     $perms_label_dir = 'perms-label-left';
 }
+
+// Initial PHP version check for PHP-4.x and 5.0.x, which don't have
+// date_default_timezone_get() (introduced as of PHP-5.1.0)
+if (version_compare(PHP_VERSION, '5.1.0', '<')) {
+    $output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" '
+            . '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . LB
+            . '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">' . LB
+            . '<head>' . LB
+            . '  <meta http-equiv="Content-Type" content="text/html;charset='
+            . $LANG_CHARSET . '" />' . LB
+            . '  <title>Geeklog - The secure CMS.</title>' . LB
+            . '</head>' . LB
+            . '<body dir="' . $LANG_DIRECTION . '">' . LB
+            . '<h1>' . $LANG_INSTALL[3] . '</h1>' . LB
+            . '<p>' . sprintf($LANG_INSTALL[5], '<strong>' . SUPPORTED_PHP_VER . '</strong>')
+            . '<strong>' . PHP_VERSION . '</strong>' . $LANG_INSTALL[6] . '</p>' . LB
+            . '</body>' . LB
+            . '</html>' . LB;
+    header('Content-Type: text/html; charset=' . $LANG_CHARSET);
+    echo $output;
+    die(1);
+}
+
+// this is not ideal but will stop PHP 5.3.0ff from complaining ...
+$system_timezone = @date_default_timezone_get();
+date_default_timezone_set($system_timezone);
+
+$_REQUEST = array_merge($_GET, $_POST);
 
 // Before we begin, check if an uploaded file exceeds PHP's post_max_size
 if (isset($_SERVER['CONTENT_LENGTH'])) {
