@@ -164,6 +164,15 @@ $(function() {
                 var a = $(data).find('a[name=' + confVar + ']');
                 var ths = a.parent().parent().parent().children("tr:first").children("th");
                 var tds = a.parent().parent().children("td");
+				var desc = tds.eq(2).html();
+
+                // Changes URI fragment into an absolite URI + fragment
+                desc = desc.replace('<a href="spamx.html"', '<a href="' + glConfigDocUrl.substr(0, glConfigDocUrl.lastIndexOf('/')) + '/spamx.html" target="_blank"');
+                desc = desc.replace('<a href="#url-rewrite">', '<a href="' + glConfigDocUrl + '#url-rewrite" target="_blank">');
+                desc = desc.replace('<a href="#date_formats">', '<a href="' + glConfigDocUrl + '#date_formats" target="_blank">');
+                desc = desc.replace('<a href="#Localization">', '<a href="' + glConfigDocUrl + '#Localization" target="_blank">');
+                desc = desc.replace('<a href="#desc_advanced_editor">', '<a href="' + glConfigDocUrl + '#desc_advanced_editor" target="_blank">');
+
                 tds.eq(0).children("a").attr('href', attrHref + '#' + confVar);
                 tds.eq(0).children("a").attr('target', 'help');
                 $('#tooltip-content').html(
@@ -172,7 +181,7 @@ $(function() {
                     '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(1).html() + '</div>' + 
                     '<div id="tooltip-default" class="tooltip-doc">'         + tds.eq(1).html() + '</div></div>' + 
                     '<div class="tooltip-block"><div class="tooltip-title">' + ths.eq(2).html() + '</div>' + 
-                    '<div id="tooltip-description" class="tooltip-doc">'     + tds.eq(2).html() + '</div></div>' + 
+                    '<div id="tooltip-description" class="tooltip-doc">'     + desc + '</div></div>' + 
                     '<a href="javascript:void(0);" id="tooltip-close">X</a>'
                 );
             } else {
