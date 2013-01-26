@@ -58,7 +58,7 @@
     $filter->cleanData('char',$charvars);
     $filter->cleanData('text',$textvars);
 
-    $dbData = $filter->getDbData();     // Filtered data is prep'ed for SQL use - addslashes added
+    $dbData = $filter->getDbData();     // Filtered data is prep'ed for SQL use - DB_escapeString added
     $webData = $filter->getWebData();  //  Filtered data like text filtered data with stripslashes already done
 
     $title = $dbData['title'];
@@ -98,7 +98,7 @@ class sanitizer {
     var $_logmode    = false;       // Set true to log to error.log
     var $_checkwords = true;        // Set true to enable word censor filter
     var $_checkhtml = true;         // Set true to enable HTML filtering
-    var $_prepfordb = false;        // Set true to place filter class into DB mode -- will addslashes around quotes
+    var $_prepfordb = false;        // Set true to place filter class into DB mode -- will DB_escapeString around quotes
     var $_prepforweb = false;       // Set true to place filter class into WEB mode - will use stripslashes before returning data
     var $_maxlength = 0;            // Set to 0 to disable, else if set will trim data to this length
 
@@ -165,7 +165,7 @@ class sanitizer {
 
     /* apply the free webtext filter to input which may need to contain quote's or other special characters */
     private function _filterText( $var ) {
-        // Need to call addslashes again as COM_checkHTML strips it out
+        // Need to call DB_escapeString again as COM_checkHTML strips it out
         if ($this->_checkhtml) $var = COM_checkHTML($var);
         if ($this->_checkwords) $var = COM_checkWords($var);
         $var = COM_killJS($var);
@@ -173,7 +173,7 @@ class sanitizer {
             $var = substr($var, 0, $this->_maxlength);
         }
         if ($this->_prepfordb) {
-            $var = addslashes($var);
+            $var = DB_escapeString($var);
         } elseif ($this->_prepforweb) {
             $var = stripslashes($var);
         }
@@ -202,7 +202,7 @@ class sanitizer {
             $p = $pa[0];
 
             if ($this->_prepfordb) {
-                $p = addslashes($p);
+                $p = DB_escapeString($p);
             } elseif ($this->_prepforweb) {
                 $p = stripslashes($p);
             }

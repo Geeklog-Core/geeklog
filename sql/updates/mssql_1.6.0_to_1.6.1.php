@@ -27,7 +27,7 @@ function update_ConfValuesFor161()
     $c->add('article_comment_close_enabled',0,'select',4,21,0, 1685, TRUE);
 
     // the timezone config option is a dropdown now
-    $utc = addslashes(serialize('UTC')); // change default timezone to UTC
+    $utc = DB_escapeString(serialize('UTC')); // change default timezone to UTC
     DB_query("UPDATE {$_TABLES['conf_values']} SET type = 'select', selectionArray = -1, default_value = '$utc' WHERE name = 'timezone' AND group_name = 'Core'");
 
     return true;

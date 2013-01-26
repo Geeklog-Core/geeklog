@@ -459,7 +459,7 @@ function XMLSITEMAP_changeFile($key, $varname)
 
     $_XMLSMAP_CONF[$key] = basename(trim($_XMLSMAP_CONF[$key]));
     $sql = "UPDATE {$_TABLES['vars']} "
-         . "SET value = '" . addslashes($_XMLSMAP_CONF[$key]) . "' "
+         . "SET value = '" . DB_escapeString($_XMLSMAP_CONF[$key]) . "' "
          . "WHERE (name = '{$varname}') ";
     DB_query($sql);
 }

@@ -48,7 +48,7 @@ class EditHeader extends BaseAdmin {
         if (($action == 'delete') && SEC_checkToken()) {
             $entry = $_GET['entry'];
             if (!empty($entry)) {
-                $dbentry = addslashes($entry);
+                $dbentry = DB_escapeString($entry);
                 DB_delete($_TABLES['spamx'], array('name', 'value'),
                                              array('HTTPHeader', $dbentry));
             }
@@ -63,7 +63,7 @@ class EditHeader extends BaseAdmin {
                 $entry = $name . ': ' . $value;
             }
 
-            $dbentry = addslashes($entry);
+            $dbentry = DB_escapeString($entry);
             if (!empty($entry)) {
                 $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('HTTPHeader','$dbentry')");
             }

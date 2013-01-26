@@ -52,17 +52,17 @@ class EditBlackList extends BaseAdmin {
         }
 
         if (($action == 'delete') && SEC_checkToken()) {
-            $entry = addslashes($entry);
+            $entry = DB_escapeString($entry);
             DB_delete($_TABLES['spamx'], array('name', 'value'),
                                          array('Personal', $entry));
         } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
             if (!empty($entry)) {
-                $entry = addslashes($entry);
+                $entry = DB_escapeString($entry);
                 $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('Personal', '$entry')");
             }
         } elseif (($action == $LANG_SX00['addcen']) && SEC_checkToken()) {
             foreach ($_CONF['censorlist'] as $entry) {
-                $entry = addslashes($entry);
+                $entry = DB_escapeString($entry);
                 $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('Personal', '$entry')");
             }
         }

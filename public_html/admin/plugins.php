@@ -932,7 +932,7 @@ function continue_upgrade($plugin, $pi_version, $code_version)
         $msg = 72;
     } else {
         // more sanity checks
-        $result = DB_query("SELECT pi_version, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '" . addslashes($plugin) . "'");
+        $result = DB_query("SELECT pi_version, pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '" . DB_escapeString($plugin) . "'");
         $A = DB_fetchArray($result);
         if (!empty($A['pi_version']) && ($A['pi_enabled'] == 1) &&
                 ($A['pi_version'] == $pi_version) &&
@@ -1097,8 +1097,8 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
                 COM_errorLog("Attempting to create '$name' group", 1);
             }
 
-            $grp_name = addslashes($name);
-            $grp_desc = addslashes($desc);
+            $grp_name = DB_escapeString($name);
+            $grp_desc = DB_escapeString($desc);
             $sql=array();
 
             $sql['pgsql']="INSERT INTO {$_TABLES['groups']} (grp_id,grp_name, grp_descr) VALUES ((SELECT NEXTVAL('{$_TABLES['groups']}_grp_id_seq')),'$grp_name', '$grp_desc')";
@@ -1165,8 +1165,8 @@ function plugin_do_autoinstall($plugin, $inst_parms, $verbose = true)
         }
 
         foreach ($features as $feature => $desc) {
-            $ft_name = addslashes($feature);
-            $ft_desc = addslashes($desc);
+            $ft_name = DB_escapeString($feature);
+            $ft_desc = DB_escapeString($desc);
             $sql=array();
             
              $sql['pgsql']="INSERT INTO {$_TABLES['features']} (ft_id,ft_name, ft_descr)

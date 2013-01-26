@@ -142,7 +142,7 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
     global $_CONF, $_TABLES, $_LI_CONF, $LANG_LINKS_ADMIN;
 
     $indent = $indent + 1;
-    $cid = addslashes($cid);
+    $cid = DB_escapeString($cid);
 
     // get all children of present category
     $sql = "SELECT cid,category,tid,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon "
@@ -159,7 +159,7 @@ function links_list_categories_recursive($data_arr, $cid, $indent)
             $A['topic_text'] = $topic;
             $A['indent'] = $indent;
             $data_arr[] = $A;
-            if (DB_count($_TABLES['linkcategories'], 'pid', addslashes($A['cid'])) > 0) {
+            if (DB_count($_TABLES['linkcategories'], 'pid', DB_escapeString($A['cid'])) > 0) {
                 $data_arr = links_list_categories_recursive($data_arr, $A['cid'], $indent);
             }
         }
@@ -178,12 +178,12 @@ function links_edit_category($cid, $pid)
 
     $retval = '';
 
-    $cid = addslashes($cid);
+    $cid = DB_escapeString($cid);
 
     if (!empty($pid)) {
         // have parent id, so making a new subcategory
         // get parent access rights
-        $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='" . addslashes($pid) . "'");
+        $result = DB_query("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['linkcategories']} WHERE cid='" . DB_escapeString($pid) . "'");
         $A = DB_fetchArray($result);
         $A['owner_id'] = $_USER['uid'];
         $A['pid'] = $pid;
@@ -331,20 +331,20 @@ function links_save_category($cid, $old_cid, $pid, $category, $description, $tid
     // Remove any autotags the user doesn't have permission to use
     $description = PLG_replaceTags($description, '', true);
     // clean 'em up
-    $description = addslashes(COM_checkHTML(COM_checkWords($description),
+    $description = DB_escapeString(COM_checkHTML(COM_checkWords($description),
                               'links.edit'));
-    $category    = addslashes(COM_checkHTML(COM_checkWords($category),
+    $category    = DB_escapeString(COM_checkHTML(COM_checkWords($category),
                               'links.edit'));
-    $pid         = addslashes(strip_tags($pid));
-    $cid         = addslashes(strip_tags($cid));
-    $old_cid     = addslashes(strip_tags($old_cid));
+    $pid         = DB_escapeString(strip_tags($pid));
+    $cid         = DB_escapeString(strip_tags($cid));
+    $old_cid     = DB_escapeString(strip_tags($old_cid));
 
     if (empty($category) || empty($description)) {
         return 7;
     }
 
     // Check cid to make sure not illegal
-    if (($cid == addslashes($_LI_CONF['root'])) || ($cid == 'user')) {
+    if (($cid == DB_escapeString($_LI_CONF['root'])) || ($cid == 'user')) {
         return 11;
     }
 
@@ -471,7 +471,7 @@ function links_delete_category($cid)
 {
     global $_TABLES, $LANG_LINKS_ADMIN;
 
-    $cid = addslashes($cid);
+    $cid = DB_escapeString($cid);
     if (DB_count ($_TABLES['linkcategories'], 'cid', $cid) > 0) {
         // item exists so check access rights
         $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,

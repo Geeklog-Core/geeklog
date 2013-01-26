@@ -832,7 +832,7 @@ function WS_authenticate()
         if (!empty($username) && !empty($pwdigest) && !empty($created) &&
                 !empty($nonce)) {
 
-            $uname = addslashes($username);
+            $uname = DB_escapeString($username);
             $pwd = DB_getItem($_TABLES['users'], 'passwd',
                               "username = '$uname'");
             // ... and here we would need the _unencrypted_ password

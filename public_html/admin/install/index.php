@@ -845,12 +845,12 @@ function INST_personalizeAdminAccount($site_mail, $site_url)
 
         if (!empty($site_mail)) {
             if (strpos($site_mail, 'example.com') === false) {
-                DB_query("UPDATE {$_TABLES['users']} SET email = '" . addslashes($site_mail) . "' WHERE uid = 2");
+                DB_query("UPDATE {$_TABLES['users']} SET email = '" . DB_escapeString($site_mail) . "' WHERE uid = 2");
             }
         }
         if (!empty($site_url)) {
             if (strpos($site_url, 'example.com') === false) {
-                DB_query("UPDATE {$_TABLES['users']} SET homepage = '" . addslashes($site_url) . "' WHERE uid = 2");
+                DB_query("UPDATE {$_TABLES['users']} SET homepage = '" . DB_escapeString($site_url) . "' WHERE uid = 2");
             }
         }
     }

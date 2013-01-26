@@ -519,13 +519,13 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             return edituser($uid, 52);
         }
 
-        $uname = addslashes ($username);
+        $uname = DB_escapeString($username);
         if (empty ($uid)) {
             $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                                   "username = '$uname'");
         } else {
             if (! empty($service)) {
-                $uservice = addslashes($service);
+                $uservice = DB_escapeString($service);
                 $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                             "username = '$uname' AND uid <> $uid AND remoteservice = '$uservice'");
             } else {
@@ -538,7 +538,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             return edituser ($uid, 51);
         }
 
-        $emailaddr = addslashes($email);
+        $emailaddr = DB_escapeString($email);
         $exclude_remote = " AND (remoteservice IS NULL OR remoteservice = '')";
         if (empty($uid)) {
             $ucount = DB_getItem($_TABLES['users'], 'COUNT(*)',
@@ -583,8 +583,8 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                 DB_query("UPDATE {$_TABLES['users']} SET status = $userstatus WHERE uid = $uid");
             }
         } else {
-            $fullname = addslashes ($fullname);
-            $homepage = addslashes ($homepage);
+            $fullname = DB_escapeString($fullname);
+            $homepage = DB_escapeString($homepage);
             $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
             if (!empty ($curphoto) && ($delete_photo == 'on')) {
                 USER_deletePhoto ($curphoto);
@@ -609,7 +609,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                 }
             }
 
-            $curphoto = addslashes ($curphoto);
+            $curphoto = DB_escapeString($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             if (!empty($passwd)) {
                 SEC_updateUserPassword($passwd, $uid);
@@ -1109,9 +1109,9 @@ function importusers()
         if (COM_isEmail ($email)) {
             // email is valid form
             $ucount = DB_count ($_TABLES['users'], 'username',
-                                addslashes ($userName));
+                                DB_escapeString($userName));
             $ecount = DB_count ($_TABLES['users'], 'email',
-                                addslashes ($emailAddr));
+                                DB_escapeString($emailAddr));
 
             if (($ucount == 0) && ($ecount == 0)) {
                 // user doesn't already exist - pass in optional true for $batchimport parm

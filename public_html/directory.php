@@ -551,7 +551,7 @@ if (($month < 1) || ($month > 12)) {
 $topicName = '';
 if ($topic != 'all') {
     $topicName = DB_getItem($_TABLES['topics'], 'topic',
-                            "tid = '" . addslashes($topic) . "'");
+                            "tid = '" . DB_escapeString($topic) . "'");
 }
 if (($year != 0) && ($month != 0)) {
     $title = sprintf ($LANG_DIR['title_month_year'],

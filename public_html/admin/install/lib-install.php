@@ -810,8 +810,8 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
                 COM_errorLog("Attempting to create '$name' group", 1);
             }
 
-            $grp_name = addslashes($name);
-            $grp_desc = addslashes($desc);
+            $grp_name = DB_escapeString($name);
+            $grp_desc = DB_escapeString($desc);
             DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) VALUES ('$grp_name', '$grp_desc')", 1);
             if (DB_error()) {
                 COM_errorLog('Error creating plugin group', 1);
@@ -871,8 +871,8 @@ function INST_pluginAutoinstall($plugin, $inst_parms, $verbose = true)
         }
 
         foreach ($features as $feature => $desc) {
-            $ft_name = addslashes($feature);
-            $ft_desc = addslashes($desc);
+            $ft_name = DB_escapeString($feature);
+            $ft_desc = DB_escapeString($desc);
             DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
                      . "VALUES ('$ft_name', '$ft_desc')", 1);
             if (DB_error()) {
@@ -1205,7 +1205,7 @@ function INST_setVersion($siteconfig_path)
         $v[2] = (int) $v[2];
         $version = implode('.', $v);
     }
-    $version = addslashes($version);
+    $version = DB_escapeString($version);
 
     DB_change($_TABLES['vars'], 'value', $version, 'name', 'database_version');
 }

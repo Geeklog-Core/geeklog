@@ -493,16 +493,16 @@ function CALENDAR_saveEvent ($eid, $title, $event_type, $url, $allday,
         $postmode = 'plaintext';
         $description = htmlspecialchars(COM_checkWords($description));
     }
-    $description = addslashes($description);
-    $title = addslashes(strip_tags(COM_checkWords($title)));
-    $location = addslashes(COM_checkHTML(COM_checkWords($location),
+    $description = DB_escapeString($description);
+    $title = DB_escapeString(strip_tags(COM_checkWords($title)));
+    $location = DB_escapeString(COM_checkHTML(COM_checkWords($location),
                                          'calendar.edit'));
-    $address1 = addslashes(strip_tags(COM_checkWords($address1)));
-    $address2 = addslashes(strip_tags(COM_checkWords($address2)));
-    $city = addslashes(strip_tags(COM_checkWords($city)));
-    $zipcode =  addslashes(strip_tags(COM_checkWords($zipcode)));
-    $event_type = addslashes(strip_tags(COM_checkWords($event_type)));
-    $url = addslashes(strip_tags($url));
+    $address1 = DB_escapeString(strip_tags(COM_checkWords($address1)));
+    $address2 = DB_escapeString(strip_tags(COM_checkWords($address2)));
+    $city = DB_escapeString(strip_tags(COM_checkWords($city)));
+    $zipcode =  DB_escapeString(strip_tags(COM_checkWords($zipcode)));
+    $event_type = DB_escapeString(strip_tags(COM_checkWords($event_type)));
+    $url = DB_escapeString(strip_tags($url));
 
     if ($allday == 0) {
         // Add 12 to make time on 24 hour clock if needed

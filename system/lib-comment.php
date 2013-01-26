@@ -1288,8 +1288,8 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         return $someError;
     }
 
-    $comment = addslashes(CMT_prepareText($comment, $postmode, $type));
-    $title = addslashes(COM_checkWords(strip_tags($title)));
+    $comment = DB_escapeString(CMT_prepareText($comment, $postmode, $type));
+    $title = DB_escapeString(COM_checkWords(strip_tags($title)));
     if (($uid == 1) && isset($_POST[CMT_USERNAME])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
@@ -1297,7 +1297,7 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             setcookie($_CONF['cookie_anon_name'], $username, time() + 31536000,
                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
                       $_CONF['cookiesecure']);
-            $name = addslashes($username);
+            $name = DB_escapeString($username);
         }
     }
 
@@ -1766,8 +1766,8 @@ function CMT_handleEditSubmit($mode = null)
     
     if (!empty ($title) && !empty ($comment)) {
         COM_updateSpeedlimit ('comment');
-        $title = addslashes ($title);
-        $comment = addslashes ($comment);
+        $title = DB_escapeString($title);
+        $comment = DB_escapeString($comment);
   
         // save the comment into the table
         DB_query("UPDATE $table SET comment = '$comment', title = '$title', type = '$type'"
@@ -1950,12 +1950,12 @@ function CMT_approveModeration($cid)
         $indent = 0;
     }
 
-    $A['title'] = addslashes($A['title']);
-    $A['comment'] = addslashes($A['comment']);
+    $A['title'] = DB_escapeString($A['title']);
+    $A['comment'] = DB_escapeString($A['comment']);
 
     if (isset($A['name'])) {
         // insert data
-        $A['name'] = addslashes($A['name']);
+        $A['name'] = DB_escapeString($A['name']);
         DB_save($_TABLES['comments'], 'type,sid,date,title,comment,uid,name,pid,ipaddress,indent',
                         "'{$A['type']}','{$A['sid']}','{$A['date']}','{$A['title']}','{$A['comment']}','{$A['uid']}',".
                         "'{$A['name']}','{$A['pid']}','{$A['ipaddress']}',$indent");
@@ -2370,7 +2370,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             $pid = $cid;
         }
         if (($pid > 0) && empty($title)) {
-            $atype = addslashes($type);
+            $atype = DB_escapeString($type);
             $title = DB_getItem($_TABLES['comments'], 'title',
                                 "(cid = $pid) AND (type = '$atype')");
         }
@@ -2488,7 +2488,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
             $cid = 0;
             $key = COM_applyFilter($_GET['key']);
             if (!empty($key)) {
-                $key = addslashes($key);
+                $key = DB_escapeString($key);
                 $cid = DB_getItem($_TABLES['commentnotifications'], 'cid',
                                   "deletehash = '$key'");
 
@@ -2537,7 +2537,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
 
             if (!$abort && !empty($sid) && !empty($type)) {
                 if (($pid > 0) && empty($title)) {
-                    $atype = addslashes($type);
+                    $atype = DB_escapeString($type);
                     $title = DB_getItem($_TABLES['comments'], 'title',
                                         "(cid = $pid) AND (type = '$atype')");
                 }

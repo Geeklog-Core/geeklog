@@ -520,23 +520,23 @@ function plugin_savesubmission_calendar($A)
 
     // Remove any autotags the user doesn't have permission to use
     $A['description'] = PLG_replaceTags($A['description'], '', true);
-     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
-    $A['address1'] = addslashes (strip_tags (COM_checkWords ($A['address1'])));
-    $A['address2'] = addslashes (strip_tags (COM_checkWords ($A['address2'])));
-    $A['city'] = addslashes (strip_tags (COM_checkWords ($A['city'])));
-    $A['zipcode'] = addslashes (strip_tags (COM_checkWords ($A['zipcode'])));
-    $A['state'] = addslashes (strip_tags (COM_checkWords ($A['state'])));
-    $A['location'] = addslashes (strip_tags (COM_checkWords ($A['location'])));
-    $A['event_type'] = addslashes (strip_tags (COM_checkWords ($A['event_type'])));
-    $A['title'] = addslashes ($A['title']);
+     $A['description'] = DB_escapeString(htmlspecialchars (COM_checkWords ($A['description'])));
+    $A['address1'] = DB_escapeString(strip_tags (COM_checkWords ($A['address1'])));
+    $A['address2'] = DB_escapeString(strip_tags (COM_checkWords ($A['address2'])));
+    $A['city'] = DB_escapeString(strip_tags (COM_checkWords ($A['city'])));
+    $A['zipcode'] = DB_escapeString(strip_tags (COM_checkWords ($A['zipcode'])));
+    $A['state'] = DB_escapeString(strip_tags (COM_checkWords ($A['state'])));
+    $A['location'] = DB_escapeString(strip_tags (COM_checkWords ($A['location'])));
+    $A['event_type'] = DB_escapeString(strip_tags (COM_checkWords ($A['event_type'])));
+    $A['title'] = DB_escapeString($A['title']);
 
-    $A['url'] = addslashes(COM_sanitizeUrl($A['url']));
+    $A['url'] = DB_escapeString(COM_sanitizeUrl($A['url']));
 
     if (!empty ($A['eid'])) {
-        $A['eid'] = addslashes (COM_applyFilter ($A['eid']));
+        $A['eid'] = DB_escapeString(COM_applyFilter ($A['eid']));
     }
     if (empty ($A['eid'])) {
-        $A['eid'] = addslashes (COM_makeSid ());
+        $A['eid'] = DB_escapeString(COM_makeSid ());
     }
 
     COM_updateSpeedlimit ('submit');
@@ -1802,7 +1802,7 @@ function plugin_dopluginsearch_calendar($query, $datestart, $dateend, $topic, $t
     global $_TABLES, $_USER, $LANG_CAL_1;
 
     // Make sure the query is SQL safe
-    $query = trim(addslashes($query));
+    $query = trim(DB_escapeString($query));
 
     if (COM_isAnonUser()) {
         $uid = 1;
@@ -2022,7 +2022,7 @@ function plugin_getiteminfo_calendar($eid, $what, $uid = 0, $options = array())
         $where = '';
         $permOp = 'WHERE';
     } else {
-        $where = " WHERE eid = '" . addslashes($eid) . "'";
+        $where = " WHERE eid = '" . DB_escapeString($eid) . "'";
         $permOp = 'AND';
     }
     if ($uid > 0) {

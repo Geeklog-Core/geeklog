@@ -339,7 +339,7 @@ if ($A['count'] > 0) {
 
             // also check permissions for the topic
             $topic_anon = DB_getItem($_TABLES['topics'], 'perm_anon',
-                "tid = '" . addslashes($story->displayElements('tid')) . "'");
+                "tid = '" . DB_escapeString($story->displayElements('tid')) . "'");
 
             // check special case: no link when Trackbacks are disabled for this
             // story AND pinging weblog directories is disabled

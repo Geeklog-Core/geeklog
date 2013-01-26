@@ -70,7 +70,7 @@ function emailpassword ($username, $msg = 0)
 
     $retval = '';
 
-    $username = addslashes ($username);
+    $username = DB_escapeString($username);
     // don't retrieve any remote users!
     $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND ((remoteservice is null) OR (remoteservice = ''))");
     $nrows = DB_numRows ($result);
@@ -213,8 +213,8 @@ function createuser ($username, $email, $email_conf)
             && (strlen ($username) <= 16)) {
 
         $ucount = DB_count ($_TABLES['users'], 'username',
-                            addslashes ($username));
-        $ecount = DB_count ($_TABLES['users'], 'email', addslashes ($email));
+                            DB_escapeString($username));
+        $ecount = DB_count ($_TABLES['users'], 'email', DB_escapeString($email));
 
         if ($ucount == 0 AND $ecount == 0) {
 
@@ -646,7 +646,7 @@ case 'profile':
 case 'user':
     $username = COM_applyFilter ($_GET['username']);
     if (!empty ($username)) {
-        $username = addslashes ($username);
+        $username = DB_escapeString($username);
         $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username'");
         if ($uid > 1) {
             $display .= USER_showProfile($uid);

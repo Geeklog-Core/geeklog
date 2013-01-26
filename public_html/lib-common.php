@@ -991,7 +991,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
              . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
         if( !empty( $topic ))
         {
-            $sql .= " OR (header_tid = '" . addslashes( $topic ) . "')";
+            $sql .= " OR (header_tid = '" . DB_escapeString( $topic ) . "')";
         }
         $result = DB_query( $sql );
         $numRows = DB_numRows( $result );
@@ -1707,7 +1707,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
              . $_TABLES['syndication'] . " WHERE (header_tid = 'all')";
         if( !empty( $topic ))
         {
-            $sql .= " OR (header_tid = '" . addslashes( $topic ) . "')";
+            $sql .= " OR (header_tid = '" . DB_escapeString( $topic ) . "')";
         }
         $result = DB_query( $sql );
         $numRows = DB_numRows( $result );
@@ -4140,8 +4140,8 @@ function COM_olderStuff()
     $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
         WHERE ta.type = 'article' AND ta.id = sid AND 
-        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
-        GROUP BY sid 
+        (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
+        GROUP BY sid, ta.tid, title, comments, day 
         ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
 
     $result = DB_query( $sql );
@@ -4191,7 +4191,7 @@ function COM_olderStuff()
             $daylist = COM_makeList( $oldnews, 'list-older-stories' );
             $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
             $string .= $daylist;
-            $string = addslashes( $string );
+            $string = DB_escapeString( $string );
 
             DB_query( "UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'" );
         }
@@ -4610,11 +4610,11 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
         $update = date('Y-m-d H:i:s');
         $last_modified = '';
         if (!empty($factory->lastModified)) {
-            $last_modified = addslashes($factory->lastModified);
+            $last_modified = DB_escapeString($factory->lastModified);
         }
         $etag = '';
         if (!empty($factory->eTag)) {
-            $etag = addslashes($factory->eTag);
+            $etag = DB_escapeString($factory->eTag);
         }
 
         if (empty($last_modified) || empty($etag)) {
@@ -4657,14 +4657,14 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 
         // Standard theme based function to put it in the block
         $result = DB_change($_TABLES['blocks'], 'content',
-                            addslashes($content), 'bid', $bid);
+                            DB_escapeString($content), 'bid', $bid);
     } else if ($factory->errorStatus !== false) {
         // failed to aquire info, 0 out the block and log an error
         COM_errorLog("Unable to aquire feed reader for $rdfurl", 1);
         COM_errorLog($factory->errorStatus[0] . ' ' .
                      $factory->errorStatus[1] . ' ' .
                      $factory->errorStatus[2]);
-        $content = addslashes($LANG21[4]);
+        $content = DB_escapeString($LANG21[4]);
         DB_query("UPDATE {$_TABLES['blocks']} SET content = '$content', rdf_last_modified = NULL, rdf_etag = NULL WHERE bid = $bid");
     }
 }
@@ -6113,7 +6113,7 @@ function COM_checkSpeedlimit($type = 'submit', $max = 1, $property = '')
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
-    $property = addslashes($property);
+    $property = DB_escapeString($property);
 
     $res  = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE (type = '$type') AND (ipaddress = '$property') ORDER BY date ASC");
 
@@ -6150,7 +6150,7 @@ function COM_updateSpeedlimit($type = 'submit', $property = '')
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
-    $property = addslashes($property);
+    $property = DB_escapeString($property);
 
     DB_save($_TABLES['speedlimit'], 'ipaddress,date,type',
             "'$property',UNIX_TIMESTAMP(),'$type'");
@@ -6189,7 +6189,7 @@ function COM_resetSpeedlimit($type = 'submit', $property = '')
     if (empty($property)) {
         $property = $_SERVER['REMOTE_ADDR'];
     }
-    $property = addslashes($property);
+    $property = DB_escapeString($property);
 
     DB_delete($_TABLES['speedlimit'], array('type', 'ipaddress'),
                                       array($type, $property));

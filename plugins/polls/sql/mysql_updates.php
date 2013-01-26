@@ -106,7 +106,7 @@ function polls_update_polltopics()
     $count_move = DB_numRows($move_rst);
     for ($i = 0; $i < $count_move; $i++) {
         $A = DB_fetchArray($move_rst);
-        $A[1] = addslashes($A[1]);
+        $A[1] = DB_escapeString($A[1]);
         $P_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (pid, question) VALUES ('{$A[0]}','{$A[1]}');";
     }
 

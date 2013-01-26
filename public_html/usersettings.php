@@ -749,7 +749,7 @@ function emailAddressExists ($email, $uid)
         return false;
     }
 
-    $email = addslashes($email);
+    $email = DB_escapeString($email);
     $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE email = '$email' AND uid <> '$uid' AND (remoteservice IS NULL OR remoteservice = '')");
     if (DB_numRows($result) > 0) {
         // email address is already in use for another non-remote account
@@ -965,7 +965,7 @@ function saveuser($A)
         $A['new_username'] = COM_applyFilter ($A['new_username']);
         if (!empty ($A['new_username']) &&
                 ($A['new_username'] != $_USER['username'])) {
-            $A['new_username'] = addslashes ($A['new_username']);
+            $A['new_username'] = DB_escapeString($A['new_username']);
             if (DB_count ($_TABLES['users'], 'username', $A['new_username']) == 0) {
                 if ($_CONF['allow_user_photo'] == 1) {
                     $photo = DB_getItem ($_TABLES['users'], 'photo',
@@ -982,7 +982,7 @@ function saveuser($A)
                             return $display;
                         }
                         DB_change ($_TABLES['users'], 'photo',
-                               addslashes ($newphoto), "uid", $_USER['uid']);
+                               DB_escapeString($newphoto), "uid", $_USER['uid']);
                     }
                 }
 
@@ -1093,15 +1093,15 @@ function saveuser($A)
                     $A['homepage'] = 'http:' . substr ($A['homepage'], $pos + 1);
                 }
             }
-            $A['homepage'] = addslashes ($A['homepage']);
+            $A['homepage'] = DB_escapeString($A['homepage']);
         }
 
-        $A['fullname'] = addslashes ($A['fullname']);
-        $A['email'] = addslashes ($A['email']);
-        $A['location'] = addslashes ($A['location']);
-        $A['sig'] = addslashes ($A['sig']);
-        $A['about'] = addslashes ($A['about']);
-        $A['pgpkey'] = addslashes ($A['pgpkey']);
+        $A['fullname'] = DB_escapeString($A['fullname']);
+        $A['email'] = DB_escapeString($A['email']);
+        $A['location'] = DB_escapeString($A['location']);
+        $A['sig'] = DB_escapeString($A['sig']);
+        $A['about'] = DB_escapeString($A['about']);
+        $A['pgpkey'] = DB_escapeString($A['pgpkey']);
 
         if (!empty ($filename)) {
             if (!file_exists ($_CONF['path_images'] . 'userphotos/' . $filename)) {
@@ -1241,7 +1241,7 @@ function savepreferences($A)
     $tids = '';
     if (count($TIDS) > 0) {
         // the array_intersect mitigates the need to scrub the TIDS input
-        $tids = addslashes (implode (' ', array_intersect ($AETIDS, $TIDS)));
+        $tids = DB_escapeString(implode (' ', array_intersect ($AETIDS, $TIDS)));
     }
 
     $aids = '';
@@ -1250,7 +1250,7 @@ function savepreferences($A)
         foreach ($AIDS as $key => $val) {
             $AIDS[$key] = COM_applyFilter($val, true);
         }
-        $aids = addslashes (implode (' ', $AIDS));
+        $aids = DB_escapeString(implode (' ', $AIDS));
     }
 
     $selectedblocks = '';
@@ -1259,7 +1259,7 @@ function savepreferences($A)
         foreach ($BOXES as $key => $val) {
             $BOXES[$key] = COM_applyFilter($val, true);
         }
-        $boxes = addslashes (implode (',', $BOXES));
+        $boxes = DB_escapeString(implode (',', $BOXES));
 
         $blockresult = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($boxes)");
         $numRows = DB_numRows($blockresult);
@@ -1278,7 +1278,7 @@ function savepreferences($A)
     $etids = '';
     if (($_CONF['emailstories'] == 1) && (count($ETIDS) > 0)) {
         // the array_intersect mitigates the need to scrub the ETIDS input
-        $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
+        $etids = DB_escapeString(implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
 
     if (isset ($A['tzid'])) {
@@ -1303,8 +1303,8 @@ function savepreferences($A)
 
     // Save theme, when doing so, put in cookie so we can set the user's theme
     // even when they aren't logged in
-    $theme = addslashes ($A['theme']);
-    $language = addslashes ($A['language']);
+    $theme = DB_escapeString($A['theme']);
+    $language = DB_escapeString($A['language']);
     DB_query("UPDATE {$_TABLES['users']} SET theme='$theme',language='$language' WHERE uid = '{$_USER['uid']}'");
     setcookie ($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
@@ -1328,13 +1328,13 @@ function savepreferences($A)
     if (empty ($A['commentmode'])) {
         $A['commentmode'] = $_CONF['comment_mode'];
     }
-    $A['commentmode'] = addslashes ($A['commentmode']);
+    $A['commentmode'] = DB_escapeString($A['commentmode']);
 
     $A['commentorder'] = COM_applyFilter ($A['commentorder']);
     if (empty ($A['commentorder'])) {
         $A['commentorder'] = 'ASC';
     }
-    $A['commentorder'] = addslashes ($A['commentorder']);
+    $A['commentorder'] = DB_escapeString($A['commentorder']);
 
     $A['commentlimit'] = COM_applyFilter ($A['commentlimit'], true);
     if ($A['commentlimit'] <= 0) {

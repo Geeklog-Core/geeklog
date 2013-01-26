@@ -1364,7 +1364,7 @@ function plugin_getiteminfo_polls($pid, $what, $uid = 0, $options = array())
         $where = '';
         $permOp = 'WHERE';
     } else {
-        $where = " WHERE pid = '" . addslashes($pid) . "'";
+        $where = " WHERE pid = '" . DB_escapeString($pid) . "'";
         $permOp = 'AND';
     }
     if ($uid > 0) {

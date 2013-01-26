@@ -378,12 +378,12 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         $meta_description = strip_tags ($meta_description);
         $meta_keywords = strip_tags ($meta_keywords);
 
-        $sp_content = addslashes ($sp_content);
-        $sp_title = addslashes ($sp_title);
-        $sp_page_title = addslashes ($sp_page_title);
-        $sp_label = addslashes ($sp_label);
-        $meta_description = addslashes ($meta_description);
-        $meta_keywords = addslashes ($meta_keywords);        
+        $sp_content = DB_escapeString($sp_content);
+        $sp_title = DB_escapeString($sp_title);
+        $sp_page_title = DB_escapeString($sp_page_title);
+        $sp_label = DB_escapeString($sp_label);
+        $meta_description = DB_escapeString($meta_description);
+        $meta_keywords = DB_escapeString($meta_keywords);        
 
         // If user does not have php edit perms, then set php flag to 0.
         if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
@@ -503,9 +503,9 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                 }
             }
         } else {
-            DB_change($_TABLES['comments'], 'sid', addslashes($sp_id),
+            DB_change($_TABLES['comments'], 'sid', DB_escapeString($sp_id),
                       array('sid', 'type'),
-                      array(addslashes($sp_old_id), 'staticpages'));
+                      array(DB_escapeString($sp_old_id), 'staticpages'));
             if (!$template_flag) {
                 PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
             } else {

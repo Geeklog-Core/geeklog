@@ -502,11 +502,11 @@ function moderation($mid, $action, $type, $count)
                 
                 $result = DB_query ($sql);
                 $A = DB_fetchArray ($result);
-                $A['related'] = addslashes (implode ("\n", STORY_extractLinks ($A['introtext'])));
+                $A['related'] = DB_escapeString(implode ("\n", STORY_extractLinks ($A['introtext'])));
                 $A['owner_id'] = $A['uid'];
-                $A['title'] = addslashes ($A['title']);
-                $A['introtext'] = addslashes ($A['introtext']);
-                $A['bodytext'] = addslashes( $A['bodytext'] );
+                $A['title'] = DB_escapeString($A['title']);
+                $A['introtext'] = DB_escapeString($A['introtext']);
+                $A['bodytext'] = DB_escapeString( $A['bodytext'] );
                 $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon,archive_flag FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
                 $T = DB_fetchArray ($result);
                 if ($T['archive_flag'] == 1) {

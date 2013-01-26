@@ -52,12 +52,12 @@ class EditIPofUrl extends BaseAdmin {
         }
 
         if (($action == 'delete') && SEC_checkToken()) {
-            $entry = addslashes($entry);
+            $entry = DB_escapeString($entry);
             DB_delete($_TABLES['spamx'], array('name', 'value'),
                                          array('IPofUrl', $entry));
         } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
             if (!empty($entry)) {
-                $entry = addslashes($entry);
+                $entry = DB_escapeString($entry);
                 $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('IPofUrl', '$entry')");
             }
         }

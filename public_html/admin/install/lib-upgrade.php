@@ -246,8 +246,8 @@ function INST_doDatabaseUpgrades($current_gl_version)
 
             $pos = strrpos ($_CONF['rdf_file'], '/');
             $filename = substr ($_CONF['rdf_file'], $pos + 1);
-            $sitename = addslashes ($_CONF['site_name']);
-            $siteslogan = addslashes ($_CONF['site_slogan']);
+            $sitename = DB_escapeString($_CONF['site_name']);
+            $siteslogan = DB_escapeString($_CONF['site_slogan']);
             DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$sitename}', '{$siteslogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
 
             // upgrade static pages plugin
@@ -311,7 +311,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $numStories = DB_numRows ($result);
             for ($i = 0; $i < $numStories; $i++) {
                 $A = DB_fetchArray ($result);
-                $related = addslashes (implode ("\n", UPDATE_extractLinks ($A['introtext'] . ' ' . $A['bodytext'])));
+                $related = DB_escapeString(implode ("\n", UPDATE_extractLinks ($A['introtext'] . ' ' . $A['bodytext'])));
                 if (empty ($related)) {
                     DB_query ("UPDATE {$_TABLES['stories']} SET related = NULL WHERE sid = '{$A['sid']}'");
                 } else {
@@ -786,7 +786,7 @@ function INST_pluginExists($plugin)
 {
     global $_TABLES;
 
-    $plugin = addslashes($plugin);
+    $plugin = DB_escapeString($plugin);
     $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_name = '$plugin'");
     if (DB_numRows($result) > 0) {
         return true;
@@ -936,7 +936,7 @@ function INST_fixOptionalConfig()
         list($value, $default_value) = DB_fetchArray($result);
         if ($value != 'unset') {
             if (substr($default_value, 0, 6) != 'unset:') {
-                $unset = addslashes('unset:' . $default_value);
+                $unset = DB_escapeString('unset:' . $default_value);
                 DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = '$name'");
             }
         }

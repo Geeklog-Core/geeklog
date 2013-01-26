@@ -77,8 +77,8 @@ function calendar_update_move_states()
 
         foreach ($_STATES as $key => $state) {
             foreach ($tables as $table) {
-                DB_change($table, 'state', addslashes($state),
-                                  'state', addslashes($key));
+                DB_change($table, 'state', DB_escapeString($state),
+                                  'state', DB_escapeString($key));
             }
         }
     }

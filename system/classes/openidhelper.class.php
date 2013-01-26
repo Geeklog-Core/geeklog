@@ -76,7 +76,7 @@ class SimpleActionHandler extends ActionHandler {
         $status = USER_ACCOUNT_ACTIVE;
 
         // PHP replaces "." with "_"
-        $openid_identity = addslashes($this->query['openid_identity']);
+        $openid_identity = DB_escapeString($this->query['openid_identity']);
         $openid_nickname = '';
         if (isset($this->query['openid_sreg_nickname'])) {
             $openid_nickname = $this->query['openid_sreg_nickname'];

@@ -542,8 +542,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
 
     $retval = '';
 
-    $title = addslashes (COM_stripslashes (strip_tags ($title)));
-    $phpblockfn = addslashes (COM_stripslashes (trim ($phpblockfn)));
+    $title = DB_escapeString(COM_stripslashes (strip_tags ($title)));
+    $phpblockfn = DB_escapeString(COM_stripslashes (trim ($phpblockfn)));
     if (empty($title) || !TOPIC_checkTopicSelectionControl()) {
         $retval .= COM_showMessageText($LANG21[64], $LANG21[63])
                 . editblock($bid);
@@ -639,13 +639,13 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
                 // Remove any autotags the user doesn't have permission to use
                 $content = PLG_replaceTags($content, '', true);
             }
-            $content = addslashes ($content);
+            $content = DB_escapeString($content);
         }
         if ($rdflimit < 0) {
             $rdflimit = 0;
         }
         if (!empty ($rdfurl)) {
-            $rdfurl = addslashes ($rdfurl);
+            $rdfurl = DB_escapeString($rdfurl);
         }
         if (empty ($rdfupdated)) {
             $rdfupdated = '0000-00-00 00:00:00';

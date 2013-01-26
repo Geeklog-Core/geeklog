@@ -260,7 +260,7 @@ function edittopic ($tid = '')
     if (empty($tid)) {
         $num_stories = $LANG_ADMIN['na'];
     } else {
-        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tid = '" . addslashes($tid) . "'" . COM_getPermSql('AND'));
+        $nresult = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND ta.tid = '" . DB_escapeString($tid) . "'" . COM_getPermSql('AND'));
         $N = DB_fetchArray( $nresult );
         $num_stories = COM_numberFormat($N['count']);
     }
@@ -452,9 +452,9 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             if ($imageurl == '/images/topics/') {
                 $imageurl = '';
             }
-            $topic = addslashes($topic);
-            $meta_description = addslashes(strip_tags($meta_description));
-            $meta_keywords = addslashes(strip_tags($meta_keywords));
+            $topic = DB_escapeString($topic);
+            $meta_description = DB_escapeString(strip_tags($meta_description));
+            $meta_keywords = DB_escapeString(strip_tags($meta_keywords));
     
             if ($is_default == 'on') {
                 $is_default = 1;
@@ -496,7 +496,7 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 if ($tid != $old_tid) {
                     changetopicid($tid, $old_tid);
     
-                    $old_tid = addslashes($old_tid);
+                    $old_tid = DB_escapeString($old_tid);
                     DB_delete($_TABLES['topics'], 'tid', $old_tid);
                 }
             }

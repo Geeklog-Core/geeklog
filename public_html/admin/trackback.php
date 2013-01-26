@@ -167,7 +167,7 @@ function deleteTrackbackComment ($id)
 {
     global $_TABLES;
 
-    $cid = addslashes ($id);
+    $cid = DB_escapeString($id);
     $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
     list ($sid, $type) = DB_fetchArray ($result);
     $url = PLG_getItemInfo($type, $sid, 'url');
@@ -682,9 +682,9 @@ function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
                                 $method, $enabled);
     }
 
-    $name     = addslashes ($name);
-    $site_url = addslashes ($site_url);
-    $ping_url = addslashes ($ping_url);
+    $name     = DB_escapeString($name);
+    $site_url = DB_escapeString($site_url);
+    $ping_url = DB_escapeString($ping_url);
 
     if ($pid > 0) {
         DB_save ($_TABLES['pingservice'],

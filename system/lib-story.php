@@ -909,7 +909,7 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
     if ($sid == '*') {
         $where = ' WHERE';
     } else {
-        $where = " WHERE (sid = '" . addslashes($sid) . "') AND";
+        $where = " WHERE (sid = '" . DB_escapeString($sid) . "') AND";
     }
     $where .= ' (draft_flag = 0) AND (date <= NOW())';
     if ($uid > 0) {

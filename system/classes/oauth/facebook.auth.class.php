@@ -201,7 +201,7 @@ class facebookConsumer extends OAuthConsumerBaseClass {
             'passwd2'        => '',
             'fullname'       => $info->name,
             'homepage'       => $info->link,
-            'remoteusername' => addslashes($info->id),
+            'remoteusername' => DB_escapeString($info->id),
             'remoteservice'  => 'oauth.facebook',
             'remotephoto'    => $info->photo_url,
         );

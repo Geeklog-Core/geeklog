@@ -831,8 +831,8 @@ function SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid)
     global $_CONF, $_TABLES;
 
     /* First try a local cached login */
-    $remoteusername = addslashes($loginname);
-    $remoteservice = addslashes($service);
+    $remoteusername = DB_escapeString($loginname);
+    $remoteservice = DB_escapeString($service);
     $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername' AND remoteservice='$remoteservice'");
     $tmp = DB_error();
     $nrows = DB_numRows($result);
@@ -1330,7 +1330,7 @@ function SEC_createToken($ttl = 1200)
     
     /* Generate the token */
     $token = md5($uid.$pageURL.uniqid (rand (), 1));
-    $pageURL = addslashes($pageURL);
+    $pageURL = DB_escapeString($pageURL);
     
     /* Destroy exired tokens: */
     $sql['mssql'] = "DELETE FROM {$_TABLES['tokens']} WHERE (DATEADD(ss, ttl, created) < NOW())"

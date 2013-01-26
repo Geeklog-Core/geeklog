@@ -70,7 +70,7 @@ if (empty ($type)) {
 
 if ($type == 'article') {
     // check if they have access to this story
-    $sid = addslashes ($id);
+    $sid = DB_escapeString($id);
     
     $sql = "SELECT trackbackcode FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
             WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" 

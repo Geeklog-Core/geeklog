@@ -438,7 +438,7 @@ class Story
     {
         global $_TABLES, $_CONF, $_USER, $topic;
 
-        $sid = addslashes(COM_applyFilter($sid));
+        $sid = DB_escapeString(COM_applyFilter($sid));
 
         if (!empty($sid) && (($mode == 'edit') || ($mode == 'view') || ($mode == 'clone'))) {
             if (empty($topic)) {
@@ -734,7 +734,7 @@ class Story
         $currentSidExists = false;
 
         /* Fix up old sid => new sid stuff */
-        $checksid = addslashes($this->_originalSid); // needed below
+        $checksid = DB_escapeString($this->_originalSid); // needed below
 
         if ($this->_sid != $this->_originalSid) {
             /* The sid has changed. Load from request will have
@@ -744,7 +744,7 @@ class Story
              * sid that was then thrown away) to reduce the sheer
              * number of SQL queries we do.
              */
-            $newsid = addslashes($this->_sid);
+            $newsid = DB_escapeString($this->_sid);
 
             $sql = "SELECT 1 FROM {$_TABLES['stories']} WHERE sid='{$checksid}'";
             $result = DB_query($sql);
@@ -817,11 +817,11 @@ class Story
                     {
                         if(is_numeric($this->{$varname}))
                         {              
-                            $values .= addslashes($this->{$varname}).', ';
+                            $values .= DB_escapeString($this->{$varname}).', ';
                         }
                         else
                         {
-                            $values .= '\''.addslashes($this->{$varname}) . '\', ';     
+                            $values .= '\''. DB_escapeString($this->{$varname}) . '\', ';     
                         }
                     }
                 }
@@ -955,7 +955,7 @@ class Story
 
         // Have we specified a permitted topic?
         if (!empty($topic)) {
-            $allowed = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . addslashes($topic) . "'" . COM_getTopicSql('AND'));
+            $allowed = DB_getItem($_TABLES['topics'], 'tid', "tid = '" . DB_escapeString($topic) . "'" . COM_getTopicSql('AND'));
 
             if ($allowed != $topic) {
                 $topic = '';
@@ -1077,12 +1077,12 @@ class Story
         
 
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
-            $this->_sid = addslashes($this->_sid);
-            $this->_title = addslashes($this->_title);
+            $this->_sid = DB_escapeString($this->_sid);
+            $this->_title = DB_escapeString($this->_title);
             
-            $this->_introtext = addslashes($this->_introtext);
-            $this->_bodytext = addslashes($this->_bodytext);
-            $this->_postmode = addslashes($this->_postmode);
+            $this->_introtext = DB_escapeString($this->_introtext);
+            $this->_bodytext = DB_escapeString($this->_bodytext);
+            $this->_postmode = DB_escapeString($this->_postmode);
             DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode',
                         "{$this->_sid},{$this->_uid},'{$this->_title}'," .
                         "'{$this->_introtext}','{$this->_bodytext}',NOW(),'{$this->_postmode}'");
@@ -1417,12 +1417,12 @@ class Story
     /**
      * Return the SID in a clean way
      *
-     * @param $fordb    boolean True if we want an 'addslashes' version for the db
+     * @param $fordb    boolean True if we want an 'DB_escapeString' version for the db
      */
     function getSid($fordb = false)
     {
         if ($fordb) {
-            return addslashes($this->_sid);
+            return DB_escapeString($this->_sid);
         } else {
             return $this->_sid;
         }

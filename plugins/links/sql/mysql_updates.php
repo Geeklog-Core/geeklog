@@ -83,7 +83,7 @@ function links_update_set_categories()
     if (empty($_LI_CONF['root'])) {
         $_LI_CONF['root'] = 'site';
     }
-    $root = addslashes($_LI_CONF['root']);
+    $root = DB_escapeString($_LI_CONF['root']);
 
     DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid, pid, category, description, tid, created, modified, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('{$root}', 'root', 'Root', 'Website root', NULL, NOW(), NOW(), 5, 2, 3, 3, 2, 2)");
 
@@ -97,7 +97,7 @@ function links_update_set_categories()
     for ($i = 0; $i < $nrows; $i++) {
 
         $A = DB_fetchArray($result);
-        $category = addslashes($A['category']);
+        $category = DB_escapeString($A['category']);
         $cid = $category;
         DB_query("INSERT INTO {$_TABLES['linkcategories']} (cid,pid,category,description,tid,owner_id,group_id,created,modified) VALUES ('{$cid}','{$root}','{$category}','{$category}','all',2,'{$group_id}',NOW(),NOW())",1);
         if ($cid != $category) { // still experimenting ...

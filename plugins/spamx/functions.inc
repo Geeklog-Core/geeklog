@@ -246,7 +246,7 @@ function plugin_upgrade_spamx()
                 list($value, $default_value) = DB_fetchArray($result);
                 if ($value != 'unset') {
                     if (substr($default_value, 0, 6) != 'unset:') {
-                        $unset = addslashes('unset:' . $default_value);
+                        $unset = DB_escapeString('unset:' . $default_value);
                         DB_query("UPDATE {$_TABLES['conf_values']} SET default_value = '$unset' WHERE name = 'notification_email' AND group_name = 'spamx'");
                     }
                 }
@@ -324,15 +324,15 @@ function plugin_migrate_spamx($old_conf)
     global $_CONF, $_TABLES;
 
     // only update the SLV whitelist, so we don't use INST_updateSiteUrl
-    $old_url = addslashes($old_conf['site_url']);
+    $old_url = DB_escapeString($old_conf['site_url']);
     $result = DB_query("SELECT name, value FROM {$_TABLES['spamx']} WHERE name = 'SLVwhitelist' AND value LIKE '{$old_url}%'");
     $num = DB_numRows($result);
 
     for ($i = 0; $i < $num; $i++) {
         list($name, $value) = DB_fetchArray($result);
-        $new_value = addslashes(str_replace($old_conf['site_url'],
+        $new_value = DB_escapeString(str_replace($old_conf['site_url'],
                                             $_CONF['site_url'], $value));
-        $old_value = addslashes($value);
+        $old_value = DB_escapeString($value);
 
         DB_query("UPDATE {$_TABLES['spamx']} SET value = '$new_value' WHERE name = 'SLVwhitelist' AND value = '$old_value'");
     }

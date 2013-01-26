@@ -71,7 +71,7 @@ function update_ConfValues()
     // move num_search_results options
     DB_query("UPDATE {$_TABLES['conf_values']} SET sort_order = 651 WHERE sort_order = 670");
     // change default for num_search_results
-    $thirty = addslashes(serialize(30));
+    $thirty = DB_escapeString(serialize(30));
     DB_query("UPDATE {$_TABLES['conf_values']} SET value = '$thirty', default_value = '$thirty' WHERE name = 'num_search_results'");
 
     // fix censormode dropdown

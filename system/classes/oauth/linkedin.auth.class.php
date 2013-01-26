@@ -56,7 +56,7 @@ class linkedinConsumer extends OAuthConsumerBaseClass {
             'passwd2'        => '',
             'fullname'       => $info->{'first-name'} . ' ' .  $info->{'last-name'},
             'homepage'       => $info->{'public-profile-url'},
-            'remoteusername' => addslashes($info->id),
+            'remoteusername' => DB_escapeString($info->id),
             'remoteservice'  => 'oauth.linkedin',
             'remotephoto'    => $info->{'picture-url'},
         );

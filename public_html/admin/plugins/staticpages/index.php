@@ -463,7 +463,7 @@ function staticpageeditor_form($A)
         $sp_template->set_var('sp_comments', $LANG_ADMIN['na']);
     } else {
         $num_comments = DB_count($_TABLES['comments'], array('sid', 'type'),
-            array(addslashes($A['sp_id']), 'staticpages'));
+            array(DB_escapeString($A['sp_id']), 'staticpages'));
         $sp_template->set_var('sp_comments', COM_numberFormat($num_comments));
     }
     $sp_template->set_var('end_block',

@@ -53,7 +53,7 @@ class twitterConsumer extends OAuthConsumerBaseClass {
             'passwd2'        => '',
             'fullname'       => $info->name,
             'homepage'       => 'http://twitter.com/'.$info->screen_name,
-            'remoteusername' => addslashes($info->screen_name),
+            'remoteusername' => DB_escapeString($info->screen_name),
             'remoteservice'  => 'oauth.twitter',
             'remotephoto'    => $info->profile_image_url,
         );

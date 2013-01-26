@@ -102,11 +102,11 @@ function INST_updateSiteUrl($old_url, $new_url, $tablespec = '')
             if ($changed) {
                 $sql = "UPDATE {$_TABLES[$table]} SET ";
                 foreach ($fields as $field) {
-                    $sql .= "$field = '" . addslashes($A[$field]) . "', ";
+                    $sql .= "$field = '" . DB_escapeString($A[$field]) . "', ";
                 }
                 $sql = substr($sql, 0, -2);
 
-                DB_query($sql . " WHERE $index = '" . addslashes($A[$index]) . "'");
+                DB_query($sql . " WHERE $index = '" . DB_escapeString($A[$index]) . "'");
             }
         }
     }

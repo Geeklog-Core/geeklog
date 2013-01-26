@@ -332,7 +332,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('filter', $filter);
     }
 
-    $sql_query = addslashes($query); // replace quotes etc for security
+    $sql_query = DB_escapeString($query); // replace quotes etc for security
     $sql = $query_arr['sql']; // get sql from array that builds data
 
     $order_var = ''; # number that is displayed in URL
@@ -1030,7 +1030,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         $topic_anon = 0;
         $tids = TOPIC_getTopicIdsForObject('article', $A['sid']);
         foreach ($tids as $tid) {
-            $current_access = DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '" . addslashes($tid) . "'");
+            $current_access = DB_getItem($_TABLES['topics'], 'perm_anon', "tid = '" . DB_escapeString($tid) . "'");
             if ($topic_anon < $current_access) {
                 $topic_anon = $current_access;
             }            

@@ -52,13 +52,13 @@ class EditIP extends BaseAdmin {
         }
 
         if (($action == 'delete') && SEC_checkToken()) {
-            $entry = addslashes($entry);
+            $entry = DB_escapeString($entry);
             DB_delete($_TABLES['spamx'], array('name', 'value'),
                                          array('IP', $entry));
         } elseif (($action == $LANG_SX00['addentry']) && SEC_checkToken()) {
             if (!empty($entry)) {
                 $entry = str_replace(' ', '', $entry);
-                $entry = addslashes($entry);
+                $entry = DB_escapeString($entry);
                 $result = DB_query("INSERT INTO {$_TABLES['spamx']} VALUES ('IP', '$entry')");
             }
         }
