@@ -110,17 +110,18 @@ class scripts {
         $this->library_files[$name]['file'] = 'javascript/common.js';
         $this->library_files[$name]['load'] = false;        
                      
-        
+        // jQuery (http://jquery.com/download/)
         // Find available jQuery library files
-        $version_jQuery = '1.7.2'; // '1.6.3';
+        $version_jQuery = '1.9.0'; // '1.7.2'; // '1.6.3';
         $this->jquery_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jquery/' . $version_jQuery .'/jquery.min.js';
         $name = 'jquery';
         $this->library_files[$name]['file'] = 'javascript/jquery.min.js';
         $this->library_files[$name]['load'] = false;
 
-        // jQuery UI
-        // When upgrading jQuery UI include the redmond theme
-        $version_jQuery_ui = '1.8.20'; // '1.8.11';
+        // jQuery UI (http://plugins.jquery.com/ui.core/)
+        // When upgrading jQuery UI include the redmond theme and all Core, Interactions and Widgets
+        // Include minified version only of js
+        $version_jQuery_ui = '1.10.0'; //'1.8.20'; // '1.8.11';
         $this->jquery_ui_cdn_file = 'https://ajax.googleapis.com/ajax/libs/jqueryui/' . $version_jQuery_ui .'/jquery-ui.min.js';
         
         // Set jQuery UI CSS
@@ -133,37 +134,43 @@ class scripts {
         $names[] = 'jquery.ui.widget';
         $names[] = 'jquery.ui.position';
         $names[] = 'jquery.ui.mouse';
+        
+        // Set jQuery UI Interactions
+        $names[] = 'jquery.ui.draggable';
+        $names[] = 'jquery.ui.droppable';
+        $names[] = 'jquery.ui.resizable';
+        $names[] = 'jquery.ui.selectable';
+        $names[] = 'jquery.ui.sortable';
+        
         // Set jQuery UI Widgets
         $names[] = 'jquery.ui.accordion';
         $names[] = 'jquery.ui.autocomplete';
         $names[] = 'jquery.ui.button';
         $names[] = 'jquery.ui.datepicker';
+        $names[] = 'jquery.ui.i18n'; // extra not included in core plugin (used by calendar and article dates)
         $names[] = 'jquery.ui.dialog';
-        $names[] = 'jquery.ui.draggable';
-        $names[] = 'jquery.ui.droppable';
+        $names[] = 'jquery.ui.menu';
         $names[] = 'jquery.ui.progressbar';
-        $names[] = 'jquery.ui.resizable';
-        $names[] = 'jquery.ui.selectable';
         $names[] = 'jquery.ui.slider';
-        $names[] = 'jquery.ui.sortable';
+        $names[] = 'jquery.ui.spinner';
         $names[] = 'jquery.ui.tabs';
-        $names[] = 'jquery-ui-i18n';
+        $names[] = 'jquery.ui.tooltip';
 
         // Set jQuery UI Effects
-        $names[] = 'jquery.effects.blind';
-        $names[] = 'jquery.effects.bounce';
-        $names[] = 'jquery.effects.clip';
-        $names[] = 'jquery.effects.core';
-        $names[] = 'jquery.effects.drop';
-        $names[] = 'jquery.effects.explode';
-        $names[] = 'jquery.effects.fade';
-        $names[] = 'jquery.effects.fold';
-        $names[] = 'jquery.effects.highlight';
-        $names[] = 'jquery.effects.pulsate';
-        $names[] = 'jquery.effects.scale';
-        $names[] = 'jquery.effects.shake';
-        $names[] = 'jquery.effects.slide';
-        $names[] = 'jquery.effects.transfer';
+        $names[] = 'jquery.ui.effect-min'; // core
+        $names[] = 'jquery.ui.effect-blind';
+        $names[] = 'jquery.ui.effect-bounce';
+        $names[] = 'jquery.ui.effect-clip';
+        $names[] = 'jquery.ui.effect-drop';
+        $names[] = 'jquery.ui.effect-explode';
+        $names[] = 'jquery.ui.effect-fade';
+        $names[] = 'jquery.ui.effect-fold';
+        $names[] = 'jquery.ui.effect-highlight';
+        $names[] = 'jquery.ui.effect-pulsate';
+        $names[] = 'jquery.ui.effect-scale';
+        $names[] = 'jquery.ui.effect-shake';
+        $names[] = 'jquery.ui.effect-slide';
+        $names[] = 'jquery.ui.effect-transfer';
         
         foreach ($names as $name) {
             $this->library_files[$name]['file'] = 'javascript/jquery_ui/' . $name . '.min.js';
