@@ -139,7 +139,7 @@ $(function() {
     );
     $('body').append(tooltipContainer);
 
-    $('.tooltip').live('mouseover touchend', function() {
+    $(document).on('mouseover touchend', '.tooltip', function() {
         var attrHref = glConfigDocUrl;
         var jqobj = $(this);
 
@@ -193,7 +193,7 @@ $(function() {
         
         tooltipContainer.show();
     });
-    $('.tooltip').live('mouseout', function() {
+    $(document).on('mouseout', '.tooltip', function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
         
         tooltipHideTimer = setTimeout(function() {
@@ -210,7 +210,7 @@ $(function() {
             tooltipContainer.hide();
         }, tooltipHideDelay);
     });
-    $('#tooltip-close').live('click touchout', function() {
+    $(document).on('click touchout', '#tooltip-close', function() {
         if ( tooltipHideTimer ) clearTimeout(tooltipHideTimer);
         tooltipContainer.hide();
     });
@@ -288,7 +288,7 @@ $(function() {
     });
     
     // dropdown click
-    $('#tabs-dropdown').live('click', function(e) {
+    $(document).on('click', '#tabs-dropdown', function(e) {
         dropDownHandler(e);
     });
     
