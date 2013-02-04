@@ -123,13 +123,13 @@ $(function() {
       $(".block-left-content").css("display", "none");
       $(".block-right-content").css("display", "none");
       $(".block-list-content").css("display", "none");
-      obj.live('touchstart', function() {
+      $(document).on('touchstart', '.block-title', function() {
         this.touched = true;
       });
-      obj.live('touchmove', function() {
+      $(document).on('touchmove', '.block-title', function() {
         this.touchmoved = true;
       });
-      obj.live('touchend', function() {
+      $(document).on('touchend', '.block-title', function() {
         if (this.touched && !this.touchmoved) {
           $(this).next().toggle();
           $(this).toggleClass("show");
@@ -157,7 +157,7 @@ $(function() {
     $('.' + classname1).attr('class', classname2);
     tablechanger.text(btntext2);
   }
-  tablechanger.live('click', function() {
+  $(document).on('click', '.admin-list-table-changer', function() {
     if (iswide) {
       $('.' + classname1).attr('class', classname2);
       tablechanger.text(btntext2);
