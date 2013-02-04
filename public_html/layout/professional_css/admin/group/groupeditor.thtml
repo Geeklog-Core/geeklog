@@ -53,7 +53,7 @@
 
     <dl>
       <dd class="description">{lang_rightsmsg}</dd>
-      <dd><table>{rights_options}</table></dd>
+      <dd><table style="width: 100%;">{rights_options}</table></dd>
     </dl>
   </fieldset>
 

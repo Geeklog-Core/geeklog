@@ -361,6 +361,7 @@ function printrights($grp_id = '', $core = 0)
 {
     global $_TABLES, $_USER, $LANG_ACCESS, $_GROUP_VERBOSE;
 
+    $num_cols = 2;	// number of columns
     // this gets a bit complicated so bear with the comments
 
     // get a list of all the features that the current user (i.e. Group Admin)
@@ -419,29 +420,31 @@ function printrights($grp_id = '', $core = 0)
     $ftcount = 0;
     $retval = '<tr>';
     for ($i = 0; $i < $nfeatures; $i++) {
+        $id = 'id-features' . $i;
         $A = DB_fetchArray($features);
 
         if ((empty($grpftarray[$A['ft_name']]) OR ($grpftarray[$A['ft_name']] == 'direct')) AND ($core != 1)) {
-            if (($ftcount > 0) && ($ftcount % 3 == 0)) {
+            if (($ftcount > 0) && ($ftcount % $num_cols == 0)) {
                 $retval .= '</tr>' . LB . '<tr>';
             }
             $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
             $ftcount++;
 
             $retval .= '<td class="' . $pluginRow . '">'
-                    . '<input type="checkbox" name="features[]" value="'
-                    . $A['ft_id'] . '"';
+                    .  '<input type="checkbox" id="' . $id . '" name="features[]" value="'
+                    .  $A['ft_id'] . '"';
             if (!empty($grpftarray[$A['ft_name']])) {
                 if ($grpftarray[$A['ft_name']] == 'direct') {
                     $retval .= ' checked="checked"';
                 }
             }
-            $retval .= XHTML . '><span title="' . $A['ft_descr'] . '">'
-                    . $A['ft_name'] . '</span></td>';
+
+            $retval .= XHTML . '><label for="' . $id . '" title="' . $A['ft_descr'] . '">'
+                    .  $A['ft_name'] . '</label></td>';
         } else {
             // either this is an indirect right OR this is a core feature
             if ((($core == 1) AND (isset($grpftarray[$A['ft_name']]) AND (($grpftarray[$A['ft_name']] == 'indirect') OR ($grpftarray[$A['ft_name']] == 'direct')))) OR ($core != 1)) {
-                if (($ftcount > 0) && ($ftcount % 3 == 0)) {
+                if (($ftcount > 0) && ($ftcount % $num_cols == 0)) {
                     $retval .= '</tr>' . LB . '<tr>';
                 }
                 $pluginRow = sprintf('pluginRow%d', ($ftcount % 2) + 1);
@@ -459,8 +462,8 @@ function printrights($grp_id = '', $core = 0)
     }
     if ($ftcount == 0) {
         // This group doesn't have rights to any features
-        $retval .= '<td colspan="3" class="pluginRow1">'
-                . $LANG_ACCESS['grouphasnorights'] . '</td>';
+        $retval .= '<td colspan="' . $num_cols . '" class="pluginRow1">'
+                .  $LANG_ACCESS['grouphasnorights'] . '</td>';
     }
 
     $retval .= '</tr>' . LB;
