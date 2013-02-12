@@ -5,7 +5,7 @@
 // | Geeklog 1.8                                                               |
 // +---------------------------------------------------------------------------+
 // | oauthhelper.class.php                                                     |
-// | version: 1.0.0                                                            |
+// | version: 1.0.1                                                            |
 // |                                                                           |
 // | Geeklog Distributed Authentication Module.                                |
 // +---------------------------------------------------------------------------+
@@ -107,7 +107,7 @@ class OAuthConsumerBaseClass {
     protected $request = '';
     protected $consumer = '';
     protected $errormsg = '';
-    protected $shortapi = 'http://api.tr.im/api/trim_url.xml';
+    protected $shortapi = '';
     public $consumer_key = '';
     public $consumer_secret = '';
     public $url_requestToken = '';
@@ -117,6 +117,7 @@ class OAuthConsumerBaseClass {
     public $method_requestToken = 'GET';
     public $method_accessToken = 'GET';
     public $method_userinfo = 'GET';
+    public $dataformat = 'xml';
     public $cookietimeout = 300;    // google Callbacks 5min
     public $token = '';
     public $token_secret = '';
@@ -179,7 +180,11 @@ class OAuthConsumerBaseClass {
             if ($response->getStatus() !== 200) {
                 $this->errormsg = $response->getStatus() . ' : ' . $response->getBody();
             } else {
-                $userinfo = simplexml_load_string($response->getBody());
+                if ($this->dataformat == 'json') {
+                    $userinfo = json_decode($response->getBody());
+                } else {
+                    $userinfo = simplexml_load_string($response->getBody());
+                }
             }
         } catch (HTTP_OAuth_Consumer_Exception_Invalid_Response $e) {
             $this->errormsg = get_class($e) . ': ' . $e->getBody();
@@ -391,6 +396,7 @@ class OAuthConsumerBaseClass {
     }
 
     protected function _shorten($url) {
+        if (empty($this->shortapi)) { return $url; }
         $this->request->setUrl($this->shortapi.'?url='.$url);
         $this->request->setMethod('GET');
         $response = $this->request->send();

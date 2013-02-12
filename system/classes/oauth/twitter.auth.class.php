@@ -5,7 +5,7 @@
 // | Geeklog 1.7                                                               |
 // +---------------------------------------------------------------------------+
 // | twitter.auth.class.php                                                    |
-// | version: 1.0.0                                                            |
+// | version: 1.0.1                                                            |
 // |                                                                           |
 // | Geeklog Distributed Authentication Module.                                |
 // +---------------------------------------------------------------------------+
@@ -40,10 +40,13 @@ require_once 'HTTP/OAuth/Consumer.php';
 class twitterConsumer extends OAuthConsumerBaseClass {
     public $consumer_key = ''; // <-- Consumer key
     public $consumer_secret = '';  // <-- Consumer secret
+    public $method_requestToken = 'POST';
+    public $method_accessToken = 'POST';
+    public $dataformat = 'json';
     public $url_requestToken = 'https://api.twitter.com/oauth/request_token';
     public $url_authorize = 'https://api.twitter.com/oauth/authenticate';
     public $url_accessToken = 'https://api.twitter.com/oauth/access_token';
-    public $url_userinfo = 'http://api.twitter.com/1/account/verify_credentials.xml';
+    public $url_userinfo = 'http://api.twitter.com/1.1/account/verify_credentials.json';
 
     protected function _getCreateUserInfo($info) {
         $users = array(
@@ -81,7 +84,7 @@ class twitterConsumer extends OAuthConsumerBaseClass {
         try {
             $this->consumer = new HTTP_OAuth_Consumer($this->consumer_key, $this->consumer_secret, $this->token, $this->token_secret);
             $this->consumer->accept($this->request);
-            $response = $this->consumer->sendRequest('http://api.twitter.com/1/direct_messages/new.xml', array('screen_name'=>$name, 'text'=>$msg), 'POST');
+            $response = $this->consumer->sendRequest('http://api.twitter.com/1.1/direct_messages/new.json', array('screen_name'=>$name, 'text'=>$msg), 'POST');
             if ($response->getStatus() !== 200) {
                 $this->errormsg = $response->getStatus() . ' : ' . $response->getBody();
                 COM_errorLog("TwitterAuth DM Error(".$response->getStatus()."/".$response->getBody().") TwitterId={$name}, DM={$msg}");
