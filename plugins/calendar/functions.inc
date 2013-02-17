@@ -688,6 +688,9 @@ function plugin_submit_calendar($mode = 'master')
 
     if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
+        if (!in_array($mode, array('master', 'personal', 'quickadd'))) {
+            $mode = 'master';
+        }
     } else if (isset($_REQUEST['mode']) && ($_REQUEST['mode'] == 'personal')) {
         $mode = 'personal';
     }
