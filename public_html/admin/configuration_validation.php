@@ -51,9 +51,9 @@ $_CONF_VALIDATE['Core']['cdn_hosted'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['meta_tags'] = array('rule' => array('inList', array(0, 1, 2), false));
 $_CONF_VALIDATE['Core']['meta_description'] = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['meta_keywords'] = array('rule' => 'stringOrEmpty');
-$_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
 
 /* Subgroup Site, Tab Mail */
+$_CONF_VALIDATE['Core']['site_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['noreply_mail'] = array('rule' => 'email');
 $_CONF_VALIDATE['Core']['mail_settings[backend]'] = array(
     'rule' => array('inList', array('smtp', 'sendmail', 'mail')),
@@ -77,6 +77,9 @@ $_CONF_VALIDATE['Core']['mail_settings[port]'] = array(
 );
 $_CONF_VALIDATE['Core']['mail_settings[auth]'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['mail_settings[username]'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['mail_settings[password]'] = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['cc_enabled'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['cc_default'] = array('rule' => 'boolean');
 
 /* Subgroup Site, Tab Syndication */
 $_CONF_VALIDATE['Core']['backend'] = array('rule' => 'boolean');
@@ -87,11 +90,14 @@ $_CONF_VALIDATE['Core']['rdf_limit'] = array(
                  $LANG_VALIDATION['rdf_limit'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['rdf_storytext'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['rdf_language'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['syndication_max_headlines'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['comment_feeds_article_tag'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['comment_feeds_article_tag_position'] = array(
     'rule' => array('inList', array('start', 'end', 'none'), true)
-); 
+);
+$_CONF_VALIDATE['Core']['comment_feeds_article_author_tag'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['comment_feeds_comment_author_tag'] = array('rule' => 'stringOrEmpty');
 
 /* Subgroup Site, Tab Paths */
 $_CONF_VALIDATE['Core']['path_html'] = array(
@@ -158,6 +164,7 @@ $_CONF_VALIDATE['Core']['search_show_limit'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_sort'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_num'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['search_show_type'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['search_separator'] = array('rule' => 'string');
 $_CONF_VALIDATE['Core']['search_def_keytype'] = array(
     'rule' => array('inList', array('all', 'any', 'phrase'), true)
 );
@@ -195,7 +202,7 @@ $_CONF_VALIDATE['Core']['aftersave_story'] = array(
 
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['aftersave_story'] = array(
+$_CONF_VALIDATE['Core']['trackback_code'] = array(
     'rule' => array('inList', array(-1, 0), false)
 );
 $_CONF_VALIDATE['Core']['trackbackspeedlimit'] = array('rule' => 'numeric');
@@ -403,6 +410,12 @@ $_CONF_VALIDATE['Core']['language'] = array(
 );
 
 /* Subgroup Language, Tab Locale */
+$_CONF_VALIDATE['Core']['locale']     = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['date']       = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['daytime']    = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['shortdate']  = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['dateonly']   = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['timeonly']   = array('rule' => 'stringOrEmpty');
 $_CONF_VALIDATE['Core']['week_start'] = array(
     'rule' => array('inList', array('Mon', 'Sun'), true)
 );
@@ -471,6 +484,7 @@ $_CONF_VALIDATE['Core']['skip_html_filter_for_root'] = array('rule' => 'boolean'
 $_CONF_VALIDATE['Core']['censormode'] = array(
     'rule' => array('inList', array(0, 1, 2, 3), false)
 );
+$_CONF_VALIDATE['Core']['censorreplace'] = array('rule' => 'stringOrEmpty');
 
 /* Subgroup Misc, Tab Permissions */
 $_CONF_VALIDATE['Core']['default_permissions_story[0]'] = array(
@@ -545,5 +559,12 @@ $_CONF_VALIDATE['Core']['autotag_permissions_user[3]'] = array(
 $_CONF_VALIDATE['Core']['disable_webservices'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['restrict_webservices'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['atom_max_stories'] = array('rule' => 'numeric');
+
+/* Subgroup Misc, Tab Topics */
+$_CONF_VALIDATE['Core']['multiple_breadcrumbs']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['disable_breadcrumbs_topics']   = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['disable_breadcrumbs_articles'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['disable_breadcrumbs_plugins']  = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['breadcrumb_root_site_name']    = array('rule' => 'boolean');
 
 ?>

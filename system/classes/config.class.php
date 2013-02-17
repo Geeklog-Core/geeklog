@@ -1600,6 +1600,43 @@ class config {
         if ( empty($this->validationErrors) ) {
             // only set if there is no validation error
             foreach ( $pass_validation as $param => $val ) {
+                if ($group === 'Core') {
+                    switch ($param) {
+                        case 'site_name':
+                        case 'site_slogan':
+                        case 'owner_name':
+                        case 'meta_description':
+                        case 'meta_keywords':
+                        case 'rdf_language':
+                        case 'locale':
+                        case 'date':
+                        case 'daytime':
+                        case 'shortdate':
+                        case 'dateonly':
+                        case 'timeonly':
+                        case 'cookie_session':
+                        case 'cookie_name':
+                        case 'cookie_password':
+                        case 'cookie_theme':
+                        case 'cookie_language':
+                        case 'cookie_tzid':
+                        case 'cookie_anon_name':
+                            $val = strip_tags($val);
+                            break;
+
+                        case 'site_disabled_msg':
+                        case 'comment_feeds_article_tag':
+                        case 'comment_feeds_article_author_tag':
+                        case 'comment_feeds_comment_author_tag':
+                        case 'search_separator':
+                            $val = COM_checkHTML($val);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
                 $this->set($param, $val, $group);
                 $success_array[$param] = true;
             }
