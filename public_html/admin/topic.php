@@ -452,7 +452,8 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             if ($imageurl == '/images/topics/') {
                 $imageurl = '';
             }
-            $topic = DB_escapeString($topic);
+
+            $topic = DB_escapeString(strip_tags($topic));
             $meta_description = DB_escapeString(strip_tags($meta_description));
             $meta_keywords = DB_escapeString(strip_tags($meta_keywords));
     
