@@ -62,6 +62,37 @@ div#admin-instructions div {
   padding: 0.5em 2em;
 }
 
+.form_block {
+  margin: 0;
+  padding: 0;
+}
+
+.form_block:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 1px;
+  overflow: hidden;
+}
+
+.wide {
+  width: 98%;
+}
+
+.separator {
+  display: none;
+}
+
+.size1  { width:  60px; }
+.size2  { width: 120px; }
+.size3  { width: 180px; }
+.size4  { width: 240px; }
+.size5  { width: 300px; }
+.size6  { width: 360px; }
+.size7  { width: 420px; }
+.size8  { width: 480px; }
+.size9  { width: 540px; }
+.size10 { width: 600px; }
 
 /*--------------------------------------
   Permission Style
