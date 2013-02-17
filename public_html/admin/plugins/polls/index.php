@@ -163,6 +163,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $topic = COM_stripslashes($topic);
+    $topic = COM_checkHTML($topic);
     $meta_description = strip_tags(COM_stripslashes($meta_description));
     $meta_keywords = strip_tags(COM_stripslashes($meta_keywords));
     $pid = COM_sanitizeID($pid);
@@ -259,6 +260,8 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     $num_questions_exist = 0;
     for ($i = 0; $i < $num_questions; $i++) {
         $Q[$i] = COM_stripslashes($Q[$i]);
+        $Q[$i] = COM_checkHTML($Q[$i]);
+
         if (strlen($Q[$i]) > 0) { // only insert questions that exist
             $num_questions_exist++;
             
@@ -270,6 +273,10 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
             $num_answers = count($A[$i]);
             for ($j = 0; $j < $num_answers; $j++) {
                 $A[$i][$j] = COM_stripslashes($A[$i][$j]);
+                $A[$i][$j] = COM_checkHTML($A[$i][$j]);
+                $R[$i][$j] = COM_stripslashes($R[$i][$j]);
+                $R[$i][$j] = COM_checkHTML($R[$i][$j]);
+
                 if (strlen($A[$i][$j]) > 0) { // only insert answers etc that exist
                     if (!is_numeric($V[$i][$j])) {
                         $V[$i][$j] = "0";
