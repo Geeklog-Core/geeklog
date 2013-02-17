@@ -1354,4 +1354,18 @@ function INST_guessCookiePath($site_url)
     return $retval;
 }
 
+/**
+* Returns a cleaned string
+*
+* @param   string  $str
+* @return  string
+*/
+function INST_cleanString($str)
+{
+    $str = preg_replace('/[[:cntrl:]]/', '', $str);
+    $str = strip_tags($str);
+
+    return $str;
+}
+
 ?>

@@ -497,14 +497,18 @@ function INST_installEngine($install_type, $install_step)
                         INST_personalizeAdminAccount($site_mail, $site_url);
 
                         // Insert the form data into the conf_values table
+                        $site_name   = urldecode($site_name);
+                        $site_name   = INST_cleanString($site_name);
+                        $site_slogan = urldecode($site_slogan);
+                        $site_slogan = INST_cleanString($site_slogan);
 
                         require_once $_CONF['path_system'] . 'classes/config.class.php';
                         require_once 'config-install.php';
                         install_config();
 
                         $config = config::get_instance();
-                        $config->set('site_name', urldecode($site_name));
-                        $config->set('site_slogan', urldecode($site_slogan));
+                        $config->set('site_name', $site_name);
+                        $config->set('site_slogan', $site_slogan);
                         $config->set('site_url', urldecode($site_url));
                         $config->set('site_admin_url', urldecode($site_admin_url));
                         $config->set('site_mail', urldecode($site_mail));
@@ -600,10 +604,15 @@ function INST_installEngine($install_type, $install_step)
                         $site_mail      = isset($_POST['site_mail']) ? $_POST['site_mail'] : (isset($_GET['site_mail']) ? $_GET['site_mail'] : '') ;
                         $noreply_mail   = isset($_POST['noreply_mail']) ? $_POST['noreply_mail'] : (isset($_GET['noreply_mail']) ? $_GET['noreply_mail'] : '') ;
 
+                        $site_name   = urldecode($site_name);
+                        $site_name   = INST_cleanString($site_name);
+                        $site_slogan = urldecode($site_slogan);
+                        $site_slogan = INST_cleanString($site_slogan);
+
                         require_once $_CONF['path_system'] . 'classes/config.class.php';
                         $config = config::get_instance();
-                        $config->set('site_name', urldecode($site_name));
-                        $config->set('site_slogan', urldecode($site_slogan));
+                        $config->set('site_name', $site_name);
+                        $config->set('site_slogan', $site_slogan);
                         $config->set('site_url', urldecode($site_url));
                         $config->set('site_admin_url', urldecode($site_admin_url));
                         $config->set('site_mail', urldecode($site_mail));
