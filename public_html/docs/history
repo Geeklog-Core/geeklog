@@ -11,6 +11,8 @@ This release addresses the following security issues:
   (TWSL2013-001).
 
 Not security-related:
+- Illegal string offset 'phantom' when using Batch Admin mode (patch #0001558)
+  [Dirk]
 - Optimize 2.0.0 MySQL Topic Upgrade Script (feature request #0001544) [Tom]
 - Introduce DB_escapeString (feature request #0001146) [Kenji]
 - For articles with 2 or more topics the incorrect topic icon may display in the
