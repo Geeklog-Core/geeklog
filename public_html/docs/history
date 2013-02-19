@@ -1,5 +1,45 @@
 Geeklog History/Changes:
 
+Feb 19, 2013 (2.0.0rc2)
+------------
+
+- Optimize 2.0.0 MySQL Topic Upgrade Script (feature request #0001544) [Tom]
+- Introduce DB_escapeString (feature request #0001146) [Kenji]
+- For articles with 2 or more topics the incorrect topic icon may display in the
+  parent topic (bug #0001509) [Tom]
+- Topic selection is lost when trying to contribute a story as a Story Admin
+  (bug #0001486) [Tom]
+- Staticpage Topic Selection (bug #0001462) [Tom]
+- Span-X plugin: Spam Number of Links (SNL) True, Posted many links users are
+  blocked. (bug #0001516) [Tom]
+- Delete account oauth (bug #0001417) [Tom]
+- Can save a staticpage with Add To Menu enabled but no label (bug #0001542)
+  [Tom]
+- Space as decimal separator (bug #0001537) [Tom]
+- Replying to a Comment and inputing the incorrect captcha code results in page
+  in a page (bug #0001527) [Tom]
+- Deleting a Comment with a Notification fails (bug #0001529) [Tom]
+- CC setting should be an admin option (patch #0001259) [Tom]
+- Date validation in advanced search (patch #0000853) [Tom]
+- Can not handle Breadcrumbs in custom function mytheme_createHTMLDocument (bug
+  #0001531) [Tom]
+- Update Topic Control Description in Admin Article Editor about Inherit
+  (feature request #0001489) [Tom]
+- Clicking on a user name causes a fatal error (bug #0001514) [Tom]
+- Can't edit plugin comment submissions (bug #0001511) [Tom]
+- User comment submission does not get deleted. (bug #0001512) [Tom]
+- nl2br breaks the HTML compliance (patch #0001141) [Tom]
+- Spam-X SFS default change to OFF (feature request #0001488) [Tom]
+- Twitter OAuth login Authentication error (bug #0001497) [Tom]
+- Trackback SQL Error (bug #0001498) [Tom]
+- Articles Feeds should only be updated when needed (feature request #0001501)
+  [Tom]
+- JavaScript error in admin/story.php (bug #0001496) [Yoshinori]
+- Default Topic for Article with Multiple Topics is always Used for Anonymous
+  Users (bug #0001487) [Tom]
+- Add HTML 5 DOCTYPE (feature request #0001426) [Yoshinori]
+
+
 Dec 30, 2012 (1.8.2)
 ------------
 
