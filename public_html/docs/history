@@ -3,6 +3,14 @@ Geeklog History/Changes:
 Feb 19, 2013 (2.0.0rc2)
 ------------
 
+This release addresses the following security issues:
+- High-Tech Bridge Security Research Lab reported an XSS in the calendar_type
+  parameter in the Calendar plugin (HTB23143).
+- Trustwave Spiderlabs reported XSS in the install script, the Configuration,
+  as well as in the Admin interfaces for the Polls plugin and the Topic editor
+  (TWSL2013-001).
+
+Not security-related:
 - Optimize 2.0.0 MySQL Topic Upgrade Script (feature request #0001544) [Tom]
 - Introduce DB_escapeString (feature request #0001146) [Kenji]
 - For articles with 2 or more topics the incorrect topic icon may display in the
