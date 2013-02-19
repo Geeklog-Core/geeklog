@@ -743,19 +743,27 @@ function batchdelete()
     $usr_type = '';
     if (isset($_REQUEST['usr_type'])) {
         $usr_type = COM_applyFilter($_REQUEST['usr_type']);
-    } else {
+    }
+    if (! in_array($usr_type, array('phantom', 'sort', 'old', 'recent'))) {
         $usr_type = 'phantom';
     }
+
     $usr_time_arr = array();
+    // default values, in months
+    $usr_time_arr['phantom'] =  2;
+    $usr_time_arr['short']   =  6;
+    $usr_time_arr['old']     = 24;
+    $usr_time_arr['recent']  =  1;
+
     $usr_time = '';
     if (isset($_REQUEST['usr_time'])) {
-        $usr_time_arr = $_REQUEST['usr_time'];
-    } else {
-        // default values, in months
-        $usr_time_arr['phantom'] =  2;
-        $usr_time_arr['short']   =  6;
-        $usr_time_arr['old']     = 24;
-        $usr_time_arr['recent']  =  1;
+        // 'usr_time' is an array when clicking "Update List" but a single
+        // value when actually deleting users
+        if (is_array($_REQUEST['usr_time'])) {
+            $usr_time_arr = $_REQUEST['usr_time'];
+        } else {
+            $usr_time_arr[$usr_type] = (int) $_REQUEST['usr_time'];
+        }
     }
     $usr_time = $usr_time_arr[$usr_type];
 
