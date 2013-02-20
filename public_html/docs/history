@@ -11,6 +11,8 @@ This release addresses the following security issues:
   (TWSL2013-001).
 
 Not security-related:
+- jQuery updated to version 1.9.0 [Tom] [Kenji]
+- jQuery UI updated to version 1.10.0 [Tom] [Kenji]
 - Illegal string offset 'phantom' when using Batch Admin mode (patch #0001558)
   [Dirk]
 - Optimize 2.0.0 MySQL Topic Upgrade Script (feature request #0001544) [Tom]
