@@ -8420,9 +8420,9 @@ function COM_nl2br($string)
         define('XHTML', '');
     }
 
-    $tag = '<br' . XHTML . '>';
+    $replace = '<br' . XHTML . '>';
     $find = array("\r\n", "\n\r", "\r", "\n");
-    $replace = array($tag."\r\n", $tag."\n\r", $tag."\r", $tag."\n");
+
     return str_replace($find, $replace, $string);
 }
 
