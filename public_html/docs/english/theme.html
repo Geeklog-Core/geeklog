@@ -200,10 +200,37 @@ CSS) or move the link around.</li>
 featured and archived stories.</li>
 </ol>
 
+<h2><a name="changes">Theme changes in Geeklog 2.0.0</a></h2>
+
+<p>As of Geeklog 2.0.0 there are now 2 theme engines in Geeklog. Currently the themes Demin and Modern Curve use the 2.0.0 theme engine. The Professional and Professional CSS themes use the 1.8.1 engine. 
+The 1.8.1 theme engine will eventually be removed from Geeklog so if you are developing a new theme it is best to use the new engine. To find out more about this please visit the Geeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide">Theme Developers Guide</a>.</p>
+
+<h3>General Changes</h3>
+<ul>
+<li>HTML 5 DOCTYPE added.</li>
+<li>A minimal theme API is now available. It can be used to override defaults, load CSS files and load JavaScript files. See the Geeklog Wiki for more details. New functions are  function theme_config_mytheme(), function theme_css_mytheme(), function theme_js_libs_mytheme(), function theme_js_files_mytheme(), and function theme_init_mytheme().</li>
+<li>New breadcrumbs folder. New files in folder include  breadcrumbs.html, breadcrumb_root.thtml, breadcrumb.thtml, breadcrumb_nolink.thtml, and breadcrumb_child.thtml.</li>
+<li>To display breadcrumbs for topics, articles and staticpages add {breadcrumb_trail} template variable to your header.thtml.</li>
+<li>New file edit_topics.thtml for topic selection found in /admin/common folder.</li>
+<li>For topic selection control you need to add the template variable {topic_selection} to the files /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/story/storyeditor.thtml, /admin/story/ storyeditor_advenced.thtml, /submit/submitstory.thtml, and /submit/submitstory_advanced.thtml.</li>
+<li>Comments on same page changed a lot of things. Copy paste the complete comment folder and custom the commentbar.thtml and comment.thtml files as necessary.</li>
+<li>New css for static pages, stories and blocks editors.</li>
+</ul>
+
+<h3>Theme Engine 2.0.0 Specific Changes</h3>
+<ul>
+<li>New template variable {layout_columns} sets the class of the body tag which is found in header.thtml. This is needed to set the number of Geeklog columns on a given page.</li>
+<li>New Javscript file /javascript/fix_html.js required when plugin doesn't support the 2.0.0 theme engine.</li>
+<li>Javascript code that runs <code>FixHTML('leftblocks', 'centerblocks', 'rightblocks');</code> needs to be added to the footer.thtml file.</li>
+</ul>
+
+<h3>Theme Engine 1.8.1 Specific Changes</h3>
+<ul>
+<li>None.</li>
+</ul>
+
 
 <h2><a name="changes">Theme changes in Geeklog 1.8.0</a></h2>
-
-<p><i>(to be grouped and sorted)</i></p>
 
 <ul>
 <li>Added a new variable <code>{plg_footercode}</code> to <tt>footer.thtml</tt>.
