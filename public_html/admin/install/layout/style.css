@@ -473,7 +473,7 @@ code {
   border: 0px;
   color: white;
   text-align: center;
-  -moz-border-radius: 5px;
+  border-radius: 5px;
   -webkit-border-radius: 5px;
 }
 
