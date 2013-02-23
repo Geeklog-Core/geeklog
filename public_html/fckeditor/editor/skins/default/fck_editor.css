@@ -35,7 +35,6 @@ body
 #xEditingArea
 {
     border: #696969 1px solid;
-    font-size: 13px;
 }
 
 .SourceField
@@ -43,17 +42,6 @@ body
     padding: 5px;
     margin: 0px;
     font-family: Monospace;
-    font-size: 13px;
-}
-@media screen and (max-device-width: 480px) {
-	#xEditingArea
-	{
-	    font-size: 16px;
-	}
-	.SourceField
-	{
-	    font-size: 16px;
-	}
 }
 
 /*
@@ -474,4 +462,3 @@ body
     float: left;
     background-color: #c4cdd6;
 }
-
