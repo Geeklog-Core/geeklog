@@ -1,6 +1,6 @@
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
 // | javascript functions to support the online configuration manager          |
 // |                                                                           |
@@ -117,7 +117,7 @@ $(function() {
                     });
                 }
                 
-//                return false;
+                return false;
             } else {
                 $('#tabs-dropdown').hide().parent().removeClass('ui-tabs-selected ui-state-active');
                 $('.ui-tabs-panel').removeClass('ui-tabs-hide');
@@ -256,6 +256,19 @@ $(function() {
         var targetParent = target.parent();
         
         if ($('#tabs-dropdown').length > 0) {
+            if ((target.attr('class') === 'ui-tabs-anchor') && (target.attr('href') !== '#tab-dropdown')) {
+                var idx = tabs.tabs('option', 'active');
+                var dummy = idx + ((idx == 0) ? 1 : -1); // dummy is any value not idx
+                tabs.tabs("option", "active", dummy);
+                tabs.tabs("option", "active", idx);
+
+                $("#tabs-dropdown > li").each(function() {
+                    var href = $('a', this).attr('href');
+                    $(href).addClass('ui-tabs-hide');
+                });
+                return false;
+            }
+
             if ( target.is('a') && (target.attr('href') === '#tab-dropdown')) {
 //                $('#tabs-dropdown').toggle();
                 e.preventDefault();
@@ -268,6 +281,7 @@ $(function() {
                 return dropDownHandler(e);
             }
         }
+
         $('#tabs-dropdown').hide();
         $('.config_name', tabs).removeClass('active-config');
         
@@ -375,8 +389,9 @@ $(function() {
      */
     function selectTabInHiddenTabs(href) {
         $('.ui-tabs-nav li.ui-state-default').each(function() {
-            $(this).removeClass('ui-tabs-selected');
-            $(this).removeClass('ui-state-active');
+            $(this).removeClass('ui-state-active ui-tabs-active');
+//            $(this).attr('aria-selected', false);
+//            $(this).attr('tabindex', -1);
         });
         $('.ui-tabs-panel', tabs).addClass('ui-tabs-hide');
         href = href.substring(href.lastIndexOf('#'));
