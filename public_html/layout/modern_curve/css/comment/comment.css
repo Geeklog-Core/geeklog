@@ -30,7 +30,7 @@ div.comments p.pagenav {
 
 
 /*--------------------------------------
-  Comment バー
+  Comment Bar
 --------------------------------------*/
 
 /* Comment Information (Story Title | Comment Number | Username) */
@@ -194,14 +194,14 @@ div.comments div.block-comment-content ul.status li.title {
   background: #F7F7F7;
 }
 
-/* Comment Auther */
+/* Comment Author */
 div.comments div.block-comment-content ul.status li.author {
   display: block;
   margin: 0 0 1em 0;
   padding: 0;
 }
 
-/* Comment 本文 */
+/* Comment Body */
 div.comments div.block-comment-content div.comment {
   margin: 0 0 1em 0;
   padding: 0;
@@ -227,14 +227,14 @@ div.comments div.block-comment-content ul.navi li {
   padding: 0;
 }
 
-/* 永久Links */
+/* Perm Links */
 div.comments div.block-comment-content ul.navi li.permlink {
   margin: 0 2px 0 0;
 }
 
 
 /*--------------------------------------
-  迷惑報告Form 
+  Report Form
 --------------------------------------*/
 
 /* Comment  */

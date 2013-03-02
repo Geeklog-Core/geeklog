@@ -21,7 +21,7 @@ form#admin-edituser dl dd.user_photo {
   padding: 0;
 }
 
-/* セキュリティGroup */
+/* Security Group */
 form#admin-edituser dl dd p.groupinstructions {
   margin: 0 0 0.5em 0;
 }

@@ -109,8 +109,8 @@ textarea {
   -ms-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  font-family: arial,verdana,tahoma,helvetica,sans-serif;
-/*    font-family: "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3", Osaka, "ＭＳ Ｐゴシック", Verdana, Arial, Helvetica, sans-serif;  */
+/* font-family: arial,verdana,tahoma,helvetica,sans-serif; */
+  font-family: Verdana, Arial, Meiryo, "Hiragino Kaku Gothic Pro", sans-serif;
 }
 /* } Mac */
 
