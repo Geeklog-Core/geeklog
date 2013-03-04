@@ -2,7 +2,7 @@
 <!-- comment/startcomment.thtml { -->
 
 <div id="{area_id}">
-  <div class="comments">
+  <div id="comments" class="comments">
     {commentbar}
     {comments}
 
