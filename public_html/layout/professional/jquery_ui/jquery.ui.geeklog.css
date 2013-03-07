@@ -82,6 +82,7 @@
     background: url("images/ui-icons_cd0a0a_256x240.png") 0 -144px;
 }
 .saved_message {
+    margin-top:5px;
     margin-bottom:5px;
     padding:10px 5px 8px 36px;
     background: #C6F9C9 url("../images/success.png") 10px 50% no-repeat;
@@ -100,4 +101,9 @@
 }
 .error_validation a {
     color: #FFFFBB;
+}
+
+/* Layout helpers */
+.ui-helper-clearfix:before, .ui-helper-clearfix:after {
+    display: block;
 }
