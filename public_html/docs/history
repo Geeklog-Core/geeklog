@@ -1,5 +1,26 @@
 Geeklog History/Changes:
 
+Mar 8, 2013 (2.0.0rc3)
+------------
+
+- jQuery updated to version 1.9.1 [Tom]
+- jQuery UI updated to version 1.10.1 [Tom]
+- Fixed "Find all postings by ..." on user profile page when search doesn't 
+  allow empty query string (bug #0001565) [Tom]
+- Add comments tag to Modern Curve theme to fix jumping to comments section of 
+  article page (bug #0001563) [Tom]
+- Added index.html to tooltips directory of modern_curve theme (bug #0001562) 
+  [Kenji]
+- Removed Japanese characters in modern_curve CSS files (bug #0001561, patch 
+  provided by taca) [Kenji]
+- Fixed a bug "More.." tab in the configuration UI does not work correctly 
+  (bug #0001560) [Dengen]
+- Updated theme changes for Geeklog 2.0.0 in docs [Tom]
+- Update FCKeditor to version 2.6.9 [Dirk]
+- Fixed COM_nl2br() that replaces newlines with a line break tag (bug #0001141) 
+  [Tom]
+
+
 Feb 19, 2013 (2.0.0rc2)
 ------------
 
