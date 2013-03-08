@@ -22,11 +22,11 @@
             </tr>
             <tr{hide_meta}>
                 <td valign="top" align="right">{lang_metadescription}:</td>
-                <td><textarea name="meta_description" style="width:100%" cols="45" rows="2">{meta_description}</textarea></td>
+                <td><textarea name="meta_description" style="width:98%" cols="45" rows="2">{meta_description}</textarea></td>
             </tr>
             <tr{hide_meta}>
                 <td valign="top" align="right">{lang_metakeywords}:</td>
-                <td><textarea name="meta_keywords" style="width:100%" cols="45" rows="2">{meta_keywords}</textarea></td>
+                <td><textarea name="meta_keywords" style="width:98%" cols="45" rows="2">{meta_keywords}</textarea></td>
             </tr>            
             <tr>
                 <td class="alignright" valign="top">{lang_topic}:</td>
@@ -53,18 +53,18 @@
             </tr>
         </table>
         <!-- Basic textarea field - no editor -->
-        <div id="text_editor" style="width:100%; margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_texteditor};">
+        <div id="text_editor" style="margin-top:10px; padding:5px 0 5px 10px; border:1px solid #ECE9D8;display:{show_texteditor};">
             {lang_introtext}:
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('introtext','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('introtext','smaller');"{xhtml}>
-            <textarea id="introtext"  style="width:100%; padding:5px 10px 5px 10px;" name="introtext" cols="45" rows="14">{story_introtext}</textarea>
+            <textarea id="introtext" style="padding:5px 10px 5px 10px; width:95%;" name="introtext" cols="45" rows="14">{story_introtext}</textarea>
             {lang_bodytext}:
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeTextAreaSize('bodytext','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeTextAreaSize('bodytext','smaller');"{xhtml}>
-            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:100%;" name="bodytext" cols="45" rows="14">{story_bodytext}</textarea>
+            <textarea id="bodytext" style="padding:5px 10px 5px 10px; width:95%;" name="bodytext" cols="45" rows="14">{story_bodytext}</textarea>
         </div>
         <!-- HTML Editor -->
-        <div id="html_editor" style="margin-top:10px; padding-left:10px; border:1px solid #ECE9D8;display:{show_htmleditor};">
+        <div id="html_editor" style="margin-top:10px; padding:5px; border:1px solid #ECE9D8;display:{show_htmleditor};">
             {lang_introtext}:
             <img src="{layout_url}/images/expand.png" title="{lang_expandhelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','larger');"{xhtml}>
             <img src="{layout_url}/images/collapse.png" title="{lang_reducehelp}" alt="" onclick="changeHTMLTextAreaSize('introhtml','smaller');"{xhtml}>
