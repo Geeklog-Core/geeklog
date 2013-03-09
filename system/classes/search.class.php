@@ -430,10 +430,10 @@ class Search {
             return SEC_loginRequiredForm();
         }
 
-        // Make sure there is a query string or author not all (to allow finding all posts of author)
-        // Full text searches have a minimum word length of 3 by default
-        if ((trim($this->_query) === '' && $this->_author === '') ||
-                (empty($this->_query) && empty($this->_author) && empty($this->_topic)) ||
+        // When full text searches are enabled, make sure the min. query length
+        // is 3 characters. Otherwise, make sure at least one of query string,
+        // author, or topic is not empty.
+        if ((empty($this->_query) && empty($this->_author) && empty($this->_topic)) ||
                 ($_CONF['search_use_fulltext'] && strlen($this->_query) < 3))
         {
             $retval = '<p>' . $LANG09[41] . '</p>' . LB;
