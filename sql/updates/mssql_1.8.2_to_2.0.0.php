@@ -110,10 +110,13 @@ function update_ConfValuesFor200()
     // Comments    
     $c->add('comment_on_same_page',0,'select',4,21,0, 1690, TRUE, $me, 21);
     $c->add('show_comments_at_replying',0,'select',4,21,0, 1691, TRUE, $me, 21);
-    
+
     // Microsummary
     $c->del('microsummary_short', 'Core');
-    
+
+    // removed in Geeklog 1.6.0 but may still be in older databases
+    $c->del('search_no_data', 'Core');
+
     // Breadcrumb Root Site Name
     $c->add('breadcrumb_root_site_name', 0, 'select', 7, 45, 0, 2040, TRUE, $me, 45);    
     
