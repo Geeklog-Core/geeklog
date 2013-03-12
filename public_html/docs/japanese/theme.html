@@ -25,7 +25,7 @@
 
 <p><kbd>cp -R /path/to/geeklog/public_html/layout/professional /path/to/geeklog/public_html/layout/自分のテーマ名（スペースを含んではいけません。）</kbd></p>
 
-<p>新しくできたディレクトリ（MS Windowsの場合は「フォルダ」。以下、同様。）に移動します。</p>
+<p>新しくできたディレクトリ（MS Windowsの場合は「フォルダー」。以下、同様。）に移動します。</p>
 
 <p><kbd>cd /path/to/geeklog/public_html/layout/自分のテーマ名（スペースを含んではいけません。）</kbd></p>
 
@@ -50,11 +50,11 @@
 
 <h3><a name="how-themes-work">テーマはどのように機能するか</a></h3>
 
-<p>テーマを用いて表示するとき、Geeklogはサイトのヘッダになる <tt>header.thtml</tt> から始め、次に左ブロック(<code>{left_blocks}</code> テンプレート変数と <tt>leftblocks.thtml</tt> テンプレートファイルを探しましょう)を処理します。サイトの中央部分は記事で構成されますが、普通の記事の場合は <tt>storytext.thtml</tt> と <tt>storybodytext.thtml</tt> テンプレートファイル、注目記事の場合は <tt>featuredstorytext.thtml</tt> と <tt>featuredstorybodytext.thtml</tt> テンプレートファイルが使用されます。最後に、<tt>footer.thtml</tt> テンプレートファイルを使用して、右ブロック（<code>{right_blocks}</code> テンプレート変数と <tt>right_blocks.thtml</tt> テンプレートファイルを探しましょう）とサイトのフッタを表示します。ブロック自体は <tt>blockheader.thtml</tt> と <tt>blockfooter.thtml</tt> テンプレートファイルで構成されています。</p>
+<p>テーマを用いて表示するとき、Geeklogはサイトのヘッダーになる <tt>header.thtml</tt> から始め、次に左ブロック(<code>{left_blocks}</code> テンプレート変数と <tt>leftblocks.thtml</tt> テンプレートファイルを探しましょう)を処理します。サイトの中央部分は記事で構成されますが、普通の記事の場合は <tt>storytext.thtml</tt> と <tt>storybodytext.thtml</tt> テンプレートファイル、注目記事の場合は <tt>featuredstorytext.thtml</tt> と <tt>featuredstorybodytext.thtml</tt> テンプレートファイルが使用されます。最後に、<tt>footer.thtml</tt> テンプレートファイルを使用して、右ブロック（<code>{right_blocks}</code> テンプレート変数と <tt>right_blocks.thtml</tt> テンプレートファイルを探しましょう）とサイトのフッターを表示します。ブロック自体は <tt>blockheader.thtml</tt> と <tt>blockfooter.thtml</tt> テンプレートファイルで構成されています。</p>
 
-<p>この説明はGeeklogのメインページと記事がどのように作成されるかを述べただけです。Geeklogで見かける様々なエディタやリストだけでなく、カレンダプラグインなど、Geeklogのあらゆる部分を構成するために様々なテンプレートが存在しています。</p>
+<p>この説明はGeeklogのメインページと記事がどのように作成されるかを述べただけです。Geeklogで見かける様々なエディターやリストだけでなく、カレンダープラグインなど、Geeklogのあらゆる部分を構成するために様々なテンプレートが存在しています。</p>
 
-<p>どのテンプレートファイルがGeeklogのどの部分の表示に使用されているのかを説明する完全なリストは今のところ存在していません。とはいえ、たいていの場合は、テンプレートのあるディレクトリ名とファイル名を見れば、用途は明らかなはずです。Geeklogのある部分を表示しているテンプレートファイルが分からない場合は、URLを見るとよいでしょう。たとえば、ユーザのプロフィールを表示しているときなら、<tt>users.php</tt> というPHPのファイル名に気がつくでしょう。そのファイルをテキストエディタで開き、 <kbd>.thtml</kbd> を検索します。プロフィールの場合は、次の行が <code>function userprofile()</code> の中に見つかります。</p>
+<p>どのテンプレートファイルがGeeklogのどの部分の表示に使用されているのかを説明する完全なリストは今のところ存在していません。とはいえ、たいていの場合は、テンプレートのあるディレクトリ名とファイル名を見れば、用途は明らかなはずです。Geeklogのある部分を表示しているテンプレートファイルが分からない場合は、URLを見るとよいでしょう。たとえば、ユーザーのプロフィールを表示しているときなら、<tt>users.php</tt> というPHPのファイル名に気がつくでしょう。そのファイルをテキストエディターで開き、 <kbd>.thtml</kbd> を検索します。プロフィールの場合は、次の行が <code>function userprofile()</code> の中に見つかります。</p>
 <pre style="margin-left:4em;"><code>$user_templates = new Template ($_CONF['path_layout'] . 'users');
 $user_templates-&gt;set_file (array ('profile'=&gt;'profile.thtml', 'row'=&gt;'commentrow.thtml', 'strow'=&gt;'storyrow.thtml'));</code></pre>
 <p>PHPを理解していなくても、この部分で <tt>profile.thtml</tt>, <tt>commentrow.thtml</tt>, <tt>storyrow.thtml</tt> テンプレートファイルが使用されていることは分かるでしょう。最初の行を見れば、これらのテンプレートファイルがテーマディレクトリ内の <tt>users</tt> ディレクトリから読み込まれているのが分かります。</p>
@@ -71,8 +71,8 @@ $user_templates-&gt;set_file (array ('profile'=&gt;'profile.thtml', 'row'=&gt;'c
 
 <h3><a name="tips">ヒントと注意点</a></h3>
 
-<p><strong><a name="wysiwyg">テーマとWYSIWYGエディタ：</a></strong>
-Geeklogが使用するテンプレートファイルは完全なHTMLファイルではなく、断片に過ぎません。Geeklogはこの断片を組み合わせて適切なHTMLドキュメントを作成します。しかし、このため一部のWYSIWYG HTMLエディタが誤動作し、ファイルに不足しているHTML要素を勝手に追加して、Geeklogにとっては使い物にならなくしてしまうことがあります。<br>テーマの編集には、単純なテキストエディタを使用することをお勧めします。</p>
+<p><strong><a name="wysiwyg">テーマとWYSIWYGエディター：</a></strong>
+Geeklogが使用するテンプレートファイルは完全なHTMLファイルではなく、断片に過ぎません。Geeklogはこの断片を組み合わせて適切なHTMLドキュメントを作成します。しかし、このため一部のWYSIWYG HTMLエディターが誤動作し、ファイルに不足しているHTML要素を勝手に追加して、Geeklogにとっては使い物にならなくしてしまうことがあります。<br>テーマの編集には、単純なテキストエディターを使用することをお勧めします。</p>
 
 <p><strong><a name="xhtml">XHTML:</a></strong>
 Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも準拠したテーマを作成できます。
@@ -80,7 +80,7 @@ Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも
 </p>
 
 <p><strong><a name="php">テンプレートファイル中のPHP：</a></strong>
-テーマの<em>ヘッダ</em>、つまり、<tt>header.thtml</tt> の中ではPHPのコードを使用できます。カスタム関数を使用したいなら、テーマディレクトリ内の <tt>functions.php</tt> ファイル内で定義すればよいでしょう。</p>
+テーマの<em>ヘッダー</em>、つまり、<tt>header.thtml</tt> の中ではPHPのコードを使用できます。カスタム関数を使用したいなら、テーマディレクトリ内の <tt>functions.php</tt> ファイル内で定義すればよいでしょう。</p>
 
 <p><strong><a name="different-look">左右のブロックで見た目を変える：</a></strong>
 左右のブロックの外見を変えることができます。詳細は、<a href="http://www.geeklog.net/forum/viewtopic.php?showtopic=21070">Geeklogホームページのこの記事</a>を参照してください。</p>
@@ -90,12 +90,12 @@ Geeklog は XHTML準拠のサイトを作成できます。HTMLにもXHTMLにも
 <code>{answer_odd}</code> は回答ごとに 0 から 1、1 から 0 と変わるので、<tt>bar{answer_odd}.gif</tt> と記述すると、結果として奇数番目の回答は <tt>bar0.gif</tt> 、偶数番目の回答は <tt>bar1.gif</tt> となります。</p>
 
 <p><strong><a name="left-blocks">右ブロック内で左ブロックを表示する：</a></strong>
-<code>$_CONF['left_blocks_in_footer']</code> はかなり変わったオプションです。このオプションを使用すると、サイトのフッタ（つまり <tt>footer.thtml</tt>）内で <code>{left_blocks}</code> テンプレート変数が使用できるようになる一方で、ヘッダ（<tt>header.thtml</tt>）内では <code>{left_blocks}</code> テンプレート変数が使用できなくなります。<br>
+<code>$_CONF['left_blocks_in_footer']</code> はかなり変わったオプションです。このオプションを使用すると、サイトのフッター（つまり <tt>footer.thtml</tt>）内で <code>{left_blocks}</code> テンプレート変数が使用できるようになる一方で、ヘッダー（<tt>header.thtml</tt>）内では <code>{left_blocks}</code> テンプレート変数が使用できなくなります。<br>
 これを利用すると、2列レイアウト（1列は右ブロック用、もう1列はコンテンツ用）を実現できます。単にすべてのブロックを右ブロックに移動しただけでは期待した動作にはなりません。普通、左ブロックしか表示しないようなページ（たとえば、<tt>article.php</tt> や管理者用のページ）では、<em>全くブロックが表示されない</em> からです。 <code>$_CONF['left_blocks_in_footer'] = 1</code> にすると、この動作が修正され、システム内部では依然として<strong>左</strong>ブロックとして扱われていても、実際には<strong>右</strong>ブロックに表示されるようになります。<br>
-テーマの <tt>header.thtml</tt>, <tt>footer.thtml</tt>, <tt>leftblocks.thtml</tt> はたぶん、修正する必要があるでしょう。ですから、<tt>left_blocks_in_footer</tt> オプションはコンフィギュレーションでは設定できず、テーマの <tt>functions.php</tt> 内で設定すべきです。そうすることで、たとえば、ユーザに「普通の」テーマと右ブロックテーマを選択する余地を与えることさえできるようにります。</p>
+テーマの <tt>header.thtml</tt>, <tt>footer.thtml</tt>, <tt>leftblocks.thtml</tt> はたぶん、修正する必要があるでしょう。ですから、<tt>left_blocks_in_footer</tt> オプションはコンフィギュレーションでは設定できず、テーマの <tt>functions.php</tt> 内で設定すべきです。そうすることで、たとえば、ユーザーに「普通の」テーマと右ブロックテーマを選択する余地を与えることさえできるようにります。</p>
 
 <p><strong><a name="error-message">エラーメッセージ：</a></strong>
-Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユーザにどのようなHTMLを表示するか制御できるようになりました。好みのHTMLを表示するには、<tt>lib-custom.php</tt> 内の <code>CUSTOM_handleError</code> 関数を変更する必要があります。</p>
+Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユーザーにどのようなHTMLを表示するか制御できるようになりました。好みのHTMLを表示するには、<tt>lib-custom.php</tt> 内の <code>CUSTOM_handleError</code> 関数を変更する必要があります。</p>
 
 <p><strong><a name="permalink">記事にパーマネントリンク(permalink)を追加する：</a></strong>
 多くのWebサイトでは、パーマネントリンク、つまり記事に対応する永続的なURLを提供しています。Geeklogでデフォルトの Professional テーマでは、記事の見出しが既にその機能を果たしています。つまり、記事の永続的なURLへのリンクとなっています（article.phpを指しています）。しかし、この方法はあまり目につかないし、訪問者がページのどこかにパーマネントリンクがあるのを期待することが多いため、自分でパーマネントリンクを追加する方法を次に示します。</p>
@@ -109,24 +109,49 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 </ol>
 
 
+<h2><a name="changes">Theme changes in Geeklog 2.0.0</a></h2>
+
+<p>Geeklog 2.0.0には2つのテーマエンジンが存在します。現在、DeminとModern Curveテーマは2.0.0のテーマエンジンを使っています。Professional および Professional CSS テーマは1.8.1テーマエンジンを使っています。 
+1.8.1テーマエンジンはそのうちGeeklogからなくなります。そのため、テーマを開発するなら新しいテーマエンジンを使ってください。くわしくはGeeklog Wiki <a href="http://wiki.geeklog.net/index.php/Theme_Developers_Guide">Theme Developers Guide</a>を。</p>
+
+<h3>General Changes</h3>
+<ul>
+<li>HTML 5 DOCTYPE が追加されました。</li>
+<li>最小のテーマAPIが利用可能になりました。それはデフォルトを無視するために使用することができます、CSSファイルとJavaScriptファイルのロード、くわしくはGeeklog Wikiを。新しい機能は、function theme_config_mytheme()、function theme_css_mytheme()、 function theme_js_libs_mytheme()、function theme_js_files_mytheme()とfunction theme_init_mytheme()です。</li>
+<li>新しいパンくず用フォルダには、breadcrumbs.html, breadcrumb_root.thtml, breadcrumb.thtml, breadcrumb_nolink.thtml, と breadcrumb_child.thtmlがあります.</li>
+<li>話題、記事と静的ページのパンくずリスト表示には、テンプレート変数 {breadcrumb_trail} をheader.thtmlに追加します。</li>
+<li>話題選択のための新しいファイルedit_topics.thtmlが/admin/commonに追加されました。</li>
+<li>topicoption.thtmlとtopicoption_off.thtml がテーマのrootフォルダに追加されました。</li>
+<li>adminフォルダの話題フォルダの入れ替え。たくさんのファイルに変更があります。</li>  
+<li>話題選択のために、テーマ変数 {topic_selection} が、ファイル /admin/block/blockeditor.thtml, /admin/block/defaultblockeditor.thtml, /admin/story/storyeditor.thtml, /admin/story/ storyeditor_advenced.thtml, /submit/submitstory.thtml, と /submit/submitstory_advanced.thtmlに追加されました。</li>
+<li>同じページでコメントする機能で多くの変更があります。すべてのコメントフォルダとcommentbar.thtml と comment.thtmlを必要に応じてカスタマイズします。</li>
+<li>静的ページとブロック編集のための新しいCSSが追加されました。</li>
+</ul>
+
+<h3>Theme Engine 2.0.0 Specific Changes</h3>
+<ul>
+<li>header.thtmlのbody のclassに新しいテンプレート変数 {layout_columns}が追加されました。これはGeeklogのカラム数の指定のためのものです。</li>
+<li>新しいJavscriptファイル /javascript/fix_html.jsは、プラグインが2.0.0テーマエンジンをサポートしていない場合に必要になります。</li>
+<li>Javascript code <code>FixHTML('leftblocks', 'centerblocks', 'rightblocks');</code> はfooter.thtml ファイルに必要になりました。</li>
+</ul>
+
+<h3>Theme Engine 1.8.1 Specific Changes</h3>
+<ul>
+<li>なし。</li>
+</ul>
+
+
 <h2><a name="changes">Theme changes in Geeklog 1.8.0</a></h2>
 
-<p><i>(to be grouped and sorted)</i></p>
-
 <ul>
-<li>Added a new variable <code>{plg_footercode}</code> to <tt>footer.thtml</tt>.
-    Allows for adding code, e.g. JavaScript code, to the end of a page.</li>
-<li>Added a robots meta tag to the printable story page,
-    <tt>article/printable.thtml</tt>, so that it isn't indexed by search
-    engines.</li>
-<li>Added a robots meta tag to the printable Static Pages page,
-    <tt>templates/printable.thtml</tt>, so that it isn't indexed by search
-    engines.</li>
-<li>Added a new <tt>tooltips</tt> directory that contains templates for various
-    forms of tooltips (used e.g. for displaying autotag descriptions). Also
-    required some changes in the <code>tooltip</code> classes and introduced
-    new classes (<tt>classic</tt>, <tt>help</tt>, etc.) in the stylesheet,
-    <tt>style.css</tt>.</li>
+<li>新たにテーマ変数 <code>{plg_footercode}</code> が <tt>footer.thtml</tt>に追加されました。
+    これにより追加コード、たとえば JavaScriptコードがページの終わりに追加されます。</li>
+<li>検索エンジン向けにメタタグが記事の印刷用ページ<tt>article/printable.thtml</tt>に追加されました。
+    これにより検索エンジンにクロールされないようになりました。</li>
+<li>検索エンジン向けにメタタグが静的ページの印刷用ページ
+    <tt>templates/printable.thtml</tt>に追加されましたこれにより検索エンジンにクロールされないようになりました。</li>
+<li>新たに様々な tooltips向けのテンプレートを含む<tt>tooltips</tt>ディレクトリ(自動タグの説明などで活用)が提供されました。
+    スタイルシート<tt>style.css</tt>の<code>tooltip</code>クラスとあたらしいクラスに、いくつかの変更が必要です (<tt>classic</tt>, <tt>help</tt>, etc.) </li>
 </ul>
 
 
@@ -135,7 +160,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <h3>Admin templates</h3>
 <ul>
 <li>グループ管理画面で、<code>chk_grpdefault</code> と <code>chk_applydefault</code>
-    のチェックボックスが<tt>admin/group/groupeditor.thtml</tt>にありますが、'登録済みユーザアカウントにデフォルトグループを追加する'は、 '新規登録ユーザのデフォルトグループをチェック'のチェックなしには選択できないようにしました。 (<tt>javascript/common.js</tt>内の追加されたJavaScriptによって実行されます).</li>
+    のチェックボックスが<tt>admin/group/groupeditor.thtml</tt>にありますが、'登録済みユーザーアカウントにデフォルトグループを追加する'は、 '新規登録ユーザーのデフォルトグループをチェック'のチェックなしには選択できないようにしました。 (<tt>javascript/common.js</tt>内の追加されたJavaScriptによって実行されます).</li>
 </ul>
 
 <h3>その他の変更</h3>
@@ -153,17 +178,17 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 
 <h3>Admin templates</h3>
 <ul>
-<li>話題エディタテンプレート(<tt>admin/topic/topiceditor.thtml</tt>)に、
+<li>話題エディターテンプレート(<tt>admin/topic/topiceditor.thtml</tt>)に、
     メタタグサポートが無効の際にメタディスクリプションとメタキーワードの
     テキスト入力フィールドを隠すためのテーマ変数 <code>{hide_meta}</code>
     を追加しました。</li>
-<li>話題エディタテンプレート<tt>admin/topic/topiceditor.thtml</tt>に、
+<li>話題エディターテンプレート<tt>admin/topic/topiceditor.thtml</tt>に、
     最大画素数、話題アイコンの最大ファイルサイズ、縮小されるかどうかを表示する
     テーマ変数 <code>{icon_max_dimensions}</code>を追加しました。</li>
-<li>話題エディタテンプレート<tt>admin/topic/topiceditor.thtml</tt>に、
+<li>話題エディターテンプレート<tt>admin/topic/topiceditor.thtml</tt>に、
     話題IDの変更ができるようにするため、</li>hiddenフィールドの"<tt>old_tid</tt>"を
     追加しました。
-<li>記事エディタテンプレート<tt>admin/topic/storyeditor.thtml</tt> と
+<li>記事エディターテンプレート<tt>admin/topic/storyeditor.thtml</tt> と
     <tt>admin/topic/storyeditor_advanced.thtml</tt>に、メタタグが無効のとき、
     メタ description と メタ keywordsを隠すためのテーマ変数 
     <code>{hide_meta}</code> を新たに追加しました。</li>
@@ -181,7 +206,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     後に<code>{delete}</code> オプションを追加しました。
     これらは動的なドロップダウンメニュー（たとえば<code>$_CONF['menu_elements']</code>）の
     追加・削除に必要なものでした。</li>
-<li>グループエディタテンプレート <tt>admin/group/groupeditor.thtml</tt>で、
+<li>グループエディターテンプレート <tt>admin/group/groupeditor.thtml</tt>で、
     デフォルトグループの2つの新たなオプション (<tt>chk_grpdefault</tt> と 
     <tt>chk_applydefault</tt> チェックボックスと言語変数)を追加しました。</li>
 <li><tt>fieldhelp</tt>クラスに左右paddingを含めるようにしました。
@@ -201,19 +226,19 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     隠すCSSが付加されます（コメントが投稿された後にはこのCSSは付加されません）。
     変更したファイル：<tt>comment/commentform.thtml</tt>, <tt>comment/commentform_advanced.thtml</tt></li>
 <li>プロファイルテンプレート(<tt>users/profile.thtml</tt>)において、
-    「<i>ユーザ</i>のすべての投稿を探す」のリンクのURLの文字が短くなりました。
+    「<i>ユーザー</i>のすべての投稿を探す」のリンクのURLの文字が短くなりました。
     不要な検索パラメーターが含まれていたのを削除したためです。</li>
 <li><tt>loginform_openid.thtml</tt>にて、identity_urlの入力フィールド<code>id="identity_url"</code>が
     抜けていたのを修正しました。（&lt;label&gt;タグが示していたのは名前でなくIDだったため）。</li>
 <li><tt>topicoption.thtml</tt>テンプレートファイルにて、新変数<tt>{option_attributes}</tt>が
     追加されました。現状では話題ブロックで Home へのリンクアトリビュート値
     <code>rel="home"</code>を追加するのに使われているのみです。</li>
-<li>「マイアカウント」における新オプションにて、ユーザーがアドバンスエディタを
+<li>「マイアカウント」における新オプションにて、ユーザーがアドバンストエディターを
     使うか否かを選択できるようになりました。
     <tt>preferences/displayblock.thtml</tt>に新たにテンプレート変数
     <tt>{advanced_editor_option}</tt>が追加され、これは新しく追加した
     テンプレートファイル<tt>preferences/editor.thtml</tt>を参照しています。
-    (コンフィギュレーションでサイトのアドバンスエディタ利用を無効にしている場合には
+    (コンフィギュレーションでサイトのアドバンストエディター利用を無効にしている場合には
     表示されません)。</li>
 <li><tt>comment/thread.thtml</tt>の<code>&lt;li&gt;</code>エレメントに少々
     paddingを加えました。これにより、スレッド上で続くコメントが少し離れるように
@@ -232,11 +257,11 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>Added rules for the <tt>token-expirynotice(セキュリティトークンの期限切れ警告)</tt>と
     <tt>token-expirytime(セキュリティトークンの期限)</tt> id(<em>クラスではありません</em>!)を
     スタイルシートに追加しました。
-    これらのidはエディタでセキュリティトークンの期限を表示する書式として使用されます。</li>
-<li>プラグインを更新する必要があるときに、プラグインエディタでの表示に使用するアイコン
+    これらのidはエディターでセキュリティトークンの期限を表示する書式として使用されます。</li>
+<li>プラグインを更新する必要があるときに、プラグインエディターでの表示に使用するアイコン
     (<tt>images/update.png</tt>)を追加しました。このアイコンは編集アイコンと同じサイズに
     した方がよいでしょう(Professionalテーマでは、16x16ピクセルです。)。</li>
-<li>話題エディタに現在の話題に含まれる記事数を表示する行が追加されました。
+<li>話題エディターに現在の話題に含まれる記事数を表示する行が追加されました。
     <tt>admin/topic/topiceditor.thtml</tt> テンプレートに追加された変数は、
     <code>{lang_num_stories}</code> と <code>{num_stories}</code> です。</li>
 <li>「友だちに記事をメールする」フォームと <tt>profiles/contactauthorform.thtml</tt>
@@ -244,12 +269,12 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     <tt>{story_title}</tt>、<tt>{story_url}</tt>、<tt>{story_link}</tt>です。</li>
 <li><tt>profiles/contactauthorform.thtml</tt>フォームに「自分宛にコピーを送信」という
     オプションを追加しました。</li>
-<li>記事エディタのテンプレート(<tt>admin/story/storyeditor.thtml</tt>と
+<li>記事エディターのテンプレート(<tt>admin/story/storyeditor.thtml</tt>と
     <tt>admin/story/storyeditor_advanced.thtml</tt>)に記事のdescriptionメタタグと
     keywordsメタタグを入力するtextareaフィールドを追加しました。</li>
-<li>話題エディタのテンプレート(<tt>admin/topic/topiceditor.thtml</tt>)に話題の
+<li>話題エディターのテンプレート(<tt>admin/topic/topiceditor.thtml</tt>)に話題の
     descriptionメタタグとkeywordsメタタグを入力するtextareaフィールドを追加しました。</li>
-<li>リモートユーザがログインするのに使用しているサービス名をオプションで表示するために、
+<li>リモートユーザーがログインするのに使用しているサービス名をオプションで表示するために、
     <code>{remoteservice}</code>変数を<tt>admin/user/edituser.thtml</tt>テンプレート
     に追加しました。</li>
 <li><code>{title_checked}</code>変数を<tt>search/searchform.thtml</tt>テンプレートに
@@ -271,14 +296,14 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     (<tt>profiles/contactauthorform.thtml</tt>)、「グループメール」フォーム
     (<tt>admin/mail/mailform.thtml</tt>)の外見とレイアウトを統一しました
     (アラインメントや入力フィールドのサイズなど)。</li>
-<li>軽微な変更: アドバンストエディタ使用時に記事のプレビューがわずかに右にずれていた
+<li>軽微な変更: アドバンストエディター使用時に記事のプレビューがわずかに右にずれていた
     バグを修正しました(<a href="http://project.geeklog.net/tracking/view.php?id=963">bug #0000963</a>)。
     <tt>admin/story/storyeditor_advanced.thtml</tt>テンプレートの<code>&lt;div id="preview"&gt;</code>を
     変更しています。</li>
-<li>軽微な変更: 管理画面で使用するリストヘッダフィールドで使用されていた
+<li>軽微な変更: 管理画面で使用するリストヘッダーフィールドで使用されていた
     <code>font-size:larger;</code>をスタイルシートから削除し、top/bottomのpaddingを
     追加しました(<a href="http://project.geeklog.net/tracking/view.php?id=956">bug #0000956</a>)。</li>
-<li>軽微な変更: 第1列を右側に押しやっていた <code>width="180"</code> をブロックエディタの
+<li>軽微な変更: 第1列を右側に押しやっていた <code>width="180"</code> をブロックエディターの
     テンプレート(<tt>admin/block/blockeditor.thtml</tt>)から削除しました。</li>
 <li>軽微な変更: パーミションを指定するチェックボックス(<tt>admin/common/edit_permissions.thtml</tt>)の
     外見を管理者リストの外見に揃えました。新しいCSSクラス(<tt>admin-list-smalltable</tt>)を
@@ -292,16 +317,16 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
    <tt>plugins/<i>プラグイン名</i>/templates</tt>ディレクトリにあります。</p>
 
 <ul>
-<li>リンク(Links): カテゴリエディタのテンプレート(<tt>admin/categoryeditor.thtml</tt>)から
+<li>リンク(Links): カテゴリエディターのテンプレート(<tt>admin/categoryeditor.thtml</tt>)から
     第1列を右側に押しやっていた<code>width="150"</code>を削除しました。</li>
-<li>静的ページ(Static Pages): 静的ページエディタにdescriptionメタタグとkeywordsメタタグ用の
+<li>静的ページ(Static Pages): 静的ページエディターにdescriptionメタタグとkeywordsメタタグ用の
     入力フィールドを追加しました。</li>
-<li>静的ページ(Static Pages): 静的ページエディタで、閲覧数を最終更新日時の下に移動
+<li>静的ページ(Static Pages): 静的ページエディターで、閲覧数を最終更新日時の下に移動
     しました(<tt>admin/editor.thtml</tt>、<tt>admin/editor_advanced.thtml</tt>)。</li>
-<li>静的ページ(Static Pages): 静的ページエディタで、descriptionメタタグとkeywordsメタタグを
+<li>静的ページ(Static Pages): 静的ページエディターで、descriptionメタタグとkeywordsメタタグを
     入力するtextareaフィールドを追加しました(<tt>admin/editor.thtml</tt>、
     <tt>admin/editor_advanced.thtml</tt>)。</li>
-<li>アンケート(Polls): アンケートエディタにdescriptionメタタグとkeywordsメタタグ用の
+<li>アンケート(Polls): アンケートエディターにdescriptionメタタグとkeywordsメタタグ用の
     入力フィールドを追加しました。</li>
 <li>Polls: 自動タグを使用してアンケートを（記事などに）埋め込む際に使用される
     新しいCSSクラス(<tt>poll-autotag-message</tt>、<tt>poll-autotag</tt>、
@@ -331,8 +356,8 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
     Geeklog 1.6.0では古い定義を復活させます。つまり、アンカータグのテーマ変数は
     所有者のプロファイルへのリンクの開始と終了のタグを含みます。
     テーマ変数<tt>{contributedby_author}</tt>は、所有者の名前だけです。</li>
-<li>新テーマ変数<tt>{photo_max_dimensions}</tt>はユーザ写真の最大値をセットしています。<br>
-    ユーザ写真のサイズ: <tt>preferences/userphoto.thtml</tt></li>
+<li>新テーマ変数<tt>{photo_max_dimensions}</tt>はユーザー写真の最大値をセットしています。<br>
+    ユーザー写真のサイズ: <tt>preferences/userphoto.thtml</tt></li>
 <li>記事や静的ページで、印刷用のテンプレートファイル<tt>printable.thtml</tt>を利用する際に
     読み込まれるスタイルシート<tt>print.css</tt>が追加されました。</li>
 <li>プラグイン編集画面で、テーマ変数<code>{pi_display_name}</code>がテンプレートファイル
@@ -348,7 +373,7 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>検索用テンプレートファイル<tt>search/searchform.thtml</tt>に、タイトルだけを
     検索するためのあらたなチェックボックスが追加されました。</li>
 <li>テンプレートファイル<tt>admin/group/groupmembers.thtml</tt>の表示上の変更：
-    ヘッダ（アイコンやリンクその他各種構成を含む）はGeeklogに実装されています。
+    ヘッダー（アイコンやリンクその他各種構成を含む）はGeeklogに実装されています。
     テンプレートファイルからこれらの要素を含んだ<tt>&lt;table&gt;</tt>を取り除きました。</li>
 <li>コンフィギュレーション: <tt>config_element.thtml</tt>で<code>&lt;/option&gt;</code>タグの
     閉じ忘れ、および<tt>configuration.thtml</tt>で<code>&lt;col&gt;</code>の
@@ -374,14 +399,14 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <li>静的ページプラグインの印刷用テンプレートファイル<tt>printable.thtml</tt>では<tt>print.css</tt>を読み込んでいます(上部参照)。それは現在HTMLスクリプトドキュメントタイプを含んでいます。</li>
 </ul>
 
-<h3>パーミッションエディタ</h3>
+<h3>パーミッションエディター</h3>
 
-<p>パーミッションエディタのそのいろいろな場合(所有者、グループ、メンバー、ゲストユーザに対してR = 閲覧　E = 編集　パーミッションの設定）は、いろいろなテンプレートで使われてきました。これからは、どこでも固有の名前で定義されます:</p>
+<p>パーミッションエディターのそのいろいろな場合(所有者、グループ、メンバー、ゲストユーザーに対してR = 閲覧　E = 編集　パーミッションの設定）は、いろいろなテンプレートで使われてきました。これからは、どこでも固有の名前で定義されます:</p>
 <ul>
 <li><tt>{lang_permissions}</tt> (headline)</li>
 <li><tt>{lang_perm_key}</tt> (凡例: R = 閲覧, ...)</li>
 <li><tt>{permissions_editor}</tt> (チェックボックス)</li>
-<li><tt>{lang_permissions_msg}</tt> (注意: メンバーとは、そのときログインしているユーザのこと ...)</li>
+<li><tt>{lang_permissions_msg}</tt> (注意: メンバーとは、そのときログインしているユーザーのこと ...)</li>
 </ul>
 <p>他の名前を使用しているテンプレートファイルは機能し続けます、しかし、新しいファイルは今後上記の名前を使用しなければなりません。 </p>
 
@@ -396,10 +421,10 @@ Geeklog 1.4.1以降、重大なエラーが発生したときにRoot以外のユ
 <p>以下に述べるバグはGeeklog 1.5.0及び1.5.1に存在していたバグです。これらの修正をカスタムテーマに適用することを勧めます。</p>
 
 <ul>
-<li>トラックバックエディタのテンプレートファイル(<tt>admin/trackback/trackbackeditor.thtml</tt>)にセキュリティトークンがありませんでした（そのため、トラックバックに失敗していました。）。</li>
+<li>トラックバックエディターのテンプレートファイル(<tt>admin/trackback/trackbackeditor.thtml</tt>)にセキュリティトークンがありませんでした（そのため、トラックバックに失敗していました。）。</li>
 <li>記事テンプレートの <code>{start_storylink_anchortag}</code> 変数にタグを閉じる '&gt;' が抜けていました。このため、テーマによっては記事のタイトルが表示されなくなっていました（これはGeeklog本体のバグであるため、テーマを修正する必要はありません。）。</li>
 <li><tt>admin/config/configuration.thtml</tt>のコンフィギュレーションフォームのactionに <code>{site_admin_url}</code> 変数がセットされていませんでした。このため、セットアップ方法によっては、設定の変更に失敗していた可能性があります。</li>
-<li>アンケートエディタのテンプレートファイル(<tt>plugins/polls/templates/admin/polleditor.thtml</tt>)にhidden属性の<code>old_pid</code>フィールドを追加し、アンケートID変更の際に生じる問題に対応しました。</li>
+<li>アンケートエディターのテンプレートファイル(<tt>plugins/polls/templates/admin/polleditor.thtml</tt>)にhidden属性の<code>old_pid</code>フィールドを追加し、アンケートID変更の際に生じる問題に対応しました。</li>
 </ul>
 
 <h3>他の変更点</h3>
@@ -453,16 +478,16 @@ if (empty($lang)) {
 <p>こうすることで、内部的にXHTMLに切り替わります。テーマをHTMLとXHTMLの両方でサポートしたいなら、XHTMLの空要素タグがあるところすべてで <code>{xhtml}</code> テーマ変数を使用する必要があります。たとえば、 <code>&lt;br /&gt;</code> タグは <code>&lt;br{xhtml}&gt;</code> と書く必要があります。HTMLをサポートするつもりがないなら、XHTMLタグを直接記述しても構いません。</p>
 <p><strong>注意:</strong> XHTMLを使用するなら、サイトのコンテンツ（記事、コメントなど）をXHTML準拠にしなければなりません。Geeklogは自動的にコンテンツをXHTMLに<strong>変換しません</strong>。</p>
 
-<h3><a name="story-submission">「記事投稿」 - ユーザによる記事投稿</a></h3>
+<h3><a name="story-submission">「記事投稿」 - ユーザーによる記事投稿</a></h3>
 
-<p>Geeklog 1.5.0では、ユーザが記事を投稿する際、記事を単に冒頭文だけでなく冒頭文と本文に分ける機能をサポートしています。テンプレートを変更することでこの機能は有効/無効にできます。該当するファイルは、</p>
+<p>Geeklog 1.5.0では、ユーザーが記事を投稿する際、記事を単に冒頭文だけでなく冒頭文と本文に分ける機能をサポートしています。テンプレートを変更することでこの機能は有効/無効にできます。該当するファイルは、</p>
 <ul>
     <li>submit/submitstory.thtml</li>
     <li>submit/submitstory_advanced.thtml</li>
 </ul>
 <p>です。有効にするには、 <code>{bodytext}</code> テンプレート変数を含むテーブルの列がテンプレートファイルに含まれるようにしましょう。 <code>{bodytext}</code> テンプレート変数を含むテーブルの列をテンプレートファイルから削除すれば、元の動作に戻ります。</p>
 
-<h3><a name="admin-menu">管理者メニュー、ユーザメニュー、話題リスト</a></h3>
+<h3><a name="admin-menu">管理者メニュー、ユーザーメニュー、話題リスト</a></h3>
 
 <p>これらの項目は今ではリストを使用しています。 <code>&lt;ul&gt;</code> タグと <code>&lt;li&gt;</code> タグとリストの黒丸を表示しないための新しい <tt>blocklist</tt> クラスが使用されています。ブロックを作成するために新しいテンプレートファイルが追加されています。</p>
 <ul>
@@ -535,7 +560,7 @@ if (empty($lang)) {
 <p>今後、ブロックと記事のタイトルは見出しタグで表現されます。記事の中で最大のタイトルは <tt>&lt;h1&gt;</tt> タグであり、ブロックのそれは常に <tt>&lt;h2&gt;</tt> タグです。</p>
 
 <h3>記事のレイアウト</h3>
-<p>記事のブロックはもはやテーブルを含まなくなり、対応するCSSのクラス名も一貫性を持たせるために変更されました。記事を囲むボックスは、 <tt>story</tt> クラスまたは <tt>story-featured</tt> クラスという名前がついています。ボックス内のコンポーネントは、記事アイコン、記事情報、記事本体、記事フッタです。タイトルは <tt>&lt;h1&gt;</tt> タグを使用しています。注目記事は外側のボックスのクラスが違うだけで、残りは同じです。</p>
+<p>記事のブロックはもはやテーブルを含まなくなり、対応するCSSのクラス名も一貫性を持たせるために変更されました。記事を囲むボックスは、 <tt>story</tt> クラスまたは <tt>story-featured</tt> クラスという名前がついています。ボックス内のコンポーネントは、記事アイコン、記事情報、記事本体、記事フッターです。タイトルは <tt>&lt;h1&gt;</tt> タグを使用しています。注目記事は外側のボックスのクラスが違うだけで、残りは同じです。</p>
 
 <h3>ブロック</h3>
 <p>ブロックは記事と同じように変化しました。テーブルはなくなり、block-box, block-box-left, block-box-right という名前の &lt;div&gt; タグが1個使用されているだけです。タイトルは &lt;h2&gt; タグであり、ブロックのヘルプアイコンは block-helpicon というクラスの &lt;span&gt; タグになりました。ブロックのサブタイトルは、（新着記事ブロックや過去の記事ブロックのように） &lt;h3&gt; タグです。これらの変更は <tt>style.css</tt> についで、以下のファイルに影響を与えます。</p>
@@ -556,7 +581,7 @@ if (empty($lang)) {
 <p>管理者用テンプレートの多くには、外見や機能の変更のため少しずつ変更が加えられています。自作テーマの管理者用テンプレートを変更していない場合、更新する最も簡単な方法は、Professional テーマの admin ディレクトリからファイルを一式、コピーすることです。</p>
 
 <ul>
-<li>記事エディタなどの管理者用エディタで削除ボタンをクリックすると、意図しない削除を防ぐためにJavaScriptを用いた確認ダイアログが表示されるようになりました。確認ダイアログが不要なら、管理者用テンプレートの <code>{delete_option}</code> テンプレート変数を <code>{delete_option_no_confirmation}</code> テンプレート変数に置き換えるとよいでしょう。</li>
+<li>記事エディターなどの管理者用エディターで削除ボタンをクリックすると、意図しない削除を防ぐためにJavaScriptを用いた確認ダイアログが表示されるようになりました。確認ダイアログが不要なら、管理者用テンプレートの <code>{delete_option}</code> テンプレート変数を <code>{delete_option_no_confirmation}</code> テンプレート変数に置き換えるとよいでしょう。</li>
 <li>保存/キャンセル/削除のボタンの配列が管理者用テンプレートで統一されました（<tt>group/groupeditor.thtml</tt> と <tt>user/edituser.thtml</tt> が変更されました）。</li>
 <li><tt>lists/topmenu_nosearch.thtml</tt> と <tt>topic/topiclist.thtml</tt> テンプレートの最上部にあるリンクが変更され、他のテンプレートと揃えられました（つまり、リンクが[]で囲まれなくなりました）。</li>
 <li>"gldefault" ブロックのグループ所有権の変更を可能にするために、<tt>defaultblockeditor.thtml</tt> テンプレートに <code>{group_dropdown}</code> テンプレート変数を含めなければならなくなりました。</li>
@@ -567,13 +592,13 @@ if (empty($lang)) {
 <ul>
 <li><tt>leftblocks.thtml</tt> と <tt>rightblocks.thtml</tt> にはブロックの横幅の最小値を維持するために &lt;div&gt; タグが使用されていましたが、CSSの <tt>block-bg-spreader</tt> というクラスに置き換えられました。</li>
 <li>アンケートプラグインのテンプレートで、CSSのブロック関係のクラスとの混同を避けるため、 block-vote-results クラスが poll-vote-results に、 block-vote クラスが poll-vote に変更されました。</li>
-<li>カレンダプラグインが使用するテンプレートファイルがプラグイン用のディレクトリ(<tt>/非公開領域/plugins/calendar/templates</tt>)へ移動され、テーマディレクトリ内の calendar ディレクトリをそっくり削除できるようになりました。<br>
+<li>カレンダープラグインが使用するテンプレートファイルがプラグイン用のディレクトリ(<tt>/非公開領域/plugins/calendar/templates</tt>)へ移動され、テーマディレクトリ内の calendar ディレクトリをそっくり削除できるようになりました。<br>
     <tt>submitevent.thtml</tt>, <tt>editpersonalevent.thtml</tt>,
     <tt>admin/eventeditor.thtml</tt>, <tt>dayview/quickaddform.thtml</tt> テンプレートで、<a href="calendar.html#desc_hour_mode">24時間制</a>で時刻を入力できるようになりました。hidden 属性の hour_mode フィールドが必要になり、テンプレートに応じて、am/pmを選ぶドロップダウンリストが <code>{startampm_selection}</code>, <code>{endampm_selection}</code>, <code>{ampm_selection}</code> テンプレート変数として、また、分を選ぶドロップダウンリストが <code>{startminute_options}</code>, <code>{endminute_options}</code>, <code>{minute_options}</code> テンプレート変数として利用できるようになりました。</li>
-<li>オブジェクトの作成者（たとえば、記事やコメントの作成者）やオブジェクトの所有者（たとえば、ブロックの所有者）が表示されるテンプレートならどれでも、<code>{author}</code> と <code>{owner}</code> テンプレート変数が利用できるようになりました。この2つの変数は <a href="config.html#desc_show_fullname">$_CONF['show_fullname']</a> の設定に従って、ユーザのフルネームかユーザ名（アカウント名）のいずれかを表示します。</li>
+<li>オブジェクトの作成者（たとえば、記事やコメントの作成者）やオブジェクトの所有者（たとえば、ブロックの所有者）が表示されるテンプレートならどれでも、<code>{author}</code> と <code>{owner}</code> テンプレート変数が利用できるようになりました。この2つの変数は <a href="config.html#desc_show_fullname">$_CONF['show_fullname']</a> の設定に従って、ユーザーのフルネームかユーザー名（アカウント名）のいずれかを表示します。</li>
 <li><tt>storytext.thtml</tt> と <tt>featuredstorytext.thtml</tt> テンプレート中の記事の作成者タグの名前が <code>{contributedby_author}</code> に変わりました。</li>
 <li>アンケートの回答でコメントを残せるようにするため、 <tt>pollvotes_bar.thtml</tt>, <tt>pollansweroption.thtml</tt>, <tt>polleditor.thtml</tt> が変更されました。<tt>pollvotes_bar.thtml</tt> には色がつき、2つの行と、それぞれの行の色を指定するクラス、 <code>{answer_text}</code> テンプレート変数が含まれます。<tt>polleditor.thtml</tt> は <tt>pollansweroption.thtml</tt> と同じく、コメントを残すためのフィールドが追加されました。</li>
-<li>ユーザのアカウント情報ページが設計し直されました。技術上の変更点はありませんが（つまり、旧バージョンのテンプレートは依然として機能しますが）、一部のオプションの配列が見直され、オプションを変更するのにパスワードを入力する必要がある旨を表示する注意書きが追加されました。変更されたのは、 <tt>preferences</tt> ディレクトリ内の <tt>profile.thtml</tt>, <tt>username.thtml</tt>, <tt>userphoto.thtml</tt> テンプレートファイルです。</li>
+<li>ユーザーのアカウント情報ページが設計し直されました。技術上の変更点はありませんが（つまり、旧バージョンのテンプレートは依然として機能しますが）、一部のオプションの配列が見直され、オプションを変更するのにパスワードを入力する必要がある旨を表示する注意書きが追加されました。変更されたのは、 <tt>preferences</tt> ディレクトリ内の <tt>profile.thtml</tt>, <tt>username.thtml</tt>, <tt>userphoto.thtml</tt> テンプレートファイルです。</li>
 <li><tt>navbar</tt> ディレクトリには2つの画像(<tt>button.gif</tt> と <tt>button_over.gif</tt>)に加えて、4つのテンプレートファイル(<tt>menuitem.thtml</tt>, <tt>navbar.thtml</tt>, <tt>breadcrumbs.thtml</tt>, <tt>breadcrumb_link</tt>)が格納されています。</li>
 <li>以下のファイルに <a name="captcha"><code>{captcha}</code></a> テンプレート変数が追加されました。
     <ul>
@@ -594,7 +619,7 @@ if (empty($lang)) {
 
 <ul>
 <li>Professionalテーマでは、間隔調整やセクション分けのために従来は1x1の透明GIF画像(<tt>speck.gif</tt>)を使用していましたが、スタイルシートで指定するようになりました。</li>
-<li>ブロックヘッダなどで、テーブルのネスト（入れ子）が減りました。</li>
+<li>ブロックヘッダーなどで、テーブルのネスト（入れ子）が減りました。</li>
 <li>使用されていない <tt>customlogin-header.thtml</tt> と <tt>customlogin-footer.thtml</tt> テンプレートファイルが削除されました。</li>
 </ul>
 
@@ -607,17 +632,17 @@ if (empty($lang)) {
 
 <p>Geeklog 1.4.0の管理者用セクションはかなりの変更を伴って改訂されています。したがって、従来のテーマの <tt>admin</tt> ディレクトリをGeeklog-1.4.0に同梱のProfessionalテーマの <tt>admin</tt> ディレクトリでそっくり置き換えてから、今まで自分が加えた改造を適用することをお勧めします。</p>
 
-<p><strong>注意:</strong> コントロールパネル(<tt>moderation.php</tt>)用の新アイコンは背景が白になっています。背景が暗い色（や白以外の色）のテーマ用には、<a href="http://www.geeklog.net/filemgmt/singlefile.php?lid=623">アルファチャンネルつきのPNG形式のアイコンをダウンロード</a>するとよいでしょう。この場合は、JavaScriptを用いた<a href="http://homepage.ntlworld.com/bobosola/">ハック</a>を行わないと、インターネットエクスプローラでは表示できないことに注意してください。場合によっては、これらのアイコンを変換して、背景を透明にしたりテーマの背景色に合わせたりする必要があるでしょう。</p>
+<p><strong>注意:</strong> コントロールパネル(<tt>moderation.php</tt>)用の新アイコンは背景が白になっています。背景が暗い色（や白以外の色）のテーマ用には、<a href="http://www.geeklog.net/filemgmt/singlefile.php?lid=623">アルファチャンネルつきのPNG形式のアイコンをダウンロード</a>するとよいでしょう。この場合は、JavaScriptを用いた<a href="http://homepage.ntlworld.com/bobosola/">ハック</a>を行わないと、インターネットエクスプローラーでは表示できないことに注意してください。場合によっては、これらのアイコンを変換して、背景を透明にしたりテーマの背景色に合わせたりする必要があるでしょう。</p>
 
 
-<h3>アドバンストエディタ（WYSIWYGエディタ）</h3>
+<h3>アドバンストエディター（WYSIWYGエディター）</h3>
 
-<p>同梱されているアドバンストエディタ(FCKeditor)を使用するには、次の新しいテンプレートが必要です。</p>
+<p>同梱されているアドバンストエディター(FCKeditor)を使用するには、次の新しいテンプレートが必要です。</p>
 <ul>
 <li><tt>comment/commentform_advanced.thtml</tt> （コメント用）</li>
 <li><tt>submit/submitstory_advanced.thtml</tt> （記事投稿用）</li>
-<li><tt>admin/story/storyeditor_advanced.thtml</tt> （管理者の記事エディタ用）</li>
-<li><tt>staticpages/templates/admin/editor_advanced.thtml</tt> （<tt>/非公開領域/plugins</tt> にある静的ページエディタ用）</li>
+<li><tt>admin/story/storyeditor_advanced.thtml</tt> （管理者の記事エディター用）</li>
+<li><tt>staticpages/templates/admin/editor_advanced.thtml</tt> （<tt>/非公開領域/plugins</tt> にある静的ページエディター用）</li>
 <li><tt>advanced_editor_header.thtml</tt> （上述のテンプレートファイルすべてから呼び出される）</li>
 </ul>
 <p>テーマの <tt>header.thtml</tt> テンプレートファイルの <code>&lt;head&gt;</code> セクションに <code>{advanced_editor}</code> テンプレート変数を追加する必要があります。</p>
@@ -632,10 +657,10 @@ if (empty($lang)) {
 <li><tt>pollbooth</tt> と <tt>admin/poll</tt> ディレクトリが削除されました。アンケート機能はプラグインとなり、そのテンプレートは <tt>/非公開領域/plugins/polls/templates</tt> にあります。</li>
 <li><tt>preferences/profile.thtml</tt> テンプレートに、パスワードを変更するためのフィールド（現在のパスワード、新規パスワードの確認用）が追加されました。</li>
 <li>検索フォーム(<tt>search/searchform.thtml</tt>)に1ページあたりの検索結果の表示数を設定するオプションが追加され、ハードコードされていたオプションが削除されました（リンクはプラグインになったので、<code>{plugin_types}</code> オプションの一部として表示されるからです）。</li>
-<li>自分のサイトにユーザがリモート認証を利用してログインするのを許可する場合、<tt>loginform.thtml</tt> テンプレートファイルに <code>{services}</code> テンプレート変数を追加しなければならなくなりました。</li>
+<li>自分のサイトにユーザーがリモート認証を利用してログインするのを許可する場合、<tt>loginform.thtml</tt> テンプレートファイルに <code>{services}</code> テンプレート変数を追加しなければならなくなりました。</li>
 <li>自分のサイトでトラックバックを有効にする場合、記事のテンプレートファイルにたとえば次のように、トラックバック用のセクションを追加する必要があります。<br>
     <code>{start_trackbacks_anchortag}{trackbacks_with_count}{end_trackbacks_anchortag}</code><br>具体例は、Professionalテーマの記事用テンプレートを参照してください。</li>
-<li>サイトの統計情報用の <tt>stats/sitestatistics.thtml</tt> テンプレートファイルが変更されました（リンクとアンケート用の項目が削除され、登録ユーザ数を表す項目が追加されました）。プラグインの項目を表示するための <tt>stats/singlesummary.thtml</tt> というテンプレートファイルが追加されました。</li>
+<li>サイトの統計情報用の <tt>stats/sitestatistics.thtml</tt> テンプレートファイルが変更されました（リンクとアンケート用の項目が削除され、登録ユーザー数を表す項目が追加されました）。プラグインの項目を表示するための <tt>stats/singlesummary.thtml</tt> というテンプレートファイルが追加されました。</li>
 <li>以前、掲示板プラグインなどが使用していた <tt>navbar</tt> ディレクトリがGeeklogテーマの一部になりました。テンプレートファイルファイルが2つ(<tt>menuitem.thtml</tt> と <tt>navbar.thtml</tt>)と画像ファイルが2つ(<tt>button.gif</tt> と <tt>button_over.gif</tt>）が含まれています。</li>
 </ul>
 

@@ -86,7 +86,7 @@
 
 <p>2番目の「話題」ドロップダウンリストを使うと、静的ページの表示を特定の話題、ホームページ（トップページ）のみ、全ページ（つまり、すべての話題 + ホームページ）に限定できます。これはブロックを表示するオプションと全く同じです。</p>
 
-<p><strong>ヒント:</strong> これらのオプションをパーミッションと組み合わせることもできます。たとえば、ゲストユーザにしか表示されない「ようこそ」ページを作成することも可能です。</p>
+<p><strong>ヒント:</strong> これらのオプションをパーミッションと組み合わせることもできます。たとえば、ゲストユーザーにしか表示されない「ようこそ」ページを作成することも可能です。</p>
 
 <h3><a name="sort">ソート（並べ換え）</a></h3>
 
@@ -139,9 +139,9 @@
 
 <h2><a name="delete">所有者の削除と共に削除する</a></h2>
 
-<p>Geeklogのすべてのオブジェクト同様、静的ページには所有者（そのページの作成者）がいます。そのユーザのアカウントが何らかの理由で削除された場合、そのユーザが所有していた静的ページも削除するか、GeeklogのRootグループに属する人に引き継がせることができます。</p>
+<p>Geeklogのすべてのオブジェクト同様、静的ページには所有者（そのページの作成者）がいます。そのユーザーのアカウントが何らかの理由で削除された場合、そのユーザーが所有していた静的ページも削除するか、GeeklogのRootグループに属する人に引き継がせることができます。</p>
 
-<p>「管理者用メニュー - コンフィギュレーション - 静的ページ」で「<a href="#desc_delete_pages">所有者の削除と共に削除する</a>」を「いいえ」（デフォルト）にすると、所有者が削除されても作成した静的ページは削除されず、Rootグループのメンバ（ユーザIDが最も若い人、つまり、たいていはサイトの管理者）に引き継がれます。「はい」にすると、所有者のアカウントが削除されたとき、作成した静的ページも削除されます。</p>
+<p>「管理者用メニュー - コンフィギュレーション - 静的ページ」で「<a href="#desc_delete_pages">所有者の削除と共に削除する</a>」を「いいえ」（デフォルト）にすると、所有者が削除されても作成した静的ページは削除されず、Rootグループのメンバ（ユーザーIDが最も若い人、つまり、たいていはサイトの管理者）に引き継がれます。「はい」にすると、所有者のアカウントが削除されたとき、作成した静的ページも削除されます。</p>
 
 <h2><a name="config.php">コンフィギュレーション</a></h2>
 
@@ -160,17 +160,17 @@
   <td>静的ページにおいて、<a href="#php">PHPを許可する</a>。つまり、この設定で、個々のページの設定を上書きします</td>
 </tr>
 <tr class="r2">
-  <td><a name="desc_sort_by">センターブロックでのソート項目(sort_by)</a></td>
+  <td><a name="desc_sort_by">センターブロックのソート(sort_by)</a></td>
   <td><tt>ページID</tt></td>
   <td>センターブロックに静的ページが複数表示される場合の順番を設定します。ページID、ページタイトル、最後に編集した日付から選べます。</td>
 </tr>
 <tr>
-  <td><a name="desc_sort_menu_by">メニューでのソート項目(sort_menu_by)</a></td>
+  <td><a name="desc_sort_menu_by">メニューのソート(sort_menu_by)</a></td>
   <td><tt>ラベル</tt></td>
   <td>サイトメニューの順番を設定します。ページラベル、ページID, ページタイトル、最後に編集した日付から選べます。</td>
 </tr>
 <tr class="r2">
-  <td><a name="desc_sort_list_by">ソート順(sort_list_by)</a></td>
+  <td><a name="desc_sort_list_by">管理者ページのソート(sort_list_by)</a></td>
   <td>タイトル</td>
   <td>管理者専用画面で表示するソート順のデフォルトを指定します。
     所有者ID順, ページID順, ページタイトル順, そして編集日付順です。</td>
@@ -178,7 +178,7 @@
 <tr>
   <td><a name="desc_delete_pages">所有者の削除と共に削除する(delete_pages)</a></td>
   <td><tt>いいえ</tt></td>
-  <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザが居なくなった場合、そのページを'True'なら削除、'False'なら"Root"グループのユーザ(通常は最も小さい値のIDのRootユーザ)に変更します。</td>
+  <td>ページの所有者のアカウントが削除された場合、つまりその静的ページを最初に作成したユーザーが居なくなった場合、そのページを'True'なら削除、'False'なら"Root"グループのユーザー(通常は最も小さい値のIDのRootユーザー)に変更します。</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_in_block">ページをブロックで囲む(in_block)</a></td>
@@ -201,7 +201,7 @@
   <td>GeeklogのHTMLフィルターを静的ページの編集時に適用させるかどうかを設定します。</td>
 </tr>
 <tr class="r2">
-  <td><a name="desc_censor">内容を検閲する(censor)</a></td>
+  <td><a name="desc_censor">コンテンツを検閲する(censor)</a></td>
   <td><tt>いいえ</tt></td>
   <td>Geeklogの"バッドワード"フィルターを静的ページの編集時に適用させるかどうかを設定します。
   </td>
@@ -223,22 +223,26 @@
   <td>WebサービスAPIによってatomフィードに書き出す静的ページ数の最大値を指定します。</td>
 </tr>
 <tr>
-  <td><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
+  <td><a name="desc_meta_tags">メタタグを有効にする(meta_tags)</a></td>
   <td>false</td>
   <td>静的ページが表示されたときメタタグをセットするかどうかを指定します。</td>
 </tr>
 <tr class="r2">
-  <td><a name="desc_comment_code">コメントコード(comment_code)</a></td>
+  <td><a name="desc_comment_code">新規作成時のデフォルト(comment_code)</a></td>
   <td>-1</td>
   <td>静的ページにコメントを許可 (0) または不可 (-1) を指定します。
     これは静的ページ新規作成時のデフォルトとなり、すべての静的ページに対してモードが上書きされます。</td>
 </tr>
 <tr>
-  <td><a name="desc_draft_flag">ドラフトフラグ(draft_flag)</a></td>
+  <td><a name="desc_draft_flag">ドラフトモードをデフォルトにする(draft_flag)</a></td>
   <td>0</td>
   <td>静的ページのデフォルト: ドラフトフラグ ON (1) または OFF (0) を指定します。</td>
 </tr>
-</table>
+<tr>
+  <td><a name="desc_disable_breadcrumbs_staticpages">パンくずリストを無効にする(disable_breadcrumbs_staticpages)</a></td>
+  <td>0</td>
+  <td>パンくずリストを無効(0)、または有効(1)にします。</td>
+</tr>
 
 
 <h3><a name="whatsnew">新着ブロック</a></h3>
@@ -257,7 +261,7 @@
   <td valign="top">表示しない</td>
   <td valign="top">新着ブロックに、'表示しない'、'作成日付によって表示する'、'編集日付によって表示する'を選択します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_title_trim_length">タイトルトリミング文字数(title_trim_length)</a></td>
+  <td valign="top"><a name="desc_title_trim_length">タイトル最大長(title_trim_length)</a></td>
   <td valign="top">20</td>
   <td valign="top">新着ブロックに表示するタイトルのトリミングの文字数を指定します。</td></tr>
 <tr class="r2">
@@ -265,9 +269,9 @@
   <td valign="top">いいえ</td>
   <td valign="top">センターブロックに表示する静的ページを含むかどうかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_includephp">PHPモードのページを含む(includephp)</a></td>
+  <td valign="top"><a name="desc_includephp">静的ページPHPを含む(includephp)</a></td>
   <td valign="top">いいえ</td>
-  <td valign="top">PHPモードの静的ページを含むかどうかを指定します。</td></tr>
+  <td valign="top">静的ページPHPを含むを含むかどうかを指定します。</td></tr>
 </table>
 
 
@@ -279,15 +283,15 @@
     <th style="width:50%">説明</th>
 </tr>
 <tr>
-  <td valign="top"><a name="desc_includesearch">検索結果に含ませる(includesearch)</a></td>
+  <td valign="top"><a name="desc_includesearch">静的ページを検索する(includesearch)</a></td>
   <td valign="top">true</td>
   <td valign="top">検索結果に静的ページを含ませるかどうかを指定します。</td></tr>
 <tr class="r2">
-  <td valign="top"><a name="desc_includesearchcenterblocks">センターブロックのページを含ませる(includesearchcenterblocks)</a></td>
+  <td valign="top"><a name="desc_includesearchcenterblocks">センターブロックの静的ページを含む(includesearchcenterblocks)</a></td>
   <td valign="top">false</td>
   <td valign="top">検索結果にセンターブロックの静的ページを含ませるかどうかを指定します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_includesearchphp">PHPモードのページを含ませる(includesearchphp)</a></td>
+  <td valign="top"><a name="desc_includesearchphp">PHPモードの静的ページを含む(includesearchphp)</a></td>
   <td valign="top">false</td>
   <td valign="top">検索結果にPHPモードの静的ページを含ませるかどうかを指定します。</td></tr>
 </table>

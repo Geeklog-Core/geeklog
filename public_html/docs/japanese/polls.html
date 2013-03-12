@@ -30,8 +30,8 @@
 <tr>
   <td><a name="desc_pollsloginrequired">ログインを要求する(pollsloginrequired)</a></td>
   <td>いいえ(0)</td>
-  <td>はい(1)にすると、登録ユーザしか最近のアンケートにアクセスできなくなります。<br>
-    この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されます。「すべてにログインを要求する」をはい(1)にすると、アンケートプラグインでログインを要求していなくても、ゲストユーザはアンケートにアクセスできなくなります。</td>
+  <td>はい(1)にすると、登録ユーザーしか最近のアンケートにアクセスできなくなります。<br>
+    この設定値よりも、「管理者用メニュー - コンフィギュレーション - Geeklog - ユーザーと投稿」の「<a href="config.html#desc_loginrequired">すべてにログインを要求する(loginrequired)</a>」の設定の方が優先されます。「すべてにログインを要求する」をはい(1)にすると、アンケートプラグインでログインを要求していなくても、ゲストユーザーはアンケートにアクセスできなくなります。</td>
 </tr>
 <tr class="r2">
   <td><a name="desc_hidepollsmenu">メニューに表示しない(hidepollsmenu)</a></td>
@@ -66,7 +66,7 @@
 <tr class="r2">
   <td><a name="desc_delete_polls">所有者の削除と共に削除する(delete_polls)</a></td>
   <td>いいえ(0)</td>
-  <td>はい(1)にすると、アンケート所有者のアカウントが削除されたときに、所有していたすべてのアンケートが全コメントと共に削除され、いいえ(0)にすると、Rootグループに属するユーザ（たとえば、サイトの管理者）に引き継がれます。</td>
+  <td>はい(1)にすると、アンケート所有者のアカウントが削除されたときに、所有していたすべてのアンケートが全コメントと共に削除され、いいえ(0)にすると、Rootグループに属するユーザー（たとえば、サイトの管理者）に引き継がれます。</td>
 </tr>
 <tr>
   <td><a name="desc_aftersave">アンケート保存後の画面遷移(aftersave)</a></td>
@@ -81,7 +81,7 @@
     </ul></td>
 </tr>
 <tr>
-  <td><a name="desc_meta_tags">メタタグ(meta_tags)</a></td>
+  <td><a name="desc_meta_tags">メタタグを有効にする(meta_tags)</a></td>
   <td>いいえ(false)</td>
   <td>アンケートを表示するときに、メタタグを出力するかどうかを指定します。</td>
 </tr>
@@ -99,14 +99,49 @@
   <td valign="top">1209600秒 (= 2週間)</td>
   <td valign="top">アンケートが新着ブロックに表示される期間を秒数で指定します。</td></tr>
 <tr class="r2">
-  <td valign="top"><a name="desc_hidenewpolls">新着ブロック表示(hidenewpolls)</a></td>
+  <td valign="top"><a name="desc_hidenewpolls">新着アンケート(hidenewpolls)</a></td>
   <td valign="top">表示しない</td>
   <td valign="top">新着ブロックに、'表示しない'、'作成日付によって表示する'、'編集日付によって表示する'を選択します。</td></tr>
 <tr>
-  <td valign="top"><a name="desc_title_trim_length">タイトルトリミング文字数(title_trim_length)</a></td>
+  <td valign="top"><a name="desc_title_trim_length">タイトル最大長(title_trim_length)</a></td>
   <td valign="top">20</td>
   <td valign="top">新着ブロックに表示するタイトルのトリミングの文字数を指定します。</td></tr>
 </table>
+
+
+<h3><a name="pollblock">投票ブロック</a></h3>
+
+<table>
+<tr><th style="width:25%">項目(変数)</th>
+    <th style="width:25%">デフォルト</th>
+    <th style="width:50%">説明</th>
+</tr>
+<tr>
+  <td valign="top"><a name="desc_block_enable">有効(block_enable)</a></td>
+  <td valign="top">true</td>
+  <td valign="top">ブロックを有効化します。</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_block_isleft">左ブロックで表示する(block_isleft)</a></td>
+  <td valign="top">1</td>
+  <td valign="top">左ブロックで表示(1) あるいは右 (0)に表示します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_order">ブロックの順番(block_order)</a></td>
+  <td valign="top">50</td>
+  <td valign="top">ブロックカラムのソート番号を指定します。</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_block_topic_option">話題オプション(block_topic_option)</a></td>
+  <td valign="top">'all'</td>
+  <td valign="top">'すべて'なら、すべてのページで表示。'ホームページのみ'ならホームページのみで表示。'話題を選択する'なら選択された話題でのみ表示されます。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_block_topic">話題(block_topic)</a></td>
+  <td valign="top"></td>
+  <td valign="top">話題オプションが '話題を選択する'のときだけ表示されます。</td></tr>
+<tr class="r2">
+  <td valign="top"><a name="desc_block_group_id">グループ(block_group_id)</a></td>
+  <td valign="top">Calendar Admin</td>
+  <td valign="top">パーミッションで使われるグループ</td></tr>
+</table>
+
 
 
 <h3><a name="pollblock">投票ブロック</a></h3>
@@ -176,7 +211,7 @@ $_PO_CONF['<a href="#desc_polladdresstime">polladdresstime</a>']   = 604800;</pr
 <ul>
 <li><code>[poll:]</code> 自動タグはアンケートへのリンクに変換されます。コロンの後にアンケートIDを記述してください。既定では、アンケートのタイトルがリンクテキストとして使用されます。別の方法としては、アンケートIDの後に半角スペースに続けて独自のリンクテキストを指定することもできます（閉じカッコの前でなければなりません）。</li>
 <li><code>[poll_result:]</code> 自動タグを使用すると、アンケート結果を記事(や、自動タグが使用できるところならどこにでも)に埋め込むことができます。</li>
-<li><code>[poll_vote:]</code> 自動タグを使用すると、アンケートを記事（や、自動タグが使用できるところならどこにでも)に埋め込むことができます。ユーザがアンケートのページへ移動する手間を省くわけです。</li>
+<li><code>[poll_vote:]</code> 自動タグを使用すると、アンケートを記事（や、自動タグが使用できるところならどこにでも)に埋め込むことができます。ユーザーがアンケートのページへ移動する手間を省くわけです。</li>
 </ul>
 
 <div class="footer">

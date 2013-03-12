@@ -14,7 +14,7 @@
 
 <h1>テーマで使用できる変数</h1>
 
-<p><strong>注意:</strong> 以下のドキュメントはテーマで使用できる変数のすべてではなく、サイトのヘッダと記事のテンプレートで使用されている変数のみに限った説明です。</p>
+<p><strong>注意:</strong> 以下のドキュメントはテーマで使用できる変数のすべてではなく、サイトのヘッダーと記事のテンプレートで使用されている変数のみに限った説明です。</p>
 
 <h2>概要</h2>
 
@@ -25,9 +25,9 @@
 <p>のように、コンストラクタの第2引数に "keep" を指定すると、未定義の変数はそのまま残されます。デバッグ用に使えるかもしれません。</p>
 
 
-<h2><a name="site-header">サイトのヘッダ</a></h2>
+<h2><a name="site-header">サイトのヘッダー</a></h2>
 
-<p>以下の変数はサイトのヘッダ、つまり、<tt>header.thtml</tt>テンプレートファイルで使用できる変数です。</p>
+<p>以下の変数はサイトのヘッダー、つまり、<tt>header.thtml</tt>テンプレートファイルで使用できる変数です。</p>
 
 <table>
 <tr><th style="width:25%">変数名</th>
@@ -38,7 +38,7 @@
     <td>自分のGeeklogサイトのURLです（コンフィギュレーションの<code>$_CONF['site_url']</code>で設定したものと同じ）。</td></tr>
 <tr><td><code>layout_url</code></td>
     <td><tt>http://www.example.com/layout/professional</tt></td>
-    <td>ユーザが現在使用しているテーマディレクトリのURLです。</td></tr>
+    <td>ユーザーが現在使用しているテーマディレクトリのURLです。</td></tr>
 <tr><td><code>page_title</code></td>
     <td>Geeklog Site - Another Nifty Geeklog Site</td>
     <td>サイト名及びスローガンと、現在の記事のタイトルです。</td></tr>
@@ -47,7 +47,7 @@
     <td>現在のテーマの <tt>images</tt> ディレクトリ内の <tt>bg.gif</tt> を指しています。背景画像として使用することを想定しています。</td></tr>
 <tr><td><code>site_mail</code></td>
     <td><tt>admin@example.com</tt></td>
-    <td>ユーザがサイトの管理者と連絡を取るときに使用するEメールアドレスです。スパムの問題があるため、サイトでこのアドレスを表示する代わりに、管理者にメールを送信するフォームへのリンクを提示することをお勧めします。つまり、<code>{site_url}/profiles.php?uid=2</code> （2 はこのEメールを受け取るユーザのIDで、ふつう、サイト管理者である）のようにします。</td></tr>
+    <td>ユーザーがサイトの管理者と連絡を取るときに使用するEメールアドレスです。スパムの問題があるため、サイトでこのアドレスを表示する代わりに、管理者にメールを送信するフォームへのリンクを提示することをお勧めします。つまり、<code>{site_url}/profiles.php?uid=2</code> （2 はこのEメールを受け取るユーザーのIDで、ふつう、サイト管理者である）のようにします。</td></tr>
 <tr><td><code>site_name</code></td>
     <td>Geeklog Site</td>
     <td>サイト名です。</td></tr>
@@ -56,7 +56,7 @@
     <td>サイトのスローガンです。</td></tr>
 <tr><td><code>welcome_msg</code></td>
     <td>Welcome to Geeklog Site</td>
-    <td>「ようこそ」のメッセージで、登録ユーザの場合は、この後にユーザ名が続きます。</td></tr>
+    <td>「ようこそ」のメッセージで、登録ユーザーの場合は、この後にユーザー名が続きます。</td></tr>
 <tr><td><code>datetime</code></td>
     <td>Thursday, November 28 2002 @ 11:43 AM PST</td>
     <td>現在の日付と時刻で、<code>$_CONF['date']</code>に従ってフォーマットされます。</td></tr>
@@ -74,17 +74,17 @@
     <td>サイトで使用されている言語を表すIDです。理想を言えば、これはISOの国/言語コードで、たとえば、イギリス英語なら en-GB となるべきでしょう。多言語サポートが有効になっている場合、この変数の値は<code>$_CONF['languages']</code>配列で使用されている言語ショートカット(ID)の値になります。それ以外の場合は、<code>$_CONF['locale']</code>から導き出されますが、ある程度の推測が含まれます。後者の場合、サイトのOSがUnix系でなければ（有効なISOコードではないので）、結果として、Germanのような値になることもあります。</td></tr>
 <tr><td><code>lang_attribute</code></td>
     <td><tt>lang="en-GB"</tt></td>
-    <td>サイトないし現在のページの言語を示すため、HTMLヘッダ内で <pre>&lt;html {lang_attribute}&gt;</pre> のような形で使用される<a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML言語属性(HTML lang attribute)</a>とその値です。サイトの言語IDが<a href="http://www.w3.org/TR/html4/struct/dirlang.html#langcodes">有効な言語コード</a>でないように思える場合（上述の <code>{lang_id}</code> 変数の説明をご覧ください。）、この変数は<strong>空</strong>、つまり、セットされないことに注意してください。</td></tr>
+    <td>サイトないし現在のページの言語を示すため、HTMLヘッダー内で <pre>&lt;html {lang_attribute}&gt;</pre> のような形で使用される<a href="http://www.w3.org/TR/html4/struct/dirlang.html#adef-lang">HTML言語属性(HTML lang attribute)</a>とその値です。サイトの言語IDが<a href="http://www.w3.org/TR/html4/struct/dirlang.html#langcodes">有効な言語コード</a>でないように思える場合（上述の <code>{lang_id}</code> 変数の説明をご覧ください。）、この変数は<strong>空</strong>、つまり、セットされないことに注意してください。</td></tr>
 <tr><td><code>feed_url</code></td>
     <td><tt>&lt;link rel="alternate" type="application/rss+xml" hreflang="en-gb" href="http://www.example.com/backend/geeklog.rss" title="RSS Feed: Geeklog"&gt;</tt></td>
-    <td>現在のページと関連するすべてのRSSフィードへのリンクです（フィードエディタの「RSSフィードに含める話題」の設定にもよります。）。</td></tr>
+    <td>現在のページと関連するすべてのRSSフィードへのリンクです（フィードエディターの「RSSフィードに含める話題」の設定にもよります。）。</td></tr>
 <tr><td><code>rss_url</code></td>
     <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
-    <td>サイトのRSSフィードのURL（ <code>{rdf_file}</code> 変数と同じです。この変数はサイトのフッタ( <tt>footer.thtml</tt> )でも利用できます。
+    <td>サイトのRSSフィードのURL（ <code>{rdf_file}</code> 変数と同じです。この変数はサイトのフッター( <tt>footer.thtml</tt> )でも利用できます。
         <strong>非推奨:</strong> この変数の代わりに<code>{feed_url}</code>変数を使用してください。</td></tr>
 <tr><td><code>rdf_file</code></td>
     <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
-    <td>サイトのRSSフィードのURL（<code>{rss_url}</code>変数と同じです。この変数はサイトのフッタ( <tt>footer.thtml</tt> )でも利用できます。
+    <td>サイトのRSSフィードのURL（<code>{rss_url}</code>変数と同じです。この変数はサイトのフッター( <tt>footer.thtml</tt> )でも利用できます。
         <strong>非推奨:</strong> この変数の代わりに<code>{feed_url}</code>変数を使用してください。</td></tr>
 <tr><td><code>rel_links</code></td>
     <td><tt>&lt;link rel="home" href="http://www.example.com/" title="Home"&gt;</tt></td>
@@ -111,10 +111,10 @@
     <td>自分のGeeklogサイトのURLです（コンフィギュレーションの <code>$_CONF['site_url']</code> で設定したものと同じです。）。</td></tr>
 <tr><td><code>layout_url</code></td>
     <td><tt>http://www.example.com/layout/professional</tt></td>
-    <td>ユーザが現在使用しているテーマディレクトリのURLです。</td></tr>
+    <td>ユーザーが現在使用しているテーマディレクトリのURLです。</td></tr>
 <tr><td><code>story_date</code></td>
     <td>Tuesday, October 22 2002 @ 11:50 PM PDT</td>
-    <td>記事の日付と時刻で、ユーザの設定に応じてフォーマットされます。</td></tr>
+    <td>記事の日付と時刻で、ユーザーの設定に応じてフォーマットされます。</td></tr>
 <tr><td><code>story_date_only</code></td>
     <td>22-Oct</td>
     <td>記事の日付で、<code>$_CONF['<a href="config.html#desc_dateonly">dateonly</a>']</code>に従ってフォーマットされます。</td></tr>
@@ -123,7 +123,7 @@
     <td>記事の日付で、<code>$_CONF['<a href="config.html#desc_shortdate">shortdate</a>']</code>に従ってフォーマットされます。</td></tr>
 <tr><td><code>lang_views</code></td>
     <td>Views</td>
-    <td>ユーザが選択している言語の「閲覧数(Views)」に相当する語句です。</td></tr>
+    <td>ユーザーが選択している言語の「閲覧数(Views)」に相当する語句です。</td></tr>
 <tr><td><code>story_hits</code></td>
     <td>42</td>
     <td>記事が閲覧された回数です。</td></tr>
@@ -144,7 +144,7 @@
     <td>トップページを表示する場合、この変数は記事の冒頭文を保持します。しかしながら、記事を個別に表示しているときには、冒頭文と本文の<em>両方</em>を保持します。<tt>story_introtext</tt>と<tt>story_text_no_br</tt>の違いは、<tt>story_introtext</tt>では、冒頭文と本文の間に<tt>&lt;br&gt;</tt>タグが2個挿入されるが、<tt>story_text_no_br</tt>では挿入されないという点です。</td></tr>
 <tr><td><code>lang_todays_featured_article</code></td>
     <td>Today's Featured Article</td>
-    <td>ユーザが現在使用している言語の「今日の注目記事(Today's Featured Article)」に相当する語句です。<strong>注目記事の場合にしか利用できません。</strong></td></tr>
+    <td>ユーザーが現在使用している言語の「今日の注目記事(Today's Featured Article)」に相当する語句です。<strong>注目記事の場合にしか利用できません。</strong></td></tr>
 <tr><td><code>story_counter</code></td>
     <td>1</td>
     <td>サイトのインデックスページ(<tt>index.php</tt>)では、この変数は最初の記事の場合は 1 、2番目の記事の場合は 2 、以下同様となります。最初の記事が注目記事かどうかとは無関係です。ページが変わる（たとえば、<tt>index.php?page=2</tt> など）ごとにカウンタはリセットされます。<br>記事を個々に表示しているとき(<tt>article.php</tt>)やプレビューでは 0 になります。</td></tr>
@@ -158,10 +158,10 @@
     <th style="width:50%">説明</th></tr>
 <tr><td><code>lang_readmore</code></td>
     <td>read more</td>
-    <td>ユーザが現在使用している言語の「続きを読む(read more)」に相当する語句です。</td></tr>
+    <td>ユーザーが現在使用している言語の「続きを読む(read more)」に相当する語句です。</td></tr>
 <tr><td><code>lang_readmore_words</code></td>
     <td>words</td>
-    <td>ユーザが現在使用している言語の「語(words)」に相当する語句です。</td></tr>
+    <td>ユーザーが現在使用している言語の「語(words)」に相当する語句です。</td></tr>
 <tr><td><code>readmore_words</code></td>
     <td>62</td>
     <td>記事の本文の語数です。</td></tr>
@@ -182,7 +182,7 @@
     <td>記事の本文が空白の場合はこの変数は空であり、そうでない場合はクラス属性になります。「続きを読む」リンクのレイアウトを変更するには、 <code>story-read-more</code> クラスを使用してください。</td></tr>
 <tr><td><code>print_icon</code></td>
     <td>(icon)</td>
-    <td>プリンタのアイコンで、印刷用のフォーマットで記事を読むためのリンクになっています。</td></tr>
+    <td>プリンターのアイコンで、印刷用のフォーマットで記事を読むためのリンクになっています。</td></tr>
 <tr><td><code>recent_post_anchortag</code></td>
     <td>--</td>
     <td>コメントが投稿されていない場合、この変数は（<code>{post_comment_link}</code>変数と同じく）コメント投稿用フォームへのリンクになっています。コメントがある場合、この変数には<strong>リンクではなく</strong>、最後にコメントが投稿された日時と投稿者名が入っています。</td></tr>
@@ -199,16 +199,16 @@
     <td>コメントセクションのURLです（記事が個別に表示されている場合）。</td></tr>
 <tr><td><code>comments_text</code></td>
     <td>2 comments</td>
-    <td>コメント数の後に、ユーザが現在使用している言語の「コメント(comments)」に相当する語句を続けたものです。</td></tr>
+    <td>コメント数の後に、ユーザーが現在使用している言語の「コメント(comments)」に相当する語句を続けたものです。</td></tr>
 <tr><td><code>comments_with_count</code></td>
     <td>2</td>
     <td>記事へのコメント数（常に 1 以上）。<br>この文字列は、コメントが受け付けられるとすぐに<code>&lt;a href=".../article.php?story=20021022234959146#comments"&gt;</code>を指すリンクに変わります。</td></tr>
 <tr><td><code>lang_comments</code></td>
     <td>comments</td>
-    <td>ユーザが現在使用している言語の「コメント(comments)」に相当する語句です。</td></tr>
+    <td>ユーザーが現在使用している言語の「コメント(comments)」に相当する語句です。</td></tr>
 <tr><td><code>post_comment_link</code></td>
     <td><code>&lt;a href=".../comment.php<br>?sid=20021022234959146&amp;pid=0<br>&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
-    <td>コメント投稿用フォームへのリンクです（リンクテキストにユーザが現在使用している言語の「コメント投稿(Post a comment)」に相当する語句を使用します。）。</td></tr>
+    <td>コメント投稿用フォームへのリンクです（リンクテキストにユーザーが現在使用している言語の「コメント投稿(Post a comment)」に相当する語句を使用します。）。</td></tr>
 </table>
 
 <p>以下の変数は、設定で <code>$_CONF['contributedbyline'] = 1;</code> となっている、つまり、「所有者名を表示する」が有効になっている場合に限り、利用できます。</p>
@@ -219,37 +219,37 @@
     <th style="width:50%">説明</th></tr>
 <tr><td><code>lang_contributed_by</code></td>
     <td>Contributed by:</td>
-    <td>ユーザが現在使用している言語の「所有者(Contributed by:)」に相当する語句です。</td></tr>
+    <td>ユーザーが現在使用している言語の「所有者(Contributed by:)」に相当する語句です。</td></tr>
 <tr><td><code>contributedby_uid</code></td>
     <td>7</td>
-    <td>記事所有者のユーザIDです。</td></tr>
+    <td>記事所有者のユーザーIDです。</td></tr>
 <tr><td><code>contributedby_user</code></td>
     <td>Tony</td>
-    <td>記事所有者のユーザ名（アカウント名）です。</td></tr>
+    <td>記事所有者のユーザー名（アカウント名）です。</td></tr>
 <tr><td><code>contributedby_fullname</code></td>
     <td>Tony Bibbs</td>
-    <td>記事所有者のフルネームです。ユーザがフルネームを記入していないときは、代わりにユーザ名が使用されます。</td></tr>
+    <td>記事所有者のフルネームです。ユーザーがフルネームを記入していないときは、代わりにユーザー名が使用されます。</td></tr>
 <tr><td><code>contributedby_author</code></td>
     <td>Tony Bibbs</td>
-    <td>記事所有者名です。もし<code>$_CONF['show_fullname']</code>が有効な場合、（もし設定されていたら）所有者のフルネーム、そうでなければユーザ名になります。</td></tr>
+    <td>記事所有者名です。もし<code>$_CONF['show_fullname']</code>が有効な場合、（もし設定されていたら）所有者のフルネーム、そうでなければユーザー名になります。</td></tr>
 <tr><td><code>start_contributedby_anchortag</code></td>
     <td><code>&lt;a class="storybyline" href="http://www.example.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
-    <td>記事所有者のプロフィールへのリンクの開きタグです（ゲストユーザの場合は空白）。</td></tr>
+    <td>記事所有者のプロフィールへのリンクの開きタグです（ゲストユーザーの場合は空白）。</td></tr>
 <tr><td><code>end_contributedby_anchortag</code></td>
     <td><code>&lt;/a&gt;</code></td>
-    <td>記事所有者のプロフィールへのリンクの閉じタグです（ゲストユーザの場合は、空白）。</td></tr>
+    <td>記事所有者のプロフィールへのリンクの閉じタグです（ゲストユーザーの場合は、空白）。</td></tr>
 <tr><td><code>contributedby_url</code></td>
     <td><tt>http://www.example.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
-    <td>記事所有者のプロフィールへのリンク（ゲストユーザの場合は空白）。</td></tr>
+    <td>記事所有者のプロフィールへのリンク（ゲストユーザーの場合は空白）。</td></tr>
 <tr><td><code>contributedby_photo</code></td>
     <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
-    <td>もしある場合は、記事所有者の写真です（ゲストユーザの場合は常に空白）。</td></tr>
+    <td>もしある場合は、記事所有者の写真です（ゲストユーザーの場合は常に空白）。</td></tr>
 <tr><td><code>camera_icon</code></td>
     <td>small camera icon and link to the author's user profile</td>
-    <td>記事所有者が写真をアップロードしている場合、（オンラインユーザブロックと同じく）小さなカメラのアイコンと記事所有者のプロフィールへのリンクを表示します（ゲストユーザの場合は表示されない）。</td></tr>
+    <td>記事所有者が写真をアップロードしている場合、（オンラインユーザーブロックと同じく）小さなカメラのアイコンと記事所有者のプロフィールへのリンクを表示します（ゲストユーザーの場合は表示されない）。</td></tr>
 </table>
 
-<p>以下の変数は、記事の話題アイコンが有効になっており、<strong>かつ、</strong>ユーザが自分の表示設定で話題アイコンを無効にしていない場合に限り、利用できます。</p>
+<p>以下の変数は、記事の話題アイコンが有効になっており、<strong>かつ、</strong>ユーザーが自分の表示設定で話題アイコンを無効にしていない場合に限り、利用できます。</p>
 
 <table>
 <tr><th style="width:25%">変数名</th>
@@ -281,7 +281,7 @@
     <td>現在の話題の記事だけを表示するサイトのインデックスページのURLです。</td></tr>
 </table>
 
-<p>以下の変数は、現在のユーザが記事を編集する権限を持っている場合に限り、利用できます。</p>
+<p>以下の変数は、現在のユーザーが記事を編集する権限を持っている場合に限り、利用できます。</p>
 
 <table>
 <tr><th style="width:25%">変数名</th>
@@ -289,16 +289,16 @@
     <th style="width:50%">説明</th></tr>
 <tr><td><code>edit_link</code></td>
     <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
-    <td>管理者の記事エディタで記事を編集するためのリンクです。</td></tr>
+    <td>管理者の記事エディターで記事を編集するためのリンクです。</td></tr>
 <tr><td><code>edit_icon</code></td>
     <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;&lt;img src=".../images/edit.gif"&gt;&lt;/a&gt;</code></td>
-    <td>記事を編集するための管理者の記事エディタへリンクしているアイコンです。</td></tr>
+    <td>記事を編集するための管理者の記事エディターへリンクしているアイコンです。</td></tr>
 <tr><td><code>edit_url</code></td>
     <td><tt>http://www.example.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
-    <td>管理者の記事エディタで記事を編集するためのURLです。</td></tr>
+    <td>管理者の記事エディターで記事を編集するためのURLです。</td></tr>
 <tr><td><code>lang_edit_text</code></td>
     <td>edit</td>
-    <td>ユーザが現在使用している言語の「編集(edit)」に相当する語句です。</td></tr>
+    <td>ユーザーが現在使用している言語の「編集(edit)」に相当する語句です。</td></tr>
 </table>
 
 <div class="footer">

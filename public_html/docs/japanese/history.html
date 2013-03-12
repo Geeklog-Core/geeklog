@@ -18,99 +18,170 @@
 
 <p><a href="../history">public_html/docs/history</a>をHTML化し、翻訳したものです。</p>
 
+
+<h2>Mar 8, 2013 (2.0.0rc3)</h2>
+
+<li>
+<li>jQuery を version 1.9.1にアップグレードしました。[Tom]</li>
+<li>jQuery UI を version 1.10.1にアップグレードしました。[Tom]</li>
+<li>プロフィールページの"すべての投稿を検索(Find all postings by ...)"に空テキストを許可しなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001565">#0001565</a>) [Tom]</li>
+<li>Modern Curveテーマに記事ページコメントセクションへリンクするタグを追加しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001563">#0001563</a>) [Tom]</li>
+<li>modern_curve テーマのtooltipsディレクトリにindex.htmlを追加しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001562">#0001562</a>) [Kenji]</li>
+<li>modern_curve CSS ファイル内の日本語文字列を削除しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001561">#0001561</a>, パッチ提供 taca) [Kenji]</li>
+<li>コンフィギュレーション UIの"More.." タブが正しく動作しなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001561">#0001561</a>[Dengen]</li>
+<li>ドキュメントのテーマの説明をGeeklog 2.0.0向けに更新しました。[Tom]</li>
+<li>FCKeditorをversion 2.6.9にアップグレードしました。[Dirk]</li>
+<li>COM_nl2br()が改行文字を&lt;br&gt;タグに置き換えるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001141">#0001141</a>) [Tom]</li>
+</ul>
+
+
+<h2>Feb 19, 2013 (2.0.0rc2)</h2>
+
+<p>このリリースは以下のセキュリティーの問題を修正:</p>
+<ul>
+<li>High-Tech Bridge Security Research Lab が XSSがカレンダープラグインのcalendar_typeパラメーターに存在することを報告しました(訳註　これに伴い、日本語版ではカレンダーjpプラグインも同様に対策しました)(HTB23143)。</li>
+<li>Trustwave Spiderlabs は、インストールプログラム、コンフィギュレーション、アンケートプラグインの管理画面、話題の管理画面にXSSが存在することを報告しました (TWSL2013-001)。</li>
+</ul>
+
+<p>セキュリティーの問題以外の修正:</p>
+<ul>
+<li>jQueryをバージョン1.9.0に更新しました。[Tom] [Kenji]
+<li>jQuery UIをバージョン1.10.0に更新しました。[Tom] [Kenji]</li>
+<li>ユーザーバッチ処理管理を使用したときに"Illegal string offset 'phantom'"となるエラーを修正しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001558">#0001558</a>) [Dirk]</li>
+<li>2.0.0 のMySQL用話題アップグレードスクリプトを最適化しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001544">#0001544</a>) [Tom]</li>
+<li>DB_escapeStringを導入しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001146">#0001146</a>) [Kenji]</li>
+<li>複数の話題に登録された記事で、親の話題に誤った話題のアイコンが表示される可能性がありました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001509">#0001509</a>) [Tom]</li>
+<li>話題の管理者として記事を投稿しようとしたときに話題の選択が外れていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001486">#0001486</a>) [Tom]</li>
+<li>静的ページの話題選択。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001462">#0001462</a>) [Tom]</li>
+<li>Span-X プラグイン: Spam Number of Links (SNL) が有効だと、たくさんのリンクを有するユーザーがブロックされるのを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001516">#0001516</a>) [Tom]</li>
+<li>OAuthアカウントの削除のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
+<li>ラベルなしでメニューに登録した静的ページを保存できていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001542">#0001542</a>) [Tom]</li>
+<li>小数点の記号としてスペースを使用できるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001537">#0001537</a>) [Tom]</li>
+<li>コメントに返信して誤ったCAPTCHAコードを入力すると、ページの中にページが表示されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001527">#0001527</a>) [Tom]</li>
+<li>通知を指定したコメントの削除でエラーが起きていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001529">#0001529</a>) [Tom]</li>
+<li>管理オプションで自分自身に写しを送る(CC)をオプションで選べるようにしました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001259">#0001259</a>) [Tom]</li>
+<li>詳しい検索で日付の検証に問題がありました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000853">#0000853</a>) [Tom]</li>
+<li>カスタム関数 mytheme_createHTMLDocumentでパンくずの処理ができませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001531">#0001531</a>) [Tom]</li>
+<li>記事管理画面の話題の管理で継承について説明を更新しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001489">#0001489</a>) [Tom]</li>
+<li>ユーザー名のクリックでエラーになるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001514">#0001514</a>) [Tom]</li>
+<li>プラグインのコメントを編集できない不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001511">#0001511</a>) [Tom]</li>
+<li>ユーザーが投稿したコメントを削除できないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001512">#0001512</a>) [Tom]</li>
+<li>nl2brがHTMLに準拠していませんでした。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001141">#0001141</a>) [Tom]</li>
+<li>Spam-X SFS デフォルトをOFFにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001488">#0001488</a>) [Tom]</li>
+<li>Twitter OAuthログインの認証エラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001497">#0001497</a>) [Tom]</li>
+<li>トラックバックでSQLのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001498">#0001498</a>) [Tom]</li>
+<li>記事のフィードが必要なときだけ更新されるようにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001501">#0001501</a>) [Tom]</li>
+<li>admin/story.phpのJavaScriptのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001496">#0001496</a>) [Yoshinori]</li>
+<li>デフォルトの複数話題に登録された記事が常にゲストユーザーに利用されるのを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001487">#0001487</a>) [Tom]</li>
+<li>HTML 5 DOCTYPEを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001426">#0001426</a>) [Yoshinori]</li>
+</ul>
+
+
+<h2>Feb 19, 2013 (1.8.2sr1)</h2>
+
+<p>このリリースは以下のセキュリティーの問題を修正:</p>
+<ul>
+<li>High-Tech Bridge Security Research Lab が XSSがカレンダープラグインのcalendar_type parameterに存在することを報告しました(訳註　これに伴い、日本語版ではカレンダーjpプラグインも同様に対策しました)(HTB23143)。</li>
+<li>Trustwave Spiderlabs は、インストールプログラム、コンフィギュレーション、アンケートプラグインの管理画面、話題の管理画面にXSSが存在することを報告しました (TWSL2013-001)。</li>
+</ul>
+
+<p>セキュリティーの問題以外の修正:</p>
+<ul>
+<li>Twitter OAuth ログインのTwitter APIをversion 1.1に切り替えました。</li>
+</ul>
+
+
 <h2>Dec 30, 2012 (1.8.2)</h2>
 
 <ul>
-    <li>A remote service user now bypasses current password check when account is deleted (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
-    <li>Fixed Twitter OAuth login error after Twitter deactived some old URLs (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001497">#0001497</a>) [Tom]</li>
-    <li>$dbconfig_path was not escaped in the install script (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001457">#0001457</a>, パッチ提供mystral-kk)</li>
-    <li>COM_stripslashes will now handle arrays; this was a problem during re-authentication after a security token expired (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001413">#0001413</a>) [suprsidr]</li>
-    <li>The comment count for a story could be wrong if there was a different object with the same id and a comment (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001414">#0001414</a>) [Tom]</li>
-    <li>Feeds with the full story text still had a '...' at the end (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001431">#0001431</a> #0001431) [Jeff Rivett, Tom]</li>
-    <li>Allow MIME type application/x-gzip-compressed when uploading a plugin for installation (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001405">#0001405</a>) [Dirk]</li>
-    <li>Fixed compatibility with MySQL 5.5 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001410">#0001410</a>, <a href="http://project.geeklog.net/tracking/view.php?id=0001456">#0001456</a>). This also raises the minimum supported MySQL version to 4.1.2 [Dirk, Tom]</li>
+    <li>リモートサービスのユーザーがアカウントを削除するとき、現在のパスワードをチェックしないようになりました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
+    <li>Twitter OAuthログインエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001497">#0001497</a>) [Tom]</li>
+    <li>$dbconfig_path がインストールスクリプトでエスケープされていなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001457">#0001457</a>, パッチ提供 mystral-kk)</li>
+    <li>COM_stripslashesが配列を処理するようになりました。以前は有効期限の切れたセキュリティトークンを再認証する時にエラーが発生していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001413">#0001413</a>) [suprsidr]</li>
+    <li>同じ記事IDで同じコメントの場合、記事へのコメント数のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001414">#0001414</a>) [Tom]</li>
+    <li>フルテキストのフィードに含まれるURLに...が含まれるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001431">#0001431</a>) [Jeff Rivett, Tom]</li>
+    <li>プラグインアップロードのファイルタイプに、MIME type application/x-gzip-compressed を対応させました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001405">#0001405</a>) [Dirk]</li>
+    <li>MySQL 5.5との互換性の問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001410">#0001410</a>, <a href="http://project.geeklog.net/tracking/view.php?id=0001456">#0001456</a>)。また、これに伴い対応するMySQLの最低バージョンは4.1.2となりました。[Dirk, Tom]</li>
 </ul>
 
 
 <h2>Oct 12, 2012 (2.0.0rc1)</h2>
 
 <ul>
-<li>別の話題と同じidで話題を新規作成できていたバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001472">#0001472</a>)  [Tom]</li>
-<li>フィードの編集の「ヘッダーリンクする話題」を「なし」と「すべて」としたセクションで2度表示していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001481">#0001481</a>) [Tom]</li>
+<li>別の話題と同じidで話題を新規作成できていたバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001472">#0001472</a>)  [Tom]</li>
+<li>フィードの編集の「ヘッダーリンクする話題」を「なし」と「すべて」としたセクションで二度表示していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001481">#0001481</a>) [Tom]</li>
 <li>テーマを切り替えたときにエラーになっていたバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001473">#0001473</a>) [Yoshinori]</li>
 <li>ページナビゲーションのコンフィギュレーションオプションを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001474">#0001474</a>) [Tom]</li>
-<li>静的ページプラグインをGeeklog 2.0.0用にアップグレードするときに、話題のアサインが適切に設定されませんでした。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001475">#0001475</a>) [Tom]</li>
-<li>左ブロックの自動タグがfooter.thtmlで左ブロックを置くDenim以外ではオプションの指定が無視されて常に動作していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001471">#0001471</a>) [Tom]</li>
-<li>ページのナビゲーターの部分はリストでマークアップすべきでした。 (要望 request <a href="http://project.geeklog.net/tracking/view.php?id=0001422">#0001422</a>) [Tom]</li>
+<li>静的ページプラグインをGeeklog 2.0.0用にアップグレードするときに、話題の割り当てが適切に設定されていませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001475">#0001475</a>) [Tom]</li>
+<li>左ブロックの自動タグがfooter.thtmlで左ブロックを置くDenimテーマ以外ではオプションの指定が常に無視されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001471">#0001471</a>) [Tom]</li>
+<li>ページのナビゲーターの部分はリストでマークアップすべきでした。(要望 request <a href="http://project.geeklog.net/tracking/view.php?id=0001422">#0001422</a>) [Tom]</li>
 <li>静的ページのテンプレートのページはアクセス拒否のメッセージを表示すべきでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001468">#0001468</a>) [Tom]</li>
-<li>カレンダープラグインの郵便番号の文字数が少なすぎるためインストールSQLで増やしました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001449">#0001449</a>) [Tom]</li>
-<li>ereg関数を取り除きました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000967">#0000967</a>) [Tom]</li>
+<li>カレンダープラグインの郵便番号の文字数が少なすぎるため、増やしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001449">#0001449</a>) [Tom]</li>
+<li>ereg関数を取り除きました。（訳注: PHP-5.3.0では、ereg(), eregi(), split()は非推奨になりました。）(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000967">#0000967</a>) [Tom]</li>
 <li>COM_siteHeaderとCOM_siteFooterを作り替えました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001358">#0001358</a>) [Yoshinori]</li>
 <li>コンフィギュレーションの「More」のリンクがIE6から7で動作しませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001466">#0001466</a>) [Tom]</li>
 </ul>
-
 
 <h2>Jul 13, 2012 (2.0.0b2)</h2>
 
 <ul>
     <li>rescue.php: $config array を追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001463">#0001463</a>) [Tom]</li>
-    <li>多言語セットアップでクラッシュするバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001465">#0001465</a>) [Yoshinori]</li>
+    <li>多言語セットアップでクラッシュするバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001465">#0001465</a>) [Yoshinori]</li>
     <li>Theme: professional_css と modern_curve: コメント投稿ボタンが常時表示されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001464">#0001464</a>) [Yoshinori]</li>
-    <li>静的ページメニューがログインユーザーにしか表示されなかったバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001461">#0001461</a>) [Tom]</li>
-    <li>ゲストユーザーが投稿したときページタイトルが入力できないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001458">#0001458</a>) [Tom]</li>
+    <li>静的ページメニューがログインユーザーにしか表示されなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001461">#0001461</a>) [Tom]</li>
+    <li>ゲストユーザーが投稿したときページタイトルが入力できないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001458">#0001458</a>) [Tom]</li>
     <li>静的ページをページ全体のモードで作成したとき、ブロックとページヘッダーとフッターが表示されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001460">#0001460</a>) [Tom]</li>
-    <li>MySQL-5.5.xへのアップグレードのバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001456">#0001456</a>) [Tom]</li>
-    <li>$dbconfig_path がエスケープされていなかったバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001457">#0001457</a>) [Tom]</li>
-    <li>microsummariesの使用を中止しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001455">#0001455</a>) [Dirk]</li>
-    <li>サブの話題を追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001175">#0001175</a>) [Tom]</li>
-    <li>パンくずリストのRootにサイト名の代わりに登録した名前を使えるようにしました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001454">#0001454</a>) [Tom]</li>
-    <li>複数のパンくずリストが表示されるバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001441">#0001441</a>) [Tom]</li>
-    <li>PUBLIC_HTML/index.php?display=microsummaryで、SQL errorが発生するバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001451">#0001451</a>) [Tom]</li>
-    <li>関数名のタイポ: SEC_hasConfigAcessを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001446">#0001446</a>) [Dirk]</li>
-    <li>PUBLIC_HTML/index.php?topic=存在しない話題IDを指定したときにクラッシュするバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001452">#0001452</a>) [Tom]</li>
-    <li>多言語モードを有効にするとサイトがクラッシュするバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001450">#0001450</a>) [Dirk]</li>
-    <li>記事新規作成で話題がセレクトされていないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001448">#0001448</a>) [Tom]</li>
+    <li>MySQL-5.5.xへのアップグレードのバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001456">#0001456</a>) [Tom]</li>
+    <li>$dbconfig_path がエスケープされていなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001457">#0001457</a>) [Tom]</li>
+    <li>microsummariesの使用を中止しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001455">#0001455</a>) [Dirk]</li>
+    <li>サブの話題を追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001175">#0001175</a>) [Tom]</li>
+    <li>パンくずリストのRootにサイト名の代わりに登録した名前を使えるようにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001454">#0001454</a>) [Tom]</li>
+    <li>複数のパンくずリストが表示されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001441">#0001441</a>) [Tom]</li>
+    <li>PUBLIC_HTML/index.php?display=microsummaryで、SQL errorが発生するバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001451">#0001451</a>) [Tom]</li>
+    <li>関数名のタイポ: SEC_hasConfigAcessを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001446">#0001446</a>) [Dirk]</li>
+    <li>PUBLIC_HTML/index.php?topic=存在しない話題IDを指定したときにクラッシュするバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001452">#0001452</a>) [Tom]</li>
+    <li>多言語モードを有効にするとサイトがクラッシュするバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001450">#0001450</a>) [Dirk]</li>
+    <li>記事新規作成で話題がセレクトされていないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001448">#0001448</a>) [Tom]</li>
 </ul>
-
 
 <h2>May 24, 2012 (2.0.0b1)</h2>
 
 <ul>
-    <li>COM_siteHeaderとCOM_siteFooterを置き換える関数としてCOM_createHTMLDocumentに変更されました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001358">#0001358</a>) [Dengen]</li>
-    <li>$_CONF['left_blocks_in_footer']を有効にしたとき、ブロックを表示しないモードが正しく動作しないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001316">#0001316</a>) [Dengen]</li>
+    <li>COM_siteHeaderとCOM_siteFooterを置き換える関数としてCOM_createHTMLDocumentに変更されました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001358">#0001358</a>) [Dengen]</li>
+    <li>$_CONF['left_blocks_in_footer']を有効にしたとき、ブロックを表示しないモードが正しく動作しないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001316">#0001316</a>) [Dengen]</li>
     <li>Responsive Web DesignのテーマDenimを追加しました。[Dengen]</li>
     <li>professionalを置き換えるテーマとしてmodern_curveを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001255">#0001255</a>) [Rouslan]</li>
     <li>Emergency Rescue Toolをインストールディレクトリに追加しました。[Tom]</li>
-    <li>jQuery css filesのロード順をScripts classで変更しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001439">#0001439</a>) [Tom]</li>
-    <li>パスワードの暗号化の強度を高めました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001384">#0001384</a>) [Vinny]</li>
-    <li>error.logにIPアドレスを追加しました。 [Tom]</li>
-    <li>ページナビゲーションにマークアップを許可しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001422">#0001422</a>) [Tom]</li>
-    <li>sitemap.xml 書き込みエラーを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001412">#0001412</a>) [Vinny]</li>
-    <li>ダイナミックブロックリスト機能をブロック管理ページに追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001434">#0001434</a>) [Tom]</li>
-    <li>管理者向けにDatabase コマンドエラーを表示するようにしました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001404">#0001404</a>) [Dirk]</li>
-    <li>MySQL 5.5 以降で発生するDB バックアップエラーを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001410">#0001410</a>) [Dirk]</li>
+    <li>jQuery css filesのロード順をScripts classで変更しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001439">#0001439</a>) [Tom]</li>
+    <li>パスワードの暗号化の強度を高めました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001384">#0001384</a>) [Vinny]</li>
+    <li>error.logにIPアドレスを追加しました。[Tom]</li>
+    <li>ページナビゲーションにマークアップを許可しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001422">#0001422</a>) [Tom]</li>
+    <li>sitemap.xml 書き込みエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001412">#0001412</a>) [Vinny]</li>
+    <li>ダイナミックブロックリスト機能をブロック管理ページに追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001434">#0001434</a>) [Tom]</li>
+    <li>管理者向けにDatabase コマンドエラーを表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001404">#0001404</a>) [Dirk]</li>
+    <li>MySQL 5.5 以降で発生するDB バックアップエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001410">#0001410</a>) [Dirk]</li>
     <li>Gravatar Image リクエスト (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001435">#0001435</a>) [Dirk]</li>
-    <li>アップロードによるインストールがWindowsのブラウザからできなかったバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001405">#0001405</a>) [Dirk]</li>
-    <li>要素がひとつしかない場合にフィードが作成されないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001431">#0001431</a>) [Tom]</li>
-    <li>コメントを同一ページで行うようにしました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000728">#0000728</a>, provided by dengen)</li>
-    <li>話題を階層化しました。 [Tom]</li>
+    <li>アップロードによるインストールがWindowsのブラウザーからできなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001405">#0001405</a>) [Dirk]</li>
+    <li>要素がひとつしかない場合にフィードが作成されないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001431">#0001431</a>) [Tom]</li>
+    <li>コメントを同一ページで行うようにしました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000728">#0000728</a>, 提供 dengen)</li>
+    <li>話題を階層化しました。[Tom]</li>
     <li>話題への関連付けを他のオブジェクトにも広げました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001155">#0001155</a>)  [Tom]</li>
     <li>記事、ブロック、静的ページを複数の話題を選択できるようにしました。[Tom]</li>
-    <li>管理者用にCC設定モードを追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001259">#0001259</a>) [Tom]</li>
-    <li>OAuthのアカウント削除ができないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
-    <li>アンケートプラグインの管理画面で保存するとき投票数がリセットされるバグを修正しました。 (バグ  <a href="http://project.geeklog.net/tracking/view.php?id=0001419">#0001419</a>) [Tom]</li>
-    <li>Scripts class がテーマのstyle.cssをincludeするバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001407">#0001407</a>) [Tom]</li>
-    <li>Queryエラー: Syntax error &quot;AS dateFROM&quot; を修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001418">#0001418</a>) [Tom]</li>
-    <li>記事のコンフィギュレーションパネルに$_CONF['linktext_maxlen']を追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001139">#0001139</a>)  [Tom]</li>
-    <li>パンくずリストを追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001062">#0001062</a>) [Tom]</li>
-    <li>コンフィギュレーションのCopyright Yearは数字のみの入力に制限しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001416">#0001416</a>) [Tom]</li>
-    <li>記事とブロック、話題と、コアプラグインは削除されたグループを扱えないバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001397">#0001397</a>) [Tom]</li>
-    <li>lib-common.php  line 5754で定義された配列によりStripslashes() がパラメーター1がストリングであると予想されるバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001413">#0001413</a>) [Tom]</li>
-    <li>コメント投稿後のコメント数がなくなるバグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001414">#0001414</a>)  [Tom]</li>
-    <li>SQL errorsの表示に、function名とline numberを追加しました。  (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001377">#0001377</a>) [Dirk]</li>
-    <li>Spam-XへForum SpamとLinks ModulesのSpam数を追加しました。 (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001378">#0001378</a>) [Tom]</li>
-    <li>Spam-X pluginの言語を分離しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000656">#0000656</a>) [Tom]</li>
-    <li>MySQLi へのサポートを追加しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001303">#0001303</a>, provided by mystral-kk)</li>
+    <li>管理者用にCC設定モードを追加しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001259">#0001259</a>) [Tom]</li>
+    <li>OAuthのアカウント削除ができないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001417">#0001417</a>) [Tom]</li>
+    <li>アンケートプラグインの管理画面で保存するとき投票数がリセットされるバグを修正しました。(バグ  <a href="http://project.geeklog.net/tracking/view.php?id=0001419">#0001419</a>) [Tom]</li>
+    <li>Scripts class がテーマのstyle.cssをincludeするバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001407">#0001407</a>) [Tom]</li>
+    <li>Queryエラー: Syntax error &quot;AS dateFROM&quot; を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001418">#0001418</a>) [Tom]</li>
+    <li>記事のコンフィギュレーションパネルに$_CONF['linktext_maxlen']を追加しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001139">#0001139</a>)  [Tom]</li>
+    <li>パンくずリストを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001062">#0001062</a>) [Tom]</li>
+    <li>コンフィギュレーションのCopyright Yearは数字のみの入力に制限しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001416">#0001416</a>) [Tom]</li>
+    <li>記事とブロック、話題と、コアプラグインは削除されたグループを扱えないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001397">#0001397</a>) [Tom]</li>
+    <li>lib-common.php  line 5754で定義された配列によりStripslashes() がパラメーター1がストリングであると予想されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001413">#0001413</a>) [Tom]</li>
+    <li>コメント投稿後のコメント数がなくなるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001414">#0001414</a>)  [Tom]</li>
+    <li>SQL errorsの表示に、function名とline numberを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001377">#0001377</a>) [Dirk]</li>
+    <li>Spam-XへForum SpamとLinks ModulesのSpam数を追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001378">#0001378</a>) [Tom]</li>
+    <li>Spam-X pluginの言語を分離しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0000656">#0000656</a>) [Tom]</li>
+    <li>MySQLi へのサポートを追加しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001303">#0001303</a>, 提供 mystral-kk)</li>
 </ul>
 <p>最新開発状況は本家<a href="http://project.geeklog.net/cgi-bin/hgwebdir.cgi/geeklog/">リポジトリ</a>を。</p>
 
@@ -123,7 +194,7 @@
 <li>RootデバッグオプションでOAuthのコンシューマー・キーとコンシューマー・シークレットを削除 [Dirk]
 <li>コンフィギュレーション配列から要素を削除する時の問題を修正 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001394">#0001394</a>で、dengen氏からパッチを提供)</li>
 <li>関連情報ブロックのバッドワードチェックを回避 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001393">#0001393</a>) [Tom, Dirk]
-<li>管理者のユーザの編集でユーザの写真の名前の変更に失敗したときにエラーメッセージを表示した問題を修正 [Dirk]</li>
+<li>管理者のユーザーの編集でユーザーの写真の名前の変更に失敗したときにエラーメッセージを表示した問題を修正 [Dirk]</li>
 <li>初期状態で失敗したMS SQLの問い合わせの詳細を表示しない [Dirk]
 </ul>
 
@@ -134,32 +205,32 @@
 <h2>Sep 11, 2011 (1.8.1rc1)</h2>
 
 <ul>
-<li>jQuery version を 1.6.3にアップデートしました。 [Tom]</li>
-<li>ユーザ管理画面でユーザ情報を編集するとパスワード情報を空にして保存する不具合を修正しました。(バグ
+<li>jQuery version を 1.6.3にアップデートしました。[Tom]</li>
+<li>ユーザー管理画面でユーザー情報を編集するとパスワード情報を空にして保存する不具合を修正しました。(バグ
   <a href="http://project.geeklog.net/tracking/view.php?id=0001385">#0001385</a>) [Tom]</li>
-<li>プラグインは、plugin_getFooter関数で$_SCRIPTSをセットするようにしました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001383">#0001383</a>)
+<li>プラグインは、plugin_getFooter関数で$_SCRIPTSをセットするようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001383">#0001383</a>)
   [Tom]</li>
-<li>ユーザプロファイル表示がゲストに許可されていないとき、サイトのメインページに
+<li>ユーザープロファイル表示がゲストに許可されていないとき、サイトのメインページに
    リダイレクトするようにしました。(cf. バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001372">#0001372</a>) [Dirk]</li>
 <li>PHP 5.4による警告メッセージが出ないようにしました。(静的呼び出しの非静的方法、
   get_magic_quotes_gpc()で警告されていました。) [Dirk]</li>
-<li>[code] と [raw] タグはコンテンツをエスケープしません。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001368">#0001368</a>)
+<li>[code] と [raw] タグはコンテンツをエスケープしません。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001368">#0001368</a>)
   [Dirk]</li>
 <li>テーマ変数{contributedby_anchortag} に属性 rel="author" が追加されました。
   [Dirk]</li>
 <li>静的ページテンプレートが使用されているとき、センターブロックに表示する
-  バグを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001370">#0001370</a>) [Tom]</li>
-<li>管理者のユーザ編集画面で、エラーが発生したとき、編集内容が失われないようにしました。(cf. バグ
+  バグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001370">#0001370</a>) [Tom]</li>
+<li>管理者のユーザー編集画面で、エラーが発生したとき、編集内容が失われないようにしました。(cf. バグ
   <a href="http://project.geeklog.net/tracking/view.php?id=0000653">#0000653</a>) [Dirk]</li>
 <li>success.phpでリストされたパスの方向のバグを修正しました。
   [Dirk]</li>
 <li>記事の編集アイコンを、すべての記事編集権限がないときには表示しないようにしました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001210">#0001210</a>) [Dirk]</li>
-<li>$_CONF['path_images']が変更されたとき、話題画像のアップロードの不具合を修正しました。 (バグ
+<li>$_CONF['path_images']が変更されたとき、話題画像のアップロードの不具合を修正しました。(バグ
   <a href="http://project.geeklog.net/tracking/view.php?id=0001268">#0001268</a>) [Dirk]</li>
 <li>自動タグ [staticpage_content:] は連続する呼び出しで空を返す不具合を修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001266">#0001266</a>) [Dirk]</li>
-<li>Calendarプラグインのテンプレートにおけるform action URLの不具合を修正しました。 (パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001360">#0001360</a>, 提供
+<li>Calendarプラグインのテンプレートにおけるform action URLの不具合を修正しました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001360">#0001360</a>, 提供
   mystral-kk)</li>
 <li>画像が記事プレビューで表示されない不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001367">#0001367</a>) [Dirk]</li>
 <li>magic_quotes_gpc = Onのとき、コメントのタイトルにバックスラッシュが入る不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000941">#0000941</a>)
@@ -198,9 +269,9 @@
 <li>German, Serbian, Slovenian 言語ファイルのコンフィギュレーション関係を修正しました。[Dirk]</li>
 <li>パッケージ同梱プラグイがGeeklog 1.5.0より古い場合のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001354">#0001354</a>) [Dirk]</li>
 <li>アップデート後にsiteconfig.phpが不完全か壊れてしまうバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001353">#0001353</a>) [Dirk]</li>
-<li>XMLSitemapプラグインが、サポートしていない言語での利用の場合にワーニングを出力するのを抑制しました。 [Dirk]</li>
+<li>XMLSitemapプラグインが、サポートしていない言語での利用の場合にワーニングを出力するのを抑制しました。[Dirk]</li>
 <li>プラグインの古いfunctions.incのキャッシュバージョンのアップデートのバグを修正した。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001345">#0001345</a>) [Dirk]</li>
-<li>プラグインアップデートがユーザによってはできないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001344">#0001344</a>, パッチ提供: dengen)</li>
+<li>プラグインアップデートがユーザーによってはできないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001344">#0001344</a>, パッチ提供: dengen)</li>
 <li>コメント通知メール送信時にSQLエラーの引き金となった間違ったテーブルロックを修正しました。(参照: バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000939">#0000939</a>) [Vinny]</li>
 <li>静的ページプラグインの関数plugin_getiteminfo_staticpagesが常に正しいリターンを返していなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001342">#0001342</a>) [Tom]</li>
 <li>Windowsで、Calendarプラグインの週ページのレンジ表示のバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001340">#0001340</a>) [Tom]</li>
@@ -215,13 +286,13 @@
 <p>1.8.0b2からの変更:</p>
 <ul>
 <li>template classのスピードアップを行いました。(パッチ <a href="http://project.geeklog.net/tracking/view.php?id=0001302">#0001302</a>, 提供: mystral-kk)</li>
-<li>スロベニア語を修正しました。 (フィックスS 提供: gape)</li>
-<li>LinkedIn OAuthユーザの氏名をユーザ名にしました。 [Dirk]</li>
-<li>Facebook OAuthユーザの氏名をユーザ名にしました。 [Tom]</li>
-<li>HTMLを修正しました。 (パッチ #0001333, 提供：dengen)</li>
+<li>スロベニア語を修正しました。(フィックスS 提供: gape)</li>
+<li>LinkedIn OAuthユーザーの氏名をユーザー名にしました。[Dirk]</li>
+<li>Facebook OAuthユーザーの氏名をユーザー名にしました。[Tom]</li>
+<li>HTMLを修正しました。(パッチ #0001333, 提供：dengen)</li>
 <li>英語の言語ファイルからのarray_flip()呼び出しを削除しました。(要望: <a href="http://project.geeklog.net/tracking/view.php?id=0001336">#0001336</a>) [Rouslan]</li>
 <li>ツールチップフリッカーのバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001337">#0001337</a>, パッチ提供: dengen)</li>
-<li>言語ファイルに$LANG_VALIDATION['between']が抜けていたのを修正しました。 [Rouslan]</li>
+<li>言語ファイルに$LANG_VALIDATION['between']が抜けていたのを修正しました。[Rouslan]</li>
 <li>OAuth and OpenIDアカウントでログアウト後2分間の動作についてバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001334">#0001334</a>) [Tom]</li>
 </ul>
 
@@ -230,13 +301,13 @@
 <p>1.8.0b1からの変更:</p>
 <ul>
 <li>プレーンテキストのコメントがプレビューまたは編集されたときに投稿モードが変更されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001324">#0001324</a>) [Tom]</li>
-<li>OAuthユーザデータのサニタイズエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001322">#0001322</a>) [Dirk]</li>
+<li>OAuthユーザーデータのサニタイズエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001322">#0001322</a>) [Dirk]</li>
 <li>コンフィギュレーションのHTMLエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001318">#0001318</a>, パッチ提供: dengen) [Tom, Rouslan]</li>
 <li>プラグインの管理画面のタイトルセルにnowrapを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001321">#0001321</a>) [Tom]</li>
 <li>カレンダープラグインの編集のパーミッションチェックのエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001317, パッチ提供: dengen)</li>
 <li>jQueryウィジェットと効果のミスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001312">#0001312</a>) [Tom]</li>
 <li>setJavaScriptFile の/抜けの修正を行いました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001315">#0001315</a>) [Tom]</li>
-<li>アドバンストエディタを有効にしたときなど、JavaScript が無効であれば警告のコメントを表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001282">#0001282</a>) [Tom]</li>
+<li>アドバンストエディターを有効にしたときなど、JavaScript が無効であれば警告のコメントを表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001282">#0001282</a>) [Tom]</li>
 <li>ツールチップが常にすべて表示されるように変更しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001304">#0001304</a>) [Rouslan]</li>
 <li>OpenIDログイン時のimages/right_arrow.png　の画像抜けを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001311">#0001311</a>) [Rouslan]</li>
 <li>テーマがstyle.cssを使わない場合にはstyle.cssをロードしないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001309">#0001309</a>) [Rouslan]</li>
@@ -258,16 +329,15 @@
   <li>新しいCOM_newTemplate関数は、テンプレートのオーバーライドを許可します。
     (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001220">#0001220</a>, パッチ提供: Joe
     Mucchiello)</li>
-  <li>"ユーザにメールを送る"フォームは失敗したときもフォームの入力値を
+  <li>"ユーザーにメールを送る"フォームは失敗したときもフォームの入力値を
 失なわないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001270">#0001270</a>) [Rouslan]</li>
   <li>画像ディレクトリをクリーンアップしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001276">#0001276</a>) [Tom,
     Rouslan]</li>
-  <li>OAuthリモート認証とユーザ情報の同期（開発:Hiroshi Sakuramoto）を追加しました。
+  <li>OAuthリモート認証とユーザー情報の同期（開発:Hiroshi Sakuramoto）を追加しました。
    (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001191">#0001191</a>) [Tom]</li>
   <li>bigdump.phpをアップデートしました。最終バージョンの移行スクリプトで利用されます。
    (要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001143">#0001143</a>) [Rouslan]</li>
-  <li>管理者ページのJavaScript依存を削除しました。(要望 
-    <a href="http://project.geeklog.net/tracking/view.php?id=0001243">#0001243</a>) [Rouslan]</li>
+  <li>管理者ページのJavaScript依存を削除しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001243">#0001243</a>) [Rouslan]</li>
   <li>プラグインインストールで、Geeklogのバージョンへの適合チェックと他のプラグインへの
      依存チェックを追加しました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001154">#0001154</a>) [Rouslan]</li>
   <li>プラグインのインストール前に、データベースの要求をチェックするようにしました。(要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001288">
@@ -290,7 +360,7 @@
     Rouslan Placella)</li>
   <li>PLG_getFooterCode関数が追加され、footerにテーマ変数{plg_footercode}が
     使用できるようになりました。これで、たとえばJavaScriptコードなどをできる
-    だけ遅く読み込むことができるようになります。 (based on patch
+    だけ遅く読み込むことができるようになります。(based on patch
     <a href="http://project.geeklog.net/tracking/view.php?id=0000906">#0000906</a>, 提供: hiroron) [Dirk]</li>
   <li>COM_onFrontpageがテーマのfunctions.phpで動かないバグを修正しました。
      (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001254">#0001254</a>, パッチ提供: mystral-kk)</li>
@@ -369,7 +439,7 @@
 <ul>
 <li>PostgreSQLサポートの修正:
   <ul>
-    <li>複数のGeeklogのインスタンスがPostgreデータベースを共有しない不具合を修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001251">#0001251</a>) [Rouslan]</li>
+    <li>複数のGeeklogのインスタンスがPostgreデータベースを共有しない不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001251">#0001251</a>) [Rouslan]</li>
     <li>dbSaveの不具合を修正しました。[Dirk]</li>
     <li>エラー報告の不具合を修正しました。[Dirk]</li>
     <li>PHP 4との互換性の不具合を修正しました。[Dirk]</li>
@@ -389,7 +459,7 @@
 
 <ul>
 <li>STORY_renderArticleの$index parameter用descriptionの不具合を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001203">#0001203</a>) [Dirk]</li>
-<li>ユーザ管理画面のユーザ一括登録終了後のメッセージで成功件数が常に0だったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001211">#0001211</a>) [Ivy, Dirk]</li>
+<li>ユーザー管理画面のユーザー一括登録終了後のメッセージで成功件数が常に0だったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001211">#0001211</a>) [Ivy, Dirk]</li>
 <li>MS SQLのchangeDESCRIBEメソッドが適切な接頭子のSQLクエリ文字列を処理するよう修正しました。[Randy]</li>
 </ul>
 
@@ -415,22 +485,22 @@
 <li>アンケートプラグインでコメント投稿後のエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001080">#0001080</a>, パッチ提供: Wojtek Szkutnik)</li>
 <li>コンフィギュレーションの、パーマネントクッキーのドロップダウンの言語ファイルを変更しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001117">#0001117</a>, パッチ提供: Eric Brisco)</li>
-<li>コメント投稿と編集で、キャンセルと削除のボタンを必要に応じて追加しました。 (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0000981">#0000981</a>) [Tom]</li>
+<li>コメント投稿と編集で、キャンセルと削除のボタンを必要に応じて追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0000981">#0000981</a>) [Tom]</li>
 <li>バグ #0001057: ブロックコンテンツをエスケープできない (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001156">#0001156</a>). ブロックの中括弧内の単語は、テンプレート変数として解釈される問題があるなら、閉じタグの前にスペースを置くことで回避します。[Dirk]</li>
 <li>自動タグをテンプレートに記述できるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001181">#0001181</a>) [Tom]</li>
-<li>プラグインは文字列をreturnできるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0000619">#0000619</a> パッチ提供: jmucchiello)</li>
-<li>管理者リストは、空白のかわりに、0を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001060">#0001060</a> パッチ提供: jmucchiello)</li>
+<li>プラグインは文字列をreturnできるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0000619">#0000619</a>パッチ提供: jmucchiello)</li>
+<li>管理者リストは、空白のかわりに、0を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001060">#0001060</a>パッチ提供: jmucchiello)</li>
 <li>マイアカウントの"Show & Hide Boxes"を修正しました。(reported by Pushkar) [Dirk]</li>
 <li>ドラフト記事リストで、(話題IDではなく)話題名を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001171">#0001171</a>) [Dirk]</li>
 <li>COM_formatTimeStringで４週間以上を扱えるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001158">#0001158</a>) [Dirk]</li>
-<li>検索フォームにもPLG_templateSetVarsを追加しました。 [Dirk]</li>
-<li>サイトのアドバンストエディタのモードを不可にした場合も、ユーザ毎のモードを残しました。 (Thanks, Markus) [Dirk]</li>
-<li>プラグインのコメント投稿モードを修正しました。 [Dirk]</li>
-<li>グループ管理画面で、'登録済みユーザアカウントにデフォルトグループを追加する'は、
-  '新規登録ユーザのデフォルトグループをチェック'のチェックなしには選択できないようにしました。 (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001116">#0001116</a>,
+<li>検索フォームにもPLG_templateSetVarsを追加しました。[Dirk]</li>
+<li>サイトのアドバンストエディターのモードを不可にした場合も、ユーザー毎のモードを残しました。(Thanks, Markus) [Dirk]</li>
+<li>プラグインのコメント投稿モードを修正しました。[Dirk]</li>
+<li>グループ管理画面で、'登録済みユーザーアカウントにデフォルトグループを追加する'は、
+  '新規登録ユーザーのデフォルトグループをチェック'のチェックなしには選択できないようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001116">#0001116</a>,
   パッチ提供: Dushyant Tiwari)</li>
 <li>インストールスクリプトの$LANG_DIRECTIONを修正しました。(cf. バグ <a href="http://project.geeklog.net/tracking/view.php?id=0000871">#0000871</a>)</li>
-<li>記事のハイライトクエリがCOM_applyFilterによって効かないのを修正しました。 [Dirk]</li>
+<li>記事のハイライトクエリがCOM_applyFilterによって効かないのを修正しました。[Dirk]</li>
 </ul>
 <ul>
 <li>日本語言語ファイルのアップグレード。提供: Geeklog Japaneseグループ</li>
@@ -440,7 +510,7 @@
 
 <h3>静的ページプラグイン</h3>
 <ul>
-<li>アドバンストエディタが有効なら静的ページ編集時にも反映させました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001147">#0001147</a>, パッチ提供: Samuel Leathers)</li>
+<li>アドバンストエディターが有効なら静的ページ編集時にも反映させました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001147">#0001147</a>, パッチ提供: Samuel Leathers)</li>
 <li>静的ページのコンテンツを他の静的ページのテンプレートに設定できるようにしました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=0001085">#0001085</a>) [Tom]</li>
 </ul>
@@ -451,8 +521,8 @@
 
 <p>1.7.0rc1からの変更:</p>
 <ul>
-  <li>セキュリティ: (長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性がありました。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザ Jack に感謝します。</li>
-  <li>サブディレクトリへのインストール時、インストール前の表示のバグであるタイポを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001148">#0001148</a>) [Dirk]</li>
+  <li>セキュリティ: (長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性がありました。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザー Jack に感謝します。</li>
+  <li>サブディレクトリへのインストール時、インストール前の表示のバグであるタイポを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=0001148">#0001148</a>) [Dirk]</li>
 </ul>
 <ul>
   <li>ドイツ語の言語ファイルを更新しました。提供: Markus Wollschlager</li>
@@ -466,11 +536,11 @@
   <li>非常に長いIDを指定したとき、未定義関数 WS_makeId() を呼び出すバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1140">#0001140</a>)[Dirk]</li>
   <li>記事コピーのバグを修正しました。
-  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1127">#0001127</a> パッチ提供: Eric Brisco)</li>
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1127">#0001127</a>パッチ提供: Eric Brisco)</li>
   <li>インストール時のメッセージで、要求するファイルのパーミッションを777から666に変更しました。
-  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1126">#0001126</a> パッチ提供: Eric Brisco)</li>
-  <li>コンフィギュレーションのメニューアイテムを削除したときのナンバリングのバグを修正しました。 
-  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1074">#0001074</a> パッチ提供: Eric Brisco)</li>
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1126">#0001126</a>パッチ提供: Eric Brisco)</li>
+  <li>コンフィギュレーションのメニューアイテムを削除したときのナンバリングのバグを修正しました。
+  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1074">#0001074</a>パッチ提供: Eric Brisco)</li>
   <li>COM_featuredCheckで、トップページに１個だけの注目記事掲載を行なうようにしました。[Tom]</li>
   <li>プロファイルページでの最新コメント10件を表示するようにしました。[Tom]</li>
 </ul>
@@ -482,7 +552,7 @@
   <li>スロバキア語の言語ファイルを更新しました。提供: Miroslav Fikar</li>
 </ul>
 
-<h3>カレンダプラグイン</h3>
+<h3>カレンダープラグイン</h3>
 <ul>
   <li>関数PLG_itemPreSaveにCAPTCHAプラグインのサポートを追加しました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1091">#0001091</a>)[Dirk]</li>
@@ -532,24 +602,24 @@
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=835">#0000835</a>) [Tom]</li>
   <li>フィードのhtmlタグが閉じていなかったバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=749">#0000749</a>) [Tom]  </li>
-  <li>ユーザプロファイルページへのリンクを行う自動タグ [user:] を追加しました。
+  <li>ユーザープロファイルページへのリンクを行う自動タグ [user:] を追加しました。
   (feature request
   <a href="http://project.geeklog.net/tracking/view.php?id=1081">#0001081</a>, パッチ提供: Akeda Bagus)</li>
-  <li>ユーザブロックではアクティブユーザのみを表示。つまり、少なくとも１回は
-  ログインしたユーザのみカウントするように修正しました。[Dirk]</li>
-  <li>アドバンストエディタFCKeditorで、許可されたhtmlタグと自動タグの表示における
+  <li>ユーザーブロックではアクティブユーザーのみを表示。つまり、少なくとも１回は
+  ログインしたユーザーのみカウントするように修正しました。[Dirk]</li>
+  <li>アドバンストエディターFCKeditorで、許可されたhtmlタグと自動タグの表示における
   バグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1020">#0001020</a>, パッチ提供: Chetan)</li>
   <li>日付による検索結果表示のソートのバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1002">#0001002</a>) [Sami]</li>
   <li>期限切れのセキュリティトークンの再認証ができるようになったので、セキュティ・
-  トークンの期限を表示する必要がなくなりました。例外: OpenID によるログインユーザは
+  トークンの期限を表示する必要がなくなりました。例外: OpenID によるログインユーザーは
   再認証できませんので、そのメッセージは表示されます。[Dirk]</li>
   <li>ブロックIDは必須入力項目になりました。[Dirk]</li>
   <li>ブロック管理画面において、片側に50ブロック以上あったとき、すべてのブロックを
   表示できないバグを修正しました。
   (報告: cesar)
-  同じように、ユーザリストや記事リスト、フィードのリスト、プラグインリスト、
+  同じように、ユーザーリストや記事リスト、フィードのリスト、プラグインリスト、
   Weblogディレクトリ検索結果の表示で問題がありましたが、すべて修正されました。[Dirk]</li>
   <li>コメントページへのリンクのバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1061">#0001061</a>) [Tom]</li>
@@ -565,13 +635,13 @@
   <li>Spam-X が、特定グループの投稿だけはフィルタリングをスキップするよう修正しました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1018">#0001018</a>) [Tom]</li>
   <li>'gravatar_rating'のコンフィグレーションのオプションをドロップダウンに変更しました。[Dirk]</li>
-  <li>ゲストユーザのコメント投稿で、なまえを、"ユーザ名(Username)"から"あなたの名前(Your Name)"に
+  <li>ゲストユーザーのコメント投稿で、名前を"ユーザー名(Username)"から"あなたの名前(Your Name)"に
   変更しました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1039">#0001039</a>) [Dirk]</li>
-  <li>CUSTOM_group_change()のパラメータの間違いを修正しました。
+  <li>CUSTOM_group_change()のパラメーターの間違いを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1051">#0001051</a>)
   [Blaine]</li>
-  <li>記事のプリンタ用ページに対して、クリックジャッキングプロテクションを追加しました。
+  <li>記事のプリンター用ページに対して、クリックジャッキングプロテクションを追加しました。
   [Dirk]</li>
   <li>ページ閲覧でログインが要求されたとき、ログイン要求メッセージの表示のみだったのを、
   ログインフォームを表示するようにしました。[Dirk]</li>
@@ -580,15 +650,15 @@
   <li>管理者専用メニューのブロックリストにブロックIDを追加しました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=819">#0000819</a>) [Dirk]</li>
   <li>マイアカウントのレイアウト・言語のページで、アドバンストエディターを
-  使うかどうかのオプションを追加しました。 このオプションは、コンフィギュレーションで、
-  アドバンストエディタを使うというモードがオンでなければ表示されません。
+  使うかどうかのオプションを追加しました。このオプションは、コンフィギュレーションで、
+  アドバンストエディターを使うというモードがオンでなければ表示されません。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=984">#0000984</a>) [Dirk]</li>
   <li>コンフィギュレーションの、テキストエリア入力サポートを追加しました。
   (機能要望
   <a href="http://project.geeklog.net/tracking/view.php?id=905">#0000905</a>) [Dirk]</li>
   <li>ブロック内で括弧{}に囲まれた単語を使用できないバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1057">#0001057</a>) [Dirk]</li>
-  <li>新規ユーザ登録時に最初から登録されるグループをつくることができるようにしました。
+  <li>新規ユーザー登録時に最初から登録されるグループをつくることができるようにしました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=798">#0000798</a>) [Dirk]</li>
   <li>コンフィギュレーションへのリターンをfalseにしました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1054">#0001054</a>)</li>
@@ -613,7 +683,7 @@
   [Dirk]</li>
   <li>Geeklog 1.5.1から使用している、コンフィギュレーションの削除 [X] のJavaScript 関数名でremove()を、
   他のJavaScriptと干渉する可能性があったので、gl_cfg_remove()を開発して用意していたものの、
-  gl_cfg_remove()を呼び忘れてremove()を呼んでいたバグを修正しました。 
+  gl_cfg_remove()を呼び忘れてremove()を呼んでいたバグを修正しました。
   (参照 バグ <a href="http://project.geeklog.net/tracking/view.php?id=681">#0000681</a>) [Dirk]</li>
 </ul>
 
@@ -650,7 +720,7 @@
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=761">#0000761</a>) [Tom]</li>
   <li>アンケートブロックに編集アイコンを表示する機能をFixしました。polls.edit権が無い場合も表示していました。
   (ただし、権限が無ければ編集はできませんでした) [Dirk]</li>
-  <li>ユーザに許可されていないコメント表示の際に、間違った"アクセス拒否"メッセージが
+  <li>ユーザーに許可されていないコメント表示の際に、間違った"アクセス拒否"メッセージが
   表示されるバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1044">#0001044</a>) [Dirk]</li>
   <li>コメントバーのリフレッシュボタンが効かないバグを修正しました。
@@ -689,9 +759,7 @@
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=884">#0000884</a>) [Dirk]</li>
   <li>owner_idがコピーされているだけで無駄なフィールドだったsp_uidフィールドを削除しました。[Dirk]</li>
   <li>静的ページ編集画面にコメントの数を表示するようにしました。[Dirk]</li>
-  <li>ユーザ権限が無い場合に、間違った"アクセス拒否(access denied)"メッセージが表示されていたバグを
-  修正しました。
-  (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1043">#0001043</a> (訳注:?)) [Dirk]</li>
+  <li>ユーザー権限が無いページのコメントを表示しようとしたときの誤った"アクセス拒否(access denied)"というメッセージを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1043">#0001043</a>[Dirk]</li>
   <li>コメントバーのリフレッシュボタンが効かないバグを修正しました。
   (バグ <a href="http://project.geeklog.net/tracking/view.php?id=1043">#0001043</a>) [Dirk]</li>
   <li>メタタグを無効にしている場合、静的ページ編集画面にメタタグのフォームを表示しないようにしました。[Dirk]</li>
@@ -700,7 +768,7 @@
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=812">#0000812</a>) [Dirk]</li>
   <li>FCKeditor利用時の場合の静的ページ編集エリアの初期サイズを大きくしました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=1037">#0001037</a>) [Dirk]</li>
-  <li>存在しないページを表示したとき、ユーザにstaticpages.edit権があれば、そのIDの
+  <li>存在しないページを表示したとき、ユーザーにstaticpages.edit権があれば、そのIDの
   静的ページ編集画面へ遷移するようにしました。
   (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=975">#0000975</a>) [Dirk]</li>
   <li>コンフィギュレーションに、コメントのオプションを追加しました。
@@ -712,22 +780,22 @@
 
 <p>このリリースでは以下のセキュリティの問題に対処しました:</p>
 
-<p>YGN Ethical Hacker GroupのAung Khant氏が管理者のコンフィギュレーションパネルにXSSが存在すると報告がありました。</p>
+<p>YGN Ethical Hacker GroupのAung Khant氏が管理者のコンフィギュレーションパネルにXSSが存在すると報告があり、修正しました。</p>
 
 
 <h2>May 9, 2010 (1.6.1sr1)</h2>
 
 <p>このリリースは以下のセキュリティ対策を行いました:</p>
 
-<p>(長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性があります。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザ Jack に感謝します。</p>
+<p>(長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性があります。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザー Jack に感謝します。</p>
 
 <h2>Nov 22, 2009 (1.6.1)</h2>
 
 <p>1.6.1rc1以降の変更点:</p>
 <ul>
-  <li>プロフィールページからユーザにメールを送信できませんでした。これは誤ったフィールドに対して'@'文字を検査していることによるものです。(参照 バグ <a href="http://project.geeklog.net/tracking/view.php?id=992">#0000992</a> 報告: rayleigh) [Dirk]</li>
-  <li>unpacker.class.phpの間違った定数を修正しました。 [Blaine]</li>
-  <li>古くなっていたヘルプファイルを更新し、コメント、ユーザによる投稿、ドラフト記事一覧についてヘルプファイルを追加しました。 [Dirk]</li>
+  <li>プロフィールページからユーザーにメールを送信できませんでした。これは誤ったフィールドに対して'@'文字を検査していることによるものです。(参照 バグ <a href="http://project.geeklog.net/tracking/view.php?id=992">#0000992</a>報告: rayleigh) [Dirk]</li>
+  <li>unpacker.class.phpの間違った定数を修正しました。[Blaine]</li>
+  <li>古くなっていたヘルプファイルを更新し、コメント、ユーザーによる投稿、ドラフト記事一覧についてヘルプファイルを追加しました。[Dirk]</li>
   <li>インストール成功時にdb-config.phpとsiteconfig.phpのパーミッションを755に変更することを勧めていましたが、これらのファイルを実行する必要はないので644への変更を勧めるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1036">#0001036</a>) [Dirk]</li>
 </ul>
 <ul>
@@ -748,12 +816,12 @@
 <p>1.6.1b1以降の変更点:</p>
 <ul>
   <li>検索結果の署名が緑色にハードコードされていたのをスタイルシート("searchresult-byline"クラス追加)で指定するように変更しました(検索結果をGoogle風に表示するとき) [Dirk] </li>
-  <li>「検索条件の修正」で「タイトルのみ」というチェックボックスの状態がページ間で維持されていなかったバグを修正しました。 [Dirk]<br />注: このバグを修正するには search/searchform.thtml テンプレートを修正する必要があります。</li>
-  <li>検索結果のページで「ソート...」と「検索結果xx件」ドロップダウンリストの表示を改善しました(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=910">#0000910</a>)。 [Sami, LWC]</li>
+  <li>「検索条件の修正」で「タイトルのみ」というチェックボックスの状態がページ間で維持されていなかったバグを修正しました。[Dirk]<br />注: このバグを修正するには search/searchform.thtml テンプレートを修正する必要があります。</li>
+  <li>検索結果のページで「ソート...」と「検索結果xx件」ドロップダウンリストの表示を改善しました(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=910">#0000910</a>)。[Sami, LWC]</li>
   <li>検索結果でXHTMLを指定しているときでもHTMLの&lt;br&gt;タグを使用していました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1022">#0001022</a>, パッチ提供: taca)</li>
   <li>'data'ディレクトリがない場合に間違ったパスが報告されるバグを修正しました。(報告: Markus Wollschlager) [Dirk]</li>
   <li>管理者メニューでプラグインが0個のアイテムを返す場合に'N/A'と表示していたバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1025">#0001025</a>) [Dirk]</li>
-  <li>$_TABLES['groups']テーブルの名前が"groups"でない場合、グループエディタで、あるグループを他のグループに追加できないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=998">#0000998</a>)[Dirk]
+  <li>$_TABLES['groups']テーブルの名前が"groups"でない場合、グループエディターで、あるグループを他のグループに追加できないバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=998">#0000998</a>)[Dirk]
   </li>
 </ul>
 
@@ -773,13 +841,13 @@
 
 <h2>Nov 1, 2009 (1.6.1b1)</h2>
 <ul>
-  <li>マイアカウントでユーザのタイムゾーンを実際に選択できるようになりました。[Dirk]</li>
+  <li>マイアカウントでユーザーのタイムゾーンを実際に選択できるようになりました。[Dirk]</li>
   <li>「タイムゾーンハック」を最新のものにし、設定オプションをドロップダウンリストにしました。タイムゾーン関係のコードはすべて新しいTimeZoneConfigクラスに移しました。[Dirk]</li>
-  <li>ユーザが「(ブロックの)表示・非表示」の設定を変更した際にSQLエラーが発生する可能性のある古いバグを修正しました。[Dirk]</li>
+  <li>ユーザーが「(ブロックの)表示・非表示」の設定を変更した際にSQLエラーが発生する可能性のある古いバグを修正しました。[Dirk]</li>
   <li>投稿者名で検索する際にPHP 4で発生していたバグを修正しました(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1008">#0001008</a>) [Dirk]</li>
   <li>toinnodb.phpスクリプトの機能をデータベースバックアップ機能へ移動しました。[Dirk]</li>
   <li>データベースバックアップ機能にテーブルを最適化するオプションを追加しました（訳注: MySQLのみ）[Dirk]</li>
-  <li>ほとんどのエディタにセキュリティトークンの期限(と編集内容が失われる旨の)警告を追加しました。これは、エディタを更新してよりユーザに親切な解決策を提供するまでの一時的な措置です。[Dirk]</li>
+  <li>ほとんどのエディターにセキュリティトークンの期限(と編集内容が失われる旨の)警告を追加しました。これは、エディターを更新してよりユーザーに親切な解決策を提供するまでの一時的な措置です。[Dirk]</li>
   <li>検索結果でテキストの抜粋を表示する際にPHP 4で発生していたバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1004">#0001004</a>)[Dirk]
   </li>
   <li>コメント投稿制限が無視されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1003">#0001003</a>) [Dirk]</li>
@@ -789,24 +857,24 @@
   <li>外部アプリケーションが検索結果に出力を送れるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=985">#0000985</a>)[Sami]</li>
   <li>検索結果で、現在のソート順/表示数の上限を維持するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=1007">#0001007</a>) [Sami]</li>
   <li>記事へのコメントが許可されていないときにコメントフォームを表示しないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=994">#0000994</a>) [Dirk]</li>
-  <li>ユーザの投稿を承認/却下した後で管理者パネルの承認待ちが更新されない古いバグを修正しました。[Dirk]</li>
+  <li>ユーザーの投稿を承認/却下した後で管理者パネルの承認待ちが更新されない古いバグを修正しました。[Dirk]</li>
   <li>プラグインの自動インストールで複数のプラグイングループの作成に関するバグを修正しました。[Randy, Dirk]</li>
   <li>一定期間が経過した後で記事のコメント受付を自動的に有効/無効にする$_CONF['article_comment_close_enabled']オプションを追加しました(バグ <a href="http://project.geeklog.net/tracking/view.php?id=959">#0000959</a>)。gl_storiesテーブルのcomment_expireフィールドの扱いを変更して、0が「コメントを常に受け付ける」の意味になるようにしました。[Dirk]</li>
-  <li>グループエディタの"Admin Group"チェックボックスが機能していなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=995">#0000995</a>, 報告・パッチ提供 Tsuchi)</li>
+  <li>グループエディターの"Admin Group"チェックボックスが機能していなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=995">#0000995</a>, 報告・パッチ提供 Tsuchi)</li>
   <li>Geeklog-1.6.0の「コメントを無効にする」オプションのバグを回避するために、$_CONF['article_comment_close_days']に大きな数値に設定すると、「年」のドロップダウンリストで範囲外となり、その結果前年(!)を指定したことになってしまい、即座にコメント受付が終了していた場合がありました。[Dirk]</li>
   <li>自分のプロフィールのページを閲覧すると、「マイアカウント」へ移動する編集用のリンクを追加しました。[Dirk]</li>
-  <li>「記事を友人にメールする」、「メール送信」、「グループメール」でユーザが名前欄にメールアドレスを記入していないかを確認するチェックを追加しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=992">#0000992</a>) [Dirk]</li>
+  <li>「記事を友人にメールする」、「メール送信」、「グループメール」でユーザーが名前欄にメールアドレスを記入していないかを確認するチェックを追加しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=992">#0000992</a>) [Dirk]</li>
   <li>「記事を友人にメールする」画面で自分にコピーを送るオプションを追加し、この画面とメール送信画面の外見により統一感を持たせました。[Dirk]</li>
-  <li>話題エディタで現在の話題に含まれる記事数を表示するようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=806">#0000806</a>) [Dirk]</li>
+  <li>話題エディターで現在の話題に含まれる記事数を表示するようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=806">#0000806</a>) [Dirk]</li>
   <li>admin/user.phpからCUSTOM_userCheckを呼び出すようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=925">#0000925</a>) [Dirk]</li>
   <li>話題ごとに注目記事を1つ指定できるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=750">#0000750</a>, パッチ提供: Tom Homer)</li>
-  <li>アドバンストエディタで投稿モードを変更すると間違ったタブが選択されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=980">#0000980</a>, パッチ提供: dengen)</li>
-  <li>COM_mail関数の$ccパラメータをメールヘッダのオプションな配列にしました。($ccパラメータに文字列を指定しても、依然としてCC:として機能します。) [Dirk]</li>
+  <li>アドバンストエディターで投稿モードを変更すると間違ったタブが選択されるバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=980">#0000980</a>, パッチ提供: dengen)</li>
+  <li>COM_mail関数の$ccパラメーターをメールヘッダーのオプションな配列にしました。($ccパラメーターに文字列を指定しても、依然としてCC:として機能します。) [Dirk]</li>
   <li>1番目のコメントに対する返信の通知に関するバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=973">#0000973</a>)[dengen, Dirk]</li>
   <li>ゲストのコメント投稿者が名前を記入した場合、その名前をコメント通知メールで使用するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=960">#0000960</a>) [Dirk]</li>
   <li>コメントを編集するリンクからすべてのCSRFトークンを削除しました。トークンが必要なのは実際にコメントを編集するときだけなので、承認のページで問題が発生していました。[Dirk]</li>
-  <li>ゲストのコメントの名前を言語ファイルではなくデータベースのゲストユーザ名から取るようにしました。(参照 バグ <a href="http://project.geeklog.net/tracking/view.php?id=960">#0000960</a>) [Dirk]</li>
-  <li>セッションとパスワードのクッキーを作成する際にHttpOnlyフラグをセットし、JavaScriptから読み取りにくくしました。(Webブラウザがこのフラグをサポートしている必要があります。) [Dirk]</li>
+  <li>ゲストのコメントの名前を言語ファイルではなくデータベースのゲストユーザー名から取るようにしました。(参照 バグ <a href="http://project.geeklog.net/tracking/view.php?id=960">#0000960</a>) [Dirk]</li>
+  <li>セッションとパスワードのクッキーを作成する際にHttpOnlyフラグをセットし、JavaScriptから読み取りにくくしました。(Webブラウザーがこのフラグをサポートしている必要があります。) [Dirk]</li>
   <li>Story Adminの記事一覧と記事のオプションブロックで「ピングを送る」リンクの表示/非表示を修正しました。[Dirk]</li>
   <li>アップグレードの過程でインストールスクリプトが英語に戻ってしまうことがあったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=969">#0000969</a>, パッチ提供: taca)</li>
   <li>カンマが小数点として使用されているロケールでXMLSitemapのプライオリティの値が失われないようにする回避策を追加しました。[Dirk]</li>
@@ -817,27 +885,27 @@
   <li>プラグイン自体がアップグレードが必要なときにしか、プラグインの移行が呼び出されていなかったバグを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=947">#0000947</a>) [Dirk]</li>
   <li>インストールスクリプトのサイト移行オプションが既存のデータベースに対しても機能するようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=945">#0000945</a>) [Dirk]</li>
   <li>コメント通知で誤って「以下の場所で記事全体を読むことができます。」というメッセージが使用されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=940">#0000940</a>) [Dirk]</li>
-  <li>インストールスクリプトで正しいコンテントタイプと文字セットのヘッダを送るようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=964">#0000964</a>, パッチ提供: taca)</li>
+  <li>インストールスクリプトで正しいコンテントタイプと文字セットのヘッダーを送るようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=964">#0000964</a>, パッチ提供: taca)</li>
   <li>「認証の保存期間」で「受け付けない」オプションが認識されなくなっていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=961">#0000961</a>) [Dirk]</li>
   <li>コメントが承認待ちキューに入ったときに通知メールを送るようにしました。[Dirk]</li>
   <li>「友だちに記事をメールする」フォームに記事へのリンクを追加しました。[Dirk]</li>
   <li>story.*権限が要求されるときに、[code]、[raw]タグしか表示しないようにしました。[Dirk]</li>
-  <li>RootユーザがすべてのHTMLタグを許可されている場合、[page_break]が表示されていませんでした。[Dirk]</li>
+  <li>RootユーザーがすべてのHTMLタグを許可されている場合、[page_break]が表示されていませんでした。[Dirk]</li>
   <li>Tom Homerの提供により、descriptionメタタグとkeywordsメタタグがサポートされるようになりました。</li>
-  <li>(サイトの移行中に)bigdump.phpでエラーが発生してmigrate.phpに戻った場合、ユーザが選択した言語が保存されるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=943">#0000943</a>) [Dirk]</li>
-  <li>検索結果で日付を表示するときに、COM_getUserDateTimeFormat関数、つまり、ユーザが設定したフォーマットを使用するようにしました。[Dirk]</li>
+  <li>(サイトの移行中に)bigdump.phpでエラーが発生してmigrate.phpに戻った場合、ユーザーが選択した言語が保存されるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=943">#0000943</a>) [Dirk]</li>
+  <li>検索結果で日付を表示するときに、COM_getUserDateTimeFormat関数、つまり、ユーザーが設定したフォーマットを使用するようにしました。[Dirk]</li>
   <li>フィードを無効にするときに、フィードファイルを削除するようにしました。[Dirk]</li>
   <li>admin/sectest.phpに残っていたハードコードされた文字列を言語ファイルに移動しました。[Dirk]</li>
   <li>ピングバックの要約を作成する際に、必要なら他サイトのコンテンツの文字コードを変換するようにしました。[Dirk]</li>
   <li>新しいCOM_getTextContent関数はHTMLを連続したテキストに変換します。記事の「続きを読む」と検索結果及びピングバックの要約で文字数をより正確に数えるために使用されます。[Dirk]</li>
-  <li>オンラインユーザブロックに表示される登録ユーザ・ゲストユーザの数をCOM_numberFormat関数でフォーマットするようにしました。[Dirk]</li>
+  <li>オンラインユーザーブロックに表示される登録ユーザー・ゲストユーザーの数をCOM_numberFormat関数でフォーマットするようにしました。[Dirk]</li>
   <li>数ヶ所でハードコードされていた'N/A'を$LANG_ADMIN['na']に移しました。[Dirk]</li>
-  <li>ユーザエディタでリモートユーザのサービス名を表示するようにしました。[Dirk]</li>
+  <li>ユーザーエディターでリモートユーザーのサービス名を表示するようにしました。[Dirk]</li>
 </ul>
 
-<h3>カレンダプラグイン 1.1.1</h3>
+<h3>カレンダープラグイン 1.1.1</h3>
 <ul>
-  <li>イベントを投稿する際にユーザidを引き継ぐようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=993">#0000993</a>) [Dirk]</li>
+  <li>イベントを投稿する際にユーザーidを引き継ぐようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=993">#0000993</a>) [Dirk]</li>
   <li>event.phpで、{event_begin_anchortag}と{event_end_anchortag}テンプレート変数を再導入しました。[Dirk]</li>
   <li>イベントを編集すると、イベントの閲覧数がリセットされていました。[Dirk]</li>
   <li>イベントをコピーすると、閲覧数が0にならずにそのままコピーされていました。[Dirk]</li>
@@ -846,13 +914,13 @@
 
 <h3>リンクプラグイン</h3>
 <ul>
-  <li>カテゴリエディタで現在のカテゴリに含まれるリンク数を表示するようにしました。<br />注意: サブカテゴリのリンク数は(現時点では)含まれません。[Dirk]</li>
+  <li>カテゴリエディターで現在のカテゴリに含まれるリンク数を表示するようにしました。<br />注意: サブカテゴリのリンク数は(現時点では)含まれません。[Dirk]</li>
   <li>自動タグでリンクのタイトルを表示する際に引用符の前にバックスラッシュ（訳注：日本語では\）が表示されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=986">#0000986</a>) [Dirk]</li>
 </ul>
 
 <h3>アンケート(Polls)プラグイン</h3>
 <ul>
-  <li>ゲストユーザには表示されないアンケートしか含まないアンケートブロックの表示を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=996">#0000996</a>) [Dirk]</li>
+  <li>ゲストユーザーには表示されないアンケートしか含まないアンケートブロックの表示を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=996">#0000996</a>) [Dirk]</li>
   <li>Geeklog 1.5.2からアップグレードした場合、アンケートIDが40文字に増やされていませんでした。Geeklog 1.6.0の新規インストールと1.5.2より古いバージョンからのアップグレードでは正常に動作していました。(参照 機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=754">#0000754</a>) [Dirk]</li>
   <li>Tom Homerの提供により、descriptionメタタグとkeywordsメタタグをサポートするようになりました。</li>
   <li>Tom Homerの提供により、[poll:]、[poll_vote:]、[poll_result:]自動タグを導入し、自動タグが許可されているところならどこにでもアンケートを埋め込めるようになりました。</li>
@@ -860,11 +928,11 @@
 
 <h3>静的ページプラグイン 1.6.1</h3>
 <ul>
-  <li>検索結果からある種の、またはすべての、静的ページを除外することができるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=979">#0000979</a>, provided by Tom Homer)</li>
-  <li>新規ないし更新された静的ページが新着情報ブロックに表示されるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=908">#0000908</a>, provided by Tom Homer)</li>
+  <li>検索結果からある種の、またはすべての、静的ページを除外することができるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=979">#0000979</a>, 提供 Tom Homer)</li>
+  <li>新規ないし更新された静的ページが新着情報ブロックに表示されるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=908">#0000908</a>, 提供 Tom Homer)</li>
   <li>Geeklog-1.6.0でこのプラグインを新規インストールした場合、プラグインの管理者グループに間違った名前が使用されていました。アップグレードの際にこっそり修正するようにしました。[Dirk]</li>
   <li>ページ一覧を所有者で並べ換えられるようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=978">#0000978</a>) [Dirk]</li>
-  <li>静的ページエディタで使用可能な自動タグの一覧を表示するようにしました。[Dirk]</li>
+  <li>静的ページエディターで使用可能な自動タグの一覧を表示するようにしました。[Dirk]</li>
   <li>Tom Homerの提供により、descriptionメタタグとkeywordsメタタグをサポートするようになりました。</li>
 </ul>
 
@@ -877,14 +945,14 @@
   <li>不正なファイルをFCKeditorを介してアップロード可能でした。<br />
   アップロードされるファイルはFCKeditorのフィルターを通過しなければならないため、スクリプトをアップロードすることは不可能でした。(したがって、Geeklogのサイトとしての整合性が壊されるといった危険性はありませんでした。)
   しかしながら、マルウェアの置き場として使用されていたという報告がありました。<br />
-  今回のアップデートではFCKeditorを無効としているか、ゲストユーザの場合にはアップロードの機能を使用できないようにしました。<br />
+  今回のアップデートではFCKeditorを無効としているか、ゲストユーザーの場合にはアップロードの機能を使用できないようにしました。<br />
   また、アーカイブ形式のファイルのアップロードも許可しません。<br />
   さらに、FCKeditorを使ってファイルをアップロードするには、何らかの「編集」の権限が必要です。(これは一時的な対応です。将来のGeeklogのバージョンでは「アップロード」という独立した権限を採用する予定です)。</li>
 </ul>
 
 <p>セキュリティと関係のない変更点:</p>
 <ul>
-  <li>InnoDBテーブルを使用してインストール時の問題を修正しました。 [Dirk]</li>
+  <li>InnoDBテーブルを使用してインストール時の問題を修正しました。[Dirk]</li>
   <li>リンクプラグイン(links): ファイル autoinstall.php に含まれる間違った関数名を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=954">#0000954</a>)</li>
   <li>コメントコードのフィールドが自動更新されるときの(global宣言のし忘れで、悪用不可能な)SQLエラーを修正しました。(報告: Jokke_K) [Dirk]</li>
 </ul>
@@ -905,7 +973,7 @@
 <p>セキュリティと関係のない変更点:</p>
 <ul>
   <li>記事投稿キューがOFFのときに(初期化されていない変数による、悪用不可能な)SQLエラーを修正しました。(報告: Dieter Thomas) [Dirk]</li>
-  <li>(COM_displayMessageAndAbortを呼ぶべきところを)存在しないCOM_outputMessageAndAbortを呼びだしていた問題を修正しました。 [Dirk]</li>
+  <li>(COM_displayMessageAndAbortを呼ぶべきところを)存在しないCOM_outputMessageAndAbortを呼びだしていた問題を修正しました。[Dirk]</li>
 </ul>
 
 
@@ -932,11 +1000,11 @@
 <h3>1.6.0rc1からの変更点:</h3>
 
 <ul>
-  <li>FCKeditorをversion 2.6.4.1に更新しました。 [Dirk]  </li>
+  <li>FCKeditorをversion 2.6.4.1に更新しました。[Dirk]  </li>
   <li>詳細な検索で開始と終了の日を使用していない問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=924">#0000924</a>: パッチ提供: dengen)  </li>
   <li>SQL dumpが<code>CREATE TABLE IF NOT EXISTS</code>要求を含んでいるときに、
     移行処理の間のテーブルのプリフィックスの自動検知の問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=922">#0000922</a>) [Dirk]  </li>
-  <li>(移行処理の間に)bigdump.phpでエラーが発生したときに、ユーザをmigrate.phpに戻るようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=919">#0000919</a>) [Dirk]  </li>
+  <li>(移行処理の間に)bigdump.phpでエラーが発生したときに、ユーザーをmigrate.phpに戻るようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=919">#0000919</a>) [Dirk]  </li>
   <li>バックアップが利用できないときの、移行処理でのウォーニングを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=918">#0000918</a>: パッチ提供: hiroron)  </li>
   <li>エストニア語の言語ファイルを更新しました。提供: Artur Rapp</li>
   <li>ヘブライ語の言語ファイルを更新しました。提供: LWC</li>
@@ -951,7 +1019,7 @@
 <ul>
   <li>bigdump.phpで、db-config.phpをインクルードするパスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=915">#0000915</a>) [Dirk]</li>
   <li>移行処理でUTF-8のデータベースのdumpの検出を改善しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=916">#0000916</a>) [Dirk]</li>
-  <li>インストール・スクリプトのタイプミスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=913">#0000913</a> and <a href="http://project.geeklog.net/tracking/view.php?id=914">#0000914</a>) [Dirk]</li>
+  <li>インストール・スクリプトのタイプミスを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=913">#0000913</a>と<a href="http://project.geeklog.net/tracking/view.php?id=914">#0000914</a>) [Dirk]</li>
 </ul>
 
 
@@ -961,36 +1029,36 @@
 <ul>
   <li>検索結果のソートと制限のコンボボックスで、IE6とSafariでの互換性の問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=874">#0000874</a>の一部) [Sami]</li>
   <li>コンフィギュレーションのHTMLの誤りを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=907">#0000907</a>) [Dirk]</li>
-  <li>インストール・スクリプトを削除するように、より目立つ念押しの表示を追加しました。 [Dirk]</li>
-  <li>プラグインで、コメント・バーから親のオブジェクト(記事と静的ページ)へのリンクが適切に動作するようにしました。 [Dirk]</li>
+  <li>インストール・スクリプトを削除するように、より目立つ念押しの表示を追加しました。[Dirk]</li>
+  <li>プラグインで、コメント・バーから親のオブジェクト(記事と静的ページ)へのリンクが適切に動作するようにしました。[Dirk]</li>
   <li>(検索文字列無しで)話題での検索を再度できるようにしました。(報告: Markus Wollschlager) [Dirk]</li>
-  <li><code>$_CONF['comment_close_rec_stories']</code>の扱いを修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=899">#0000899</a>) [Dirk]</li>
-  <li>検索結果に表示される、文字列の(検索対象の)選択を改善しました。 [Dirk]</li>
-  <li>トラックバック消去後に起こるエラーを修正しました。 [Dirk]</li>
+  <li><code>$_CONF['comment_close_rec_stories']</code>の扱いを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=899">#0000899</a>) [Dirk]</li>
+  <li>検索結果に表示される、文字列の(検索対象の)選択を改善しました。[Dirk]</li>
+  <li>トラックバック消去後に起こるエラーを修正しました。[Dirk]</li>
   <li>検索結果の自動タグを置き換えました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=887">#0000887</a>) [Dirk]</li>
   <li>リモートユーザー編集の際にemailアドレスを強調しないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=885">#0000885</a>) [Dirk]</li>
-  <li>クリックジャッキング防止のために、<code>X-FRAME-OPTIONS</code> HTTPヘッダを送信するコンフィギュレーションのオプションを追加しましたた。(ブラウザ側サポートが必要です。) [Dirk]</li>
+  <li>クリックジャッキング防止のために、<code>X-FRAME-OPTIONS</code> HTTPヘッダーを送信するコンフィギュレーションのオプションを追加しましたた。(ブラウザー側サポートが必要です。) [Dirk]</li>
   <li>インストール・スクリプトにおけるXSSを防止しました。
     (報告: Nemesis, MaXe) [Dirk]</li>
-  <li>カレンダー、アンケート、静的ページの各プラグインの古いプラグインAPI関数<code>plugin_commentsupport</code>を削除しました。 [Dirk]</li>
+  <li>カレンダー、アンケート、静的ページの各プラグインの古いプラグインAPI関数<code>plugin_commentsupport</code>を削除しました。[Dirk]</li>
   <li>Geeklog.jpグループの提供により、日本語の言語ファイルと日本語のドキュメントを更新しました。</li>
 </ul>
 
 <h3>カレンダープラグイン</h3>
 <ul>
-  <li>閏年チェックの修正しました。 [Sean Clark]</li>
+  <li>閏年チェックの修正しました。[Sean Clark]</li>
 </ul>
 
 <h3>アンケートプラグイン</h3>
 <ul>
-  <li>PLG_getCommentUrlIdを実装しました。 [Dirk]</li>
+  <li>PLG_getCommentUrlIdを実装しました。[Dirk]</li>
   <li>アンケートIDを変更したときに、アンケートへのコメントを更新して迷子にならないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=901">#0000901</a>の一部) [Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
 <ul>
-  <li>さらにPHP 4で(文法エラーとなる)互換性の問題の修正を試みました。 [Ben, Dirk]</li>
-  <li>PLG_getCommentUrlIdを実装しました。 [Dirk]</li>
+  <li>さらにPHP 4で(文法エラーとなる)互換性の問題の修正を試みました。[Ben, Dirk]</li>
+  <li>PLG_getCommentUrlIdを実装しました。[Dirk]</li>
   <li>静的ページのIDを変更したときに、静的ページへのコメントを更新して迷子にならないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=901">#0000901</a>の一部) [Dirk]</li>
   <li>静的ページを削除したときに、そのコメントも削除するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=901">#0000901</a>) [Dirk]</li>
 </ul>
@@ -1007,44 +1075,44 @@
 
 <h3>1.6.0b1からの変更点:</h3>
 <ul>
-  <li>(作業が進行中の)新しい検索(訳者註: タイトルのみの検索チェックボックス追加他)に様々な修正を行いました。 [Sami]</li>
-  <li>コメント投稿のリストは、コメントの親の(記事やアンケートなどの)オブジェクトへのリンクを用意しようとするようになりました。もし、リンクが用意できないなら、コメントから抜粋を表示します。 [Dirk]</li>
+  <li>(作業が進行中の)新しい検索(訳者註: タイトルのみの検索チェックボックス追加他)に様々な修正を行いました。[Sami]</li>
+  <li>コメント投稿のリストは、コメントの親の(記事やアンケートなどの)オブジェクトへのリンクを用意しようとするようになりました。もし、リンクが用意できないなら、コメントから抜粋を表示します。[Dirk]</li>
   <li>コメント投稿キューに保存されたときに、プラグインのコメントのタイプは失われます。(記事のコメントとして扱われます。) [Dirk]</li>
-  <li>SQLのエラーは標準のエラーハンドラ("Unfortunately, an error has occurred ...")を呼び出すようになりました。詳細はいつものようにerror.logに記録されます。 [Tony, Dirk]</li>
-  <li>$_CONF['search_no_data']を設定オプションから削除して、言語ファイルに移動しました。 [Dirk]</li>
-  <li>同梱しているプラグインは、稼働中のサイトで動作しているDBMS(データベース管理システム)を参照して、確認するようになりました。 [Dirk]</li>
-  <li>新規インストールで、同梱しているプラグインはインストールしようとしているGeeklogのバージョンとの互換性を確認するようにしました。 [Dirk]</li>
-  <li>ユーザははパスワードの変更もアカウントの削除もできませんでした。(報告: Tom Homer) [Dirk]</li>
-  <li>インストール・スクリプトからの、プラグインのインストール後の処理を修正しました。 [Dirk]</li>
+  <li>SQLのエラーは標準のエラーハンドラ("Unfortunately, an error has occurred ...")を呼び出すようになりました。詳細はいつものようにerror.logに記録されます。[Tony, Dirk]</li>
+  <li>$_CONF['search_no_data']を設定オプションから削除して、言語ファイルに移動しました。[Dirk]</li>
+  <li>同梱しているプラグインは、稼働中のサイトで動作しているDBMS(データベース管理システム)を参照して、確認するようになりました。[Dirk]</li>
+  <li>新規インストールで、同梱しているプラグインはインストールしようとしているGeeklogのバージョンとの互換性を確認するようにしました。[Dirk]</li>
+  <li>ユーザーははパスワードの変更もアカウントの削除もできませんでした。(報告: Tom Homer) [Dirk]</li>
+  <li>インストール・スクリプトからの、プラグインのインストール後の処理を修正しました。[Dirk]</li>
   <li>https://のURLを<code>COM_createImage</code>が認識するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=881">#0000881</a>) [Dirk]</li>
   <li>config classにおける通知を修正しました。(tgc他からの報告) [Dirk]</li>
   <li>詳細検索のページで、「タイプ」のドロップダウンに空のエントリがある問題を修正しました。更新した<code>search/searchform.thtml</code>のテンプレートが必要です。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=874">#0000874</a>の一部)</li>
   <li>「プレビューをスキップする」オプションが無効のときに、<code>PLG_templateSetVars</code>(と当然<code>CUSTOM_templateSetVars</code>)が適切に呼び出されるようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=880">#0000880</a>) [Dirk]</li>
   <li>フィードのエントリーの内容を一定量の文字に制限したときの、マルチバイトのエンコードされた文字列の扱いを修正しました。(報告: alank) [Dirk]</li>
-  <li>search classに冗長なロギングのオプションを追加して、デフォルトではoffとしました。 [Dirk]</li>
+  <li>search classに冗長なロギングのオプションを追加して、デフォルトではoffとしました。[Dirk]</li>
   <li>lib-custom.phpが、1.6.0b1の配布用ファイルに含まれていませんでした。</li>
   <li>スペイン語の言語ファイルを更新しました。提供: Juan Pablo Novillo</li>
 </ul>
 
 <h3>アンケートプラグイン</h3>
 <ul>
-  <li>プラグインのコメントキューに置かれた時にメッセージを表示をします。 [Dirk]</li>
-  <li>アンケートのIDが分かっていれば、アンケートのアクセス権がなくてもアンケートのタイトルを探し出すことができていました。 [Dirk]</li>
+  <li>プラグインのコメントキューに置かれた時にメッセージを表示をします。[Dirk]</li>
+  <li>アンケートのIDが分かっていれば、アンケートのアクセス権がなくてもアンケートのタイトルを探し出すことができていました。[Dirk]</li>
   <li>存在しないアンケートのIDが呼び出すと、空のページとなる問題を(ほぼ)修正しました。(報告: scarecrow) [Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
 <ul>
-  <li>プラグインのコメントキューに置かれた時にメッセージを表示をします。 [Dirk]</li>
+  <li>プラグインのコメントキューに置かれた時にメッセージを表示をします。[Dirk]</li>
   <li>複数言語の環境で「全部のページ」の中央ブロックの処理を修正しました。これは、言語毎に許可できなければなりません。(報告: Norbert Ortmann) [Dirk]</li>
-  <li>自動タグ<code>[staticpage:]</code>が動作しない原因だったタイプミスを修正しました。 [Dirk]</li>
+  <li>自動タグ<code>[staticpage:]</code>が動作しない原因だったタイプミスを修正しました。[Dirk]</li>
 </ul>
 
 <h3>XMLサイトマッププラグイン</h3>
 <ul>
-  <li>サイトマップに含めずに除外するプラグインを設定するオプションを追加しました。デフォルトではリンクプラグインが除外の対象となっています。 [Dirk]</li>
-  <li>プラグインをアンインストールするときに、サイトマップのファイルも削除するようにしました。 [Dirk]</li>
-  <li><code>sitemap.xml</code>に自動的にリンクを含めないようにしました。 [Dirk]</li>
+  <li>サイトマップに含めずに除外するプラグインを設定するオプションを追加しました。デフォルトではリンクプラグインが除外の対象となっています。[Dirk]</li>
+  <li>プラグインをアンインストールするときに、サイトマップのファイルも削除するようにしました。[Dirk]</li>
+  <li><code>sitemap.xml</code>に自動的にリンクを含めないようにしました。[Dirk]</li>
   <li>設定オプションをすると、<code>"missing argument 2"</code>というエラーになる問題を修正しました。(報告: Markus Wollschlager) [Dirk]</li>
 </ul>
 
@@ -1052,13 +1120,13 @@
 <h2>May 1, 2009 (1.6.0b1)</h2>
 <ul>
   <li>mystral-kk氏から提供された、新しいプラグインXMLSitemapは、すべての主要な検索エンジンがサポートしているXMLサイトマップファイルを生成します。</li>
-  <li>グループ管理画面で、AllUsersとログイン中Userのグループにユーザー追加または削除を禁止しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=863">#0000863</a> と <a href="http://project.geeklog.net/tracking/view.php?id=864">#0000864</a>) [Dirk]</li>
-  <li>ユーザーをグループに追加または削除するグループ管理画面のフォームの外観を変更して、他の管理パネルと一貫性が取れるようにしました。 [Dirk]</li>
+  <li>グループ管理画面で、AllUsersとログイン中Userのグループにユーザー追加または削除を禁止しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=863">#0000863</a>と<a href="http://project.geeklog.net/tracking/view.php?id=864">#0000864</a>) [Dirk]</li>
+  <li>ユーザーをグループに追加または削除するグループ管理画面のフォームの外観を変更して、他の管理パネルと一貫性が取れるようにしました。[Dirk]</li>
   <li><code>CUSTOM_templateSetVars</code>が実際にどこから呼び出されているか、ドキュメントに記述しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=862">#0000862</a>) [Dirk]</li>
   <li>タイトルだけで検索するオプションを追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=840">#0000840</a>) [Sami]</li>
   <li>管理者専用メニューの「プラグイン」管理画面は、有効なプラグインの数を表示するようにしました。(従来は、無効なプラグインの数も含めて表示していました。) [Dirk]</li>
-  <li>コンフィギュレーションに、「テキスト中のURLを自動的にクリック可能なURLにする」機能を有効または無効とするオプションを追加しました。 [Dirk]</li>
-  <li>デフォルト設定をいくつか変更しました。 [Dirk]
+  <li>コンフィギュレーションに、「テキスト中のURLを自動的にクリック可能なURLにする」機能を有効または無効とするオプションを追加しました。[Dirk]</li>
+  <li>デフォルト設定をいくつか変更しました。[Dirk]
   <ul>
     <li>ウェブサービスは無効にしました。</li>
     <li>cronjobのエミュレーションはoffです。</li>
@@ -1066,18 +1134,18 @@
     <li>デフォルトのコメントの表示モードは入れ子です。</li>
   </ul>
   これらの設定は、以前のバージョンのGeeklogから更新する場合は<strong>変わりません。</strong></li>
-  <li>試験的実装: HTML出力をブラウザに送る前に圧縮します。(デフォルトでは無効; ブラウザとウェブサーバーの両方がサポートしていなければなりません。) [Dirk]</li>
+  <li>試験的実装: HTML出力をブラウザーに送る前に圧縮します。(デフォルトでは無効; ブラウザーとウェブサーバーの両方がサポートしていなければなりません。) [Dirk]</li>
   <li>記事の一覧に正規化リンク(訳者註: 以下を参照<a
 href="http://www.sem-r.com/09/20090213153711.html" class="external free"
-title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/20090213153711.html</a>)を追加しました。 [Dirk]</li>
+title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/20090213153711.html</a>)を追加しました。[Dirk]</li>
   <li>admin/sectest.phpに直接書かれていた文字列を言語ファイルに移動しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=716">#0000716</a>) [Dirk]</li>
   <li>ユーザーにメール送信を行うときに、自分にもコピーを送るオプションを追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=771">#0000771</a>, Roshan Singh氏提供のパッチを元)</li>
-  <li>COM_checkListがHTML内のcheckbox配列の名前にテーブルの名前を使ってしまうでしょう!  checkboxの名前用に新しいパラメータを追加しました。
+  <li>COM_checkListがHTML内のcheckbox配列の名前にテーブルの名前を使ってしまうでしょう!  checkboxの名前用に新しいパラメーターを追加しました。
     (Bookoo氏によりusersettings.phpの脆弱性と共に指摘、Geeklog1.5.2sr4を参照)</li>
   <li>プラグインで<code>COM_allowedHTML</code>と<code>COM_checkHTML</code>の誤って使用していた問題を修正しました: 特定のパーミッションなしに関数が呼ばれていたため'story.edit'がデフォルトとなっていました。すなわち話題の管理者として、admin_htmlをイベントに使用できるのに、カレンダーの管理者としては使用できませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=785">#0000785</a>) [Dirk]</li>
   <li>header.thtmlといった、テンプレートのいくつかにfinish()の呼び出しが欠けていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=855">#0000855</a>) [Dirk]</li>
   <li>ドキュメントをdocs/englishに移して、翻訳を用意できるようになりました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=770">#0000770</a>) [Dirk]</li>
-  <li>新しいプラグインのAPI関数<code>PLG_pluginStateChange</code>を追加しました。 [Dirk]</li>
+  <li>新しいプラグインのAPI関数<code>PLG_pluginStateChange</code>を追加しました。[Dirk]</li>
   <li>バッドワードチェックのドロップダウンを修正して、オプションを従来の2つから増やせるようにしました。(訳者註: 従来の「チェックする」と「チェックしない」から、「チェックする(完全一致)」、「チェックする(前方一致)」、「チェックする(後方一致)」、「チェックしない」の4つとなりました。) (バグ <a href="http://project.geeklog.net/tracking/view.php?id=692">#0000692</a>)  [Mike, Maciej Cupial]</li>
   <li>少しだけ速度の速いテンプレートクラスを追加しました。(機能要望<a href="http://project.geeklog.net/tracking/view.php?id=760">#0000760</a>, パッチ提供: dengen, mystral-kk)</li>
   <li>より効率的なStory::hasContent実装を使用するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=858">#0000858</a>,
@@ -1088,44 +1156,44 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>予め定義済みの日付フォーマット文字列の１つを修正しましたた。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=854">#0000854</a>)</li>
   <li>デイリー・ダイジェストと話題を友人にメールするときWikiスタイルの形式が処理されていませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=837">#0000837</a>, パッチ提供: Pawel Szczur)</li>
   <li>新しいプラグインのAPI関数<code>PLG_configChange</code>を追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=694">#0000694</a>) [Dirk]</li>
-  <li>ユーザー管理画面で、一括登録と一括削除のオプションのレイアウトを修正しました。 [Dirk]</li>
+  <li>ユーザー管理画面で、一括登録と一括削除のオプションのレイアウトを修正しました。[Dirk]</li>
   <li>ログインに失敗したとき、ユーザー登録を無効に設定していてもユーザー登録フォームが表示されていた問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=843">#0000843</a>)</li>
   <li>Wikiスタイルの表示処理で、(日本語やドイツ語のウムラウトといった)国毎の文字が正しく行われていませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=823">#0000823</a>) [Dirk]</li>
-  <li>新しいプラグインのAPI関数<code>PLG_migrate</code>を導入しました。 [Dirk]</li>
+  <li>新しいプラグインのAPI関数<code>PLG_migrate</code>を導入しました。[Dirk]</li>
   <li>コンフィギュレーションからDOCTYPEを切り換えられるようにしました。テーマでは、固定した文字列のDOCTYPEを書く代わりに<code>{doctype}</code>を使用する必要があります。(機能要求 <a href="http://project.geeklog.net/tracking/view.php?id=745">#0000745</a>) [Dirk]</li>
-  <li>新しいユーザーを登録したときの通知メールは、使用しているリモートのサービスについての情報を含めていませんでした。 [Dirk]</li>
-  <li>XHTMLを使用するときにXHTMLに適合させるため、<code>{xmlns}</code>を定義しました。更新したテンプレートファイルのheadr.thtmlとarticle/printable.thtmlは変数を使用しています。 [Dirk]</li>
+  <li>新しいユーザーを登録したときの通知メールは、使用しているリモートのサービスについての情報を含めていませんでした。[Dirk]</li>
+  <li>XHTMLを使用するときにXHTMLに適合させるため、<code>{xmlns}</code>を定義しました。更新したテンプレートファイルのheadr.thtmlとarticle/printable.thtmlは変数を使用しています。[Dirk]</li>
   <li>トラックバックを送信するときに、'&amp;'を誤って使用していた問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=825">#0000825</a>)</li>
-  <li>不完全な(過去に公開したバージョンで決して有効にしたことのない)PDF作成機能を廃止しました。 [Dirk]</li>
-  <li>行の区切り文字(訳者註: 行末文字)にCRを使用して記事がが書かれていると、ニュースフィードで単語がつなげられてしまう問題を修正しました。 [Dirk]</li>
+  <li>不完全な(過去に公開したバージョンで決して有効にしたことのない)PDF作成機能を廃止しました。[Dirk]</li>
+  <li>行の区切り文字(訳者註: 行末文字)にCRを使用して記事がが書かれていると、ニュースフィードで単語がつなげられてしまう問題を修正しました。[Dirk]</li>
   <li>URLリライト作業を$_SERVER['ORIG_PATH_INFO']のみを設定するようにした(バグ <a href="http://project.geeklog.net/tracking/view.php?id=816">#0000816</a>)</li>
   <li>管理者画面とユーザー画面でプラグインが複数登録されていると、プラグインの項目が重複する問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=820">#0000820</a>)</li>
   <li><code>{contributedby_user}</code>と<code>{contributedby_fullname}</code>が記事のテンプレートに設定されていませんでした。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=821">#0000821</a>) [Dirk]</li>
   <li><code>{start_contributedby_anchortag}</code>, <code>{end_contributedby_anchortag}</code>, <code>{contributedby_author}</code>といった変数の古い定義を元にもどしました。すなわち、2つのアンカータグの変数が再び定義され、<code>_author</code>は名前だけを含むようになりました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=821">#0000821</a>) [Dirk]</li>
-  <li>自動的に削除する記事で、その記事のトラックバックを削除してませんでした。 [Dirk]</li>
-  <li>パーミッション管理エディターで、テンプレート変数名の一貫性が取れるように保証しました。 [Dirk]</li>
+  <li>自動的に削除する記事で、その記事のトラックバックを削除してませんでした。[Dirk]</li>
+  <li>パーミッション管理エディターで、テンプレート変数名の一貫性が取れるように保証しました。[Dirk]</li>
   <li>新しいパーミッション'group.assign'を追加してました。これは、ユーザーをグループに所属させるために必要となります。(ユーザー管理でなく)グループ管理の一部のパーミッションではデフォルトとしています。(機能要求 <a href="http://project.geeklog.net/tracking/view.php?id=190">#0000190</a>) [Dirk]</li>
-  <li>動作環境におけるPHPのバージョンをPHP 4.3.0以上に引き上げて、PHP 4.1.0への互換性のためのすべての回避策を削除しました。 [Dirk]</li>
-  <li>データベースのバックアップファイル名のマスク設定(訳者注: ファイル名の付け方を定義)を追加しました。 [Dirk]</li>
-  <li>$_CONF['pagetitle'] ハックを削除しました。代わりに、<code>COM_siteHeader('menu', $pagetitle)</code>を使用してください。 [Dirk]</li>
-  <li>正規リンクを記事に追加しました。 [Dirk]</li>
+  <li>動作環境におけるPHPのバージョンをPHP 4.3.0以上に引き上げて、PHP 4.1.0への互換性のためのすべての回避策を削除しました。[Dirk]</li>
+  <li>データベースのバックアップファイル名のマスク設定(訳者注: ファイル名の付け方を定義)を追加しました。[Dirk]</li>
+  <li>$_CONF['pagetitle'] ハックを削除しました。代わりに、<code>COM_siteHeader('menu', $pagetitle)</code>を使用してください。[Dirk]</li>
+  <li>正規リンクを記事に追加しました。[Dirk]</li>
   <li>固定した文字列で書かれていた「リマインダー」カラムのタイトルを言語ファイルに移動しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=817">#0000817</a>)</li>
   <li>アーカイブの話題が定義されていないときは、アーカイブ・オプションのラジオボタンを表示しないようにしました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=807">#0000807</a>) [Dirk]</li>
   <li>どのような場所でも、グループ名の最初の文字を大文字にして表示するようにしました。[Dirk]</li>
-  <li><code>gl_dataformats</code>テーブルに、ISO 8601的な形式を追加しました。 [Dirk]</li>
-  <li><code>user.mail</code>パーミッションだけを持っているユーザーだけが、自ら所属するグループにメール送信できるようにしました。 [Dirk]</li>
+  <li><code>gl_dataformats</code>テーブルに、ISO 8601的な形式を追加しました。[Dirk]</li>
+  <li><code>user.mail</code>パーミッションだけを持っているユーザーだけが、自ら所属するグループにメール送信できるようにしました。[Dirk]</li>
   <li>グループ管理画面とユーザー管理画面を模様替えできるようにしました。新しいテンプレートファイル<code>admin/lists/inline.thtml</code>が必要です。
     [Dirk]</li>
-  <li>FCKeditorが有効な場合に使用できるタグ(訳者注: 「アドバンストエディタ用追加HTML」による設定)のリストを"advanced HTML"として導入しました。これは画像のために必要です。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=757">#0000757</a>) [Blaine]</li>
+  <li>FCKeditorが有効な場合に使用できるタグ(訳者注: 「アドバンストエディター用追加HTML」による設定)のリストを"advanced HTML"として導入しました。これは画像のために必要です。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=757">#0000757</a>) [Blaine]</li>
   <li>新しいパーミッション<code>plugin.install</code>と<code>plugin.upload</code>を追加して、プラグイン管理画面で、さらに「きめの細かい」制御を可能としました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=637">#0000637</a>) [Dirk]</li>
-  <li>新しいプラグインのAPI関数<code>PLG_itemDeleted</code>を導入しました。 [Dirk]</li>
-  <li><code>PLG_itemSaved</code>のAPIを変更して、より単純に、そして使いやすくしました。 [Dirk]</li>
-  <li>FCKeditorを2.6.4にバージョンアップしました。 [Blaine]</li>
+  <li>新しいプラグインのAPI関数<code>PLG_itemDeleted</code>を導入しました。[Dirk]</li>
+  <li><code>PLG_itemSaved</code>のAPIを変更して、より単純に、そして使いやすくしました。[Dirk]</li>
+  <li>FCKeditorを2.6.4にバージョンアップしました。[Blaine]</li>
   <li>Usersettings.php: カスタムユーザー登録が有効なときにパスワード変更ができませんでした。CUSTOM_userCheckをエラーメッセージの文字列とエラーコードの両方を返すように修正しました。users.php と usersettings,php を更新しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=776">#0000776</a>) [Blaine]</li>
-  <li>拡張のAPI<code>PLG_getItemInfo</code>を導入しました。 [mystral-kk, Dirk]</li>
-  <li>管理画面で「アクセスが拒否されました」を表示するときの一貫性の欠如と様々な小さな誤りを修正しました。 [Dirk]</li>
+  <li>拡張のAPI<code>PLG_getItemInfo</code>を導入しました。[mystral-kk, Dirk]</li>
+  <li>管理画面で「アクセスが拒否されました」を表示するときの一貫性の欠如と様々な小さな誤りを修正しました。[Dirk]</li>
   <li>印刷可能なテンプレートのファイルで使用される<code>print.css</code>スタイルシートを追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=766">#0000766</a>) [Dirk]</li>
-  <li>db-config.phpを見つけられないときの、パスのヒントをインストール・スクリプトに再び導入しました。 [Dirk]</li>
+  <li>db-config.phpを見つけられないときの、パスのヒントをインストール・スクリプトに再び導入しました。[Dirk]</li>
   <li>マイアカウントのページにある「個人情報」の管理画面で、ユーザー写真の最大の解像度についての記述を加えました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=629">#0000629</a>) [Dirk]</li>
   <li>話題が存在しないときにメッセージを表示して、ユーザーが記事の編集画面に入れないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=738">#0000738</a>) [Dirk]</li>
   <li>JPEGの品質を制御するコンフィギュレーションのオプションを追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=720">#0000720</a>) [Dirk]<br /></li>
@@ -1134,45 +1202,45 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 </ul>
 <h3>カレンダープラグイン</h3>
 <ul>
-  <li>移行処理のサポートを追加しました。 [Dirk]</li>
+  <li>移行処理のサポートを追加しました。[Dirk]</li>
   <li>「これからのイベント」ブロックから余分な二重引用符を削除しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=827">#0000827</a>)</li>
-  <li>自動インストールのサポートを追加しました。 [Dirk]</li>
-  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。 [Dirk]</li>
+  <li>自動インストールのサポートを追加しました。[Dirk]</li>
+  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。[Dirk]</li>
 </ul>
 <h3>リンクプラグイン</h3>
 <ul>
-  <li>移行処理のサポートを追加しました。 [Dirk]</li>
-  <li>カテゴリのデフォルトのパーミッションを追加しました。 [Dirk]</li>
-  <li>自動インストールのサポートを追加しました。 [Dirk]</li>
-  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。 [Dirk]</li>
-  <li><code>LINKS_getCategorySQL</code>を導入して、Top10リンクでのリンクカテゴリとサイトの統計の視認性を向上しました。 [Dirk]</li>
+  <li>移行処理のサポートを追加しました。[Dirk]</li>
+  <li>カテゴリのデフォルトのパーミッションを追加しました。[Dirk]</li>
+  <li>自動インストールのサポートを追加しました。[Dirk]</li>
+  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。[Dirk]</li>
+  <li><code>LINKS_getCategorySQL</code>を導入して、Top10リンクでのリンクカテゴリとサイトの統計の視認性を向上しました。[Dirk]</li>
   <li>外部リンクを新しいウィンドウで開くオプションを追加しました。
-    (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=693">#0000693</a>)　どうか、十分に注意して使用してください。 [Dirk]</li>
-  <li>外部リンクだけ<code>class="ext-link"</code>と印を付けるようにしました。 [Dirk]</li>
+    (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=693">#0000693</a>)　どうか、十分に注意して使用してください。[Dirk]</li>
+  <li>外部リンクだけ<code>class="ext-link"</code>と印を付けるようにしました。[Dirk]</li>
 </ul>
 <h3>アンケートプラグイン</h3>
 <ul>
-  <li>移行処理のサポートを追加しました。 [Dirk]</li>
-  <li>アンケートを見るときのページタイトルを設定しました。 [Dirk]</li>
-  <li>自動インストールのサポートを追加しました。 [Dirk]</li>
-  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。 [Dirk]</li>
+  <li>移行処理のサポートを追加しました。[Dirk]</li>
+  <li>アンケートを見るときのページタイトルを設定しました。[Dirk]</li>
+  <li>自動インストールのサポートを追加しました。[Dirk]</li>
+  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。[Dirk]</li>
   <li>アンケートIDの最大文字数を40に拡張しました。(機能要望<a href="http://project.geeklog.net/tracking/view.php?id=754">#0000754</a>)
     [Dirk]</li>
 </ul>
 <h3>スパム-X</h3>
 <ul>
-  <li>移行処理のサポートを追加しました。 [Dirk]</li>
-  <li>自動インストールのサポートを追加しました。 [Dirk]</li>
+  <li>移行処理のサポートを追加しました。[Dirk]</li>
+  <li>自動インストールのサポートを追加しました。[Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
 <ul>
-  <li>移行処理のサポートを追加しました。 [Dirk]</li>
+  <li>移行処理のサポートを追加しました。[Dirk]</li>
   <li>printable.thtmlテンプレートで<code>{xmlns}</code>変数を使うようになりました。
     [Dirk]</li>
-  <li>正規リンクを追加しました。 [Dirk]</li>
-  <li>自動インストールのサポートを追加しました。 [Dirk]</li>
-  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。 [Dirk]</li>
+  <li>正規リンクを追加しました。[Dirk]</li>
+  <li>自動インストールのサポートを追加しました。[Dirk]</li>
+  <li><code>PLG_getItemInfo</code>, <code>PLG_itemSaved</code>, <code>PLG_itemDeleted</code>のサポートを追加しました。[Dirk]</li>
   <li>テンプレート・ファイル<code>printable.thtml</code>は、HTML Strictなドキュメントタイプと、<code>print.css</code>を使うようになりました。
     [Dirk]</li>
   <li>他のプラグインや組み込み済み関数のように、"successfully saved"と"successfully deleted"といったメッセージ(訳者注: 英語の言語ファイルの場合で、日本語の言語ファイルでは若干表現が異なります。)を表示するようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=644">#0000644</a>)
@@ -1183,7 +1251,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 
 <p>このリリースは以下のセキュリティ対策を行いました:</p>
 
-<p>(長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性があります。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザ Jack に感謝します。</p>
+<p>(長い期間有効なクッキーを使用している)自動ログインは辞書攻撃に対して脆弱性があります。この問題は、Nine SituationsグループのBookoo氏から2009年4月に受けた報告の1つでしたが、Geeklogチームはどうも見落としていたようです。これを指摘していただいた geeklog.net のユーザー Jack に感謝します。</p>
 
 <h2>July 30, 2009 (1.5.2sr5)</h2>
 
@@ -1228,14 +1296,14 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 <h2>Feb 8, 2009 (1.5.2)</h2>
 
 <ul>
-  <li>バッドワードチェックでの置換え文字列は"censormode"でなく"censored"とすべきでした。 [Dirk]</li>
+  <li>バッドワードチェックでの置換え文字列は"censormode"でなく"censored"とすべきでした。[Dirk]</li>
   <li><code>magic_quotes_gpc = On</code>で、記事プレビューの際にタイトルに余分なバックスラッシュが表示される問題を解決しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=790">#0000790</a>)
     [Mike, Dirk]</li>
   <li>コメントを単独で見ているときに抜けていたページタイトルを追加しました。
     [Dirk]</li>
-  <li>グループドロップダウンメニューでのグループ表示で大文字小文字を区別しないようにしました。 [Dirk]</li>
-  <li>コメントがスパムとして拒否された場合に報告メールを管理者に送った旨のメッセージを表示するようにしました。 [Dirk]</li>
-  <li>新しいパスワードでログインに失敗した場合に報告メールを管理者に送った旨のメッセージを表示するようにしました。 [Dirk]</li>
+  <li>グループドロップダウンメニューでのグループ表示で大文字小文字を区別しないようにしました。[Dirk]</li>
+  <li>コメントがスパムとして拒否された場合に報告メールを管理者に送った旨のメッセージを表示するようにしました。[Dirk]</li>
+  <li>新しいパスワードでログインに失敗した場合に報告メールを管理者に送った旨のメッセージを表示するようにしました。[Dirk]</li>
   <li>カレンダープラグイン用エストニア語の言語ファイルを更新しました。提供: Artur Rapp</li>
   <li>日本語言語ファイルを更新しました。提供: Geeklog.jpグループ</li>
 </ul>
@@ -1250,29 +1318,29 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 <ul>
   <li>COM_makeClickableLinksに関する様々な問題を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=767">#0000767</a>,
     <a href="http://project.geeklog.net/tracking/view.php?id=793">#0000793</a>,<a href="http://project.geeklog.net/tracking/view.php?id=796">#0000796</a>) [Sami]</li>
-  <li>コメント投稿で、$_CONF['show_fullname']が有効の場合にユーザーのフルネームが表示されませんでした。 [Dirk]</li>
+  <li>コメント投稿で、$_CONF['show_fullname']が有効の場合にユーザーのフルネームが表示されませんでした。[Dirk]</li>
   <li>$_CONF['show_fullname']を有効にしてもコメントでいつもユーザー名が表示されていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=800">#0000800</a>, 報告とパッチ提供: mystral-kk)</li>
-  <li>記事のプレビューで、記事idが既に存在している場合に記事がなくなる問題を修正しました。 (バグ
+  <li>記事のプレビューで、記事idが既に存在している場合に記事がなくなる問題を修正しました。(バグ
     <a href="http://project.geeklog.net/tracking/view.php?id=789">#0000789</a>) [Dirk]</li>
-  <li>STORY_extractLinksでのstr_replaceの誤用を修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=794">#0000794</a>)
+  <li>STORY_extractLinksでのstr_replaceの誤用を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=794">#0000794</a>)
     [Dirk]</li>
-  <li>「PING送信」を記事のオプションブロックに追加(機能がONになっており記事を作成･編集しているユーザーに許可されている場合に有効)しました。 [Dirk]</li>
+  <li>「PING送信」を記事のオプションブロックに追加(機能がONになっており記事を作成･編集しているユーザーに許可されている場合に有効)しました。[Dirk]</li>
   <li>各プラグインにfunctions.incがない場合にユーザーがプラグインを有効にできないようにしました。
     [Dirk]</li>
-  <li>インストールスクリプトがdb-config.phpを探せない場合に、メッセージは常に英語としました。つまり画面上、言語の変更ができないようにしました。 [Dirk]</li>
+  <li>インストールスクリプトがdb-config.phpを探せない場合に、メッセージは常に英語としました。つまり画面上、言語の変更ができないようにしました。[Dirk]</li>
   <li>1.5.0以前のGeeklogからのアップグレードの場合、plugin
-    config.phpファイルはリネームしないようにしました。 [Dirk]</li>
+    config.phpファイルはリネームしないようにしました。[Dirk]</li>
   <li>ソートできなかった管理画面の項目をソート可能としました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=791">#0000791</a>, 報告とパッチ提供: hiroron)</li>
-  <li>STORY_getItemInfoを修正して、未来の日付とドラフトフラグのチェックをするようにしました。 [mystral-kk,
+  <li>STORY_getItemInfoを修正して、未来の日付とドラフトフラグのチェックをするようにしました。[mystral-kk,
     Dirk]</li>
   <li>COM_getPermSQLでのCOM_isAnonUserの誤用を訂正しました。(1.5.0以降) [Dirk]</li>
-  <li>COM_getYearFormOptionsを$startoffsetパラメータと一緒に呼ぶとき、年のリストが1年ずつ戻っていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=783">#0000783</a>; パッチ提供: hiroron)</li>
+  <li>COM_getYearFormOptionsを$startoffsetパラメーターと一緒に呼ぶとき、年のリストが1年ずつ戻っていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=783">#0000783</a>; パッチ提供: hiroron)</li>
   <li>話題のパーミッションを変更した後のアップデートフィードを修正しました。
     (バグ <a href="http://project.geeklog.net/tracking/view.php?id=783">#0000783</a>; パッチ提供: hiroron)</li>
-  <li>トラックバックエディタのテンプレートファイルでセキュリティトークンがなくなっている問題(バグ <a href="http://project.geeklog.net/tracking/view.php?id=778">#0000778</a>, 報告とパッチ提供: hiroron)</li>
+  <li>トラックバックエディターのテンプレートファイルでセキュリティトークンがなくなっている問題(バグ <a href="http://project.geeklog.net/tracking/view.php?id=778">#0000778</a>, 報告とパッチ提供: hiroron)</li>
   <li>少し違う意味のマイクロフォーマットを指示するため、lib-story.phpの話題のリンクからrelタグを削除しました。
     [Dirk]</li>
-  <li>サイト管理者が送信するメールでX-Originating-IPヘッダを含めないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=701">#0000701</a>) [Dirk]</li>
+  <li>サイト管理者が送信するメールでX-Originating-IPヘッダーを含めないようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=701">#0000701</a>) [Dirk]</li>
   <li>COM_errorLogをconfig classで使う前に、COM_errorLogがあるか否かをチェックするようにしました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=768">#0000768</a>, インストールで問題の起きる可能性を回避するため) [Dirk]</li>
   <li>インストールスクリプトで「サイトのメールアドレス」「No-Replyメールアドレス」を記入するようにしました。以前はアップグレード時にconfig.phpの値を上書きしてしまっていました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=759">#0000759</a>) [Dirk]</li>
   <li>記事と静的ページの印刷画面テンプレートに言語指示を設定しました。また、言語ファイルが定義がしていなければ、$LANG_DIRECTIONを'ltr'に設定するようにしました。
@@ -1284,7 +1352,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>gdlibを使用するときにimagecopyresizedの代わりにimagecopyresampledが使うようにしました。これにより、よりよい品質の画像を得ることができるでしょう。
     (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=720">#0000720</a>の一部) [Dirk]</li>
   <li>記事テンプレートの{start_storylink_anchortag}変数で'&gt;'が抜けていました。(報告: Michael Brusletten) [Dirk]</li>
-  <li>記事等の所有者がリモートの認証でログインしているとき、管理者専用メニューの「サービス」欄を表示するようにしました。 [Dirk]</li>
+  <li>記事等の所有者がリモートの認証でログインしているとき、管理者専用メニューの「サービス」欄を表示するようにしました。[Dirk]</li>
   <li>&quot;System Message&quot;欄に自由に文字列を表示できる新しい関数COM_showMessageTextを導入しました。
     (機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=676">#0000676</a>) [Dirk]</li>
   <li>プラグインのメッセージを含む、そのURLに渡されたメッセージを簡易に安定して表示する新しい関数COM_showMessageFromParameterの導入しました。
@@ -1296,7 +1364,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>CUSTOM_formatEmailAddress と CUSTOM_emailEscape functionsのサポートを追加しました。(機能要望 <a href="http://project.geeklog.net/tracking/view.php?id=727">#0000727</a>) [Dirk]</li>
   <li>コンフィギュレーションで変わってしまっていると報告があった'cookiedomain'を修正しました。(バグ
     <a href="http://project.geeklog.net/tracking/view.php?id=638">#0000638</a>) [Dirk]</li>
-  <li>1つのページに2つ以上のメッセージを表示するときに問題を起こしていたので、バグ <a href="http://project.geeklog.net/tracking/view.php?id=618">#0000618</a>(COM_showMessageが自動的に'plugin'パラメータを拾ってしまう)への修正を元に戻しました。 [Dirk]</li>
+  <li>1つのページに2つ以上のメッセージを表示するときに問題を起こしていたので、バグ <a href="http://project.geeklog.net/tracking/view.php?id=618">#0000618</a>(COM_showMessageが自動的に'plugin'パラメーターを拾ってしまう)への修正を元に戻しました。[Dirk]</li>
   <li>ダウンローダクラスで許可されているIPアドレスチェックが漏れていたので追加しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=709">#0000709</a>) [Dirk]</li>
   <li>プラグインのアンインストール後に強制的にリフレッシュするようにして、管理者専用ブロックからそのプラグインのエントリーが消えるようにしました。
     [Dirk]</li>
@@ -1309,21 +1377,21 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 
 <h3>カレンダープラグイン</h3>
 <ul>
-  <li>個人カレンダが使えなかったカレンダープラグインの問題を修正しました。
+  <li>個人カレンダーが使えなかったカレンダープラグインの問題を修正しました。
     [Blaine]</li>
-  <li>eventdetails.thtmlで{event_url}を使えるようにしました。 [Dirk]</li>
+  <li>eventdetails.thtmlで{event_url}を使えるようにしました。[Dirk]</li>
 </ul>
 <h3>リンクプラグイン</h3>
 <ul>
-  <li>()が抜けていて、検索結果に間違いがあった可能性があります。 [Dirk]</li>
-  <li>{link_actual_url} と {link_name} にURLエンコードを行う版を追加しました。 [Dirk]</li>
-  <li>リンクID変更するときに、既存のリンクの上書きを防止しました。 [Dirk]</li>
+  <li>()が抜けていて、検索結果に間違いがあった可能性があります。[Dirk]</li>
+  <li>{link_actual_url} と {link_name} にURLエンコードを行う版を追加しました。[Dirk]</li>
+  <li>リンクID変更するときに、既存のリンクの上書きを防止しました。[Dirk]</li>
 </ul>
 <h3>アンケートプラグイン</h3>
 <ul>
   <li>Suhosinのデフォルトのpost.max_varsの制限にかかるのを回避するため、(新規インストールの場合だけ)デフォルトの設定数を減らして一つのアンケートでの質問数のデフォルト設定を5に、一つの質問に対する答えの数を8としました。[Dirk]</li>
   <li>アンケートの質問にシングルクォート(&quot;)が含まれていると起きたSQLエラーを修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=756">#0000756</a>) [Dirk]</li>
-  <li>アンケート管理画面のアンケートIDの処理を修正しました。 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=753">#0000753</a>) [Dirk]</li>
+  <li>アンケート管理画面のアンケートIDの処理を修正しました。(バグ <a href="http://project.geeklog.net/tracking/view.php?id=753">#0000753</a>) [Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
@@ -1403,12 +1471,12 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     <li>FCKeditorをv2.6.2にアップデート [Blaine]</li>
     <li>remove() (config JavaScript)をgl_cfg_removeに移動 (バグ <a href="http://project.geeklog.net/tracking/view.php?id=681">#0000681</a>)
       [Mike]</li>
-    <li>CUSTOM_usercreateへの変更を$batchimportでサポートし, もしthe
+    <li>CUSTOM_usercreateへの変更を$batchimportでサポートし、 もしthe
       Admin-&gt;Users Batch_Add が呼ばれたらtrueをセット[Blaine]</li>
     <li>RSSフィールドの日付フォーマットの修正(バグ <a href="http://project.geeklog.net/tracking/view.php?id=696">#0000696</a>) [mystral-kk]</li>
     <li>Professionalテーマのコメントバーの、コメント投稿をわかりやすくした
       [Dirk]</li>
-    <li>シンジケーションフィードタイプを &quot;geeklog&quot;から&quot;article&quot;にリネームした。 [Dirk]</li>
+    <li>シンジケーションフィードタイプを &quot;geeklog&quot;から&quot;article&quot;にリネームした。[Dirk]</li>
     <li>記事フィードに対する新オプション&quot;すべてのトップに表示する記事&quot;:
       記事をスキップ&quot;話題ページでのみ表示する記事&quot;オプションをセット
       (feature request <a href="http://project.geeklog.net/tracking/view.php?id=652">#0000652</a>) [Dirk]</li>
@@ -1508,7 +1576,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
 <ul>
   <li>マルチクエスチョン投稿で、投票ブロックで投票ボタンが投票開始を読むバグを修正。
     (バグ <a href="http://project.geeklog.net/tracking/view.php?id=633">#0000633</a>) [Dirk]</li>
-  <li>投票が公開されている間は、結果をフィックス。 [Dirk]</li>
+  <li>投票が公開されている間は、結果をフィックス。[Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン</h3>
@@ -1536,7 +1604,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>利便性とセキュリティを秤にかけた結果、セキュリティを優先することにした。インストールスクリプトで、データベース認証要素(db名やパスワードのこと
     か？)をdb-config.phpから呼び出し表示することはしないことにした。デメリットは、データベースのアップグレードやgeeklogのインス
     トールを再度実行する際にデータベース認証要素を再度入力しなければいけなくなった。</li>
-  <li>リンクプラグイン:  &quot;Root&quot; が、言語ファイルのリンクの公開リストのページタイトルを参照していなかったバグを修正しました。 (報告: Markus Wollschlager) [Dirk]</li>
+  <li>リンクプラグイン:  &quot;Root&quot; が、言語ファイルのリンクの公開リストのページタイトルを参照していなかったバグを修正しました。(報告: Markus Wollschlager) [Dirk]</li>
   <li>リンクプラグイン: リンクの公開リストのページタイトルの言語ファイルから&quot;root&quot;が呼び出されていなかった。(報告: Markus Wollschlager) [Dirk]</li>
   <li>管理者画面のレイアウト不整合で残っていた問題を修正。イベントのカレンダーリストとアンケートプラグイン
     (バグ <a href="http://project.geeklog.net/tracking/view.php?id=650">#0000650</a>) [Dirk]</li>
@@ -1566,13 +1634,13 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>バグ <a href="http://project.geeklog.net/tracking/view.php?id=647">#0000647</a>の修正: ユーザー設定の全ての変更がCUSTOM_usercheckを通るようにした
     [Blaine]</li>
   <li>ハードコードした&lt;ul&gt;を管理者･ユーザー・話題ブロックの関数から削除した。新しくblockheader-list.thtml,
-    blockfooter-list.thtmlをこれらのブロックに追加した。 [Blaine]</li>
+    blockfooter-list.thtmlをこれらのブロックに追加した。[Blaine]</li>
   <li>ブロックテンプレートの偽の{blockid}を削除し、ブロックタイトルから実際に取得するようにした。結果、ブロックタイトルが変わるとレイアウトが
     変わるようになった。非アスキー言語でもうまく動作していなかったもの。style.cssとブロックテンプレートも適宜アップデートした。
     [Blaine]</li>
   <li>サイトのデフォルト言語とデフォルトテーマ設定を修正(バグ <a href="http://project.geeklog.net/tracking/view.php?id=646">#0000646</a>と<a href="http://project.geeklog.net/tracking/view.php?id=648">#0000648</a>)
     [Aaron, Dirk]</li>
-  <li>バンドルされたプラグインは今後config.phpを読む必要がないようにした。これによりアップグレードにおいて古いconfig.phpのリネームに失敗したときのトラブルも回避する。 [Dirk]</li>
+  <li>バンドルされたプラグインは今後config.phpを読む必要がないようにした。これによりアップグレードにおいて古いconfig.phpのリネームに失敗したときのトラブルも回避する。[Dirk]</li>
   <li>ユーザー設定オーバーライドのオプションを使用した際のメールユティリティにおけるSQLエラーを修正
     (報告: Michael Brusletten) [Dirk]</li>
   <li>インストールスクリプトの文字列方向に関する問題を修正
@@ -1658,7 +1726,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>バグフィックス: 幾つかのフィールド空欄で新しくアンケートを登録した時に、アンケート管理画面に戻らないようにした。「アクセスが拒否されました」のメッセージが出てしまうため。
     [Dirk]</li>
   <li>gl_polltopicsテーブルの'open'列を'is_open'に名称変更。&quot;open&quot;はMS
-    SQLサーバーでキーワードとして使われるため。 [Matt]</li>
+    SQLサーバーでキーワードとして使われるため。[Matt]</li>
   <li>アンケートのコンフィギュレーションでのsort_orderの値のダブりを修正
     [Dirk]</li>
   <li>アンケートの話題と結果の見栄えの変更(バグ <a href="http://project.geeklog.net/tracking/view.php?id=625">#0000625</a>)
@@ -1681,7 +1749,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>{lang_attribute}が多言語セットアップの時にのみ正しく設定されるようにした(バグ <a href="http://project.geeklog.net/tracking/view.php?id=616">#0000616</a>)
     [Dirk]</li>
   <li>Bloggerのリモート認証オプションを除いた。Blogger.comが認証プロセスを変更したのでこのモジュールは役に立たない。</li>
-  <li>Geeklogが送信するemailはX-Orginating-IPヘッダを持つようになるのでspamやabuseの追跡の役に立つようになる
+  <li>Geeklogが送信するemailはX-Orginating-IPヘッダーを持つようになるのでspamやabuseの追跡の役に立つようになる
     [Dirk]</li>
   <li>話題管理画面で半角20文字以上のIDを使えるようにした(報告: Markus Wollschlager) [Dirk]</li>
   <li>ユーザーの登録メールアドレスが他のユーザーと重なっていないことの制限を緩和。リモートユーザーの場合、重なっていても良い。オンサイトのユーザーの場合は今までの変わらずダメ。
@@ -1690,7 +1758,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     [Mike]</li>
   <li>バグ: 全てのテンプレートでsite_url, site_admin_url,
     layout_urlとxhtml有効を確実なものにした [Mike]</li>
-  <li>html投稿モードで自動タグ[raw][/raw]をサポート。 [code]と&lt;pre&gt;のよいところ取りをして見苦しいスタイリングを使わなくて済むようにした。</li>
+  <li>html投稿モードで自動タグ[raw][/raw]をサポート。[code]と&lt;pre&gt;のよいところ取りをして見苦しいスタイリングを使わなくて済むようにした。</li>
   <li>RSSフィードにAtomセルフリンクを追加。少し変だが&lt;<a href="http://feedvalidator.org/docs/warning/MissingAtomSelfLink" class="external free" title="http://feedvalidator.org/docs/warning/MissingAtomSelfLink" rel="nofollow">http://feedvalidator.org/docs/warning/MissingAtomSelfLink</a>...&gt;で推薦されているので。
     [Mike]</li>
   <li>ポータルブロックでのポッドキャストサポートを改善し、フィードが本当に長い時にポータルブロックが溢れてしまうエラーを改善した。
@@ -1710,7 +1778,7 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>COM_startBlockをアップデートし、作成済みのidと重ならない｛blockid｝テンプレート変数を設定した。
     [Blaine]</li>
   <li>グループ管理画面が2ページ以上の表示になる際の&quot;Show
-    Admin lists&quot;チェックを修正した。 [Oliver]</li>
+    Admin lists&quot;チェックを修正した。[Oliver]</li>
   <li>Admin-Menu表示の為の新関数を導入し、その機能をADMIN_list-functionsから除外した
     [Oliver]</li>
   <li>プラグインのバージョン番号が取得できないときにN/A表示していなかったのを修正した。(報告: Machinari)
@@ -1719,14 +1787,14 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>バグフィクス: Atomが常に0.3になっており記事の日付を処理しない
     (forumでの報告: mystral kk). [Mike]</li>
   <li>OpenID 1.1サポートを追加。Choplair提供。</li>
-  <li>site_nameを記事テンプレートに渡すようにした。digg.comなどにアドバンスリンクを提供するcross-siteなテンプレートにできるようになった [Mike]</li>
+  <li>site_nameを記事テンプレートに渡すようにした。digg.comなどにアドバンストリンクを提供するcross-siteなテンプレートにできるようになった [Mike]</li>
   <li>DB Backupsオプションを少々修正。全てのバックアップ(全ての.sqlファイル)をリスト化し、そこからダウンロードとファイル削除ができるようにした
     [Dirk]</li>
   <li>ピングとピングバック送信時のエラーチェックを修正
     [Mike, Dirk]</li>
   <li>ピングバック受信の際、ピングバックを送ってきたサイトの内容の抜粋を取得できるオプションをつけた
     [Dirk]</li>
-  <li>ポータルブロックでHTTP Last-ModifiedとETagヘッダをこれらに変更があったときのみ使うようにした。
+  <li>ポータルブロックでHTTP Last-ModifiedとETagヘッダーをこれらに変更があったときのみ使うようにした。
     [Dirk]</li>
   <li>{read_more_class}変数がclass=&quot;story-read-more-link&quot;が定義されていればそれを含むようにし{readmore_link}で使われるclass名との整合性を取るようにした。
     [Dirk]</li>
@@ -1735,22 +1803,22 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>admin/sectest.phpが403ステータスコードを認識するようにした
     (報告: THX100) [Dirk]</li>
   <li>全てのプラグインAPIで、本当にプラグインのみで使われているもの以外はmatching
-    CUSTOM_ 関数をを呼ぶようにした。 [Mike]</li>
-  <li>phpブロック関数にパラメータを渡す統合的なサポート(Joe
+    CUSTOM_ 関数をを呼ぶようにした。[Mike]</li>
+  <li>phpブロック関数にパラメーターを渡す統合的なサポート(Joe
     Mucchielloのパッチ#643)[Mike]</li>
   <li>管理ページでの多くのHTMLエラーの修正[Oliver]</li>
   <li>過去記事ブロックで日付と日付名の間に抜けていたブランクを追加(IRCによる報告: Jeruvy's girlfriend) [Dirk]</li>
-  <li>バグ[#648]のフィックス。新パスワードをemailした時にSMTPサーバーに届かずに送信に失敗していても&quot;OK&quot;を返してしまう。 [Oliver]</li>
-  <li>ピングバック送信時にはURLにパラメータを含める必要がある。例えば
+  <li>バグ[#648]のフィックス。新パスワードをemailした時にSMTPサーバーに届かずに送信に失敗していても&quot;OK&quot;を返してしまう。[Oliver]</li>
+  <li>ピングバック送信時にはURLにパラメーターを含める必要がある。例えば
     to</li>
 </ul>
 <p>Serendipity [Dirk]</p>
 <ul>
-  <li>ピングバック送信の際、リンク先のサイトがX-Pingbackヘッダを送っていなければ&lt;link
-    rel=&quot;pingback&quot;&gt;を探す。 [Dirk]</li>
+  <li>ピングバック送信の際、リンク先のサイトがX-Pingbackヘッダーを送っていなければ&lt;link
+    rel=&quot;pingback&quot;&gt;を探す。[Dirk]</li>
   <li>ピングバックを送る際、対象の記事で同一のリンクテキストで複数のURLを持っている場合、最後のリンクだけにピングバックを送信していた(それを改善した)[Dirk]</li>
-  <li>プラグインの自動アンインストールを新たに導入した。プラグインのすべての要素を除去するgeeklogコア関数に特定の配列を渡す関数をプラグイン自身が動作させる。このプラグイン内蔵関数はコアコードでは不可能な追加の除去を処理することができる。 [Oliver]</li>
-  <li>カレンダの日付検索を修正(パッチ提供: Jeffrey Hare)</li>
+  <li>プラグインの自動アンインストールを新たに導入した。プラグインのすべての要素を除去するgeeklogコア関数に特定の配列を渡す関数をプラグイン自身が動作させる。このプラグイン内蔵関数はコアコードでは不可能な追加の除去を処理することができる。[Oliver]</li>
+  <li>カレンダーの日付検索を修正(パッチ提供: Jeffrey Hare)</li>
   <li>自動タグがノーマルブロックのみで有効にした (バグ #653)
     [Dirk]</li>
   <li>記事に{story_topic_image_no_align} and {story_anchortag_and_image_no_align}を追加して、位置指定(alignment)なしで話題アイコンにアクセスす
@@ -1766,10 +1834,10 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     [Oliver]</li>
   <li>index.phpに&quot;microsummaries&quot;サポートを追加。<a href="http://wiki.mozilla.org/Microsummaries" class="external free" title="http://wiki.mozilla.org/Microsummariesを参照" rel="nofollow">http://wiki.mozilla.org/Microsummariesを参照</a>
     [Mike]</li>
-  <li>記事関連の改変 - HTML特別文字での投稿に関する全ての問題に対応する為に記事のコードを大幅に再編した。 [Mike]</li>
+  <li>記事関連の改変 - HTML特別文字での投稿に関する全ての問題に対応する為に記事のコードを大幅に再編した。[Mike]</li>
   <li>ユーザー投稿記事においてBody Textを持つことができるようにした。これを無効にするには、layout\theme\submit\submitstory.thtmlとsubmitstory_advanced.thtmlを編集する[Mike]</li>
   <li>アップロード画像の寸法リサイズを修正。リサイズ後の画像の幅がmax以下の場合、max高さが効かなかった。新コードでこれを解決した[Oliver]</li>
-  <li>tzcodeテーブルを除去し、代わりにPEAR::Dateを使い始めた。全てのtimezone情報がここに保存されていたので。 [Oiver]</li>
+  <li>tzcodeテーブルを除去し、代わりにPEAR::Dateを使い始めた。全てのtimezone情報がここに保存されていたので。[Oiver]</li>
   <li>ユーザー設定ページにtimezeoneセレクターを追加[Oliver]</li>
   <li>LIKEで使われるようなワイルドカード文字で発生するアンダースコア(_)を外すようにCOM_getLangSQL()を修正。多言語設定で不要な文字を表示してしまう。(報告: Kenji Ito)[Dirk]</li>
   <li>文章方向(ltr/rtl)に関わるアドレス問題とadmin/sectest.phpにハードコードされた英語文の修正
@@ -1779,12 +1847,12 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     (報告: LWC) [Dirk]</li>
   <li>コンフィギュレーションに保存後に表示する画面のオプションを追加[Oliver]</li>
   <li>コンフィギュレーションに記事保存後に表示する画面のオプションを追加[Oliver]</li>
-  <li>記事中の画像位置をfloatにした。話題アイコンも。 [Oliver]</li>
+  <li>記事中の画像位置をfloatにした。話題アイコンも。[Oliver]</li>
   <li>カレンダープラグインとリンクプラグ引用の新チェコ語言語ファイルを更新しました。Onderej
     Rusek提供</li>
   <li>カレンダープラグイン用新デンマーク語言語ファイルを更新しました。dirtyjensen提供。</li>
   <li>オランダ語言語ファイルを更新しました。Ronald Edelschaap提供。</li>
-  <li>カレンダプラグイン用オランダ語言語ファイルを更新しました。John van
+  <li>カレンダープラグイン用オランダ語言語ファイルを更新しました。John van
     Gaal提供</li>
   <li>カナダフランス語言語ファイルの更新: Geeklog本体と静的ページプラグイン用。同新らたな言語ファイル: カレンダー･リンク･アンケートプラグイン。提供: Jean-Francois Allard</li>
   <li>ヘブライ語言語ファイル。提供: LWC</li>
@@ -1798,8 +1866,8 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
     (進行中または前日のイベント、バグ0000604、forumsで提供されたパッチ)</li>
   <li>イベントカレンダーからイベント削除する際の問題の修正[Dirk]</li>
   <li>gloabal $_STATESをGeeklog本体から除去した。イベント詳細のstateの項をテキスト入力フィールドにした。</li>
-  <li>個人カレンダーのイベント入力フォームでサイトフッタが抜けていたので修正した(報告: Mark Evens)[Dirk]</li>
-  <li>カレンダーのフィードの修正: getFeedContent関数への最初のパラメータをfeed
+  <li>個人カレンダーのイベント入力フォームでサイトフッターが抜けていたので修正した(報告: Mark Evens)[Dirk]</li>
+  <li>カレンダーのフィードの修正: getFeedContent関数への最初のパラメーターをfeed
     limitでなくfeedのIDにした。(バグ$659)[Dirk]</li>
   <li>検索文をハイライトするようにした[Dirk]</li>
   <li>自動アンインストールを導入[Oliver]</li>
@@ -1829,17 +1897,17 @@ title="http://www.sem-r.com/09/20090213153711.html">http://www.sem-r.com/09/2009
   <li>編集モジュールがフランス語言語ファイルで動作していない問題を修正(報告: Joe)[Dirk]</li>
   <li>自動アンインストールの導入[Oliver]</li>
   <li>$_CONF['site_url']が空の時のSLVモジュールのエラーを修正(報告: AA6QN)[Dirk]</li>
-  <li>ブロックするIPを範囲で指定するサポートの追加。CIDRまたはx.x.x.x.-y.y.y.yで指定する。 [Dirk]</li>
+  <li>ブロックするIPを範囲で指定するサポートの追加。CIDRまたはx.x.x.x.-y.y.y.yで指定する。[Dirk]</li>
 </ul>
 
 <h3>静的ページプラグイン (1.5.0)</h3>
 <ul>
-  <li>バグフィックス: 多言語セットアップで全ての話題をセンターブロックで見えるようにした。 [Dirk]</li>
+  <li>バグフィックス: 多言語セットアップで全ての話題をセンターブロックで見えるようにした。[Dirk]</li>
   <li>バグフィックス: 静的ページで$_CONF['show_right_blocks']をオーバーライドするページフォーマットを可能にした(報告: Simon Lord)[Dirk]</li>
-  <li>静的ページ用の新自動タグ: staticpage_content。静的ページへのリンクの代わりに静的ページの内容を返す。 [Oliver]</li>
+  <li>静的ページ用の新自動タグ: staticpage_content。静的ページへのリンクの代わりに静的ページの内容を返す。[Oliver]</li>
   <li>静的ページ表示にはテンプレートを使うようにした[Oliver]</li>
   <li>自動アンインストールを導入[Oliver]</li>
-  <li>静的ページエディター(編集画面)がアドバンスエディターのテンプレートを間違った場所で探していた。初期化されていない変数が原因(報告: k74)[Dirk]</li>
+  <li>静的ページエディター(編集画面)がアドバンストエディターのテンプレートを間違った場所で探していた。初期化されていない変数が原因(報告: k74)[Dirk]</li>
   <li>phpで作られたコンテンツにおいても静的ページでタグの置換えができるようにした
     [Oliver]</li>
   <li>ページ保存後に表示する内容のオプションをコンフィギュレーションで選択できるようにした[Oliver]</li>
