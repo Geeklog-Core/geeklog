@@ -980,7 +980,7 @@ $LANG28 = array(
     53 => 'registriert',
     54 => 'User löschen',
     55 => 'Dies funktioniert nur, wenn die Funktion \'Letzte Anmeldung aufzeichnen\' im Configuration admin panel aktiviert wurde.',
-    56 => 'Bitte den Typ User wählen, der gelöscht werden soll und "Liste aktualisieren" drücken. Dann die aus der Liste abhaken, di enicht gelöscht werden sollen und "Delete" drücken. Es werden nur die gelöscht, die gegenwärtig sichtbar sind. Dieser Hinweis für den Fall, dass die Liste sich über mehrere Seiten erstreckt.',
+    56 => 'Bitte den Typ User wählen, der gelöscht werden soll und "Liste aktualisieren" drücken. Dann die aus der Liste abhaken, die nicht gelöscht werden sollen und "Delete" drücken. Es werden nur die gelöscht, die gegenwärtig sichtbar sind. Dieser Hinweis für den Fall, dass die Liste sich über mehrere Seiten erstreckt.',
     57 => 'Phantom-User',
     58 => 'Einmal-User',
     59 => 'Alte User',
@@ -999,7 +999,7 @@ $LANG28 = array(
     72 => 'Kein User zum Löschen vorgemerkt',
     73 => 'Alle ausgewählten User dauerhaft löschen?',
     74 => 'Aktuelle User',
-    75 => 'User, angemeldet in den letzen ',
+    75 => 'User, angemeldet in den letzten ',
     76 => ' Monaten.',
     77 => 'Email site login reminder to selected users',
     78 => 'Erinnerung schicken',
@@ -1701,7 +1701,7 @@ $LANG_ADMIN = array(
     'warning' => '!!!',
     'token_expiry' => 'Achtung, zeitgesteuerte Sicherheitsfunktion (Security-Token). Nach %s lässt sich diese Seite nicht mehr speichern. Änderungen gehen verloren.',
     'token_expired' => 'Der Security-Token für diese Veränderung ist ausgelaufen. Bitte neu authentifizieren, um weiterzumachen.',
-    'reauth_msg' => 'Der Security-Token für diese Veränderung ist ausgelaufen. Wenn Sie weitermachen wollen, dann bitte unten neu authentifizieren. Damit wird sichergestellt, dass die grade gemachten Änderungen nicht verlohren gehen.',
+    'reauth_msg' => 'Der Security-Token für diese Veränderung ist ausgelaufen. Wenn Sie weitermachen wollen, dann bitte unten neu authentifizieren. Damit wird sichergestellt, dass die gerade gemachten Änderungen nicht verloren gehen.',
     'authenticate' => 'Authentifizieren'
 );
 
