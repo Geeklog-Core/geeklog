@@ -748,11 +748,15 @@ class database {
             $btr = debug_backtrace();
             if (! empty($btr)) {
                 for ($i = 0; $i < 100; $i++) {
-                    $b = $btr[$i];
-                    if ($b['function'] == 'DB_query') {
-                        if (!empty($b['file']) && !empty($b['line'])) {
-                            $fn = $b['file'] . ':' . $b['line'];
+                    if (isset($btr[$i])) {
+                        $b = $btr[$i];
+                        if ($b['function'] == 'DB_query') {
+                            if (!empty($b['file']) && !empty($b['line'])) {
+                                $fn = $b['file'] . ':' . $b['line'];
+                            }
+                            break;
                         }
+                    } else {
                         break;
                     }
                 }
