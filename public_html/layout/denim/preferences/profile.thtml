@@ -56,10 +56,9 @@
         <dd><input type="text" maxlength="96" value="{email_value}" name="email_conf" id="profile-email_conf" class="size6"{xhtml}></dd>
 
         {current_password_option}
-
-        {delete_account_option}
       </dl>
     </div>
+    {delete_account_option}
   </fieldset>
 </div>
 
