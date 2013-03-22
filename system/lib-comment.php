@@ -2559,8 +2559,13 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
                 $retval .= CMT_commentForm ($title, '', $sid, $pid, $type, $commentmode,
                                             $postmode, $format, $order, $cpage);
             } else {
-                echo COM_refresh($_CONF['site_url'] . '/index.php');
-                exit;
+                if (COMMENT_ON_SAME_PAGE) {
+                    // Do nothing and do not show comment form (happens most likely when admin viewing draft article)                    
+                } else {
+                    // For comments not displayed on same page (probably owner pushed the post comment button on a draft article)
+                    echo COM_refresh($_CONF['site_url'] . '/index.php');
+                    exit;
+                }
             }
             if ($is_comment_page) {
                 $noindex = '<meta name="robots" content="noindex"' . XHTML . '>';
