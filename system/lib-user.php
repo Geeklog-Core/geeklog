@@ -1019,8 +1019,11 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             $user_templates->parse('story_row', 'strow', true);
         }
     } else {
-        $user_templates->set_var('story_row',
-                                 '<tr><td>' . $LANG01[37] . '</td></tr>');
+        $story_row = $LANG01[37];
+        if ($_CONF['supported_version_theme'] == '1.8.1') {
+            $story_row = '<tr><td>' . $story_row . '</td></tr>';
+        }
+        $user_templates->set_var('story_row', $story_row);
     }
 
     // list of last 10 comments by this user
@@ -1061,8 +1064,11 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
             }
         }
     } else {
-        $user_templates->set_var('comment_row',
-                                 '<tr><td>' . $LANG01[29] . '</td></tr>');
+        $comment_row = $LANG01[29];
+        if ($_CONF['supported_version_theme'] == '1.8.1') {
+            $comment_row = '<tr><td>' . $comment_row . '</td></tr>';
+        }
+        $user_templates->set_var('comment_row', $comment_row);
     }
 
     // posting stats for this user
