@@ -1501,7 +1501,7 @@ function ADMIN_getListField_newplugins($fieldname, $fieldvalue, $A, $icon_arr, $
  */
 function ADMIN_getListField_topics($fieldname, $fieldvalue, $A, $icon_arr, $token)
 {
-    global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27;
+    global $_CONF, $LANG_ACCESS, $_TABLES, $LANG27, $LANG32;
     
     $retval = false;
 
