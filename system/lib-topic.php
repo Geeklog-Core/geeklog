@@ -36,7 +36,11 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-topic.php') !== false) {
 // set to true to enable debug output in error.log
 $_TOPIC_DEBUG = false;
 
-define("TOPIC_ALL_OPTION", 'all');
+// These constants are used by topic assignments table and when the user selects 
+// a topic option. 
+// The global variable $topic should never be one of these. It should be set to
+// either a topic id the user has access to or empty (which means all topics).
+define("TOPIC_ALL_OPTION", 'all'); 
 define("TOPIC_NONE_OPTION", 'none');
 define("TOPIC_HOMEONLY_OPTION", 'homeonly');
 define("TOPIC_SELECTED_OPTION", 'selectedtopics');
@@ -1162,6 +1166,15 @@ function TOPIC_getTopic($type = '', $id = '')
     
     // Double check
     $topic = COM_applyFilter($topic);
+    if ($topic == TOPIC_ALL_OPTION) {
+        $topic = ''; // Do not use 'all' option. Nothing is the same thing 
+    }
+    // See if user has access to view topic
+    if ($topic != '') {
+        if ($topic != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'))) {
+            $topic = '';
+        }
+    }
     
     // Check and return Previous topic
     if ($topic == '') {

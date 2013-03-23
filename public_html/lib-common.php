@@ -220,7 +220,7 @@ require_once( $_CONF['path_system'] . 'lib-syndication.php' );
 require_once( $_CONF['path_system'] . 'lib-topic.php' );
 
 /**
-* Retrieve new topic or get last topic.
+* Retrieve new topic if found
 *
 */
 
@@ -230,6 +230,12 @@ if (isset($_GET['topic'])) {
     $topic = COM_applyFilter($_POST['topic']);
 } else {
     $topic = '';
+}
+// See if user has access to view topic
+if ($topic != '') {
+    if ($topic != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'))) {
+        $topic = '';
+    }
 }
 
 /**
@@ -1259,6 +1265,9 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     }
     
     // Set last topic session variable
+    if ($topic == TOPIC_ALL_OPTION) {
+        $topic = ''; // Do not save 'all' option. Nothing is the same thing 
+    }
     SESS_setVariable('topic', $topic);
 
     // Call any plugin that may want to include extra Meta tags
@@ -1978,6 +1987,9 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
     
     // Set last topic session variable
+    if ($topic == TOPIC_ALL_OPTION) {
+        $topic = ''; // Do not save 'all' option. Nothing is the same thing 
+    }
     SESS_setVariable('topic', $topic);
 
     // Call any plugin that may want to include extra Meta tags
