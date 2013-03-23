@@ -86,6 +86,7 @@ function fixTopic(&$A, $tid_list)
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re check to figure out if 
 // message needs to be displayed.
+$topic_check = '';
 if (isset($_GET['topic'])) {
     $topic_check = COM_applyFilter($_GET['topic']);
 } elseif (isset($_POST['topic'])) {
