@@ -21,11 +21,11 @@ div#centerblocks div.storytext {
 }
 
 /* Story Title */
-div#centerblocks div.storytext h2 {
+div#centerblocks div.storytext h2.story_title {
   float: {left};
   margin: 0 0 1em 0;
   padding: 0;
-  font-size: 110%;
+  font-size: 125%; /* 15px */
   font-weight: bold;
 }
 
@@ -135,11 +135,11 @@ div#centerblocks div.featuredstorytext {
 }
 
 /* Story Title */
-div#centerblocks div.featuredstorytext h2 {
+div#centerblocks div.featuredstorytext h2.story_title {
   float: {left};
   margin: 0 0 1em 0;
   padding: 0;
-  font-size: 110%;
+  font-size: 125%;
   font-weight: bold;
 }
 
@@ -249,11 +249,11 @@ div#centerblocks div.archivestorytext {
 }
 
 /* Story Title */
-div#centerblocks div.archivestorytext h2 {
+div#centerblocks div.archivestorytext h2.story_title {
   float: {left};
   margin: 0 0 1em 0;
   padding: 0;
-  font-size: 110%;
+  font-size: 125%;
   font-weight: bold;
 }
 
@@ -347,4 +347,17 @@ div#centerblocks div.archivestorytext ul.feedback li {
   display: inline;
   margin: 0 2px;
   padding: 0;
+}
+
+/* Set font size for h2, h3, h4, h5, h6 */
+div.story_introtext h2 {
+  font-size: 116.7%; /* 14px */
+}
+div.story_introtext h3 {
+  font-size: 108.4%; /* 13px */
+}
+div.story_introtext h4,
+div.story_introtext h5,
+div.story_introtext h6 {
+  font-size: 100%; /* 12px */
 }
