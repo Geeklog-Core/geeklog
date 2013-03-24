@@ -2043,7 +2043,7 @@ class Story
             $this->_statuscode = 0;
         }
 
-        if (array_key_exists('expire_ampm', $array)) {
+        if (array_key_exists('expire_hour', $array)) {
             $expire_ampm = COM_applyFilter($array['expire_ampm']);
             $expire_hour = COM_applyFilter($array['expire_hour'], true);
             $expire_minute = COM_applyFilter($array['expire_minute'], true);
