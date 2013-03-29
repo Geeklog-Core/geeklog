@@ -540,7 +540,7 @@ class database
         }
 
         // return only if recordset exists, otherwise 0
-        if (strcasecmp(get_class($recordset), 'MySQLi_Result') === 0) {
+        if (strcasecmp(@get_class($recordset), 'MySQLi_Result') === 0) {
             if ($this->_verbose) {
                 $this->_errorlog('got ' . $recordset->num_rows . ' rows');
                 $this->_errorlog("\n*** Inside database->dbNumRows ***");
