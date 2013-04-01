@@ -148,9 +148,7 @@ if ($nrows > 0) {
     }
     $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 } else {
-    $display .= COM_startBlock($LANG10[7]);
-    $display .= $LANG10[10];
-    $display .= COM_endBlock();
+    $display .= COM_showMessageText($LANG10[10], $LANG10[7]);
 }
 
 // Top Ten Commented Stories
@@ -182,9 +180,7 @@ if ($nrows > 0) {
     $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 
 } else {
-    $display .= COM_startBlock($LANG10[11]);
-    $display .= $LANG10[13];
-    $display .= COM_endBlock();
+    $display .= COM_showMessageText($LANG10[13], $LANG10[11]);
 }
 
 // Top Ten Trackback Comments
@@ -218,9 +214,7 @@ if ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled']) {
         $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 
     } else {
-        $display .= COM_startBlock ($LANG10[25]);
-        $display .= $LANG10[26];
-        $display .= COM_endBlock ();
+        $display .= COM_showMessageText($LANG10[26], $LANG10[25]);
     }
 }
 
@@ -254,9 +248,7 @@ if ($nrows > 0) {
     }
     $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
 } else {
-    $display .= COM_startBlock($LANG10[22]);
-    $display .= $LANG10[24];
-    $display .= COM_endBlock();
+    $display .= COM_showMessageText($LANG10[24], $LANG10[22]);
 }
 
 // Now show stats for any plugins that want to be included

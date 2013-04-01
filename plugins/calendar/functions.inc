@@ -438,11 +438,8 @@ function plugin_savesubmission_calendar($A)
 
     // check for missing textfields
     if (empty ($A['title']) || empty ($A['start_month']) || empty ($A['start_day']) || empty ($A['start_year'])) {
-        $retval .= COM_startBlock ($LANG12[22], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-            . $LANG12[23]
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . plugin_submit_calendar ($A['calendar_type']);
+        $retval .= COM_showMessageText($LANG12[23], $LANG12[22])
+                .  plugin_submit_calendar($A['calendar_type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG_CAL_1[27]));
 
         return $retval;
@@ -1394,9 +1391,7 @@ function plugin_showstats_calendar ($showsitestats)
         }
         $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
-        $display .= COM_startBlock($LANG_CAL_1[47]);
-        $display .= $LANG_CAL_1[49];
-        $display .= COM_endBlock();
+        $display .= COM_showMessageText($LANG_CAL_1[49], $LANG_CAL_1[47]);
     }
 
     return $display;

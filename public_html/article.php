@@ -151,10 +151,7 @@ if ($A['count'] > 0) {
     }
 
     if ($output == STORY_PERMISSION_DENIED) {
-        $display = COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                 . $LANG_ACCESS['storydenialmsg']
-                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display = COM_showMessageText($LANG_ACCESS['storydenialmsg'], $LANG_ACCESS['accessdenied']);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ACCESS['accessdenied']));
     } elseif ( $output == STORY_INVALID_SID ) {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');

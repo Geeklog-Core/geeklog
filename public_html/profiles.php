@@ -79,10 +79,7 @@ function contactemail($uid,$cc,$author,$authoremail,$subject,$message)
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
     $last = COM_checkSpeedlimit ('mail');
     if ($last > 0) {
-        $retval = COM_startBlock ($LANG12[26], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG08[39] . $last . $LANG08[40]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval = COM_showMessageText($LANG08[39] . $last . $LANG08[40], $LANG12[26]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[81]));
         
         return $retval;
@@ -255,11 +252,7 @@ function contactform ($uid, $cc = false, $subject = '', $message = '')
             $retval .= $mail_template->finish($mail_template->get_var('output'));
             $retval .= COM_endBlock();
         } else {
-            $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname, '',
-                              COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG08[35];
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                           'footer'));
+            $retval = COM_showMessageText($LANG08[35], $LANG08[10] . ' ' . $displayname);
         }
     }
 

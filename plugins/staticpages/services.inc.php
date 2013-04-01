@@ -69,10 +69,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
     $output = '';
 
     if (!SEC_hasRights('staticpages.edit')) {
-        $output .= COM_startBlock($LANG_STATIC['access_denied'], '',
-                                  COM_getBlockTemplate('_msg_block', 'header'));
-        $output .= $LANG_STATIC['access_denied_msg'];
-        $output .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $output .= COM_showMessageText($LANG_STATIC['access_denied_msg'], $LANG_STATIC['access_denied']);
         $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
 
         return PLG_RET_AUTH_FAILED;
@@ -563,10 +560,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     $sp_id = $args['sp_id'];
 
     if (!SEC_hasRights ('staticpages.delete')) {
-        $output .= COM_startBlock ($LANG_STATIC['access_denied'], '',
-                                    COM_getBlockTemplate ('_msg_block', 'header'));
-        $output .= $LANG_STATIC['access_denied_msg'];
-        $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $output .= COM_showMessageText($LANG_STATIC['access_denied_msg'], $LANG_STATIC['access_denied']);
         $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG_STATIC['access_denied']));
         if ($_USER['uid'] > 1) {
             return PLG_RET_PERMISSION_DENIED;
@@ -787,11 +781,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                         $output = COM_createHTMLDocument($output, array('rightblock' => true));
                     }
                 } else {
-                    $output .= COM_startBlock($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate('_msg_block', 'header'));
-                    $output .= $LANG_STATIC['deny_msg'];
-                    $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
-                                                                 'footer'));
+                    $output .= COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_ACCESS['accessdenied']);
                     if ($mode !== 'autotag') {
                         $output = COM_createHTMLDocument($output, array('rightblock' => true));
                     }

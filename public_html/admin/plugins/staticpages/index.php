@@ -683,10 +683,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
 
         $retval = staticpageeditor_form($A);
     } else {
-        $retval = COM_startBlock($LANG_ACCESS['accessdenied'], '',
-                        COM_getBlockTemplate('_msg_block', 'header'))
-                . $LANG_STATIC['deny_msg']
-                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $retval = COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_ACCESS['accessdenied']);
     }
 
     return $retval;

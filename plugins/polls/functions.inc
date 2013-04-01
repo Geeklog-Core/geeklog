@@ -248,11 +248,9 @@ function plugin_showstats_polls ($showsitestats)
             $voters = COM_NumberFormat ($A['voters']);
             $data_arr[] = array ('pid' => $pid, 'voters' => $voters);
         }
-        $retval .= ADMIN_simpleList ('', $header_arr, $text_arr, $data_arr);
+        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_startBlock ($LANG_POLLS['stats_top10']);
-        $retval .= $LANG_POLLS['stats_none'];
-        $retval .= COM_endBlock ();
+        $retval .= COM_showMessageText($LANG_POLLS['stats_none'], $LANG_POLLS['stats_top10']);
     }
 
     return $retval;
@@ -736,13 +734,12 @@ function POLLS_pollsave($pid, $aid)
 
     // This always does an insert so no need to provide key_field and key_value args
     DB_query("INSERT INTO {$_TABLES['pollvoters']} (ipaddress,date,pid) VALUES ('{$_SERVER['REMOTE_ADDR']}'," . time() . ",'$pid')");
-    $retval .= COM_startBlock ($LANG_POLLS['savedvotetitle'], '',
-                       COM_getBlockTemplate ('_msg_block', 'header'))
-        . $LANG_POLLS['savedvotemsg'] . ' "'
-        . DB_getItem ($_TABLES['polltopics'], 'topic', "pid = '{$pid}'")
-        . '"'
-        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-        . POLLS_pollResults($pid);
+    $retval .= COM_showMessageText(
+                  $LANG_POLLS['savedvotemsg'] . ' "'
+                  . DB_getItem($_TABLES['polltopics'], 'topic', "pid = '{$pid}'") . '"',
+                  $LANG_POLLS['savedvotetitle']
+               )
+            .  POLLS_pollResults($pid);
 
     return $retval;
 }
@@ -1016,14 +1013,12 @@ function plugin_displaycomment_polls ($id, $cid, $title, $order, $format, $page,
                 (SEC_hasAccess ($A['owner_id'], $A['group_id'],
                     $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                     $A['perm_anon']) == 3));
-        $retval .= CMT_userComments ($id, $title, 'polls', $order, $format,
-                                     $cid, $page, $view, $delete_option,
-                                     $A['commentcode']);
+        $retval .= CMT_userComments($id, $title, 'polls', $order, $format,
+                                    $cid, $page, $view, $delete_option,
+                                    $A['commentcode']);
     } else {
-        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_POLLS['deny_msg']
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG_POLLS['deny_msg'], $LANG_ACCESS['accessdenied'])
+                .  COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
     return $retval;

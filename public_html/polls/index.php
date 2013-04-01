@@ -182,11 +182,7 @@ if (empty($pid)) {
             $display .= COM_showMessage($msg, 'polls');
         }
         if (isset($_POST['aid'])) {
-            $display .= COM_startBlock (
-                    $LANG_POLLS['not_saved'], '',
-                    COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_POLLS['answer_all'] . ' "' . $polltopic . '"'
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $display .= COM_showMessageText($LANG_POLLS['answer_all'] . ' "' . $polltopic . '"', $LANG_POLLS['not_saved']);
         }
         if (DB_getItem($_TABLES['polltopics'], 'is_open', "pid = '$pid'") != 1) {
             $aid = -1; // poll closed - show result

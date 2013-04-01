@@ -330,11 +330,9 @@ function plugin_showstats_links ($showsitestats)
                                 'hits' => $hits
                           );
         }
-        $retval .= ADMIN_simpleList ('', $header_arr, $text_arr, $data_arr);
+        $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_startBlock ($LANG_LINKS_STATS['stats_headline']);
-        $retval .= $LANG_LINKS_STATS['stats_no_hits'];
-        $retval .= COM_endBlock ();
+        $retval .= COM_showMessageText($LANG_LINKS_STATS['stats_no_hits'], $LANG_LINKS_STATS['stats_headline']);
     }
 
     return $retval;
@@ -984,11 +982,8 @@ function plugin_savesubmission_links($A)
             && ($A['url'] != 'http://')) {
         $retval = plugin_save_submit_links($A);
     } else {
-        $retval .= COM_startBlock ($LANG12[22], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-            . $LANG12[23]
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-            . plugin_submit_links();
+        $retval .= COM_showMessageText($LANG12[23], $LANG12[22])
+                .  plugin_submit_links();
         $retval = COM_createHTMLDocument($retval);
     }
 
@@ -1080,11 +1075,8 @@ function plugin_save_submit_links($A)
         }
     }
     if (!$validcat) {
-        $retval .= COM_startBlock($LANG12[22], '',
-                       COM_getBlockTemplate('_msg_block', 'header'))
-                . $LANG12[23]
-                . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
-                . submissionform('links');
+        $retval .= COM_showMessageText($LANG12[23], $LANG12[22])
+                .  submissionform('links');
         $retval = COM_createHTMLDocument($retval);
 
         return $retval;
