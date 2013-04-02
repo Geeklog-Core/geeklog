@@ -133,10 +133,7 @@ function links_list($message)
     }
 
     if (is_array($message) && !empty($message[0])) {
-        $display .= COM_startBlock($message[0], '',
-                                 COM_getBlockTemplate('_msg_block', 'header'));
-        $display .= $message[1];
-        $display .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+        $display .= COM_showMessageText($message[1], $message[0]);
     } else if (isset($_REQUEST['msg'])) {
         $msg = COM_applyFilter($_REQUEST['msg'], true);
         if ($msg > 0) {

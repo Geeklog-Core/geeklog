@@ -108,19 +108,13 @@ function editlink ($mode, $lid = '')
     if ($mode <> 'editsubmission' AND !empty($lid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
         if (DB_numRows($result) !== 1) {
-            $msg = COM_startBlock ($LANG_LINKS_ADMIN[24], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-            $msg .= $LANG_LINKS_ADMIN[25];
-            $msg .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $msg = COM_showMessageText($LANG_LINKS_ADMIN[25], $LANG_LINKS_ADMIN[24]);
             return $msg;
         }
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
-            $retval .= COM_startBlock($LANG_LINKS_ADMIN[16], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG_LINKS_ADMIN[17];
-            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            $retval .= COM_showMessageText($LANG_LINKS_ADMIN[17], $LANG_LINKS_ADMIN[16]);
             COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
             return $retval;
         }

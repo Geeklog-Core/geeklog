@@ -179,10 +179,7 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     // check if any question was entered
     if (empty($topic) or (count($Q) == 0) or (strlen($Q[0]) == 0) or
             (strlen($A[0][0]) == 0)) {
-        $retval .= COM_startBlock ($LANG21[32], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG25[2];
-        $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG25[2], $LANG21[32]);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG25[5]));
         return $retval;
     }
@@ -373,10 +370,7 @@ function editpoll ($pid = '')
         $access = SEC_hasAccess($T['owner_id'],$T['group_id'],$T['perm_owner'],$T['perm_group'],$T['perm_members'],$T['perm_anon']);
         if ($access == 0 OR $access == 2) {
             // User doesn't have access...bail
-            $retval .= COM_startBlock($LANG25[21], '',
-                            COM_getBlockTemplate('_msg_block', 'header'));
-            $retval .= $LANG25[22];
-            $retval .= COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'));
+            $retval .= COM_showMessageText($LANG25[22], $LANG25[21]);
             COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
             return $retval;
         }
@@ -657,11 +651,8 @@ if ($mode == 'edit') {
                         $_POST['perm_owner'], $_POST['perm_group'],
                         $_POST['perm_members'], $_POST['perm_anon']);
     } else {
-        $display .= COM_startBlock ($LANG21[32], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $LANG25[17];
-        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-        $display .= editpoll ();
+        $display .= COM_showMessageText($LANG25[17], $LANG21[32])
+                 .  editpoll();
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG25[5]));
     }
 } elseif (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete'])) {

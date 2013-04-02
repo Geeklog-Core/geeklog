@@ -325,21 +325,14 @@ function confirmAccountDelete ($form_reqid)
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                                   'uid', $_USER['uid']);
-
-    $retval = '';
-
-    $retval .= COM_startBlock ($LANG04[97], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-    $retval .= '<p>' . $LANG04[98] . '</p>' . LB;
-    $retval .= '<form action="' . $_CONF['site_url']
-            . '/usersettings.php" method="post"><div>' . LB;
-    $retval .= '<p align="center"><input type="submit" name="btnsubmit" value="'
-            . $LANG04[96] . '"' . XHTML . '></p>' . LB;
-    $retval .= '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB;
-    $retval .= '<input type="hidden" name="account_id" value="' . $reqid
-            . '"' . XHTML . '>' . LB;
-    $retval .= '</div></form>' . LB;
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $msg = '<p>' . $LANG04[98] . '</p>' . LB . '<form action="' . $_CONF['site_url']
+         . '/usersettings.php" method="post"><div>' . LB
+         . '<p align="center"><input type="submit" name="btnsubmit" value="'
+         . $LANG04[96] . '"' . XHTML . '></p>' . LB
+         . '<input type="hidden" name="mode" value="deleteconfirmed"' . XHTML . '>' . LB
+         . '<input type="hidden" name="account_id" value="' . $reqid . '"' . XHTML . '>' . LB
+         . '</div></form>' . LB;
+    $retval = COM_showMessageText($msg, $LANG04[97]);
     $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG04[97]));
 
     return $retval;
@@ -801,11 +794,7 @@ function handlePhotoUpload ($delete_photo = '')
                                          'image/png'   => '.png'
                                  )      );
     if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
-        $display .= COM_startBlock ($LANG24[30], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-        $display .= $upload->printErrors (false);
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                        'footer'));
+        $display .= COM_showMessageText($upload->printErrors(false), $LANG24[30]);
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
         COM_output($display);
         exit; // don't return
@@ -863,11 +852,7 @@ function handlePhotoUpload ($delete_photo = '')
         $upload->uploadFiles ();
 
         if ($upload->areErrors ()) {
-            $display = COM_startBlock ($LANG24[30], '',
-                    COM_getBlockTemplate ('_msg_block', 'header'));
-            $display .= $upload->printErrors (false);
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                            'footer'));
+            $display = COM_showMessageText($upload->printErrors (false), $LANG24[30]);
             $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG24[30]));
             COM_output($display);
             exit; // don't return
@@ -1480,9 +1465,10 @@ if (! COM_isAnonUser()) {
         break;
     }
 } else {
-    $display .= COM_startBlock ($LANG04[70] . '!');
-    $display .= '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>';
-    $display .= COM_endBlock ();
+    $display .= COM_showMessageText(
+                    '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>',
+                    $LANG04[70] . '!'
+    );
     $display = COM_createHTMLDocument($display);
 }
 

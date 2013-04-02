@@ -1413,10 +1413,7 @@ function plugin_displaycomment_article($id, $cid, $title, $order, $format, $page
                        $format, $cid, $page, $view, $delete_option,
                        $A['commentcode']);
     } else {
-        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_ACCESS['storydenialmsg']
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG_ACCESS['storydenialmsg'], $LANG_ACCESS['accessdenied']);
     }
 
     return $retval;
@@ -1781,9 +1778,7 @@ function service_submit_story($args, &$output, &$svc_msg)
                     'image/png'   => '.png'
                     ));
             if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-                $output = COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
-                $output .= $upload->printErrors (false);
-                $output .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $output = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
                 $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
                 echo $output;
                 exit;
@@ -1814,10 +1809,7 @@ function service_submit_story($args, &$output, &$svc_msg)
             $upload->uploadFiles();
 
             if ($upload->areErrors()) {
-                $retval = COM_startBlock ($LANG24[30], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'));
-                $retval .= $upload->printErrors(false);
-                $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval = COM_showMessageText($upload->printErrors(false), $LANG24[30]);
                 $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[30]));
                 echo $retval;
                 exit;

@@ -905,15 +905,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
 
         if ($last > 0) {
             if (COMMENT_ON_SAME_PAGE) {
-                $retval .= COM_startBlock ($MESSAGE[40], '',
-                                   COM_getBlockTemplate ('_msg_block', 'header'))
-                    . $LANG03[45]
-                    . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval .= COM_showMessageText($LANG03[45], $MESSAGE[40]);
             } else {
-                $retval .= COM_startBlock ($LANG12[26], '',
-                                   COM_getBlockTemplate ('_msg_block', 'header'))
-                    . $LANG03[7] . $last . $LANG03[8]
-                    . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $retval .= COM_showMessageText($LANG03[7] . $last . $LANG03[8], $LANG12[26]);
             }
         } else {
 
@@ -1594,10 +1588,7 @@ function CMT_reportAbusiveComment ($cid, $type)
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
     $last = COM_checkSpeedlimit ('mail');
     if ($last > 0) {
-        $retval .= COM_startBlock ($LANG12[26], '',
-                            COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[30] . $last . $LANG12[31]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG12[30] . $last . $LANG12[31], $LANG12[26]);
 
         return $retval;
     }

@@ -179,10 +179,7 @@ function plugin_displaycomment_staticpages($id, $cid, $title, $order, $format, $
                                      $cid, $page, $view, $delete_option,
                                      $A['commentcode']);
     } else {
-        $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG_STATIC['deny_msg']
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_ACCESS['accessdenied']);
     }
 
     return $retval;
@@ -736,9 +733,7 @@ function plugin_showstats_staticpages($showsitestats)
         }
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_startBlock($LANG_STATIC['stats_headline']);
-        $retval .= $LANG_STATIC['stats_no_hits'];
-        $retval .= COM_endBlock();
+        $retval .= COM_showMessageText($LANG_STATIC['stats_no_hits'], $LANG_STATIC['stats_headline']);
     }
 
     return $retval;
