@@ -423,9 +423,9 @@ $LANG_MYACCOUNT = array(
 # index.php
 
 $LANG05 = array(
-    1 => 'No News to Display',
-    2 => 'There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive',
-    3 => ' for topic %s',
+    1 => 'No Articles to Display',
+    2 => 'There are no articles to display for this topic.',
+    3 => '', // Not Used
     4 => 'Today\'s Featured Article',
     5 => 'Next',
     6 => 'Previous',
@@ -1468,8 +1468,9 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => '404 Error',
-    2 => 'Gee, I\'ve looked everywhere but I can not find <b>%s</b>.',
-    3 => "<p>We're sorry, but the file you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
+    2 => '<p>Gee, I\'ve looked everywhere but I can not find:</p><p><b>%s</b></p>',
+    3 => "<p>We're sorry, but the page you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}/\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost.", 
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost.",
 );
 
 ###############################################################################

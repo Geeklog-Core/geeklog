@@ -85,7 +85,7 @@ function fixTopic(&$A, $tid_list)
 
 // See if user has access to view topic else display message.
 // This check has already been done in lib-common so re check to figure out if 
-// message needs to be displayed.
+// 404 message needs to be displayed.
 $topic_check = '';
 if (isset($_GET['topic'])) {
     $topic_check = COM_applyFilter($_GET['topic']);
@@ -94,43 +94,7 @@ if (isset($_GET['topic'])) {
 }
 if ($topic_check != '') {
     if ($topic_check != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND'))) {
-        // This will eventually be a 404 error. Copied code from below this time
-        // just to keep the same user exerience        
-        $display = '';
-        if (!isset ($_CONF['hide_no_news_msg']) ||
-                ($_CONF['hide_no_news_msg'] == 0)) {
-            $display .= COM_startBlock ($LANG05[1], '',
-                        COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
-            if (!empty ($topic_check)) {
-                $topicname = DB_getItem ($_TABLES['topics'], 'topic',
-                                         "tid = '$topic_check'");
-                $display .= sprintf ($LANG05[3], $topicname);
-            }
-            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        }
-    
-        $display .= PLG_showCenterblock (3, $page, $topic_check); // bottom blocks
-        
-        $header = '';
-        
-        if ($topic)
-        {
-            // Meta Tags
-            if ($_CONF['meta_tags'] > 0) {
-                $result = DB_query ("SELECT meta_description, meta_keywords FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
-                $A = DB_fetchArray ($result);
-        
-                $meta_description = stripslashes($A['meta_description']);
-                $meta_keywords = stripslashes($A['meta_keywords']);
-                $header .= COM_createMetaTags($meta_description, $meta_keywords);
-            }
-        }
-        
-        $display = COM_createHTMLDocument($display, array('breadcrumbs' => $breadcrumbs, 'headercode' => $header, 'rightblock' => true));
-        
-        // Output page
-        COM_output($display);
-        exit();    
+        COM_handle404();  
     }
 }
 
@@ -418,19 +382,22 @@ if ( $A = DB_fetchArray( $result ) ) {
         $display .= COM_printPageNavigation ($base_url, $page, $num_pages);
     }
 } else { // no stories to display
-    if (!isset ($_CONF['hide_no_news_msg']) ||
-            ($_CONF['hide_no_news_msg'] == 0)) {
-        $display .= COM_startBlock ($LANG05[1], '',
-                    COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
-        if (!empty ($topic)) {
-            $topicname = DB_getItem ($_TABLES['topics'], 'topic',
-                                     "tid = '$topic'");
-            $display .= sprintf ($LANG05[3], $topicname);
+    if ($page == 1) {
+        if (!isset ($_CONF['hide_no_news_msg']) ||
+                ($_CONF['hide_no_news_msg'] == 0)) {
+            $display .= COM_startBlock ($LANG05[1], '',
+                        COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
+            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         }
-        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    
+        $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
+    } else {
+        $topic_url = '';
+        if (!empty($topic)) {
+            $topic_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
+        }        
+        COM_handle404($topic_url);    
     }
-
-    $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 }
 
 $header = '';

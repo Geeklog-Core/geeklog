@@ -766,7 +766,19 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
         $thecomments = '';
         $result = DB_query( $q );
-
+        
+        if (DB_numRows($result) == 0) {
+            if ($page > 1) {
+                list($plgurl, $plgid) = CMT_getCommentUrlId($type);
+                $plglink = '';
+                if (!empty($plgurl)) {
+                    $plglink = "$plgurl?$plgid=$sid";
+                }
+                // Requested invalid page                
+                COM_handle404($plglink);   
+            }
+        }
+        
         $thecomments .= CMT_getComment( $result, $mode, $type, $order,
                                         $delete_option, false, $ccode, $page );
 
@@ -2143,7 +2155,7 @@ function CMT_handleView($format, $order, $page, $view = true)
         }
     }
     if ($cid <= 0) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_handle404();
     }
 
     $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
@@ -2155,7 +2167,7 @@ function CMT_handleView($format, $order, $page, $view = true)
     $display = PLG_displayComment($type, $sid, $cid, $title,
                                   $order, $format, $page, $view);
     if (!$display) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_handle404();   
     }
     
     $display = COM_showMessageFromParameter() . $display;

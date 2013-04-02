@@ -33,23 +33,6 @@
 
 require_once 'lib-common.php';
 
-$display = COM_startBlock($LANG_404[1]);
-if (isset($_SERVER['SCRIPT_URI'])) {
-    $url = strip_tags($_SERVER['SCRIPT_URI']);
-} else {
-    $pos = strpos($_SERVER['REQUEST_URI'], '?');
-    if ($pos === false) {
-        $request = $_SERVER['REQUEST_URI'];
-    } else {
-        $request = substr($_SERVER['REQUEST_URI'], 0, $pos);
-    }
-    $url = 'http://' . $_SERVER['HTTP_HOST'] . strip_tags($request);
-}
-$display .= sprintf($LANG_404[2], $url);
-$display .= $LANG_404[3];
-$display .= COM_endBlock();
-$display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_404[1]));
-
-COM_output($display);
+COM_handle404();
 
 ?>

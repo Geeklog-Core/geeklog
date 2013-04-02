@@ -110,8 +110,7 @@ if (empty ($sid) && !empty ($_POST['cmt_sid'])) {
     $sid = COM_applyFilter ($_POST['cmt_sid']);
 }
 if (empty ($sid)) {
-    echo COM_refresh ($_CONF['site_url'] . '/index.php');
-    exit();
+    COM_handle404();
 }
 
 // Get topic
@@ -157,7 +156,7 @@ if ($A['count'] > 0) {
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_ACCESS['accessdenied']));
     } elseif ( $output == STORY_INVALID_SID ) {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_handle404();
     } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
         $story_template = COM_newTemplate($_CONF['path_layout'] . 'article');
         $story_template->set_file('article', 'printable.thtml');
@@ -450,7 +449,7 @@ if ($A['count'] > 0) {
         $display = COM_createHTMLDocument($display, array('pagetitle' => $pagetitle, 'breadcrumbs' => $breadcrumbs, 'headercode' => $headercode));
     }
 } else {
-    $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    COM_handle404();  
 }
 
 COM_output($display);
