@@ -144,8 +144,8 @@
                             </td>
                          </tr>
                          <tr>
-                            <td>{lang_cmt_disable}:</td>
-                                        <td class="alignleft" style="vertical-align:top;" colspan="1">{lang_enabled}:<input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
+                            <td><label for="cmt_close_flag">{lang_cmt_disable}</label>:</td>
+                                        <td class="alignleft" style="vertical-align:top;" colspan="1"><label for="cmt_close_flag">{lang_enabled}</label>:<input type="checkbox" name="cmt_close_flag" id="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
                                             <span dir="ltr">
                                                 <select name="cmt_close_month">
                                                     {cmt_close_month_options}
@@ -186,14 +186,11 @@
                     <table cellspacing="0" cellpadding="3" style="width:100%;">
                         <tr>
                             <td class="alignright" style="width:20%; padding-right:5px;">{lang_option}:</td>
-                            <td style="width:20%;">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"{xhtml}></td>
+                            <td style="width:20%;"><label for="admin-storyeditor_advanced-archiveflag">{lang_enabled}</label>:<input type="checkbox" name="archiveflag" value="1" {is_checked2} id="admin-storyeditor_advanced-archiveflag" onclick="enablearchive(this);"{xhtml}></td>
                             <td class="alignleft">
-                                <label for="storycode10">
-                                    <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}
-                                </label>&nbsp;
-                                <label for="storycode11">
-                                    <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>{lang_optiondelete}
-                                </label>
+                                <input type="checkbox" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}><label for="storycode10">{lang_optionarchive}</label>
+                                &nbsp;
+                                <input type="checkbox" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}><label for="storycode11">{lang_optiondelete}</label>
                             </td>
                         </tr>
                         <tr>
