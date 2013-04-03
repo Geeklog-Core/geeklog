@@ -167,8 +167,7 @@ if (empty($pid)) {
     $polltopic = $A['topic'];
     if (empty($polltopic)) {
         // poll doesn't exist or user doesn't have access
-        $display .= COM_showMessageText(sprintf($LANG25[12], $pid));
-        $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_POLLS['pollstitle']));
+        COM_handle404($_CONF['site_url'] . '/polls/index.php');
     } else {
         // Meta Tags
         $headercode = '';
