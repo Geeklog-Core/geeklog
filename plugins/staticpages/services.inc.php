@@ -782,9 +782,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                         $output = COM_createHTMLDocument($output, array('rightblock' => true));
                     }
                 } else {
-                    $output .= COM_showMessageText($LANG_STATIC['deny_msg'], $LANG_ACCESS['accessdenied']);
                     if ($mode !== 'autotag') {
-                        $output = COM_createHTMLDocument($output, array('rightblock' => true));
+                        COM_handle404();   
                     }
                 }
             }
