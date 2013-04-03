@@ -804,7 +804,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u, {$_TABLES['topic_assignments']} ta ";
     $sql .= "WHERE (sp.owner_id = u.uid) AND (draft_flag = 0) AND (template_flag = 0) ";
     $sql .= "AND ta.type = 'staticpages' AND ta.id = sp.sp_id ";
-    $sql .= COM_getPermSQL('AND') . COM_getTopicSQL('AND', 0, 'ta') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
+    $sql .= COM_getPermSQL('AND') . COM_getLangSQL('sp_id', 'AND', 'sp') . ' ';
 
     if (!empty ($author)) {
         $sql .= "AND (owner_id = '$author') ";
@@ -813,10 +813,10 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if (!empty($topic)) {
         // Retrieve list of inherited topics
         if ($topic == TOPIC_ALL_OPTION) {
-            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+            $sql .= "AND ((ta.inherit = 1 " . COM_getTopicSQL('AND', 0, 'ta') . ") OR (ta.inherit = 0 AND ta.tid = '".TOPIC_ALL_OPTION."') OR (ta.inherit = 0 AND ta.tid = '".TOPIC_HOMEONLY_OPTION."')) ";
         } else {
             $tid_list = TOPIC_getChildList($topic);
-            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."'))) ";
+            $sql .= "AND (ta.tid IN('".TOPIC_ALL_OPTION."',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '".$topic."' OR ta.tid = '".TOPIC_ALL_OPTION."')))) ";
         }
     }
         
@@ -854,7 +854,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $sql .= "LEFT JOIN {$_TABLES['staticpage']} AS s ON ((s.sp_id = c.sid) ";
     $sql .= COM_getPermSQL('AND',0,2,'s') . COM_getLangSQL('sp_id','AND','s') . ") ";
     $sql .= "WHERE (u.uid = c.uid) AND (s.draft_flag = 0) AND (s.template_flag = 0) AND (s.commentcode >= 0) AND (s.created <= NOW()) ";
-    $sql .= "AND ta.type = 'staticpages' AND ta.id = s.sp_id " . COM_getTopicSQL('AND',0,'ta');;
+    $sql .= "AND ta.type = 'staticpages' AND ta.id = s.sp_id ";
 
     if (!empty($author)) {
         $sql .= "AND (c.uid = '$author') ";
@@ -862,9 +862,9 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     if (!empty($topic)) {
         if ($topic == TOPIC_ALL_OPTION) {
-            $sql .= "AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."')) ";
+            $sql .= "AND ((ta.inherit = 1 " . COM_getTopicSQL('AND', 0, 'ta') . ") OR (ta.inherit = 0 AND ta.tid = '".TOPIC_ALL_OPTION."') OR (ta.inherit = 0 AND ta.tid = '".TOPIC_HOMEONLY_OPTION."')) ";
         } else {
-            $sql .= "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '".$topic."'))) ";
+            $sql .= "AND (ta.tid IN('".TOPIC_ALL_OPTION."',{$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND (ta.tid = '".$topic."' OR ta.tid = '".TOPIC_ALL_OPTION."')))) ";
         }
     }    
     
@@ -880,7 +880,6 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     return array($search_p, $search_c);
 }
-
 
 /**
 * This will put an option for static pages in the command and control block on

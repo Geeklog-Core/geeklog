@@ -595,7 +595,7 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
  */
 function service_get_staticpages($args, &$output, &$svc_msg)
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $_SP_CONF;
+    global $_CONF, $_TABLES, $LANG_ACCESS, $LANG12, $LANG_STATIC, $_SP_CONF, $topic;
 
     $output = '';
 
@@ -670,7 +670,8 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (COM_onFrontpage()) {
                 $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
             } else {
-                $topic_perms .= " OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+                // $topic_perms .= " OR ta.tid = '" . TOPIC_ALL_OPTION . "')";
+                $topic_perms .= " OR (ta.tid = '" . TOPIC_HOMEONLY_OPTION . "' OR ta.tid = '" . TOPIC_ALL_OPTION . "'))";
             }
         }
         $topic_perms .= " GROUP BY sp_id";        
