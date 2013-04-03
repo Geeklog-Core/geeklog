@@ -169,10 +169,10 @@
           {trackback_options}
         </select>
       </dd>
-      <dt>{lang_cmt_disable}</dt>
+      <dt><label for="cmt_close_flag">{lang_cmt_disable}</label></dt>
       <dd>
-        {lang_enabled}&nbsp;
-        <input type="checkbox" name="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
+        <label for="cmt_close_flag">{lang_enabled}</label>&nbsp;
+        <input type="checkbox" name="cmt_close_flag" id="cmt_close_flag" value="1" {is_checked5} onclick="enablecmtclose(this);"{xhtml}>
         &nbsp;
            <span dir="ltr">
                <select name="cmt_close_month">
@@ -225,11 +225,11 @@
     <dl>
       <dt><label for="admin-storyeditor_advanced-archiveflag">{lang_archivetitle}</label></dt>
       <dd>
-        {lang_enabled}&nbsp;
+        <label for="admin-storyeditor_advanced-archiveflag">{lang_enabled}</label>&nbsp;
         <input type="checkbox" value="1" {is_checked2} onclick="enablearchive(this);" name="archiveflag" id="admin-storyeditor_advanced-archiveflag"{xhtml}>
-        <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}>{lang_optionarchive}
-        &nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>
-        &nbsp;{lang_optiondelete}
+        <input type="checkbox" name="statuscode" id="storycode10" value="10" {is_checked3}{xhtml}><label for="storycode10">{lang_optionarchive}</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="statuscode" id="storycode11" value="11" {is_checked4}{xhtml}>
+        &nbsp;<label for="storycode11">{lang_optiondelete}</label>
       </dd>
 
       <dt><label for="admin-storyeditor_advanced-expire_month"></label></dt>
