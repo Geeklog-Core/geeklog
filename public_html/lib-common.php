@@ -278,14 +278,6 @@ if (COM_isAnonUser()) {
     $_USER['advanced_editor'] = $_CONF['advanced_editor'];
 }
 
-
-/**
-* Ulf Harnhammar's kses class
-*
-*/
-
-require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
-
 /**
 * Multibyte functions
 *
@@ -3768,7 +3760,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     $str = str_replace('\\', '&#092;', COM_stripslashes($str) );
 
     // Get rid of any newline characters
-    $str = preg_replace( "/\n/", '', $str );
+    $str = str_replace("\n", '', $str);
 
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace( '$', '&#36;', $str );
@@ -3842,19 +3834,31 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         return $str;
     }
 
-    // strip_tags() gets confused by HTML comments ...
-    $str = preg_replace( '/<!--.+?-->/', '', $str );
+    require_once $_CONF['path_system'] . 'classes/htmlawed/htmLawed.php';
 
-    $filter = new kses4;
-    if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( count( $_CONF['allowed_protocols'] ) > 0 ))
-    {
-        $filter->SetProtocols( $_CONF['allowed_protocols'] );
+    // Sets config options for htmLawed.  See http://www.bioinformatics.org/
+    // phplabware/internal_utilities/htmLawed/htmLawed_README.htm
+    $config = array(
+        'balance'        => 1, // Balance tags for well-formedness and proper nesting
+        'comment'        => 3, // Allow HTML comment
+        'css_expression' => 1, // Allow dynamic CSS expression in "style" attributes
+        'keep_bad'       => 1, // Neutralize both tags and element content
+        'tidy'           => 0, // Don't beautify or compact HTML code
+        'unique_ids'     => 1, // Remove duplicate and/or invalid ids
+        'valid_xhtml'    => 1, // Magic parameter to make input the most valid XHTML
+    );
+    
+    if (isset($_CONF['allowed_protocols']) &&
+            is_array($_CONF['allowed_protocols']) &&
+            (count($_CONF['allowed_protocols']) > 0)) {
+        $schemes = $_CONF['allowed_protocols'];
+    } else {
+        $schemes = array('http:', 'https:', 'ftp:');
     }
-    else
-    {
-        $filter->SetProtocols( array( 'http:', 'https:', 'ftp:' ));
-    }
-
+    
+    $schemes = str_replace(':', '', implode(', ', $schemes));
+    $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
+    
     if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
             empty( $_CONF['admin_html'] ))
     {
@@ -3872,14 +3876,23 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         }
     }
 
-    foreach( $html as $tag => $attr )
-    {
-        $filter->AddHTML( $tag, $attr );
+    foreach ($html as $tag => $attr) {
+        if (is_array($attr) && (count($attr) > 0)) {
+            $spec[] = $tag . '=' . implode(', ', array_keys($attr));
+        } else {
+            $spec[] = $tag . '=-*';
+        }
+
+        $elements[] = $tag;
     }
+
+    $config['elements'] = implode(', ', $elements);
+    $spec = implode('; ', $spec);
+
     /* Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
      * of the above noted // strip_tags() gets confused by HTML comments ...
      */
-    $str = $filter->Parse( $str );
+    $str = htmLawed($str, $config, $spec);
     $str = str_replace('[raw2]','<!--raw--><span class="raw">', $str);
     $str = str_replace('[/raw2]','</span><!--/raw-->', $str);
 
