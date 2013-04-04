@@ -1974,6 +1974,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => "Comment Speed Limit",
     'comment_limit' => "Comment Limit",
     'comment_mode' => "Comment Mode",
+    'comment_order' => "Comment Order",
     'comment_code' => "Comment Default",
     'comment_edit' => "Allow Comment Edit?",
     'comment_edittime' => "Comment Edit Time (seconds)",
@@ -2173,7 +2174,8 @@ $LANG_configselects['Core'] = array(
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'), 
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'), 
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
 );
 
 ################################################################################

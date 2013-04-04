@@ -345,6 +345,9 @@ $_CONF_VALIDATE['Core']['comment_limit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['comment_mode'] = array(
     'rule' => array('inList', array('flat', 'nested', 'nocomment', 'threaded'), true)
 );
+$_CONF_VALIDATE['Core']['comment_order'] = array(
+    'rule' => array('inList', array('DESC', 'ASC'), true)
+);
 $_CONF_VALIDATE['Core']['comment_code'] = array(
     'rule' => array('inList', array(0, -1), false)
 );

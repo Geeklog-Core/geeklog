@@ -657,7 +657,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     }
 
     if( $order != 'ASC' && $order != 'DESC' ) {
-        $order = 'ASC';
+        $order = $_CONF['comment_order'];
     }
 
     if( empty( $mode )) {

@@ -317,7 +317,7 @@ function USER_createAccount($username, $email, $passwd = '', $fullname = '', $ho
         DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
     }
 
-    DB_query("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_limit']}')");
+    DB_query("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentorder,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_order']}','{$_CONF['comment_limit']}')");
     DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
 
     // call custom registration function and plugins
