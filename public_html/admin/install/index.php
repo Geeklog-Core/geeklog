@@ -1133,7 +1133,8 @@ if (INST_phpOutOfDate()) {
             if (!isset($_CONF['allow_mysqldump']) && $_DB_dbms == 'mysql') {
                 array_splice($file_list, 1, 0, $gl_path . 'backups/');
             }
-
+            $check_selinux = false;
+            $cmd_selinux = '';
             foreach ($file_list as $file) {
                 if (!is_writable($file)) {
                     if (is_file($file)) {
@@ -1142,6 +1143,15 @@ if (INST_phpOutOfDate()) {
                         $perm_should_be = '777';
                     }
                     $permission = sprintf("%3o", @fileperms($file) & 0777);
+                    $check_perm = 0;
+                    for ($i=0; $i<strlen($permission); $i++) {
+                        if ($permission[$i] >= $perm_should_be[$i])
+                            $check_perm++;
+                    }
+                    if ($check_perm >= 3) {
+                        $check_selinux = true;
+                        $cmd_selinux .= $file . ' ';
+                    }
                     $display_permissions    .= '<p><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
                                             . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' '. $perm_should_be .'</span> ('
                                             . $LANG_INSTALL[13] . ' ' . $permission . ')</p>' . LB ;
@@ -1151,11 +1161,18 @@ if (INST_phpOutOfDate()) {
             }
 
             $display_step = 1;
-
             /**
              * Display permissions, etc
              */
-            if ($num_wrong) {
+            if ($check_selinux){
+                $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
+                $display .= $LANG_INSTALL[110];
+                $cmd = 'chcon -Rt httpd_user_rw_content_t '.$cmd_selinux;
+                $display .= '<p class="codeblock"><code>' . $cmd . LB 
+                    . '</code></p><br ' . XHTML . '>' . LB;
+                $display_step++;
+            }
+            else if ($num_wrong) {
                 // If any files have incorrect permissions.
 
                 $display .= '<h1 class="heading">' . $LANG_INSTALL[101] . ' ' . $display_step . ' - ' . $LANG_INSTALL[97] . '</h1>' . LB;
