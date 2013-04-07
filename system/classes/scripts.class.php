@@ -408,7 +408,7 @@ class scripts {
     */     
     public function getHeader() {
         
-        global $_CONF;
+        global $_CONF, $MESSAGE;
         
         $this->header_set = true;
         
@@ -427,7 +427,32 @@ class scripts {
             }
         }
 
-        // Set JavaScript (do this before file incase variables are needed)
+        // Set JavaScript (do this before file in case variables are needed)
+        $iso639Code = COM_getLangIso639Code();
+        $headercode .= <<<EOD
+<script type="text/javascript">
+var geeklog = {
+    doc: document,
+    site_url: "{$_CONF['site_url']}",
+    layout_url: "{$_CONF['layout_url']}",
+    lang: {
+        iso639Code: "{$iso639Code}",
+        tooltip_loading: "{$MESSAGE[116]}",
+        tooltip_not_found: "{$MESSAGE[117]}",
+        tooltip_select_date: "{$MESSAGE[118]}",
+        tabs_more: "{$MESSAGE[119]}",
+        confirm_delete: "{$MESSAGE[76]}",
+        confirm_send: "{$MESSAGE[120]}"
+    },
+    win: window,
+    $: function (id) {
+        return this.doc.getElementById(id);
+    }
+};
+</script>';
+
+EOD;
+
         if (isset($this->scripts['header'])) {
             foreach ($this->scripts['header'] as $script) {
                 $headercode .= $script . LB;

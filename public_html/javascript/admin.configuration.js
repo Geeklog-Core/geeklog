@@ -172,7 +172,7 @@ $(function() {
     var tooltipHideTimer = null;
     var tooltipContainer = $(
         '<div id="tooltip-container">' +
-//            '<div id="tootip-loading"><img src="'+ imgSpinner +'" /> Loading...</div>' +
+//            '<div id="tootip-loading"><img src="'+ imgSpinner +'" />' + geeklog.lang.tooltip_loading + '</div>' +
             '<div id="tooltip-header"></div>' +
             '<div id="tooltip-content"></div>' +
             '<div id="tooltip-tip"></div>' +
@@ -227,7 +227,7 @@ $(function() {
                 );
             } else {
                 $('#tooltip-content').html(
-                    '<span>Help page is not found.</span>'
+                    '<span>' . geeklog.lang.tooltip_not_found + '</span>'
                 )
             }
         });
@@ -524,7 +524,7 @@ $(function() {
         }
 
         dropDownShown = true;
-        geeklog.admin.configuration.addTab(tabs, '#tab-dropdown', 'More..', idxAfter);
+        geeklog.admin.configuration.addTab(tabs, '#tab-dropdown', geeklog.lang.tabs_more, idxAfter);
         dropDownTabIdx  = idxAfter;
     }
     

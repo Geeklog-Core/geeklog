@@ -729,7 +729,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
 
     $langCode = COM_getLangIso639Code();
-    $toolTip  = 'Click and select a date';	// Should be translated
+    $toolTip  = $MESSAGE[118];
     $imgUrl   = $_CONF['site_url'] . '/images/calendar.png';
 
     $_SCRIPTS->setJavaScript(

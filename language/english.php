@@ -1333,6 +1333,11 @@ $MESSAGE = array(
     113 => 'Your account has been created successfully. {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     115 => 'Remote service has been disabled.',
+    116 => 'Loading...',
+    117 => 'Help page is not found.',
+    118 => 'Click to select a date',
+    119 => 'More..',
+    120 => 'Send this?',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
     401 => 'Please enter Fullname'
 );

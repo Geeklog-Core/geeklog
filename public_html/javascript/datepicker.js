@@ -113,7 +113,7 @@ geeklog.datepicker = {
         }
 
         langCode = langCode || 'en';
-        toolTip  = toolTip || 'Click to select a date';
+        toolTip  = toolTip || geeklog.lang.tooltip_select_date;
 
         // Fixes language code for jQuery UI
         langCode = this.fixLangCode(langCode);

@@ -681,7 +681,7 @@ function plugin_getheadercode_calendar()
 */
 function plugin_submit_calendar($mode = 'master')
 {
-    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $_SCRIPTS;
+    global $_CONF, $_CA_CONF, $LANG_CAL_1, $LANG12, $MESSAGE, $_SCRIPTS;
 
     if (isset($_POST['calendar_type'])) {
         $mode = $_POST['calendar_type'];
@@ -739,7 +739,7 @@ function plugin_submit_calendar($mode = 'master')
     $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
 
     $langCode = COM_getLangIso639Code();
-    $toolTip  = 'Click and select a date';	// Should be translated
+    $toolTip  = $MESSAGE[118];
     $imgUrl   = $_CONF['site_url'] . '/images/calendar.png';
 
     $_SCRIPTS->setJavaScript(
