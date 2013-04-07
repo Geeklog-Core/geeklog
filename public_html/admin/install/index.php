@@ -1152,7 +1152,7 @@ if (INST_phpOutOfDate()) {
                         $check_selinux = true;
                         $cmd_selinux .= $file . ' ';
                     }
-                    $display_permissions    .= '<p><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
+                    $display_permissions    .= '<p class="clearboth"><label class="' . $perms_label_dir . '"><code>' . $file . '</code></label>' . LB
                                             . ' <span class="permissions-list">' . $LANG_INSTALL[12] . ' '. $perm_should_be .'</span> ('
                                             . $LANG_INSTALL[13] . ' ' . $permission . ')</p>' . LB ;
                     $chmod_string .= $file . ' ' ;
@@ -1192,7 +1192,7 @@ if (INST_phpOutOfDate()) {
                 // Also, list the auto-generated chmod command for advanced users
                 $display .= '<div class="file-permissions">' . LB
                     . $display_permissions . '</div>' . LB
-                    . '<h2>' . $LANG_INSTALL[98] . '</h2>' . LB
+                    . '<h2 class="clearboth">' . $LANG_INSTALL[98] . '</h2>' . LB
                     . '<p>' . $LANG_INSTALL[99] . '</p>' . LB
                     . '<p class="codeblock"><code>' . $chmod_string . LB 
                     . '</code></p><br ' . XHTML . '>' . LB;
