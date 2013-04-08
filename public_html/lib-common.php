@@ -7228,16 +7228,41 @@ function COM_getImgSizeAttributes( $file )
 */
 function COM_displayMessageAndAbort( $msg, $plugin = '', $http_status = 200, $http_text = 'OK')
 {
-    global $MESSAGE;
+    global $_CONF, $MESSAGE;
 
-    $display = COM_showMessage( $msg, $plugin );
-    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30], 'rightblock' => true));
+    if (defined('GL_INITIALIZED')) {
+        $display = COM_showMessage($msg, $plugin);
+        $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30], 'rightblock' => true));
+    } else {
+        // Calling COM_createHTMLDocument() here will cause a fatal error
+        $display = '';
 
-    if( $http_status != 200 )
-    {
-        header( "HTTP/1.1 $http_status $http_text" );
-        header( "Status: $http_status $http_text" );
+        if (empty($plugin)) {
+            if (!isset($MESSAGE)) {
+                if (isset($_CONF['path_language'])) {
+                    if (isset($_CONF['language'])) {
+                        require_once $_CONF['path_language'] . $_CONF['language'] . '.php';
+                    } else {
+                        require_once $_CONF['path_language'] . 'english.php';
+                    }
+                }
+            }
+
+            if (isset($MESSAGE) AND isset($MESSAGE[$msg])) {
+                $display = $MESSAGE[$msg];
+            }
+        }
+
+        if ($display === '') {
+            $display = 'Error ' . $http_status . ': ' . $http_text;
+        }
     }
+
+    if ($http_status != 200) {
+        header("HTTP/1.1 $http_status $http_text");
+        header("Status: $http_status $http_text");
+    }
+
     echo $display;
     exit;
 }
@@ -8595,5 +8620,7 @@ if ($_CONF['cron_schedule_interval'] > 0) {
         PLG_runScheduledTask();
     }
 }
+
+define('GL_INITIALIZED', TRUE);
 
 ?>
