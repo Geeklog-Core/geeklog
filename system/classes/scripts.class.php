@@ -449,7 +449,7 @@ var geeklog = {
         return this.doc.getElementById(id);
     }
 };
-</script>';
+</script>
 
 EOD;
 
