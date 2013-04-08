@@ -1928,13 +1928,20 @@ span.warning  em { color: #CE5C00; }
 .level-0   { margin-left: 0; } /* rtl */
 .level-25  { margin-left: 16px; } /* rtl */
 .level-50  { margin-left: 32px; } /* rtl */
-.level-100 { margin-left: 48px; } /* rtl */
-.level-125 { margin-left: 64px; } /* rtl */
-.level-150 { margin-left: 80px; } /* rtl */
-.level-175 { margin-left: 96px; } /* rtl */
-.level-200 { margin-left: 112px; } /* rtl */
-.level-225 { margin-left: 128px; } /* rtl */
-.level-250 { margin-left: 144px; } /* rtl */
+.level-75  { margin-left: 48px; } /* rtl */
+.level-100 { margin-left: 64px; } /* rtl */
+.level-125 { margin-left: 80px; } /* rtl */
+.level-150 { margin-left: 96px; } /* rtl */
+.level-175 { margin-left: 112px; } /* rtl */
+.level-200 { margin-left: 128px; } /* rtl */
+.level-225 { margin-left: 144px; } /* rtl */
+.level-250 { margin-left: 160px; } /* rtl */
+.level-275 { margin-left: 176px; } /* rtl */
+.level-300 { margin-left: 192px; } /* rtl */
+.level-325 { margin-left: 208px; } /* rtl */
+.level-350 { margin-left: 224px; } /* rtl */
+.level-375 { margin-left: 240px; } /* rtl */
+.level-400 { margin-left: 256px; } /* rtl */
 
 /* Comment Information  */
 .comment_status {

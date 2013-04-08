@@ -1928,13 +1928,20 @@ span.warning  em { color: #CE5C00; }
 .level-0   { margin-right: 0; } /* rtl */
 .level-25  { margin-right: 16px; } /* rtl */
 .level-50  { margin-right: 32px; } /* rtl */
-.level-100 { margin-right: 48px; } /* rtl */
-.level-125 { margin-right: 64px; } /* rtl */
-.level-150 { margin-right: 80px; } /* rtl */
-.level-175 { margin-right: 96px; } /* rtl */
-.level-200 { margin-right: 112px; } /* rtl */
-.level-225 { margin-right: 128px; } /* rtl */
-.level-250 { margin-right: 144px; } /* rtl */
+.level-75  { margin-right: 48px; } /* rtl */
+.level-100 { margin-right: 64px; } /* rtl */
+.level-125 { margin-right: 80px; } /* rtl */
+.level-150 { margin-right: 96px; } /* rtl */
+.level-175 { margin-right: 112px; } /* rtl */
+.level-200 { margin-right: 128px; } /* rtl */
+.level-225 { margin-right: 144px; } /* rtl */
+.level-250 { margin-right: 160px; } /* rtl */
+.level-275 { margin-right: 176px; } /* rtl */
+.level-300 { margin-right: 192px; } /* rtl */
+.level-325 { margin-right: 208px; } /* rtl */
+.level-350 { margin-right: 224px; } /* rtl */
+.level-375 { margin-right: 240px; } /* rtl */
+.level-400 { margin-right: 256px; } /* rtl */
 
 /* Comment Information  */
 .comment_status {

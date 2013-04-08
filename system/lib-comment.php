@@ -327,6 +327,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // determines indentation for current comment
         if ($mode == 'threaded' || $mode == 'nested') {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
+            // set the maximum indentation level to 16
+            if ($indent > 400) {
+                $indent = 400;
+            }
         }
 
         // Filemgmt plugin is doing special processing.
