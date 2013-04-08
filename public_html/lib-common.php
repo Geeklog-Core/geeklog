@@ -6975,7 +6975,7 @@ function COM_dateDiff( $interval, $date1, $date2 )
 * we want and the variables used here may not be available on all servers
 * and / or setups.
 *
-* Seems to work on Apache (1.3.x and 2.x), IIS, and Zeus ...
+* Seems to work on Apache (1.3.x and 2.x), nginx, and IIS.
 *
 * @return   string  complete URL, e.g. 'http://www.example.com/blah.php?foo=bar'
 *
@@ -7024,7 +7024,6 @@ function COM_getCurrentURL()
         $requestUri = $_SERVER['REQUEST_URI'];
         if( empty( $_SERVER['REQUEST_URI'] ))
         {
-            // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
             if( empty( $_SERVER['PATH_INFO'] ))
             {
                 $requestUri = $_SERVER['SCRIPT_NAME'];
@@ -7077,7 +7076,6 @@ function COM_onFrontpage()
     // DocumentRoot
     $onFrontpage = false;
 
-    // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
     if (empty($_SERVER['PATH_INFO'])) {
         $scriptName = $_SERVER['SCRIPT_NAME'];
     } else {
