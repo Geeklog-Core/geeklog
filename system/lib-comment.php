@@ -1373,8 +1373,16 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         // Must occur after table unlock, only with valid $cid and $pid
         // NOTE: This could be modified to send notifications to all parents in the comment tree
         //       with only a modification to the below SELECT statement
+        //       See: http://wiki.geeklog.net/index.php/CommentAlgorithm
         if ($_CONF['allow_reply_notifications'] == 1 && $cid > 0 && $pid > 0) {
-        	$result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid");
+            // $sql = "SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid"; // Used in Geeklog 2.0.0 and before. Notification sent only if someone directly replies to the comment (not a reply of a reply)
+            $sql = "SELECT cn.cid, cn.uid, cn.deletehash "
+               . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
+               . "{$_TABLES['commentnotifications']} AS cn "
+               . "WHERE c2.cid = cn.cid AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
+               . "AND c.cid = $pid";
+ 
+        	$result = DB_query($sql);
         	$A = DB_fetchArray($result);
         	if ($A !== false) {
         		CMT_sendReplyNotification($A);
