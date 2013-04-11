@@ -1380,9 +1380,8 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
                . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
                . "{$_TABLES['commentnotifications']} AS cn "
                . "WHERE c2.cid = cn.cid AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-               . "AND c.cid = $pid";
- 
-        	$result = DB_query($sql);
+               . "AND c.cid = $pid GROUP BY cn.uid";
+         	$result = DB_query($sql);
         	$A = DB_fetchArray($result);
         	if ($A !== false) {
         		CMT_sendReplyNotification($A);
@@ -1987,7 +1986,13 @@ function CMT_approveModeration($cid)
 
     // notify of new published comment
     if ($_CONF['allow_reply_notifications'] == 1 && $A['pid'] > 0) {
-        $result = DB_query("SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = {$A['pid']}");
+        // $sql = "SELECT cid, uid, deletehash FROM {$_TABLES['commentnotifications']} WHERE cid = $pid"; // Used in Geeklog 2.0.0 and before. Notification sent only if someone directly replies to the comment (not a reply of a reply)
+        $sql = "SELECT cn.cid, cn.uid, cn.deletehash "
+           . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
+           . "{$_TABLES['commentnotifications']} AS cn "
+           . "WHERE c2.cid = cn.cid AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
+           . "AND c.cid = $pid GROUP BY cn.uid";
+        $result = DB_query($sql);        
         $B = DB_fetchArray($result);
         if ($B !== false) {
             CMT_sendReplyNotification($B);
