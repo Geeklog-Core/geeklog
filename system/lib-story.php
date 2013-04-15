@@ -96,6 +96,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
 
     $article = COM_newTemplate($_CONF['path_layout']);
+    $article->postprocess_fn = 'PLG_replaceTags';
     $article->set_file( array(
             'article'          => $storytpl,
             'bodytext'         => 'storybodytext.thtml',
@@ -104,8 +105,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             'archivearticle'   => 'archivestorytext.thtml',
             'archivebodytext'  => 'archivestorybodytext.thtml'
             ));
-    
-    $article->postprocess_fn = 'PLG_replaceTags';
 
     $article->set_var( 'site_name', $_CONF['site_name'] );
     $article->set_var( 'story_date', $story->DisplayElements('date') );

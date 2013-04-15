@@ -46,7 +46,8 @@ function theme_config_modern_curve()
 {
     return array(
         'image_type' => 'png',
-        'doctype' => 'xhtml10strict'
+        'doctype' => 'xhtml10strict', 
+        'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }
 
@@ -92,8 +93,6 @@ function theme_js_files_modern_curve()
 function theme_init_modern_curve()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
-
-    $_CONF['supported_version_theme'] = '2.0.0'; // support new theme format for the later Geeklog 2.0
 
     /*
      * For left/right block support there is no longer any need for the theme to

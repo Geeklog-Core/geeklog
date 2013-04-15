@@ -79,7 +79,7 @@ function render_cc_item(&$template, $url = '', $image = '', $label = '')
 */
 function commandcontrol($token)
 {
-    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE, $_DB_dbms;
+    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW, $_IMAGE_TYPE, $_DB_dbms;
 
     $retval = '';
 
@@ -94,6 +94,9 @@ function commandcontrol($token)
     $showTrackbackIcon = (($_CONF['trackback_enabled'] ||
                           $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])
                          && SEC_hasRights('story.ping'));
+     
+    $showClearCacheIcon = ($_CONF['cache_templates'] && SEC_inGroup('Root'));
+    
     $cc_arr = array(
                   array('condition' => SEC_hasRights('story.edit'),
                         'url' => $_CONF['site_admin_url'] . '/story.php',
@@ -121,7 +124,13 @@ function commandcontrol($token)
                         'lang' => $LANG01[116], 'image' => '/images/icons/trackback.'),
                   array('condition' => SEC_hasRights('plugin.edit'),
                         'url' => $_CONF['site_admin_url'] . '/plugins.php',
-                        'lang' => $LANG01[98], 'image' => '/images/icons/plugins.')
+                        'lang' => $LANG01[98], 'image' => '/images/icons/plugins.'),
+                  array('condition' => $showClearCacheIcon,
+                        'url' => $_CONF['site_admin_url'] . '/clearctl.php',
+                        'lang' => $LANG01['ctl'], 'image' => '/images/icons/ctl.'),
+                  array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/logviewer.php',
+                        'lang' => $LANG_LOGVIEW['log_viewer'], 'image' => '/images/icons/log_viewer.')                  
     );
     $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
 

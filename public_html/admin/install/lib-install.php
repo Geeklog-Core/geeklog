@@ -1368,4 +1368,70 @@ function INST_cleanString($str)
     return $str;
 }
 
+function INST_clearCacheDirectories($path, $needle = '')
+{
+    if ( $path[strlen($path)-1] != '/' ) {
+        $path .= '/';
+    }
+    if ($dir = @opendir($path)) {
+        while ($entry = readdir($dir)) {
+            if ($entry == '.' || $entry == '..' || is_link($entry) || $entry == '.svn' || $entry == 'index.html') {
+                continue;
+            } elseif (is_dir($path . $entry)) {
+                INST_clearCacheDirectories($path . $entry, $needle);
+                @rmdir($path . $entry);
+            } elseif (empty($needle) || strpos($entry, $needle) !== false) {
+                @unlink($path . $entry);
+            }
+        }
+        @closedir($dir);
+    }
+}
+
+
+function INST_clearCache($plugin='')
+{
+    global $_CONF;
+
+    if (!empty($plugin)) {
+        $plugin = '__' . $plugin . '__';
+    }
+
+    INST_clearCacheDirectories($_CONF['path'] . 'data/layout_cache/', $plugin);
+}
+
+function INST_checkCacheDir($path,$template,$classCounter)
+{
+    $permError = 0;
+
+    // special test to see if existing cache files exist and are writable...
+    if ( $dh = @opendir($path) ) {
+        while (($file = readdir($dh)) !== false ) {
+            if ( $file == '.' || $file == '..' || $file == '.svn') {
+                continue;
+            }
+            if ( is_dir($path.$file) ) {
+                $rc = INST_checkCacheDir($path.$file.'/',$template,$classCounter);
+                if ( $rc > 0 ) {
+                    $permError = 1;
+                }
+            } else {
+                $ok = INST_isWritable($path.$file);
+                if ( !$ok ) {
+                    $template->set_var('location',$path.$file);
+                    $template->set_var('status', $ok ? '<span class="yes">OK</span>' : '<span class="Unwriteable">NOT WRITABLE</span>');
+                    $template->set_var('rowclass',($classCounter % 2)+1);
+                    $classCounter++;
+                    $template->parse('perm','perms',true);
+                    if  ( !$ok ) {
+                        $permError = 1;
+                    }
+                }
+            }
+        }
+        closedir($dh);
+    }
+    return $permError;
+}
+
 ?>

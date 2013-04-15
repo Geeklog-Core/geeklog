@@ -183,7 +183,8 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn'
+    'linkedin' => 'Login with LinkedIn', 
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -670,6 +671,18 @@ $LANG12 = array(
 ###############################################################################
 # ADMIN PHRASES - These are file phrases used in admin scripts
 ###############################################################################
+
+###############################################################################
+# admin/logview.php
+
+$LANG_LOGVIEW = array(
+    'log_viewer' => 'Log Viewer',
+    'info' => 'Geeklog log file administration.',
+    'logs' => 'Logs',
+    'view' => 'View Log File',
+    'clear' => 'Clear Log File',
+    'log_file' => 'Log File'
+);
 
 ###############################################################################
 # admin/auth.inc.php
@@ -1339,7 +1352,8 @@ $MESSAGE = array(
     119 => 'More..',
     120 => 'Send this?',
     400 => 'Not all required fields have been passed validation', // Error codes in the 400 range reserved for CUSTOM membership
-    401 => 'Please enter Fullname'
+    401 => 'Please enter Fullname',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1821,6 +1835,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => "Menu Elements",
     'path_themes' => "Themes Path",
+    'cache_templates' => "Cache Templates?",
     'disable_new_user_registration' => "Disable New Registrations",
     'allow_user_themes' => "Allow User Themes",
     'allow_user_language' => "Allow User Language",
@@ -1945,6 +1960,7 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => "After Saving User",
     'show_right_blocks' => "Always Show Right Blocks?",
     'showfirstasfeatured' => "Show First Story as Featured?",
+    'template_comments' => "Template Comments in Output?",
     'backend' => "Enable Feeds?",
     'rdf_file' => "Syndication Output Folder",
     'rdf_limit' => "Feed Limit",

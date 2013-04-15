@@ -165,11 +165,13 @@ function install_config()
     $c->add('doctype','html401strict','select',2,10,21,195,TRUE, $me, 10);
     $c->add('menu_elements',array('contribute','search','stats','directory','plugins'),'%select',2,10,24,200,TRUE, $me, 10);
     $c->add('path_themes','','text',2,10,NULL,210,TRUE, $me, 10);
+    $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
 
     $c->add('tab_theme_advanced', NULL, 'tab', 2, 11, NULL, 0, TRUE, $me, 11);
     $c->add('fs_theme_advanced', NULL, 'fieldset', 2, 11, NULL, 0, TRUE, $me, 11);
     $c->add('show_right_blocks',FALSE,'select',2,11,1,1350,TRUE, $me, 11);
     $c->add('showfirstasfeatured',0,'select',2,11,0,1360,TRUE, $me, 11);
+    $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);    
 
     // Subgroup: Blocks
     $c->add('sg_blocks', NULL, 'subgroup', 3, 0, NULL, 0, TRUE, $me, 0);

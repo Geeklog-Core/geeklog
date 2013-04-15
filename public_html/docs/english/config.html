@@ -569,6 +569,14 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_path_themes">path_themes</a></td>
   <td valign="top">/path/to/geeklog/public_html/layout/</td>
   <td valign="top">Directory where all themes reside</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If set to <tt>true</tt>, all templates will be cached, which 
+  should improve performance of the web site.  In some cases, caching could 
+  slow performance down.  For example, if the disk access is slow on the web 
+  server or if the web server is accessing Windows shared drives, setting this 
+  option to FALSE may improve performance.</td></tr>  
 </table>
 
 <h3><a name="theme_advanced">Theme: Advanced Settings</a></h3>
@@ -590,6 +598,18 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
     using the templates for a featured story, even if that story is not
     featured. This will even be applied to the first story on page 2 of a
     topic page, for example.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_template_comments">template_comments</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Each template contains some internal comments 
+  (surrounded with {# #} ) that are removed before the template is sent to the 
+  browser.  If this option is set to True, the {# and #} will become <!-- --> 
+  HTML comments and will be included in the output to the browser.  Also, the 
+  beginning and end of each template, along with it's physical location on the 
+  server, will be included in the output.  This feature is useful if you are 
+  trying to determine which template controls a specific display item, or when 
+  developing a new theme. If this is set to False, the comments are removed 
+  prior to sending the output to the browser.</td></tr>    
 </table>
 
 

@@ -197,6 +197,7 @@ $_URL = new url( $_CONF['url_rewrite'] );
 */
 
 require_once( $_CONF['path_system'] . 'classes/template.class.php' );
+require_once( $_CONF['path_system'] . 'lib-template.php' );
 
 /**
 * This is the security library used for application security
@@ -323,6 +324,8 @@ else if( $_CONF['allow_user_themes'] == 1 )
     }
 }
 
+$TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
+
 /**
 * Include the Scripts class
 *
@@ -342,11 +345,19 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
 /**
  * Get the configuration values from the theme
  */
+$_CONF['theme_default'] = ''; // Default is none
+$_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version of the theme engine not found assume lowest version
 $func = "theme_config_" . $_CONF['theme'];
 if (function_exists($func)) {
     $theme_config = $func();
     $_CONF['doctype'] = $theme_config['doctype'];
     $_IMAGE_TYPE = $theme_config['image_type'];
+    if (isset($theme_config['theme_default'])) {
+        $_CONF['theme_default'] = $theme_config['theme_default'];
+    }
+    if (isset($theme_config['supported_version_theme'])) {
+        $_CONF['supported_version_theme'] = $theme_config['supported_version_theme'];
+    }
 }
 /**
 * themes can specify the default image type
@@ -451,10 +462,6 @@ unset(
     $theme_config,
     $func
 );
-// if the themes supported version of the theme engine not found assume lowest version
-if (!isset($_CONF['supported_version_theme'])) {
-    $_CONF['supported_version_theme'] = '1.8.1';
-}
 
 // Clear out any expired sessions
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
@@ -960,6 +967,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     }
 
     $header = COM_newTemplate($_CONF['path_layout']);
+    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted 
+    $header->preprocess_fn = 'PLG_replaceTags';    
     $header->set_file( array(
         'header'        => 'header.thtml',
         'menuitem'      => 'menuitem.thtml',
@@ -969,8 +978,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         'rightblocks'   => 'rightblocks.thtml'
         ));
     
-    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted 
-    $header->preprocess_fn = 'PLG_replaceTags';
+
     
     $header->set_var('doctype', $doctype);
     
@@ -1387,17 +1395,16 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
     // Set template directory
     $footer = COM_newTemplate($_CONF['path_layout']);
-
+    // Needed to set for pre (instead of post) since JavaScript could contain 
+    // autotag labels (like in configuration search) 
+    $footer->preprocess_fn = 'PLG_replaceTags';    
     // Set template file
     $footer->set_file( array(
             'footer'      => 'footer.thtml',
             'rightblocks' => 'rightblocks.thtml',
             'leftblocks'  => 'leftblocks.thtml'
             ));
-    
-    // Needed to set for pre (instead of post) since JavaScript could contain 
-    // autotag labels (like in configuration search) 
-    $footer->preprocess_fn = 'PLG_replaceTags';
+
 
     // Do variable assignments
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
@@ -1679,6 +1686,8 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
 
     $header = COM_newTemplate($_CONF['path_layout']);
+    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted
+    $header->preprocess_fn = 'PLG_replaceTags';
     $header->set_file( array(
         'header'        => 'header.thtml',
         'menuitem'      => 'menuitem.thtml',
@@ -1687,9 +1696,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         'leftblocks'    => 'leftblocks.thtml',
         'rightblocks'   => 'rightblocks.thtml'
         ));
-    
-    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted
-    $header->preprocess_fn = 'PLG_replaceTags';
+   
     
     $header->set_var('doctype', $doctype);
     
@@ -2057,17 +2064,15 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Set template directory
     $footer = COM_newTemplate($_CONF['path_layout']);
-
+    // Needed to set for pre (instead of post) since JavaScript could contain 
+    // autotag labels (like in configuration search) 
+    $footer->preprocess_fn = 'PLG_replaceTags';    
     // Set template file
     $footer->set_file( array(
             'footer'      => 'footer.thtml',
             'rightblocks' => 'rightblocks.thtml',
             'leftblocks'  => 'leftblocks.thtml'
             ));
-    
-    // Needed to set for pre (instead of post) since JavaScript could contain 
-    // autotag labels (like in configuration search) 
-    $footer->preprocess_fn = 'PLG_replaceTags';
 
     $year = date( 'Y' );
     $copyrightyear = $year;
@@ -2297,9 +2302,8 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     }
 
     $block = COM_newTemplate($_CONF['path_layout']);
-    $block->set_file( 'block', $template );
-    
     $block->postprocess_fn = 'PLG_replaceTags';
+    $block->set_file( 'block', $template );
 
     $block->set_var( 'block_title', stripslashes( $title ));
 
@@ -2340,9 +2344,8 @@ function COM_endBlock( $template='blockfooter.thtml' )
     }
 
     $block = COM_newTemplate($_CONF['path_layout']);
-    $block->set_file( 'block', $template );
-    
     $block->postprocess_fn = 'PLG_replaceTags';
+    $block->set_file( 'block', $template );
 
     $block->parse( 'endHTML', 'block' );
 
@@ -8520,6 +8523,41 @@ function COM_newTemplate($root, $options = Array())
     $T->set_var('site_admin_url', $_CONF['site_admin_url']);
     $T->set_var('layout_url', $_CONF['layout_url']);
     return $T;
+}
+
+
+/**
+* Get a valid encoding for htmlspecialchars()
+*
+* @return   string      character set, e.g. 'utf-8'
+*
+*/
+function COM_getEncodingt() {
+	global $_CONF, $LANG_CHARSET;
+
+	static $encoding = null;
+
+    $valid_charsets = array('iso-8859-1','iso-8859-15','utf-8','cp866','cp1251','cp1252','koi8-r','big5','gb2312','big5-hkscs','shift_jis sjis','euc-jp');
+
+	if ($encoding === null) {
+		if (isset($LANG_CHARSET)) {
+			$encoding = $LANG_CHARSET;
+		} else if (isset($_CONF['default_charset'])) {
+			$encoding = $_CONF['default_charset'];
+		} else {
+			$encoding = 'iso-8859-1';
+		}
+	}
+
+	$encoding = strtolower($encoding);
+
+	if ( in_array($encoding,$valid_charsets) ) {
+	    return $encoding;
+	} else {
+	    return 'iso-8859-1';
+	}
+
+	return $encoding;
 }
 
 /**

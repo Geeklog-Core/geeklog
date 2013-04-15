@@ -1123,6 +1123,7 @@ if (INST_phpOutOfDate()) {
             // Files to check if writable
             $file_list = array( $_PATH['db-config.php'],
                                 $gl_path . 'data/',
+                                $gl_path . 'data/layout_cache/',
                                 $gl_path . 'logs/error.log',
                                 $_PATH['public_html/'] . 'siteconfig.php',
                                 $_PATH['public_html/'] . 'backend/geeklog.rss',
@@ -1315,6 +1316,10 @@ if (INST_phpOutOfDate()) {
 
         // Run the installation function
         INST_installEngine($mode, $step); 
+
+        // Clear the Geeklog Cache        
+        INST_clearCache();
+
         break;
 
     } // End switch ($mode)

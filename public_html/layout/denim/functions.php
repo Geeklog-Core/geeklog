@@ -46,7 +46,8 @@ function theme_config_denim()
 {
     return array(
         'image_type' => 'png',
-        'doctype'    => 'xhtml10transitional'
+        'doctype'    => 'xhtml10transitional', 
+        'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }
 
@@ -91,8 +92,6 @@ function theme_js_files_denim()
 function theme_init_denim()
 {
     global $_BLOCK_TEMPLATE, $_CONF;
-
-    $_CONF['supported_version_theme'] = '2.0.0'; // support new theme format for the later Geeklog 2.0
 
     $_CONF['left_blocks_in_footer'] = 1;
 

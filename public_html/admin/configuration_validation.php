@@ -237,10 +237,12 @@ $_CONF_VALIDATE['Core']['path_themes'] = array(
     'message' => isset($LANG_VALIDATION['path_themes']) ? 
                  $LANG_VALIDATION['path_themes'] : $LANG_VALIDATION['default']
 );
+$_CONF_VALIDATE['Core']['cache_templates'] = array('rule' => 'boolean');
 
 /* Subgroup Theme, Tab Advanced Settings */
 $_CONF_VALIDATE['Core']['show_right_blocks'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['showfirstasfeatured'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['template_comments'] = array('rule' => 'boolean');
 
 /* Subgroup Blocks, Tab Admin Block */
 $_CONF_VALIDATE['Core']['sort_admin'] = array('rule' => 'boolean');

@@ -501,6 +501,14 @@
   <td valign="top"><a name="desc_path_themes">テーマのパス(path_themes)</a></td>
   <td valign="top">/path/to/geeklog/public_html/layout/</td>
   <td valign="top">テーマデータのあるディレクトリを指定します。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cache_templates">cache_templates</a></td>
+  <td valign="top">true</td>
+  <td valign="top">If set to <tt>true</tt>, all templates will be cached, which 
+  should improve performance of the web site.  In some cases, caching could 
+  slow performance down.  For example, if the disk access is slow on the web 
+  server or if the web server is accessing Windows shared drives, setting this 
+  option to FALSE may improve performance.</td></tr>    
 </table>
 
 <h3><a name="theme_advanced">テーマ: テーマの拡張設定</a></h3>
@@ -517,6 +525,18 @@
   <td valign="top"><a name="desc_showfirstasfeatured">最初の記事を注目記事として表示する(showfirstasfeatured)</a></td>
   <td valign="top">いいえ(0)</td>
   <td valign="top">はい(1) にすると、<em>どの</em> ページであれ、注目記事にされているかどうかにかかわらず、最初の記事を注目記事にします。たとえば、ある話題を選択したときの2ページであっても、この設定は適用されます。</td></tr>
+<tr>
+  <td valign="top"><a name="desc_template_comments">template_comments</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Each template contains some internal comments 
+  (surrounded with {# #} ) that are removed before the template is sent to the 
+  browser.  If this option is set to True, the {# and #} will become <!-- --> 
+  HTML comments and will be included in the output to the browser.  Also, the 
+  beginning and end of each template, along with it's physical location on the 
+  server, will be included in the output.  This feature is useful if you are 
+  trying to determine which template controls a specific display item, or when 
+  developing a new theme. If this is set to False, the comments are removed 
+  prior to sending the output to the browser.</td></tr>   
 </table>
 
 

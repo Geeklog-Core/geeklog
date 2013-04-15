@@ -284,9 +284,8 @@ if ($A['count'] > 0) {
         // Display whats related
 
         $story_template = COM_newTemplate($_CONF['path_layout'] . 'article');
-        $story_template->set_file('article','article.thtml');
-        
         $story_template->postprocess_fn = 'PLG_replaceTags';
+        $story_template->set_file('article','article.thtml');
  
         $story_template->set_var('story_id', $story->getSid());
         $story_template->set_var('story_title', $pagetitle);
