@@ -304,7 +304,7 @@ function _postprocess($str)
                 $this->set_var($k, $v);
             }
         }
-        if ( $_CONF['cache_templates'] ) {
+        if ( isset($_CONF['cache_templates']) && $_CONF['cache_templates'] == true ) {
             clearstatcache();
         }
     }
