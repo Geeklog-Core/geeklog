@@ -293,7 +293,7 @@ function _postprocess($str)
     * @access    public
     * @return    void
     */
-    function Template($root = array(), $unknowns = "")
+    function Template($root = array('.'), $unknowns = 'remove')
     {
         global $_CONF, $TEMPLATE_OPTIONS;
 
