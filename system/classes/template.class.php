@@ -510,6 +510,8 @@ function _postprocess($str)
             $this->blocks[$varname] = $p['dirname'].'/'.substr($p['basename'],0,-(strlen($p['extension'])+1)).'__'.$varname.'.'.$p['extension'];
             $this->file[$varname] = $p['dirname'].'/'.substr($p['basename'],0,-(strlen($p['extension'])+1)).'.'.$p['extension'];
         }
+        
+        return true;
     }
 
 
