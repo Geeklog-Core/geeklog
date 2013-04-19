@@ -1304,7 +1304,8 @@ function _postprocess($str)
       if ($this->unknowns == 'comment') {
           return "<!-- Template variable $val undefined -->";
       } else if ($this->unknowns == 'keep') {
-          return '{'.$val.'}{'.$this->varvals[$val].'}';
+          // return '{'.$val.'}{'.$this->varvals[$val].'}'; // Not sure why this was like this and not like below
+          return '{'.$val.'}';
       }
       return '';
     }
