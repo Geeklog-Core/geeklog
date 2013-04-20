@@ -191,7 +191,8 @@ $LANG01 = array(
     139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック",
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
-    'linkedin' => 'LinkedInでログイン'
+    'linkedin' => 'LinkedInでログイン',
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -402,7 +403,7 @@ $LANG04 = array(
     156 => 'アカウントを削除',
     157 => 'アカウントの削除オプション',
     158 => 'タイムゾーン',
-    159 => 'このメールは自動的に送信したものです。このメールに返信しないように\nお願いします。',
+    159 => "このメールは自動的に送信したものです。このメールに返信しないように\nお願いします。",
     160 => '(最大. %d X %d ピクセル, %d バイト; %s)',
     161 => 'リサイズ',
     162 => 'リサイズなし',
@@ -433,7 +434,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => '表示する記事がありません',
     2 => '表示する記事がありません。この話題の記事がないか表示設定を絞り過ぎなのかのどちらかです。',
-    3 => '<br' . XHTML . '>この話題 %s の記事についてです。',
+    3 => '',
     4 => '今日の注目記事',
     5 => '次へ',
     6 => '前へ',
@@ -1342,7 +1343,8 @@ $MESSAGE = array(
     119 => 'More..',
     120 => 'この項目を送信しますか?',
     400 => '検証に通っていない必須のフィールドがあります。',
-    401 => '氏名を入力してください。'
+    401 => '氏名を入力してください。',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1473,7 +1475,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => '404 Error',
     2 => '<strong>%s</strong>はどこにも見つかりませんでした。',
-    3 => "<p>指定したファイルは存在しません。<a href=\"{$_CONF['site_url']}\">メインページ</a>をチェックしたり、<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で探してみてください。"
+    3 => "<p>指定したファイルは存在しません。<a href=\"{$_CONF['site_url']}\">メインページ</a>をチェックしたり、<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で探してみてください。",
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
 ###############################################################################
@@ -1566,7 +1569,7 @@ $LANG_TRB = array(
     'pingback_explain' => 'ピングバックするURLを入力してください。ピングバックはサイトのホームページを指し示します。',
     'pingback_url' => 'ピングバックURL',
     'site_url' => 'このサイトのURL',
-    'pingback_note' => '記事へのピングバックを送るには、記事の一覧で、記事の行の「' . $LANG24[21] . '」をクリックしてください。記事に関係しないピングバックを送るには、<a href="%s">ここをクリック</a>してください。',
+    'pingback_note' => '記事へのピングバックを送るには、記事の一覧で、記事の行の「トラックバック・ピングを送る」をクリックしてください。記事に関係しないピングバックを送るには、<a href="%s">ここをクリック</a>してください。',
     'pbtarget_missing' => 'ピングバックURLではありません。',
     'pbtarget_required' => 'ピングバックURLを入力してください',
     'pb_error_details' => '次のピングバックの送信中にエラー:',
@@ -1789,7 +1792,7 @@ $LANG_CONFIG = array(
     'enable' => '有効にする',
     'default_tab_name' => 'メイン',
     'search_configuration_label' => 'コンフィギュレーションの検索',
-    'error_validation_occurs' => '正しくない設定値があります。これらのフィールドを修正してください。' . '(エラーの欄を示す設定変数をクリックしてください)'
+    'error_validation_occurs' => '正しくない設定値があります。これらのフィールドを修正してください。(エラーの欄を示す設定変数をクリックしてください)'
 );
 
 $LANG_configsections['Core'] = array(
@@ -1825,6 +1828,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE宣言',
     'menu_elements' => 'メニュー項目',
     'path_themes' => 'テーマのパス',
+    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
@@ -1949,6 +1953,7 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
+    'template_comments' => 'Template Comments in Output?',
     'backend' => 'フィードを有効にする',
     'rdf_file' => 'フィードの出力ファイル',
     'rdf_limit' => 'フィードの最大数',
@@ -1958,7 +1963,7 @@ $LANG_confignames['Core'] = array(
     'comment_feeds_article_tag' => '記事のタグ',
     'comment_feeds_article_tag_position' => '記事のタグの位置',
     'comment_feeds_article_author_tag' => '記事の投稿者のタグ',
-    'comment_feeds_comment_author_tag' => 'コメントの投稿者のタグ', 
+    'comment_feeds_comment_author_tag' => 'コメントの投稿者のタグ',
     'copyrightyear' => 'Copyrightの年の設定',
     'image_lib' => '画像処理ライブラリ',
     'path_to_mogrify' => 'mogrifyのパス',
@@ -1983,6 +1988,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'コメントの投稿間隔の制限',
     'comment_limit' => '表示件数',
     'comment_mode' => '表示モード',
+    'comment_order' => 'Comment Order',
     'comment_code' => '新規作成時のデフォルト',
     'comment_edit' => 'コメントの編集を許可する',
     'comment_edittime' => 'コメントの編集時間(秒)',
@@ -2149,14 +2155,7 @@ $LANG_configselects['Core'] = array(
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('拒否' => 0, '最新ポストのみ保持' => 1, 'マルチポストを許可' => 2),
     3 => array('トラックバックを有効' => 0, 'トラックバックを停止' => -1),
-    4 => array('何も検査しない' => 0,
-               'サイトのURLリンクを検査' => 1,
-               '完全なURLを検査' => 2,
-               'サイトのURLと完全なURLを検査' => 3,
-               'IPアドレスとサイトのIPアドレスを検査' => 4,
-               'IPアドレスとサイトのURLリンクを検査' => 5,
-               'IPアドレスと完全なURLを検査' => 6,
-               'IPアドレス、完全なURL、サイトのURLを検査' => 7),
+    4 => array('何も検査しない' => 0, 'サイトのURLリンクを検査' => 1, '完全なURLを検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'IPアドレスとサイトのIPアドレスを検査' => 4, 'IPアドレスとサイトのURLリンクを検査' => 5, 'IPアドレスと完全なURLを検査' => 6, 'IPアドレス、完全なURL、サイトのURLを検査' => 7),
     5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),
@@ -2182,7 +2181,8 @@ $LANG_configselects['Core'] = array(
     27 => array('表示回数 (昇順)' => 'hits|asc', '表示回数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),
     28 => array('アクセス不可' => 0, '利用する' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none')
+    30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
 );
 
 ###############################################################################

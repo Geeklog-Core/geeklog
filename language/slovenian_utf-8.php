@@ -185,7 +185,8 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn'
+    'linkedin' => 'Login with LinkedIn',
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -427,7 +428,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => 'Ni novic za prikaz',
     2 => 'Trenutno v tej rubriki ni nobene nove objave ali pa imaš v svojih uporabniških nastavitvah izbrane omejitve.',
-    3 => ' za rubriko %s',
+    3 => '',
     4 => 'Današnji udarni članek',
     5 => 'naslednja',
     6 => 'prejšnja',
@@ -1330,8 +1331,14 @@ $MESSAGE = array(
     113 => 'Your account has been created successfully. {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     115 => 'Remote service has been disabled.',
+    116 => 'Loading...',
+    117 => 'Help page is not found.',
+    118 => 'Click to select a date',
+    119 => 'More..',
+    120 => 'Send this?',
     400 => 'Vsa zahtevana polja niso bila veljavno izpolnjena.',
-    401 => 'Prosim, vnesi polno ime'
+    401 => 'Prosim, vnesi polno ime',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1462,7 +1469,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => 'Napaka 404',
     2 => 'Pogledal sem povsod, ampak ne najdem <b>%s</b>.',
-    3 => "<p>Žal datoteka, ki jo zahtevaš, ne obstaja. Prosim, preveri <a href=\"{$_CONF['site_url']}\">glavno stran</a> ali <a href=\"{$_CONF['site_url']}/search.php\">iskalno stran</a> in poglej, če lahko najdeš, kar si izgubil."
+    3 => "<p>Žal datoteka, ki jo zahtevaš, ne obstaja. Prosim, preveri <a href=\"{$_CONF['site_url']}\">glavno stran</a> ali <a href=\"{$_CONF['site_url']}/search.php\">iskalno stran</a> in poglej, če lahko najdeš, kar si izgubil.",
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
 ###############################################################################
@@ -1814,6 +1822,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => 'Elementi menija',
     'path_themes' => 'Pot do tem',
+    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => 'Onemogoči nove registracije',
     'allow_user_themes' => 'Dovoli uporabnikom izbiro postavitve',
     'allow_user_language' => 'Dovoli uporabnikom izbiro jezika',
@@ -1938,6 +1947,7 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => 'Po shranjevanju uporabnika',
     'show_right_blocks' => 'Vedno prikaži desne bloke?',
     'showfirstasfeatured' => 'Prikaži prvi članek kot udarni članek?',
+    'template_comments' => 'Template Comments in Output?',
     'backend' => 'Omogoči feede?',
     'rdf_file' => 'Mapa za združeno vsebino',
     'rdf_limit' => 'Meja feeda',
@@ -1972,6 +1982,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'Zahtevani čas med dvema komentarjema',
     'comment_limit' => 'Število komentarjev',
     'comment_mode' => 'Način prikaza komentarjev',
+    'comment_order' => 'Comment Order',
     'comment_code' => 'Prednastavljen komentar',
     'comment_edit' => 'Dovoli urejanje komentarjev?',
     'comment_edittime' => 'Čas urejanja komentarjev (sekunde)',
@@ -2164,7 +2175,8 @@ $LANG_configselects['Core'] = array(
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
 );
 
 ###############################################################################

@@ -185,7 +185,8 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn'
+    'linkedin' => 'Login with LinkedIn',
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -427,7 +428,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => '没有新闻可显示',
     2 => '没有新文章可显示。',
-    3 => '这也许是真的没有新主题或是你的 %s 设定得太过限制性。',
+    3 => '',
     4 => '今天头条',
     5 => '下页',
     6 => '上页',
@@ -1330,8 +1331,14 @@ $MESSAGE = array(
     113 => 'Your account has been created successfully. {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     115 => 'Remote service has been disabled.',
+    116 => 'Loading...',
+    117 => 'Help page is not found.',
+    118 => 'Click to select a date',
+    119 => 'More..',
+    120 => 'Send this?',
     400 => 'Not all required fields have been passed validation',
-    401 => 'Please enter Fullname'
+    401 => 'Please enter Fullname',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1462,7 +1469,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => '404 错误',
     2 => '咦，我到处都看过了但找不到<b>%s</b>.',
-    3 => "<p>很抱歉，但你要求的文件不存在。请检查<a href=\"{$_CONF['site_url']}\">主页</a>或<a href=\"{$_CONF['site_url']}/search.php\">搜索页</a>看看能发现什麽。"
+    3 => "<p>很抱歉，但你要求的文件不存在。请检查<a href=\"{$_CONF['site_url']}\">主页</a>或<a href=\"{$_CONF['site_url']}/search.php\">搜索页</a>看看能发现什麽。",
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
 ###############################################################################
@@ -1814,6 +1822,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => '才当成分',
     'path_themes' => '画面主题的路径',
+    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => '关闭新登记',
     'allow_user_themes' => '允许用户版面主题',
     'allow_user_language' => '允许用户语言',
@@ -1938,6 +1947,7 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => '存续用户后',
     'show_right_blocks' => '总是显示右边的组件?',
     'showfirstasfeatured' => '显示第一个文章为特载文章?',
+    'template_comments' => 'Template Comments in Output?',
     'backend' => '激活新闻供应(RSS Feeds)?',
     'rdf_file' => '新闻供应输出档案夹',
     'rdf_limit' => '新闻供应速度',
@@ -1972,6 +1982,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => '评论速度限定',
     'comment_limit' => '评论限定',
     'comment_mode' => '评论方式',
+    'comment_order' => 'Comment Order',
     'comment_code' => '评论默认',
     'comment_edit' => 'Allow Comment Edit?',
     'comment_edittime' => 'Comment Edit Time (seconds)',
@@ -2164,7 +2175,8 @@ $LANG_configselects['Core'] = array(
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
 );
 
 ###############################################################################

@@ -185,7 +185,8 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn'
+    'linkedin' => 'Login with LinkedIn',
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -427,7 +428,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => 'Aucun article &agrave; afficher',
     2 => 'Il n\'y a pas de nouveaux articles &agrave; afficher. Il n\'y a peut-être pas de nouveaut&eacute;s pour ce sujet ou alors vos pr&eacute;f&eacute;rences sont trop restrictives.',
-    3 => ' pour le sujet %s',
+    3 => '',
     4 => 'Article du jour',
     5 => 'Suivant',
     6 => 'Pr&eacute;c&eacute;dent',
@@ -1330,8 +1331,14 @@ $MESSAGE = array(
     113 => 'Your account has been created successfully. {site_url}',
     114 => 'Your re-synch with your remote account has failed but your other account information has been successfully saved.',
     115 => 'Remote service has been disabled.',
+    116 => 'Loading...',
+    117 => 'Help page is not found.',
+    118 => 'Click to select a date',
+    119 => 'More..',
+    120 => 'Send this?',
     400 => 'Not all required fields have been passed validation',
-    401 => 'Please enter Fullname'
+    401 => 'Please enter Fullname',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1462,7 +1469,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => 'Erreur 404',
     2 => 'Le syst&egrave;me ne trouve pas <b>http://</b>.',
-    3 => "<p>Le fichier que vous demandez n'existe pas. Allez &agrave; la <a href=\'{$_CONF['site_url']}\'>page principale</a> ou la <a href=\'{$_CONF['site_url']}/search.php\'>page de recherche</a> afin de retrouver ce que vous avez perdu."
+    3 => "<p>Le fichier que vous demandez n'existe pas. Allez &agrave; la <a href=\'{$_CONF['site_url']}\'>page principale</a> ou la <a href=\'{$_CONF['site_url']}/search.php\'>page de recherche</a> afin de retrouver ce que vous avez perdu.",
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
 ###############################################################################
@@ -1814,6 +1822,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE Declaration',
     'menu_elements' => 'Menu Elements',
     'path_themes' => 'Themes Path',
+    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => 'Disable New Registrations',
     'allow_user_themes' => 'Allow User Themes',
     'allow_user_language' => 'Allow User Language',
@@ -1938,6 +1947,7 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => 'After Saving User',
     'show_right_blocks' => 'Always Show Right Blocks?',
     'showfirstasfeatured' => 'Show First Story as Featured?',
+    'template_comments' => 'Template Comments in Output?',
     'backend' => 'Enable Feeds?',
     'rdf_file' => 'Syndication Output Folder',
     'rdf_limit' => 'Feed Limit',
@@ -1972,6 +1982,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'Comment Speed Limit',
     'comment_limit' => 'Comment Limit',
     'comment_mode' => 'Comment Mode',
+    'comment_order' => 'Comment Order',
     'comment_code' => 'Comment Default',
     'comment_edit' => 'Allow Comment Edit?',
     'comment_edittime' => 'Comment Edit Time (seconds)',
@@ -2164,7 +2175,8 @@ $LANG_configselects['Core'] = array(
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
 );
 
 ###############################################################################
