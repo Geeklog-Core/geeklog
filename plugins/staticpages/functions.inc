@@ -659,6 +659,11 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
                 'sp_id' => $page,
                 'mode'  => $mode
                  );
+    if ($mode == 'autotag') {
+        // tells service that it is okay to retrieve a template staticpage since 
+        // requested by another staticpage or autotag.
+        $args['template'] = true;
+    }    
     $svc_msg = array();
 
     if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
