@@ -656,7 +656,13 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (! empty($perms)) {
                 $perms .= ' AND';
             }
-            $perms .= '(draft_flag = 0) AND (template_flag = 0)';
+            if (isset($args['template'])) {
+                // Allow the viewing of a template since it is being retrieved by another staticpage
+                $perms .= '(draft_flag = 0)';
+            } else {
+                // Usually normal user cannot view staticpage that is a draft or template 
+                $perms .= '(draft_flag = 0) AND (template_flag = 0)';
+            } 
         }
         if (! empty($perms)) {
             $perms = ' AND ' . $perms;
@@ -738,6 +744,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                 $args = array(
                             'sp_id' => $output['template_id'],
                             'mode'  => $mode,
+                            'template' => true, // tells service that it is okay to retrieve a template staticpage since requested by another staticpage
                             'gl_svc' => ''
                              );
                 $svc_msg = array();    
