@@ -85,14 +85,17 @@
 
         {userphoto_option}
 
-        <dt><label for="profile-sig">{lang_signature}{lang_signature_text}</label></dt>
+        <dt><label for="profile-sig">{lang_signature}</label></dt>
         <dd><textarea cols="45" rows="4" name="sig" id="profile-sig" class="wide">{signature_value}</textarea></dd>
+        <dd class="description">{lang_signature_text}</dd>
 
-        <dt><label for="profile-about">{lang_about}{lang_about_text}</label></dt>
+        <dt><label for="profile-about">{lang_about}</label></dt>
         <dd><textarea cols="45" rows="6" name="about" id="profile-about" class="wide">{about_value}</textarea></dd>
+        <dd class="description">{lang_about_text}</dd>
 
-        <dt><label for="profile-pgpkey">{lang_pgpkey}{lang_pgpkey_text}</label></dt>
+        <dt><label for="profile-pgpkey">{lang_pgpkey}</label></dt>
         <dd><textarea cols="45" rows="6" name="pgpkey" id="profile-pgpkey" class="wide">{pgpkey_value}</textarea></dd>
+        <dd class="description">{lang_pgpkey_text}</dd>
       </dl>
     </div>
   </fieldset>
