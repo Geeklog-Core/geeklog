@@ -1769,20 +1769,31 @@ div.third-party-login {
 .gl-tooltip span {
   margin-left: -999em;
   position: absolute;
-  text-align: left;
+  text-align: right; /* rtl */
   width: 250px;
 }
 .gl-tooltip:hover span {
-  border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px;
-  box-shadow: 2px 2px 8px #666; -webkit-box-shadow: 2px 2px 8px #666; -moz-box-shadow: 2px 2px 8px #666;
-  font-size: 1em; text-align: left; white-space:normal;
+  border-radius: 8px;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  box-shadow: 2px 2px 8px #666;
+  -webkit-box-shadow: 2px 2px 8px #666;
+  -moz-box-shadow: 2px 2px 8px #666;
+  font-size: 1em;
+  text-align: right; /* rtl */
+  white-space:normal;
   font-family: Calibri, Tahoma, Geneva, sans, sans-serif;
-  position: absolute; left: 2.2em; top: 2.2em; z-index: 99;
+  position: absolute;
+  left: -22.2em; /* rtl */
+  top: 2.2em;
+  z-index: 99;
   margin-left: 0; width: 250px;
 }
 .gl-tooltip:hover img.icon {
-  border: 0; margin: -15px 0 0 -51px;
-  float: left; position: absolute;
+  border: 0;
+  margin: -15px 0 0 3px; /* rtl */
+  float: left;
+  position: absolute;
 }
 #gl-tooltip-icon {
   border: 0;
@@ -1792,7 +1803,7 @@ div.third-party-login {
   display: block; padding: 0.2em 0 0.6em 0.4em;
 }
 span.classic     { padding: 0.8em 1em; }
-span.custom      { padding: 0.5em 0.8em 0.8em 2em; }
+span.custom      { padding: 0.5em 2em 0.8em 0.8em; } /* rtl */
 span.classic     { background: #EEEEEC; border: 2px solid #555753; }
 span.critical    { background: #F5F0F0; border: 2px solid #A40000; }
 span.help        { background: #EDF0F2; border: 2px solid #204A87; }
