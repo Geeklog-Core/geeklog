@@ -1368,20 +1368,20 @@ h4 img {
   System Message Block
 --------------------------------------*/
 
-#block-message {
+.block-message {
   margin: 1.5em 0;
   padding: 0;
   border-radius: 6px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#block-message dl {
+.block-message dl {
   margin: 0;
   padding: 0;
 }
 
 /* Title */
-#block-message dt {
+.block-message dt {
   margin: 0;
   padding: 4px 8px;
   background: #3E6C9A;
@@ -1393,7 +1393,7 @@ h4 img {
 }
 
 /* Message */
-#block-message dd {
+.block-message dd {
   margin: 0;
   padding: 8px 12px;
   background: #E7E7E7;
@@ -1404,7 +1404,7 @@ h4 img {
   border-radius: 0px 0px 6px 6px;
 }
 
-#block-message p {
+.block-message p {
   margin: 0.2em 0;
   line-height: 1.25;
 }

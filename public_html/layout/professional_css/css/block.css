@@ -42,19 +42,19 @@ li.listitem {
     in system message
 --------------------------------------*/
 
-div#centerblocks div#block-message {
+div#centerblocks div.block-message {
   margin: 2em 0;
   padding: 0;
   border: 1px solid #000000;
 }
 
-div#centerblocks div#block-message dl {
+div#centerblocks div.block-message dl {
   margin: 0;
   padding: 0;
 }
 
 /* Title */
-div#centerblocks div#block-message dl dt {
+div#centerblocks div.block-message dl dt {
   margin: 0;
   padding: 8px;
   background: #1A3955 url(../images/css/bg_message_title.gif) repeat-x 0 0;
@@ -63,7 +63,7 @@ div#centerblocks div#block-message dl dt {
 }
 
 /* Message */
-div#centerblocks div#block-message dl dd {
+div#centerblocks div.block-message dl dd {
   margin: 0;
   padding: 8px;
   background: #E7E7E7;

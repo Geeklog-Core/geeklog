@@ -76,12 +76,12 @@ fieldset .compact dd.description {
 --------------------------------------*/
 
 /* Title */
-#block-message dt {
+.block-message dt {
   border: 1px solid #32567B;
 }
 
 /* Message */
-#block-message dd {
+.block-message dd {
   font-weight: bold;
   border-bottom: 1px solid #BEBEBE;
   border-left:   1px solid #BEBEBE;

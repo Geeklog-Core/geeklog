@@ -40,7 +40,7 @@ li.listitem {
     in system message
 --------------------------------------*/
 
-div#centerblocks div#block-message {
+div#centerblocks div.block-message {
   margin: 1.2em 0;
   padding: 0;
 
@@ -57,13 +57,13 @@ div#centerblocks div#block-message {
   background: #eeeeec url("./images/css/bg_message_title.png") repeat-x scroll 0 0;
 }
 
-div#centerblocks div#block-message dl {
+div#centerblocks div.block-message dl {
   margin: 0;
   padding: 0;
 }
 
 /* Title */
-div#centerblocks div#block-message dl dt {
+div#centerblocks div.block-message dl dt {
   margin: 0;
   padding: 8px;
   color: #222;
@@ -73,7 +73,7 @@ div#centerblocks div#block-message dl dt {
 }
 
 /* Message */
-div#centerblocks div#block-message dl dd {
+div#centerblocks div.block-message dl dd {
   margin: 0;
   padding: 8px;
   font-weight: bold;
