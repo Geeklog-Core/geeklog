@@ -70,6 +70,7 @@ perm_anon       Permissions anonymous users have
 * @return       array      
 *
 */
+
 function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = array())
 {
 	global $_TABLES, $_CONF, $_USER, $LANG27;
@@ -153,6 +154,72 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
     }
     
     return $tree_array;
+}
+
+/**
+* Implements the [topic:] autotag.
+*
+* @param    string  $op         operation to perform
+* @param    string  $content    item (e.g. topic text), including the autotag
+* @param    array   $autotag    parameters used in the autotag
+* @param    mixed               tag names (for $op='tagname') or formatted content
+*
+*/
+
+function plugin_autotags_topic($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_TABLES, $LANG27, $_GROUPS;
+    if($op == 'tagname') {
+        return 'topic';
+    } 
+
+    elseif (($op == 'permission') || ($op == 'nopermission')) {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        $tagnames = array();
+
+        if (isset($_GROUPS['Topic Admin'])) {
+            $group_id = $_GROUPS['Topic Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',"grp_name = 'Topic Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_topic'][0], $_CONF['autotag_permissions_topic'][1], $_CONF['autotag_permissions_topic'][2], $_CONF['autotag_permissions_topic'][3]) == $flag) {
+            $tagnames[] = 'topic';
+        }
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
+        }
+    }
+
+    elseif ($op == 'description') {
+        return array ('topic' => $LANG27['autotag_desc_topic']);
+    }
+
+    elseif ($op == 'parse') {
+        $tid = COM_applyFilter($autotag['parm1']);
+        $tid = DB_escapeString($tid);
+        if(! empty($tid)) {
+            $sql = "SELECT COUNT(*) as count FROM {$_TABLES['topics']} where tid = '$tid'";
+            $result = DB_query($sql);
+            $A = DB_fetchArray($result);
+            if ($A['count'] == 1) {
+                $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
+                $linktext = $autotag['parm2'];
+                if (empty($linktext)) {
+                    $linktext = stripslashes(DB_getItem($_TABLES['topics'],'meta_description', "tid = '$tid'"));
+                }
+                $link = COM_createLink($linktext, $url);
+                $content = str_replace($autotag['tagstr'], $link, $content);
+            }
+        }
+        return $content;
+    }
 }
 
 /**
