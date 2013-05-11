@@ -2,15 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Geeklog 1.7                                                               |
+// | Geeklog 2.0.0#1                                                           |
 // +---------------------------------------------------------------------------+
 // | hebrew_utf-8.php                                                          |
 // |                                                                           |
 // | Hebrew language file for the Geeklog installation script                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2008-2010                                                   |
+// | Copyright (C) 2008-2013                                                   |
 // | http://lior.weissbrod.com                                                 |
-// | Version 1                                                                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -154,7 +153,7 @@ $LANG_INSTALL = array(
     106 => 'PostgreSQL',
     107 => 'נחוצה סיסמת מאגר מידע לאתרים שבאוויר.',
     108 => 'לא נבחרו מנועי מאגר מידע!',
-    109 => 'Emergency Rescue Tool'
+    109 => 'כלי סיוע חירום'
 );
 
 // +---------------------------------------------------------------------------+
@@ -283,7 +282,7 @@ $LANG_BIGDUMP = array(
     8 => 'מעבד את הקובץ:',
     9 => 'לא יכול להגדיר סמן קובץ אחרי סוף הקובץ.',
     10 => 'לא יכול לקבוע את סמן הקובץ לאופ-סט: ',
-    11 => 'There is no MySQL extension available in your PHP installation.',
+    11 => 'אין סיומת MySQL זמינה בהתקנת ה-PHP שלכם.',
     14 => 'נעצר בשורה ',
     15 => '. במקום זה המשוב הנוכחי כולל יותר מאשר ',
     16 => ' שורות dump. זה יכול לקרות אם קובץ ה-dump שלכם נוצר על ידי כלי שלא שם נקודה פסיק ואז עובר שורה בסוף של כל משוב, או שה-dump שלכם כולל הכנסות מורחבות. אנא קיראו את השאלות השכיחות של BigDump למידע נוסף.',
@@ -347,51 +346,51 @@ $LANG_HELP = array(
 // rescue.php
 
 $LANG_RESCUE = array(
-    0 => 'Login successful',
-    1 => 'Geeklog Emergency Rescue Tool',
-    2 => 'Geeklog Install',
-    3 => 'Geeklog Emergency Rescue Tool',
-    4 => 'Do not forget to <strong>delete this {{SELF}} file and the install directory once you are done!</strong>  If other users guess the password, they can seriously harm your geeklog installation!',
-    5 => 'Status',
-    6 => 'You are attempting to access a secure section.  You can\'t proceed until you pass the security check.',
-    7 => 'In order to verify you, we require you to enter your database password.  This is the password that is stored in geeklog\'s db-config.php',
-    8 => 'Password',
-    9 => 'Verify Me',
-    10 => 'Password incorrect!',
-    11 => 'enabling ',
-    12 => 'disabling ',
-    13 => 'success ',
-    14 => 'error ',
-    15 => 'There was an error updating configs',
-    16 => 'Updating configs completed successfully',
-    17 => 'There was an error updating your password',
-    18 => 'Geeklog password request',
-    19 => 'Requested Password',
-    20 => 'Someone (hopefully you) has accessed the emergency password request form and a new password:"%s" for your account "%s" on %s, has been generated.',
-    21 => 'If it was not you, please check the security of your site. Make sure to remove the Emergency Rescue Form /admin/rescue.php',
-    22 => 'New password has been sent to the recorded email address',
-    23 => 'There was an error sending email with the subject: ',
-    24 => 'PHP Information',
-    25 => 'Return to main screen',
-    26 => 'System Information',
-    27 => 'PHP version',
-    28 => 'Geeklog version',
-    29 => 'Options',
-    30 => 'If you happen to install a plugin or addon that brings down your geeklog site, you can remedy the problem with the options below.',
-    31 => 'Enable/Disable Plugins',
-    32 => 'Enable/Disable Blocks',
-    33 => 'Edit Select $_CONF Values',
-    34 => 'Reset Admin Password',
-    35 => 'Here you can enable/disable any plugin that is currently installed on your geeklog website.',
-    36 => 'Select a plugin',
-    37 => 'Enable',
-    38 => 'Disable',
-    39 => 'Here you can enable/disable any block (except dynamic) that is currently installed on your geeklog website.',
-    40 => 'Select a block',
-    41 => 'Go',
-    42 => 'You can edit some key $_CONF options.',
-    43 => 'Here you can reset your geeklog root/admin password.',
-    44 => 'Email my password'
+    0 => 'הכניסה למערכת הצליחה',
+    1 => 'כלי סיוע חירום של Geeklog',
+    2 => 'התקנת Geeklog',
+    3 => 'כלי סיוע חירום של Geeklog',
+    4 => 'אל תשכחו <strong>למחוק את הקובץ {{SELF}} הזה ואת ספריית ההתקנה ברגע שתסיימו!</strong> אם משתמשים אחרים ינחשו את הססמה, הם יוכלו לפגוע בצורה חמורה בהתקנת ה-Geeklog שלכם!',
+    5 => 'סטטוס',
+    6 => 'הנכם מנסים לגשת למקום מאובטח. לא תוכלו להמשיך עד שתעברו את בדיקת האבטחה.',
+    7 => 'כדי לוודא את זהותכם, אנו דורשים שתקלידו את ססמת מאגר המידע שםכם. זוהי הססמה שרשומה בקובץ geeklog\'s db-config.php',
+    8 => 'ססמה',
+    9 => 'וודאו אותי',
+    10 => 'הססמה לא נכונה!',
+    11 => 'איפשור ',
+    12 => 'ניטרול ',
+    13 => 'הצלחה ',
+    14 => 'שגיאה ',
+    15 => 'חלה שגיאה בעדכון הכיוונים',
+    16 => 'עדכון הכיוונים הסתיימה בהצלחה',
+    17 => 'חלה שגיאה בעדכון ססמתכם',
+    18 => 'בקשת ססמת Geeklog',
+    19 => 'בוקשה ססמה',
+    20 => 'מישהי (בתקווה אתם) ניגש לטופס בקשת ססמת חירום וססמה חדשה:"%s" לחשבונכם "%s" שבתוך %s, נוצרה.',
+    21 => 'אם זה לא הייתם אתם, אנא בידקו את אבטחת אתרכם. בידקו שהסרתם את טופס סיוע החירום /admin/rescue.php',
+    22 => 'ססמה חדשה נשלחה לכתובת האימייל הרשומה',
+    23 => 'חלה שגיאה בשליחת אימייל עם הנושא: ',
+    24 => 'מידע PHP',
+    25 => 'חזרה למסך הראשי',
+    26 => 'מידע מערכת',
+    27 => 'גרסת PHP',
+    28 => 'גרסה Geeklog',
+    29 => 'אפשרויות',
+    30 => 'אם יצא לכם להתקין plugin או תוסף שהפיל את אתר ה-Geeklog שלכם, תוכלו לתקן את הבעיה בעזרת האפשרויות שלהלן.',
+    31 => 'איפשרו/ניטרול plugins',
+    32 => 'איפשרו/ניטרול קוביות מידע',
+    33 => 'עריכת ערכי $_CONF נבחרים',
+    34 => 'איפוס ססמת ניהול',
+    35 => 'כאן תוכלו לאפשר/לנטרל כל plugin שכרגע מותקן באתר ה-Geeklog שלכם.',
+    36 => 'בחירת plugin',
+    37 => 'איפשור',
+    38 => 'ניטרול',
+    39 => 'כאן תוכלו לאפשר/לנטרל כל קוביית מידע (חוץ מדינמית) שכרגע מותקמת באתר ה-Geeklog שלכם.',
+    40 => 'בחירת קוביית מידע',
+    41 => 'אישור',
+    42 => 'תוכלו לערוך כמה אפשרויות $_CONF מרכזיות.',
+    43 => 'כאן תוכלו לאפס את הססמה הראשית/הניהולית של Geeklog שלכם.',
+    44 => 'שליחת הססמה באימייל'
 );
 
 // which texts to use as labels, so they don't have to be translated again

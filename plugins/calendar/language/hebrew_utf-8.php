@@ -86,7 +86,7 @@ $LANG_CAL_1 = array(
     49 => 'נראה שאין שום אירועים באתר זה או שאף אחד עוד לא לחץ על אחד מהם.',
     50 => 'אירועים',
     51 => 'מחיקה',
-    'autotag_desc_event' => '[event: id alternate title] - Displays a link to an Event Link from the Calendar using the Event Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_event' => '[event: id alternate title] - מציג קישור לאירוע מהיומן בעזרת כותרת האירוע בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
 );
 
 $_LANG_CAL_SEARCH = array(

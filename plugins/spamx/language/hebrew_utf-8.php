@@ -3,9 +3,9 @@
 /**
 * File: hebrew_utf-8.php
  * This is the Hebrew language file for the Geeklog Spam-X plugin
-* Copyright (C) 2009
+* Copyright (C) 2013
  * http://lior.weissbrod.com
- * Version 1.6#1
+ * Version 2.0.0#1
  * 
  * Licensed under GNU General Public License
  *
@@ -50,7 +50,7 @@ $LANG_SX00 = array(
     'e1' => 'כדי למחוק פריט, ליחצו עליו.',
     'e2' => 'כדי להוסיף פריט, הכניסו אותו לתיבה וליחצו על הוספה.  הפריטים יכולים להשתמש באופן מלא ב-Regular Expressions של Perl.',
     'pblack' => 'הרשימה השחורה האישית של Spam-X',
-    'sfseblack' => 'Spam-X SFS Email Blacklist',
+    'sfseblack' => 'רשימות שחורות של אימייל SFS של Spam-X',
     'conmod' => 'כוונו את מודול השימוש של Spam-X',
     'acmod' => 'מודולי הפעולה של Spam-X',
     'exmod' => 'מודולי הבחינה של Spam-X',
@@ -122,18 +122,17 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'נחסם על ידי כתובת ה-IP של כתובת אתר',
     'stats_header' => 'HTTP headers',
     'stats_deleted' => 'פריטים שנמחקו כספאם',
-    'invalid_email_or_ip' => 'Invalid e-mail address or IP address has been blocked.',
-    'email_ip_spam' => '%s or %s attempted to register but was considered a spammer.',
-    'edit_personal_blacklist' => 'Edit Personal Blacklist',
-    'mass_delete_spam_comments' => 'Mass Delete Spam Comments',
-    'mass_delete_trackback_spam' => 'Mass Delete Trackback Spam',
-    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
-    'edit_ip_blacklist' => 'Edit IP Blacklist',
-    'edit_ip_url_blacklist' => 'Edit IP of URL Blacklist',
-    'edit_sfs_blacklist' => 'Edit SFS Email Blacklist',
-    'edit_slv_whitelist' => 'Edit SLV Whitelist',
+    'invalid_email_or_ip' => 'כתובת אימייל או IP נחסמו.',
+    'email_ip_spam' => '%s או %s ניסו להירשם אבל נחשבו כספאם.',
+    'edit_personal_blacklist' => 'עריכת רשימה שחורה אישית',
+    'mass_delete_spam_comments' => 'מחיקה המונית של תגובות ספאם',
+    'mass_delete_trackback_spam' => 'מחיקה המונית של רשימה שחורה של HTTP Header',
+    'edit_ip_blacklist' => 'עריכת רשימה שחורה של IP',
+    'edit_ip_url_blacklist' => 'עריכת IP של רשימה שחורה של כתובות אתרי אינטרנט',
+    'edit_sfs_blacklist' => 'עריכת רשימה שחורה של אימייל SFS',
+    'edit_slv_whitelist' => 'עריכת רשימה לבנה של SLV',
     'plugin_name' => 'Spam-X',
-    'slvwhitelist' => 'SLV Whitelist'
+    'slvwhitelist' => 'רשימה לבנה של SLV'
 );
 
 // Define Messages that are shown when Spam-X module action is taken
@@ -151,13 +150,13 @@ $LANG_configsections['spamx'] = array(
 );
 
 $LANG_confignames['spamx'] = array(
-    'spamx_action' => 'Spam-X Actions',
+    'spamx_action' => 'פעולות Spam-X',
     'notification_email' => 'התרעה בהודעת אימייל',
     'logging' => 'איפשור לוג',
     'timeout' => 'פקיעת זמן מוקצב',
-    'sfs_enabled' => 'Enable SFS',
-    'snl_enabled' => 'Enable SNL',
-    'snl_num_links' => 'Number of links'
+    'sfs_enabled' => 'איפשור SFS',
+    'snl_enabled' => 'איפשור SNL',
+    'snl_num_links' => 'מספר הקישורים'
 );
 
 $LANG_configsubgroups['spamx'] = array(
@@ -165,14 +164,14 @@ $LANG_configsubgroups['spamx'] = array(
 );
 
 $LANG_tab['spamx'] = array(
-    'tab_main' => 'Spam-X Main Settings',
-    'tab_modules' => 'Modules'
+    'tab_main' => 'הגדרות Spam-X כלליות',
+    'tab_modules' => 'מודולים'
 );
 
 $LANG_fs['spamx'] = array(
     'fs_main' => 'ההגדרות הראשיות של Spam-X',
-    'fs_sfs' => 'Stop Forum Spam (SFS)',
-    'fs_snl' => 'Spam Number of Links (SNL)'
+    'fs_sfs' => 'הפסיקו פורום ספאם (SFS)',
+    'fs_snl' => 'ספאם מספר קישורים (SNL)'
 );
 
 // Note: entries 0, 1, 9, and 12 are the same as in $LANG_configselects['Core']

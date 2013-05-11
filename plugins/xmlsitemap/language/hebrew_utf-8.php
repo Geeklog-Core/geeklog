@@ -54,9 +54,9 @@ $LANG_configsubgroups['xmlsitemap'] = array(
 );
 
 $LANG_tab['xmlsitemap'] = array(
-    'tab_main' => 'XMLSitemap Main Settings',
-    'tab_pri' => 'Priority',
-    'tab_freq' => 'Update frequency'
+    'tab_main' => 'הגדרות כלליות של XMLSitemap',
+    'tab_pri' => 'עדיפות',
+    'tab_freq' => 'תכיפות עדכונים'
 );
 
 $LANG_fs['xmlsitemap'] = array(

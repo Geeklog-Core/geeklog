@@ -121,8 +121,8 @@ $LANG_STATIC = array(
     'draft' => 'טיוטה',
     'draft_yes' => 'כן',
     'draft_no' => 'לא',
-    'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
+    'autotag_desc_staticpage' => '[staticpage: id alternate title] - מציג קישור לעמוד סטטי בעזרת כותרת העמוד הסטטי בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
+    'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - מציג את תכני העמוד הסטטי.'
 );
 
 $PLG_staticpages_MESSAGE15 = 'תגובתכם נשלחה לסקירה ותפורסם כאשר תאושר על ידי המשגיחים.';

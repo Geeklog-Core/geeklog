@@ -62,9 +62,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
     'start_poll' => 'התחילו את הסקר',
     'no_new_polls' => 'אין סקרים חדשים',
-    'autotag_desc_poll' => '[poll: id alternate title] - Displays a link to a poll using the Poll Topic as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - Displays a poll for voting. Class and showall not required. Class specifies the css class and Showall if set to 1, shows all questions',
-    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - Displays the poll results. Class not required. Class specifies the css class.',
+    'autotag_desc_poll' => '[poll: id alternate title] - מציג קישור לסקר בעזרת כותרת הסקר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - מציג סקר להצבעה. Class ו-Showall אינם הכרחיים. Class מציינת את ה-css class ו-Showall אם מכוון ל-1, מציג את כל השאלות',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - מציג תשובות לסקר. Class אינו הכרחי. Class מציין את ה-css class.',
     'deny_msg' => 'הגישה לסקר זה לא מאושרת. הסקר הוזז/נמחק או שאין ברשותכם הרשאות מתאימות.'
 );
 

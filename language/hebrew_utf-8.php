@@ -184,8 +184,7 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn',
-    'ctl' => 'Clear Cache'
+    'linkedin' => 'Login with LinkedIn'
 );
 
 ###############################################################################
@@ -427,7 +426,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => 'אין חדשות להצגה',
     2 => 'אין שום חדשות להצגה. ייתכן שאין שום חדשות בתוך הנושא הזה או שהגדרות המשתמש שלך מגבילות מדי',
-    3 => '',
+    3 => ' עבור נושא %s',
     4 => 'המאמר המוצג של היום',
     5 => 'הבא',
     6 => 'הקודם',
@@ -856,7 +855,7 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_story' => '[story: id alternate title] - מציג קישור למאמר בעזרת כותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
 );
 
 ###############################################################################
@@ -1014,7 +1013,7 @@ $LANG28 = array(
     88 => 'קבוצת ברירת מחדל',
     89 => 'אפשרו לקבוצה זו להיות קבוצת ברירת מחדל למשתמשים חדשים',
     90 => 'הוסיפו את השינוי של "קבוצת ברירת מחדל" לחשבונות משתמשים קיימים',
-    'autotag_desc_user' => '[user: id alternate title] - Displays a link to a User using the Username as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_user' => '[user: id alternate title] - מציג קישור למשתמש בעזרת שם המשתמש בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
 );
 
 ###############################################################################
@@ -1468,8 +1467,7 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => '404 Error',
     2 => 'לא נמצא העמוד <b>%s</b>.',
-    3 => "<p>מצטערים, אבל הקובץ שביקשתם לקבל לא קיים. אנא הרגישו חופשי לבדוק את <a href=\"{$_CONF['site_url']}\">העמוד הראשי</a> או את <a href=\"{$_CONF['site_url']}/search.php\">עמוד החיפוש</a> כדי לראות אם תוכלו למצוא את מה שאיבדתם.",
-    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
+    3 => "<p>מצטערים, אבל הקובץ שביקשתם לקבל לא קיים. אנא הרגישו חופשי לבדוק את <a href=\"{$_CONF['site_url']}\">העמוד הראשי</a> או את <a href=\"{$_CONF['site_url']}/search.php\">עמוד החיפוש</a> כדי לראות אם תוכלו למצוא את מה שאיבדתם."
 );
 
 ###############################################################################
@@ -1821,7 +1819,6 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'הצהרת DOCTYPE',
     'menu_elements' => 'פריטי תפריט',
     'path_themes' => 'נתיב לנושאים עיצוביים',
-    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => 'ביטול הרשמות חדשות',
     'allow_user_themes' => 'איפשור בחירת נושאים עיצוביים למשתמשים',
     'allow_user_language' => 'איפשור בחירת שפה למשתמשים',
@@ -1946,7 +1943,6 @@ $LANG_confignames['Core'] = array(
     'aftersave_user' => 'לאחר שמירת משתמש',
     'show_right_blocks' => 'תמיד להציג קוביות מידע ימניות (שמאליות במצב שפה RTL)?',
     'showfirstasfeatured' => 'הצגת המאמר הראשון כמאמר המוצג היומי?',
-    'template_comments' => 'Template Comments in Output?',
     'backend' => 'איפשור הזנות?',
     'rdf_file' => 'ספריית פלט סינדיקציה',
     'rdf_limit' => 'הגבלת הזנות',
@@ -1981,7 +1977,6 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'הגבלת מהירות תגובות',
     'comment_limit' => 'הגבלות תגובות',
     'comment_mode' => 'מצב תגובות',
-    'comment_order' => 'Comment Order',
     'comment_code' => 'ברירת המחדל של תגובות',
     'comment_edit' => 'איפשור עריכת תגובות?',
     'comment_edittime' => 'זמן עריכת תגובות (בשניות)',
@@ -2174,8 +2169,7 @@ $LANG_configselects['Core'] = array(
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
+    30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none')
 );
 
 ###############################################################################

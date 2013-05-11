@@ -51,7 +51,7 @@ $LANG_LINKS = array(
     124 => 'עיברו',
     125 => 'קטגוריות',
     126 => 'אתם כאן:',
-    'autotag_desc_link' => '[link: id alternate title] - Displays a link to a Link from the Links Plugin using the Link Title as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_link' => '[link: id alternate title] - מציג קישור לקישור מ-plugin הקישורים בעזרת כותרת הקישור בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
     'root' => 'ראשי'
 );
 
