@@ -203,21 +203,22 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
 
     elseif ($op == 'parse') {
         $tid = COM_applyFilter($autotag['parm1']);
-        $tid = DB_escapeString($tid);
-        if(! empty($tid)) {
-            $sql = "SELECT COUNT(*) as count FROM {$_TABLES['topics']} where tid = '$tid'";
+        if (!empty($tid) && (SEC_hasTopicAccess($tid) > 0)) {
+            $tid = DB_escapeString($tid);
+            $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['topics']} WHERE tid = '$tid'";
             $result = DB_query($sql);
             $A = DB_fetchArray($result);
             if ($A['count'] == 1) {
                 $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
                 $linktext = $autotag['parm2'];
                 if (empty($linktext)) {
-                    $linktext = stripslashes(DB_getItem($_TABLES['topics'],'meta_description', "tid = '$tid'"));
+                    $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));
                 }
                 $link = COM_createLink($linktext, $url);
                 $content = str_replace($autotag['tagstr'], $link, $content);
             }
         }
+
         return $content;
     }
 }
