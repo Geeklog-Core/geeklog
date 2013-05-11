@@ -24,6 +24,9 @@ function update_ConfValuesFor201()
     $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
     $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);   
 
+    // [topic:] autotag permissions
+    $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
+
     return true;
 }
 
