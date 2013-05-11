@@ -2052,7 +2052,7 @@ $LANG_confignames['Core'] = array(
     'multiple_breadcrumbs' => "Multiple Breadcrumbs",
     'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
     'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
-    'disable_breadcrumbs_plugins' => "Disable Plugins Breadcrumbs", 
+    'disable_breadcrumbs_plugins' => "Disable Plugins Breadcrumbs",
     'breadcrumb_root_site_name' => "Site Name as Breadcrumb Root?"
 );
 
