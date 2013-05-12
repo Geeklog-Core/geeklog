@@ -869,6 +869,9 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
         case 'date-created':
             $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
             break;
+        case 'date-modified':
+            $fields[] = 'UNIX_TIMESTAMP(date) AS unixdate';
+            break;
         case 'description':
             $fields[] = 'introtext';
             $fields[] = 'bodytext';
@@ -935,6 +938,9 @@ function plugin_getiteminfo_story($sid, $what, $uid = 0, $options = array())
             switch ($p) {
             case 'date-created':
                 $props['date-created'] = $A['unixdate'];
+                break;
+            case 'date-modified':
+                $props['date-modified'] = $A['unixdate'];
                 break;
             case 'description':
                 $props['description'] = trim(PLG_replaceTags(stripslashes($A['introtext']) . ' ' . stripslashes($A['bodytext'])));

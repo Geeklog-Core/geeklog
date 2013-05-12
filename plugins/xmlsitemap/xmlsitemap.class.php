@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Google Sitemap Generator classes                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2009 by the following authors:                              |
+// | Copyright (C) 2009-2013 by the following authors:                         |
 // |                                                                           |
 // | Authors: Kenji ITO        - geeklog AT mystral-kk DOT net                 |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -36,15 +36,8 @@
 * @package XMLSitemap
 */
 
-if (strpos(strtolower($_SERVER['PHP_SELF']), 'xmlsitemap.class.php') !== FALSE) {
-    die('This file can not be used on its own.');
-}
-
-/**
-* "linebreak" constant
-*/
-if (!defined('LB')) {
-    define('LB', "\n");
+if (stripos($_SERVER['PHP_SELF'], 'xmlsitemap.class.php') !== FALSE) {
+    die('This file cannot be used on its own.');
 }
 
 /**
@@ -67,32 +60,28 @@ if (!defined('LB')) {
 */
 class SitemapXML
 {
-    /**
-    * Vars
-    *
-    * @access  private
-    */
-    var $_num_entries;
-    var $_encoding;
-    var $_changeFreqs;
-    var $_priorities;
-    var $_types;
-    var $_filename;
-    var $_mobile_filename;
+    // Constants
+    const LB = "\n";
 
-    /**
-    * Valid expressions for 'changefreq' field.  Should be constants in PHP5
-    */
-    var $_valid_change_freqs = array('always', 'hourly', 'daily', 'weekly',
+    // Vars
+    private $_num_entries;
+    private $_encoding;
+    private $_changeFreqs;
+    private $_priorities;
+    private $_types;
+    private $_filename;
+    private $_mobile_filename;
+
+    // Valid expressions for 'changefreq' field
+    private $_valid_change_freqs = array('always', 'hourly', 'daily', 'weekly',
             'monthly', 'yearly', 'never');
 
     /**
     * Constructor
     *
-    * @access  public
     * @param   string   $encoding   the encoding of contents
     */
-    function SitemapXML($encoding = '')
+    public function __construct($encoding = '')
     {
         $this->_num_entries = 0;
         $this->setEncoding($encoding);
@@ -106,11 +95,10 @@ class SitemapXML
     /**
     * Set the encoding of contents
     *
-    * @access  public
     * @param   string   $encoding   the encoding of contents
     * @return  void
     */
-    function setEncoding($encoding)
+    public function setEncoding($encoding)
     {
         if ($encoding == '') {
             $encoding = COM_getCharset();
@@ -125,10 +113,9 @@ class SitemapXML
     /**
     * Return the encoding of the source content
     *
-    * @access  public
     * @return  string   the encoding of contents
     */
-    function getEncoding()
+    public function getEncoding()
     {
         return $this->_encoding;
     }
@@ -140,11 +127,10 @@ class SitemapXML
     * NOTE:    Sitemap files must be located in the top directory of the site,
     *          i.e., the same directory as "lib-common.php".
     *
-    * @access  public
     * @param   string   $filename           name of sitemap file
     * @param   string   $mobile_filename    name of mobile sitemap file
     */
-    function setFileNames($filename = '', $mobile_filename = '')
+    public function setFileNames($filename = '', $mobile_filename = '')
     {
         global $_CONF;
 
@@ -160,10 +146,9 @@ class SitemapXML
     /**
     * Return the names of sitemap files
     *
-    * @access  public
     * @return  array    names of the sitemap and mobile sitemap
     */
-    function getFileNames()
+    public function getFileNames()
     {
         return array($this->_filename, $this->_mobile_filename);
     }
@@ -171,11 +156,10 @@ class SitemapXML
     /**
     * Check if a string stands for a valid value of priority
     *
-    * @access  public
     * @param   string   $str    a string for a priority
     * @return  float            a valid value or 0.5 (default value)
     */
-    function checkPriority($str)
+    public function checkPriority($str)
     {
         $v = (float) $str;
         return (($v >= 0.0) AND ($v <= 1.0)) ? $v : 0.5;
@@ -184,11 +168,10 @@ class SitemapXML
     /**
     * Set the priority of the item
     *
-    * @access  public
     * @param   string   $type   'article', 'staticpages', ...
     * @param   float    $value  the value of priority
     */
-    function setPriority($type, $value)
+    public function setPriority($type, $value)
     {
         $value = $this->checkPriority($value);
         if ($value != 0.5) {
@@ -199,11 +182,10 @@ class SitemapXML
     /**
     * Return the value of priority
     *
-    * @access  public
     * @param   string  $type   'article', 'staticpages', ...
     * @return  float           0.0..1.0 (default value is 0.5)
     */
-    function getPriority($type)
+    public function getPriority($type)
     {
         if (isset($this->_priorities[$type])) {
             return (float) $this->_priorities[$type];
@@ -215,11 +197,10 @@ class SitemapXML
     /**
     * Check if a string stands for a proper frequency
     *
-    * @access  public
     * @param   string  $str    a string for a frequency
     * @return  string          a valid string or an empty string
     */
-    function checkChangeFreq($str)
+    public function checkChangeFreq($str)
     {
         $str = strtolower($str);
         return in_array($str, $this->_valid_change_freqs) ? $str : '';
@@ -228,12 +209,11 @@ class SitemapXML
     /**
     * Set the change frequency of the item
     *
-    * @access  public
     * @param   string  $type   'article', 'staticpages', ...
     * @param   string  $value  any of 'always', 'hourly', 'daily', 'weekly',
     *                          'monthly', 'yearly', 'never'
     */
-    function setChangeFreq($type, $value)
+    public function setChangeFreq($type, $value)
     {
         $value = $this->checkChangeFreq($value);
         if ($value != '') {
@@ -244,12 +224,11 @@ class SitemapXML
     /**
     * Return the value of change frequency
     *
-    * @access  public
     * @param   string  $type   'article', 'staticpages', ...
     * @return  string          any of 'always', 'hourly', 'daily', 'weekly',
     *                          'monthly', 'yearly', 'never', ''
     */
-    function getChangeFreq($type)
+    public function getChangeFreq($type)
     {
         if (isset($this->_change_freqs[$type])) {
             return $this->_change_freqs[$type];
@@ -265,10 +244,9 @@ class SitemapXML
     *       a plugins is being enabled/disabled, i.e., when you can't
     *       depend on $_PLUGINS.
     *
-    * @access  public
     * @param   mixed   $types (string or array of string): 'article', ...
     */
-    function setTypes($types)
+    public function setTypes($types)
     {
         $this->_types = array_unique($types);
     }
@@ -276,10 +254,9 @@ class SitemapXML
     /**
     * Get the types of content
     *
-    * @access  public
     * @return  array    array of strings of types: 'article', 'staticpages', ...
     */
-    function getTypes()
+    public function getTypes()
     {
         return $this->_types;
     }
@@ -287,11 +264,10 @@ class SitemapXML
     /**
     * Normalize a URL
     *
-    * @access  private
     * @param   string   $url    URL to normalize
     * @return  string           a normalized URL
     */
-    function _normalizeURL($url)
+    private function _normalizeURL($url)
     {
         static $encoding = NULL;
 
@@ -311,11 +287,10 @@ class SitemapXML
     /**
     * Return a string expression of the server time zone
     *
-    * @access  private
     * @return           mixed  '(+|-)\d\d:\d\d' or FALSE
     * @see              PEAR Date/TimeZone.php
     */
-    function _getTimezoneStr()
+    private function _getTimezoneStr()
     {
         global $_CONF;
 
@@ -355,12 +330,11 @@ class SitemapXML
     *
     * NOTE: This method is not used currently.
     *
-    * @access  private
     * @param   string         $str    to encode
     * @param   string $from_encoding  source encoding
     * @return                 string
     */
-    function _toUtf8($str, $from_encoding = '')
+    private function _toUtf8($str, $from_encoding = '')
     {
         if ($from_encoding == '') {
             $from_encoding = $this->_encoding;
@@ -384,12 +358,11 @@ class SitemapXML
     /**
     * Write the sitemap into a file
     *
-    * @access  protected
     * @param   string     $filename the name of the sitemap file
     * @param   string     $sitemap  the content of the sitemap
     * @return  boolean              TRUE = success, FALSE = otherwise
     */
-    function _write($filename, $sitemap)
+    protected function _write($filename, $sitemap)
     {
         $retval = FALSE;
 
@@ -441,10 +414,9 @@ class SitemapXML
     /**
     * Create the sitemap and save it as a file
     *
-    * @access  public
     * @return  boolean  TRUE = success, FALSE = otherwise
     */
-    function create()
+    public function create()
     {
         global $_CONF;
 
@@ -453,7 +425,8 @@ class SitemapXML
         $types   = $this->getTypes();
         $what    = 'url,date-modified';
         $options = array();
-        if (count($types) == 0) {
+
+        if (count($types) === 0) {
             COM_errorLog(__CLASS__ . ': No content type is specified.');
             return FALSE;
         }
@@ -465,8 +438,8 @@ class SitemapXML
                 foreach ($result as $entry) {
                     if (isset($entry['url'])) {
                         $url = $this->_normalizeURL($entry['url']);
-                        $sitemap .= '  <url>' . LB
-                                 .  '    <loc>' . $url . '</loc>' . LB;
+                        $sitemap .= '  <url>' . self::LB
+                                 .  '    <loc>' . $url . '</loc>' . self::LB;
                     } else {
                         /**
                         * <loc> element is mandatory for the sitemap.  So,
@@ -482,7 +455,7 @@ class SitemapXML
                     $change_freq = $this->getChangeFreq($type);
                     if ($change_freq != '') {
                         $sitemap .= '    <changefreq>' . $change_freq
-                                 .  '</changefreq>' . LB;
+                                 .  '</changefreq>' . self::LB;
                     }
 
                     // Time stamp
@@ -497,17 +470,17 @@ class SitemapXML
                                       .  $timezone;
                             }
                         }
-                        $sitemap .= '    <lastmod>' . $date . '</lastmod>' . LB;
+                        $sitemap .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
                     }
 
                     // Priority
                     $priority = $this->getPriority($type);
                     if ($priority != 0.5) {
                         $sitemap .= '    <priority>' . (string) $priority
-                                 .  '</priority>' . LB;
+                                 .  '</priority>' . self::LB;
                     }
 
-                    $sitemap .= '  </url>' . LB;
+                    $sitemap .= '  </url>' . self::LB;
                     $this->_num_entries ++;
                 }
             }
@@ -515,10 +488,10 @@ class SitemapXML
 
         // Append the header and footer to the sitemap body
         if ($sitemap != '') {
-            $sitemap = '<?xml version="1.0" encoding="UTF-8" ?>' . LB
-                     .  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . LB
+            $sitemap = '<?xml version="1.0" encoding="UTF-8" ?>' . self::LB
+                     .  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . self::LB
                      . $sitemap
-                     . '</urlset>' . LB;
+                     . '</urlset>' . self::LB;
         } else {
             return TRUE;
         }
@@ -534,6 +507,7 @@ class SitemapXML
 
         // Write the sitemap into file(s)
         list($filename, $mobile_filename) = $this->getFileNames();
+
         if ($filename != '') {
             if (!$this->_write($filename, $sitemap)) {
                 return FALSE;
@@ -549,7 +523,7 @@ class SitemapXML
             );
             $sitemap = str_replace(
                 '  </url>',
-                '    <mobile:mobile>' . LB . '  </url>',
+                '    <mobile:mobile>' . self::LB . '  </url>',
                 $sitemap
             );
 
