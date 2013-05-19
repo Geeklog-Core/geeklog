@@ -7456,7 +7456,7 @@ function COM_getLanguageIdForObject($id)
             if (isset($_CONF['language_files'])) {
                 if (array_key_exists($lang_id, $_CONF['language_files']) === false) {
                     // that looks like a misconfigured $_CONF['language_files'] array
-                    COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
+                    COM_errorLog('Language "' . $lang_id . '" not found in $_CONF[\'language_files\'] array!');
         
                     $lang_id = ''; // not much we can do here ...
                 }
