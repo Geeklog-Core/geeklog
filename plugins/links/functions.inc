@@ -216,26 +216,32 @@ function plugin_autotags_links($op, $content = '', $autotag = '')
     } else if ($op == 'parse') {
         $lid = COM_applyFilter($autotag['parm1']);
         if (! empty($lid)) {
-            $url = COM_buildUrl($_CONF['site_url']
-                            . '/links/portal.php?what=link&amp;item=' . $lid);
-            if (empty($autotag['parm2'])) {
-                $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
-                list($siteurl, $linktext) = DB_fetchArray($result);
-                $linktext = stripslashes($linktext);
-            } else {
-                $linktext = $autotag['parm2'];
-                $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
+            $result = DB_query("SELECT COUNT(*) AS count "
+                . "FROM {$_TABLES['links']} "
+                . "WHERE lid = '$lid'" . COM_getPermSql('AND'));
+            $A = DB_fetchArray($result);
+            if ($A['count'] > 0) {
+                $url = COM_buildUrl($_CONF['site_url']
+                                . '/links/portal.php?what=link&amp;item=' . $lid);
+                if (empty($autotag['parm2'])) {
+                    $result = DB_query("SELECT url, title FROM {$_TABLES['links']} WHERE lid = '$lid'");
+                    list($siteurl, $linktext) = DB_fetchArray($result);
+                    $linktext = stripslashes($linktext);
+                } else {
+                    $linktext = $autotag['parm2'];
+                    $siteurl = DB_getItem($_TABLES['links'], 'url', "lid = '$lid'");
+                }
+                $class = 'ext-link';
+                if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
+                    $class .= '-rtl';
+                }
+                $attr = array(
+                            'title' => $siteurl,
+                            'class' => $class
+                             );
+                $link = COM_createLink($linktext, $url, $attr);
+                $content = str_replace($autotag['tagstr'], $link, $content);
             }
-            $class = 'ext-link';
-            if ((!empty($LANG_DIRECTION)) && ($LANG_DIRECTION == 'rtl')) {
-                $class .= '-rtl';
-            }
-            $attr = array(
-                        'title' => $siteurl,
-                        'class' => $class
-                         );
-            $link = COM_createLink($linktext, $url, $attr);
-            $content = str_replace($autotag['tagstr'], $link, $content);
         }
 
         return $content;
