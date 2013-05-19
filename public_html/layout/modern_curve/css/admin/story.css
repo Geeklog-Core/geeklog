@@ -137,3 +137,10 @@ div#preview div.storytext {
   padding: 0;
   border-bottom: none;
 }
+
+/* Story Stats */
+span.story_stats {
+  display: inline-block;
+  float: {left};
+  margin-{right}: 2em;
+}

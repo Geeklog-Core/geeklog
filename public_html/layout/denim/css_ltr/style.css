@@ -2683,6 +2683,13 @@ b.status_black {
   border-bottom: none;
 }
 
+/* Story Stats */
+.story_stats {
+  display: inline-block;
+  float: left; /* rtl */
+  margin-right: 2em; /* rtl */
+}
+
 /*--------------------------------------
   Topic Editor
 --------------------------------------*/

@@ -156,17 +156,13 @@
         {image_form_elements}
       </dd>
 
-      <dt>{lang_hits}</dt>
-      <dd>{story_hits}</dd>
-
-      <dt>{lang_comments}</dt>
-      <dd>{story_comments}</dd>
-
-      <dt>{lang_trackbacks}</dt>
-      <dd>{story_trackbacks}</dd>
-
-      <dt>{lang_emails}</dt>
-      <dd>{story_emails}</dd>
+      <dt>{lang_story_stats}</dt>
+      <dd><div class="clearfix">
+            <span class="story_stats">{lang_hits}: {story_hits}</span>
+            <span class="story_stats">{lang_comments}: {story_comments}</span>
+            <span class="story_stats">{lang_trackbacks}: {story_trackbacks}</span>
+            <span class="story_stats">{lang_emails}: {story_emails}</span>
+          </div></dd>
     </dl>
 
     <fieldset>

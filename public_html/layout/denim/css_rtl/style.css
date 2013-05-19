@@ -2389,6 +2389,7 @@ dd#profile-user_photo {
   padding: 0.5em 2em;
 }
 
+
 /*--------------------------------------
   Admin Top Menu Style
 --------------------------------------*/
@@ -2681,6 +2682,13 @@ b.status_black {
   padding: 1em 0;
   border-top: 1px solid #CCC;
   border-bottom: none;
+}
+
+/* Story Stats */
+.story_stats {
+  display: inline-block;
+  float: right; /* rtl */
+  margin-left: 2em; /* rtl */
 }
 
 /*--------------------------------------
