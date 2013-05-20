@@ -75,7 +75,7 @@ $display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
 $files = array();
 if ($dir = @opendir($_CONF['path_log'])) {
     while(($file = readdir($dir)) !== false) {
-        if (is_file($_CONF['path_log'] . $file) && $file != 'index.html' ) {
+        if (is_file($_CONF['path_log'] . $file) && preg_match('/\.log$/i', $file)) {
             array_push($files,$file);
         }
     }
