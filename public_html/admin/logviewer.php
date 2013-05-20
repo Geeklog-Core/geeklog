@@ -55,7 +55,7 @@ if (isset($_GET['log'])) {
     $log = '';
 }
 
-$log = preg_replace('/[^a-z0-9\.\-_]/', '', $log);
+$log = COM_sanitizeFilename($log, true);
 if (empty($log)) {
     $log = 'error.log';
 }
