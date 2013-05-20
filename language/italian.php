@@ -674,6 +674,18 @@ $LANG12 = array(
 ###############################################################################
 
 ###############################################################################
+# admin/logviewer.php
+
+$LANG_LOGVIEW = array(
+    'log_viewer' => 'Log Viewer',
+    'info' => 'Geeklog log file administration.',
+    'logs' => 'Logs',
+    'view' => 'View Log File',
+    'clear' => 'Clear Log File',
+    'log_file' => 'Log File'
+);
+
+###############################################################################
 # admin/auth.inc.php
 
 $LANG20 = array(
@@ -917,7 +929,8 @@ $LANG27 = array(
     52 => 'Story',
     53 => 'Image',
     'breadcrumb_separator' => '>',
-    'breadcrumb_root' => 'Home'
+    'breadcrumb_root' => 'Home',
+    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.'
 );
 
 ###############################################################################
