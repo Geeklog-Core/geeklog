@@ -47,15 +47,18 @@ if (!SEC_inGroup('Root')) {
     exit;
 }
 
-if ( isset($_GET['log']) ) {
+if (isset($_GET['log'])) {
     $log = COM_applyFilter($_GET['log']);
-} else if ( isset( $_POST['log']) ) {
+} else if (isset($_POST['log'])) {
     $log = COM_applyFilter($_POST['log']);
 } else {
     $log = '';
 }
 
 $log = preg_replace('/[^a-z0-9\.\-_]/', '', $log);
+if (empty($log)) {
+    $log = 'error.log';
+}
 
 $display = '';
 
@@ -82,9 +85,6 @@ if ($dir = @opendir($_CONF['path_log'])) {
     closedir($dir);
 }
 $display .= '<select name="log">';
-if (empty($log)) {
-    $log = $files[0];
-}
 
 for ($i = 0; $i < count($files); $i++) {
     $display .= '<option value="' . $files[$i] . '"';
