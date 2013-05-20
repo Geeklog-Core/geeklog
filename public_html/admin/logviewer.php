@@ -2,7 +2,7 @@
 // +--------------------------------------------------------------------------+
 // | Geeklog 2.0                                                              |
 // +--------------------------------------------------------------------------+
-// | logview.php                                                              |
+// | logviewer.php                                                            |
 // |                                                                          |
 // | Geeklog log viewer.                                                      |
 // +--------------------------------------------------------------------------+
@@ -67,10 +67,10 @@ $menu_arr = array (
 $display  = COM_startBlock ($LANG_LOGVIEW['logview'],'', COM_getBlockTemplate ('_admin_block', 'header'));
 $display .= ADMIN_createMenu( $menu_arr,
                              $LANG_LOGVIEW['info'],
-                             $_CONF['layout_url'] . '/images/icons/logview.'. $_IMAGE_TYPE
+                             $_CONF['layout_url'] . '/images/icons/log_viewer.'. $_IMAGE_TYPE
 );
 
-$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logview.php">';
+$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php">';
 $display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
 $files = array();
 if ($dir = @opendir($_CONF['path_log'])) {
