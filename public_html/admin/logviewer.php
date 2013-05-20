@@ -70,7 +70,7 @@ $display .= ADMIN_createMenu( $menu_arr,
                              $_CONF['layout_url'] . '/images/icons/log_viewer.'. $_IMAGE_TYPE
 );
 
-$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php">';
+$display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.php"><div>';
 $display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
 $files = array();
 if ($dir = @opendir($_CONF['path_log'])) {
@@ -98,7 +98,7 @@ $display .= '</select>&nbsp;&nbsp;&nbsp;&nbsp;';
 $display .= '<input type="submit" name="viewlog" value="'.$LANG_LOGVIEW['view'].'"'.XHTML.'>';
 $display .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 $display .= '<input type="submit" name="clearlog" value="'.$LANG_LOGVIEW['clear'].'"'.XHTML.'>';
-$display .= '</form>';
+$display .= '</div></form>';
 
 if ( isset($_POST['clearlog']) ) {
     @unlink($_CONF['path_log'] . $log);
@@ -113,7 +113,7 @@ if ( isset($_POST['viewlog']) ) {
     $display .= '<div style="margin:10px 0 5px;border-bottom:1px solid #cccccc;"></div>';
     $display .= '<div style="overflow:scroll; height:500px;"><pre>';
     $display .= htmlentities(implode('', file($_CONF['path_log'] . $log)),ENT_NOQUOTES,COM_getEncodingt());
-    $display .= "</pre></div>";
+    $display .= '</pre></div>';
 }
 
 $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));

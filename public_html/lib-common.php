@@ -7588,6 +7588,7 @@ function phpblock_switch_language()
     {
         $retval .= '<form name="change" action="'. $_CONF['site_url']
                 . '/switchlang.php" method="get">' . LB;
+        $retval .= '<div>' . LB;
         $retval .= '<input type="hidden" name="oldlang" value="' . $langId
                 . '"' . XHTML . '>' . LB;
 
@@ -7606,6 +7607,7 @@ function phpblock_switch_language()
                     . $value . '</option>' . LB;
         }
         $retval .= '</select>' . LB;
+        $retval .= '</div>' . LB;
         $retval .= '</form>' . LB;
     }
 
