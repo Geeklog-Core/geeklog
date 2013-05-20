@@ -8537,7 +8537,7 @@ function COM_getEncodingt() {
 
 	static $encoding = null;
 
-    $valid_charsets = array('iso-8859-1','iso-8859-15','utf-8','cp866','cp1251','cp1252','koi8-r','big5','gb2312','big5-hkscs','shift_jis sjis','euc-jp');
+    $valid_charsets = array('iso-8859-1','iso-8859-15','utf-8','cp866','cp1251','cp1252','koi8-r','big5','gb2312','big5-hkscs','shift_jis','sjis','euc-jp');
 
 	if ($encoding === null) {
 		if (isset($LANG_CHARSET)) {
