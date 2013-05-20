@@ -64,7 +64,7 @@ $menu_arr = array (
           'text' => $LANG_ADMIN['admin_home'])
 );
 
-$display  = COM_startBlock ($LANG_LOGVIEW['logview'],'', COM_getBlockTemplate ('_admin_block', 'header'));
+$display  = COM_startBlock ($LANG_LOGVIEW['log_viewer'],'', COM_getBlockTemplate ('_admin_block', 'header'));
 $display .= ADMIN_createMenu( $menu_arr,
                              $LANG_LOGVIEW['info'],
                              $_CONF['layout_url'] . '/images/icons/log_viewer.'. $_IMAGE_TYPE
