@@ -1248,11 +1248,7 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
     if ($op == 'tagname' ) {
         return 'story';
     } elseif ($op == 'permission' || $op == 'nopermission') {
-        if ($op == 'permission') {
-            $flag = true;
-        } else {
-            $flag = false;
-        }
+        $flag = ($op == 'permission');
         $tagnames = array();
 
         if (isset($_GROUPS['Story Admin'])) {
@@ -1262,8 +1258,10 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
                                    "grp_name = 'Story Admin'");
         }
         $owner_id = SEC_getDefaultRootUser();
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_story'][0], $_CONF['autotag_permissions_story'][1], $_CONF['autotag_permissions_story'][2], $_CONF['autotag_permissions_story'][3]) == $flag) {
+        $p = 'autotag_permissions_story';
+        if (COM_getPermTag($owner_id, $group_id,
+            $_CONF[$p][0], $_CONF[$p][1],
+            $_CONF[$p][2], $_CONF[$p][3]) == $flag) {
             $tagnames[] = 'story';
         }
         
@@ -1276,8 +1274,11 @@ function plugin_autotags_story($op, $content = '', $autotag = '')
             );        
     } else {
         $sid = COM_applyFilter($autotag['parm1']);
+        $sid = COM_switchLanguageIdForObject($sid);
         if (! empty($sid)) {
-            $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$sid'" . COM_getPermSql('AND'));
+            $result = DB_query("SELECT COUNT(*) AS count "
+                . "FROM {$_TABLES['stories']} "
+                . "WHERE sid = '$sid'" . COM_getPermSql('AND'));
             $A = DB_fetchArray($result);
             if ($A['count'] > 0) {
 

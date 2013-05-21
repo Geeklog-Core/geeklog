@@ -7648,6 +7648,28 @@ function COM_switchLocaleSettings()
 }
 
 /**
+* Switch the language ID of the object id
+*
+* @param    string  $id  object id that the language ID is attached to the end
+* @return   string       id that is overwritten with the current language ID
+*
+*/
+function COM_switchLanguageIdForObject($id)
+{
+    global $_CONF;
+
+    if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+        $new_id = COM_getLanguageId();
+        $old_id = COM_getLanguageIdForObject($id);
+        if (!empty($new_id) && !empty($old_id)) {
+            $id = substr_replace($id, $new_id, -strlen($old_id));
+        }
+    }
+
+    return $id;
+}
+
+/**
 * Get the name of the current language, minus the character set
 *
 * Strips the character set from $_CONF['language'].

@@ -1221,14 +1221,10 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
 
     static $recursive = array();
 
-    if ($op == 'tagname' ) {
+    if ($op == 'tagname') {
         return array('staticpage', 'staticpage_content');
     } elseif ($op == 'permission' || $op == 'nopermission') {
-        if ($op == 'permission') {
-            $flag = true;
-        } else {
-            $flag = false;
-        }
+        $flag = ($op == 'permission');
         $tagnames = array();
 
         if (isset($_GROUPS['Static Page Admin'])) {
@@ -1237,12 +1233,17 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
             $group_id = DB_getItem($_TABLES['groups'], 'grp_id',
                                    "grp_name = 'Static Page Admin'");
         }
-        $owner_id = SEC_getDefaultRootUser();          
-
-        if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage_content'][0], $_SP_CONF['autotag_permissions_staticpage_content'][1], $_SP_CONF['autotag_permissions_staticpage_content'][2], $_SP_CONF['autotag_permissions_staticpage_content'][3]) == $flag) {
+        $owner_id = SEC_getDefaultRootUser();
+        $p = 'autotag_permissions_staticpage_content';
+        if (COM_getPermTag($owner_id, $group_id,
+            $_SP_CONF[$p][0], $_SP_CONF[$p][1],
+            $_SP_CONF[$p][2], $_SP_CONF[$p][3]) == $flag) {
             $tagnames[] = 'staticpage_content';
         }
-        if (COM_getPermTag($owner_id, $group_id, $_SP_CONF['autotag_permissions_staticpage'][0], $_SP_CONF['autotag_permissions_staticpage'][1], $_SP_CONF['autotag_permissions_staticpage'][2], $_SP_CONF['autotag_permissions_staticpage'][3]) == $flag) {
+        $p = 'autotag_permissions_staticpage';
+        if (COM_getPermTag($owner_id, $group_id,
+            $_SP_CONF[$p][0], $_SP_CONF[$p][1],
+            $_SP_CONF[$p][2], $_SP_CONF[$p][3]) == $flag) {
             $tagnames[] = 'staticpage';
         }
         
@@ -1257,6 +1258,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
     } elseif ($op == 'parse') {
         if ($autotag['tag'] == 'staticpage') {
             $sp_id = COM_applyFilter($autotag['parm1']);
+            $sp_id = COM_switchLanguageIdForObject($sp_id);
             if (! empty($sp_id)) {
                 $result = DB_query("SELECT COUNT(*) AS count "
                     . "FROM {$_TABLES['staticpage']} "
@@ -1277,6 +1279,7 @@ function plugin_autotags_staticpages($op, $content = '', $autotag = '')
             }
         } elseif ($autotag['tag'] == 'staticpage_content') {
             $sp_id = COM_applyFilter($autotag['parm1']);
+            $sp_id = COM_switchLanguageIdForObject($sp_id);
             if (! empty($sp_id)) {
                 $result = DB_query("SELECT COUNT(*) AS count "
                     . "FROM {$_TABLES['staticpage']} "
