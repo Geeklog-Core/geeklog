@@ -1397,7 +1397,9 @@ function plugin_showstats_calendar ($showsitestats)
         }
         $display .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
-        $display .= COM_showMessageText($LANG_CAL_1[49], $LANG_CAL_1[47]);
+        $display .= COM_startBlock($LANG_CAL_1[47]);
+        $display .= $LANG_CAL_1[49];
+        $display .= COM_endBlock();
     }
 
     return $display;

@@ -738,7 +738,9 @@ function plugin_showstats_staticpages($showsitestats)
         }
         $retval .= ADMIN_simpleList("", $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_showMessageText($LANG_STATIC['stats_no_hits'], $LANG_STATIC['stats_headline']);
+        $retval .= COM_startBlock($LANG_STATIC['stats_headline']);
+        $retval .= $LANG_STATIC['stats_no_hits'];
+        $retval .= COM_endBlock();
     }
 
     return $retval;

@@ -250,7 +250,9 @@ function plugin_showstats_polls ($showsitestats)
         }
         $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_showMessageText($LANG_POLLS['stats_none'], $LANG_POLLS['stats_top10']);
+        $retval .= COM_startBlock($LANG_POLLS['stats_top10']);
+        $retval .= $LANG_POLLS['stats_none'];
+        $retval .= COM_endBlock();
     }
 
     return $retval;

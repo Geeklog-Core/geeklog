@@ -413,7 +413,9 @@ case 'edit':
             $result = DB_query ("SELECT * FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})");
             if (DB_numRows ($result) == 1) {
                 $A = DB_fetchArray ($result);
-                $display .= COM_showMessageText(editpersonalevent($A), $LANG_CAL_2[38]);
+                $display .= COM_startBlock ($LANG_CAL_2[38])
+                         . editpersonalevent ($A)
+                         . COM_endBlock ();
                 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_CAL_2[38]));
             } else {
                 $display = COM_refresh ($_CONF['site_url'] . '/index.php');

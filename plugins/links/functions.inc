@@ -338,7 +338,9 @@ function plugin_showstats_links ($showsitestats)
         }
         $retval .= ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     } else {
-        $retval .= COM_showMessageText($LANG_LINKS_STATS['stats_no_hits'], $LANG_LINKS_STATS['stats_headline']);
+        $retval .= COM_startBlock($LANG_LINKS_STATS['stats_headline']);
+        $retval .= $LANG_LINKS_STATS['stats_no_hits'];
+        $retval .= COM_endBlock();
     }
 
     return $retval;
