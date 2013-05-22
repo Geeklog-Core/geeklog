@@ -199,7 +199,7 @@ function phpblock_calendar( $help='', $title='' )
                     if( !$headline ) {
                         if($z == 2) {
                             if( $numRows > 0 ) {
-                                $retval .= '<p><b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
+                                $retval .= '<b>' . $LANG_CAL_1[23] . '</b><br' . XHTML . '>';
                             }
                         } else {
                             if( $totalrows > 0 ) {
