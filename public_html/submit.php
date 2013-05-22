@@ -70,7 +70,9 @@ function submissionform($type = 'story', $mode = '')
             $retval .= SEC_loginRequiredForm();
             return $retval;
         } else {
-            $retval .= COM_showMessageText($LANG12[9], $LANG12[19]);
+            $retval .= COM_startBlock($LANG12[19])
+                    . $LANG12[9]
+                    . COM_endBlock();
 
             if ((strlen($type) > 0) && ($type <> 'story')) {
                 $formresult = PLG_showSubmitForm($type);
@@ -105,7 +107,9 @@ function submitstory()
     {
         // preview
         $story->loadSubmission();
-        $retval .= COM_showMessageText(STORY_renderArticle($story, 'p'), $LANG12[32]);
+        $retval .= COM_startBlock($LANG12[32])
+                . STORY_renderArticle ($story, 'p')
+                . COM_endBlock();
     } else {
         $story->initSubmission();
     }
