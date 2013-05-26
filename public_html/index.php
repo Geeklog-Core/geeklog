@@ -220,12 +220,22 @@ if (empty ($archivetid)) {
 } else {
     $asql .= ' OR statuscode = ' . STORY_ARCHIVE_ON_EXPIRE . ") AND ta.tid != '$archivetid'";
 }
-$expiresql = DB_query ($asql);
+$expiresql = DB_query($asql);
 while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
         if (!empty ($archivetid) ) {
             COM_errorLog("Archive Story: $sid, Topic: $archivetid, Title: $title, Expired: $expire");
-            DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid', frontpage = '0', featured = '0' WHERE sid='{$sid}'");
+
+            // Delete all topic references to story except topic default
+            $asql = "DELETE FROM {$_TABLES['topic_assignments']} WHERE type = 'article' AND id = '{$sid}' AND tdefault = 0";
+            DB_query ($asql);
+            
+            // Now move over story to archive topic
+            $asql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta  
+                    SET ta.tid = '$archivetid', s.frontpage = '0', s.featured = '0' 
+                    WHERE s.sid='{$sid}' AND ta.type = 'article' AND ta.id = s.sid AND ta.tdefault = 1";
+            DB_query ($asql);
+            
         }
     } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLog("Delete Story and comments: $sid, Topic: $expiretopic, Title: $title, Expired: $expire");

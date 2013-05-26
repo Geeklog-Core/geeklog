@@ -468,8 +468,13 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 // $tid is the archive topic
                 // - if it wasn't already, mark all its stories "archived" now
                 if ($archive_tid != $tid) {
-                    DB_query ("UPDATE {$_TABLES['stories']} SET featured = 0, frontpage = 0, statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " WHERE tid = '$tid'");
-                    DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+                    $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta 
+                            SET s.featured = 0, s.frontpage = 0, s.statuscode = " . STORY_ARCHIVE_ON_EXPIRE . "
+                            WHERE ta.type = 'article' AND ta.tid = '$tid' AND ta.id = s.sid";
+                    DB_query($sql);
+                    
+                    $sql = "UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1";
+                    DB_query($sql);
                 }
                 
                 // Set hidden and inherit to false since archive topic now
@@ -479,8 +484,13 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 // $tid is not the archive topic
                 // - if it was until now, reset the "archived" status of its stories
                 if ($archive_tid == $tid) {
-                    DB_query ("UPDATE {$_TABLES['stories']} SET statuscode = 0 WHERE tid = '$tid'");
-                    DB_query ("UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1");
+                    $sql = "UPDATE {$_TABLES['stories']} s, {$_TABLES['topic_assignments']} ta
+                            SET s.statuscode = 0
+                            WHERE ta.type = 'article' AND ta.tid = '$tid' AND ta.id = s.sid";
+                    DB_query($sql);
+                    
+                    $sql = "UPDATE {$_TABLES['topics']} SET archive_flag = 0 WHERE archive_flag = 1";
+                    DB_query($sql);
                 }
             }
             
