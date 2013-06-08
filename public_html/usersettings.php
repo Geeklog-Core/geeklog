@@ -636,7 +636,7 @@ function editpreferences()
             $B = DB_fetchArray ($query);
             $selauthors .= '<option value="' . $B['uid'] . '"';
             if (in_array (sprintf ('%d', $B['uid']), $authors)) {
-               $selauthors .= ' selected';
+               $selauthors .= ' selected="selected"';
             }
             $selauthors .= '>' . COM_getDisplayName ($B['uid'], $B['username'],
                                                      $B['fullname'])
