@@ -1,7 +1,7 @@
 
 <!-- breadcrumbs/breadcrumb_child.thtml { -->
 
-<span itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<span{!if microdata} itemprop="child" itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
     {breadcrumb}
 </span>
 
