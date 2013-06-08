@@ -266,7 +266,8 @@ select {
   line-height: 28px;
 }
 
-select.multiple {
+select.multiple,
+select[multiple="multiple"] {
   height: auto;
 }
 
