@@ -199,6 +199,10 @@ $_CONF_VALIDATE['Core']['onlyrootfeatures'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['aftersave_story'] = array(
     'rule' => array('inList', array('admin', 'home', 'list', 'item'), true)
 );
+$_CONF_VALIDATE['Core']['related_topics'] = array(
+    'rule' => array('inList', array(0, 1, 2), false)
+);
+$_CONF_VALIDATE['Core']['related_topics_max'] = array('rule' => 'numeric');
 
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');

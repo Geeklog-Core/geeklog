@@ -1,5 +1,4 @@
-
-<!-- storytext.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="storytext">
   <h2 class="story_title">{start_storylink_anchortag}{story_title}{end_storylink_anchortag}</h2>
@@ -35,6 +34,8 @@
   <div class="story_introtext">
     {story_text_no_br}
   </div>
+  
+  {related_topics}
 
   <ul class="navi">
     <li>{page_selector}</li>
@@ -49,4 +50,12 @@
   </ul>
 </div>
 
-<!-- } storytext.thtml -->
+{# To display topics the article belongs to #}
+<!-- BEGIN related-topics -->
+<span class="related-topics">{lang_topics}{topic}</li>
+<!-- END related-topics -->
+<!-- BEGIN topic -->
+<a href="{option_url}">{option_label}</a> 
+<!-- END topic -->
+
+{# end {templatelocation} #}

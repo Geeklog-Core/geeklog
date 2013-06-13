@@ -1736,6 +1736,75 @@ function plugin_whatsnewsupported_staticpages()
 }
 
 /**
+* Return list of Static Pages for the Related Items block
+*
+* @param    array   $tids list of topic ids
+* @param    int     $max  maximum number of items to return
+* @param    int     $trim max length of text
+* @return   array   array of links to related staticpages with unix timestamp as key
+*
+*/
+function plugin_getrelateditems_staticpages($tids, $max, $trim)
+{
+    global $_CONF, $_TABLES, $_SP_CONF;
+
+    $newstaticpages = array();
+    
+    // Use setting from What's New block here since similar settings needed
+    if ($_SP_CONF['hidenewstaticpages'] == 'modified') {
+        $datecolumn = 'modified';
+    } else {
+        $datecolumn = 'created';
+    }
+    $extra_sql = "";
+    if ($_SP_CONF['includecenterblocks'] == 0) {
+        $extra_sql =' AND sp_centerblock = 0';
+    }
+    if ($_SP_CONF['includephp'] == 0) {
+        $extra_sql .=' AND sp_php = 0';
+    }
+    
+    $sql = "SELECT sp_id, sp_title, UNIX_TIMESTAMP({$datecolumn}) sp_date 
+        FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta   
+        WHERE ta.type = 'staticpages' AND ta.id = sp_id AND (ta.tid IN ('" . implode( "','", $tids ) . "')) 
+        AND sp_content IS NOT NULL AND (draft_flag = 0) AND (template_flag = 0)  
+        {$extra_sql} " . COM_getPermSQL('AND') . " 
+        GROUP BY sp_id ORDER BY {$datecolumn} DESC LIMIT {$max}";
+
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
+    if ($nrows > 0) {
+        $newstaticpages = array();
+
+        for ($x = 0; $x < $nrows; $x++) {
+            $A = DB_fetchArray($result);
+
+            $url = COM_buildUrl($_CONF['site_url']
+                        . '/staticpages/index.php?page=' . $A['sp_id']);
+
+            $title = COM_undoSpecialChars(stripslashes( $A['sp_title']));
+            if ($trim > 0) {
+                $titletouse = COM_truncate($title, $trim, '...');
+            } else {
+                $titletouse = $title;
+            }
+            if ($title != $titletouse) {
+                $attr = array('title' => htmlspecialchars($title));
+            } else {
+                $attr = array();
+            }
+            $astaticpage = str_replace('$', '&#36;', $titletouse);
+            $astaticpage = str_replace(' ', '&nbsp;', $astaticpage);
+
+            $newstaticpages[$A['sp_date']] = COM_createLink($astaticpage, $url, $attr);
+        }
+    }
+
+    return $newstaticpages;
+}
+
+/**
 * Return new Static Pages for the What's New block
 *
 * @return   string  HTML list of new staticpages

@@ -910,7 +910,7 @@ $LANG27 = array(
     33 => 'Inherit',
     34 => 'Items of child topic are inherited',
     35 => 'Hidden', 
-    36 => 'Topic will be hidden and cannot be viewed directly, only inherited', 
+    36 => 'Topic will be hidden in the Topic Block until it\'s parent topic is selected',  
     37 => 'Root',
     38 => 'All',
     39 => 'Homepage Only', 
@@ -930,7 +930,11 @@ $LANG27 = array(
     53 => 'Image',
     'breadcrumb_separator' => '>', 
     'breadcrumb_root' => 'Home',
-    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_topic' => '[topic:id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
+    'no_related_items' => 'No related items found.', 
+    'topics:' => 'Topics:'
 );
 
 ###############################################################################
@@ -1958,6 +1962,8 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => "Hide Main Page Navigation?",
     'onlyrootfeatures' => "Only Root can Feature?",
     'aftersave_story' => "After Saving Story",
+    'related_topics' => "Related Topics",
+    'related_topics_max' => "Max Related Topics to Display",    
     'aftersave_user' => "After Saving User",
     'show_right_blocks' => "Always Show Right Blocks?",
     'showfirstasfeatured' => "Show First Story as Featured?",
@@ -2049,6 +2055,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => "Default Sort Order", 
     'autotag_permissions_story' => '[story: ] Permissions', 
     'autotag_permissions_user' => '[user: ] Permissions',
+    'autotag_permissions_topic' => '[topic: ] Permissions',
+    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
+    'autotag_permissions_related_items' => '[related_items: ] Permissions',    
     'multiple_breadcrumbs' => "Multiple Breadcrumbs",
     'disable_breadcrumbs_topics' => "Disable Topic Breadcrumbs",
     'disable_breadcrumbs_articles' => "Disable Article Breadcrumbs",
@@ -2197,7 +2206,8 @@ $LANG_configselects['Core'] = array(
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'), 
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'), 
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 'articletopic')
 );
 
 ################################################################################

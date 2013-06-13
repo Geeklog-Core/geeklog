@@ -170,7 +170,7 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
 {
     global $_CONF, $_TABLES, $LANG27, $_GROUPS;
     if($op == 'tagname') {
-        return 'topic';
+        return array('topic', 'related_topics', 'related_items');
     } 
 
     elseif (($op == 'permission') || ($op == 'nopermission')) {
@@ -192,31 +192,139 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
             $tagnames[] = 'topic';
         }
 
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_topics'][0], $_CONF['autotag_permissions_related_topics'][1], $_CONF['autotag_permissions_related_topics'][2], $_CONF['autotag_permissions_related_topics'][3]) == $flag) {
+            $tagnames[] = 'related_topics';
+        }
+        
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_items'][0], $_CONF['autotag_permissions_related_items'][1], $_CONF['autotag_permissions_related_items'][2], $_CONF['autotag_permissions_related_items'][3]) == $flag) {
+            $tagnames[] = 'related_items';
+        }        
+
         if (count($tagnames) > 0) {
             return $tagnames;
         }
-    }
-
-    elseif ($op == 'description') {
-        return array ('topic' => $LANG27['autotag_desc_topic']);
-    }
-
-    elseif ($op == 'parse') {
-        $tid = COM_applyFilter($autotag['parm1']);
-        if (!empty($tid) && (SEC_hasTopicAccess($tid) > 0)) {
-            $tid = DB_escapeString($tid);
-            $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['topics']} WHERE tid = '$tid'";
-            $result = DB_query($sql);
-            $A = DB_fetchArray($result);
-            if ($A['count'] == 1) {
-                $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
-                $linktext = $autotag['parm2'];
-                if (empty($linktext)) {
-                    $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));
+    } elseif ($op == 'description') {
+        return array (
+            'topic' => $LANG27['autotag_desc_topic'],
+            'related_topics' => $LANG27['autotag_desc_related_topics'], 
+            'related_items' => $LANG27['autotag_desc_related_items']
+            );  
+    } elseif ($op == 'parse') {
+		if ( $autotag['tag'] != 'topic' && $autotag['tag'] != 'related_topics' && $autotag['tag'] != 'related_items') {
+            return $content;
+		}
+        
+        if ($autotag['tag'] == 'topic') {
+            $tid = COM_applyFilter($autotag['parm1']);
+            if (!empty($tid) && (SEC_hasTopicAccess($tid) > 0)) {
+                $tid = DB_escapeString($tid);
+                $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['topics']} WHERE tid = '$tid'";
+                $result = DB_query($sql);
+                $A = DB_fetchArray($result);
+                if ($A['count'] == 1) {
+                    $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
+                    $linktext = $autotag['parm2'];
+                    if (empty($linktext)) {
+                        $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));
+                    }
+                    $link = COM_createLink($linktext, $url);
+                    $content = str_replace($autotag['tagstr'], $link, $content);
                 }
-                $link = COM_createLink($linktext, $url);
-                $content = str_replace($autotag['tagstr'], $link, $content);
             }
+        } elseif ($autotag['tag'] == 'related_topics') {
+            $id = COM_applyFilter($autotag['parm1']);
+            $type = '';
+            $max = $_CONF['related_topics_max']; // Article Default
+            $tids = array();
+            
+            $px = explode (' ', trim ($autotag['parm2']));
+            if (is_array ($px)) {
+                foreach ($px as $part) {
+                    if (substr ($part, 0, 5) == 'type:') {
+                        $a = explode (':', $part);
+                        $type = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 4) == 'max:') {
+                        $a = explode (':', $part);
+                        $max = $a[1];
+                        $skip++;
+                    } elseif (substr ($part,0, 6) == 'topic:') {
+                        $a = explode(':', $part);
+                        $tids[] = $a[1]; // Add each topic when found
+                        $skip++;
+                    } else {
+                            break;
+                    }
+                }
+            }             
+            
+            $related_topics = '';
+            if (!empty($type) AND !empty($id)) {
+                // Return topics of object
+                $related_topics = TOPIC_relatedTopics($type, $id, $max);
+            } elseif (!empty($tids)) {
+                // Since list of topics specified add id to topic list (since really a topic)
+                if (!empty($id)) {
+                    $tids[] = $id;
+                }
+                $related_topics = TOPIC_relatedTopics('', '', $max, $tids);
+            }
+
+            if (!empty($related_topics)) {
+                $content = str_replace($autotag['tagstr'], $related_topics, $content);
+            }
+        } elseif ($autotag['tag'] == 'related_items') {
+            $id = COM_applyFilter($autotag['parm1']);
+            $type = '';
+            $max = $_CONF['related_topics_max']; // Article Default
+            $trim = 0;
+            $include_types = array();
+            $tids = array();
+            
+            $px = explode (' ', trim ($autotag['parm2']));
+            if (is_array ($px)) {
+                foreach ($px as $part) {
+                    if (substr ($part, 0, 5) == 'type:') {
+                        $a = explode (':', $part);
+                        $type = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 4) == 'max:') {
+                        $a = explode (':', $part);
+                        $max = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 5) == 'trim:') {
+                        $a = explode (':', $part);
+                        $trim = $a[1];
+                        $skip++;
+                    } elseif (substr ($part,0, 6) == 'topic:') {
+                        $a = explode(':', $part);
+                        $tids[] = $a[1]; // Add each topic when found
+                        $skip++;
+                    } elseif (substr ($part,0, 8) == 'include:') {
+                        $a = explode(':', $part);
+                        $include_types[] = $a[1]; // Add each type when found
+                        $skip++;                        
+                    } else {
+                            break;
+                    }
+                }
+            }             
+            
+            $related_items = '';
+            if (!empty($type) AND !empty($id)) {
+                // Return topics of object
+                $related_items = TOPIC_relatedItems($type, $id, $include_types, $max, $trim, $tids);
+            } elseif (!empty($tids)) {
+                // Since list of topics specified add id to topic list (since really a topic)
+                if (!empty($id)) {
+                    $tids[] = $id;
+                }
+                $related_items = TOPIC_relatedItems('', '', $include_types, $max, $trim, $tids);
+            }
+
+            if (!empty($related_items)) {
+                $content = str_replace($autotag['tagstr'], $related_items, $content);
+            }            
         }
 
         return $content;
@@ -1515,6 +1623,201 @@ function TOPIC_breadcrumbs($type, $id)
         
         return $breadcrumbs_output;
     }
+}
+
+/**
+* Checks to see if the topic id given is in the current topic path (bases on current users's access). 
+*
+* @param    string     $tid         Topic Id to check if in parent path  
+* @param    string     $current_tid Current Topic Id (the path to check). If blank then assume actual current topic
+* @return   boolean                 False if not found or no access or if no current topic
+*
+*/
+function TOPIC_inPath($tid, $current_tid = '')
+{
+    global $_TOPICS, $topic;
+    
+    $found = false;
+    
+    if ($current_tid == '') {
+        $current_tid = $topic;    
+    }
+    
+    if ($current_tid != '') {
+        // Let's start at the bottom and work I way up
+        $check_tid = $current_tid;
+        while ($found == false) {
+            if ($check_tid != TOPIC_ROOT) {
+                $index = TOPIC_getIndex($check_tid);
+                if ($_TOPICS[$index]['access'] > 0 && $index != 0) {
+                    if ($check_tid == $tid) {
+                        $found = true;    
+                    }
+                } else {
+                    break; // break on no access or not found
+                }
+                $check_tid = $_TOPICS[$index]['parent_id'];
+            } else {
+                break; // break on root
+            }
+        }
+    }
+    
+    return $found;
+}
+
+/**
+* This function creates an html list of topics the object belongs too or 
+* creates a similar list based on topics passed to it
+*
+* @param    string          $type           Type of object to display access for
+* @param    string          $id             Id of onject
+* @param    integer         $max            Max number of items returned
+* @param    string/array    $tids           Topics Ids to use instead of retrieving from db
+* @return   HTML string
+*
+*/
+function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
+{
+    global $_CONF, $LANG27, $_TABLES;
+
+    $retval = '';
+    
+    if ($max < 1) {
+        $max = 1;
+    }
+    
+    if (!is_array($tids)) {
+        $tids = array($tids);   
+    }  
+    
+    // if topic ids not passed then retrieve from db
+    $from_db = false;
+    if (empty($tids)) {
+        $from_db = true;
+    }
+    
+    if ($from_db) {
+        // Retrieve Topic options
+        $sql = "SELECT ta.tid, t.topic 
+            FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
+            WHERE t.tid = ta.tid AND ta.type = '$type' AND ta.id ='$id'  
+            AND t.tid != '" . TOPIC_ALL_OPTION . "' AND t.tid != '" . TOPIC_HOMEONLY_OPTION . "'";
+    } else {
+        $sql = "SELECT tid, topic 
+            FROM {$_TABLES['topics']} t   
+            WHERE (tid IN ('" . implode( "','", $tids ) . "'))"; 
+    }
+    $sql .= COM_getPermSQL('AND') . "
+        ORDER BY topic ASC LIMIT " . $max;    
+    
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $retval = '<div class="related-topics">' . $LANG27['topics:'];
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];            
+            
+            $retval .= ' <a href="' . $url . '">' . $A['topic'] . '</a>';
+        }
+        
+        $retval .= '</div>';
+    }    
+
+    return $retval;
+}
+
+/*
+ 3) Have an Autotag that create a point list of the last x number of new stories, staticpages, polls, etc. of a topic. Configurable options would include:
+
+ - Either object type and id (so we can gather topic info and not include itself in the list) OR a list of topics to include
+  - Number of items in the list
+ - What type of items to include: All, Stories, Staticpage, etc
+
+ Some new plugin api is required here for this as well.
+ */
+/**
+* This function creates a list of the newest and recently modified items that are related based on 
+* the topics passed or that the object belongs too 
+*
+* @param    string          $type           Type of object to display access for
+* @param    string          $id             Id of onject
+* @param    integer         $max            Max number of items returned
+* @param    integer         $trim           Max length of link text
+* @param    string/array    $tids           Topics Ids to use instead of retrieving from db
+* @return   HTML string
+*
+*/
+function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $trim = 0, $tids = array())
+{
+    global $_CONF, $LANG27, $_TABLES;
+
+    $retval = '';
+    $related_items = array();
+    
+    if ($max < 1) {
+        $max = 1;
+    }
+    
+    if (!is_array($tids)) {
+        $tids = array($tids);   
+    }  
+    
+    // if topic ids not passed then retrieve from db
+    $from_db = false;
+    if (empty($tids)) {
+        $from_db = true;
+    }
+    
+    if ($from_db) {
+        // Retrieve Topic options
+        $sql = "SELECT ta.tid, t.topic 
+            FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
+            WHERE t.tid = ta.tid AND ta.type = '$type' AND ta.id ='$id'  
+            AND t.tid != '" . TOPIC_ALL_OPTION . "' AND t.tid != '" . TOPIC_HOMEONLY_OPTION . "'";
+    } else {
+        $sql = "SELECT tid, topic 
+            FROM {$_TABLES['topics']} t   
+            WHERE (tid IN ('" . implode( "','", $tids ) . "'))"; 
+    }
+    $sql .= COM_getPermSQL('AND') . "
+        ORDER BY topic ASC LIMIT " . $max;    
+    
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $tids = array();
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $tids[] = $A['tid'];
+        }
+        
+        // Now pass the topic ids to the plugins so they return the latest related items
+        $related_items = PLG_getRelatedItems($include_types, $tids, $max, $trim);
+        
+        if (!empty($related_items)) {
+            // Sort date so newest is first       
+            krsort($related_items);
+            
+            // Return only max number
+            if ($max > 0) {
+                $related_items = array_slice($related_items, 0, $max);
+            }
+        } else {
+            // No related items found so and that to the list
+            $related_items[] = $LANG27['no_related_items'];
+        }
+        
+    } else {
+        // No Topics found, most likely setting an autotag mistake but return a nice message
+        $related_items[] = $LANG27['no_related_items'];
+    }    
+
+    // Make html list
+    $retval = COM_makeList($related_items, 'list-new-plugins');
+    
+    return $retval;    
 }
 
 ?>

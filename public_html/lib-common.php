@@ -2900,17 +2900,19 @@ function COM_showTopics($topic = '')
     global $_CONF, $_TABLES, $_TOPICS, $_USER, $LANG01, $_BLOCK_TEMPLATE, $page;
  
     $retval = '';
-    $sections = COM_newTemplate($_CONF['path_layout']);
+    
+    $topicnavigation = COM_newTemplate($_CONF['path_layout']);
     if (isset($_BLOCK_TEMPLATE['topicoption'])) {
-        $templates = explode(',', $_BLOCK_TEMPLATE['topicoption']);
-        $sections->set_file(array('option'  => $templates[0],
-                                  'current' => $templates[1]));
+        $topicnavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicoption']);
     } else {
-        $sections->set_file(array('option'   => 'topicoption.thtml',
-                                  'inactive' => 'topicoption_off.thtml'));
-    }
+        $topicnavigation->set_file('topicnavigation', 'topicnavigation.thtml');
+    }    
+    $blocks = array('option', 'option-with-hidden', 'option-off');
+    foreach ($blocks as $block) {
+        $topicnavigation->set_block('topicnavigation', $block);
+    }    
 
-    $sections->set_var('block_name', str_replace('_', '-', 'section_block'));
+    $topicnavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
 
     if ($_CONF['hide_home_link'] == 0) {
         // Give a link to the homepage here since a lot of people use this for
@@ -2919,19 +2921,19 @@ function COM_showTopics($topic = '')
         $start_branch = 1; // Sets indentation level for topics
 
         if (COM_onFrontpage()) {
-            $sections->set_var('option_url', '');
-            $sections->set_var('option_label', $LANG01[90]);
-            $sections->set_var('option_count', '');
-            $sections->set_var('option_attributes', '');
-            $sections->set_var('topic_image', '');
-            $retval .= $sections->parse('item', 'inactive');
+            $topicnavigation->set_var('option_url', '');
+            $topicnavigation->set_var('option_label', $LANG01[90]);
+            $topicnavigation->set_var('option_count', '');
+            $topicnavigation->set_var('option_attributes', '');
+            $topicnavigation->set_var('topic_image', '');
+            $retval .= $topicnavigation->parse('item', 'option-off');
         } else {
-            $sections->set_var('option_url', $_CONF['site_url'] . '/');
-            $sections->set_var('option_label', $LANG01[90]);
-            $sections->set_var('option_count', '');
-            $sections->set_var('option_attributes', ' rel="home"');
-            $sections->set_var('topic_image', '');
-            $retval .= $sections->parse('item', 'option');
+            $topicnavigation->set_var('option_url', $_CONF['site_url'] . '/');
+            $topicnavigation->set_var('option_label', $LANG01[90]);
+            $topicnavigation->set_var('option_count', '');
+            $topicnavigation->set_var('option_attributes', ' rel="home"');
+            $topicnavigation->set_var('topic_image', '');
+            $retval .= $topicnavigation->parse('item', 'option');
         }
     } else {
         $start_branch = 2;
@@ -2953,6 +2955,7 @@ function COM_showTopics($topic = '')
     $lang_id = COM_getLanguageId();
 
     for ($count_topic = $start_topic; $count_topic <= $total_topic ; $count_topic++) {
+        $topic_in_path = TOPIC_inPath($_TOPICS[$count_topic]['id']);
         
         // Check if branch needs to be hidden due to a parent being hidden or a different language
         if ($branch_level_skip >= $_TOPICS[$count_topic]['branch_level']) {
@@ -2961,91 +2964,119 @@ function COM_showTopics($topic = '')
         
         if ($branch_level_skip == 0) {
             // Make sure to show topics for proper language only
-            if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
-                $branch_spaces = "";
-                $level = 1;
-                for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
-                    $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
-                    $level++;
-                }
-                $sections->set_var('branch_spaces', $branch_spaces);
-                $sections->set_var('branch_level', $level);
-                
-                $topicname = stripslashes($_TOPICS[$count_topic]['title']);
-                $sections->set_var('option_url', $_CONF['site_url']
-                                                 . '/index.php?topic=' . $_TOPICS[$count_topic]['id']);
-                $sections->set_var('option_label', $topicname);
-        
-                $countstring = '';
-                if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
-                    $countstring .= '(';
-
-                    // Retrieve list of inherited topics
-                    $tid_list = TOPIC_getChildList($_TOPICS[$count_topic]['id']);
-
-                    if ($_CONF['showstorycount']) {
-                        // Calculate number of stories in topic, includes any inherited ones
-                        $sql = "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta "
-                             . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
-                             . COM_getPermSQL('AND')
-                             . "AND ta.type = 'article' AND ta.id = sid "
-                             . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$_TOPICS[$count_topic]['id']}'))) "
-                             . ' GROUP BY sid';   
-            
-                        $resultD = DB_query($sql);
-                        $nrows = DB_numRows ($resultD);
-                        $countstring .= COM_numberFormat($nrows);
-                    }
-        
-                    if ($_CONF['showsubmissioncount']) {
-                        if ($_CONF['showstorycount']) {
-                            $countstring .= '/';
-                        }
-                        // Calculate number of story submissions in topic, includes any inherited ones
-                        $sql = "SELECT sid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta "
-                             . "WHERE ta.type = 'article' AND ta.id = sid "
-                             . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$_TOPICS[$count_topic]['id']}'))) "
-                             . ' GROUP BY sid';   
-            
-                        $resultD = DB_query($sql);
-                        $nrows = DB_numRows ($resultD);
-                        $countstring .= COM_numberFormat($nrows);
-                    }
-        
-                    $countstring .= ')';
-                }
-                $sections->set_var('option_count', $countstring);
-                $sections->set_var('option_attributes', '');
-        
-                $sql = "SELECT imageurl, meta_description FROM {$_TABLES['topics']} WHERE tid = '{$_TOPICS[$count_topic]['id']}'";
-                $result = DB_query($sql);
-                $A = DB_fetchArray($result);
-                
-                $topicimage = '';
-                if (! empty( $A['imageurl'])) {
-                    $imageurl = COM_getTopicImageUrl($A['imageurl']);
-                    $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
-                                . '" title="' . $topicname . '"' . XHTML . '>';
-                }
-                $sections->set_var('topic_image', $topicimage);
-        
-                $desc = trim($A['meta_description']);
-                $sections->set_var('topic_description', $desc);
-                $desc_escaped = htmlspecialchars($desc);
-                $sections->set_var('topic_description_escaped', $desc_escaped);
-                if (! empty($desc)) {
-                    $sections->set_var('topic_title_attribute',
-                                       'title="' . $desc_escaped . '"');
+            // if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
+            if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
+                $continue = false;
+                if ($_TOPICS[$count_topic]['parent_id'] == $topic) {
+                    // Make sure to list any hidden child topics else skip
+                    $continue = true;
+                } elseif ($topic_in_path) {
+                    // Figure out if we are on the current topic breadcrumb and if so show all even if hidden
+                    $continue = true;                    
                 } else {
-                    $sections->set_var('topic_title_attribute', '');
+                    // Normal check see if hidden, if not then continue
+                    if (!$_TOPICS[$count_topic]['hidden']) {
+                        $continue = true;
+                    }
                 }
-        
-                if (($_TOPICS[$count_topic]['id'] == $topic) && ($page == 1)) {
-                    $retval .= $sections->parse('item', 'inactive');
-                }
-                else
-                {
-                    $retval .= $sections->parse('item', 'option');
+
+                if ($continue) {
+                    $branch_spaces = "";
+                    $level = 1;
+                    for ($branch_count = $start_branch; $branch_count <= $_TOPICS[$count_topic]['branch_level'] ; $branch_count++) {
+                        $branch_spaces .= "&nbsp;&nbsp;&nbsp;";
+                        $level++;
+                    }
+                    $topicnavigation->set_var('branch_spaces', $branch_spaces);
+                    $topicnavigation->set_var('branch_level', $level);
+                    
+                    $topicname = stripslashes($_TOPICS[$count_topic]['title']);
+                    $topicnavigation->set_var('option_url', $_CONF['site_url']
+                                                     . '/index.php?topic=' . $_TOPICS[$count_topic]['id']);
+                    $topicnavigation->set_var('option_label', $topicname);                
+                    
+                    $countstring = '';
+                    if ($_CONF['showstorycount'] || $_CONF['showsubmissioncount']) {
+                        $countstring .= '(';
+    
+                        // Retrieve list of inherited topics
+                        $tid_list = TOPIC_getChildList($_TOPICS[$count_topic]['id']);
+    
+                        if ($_CONF['showstorycount']) {
+                            // Calculate number of stories in topic, includes any inherited ones
+                            $sql = "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta "
+                                 . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
+                                 . COM_getPermSQL('AND')
+                                 . "AND ta.type = 'article' AND ta.id = sid "
+                                 . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$_TOPICS[$count_topic]['id']}'))) "
+                                 . ' GROUP BY sid';   
+                
+                            $resultD = DB_query($sql);
+                            $nrows = DB_numRows ($resultD);
+                            $countstring .= COM_numberFormat($nrows);
+                        }
+            
+                        if ($_CONF['showsubmissioncount']) {
+                            if ($_CONF['showstorycount']) {
+                                $countstring .= '/';
+                            }
+                            // Calculate number of story submissions in topic, includes any inherited ones
+                            $sql = "SELECT sid FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta "
+                                 . "WHERE ta.type = 'article' AND ta.id = sid "
+                                 . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$_TOPICS[$count_topic]['id']}'))) "
+                                 . ' GROUP BY sid';   
+                
+                            $resultD = DB_query($sql);
+                            $nrows = DB_numRows ($resultD);
+                            $countstring .= COM_numberFormat($nrows);
+                        }
+            
+                        $countstring .= ')';
+                    }
+                    $topicnavigation->set_var('option_count', $countstring);
+                    $topicnavigation->set_var('option_attributes', '');
+            
+                    $sql = "SELECT imageurl, meta_description FROM {$_TABLES['topics']} WHERE tid = '{$_TOPICS[$count_topic]['id']}'";
+                    $result = DB_query($sql);
+                    $A = DB_fetchArray($result);
+                    
+                    $topicimage = '';
+                    if (! empty( $A['imageurl'])) {
+                        $imageurl = COM_getTopicImageUrl($A['imageurl']);
+                        $topicimage = '<img src="' . $imageurl . '" alt="' . $topicname
+                                    . '" title="' . $topicname . '"' . XHTML . '>';
+                    }
+                    $topicnavigation->set_var('topic_image', $topicimage);
+            
+                    $desc = trim($A['meta_description']);
+                    $topicnavigation->set_var('topic_description', $desc);
+                    $desc_escaped = htmlspecialchars($desc);
+                    $topicnavigation->set_var('topic_description_escaped', $desc_escaped);
+                    if (! empty($desc)) {
+                        $topicnavigation->set_var('topic_title_attribute',
+                                           'title="' . $desc_escaped . '"');
+                    } else {
+                        $topicnavigation->set_var('topic_title_attribute', '');
+                    }
+            
+                    if (($_TOPICS[$count_topic]['id'] == $topic) && ($page == 1)) {
+                        $retval .= $topicnavigation->parse('item', 'option-off');
+                    } else {
+                        // See if we need to display hidden child topic sign
+                        $sql = "SELECT tid FROM {$_TABLES['topics']} 
+                                WHERE parent_id = '{$_TOPICS[$count_topic]['id']}' AND hidden = 1" . COM_getPermSQL('AND', 0, 2);
+                        $result = DB_query($sql);
+                        $nrows = DB_numRows($result);
+                        $A = DB_fetchArray($result);
+                        if (($topic_in_path AND $nrows > 1) OR (!$topic_in_path AND $nrows > 0) OR ($topic_in_path AND $nrows == 1 AND !TOPIC_inPath($A['tid']))) {
+                            $retval .= $topicnavigation->parse('item', 'option-with-hidden');
+                        } else {                        
+                            $retval .= $topicnavigation->parse('item', 'option');
+                        }
+                    }
+                } else {
+                    // Hidden, so flag this to skip if we have children
+                    $branch_level_skip = $_TOPICS[$count_topic]['branch_level'];
                 }
             } else {
                 // Different language or hidden, so flag this to skip if we have children
@@ -6098,7 +6129,7 @@ function COM_getAmPmFormSelection( $name, $selected = '' )
 */
 function COM_makeList($listofitems, $classname = '')
 {
-    global $_CONF;
+    global $_CONF;                                                                                              
 
     $list = COM_newTemplate($_CONF['path_layout']);
     $list->set_file(array('list'     => 'list.thtml',

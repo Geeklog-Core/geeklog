@@ -216,7 +216,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $article->set_var('lang_permalink', $LANG01[127]);
 
     $show_comments = true;
-    
     // n = Full display of article. p = 'Preview' mode.
     if ((($index != 'n') && ($index != 'p')) || !empty($query)) {
         $attributes = ' class="non-ul"';
@@ -236,13 +235,24 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             )
         );
     } else {
+        $article->set_var('story_title_link', $story->DisplayElements('title'));
+    }
+    
+    if ($index == 'n') {
         if ($_CONF['supported_version_theme'] == '1.8.1') {
             $article->set_var('breadcrumb_trail', TOPIC_breadcrumbs('article', $story->getSid()));
         }
-        $article->set_var('story_title_link', $story->DisplayElements('title'));
+        
+        if ($_CONF['related_topics'] > 0) {
+            $article->set_var('related_topics', TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']));
+        }
+    } elseif ($index != 'p') {
+        if ($_CONF['related_topics'] > 1) {
+            $article->set_var('related_topics', TOPIC_relatedTopics('article', $story->getSid(), $_CONF['related_topics_max']));
+        }
     }
 
-    if(( $index == 'n' ) || ( $index == 'p' ))
+    if (( $index == 'n' ) || ( $index == 'p' ))
     {
         if( empty( $bodytext ))
         {
@@ -777,6 +787,65 @@ function STORY_updateLastArticlePublished()
  * aren't a plugin (and likely never will be), implementing some of the API
  * functions here will save us from doing special handling elsewhere.
  */
+
+/**
+* Return list of articles for the Related Items block
+*
+* @param    array   $tids list of topic ids
+* @param    int     $max  maximum number of items to return
+* @param    int     $trim max length of text
+* @return   array   array of links to related articles with unix timestamp as key
+*
+*/
+function plugin_getrelateditems_story($tids, $max, $trim)
+{
+    global $_CONF, $_TABLES;
+
+    $archsql = '';
+    $archivetid = DB_getItem( $_TABLES['topics'], 'tid', "archive_flag=1" );
+    if(!empty( $archivetid )) {
+        $where_sql .= " AND (ta.tid <> '$archivetid')";
+    }
+
+    // Find the newest stories
+    $sql = "SELECT sid, title, UNIX_TIMESTAMP(date) s_date 
+        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+        WHERE ta.type = 'article' AND ta.id = sid AND (ta.tid IN ('" . implode( "','", $tids ) . "')) 
+        AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . COM_getLangSQL( 'sid', 'AND' ) . " 
+        GROUP BY sid ORDER BY s_date DESC LIMIT {$max}";
+
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
+
+    if ($nrows > 0) {
+        $newstories = array();
+
+        for ($x = 0; $x < $nrows; $x++) {
+            $A = DB_fetchArray($result);
+
+            $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story='
+                                . $A['sid']);            
+
+            $title = COM_undoSpecialChars(stripslashes( $A['title']));
+            if ($trim > 0) {
+                $titletouse = COM_truncate($title, $trim, '...');
+            } else {
+                $titletouse = $title;
+            }
+            if ($title != $titletouse) {
+                $attr = array('title' => htmlspecialchars($title));
+            } else {
+                $attr = array();
+            }
+            $astory = str_replace('$', '&#36;', $titletouse);
+            $astory = str_replace(' ', '&nbsp;', $astory);
+
+            $newstories[$A['s_date']] = COM_createLink($astory, $url, $attr);
+        }
+    }
+
+    return $newstories;
+} 
  
 /**
 * Return new Story comments for the What's New block

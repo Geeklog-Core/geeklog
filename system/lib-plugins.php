@@ -2017,6 +2017,46 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
 }
 
 /**
+* Ask plugins if they want to add something to Geeklog's Related Items list.
+*
+* @return   array   A list of clickable links with the key being the timestamp
+*
+*/
+function PLG_getRelatedItems($types, $tids, $max, $trim)
+{
+    global $_PLUGINS;
+
+    $relateditems =  array();
+    $returneditems =  array();
+    
+    $args[1] = $tids;
+    $args[2] = $max;
+    $args[3] = $trim;
+    
+    if (in_array('article', $types) || in_array('story', $types) || empty($types)) {
+        require_once $_CONF['path_system'] . 'lib-story.php';
+        $returneditems = plugin_getrelateditems_story($tids, $max, $trim);
+    }      
+
+    foreach ($_PLUGINS as $pi_name) {
+        // If no types (plugins) passed then assume all
+        if (empty($types) OR in_array($pi_name, $types)) {
+            $relateditems = PLG_callFunctionForOnePlugin('plugin_getrelateditems_' . $pi_name, $args); 
+            if (is_array($relateditems)) {
+                $returneditems = $returneditems + $relateditems;
+            }            
+        }
+    }
+    
+    $relateditems = PLG_callFunctionForOnePlugin('CUSTOM_getrelateditems', $args); 
+    if (is_array($relateditems)) {
+        $returneditems = $returneditems + $relateditems;
+    }     
+
+    return $returneditems;
+}
+
+/**
 * Ask plugins if they want to add something to Geeklog's What's New block.
 *
 * @return   array   array($headlines[], $bylines[], $content[$entries[]])

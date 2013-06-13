@@ -1,0 +1,13 @@
+{# begin {templatelocation} #}
+
+<!-- BEGIN option -->
+<li class="topicoption">{branch_spaces}<a href="{option_url}"{option_attributes}>{option_label}</a> {option_count}</li>
+<!-- END option -->
+<!-- BEGIN option-with-hidden -->
+<li class="topicoption">{branch_spaces}<a href="{option_url}"{option_attributes}>{option_label} +</a> {option_count}</li>
+<!-- END option-with-hidden -->
+<!-- BEGIN option-off -->
+<li class="topicoption-off">{branch_spaces}{option_label} {option_count}</li>
+<!-- END option-off -->
+
+{# end {templatelocation} #}

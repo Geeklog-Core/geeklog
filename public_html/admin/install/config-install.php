@@ -140,6 +140,8 @@ function install_config()
     $c->add('hide_main_page_navigation',0,'select',1,7,0,1310,TRUE, $me, 7);
     $c->add('onlyrootfeatures',0,'select',1,7,0,1320,TRUE, $me, 7);
     $c->add('aftersave_story','list','select',1,7,9,1330,TRUE, $me, 7);
+    $c->add('related_topics',1,'select',1,7,32,1340,TRUE, $me, 7);
+    $c->add('related_topics_max',6,'text',1,7,NULL,1350,TRUE, $me, 7);
 
     $c->add('tab_trackback', NULL, 'tab', 1, 8, NULL, 0, TRUE, $me, 8);
     $c->add('fs_trackback', NULL, 'fieldset', 1, 8, NULL, 0, TRUE, $me, 8);
@@ -426,6 +428,8 @@ function install_config()
     $c->add('autotag_permissions_story', array(2, 2, 2, 2), '@select', 7, 41, 28, 1870, TRUE, $me, 37);
     $c->add('autotag_permissions_user', array(2, 2, 2, 2), '@select', 7, 41, 28, 1880, TRUE, $me, 37);
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
+    $c->add('autotag_permissions_related_topics', array(2, 2, 0, 0), '@select', 7, 41, 28, 1900, TRUE, $me, 37);
+    $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
 
     $c->add('tab_webservices', NULL, 'tab', 7, 40, NULL, 0, TRUE, $me, 40);
     $c->add('fs_webservices', NULL, 'fieldset', 7, 40, NULL, 0, TRUE, $me, 40);

@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}
+
 <div class="story-featured">
     <span class="story-icons">
         {email_icon}
@@ -14,6 +16,9 @@
     <div class="story-body">
         {story_anchortag_and_image}{story_text_no_br}
     </div>
+    
+    {related_topics}
+    
     <div class="story-footer">
         <p>{page_selector}</p>
         <p>{readmore_link} {post_comment_link}</p>
@@ -21,3 +26,5 @@
     </div>
 </div>
 <div class="block-divider"> </div>
+
+{# end {templatelocation} #}

@@ -22,10 +22,16 @@ function update_ConfValuesFor201()
     
     // Caching Template Library Options
     $c->add('cache_templates',TRUE,'select',2,10,1,220,TRUE, $me, 10);
-    $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);       
+    $c->add('template_comments',FALSE,'select',2,11,1,1370,TRUE, $me, 11);
+    
+    // Article Related Topics    
+    $c->add('related_topics',1,'select',1,7,32,1340,TRUE, $me, 7);
+    $c->add('related_topics_max',6,'text',1,7,NULL,1350,TRUE, $me, 7);    
 
-    // [topic:] autotag permissions
+    // New Topic autotag permissions
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
+    $c->add('autotag_permissions_related_topics', array(2, 2, 0, 0), '@select', 7, 41, 28, 1900, TRUE, $me, 37);
+    $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
 
     return true;
 }
