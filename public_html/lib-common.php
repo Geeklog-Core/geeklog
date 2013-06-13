@@ -975,7 +975,11 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         'leftblocks'     => 'leftblocks.thtml',
         'rightblocks'    => 'rightblocks.thtml'
         ));
-    // Blocks in menunavigation.html include menuitem, menuitem_last, menuitem_none
+    $blocks = array('menuitem', 'menuitem_last', 'menuitem_none');
+    foreach ($blocks as $block) {
+        $header->set_block('menunavigation', $block);
+    }        
+    
     $header->parse('menu_elements', 'menunavigation', true);
     
     $header->set_var('doctype', $doctype);
@@ -1692,7 +1696,11 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         'leftblocks'     => 'leftblocks.thtml',
         'rightblocks'    => 'rightblocks.thtml'
         ));
-    // Blocks in menunavigation.html include menuitem, menuitem_last, menuitem_none
+    $blocks = array('menuitem', 'menuitem_last', 'menuitem_none');
+    foreach ($blocks as $block) {
+        $header->set_block('menunavigation', $block);
+    } 
+    
     $header->parse('menu_elements', 'menunavigation', true);    
     
     $header->set_var('doctype', $doctype);
@@ -2904,7 +2912,11 @@ function COM_showTopics($topic = '')
     } else {
         $topicnavigation->set_file('topicnavigation', 'topicnavigation.thtml');
     }    
-    // Blocks in topicnavigation.html include option, option-with-hidden, option-off
+    $blocks = array('option', 'option-with-hidden', 'option-off');
+    foreach ($blocks as $block) {
+        $topicnavigation->set_block('topicnavigation', $block);
+    }    
+    
     $retval .= $topicnavigation->parse('item', 'topicnavigation', true);
 
     $topicnavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
@@ -5547,7 +5559,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     $page_navigation = COM_newTemplate($_CONF['path_layout']);
     $page_navigation->set_file('page_navigation', 'pagenavigation.thtml');
-    // Blocks in pagenavigation.html include page, page-current, nav-end, nav-open-ended
+    $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended');
+    foreach ($blocks as $block) {
+        $page_navigation->set_block('page_navigation', $block);
+    }    
 
     $page_navigation->set_var('lang_first', $LANG05[7]);
     $page_navigation->set_var('lang_previous', $LANG05[6]);
