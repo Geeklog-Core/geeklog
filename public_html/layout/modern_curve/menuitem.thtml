@@ -1,6 +1,0 @@
-
-<!-- menuitem.thtml { -->
-
-      <li class="menuitem"><a href="{menuitem_url}">{menuitem_text}</a></li>
-
-<!-- } menuitem.thtml -->

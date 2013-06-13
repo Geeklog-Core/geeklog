@@ -1,6 +1,0 @@
-
-<!-- menuitem_last.thtml { -->
-
-      <li class="menuitem last-child"><a href="{menuitem_url}">{menuitem_text}</a></li>
-
-<!-- } menuitem_last.thtml -->

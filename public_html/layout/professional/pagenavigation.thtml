@@ -1,5 +1,4 @@
-
-<!-- page_navigation.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="gl-pagenav">
 {message}<span>{start_first_anchortag}{lang_first}{end_first_anchortag}</span> |
@@ -20,4 +19,4 @@
 <!-- END nav-open-ended -->
 </div>
 
-<!-- } page_navigation.thtml -->
+{# end {templatelocation} #}

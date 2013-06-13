@@ -970,15 +970,13 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted 
     $header->preprocess_fn = 'PLG_replaceTags';    
     $header->set_file( array(
-        'header'        => 'header.thtml',
-        'menuitem'      => 'menuitem.thtml',
-        'menuitem_last' => 'menuitem_last.thtml',
-        'menuitem_none' => 'menuitem_none.thtml',
-        'leftblocks'    => 'leftblocks.thtml',
-        'rightblocks'   => 'rightblocks.thtml'
+        'header'         => 'header.thtml',
+        'menunavigation' => 'menunavigation.thtml',
+        'leftblocks'     => 'leftblocks.thtml',
+        'rightblocks'    => 'rightblocks.thtml'
         ));
-    
-
+    // Blocks in menunavigation.html include menuitem, menuitem_last, menuitem_none
+    $header->parse('menu_elements', 'menunavigation', true);
     
     $header->set_var('doctype', $doctype);
     
@@ -1689,14 +1687,13 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted
     $header->preprocess_fn = 'PLG_replaceTags';
     $header->set_file( array(
-        'header'        => 'header.thtml',
-        'menuitem'      => 'menuitem.thtml',
-        'menuitem_last' => 'menuitem_last.thtml',
-        'menuitem_none' => 'menuitem_none.thtml',
-        'leftblocks'    => 'leftblocks.thtml',
-        'rightblocks'   => 'rightblocks.thtml'
+        'header'         => 'header.thtml',
+        'menunavigation' => 'menunavigation.thtml',
+        'leftblocks'     => 'leftblocks.thtml',
+        'rightblocks'    => 'rightblocks.thtml'
         ));
-   
+    // Blocks in menunavigation.html include menuitem, menuitem_last, menuitem_none
+    $header->parse('menu_elements', 'menunavigation', true);    
     
     $header->set_var('doctype', $doctype);
     
@@ -2907,10 +2904,8 @@ function COM_showTopics($topic = '')
     } else {
         $topicnavigation->set_file('topicnavigation', 'topicnavigation.thtml');
     }    
-    $blocks = array('option', 'option-with-hidden', 'option-off');
-    foreach ($blocks as $block) {
-        $topicnavigation->set_block('topicnavigation', $block);
-    }    
+    // Blocks in topicnavigation.html include option, option-with-hidden, option-off
+    $retval .= $topicnavigation->parse('item', 'topicnavigation', true);
 
     $topicnavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
 
@@ -5551,11 +5546,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
 
     $page_navigation = COM_newTemplate($_CONF['path_layout']);
-    $page_navigation->set_file('page_navigation', 'page_navigation.thtml');
-    $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended');
-    foreach ($blocks as $block) {
-        $page_navigation->set_block('page_navigation', $block);
-    }
+    $page_navigation->set_file('page_navigation', 'pagenavigation.thtml');
+    // Blocks in pagenavigation.html include page, page-current, nav-end, nav-open-ended
 
     $page_navigation->set_var('lang_first', $LANG05[7]);
     $page_navigation->set_var('lang_previous', $LANG05[6]);
@@ -5613,7 +5605,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     if (!empty($open_ended)) {
         $page_navigation->set_var('open_ended', $open_ended);
-        $page_navigation->set_var('nav-end', '');
+        $page_navigation->parse('pages', 'nav-open-ended', true);
     } else {
         if ($curpage == $num_pages) {
             $page_navigation->set_var('start_next_anchortag', '');
@@ -5625,8 +5617,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
             $page_navigation->set_var('end_next_anchortag', '</a>');
             $page_navigation->set_var('start_last_anchortag', '<a href="' . $first_url . $sep . $page_str . $num_pages . $last_url . '">');
             $page_navigation->set_var('end_last_anchortag', '</a>');
+            
+            
         }
-        $page_navigation->set_var('nav-open-ended', '');
+        $page_navigation->parse('pages', 'nav-end', true);
     }
 
     if (!empty($msg)) {

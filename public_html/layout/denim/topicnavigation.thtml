@@ -1,4 +1,4 @@
-{# begin {templatelocation} #}
+{# {templatelocation} - The Topic Navigation uses template blocks which is built into this file #}
 
 <!-- BEGIN option -->
 <li class="topicoption sideoption branch_level{branch_level}"><a href="{option_url}">{option_label}<span>{option_count}</span></a></li>
@@ -9,5 +9,3 @@
 <!-- BEGIN option-off -->
 <li class="topicoption_off sideoption_off branch_level{branch_level}">{option_label}&nbsp;{option_count}</li>
 <!-- END option-off -->
-
-{# end {templatelocation} #}
