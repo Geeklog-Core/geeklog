@@ -32,18 +32,23 @@
 // |                                                                          |
 // +--------------------------------------------------------------------------+
 
+/**
+* Geeklog common function library
+*/
 require_once '../lib-common.php';
+
+/**
+* Security check to ensure user even belongs on this page
+*/
+require_once 'auth.inc.php';
+
 require_once $_CONF['path_system'] . 'lib-admin.php';
 
 if (!SEC_inGroup('Root')) {
-    $display = COM_siteHeader ('menu');
-    $display .= COM_startBlock ($LANG27[12], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-    $display .= $LANG27[12];
-    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    $display .= COM_siteFooter ();
-    COM_accessLog ("User {$_USER['username']} tried to illegally access the log viewer utility.");
-    echo $display;
+    $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
+    $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
+    COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
+    COM_output($display);
     exit;
 }
 
@@ -77,7 +82,7 @@ $display .= '<form method="post" action="'.$_CONF['site_admin_url'].'/logviewer.
 $display .= $LANG_LOGVIEW['logs'].':&nbsp;&nbsp;&nbsp;';
 $files = array();
 if ($dir = @opendir($_CONF['path_log'])) {
-    while(($file = readdir($dir)) !== false) {
+    while (($file = readdir($dir)) !== false) {
         if (is_file($_CONF['path_log'] . $file) && preg_match('/\.log$/i', $file)) {
             array_push($files,$file);
         }
@@ -100,23 +105,25 @@ $display .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 $display .= '<input type="submit" name="clearlog" value="'.$LANG_LOGVIEW['clear'].'"'.XHTML.'>';
 $display .= '</div></form>';
 
-if ( isset($_POST['clearlog']) ) {
-    @unlink($_CONF['path_log'] . $log);
-    $timestamp = strftime( "%c" );
-    $fd = fopen( $_CONF['path_log'] . $log, 'a' );
-    fputs( $fd, "$timestamp - Log File Cleared \n" );
-    fclose($fd);
-    $_POST['viewlog'] = 1;
+if (isset($_POST['clearlog'])) {
+    if (@unlink($_CONF['path_log'] . $log)) {
+        if ($fd = @fopen($_CONF['path_log'] . $log, 'a')) {
+            $timestamp = strftime("%c");
+            fputs($fd, "$timestamp - Log File Cleared \n");
+            fclose($fd);
+            $_POST['viewlog'] = 1;
+        }
+    }
 }
-if ( isset($_POST['viewlog']) ) {
+if (isset($_POST['viewlog'])) {
     $display .= '<p><strong>'.$LANG_LOGVIEW['log_file'].': ' . $log . '</strong></p>';
     $display .= '<div style="margin:10px 0 5px;border-bottom:1px solid #cccccc;"></div>';
-    $display .= '<div style="overflow:scroll; height:500px;"><pre>';
-    $display .= htmlentities(implode('', file($_CONF['path_log'] . $log)),ENT_NOQUOTES,COM_getEncodingt());
-    $display .= '</pre></div>';
+    $display .= '<pre style="overflow:scroll; height:500px;">';
+    $display .= htmlentities(implode('', file($_CONF['path_log'] . $log)), ENT_NOQUOTES, COM_getEncodingt());
+    $display .= '</pre>';
 }
 
-$display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+$display .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
 $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG_LOGVIEW['log_viewer']));
 

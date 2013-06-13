@@ -1,6 +1,6 @@
 <!-- Start of Breadcrumbs Navigation -->
 <p>
-<div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+<div{!if microdata} itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
     {breadcrumbs_list}
 </div>
 </p>

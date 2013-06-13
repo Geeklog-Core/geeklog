@@ -1484,9 +1484,9 @@ function plugin_group_changed_topic($grp_id, $mode)
 }
 
 /**
-* If found returns one or more html breadcrumb. Used by Topics, Stories and Plugins. 
+* If found returns one or more html breadcrumb. Used by Topics, Stories and Plugins.
 *
-* @param    string          $type   Type of object to create breadcrumb trail  
+* @param    string          $type   Type of object to create breadcrumb trail
 * @param    string/array    $id     ID of object
 * @return   string                  1 or more breadcrumb trail in html
 *
@@ -1494,135 +1494,105 @@ function plugin_group_changed_topic($grp_id, $mode)
 function TOPIC_breadcrumbs($type, $id)
 {
     global $_CONF, $_TABLES, $LANG27, $_TOPICS, $topic;
-    
-    
+
     $breadcrumbs_output = '';
-    
+
     // see if breadcrumbs is disabled
-    if (($_CONF['disable_breadcrumbs_topics'] && $type == 'topic') || ($_CONF['disable_breadcrumbs_articles'] && $type == 'article') || ($_CONF['disable_breadcrumbs_plugins'] && $type != 'topic' && $type != 'article') ) {
+    if (($_CONF['disable_breadcrumbs_topics'] && $type == 'topic') ||
+        ($_CONF['disable_breadcrumbs_articles'] && $type == 'article') ||
+        ($_CONF['disable_breadcrumbs_plugins'] && $type != 'topic' && $type != 'article')) {
         return $breadcrumbs_output;
     }
-    
-    $breadcrumb_t = COM_newTemplate($_CONF['path_layout'] . 'breadcrumbs/');
-    $breadcrumb_t->set_file (array ('breadcrumbs_t' => 'breadcrumbs.thtml',
-                                    'breadcrumb_child_t' => 'breadcrumb_child.thtml',
-                                    'breadcrumb_root_t' => 'breadcrumb_root.thtml',
-                                    'breadcrumb_nolink_t' => 'breadcrumb_nolink.thtml',
-                                    'breadcrumb_t' => 'breadcrumb.thtml'));        
-    
+
     if ($type == 'topic') {
-        $sql = "SELECT tid FROM {$_TABLES['topics']} 
-            WHERE tid = '{$id}'" . COM_getPermSQL('AND', 0, 2);
+        $sql = "SELECT tid, topic, parent_id FROM {$_TABLES['topics']} "
+             . "WHERE tid = '$id'" . COM_getPermSQL('AND', 0, 2);
     } else {
         // Retrieve all topics assignments that point to this object
-        $sql = "SELECT ta.tid FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
-            WHERE ta.type = '{$type}' AND ta.id = '{$id}' and t.tid = ta.tid" . COM_getPermSQL('AND', 0, 2, 't');
-            
-            if (!$_CONF['multiple_breadcrumbs']) {
-                $sql .= " AND ta.tid = '{$topic}'";        
-            }
+        $sql = "SELECT t.tid, t.topic, t.parent_id "
+             . "FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t "
+             . "WHERE ta.type = '$type' AND ta.id = '$id' AND t.tid = ta.tid"
+             . COM_getPermSQL('AND', 0, 2, 't');
+
+        if (!$_CONF['multiple_breadcrumbs']) {
+            $sql .= " AND ta.tid = '$topic'";
+        }
     }
     $result = DB_query($sql);
-    $nrows = DB_numRows($result);
-
-    if ($nrows > 0) {
-        while ($A = DB_fetchArray($result)) {
-            $sql = "SELECT tid, topic, parent_id FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'";
-            $resultB = DB_query($sql);
-            while ($B = DB_fetchArray($resultB)) {
-                $breadcrumb_a = array();
-                
-                $breadcrumb_a[]['id'] = $B['tid'];
-                end($breadcrumb_a);
-                $breadcrumb_a[key($breadcrumb_a)]['title'] = $B['topic'];
-                
-                if ($B['parent_id'] != TOPIC_ROOT) {
-                    $sql = "SELECT tid, topic, parent_id FROM {$_TABLES['topics']} WHERE tid = '{$B['parent_id']}'";
-                    $resultC = DB_query($sql);
-                    while ($C = DB_fetchArray($resultC)) {    
-                        $breadcrumb_a[]['id'] = $C['tid'];
-                        end($breadcrumb_a);
-                        $breadcrumb_a[key($breadcrumb_a)]['title'] = $C['topic'];
-    
-                        if ($C['parent_id'] != TOPIC_ROOT) {
-                            $sql = "SELECT tid, topic, parent_id FROM {$_TABLES['topics']} WHERE tid = '{$C['parent_id']}'";
-                            $resultC = DB_query($sql);
-                        } else {
-                            $breadcrumb_a[]['id'] = TOPIC_ROOT;
-                            end($breadcrumb_a);
-                            
-                            if ($_CONF['breadcrumb_root_site_name']) {
-                                $rootname = $_CONF['site_name'];
-                            } else {
-                                $rootname = $LANG27['breadcrumb_root'];
-                            }
-                            $breadcrumb_a[key($breadcrumb_a)]['title'] = $rootname;
-                        }
-                    }
-                } else {
-                    $breadcrumb_a[]['id'] = TOPIC_ROOT;
-                    end($breadcrumb_a);
-                    
-                    if ($_CONF['breadcrumb_root_site_name']) {
-                        $rootname = $_CONF['site_name'];
-                    } else {
-                        $rootname = $LANG27['breadcrumb_root'];
-                    }
-                    $breadcrumb_a[key($breadcrumb_a)]['title'] = $rootname;
-                }
-                
-                $retval = '';
-                end($breadcrumb_a);
-                $last_key = key($breadcrumb_a);
-                
-                foreach ($breadcrumb_a as $key => $value) {
-                    if ($value['id']  != TOPIC_ROOT) {
-                        $url = $_CONF['site_url'] . '/index.php?topic=' . $value['id'];
-                    } else {
-                        $url = $_CONF['site_url'] . '/index.php';
-                    }
-                    // double check access (users may have access to a subtopic but not a parent topic, this shouldn't really happen though)
-                    $topic_access = 0;
-                    $topic_index = TOPIC_getIndex($value['id']);
-                    if ($topic_index > 0 ) {
-                        $topic_access = $_TOPICS[$topic_index]['access'];   
-                    }
-                    
-                    if ($topic_access == 0) { // Do not have access to view page
-                        $url = '';
-                        $use_template = 'breadcrumb_nolink_t';
-                    } else {
-                        $use_template = 'breadcrumb_t';
-                    }                
-                    $breadcrumb_t->set_var('url', $url);
-                    $breadcrumb_t->set_var('name', $value['title']);
-                    $breadcrumb_t->set_var('breadcrumb_child', $retval);
-                    
-                    if (!empty($retval)) {
-                        $breadcrumb_t->set_var('separator', htmlspecialchars($LANG27['breadcrumb_separator']));
-                    } else {
-                        $breadcrumb_t->set_var('separator', '');
-                    }
-                    if ($last_key == $key) {
-                        $breadcrumb_t->parse('breadcrumb_root', $use_template);
-                        $breadcrumb_t->parse ('output', 'breadcrumb_root_t');
-                    } else {
-                        $breadcrumb_t->parse('breadcrumb', $use_template);
-                        $breadcrumb_t->parse ('output', 'breadcrumb_child_t');
-                    }
-                       
-                    $retval = $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
-                }
-                $breadcrumb_t->set_var('breadcrumbs_list', $retval);
-                $breadcrumb_t->parse ('output', 'breadcrumbs_t');
-                $breadcrumbs_output .= $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
-            }
-            
-            
+    if (DB_numRows($result) > 0) {
+        $breadcrumb_t = COM_newTemplate($_CONF['path_layout'] . 'breadcrumbs/');
+        $breadcrumb_t->set_file(array(
+            'breadcrumbs_t'       => 'breadcrumbs.thtml',
+            'breadcrumb_child_t'  => 'breadcrumb_child.thtml',
+            'breadcrumb_root_t'   => 'breadcrumb_root.thtml',
+            'breadcrumb_nolink_t' => 'breadcrumb_nolink.thtml',
+            'breadcrumb_t'        => 'breadcrumb.thtml'));
+        if (in_array($_CONF['doctype'], array('html5', 'xhtml5'))) {
+            $breadcrumb_t->set_var('microdata', true);
         }
-        
-        return $breadcrumbs_output;
+        $rootname = $_CONF['breadcrumb_root_site_name'] ?
+            $_CONF['site_name'] : $LANG27['breadcrumb_root'];
+        $separator = htmlspecialchars($LANG27['breadcrumb_separator']);
+
+        while ($A = DB_fetchArray($result)) {
+            $breadcrumb_a = array();
+            $breadcrumb_a[] = $A;
+            $parent_id = $A['parent_id'];
+            while ($parent_id != TOPIC_ROOT) {
+                $sql = "SELECT tid, topic, parent_id "
+                     . "FROM {$_TABLES['topics']} WHERE tid = '$parent_id'";
+                $resultB = DB_query($sql);
+                if (DB_numRows($resultB) !== 1) break;
+                $B = DB_fetchArray($resultB);
+                $breadcrumb_a[] = $B;
+                $parent_id = $B['parent_id'];
+            }
+            $breadcrumb_a[] = array(
+                'tid' => TOPIC_ROOT,
+                'topic' => $rootname,
+                'parent_id' => '');
+
+            $retval = '';
+            foreach ($breadcrumb_a as $value) {
+                // double check access (users may have access to a subtopic
+                // but not a parent topic, this shouldn't really happen though)
+                $topic_access = 0;
+                $topic_index = TOPIC_getIndex($value['tid']);
+                if ($topic_index > 0) {
+                    $topic_access = $_TOPICS[$topic_index]['access'];
+                }
+
+                if ($topic_access == 0) { // Do not have access to view page
+                    $url = '';
+                    $use_template = 'breadcrumb_nolink_t';
+                } else {
+                    $url = $_CONF['site_url'] . '/index.php';
+                    if ($value['tid'] != TOPIC_ROOT) {
+                        $url .= '?topic=' . $value['tid'];
+                    }
+                    $use_template = 'breadcrumb_t';
+                }
+                $breadcrumb_t->set_var('url', $url);
+                $breadcrumb_t->set_var('name', $value['topic']);
+                $breadcrumb_t->set_var('breadcrumb_child', $retval);
+                $breadcrumb_t->set_var('separator', empty($retval) ? '' : $separator);
+                if ($value['tid'] == TOPIC_ROOT) {
+                    $breadcrumb_t->parse('breadcrumb_root', $use_template);
+                    $breadcrumb_t->parse('output', 'breadcrumb_root_t');
+                } else {
+                    $breadcrumb_t->parse('breadcrumb', $use_template);
+                    $breadcrumb_t->parse('output', 'breadcrumb_child_t');
+                }
+
+                $retval = $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
+            }
+            $breadcrumb_t->set_var('breadcrumbs_list', $retval);
+            $breadcrumb_t->parse('output', 'breadcrumbs_t');
+            $breadcrumbs_output .= $breadcrumb_t->finish($breadcrumb_t->get_var('output'));
+        }
     }
+
+    return $breadcrumbs_output;
 }
 
 /**
