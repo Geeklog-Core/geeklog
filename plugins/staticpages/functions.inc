@@ -1764,6 +1764,7 @@ function plugin_getrelateditems_staticpages($tids, $max, $trim)
         $extra_sql .=' AND sp_php = 0';
     }
     
+    // Find newest Static Pages user has access too
     $sql = "SELECT sp_id, sp_title, UNIX_TIMESTAMP({$datecolumn}) sp_date 
         FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta   
         WHERE ta.type = 'staticpages' AND ta.id = sp_id AND (ta.tid IN ('" . implode( "','", $tids ) . "')) 

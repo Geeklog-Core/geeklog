@@ -1740,6 +1740,7 @@ function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $tr
         $from_db = true;
     }
     
+    // Find all topics user has access too
     if ($from_db) {
         // Retrieve Topic options
         $sql = "SELECT ta.tid, t.topic 

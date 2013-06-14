@@ -807,7 +807,7 @@ function plugin_getrelateditems_story($tids, $max, $trim)
         $where_sql .= " AND (ta.tid <> '$archivetid')";
     }
 
-    // Find the newest stories
+    // Find the newest stories the user has access too
     $sql = "SELECT sid, title, UNIX_TIMESTAMP(date) s_date 
         FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
         WHERE ta.type = 'article' AND ta.id = sid AND (ta.tid IN ('" . implode( "','", $tids ) . "')) 
