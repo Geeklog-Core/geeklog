@@ -2805,7 +2805,13 @@ function PLG_configChange($group, $changes)
 {
     global $_PLUGINS;
 
-    foreach ($_PLUGINS as $pi_name) {
+    // Treat articles like a plugin (since belong to core group)
+    require_once $_CONF['path_system'] . 'lib-story.php';
+    
+    $plugintypes[] = 'article';
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+
+    foreach ($plugintypes as $pi_name) {    
         $args = array();
         $args[1] = $group;
 

@@ -36,6 +36,9 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'config-install.php') !== false) {
 function install_config()
 {
     global $_CONF, $_TABLES;
+    
+    
+    // Parameters for add function:  $param_name, $default_value, $type, $subgroup, $fieldset=null, $selection_array=null, $sort=0, $set=true, $group='Core', $tab=null
 
     $me = 'Core';
     
@@ -142,6 +145,9 @@ function install_config()
     $c->add('aftersave_story','list','select',1,7,9,1330,TRUE, $me, 7);
     $c->add('related_topics',1,'select',1,7,32,1340,TRUE, $me, 7);
     $c->add('related_topics_max',6,'text',1,7,NULL,1350,TRUE, $me, 7);
+    $c->add('whats_related',1,'select',1,7,33,1360,TRUE, $me, 7);
+    $c->add('whats_related_max',0,'text',1,7,NULL,1370,TRUE, $me, 7);
+    $c->add('whats_related_trim',26,'text',1,7,NULL,1380,TRUE, $me, 7);
 
     $c->add('tab_trackback', NULL, 'tab', 1, 8, NULL, 0, TRUE, $me, 8);
     $c->add('fs_trackback', NULL, 'fieldset', 1, 8, NULL, 0, TRUE, $me, 8);

@@ -1963,7 +1963,10 @@ $LANG_confignames['Core'] = array(
     'onlyrootfeatures' => "Only Root can Feature?",
     'aftersave_story' => "After Saving Story",
     'related_topics' => "Related Topics",
-    'related_topics_max' => "Max Related Topics to Display",    
+    'related_topics_max' => "Max Related Topics to Display",
+    'whats_related' => "What's Related",
+    'whats_related_max' => "Max What's Related to Display",    
+    'whats_related_trim' => "What's Related Title Length",
     'aftersave_user' => "After Saving User",
     'show_right_blocks' => "Always Show Right Blocks?",
     'showfirstasfeatured' => "Show First Story as Featured?",
@@ -2207,7 +2210,8 @@ $LANG_configselects['Core'] = array(
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'), 
     31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'), 
-    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 'articletopic')
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2), 
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
 );
 
 ################################################################################

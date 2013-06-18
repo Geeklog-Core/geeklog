@@ -1183,10 +1183,11 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
 *
 * @param    string          $type   Type of object to find topic access about. If 'topic' then will check post array for topic selection control 
 * @param    string/array    $id     ID of block or topic to check if block topic access
+* @param    int             $uid    User id (not currently implemented) or 0 = current user or -1 = do not check access
 * @return   array                   Returns default topic id or empty string if not found
 *
 */
-function TOPIC_getTopicIdsForObject($type, $id = '')
+function TOPIC_getTopicIdsForObject($type, $id = '', $uid = -1)
 {
     global $_TABLES;
     
@@ -1203,7 +1204,23 @@ function TOPIC_getTopicIdsForObject($type, $id = '')
         }
     } else {
         // Retrieve topic assignments
-        $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
+        if ($uid == 0) {
+            $sql = "SELECT ta.tid, t.topic 
+                FROM {$_TABLES['topics']} t, {$_TABLES['topic_assignments']} ta 
+                WHERE t.tid = ta.tid  
+                AND ta.type = '$type' AND ta.id = '$id' 
+                " . COM_getPermSQL('AND', 0, 2, 't')
+                . " ORDER BY tdefault DESC, topic ASC"; 
+        } elseif ($uid > 0) {
+            // Need to add code to retrieve topics assigments a specified user has access too
+            
+            
+            
+            
+        } else {
+            $sql = "SELECT tid FROM {$_TABLES['topic_assignments']} WHERE type = '$type' AND id ='$id'";
+        }
+        
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         for($i = 0; $i < $nrows; $i++) {
@@ -1653,8 +1670,8 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
 
     $retval = '';
     
-    if ($max < 1) {
-        $max = 1;
+    if ($max < 0) {
+        $max = 6;
     }
     
     if (!is_array($tids)) {
@@ -1679,8 +1696,11 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
             WHERE (tid IN ('" . implode( "','", $tids ) . "'))"; 
     }
     $sql .= COM_getPermSQL('AND') . "
-        ORDER BY topic ASC LIMIT " . $max;    
-    
+        ORDER BY topic ASC";
+    if ($max > 0) {    
+        $sql .= " LIMIT " . $max;
+    }
+        
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
@@ -1698,15 +1718,6 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
     return $retval;
 }
 
-/*
- 3) Have an Autotag that create a point list of the last x number of new stories, staticpages, polls, etc. of a topic. Configurable options would include:
-
- - Either object type and id (so we can gather topic info and not include itself in the list) OR a list of topics to include
-  - Number of items in the list
- - What type of items to include: All, Stories, Staticpage, etc
-
- Some new plugin api is required here for this as well.
- */
 /**
 * This function creates a list of the newest and recently modified items that are related based on 
 * the topics passed or that the object belongs too 

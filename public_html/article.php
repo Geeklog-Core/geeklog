@@ -357,7 +357,7 @@ if ($A['count'] > 0) {
     */
         $related = STORY_whatsRelated($story->displayElements('related'),
                                       $story->displayElements('uid'),
-                                      $story->displayElements('tid'));
+                                      $story->getSid());
         if (!empty ($related)) {
             $related = COM_startBlock ($LANG11[1], '',
                 COM_getBlockTemplate ('whats_related_block', 'header'))

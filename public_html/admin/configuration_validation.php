@@ -203,6 +203,11 @@ $_CONF_VALIDATE['Core']['related_topics'] = array(
     'rule' => array('inList', array(0, 1, 2), false)
 );
 $_CONF_VALIDATE['Core']['related_topics_max'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['whats_related'] = array(
+    'rule' => array('inList', array(0, 1, 2, 3), false)
+);    
+$_CONF_VALIDATE['Core']['whats_related_max'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['whats_related_trim'] = array('rule' => 'numeric');
 
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');

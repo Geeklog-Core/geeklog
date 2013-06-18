@@ -562,7 +562,7 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 * @return   array   an array of strings of form <a href="...">link</a>
 *
 */
-function STORY_extractLinks( $fulltext, $maxlength = 26 )
+function STORY_extractLinks($fulltext, $maxlength = 26)
 {
     $rel = array();
 
@@ -598,54 +598,135 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
 *
 * @param        string      $related    contents of gl_stories 'related' field
 * @param        int         $uid        user id of the author
-* @param        int         $tid        topic id
+* @param        int         $sid        story id
 * @return       string      HTML-formatted list of links
 */
 
-function STORY_whatsRelated( $related, $uid, $tid )
+function STORY_whatsRelated($related, $uid, $sid)
 {
     global $_CONF, $_TABLES, $LANG24;
 
-    // get the links from the story text
-    if (!empty ($related)) {
-        $rel = explode ("\n", $related);
+    // Is it enabled?
+    // Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3
+    if ($_CONF['whats_related']) {
+        // get the links from the story text
+        if ($_CONF['whats_related'] != 2) {
+            if (!empty ($related)) {
+                $rel = explode ("\n", $related);
+            } else {
+                $rel = array ();
+            }
+
+            // Used to hunt out duplicates. Stores urls that have already passed filters            
+            $urls = array();
+        
+            foreach ($rel as $key => &$value) {
+                if (preg_match("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
+                               $value, $matches) === 1) {
+                    
+                    // Go through array and remove links with no link text except link. Since a max of only 23 characters of link text showen then compare only this    
+                    if (substr($matches[1] , 0, 23) != substr($matches[2] , 0, 23)) {
+                        // Check if outbound links (if needed)
+                        $passd_check = false;
+                        if ($_CONF['whats_related'] == 3) { // no outbound links
+                            if ($_CONF['site_url'] == substr($matches[1] , 0, strlen($_CONF['site_url']))) {
+                                $passd_check = true; 
+                            }
+                        } else {
+                            $passd_check = true;    
+                        }
+                            
+                        if ($passd_check) {    
+                            // Go through array and remove any duplicates of this link
+                            if (in_array($matches[1], $urls)) {
+                               // remove it from the array
+                               unset($rel[$key]);                       
+                            } else {
+                                $urls[] = $matches[1];
+                                // Now Check Words
+                                $value = '<a href="' . $matches[1] . '">'
+                                       . COM_checkWords($matches[2]) . '</a>';
+                           }
+                       } else {
+                           // remove it from the array
+                           unset($rel[$key]);
+                       }
+                   } else {
+                       // remove it from the array
+                       unset($rel[$key]);
+                   }
+                } else {
+                    $value = COM_checkWords($value);
+                }
+            }
+        }
+        
+        $topics = array();
+        if (!COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
+               ( $_CONF['searchloginrequired'] == 0))) {
+            // add a link to "search by author"
+            if( $_CONF['contributedbyline'] == 1 )
+            {
+                $author = $LANG24[37] . ' ' . COM_getDisplayName($uid);
+                if ($_CONF['whats_related_trim'] > 0 && (MBYTE_strlen($author) > $_CONF['whats_related_trim'])) {
+                    $author = substr($author, 0, $_CONF['whats_related_trim'] - 3 ) . '...';
+                }                
+                $topics[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">$author</a>";
+            }
+    
+            // Retrieve topics
+            $tids = TOPIC_getTopicIdsForObject('article', $sid, 0);
+            foreach ($tids as $tid) {
+                // add a link to "search by topic"
+                $topic = $LANG24[38] . ' ' . stripslashes(DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" ));
+                // trim topics if needed
+                if ($_CONF['whats_related_trim'] > 0 && (MBYTE_strlen($topic) > $_CONF['whats_related_trim'])) {
+                    $topic = substr($topic, 0, $_CONF['whats_related_trim'] - 3 ) . '...';
+                }
+                $topics[] = '<a href="' . $_CONF['site_url']
+                       . '/search.php?mode=search&amp;type=stories&amp;topic=' . $tid
+                       . '">' . $topic . '</a>';          
+            }               
+        }
+    
+        // If line limit then split between related links and topics
+        if ($_CONF['whats_related_max'] > 0) {
+            if ($_CONF['whats_related_max'] < 3) {
+                $rel = array(); // Reset related links so at least user search and default topic search is displayed 
+                $topics = array_slice($topics, 0, 2);
+            } else {
+                $rel_max_num_items = intval($_CONF['whats_related_max'] / 2);
+                $topic_max_num_items = $rel_max_num_items;
+                if (($rel_max_num_items + $topic_max_num_items) != $_CONF['whats_related_max']) {
+                    $topic_max_num_items = $topic_max_num_items + 1;
+                }
+                // Now check if we have enough topics to display else give it to links
+                $topic_num_items = count($topics);
+                $rel_num_items = count($rel);
+                $added_flag = false;
+                if ($topic_num_items < $topic_max_num_items) {
+                    $rel_max_num_items = $rel_max_num_items + ($topic_max_num_items - $topic_num_items);
+                    $added_flag = true;
+                }
+                if (!$added_flag AND ($rel_num_items < $rel_max_num_items)) {
+                    $topic_max_num_items = $topic_max_num_items + ($rel_max_num_items - $rel_num_items);
+                }
+                $rel = array_slice($rel, 0, $rel_max_num_items);
+                $topics = array_slice($topics, 0, $topic_max_num_items);
+            
+            }
+        }
+        $result = array_merge($rel, $topics);
+
+        $related = '';
+        if( count( $result ) > 0 ) {
+            $related = COM_makeList($result, 'list-whats-related');
+        }
     } else {
-        $rel = array ();
+        $related = '';
     }
-
-    foreach ($rel as &$value) {
-        if (preg_match("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i",
-                       $value, $matches) === 1) {
-            $value = '<a href="' . $matches[1] . '">'
-                   . COM_checkWords($matches[2]) . '</a>';
-        } else {
-            $value = COM_checkWords($value);
-        }
-    }
-
-    if( !COM_isAnonUser() || (( $_CONF['loginrequired'] == 0 ) &&
-           ( $_CONF['searchloginrequired'] == 0 ))) {
-        // add a link to "search by author"
-        if( $_CONF['contributedbyline'] == 1 )
-        {
-            $author = COM_getDisplayName( $uid );
-            $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
-        }
-
-        // add a link to "search by topic"
-        $topic = DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" );
-        $rel[] = '<a href="' . $_CONF['site_url']
-               . '/search.php?mode=search&amp;type=stories&amp;topic=' . $tid
-               . '">' . $LANG24[38] . ' ' . stripslashes( $topic ) . '</a>';
-    }
-
-    $related = '';
-    if( count( $rel ) > 0 )
-    {
-        $related = COM_makeList( $rel, 'list-whats-related' );
-    }
-
-    return( $related );
+    
+    return $related;
 }
 
 /**
@@ -1522,11 +1603,34 @@ function plugin_getfeednames_article()
     return $feeds;
 }
 
+/**
+* Config Option has changed. (use plugin api)
+*
+* @return   nothing
+*
+*/
+function plugin_configchange_article($group, $changes)
+{
+    global $_TABLES, $_CONF;
 
-
-
-
-
+    // If trim length changes then need to redo all related url's for articles
+    if ($group == 'Core' AND in_array('whats_related_trim', $changes)) {
+        $sql = "SELECT sid, introtext, bodytext FROM {$_TABLES['stories']}";  
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+        if ($nrows > 0) {
+            for ($x = 0; $x < $nrows; $x++) {
+                $A = DB_fetchArray ($result);
+                $fulltext = $A['introtext'] . ' ' . $A['bodytext']; 
+                $related =  implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim']));
+                if (!empty($related)) {
+                    DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");                    
+                }
+            }
+            
+        }
+    }
+}
 
 /*
  * START SERVICES SECTION
