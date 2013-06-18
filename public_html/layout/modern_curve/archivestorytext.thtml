@@ -1,5 +1,4 @@
-
-<!-- archivestorytext.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="archivestorytext">
   {breadcrumb_trail}
@@ -36,6 +35,8 @@
   <div class="story_introtext">
     {story_text_no_br}
   </div>
+  
+  {related_topics}  
 
   <ul class="navi">
     <li>{page_selector}</li>
@@ -50,4 +51,4 @@
   </ul>
 </div>
 
-<!-- } archivestorytext.thtml -->
+{# end {templatelocation} #}
