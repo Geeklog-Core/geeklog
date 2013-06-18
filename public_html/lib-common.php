@@ -980,6 +980,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
         $header->set_block('menunavigation', $block);
     }        
     
+    // Allow anything not in the blocks but in the rest of the template file to be displayed
     $header->parse('menu_elements', 'menunavigation', true);
     
     $header->set_var('doctype', $doctype);
@@ -2907,8 +2908,8 @@ function COM_showTopics($topic = '')
     $retval = '';
     
     $topicnavigation = COM_newTemplate($_CONF['path_layout']);
-    if (isset($_BLOCK_TEMPLATE['topicoption'])) {
-        $topicnavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicoption']);
+    if (isset($_BLOCK_TEMPLATE['topicnavigation'])) {
+        $topicnavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicnavigation']);
     } else {
         $topicnavigation->set_file('topicnavigation', 'topicnavigation.thtml');
     }    
@@ -2916,10 +2917,11 @@ function COM_showTopics($topic = '')
     foreach ($blocks as $block) {
         $topicnavigation->set_block('topicnavigation', $block);
     }    
-    
-    $retval .= $topicnavigation->parse('item', 'topicnavigation', true);
 
     $topicnavigation->set_var('block_name', str_replace('_', '-', 'section_block'));
+    
+    // Allow anything not in the blocks but in the rest of the template file to be displayed
+    $retval .= $topicnavigation->parse('item', 'topicnavigation', true);
 
     if ($_CONF['hide_home_link'] == 0) {
         // Give a link to the homepage here since a lot of people use this for
@@ -3115,18 +3117,17 @@ function COM_userMenu( $help='', $title='', $position='' )
     if( !COM_isAnonUser() )
     {
         $usermenu = COM_newTemplate($_CONF['path_layout']);
-        if( isset( $_BLOCK_TEMPLATE['useroption'] ))
-        {
-            $templates = explode( ',', $_BLOCK_TEMPLATE['useroption'] );
-            $usermenu->set_file( array( 'option' => $templates[0],
-                                        'current' => $templates[1] ));
-        }
-        else
-        {
-           $usermenu->set_file( array( 'option' => 'useroption.thtml',
-                                       'current' => 'useroption_off.thtml' ));
-        }
-        $usermenu->set_var( 'block_name', str_replace( '_', '-', 'user_block' ));
+        if (isset($_BLOCK_TEMPLATE['usernavigation'])) {
+            $usermenu->set_file('usernavigation', $_BLOCK_TEMPLATE['usernavigation']);
+        } else {
+            $usermenu->set_file('usernavigation', 'usernavigation.thtml');
+        }    
+        $blocks = array('option', 'current');
+        foreach ($blocks as $block) {
+            $usermenu->set_block('usernavigation', $block);
+        }    
+        
+        $usermenu->set_var('block_name', str_replace('_', '-', 'user_block'));
 
         if( empty( $title ))
         {
@@ -3139,6 +3140,9 @@ function COM_userMenu( $help='', $title='', $position='' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'user_block', 'header', $position ));
+        
+        // Allow anything not in the blocks but in the rest of the template file to be displayed
+        $retval .= $usermenu->parse('item', 'usernavigation', true);           
 
         // This function will show the user options for all installed plugins
         // (if any)
@@ -3322,20 +3326,19 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
-
+   
         $adminmenu = COM_newTemplate($_CONF['path_layout']);
-        if( isset( $_BLOCK_TEMPLATE['adminoption'] ))
-        {
-            $templates = explode( ',', $_BLOCK_TEMPLATE['adminoption'] );
-            $adminmenu->set_file( array( 'option' => $templates[0],
-                                         'current' => $templates[1] ));
-        }
-        else
-        {
-            $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
-                                         'current' => 'adminoption_off.thtml' ));
-        }
-        $adminmenu->set_var( 'block_name', str_replace( '_', '-', 'admin_block' ));
+        if (isset($_BLOCK_TEMPLATE['adminnavigation'])) {
+            $adminmenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
+        } else {
+            $adminmenu->set_file('adminnavigation', 'adminnavigation.thtml');
+        }    
+        $blocks = array('option', 'current');
+        foreach ($blocks as $block) {
+            $adminmenu->set_block('adminnavigation', $block);
+        }    
+        
+        $adminmenu->set_var('block_name', str_replace('_', '-', 'admin_block'));
 
         if( empty( $title ))
         {
@@ -3345,6 +3348,9 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'admin_block', 'header', $position ));
+        
+        // Allow anything not in the blocks but in the rest of the template file to be displayed
+        $retval .= $adminmenu->parse('item', 'adminnavigation', true);
 
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
@@ -6141,14 +6147,14 @@ function COM_makeList($listofitems, $classname = '')
     global $_CONF;                                                                                              
 
     $list = COM_newTemplate($_CONF['path_layout']);
-    $list->set_file(array('list'     => 'list.thtml',
-                          'listitem' => 'listitem.thtml'));
+    $list->set_file(array('list'     => 'list.thtml'));
+    $list->set_block('list', 'listitem');
 
     if (empty($classname)) {
         $list->set_var('list_class',      '');
         $list->set_var('list_class_name', '');
     } else {
-        $list->set_var('list_class',      'class="' . $classname . '"');
+        $list->set_var('list_class', 'class="' . $classname . '"');
         $list->set_var('list_class_name', $classname);
     }
 

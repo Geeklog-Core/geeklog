@@ -1,0 +1,8 @@
+{# {templatelocation} - The Admin Navigation uses template blocks which is built into this file #}
+
+<!-- BEGIN option -->
+<li class="adminoption sideoption"><a href="{option_url}">{option_label}<span>({option_count})</span></a></li>
+<!-- END option -->
+<!-- BEGIN current -->
+<li class="adminoption_off sideoption_off">{option_label} ({option_count})</li>
+<!-- END current -->

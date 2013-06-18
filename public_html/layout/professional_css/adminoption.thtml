@@ -1,6 +1,0 @@
-
-<!-- adminoption.thtml { -->
-
-        <li class="adminoption"><a href="{option_url}">{option_label}</a> ({option_count})</li>
-
-<!-- } adminoption.thtml -->

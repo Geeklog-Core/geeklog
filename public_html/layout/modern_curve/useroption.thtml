@@ -1,6 +1,0 @@
-
-<!-- useroption.thtml { -->
-
-        <li class="useroption"><a href="{option_url}"{option_attributes}>{option_label}</a>&nbsp;{option_count}</li>
-
-<!-- } useroption.thtml -->

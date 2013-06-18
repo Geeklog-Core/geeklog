@@ -1,3 +1,11 @@
-<ul {list_class}>
-{list_items}
-</ul>
+{# begin {templatelocation} #}
+
+      <ul {list_class}>
+        {list_items}
+      </ul>
+
+{# end {templatelocation} #}
+
+<!-- BEGIN listitem -->
+<li>{list_item}</li>
+<!-- END listitem -->

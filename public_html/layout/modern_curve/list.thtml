@@ -1,7 +1,11 @@
-<!-- list.thtml { -->
+{# begin {templatelocation} #}
 
       <ul {list_class}>
         {list_items}
       </ul>
 
-<!-- } list.thtml -->
+{# end {templatelocation} #}
+
+<!-- BEGIN listitem -->
+<li class="listitem">{list_item}</li>
+<!-- END listitem -->
