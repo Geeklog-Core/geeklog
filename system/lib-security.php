@@ -757,7 +757,7 @@ function SEC_authenticate($username, $password, &$uid)
         }
     } else {
         $tmp = $LANG01[32] . ": '" . $username . "'";
-        COM_errorLog($tmp, 1);
+        COM_accessLog($tmp);
         return -1;
     }
 }
