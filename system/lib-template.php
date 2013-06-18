@@ -110,4 +110,20 @@ function CTL_clearCache($plugin='')
 
 }
 
+/**
+* Config Option has changed. (use plugin api)
+*
+* @return   nothing
+*
+*/
+function plugin_configchange_template($group, $changes)
+{
+    global $_TABLES, $_CONF;
+echo "ha";
+    // If template comments disabled or enabled clear all cached templates
+    if ($group == 'Core' AND in_array('template_comments', $changes)) {
+        CTL_clearCache();
+    }
+}
+
 ?>
