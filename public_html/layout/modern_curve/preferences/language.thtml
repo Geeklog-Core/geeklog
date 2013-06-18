@@ -1,7 +1,6 @@
-
-<!-- preferences/language.thtml { -->
+{# begin {templatelocation} #}
 
 <dt><label for="language">{lang_language}</label></dt>
 <dd>{language_selector}</dd>
 
-<!-- } preferences/language.thtml -->
+{# end {templatelocation} #}

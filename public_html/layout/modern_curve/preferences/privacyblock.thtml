@@ -1,4 +1,4 @@
-<!-- preferences/privacyblock.thtml { -->
+{# begin {templatelocation} #}
 
 <fieldset>
   <legend>{lang_privacy_title}</legend>
@@ -20,4 +20,4 @@
   </dl>
 </fieldset>
 
-<!-- } preferences/privacyblock.thtml -->
+{# end {templatelocation} #}

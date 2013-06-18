@@ -1,5 +1,4 @@
-
-<!-- admin/story/storyeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="admin-storyeditor" class="compact">
 
@@ -208,4 +207,4 @@
   </ul>
 </form>
 
-<!-- } admin/story/storyeditor.thtml -->
+{# end {templatelocation} #}

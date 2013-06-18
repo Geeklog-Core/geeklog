@@ -1,8 +1,7 @@
-
-<!-- search/resultsummary.thtml { -->
+{# begin {templatelocation} #}
 
 <tr>
   <td colspan="3">{data}</td>
 </tr>
 
-<!-- } search/resultsummary.thtml -->
+{# end {templatelocation} #}

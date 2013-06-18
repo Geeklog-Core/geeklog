@@ -1,5 +1,4 @@
-
-<!-- trackback/trackback.thtml { -->
+{# begin {templatelocation} #}
 
 <div id="trackback">
   <h3>{lang_trackback}</h3>
@@ -15,4 +14,4 @@
   </div>
 </div>
 
-<!-- } trackback/trackback.thtml -->
+{# end {templatelocation} #}

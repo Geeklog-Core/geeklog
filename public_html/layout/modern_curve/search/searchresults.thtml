@@ -1,5 +1,4 @@
-
-<!-- search/searchresults.thtml { -->
+{# begin {templatelocation} #}
 
 <dl id="searchresults-found">
   <dt>{lang_matchesfor}</dt>
@@ -11,4 +10,4 @@
 {search_blocks}
 {search_pager}
 
-<!-- } search/searchresults.thtml -->
+{# end {templatelocation} #}

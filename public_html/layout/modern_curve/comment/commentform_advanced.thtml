@@ -1,5 +1,4 @@
-
-<!-- comment/commentform_advanced.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
@@ -73,4 +72,4 @@
   {end_block}
 </div>
 
-<!-- } comment/commentform_advanced.thtml -->
+{# end {templatelocation} #}

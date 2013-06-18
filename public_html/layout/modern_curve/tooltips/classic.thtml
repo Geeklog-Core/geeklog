@@ -1,6 +1,5 @@
-
-<!-- tooltips/classic.thtml { -->
+{# begin {templatelocation} #}
 
 <a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="classic">{text}</span></a>
 
-<!-- } tooltips/classic.thtml -->
+{# end {templatelocation} #}

@@ -1,5 +1,4 @@
-
-<!-- submit/submitstory.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_url}/submit.php" method="post" id="submitstory" class="compact">
 
@@ -49,4 +48,4 @@
   </div>
 </form>
 
-<!-- } submit/submitstory.thtml -->
+{# end {templatelocation} #}

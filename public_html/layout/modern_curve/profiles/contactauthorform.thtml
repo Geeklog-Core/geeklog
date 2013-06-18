@@ -1,5 +1,4 @@
-
-<!-- profiles/contactauthorform.thtml { -->
+{# begin {templatelocation} #}
 
 {start_block_mailstory2friend}
   <form action="{site_url}/profiles.php" method="post" id="contactauthorform" class="compact">
@@ -43,4 +42,4 @@
   </form>
 {end_block}
 
-<!-- } profiles/contactauthorform.thtml -->
+{# end {templatelocation} #}

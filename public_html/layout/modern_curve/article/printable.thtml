@@ -14,7 +14,7 @@
 
 <body dir="{direction}">
 
-<!-- article/printable.thtml { -->
+{# begin {templatelocation} #}
 
   <h1 id="printable-story_title">{story_title}</h1>
 
@@ -33,7 +33,7 @@
     <dd><a href="{article_url}">{article_url}</a></dd>
   </dl>
 
-<!-- } article/printable.thtml -->
+{# end {templatelocation} #}
 
 </body>
 </html>

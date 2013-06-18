@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/pinglist.thtml { -->
+{# begin {templatelocation} #}
 
 <p class="trackback-message">{lang_results}</p>
 
@@ -9,4 +8,4 @@
   </tbody>
 </table>
 
-<!-- } admin/trackback/pinglist.thtml -->
+{# end {templatelocation} #}

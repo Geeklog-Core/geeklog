@@ -1,7 +1,9 @@
-<!-- Start of Breadcrumbs Navigation -->
+{# begin {templatelocation} #}
+
 <p>
 <div{!if microdata} itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
     {breadcrumbs_list}
 </div>
 </p>
-<!-- End of Breadcrumbs Navigation -->
+
+{# end {templatelocation} #}

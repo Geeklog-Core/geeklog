@@ -1,5 +1,4 @@
-
-<!-- trackback/formattedcomment.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="formattedcomment">
   <ul class="status">
@@ -14,4 +13,4 @@
   </ul>
 </div>
 
-<!-- } trackback/formattedcomment.thtml -->
+{# end {templatelocation} #}

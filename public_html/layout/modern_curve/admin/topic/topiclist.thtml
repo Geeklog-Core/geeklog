@@ -1,5 +1,4 @@
-
-<!-- admin/topic/topiclist.thtml { -->
+{# begin {templatelocation} #}
 
 {top_menu}
 
@@ -7,4 +6,4 @@
   {list_row}
 </ul>
 
-<!-- } admin/topic/topiclist.thtml -->
+{# end {templatelocation} #}

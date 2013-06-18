@@ -1,5 +1,4 @@
-
-<!-- search/resultrowenhanced.thtml { -->
+{# begin {templatelocation} #}
 
 <tr>
   <td>
@@ -9,4 +8,4 @@
   </td>
 </tr>
 
-<!-- } search/resultrowenhanced.thtml -->
+{# end {templatelocation} #}

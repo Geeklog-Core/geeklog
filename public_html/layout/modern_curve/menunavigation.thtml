@@ -1,4 +1,4 @@
-{# {templatelocation} - The Menu Navigation uses template blocks which is built into this file #}
+{# begin {templatelocation} - The Menu Navigation uses template blocks which is built into this file #}
 
 <!-- BEGIN menuitem -->
 <li class="menuitem"><a href="{menuitem_url}">{menuitem_text}</a></li>

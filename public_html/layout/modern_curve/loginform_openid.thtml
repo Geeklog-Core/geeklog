@@ -1,5 +1,5 @@
+{# begin {templatelocation} #}
 
-<!-- loginform_openid.thtml { -->
 <form class="third-party-login" action="{site_url}/users.php?openid_login=1" method="post">
   <div>
     <div style="display: none;">
@@ -14,4 +14,5 @@
     </noscript>
   </div>
 </form>
-<!-- } loginform_openid.thtml -->
+
+{# end {templatelocation} #}

@@ -1,5 +1,4 @@
-
-<!-- preferences/displayblock.thtml { -->
+{# begin {templatelocation} #}
 
 <fieldset>
   <legend>{lang_misc_title}</legend>
@@ -32,4 +31,4 @@
   </dl>
 </fieldset>
 
-<!-- } preferences/displayblock.thtml -->
+{# end {templatelocation} #}

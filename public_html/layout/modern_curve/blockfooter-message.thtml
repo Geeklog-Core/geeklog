@@ -1,8 +1,7 @@
-
-<!-- blockfooter-message.thtml { -->
+{# begin {templatelocation} #}
 
     </dd>
   </dl>
 </div>
 
-<!-- } blockfooter-message.thtml -->
+{# end {templatelocation} #}

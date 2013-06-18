@@ -1,5 +1,4 @@
-
-<!-- admin/lists/topmenu.thtml { -->
+{# begin {templatelocation} #}
 
 <div id="admin-instructions">
   {icon}
@@ -9,4 +8,4 @@
   <div id="instructions">{lang_instructions}</div>
 </div>
 
-<!-- } admin/lists/topmenu.thtml -->
+{# end {templatelocation} #}

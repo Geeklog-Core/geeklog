@@ -1,6 +1,5 @@
-
-<!-- tooltips/warning.thtml { -->
+{# begin {templatelocation} #}
 
 <a class="{class}" style="cursor: {cursor}; " href="{link}">{hoverover}<span class="custom warning"><img class="icon" src="{layout_url}/tooltips/images/warning.png" alt="{title}" height="48" width="48"{xhtml}><em>{title}</em>{text}</span></a>
 
-<!-- } tooltips/warning.thtml -->
+{# end {templatelocation} #}

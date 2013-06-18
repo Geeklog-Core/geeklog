@@ -1,9 +1,8 @@
-
-<!-- admin/user/groupedit.thtml { -->
+{# begin {templatelocation} #}
 
 <dd>
   <p class="groupinstructions">{lang_groupinstructions}</p>
   {group_options}
 </dd>
 
-<!-- } admin/user/groupedit.thtml -->
+{# end {templatelocation} #}

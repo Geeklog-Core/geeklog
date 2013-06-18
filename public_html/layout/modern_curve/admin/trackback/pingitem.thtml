@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/pingitem.thtml { -->
+{# begin {templatelocation} #}
 
 <tr class="admin-listitem{cssid}">
   <td><a href="{service_url}">{service_name}</a></td>
@@ -7,4 +6,4 @@
   <td>{resend}</td>
 </tr>
 
-<!-- } admin/trackback/pingitem.thtml -->
+{# end {templatelocation} #}

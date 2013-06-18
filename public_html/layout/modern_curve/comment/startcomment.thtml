@@ -1,5 +1,4 @@
-
-<!-- comment/startcomment.thtml { -->
+{# begin {templatelocation} #}
 
 <div id="{area_id}">
   <div id="comments" class="comments">
@@ -11,4 +10,4 @@
   {commenteditor}
 </div>
 
-<!-- } comment/startcomment.thtml -->
+{# end {templatelocation} #}

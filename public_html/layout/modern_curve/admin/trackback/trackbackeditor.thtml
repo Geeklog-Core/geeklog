@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/trackbackeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/trackback.php" method="post" id="trackbackeditor" class="compact">
 
@@ -32,4 +31,4 @@
   </div>
 </form>
 
-<!-- } admin/trackback/trackbackeditor.thtml -->
+{# end {templatelocation} #}

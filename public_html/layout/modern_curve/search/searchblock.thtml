@@ -1,5 +1,4 @@
-
-<!-- search/searchblock.thtml { -->
+{# begin {templatelocation} #}
 
 {start_block_results}
 
@@ -17,4 +16,4 @@
 
 {end_block}
 
-<!-- search/searchblock.thtml { -->
+{# end {templatelocation} #}

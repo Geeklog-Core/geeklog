@@ -1,5 +1,4 @@
-
-<!-- admin/lists/inline.thtml { -->
+{# begin {templatelocation} #}
 
                             {search_menu}
                             {formfields_top}
@@ -16,4 +15,4 @@
                             <p class="aligncenter" style="{show_message}"><strong>{message}</strong></p>
                             {google_paging}
 
-<!-- } admin/lists/inline.thtml -->
+{# end {templatelocation} #}

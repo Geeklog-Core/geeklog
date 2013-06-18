@@ -1,8 +1,7 @@
-
-<!-- navbar/breadcrumbs.thtml { -->
+{# begin {templatelocation} #}
 
 <ul class="navbar-breadcrumbs">
   {breadcrumb_links}{last_label}
 </ul>
 
-<!-- } navbar/breadcrumbs.thtml -->
+{# end {templatelocation} #}

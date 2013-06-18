@@ -1,5 +1,4 @@
-
-<!-- comment/commentform.thtml { -->
+{# begin {templatelocation} #}
 
 {start_block_postacomment}
 <div id="commenteditform">
@@ -66,4 +65,5 @@
 
 </div>
 {end_block}
-<!-- } comment/commentform.thtml -->
+
+{# end {templatelocation} #}

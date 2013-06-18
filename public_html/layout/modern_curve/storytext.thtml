@@ -50,12 +50,4 @@
   </ul>
 </div>
 
-{# To display topics the article belongs to #}
-<!-- BEGIN related-topics -->
-<span class="related-topics">{lang_topics}{topic}</li>
-<!-- END related-topics -->
-<!-- BEGIN topic -->
-<a href="{option_url}">{option_label}</a> 
-<!-- END topic -->
-
 {# end {templatelocation} #}

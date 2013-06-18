@@ -1,6 +1,5 @@
-
-<!-- trackback/trackbackcomment.thtml { -->
+{# begin {templatelocation} #}
 
 {formatted_comment}
 
-<!-- } trackback/trackbackcomment.thtml -->
+{# end {templatelocation} #}

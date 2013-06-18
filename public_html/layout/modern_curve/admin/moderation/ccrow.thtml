@@ -1,6 +1,5 @@
-
-<!-- admin/moderation/ccrow.thtml { -->
+{# begin {templatelocation} #}
 
 {cc_main_options}
 
-<!-- } admin/moderation/ccrow.thtml -->
+{# end {templatelocation} #}

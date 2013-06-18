@@ -1,5 +1,4 @@
-
-<!-- admin/common/edit_topics.thtml { -->
+{# begin {templatelocation} #}
 
 <div style="vertical-align:top;display:inline-block;{options_hide}">
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
@@ -30,4 +29,4 @@
     <p>{topic_info}</p>
 </div>
 
-<!-- } admin/common/edit_topics.thtml -->
+{# end {templatelocation} #}

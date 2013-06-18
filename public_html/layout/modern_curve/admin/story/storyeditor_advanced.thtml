@@ -1,5 +1,4 @@
-
-<!-- admin/story/storyeditor_advanced.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 
@@ -308,4 +307,4 @@
   {preview_content}
 </div>
 
-<!-- } admin/story/storyeditor_advanced.thtml -->
+{# end {templatelocation} #}

@@ -1,5 +1,4 @@
-
-<!-- loginform.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_url}/users.php" method="post" id="loginform" class="basic">
   <div>
@@ -24,4 +23,5 @@
 </form>
 {oauth_login}
 {openid_login}
-<!-- } loginform.thtml -->
+
+{# end {templatelocation} #}

@@ -1,8 +1,7 @@
-
-<!-- blockheader-right.thtml { -->
+{# begin {templatelocation} #}
 
     <div class="block-right">
       <h2>{block_title}{block_help}</h2>
       <div class="block-right-content">
 
-<!-- } blockheader-right.thtml -->
+{# end {templatelocation} #}

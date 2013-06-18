@@ -1,5 +1,4 @@
-
-<!-- comment/comment.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="block-comment-content level-{indent}">
   <ul class="status">
@@ -17,4 +16,4 @@
   </ul>
 </div>
 
-<!-- } comment/comment.thtml -->
+{# end {templatelocation} #}

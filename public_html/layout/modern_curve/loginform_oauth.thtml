@@ -1,4 +1,4 @@
-<!-- loginform_oauth.thtml { -->
+{# begin {templatelocation} #}
 
 <form class="third-party-login" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
   <div>
@@ -7,5 +7,5 @@
   </div>
 </form>
 
-<!-- } loginform_oauth.thtml -->
+{# end {templatelocation} #}
 

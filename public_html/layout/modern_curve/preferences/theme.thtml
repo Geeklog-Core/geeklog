@@ -1,7 +1,6 @@
-
-<!-- preferences/theme.thtml { -->
+{# begin {templatelocation} #}
 
 <dt><label for="theme">{lang_theme}</label></dt>
 <dd>{theme_selector}</dd>
 
-<!-- } preferences/theme.thtml -->
+{# end {templatelocation} #}

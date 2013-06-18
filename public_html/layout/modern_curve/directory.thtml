@@ -1,5 +1,4 @@
-
-<!-- directory.thtml { -->
+{# begin {templatelocation} #}
 
 {current_month}
 {blockheader}
@@ -22,4 +21,4 @@
 <div class="pagenav">{page_navigation}</div>
 {blockfooter}
 
-<!-- } directory.thtml -->
+{# end {templatelocation} #}

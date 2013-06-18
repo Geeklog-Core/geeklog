@@ -1,9 +1,8 @@
-
-<!-- blockheader-message.thtml { -->
+{# begin {templatelocation} #}
 
 <div class="block-message">
   <dl>
     <dt class="title">{showhide}{block_title}{block_help}</dt>
     <dd class="message">
 
-<!-- } blockheader-message.thtml -->
+{# end {templatelocation} #}

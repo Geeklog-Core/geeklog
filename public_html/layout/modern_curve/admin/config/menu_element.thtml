@@ -1,5 +1,4 @@
-
-<!-- admin/config/menu_element.thtml { -->
+{# begin {templatelocation} #}
 
 <li><a href="#" onclick='open_group("{group_select_value}");return false;'>{group_display}</a>
     <ul>
@@ -11,4 +10,4 @@
     </ul>
 </li>
 
-<!-- } admin/config/menu_element.thtml -->
+{# end {templatelocation} #}

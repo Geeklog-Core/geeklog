@@ -1,6 +1,5 @@
-
-<!-- lists/inline/item_field.thtml { -->
+{# begin {templatelocation} #}
 
                                     {field_text}
 
-<!-- } lists/inline/item_field.thtml -->
+{# end {templatelocation} #}

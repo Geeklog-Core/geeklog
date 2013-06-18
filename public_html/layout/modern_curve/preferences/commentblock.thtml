@@ -1,5 +1,4 @@
-
-<!-- preferences/commentblock.thtml { -->
+{# begin {templatelocation} #}
 
 <fieldset>
   <legend>{lang_comment_title}</legend>
@@ -21,4 +20,4 @@
   </dl>
 </fieldset>
 
-<!-- } preferences/commentblock.thtml -->
+{# end {templatelocation} #}

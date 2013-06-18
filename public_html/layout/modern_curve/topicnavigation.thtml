@@ -1,4 +1,4 @@
-{# {templatelocation} - The Topic Navigation uses template blocks which is built into this file #}
+{# begin {templatelocation} - The Topic Navigation uses template blocks which is built into this file #}
 
 <!-- BEGIN option -->
 <li class="topicoption">{branch_spaces}<a href="{option_url}">{option_label}</a>&nbsp;{option_count}</li>

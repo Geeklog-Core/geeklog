@@ -1,6 +1,5 @@
-
-<!-- admin/lists/field.thtml { -->
+{# begin {templatelocation} #}
 
 <td class="{class}"{colspan}>{itemtext}</td>
 
-<!-- } admin/lists/field.thtml -->
+{# end {templatelocation} #}

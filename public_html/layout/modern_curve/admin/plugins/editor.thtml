@@ -1,5 +1,4 @@
-
-<!-- admin/plugins/editor.thtml { -->
+{# begin {templatelocation} #}
 
 {start_block_editor}
 <form action="{site_admin_url}/plugins.php" method="post" class="compact">
@@ -36,4 +35,4 @@
 </form>
 {end_block}
 
-<!-- } admin/plugins/editor.thtml -->
+{# end {templatelocation} #}

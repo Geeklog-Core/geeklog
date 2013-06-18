@@ -1,5 +1,4 @@
-
-<!-- lists/table/list.thtml { -->
+{# begin {templatelocation} #}
 
                             {list_top}
                             <div class="admin-list-search">
@@ -20,4 +19,4 @@
                             {google_paging}
                             {list_bottom}
 
-<!-- } lists/table/list.thtml -->
+{# end {templatelocation} #}

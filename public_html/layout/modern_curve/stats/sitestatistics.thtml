@@ -1,5 +1,4 @@
-
-<!-- stats/sitestatistics.thtml { -->
+{# begin {templatelocation} #}
 
 <table class="sitestatistics">
   <tbody>
@@ -21,4 +20,4 @@
 
 </table>
 
-<!-- } stats/sitestatistics.thtml -->
+{# end {templatelocation} #}

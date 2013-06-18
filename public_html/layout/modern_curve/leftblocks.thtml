@@ -1,9 +1,9 @@
+{# begin {templatelocation} #}
 <!--[if !IE]> Using conditional comments to avoid Win IE 6 bugs. <![endif]-->
 <!--[if !IE]> (When combined with multiple floating elements, floating bug duplicate last element content) <![endif]-->
-<!-- leftblocks.thtml { -->
 
     <!-- #leftblocks { -->
-    <!-- Left Blocks Container -->
+    {# Left Blocks Container #}
     <div id="leftblocks">
       <div class="block-left" id="block-left-search">
         <div class="block-left-content">
@@ -25,4 +25,4 @@
 
     <hr class="separator"{xhtml}>
 
-<!-- } leftblocks.thtml -->
+{# end {templatelocation} #}

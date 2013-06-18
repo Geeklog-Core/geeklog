@@ -1,5 +1,4 @@
-
-<!-- admin/topic/listitem.thtml { -->
+{# begin {templatelocation} #}
 
 <li>
   <a href="{site_admin_url}/topic.php?mode=edit&amp;tid={topic_id}">{image_tag}</a>
@@ -7,4 +6,4 @@
   {default_topic} ({topic_access})
 </li>
 
-<!-- } admin/topic/listitem.thtml -->
+{# end {templatelocation} #}

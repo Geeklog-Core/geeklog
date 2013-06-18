@@ -1,5 +1,4 @@
-
-<!-- admin/topic/topiceditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data" id="admin-topiceditor" class="compact">
 
@@ -82,4 +81,4 @@
   </ul>
 </form>
 
-<!-- } admin/topic/topiceditor.thtml -->
+{# end {templatelocation} #}

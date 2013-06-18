@@ -1,5 +1,4 @@
-
-<!-- submit/submitstory_advanced.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
@@ -56,4 +55,4 @@
     </form>
 </div>
 
-<!-- } submit/submitstory_advanced.thtml -->
+{# end {templatelocation} #}

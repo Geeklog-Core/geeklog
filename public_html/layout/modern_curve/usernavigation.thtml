@@ -1,4 +1,4 @@
-{# {templatelocation} - The User Navigation uses template blocks which is built into this file #}
+{# begin {templatelocation} - The User Navigation uses template blocks which is built into this file #}
 
 <!-- BEGIN option -->
 <li class="useroption sideoption"><a href="{option_url}"{option_attributes}>{option_label}<span>{option_count}</span></a></li>

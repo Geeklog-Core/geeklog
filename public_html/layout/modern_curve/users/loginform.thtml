@@ -1,5 +1,4 @@
-
-<!-- users/loginform.thtml { -->
+{# begin {templatelocation} #}
 
 {start_block_loginagain}
 <div class="login-wrapper {remote_login_class}">
@@ -42,4 +41,4 @@
 </div>
 {end_block}
 
-<!-- } users/loginform.thtml -->
+{# end {templatelocation} #}

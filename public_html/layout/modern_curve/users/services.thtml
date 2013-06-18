@@ -1,7 +1,6 @@
-
-<!-- users/services.thtml { -->
+{# begin {templatelocation} #}
 
 {select_service}
 <label for="service">{lang_service}</label>
 
-<!-- } users/services.thtml -->
+{# end {templatelocation} #}

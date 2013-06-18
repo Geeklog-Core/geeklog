@@ -1,5 +1,5 @@
+{# begin {templatelocation} #}
 
-<!-- /admin/config/configuration.thtml { -->
 {noscript}
 <div id="geeklog_config_editor" style="display:none;">
     <form method="post" action="{site_admin_url}/configuration.php" name="group">
@@ -69,4 +69,5 @@
         </tr>
     </table>
 </div>
-<!-- } /admin/config/configuration.thtml -->
+
+{# end {templatelocation} #}

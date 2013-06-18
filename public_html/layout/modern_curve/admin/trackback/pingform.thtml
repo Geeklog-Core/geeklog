@@ -1,5 +1,4 @@
-
-<!-- admin/trackback/pingform.thtml { -->
+{# begin {templatelocation} #}
 
 <p class="trackback-message">{lang_ping_explain}</p>
 
@@ -24,4 +23,4 @@
   </fieldset>
 </form>
 
-<!-- } admin/trackback/pingform.thtml -->
+{# end {templatelocation} #}

@@ -1,5 +1,4 @@
-
-<!-- preferences/boxesblock.thtml { -->
+{# begin {templatelocation} #}
 
 <fieldset>
   <legend>{lang_boxes_title}</legend>
@@ -12,4 +11,4 @@
     {boxes_checklist}
 </fieldset>
 
-<!-- } preferences/boxesblock.thtml -->
+{# end {templatelocation} #}

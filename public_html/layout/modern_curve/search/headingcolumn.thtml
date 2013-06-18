@@ -1,6 +1,5 @@
-
-<!-- search/headingcolumn.thtml { -->
+{# begin {templatelocation} #}
 
 <th>{label}</th>
 
-<!-- } search/headingcolumn.thtml -->
+{# end {templatelocation} #}

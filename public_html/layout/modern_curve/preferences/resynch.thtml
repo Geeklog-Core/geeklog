@@ -1,8 +1,7 @@
-
-<!-- preferences/resynch.thtml { -->
+{# begin {templatelocation} #}
 
       <dt><label for="profile-resynch">{lang_resynch}</label></dt>
       <dd><input type="checkbox" {resynch_checked} name="resynch" id="profile-resynch"{xhtml}></dd>
       <dd class="description">{lang_resynch_text}</dd>
 
-<!-- } preferences/resynch.thtml -->
+{# end {templatelocation} #}

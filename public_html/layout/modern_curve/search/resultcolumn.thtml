@@ -1,6 +1,5 @@
-
-<!-- search/resultcolumn.thtml { -->
+{# begin {templatelocation} #}
 
 <td>{data}</td>
 
-<!-- } search/resultcolumn.thtml -->
+{# end {templatelocation} #}

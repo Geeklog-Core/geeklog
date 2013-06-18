@@ -1,5 +1,4 @@
-
-<!-- comment/commentbar.thtml { -->
+{# begin {templatelocation} #}
 
 <ul class="status">
   <li>{start_storylink_anchortag}<strong>{story_title}</strong>{end_storylink_anchortag}</li>
@@ -40,4 +39,4 @@
 
 <p class="disclaimer">{lang_disclaimer}</p>
 
-<!-- } comment/commentbar.thtml -->
+{# end {templatelocation} #}

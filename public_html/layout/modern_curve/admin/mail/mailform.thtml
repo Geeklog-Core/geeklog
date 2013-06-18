@@ -1,4 +1,4 @@
-<!-- admin/mail/mailform.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{php_self}" method="post" id="admin-mailform" class="compact">
 
@@ -42,4 +42,4 @@
   </div>
 </form>
 
-<!-- } admin/mail/mailform.thtml -->
+{# end {templatelocation} #}

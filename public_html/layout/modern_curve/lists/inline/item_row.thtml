@@ -1,9 +1,8 @@
-
-<!-- lists/inline/item_row.thtml { -->
+{# begin {templatelocation} #}
 
                                 <div>
                                     {item_field}
                                 </div>
                                 <br{xhtml}>
 
-<!-- } lists/inline/iitem_row.thtml -->
+{# end {templatelocation} #}

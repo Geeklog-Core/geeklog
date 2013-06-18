@@ -1,5 +1,4 @@
-
-<!-- admin/block/defaultblockeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/block.php" method="post" id="admin-blockeditor" class="compact">
 
@@ -67,5 +66,4 @@
     </ul>
 </form>
 
-<!-- } admin/block/defaultblockeditor.thtml -->
-
+{# end {templatelocation} #}

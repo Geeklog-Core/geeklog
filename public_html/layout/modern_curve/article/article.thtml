@@ -1,5 +1,4 @@
-
-<!-- article.thtml { -->
+{# begin {templatelocation} #}
 
 {formatted_article}
 
@@ -9,4 +8,4 @@
 {trackback}
 {commentbar}
 
-<!-- } article.thtml -->
+{# end {templatelocation} #}

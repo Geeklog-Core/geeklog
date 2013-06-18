@@ -1,5 +1,4 @@
-
-<!-- admin/common/edit_permissions.thtml { -->
+{# begin {templatelocation} #}
 
 <table id="admin-permissions">
   <thead>
@@ -23,4 +22,4 @@
   </tbody>
 </table>
 
-<!-- } admin/common/edit_permissions.thtml -->
+{# end {templatelocation} #}

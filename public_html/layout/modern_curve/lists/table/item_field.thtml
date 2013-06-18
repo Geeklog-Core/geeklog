@@ -1,6 +1,5 @@
-
-<!-- lists/table/item_field.thtml { -->
+{# begin {templatelocation} #}
 
                                     <td>{field_text}</td>
 
-<!-- } lists/table/item_field.thtml -->
+{# end {templatelocation} #}

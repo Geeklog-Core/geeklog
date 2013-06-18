@@ -1,5 +1,4 @@
-
-<!-- admin/user/edituser.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/user.php" method="post" id="admin-edituser" class="compact">
 
@@ -57,4 +56,4 @@
 
 </form>
 
-<!-- } admin/user/edituser.thtml -->
+{# end {templatelocation} #}

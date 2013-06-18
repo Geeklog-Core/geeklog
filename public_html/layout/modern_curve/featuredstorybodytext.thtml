@@ -1,5 +1,3 @@
+{# begin {templatelocation} #}
 
-<!-- featuredstorybodytext.thtml { -->
-
-
-<!-- } featuredstorybodytext.thtml -->
+{# end {templatelocation} #}

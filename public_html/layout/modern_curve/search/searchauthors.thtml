@@ -1,4 +1,4 @@
-<!-- search/searchauthors.thtml { -->
+{# begin {templatelocation} #}
 
 <dt><label for="advsearchform-author">{lang_authors}</label></dt>
 <dd>
@@ -8,4 +8,4 @@
   </select>
 </dd>
 
-<!-- } search/searchauthors.thtml -->
+{# end {templatelocation} #}
