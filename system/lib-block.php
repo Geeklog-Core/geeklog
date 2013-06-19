@@ -36,6 +36,12 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'lib-block.php') !== false) {
 // set to true to enable debug output in error.log
 $_BLOCK_DEBUG = false;
 
+/*
+ * Implement *some* of the Plugin API functions for blocks. While blocks
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+ 
 /**
 * This function is called to inform plugins when a group's information has
 * changed or a new group has been created.
