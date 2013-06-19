@@ -3780,12 +3780,16 @@ function COM_killJS( $Message )
 */
 function COM_handleCode( $str )
 {
-    $search  = array( '&',     '\\',    '<',    '>',    '[',     ']'     );
-    $replace = array( '&amp;', '&#92;', '&lt;', '&gt;', '&#91;', '&#93;' );
+
+    // note that bug fixes are included in this function (Issue #0001619)
+    // '&#092;' -> '&amp;#092;' -> '&#092;'
+    // '&#36;'  -> '&amp;#36;'  -> '&#36;'
+    $search  = array('&',     '&amp;#092;', '&amp;#36;', '\\',    '<',    '>',    '[',     ']'    );
+    $replace = array('&amp;', '&#092;',     '&#36;',     '&#92;', '&lt;', '&gt;', '&#91;', '&#93;');
 
     $str = str_replace( $search, $replace, $str );
 
-    return( $str );
+    return $str;
 }
 
 /**
