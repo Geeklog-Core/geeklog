@@ -863,7 +863,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
         COM_errorLog ('Attempted to delete story sid=' . $sid);
         echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
     } else if ($type == 'submission') {
-        $tid = DB_getItem ($_TABLES['storysubmission'], 'tid', "sid = '$sid'");
         if (SEC_hasTopicAccess ($tid) < 3) {
             COM_accessLog ("User {$_USER['username']} tried to illegally delete story submission $sid.");
             echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
