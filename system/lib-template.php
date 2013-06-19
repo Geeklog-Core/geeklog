@@ -110,6 +110,12 @@ function CTL_clearCache($plugin='')
 
 }
 
+/*
+ * Implement *some* of the Plugin API functions for templates. While templates
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+
 /**
 * Config Option has changed. (use plugin api)
 *
@@ -119,7 +125,7 @@ function CTL_clearCache($plugin='')
 function plugin_configchange_template($group, $changes)
 {
     global $_TABLES, $_CONF;
-echo "ha";
+
     // If template comments disabled or enabled clear all cached templates
     if ($group == 'Core' AND in_array('template_comments', $changes)) {
         CTL_clearCache();
