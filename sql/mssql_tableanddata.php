@@ -263,7 +263,9 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [uid] [int] NOT NULL ,
     [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
     [whos_online] [tinyint] NOT NULL, 
-    [topic] [varchar] (20) NOT NULL
+    [topic] [varchar] (20) NOT NULL, 
+    [topic_tree_date] [datetime] NULL,
+    [topic_tree] [text] NULL
 ) ON [PRIMARY]
 ";
 
@@ -502,7 +504,7 @@ CREATE TABLE [dbo].[{$_TABLES['users']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['vars']}] (
     [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [value] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL
 ) ON [PRIMARY]
 ";
 
@@ -1558,6 +1560,9 @@ $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0')
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_publish','') ";
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_topic_update','') ";
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree_date','')";
+$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree','')";
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','0.0.0')";
 
 $_SQL[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled')";

@@ -497,8 +497,32 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 * @global array $_TOPICS
 *
 */
-$_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
+// Figure out if we need to update topic tree or retrieve it from the session
+$last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
+if (COM_isAnonUser()) { // For Anon users data stored in vars table since all anon users can use the same topic tree
+    if ($last_topic_update != DB_getItem($_TABLES['vars'], 'value', "name='anon_topic_tree_date'")) {
+        // Tree has changed for anonymous users so rebuild tree
+        $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
+        // Save updated topic tree and date
+        DB_query("UPDATE {$_TABLES['vars']} SET value='$last_topic_update' WHERE name='anon_topic_tree_date'");
+        DB_query("UPDATE {$_TABLES['vars']} SET value='" . serialize($_TOPICS) . "' WHERE name='anon_topic_tree'");
+    } else {
+        $_TOPICS = unserialize(DB_getItem($_TABLES['vars'], 'value', "name='anon_topic_tree'"));
+    }    
+} else {
+    if ($last_topic_update != SESS_getVariable('topic_tree_date')) {
+        // Tree has changed for current logged in user so rebuild tree
+        $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
+        // Save updated topic tree and date
+        SESS_setVariable('topic_tree_date', $last_topic_update);
+        SESS_setVariable('topic_tree', serialize($_TOPICS));
+    } else {
+        $_TOPICS = unserialize(SESS_getVariable('topic_tree'));
+    }
+}
 // Figure out if we need to update article feeds. Check last article date punlished in feed
 $sql = "SELECT date FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND perm_anon > 0 ORDER BY date DESC LIMIT 1";
 $result = DB_query($sql);

@@ -523,6 +523,9 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 PLG_itemSaved($tid, 'topic');
             }
             
+            // Update date of change to a topic
+            TOPIC_updateLastTopicUpdate();
+            
             // update feed(s) and Older Stories block
             COM_rdfUpToDateCheck('article', $tid);
             COM_olderStuff();
@@ -884,6 +887,9 @@ function deleteTopic ($tid)
 
     // Update Topics Array to reflect any changes since not sure what is called after
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
+    // Update date of change to a topic
+    TOPIC_updateLastTopicUpdate();
     
     // update feed(s) and Older Stories block
     COM_rdfUpToDateCheck('article');

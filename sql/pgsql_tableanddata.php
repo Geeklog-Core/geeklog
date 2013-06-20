@@ -259,6 +259,8 @@ CREATE TABLE {$_TABLES['sessions']} (
   md5_sess_id varchar(128) default NULL,
   whos_online smallint NOT NULL default '1',
   topic varchar(20) NOT NULL default '',
+  topic_tree_date timestamp DEFAULT NULL,
+  topic_tree text DEFAULT NULL,
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -848,6 +850,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0'
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_publish','') ";
+$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_topic_update','') ";
+$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree_date','')";
+$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree','')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','0.0.0') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";

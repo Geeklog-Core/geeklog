@@ -62,7 +62,7 @@ access          Access current user has with topic
 owner_id        ID of the owner of the topic
 group_id        ID of group topic belongs to
 perm_owner      Permissions the owner has
-perm_group      Permissions the gorup has
+perm_group      Permissions the group has
 perm_members    Permissions logged in members have
 perm_anon       Permissions anonymous users have
 
@@ -154,181 +154,6 @@ function TOPIC_buildTree($id, $parent = '', $branch_level = -1, $tree_array = ar
     }
     
     return $tree_array;
-}
-
-/**
-* Implements the [topic:] autotag.
-*
-* @param    string  $op         operation to perform
-* @param    string  $content    item (e.g. topic text), including the autotag
-* @param    array   $autotag    parameters used in the autotag
-* @param    mixed               tag names (for $op='tagname') or formatted content
-*
-*/
-
-function plugin_autotags_topic($op, $content = '', $autotag = '')
-{
-    global $_CONF, $_TABLES, $LANG27, $_GROUPS;
-    if($op == 'tagname') {
-        return array('topic', 'related_topics', 'related_items');
-    } 
-
-    elseif (($op == 'permission') || ($op == 'nopermission')) {
-        if ($op == 'permission') {
-            $flag = true;
-        } else {
-            $flag = false;
-        }
-        $tagnames = array();
-
-        if (isset($_GROUPS['Topic Admin'])) {
-            $group_id = $_GROUPS['Topic Admin'];
-        } else {
-            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',"grp_name = 'Topic Admin'");
-        }
-        $owner_id = SEC_getDefaultRootUser();
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_topic'][0], $_CONF['autotag_permissions_topic'][1], $_CONF['autotag_permissions_topic'][2], $_CONF['autotag_permissions_topic'][3]) == $flag) {
-            $tagnames[] = 'topic';
-        }
-
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_topics'][0], $_CONF['autotag_permissions_related_topics'][1], $_CONF['autotag_permissions_related_topics'][2], $_CONF['autotag_permissions_related_topics'][3]) == $flag) {
-            $tagnames[] = 'related_topics';
-        }
-        
-        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_items'][0], $_CONF['autotag_permissions_related_items'][1], $_CONF['autotag_permissions_related_items'][2], $_CONF['autotag_permissions_related_items'][3]) == $flag) {
-            $tagnames[] = 'related_items';
-        }        
-
-        if (count($tagnames) > 0) {
-            return $tagnames;
-        }
-    } elseif ($op == 'description') {
-        return array (
-            'topic' => $LANG27['autotag_desc_topic'],
-            'related_topics' => $LANG27['autotag_desc_related_topics'], 
-            'related_items' => $LANG27['autotag_desc_related_items']
-            );  
-    } elseif ($op == 'parse') {
-		if ( $autotag['tag'] != 'topic' && $autotag['tag'] != 'related_topics' && $autotag['tag'] != 'related_items') {
-            return $content;
-		}
-        
-        if ($autotag['tag'] == 'topic') {
-            $tid = COM_applyFilter($autotag['parm1']);
-            if (!empty($tid) && (SEC_hasTopicAccess($tid) > 0)) {
-                $tid = DB_escapeString($tid);
-                $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['topics']} WHERE tid = '$tid'";
-                $result = DB_query($sql);
-                $A = DB_fetchArray($result);
-                if ($A['count'] == 1) {
-                    $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
-                    $linktext = $autotag['parm2'];
-                    if (empty($linktext)) {
-                        $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));
-                    }
-                    $link = COM_createLink($linktext, $url);
-                    $content = str_replace($autotag['tagstr'], $link, $content);
-                }
-            }
-        } elseif ($autotag['tag'] == 'related_topics') {
-            $id = COM_applyFilter($autotag['parm1']);
-            $type = '';
-            $max = $_CONF['related_topics_max']; // Article Default
-            $tids = array();
-            
-            $px = explode (' ', trim ($autotag['parm2']));
-            if (is_array ($px)) {
-                foreach ($px as $part) {
-                    if (substr ($part, 0, 5) == 'type:') {
-                        $a = explode (':', $part);
-                        $type = $a[1];
-                        $skip++;
-                    } elseif (substr ($part, 0, 4) == 'max:') {
-                        $a = explode (':', $part);
-                        $max = $a[1];
-                        $skip++;
-                    } elseif (substr ($part,0, 6) == 'topic:') {
-                        $a = explode(':', $part);
-                        $tids[] = $a[1]; // Add each topic when found
-                        $skip++;
-                    } else {
-                            break;
-                    }
-                }
-            }             
-            
-            $related_topics = '';
-            if (!empty($type) AND !empty($id)) {
-                // Return topics of object
-                $related_topics = TOPIC_relatedTopics($type, $id, $max);
-            } elseif (!empty($tids)) {
-                // Since list of topics specified add id to topic list (since really a topic)
-                if (!empty($id)) {
-                    $tids[] = $id;
-                }
-                $related_topics = TOPIC_relatedTopics('', '', $max, $tids);
-            }
-
-            if (!empty($related_topics)) {
-                $content = str_replace($autotag['tagstr'], $related_topics, $content);
-            }
-        } elseif ($autotag['tag'] == 'related_items') {
-            $id = COM_applyFilter($autotag['parm1']);
-            $type = '';
-            $max = $_CONF['related_topics_max']; // Article Default
-            $trim = 0;
-            $include_types = array();
-            $tids = array();
-            
-            $px = explode (' ', trim ($autotag['parm2']));
-            if (is_array ($px)) {
-                foreach ($px as $part) {
-                    if (substr ($part, 0, 5) == 'type:') {
-                        $a = explode (':', $part);
-                        $type = $a[1];
-                        $skip++;
-                    } elseif (substr ($part, 0, 4) == 'max:') {
-                        $a = explode (':', $part);
-                        $max = $a[1];
-                        $skip++;
-                    } elseif (substr ($part, 0, 5) == 'trim:') {
-                        $a = explode (':', $part);
-                        $trim = $a[1];
-                        $skip++;
-                    } elseif (substr ($part,0, 6) == 'topic:') {
-                        $a = explode(':', $part);
-                        $tids[] = $a[1]; // Add each topic when found
-                        $skip++;
-                    } elseif (substr ($part,0, 8) == 'include:') {
-                        $a = explode(':', $part);
-                        $include_types[] = $a[1]; // Add each type when found
-                        $skip++;                        
-                    } else {
-                            break;
-                    }
-                }
-            }             
-            
-            $related_items = '';
-            if (!empty($type) AND !empty($id)) {
-                // Return topics of object
-                $related_items = TOPIC_relatedItems($type, $id, $include_types, $max, $trim, $tids);
-            } elseif (!empty($tids)) {
-                // Since list of topics specified add id to topic list (since really a topic)
-                if (!empty($id)) {
-                    $tids[] = $id;
-                }
-                $related_items = TOPIC_relatedItems('', '', $include_types, $max, $trim, $tids);
-            }
-
-            if (!empty($related_items)) {
-                $content = str_replace($autotag['tagstr'], $related_items, $content);
-            }            
-        }
-
-        return $content;
-    }
 }
 
 /**
@@ -1466,41 +1291,6 @@ function TOPIC_getTopic($type = '', $id = '')
 }
 
 /**
-* This function is called to inform plugins when a group's information has
-* changed or a new group has been created.
-*
-* @param    int     $grp_id     Group ID
-* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
-* @return   void
-*
-*/
-function plugin_group_changed_topic($grp_id, $mode)
-{
-    global $_TABLES, $_GROUPS;
-    
-    if ($mode == 'delete') {
-        // Change any deleted group ids to Topic Admin if exist, if does not change to root group
-        $new_group_id = 0;
-        if (isset($_GROUPS['Topic Admin'])) {
-            $new_group_id = $_GROUPS['Topic Admin'];
-        } else {
-            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Topic Admin'");
-            if ($new_group_id == 0) {
-                if (isset($_GROUPS['Root'])) {
-                    $new_group_id = $_GROUPS['Root'];
-                } else {
-                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
-                }
-            }
-        }    
-        
-        // Update Topic with new group id
-        $sql = "UPDATE {$_TABLES['topics']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
-        $result = DB_query($sql);
-   }
-}
-
-/**
 * If found returns one or more html breadcrumb. Used by Topics, Stories and Plugins.
 *
 * @param    string          $type   Type of object to create breadcrumb trail
@@ -1800,6 +1590,267 @@ function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $tr
     $retval = COM_makeList($related_items, 'list-new-plugins');
     
     return $retval;    
+}
+
+/**
+* Updates last_topic_update variables stored in vars table.
+*
+* Note: Used when insert/update/delete a topic. last_topic_update is used to 
+*       determine when we need to generate the $_TOPICS global variable from the
+*       topics table or retrieve it from the session table. 
+*
+*/
+function TOPIC_updateLastTopicUpdate()
+{
+    global$_TABLES;
+
+    $currentDate = date("Y-m-d H:i:s");
+
+    DB_query("UPDATE {$_TABLES['vars']} SET value='$currentDate' WHERE name='last_topic_update'");
+    
+}
+
+/*
+ * Implement *some* of the Plugin API functions for topics. While topics
+ * aren't a plugin (and likely never will be), implementing some of the API
+ * functions here will save us from doing special handling elsewhere.
+ */
+ 
+
+/**
+* Implements the [topic:] autotag.
+*
+* @param    string  $op         operation to perform
+* @param    string  $content    item (e.g. topic text), including the autotag
+* @param    array   $autotag    parameters used in the autotag
+* @param    mixed               tag names (for $op='tagname') or formatted content
+*
+*/
+
+function plugin_autotags_topic($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_TABLES, $LANG27, $_GROUPS;
+    if($op == 'tagname') {
+        return array('topic', 'related_topics', 'related_items');
+    } 
+
+    elseif (($op == 'permission') || ($op == 'nopermission')) {
+        if ($op == 'permission') {
+            $flag = true;
+        } else {
+            $flag = false;
+        }
+        $tagnames = array();
+
+        if (isset($_GROUPS['Topic Admin'])) {
+            $group_id = $_GROUPS['Topic Admin'];
+        } else {
+            $group_id = DB_getItem($_TABLES['groups'], 'grp_id',"grp_name = 'Topic Admin'");
+        }
+        $owner_id = SEC_getDefaultRootUser();
+
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_topic'][0], $_CONF['autotag_permissions_topic'][1], $_CONF['autotag_permissions_topic'][2], $_CONF['autotag_permissions_topic'][3]) == $flag) {
+            $tagnames[] = 'topic';
+        }
+
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_topics'][0], $_CONF['autotag_permissions_related_topics'][1], $_CONF['autotag_permissions_related_topics'][2], $_CONF['autotag_permissions_related_topics'][3]) == $flag) {
+            $tagnames[] = 'related_topics';
+        }
+        
+        if (COM_getPermTag($owner_id, $group_id, $_CONF['autotag_permissions_related_items'][0], $_CONF['autotag_permissions_related_items'][1], $_CONF['autotag_permissions_related_items'][2], $_CONF['autotag_permissions_related_items'][3]) == $flag) {
+            $tagnames[] = 'related_items';
+        }        
+
+        if (count($tagnames) > 0) {
+            return $tagnames;
+        }
+    } elseif ($op == 'description') {
+        return array (
+            'topic' => $LANG27['autotag_desc_topic'],
+            'related_topics' => $LANG27['autotag_desc_related_topics'], 
+            'related_items' => $LANG27['autotag_desc_related_items']
+            );  
+    } elseif ($op == 'parse') {
+		if ( $autotag['tag'] != 'topic' && $autotag['tag'] != 'related_topics' && $autotag['tag'] != 'related_items') {
+            return $content;
+		}
+        
+        if ($autotag['tag'] == 'topic') {
+            $tid = COM_applyFilter($autotag['parm1']);
+            if (!empty($tid) && (SEC_hasTopicAccess($tid) > 0)) {
+                $tid = DB_escapeString($tid);
+                $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['topics']} WHERE tid = '$tid'";
+                $result = DB_query($sql);
+                $A = DB_fetchArray($result);
+                if ($A['count'] == 1) {
+                    $url = COM_buildUrl($_CONF['site_url'] . '/index.php?topic=' . $tid);
+                    $linktext = $autotag['parm2'];
+                    if (empty($linktext)) {
+                        $linktext = stripslashes(DB_getItem($_TABLES['topics'], 'topic', "tid = '$tid'"));
+                    }
+                    $link = COM_createLink($linktext, $url);
+                    $content = str_replace($autotag['tagstr'], $link, $content);
+                }
+            }
+        } elseif ($autotag['tag'] == 'related_topics') {
+            $id = COM_applyFilter($autotag['parm1']);
+            $type = '';
+            $max = $_CONF['related_topics_max']; // Article Default
+            $tids = array();
+            
+            $px = explode (' ', trim ($autotag['parm2']));
+            if (is_array ($px)) {
+                foreach ($px as $part) {
+                    if (substr ($part, 0, 5) == 'type:') {
+                        $a = explode (':', $part);
+                        $type = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 4) == 'max:') {
+                        $a = explode (':', $part);
+                        $max = $a[1];
+                        $skip++;
+                    } elseif (substr ($part,0, 6) == 'topic:') {
+                        $a = explode(':', $part);
+                        $tids[] = $a[1]; // Add each topic when found
+                        $skip++;
+                    } else {
+                            break;
+                    }
+                }
+            }             
+            
+            $related_topics = '';
+            if (!empty($type) AND !empty($id)) {
+                // Return topics of object
+                $related_topics = TOPIC_relatedTopics($type, $id, $max);
+            } elseif (!empty($tids)) {
+                // Since list of topics specified add id to topic list (since really a topic)
+                if (!empty($id)) {
+                    $tids[] = $id;
+                }
+                $related_topics = TOPIC_relatedTopics('', '', $max, $tids);
+            }
+
+            if (!empty($related_topics)) {
+                $content = str_replace($autotag['tagstr'], $related_topics, $content);
+            }
+        } elseif ($autotag['tag'] == 'related_items') {
+            $id = COM_applyFilter($autotag['parm1']);
+            $type = '';
+            $max = $_CONF['related_topics_max']; // Article Default
+            $trim = 0;
+            $include_types = array();
+            $tids = array();
+            
+            $px = explode (' ', trim ($autotag['parm2']));
+            if (is_array ($px)) {
+                foreach ($px as $part) {
+                    if (substr ($part, 0, 5) == 'type:') {
+                        $a = explode (':', $part);
+                        $type = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 4) == 'max:') {
+                        $a = explode (':', $part);
+                        $max = $a[1];
+                        $skip++;
+                    } elseif (substr ($part, 0, 5) == 'trim:') {
+                        $a = explode (':', $part);
+                        $trim = $a[1];
+                        $skip++;
+                    } elseif (substr ($part,0, 6) == 'topic:') {
+                        $a = explode(':', $part);
+                        $tids[] = $a[1]; // Add each topic when found
+                        $skip++;
+                    } elseif (substr ($part,0, 8) == 'include:') {
+                        $a = explode(':', $part);
+                        $include_types[] = $a[1]; // Add each type when found
+                        $skip++;                        
+                    } else {
+                            break;
+                    }
+                }
+            }             
+            
+            $related_items = '';
+            if (!empty($type) AND !empty($id)) {
+                // Return topics of object
+                $related_items = TOPIC_relatedItems($type, $id, $include_types, $max, $trim, $tids);
+            } elseif (!empty($tids)) {
+                // Since list of topics specified add id to topic list (since really a topic)
+                if (!empty($id)) {
+                    $tids[] = $id;
+                }
+                $related_items = TOPIC_relatedItems('', '', $include_types, $max, $trim, $tids);
+            }
+
+            if (!empty($related_items)) {
+                $content = str_replace($autotag['tagstr'], $related_items, $content);
+            }            
+        }
+
+        return $content;
+    }
+}
+ 
+/**
+* This function is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+* @return   void
+*
+*/
+function plugin_group_changed_topic($grp_id, $mode)
+{
+    global $_TABLES, $_GROUPS;
+    
+    if ($mode == 'delete') {
+        // Change any deleted group ids to Topic Admin if exist, if does not change to root group
+        $new_group_id = 0;
+        if (isset($_GROUPS['Topic Admin'])) {
+            $new_group_id = $_GROUPS['Topic Admin'];
+        } else {
+            $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Topic Admin'");
+            if ($new_group_id == 0) {
+                if (isset($_GROUPS['Root'])) {
+                    $new_group_id = $_GROUPS['Root'];
+                } else {
+                    $new_group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+                }
+            }
+        }    
+        
+        // Update Topic with new group id
+        $sql = "UPDATE {$_TABLES['topics']} SET group_id = $new_group_id WHERE group_id = $grp_id";        
+        $result = DB_query($sql);
+   }
+}
+
+/**
+* This function is called when a user's information
+* (profile or preferences) has changed.
+*
+* @param    int     $uid    user id
+* @return   void
+*
+*/
+function plugin_user_changed_topic($uid)
+{
+    // Wipe out user's session variable for last_topic_update (if it exists) since their 
+    // security may have changed and the topic tree should be updated again
+
+    // See if user (other than anonymous) has a session
+    if ($uid > 1) {
+        $session_id = SESS_getSessionIdFromUserId($uid);
+        
+        if (!empty($session_id)) {
+            SESS_setVariable('topic_tree_date', '', $session_id);
+        }
+    } else {
+        // Delete topic tree array date in vars table    
+        DB_query("UPDATE {$_TABLES['vars']} SET value='' WHERE name='anon_topic_tree_date'");
+    }
 }
 
 ?>

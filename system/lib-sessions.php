@@ -564,6 +564,28 @@ function SESS_getUserDataFromId($userid)
     return $myrow;
 }
 
+
+/**
+* Gets the Session ID from the User Id
+*
+* Returns the session id associated with the user if available.
+* This is not for anonymous users. If no match found, returns an empty string.
+*
+* @param        int      $uid         User Id to retrieve session Id for
+* @return       string                Session ID
+*/
+function SESS_getSessionIdFromUserId($uid)
+{
+    global $_TABLES;
+
+    $retval = '';
+    if ($uid > 1) {
+        $retval = DB_getItem($_TABLES['sessions'], "sess_id", "uid = $uid");
+    }
+
+    return $retval;   
+}
+
 /**
 * Retrieves a session variable from the db
 *
@@ -593,14 +615,17 @@ function SESS_getVariable($variable)
 *
 * @param        string      $variable   Variable name to update
 * @param        string      $value      Value of variable
+* @param        string      $session_id Session ID of variable to update (0 = current session)
 * @return       boolean     always true for some reason
 *
 */
-function SESS_setVariable($variable, $value)
+function SESS_setVariable($variable, $value, $session_id = 0)
 {
     global $_TABLES, $_CONF, $_USER;
     
-    $session_id = $_USER['session_id'];
+    if ($session_id == 0) {
+        $session_id = $_USER['session_id'];
+    }
 
     if ( $_CONF['cookie_ip'] == 1) { // $md5_based  Indicates if sessid is MD5 hash
         $sql = "UPDATE {$_TABLES['sessions']} SET $variable = '$value' WHERE (md5_sess_id = '$session_id')";

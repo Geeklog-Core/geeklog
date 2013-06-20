@@ -1274,7 +1274,9 @@ function PLG_userInfoChanged($uid)
 {
     global $_PLUGINS;
 
-    foreach ($_PLUGINS as $pi_name) {
+    $all_plugins = array_merge($_PLUGINS, array('topic'));
+    
+    foreach ($all_plugins as $pi_name) {       
         $function = 'plugin_user_changed_' . $pi_name;
         if (function_exists($function)) {
             $function($uid);
@@ -1566,7 +1568,6 @@ function PLG_collectTags($type = 'tagname')
     }
 
     // ensure that we're picking up the Core autotags
-
     require_once $_CONF['path_system'] . 'lib-story.php';
     require_once $_CONF['path_system'] . 'lib-user.php';
     require_once $_CONF['path_system'] . 'lib-topic.php';
