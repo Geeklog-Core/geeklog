@@ -1837,19 +1837,25 @@ function plugin_group_changed_topic($grp_id, $mode)
 */
 function plugin_user_changed_topic($uid)
 {
+    global $_CONF;
+    
     // Wipe out user's session variable for last_topic_update (if it exists) since their 
     // security may have changed and the topic tree should be updated again
-
-    // See if user (other than anonymous) has a session
-    if ($uid > 1) {
-        $session_id = SESS_getSessionIdFromUserId($uid);
-        
-        if (!empty($session_id)) {
-            SESS_setVariable('topic_tree_date', '', $session_id);
-        }
+    if ($_CONF['cache_templates']) {
+        $cacheInstance = 'topic_tree__' . CACHE_security_hash() . '__' . $uid;
+        CACHE_remove_instance($cacheInstance);
     } else {
-        // Delete topic tree array date in vars table    
-        DB_query("UPDATE {$_TABLES['vars']} SET value='' WHERE name='anon_topic_tree_date'");
+        // See if user (other than anonymous) has a session
+        if ($uid > 1) {
+            $session_id = SESS_getSessionIdFromUserId($uid);
+            
+            if (!empty($session_id)) {
+                SESS_setVariable('topic_tree_date', '', $session_id);
+            }
+        } else {
+            // Delete topic tree array date in vars table    
+            DB_query("UPDATE {$_TABLES['vars']} SET value='' WHERE name='anon_topic_tree_date'");
+        }
     }
 }
 
