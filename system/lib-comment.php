@@ -968,7 +968,7 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 $start = COM_newTemplate($_CONF['path_layout'] . 'comment');
                 $start->set_file(array('comment' => 'startcomment.thtml'));
                 $start->set_var('hide_if_preview', 'style="display:none"');
-                $start->set_var( 'area_id', 'commentperview' );
+                $start->set_var( 'area_id', 'commentpreview' );
 
                 // Clean up all the vars
                 $A = array();
@@ -1080,9 +1080,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                     $sid = str_replace('fileid_', '', $sid);
                 }
 
-                $formurl = "$plgurl?$plgid=$sid#commentperview";
+                $formurl = "$plgurl?$plgid=$sid#commentpreview";
             } else {
-                $formurl = $_CONF['site_url'] . '/comment.php';
+                $formurl = $_CONF['site_url'] . '/comment.php#commentpreview'; // commentpreview needed for when showing replies on the same page
             }
 
             if ($mode == 'edit' || $mode == $LANG03[28]) { //edit modes
