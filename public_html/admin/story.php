@@ -685,8 +685,12 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
     }
     $story_templates->set_var('post_options',$post_options );
+    $allowed_tags = array('code', 'raw');
+    if ($_CONF['allow_page_breaks'] == 1) {
+        $allowed_tags = array_merge($allowed_tags, array('page_break'));
+    }
     $story_templates->set_var('lang_allowed_html',
-                              COM_allowedHTML('story.edit'));
+                              COM_allowedHTML('story.edit', false, 1, $allowed_tags));
     $fileinputs = '';
     $saved_images = '';
     if ($_CONF['maximagesperarticle'] > 0) {
