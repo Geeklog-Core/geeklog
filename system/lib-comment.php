@@ -2321,7 +2321,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
     }
 
     if (!empty($_REQUEST['title'])) {
-        $title = COM_applyFilter($_REQUEST['title']);
+        $title = $_REQUEST['title']; // apply filters later in CMT_commentForm or CMT_saveComment
     }
 
     if (!empty($_REQUEST[CMT_UID])) {
