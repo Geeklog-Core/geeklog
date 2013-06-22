@@ -1,9 +1,7 @@
 {# begin {templatelocation} #}
 
-<p>
-<div{!if microdata} itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
+<div {!if microdata}itemscope itemtype="http://data-vocabulary.org/Breadcrumb" {!endif}class="bc_navigation">
     {breadcrumbs_list}
 </div>
-</p>
 
 {# end {templatelocation} #}

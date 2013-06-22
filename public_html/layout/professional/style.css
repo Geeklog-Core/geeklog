@@ -1111,6 +1111,11 @@ div.gl-pagenav span a {
    text-decoration: underline;
  }
   
+/* Breadcrumbs Navigation *********************************************************************/
+.bc_navigation {
+   margin: 13px 0;
+}
+
 /* Common CSS for on-hover tooltip feature  *********************************************************************/
 a.gl-tooltip {
     border-bottom: 1px dotted #000000; color: #000000; outline: none;
