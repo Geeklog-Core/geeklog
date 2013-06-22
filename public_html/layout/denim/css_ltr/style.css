@@ -368,6 +368,16 @@ input::-moz-focus-inner {
   padding: 0;
 }
 
+a.button:link,
+a.button:visited {
+  color: #444;
+}
+
+a.button:hover {
+  color: #222;
+  text-decoration: none;
+}
+
 
 /*--------------------------------------
   professional Compatible Style

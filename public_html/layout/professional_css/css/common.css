@@ -480,3 +480,9 @@ div.gl-pagenav span a {
    text-decoration: underline;
  }
 
+/*--------------------------------------
+  Breadcrumbs Navigation
+--------------------------------------*/
+.bc_navigation {
+  margin: 1.12em 0;
+}

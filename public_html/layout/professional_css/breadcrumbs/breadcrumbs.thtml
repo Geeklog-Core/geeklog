@@ -2,11 +2,9 @@
 <!-- breadcrumbs/breadcrumbs.thtml { -->
 
 <!-- Start of Breadcrumbs Navigation -->
-<p>
-<div{!if microdata} itemscope itemtype="http://data-vocabulary.org/Breadcrumb"{!endif}>
+<div {!if microdata}itemscope itemtype="http://data-vocabulary.org/Breadcrumb" {!endif}class="bc_navigation">
     {breadcrumbs_list}
 </div>
-</p>
 <!-- End of Breadcrumbs Navigation -->
 
 <!-- } breadcrumbs/breadcrumbs.thtml -->

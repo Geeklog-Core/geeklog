@@ -35,6 +35,11 @@
         <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}" class="submit"{xhtml}>
       </li>
     </ul>
+    <div style="{show_link_to_commenteditform}">
+        [
+        <a class="button" href="#commenteditform">{lang_reply}</a>
+        ]
+    </div>
   </div>
 </form>
 

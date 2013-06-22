@@ -90,8 +90,10 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode, $ccode = 0 )
 
     if ( $ccode == 0 && !COMMENT_ON_SAME_PAGE) {
         $commentbar->set_var( 'reply_hidden_or_submit', 'submit' );
+        $commentbar->set_var( 'show_link_to_commenteditform', 'display:none;' );
     } else {
         $commentbar->set_var( 'reply_hidden_or_submit', 'hidden' );
+        $commentbar->set_var( 'show_link_to_commenteditform', '' );
     }
     $commentbar->set_var( 'num_comments', COM_numberFormat( $nrows ));
     $commentbar->set_var( 'comment_type', $type );
@@ -2319,7 +2321,7 @@ function CMT_handleComment($mode='', $type='', $title='', $sid='', $format='')
     }
 
     if (!empty($_REQUEST['title'])) {
-        $title = COM_applyFilter($_REQUEST['title']);
+        $title = $_REQUEST['title']; // apply filters later in CMT_commentForm or CMT_saveComment
     }
 
     if (!empty($_REQUEST[CMT_UID])) {
