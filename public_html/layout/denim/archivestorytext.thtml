@@ -1,7 +1,6 @@
 {# begin {templatelocation} #}
 
 <div class="storytext archivestorytext">
-  {breadcrumb_trail}
   <h2 class="story_title">{story_title_link}</h2>
 
   <div class="story_icon">
