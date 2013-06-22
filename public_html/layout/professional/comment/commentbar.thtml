@@ -12,6 +12,9 @@
             <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
             <input type="hidden" name="title" value="{comment_title}"{xhtml}>
             <input type="{reply_hidden_or_submit}" name="reply" value="{lang_reply}"{xhtml}>
+            <div style="padding:3px;{show_link_to_commenteditform}">
+                <a class="button" href="#commenteditform">{lang_reply}</a>
+            </div>
         </div>
     </form>
     <form action="{parent_url}" method="post" class="floatright" style="display:inline;">

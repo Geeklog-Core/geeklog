@@ -18,6 +18,9 @@
       <input type="hidden" name="{nprefix}type" value="{comment_type}"{xhtml}>
       <input type="hidden" name="title" value="{comment_title}"{xhtml}>
       {hidden_field_reply}
+      <div style="padding:0.3em;{show_link_to_commenteditform}">
+          <a class="button" href="#commenteditform">{lang_reply}</a>
+      </div>
     </div>
   </form>
 
