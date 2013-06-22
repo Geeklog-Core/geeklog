@@ -43,8 +43,8 @@ Modern_Curve is preinstalled with Geeklog.
 
 If you wish to use this theme as a default theme for your own theme then all 
 you need to do is create your own theme directory and copy the files 
-functions.php and style.css.php to your new theme along with the images 
-directory. Plus any theme files and css files you wish to change. 
+functions.php and style.css.php to your new theme along with the images and 
+jquery_ui directories. Plus any theme files and css files you wish to change. 
 
 In style.css.php you with need to update the variables $theme and 
 $theme_default. $theme_default would now equal "modern_curve".
