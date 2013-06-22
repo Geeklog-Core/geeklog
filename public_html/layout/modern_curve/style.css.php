@@ -31,13 +31,23 @@
 
 require_once '../../siteconfig.php';
 
+$theme = 'modern_curve'; // Theme Name
+$default_theme = ''; // Default theme name. If nothing leave as blank string
+$path_themes = $_CONF['path'] . 'public_html/layout/'; // Assumes the default if not then change
+
+$css_path_default='';
+if (!empty($default_theme)) {
+    $css_path_default = $path_themes . $default_theme . '/css/';
+}
+$css_path = $path_themes . $theme . '/css/';
+
 // We assume /data directory is right under $_CONF['path'] directory.  If you
 // have moved or renamed /data directory, please change the following line accordingly.
-define('MODERN_CURVE_ETAG_FILE', $_CONF['path'] . 'data/modern_curve_etag.cache');
+$etag_filename =  $_CONF['path'] . 'data/' . $theme . '_etag.cache';
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
-    if (is_readable(MODERN_CURVE_ETAG_FILE)) {
-        $etag = file_get_contents(MODERN_CURVE_ETAG_FILE);
+    if (is_readable($etag_filename)) {
+        $etag = file_get_contents($etag_filename);
         
         if (!empty($etag) AND (trim($_SERVER['HTTP_IF_NONE_MATCH'], '"\'') === $etag)) {
             header('HTTP/1.1 304 Not Modified');
@@ -49,7 +59,7 @@ if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
 
 // Creates a new ETag value and saves it into the file
 $etag = md5(microtime(TRUE));
-@file_put_contents(MODERN_CURVE_ETAG_FILE, $etag);
+@file_put_contents($etag_filename, $etag);
 
 // Send correct header type:
 header('Content-Type: text/css; charset=UTF-8');
@@ -91,13 +101,10 @@ $files = array(
     'plugin/japanize.css',
     'plugin/sitecalendar.css',
 
-    'tooltips/tooltips.css'
+    'tooltips/tooltips.css', 
+    
+    'custom.css'
 );
-
-// Also output the contents of the custom CSS file, if it's available
-if (is_readable('css/custom.css')) {
-    $files[] = 'custom.css';
-}
 
 // Create directions for RTL support
 $left  = 'left';
@@ -110,18 +117,36 @@ if ($_GET['dir'] === 'rtl') {
 
 // Output the contents of each file
 foreach ($files as $file) {
-    $css = file_get_contents('css/' . $file);
-    $css = preg_replace("@/\*.*?\*/@sm", '', $css); // strip comments
-    $css = preg_replace("@\s*\n+\s*@sm", "\n", $css); // strip indentation
-
-    // Replace {right} and {left} placeholders with actual values.
-    // Used for RTL support.
-    $css = str_replace('{right}', $right, $css);
-    $css = str_replace('{left}', $left, $css);
-
-    // Output
-    echo "\n/* $file */\n";
-    echo $css;
+    $full_filepath = '';
+    if (!empty($default_theme)) {
+        // First add own theme css file if found else add default css file
+        if (is_readable($css_path . $file)) {
+            $full_filepath = $css_path . $file;
+        } elseif (is_readable($css_path_default . $file)) {
+            $full_filepath = $css_path_default . $file;
+        }
+    } else {
+        // Add theme css file if found
+        if (is_readable($css_path . $file)) {
+            $full_filepath = $css_path . $file;
+        }
+    }
+    
+    if (!empty($full_filepath)) {
+        $css = file_get_contents($full_filepath);
+        $css = preg_replace("@/\*.*?\*/@sm", '', $css); // strip comments
+        $css = preg_replace("@\s*\n+\s*@sm", "\n", $css); // strip indentation
+    
+        // Replace {right} and {left} placeholders with actual values.
+        // Used for RTL support.
+        $css = str_replace('{right}', $right, $css);
+        $css = str_replace('{left}', $left, $css);
+    
+        // Output
+        echo "\n/* $full_filepath */\n";
+         
+        echo $css;
+    }
 }
 
 ?>
