@@ -346,6 +346,7 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
  * Get the configuration values from the theme
  */
 $_CONF['theme_default'] = ''; // Default is none
+$_CONF['path_layout_default'] = ''; // Default is none
 $_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version of the theme engine not found assume lowest version
 $func = "theme_config_" . $_CONF['theme'];
 if (function_exists($func)) {
@@ -354,6 +355,7 @@ if (function_exists($func)) {
     $_IMAGE_TYPE = $theme_config['image_type'];
     if (isset($theme_config['theme_default'])) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
+        $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
     }
     if (isset($theme_config['supported_version_theme'])) {
         $_CONF['supported_version_theme'] = $theme_config['supported_version_theme'];
@@ -645,6 +647,14 @@ function COM_getBlockTemplate( $blockname, $which, $position='' )
         if( file_exists( $_CONF['path_layout'] . $positionSpecific ) )
         {
             $template = $positionSpecific;
+        }
+        // See if default theme if so check there
+        if(!empty($_CONF['theme_default']))
+        {
+            if( file_exists( $_CONF['path_layout_default'] . $positionSpecific ) )
+            {
+                $template = $positionSpecific;
+            }
         }
     }
 
@@ -8197,6 +8207,10 @@ function COM_handleError($errno, $errstr, $errfile='', $errline=0, $errcontext='
             file_exists($_CONF['path_layout'] . 'errormessage.html')) {
         // NOTE: NOT A TEMPLATE! JUST HTML!
         include $_CONF['path_layout'] . 'errormessage.html';
+    } elseif (!empty($_CONF['path_layout_default']) &&
+            file_exists($_CONF['path_layout_default'] . 'errormessage.html')) {
+        // NOTE: NOT A TEMPLATE! JUST HTML!
+        include $_CONF['path_layout_default'] . 'errormessage.html';
     } else {
         // Otherwise, display simple error message
         $title = 'An Error Occurred';
