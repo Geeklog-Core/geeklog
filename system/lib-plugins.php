@@ -2804,7 +2804,7 @@ function PLG_afterSaveSwitch($target, $item_url, $plugin, $message = '')
 */
 function PLG_configChange($group, $changes)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     // Treat articles like a plugin (since belong to core group)
     $plugintypes[] = 'article';
@@ -2815,7 +2815,7 @@ function PLG_configChange($group, $changes)
 
     $plugintypes = array_merge($plugintypes, $_PLUGINS);
 
-    foreach ($plugintypes as $pi_name) {    
+    foreach ($plugintypes as $pi_name) {
         $args = array();
         $args[1] = $group;
 

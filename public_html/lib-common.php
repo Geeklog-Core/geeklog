@@ -521,8 +521,12 @@ if ($_CONF['cache_templates']) {
     }
 }
 // See if Topic Tree has changed for users, if so rebuild tree   
-if ($last_topic_update > $topic_tree_date) {
+if ($last_topic_update > $topic_tree_date || empty($last_topic_update)) {
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    if (empty($last_topic_update)) {
+        TOPIC_updateLastTopicUpdate();
+        $last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
+    }
 
     // Save updated topic tree and date
     if ($_CONF['cache_templates']) {
@@ -4819,15 +4823,16 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
 *
 * @param    string  $permissions        comma-separated list of rights which identify the current user as an "Admin"
 * @param    boolean $list_only          true = return only the list of HTML tags
-* @param    boolean $filter_html_flag   0 = returns allowed all html tags, 1 = returns allowed HTML tags only, 2 = returns No HTML Tags Allowed (this is used by plugins if they have a config that overrides Geeklogs filter html settings or do not have a post mode)
-* @return   string                  HTML <div>/<span> enclosed string
+* @param    int     $filter_html_flag   0 = returns allowed all html tags,
+                                        1 = returns allowed HTML tags only,
+                                        2 = returns No HTML Tags Allowed (this is used by plugins if they have a config
+                                               that overrides Geeklogs filter html settings or do not have a post mode)
+* @param    array   $allowed_tags       Array of allowed special tags ('code', 'raw', 'page_break' ...)
+* @return   string                      HTML <div>/<span> enclosed string
 * @see      function COM_checkHTML
-* @todo     Bugs: The list always includes the [code], [raw], and [page_break]
-*           tags when story.* permissions are required, even when those tags
-*           are not actually available (e.g. in comments on stories).
 *
 */
-function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1)
+function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1, $allowed_tags = '')
 {
     global $_CONF, $_PLUGINS, $LANG01;
 
@@ -4870,20 +4875,9 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
         }
     }
 
-    $with_story_perms = false;
-    $perms = explode(',', $permissions);
-    foreach ($perms as $p) {
-        if (substr($p, 0, 6) == 'story.') {
-            $with_story_perms = true;
-            break;
-        }
-    }
-
-    if ($with_story_perms) {
-        $retval .= '[code], [raw], ';
-
-        if ($_CONF['allow_page_breaks'] == 1) {
-            $retval .= '[page_break], ';
+    if ($filter_html_flag !== 2 && is_array($allowed_tags)) {
+        foreach ($allowed_tags as $tag) {
+            $retval .= '&#91;' . $tag . '&#93;, ';
         }
     }
 
@@ -4905,9 +4899,6 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
         $done_once = true;
     }
     $retval .= '</div>';
-
-    return $retval;
-    
 
     return $retval;
 }
@@ -8678,32 +8669,22 @@ function COM_newTemplate($root, $options = Array())
 * @return   string      character set, e.g. 'utf-8'
 *
 */
-function COM_getEncodingt() {
-	global $_CONF, $LANG_CHARSET;
+function COM_getEncodingt()
+{
+    static $encoding;
 
-	static $encoding = null;
+    if ($encoding === null) {
+        $encoding = strtolower(COM_getCharset());
+        $valid_charsets = array(
+            'iso-8859-1', 'iso-8859-15', 'utf-8', 'cp866', 'cp1251',
+            'cp1252', 'koi8-r', 'big5', 'gb2312', 'big5-hkscs',
+            'shift_jis', 'sjis', 'euc-jp');
+        if (!in_array($encoding, $valid_charsets)) {
+            $encoding = 'iso-8859-1';
+        }
+    }
 
-    $valid_charsets = array('iso-8859-1','iso-8859-15','utf-8','cp866','cp1251','cp1252','koi8-r','big5','gb2312','big5-hkscs','shift_jis','sjis','euc-jp');
-
-	if ($encoding === null) {
-		if (isset($LANG_CHARSET)) {
-			$encoding = $LANG_CHARSET;
-		} else if (isset($_CONF['default_charset'])) {
-			$encoding = $_CONF['default_charset'];
-		} else {
-			$encoding = 'iso-8859-1';
-		}
-	}
-
-	$encoding = strtolower($encoding);
-
-	if ( in_array($encoding,$valid_charsets) ) {
-	    return $encoding;
-	} else {
-	    return 'iso-8859-1';
-	}
-
-	return $encoding;
+    return $encoding;
 }
 
 /**

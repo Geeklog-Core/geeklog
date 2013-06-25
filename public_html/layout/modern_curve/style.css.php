@@ -33,7 +33,7 @@ require_once '../../siteconfig.php';
 
 $theme = 'modern_curve'; // Theme Name
 $default_theme = ''; // Default theme name. If nothing leave as blank string
-$path_themes = $_CONF['path'] . 'public_html/layout/'; // Assumes the default if not then change
+$path_themes = '../'; // Assumes the default if not then change
 
 $css_path_default='';
 if (!empty($default_theme)) {
