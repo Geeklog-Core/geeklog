@@ -90,7 +90,7 @@ $files = array(
     'admin/block.css',
     'admin/group.css',
     'admin/lists.css',
-    'admin/moderation.css',
+    'admin/commandcontrol.css',
     'admin/plugins.css',
     'admin/story.css',
     'admin/topic.css',

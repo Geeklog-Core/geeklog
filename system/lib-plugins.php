@@ -940,8 +940,8 @@ function PLGINT_getOptionsforMenus($var_names, $required_names, $function_name)
 */
 function PLG_getCCOptions()
 {
-    $var_names = array('adminlabel', 'adminurl', 'plugin_image');
-    $required_names = array(true, true, true);
+    $var_names = array('adminlabel', 'adminurl', 'plugin_image', 'admingroup');
+    $required_names = array(true, true, true, false);
     $function_name = 'plugin_cclabel_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
 

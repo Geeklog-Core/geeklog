@@ -121,7 +121,7 @@ function plugin_cclabel_spamx()
     if (SEC_hasRights('spamx.admin')) {
         $retval = array($LANG_SX00['plugin_name'],
             $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
-            plugin_geticon_spamx ());
+            plugin_geticon_spamx (), 'tools');
     }
 
     return $retval;

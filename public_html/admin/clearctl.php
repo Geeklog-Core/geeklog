@@ -45,5 +45,5 @@ if (!SEC_inGroup ('Root')) {
 
 CTL_clearCache();
 
-echo COM_refresh($_CONF['site_admin_url'] . '/moderation.php?msg=500');
+echo COM_refresh($_CONF['site_admin_url'] . '/index.php?msg=500');
 ?>

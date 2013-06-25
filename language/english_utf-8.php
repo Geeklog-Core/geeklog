@@ -55,7 +55,7 @@ $LANG01 = array(
     11 => 'Stories',
     12 => 'Blocks',
     13 => 'Topics',
-    14 => '',
+    14 => 'Command &amp; Control',
     15 => '',
     16 => '',
     17 => 'Users',
@@ -1036,6 +1036,7 @@ $LANG28 = array(
 
 ###############################################################################
 # admin/moderation.php
+# admin/index.php
 
 $LANG29 = array(
     1 => 'Approve',
@@ -1060,7 +1061,12 @@ $LANG29 = array(
     40 => 'User Submissions',
     41 => 'Comment Submissions',
     42 => 'Username',
-    43 => 'Auto-publish Comments?'
+    43 => 'Auto-publish Comments?',
+    'core' => 'Core',
+    'plugins' => 'Plugins',
+    'tools' => 'Tools',
+    'users' => 'Users',    
+    'submissions_desc' => "To modify or delete a user submssion, click on that item's edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit." 
 );
 
 ###############################################################################

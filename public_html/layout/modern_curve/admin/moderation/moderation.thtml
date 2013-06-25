@@ -1,7 +1,0 @@
-{# begin {templatelocation} #}
-
-<ul id="admin-moderation">
-  {cc_rows}
-</ul>
-
-{# end {templatelocation} #}

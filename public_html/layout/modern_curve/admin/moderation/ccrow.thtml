@@ -1,5 +1,0 @@
-{# begin {templatelocation} #}
-
-{cc_main_options}
-
-{# end {templatelocation} #}

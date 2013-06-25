@@ -329,7 +329,7 @@ input.search {
   Moderation Page
 --------------------------------------*/
 
-#admin-moderation:after {
+#admin-commandcontrol:after {
   content: ".";
   display: block;
   height: 0;
@@ -337,12 +337,12 @@ input.search {
   visibility: hidden;
 }
 
-#admin-moderation {
+#admin-commandcontrol {
   overflow: auto;
   width: 100%;
 }
 
-#admin-moderation li {
+#admin-commandcontrol li {
   width: 12.48%;
 }
 
@@ -469,7 +469,7 @@ select.opt {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-moderation li {
+	#admin-commandcontrol li {
 	  width: 16.61%;
 	}
 }
@@ -491,7 +491,7 @@ select.opt {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-moderation li {
+	#admin-commandcontrol li {
 	  width: 19.98%;
 	}
 }
@@ -549,7 +549,7 @@ select.opt {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-moderation li {
+	#admin-commandcontrol li {
 	  width: 24.94%;
 	}
 
@@ -605,7 +605,7 @@ select.opt {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-moderation li {
+	#admin-commandcontrol li {
 	  width: 33.24%;
 	}
 }

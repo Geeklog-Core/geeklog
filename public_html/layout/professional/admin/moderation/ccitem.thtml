@@ -1,5 +1,0 @@
-        <div class="moderation-cc-item" style="width:{cc_icon_width}%">
-            <a href="{page_url}"><img src="{page_image}" alt=""{xhtml}></a><br{xhtml}>
-            <a href="{page_url}">{option_label}</a>
-
-        </div>

@@ -1,7 +1,0 @@
-
-<!-- admin/moderation/moderation.thtml { -->
-
-<ul id="admin-moderation" class="clearfix">
-{cc_rows}</ul>
-
-<!-- } admin/moderation/moderation.thtml -->

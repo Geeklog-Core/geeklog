@@ -299,8 +299,47 @@ function SEC_hasConfigAcess()
 }
 
 /**
-* Checks to see if current user has access to a topic
+* Checks to see if current user has access to a admin moderation page
 *
+* @return       boolean 	
+*
+*/
+function SEC_hasModerationAccess()
+{
+    global $_CONF;
+    
+    $hasAccess = false;
+    
+    if (SEC_hasRights('story.moderate')) {
+        $hasAccess = true;
+    }
+
+    if ($_CONF['listdraftstories'] == 1) {
+        if (SEC_hasRights('story.edit')) {
+            $hasAccess = true;
+        }
+    }
+    
+    if ($_CONF['commentsubmission'] == 1) {
+        if (SEC_hasRights('comment.moderate')) {
+            $hasAccess = true;
+        }
+    }
+
+    if ($_CONF['usersubmission'] == 1) {
+        if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
+            $hasAccess = true;
+        }
+    }
+    
+    if (PLG_isModerator()) {
+        $hasAccess = false;
+    }
+    
+    return $hasAccess;
+}
+
+/**
 * Checks to see if current user has access to a topic
 *
 * @param        string      $tid        ID for topic to check on
