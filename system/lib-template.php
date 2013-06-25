@@ -122,7 +122,7 @@ function CTL_clearCache($plugin='')
 * @return   nothing
 *
 */
-function plugin_configchange_template($group, $changes)
+function plugin_configchange_template($group, $changes = array())
 {
     global $_TABLES, $_CONF;
 

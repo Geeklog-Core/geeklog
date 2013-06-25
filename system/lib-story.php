@@ -1609,7 +1609,7 @@ function plugin_getfeednames_article()
 * @return   nothing
 *
 */
-function plugin_configchange_article($group, $changes)
+function plugin_configchange_article($group, $changes = array())
 {
     global $_TABLES, $_CONF;
 
