@@ -519,8 +519,12 @@ if ($_CONF['cache_templates']) {
     }
 }
 // See if Topic Tree has changed for users, if so rebuild tree   
-if ($last_topic_update > $topic_tree_date) {
+if ($last_topic_update > $topic_tree_date || empty($last_topic_update)) {
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    if (empty($last_topic_update)) {
+        TOPIC_updateLastTopicUpdate();
+        $last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
+    }
 
     // Save updated topic tree and date
     if ($_CONF['cache_templates']) {
