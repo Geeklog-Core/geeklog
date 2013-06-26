@@ -231,7 +231,7 @@ fieldset .compact dd.description {
   Moderation Page
 --------------------------------------*/
 
-#admin-commandcontrol:after {
+.admin-commandcontrol:after {
   content: ".";
   display: block;
   height: 0;
@@ -239,12 +239,12 @@ fieldset .compact dd.description {
   visibility: hidden;
 }
 
-#admin-commandcontrol {
+.admin-commandcontrol {
   overflow: auto;
   width: 100%;
 }
 
-#admin-commandcontrol li {
+.admin-commandcontrol li {
   width: 12.48%;
 }
 
@@ -300,7 +300,7 @@ fieldset .compact dd.description {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 16.61%;
 	}
 }
@@ -322,7 +322,7 @@ fieldset .compact dd.description {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 19.98%;
 	}
 }
@@ -381,7 +381,7 @@ fieldset .compact dd.description {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 24.94%;
 	}
 
@@ -407,7 +407,7 @@ fieldset .compact dd.description {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 33.24%;
 	}
 }
