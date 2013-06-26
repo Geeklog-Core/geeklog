@@ -127,7 +127,8 @@ function plugin_configchange_template($group, $changes = array())
     global $_TABLES, $_CONF;
 
     // If template comments disabled or enabled clear all cached templates
-    if ($group == 'Core' AND in_array('template_comments', $changes)) {
+    // To be safe clear cache on enabling and disabling of cache
+    if ($group == 'Core' AND (in_array('cache_templates', $changes) OR  in_array('template_comments', $changes))) {
         CTL_clearCache();
     }
 }
