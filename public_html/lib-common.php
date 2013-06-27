@@ -1041,7 +1041,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     // Allow anything not in the blocks but in the rest of the template file to be displayed
     $header->parse('menu_elements', 'menunavigation', true);
     
-    $header->set_var('doctype', $doctype);
+    $header->set_var('doctype', $doctype . LB);
     
     if (XHTML == '') {
         $header->set_var('xmlns', '');
@@ -1762,7 +1762,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     
     $header->parse('menu_elements', 'menunavigation', true);    
     
-    $header->set_var('doctype', $doctype);
+    $header->set_var('doctype', $doctype . LB);
     
     if (XHTML == '') {
         $header->set_var('xmlns', '');
