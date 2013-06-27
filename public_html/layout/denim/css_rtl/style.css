@@ -2598,14 +2598,14 @@ dd#profile-user_photo {
   Moderation Page
 --------------------------------------*/
 
-#admin-commandcontrol {
+.admin-commandcontrol {
   list-style-position: outside;
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
 
-#admin-commandcontrol li {
+.admin-commandcontrol li {
   float: right; /* rtl */
   width: 12.5%;
   height: 8em;
@@ -2614,7 +2614,7 @@ dd#profile-user_photo {
   text-align: center;
 }
 
-#admin-commandcontrol a {
+.admin-commandcontrol a {
   display: block;
   font-size: 90%;
   margin: 5px 0;
@@ -3010,7 +3010,7 @@ body.center-right #config_content {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 16.66%;
 	}
 
@@ -3236,7 +3236,7 @@ body.center-right #config_content {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 20%;
 	}
 
@@ -3294,7 +3294,7 @@ body.center-right #config_content {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 25%;
 	}
 
@@ -3788,7 +3788,7 @@ body.center-right #config_content {
 	  Moderation Page
 	--------------------------------------*/
 
-	#admin-commandcontrol li {
+	.admin-commandcontrol li {
 	  width: 33.33%;
 	}
 }

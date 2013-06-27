@@ -430,7 +430,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->clear_var('header_text');
     }
 
-    if ($has_extras) {
+    if ($has_extras && $showsearch) {
         /**
         * default query limit if no other ch osen.
         * @todo maybe this could be a setting from the list?

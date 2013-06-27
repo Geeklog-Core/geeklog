@@ -5,7 +5,7 @@
 <!-- BEGIN ccgroup -->
 <h2>{lang_group}</h2>
 
-<ul id="admin-commandcontrol" class="clearfix">
+<ul class="admin-commandcontrol clearfix">
 {cc_rows}
 </ul>
 <!-- END ccgroup -->

@@ -1036,7 +1036,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     // Allow anything not in the blocks but in the rest of the template file to be displayed
     $header->parse('menu_elements', 'menunavigation', true);
     
-    $header->set_var('doctype', $doctype);
+    $header->set_var('doctype', $doctype . LB);
     
     if (XHTML == '') {
         $header->set_var('xmlns', '');
@@ -1757,7 +1757,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     
     $header->parse('menu_elements', 'menunavigation', true);    
     
-    $header->set_var('doctype', $doctype);
+    $header->set_var('doctype', $doctype . LB);
     
     if (XHTML == '') {
         $header->set_var('xmlns', '');
@@ -3405,15 +3405,6 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
         // Allow anything not in the blocks but in the rest of the template file to be displayed
         $retval .= $adminmenu->parse('item', 'adminnavigation', true);
 
-        if (SEC_hasModerationAccess()) {
-            $url = $_CONF['site_admin_url'] . '/moderation.php';
-            $adminmenu->set_var('option_url', $url);
-            $adminmenu->set_var('option_label', $LANG01[10]);
-            $adminmenu->set_var('option_count', COM_numberFormat($modnum));
-            $menu_item = $adminmenu->parse('item', 'option');
-            $link_array[$LANG01[10]] = $menu_item;
-        }
-        
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
         {
@@ -3488,6 +3479,15 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
 
         // now handle submissions for plugins
         $modnum += PLG_getSubmissionCount();
+
+        if (SEC_hasModerationAccess()) {
+            $url = $_CONF['site_admin_url'] . '/moderation.php';
+            $adminmenu->set_var('option_url', $url);
+            $adminmenu->set_var('option_label', $LANG01[10]);
+            $adminmenu->set_var('option_count', COM_numberFormat($modnum));
+            $menu_item = $adminmenu->parse('item', 'option');
+            $link_array[$LANG01[10]] = $menu_item;
+        }
 
         if( SEC_hasRights( 'story.edit' ))
         {
