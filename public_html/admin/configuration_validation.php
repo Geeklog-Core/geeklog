@@ -278,6 +278,7 @@ $_CONF_VALIDATE['Core']['hidenewcomments'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hidenewtrackbacks'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['hidenewplugins'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['title_trim_length'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['whatsnew_cache_time'] = array('rule' => 'numeric');
 
 /* Subgroup Users and Submissions, Tab Users */
 $_CONF_VALIDATE['Core']['disable_new_user_registration'] = array('rule' => 'boolean');

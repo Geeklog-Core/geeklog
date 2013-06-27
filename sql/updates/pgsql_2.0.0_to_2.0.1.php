@@ -44,6 +44,9 @@ function update_ConfValuesFor201()
     $c->add('whats_related',1,'select',1,7,33,1360,TRUE, $me, 7);
     $c->add('whats_related_max',0,'text',1,7,NULL,1370,TRUE, $me, 7);
     $c->add('whats_related_trim',26,'text',1,7,NULL,1380,TRUE, $me, 7);
+    
+    // What's New Block
+    $c->add('whatsnew_cache_time',3600,'text',3,15,NULL,1060,TRUE, $me, 15);
 
     // New Topic autotag permissions
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);

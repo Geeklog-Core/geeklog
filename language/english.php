@@ -1940,6 +1940,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => "Hide New Trackbacks",
     'hidenewplugins' => "Hide New Plugin Entries",
     'title_trim_length' => "Title Trim Length",
+    'whatsnew_cache_time' => "Max Cache Time",
     'trackback_enabled' => "Trackback Enabled?",
     'pingback_enabled' => "Pingback Enabled?",
     'ping_enabled' => "Ping Enabled?",

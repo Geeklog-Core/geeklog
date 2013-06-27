@@ -1842,7 +1842,7 @@ function plugin_user_changed_topic($uid)
     // Wipe out user's session variable for last_topic_update (if it exists) since their 
     // security may have changed and the topic tree should be updated again
     if ($_CONF['cache_templates']) {
-        $cacheInstance = 'topic_tree__' . CACHE_security_hash() . '__' . $uid;
+        $cacheInstance = 'topic_tree__' . CACHE_security_hash();
         CACHE_remove_instance($cacheInstance);
     } else {
         // See if user (other than anonymous) has a session

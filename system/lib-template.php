@@ -128,9 +128,78 @@ function plugin_configchange_template($group, $changes = array())
 
     // If template comments disabled or enabled clear all cached templates
     // To be safe clear cache on enabling and disabling of cache
-    if ($group == 'Core' AND (in_array('cache_templates', $changes) OR  in_array('template_comments', $changes))) {
+    if ($group == 'Core' AND (in_array('cache_templates', $changes) OR in_array('template_comments', $changes))) {
         CTL_clearCache();
+    } elseif ($_CONF['cache_templates']) {
+        // Probably not really necessary but clear cache if enabled on these other settings that can have cache files
+        // These are from the What's New Block
+        if ($group == 'Core' AND (in_array('newstoriesinterval', $changes) OR
+                                  in_array('newcommentsinterval', $changes) OR
+                                  in_array('newtrackbackinterval', $changes) OR
+                                  in_array('hidenewstories', $changes) OR
+                                  in_array('hidenewcomments', $changes) OR
+                                  in_array('hidenewtrackbacks', $changes) OR
+                                  in_array('hidenewplugins', $changes) OR
+                                  in_array('title_trim_length', $changes) OR
+                                  in_array('whatsnew_cache_time', $changes))) {
+            $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+            CACHE_remove_instance($cacheInstance);            
+        }
     }
+}
+
+/**
+* To be called (eventually) whenever Geeklog saves an item into the database.
+* Plugins can define their own 'itemsaved' function to be notified whenever
+* an item is saved or modified.
+*
+* NOTE:     The behaviour of this API function changed in Geeklog 1.6.0
+*
+* @param    string  $id     unique ID of the item
+* @param    string  $type   type of the item, e.g. 'article'
+* @param    string  $old_id (optional) old ID when the ID was changed
+* @return   void            (actually: false, for backward compatibility)
+* @link     http://wiki.geeklog.net/index.php/PLG_itemSaved
+*
+*/
+function plugin_itemsaved_template($id, $type, $old_id = '')
+{
+    // Just call item delete since same functionality
+    plugin_itemdeleted_template($id, $type);
+}
+
+/**
+* To be called (eventually) whenever Geeklog removes an item from the database.
+* Plugins can define their own 'itemdeleted' function to be notified whenever
+* an item is deleted.
+*
+* @param    string  $id     ID of the item
+* @param    string  $type   type of the item, e.g. 'article'
+* @return   void
+* @since    Geeklog 1.6.0
+*
+*/
+function plugin_itemdeleted_template($id, $type)
+{
+    // See if uses what's new block then delete cache of whatsnew 
+    // This will not catch everything though like trackbacks, comments, and 
+    // plugins that do not use itemsaved but let's delete the cache when we can
+    $supported = false;
+    if ($type == 'article') {
+        $supported = true;
+    } else {
+        // hack to see if plugin supports what's new
+        $fn_head = 'plugin_whatsnewsupported_' . $type; 
+        if (function_exists($fn_head)) {  
+            if (is_array($fn_head())) { // if array then supported
+                $supported = true;
+            }
+        }
+    }
+    if ($supported) {
+        $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+        CACHE_remove_instance($cacheInstance);  
+    }        
 }
 
 ?>

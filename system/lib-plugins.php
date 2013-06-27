@@ -2406,14 +2406,19 @@ function PLG_runScheduledTask()
 function PLG_itemSaved($id, $type, $old_id = '')
 {
     global $_PLUGINS;
-
+    
     $t = explode('.', $type);
-    $plg_type = $t[0];
+    $plg_type = $t[0];    
+    
+    // Treat template system like a plugin (since belong to core group)
+    $plugintypes[] = 'template';
+    require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugins = count($_PLUGINS);
-    for ($save = 0; $save < $plugins; $save++) {
-        if ($_PLUGINS[$save] != $plg_type) {
-            $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+
+    foreach ($plugintypes as $pi_name) {
+        if ($pi_name != $plg_type) {
+            $function = 'plugin_itemsaved_' . $pi_name;
             if (function_exists($function)) {
                 $function($id, $type, $old_id);
             }
@@ -2446,16 +2451,21 @@ function PLG_itemDeleted($id, $type)
 
     $t = explode('.', $type);
     $plg_type = $t[0];
+    
+    // Treat template system like a plugin (since belong to core group)
+    $plugintypes[] = 'template';
+    require_once $_CONF['path_system'] . 'lib-template.php';
 
-    $plugins = count($_PLUGINS);
-    for ($del = 0; $del < $plugins; $del++) {
-        if ($_PLUGINS[$del] != $plg_type) {
-            $function = 'plugin_itemdeleted_' . $_PLUGINS[$del];
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+
+    foreach ($plugintypes as $pi_name) {
+        if ($pi_name != $plg_type) {
+            $function = 'plugin_itemdeleted_' . $pi_name;
             if (function_exists($function)) {
                 $function($id, $type);
             }
         }
-    }
+    }    
 
     if (function_exists('CUSTOM_itemdeleted')) {
         CUSTOM_itemdeleted($id, $type);

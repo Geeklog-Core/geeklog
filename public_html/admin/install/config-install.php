@@ -213,6 +213,7 @@ function install_config()
     $c->add('hidenewtrackbacks',0,'select',3,15,0,1030,TRUE, $me, 15);
     $c->add('hidenewplugins',0,'select',3,15,0,1040,TRUE, $me, 15);
     $c->add('title_trim_length',20,'text',3,15,NULL,1050,TRUE, $me, 15);
+    $c->add('whatsnew_cache_time',3600,'text',3,15,NULL,1060,TRUE, $me, 15);
 
     // Subgroup: Users and Submissions
     $c->add('sg_users', NULL, 'subgroup', 4, 0, NULL, 0, TRUE, $me, 0);

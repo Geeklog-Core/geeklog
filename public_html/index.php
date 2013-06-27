@@ -99,12 +99,9 @@ if ($topic_check != '') {
 }
 
 
-$newstories = false;
 $displayall = false;
 if (isset ($_GET['display'])) {
-    if (($_GET['display'] == 'new') && (empty ($topic))) {
-        $newstories = true;
-    } else if (($_GET['display'] == 'all') && (empty ($topic))) {
+    if (($_GET['display'] == 'all') && (empty ($topic))) {
         $displayall = true;
     }
 }
@@ -122,7 +119,7 @@ if (isset ($_GET['page'])) {
 
 $display = '';
 
-if (!$newstories && !$displayall) {
+if (!$displayall) {
     // give plugins a chance to replace this page entirely
     $newcontent = PLG_showCenterblock (0, $page, $topic);
     if (!empty ($newcontent)) {
@@ -260,7 +257,7 @@ if (!empty($topic)) {
         $tid_list = "'" . $topic . "'";
     }
     $sql .= " AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$topic}')))";
-} elseif (!$newstories) {
+} else {
     $sql .= " AND frontpage = 1 AND ta.tdefault = 1";
 }
 
@@ -279,20 +276,6 @@ if (!empty($U['tids'])) {
 }
 
 $sql .= COM_getTopicSQL ('AND', 0, 'ta') . ' ';
-
-if ($newstories) {
-    switch ($_DB_dbms) {
-    case 'mysql':
-        $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
-        break;
-    case 'pgsql':
-        $sql .= "AND (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) ";
-        break;
-    case 'mssql':
-        $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
-        break;
-    }
-}
 
 $offset = ($page - 1) * $limit;
 $userfields = 'u.uid, u.username, u.fullname';
@@ -383,9 +366,6 @@ if ( $A = DB_fetchArray( $result ) ) {
             ($_CONF['hide_main_page_navigation'] == 0)) {
         if (empty ($topic)) {
             $base_url = $_CONF['site_url'] . '/index.php';
-            if ($newstories) {
-                $base_url .= '?display=new';
-            }
         } else {
             $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
         }

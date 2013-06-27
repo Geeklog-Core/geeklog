@@ -506,12 +506,7 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 $last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
 // Figure out how old stored topic tree is
 if ($_CONF['cache_templates']) {
-    if (COM_isAnonUser()) {
-        $uid = 1;
-    } else {
-        $uid = $_USER['uid'];
-    }
-    $cacheInstance = 'topic_tree__' . CACHE_security_hash() . '__' . $uid;
+    $cacheInstance = 'topic_tree__' . CACHE_security_hash();
     $topic_tree_date = date("Y-m-d H:i:s", CACHE_get_instance_update($cacheInstance, true));
 } else {
     if (COM_isAnonUser()) { 
@@ -5177,8 +5172,26 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $newstories;
+    global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $_USER;
 
+    if ($_CONF['cache_templates']) {
+        if (COM_isAnonUser()) {
+            $uid = 1;
+        } else {
+            $uid = $_USER['uid'];
+        }
+
+        $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+        $retval = CACHE_check_instance($cacheInstance, 0);
+        if ( $retval ) {
+            $lu = CACHE_get_instance_update($cacheInstance, 0);
+            $now = time();
+            if (( $now - $lu ) < $_CONF['whatsnew_cache_time'] ) {
+                return $retval;
+            }
+        }    
+    }
+    
     $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header', $position ));
 
@@ -5201,18 +5214,20 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
 
         // Find the newest stories
-        $sql['mssql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
+        $sql['mssql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . "
+            GROUP BY sid, title ORDER BY date DESC";
         
-        $sql['mysql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );
+        $sql['mysql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+            WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . " 
+            GROUP BY sid, title ORDER BY date DESC";
         
-        $sql['pgsql'] = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-            WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' );        
-        
+        $sql['pgsql'] = "SELECT sid, title FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+            WHERE (date >= (NOW() - INTERVAL '{$_CONF['newstoriesinterval']} SECOND')) AND (date <= NOW()) AND (draft_flag = 0)" . $where_sql . COM_getPermSQL( 'AND' ) . $topicsql . COM_getLangSQL( 'sid', 'AND' ) . " 
+            GROUP BY sid, title ORDER BY date DESC";
+       
         $result = DB_query( $sql );
-        $A = DB_fetchArray( $result );
-        $nrows = $A['count'];
+        $nrows = DB_numRows( $result );
 
         if( empty( $title ))
         {
@@ -5220,34 +5235,37 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
 
         // Any late breaking news stories?
-        $retval .= '<h3>' . $LANG01[99] . '</h3>';
-
-        if( $nrows > 0 )
-        {
-            $newmsg = COM_formatTimeString( $LANG_WHATSNEW['new_string'],
-                        $_CONF['newstoriesinterval'], $LANG01[11], $nrows);
-
-            if( $newstories && ( $page < 2 ))
-            {
-                $retval .= $newmsg . '<br' . XHTML . '>';
+        $retval .= '<h3>' . $LANG01[99] . ' <small>'
+                . COM_formatTimeString( $LANG_WHATSNEW['new_last'],
+                                        $_CONF['newstoriesinterval'] )
+                . '</small></h3>';
+        
+        if ($nrows > 0) {
+            $newarticles = array();
+   
+            for ($x = 0; $x < $nrows; $x++) {
+                $A = DB_fetchArray($result);
+  
+                $url = COM_buildUrl($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+    
+                $title = COM_undoSpecialChars(stripslashes( $A['title']));
+                $titletouse = COM_truncate($title, $_CONF['title_trim_length'],
+                                           '...');
+                if ($title != $titletouse) {
+                    $attr = array('title' => htmlspecialchars($title));
+                } else {
+                    $attr = array();
+                }
+                $aarticle = str_replace('$', '&#36;', $titletouse);
+                $aarticle = str_replace(' ', '&nbsp;', $aarticle);
+    
+                $newarticles[] = COM_createLink($aarticle, $url, $attr);
             }
-            else
-            {
-                $retval .= COM_createLink($newmsg, $_CONF['site_url']
-                    . '/index.php?display=new') . '<br' . XHTML . '>';
-            }
-        }
-        else
-        {
-            $retval .= $LANG01[100] . '<br' . XHTML . '>';
-        }
-
-        if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['trackback_enabled']
-                && ( $_CONF['hidenewtrackbacks'] == 0 ))
-                || ( $_CONF['hidenewplugins'] == 0 ))
-        {
-            $retval .= '<br' . XHTML . '>';
-        }
+    
+            $retval .= COM_makeList($newarticles, 'list-new-plugins');
+        } else {
+            $retval .= $LANG01[100] . '<br' . XHTML . '>' . LB; // No new stories
+        }        
     }
 
     if( $_CONF['hidenewcomments'] == 0 )
@@ -5420,6 +5438,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     }
 
     $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer', $position ));
+    if ($_CONF['cache_templates']) { CACHE_create_instance($cacheInstance, $retval, 0); }
 
     return $retval;
 }
@@ -7174,7 +7193,7 @@ function COM_getCurrentURL()
 */
 function COM_onFrontpage()
 {
-    global $_CONF, $topic, $page, $newstories;
+    global $_CONF, $topic, $page;
 
     // Note: We can't use $PHP_SELF here since the site may not be in the
     // DocumentRoot
@@ -7188,7 +7207,7 @@ function COM_onFrontpage()
 
     preg_match('/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly);
     if (($scriptName == $pathonly[1] . '/index.php') &&
-            empty($topic) && (empty($page) || ($page == 1)) && !$newstories) {
+            empty($topic) && (empty($page) || ($page == 1))) {
         $onFrontpage = true;
     }
 
