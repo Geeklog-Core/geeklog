@@ -1318,7 +1318,7 @@ function ADMIN_getListField_moderation($fieldname, $fieldvalue, $A, $icon_arr)
         break;
 
     default:
-        if (($fieldname == 3) && (($type == 'story') || ($type == 'story_draft'))) {
+        if (($fieldname == 4) && (($type == 'story') || ($type == 'story_draft'))) {
             $retval = TOPIC_getTopicAdminColumn('article', $A[0]);
         } elseif (($fieldname == 2) && ($type == 'comment')) {
             $commenttext = COM_getTextContent($A['comment']);

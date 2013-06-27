@@ -204,20 +204,27 @@ function itemlist($type, $token)
         $data_arr[$i] = $A;
     }
 
-    $header_arr = array(      // display 'text' and use table field 'field'
-        array('text' => $LANG_ADMIN['edit'], 'field' => 0),
-        array('text' => $H[0], 'field' => 1),
-        array('text' => $H[1], 'field' => 2),
-        array('text' => $H[2], 'field' => 3),
-        array('text' => $LANG29[2], 'field' => 'delete'),
-        array('text' => $LANG29[1], 'field' => 'approve')
-    );
     if ($type == 'comment') {
-        // data for comment submission headers
-        $header_arr[6]['text'] = $LANG29[42];
-        $header_arr[6]['field'] = 'uid';
-        $header_arr[7]['text'] = $LANG29[43];
-        $header_arr[7]['field'] = 'publishfuture';
+        $header_arr = array(      // display 'text' and use table field 'field'
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $H[0], 'field' => 1),
+            array('text' => $H[1], 'field' => 2),
+            array('text' => $H[2], 'field' => 3),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve'),
+            array('text' => $LANG29[42], 'field' => 'uid'),
+            array('text' => $LANG29[43], 'field' => 'publishfuture')
+        );            
+    } else {
+        $header_arr = array(      // display 'text' and use table field 'field'
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $H[0], 'field' => 1),
+            array('text' => $H[1], 'field' => 'uid'),
+            array('text' => $H[2], 'field' => 3),
+            array('text' => $H[3], 'field' => 4),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve')
+        );            
     }
 
     $text_arr = array('has_menu' => false,
