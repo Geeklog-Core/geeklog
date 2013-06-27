@@ -1697,6 +1697,7 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
             $type = '';
             $max = $_CONF['related_topics_max']; // Article Default
             $tids = array();
+            $skip = 0;
             
             $px = explode (' ', trim ($autotag['parm2']));
             if (is_array ($px)) {
@@ -1741,6 +1742,7 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
             $trim = 0;
             $include_types = array();
             $tids = array();
+            $skip = 0;
             
             $px = explode (' ', trim ($autotag['parm2']));
             if (is_array ($px)) {

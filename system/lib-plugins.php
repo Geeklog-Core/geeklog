@@ -2025,7 +2025,7 @@ function PLG_feedUpdateCheck($plugin, $feed, $topic, $update_data, $limit, $upda
 */
 function PLG_getRelatedItems($types, $tids, $max, $trim)
 {
-    global $_PLUGINS;
+    global $_PLUGINS, $_CONF;
 
     $relateditems =  array();
     $returneditems =  array();

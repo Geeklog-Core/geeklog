@@ -882,10 +882,10 @@ function plugin_getrelateditems_story($tids, $max, $trim)
 {
     global $_CONF, $_TABLES;
 
-    $archsql = '';
-    $archivetid = DB_getItem( $_TABLES['topics'], 'tid', "archive_flag=1" );
-    if(!empty( $archivetid )) {
-        $where_sql .= " AND (ta.tid <> '$archivetid')";
+    $where_sql = '';
+    $archivetid = DB_getItem($_TABLES['topics'], 'tid', "archive_flag=1");
+    if (!empty($archivetid)) {
+        $where_sql = " AND (ta.tid <> '$archivetid')";
     }
 
     // Find the newest stories the user has access too

@@ -306,7 +306,7 @@ function commandcontrol($token)
 }
 
 
-$display .= COM_showMessageFromParameter()
+$display = COM_showMessageFromParameter()
          .  security_check_reminder()
          .  commandcontrol(SEC_createToken());
 
