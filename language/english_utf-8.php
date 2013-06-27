@@ -100,7 +100,7 @@ $LANG01 = array(
     56 => 'Vote',
     57 => 'Password',
     58 => 'Login',
-    59 => "Don't have an account yet?  Sign up as a <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">New User</a>",
+    59 => "Don't have an account yet?  Sign up as a <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">New User</a>!",
     60 => 'Post a comment',
     61 => 'Create New Account',
     62 => 'words',
