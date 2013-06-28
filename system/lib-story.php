@@ -1623,8 +1623,10 @@ function plugin_configchange_article($group, $changes = array())
         if ($nrows > 0) {
             for ($x = 0; $x < $nrows; $x++) {
                 $A = DB_fetchArray ($result);
-                $fulltext = $A['introtext'] . ' ' . $A['bodytext']; 
-                $related =  implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim']));
+                // Should maybe retrieve through story service but just grab from database and apply any autotags
+                // This is all the related story column should really need
+                $fulltext = PLG_replaceTags($A['introtext']) . ' ' . PLG_replaceTags($A['bodytext']);
+                $related =  DB_escapeString(implode("\n", STORY_extractLinks($fulltext, $_CONF['whats_related_trim'])));
                 if (!empty($related)) {
                     DB_query("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");                    
                 }
