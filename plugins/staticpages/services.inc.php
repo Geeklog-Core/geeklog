@@ -751,6 +751,9 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             
                 if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
                     $retval['sp_content'] = str_replace(array_keys($tag), array_values($tag), $retval['sp_content']);
+                    // Remove any unknown staticpage template variables as long as they use the curly brackets ie {templatevariable}
+                    // If template variable format is different then any unused ones will display
+                    $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
                     
                     $output['sp_content'] = $retval['sp_content'];
                 }
