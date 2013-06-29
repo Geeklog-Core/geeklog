@@ -215,7 +215,7 @@ function itemlist($type, $token)
             array('text' => $LANG29[42], 'field' => 'uid'),
             array('text' => $LANG29[43], 'field' => 'publishfuture')
         );            
-    } else {
+    } elseif ($type == 'story' || $type == 'story_draft') {
         $header_arr = array(      // display 'text' and use table field 'field'
             array('text' => $LANG_ADMIN['edit'], 'field' => 0),
             array('text' => $H[0], 'field' => 1),
@@ -225,6 +225,15 @@ function itemlist($type, $token)
             array('text' => $LANG29[2], 'field' => 'delete'),
             array('text' => $LANG29[1], 'field' => 'approve')
         );            
+    } else {
+        $header_arr = array(      // display 'text' and use table field 'field'
+            array('text' => $LANG_ADMIN['edit'], 'field' => 0),
+            array('text' => $H[0], 'field' => 1),
+            array('text' => $H[1], 'field' => 2),
+            array('text' => $H[2], 'field' => 3),
+            array('text' => $LANG29[2], 'field' => 'delete'),
+            array('text' => $LANG29[1], 'field' => 'approve')
+        );          
     }
 
     $text_arr = array('has_menu' => false,
