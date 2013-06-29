@@ -3,17 +3,8 @@
 // Delete anonymous user comment settings since all 3 are now config options
 $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 
-// Update Session Table
-$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD topic_tree_date datetime DEFAULT NULL AFTER topic";
-$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} ADD topic_tree text DEFAULT NULL AFTER topic_tree_date";
-
-// Alter Session table structure
-$_SQL[] = "ALTER TABLE {$_TABLES['vars']} CHANGE `value` `value` TEXT DEFAULT NULL"; 
-
 // New Geeklog variable for Topics
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_topic_update','')";
-$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree_date','')";
-$_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree','')";
 
 /**
  * Add new config options

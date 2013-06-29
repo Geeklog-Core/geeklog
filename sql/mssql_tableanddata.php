@@ -264,8 +264,6 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
     [whos_online] [tinyint] NOT NULL, 
     [topic] [varchar] (20) NOT NULL, 
-    [topic_tree_date] [datetime] NULL,
-    [topic_tree] [text] NULL
 ) ON [PRIMARY]
 ";
 
@@ -504,7 +502,7 @@ CREATE TABLE [dbo].[{$_TABLES['users']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['vars']}] (
     [name] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [value] [text] COLLATE SQL_Latin1_General_CP1_CI_AS NULL
+    [value] [varchar] (128) NULL
 ) ON [PRIMARY]
 ";
 

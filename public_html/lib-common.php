@@ -500,21 +500,13 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 *
 */
 
-// Figure out if we need to update topic tree or retrieve it from the session/cache
+// Figure out if we need to update topic tree or retrieve it from the cache
 // For anonymous users topic tree data can be shared
 // Retrieve when last topic update happened
 $last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
 // Figure out how old stored topic tree is
-if ($_CONF['cache_templates']) {
-    $cacheInstance = 'topic_tree__' . CACHE_security_hash();
-    $topic_tree_date = date("Y-m-d H:i:s", CACHE_get_instance_update($cacheInstance, true));
-} else {
-    if (COM_isAnonUser()) { 
-        $topic_tree_date = DB_getItem($_TABLES['vars'], 'value', "name='anon_topic_tree_date'");
-    } else {
-        $topic_tree_date = SESS_getVariable('topic_tree_date');      
-    }
-}
+$cacheInstance = 'topic_tree__' . CACHE_security_hash();
+$topic_tree_date = date("Y-m-d H:i:s", CACHE_get_instance_update($cacheInstance, true));
 // See if Topic Tree has changed for users, if so rebuild tree   
 if ($last_topic_update > $topic_tree_date || empty($last_topic_update)) {
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
@@ -524,23 +516,9 @@ if ($last_topic_update > $topic_tree_date || empty($last_topic_update)) {
     }
 
     // Save updated topic tree and date
-    if ($_CONF['cache_templates']) {
-        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
-    } else {
-        if (COM_isAnonUser()) {
-            DB_query("UPDATE {$_TABLES['vars']} SET value='$last_topic_update' WHERE name='anon_topic_tree_date'");
-            DB_query("UPDATE {$_TABLES['vars']} SET value='" . serialize($_TOPICS) . "' WHERE name='anon_topic_tree'");
-        } else {
-            SESS_setVariable('topic_tree_date', $last_topic_update);
-            SESS_setVariable('topic_tree', serialize($_TOPICS));            
-        }
-    }
+    CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
 } else {
-    if ($_CONF['cache_templates']) {
-        $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
-    } else {
-        $serialized_topic_tree = DB_getItem($_TABLES['vars'], 'value', "name='anon_topic_tree'");
-    }
+    $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
     $_TOPICS = unserialize($serialized_topic_tree);
 }    
 
@@ -5174,12 +5152,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 {
     global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $_USER;
 
-    if ($_CONF['cache_templates']) {
-        if (COM_isAnonUser()) {
-            $uid = 1;
-        } else {
-            $uid = $_USER['uid'];
-        }
+    if ($_CONF['whatsnew_cache_time'] > 0) {
 
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
         $retval = CACHE_check_instance($cacheInstance, 0);
@@ -5438,7 +5411,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     }
 
     $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer', $position ));
-    if ($_CONF['cache_templates']) { CACHE_create_instance($cacheInstance, $retval, 0); }
+    if ($_CONF['whatsnew_cache_time'] > 0) { CACHE_create_instance($cacheInstance, $retval, 0); }
 
     return $retval;
 }

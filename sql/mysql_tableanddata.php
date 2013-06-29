@@ -260,8 +260,6 @@ CREATE TABLE {$_TABLES['sessions']} (
   md5_sess_id varchar(128) default NULL,
   whos_online tinyint(1) NOT NULL default '1',
   topic varchar(20) NOT NULL default '',
-  topic_tree_date datetime DEFAULT NULL,
-  topic_tree text DEFAULT NULL,
   PRIMARY KEY  (sess_id),
   KEY sess_id (sess_id),
   KEY start_time (start_time),
@@ -545,7 +543,7 @@ CREATE TABLE {$_TABLES['users']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
-  value text default NULL,
+  value varchar(128) default NULL,
   PRIMARY KEY  (name)
 ) ENGINE=MyISAM
 ";
@@ -833,8 +831,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedsto
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_scheduled_run','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_article_publish','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_topic_update','') ";
-$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree_date','')";
-$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('anon_topic_tree','')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('database_version','0.0.0') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['trackbackcodes']} (code, name) VALUES (0,'Trackback Enabled') ";
