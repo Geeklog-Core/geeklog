@@ -545,7 +545,7 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
         $admin_templates->set_var('message', $message);
     }
 
-    if ($has_extras) { # now make google-paging
+    if ($has_extras && $showsearch) {
         $hasargs = strstr( $form_url, '?' );
         if( $hasargs ) {
             $sep = '&amp;';
