@@ -969,7 +969,7 @@ a.pluginButton:hover {
   color:blue;
   text-align:center;
   padding-top:2px;
-  background:center url(navbar/images/button_over.gif);
+  background:center url(images/navbar/button_over.gif);
   background-repeat:repeat-x;
   display:block;
   height:19px;
@@ -998,7 +998,7 @@ a.pluginButton:hover {
 }
 #navcontainer a {
   float:left;
-  background:url("navbar/images/tableftJ.gif") no-repeat left top;
+  background:url("images/navbar/tableftJ.gif") no-repeat left top;
   margin:0px;
   padding:0px 0px 0px 5px;
   text-decoration:none;
@@ -1006,7 +1006,7 @@ a.pluginButton:hover {
 #navcontainer a span {
   float:left;
   display:block;
-  background:url("navbar/images/tabrightJ.gif") no-repeat right top;
+  background:url("images/navbar/tabrightJ.gif") no-repeat right top;
   padding:5px 15px 4px 6px;
   color:#24618E;
 }
@@ -1025,14 +1025,14 @@ a.pluginButton:hover {
   background-position:100% -42px;
 }
 #navcontainer a#current span {
-  background:url("navbar/images/tabrightI.gif") no-repeat left top;
+  background:url("images/navbar/tabrightI.gif") no-repeat left top;
   background-position:100% -42px;
   color:#FFFFFF;
 }
 #navcontainer a:link#current,
 #navcontainer a:visited#current,
 #navcontainer a:hover#current {
-  background:url("navbar/images/tableftI.gif") no-repeat left top;
+  background:url("images/navbar/tableftI.gif") no-repeat left top;
   background-position:0% -42px;
 }
 

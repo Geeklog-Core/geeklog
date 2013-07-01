@@ -78,7 +78,7 @@ ul.navbar-breadcrumbs li a {
   display: block;
   margin: 0;
   padding: 0 0 0 5px;
-  background: url(../../navbar/images/tableftJ.gif) no-repeat 0 0;
+  background: url(../../images/navbar/tableftJ.gif) no-repeat 0 0;
   text-decoration: none;
 }
 
@@ -86,7 +86,7 @@ ul.navbar-breadcrumbs li a {
   display: block;
   padding: 4px 8px 4px 3px;
   color: #24618E;
-  background: url(../../navbar/images/tabrightJ.gif) no-repeat 100% 0;
+  background: url(../../images/navbar/tabrightJ.gif) no-repeat 100% 0;
 }
 
 #navcontainer a span {
@@ -107,12 +107,12 @@ ul.navbar-breadcrumbs li a {
 
 #navcontainer a#current span {
   color: #FFFFFF;
-  background: url(../../navbar/images/tabrightI.gif) no-repeat 100% -42px;
+  background: url(../../images/navbar/tabrightI.gif) no-repeat 100% -42px;
 }
 
 #navcontainer a:link#current,
 #navcontainer a:visited#current,
 #navcontainer a:hover#current {
-  background: url(../../navbar/images/tableftI.gif) no-repeat 0% -42px;
+  background: url(../../images/navbar/tableftI.gif) no-repeat 0% -42px;
 }
 

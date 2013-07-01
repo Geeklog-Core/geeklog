@@ -818,7 +818,7 @@ a.pluginButton:hover {
   color: blue;
   text-align: center;
   padding-top: 2px;
-  background:center url(../navbar/images/button_over.gif);
+  background:center url(../images/navbar/button_over.gif);
   background-repeat: repeat-x;
   display: block;
   height: 19px;
