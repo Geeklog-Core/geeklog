@@ -7868,7 +7868,7 @@ function COM_getTooltip($hoverover = '', $text = '', $link = '', $title = '', $t
     }
 
     if ($hoverover == '') {
-        $hoverover = '<img alt="?" id="gl-tooltip-icon" src="' . $_CONF['layout_url'] . '/tooltips/images/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';   
+        $hoverover = '<img alt="?" id="gl-tooltip-icon" src="' . $_CONF['layout_url'] . '/images/tooltips/tooltip.' . $_IMAGE_TYPE . '"' . XHTML . '>';   
     }
     
     $tooltip = COM_newTemplate($_CONF['path_layout'] .'tooltips/');
