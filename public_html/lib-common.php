@@ -4413,7 +4413,7 @@ function COM_showBlocks( $side, $topic='' )
         }
     }
 
-    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, ";
+    $blocksql['mssql']  = "SELECT bid, is_enabled, name, b.type, title, blockorder, cast(content as text) as content, cache_time, ";
     $blocksql['mssql'] .= "rdfurl, rdfupdated, rdflimit, onleft, phpblockfn, help, owner_id, ";
     $blocksql['mssql'] .= "group_id, perm_owner, perm_group, perm_members, perm_anon, allow_autotags,UNIX_TIMESTAMP(rdfupdated) AS date ";
 
@@ -4575,6 +4575,23 @@ function COM_formatBlock( $A, $noboxes = false )
     if( $A['type'] == 'gldefault' )
     {
         $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'], $position );
+    } else {
+        // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
+        // Don't Cache default blocks either
+        if (isset($A['cache_time']) AND $A['cache_time'] > 0) {
+    
+            $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+            $retval = CACHE_check_instance($cacheInstance, 0);
+            if ($retval) {
+                $lu = CACHE_get_instance_update($cacheInstance, 0);
+                $now = time();
+                if (($now - $lu) < $A['cache_time'] ) {
+                    return $retval;
+                } else {
+                    $retval = '';
+                }
+            }    
+        }
     }
 
     if( $A['type'] == 'phpblock' && !$noboxes )
@@ -4624,7 +4641,6 @@ function COM_formatBlock( $A, $noboxes = false )
         // Hack: If the block content starts with a '<' assume it
         // contains HTML and do not call COM_nl2br() which would only add
         // unwanted <br> tags.
-
         if (substr(trim($blockcontent), 0, 1) != '<') {
             $blockcontent = COM_nl2br($blockcontent);
         }
@@ -4640,6 +4656,8 @@ function COM_formatBlock( $A, $noboxes = false )
                 . $blockcontent . LB
                 . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
     }
+    // Cache only if enabled and not gldefault or dynamic
+    if (isset($A['cache_time']) AND $A['cache_time'] > 0 AND $A['type'] != 'gldefault') { CACHE_create_instance($cacheInstance, $retval, 0); }
 
     return $retval;
 }

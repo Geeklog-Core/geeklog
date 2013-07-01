@@ -6,6 +6,10 @@ $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 // New Geeklog variable for Topics
 $_SQL[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('last_topic_update','')";
 
+// Add Cache Time variable to Blocks table
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `allow_autotags`"; 
+
+
 /**
  * Add new config options
  *

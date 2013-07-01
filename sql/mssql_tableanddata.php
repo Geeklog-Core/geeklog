@@ -49,6 +49,7 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [blockorder] [numeric](5, 0) NOT NULL ,
     [content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allow_autotags] [tinyint] NOT NULL ,
+    [cache_time] [int] NOT NULL DEFAULT '0',
     [rdfurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdfupdated] [varchar] (50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [rdf_last_modified] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,

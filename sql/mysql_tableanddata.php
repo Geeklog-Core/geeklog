@@ -27,6 +27,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   blockorder smallint(5) unsigned NOT NULL default '1',
   content text,
   allow_autotags tinyint(1) unsigned NOT NULL DEFAULT '0',
+  cache_time INT NOT NULL DEFAULT '0',
   rdfurl varchar(255) default NULL,
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
   rdf_last_modified varchar(40) default NULL,

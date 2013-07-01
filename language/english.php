@@ -769,7 +769,9 @@ $LANG21 = array(
     66 => 'Autotags',
     67 => 'Check to allow autotags',
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
-    69 => 'Plugin Name'
+    69 => 'Plugin Name',
+    'cache_time'        => 'Cache Time',
+    'cache_time_desc'   => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################

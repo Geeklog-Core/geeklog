@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}                                
+                                
                                 {start_block_editor}
                                 <form action="{site_admin_url}/block.php" method="post">
                                     <table cellspacing="0" cellpadding="3" width="100%">
@@ -44,6 +46,10 @@
                                                 </select>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="alignright" style="vertical-align:top">{lang_cachetime}:</td>
+                                            <td><input type="text" size="8" name="cache_time" value="{cache_time}"{xhtml}><div class="pluginMediumText">{lang_cachetime_desc}</div></td>
+                                        </tr>                                        
                                         <tr>
                                             <td colspan="2"><hr{xhtml}></td>
                                         </tr>
@@ -128,3 +134,5 @@
                                     </table>
                                 </form>
                                 {end_block}
+                                
+{# end {templatelocation} #}                                
