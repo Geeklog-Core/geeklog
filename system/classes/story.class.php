@@ -421,9 +421,6 @@ class Story
 
         // Store the original SID
         $this->_originalSid = $this->_sid;
-
-        // Fix incorrect strings
-        $this->_fixData();
     }
 
     /**
@@ -2220,18 +2217,6 @@ class Story
         } elseif ($this->_show_topic_icon != 1) {
             $this->_show_topic_icon = 0;
         }
-    }
-
-    /**
-     * replace incorrect strings that have already been stored in the database
-     * (Issue #0001619)
-     */
-    function _fixData()
-    {
-        $search  = array('&amp;#092;', '&amp;#36;');
-        $replace = array('&#092;',     '&#36;');
-        $this->_introtext = str_replace($search, $replace, $this->_introtext);
-        $this->_bodytext  = str_replace($search, $replace, $this->_bodytext);
     }
 
 // End Private Methods.

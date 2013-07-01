@@ -3821,12 +3821,8 @@ function COM_killJS( $Message )
 */
 function COM_handleCode( $str )
 {
-
-    // note that bug fixes are included in this function (Issue #0001619)
-    // '&#092;' -> '&amp;#092;' -> '&#092;'
-    // '&#36;'  -> '&amp;#36;'  -> '&#36;'
-    $search  = array('&',     '&amp;#092;', '&amp;#36;', '\\',    '<',    '>',    '[',     ']'    );
-    $replace = array('&amp;', '&#092;',     '&#36;',     '&#92;', '&lt;', '&gt;', '&#91;', '&#93;');
+    $search  = array('&',     '<',    '>',    '[',     ']'    );
+    $replace = array('&amp;', '&lt;', '&gt;', '&#91;', '&#93;');
 
     $str = str_replace( $search, $replace, $str );
 
@@ -3848,14 +3844,11 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
     global $_CONF, $_USER;
 
-    // replace any \ with &#092; (HTML equiv)
-    $str = str_replace('\\', '&#092;', COM_stripslashes($str) );
+    $str = COM_stripslashes($str);
 
     // Get rid of any newline characters
     $str = str_replace("\n", '', $str);
 
-    // Replace any $ with &#36; (HTML equiv)
-    $str = str_replace( '$', '&#36;', $str );
     // handle [code] ... [/code]
     do
     {
@@ -3917,6 +3910,12 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
         }
     }
     while( $start_pos !== false );
+
+    // replace any \ with &#092; (HTML equiv)
+    $str = str_replace( '\\', '&#092;', $str );
+
+    // Replace any $ with &#36; (HTML equiv)
+    $str = str_replace( '$', '&#36;', $str );
 
     $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
     
