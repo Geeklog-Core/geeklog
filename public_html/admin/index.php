@@ -24,8 +24,15 @@
 //
 // $Id: index.php,v 1.9 2006/10/01 19:13:37 dhaun Exp $
 
-require_once('../lib-common.php');
+/**
+* Geeklog common function library
+*/
+require_once '../lib-common.php';
 
+/**
+* Security check to ensure user even belongs on this page
+*/
+require_once 'auth.inc.php';
 
 // MAIN
 if (isset ($_GET['mode']) && ($_GET['mode'] == 'logout')) {
