@@ -792,6 +792,9 @@ function moveTopics($tid, $where)
     }
 
     DB_query("UPDATE {$_TABLES['topics']} SET sortnum = $order WHERE tid = '$tid'");
+    
+    // Update date of change to a topic
+    TOPIC_updateLastTopicUpdate();
 }
 
 /**
