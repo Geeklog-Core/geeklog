@@ -1369,7 +1369,13 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         DB_unlockTable($_TABLES['comments']);
         
         // Update Comment Feeds
-        COM_rdfUpToDateCheck('comment');        
+        COM_rdfUpToDateCheck('comment');    
+        
+        // Delete What's New block cache so it can get updated again
+        if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
+            $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+            CACHE_remove_instance($cacheInstance);        
+        }        
         
         // notify parent of new comment
         // Must occur after table unlock, only with valid $cid and $pid
@@ -1410,6 +1416,12 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
+        
+        // Delete What's New block cache so it can get updated again
+        if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
+            $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+            CACHE_remove_instance($cacheInstance);        
+        }        
     }
 
     // save user notification information
@@ -1568,6 +1580,12 @@ function CMT_deleteComment ($cid, $sid, $type)
         
         // Update Comment Feeds
         COM_rdfUpToDateCheck('comment');
+        
+        // Delete What's New block cache so it can get updated again
+        if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
+            $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+            CACHE_remove_instance($cacheInstance);        
+        }        
     } else {
         DB_unlockTable ($_TABLES['comments']);
         COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
@@ -1800,6 +1818,12 @@ function CMT_handleEditSubmit($mode = null)
             DB_save($_TABLES['commentedits'],'cid,uid,time',"$cid,$uid,NOW()");
             
             COM_rdfUpToDateCheck('comment');
+            
+            // Delete What's New block cache so it can get updated again
+            if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
+                $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+                CACHE_remove_instance($cacheInstance);        
+            }            
         } else {
             return COM_refresh (COM_buildUrl ($_CONF['site_admin_url'] . "/moderation.php"));
         }
@@ -2003,6 +2027,12 @@ function CMT_approveModeration($cid)
     
     // Update Comment Feeds
     COM_rdfUpToDateCheck('comment');
+    
+    // Delete What's New block cache so it can get updated again
+    if ($_CONF['whatsnew_cache_time'] > 0 AND !$_CONF['hidenewcomments']) {
+        $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
+        CACHE_remove_instance($cacheInstance);        
+    }
 
     return $A['sid'];
 }
