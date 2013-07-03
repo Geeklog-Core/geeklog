@@ -130,7 +130,7 @@ function plugin_configchange_template($group, $changes = array())
     // To be safe clear cache on enabling and disabling of cache
     if ($group == 'Core' AND (in_array('cache_templates', $changes) OR in_array('template_comments', $changes))) {
         CTL_clearCache();
-    } elseif ($_CONF['cache_templates']) {
+    } elseif ($_CONF['whatsnew_cache_time'] > 0) {
         // Probably not really necessary but clear cache if enabled on these other settings that can have cache files
         // These are from the What's New Block
         if ($group == 'Core' AND (in_array('newstoriesinterval', $changes) OR
