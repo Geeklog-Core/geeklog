@@ -5256,6 +5256,13 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         } else {
             $retval .= $LANG01[100] . '<br' . XHTML . '>' . LB; // No new stories
         }        
+        
+        if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 )
+                || ( $_CONF['trackback_enabled']
+                && ( $_CONF['hidenewtrackbacks'] == 0 )))
+        {
+            $retval .= '<br' . XHTML . '>';
+        }        
     }
 
     if( $_CONF['hidenewcomments'] == 0 )
