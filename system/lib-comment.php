@@ -2017,7 +2017,7 @@ function CMT_approveModeration($cid)
            . "FROM {$_TABLES['comments']} AS c, {$_TABLES['comments']} AS c2, "
            . "{$_TABLES['commentnotifications']} AS cn "
            . "WHERE c2.cid = cn.cid AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
-           . "AND c.cid = $pid GROUP BY cn.uid";
+           . "AND c.cid = {$A['pid']} GROUP BY cn.uid";
         $result = DB_query($sql);        
         $B = DB_fetchArray($result);
         if ($B !== false) {
