@@ -351,8 +351,12 @@ function savesubmission($type, $A)
         } elseif (empty ($retval)) {
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
+            PLG_submissionSaved($type);
+            
             return COM_refresh ($_CONF['site_url'] . '/index.php');
         } else {
+            PLG_submissionSaved($type);
+            
             return $retval;
         }
     }
@@ -360,6 +364,8 @@ function savesubmission($type, $A)
 
     if (!empty($A['title']) && !empty($A['introtext']) && TOPIC_checkTopicSelectionControl()) {
         $retval = savestory ($A);
+        
+        PLG_submissionSaved($type);
     } else {
         $retval = COM_showMessageText($LANG12[23], $LANG12[22]) // return missing fields error
                 . submissionform($type);

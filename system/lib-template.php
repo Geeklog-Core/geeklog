@@ -149,6 +149,34 @@ function plugin_configchange_template($group, $changes = array())
 }
 
 /**
+* Submission by a user
+*
+* @return   nothing
+*
+*/
+function plugin_submissionsaved_template($type)
+{
+    if ($type == 'article' OR $type == 'story') {
+        // Just call item delete since same functionality
+        plugin_itemdeleted_template('', $type);
+    }
+}
+
+/**
+* Submission deleted by Admin
+*
+* @return   nothing
+*
+*/
+function plugin_submissiondeleted_template($type)
+{
+    if ($type == 'article' OR $type == 'story') {
+        // Just call item delete since same functionality
+        plugin_itemdeleted_template('', $type);
+    }
+}
+
+/**
 * To be called (eventually) whenever Geeklog saves an item into the database.
 * Plugins can define their own 'itemsaved' function to be notified whenever
 * an item is saved or modified.
@@ -184,21 +212,40 @@ function plugin_itemdeleted_template($id, $type)
     // See if uses what's new block then delete cache of whatsnew 
     // This will not catch everything though like trackbacks, comments, and 
     // plugins that do not use itemsaved but let's delete the cache when we can
-    $supported = false;
-    if ($type == 'article') {
-        $supported = true;
+    
+    // Also delete cache for topics block and topic_tree when topic or article is updated or deleted
+
+    $whatsnew = false;
+    $topicsblock = false;
+    $topic_tree = false;
+    
+    if ($type == 'article' OR $type == 'story') {
+        $whatsnew = true;
+        $topicsblock = true;
+    } elseif ($type == 'topic') {
+        $topicsblock = true;
+        $topic_tree = true;
     } else {
         // hack to see if plugin supports what's new
         $fn_head = 'plugin_whatsnewsupported_' . $type; 
         if (function_exists($fn_head)) {  
             if (is_array($fn_head())) { // if array then supported
-                $supported = true;
+                $whatsnew = true;
             }
         }
     }
-    if ($supported) {
+    
+    if ($whatsnew) {
         $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
         CACHE_remove_instance($cacheInstance);  
+    }
+    if ($topicsblock) {
+        $cacheInstance = 'topicsblock__';
+        CACHE_remove_instance($cacheInstance);
+    }
+    if ($topic_tree) {    
+        $cacheInstance = 'topic_tree__';
+        CACHE_remove_instance($cacheInstance);
     }        
 }
 

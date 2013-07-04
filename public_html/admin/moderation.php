@@ -378,6 +378,9 @@ function moderation($mid, $action, $type, $count)
             // There may be some plugin specific processing that needs to
             // happen first.
             $retval .= PLG_deleteSubmission($type, $mid[$i]);
+            
+            // Notify plugins of a submission that is deleted
+            PLG_submissionDeleted($type);
 
             DB_delete($submissiontable, $id, $mid[$i]);
             break;
@@ -462,6 +465,9 @@ function moderation($mid, $action, $type, $count)
                 // There may be some plugin specific processing that needs
                 // to happen first.
                 $retval .= PLG_deleteSubmission($type, $delitem);
+                
+                // Notify plugins of a submission type that is deleted
+                PLG_submissionDeleted($type);
 
                 DB_delete($submissiontable, $id, $delitem);
             }

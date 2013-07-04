@@ -1592,24 +1592,6 @@ function TOPIC_relatedItems($type, $id, $include_types = array(), $max = 10, $tr
     return $retval;    
 }
 
-/**
-* Updates last_topic_update variables stored in vars table.
-*
-* Note: Used when insert/update/delete a topic. last_topic_update is used to 
-*       determine when we need to generate the $_TOPICS global variable from the
-*       topics table or retrieve it from the session table. 
-*
-*/
-function TOPIC_updateLastTopicUpdate()
-{
-    global$_TABLES;
-
-    $currentDate = date("Y-m-d H:i:s");
-
-    DB_query("UPDATE {$_TABLES['vars']} SET value='$currentDate' WHERE name='last_topic_update'");
-    
-}
-
 /*
  * Implement *some* of the Plugin API functions for topics. While topics
  * aren't a plugin (and likely never will be), implementing some of the API

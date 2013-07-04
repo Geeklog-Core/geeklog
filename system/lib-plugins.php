@@ -2388,6 +2388,82 @@ function PLG_runScheduledTask()
 }
 
 /**
+* "Generic" plugin API: Save submission
+*
+* Called whenever Geeklog saves a submission into the database.
+* Plugins can define their own 'submissionsaved' function to be notified whenever
+* an submission is saved.
+*
+* @param    string  $type   type of the item, e.g. 'article'
+*
+*/
+function PLG_submissionSaved($type)
+{
+    global $_PLUGINS;
+    
+    $t = explode('.', $type);
+    $plg_type = $t[0];    
+    
+    // Treat template system like a plugin (since belong to core group)
+    $plugintypes[] = 'template';
+    require_once $_CONF['path_system'] . 'lib-template.php';
+
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+
+    foreach ($plugintypes as $pi_name) {
+        if ($pi_name != $plg_type) {
+            $function = 'plugin_submissionsaved_' . $pi_name;
+            if (function_exists($function)) {
+                $function($type);
+            }
+        }
+    }
+
+    if (function_exists('CUSTOM_submissionsaved')) {
+        CUSTOM_itemsaved($type);
+    }
+
+    return false; // for backward compatibility
+}
+
+/**
+* "Generic" plugin API: Delete submission
+*
+* Called whenever Geeklog removes a submission from the database.
+* Plugins can define their own 'submissiondeleted' function to be notified whenever
+* an submission is deleted.
+*
+* @param    string  $type   type of the item, e.g. 'article'
+*
+*/
+function PLG_submissionDeleted($type)
+{
+    global $_PLUGINS;
+
+    $t = explode('.', $type);
+    $plg_type = $t[0];
+    
+    // Treat template system like a plugin (since belong to core group)
+    $plugintypes[] = 'template';
+    require_once $_CONF['path_system'] . 'lib-template.php';
+
+    $plugintypes = array_merge($plugintypes, $_PLUGINS);
+
+    foreach ($plugintypes as $pi_name) {
+        if ($pi_name != $plg_type) {
+            $function = 'plugin_submissiondeleted_' . $pi_name;
+            if (function_exists($function)) {
+                $function($type);
+            }
+        }
+    }    
+
+    if (function_exists('CUSTOM_submissiondeleted')) {
+        CUSTOM_itemdeleted($type);
+    }
+}
+
+/**
 * "Generic" plugin API: Save item
 *
 * To be called (eventually) whenever Geeklog saves an item into the database.

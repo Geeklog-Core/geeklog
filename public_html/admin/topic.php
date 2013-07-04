@@ -523,9 +523,6 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
                 PLG_itemSaved($tid, 'topic');
             }
             
-            // Update date of change to a topic
-            TOPIC_updateLastTopicUpdate();
-            
             // update feed(s) and Older Stories block
             COM_rdfUpToDateCheck('article', $tid);
             COM_olderStuff();
@@ -559,106 +556,11 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
 *
 * Lists all the topics and their icons.
 *
-* @return   string      HTML for the topic list
-*
-*/
-function listtopics()
-{
-    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN;
-
-    require_once( $_CONF['path_system'] . 'lib-admin.php' );
-
-    $retval = '';
-
-    $retval .= COM_startBlock ($LANG27[8], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
-
-    $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/topic');
-    $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
-    $topic_templates->set_var('lang_newtopic', $LANG_ADMIN['create_new']);
-    $topic_templates->set_var('lang_adminhome', $LANG27[18]);
-    $topic_templates->set_var('lang_instructions', $LANG27[9]);
-    $topic_templates->set_var('begin_row', '<tr align="center" valign="bottom">');
-
-    $result = DB_query("SELECT * FROM {$_TABLES['topics']}");
-    $nrows = DB_numRows($result);
-    $counter = 1;
-
-    $menu_arr = array (
-        array('url' => $_CONF['site_admin_url'] . '/topic.php?mode=edit',
-              'text' => $LANG_ADMIN['create_new']),
-        array('url' => $_CONF['site_admin_url'],
-              'text' => $LANG_ADMIN['admin_home']));
-    $menu = ADMIN_createMenu(
-        $menu_arr,
-        $LANG27[9],
-        $_CONF['layout_url'] . "/images/icons/topic.png"
-    );
-    $topic_templates->set_var('top_menu', $menu);
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-
-        if ($access > 0) {
-            if ($access == 3) {
-                $access = $LANG_ACCESS['edit'];
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
-
-            $topic_templates->set_var('topic_id', $A['tid']);
-            $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
-            $topic_templates->set_var('topic_access', $access);
-            if ($A['is_default'] == 1) {
-                $topic_templates->set_var ('default_topic', $LANG27[24]);
-            } else {
-                $topic_templates->set_var ('default_topic', '');
-            }
-            if (empty ($A['imageurl'])) {
-                $topic_templates->set_var ('image_tag', '');
-            } else {
-                $imageurl = COM_getTopicImageUrl ($A['imageurl']);
-                $topic_templates->set_var ('image_tag', '<img src="' . $imageurl
-                                           . '" alt=""' . XHTML . '>');
-            }
-            if ($counter == 5) {
-                $counter = 1;
-                $topic_templates->set_var('end_row','</tr>');
-                $topic_templates->parse('list_row','item',true);
-                $topic_templates->set_var('begin_row','<tr align="center" valign="bottom">');
-            } else {
-                if ($i == $nrows - 1) {
-                    $topic_templates->set_var('end_row','</tr>');
-                } else {
-                    $topic_templates->set_var('end_row','');
-                }
-
-                $topic_templates->parse('list_row','item',true);
-                $topic_templates->set_var('begin_row','');
-                $counter = $counter + 1;
-            }
-        }
-    }
-    $topic_templates->parse('output', 'list');
-    $retval .= $topic_templates->finish($topic_templates->get_var('output'));
-    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
-    return $retval;
-}
-
-
-/**
-* Displays a list of topics
-*
-* Lists all the topics and their icons.
-*
 * @param    string      $token  Security token to use in list
 * @return   string      HTML for the topic list
 *
 */
-function draft_listTopics($token)
+function listTopics($token)
 {
     global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN;
 
@@ -793,8 +695,8 @@ function moveTopics($tid, $where)
 
     DB_query("UPDATE {$_TABLES['topics']} SET sortnum = $order WHERE tid = '$tid'");
     
-    // Update date of change to a topic
-    TOPIC_updateLastTopicUpdate();
+    PLG_itemSaved($tid, 'topic');
+    
 }
 
 /**
@@ -890,9 +792,6 @@ function deleteTopic ($tid)
 
     // Update Topics Array to reflect any changes since not sure what is called after
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
-    
-    // Update date of change to a topic
-    TOPIC_updateLastTopicUpdate();
     
     // update feed(s) and Older Stories block
     COM_rdfUpToDateCheck('article');
@@ -1086,16 +985,13 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     $display .= COM_showMessageFromParameter();
     moveTopics(COM_applyFilter($_GET['tid']), COM_applyFilter($_GET['where']));
     reorderTopics();
-    $display .= draft_listTopics(SEC_createToken());
+    $display .= listTopics(SEC_createToken());
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
-
-//    $display .= listtopics();
-
     reorderTopics();
-    $display .= draft_listTopics(SEC_createToken());
+    $display .= listTopics(SEC_createToken());
 
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 }

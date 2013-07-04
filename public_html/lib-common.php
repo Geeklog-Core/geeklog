@@ -502,23 +502,15 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 
 // Figure out if we need to update topic tree or retrieve it from the cache
 // For anonymous users topic tree data can be shared
-// Retrieve when last topic update happened
-$last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
-// Figure out how old stored topic tree is
 $cacheInstance = 'topic_tree__' . CACHE_security_hash();
-$topic_tree_date = date("Y-m-d H:i:s", CACHE_get_instance_update($cacheInstance, true));
-// See if Topic Tree has changed for users, if so rebuild tree   
-if ($last_topic_update > $topic_tree_date || empty($last_topic_update)) {
+$serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
+// See if Topic Tree cache exists   
+if (empty($serialized_topic_tree)) {
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
-    if (empty($last_topic_update)) {
-        TOPIC_updateLastTopicUpdate();
-        $last_topic_update = DB_getItem($_TABLES['vars'], 'value', "name='last_topic_update'");
-    }
 
     // Save updated topic tree and date
     CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
 } else {
-    $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
     $_TOPICS = unserialize($serialized_topic_tree);
 }    
 
@@ -2938,6 +2930,13 @@ function COM_showTopics($topic = '')
  
     $retval = '';
     
+    // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
+    $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+    $retval = CACHE_check_instance($cacheInstance, 0);
+    if ($retval) {
+        return $retval;
+    }    
+    
     $topicnavigation = COM_newTemplate($_CONF['path_layout']);
     if (isset($_BLOCK_TEMPLATE['topicnavigation'])) {
         $topicnavigation->set_file('topicnavigation', $_BLOCK_TEMPLATE['topicnavigation']);
@@ -3125,6 +3124,9 @@ function COM_showTopics($topic = '')
         }
     }
 
+    // Create cache so don't need to recreate unless change
+    CACHE_create_instance($cacheInstance, $retval, 0);
+    
     return $retval;
 }
 
@@ -5170,7 +5172,6 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     global $_CONF, $_TABLES, $LANG01, $LANG_WHATSNEW, $page, $_USER;
 
     if ($_CONF['whatsnew_cache_time'] > 0) {
-
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
         $retval = CACHE_check_instance($cacheInstance, 0);
         if ( $retval ) {
