@@ -126,22 +126,29 @@ function plugin_configchange_template($group, $changes = array())
 {
     global $_TABLES, $_CONF;
 
-    // If template comments disabled or enabled clear all cached templates
-    // To be safe clear cache on enabling and disabling of cache
     if ($group == 'Core' AND (in_array('cache_templates', $changes) OR in_array('template_comments', $changes))) {
+        // If template comments disabled or enabled clear all cached templates
+        // To be safe clear cache on enabling and disabling of cache
         CTL_clearCache();
-    } elseif ($_CONF['whatsnew_cache_time'] > 0) {
+    } elseif ($group == 'Core' AND (in_array('sortmethod', $changes) OR
+                              in_array('showstorycount', $changes) OR
+                              in_array('showsubmissioncount', $changes) OR
+                              in_array('hide_home_link', $changes))) {
+        // If Topics Block options changed then delete it's cache 
+        $cacheInstance = 'topicsblock__';
+        CACHE_remove_instance($cacheInstance);
+    } elseif ($group == 'Core' AND (in_array('newstoriesinterval', $changes) OR
+                              in_array('newcommentsinterval', $changes) OR
+                              in_array('newtrackbackinterval', $changes) OR
+                              in_array('hidenewstories', $changes) OR
+                              in_array('hidenewcomments', $changes) OR
+                              in_array('hidenewtrackbacks', $changes) OR
+                              in_array('hidenewplugins', $changes) OR
+                              in_array('title_trim_length', $changes) OR
+                              in_array('whatsnew_cache_time', $changes))) {
         // Probably not really necessary but clear cache if enabled on these other settings that can have cache files
         // These are from the What's New Block
-        if ($group == 'Core' AND (in_array('newstoriesinterval', $changes) OR
-                                  in_array('newcommentsinterval', $changes) OR
-                                  in_array('newtrackbackinterval', $changes) OR
-                                  in_array('hidenewstories', $changes) OR
-                                  in_array('hidenewcomments', $changes) OR
-                                  in_array('hidenewtrackbacks', $changes) OR
-                                  in_array('hidenewplugins', $changes) OR
-                                  in_array('title_trim_length', $changes) OR
-                                  in_array('whatsnew_cache_time', $changes))) {
+        if ($_CONF['whatsnew_cache_time'] > 0) {
             $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
             CACHE_remove_instance($cacheInstance);            
         }
