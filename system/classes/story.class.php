@@ -1822,6 +1822,13 @@ class Story
     function _editUnescape($in)
     {
         if (($this->_postmode == 'html') || ($this->_postmode == 'wikitext')) {
+
+            // replace any &#092; with \ (see COM_checkHTML)
+            $in = str_replace('&#92;', '\\', $in);
+
+            // Replace any &#36; with $ (see COM_checkHTML)
+            $in = str_replace('&#36;', '$', $in);
+
             /* Raw and code blocks need entity decoding. Other areas do not.
              * otherwise, annoyingly, &lt; will end up as < on preview 1, on
              * preview 2 it'll be stripped by KSES. Can't beleive I missed that
