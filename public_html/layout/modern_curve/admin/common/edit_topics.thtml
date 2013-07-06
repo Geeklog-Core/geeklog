@@ -1,27 +1,27 @@
 {# begin {templatelocation} #}
 
-<div style="vertical-align:top;display:inline-block;{options_hide}">
+<div id="panel_radio_options" style="vertical-align:top;display:inline-block;{options_hide}">
     <input type="hidden" name="topic_options_hide" value="{topic_options_hide}"{xhtml}>
-    <input type="radio" name="topic_option" value="all" {all_checked}{xhtml}> {lang_all}
-    <input type="radio" name="topic_option" value="homeonly" {homeonly_checked}{xhtml}> {lang_homeonly}
-    <span style="{topic_option_hide}"><input type="radio" name="topic_option" value="selectedtopics" {selectedtopics_checked}{xhtml}></span>
+    <input type="radio" name="topic_option" value="all" id="topic_option_all" {all_checked}{xhtml}> {lang_all}
+    <input type="radio" name="topic_option" value="homeonly" id="topic_option_homeonly" {homeonly_checked}{xhtml}> {lang_homeonly}
+    <span style="{topic_option_hide}"><input type="radio" name="topic_option" id="topic_option_selectedtopics" value="selectedtopics" {selectedtopics_checked}{xhtml}></span>
 </div>
-<div style="vertical-align:top;display:inline-block;{topic_hide}">
-    <select name="tid[]" multiple="multiple" class="multiple" size="4">
+<div id="panel_topic_options" style="vertical-align:top;display:inline-block;{topic_hide}">
+    <select name="tid[]" multiple="multiple" class="multiple" size="4" id="tid">
         {topic_options}
     </select>
 </div>
-<div style="vertical-align:top;display:inline-block;{inherit_hide}">
+<div id="panel_inherit_options" style="vertical-align:top;display:inline-block;{inherit_hide}">
     <input type="hidden" name="topic_inherit_hide" value="{topic_inherit_hide}"{xhtml}>
     <span style="vertical-align:top;">{lang_inherit}:</span>
-    <select name="inherit_tid[]" multiple="multiple" class="multiple" size="4">
+    <select name="inherit_tid[]" multiple="multiple" class="multiple" size="4" id="inherit_tid">
         {inherit_options}
     </select>
 </div>
-<div style="vertical-align:top;display:inline-block;{default_hide}">
+<div id="panel_default_options" style="vertical-align:top;display:inline-block;{default_hide}">
     <input type="hidden" name="topic_default_hide" value="{topic_default_hide}"{xhtml}>
     <span style="vertical-align:top;">{lang_default}:</span>
-    <select name="default_tid">
+    <select name="default_tid" id="default_tid">
         {default_options}
     </select>
 </div>

@@ -833,7 +833,7 @@ function TOPIC_getDataTopicSelectionControl(&$topic_option, &$tids, &$inherit_ti
 */
 function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show_inherit = false, $show_default = false)
 {
-    global $_CONF, $LANG27, $_TABLES, $topic;
+    global $_CONF, $LANG27, $_TABLES, $topic, $_SCRIPTS;
     
     $tids = array();
     $inherit_tids = array();
@@ -909,6 +909,9 @@ function TOPIC_getTopicSelectionControl($type, $id, $show_options = false, $show
 
     $topic_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/common');
     $topic_templates->set_file(array('editor' => 'edit_topics.thtml'));
+    
+    $_SCRIPTS->setJavaScriptLibrary('jquery');
+    $_SCRIPTS->setJavascriptFile('topic_control', '/javascript/topic_control.js');
     
     $topiclist = TOPIC_getTopicListSelect($tids, false);
     if ($topiclist == '') { // Topics do not exist
