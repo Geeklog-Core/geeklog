@@ -163,8 +163,10 @@ function plugin_configchange_template($group, $changes = array())
 */
 function plugin_submissionsaved_template($type)
 {
-    if ($type == 'article' OR $type == 'story') {
-        // Just call item delete since same functionality
+    global $_CONF;
+    
+    if (($type == 'article' OR $type == 'story') AND $_CONF['showsubmissioncount']) {
+        // Just call item delete since same functionality and doesn't need id
         plugin_itemdeleted_template('', $type);
     }
 }
@@ -177,8 +179,10 @@ function plugin_submissionsaved_template($type)
 */
 function plugin_submissiondeleted_template($type)
 {
-    if ($type == 'article' OR $type == 'story') {
-        // Just call item delete since same functionality
+    global $_CONF;
+    
+    if (($type == 'article' OR $type == 'story') AND $_CONF['showsubmissioncount']) {
+        // Just call item delete since same functionality and doesn't need id
         plugin_itemdeleted_template('', $type);
     }
 }
