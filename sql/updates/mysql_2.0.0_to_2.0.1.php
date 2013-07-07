@@ -6,6 +6,9 @@ $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 // Add Cache Time variable to Blocks table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `allow_autotags`"; 
 
+// Remove unused columns in Comments table
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']}  DROP `score`, DROP `reason`"; 
+
 /**
  * Add new config options
  *

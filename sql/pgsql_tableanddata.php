@@ -94,8 +94,6 @@ CREATE TABLE {$_TABLES['comments']} (
   date timestamp NOT NULL DEFAULT current_timestamp,
   title varchar(128) default NULL,
   comment text,
-  score smallint NOT NULL default '0',
-  reason smallint NOT NULL default '0',
   pid int NOT NULL default '0',
   lft smallint NOT NULL default '0',
   rht smallint NOT NULL default '0',

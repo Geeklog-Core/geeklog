@@ -117,8 +117,6 @@ CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [date] [datetime] NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [comment] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [score] [smallint] NULL ,
-    [reason] [smallint] NULL ,
     [pid] [numeric](10, 0) NULL ,
     [lft] [numeric](10, 0) NULL ,
     [rht] [numeric](10, 0) NULL ,
