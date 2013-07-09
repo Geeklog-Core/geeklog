@@ -315,7 +315,10 @@ function SP_displayPage($page, $A, $comment_order = 'ASC', $comment_mode = 'nest
     $retval = '';
 
     // get content
-    $content = SP_render_content(stripslashes($A['sp_content']), $A['sp_php'], $query);
+    $content = $A['sp_content'];
+    if (!empty($query)) {
+        $content = COM_highlightQuery($content, $query);
+    }
 
     if ($A['sp_format'] == 'blankpage') {
         // The format is "blank page", only return the content of the page - nothing else.
@@ -545,8 +548,7 @@ function SP_printPage($page, $A)
                                   . '/staticpages/index.php?page=' . $page);
     $print->set_var('sp_url', $sp_url);
     $print->set_var('sp_title', stripslashes($A['sp_title']));
-    $print->set_var('sp_content',
-            SP_render_content(stripslashes($A['sp_content']), $A['sp_php']));
+    $print->set_var('sp_content', $A['sp_content']);
 
     $author_name = COM_getDisplayName($A['owner_id']);
     $author_username = DB_getItem($_TABLES['users'], 'username',
@@ -671,7 +673,7 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
         if ($mode == 'print') {
             $retval = SP_printPage($page, $retval);
         } elseif ($mode =='autotag') {
-            $retval = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
+            $retval = $retval['sp_content'];
         } else {
             $retval = SP_displayPage($page, $retval, $comment_order, $comment_mode, $comment_page, $msg, $query);
         }
@@ -1135,7 +1137,7 @@ function plugin_centerblock_staticpages($where = 1, $page = 1, $topic ='')
             $svc_msg = array();
         
             if (PLG_invokeService('staticpages', 'get', $args, $SP_retval, $svc_msg) == PLG_RET_OK) {  
-                $content = SP_render_content(stripslashes($SP_retval['sp_content']), $SP_retval['sp_php']);
+                $content = $SP_retval['sp_content'];
             }
             
             $spage->set_var('content', $content);
@@ -1472,6 +1474,17 @@ function plugin_upgrade_staticpages()
 
             $current_version = '1.6.5';
             break; 
+        
+        case '1.6.5':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '1.6.6';
+            break;             
             
         default:
             $done = true;
@@ -1660,19 +1673,77 @@ function plugin_getListField_staticpages($fieldname, $fieldvalue, $A, $icon_arr)
 /**
 * Render the actual content of a static page (without any surrounding blocks)
 *
-* @param    string  $sp_content the content (HTML or PHP source)
-* @param    int     $sp_php     flag: 1 = content is PHP source, 0 = is HTML
-* @param    string  $query      optional search query string to highlight
-* @return   string              rendered content (HTML)
+* @param    string  $sp_id          the id
+* @param    string  $sp_content     the content (HTML or PHP source)
+* @param    int     $sp_php         flag: 1 = content is PHP source, 0 = is HTML
+* @param    int     $cache_time     the max cache time of this page
+* @param    string  $template_id    the max cache time of this page
+* @return   string                  rendered content (HTML)
 *
 */
-function SP_render_content($sp_content, $sp_php, $query = '')
+function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $template_id = '')
 {
     global $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
-
+    
+    // Retrieve non php staticpage from cache
+    if ($cache_time > 0 AND $sp_php == 0) {
+        // Don't need to cache per theme since not rendered in a block yet 
+        $cacheInstance = 'staticpage__' . $sp_id . '__' . CACHE_security_hash();
+        $retval = CACHE_check_instance($cacheInstance, 0);
+        if ($retval) {
+            $lu = CACHE_get_instance_update($cacheInstance, 0);
+            $now = time();
+            if (($now - $lu) < $cache_time ) {
+                return $retval;
+            } else {
+                $retval = '';
+            }
+        }    
+    }    
+    
+    // See if uses template, if so get it
+    if ($template_id != '') {
+        
+        $retval = '';
+        $mode = '';
+        
+        $xmlObject = simplexml_load_string($sp_content);
+        
+        // create array of XML data
+        $tag = array();    
+        foreach($xmlObject->variable as $variable) {
+            $key = $variable["name"] . '';
+            $value = $variable->data;
+            $tag[$key] = $value;
+        }    
+    
+        // Loop through variables to replace any autotags first
+        foreach ($tag as &$value) {
+            $value = PLG_replaceTags($value);
+        }
+        
+        $args = array(
+                    'sp_id' => $template_id,
+                    'mode'  => $mode,
+                    'template' => true, // tells service that it is okay to retrieve a template staticpage since requested by another staticpage
+                    'gl_svc' => ''
+                     );
+        $svc_msg = array();    
+    
+        if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
+            $retval['sp_content'] = str_replace(array_keys($tag), array_values($tag), $retval['sp_content']);
+            // Remove any unknown staticpage template variables as long as they use the curly brackets ie {templatevariable}
+            // If template variable format is different then any unused ones will display
+            $retval['sp_content'] = preg_replace('/{[^ \t\r\n}]+}/', '', $retval['sp_content']);
+            
+            $sp_content = $retval['sp_content'];
+        }
+    }     
+    
     if ($_SP_CONF['allow_php'] == 1) {
+        
         // Check for type (ie html or php)
         if ($sp_php == 1) {
             $retval = eval($sp_content);
@@ -1685,21 +1756,19 @@ function SP_render_content($sp_content, $sp_php, $query = '')
             $retval = $sp_content;
         }
         $retval = PLG_replaceTags($retval);
-        if (! empty($query)) {
-            $retval = COM_highlightQuery($retval, $query);
-        }
     } else {
         if ($sp_php != 0) {
             COM_errorLog("PHP in static pages is disabled. Can not display page.", 1);
             $retval .= $LANG_STATIC['deny_msg'];
         } else {
             $retval .= PLG_replaceTags($sp_content);
-            if (! empty($query)) {
-                $retval = COM_highlightQuery($retval, $query);
-            }
         }
     }
+    
+    $sp_content = stripslashes($sp_content);
 
+    if ($cache_time > 0 AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $retval, 0); }
+    
     return $retval;
 }
 
@@ -2018,7 +2087,7 @@ function plugin_getiteminfo_staticpages($sp_id, $what, $uid = 0, $options = arra
                 $svc_msg = array();
             
                 if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {     
-                    $props[$p] = SP_render_content(stripslashes($retval['sp_content']), $retval['sp_php']);
+                    $props[$p] = $retval['sp_content'];
                 }
                 break;                
             case 'id':

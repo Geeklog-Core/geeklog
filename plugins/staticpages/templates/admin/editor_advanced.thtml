@@ -1,5 +1,4 @@
-
-<!-- plugins/staticpages/templates/admin/editor_advanced.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
@@ -84,6 +83,10 @@
         <dt><label for="sp-advanced_editor-draft_flag">{lang_draft}</label></dt>
         <dd><input type="checkbox" name="draft_flag" id="sp-advanced_editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
 
+        <dt><label for="sp-advanced_editor-cache_time">{lang_cache_time}</label></dt>
+        <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-advanced_editor-cachetime" class="text"{xhtml}></dd>
+        <dd class="description">{lang_cache_time_desc}</dd>        
+
         <dt><label>{lang_lastupdated}</label></dt>
         <dd>{sp_formateddate}</dd>
 
@@ -158,4 +161,4 @@
   {end_block}
 </div>
 
-<!-- } plugins/staticpages/templates/admin/editor_advanced.thtml -->
+{# end {templatelocation} #}

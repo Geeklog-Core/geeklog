@@ -204,7 +204,11 @@ function plugin_submissiondeleted_template($type)
 function plugin_itemsaved_template($id, $type, $old_id = '')
 {
     // Just call item delete since same functionality
-    plugin_itemdeleted_template($id, $type);
+    if (empty($old_id)) {
+        plugin_itemdeleted_template($id, $type);
+    } else {
+        plugin_itemdeleted_template($old_id, $type);
+    }
 }
 
 /**
@@ -229,6 +233,7 @@ function plugin_itemdeleted_template($id, $type)
     $whatsnew = false;
     $topicsblock = false;
     $topic_tree = false;
+    $staticpage = false;
     
     if ($type == 'article' OR $type == 'story') {
         $whatsnew = true;
@@ -236,6 +241,9 @@ function plugin_itemdeleted_template($id, $type)
     } elseif ($type == 'topic') {
         $topicsblock = true;
         $topic_tree = true;
+    } elseif ($type == 'staticpages') {
+        $whatsnew = true;
+        $staticpage = true;
     } else {
         // hack to see if plugin supports what's new
         $fn_head = 'plugin_whatsnewsupported_' . $type; 
@@ -257,7 +265,11 @@ function plugin_itemdeleted_template($id, $type)
     if ($topic_tree) {    
         $cacheInstance = 'topic_tree__';
         CACHE_remove_instance($cacheInstance);
-    }        
+    }
+    if ($staticpage) {    
+        $cacheInstance = 'staticpage__' . $id . '__';
+        CACHE_remove_instance($cacheInstance);
+    }      
 }
 
 ?>

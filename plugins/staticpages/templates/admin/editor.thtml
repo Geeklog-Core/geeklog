@@ -1,5 +1,4 @@
-
-<!-- plugins/staticpages/templates/admin/editor.thtml { -->
+{# begin {templatelocation} #}
 
   {start_block_editor}
   <form action="{site_admin_url}/plugins/staticpages/index.php" method="post" id="sp-editor" class="compact">
@@ -51,6 +50,10 @@
         <dt><label for="sp-editor-draft_flag">{lang_draft}</label></dt>
         <dd><input type="checkbox" name="draft_flag" id="sp-editor-draft_flag" {draft_flag_checked}{xhtml}></dd>
 
+        <dt><label for="sp-editor-cache_time">{lang_cache_time}</label></dt>
+        <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="sp-editor-cachetime" class="text"{xhtml}></dd>
+        <dd class="description">{lang_cache_time_desc}</dd>          
+        
         <dt><label>{lang_lastupdated}</label></dt>
         <dd>{sp_formateddate}</dd>
 
@@ -124,4 +127,4 @@
   </form>
   {end_block}
 
-<!-- } plugins/staticpages/templates/admin/editor.thtml -->
+{# end {templatelocation} #}

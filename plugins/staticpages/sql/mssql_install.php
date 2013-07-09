@@ -53,6 +53,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
     [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [template_flag] [tinyint] NULL ,
     [template_id] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [cache_time] [int] NOT NULL ,
     [draft_flag] [tinyint] NULL ,
     [owner_id] [numeric](8, 0) NOT NULL ,
     [group_id] [numeric](8, 0) NOT NULL ,
@@ -72,6 +73,7 @@ CREATE TABLE [dbo].[{$_TABLES['staticpage']}] (
 
 $_SQL[] = "ALTER TABLE [dbo].[{$_TABLES['staticpage']}] ADD
     CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('html') FOR [postmode],
+    CONSTRAINT [DF_{$_TABLES['staticpage']}] DEFAULT ('0') FOR [cache_time],
 	CONSTRAINT [PK_{$_TABLES['staticpage']}] PRIMARY KEY  CLUSTERED
 	(
 		[sp_id]
