@@ -47,7 +47,7 @@ require_once $_CONF['path_system'] . 'lib-admin.php';
 if (!SEC_inGroup('Root')) {
     $display .= COM_showMessageText($MESSAGE[29], $MESSAGE[30]);
     $display = COM_createHTMLDocument($display, array('pagetitle' => $MESSAGE[30]));
-    COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
+    COM_accessLog("User {$_USER['username']} tried to illegally access the log viewer screen.");
     COM_output($display);
     exit;
 }
