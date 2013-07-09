@@ -2481,7 +2481,7 @@ function PLG_submissionDeleted($type)
 */
 function PLG_itemSaved($id, $type, $old_id = '')
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
     
     $t = explode('.', $type);
     $plg_type = $t[0];    
@@ -2523,7 +2523,7 @@ function PLG_itemSaved($id, $type, $old_id = '')
 */
 function PLG_itemDeleted($id, $type)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $t = explode('.', $type);
     $plg_type = $t[0];
