@@ -506,12 +506,20 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         if (empty($sp_old_id) || ($sp_id == $sp_old_id)) {
             if (!$template_flag) {
                 PLG_itemSaved($sp_id, 'staticpages');
+                
+               // Clear Cache    
+                $cacheInstance = 'staticpage__' . $sp_id . '__';
+                CACHE_remove_instance($cacheInstance);                      
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
                 $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
                 $result = DB_query($sql);
                 while ($A = DB_fetchArray($result)) {
                     PLG_itemSaved($A['sp_id'], 'staticpages');
+                    
+                   // Clear Cache    
+                    $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
+                    CACHE_remove_instance($cacheInstance);                          
                 }
             }
         } else {
@@ -520,12 +528,20 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
                       array(DB_escapeString($sp_old_id), 'staticpages'));
             if (!$template_flag) {
                 PLG_itemSaved($sp_id, 'staticpages', $sp_old_id);
+                
+                // Clear Cache    
+                $cacheInstance = 'staticpage__' . $sp_old_id . '__';
+                CACHE_remove_instance($cacheInstance);                    
             } else {
                 // If template then have to notify of all pages that use this template that a change to the page happened
                 $sql = "SELECT sp_id FROM {$_TABLES['staticpage']} WHERE template_id = '{$sp_id}'";
                 $result = DB_query($sql);
                 while ($A = DB_fetchArray($result)) {
                     PLG_itemSaved($A['sp_id'], 'staticpages');
+                    
+                    // Clear Cache    
+                    $cacheInstance = 'staticpage__' . $A['sp_id'] . '__';
+                    CACHE_remove_instance($cacheInstance);                        
                 }                
             }
         }
@@ -596,6 +612,10 @@ function service_delete_staticpages($args, &$output, &$svc_msg)
     TOPIC_deleteTopicAssignments('staticpages', $sp_id);
     
     PLG_itemDeleted($sp_id, 'staticpages');
+
+    // Clear Cache    
+    $cacheInstance = 'staticpage__' . $sp_id . '__';
+    CACHE_remove_instance($cacheInstance);    
 
     return PLG_RET_OK;
 }
