@@ -56,6 +56,10 @@
 /* This should be the only Geeklog-isms in the file. Didn't want to "infect" the class but it was necessary.
  * These options are global to all templates.
  */
+$xhtml = '';
+if (defined('XHTML')) { // usually not defined yet but will be later
+    $xhtml = XHTML;
+}
 $TEMPLATE_OPTIONS = array(
     'path_cache'    => $_CONF['path_data'].'layout_cache/',   // location of template cache
     'path_prefixes' => array(                               // used to strip directories off file names. Order is important here.
@@ -66,9 +70,10 @@ $TEMPLATE_OPTIONS = array(
     'incl_phpself_header' => true,          // set this to true if your template cache exists within your web server's docroot.
     'cache_by_language' => true,            // create cache directories for each language. Takes extra space but moves all $LANG variable text directly into the cached file
     'default_vars' => array(                                // list of vars found in all templates.
+                        'xhtml' => $xhtml, // Will be reset by lib-common       
                         'site_url' => $_CONF['site_url'],
                         'site_admin_url' => $_CONF['site_admin_url'],
-                        'layout_url' => $_CONF['layout_url'],
+                        'layout_url' => $_CONF['layout_url'], // Can be set by lib-common on theme change
                       ),
     'hook' => array(),
 );

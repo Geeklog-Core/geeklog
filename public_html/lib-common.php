@@ -323,7 +323,7 @@ else if( $_CONF['allow_user_themes'] == 1 )
         }
     }
 }
-
+// Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 
 /**
@@ -388,6 +388,8 @@ if (! defined('XHTML')) {
         break;
     }
 }
+// Set template class default template variables option
+$TEMPLATE_OPTIONS['default_vars']['xhtml'] = XHTML;
 
 // Set language
 
@@ -1365,28 +1367,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
 
     $header->set_var( 'layout_columns', 'js_off' );
 
-    // The following lines allow users to embed PHP in their templates.  This
-    // is almost a contradition to the reasons for using templates but this may
-    // prove useful at times ...
-    // Don't use PHP in templates if you can live without it!
-
-    $tmp = $header->finish($header->parse('index_header', 'header'));
-
-    $xml_declaration = '';
-    if ( get_cfg_var('short_open_tag') == '1' )
-    {
-        if ( preg_match( '/(<\?xml[^>]*>)(.*)/s', $tmp, $match ) )
-        {
-            $xml_declaration = $match[1] . LB;
-            $tmp = $match[2];
-        }
-    }
-
-    ob_start();
-    eval( '?>' . $tmp );
-    $retval = $xml_declaration . ob_get_contents();
-    ob_end_clean();
-
+    $retval = $header->finish($header->parse('index_header', 'header'));
+    
     return $retval;
 }
 
@@ -2257,27 +2239,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
     $header->set_var( 'layout_columns', $layout_columns );
 
-    // The following lines allow users to embed PHP in their templates.  This
-    // is almost a contradition to the reasons for using templates but this may
-    // prove useful at times ...
-    // Don't use PHP in templates if you can live without it!
-
-    $tmp = $header->finish($header->parse('index_header', 'header'));
-
-    $xml_declaration = '';
-    if ( get_cfg_var('short_open_tag') == '1' )
-    {
-        if ( preg_match( '/(<\?xml[^>]*>)(.*)/s', $tmp, $match ) )
-        {
-            $xml_declaration = $match[1] . LB;
-            $tmp = $match[2];
-        }
-    }
-
-    ob_start();
-    eval( '?>' . $tmp );
-    $retval_header = $xml_declaration . ob_get_contents();
-    ob_end_clean();
+    $retval_header = $header->finish($header->parse('index_header', 'header'));
 
     // Call to plugins to set template variables in the footer
     PLG_templateSetVars( 'footer', $footer );
@@ -4580,7 +4542,6 @@ function COM_formatBlock( $A, $noboxes = false )
         // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
         // Don't Cache default blocks either
         if (isset($A['cache_time']) AND $A['cache_time'] > 0) {
-    
             $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
             $retval = CACHE_check_instance($cacheInstance, 0);
             if ($retval) {
@@ -8672,10 +8633,7 @@ function COM_newTemplate($root, $options = Array())
         else $options = 'remove';
         $T = new Template($root, $options);
     }
-    $T->set_var('xhtml', XHTML);
-    $T->set_var('site_url', $_CONF['site_url']);
-    $T->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $T->set_var('layout_url', $_CONF['layout_url']);
+    
     return $T;
 }
 
