@@ -1,0 +1,53 @@
+/*==============================================================================
+  Title       : Enviroment Check Style (Admin Page)
+  Author      : Fumito Arakawa as Phize (http://phize.net/) and Geeklog Japanese
+  Description : Enviroment Check style for admin.
+  Apply       : admin/envcheck.thtml
+==============================================================================*/
+
+
+
+/*--------------------------------------
+  Enviroment Check  
+--------------------------------------*/
+
+.pathtext {
+  font-size:11px;
+  color:#666;
+}
+
+.pathtext-status {
+  text-align:right;
+  white-space:nowrap;
+}
+
+.yes, .iswriteable {
+  font-weight: bold;
+  color: #46882b;
+}
+.no, .notok, .notwriteable {
+  font-weight: bold;
+  color: #cc0000;
+}
+
+/* PHPInfo Panel style and button */
+#panel_phpinfo {
+  padding:5px;
+  width:600px;
+  margin: auto;
+  text-align:center;
+}
+#toggle_phpinfo {
+  padding:5px;
+  width:200px;
+  margin: auto;
+  text-align:center;
+  border:solid 1px #c3c3c3;
+}
+
+#panel_phpinfo {
+  padding:50px;
+  display:none;
+}
+  
+

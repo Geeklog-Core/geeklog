@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+{php_settings_list}
+
+{graphics_list}
+
+{filesystem_list}
+
+{!if phpinfo}
+<div class="block-center">
+    {# Mimic ADMIN_simpleList function output #}
+    <h2>{lang_current_php_settings}</h2>
+    <div class="block-center-content">
+        <div id="toggle_phpinfo">{lang_showhide_phpinfo}</div>
+        <div id="panel_phpinfo">
+            {phpinfo}
+        </div>
+    </div>
+</div>
+{!endif}
+
+{# end {templatelocation} #}

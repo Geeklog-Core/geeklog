@@ -103,7 +103,7 @@ function render_cc_item(&$template, $url = '', $image = '', $label = '')
 */
 function commandcontrol($token)
 {
-    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW, $_IMAGE_TYPE, $_DB_dbms;
+    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW, $LANG_ENVCHECK, $_IMAGE_TYPE, $_DB_dbms;
 
     $retval = '';
 
@@ -233,6 +233,9 @@ function commandcontrol($token)
                     array('condition' => $showClearCacheIcon,
                         'url' => $_CONF['site_admin_url'] . '/clearctl.php',
                         'lang' => $LANG01['ctl'], 'image' => $_CONF['layout_url'] . '/images/icons/ctl.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/envcheck.php',
+                        'lang' => $LANG_ENVCHECK['env_check'], 'image' => $_CONF['layout_url'] . '/images/icons/envcheck.' . $_IMAGE_TYPE),
                     array('condition' => SEC_inGroup('Root'),
                         'url' => $_CONF['site_admin_url'] . '/logviewer.php',
                         'lang' => $LANG_LOGVIEW['log_viewer'], 'image' => $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE),

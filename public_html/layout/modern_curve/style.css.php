@@ -88,6 +88,7 @@ $files = array(
 
     'admin/common.css',
     'admin/block.css',
+    'admin/envcheck.css',
     'admin/group.css',
     'admin/lists.css',
     'admin/commandcontrol.css',

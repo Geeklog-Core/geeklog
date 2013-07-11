@@ -16,6 +16,7 @@
 @import url("admin/plugins.css");           /* Plugin editor style */
 @import url("admin/story.css");             /* Story editor style */
 @import url("admin/topic.css");             /* Topic editor style */
+@import url("admin/envcheck.css");          /* Enviroment Check style */
 @import url("admin/trackback.css");         /* Trackback editor style */
 @import url("admin/user.css");              /* User editor style */
 @import url("admin/configuration.css");     /* Configuration editor style */
