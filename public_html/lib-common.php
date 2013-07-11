@@ -992,8 +992,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '')
     }
 
     $header = COM_newTemplate($_CONF['path_layout']);
-    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted 
-    $header->preprocess_fn = 'PLG_replaceTags';    
     $header->set_file( array(
         'header'         => 'header.thtml',
         'menunavigation' => 'menunavigation.thtml',
@@ -1403,9 +1401,6 @@ function COM_siteFooter( $rightblock = -1, $custom = '' )
 
     // Set template directory
     $footer = COM_newTemplate($_CONF['path_layout']);
-    // Needed to set for pre (instead of post) since JavaScript could contain 
-    // autotag labels (like in configuration search) 
-    $footer->preprocess_fn = 'PLG_replaceTags';    
     // Set template file
     $footer->set_file( array(
             'footer'      => 'footer.thtml',
@@ -1694,8 +1689,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
 
     $header = COM_newTemplate($_CONF['path_layout']);
-    // Needed to set for pre (instead of post) since blocks could contain autotags that are not meant to be converted
-    $header->preprocess_fn = 'PLG_replaceTags';
     $header->set_file( array(
         'header'         => 'header.thtml',
         'menunavigation' => 'menunavigation.thtml',
@@ -2075,9 +2068,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
     // Set template directory
     $footer = COM_newTemplate($_CONF['path_layout']);
-    // Needed to set for pre (instead of post) since JavaScript could contain 
-    // autotag labels (like in configuration search) 
-    $footer->preprocess_fn = 'PLG_replaceTags';    
     // Set template file
     $footer->set_file( array(
             'footer'      => 'footer.thtml',
@@ -2293,7 +2283,6 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
     }
 
     $block = COM_newTemplate($_CONF['path_layout']);
-    $block->postprocess_fn = 'PLG_replaceTags';
     $block->set_file( 'block', $template );
 
     $block->set_var( 'block_title', stripslashes( $title ));
@@ -2335,7 +2324,6 @@ function COM_endBlock( $template='blockfooter.thtml' )
     }
 
     $block = COM_newTemplate($_CONF['path_layout']);
-    $block->postprocess_fn = 'PLG_replaceTags';
     $block->set_file( 'block', $template );
 
     $block->parse( 'endHTML', 'block' );

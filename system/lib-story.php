@@ -96,7 +96,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
 
 
     $article = COM_newTemplate($_CONF['path_layout']);
-    $article->postprocess_fn = 'PLG_replaceTags';
     $article->set_file( array(
             'article'          => $storytpl,
             'bodytext'         => 'storybodytext.thtml',
