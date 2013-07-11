@@ -107,7 +107,7 @@ function commandcontrol($token)
 
     $retval = '';
 
-    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin/commandcontrol');
+    $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin');
     $admin_templates->set_file (array ('cc'     => 'commandcontrol.thtml'));
     $blocks = array('ccgroup', 'ccrow', 'ccitem');
     foreach ($blocks as $block) {
