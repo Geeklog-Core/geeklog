@@ -171,7 +171,7 @@ function liststories($current_topic = '')
         $header_arr[] = array('text' => $LANG24[7], 'field' => 'username', 'sort' => true); // author
     }
     $header_arr[] = array('text' => $LANG24[15], 'field' => 'unixdate', 'sort' => true); // date
-    $header_arr[] = array('text' => $LANG_ADMIN['topic'], 'field' => 'topic_ids', 'sort' => true);
+    $header_arr[] = array('text' => $LANG_ADMIN['topic'], 'field' => 'tid', 'sort' => true);
     $header_arr[] = array('text' => $LANG24[32], 'field' => 'featured', 'sort' => true);
 
     if (SEC_hasRights ('story.ping') && ($_CONF['trackback_enabled'] ||

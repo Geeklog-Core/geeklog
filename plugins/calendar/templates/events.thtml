@@ -1,3 +1,6 @@
-                            [ <a href="{site_url}/submit.php?type=calendar{calendar_mode}">{lang_addevent}</a> ][ <a href="{site_url}/calendar/index.php{calendar_mode}">{lang_backtocalendar}</a> ]<br{xhtml}><br{xhtml}>
-                            <h1>{lang_month} {event_year}</h1>
+
+                            <div style="margin-bottom:2em">
+                                [ <a href="{site_url}/submit.php?type=calendar{calendar_mode}">{lang_addevent}</a> ][ <a href="{site_url}/calendar/index.php{calendar_mode}">{lang_backtocalendar}</a> ]
+                            </div>
+                            <h2 class="cal-event-date">{lang_month}&nbsp;&nbsp;{event_year}</h2>
                             {event_details}
