@@ -240,6 +240,7 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
     }
 }
 
+// Figure out different settings to display stories in a topic
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 if (empty ($topic)) {
@@ -295,7 +296,7 @@ $msql['mysql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate, "
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta,{$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
-         . " ta.type = 'article' AND ta.id = s.sid AND"
+         . " ta.type = 'article' AND ta.id = s.sid " . COM_getLangSQL('sid', 'AND', 's') . " AND "
          . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";     
 
 $msql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, cast(s.introtext as text) as introtext, cast(s.bodytext as text) as bodytext, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, "
@@ -304,7 +305,7 @@ $msql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, ta.tid, s.date, s.title, ca
          . $userfields . ", t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u, "
          . "{$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND"
-         . " ta.type = 'article' AND ta.id = s.sid AND"
+         . " ta.type = 'article' AND ta.id = s.sid AND " . COM_getLangSQL('sid', 'AND', 's') . " AND "
          . $sql . " GROUP BY s.sid ORDER BY featured DESC, date DESC LIMIT $offset, $limit";   
          
 $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
@@ -312,9 +313,9 @@ $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
             {$userfields}, t.topic, t.imageurl
             FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta, {$_TABLES['users']} AS u,
             {$_TABLES['topics']} AS t WHERE (s.uid = u.uid) AND (ta.tid = t.tid) AND 
-            ta.type = 'article' AND ta.id = s.sid AND
+            ta.type = 'article' AND ta.id = s.sid AND  " . COM_getLangSQL('sid', 'AND', 's') . " AND 
             {$sql} GROUP BY s.sid, ta.tid, expireunix, {$userfields}, t.topic, t.imageurl ORDER BY featured DESC, date DESC LIMIT {$offset}, {$limit}";   
-         
+
 $result = DB_query ($msql);
 
 $nrows = DB_numRows ($result);
