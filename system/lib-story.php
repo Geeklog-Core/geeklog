@@ -897,9 +897,8 @@ function plugin_getrelateditems_story($tids, $max, $trim)
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
+    $newstories = array();
     if ($nrows > 0) {
-        $newstories = array();
-
         for ($x = 0; $x < $nrows; $x++) {
             $A = DB_fetchArray($result);
 
