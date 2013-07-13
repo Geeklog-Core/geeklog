@@ -1049,7 +1049,7 @@ function ADMIN_getListField_stories($fieldname, $fieldvalue, $A, $icon_arr)
         }
         break;
         
-    case 'topic_ids':
+    case 'tid':
         $retval = TOPIC_getTopicAdminColumn('article', $A['sid']);
         break;
 
