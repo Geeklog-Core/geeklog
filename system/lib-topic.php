@@ -1481,7 +1481,7 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
         // Retrieve Topic options
         $sql = "SELECT ta.tid, t.topic 
             FROM {$_TABLES['topic_assignments']} ta, {$_TABLES['topics']} t 
-            WHERE t.tid = ta.tid AND ta.type = '$type' AND ta.id ='$id'  
+            WHERE t.tid = ta.tid AND ta.type = '$type' AND ta.id ='$id' " . COM_getLangSQL('tid', 'AND', 't') . "  
             AND t.tid != '" . TOPIC_ALL_OPTION . "' AND t.tid != '" . TOPIC_HOMEONLY_OPTION . "'";
     } else {
         $sql = "SELECT tid, topic 
