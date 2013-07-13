@@ -2952,9 +2952,8 @@ function COM_showTopics($topic = '')
         }
         
         if ($branch_level_skip == 0) {
-            // Make sure to show topics for proper language only
-            // if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && !$_TOPICS[$count_topic]['hidden'] && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
-            if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id)))) {
+            // Make sure to show topics for proper language only (and all languages)
+            if ($_TOPICS[$count_topic]['exclude'] == 0 && $_TOPICS[$count_topic]['access'] > 0 && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
                 $continue = false;
                 if ($_TOPICS[$count_topic]['parent_id'] == $topic) {
                     // Make sure to list any hidden child topics else skip
