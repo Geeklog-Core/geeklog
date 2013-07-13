@@ -209,7 +209,6 @@ function commandcontrol($token)
                         $docsUrl = $_CONF['site_url'] . '/' . $docs;
                     }
                 }
-                $showClearCacheIcon = ($_CONF['cache_templates'] && SEC_inGroup('Root'));
                 
                 $cc_arr = array(
                     array('condition' => SEC_hasRights($_CONF_FT, 'OR'),
@@ -230,7 +229,7 @@ function commandcontrol($token)
                                             ($_DB_dbms == 'mysql') && SEC_inGroup('Root'),
                         'url' => $_CONF['site_admin_url'] . '/database.php',
                         'lang' => $LANG01[103], 'image' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE),
-                    array('condition' => $showClearCacheIcon,
+                    array('condition' => SEC_inGroup('Root'),
                         'url' => $_CONF['site_admin_url'] . '/clearctl.php',
                         'lang' => $LANG01['ctl'], 'image' => $_CONF['layout_url'] . '/images/icons/ctl.' . $_IMAGE_TYPE),
                     array('condition' => SEC_inGroup('Root'),
