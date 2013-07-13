@@ -506,9 +506,11 @@ if (array_key_exists('set_action', $_POST) && SEC_checkToken()){
         );
     }
     
-    //$display = $config->get_ui($conf_group, array_key_exists('subgroup', $_POST)
-    //                                        ?  $_POST['subgroup'] : null);
-    $subgroup = array_key_exists('subgroup', $_POST)
+    // notify plugins when config item enabled or disabled 
+    $config_item[] = $_POST['name'];
+    PLG_configChange($conf_group, $config_item);
+    
+        $subgroup = array_key_exists('subgroup', $_POST)
               ? COM_applyFilter($_POST['subgroup']) : null;
     $display = $config->get_ui($conf_group, $subgroup);
 } elseif (array_key_exists('form_submit', $_POST) && SEC_checkToken()) {
