@@ -2995,7 +2995,7 @@ function COM_showTopics($topic = '')
                             $sql = "SELECT sid FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta "
                                  . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
                                  . COM_getPermSQL('AND')
-                                 . "AND ta.type = 'article' AND ta.id = sid "
+                                 . "AND ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND')
                                  . "AND (ta.tid IN({$tid_list}) AND (ta.inherit = 1 OR (ta.inherit = 0 AND ta.tid = '{$_TOPICS[$count_topic]['id']}'))) "
                                  . ' GROUP BY sid';   
                 
