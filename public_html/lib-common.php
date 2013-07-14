@@ -7582,24 +7582,23 @@ function COM_getLanguageId($language = '')
 * @return   string          SQL expression string (may be empty)
 *
 */
-function COM_getLangSQL( $field, $type = 'WHERE', $table = '' )
+function COM_getLangSQL($field, $type = 'WHERE', $table = '')
 {
     global $_CONF;
 
     $sql = '';
 
-    if( !empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'] ))
-    {
-        if( !empty( $table ))
-        {
+    if (!empty( $_CONF['languages'] ) && !empty( $_CONF['language_files'])) {
+        if (!empty($table)) {
             $table .= '.';
         }
 
         $lang_id = COM_getLanguageId();
 
-        if( !empty( $lang_id ))
-        {
-            $sql = ' ' . $type . " ({$table}$field LIKE '%\\_$lang_id')";
+        if (!empty($lang_id)) {
+            // $sql = ' ' . $type . " ({$table}$field LIKE '%\\_$lang_id')";
+            $length = strlen('_' . $lang_id);
+            $sql = ' ' . $type . " (({$table}$field LIKE '%\\_$lang_id') OR ('_' <> SUBSTRING({$table}$field, -$length, 1)))";
         }
     }
 
