@@ -46,6 +46,15 @@ function update_ConfValuesFor201()
     $c->add('autotag_permissions_topic', array(2, 2, 2, 2), '@select', 7, 41, 28, 1890, TRUE, $me, 37);
     $c->add('autotag_permissions_related_topics', array(2, 2, 0, 0), '@select', 7, 41, 28, 1900, TRUE, $me, 37);
     $c->add('autotag_permissions_related_items', array(2, 2, 0, 0), '@select', 7, 41, 28, 1910, TRUE, $me, 37);
+    
+    // Update Language Configuration
+    $c->del('allow_user_language', 'Core');
+    $c->add('allow_user_language', 1,'select',6,28,0,360,TRUE, $me, 28); // Move from Users and Submissions to Language
+    $c->add('fs_multilanguage', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 28);
+    $c->del('language_files', 'Core');
+    $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,29,NULL,470,FALSE, $me, 28);
+    $c->del('languages', 'Core');
+    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);       
 
     return true;
 }

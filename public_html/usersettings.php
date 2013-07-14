@@ -483,8 +483,13 @@ function editpreferences()
             $userlang = $_USER['language'];
         }
 
-        // Get available languages
-        $language = MBYTE_languageList ($_CONF['default_charset']);
+        // if multi-language content return just languages supported (assume config options are setup correctly and both contain the same language mappings)
+        if (!empty($_CONF['languages']) && !empty($_CONF['language_files'])) {
+            $language = MBYTE_languageList ($_CONF['default_charset'], true);
+        } else {
+            // Get available languages
+            $language = MBYTE_languageList ($_CONF['default_charset']);
+        }
 
         $has_valid_language = count (array_keys ($language, $userlang));
         if ($has_valid_language == 0) {

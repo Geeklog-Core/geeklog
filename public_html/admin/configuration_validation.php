@@ -283,7 +283,6 @@ $_CONF_VALIDATE['Core']['whatsnew_cache_time'] = array('rule' => 'numeric');
 /* Subgroup Users and Submissions, Tab Users */
 $_CONF_VALIDATE['Core']['disable_new_user_registration'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['allow_user_themes'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['allow_user_language'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['allow_user_photo'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['allow_username_change'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['allow_account_delete'] = array('rule' => 'boolean');
@@ -423,6 +422,7 @@ $_CONF_VALIDATE['Core']['language'] = array(
     'message' => isset($LANG_VALIDATION['language']) ? 
                  $LANG_VALIDATION['language'] : $LANG_VALIDATION['default']
 );
+$_CONF_VALIDATE['Core']['allow_user_language'] = array('rule' => 'boolean');
 
 /* Subgroup Language, Tab Locale */
 $_CONF_VALIDATE['Core']['locale']     = array('rule' => 'stringOrEmpty');

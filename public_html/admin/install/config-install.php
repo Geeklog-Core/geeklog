@@ -222,7 +222,7 @@ function install_config()
     $c->add('fs_users', NULL, 'fieldset', 4, 16, NULL, 0, TRUE, $me, 16);
     $c->add('disable_new_user_registration',FALSE,'select',4,16,0,220,TRUE, $me, 16);
     $c->add('allow_user_themes',1,'select',4,16,0,230,TRUE, $me, 16);
-    $c->add('allow_user_language',1,'select',4,16,0,240,TRUE, $me, 16);
+    // $c->add('allow_user_language',1,'select',4,16,0,240,TRUE, $me, 16); Moved to Language Tab
     $c->add('allow_user_photo',1,'select',4,16,0,250,TRUE, $me, 16);
     $c->add('allow_username_change',0,'select',4,16,0,260,TRUE, $me, 16);
     $c->add('allow_account_delete',0,'select',4,16,0,270,TRUE, $me, 16);
@@ -347,8 +347,10 @@ function install_config()
     $c->add('tab_language', NULL, 'tab', 6, 28, NULL, 0, TRUE, $me, 28);
     $c->add('fs_language', NULL, 'fieldset', 6, 28, NULL, 0, TRUE, $me, 28);
     $c->add('language','english','select',6,28,NULL,350,TRUE, $me, 28);
-    $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,28,NULL,470,FALSE, $me, 28);
-    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,28,NULL,480,FALSE, $me, 28);
+    $c->add('allow_user_language',1,'select',6,28,0,360,TRUE, $me, 28);
+    $c->add('fs_multilanguage', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 28);
+    $c->add('language_files',array('en'=>'english_utf-8', 'de'=>'german_formal_utf-8'),'*text',6,29,NULL,470,FALSE, $me, 28);
+    $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,28,NULL,480,FALSE, $me, 29);
 
     $c->add('tab_locale', NULL, 'tab', 6, 29, NULL, 0, TRUE, $me, 29);
     $c->add('fs_locale', NULL, 'fieldset', 6, 29, NULL, 0, TRUE, $me, 29);
