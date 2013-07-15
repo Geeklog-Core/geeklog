@@ -172,12 +172,11 @@ class GLText
         // // Replace any $ with &#36; (HTML equiv)
         // $str = str_replace( '$', '&#36;', $str);
 
-        if (SEC_hasRights('htmlfilter.skip') ||
-            (($_CONF['skip_html_filter_for_root'] == 1) && SEC_inGroup('Root'))) {
-            return $str;
-        }
+        if (!SEC_hasRights('htmlfilter.skip') &&
+            (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
 
-        $str = self::_htmLawed($str, $permissions);
+            $str = self::_htmLawed($str, $permissions);
+        }
 
         // Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
         // of the above noted // strip_tags() gets confused by HTML comments ...
