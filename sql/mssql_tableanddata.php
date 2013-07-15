@@ -299,6 +299,7 @@ CREATE TABLE [dbo].[{$_TABLES['stories']}] (
     [page_title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [text_version] [tinyint] NOT NULL DEFAULT (1),
     [hits] [numeric](8, 0) NOT NULL ,
     [numemails] [numeric](8, 0) NOT NULL ,
     [comments] [numeric](8, 0) NOT NULL ,
@@ -333,6 +334,7 @@ CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [text_version] [tinyint] NOT NULL DEFAULT (1),
     [date] [datetime] NULL ,
     [postmode] [varchar] (10) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
