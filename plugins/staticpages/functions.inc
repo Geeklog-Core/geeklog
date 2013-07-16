@@ -1746,30 +1746,29 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
         
         // Check for type (ie html or php)
         if ($sp_php == 1) {
-            $retval = eval($sp_content);
+            $sp_content = eval($sp_content);
         } elseif ($sp_php == 2) {
             ob_start();
             eval($sp_content);
-            $retval = ob_get_contents();
+            $sp_content = ob_get_contents();
             ob_end_clean();
-        } else {
-            $retval = $sp_content;
         }
-        $retval = PLG_replaceTags($retval);
+        
+        $sp_content = PLG_replaceTags($sp_content);
     } else {
         if ($sp_php != 0) {
             COM_errorLog("PHP in static pages is disabled. Can not display page.", 1);
-            $retval .= $LANG_STATIC['deny_msg'];
+            $sp_content .= $LANG_STATIC['deny_msg'];
         } else {
-            $retval .= PLG_replaceTags($sp_content);
+            $sp_content .= PLG_replaceTags($sp_content);
         }
     }
     
     $sp_content = stripslashes($sp_content);
 
-    if ($cache_time > 0 AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $retval, 0); }
+    if ($cache_time > 0 AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $sp_content, 0); }
     
-    return $retval;
+    return $sp_content;
 }
 
 /**

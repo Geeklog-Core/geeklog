@@ -755,9 +755,10 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             $output = DB_fetchArray($result, false);
 
             // WE ASSUME $output doesn't have any confidential fields
-            
-            // Generate output now
-            $output['sp_content'] = SP_render_content($page, $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
+            // Generate output now (omly if not grabing a template since template is combined with variables first and then generated)
+            if (!isset($args['template'])) {
+                $output['sp_content'] = SP_render_content($page, $output['sp_content'], $output['sp_php'], $output['cache_time'], $output['template_id']);
+            }
         } else { // an error occured (page not found, access denied, ...)
 
             /**
