@@ -304,6 +304,7 @@ CREATE TABLE {$_TABLES['stories']} (
   page_title varchar(128) default NULL,
   introtext text,
   bodytext text,
+  text_version tinyint(2) NOT NULL default '1',
   hits mediumint(8) unsigned NOT NULL default '0',
   numemails mediumint(8) unsigned NOT NULL default '0',
   comments mediumint(8) unsigned NOT NULL default '0',
@@ -346,6 +347,7 @@ CREATE TABLE {$_TABLES['storysubmission']} (
   title varchar(128) default NULL,
   introtext text,
   bodytext text,
+  text_version tinyint(2) NOT NULL default '1',
   date datetime default NULL,
   postmode varchar(10) NOT NULL default 'html',
   PRIMARY KEY  (sid)

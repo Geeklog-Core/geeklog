@@ -9,6 +9,12 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `cache_time` INT NOT NULL DEFAUL
 // Remove unused columns in Comments table
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']}  DROP `score`, DROP `reason`";
 
+// Add version of GLText engine to stories table
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [text_version] [tinyint] NOT NULL DEFAULT (1) AFTER [bodytext]";
+
+// Add version of GLText engine to storysubmission table
+$_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD [text_version] [tinyint] NOT NULL DEFAULT (1) AFTER [bodytext]";
+
 /**
  * Add new config options
  *

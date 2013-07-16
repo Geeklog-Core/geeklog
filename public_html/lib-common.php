@@ -3793,152 +3793,11 @@ function COM_handleCode( $str )
 */
 function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
-    global $_CONF, $_USER;
+    global $_CONF;
 
-    $str = COM_stripslashes($str);
+    require_once $_CONF['path_system'] . 'classes/gltext.class.php';
 
-    // Get rid of any newline characters
-    $str = str_replace("\n", '', $str);
-
-    // handle [code] ... [/code]
-    do
-    {
-        $start_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[code]' );
-        if( $start_pos !== false )
-        {
-            $end_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[/code]' );
-            if( $end_pos !== false )
-            {
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6,
-                        $end_pos - ( $start_pos + 6 )));
-                $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded
-                     . MBYTE_substr( $str, $end_pos + 7 );
-            }
-            else // missing [/code]
-            {
-                // Treat the rest of the text as code (so as not to lose any
-                // special characters). However, the calling entity should
-                // better be checking for missing [/code] before calling this
-                // function ...
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 6 ));
-                $encoded = '<pre><code>' . $encoded . '</code></pre>';
-                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded;
-            }
-        }
-    }
-    while( $start_pos !== false );
-
-    // handle [raw] ... [/raw]
-    do
-    {
-        $start_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[raw]' );
-        if( $start_pos !== false )
-        {
-            $end_pos = MBYTE_strpos( MBYTE_strtolower( $str ), '[/raw]' );
-            if( $end_pos !== false )
-            {
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 5,
-                        $end_pos - ( $start_pos + 5 )));
-                // [raw2] to avoid infinite loop. Not HTML comment as we strip
-                // them later.
-                $encoded = '[raw2]' . $encoded . '[/raw2]';
-                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded
-                     . MBYTE_substr( $str, $end_pos + 6 );
-            }
-            else // missing [/raw]
-            {
-                // Treat the rest of the text as raw (so as not to lose any
-                // special characters). However, the calling entity should
-                // better be checking for missing [/raw] before calling this
-                // function ...
-                $encoded = COM_handleCode( MBYTE_substr( $str, $start_pos + 5 ));
-                // [raw2] to avoid infinite loop. Not HTML comment as we strip
-                // them later.
-                $encoded = '[raw2]' . $encoded . '[/raw2]';
-                $str = MBYTE_substr( $str, 0, $start_pos ) . $encoded;
-            }
-        }
-    }
-    while( $start_pos !== false );
-
-    // replace any \ with &#092; (HTML equiv)
-    $str = str_replace( '\\', '&#092;', $str );
-
-    // Replace any $ with &#36; (HTML equiv)
-    $str = str_replace( '$', '&#36;', $str );
-
-    $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
-    
-    if ($has_skiphtmlfilterPermissions || (isset( $_CONF['skip_html_filter_for_root'] ) &&
-             ( $_CONF['skip_html_filter_for_root'] == 1 ) &&
-            SEC_inGroup( 'Root' ))) {
-        return $str;
-    }
-
-    require_once $_CONF['path_system'] . 'classes/htmlawed/htmLawed.php';
-
-    // Sets config options for htmLawed.  See http://www.bioinformatics.org/
-    // phplabware/internal_utilities/htmLawed/htmLawed_README.htm
-    $config = array(
-        'balance'        => 1, // Balance tags for well-formedness and proper nesting
-        'comment'        => 3, // Allow HTML comment
-        'css_expression' => 1, // Allow dynamic CSS expression in "style" attributes
-        'keep_bad'       => 1, // Neutralize both tags and element content
-        'tidy'           => 0, // Don't beautify or compact HTML code
-        'unique_ids'     => 1, // Remove duplicate and/or invalid ids
-        'valid_xhtml'    => 1, // Magic parameter to make input the most valid XHTML
-    );
-    
-    if (isset($_CONF['allowed_protocols']) &&
-            is_array($_CONF['allowed_protocols']) &&
-            (count($_CONF['allowed_protocols']) > 0)) {
-        $schemes = $_CONF['allowed_protocols'];
-    } else {
-        $schemes = array('http:', 'https:', 'ftp:');
-    }
-    
-    $schemes = str_replace(':', '', implode(', ', $schemes));
-    $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
-    
-    if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
-            empty( $_CONF['admin_html'] ))
-    {
-        $html = $_CONF['user_html'];
-    }
-    else
-    {
-        if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-            $html = array_merge_recursive($_CONF['user_html'],
-                                          $_CONF['admin_html'],
-                                          $_CONF['advanced_html']);
-        } else {
-            $html = array_merge_recursive($_CONF['user_html'],
-                                          $_CONF['admin_html']);
-        }
-    }
-
-    foreach ($html as $tag => $attr) {
-        if (is_array($attr) && (count($attr) > 0)) {
-            $spec[] = $tag . '=' . implode(', ', array_keys($attr));
-        } else {
-            $spec[] = $tag . '=-*';
-        }
-
-        $elements[] = $tag;
-    }
-
-    $config['elements'] = implode(', ', $elements);
-    $spec = implode('; ', $spec);
-
-    /* Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
-     * of the above noted // strip_tags() gets confused by HTML comments ...
-     */
-    $str = htmLawed($str, $config, $spec);
-    $str = str_replace('[raw2]','<!--raw--><span class="raw">', $str);
-    $str = str_replace('[/raw2]','</span><!--/raw-->', $str);
-
-    return $str;
+    return GLText::checkHTML($str, $permissions);
 }
 
 /**
@@ -8303,16 +8162,9 @@ function COM_renderWikiText($wikitext)
         return $wikitext;
     }
 
-    require_once 'Text/Wiki.php';
+    require_once $_CONF['path_system'] . 'classes/gltext.class.php';
 
-    $wiki = new Text_Wiki();
-    $wiki->setFormatConf('Xhtml', 'translate', HTML_SPECIALCHARS);
-    $wiki->setRenderConf('Xhtml', 'charset', COM_getCharset());
-    $wiki->disableRule('wikilink');
-    $wiki->disableRule('freelink');
-    $wiki->disableRule('interwiki');
-
-    return $wiki->transform($wikitext, 'Xhtml');
+    return GLText::renderWikiText($wikitext);
 }
 
 /**
