@@ -1002,7 +1002,8 @@ $LANG27 = array(
     'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
     'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
     'no_related_items' => 'No related items found.', 
-    'topics:' => 'Topics:'
+    'topics:' => 'Topics:',
+    'filed_under:' => 'Filed Under:'
 );
 
 ###############################################################################

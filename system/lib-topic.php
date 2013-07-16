@@ -1498,7 +1498,7 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $retval = '<div class="related-topics">' . $LANG27['topics:'];
+        $retval = '<div class="related-topics">' . $LANG27['filed_under:'];
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];            
