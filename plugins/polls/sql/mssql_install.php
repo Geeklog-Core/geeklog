@@ -39,7 +39,7 @@
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
-    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [qid] [int] NOT NULL ,
     [aid] [tinyint] NOT NULL ,
     [answer] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -51,14 +51,14 @@ CREATE TABLE [dbo].[{$_TABLES['pollanswers']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollquestions']}] (
     [qid] [int] NOT NULL ,
-    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [question] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
 ) ON [PRIMARY]
 ";
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
-    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [topic] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,    
@@ -83,7 +83,7 @@ CREATE TABLE [dbo].[{$_TABLES['polltopics']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['pollvoters']}] (
     [id] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [pid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [pid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ipaddress] [varchar] (39) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [numeric](10, 0) NULL
 ) ON [PRIMARY]

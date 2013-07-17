@@ -1,12 +1,14 @@
-
-<!-- admin/topic/topiceditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data" id="admin-topiceditor" class="compact">
 
   <div class="admin_basic">
     <dl class="form_block">
+      <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
+      <dd><input type="text" maxlength="128" onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="size5"{xhtml}></dd>
+
       <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
-      <dd><input type="text" maxlength="20" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size3"{xhtml}> {lang_donotusespaces}</dd>
+      <dd><input type="text" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="size5"{xhtml}> {lang_donotusespaces}</dd>
 
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
       <dd><input type="checkbox" {inherit_checked} name="inherit" id="admin-topiceditor-inherit"{xhtml}><span class="fieldhelp">{lang_inherit_info}</span></dd>
@@ -26,9 +28,6 @@
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
       <dd><input type="text" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="size1"{xhtml}> <span class="fieldhelp">{lang_defaultis}{default_limit}</span></dd>
-
-      <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
-      <dd><input type="text" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="size5"{xhtml}></dd>
 
       <dt><label for="admin-topiceditor-imageurl">{lang_topicimage}</label></dt>
       <dd><input type="text" dir="ltr" maxlength="{max_url_length}" value="{image_url}" name="imageurl" id="admin-topiceditor-imageurl" class="size5"{xhtml}></dd>
@@ -84,4 +83,4 @@
 
 </form>
 
-<!-- } admin/topic/topiceditor.thtml -->
+{# end {templatelocation} #}

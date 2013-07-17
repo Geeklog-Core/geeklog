@@ -726,6 +726,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile('story_editor', '/javascript/story_editor.js');
+    $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
 
     // Loads jQuery UI datepicker
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');

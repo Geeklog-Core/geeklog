@@ -32,7 +32,7 @@ CREATE TABLE [dbo].[{$_TABLES['access']}] (
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['article_images']}] (
-    [ai_sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [ai_sid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [ai_img_num] [tinyint] NOT NULL ,
     [ai_filename] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL
 ) ON [PRIMARY]
@@ -45,7 +45,6 @@ CREATE TABLE [dbo].[{$_TABLES['blocks']}] (
     [name] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [type] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [blockorder] [numeric](5, 0) NOT NULL ,
     [content] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [allow_autotags] [tinyint] NOT NULL ,
@@ -113,7 +112,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['comments']}] (
     [cid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [date] [datetime] NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [comment] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -131,7 +130,7 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['commentsubmissions']}] (
   [cid] [int] IDENTITY (1,1) NOT NULL,
   [type] [varchar] (30) NOT NULL default 'article',
-  [sid] [varchar](40) NOT NULL,
+  [sid] [varchar](128) NOT NULL,
   [date] [datetime] default NULL,
   [title] [varchar] (128) default NULL,
   [comment] [NTEXT],
@@ -262,7 +261,7 @@ CREATE TABLE [dbo].[{$_TABLES['sessions']}] (
     [uid] [int] NOT NULL ,
     [md5_sess_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL, 
     [whos_online] [tinyint] NOT NULL, 
-    [topic] [varchar] (20) NOT NULL, 
+    [topic] [varchar] (128) NOT NULL, 
 ) ON [PRIMARY]
 ";
 
@@ -291,7 +290,7 @@ CREATE TABLE [dbo].[{$_TABLES['statuscodes']}] (
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['stories']}] (
-    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
     [draft_flag] [tinyint] NULL ,
     [date] [datetime] NULL ,
@@ -330,7 +329,6 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['storysubmission']}] (
     [sid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [uid] [int] NOT NULL ,
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [introtext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [bodytext] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -344,8 +342,8 @@ $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['syndication']}] (
     [fid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
     [type] [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [header_tid] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [topic] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [header_tid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [format] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [limits] [varchar] (5) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [content_length] [numeric](5, 0) NOT NULL ,
@@ -373,9 +371,9 @@ CREATE TABLE [dbo].[{$_TABLES['tokens']}] (
 
 $_SQL[] = "
 CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
-  [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+  [tid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
   [type]  [varchar] (30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-  [id]  [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
+  [id]  [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL, 
   [inherit] [tinyint] NOT NULL, 
   [tdefault] [tinyint] NOT NULL
 ) ON [PRIMARY]
@@ -383,8 +381,8 @@ CREATE TABLE  [dbo].[{$_TABLES['topic_assignments']}] (
 
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['topics']}] (
-    [tid] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
-    [topic] [varchar] (48) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
+    [tid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [topic] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [imageurl] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [meta_description] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [meta_keywords] [varchar] (5000) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
@@ -407,7 +405,7 @@ CREATE TABLE [dbo].[{$_TABLES['topics']}] (
 $_SQL[] = "
 CREATE TABLE [dbo].[{$_TABLES['trackback']}] (
     [cid] [numeric](10, 0) IDENTITY (1, 1) NOT NULL ,
-    [sid] [varchar] (40) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
+    [sid] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL ,
     [url] [varchar] (255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [title] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,
     [blog] [varchar] (80) COLLATE SQL_Latin1_General_CP1_CI_AS NULL ,

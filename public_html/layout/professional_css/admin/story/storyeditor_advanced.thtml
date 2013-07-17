@@ -1,5 +1,4 @@
-
-<!-- admin/story/storyeditor_advanced.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 
@@ -14,13 +13,13 @@
       <dd>{story_author}</dd>
 
       <dt><label for="admin-storyeditor_advanced-title">{lang_title}</label></dt>
-      <dd><input type="text" size="48" maxlength="255" value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="text"{xhtml}></dd>
+      <dd><input type="text" size="48" maxlength="128" onkeyup="TitleToId('admin-storyeditor_advanced-title','admin-storyeditor_advanced-sid');" value="{story_title}" name="title" id="admin-storyeditor_advanced-title" class="text"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
-      <dd><input type="text" size="48" maxlength="255" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="text"{xhtml}></dd>
+      <dd><input type="text" size="48" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="text"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor_advanced-sid">{lang_sid}</label></dt>
-      <dd><input type="text" size="40" maxlength="40" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="text"{xhtml}></dd>
+      <dd><input type="text" size="48" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor_advanced-sid" class="text"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea name="meta_description" id="admin-storyeditor-metadescription" style="width:95%" cols="70" rows="2">{meta_description}</textarea></dd>
@@ -308,4 +307,4 @@
   {preview_content}
 </div>
 
-<!-- } admin/story/storyeditor_advanced.thtml -->
+{# end {templatelocation} #}

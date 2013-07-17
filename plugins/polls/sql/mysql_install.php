@@ -38,7 +38,7 @@
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   qid mediumint(9) NOT NULL default 0,
   aid tinyint(3) unsigned NOT NULL default '0',
   answer varchar(255) default NULL,
@@ -51,7 +51,7 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
   qid mediumint(9) NOT NULL DEFAULT '0',
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   question varchar(255) NOT NULL,
   PRIMARY KEY (qid, pid)
 ) ENGINE=MyISAM
@@ -59,7 +59,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   topic varchar(255) default NULL,
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,    
@@ -90,7 +90,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id int(10) unsigned NOT NULL auto_increment,
-  pid varchar(20) NOT NULL,
+  pid varchar(128) NOT NULL,
   ipaddress varchar(39) NOT NULL default '',
   date int(10) unsigned default NULL,
   PRIMARY KEY  (id)

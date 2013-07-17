@@ -77,7 +77,7 @@ if (!SEC_hasRights('topic.edit')) {
 function edittopic ($tid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG04, $LANG27, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+           $LANG_ADMIN, $MESSAGE, $_SCRIPTS;
 
     $retval = '';
 
@@ -104,6 +104,8 @@ function edittopic ($tid = '')
         }
     }
 
+    $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
+    
     $token = SEC_createToken();
 
     $retval .= COM_startBlock ($LANG27[1], '',
@@ -562,13 +564,11 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
 */
 function listTopics($token)
 {
-    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN;
+    global $_CONF, $_TABLES, $LANG27, $LANG_ACCESS, $LANG_ADMIN, $_SCRIPTS;
 
     require_once $_CONF['path_system'] . 'lib-admin.php';
 
-    global $_SCRIPTS;
     $_SCRIPTS->setJavaScriptFile('admin.topic', '/javascript/admin.topic.js');
-
 
     $retval = '';
 

@@ -45,7 +45,15 @@ $_UPDATES = array(
         // Delete Poll block since moved to dynamic
         "DELETE FROM {$_TABLES['blocks']} WHERE phpblockfn = 'phpblock_polls'", 
         "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('config.polls.tab_poll_block', 'Access to configure poll block', 0)"
-    )    
+    ), 
+    
+    '2.1.4' => array(
+        // Poll Id now 128 characters
+        "ALTER TABLE {$_TABLES['pollanswers']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''", 
+        "ALTER TABLE {$_TABLES['pollquestions']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''",
+        "ALTER TABLE {$_TABLES['polltopics']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL DEFAULT ''",
+        "ALTER TABLE {$_TABLES['pollvoters']} CHANGE `pid` `pid` VARCHAR(128) NOT NULL"
+    )
     
 );
 

@@ -4,7 +4,7 @@
 $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 
 // Add Cache Time variable to Blocks table
-$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `allow_autotags`"; 
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [allow_autotags]"; 
 
 // Remove unused columns in Comments table
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']}  DROP `score`, DROP `reason`";
@@ -14,6 +14,22 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [text_version] [tinyint] NOT NU
 
 // Add version of GLText engine to storysubmission table
 $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD [text_version] [tinyint] NOT NULL DEFAULT (1) AFTER [bodytext]";
+
+// Update all topic ids and Topic name to 128 characters
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE [tid] VARCHAR(128) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE [topic] VARCHAR(128) NULL DEFAULT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} CHANGE [tid] VARCHAR(128) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} CHANGE [id] VARCHAR(128) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['sessions']} CHANGE [topic] VARCHAR(128) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE [topic] VARCHAR(128) NOT NULL DEFAULT '::all'";
+$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} CHANGE [header_tid] VARCHAR(128) NOT NULL DEFAULT 'none'";
+
+// Update all article ids to 128 characters
+$_SQL[] = "ALTER TABLE {$_TABLES['article_images']} CHANGE [ai_sid] VARCHAR(128) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} CHANGE [sid] VARCHAR(128) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['commentsubmissions']} CHANGE [sid] VARCHAR(128) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} CHANGE [sid] VARCHAR(128) NOT NULL DEFAULT ''";
+$_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE [sid] VARCHAR(128) NOT NULL";
 
 /**
  * Add new config options

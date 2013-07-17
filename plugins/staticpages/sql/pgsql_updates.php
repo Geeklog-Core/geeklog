@@ -48,7 +48,8 @@ $_UPDATES = array(
     ),    
     
     '1.6.5' => array(
-        "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`"
+        "ALTER TABLE {$_TABLES['staticpage']} ADD `cache_time` INT NOT NULL DEFAULT '0' AFTER `template_id`", 
+        "ALTER TABLE {$_TABLES['staticpage']} CHANGE `sp_id``sp_id` VARCHAR(128) NOT NULL DEFAULT ''"
     )  
 );
 

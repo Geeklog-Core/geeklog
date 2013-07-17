@@ -1,5 +1,4 @@
-
-<!-- plugins/polls/templates/admin/polleditor.thtml { -->
+{# begin {templatelocation} #}
 
 {noscript}
 <div id="advanced_editor" style="display:none;">
@@ -7,7 +6,7 @@
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="polls-polleditor-pid">{lang_pollid}</label></dt>
-        <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="40" id="polls-polleditor-pid" class="size5"{xhtml}> {lang_donotusespaces}</dd>
+        <dd><input type="text" dir="ltr" name="pid" value="{poll_id}" maxlength="128" id="polls-polleditor-pid" class="size5"{xhtml}> {lang_donotusespaces}</dd>
 
         <dt><label for="polls-polleditor-topic">{lang_topic}</label></dt>
         <dd><input type="text" name="topic" value="{poll_topic}" maxlength="255" id="polls-polleditor-topic" class="size6"{xhtml}><br{xhtml}>{poll_topic_info}</dd>
@@ -64,4 +63,4 @@
   </form>
 </div>
 
-<!-- } plugins/polls/templates/admin/polleditor.thtml -->
+{# end {templatelocation} #}

@@ -5,10 +5,10 @@
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="sp-editor-sp_title">{lang_title}</label></dt>
-        <dd><input type="text" maxlength="255" name="sp_title" value="{sp_title}" id="sp-editor-sp_title" class="size5"{xhtml}></dd>
+        <dd><input type="text" maxlength="128" name="sp_title" value="{sp_title}" id="sp-editor-sp_title" class="size5"{xhtml}></dd>
 
         <dt><label for="sp-editor-sp_page_title">{lang_page_title}</label></dt>
-        <dd><input type="text" maxlength="255" name="sp_page_title" value="{sp_page_title}" id="sp-editor-sp_page_title" class="size5"{xhtml}></dd>
+        <dd><input type="text" maxlength="128" name="sp_page_title" value="{sp_page_title}" id="sp-editor-sp_page_title" class="size5"{xhtml}></dd>
 
         <dt><label for="sp-editor-sp_onmenu">{lang_addtomenu}</label></dt>
         <dd><input type="checkbox" name="sp_onmenu" id="sp-editor-sp_onmenu" {onmenu_checked}{xhtml}></dd>
@@ -33,7 +33,7 @@
             </select></dd>
 
         <dt><label for="sp-editor-sp_id">{lang_id}</label></dt>
-        <dd><input type="text" dir="ltr" name="sp_id" maxlength="40" value="{sp_id}" id="sp-editor-sp_id" class="size5"{xhtml}></dd>
+        <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-editor-sp_id" class="size5"{xhtml}></dd>
 
         <dt><label>{lang_url}</label></dt>
         <dd><span class="break-word">{example_url}</span></dd>

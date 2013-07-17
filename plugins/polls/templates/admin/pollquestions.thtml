@@ -1,5 +1,5 @@
+{# begin {templatelocation} #}
 
-<!-- plugins/polls/templates/admin/pollquestions.thtml { -->
 <div id="po_{question_id}" {style} class="wide">
   <dl class="form_block">
     <dt><label>{lang_question}</label></dt>
@@ -11,4 +11,5 @@
 </div>
 
 <hr class="separator"{xhtml}>
-<!-- } plugins/polls/templates/admin/pollquestions.thtml -->
+
+{# end {templatelocation} #}

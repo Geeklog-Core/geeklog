@@ -1,3 +1,5 @@
+{# begin {templatelocation} #}                            
+                            
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
                                 <table cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
@@ -34,7 +36,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_title}:</td>
-                                        <td><input type="text" size="48" maxlength="128" name="title" value="{story_title}"{xhtml}></td>
+                                        <td><input type="text" size="48" maxlength="128" onkeyup="TitleToId();" value="{story_title}" id="title" name="title" value="{story_title}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_page_title}:</td>
@@ -144,7 +146,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright" style="vertical-align:top;">{lang_sid}:</td>
-                                        <td><input type="text" dir="ltr" size="40" maxlength="40" name="sid" value="{story_id}"{xhtml}></td>
+                                        <td><input type="text" dir="ltr" size="48" maxlength="128" id="id" name="sid" value="{story_id}"{xhtml}></td>
                                     </tr>
                                     <tr{hide_meta}>
                                         <td valign="top" align="right">{lang_metadescription}:</td>
@@ -248,3 +250,4 @@
                                 </table>
                             </form>
 
+{# end {templatelocation} #}

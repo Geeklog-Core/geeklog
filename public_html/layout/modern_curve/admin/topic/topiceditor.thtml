@@ -4,8 +4,11 @@
 
   <div class="admin_basic">
     <dl>
+      <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
+      <dd><input type="text" size="48" maxlength="128" onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="text"{xhtml}></dd>
+      
       <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
-      <dd><input type="text" size="20" maxlength="20" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="text"{xhtml}></dd>
+      <dd><input type="text" size="48" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="text"{xhtml}></dd>
       <dd class="description">{lang_donotusespaces}</dd>
       
       <dt><label for="admin-topiceditor-inherit">{lang_inherit}</label></dt>
@@ -26,9 +29,6 @@
 
       <dt><label for="admin-topiceditor-limitnews">{lang_storiesperpage}</label></dt>
       <dd><input type="text" size="3" maxlength="3" value="{story_limit}" name="limitnews" id="admin-topiceditor-limitnews" class="text"{xhtml}><span class="fieldhelp">{lang_defaultis} {default_limit}</span></dd>
-
-      <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
-      <dd><input type="text" size="48" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="text"{xhtml}></dd>
 
       <dt><label for="admin-topiceditor-imageurl">{lang_topicimage}</label></dt>
       <dd><input type="text" dir="ltr" size="48" maxlength="{max_url_length}" value="{image_url}" name="imageurl" id="admin-topiceditor-imageurl" class="text"{xhtml}></dd>

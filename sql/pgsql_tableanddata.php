@@ -10,7 +10,7 @@ CREATE TABLE {$_TABLES['access']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['article_images']} (
-  ai_sid varchar(40) NOT NULL,
+  ai_sid varchar(128) NOT NULL,
   ai_img_num smallint NULL,
   ai_filename varchar(128) NOT NULL,
   PRIMARY KEY (ai_sid,ai_img_num)
@@ -90,7 +90,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['comments']} (
   cid SERIAL,
   type varchar(30) NOT NULL DEFAULT 'article',
-  sid varchar(40) NOT NULL default '',
+  sid varchar(128) NOT NULL default '',
   date timestamp NOT NULL DEFAULT current_timestamp,
   title varchar(128) default NULL,
   comment text,
@@ -114,7 +114,7 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['commentsubmissions']} (
   cid SERIAL,
   type varchar(30) NOT NULL default 'article',
-  sid varchar(40) NOT NULL,
+  sid varchar(128) NOT NULL,
   date timestamp NOT NULL default current_timestamp,
   title varchar(128) default NULL,
   comment text,
@@ -257,7 +257,7 @@ CREATE TABLE {$_TABLES['sessions']} (
   uid smallint NOT NULL default '1',
   md5_sess_id varchar(128) default NULL,
   whos_online smallint NOT NULL default '1',
-  topic varchar(20) NOT NULL default '',
+  topic varchar(128) NOT NULL default '',
   PRIMARY KEY (sess_id)
 );
   CREATE INDEX {$_TABLES['sessions']}_start_time ON {$_TABLES['sessions']} (start_time);
@@ -294,7 +294,7 @@ CREATE TABLE {$_TABLES['statuscodes']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['stories']} (
-  sid varchar(40) NOT NULL default '',
+  sid varchar(128) NOT NULL default '',
   uid smallint NOT NULL default '1',
   draft_flag smallint default '0',
   date timestamp NOT NULL default current_timestamp,
@@ -356,8 +356,8 @@ $_SQL[] = "
 CREATE TABLE {$_TABLES['syndication']} (
   fid SERIAL,
   type varchar(30) NOT NULL default 'article',
-  topic varchar(48) NOT NULL default '::all',
-  header_tid varchar(48) NOT NULL default 'none',
+  topic varchar(128) NOT NULL default '::all',
+  header_tid varchar(128) NOT NULL default 'none',
   format varchar(20) NOT NULL default 'RSS-2.0',
   limits varchar(5) NOT NULL default '10',
   content_length smallint NOT NULL default '0',
@@ -391,9 +391,9 @@ CREATE TABLE {$_TABLES['tokens']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topic_assignments']} (
-  tid varchar(20) NOT NULL,
+  tid varchar(128) NOT NULL,
   type varchar(30) NOT NULL,
-  id varchar(40) NOT NULL,
+  id varchar(128) NOT NULL,
   inherit smallint NOT NULL default '1',
   tdefault smallint NOT NULL default '0',   
   PRIMARY KEY  (tid,type,id)
@@ -402,8 +402,8 @@ CREATE TABLE {$_TABLES['topic_assignments']} (
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['topics']} (
-  tid varchar(20) NOT NULL default '',
-  topic varchar(48) default NULL,
+  tid varchar(128) NOT NULL default '',
+  topic varchar(128) default NULL,
   imageurl varchar(255) default NULL,
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,
@@ -427,7 +427,7 @@ CREATE TABLE {$_TABLES['topics']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['trackback']} (
   cid SERIAL,
-  sid varchar(40) NOT NULL,
+  sid varchar(128) NOT NULL,
   url varchar(255) default NULL,
   title varchar(128) default NULL,
   blog varchar(80) default NULL,

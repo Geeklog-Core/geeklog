@@ -1270,7 +1270,18 @@ function plugin_upgrade_polls()
             polls_update_ConfigSecurity_2_1_3();
 
             $current_version = '2.1.4';
-            break;            
+            break;
+
+        case '2.1.4':
+            if (isset($_UPDATES[$current_version])) {
+                $_SQL = $_UPDATES[$current_version];
+                foreach ($_SQL as $sql) {
+                    DB_query($sql);
+                }
+            }
+
+            $current_version = '2.1.5';
+            break;             
 
         default:
             $done = true;

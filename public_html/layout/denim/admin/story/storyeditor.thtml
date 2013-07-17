@@ -1,5 +1,4 @@
-
-<!-- admin/story/storyeditor.thtml { -->
+{# begin {templatelocation} #}
 
 <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" id="frmstory" class="compact">
 
@@ -35,10 +34,10 @@
       <dd class="description">{publish_date_explanation}</dd>
 
       <dt><label for="admin-storyeditor-title">{lang_title}</label></dt>
-      <dd><input type="text" maxlength="255" value="{story_title}" name="title" id="admin-storyeditor-title" class="size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" value="{story_title}" value="{story_title}" name="title" id="admin-storyeditor-title" class="size6"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
-      <dd><input type="text" maxlength="255" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="size6"{xhtml}></dd>
 
       <dt><label>{lang_topic}</label></dt>
       <dd>{topic_selection}</dd>
@@ -128,7 +127,7 @@
       </dd>
 
       <dt><label for="admin-storyeditor-sid">{lang_sid}</label></dt>
-      <dd><input type="text" maxlength="40" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="size5"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" value="{story_id}" name="sid" id="admin-storyeditor-sid" class="size5"{xhtml}></dd>
 
       <dt{hide_meta}><label for="admin-storyeditor-metadescription">{lang_metadescription}</label></dt>
       <dd{hide_meta}><textarea cols="70" rows="2" name="meta_description" id="admin-storyeditor-metadescription" class="wide">{meta_description}</textarea></dd>
@@ -204,4 +203,4 @@
 
 </form>
 
-<!-- } admin/story/storyeditor.thtml -->
+{# end {templatelocation} #}

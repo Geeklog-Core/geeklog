@@ -1,8 +1,14 @@
+{# begin {templatelocation} #}                            
+                            
                             <form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data">
                                 <table cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
+                                        <td class="alignright">{lang_topicname}:</td>
+                                        <td><input type="text" size="48" maxlength="128" onkeyup="TitleToId();" id="title" name="topic_name" value="{topic_name}"{xhtml}></td>
+                                    </tr>                                
+                                    <tr>
                                         <td class="alignright">{lang_topicid}:</td>
-                                        <td><input type="text" size="20" maxlength="20" name="tid" value="{topic_id}"{xhtml}> {lang_donotusespaces}</td>
+                                        <td><input type="text" size="48" maxlength="128" id="id" name="tid" value="{topic_id}"{xhtml}> {lang_donotusespaces}</td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_inherit}:</td>
@@ -27,10 +33,6 @@
                                     <tr>
                                         <td class="alignright">{lang_storiesperpage}:</td>
                                         <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"{xhtml}> <span class="fieldhelp">{lang_defaultis} {default_limit}</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="alignright">{lang_topicname}:</td>
-                                        <td><input type="text" size="48" name="topic_name" value="{topic_name}"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_topicimage}:</td>
@@ -111,3 +113,5 @@
                                     </tr>
                                 </table>
                             </form>
+                            
+{# end {templatelocation} #}

@@ -34,7 +34,7 @@
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollanswers']} (
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   qid int NOT NULL default 0,
   aid int NOT NULL default '0',
   answer varchar(255) default NULL,
@@ -46,14 +46,14 @@ CREATE TABLE {$_TABLES['pollanswers']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollquestions']} (
   qid int NOT NULL DEFAULT '0',
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   question varchar(255) NOT NULL,
   PRIMARY KEY (qid, pid))
 ";
 
 $_SQL[] = "
 CREATE TABLE {$_TABLES['polltopics']} (
-  pid varchar(40) NOT NULL default '',
+  pid varchar(128) NOT NULL default '',
   topic varchar(255) default NULL,
   voters int default NULL,
   meta_description TEXT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE {$_TABLES['polltopics']} (
 $_SQL[] = "
 CREATE TABLE {$_TABLES['pollvoters']} (
   id SERIAL,
-  pid varchar(20) NOT NULL,
+  pid varchar(128) NOT NULL,
   ipaddress varchar(15) NOT NULL default '',
   date int default NULL,
   PRIMARY KEY  (id))
