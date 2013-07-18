@@ -480,7 +480,7 @@ function TOPIC_getTopicListSelect($selected_ids = array(), $include_root_all = 1
                 }
                 
                 // Make sure to show topics for proper language and access level only
-                if ($archive_tid != $id && $specified_user_access > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && $_TOPICS[$count_topic]['language_id'] == $lang_id))) {
+                if ($archive_tid != $id && $specified_user_access > 0 && $id != $remove_id && (($lang_id == '') || ($lang_id != '' && ($_TOPICS[$count_topic]['language_id'] == $lang_id || $_TOPICS[$count_topic]['language_id'] == '')))) {
                     $title =  $_TOPICS[$count_topic]['title'];
                     
                     $branch_spaces = "";
