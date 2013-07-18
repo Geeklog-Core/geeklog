@@ -283,7 +283,7 @@ class GLText
      * @access  private
      *
      */
-    private function _displayEscape($text)
+    private static function _displayEscape($text)
     {
         return str_replace(
             array('$',     '{',      '}',      '\\'),
