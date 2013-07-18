@@ -47,7 +47,7 @@
  *
  */
 
-require_once $_CONF['path_system'] . 'classes/gltext.class.php';
+require_once 'gltext.class.php';
 
 /**
  * Constants for stories:
