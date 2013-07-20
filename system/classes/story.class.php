@@ -47,7 +47,7 @@
  *
  */
 
-require_once $_CONF['path_system'] . 'classes/gltext.class.php';
+require_once 'gltext.class.php';
 
 /**
  * Constants for stories:
@@ -872,7 +872,7 @@ class Story
      */
     function loadFromArgsArray(&$array)
     {
-        global $_TABLES;
+        global $_TABLES, $_CONF;
 
         /* magic_quotes_gpc cleanup routine now in submitstory() in
          * /public_html/admin/story.php
