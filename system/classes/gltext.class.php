@@ -90,14 +90,15 @@ class GLText
     /**
      * Returns text ready for display.
      *
-     * @param   string  $text      Text to prepare for display
-     * @param   string  $postmode  Indicates if text is html, wikitext or plaintext
-     * @param   int     $version   version of GLText engine
+     * @param   string  $text         Text to prepare for display
+     * @param   string  $postmode     Indicates if text is html, wikitext or plaintext
+     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int     $version      version of GLText engine
      * @return  string  Escaped String
      * @access  public
      *
      */
-    public static function getDisplayText($text, $postmode, $version)
+    public static function getDisplayText($text, $postmode, $permissions, $version)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
 
@@ -117,7 +118,7 @@ class GLText
             // latest version
 
             if ($postmode == 'html') {
-                $text = self::checkHTML($text, 'story.edit');
+                $text = self::checkHTML($text, $permissions);
             }
 
             if ($postmode == 'plaintext') {
