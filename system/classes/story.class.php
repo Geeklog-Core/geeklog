@@ -1708,13 +1708,17 @@ class Story
         {
         case 'introtext':
             $return = GLText::getDisplayText($this->_introtext,
-                          $this->_postmode, $this->_text_version);
+                          $this->_postmode,
+                          'story.edit',
+                          $this->_text_version);
             break;
 
         case 'bodytext':
             if (empty($this->_bodytext)) break;
             $return = GLText::getDisplayText($this->_bodytext,
-                          $this->_postmode, $this->_text_version);
+                          $this->_postmode,
+                          'story.edit',
+                          $this->_text_version);
 
             break;
 
