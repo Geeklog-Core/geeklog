@@ -2399,7 +2399,7 @@ function PLG_runScheduledTask()
 */
 function PLG_submissionSaved($type)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
     
     $t = explode('.', $type);
     $plg_type = $t[0];    
@@ -2438,7 +2438,7 @@ function PLG_submissionSaved($type)
 */
 function PLG_submissionDeleted($type)
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $t = explode('.', $type);
     $plg_type = $t[0];
