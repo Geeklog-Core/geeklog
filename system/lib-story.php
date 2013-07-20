@@ -45,7 +45,7 @@ if ($_CONF['allow_user_photo']) {
 }
 
 // this must be kept in sync with the actual size of 'sid' in the db ...
-define('STORY_MAX_ID_LENGTH', 40);
+define('STORY_MAX_ID_LENGTH', 128);
 
 // Story Record Options for the STATUS Field
 if (!defined ('STORY_ARCHIVE_ON_EXPIRE')) {

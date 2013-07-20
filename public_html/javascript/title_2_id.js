@@ -49,7 +49,7 @@ function TitleToId(getTitle = 'title', setTl2ID = 'id') {
 		nr = 35;
 	} else {
 		yondigit = "";
-		nr = 40;
+		nr = 128;
 	}
 	T2ID.value = urlID.slice(0, nr) + yondigit;
 
