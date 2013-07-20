@@ -3277,63 +3277,30 @@ function COM_userMenu( $help='', $title='', $position='' )
 }
 
 /**
-* Prints administration menu
+* Prints Command and Control Page or Administration Menu Block
 *
-* This will return the administration menu items that the user has
-* sufficient rights to -- Admin Block on the left side.
+* This will return the command and control items or administration menu items that 
+* the user has sufficient rights to -- Admin Block on the left side.
 *
-* @param        string      $help       Help file to show
-* @param        string      $title      Menu Title
-* @param        string      $position   Side being shown on 'left', 'right' or blank.
-* @see function COM_userMenu
+* @param        string      $adminMenu  True if admin menu, false if command and control page
+* @param        string      $help       Help file to show (admin menu only)
+* @param        string      $title      Menu Title (admin menu only)
+* @param        string      $position   Side being shown on 'left', 'right' or blank. (admin menu only)
+* @see function COM_adminMenu
 *
 */
-function COM_adminMenu( $help = '', $title = '', $position = '' )
+function COM_commandControl($adminMenu = false, $help = '', $title = '', $position = '')
 {
-    global $_TABLES, $_CONF, $_CONF_FT, $LANG01, $LANG_ADMIN, $_BLOCK_TEMPLATE,
-           $_DB_dbms, $config;
+    global $_CONF, $_CONF_FT, $_TABLES, $LANG01, $LANG29, $LANG_LOGVIEW, 
+        $LANG_ENVCHECK, $LANG_ADMIN, $_IMAGE_TYPE, $_DB_dbms, $config;;
 
     $retval = '';
 
-    if (COM_isAnonUser()) {
-        return $retval;
-    }
-
-    $plugin_options = PLG_getAdminOptions();
-    $num_plugins = count( $plugin_options );
-
-    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAccess())        
-    {
-        $link_array = array();
-
+    if ($adminMenu) {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
-   
-        $adminmenu = COM_newTemplate($_CONF['path_layout']);
-        if (isset($_BLOCK_TEMPLATE['adminnavigation'])) {
-            $adminmenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
-        } else {
-            $adminmenu->set_file('adminnavigation', 'adminnavigation.thtml');
-        }    
-        $blocks = array('option', 'current');
-        foreach ($blocks as $block) {
-            $adminmenu->set_block('adminnavigation', $block);
-        }    
-        
-        $adminmenu->set_var('block_name', str_replace('_', '-', 'admin_block'));
 
-        if( empty( $title ))
-        {
-            $title = DB_getItem( $_TABLES['blocks'], 'title',
-                                 "name = 'admin_block'" );
-        }
-
-        $retval .= COM_startBlock( $title, $help,
-                           COM_getBlockTemplate( 'admin_block', 'header', $position ));
-        
-        // Allow anything not in the blocks but in the rest of the template file to be displayed
-        $retval .= $adminmenu->parse('item', 'adminnavigation', true);
-
+        // Figure out topics sql since used in a few places    
         $topicsql = '';
         if( SEC_isModerator() || SEC_hasRights( 'story.edit' ))
         {
@@ -3354,304 +3321,455 @@ function COM_adminMenu( $help = '', $title = '', $position = '' )
                 }
             }
         }
-
-        $modnum = 0;
-        if (SEC_hasRights('story.edit,story.moderate', 'OR') ||
-                (($_CONF['commentsubmission'] == 1) &&
-                    SEC_hasRights('comment.moderate')) ||
-                (($_CONF['usersubmission'] == 1) &&
-                    SEC_hasRights('user.edit,user.delete'))) {
-
-            if (SEC_hasRights('story.moderate')) {
-                if (empty($topicsql)) {
-                    $modnum += DB_count($_TABLES['storysubmission']);
-                } else {
-                    $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql;
-                    $sresult = DB_query($sql);
-                    $S = DB_fetchArray($sresult);
-                    $modnum += $S['count'];
-                }
-            }
-
-            if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
-                $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND draft_flag = 1";
-                if (!empty($topicsql)) {
-                    $sql .= $topicsql;
-                }
-                $result = DB_query($sql . COM_getPermSQL('AND', 0, 3));
-                $A = DB_fetchArray($result);
-                $modnum += $A['count'];
-            }
-
-            if (($_CONF['commentsubmission'] == 1) && SEC_hasRights('comment.moderate')) {
-                $modnum += DB_count($_TABLES['commentsubmissions']);
-            }
-
-            if ($_CONF['usersubmission'] == 1) {
-                if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
-                    $modnum += DB_count($_TABLES['users'], 'status', '2');
-                }
-            }
-        }
-
-        if (SEC_hasConfigAccess()) {
-            $url = $_CONF['site_admin_url'] . '/configuration.php';
-            $adminmenu->set_var('option_url', $url);
-            $adminmenu->set_var('option_label', $LANG01[129]);
-            $adminmenu->set_var('option_count', count($config->_get_groups()));
-            $menu_item = $adminmenu->parse('item',
-                                           ($thisUrl == $url) ? 'current' :
-                                                                'option');
-            $link_array[$LANG01[129]] = $menu_item;
-        }
-
-
-        // now handle submissions for plugins
-        $modnum += PLG_getSubmissionCount();
-
-        if (SEC_hasModerationAccess()) {
-            $url = $_CONF['site_admin_url'] . '/moderation.php';
-            $adminmenu->set_var('option_url', $url);
-            $adminmenu->set_var('option_label', $LANG01[10]);
-            $adminmenu->set_var('option_count', COM_numberFormat($modnum));
-            $menu_item = $adminmenu->parse('item', 'option');
-            $link_array[$LANG01[10]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'story.edit' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/story.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[11] );
-            if( empty( $topicsql ))
-            {
-                $numstories = DB_count( $_TABLES['stories'] );
-            }
-            else
-            {
-                $nresult = DB_query( "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql . COM_getPermSql( 'AND' ));
-                $N = DB_fetchArray( $nresult );
-                $numstories = $N['count'];
-            }
-            $adminmenu->set_var( 'option_count',
-                                 COM_numberFormat( $numstories ));
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[11]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'block.edit' ))
-        {
-            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSql());
-            list( $count ) = DB_fetchArray( $result );
-
-            $url = $_CONF['site_admin_url'] . '/block.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[12] );
-            $adminmenu->set_var( 'option_count', COM_numberFormat( $count ));
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[12]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'topic.edit' ))
-        {
-            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['topics']}" . COM_getPermSql());
-            list( $count ) = DB_fetchArray( $result );
-
-            $url = $_CONF['site_admin_url'] . '/topic.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[13] );
-            $adminmenu->set_var( 'option_count', COM_numberFormat( $count ));
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[13]] = $menu_item;
-        }
-
-        if (SEC_hasRights('user.edit')) {
-            $url = $_CONF['site_admin_url'] . '/user.php';
-            $adminmenu->set_var('option_url', $url);
-            $adminmenu->set_var('option_label', $LANG01[17]);
-            $active_users = DB_count($_TABLES['users'], 'status',
-                                     USER_ACCOUNT_ACTIVE);
-            $adminmenu->set_var('option_count',
-                    COM_numberFormat($active_users - 1));
-
-            $menu_item = $adminmenu->parse('item',
-                    $thisUrl == $url ? 'current' : 'option');
-            $link_array[$LANG01[17]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'group.edit' ))
-        {
-            if (SEC_inGroup('Root')) {
-                $grpFilter = '';
-            } else {
-                $thisUsersGroups = SEC_getUserGroups ();
-                $grpFilter = 'WHERE (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
-            }
-            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} $grpFilter;" );
-            $A = DB_fetchArray( $result );
-
-            $url = $_CONF['site_admin_url'] . '/group.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[96] );
-            $adminmenu->set_var( 'option_count',
-                                 COM_numberFormat( $A['count'] ));
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[96]] = $menu_item;
-        }
-
-        if( SEC_hasRights( 'user.mail' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/mail.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[105] );
-            $adminmenu->set_var( 'option_count', $LANG_ADMIN['na'] );
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[105]] = $menu_item;
-        }
-
-        if(( $_CONF['backend'] == 1 ) && SEC_hasRights( 'syndication.edit' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/syndication.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[38] );
-            $count = COM_numberFormat( DB_count( $_TABLES['syndication'] ));
-            $adminmenu->set_var( 'option_count', $count );
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[38]] = $menu_item;
-        }
-
-        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ||
-                $_CONF['ping_enabled'] ) && SEC_hasRights( 'story.ping' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/trackback.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[116] );
-            if( $_CONF['ping_enabled'] )
-            {
-                $count = COM_numberFormat( DB_count( $_TABLES['pingservice'] ));
-                $adminmenu->set_var( 'option_count', $count );
-            }
-            else
-            {
-                $adminmenu->set_var( 'option_count', $LANG_ADMIN['na'] );
-            }
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[116]] = $menu_item;
-        }
-
-        if (SEC_hasRights('plugin.edit')) {
-            $url = $_CONF['site_admin_url'] . '/plugins.php';
-            $adminmenu->set_var('option_url', $url);
-            $adminmenu->set_var('option_label', $LANG01[77]);
-            $adminmenu->set_var('option_count',
-                    COM_numberFormat(DB_count($_TABLES['plugins'],
-                                              'pi_enabled', 1)));
-
-            $menu_item = $adminmenu->parse('item',
-                    ($thisUrl == $url) ? 'current' : 'option');
-            $link_array[$LANG01[77]] = $menu_item;
-        }
-
-        // This will show the admin options for all installed plugins (if any)
-
-        for ($i = 0; $i < $num_plugins; $i++) {
-            $plg = current($plugin_options);
-
-            $adminmenu->set_var('option_url',   $plg->adminurl);
-            $adminmenu->set_var('option_label', $plg->adminlabel);
-
-            if (isset($plg->numsubmissions) &&
-                    is_numeric($plg->numsubmissions)) {
-                $adminmenu->set_var('option_count',
-                                    COM_numberFormat($plg->numsubmissions));
-            } elseif (! empty($plg->numsubmissions)) {
-                $adminmenu->set_var('option_count', $plg->numsubmissions);
-            } else {
-                $adminmenu->set_var('option_count', $LANG_ADMIN['na']);
-            }
-
-            $menu_item = $adminmenu->parse('item',
-                    ($thisUrl == $plg->adminurl) ? 'current' : 'option', true);
-            $link_array[$plg->adminlabel] = $menu_item;
-
-            next($plugin_options);
-        }
-
-        if(( $_CONF['allow_mysqldump'] == 1 ) AND ( $_DB_dbms == 'mysql' ) AND
-                SEC_inGroup( 'Root' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/database.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[103] );
-            $adminmenu->set_var( 'option_count', $LANG_ADMIN['na'] );
-
-            $menu_item = $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-            $link_array[$LANG01[103]] = $menu_item;
-        }
-
-        if ($_CONF['link_documentation'] == 1) {
-            $doclang = COM_getLanguageName();
-            $docs = 'docs/' . $doclang . '/index.html';
-            if (file_exists($_CONF['path_html'] . $docs)) {
-                $adminmenu->set_var('option_url', $_CONF['site_url']
-                                    . '/' . $docs);
-            } else {
-                $adminmenu->set_var('option_url', $_CONF['site_url']
-                                    . '/docs/english/index.html');
-            }
-            $adminmenu->set_var('option_label', $LANG01[113]);
-            $adminmenu->set_var('option_count', $LANG_ADMIN['na']);
-            $menu_item = $adminmenu->parse('item', 'option');
-            $link_array[$LANG01[113]] = $menu_item;
-        }
-
-        if( $_CONF['link_versionchecker'] == 1 AND SEC_inGroup( 'Root' ))
-        {
-            $adminmenu->set_var( 'option_url',
-               'http://www.geeklog.net/versionchecker.php?version=' . VERSION );
-            $adminmenu->set_var( 'option_label', $LANG01[107] );
-            $adminmenu->set_var( 'option_count', VERSION );
-
-            $menu_item = $adminmenu->parse( 'item', 'option' );
-            $link_array[$LANG01[107]] = $menu_item;
-        }
-
-        if( $_CONF['sort_admin'] )
-        {
-            uksort( $link_array, 'strcasecmp' );
-        }
         
+        // Template Stuff
+        $adminmenu = COM_newTemplate($_CONF['path_layout']);
+        if (isset($_BLOCK_TEMPLATE['adminnavigation'])) {
+            $adminmenu->set_file('adminnavigation', $_BLOCK_TEMPLATE['adminnavigation']);
+        } else {
+            $adminmenu->set_file('adminnavigation', 'adminnavigation.thtml');
+        }    
+        $blocks = array('option', 'current', 'group', 'count');
+        foreach ($blocks as $block) {
+            $adminmenu->set_block('adminnavigation', $block);
+        }    
+        
+        $adminmenu->set_var('block_name', str_replace('_', '-', 'admin_block'));
+
+        if(empty($title)) {
+            $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'admin_block'" );
+        }
+
+        $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'admin_block', 'header', $position ));
+        
+        // Allow anything not in the blocks but in the rest of the template file to be displayed
+        $retval .= $adminmenu->parse('item', 'adminnavigation', true);
+
+        // Add Command and Control Link        
         $url = $_CONF['site_admin_url'] . '/index.php';
         $adminmenu->set_var('option_url', $url);
         $adminmenu->set_var('option_label', $LANG01[14]);
         $adminmenu->set_var('option_count', $LANG_ADMIN['na']);
-        $menu_item = $adminmenu->finish($adminmenu->parse('item',
+        $retval .= $adminmenu->finish($adminmenu->parse('item',
                         ($thisUrl == $url) ? 'current' : 'option'));
-        $link_array = array($menu_item) + $link_array;
         
-
-        foreach( $link_array as $link )
-        {
-            $retval .= $link;
-        }
-
-        $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer', $position ));
+        // Get any plugin items
+        $plugins = PLG_getAdminOptions();
+    } else {
+        // this defines the amount of icons displayed next to another in the CC-block
+        define ('ICONS_PER_ROW', 6);
+        
+        // Template Stuff
+        $admin_templates = COM_newTemplate($_CONF['path_layout'] . 'admin');
+        $admin_templates->set_file (array ('cc'     => 'commandcontrol.thtml'));
+        $blocks = array('ccgroup', 'ccrow', 'ccitem');
+        foreach ($blocks as $block) {
+            $admin_templates->set_block('cc', $block);
+        }       
+    
+        $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
+                                   COM_getBlockTemplate ('_admin_block', 'header'));
+        
+        // Get any plugin items
+        $plugins = PLG_getCCOptions ();
     }
 
+    $cc_core = array();
+    $cc_plugins = array();
+    $cc_tools = array();
+    $cc_users = array();
+    for ($i = 0; $i < count ($plugins); $i++) {
+        $cur_plugin = current ($plugins);
+
+        if ($adminMenu) {
+            $item = array('condition' => SEC_hasRights('story.edit'),
+                            'url' => $cur_plugin->adminurl,
+                            'lang' => $cur_plugin->adminlabel, 
+                            'num' => $cur_plugin->numsubmissions);
+        } else {
+            $item = array('condition' => SEC_hasRights('story.edit'),
+                            'url' => $cur_plugin->adminurl,
+                            'lang' => $cur_plugin->adminlabel, 
+                            'image' => $cur_plugin->plugin_image);            
+        }
+        
+        switch ($cur_plugin->admingroup) {
+            case 'core':
+                $cc_core[] = $item;
+                break;
+                
+            case 'tools':
+                $cc_tools[] = $item;
+                break;
+
+            case 'users':
+                $cc_users[] = $item;
+                break;                
+                
+            default:
+                $cc_plugins[] = $item;
+                break;
+        }
+        next ($plugins);
+    }
+    
+    // Command & Control Group Layout
+    $ccgroups = array('core', 'plugins', 'tools', 'users');
+    foreach ($ccgroups as $ccgroup) {
+        // Clear a few things before starting group
+        $cc_arr = array();
+        $items = array();
+        if (!$adminMenu) {
+            $admin_templates->clear_var ('cc_rows');
+            $admin_templates->set_var('cc_icon_width', floor(100/ICONS_PER_ROW));
+        }
+        
+        switch ($ccgroup) {
+            // Core - Blocks, Content Syndication, Stories, Topics, Submissions, Trackbacks
+            case 'core':
+                $showTrackbackIcon = (($_CONF['trackback_enabled'] ||
+                                      $_CONF['pingback_enabled'] || $_CONF['ping_enabled'])
+                                     && SEC_hasRights('story.ping'));
+                
+                // Count stuff for admin menu
+                $blockcount = 0;
+                $topiccount = 0;
+                $storycount = 0;
+                $submissioncount = 0;
+                $syndicationcount = 0;
+                $trackbackcount = $LANG_ADMIN['na'];
+                if ($adminMenu) {
+                    // Find num of blocks
+                    $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['blocks']}" . COM_getPermSql());
+                    list($blockcount) = DB_fetchArray($result);
+                    // Find num of topics
+                    $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['topics']}" . COM_getPermSql());
+                    list($topiccount) = DB_fetchArray($result);
+                    // Find num of stories
+                    if(SEC_hasRights('story.edit')) {
+                        if (empty($topicsql)) {
+                            $storycount = DB_count($_TABLES['stories']);
+                        } else {
+                            $nresult = DB_query( "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql . COM_getPermSql( 'AND' ));
+                            $N = DB_fetchArray($nresult);
+                            $storycount = $N['count'];
+                        }
+                    }
+                    // Find num of submissions
+                    if (SEC_hasRights('story.edit,story.moderate', 'OR') ||
+                            (($_CONF['commentsubmission'] == 1) &&
+                                SEC_hasRights('comment.moderate')) ||
+                            (($_CONF['usersubmission'] == 1) &&
+                                SEC_hasRights('user.edit,user.delete'))) {
+            
+                        if (SEC_hasRights('story.moderate')) {
+                            if (empty($topicsql)) {
+                                $submissioncount += DB_count($_TABLES['storysubmission']);
+                            } else {
+                                $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['storysubmission']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid " . $topicsql;
+                                $sresult = DB_query($sql);
+                                $S = DB_fetchArray($sresult);
+                                $submissioncount += $S['count'];
+                            }
+                        }
+            
+                        if (($_CONF['listdraftstories'] == 1) && SEC_hasRights('story.edit')) {
+                            $sql = "SELECT COUNT(DISTINCT sid) AS count FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta WHERE ta.type = 'article' AND ta.id = sid AND draft_flag = 1";
+                            if (!empty($topicsql)) {
+                                $sql .= $topicsql;
+                            }
+                            $result = DB_query($sql . COM_getPermSQL('AND', 0, 3));
+                            $A = DB_fetchArray($result);
+                            $submissioncount += $A['count'];
+                        }
+            
+                        if (($_CONF['commentsubmission'] == 1) && SEC_hasRights('comment.moderate')) {
+                            $submissioncount += DB_count($_TABLES['commentsubmissions']);
+                        }
+            
+                        if ($_CONF['usersubmission'] == 1) {
+                            if (SEC_hasRights('user.edit') && SEC_hasRights('user.delete')) {
+                                $submissioncount += DB_count($_TABLES['users'], 'status', '2');
+                            }
+                        }
+                    }
+                    // now handle submissions for plugins
+                    $submissioncount += PLG_getSubmissionCount();
+                    // Find num of syndication
+                    if (($_CONF['backend'] == 1) && SEC_hasRights('syndication.edit')) {
+                        $syndicationcount = COM_numberFormat(DB_count($_TABLES['syndication']));
+                    }
+                    // Find num of trackback
+                    if ($_CONF['ping_enabled'] && SEC_hasRights('story.ping')) {
+                        $trackbackcount = COM_numberFormat(DB_count($_TABLES['pingservice']));
+                    }
+                }
+                
+                $cc_arr = array(
+                    array('condition' => SEC_hasRights('topic.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/topic.php',
+                        'lang' => $LANG01[13],
+                        'num' => COM_numberFormat($topiccount),
+                        'image' => $_CONF['layout_url'] . '/images/icons/topic.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights('block.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/block.php',
+                        'lang' => $LANG01[12],
+                        'num' => COM_numberFormat($blockcount),
+                        'image' => $_CONF['layout_url'] . '/images/icons/block.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights('story.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/story.php',
+                        'lang' => $LANG01[11],
+                        'num' => COM_numberFormat($storycount),
+                        'image' =>  $_CONF['layout_url'] . '/images/icons/story.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasModerationAccess(),
+                        'url' => $_CONF['site_admin_url'] . '/moderation.php',
+                        'lang' => $LANG01[10],
+                        'num' => COM_numberFormat($submissioncount), 
+                        'image' =>  $_CONF['layout_url'] . '/images/icons/moderation.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights ('syndication.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/syndication.php',
+                        'lang' => $LANG01[38],
+                        'num' => $syndicationcount, 
+                        'image' => $_CONF['layout_url'] . '/images/icons/syndication.' . $_IMAGE_TYPE),
+                    array('condition' => $showTrackbackIcon,
+                        'url' => $_CONF['site_admin_url'] . '/trackback.php',
+                        'lang' => $LANG01[116],
+                        'num' => $trackbackcount, 
+                        'image' => $_CONF['layout_url'] . '/images/icons/trackback.' . $_IMAGE_TYPE),
+                );
+
+                // Merge any items that belong to this group from plugins
+                $cc_arr = array_merge($cc_arr, $cc_core);
+                break;
+                
+            // Plugins - All ungrouped plugins
+            case 'plugins':
+                $cc_arr = $cc_plugins;
+                break;
+            
+            // Tools - Db backups, Clear cache, Log Viewer, GL Version Test, Plugins, Configuration, Documentation, SPAM-X Plugin                
+            case 'tools':
+                $docsUrl = $_CONF['site_url'] . '/docs/english/index.html';
+                if ($_CONF['link_documentation'] == 1) {
+                    $doclang = COM_getLanguageName();
+                    $docs = 'docs/' . $doclang . '/index.html';
+                    if (file_exists($_CONF['path_html'] . $docs)) {
+                        $docsUrl = $_CONF['site_url'] . '/' . $docs;
+                    }
+                }
+                
+                $pluginscount = 0;
+                if ($adminMenu) {
+                    // Find num of plugins
+                    if (SEC_hasRights('plugin.edit')) {                    
+                        $pluginscount = COM_numberFormat(DB_count($_TABLES['plugins'], 'pi_enabled', 1));
+                    }
+                }
+                
+                $cc_arr = array(
+                    array('condition' => SEC_hasRights($_CONF_FT, 'OR'),
+                        'url' => $_CONF['site_admin_url'] . '/configuration.php',
+                        'lang' => $LANG01[129], 
+                        'num' => count($config->_get_groups()),
+                        'image' => $_CONF['layout_url'] . '/images/icons/configuration.' . $_IMAGE_TYPE),
+                    array('condition' => ($_CONF['link_documentation'] == 1),
+                        'url' => $docsUrl,
+                        'lang' => $LANG01[113], 'image' => $_CONF['layout_url'] . '/images/icons/docs.' . $_IMAGE_TYPE),
+                    array('condition' => (SEC_inGroup ('Root') && ($_CONF['link_versionchecker'] == 1)),
+                        'url' => 'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                        'lang' => $LANG01[107],
+                        'num' => VERSION,
+                        'image' => $_CONF['layout_url'] . '/images/icons/versioncheck.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights('plugin.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/plugins.php',
+                        'lang' => $LANG01[98],
+                        'num' => $pluginscount, 
+                        'image' => $_CONF['layout_url'] . '/images/icons/plugins.' . $_IMAGE_TYPE),
+                    array('condition' => ($_CONF['allow_mysqldump'] == 1) && ($_DB_dbms == 'mysql') && SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/database.php',
+                        'lang' => $LANG01[103],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/database.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/clearctl.php',
+                        'lang' => $LANG01['ctl'],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/ctl.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/envcheck.php',
+                        'lang' => $LANG_ENVCHECK['env_check'],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/envcheck.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_inGroup('Root'),
+                        'url' => $_CONF['site_admin_url'] . '/logviewer.php',
+                        'lang' => $LANG_LOGVIEW['log_viewer'],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/log_viewer.' . $_IMAGE_TYPE),
+                    array('condition' => true,
+                        'url' =>$_CONF['site_url'] . '/users.php?mode=logout',
+                        'lang' => $LANG01[35],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/logout.' . $_IMAGE_TYPE) 
+                );
+                
+                // Merge any items that belong to this group from plugins
+                $cc_arr = array_merge($cc_arr, $cc_tools);
+                break;
+            
+            // Users - Groups, Users, Mail Users                
+            case 'users':
+                
+                $groupcount = 0;
+                $usercount = 0;
+                if ($adminMenu) {
+                    // Find num of groups
+                    if (SEC_inGroup('Root')) {
+                        $grpFilter = '';
+                    } else {
+                        $thisUsersGroups = SEC_getUserGroups ();
+                        $grpFilter = 'WHERE (grp_id IN (' . implode (',', $thisUsersGroups) . '))';
+                    }
+                    $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} $grpFilter;" );
+                    $A = DB_fetchArray( $result ); 
+                    $groupcount = $A['count'];
+                    // Find num of users
+                    $usercount = (DB_count($_TABLES['users'], 'status', USER_ACCOUNT_ACTIVE) - 1);
+                }
+                
+                $cc_arr = array(
+                    array('condition' => SEC_hasRights('group.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/group.php',
+                        'lang' => $LANG01[96],
+                        'num' => COM_numberFormat($groupcount), 
+                        'image' => $_CONF['layout_url'] . '/images/icons/group.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights('user.edit'),
+                        'url' => $_CONF['site_admin_url'] . '/user.php',
+                        'lang' => $LANG01[17],
+                        'num' => COM_numberFormat($usercount), 
+                        'image' => $_CONF['layout_url'] . '/images/icons/user.' . $_IMAGE_TYPE),
+                    array('condition' => SEC_hasRights('user.mail'),
+                        'url' => $_CONF['site_admin_url'] . '/mail.php',
+                        'lang' => $LANG01[105],
+                        'num' => '', 
+                        'image' => $_CONF['layout_url'] . '/images/icons/mail.' . $_IMAGE_TYPE)
+                );                
+                // Merge any items that belong to this group from plugins
+                $cc_arr = array_merge($cc_arr, $cc_users);
+                
+                break;
+        }
+        
+        for ($i = 0; $i < count ($cc_arr); $i++) {
+            if ($cc_arr[$i]['condition']) {
+                if ($adminMenu) {
+                    // Add Command and Control Link        
+                    $adminmenu->set_var('option_url', $cc_arr[$i]['url']);
+                    $adminmenu->set_var('option_label',  $cc_arr[$i]['lang']);
+                    if (!empty($cc_arr[$i]['num'])) {
+                        $adminmenu->set_var('option_count',  $cc_arr[$i]['num']);
+                        $adminmenu->set_var('display_count', $adminmenu->parse('item', 'count'));
+                    }
+                    $adminmenu->set_var('branch_spaces',  '&nbsp;&nbsp;&nbsp;');
+
+                    $item = $adminmenu->finish($adminmenu->parse('item',
+                                    ($thisUrl == $cc_arr[$i]['url']) ? 'current' : 'option'));
+                    
+                    $adminmenu->clear_var ('display_count'); // incase set before                    
+                } else {
+                    if (!empty($cc_arr[$i]['url'])) {
+                        $admin_templates->set_var('page_url', $cc_arr[$i]['url']);
+                        $admin_templates->set_var('page_image',  $cc_arr[$i]['image']);
+                        $admin_templates->set_var('option_label', $cc_arr[$i]['lang']);
+                        $admin_templates->set_var('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
+                
+                        $item = $admin_templates->parse('cc_main_options', 'ccitem', false);
+                    }                    
+                }
+
+                $items[$cc_arr[$i]['lang']] = $item;
+            }
+        }
+
+        if( $_CONF['sort_admin'] ) {
+            uksort( $items, 'strcasecmp' );
+        }        
+        
+        if (!empty($items)) {
+            
+            // Add Group Label now
+             if ($adminMenu) {
+                $adminmenu->set_var('group_label', $LANG29[$ccgroup]);
+                $retval .= $adminmenu->finish($adminmenu->parse('item', 'group'));
+            } else {
+                $admin_templates->set_var('lang_group', $LANG29[$ccgroup]);
+            }
+            
+            // Add items now
+            reset($items);
+            $cols = 0;
+            $cc_main_options = '';
+            foreach ($items as $key => $val) {
+                if ($adminMenu) {
+                    $retval .= $val;
+                } else {
+                    $cc_main_options .= $val . LB;
+                    $cols++;
+                    if ($cols == ICONS_PER_ROW) {
+                        $admin_templates->set_var('cc_main_options', $cc_main_options);
+                        $admin_templates->parse ('cc_rows', 'ccrow', true);
+                        $admin_templates->clear_var ('cc_main_options');
+                        $cc_main_options = '';
+                        $cols = 0;
+                    }
+                }
+            }
+        
+            if (!$adminMenu) {
+                if($cols > 0) {
+                    // "flush out" any unrendered entries
+                    $admin_templates->set_var('cc_main_options', $cc_main_options);
+                    $admin_templates->parse ('cc_rows', 'ccrow', true);
+                    $admin_templates->clear_var ('cc_main_options');
+                }    
+                
+                $admin_templates->parse ('cc_groups', 'ccgroup', true);
+            }
+        }
+
+    }
+    
+    if ($adminMenu) {
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer', $position ));    
+    } else {
+        $retval .= $admin_templates->finish($admin_templates->parse('output','cc'));
+    
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    }
+
+    return $retval;    
+}
+
+
+/**
+* Prints administration menu
+*
+* This will return the administration menu items that the user has
+* sufficient rights to -- Admin Block on the left side.
+*
+* @param        string      $help       Help file to show
+* @param        string      $title      Menu Title
+* @param        string      $position   Side being shown on 'left', 'right' or blank.
+* @see function COM_userMenu
+*
+*/
+function COM_adminMenu( $help = '', $title = '', $position = '' )
+{
+    $retval = '';
+ 
+    if (!COM_isAnonUser()) {
+        $retval = COM_commandControl(true, $help, $title, $position);
+    }
+    
     return $retval;
 }
 
@@ -4161,11 +4279,11 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
     switch( $name )
     {
         case 'user_block':
-            $retval .= COM_userMenu( $help,$title, $position );
+            $retval .= COM_userMenu( $help, $title, $position );
             break;
 
         case 'admin_block':
-            $retval .= COM_adminMenu( $help,$title, $position );
+            $retval .= COM_adminMenu( $help, $title, $position );
             break;
 
         case 'section_block':

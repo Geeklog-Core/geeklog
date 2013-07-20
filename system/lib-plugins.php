@@ -973,8 +973,8 @@ function PLG_getCCOptions()
 */
 function PLG_getAdminOptions()
 {
-    $var_names = array('adminlabel', 'adminurl', 'numsubmissions');
-    $required_names = array(true, true, false);
+    $var_names = array('adminlabel', 'adminurl', 'numsubmissions', 'admingroup');
+    $required_names = array(true, true, false, false);
     $function_name = 'plugin_getadminoption_';
     $plgresults = PLGINT_getOptionsforMenus($var_names, $required_names, $function_name);
 

@@ -1,8 +1,15 @@
 {# begin {templatelocation} - The Admin Navigation uses template blocks which is built into this file #}
 
+<!-- BEGIN group -->
+<li class="adminoption_off"><b>{group_label}</b></li>
+<!-- END group -->
 <!-- BEGIN option -->
-<li class="adminoption"><a href="{option_url}">{option_label}</a> ({option_count})</li>
+<li class="adminoption">{branch_spaces}<a href="{option_url}">{option_label}</a>{display_count}</li>
 <!-- END option -->
 <!-- BEGIN current -->
-<li class="adminoption_off">{option_label} ({option_count})</li>
+<li class="adminoption_off">{branch_spaces}{option_label}{display_count}</li>
 <!-- END current -->
+<!-- BEGIN count -->
+&nbsp;({option_count})
+<!-- END count -->
+
