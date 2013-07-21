@@ -189,12 +189,12 @@ function _checkEnvironment()
     
     if (extension_loaded('openssl')) {
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['opensll_library'],
+            'item' => $LANG_ENVCHECK['openssl_library'],
             'status' => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
             'notes' => $LANG_ENVCHECK['openssl_ok']);
     } else {
         $data_arr[] = array(
-            'item' => $LANG_ENVCHECK['opensll_library'],
+            'item' => $LANG_ENVCHECK['openssl_library'],
             'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
             'notes' => $LANG_ENVCHECK['openssl_not_found']);
     }
