@@ -107,6 +107,7 @@ function _checkEnvironment()
     $rg = ini_get('register_globals');
     $sm = ini_get('safe_mode');
     $ob = ini_get('open_basedir');
+    
     $current = $rg == 1 ? '<span class="notok">'.$LANG_ENVCHECK['on'].'</span>' : '<span class="yes">'.$LANG_ENVCHECK['off'].'</span>';
     $data_arr[] = array('settings' => 'register_globals',
                           'current' => $current,
@@ -130,7 +131,7 @@ function _checkEnvironment()
     $data_arr[] = array('settings' => 'open_basedir',
                           'current' => $current,
                           'recommended' => $LANG_ENVCHECK['off'],
-                          'notes' => $LANG_ENVCHECK['open_basedir']);    
+                          'notes' => $LANG_ENVCHECK['open_basedir']);  
 
     $memory_limit = _return_bytes(ini_get('memory_limit'));
     $memory_limit_print = ($memory_limit / 1024) / 1024;
@@ -138,7 +139,7 @@ function _checkEnvironment()
     $data_arr[] = array('settings' => 'memory_limit',
                           'current' => $current,
                           'recommended' => '48M',
-                          'notes' => $LANG_ENVCHECK['memory_limit']);    
+                          'notes' => $LANG_ENVCHECK['memory_limit']);
 
     $fu = ini_get('file_uploads');
     $current = $fu == 1 ? '<span class="yes">'.$LANG_ENVCHECK['on'].'</span>' : '<span class="notok">'.$LANG_ENVCHECK['off'].'</span>';
@@ -168,23 +169,35 @@ function _checkEnvironment()
     $data_arr[] = array('settings' => 'max_execution_time',
                           'current' => $current,
                           'recommended' => '30 secs',
-                          'notes' => $LANG_ENVCHECK['max_execution_time']);    
+                          'notes' => $LANG_ENVCHECK['max_execution_time']); 
     
     $admin_list = ADMIN_simpleList('', $header_arr, $text_arr, $data_arr);
     $T->set_var('php_settings_list', $admin_list);
     
     // ***********************************************
-    // Graphics Library
+    // Libraries
     $header_arr = array(      // display 'text' and use table field 'field'
         array('text' => $LANG_ENVCHECK['item'], 'field' => 'item'),
         array('text' => $LANG_ENVCHECK['status'], 'field' => 'status'),
         array('text' => $LANG_ENVCHECK['notes'], 'field' => 'notes')
     );
     $text_arr = array('has_menu' => false,
-                      'title'    => $LANG_ENVCHECK['graphics'],
+                      'title'    => $LANG_ENVCHECK['libraries'],
                       'form_url' => "{$_CONF['site_admin_url']}/envcheck.php"
     );
     $data_arr = array();
+    
+    if (extension_loaded('openssl')) {
+        $data_arr[] = array(
+            'item' => $LANG_ENVCHECK['opensll_library'],
+            'status' => '<span class="yes">' . $LANG_ENVCHECK['ok'] . '</span>',
+            'notes' => $LANG_ENVCHECK['openssl_ok']);
+    } else {
+        $data_arr[] = array(
+            'item' => $LANG_ENVCHECK['opensll_library'],
+            'status' => '<span class="notok">' .  $LANG_ENVCHECK['not_found'] . '</span>',
+            'notes' => $LANG_ENVCHECK['openssl_not_found']);
+    }
 
     if ( $sm != 1 && $open_basedir_restriction != 1 ) {
         switch ( $_CONF['image_lib'] ) {
