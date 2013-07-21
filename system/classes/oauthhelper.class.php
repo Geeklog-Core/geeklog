@@ -39,6 +39,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'oauthhelper.class.php') !== false)
 require_once 'http/http.php';
 require_once 'oauth/oauth_client.php';
 
+// Enable to show debug info for OAuth
 $_SYSTEM['debug_oauth'] = false;
 
 class OAuthConsumer {
@@ -158,7 +159,7 @@ class OAuthConsumer {
     }
 
     public function doAction($info) {
-        global $_TABLES, $status, $uid, $_CONF, $checkMerge;
+        global $_TABLES, $status, $uid, $_CONF;
 
         // remote auth precludes usersubmission, and integrates user activation
         $status = USER_ACCOUNT_ACTIVE;
@@ -174,7 +175,6 @@ class OAuthConsumer {
 
         if (empty($tmp) && $nrows == 1) {
             list($uid, $status) = DB_fetchArray($result);
-            $checkMerge = false;
         } else {
             // initial login - create account
             $status = USER_ACCOUNT_ACTIVE;
@@ -201,7 +201,6 @@ class OAuthConsumer {
 
             $remote_grp = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Remote Users'");
             DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($remote_grp, $uid)");
-            $checkMerge = true;
         }
     }
 
