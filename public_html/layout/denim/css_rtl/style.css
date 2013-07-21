@@ -1627,6 +1627,31 @@ input[type="text"].search {
   Login Form
 --------------------------------------*/
 
+/* authentication buttons */
+#login_facebook{left:0px;width:141px;}
+#login_facebook{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position:0 0;}
+
+#login_twitter{left:0px;width:141px;}
+#login_twitter{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -23px;}
+
+#login_linkedin{left:0px;width:141px;}
+#login_linkedin{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -44px;}
+
+#login_google{left:0px;width:141px;}
+#login_google{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -66px;}
+
+#login_yahoo{left:0px;width:141px;}
+#login_yahoo{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -88px;}
+
+#login_microsoft{left:0px;width:141px;}
+#login_microsoft{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -110px;}
+
+#login_github{left:0px;width:141px;}
+#login_github{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -132px;}
+
+#login_openid{left:0px;width:141px;}
+#login_openid{background:url('/images/oauth-login-with-sprite.png') no-repeat; background-position: 0 -154px;}
+
 #loginform fieldset {
   margin-top: 15px;
   padding: 0px;

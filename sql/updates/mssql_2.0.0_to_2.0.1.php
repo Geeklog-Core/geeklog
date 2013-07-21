@@ -78,6 +78,14 @@ function update_ConfValuesFor201()
     $c->del('languages', 'Core');
     $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);       
 
+    // New OAuth Services 
+    $c->add('google_login',0,'select',4,16,1,359,TRUE, $me, 16);
+    $c->add('google_consumer_key','','text',4,16,NULL,360,TRUE, $me, 16);
+    $c->add('google_consumer_secret','','text',4,16,NULL,361,TRUE, $me, 16);    
+    $c->add('microsoft_login',0,'select',4,16,1,362,TRUE, $me, 16);
+    $c->add('microsoft_consumer_key','','text',4,16,NULL,363,TRUE, $me, 16);
+    $c->add('microsoft_consumer_secret','','text',4,16,NULL,364,TRUE, $me, 16);     
+
     return true;
 }
 

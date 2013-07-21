@@ -890,7 +890,40 @@ default:
             !$_CONF['disable_new_user_registration'] &&
             isset($_GET['oauth_login'])) {
         // Here we go with the handling of OAuth authentification.
+        $modules = SEC_collectRemoteOAuthModules();
+        $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
+        if (!$active_service) {
+            $status = -1;
+            COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $_GET['oauth_login']);
+        } else {
+            $query = array_merge($_GET, $_POST);
+            $service = $query['oauth_login'];
 
+            COM_clearSpeedlimit($_CONF['login_speedlimit'], $service);
+            if (COM_checkSpeedlimit($service, $_CONF['login_attempts']) > 0) {
+                displayLoginErrorAndAbort(82, $LANG12[26], $LANG04[112]);
+            }
+
+            require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+
+            $consumer = new OAuthConsumer($service);
+
+            $callback_url = $_CONF['site_url'] . '/users.php?oauth_login=' . $service;
+
+            $consumer->setRedirectURL($callback_url);
+            $oauth_userinfo = $consumer->authenticate_user();
+            if ( $oauth_userinfo === false ) {
+                COM_updateSpeedlimit('login');
+                COM_errorLog("OAuth Error: " . $consumer->error);
+                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=110'); // OAuth authentication error
+                exit;
+            }
+
+            $consumer->doAction($oauth_userinfo);
+
+        }        
+        
+        /*
         $active_service = false;
         $modules = SEC_collectRemoteOAuthModules();
         $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
@@ -942,6 +975,7 @@ default:
                 exit;
             }
         }
+        */
 
     } else {
         $status = -1;
