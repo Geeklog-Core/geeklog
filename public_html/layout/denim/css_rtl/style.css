@@ -1024,49 +1024,6 @@ ul.compact li {
   padding: 0;
 }
 
-/*--------------------------------------
-  Enviroment Check  
---------------------------------------*/
-
-.pathtext {
-  font-size:11px;
-  color:#666;
-}
-
-.pathtext-status {
-  text-align:right;
-  white-space:nowrap;
-}
-
-.yes, .iswriteable {
-  font-weight: bold;
-  color: #46882b;
-}
-.no, .notok, .notwriteable {
-  font-weight: bold;
-  color: #cc0000;
-}
-
-/* PHPInfo Panel style and button */
-#panel_phpinfo {
-  padding:5px;
-  width:600px;
-  margin: auto;
-  text-align:center;
-}
-#toggle_phpinfo {
-  padding:5px;
-  width:200px;
-  margin: auto;
-  text-align:center;
-  border:solid 1px #c3c3c3;
-}
-
-#panel_phpinfo {
-  padding:50px;
-  display:none;
-}
-
 /*==============================================================================
   Layout Pattern:
     * 3 Column ( Left Block * Center Block * Right Block )...left-center-right
@@ -1539,6 +1496,20 @@ h4 img {
   margin: 0;
   padding: 0 5px;
   white-space: nowrap;
+}
+
+/* Group Label */
+#leftblocks .sideoption_group_label,
+#rightblocks .sideoption_group_label {
+  color: #630;
+  font-size: 103%;
+  height: 1.6em;
+  line-height: 1.6em;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 5px;
+  white-space: nowrap;
+  border-bottom: 1px dashed #ccc;
 }
 
 #leftblocks .noliststyle,
@@ -2936,6 +2907,48 @@ body.center-right #config_content {
   display: none;
 }
 
+/*--------------------------------------
+  Enviroment Check  
+--------------------------------------*/
+
+.pathtext {
+  font-size:11px;
+  color:#666;
+}
+
+.pathtext-status {
+  text-align:right;
+  white-space:nowrap;
+}
+
+.yes, .iswriteable {
+  font-weight: bold;
+  color: #46882b;
+}
+.no, .notok, .notwriteable {
+  font-weight: bold;
+  color: #cc0000;
+}
+
+/* PHPInfo Panel style and button */
+#panel_phpinfo {
+  padding:5px;
+  width:600px;
+  margin: auto;
+  text-align:center;
+}
+#toggle_phpinfo {
+  padding:5px;
+  width:200px;
+  margin: auto;
+  text-align:center;
+  border:solid 1px #c3c3c3;
+}
+
+#panel_phpinfo {
+  padding:50px;
+  display:none;
+}
 
 /***************************************************************************************************/
 /* Note: If you want to disable the Responsive Web Design, please delete the code below this line. */
@@ -3687,6 +3700,13 @@ body.center-right #config_content {
 	.sideoption_off:last-child {
 	  -webkit-border-bottom-left-radius: 8px;
 	  -webkit-border-bottom-right-radius: 8px;
+	}
+
+	/* Group Label */
+	#leftblocks .sideoption_group_label,
+	#rightblocks .sideoption_group_label {
+	  font-size: 16px;
+	  border: none;
 	}
 
 	#save_button,

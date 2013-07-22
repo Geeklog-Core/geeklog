@@ -1498,6 +1498,20 @@ h4 img {
   white-space: nowrap;
 }
 
+/* Group Label */
+#leftblocks .sideoption_group_label,
+#rightblocks .sideoption_group_label {
+  color: #630;
+  font-size: 103%;
+  height: 1.6em;
+  line-height: 1.6em;
+  overflow: hidden;
+  margin: 0;
+  padding: 0 5px;
+  white-space: nowrap;
+  border-bottom: 1px dashed #ccc;
+}
+
 #leftblocks .noliststyle,
 #rightblocks .noliststyle {
   padding-left: 0; /* rtl */
@@ -3685,6 +3699,13 @@ body.center-right #config_content {
 	.sideoption_off:last-child {
 	  -webkit-border-bottom-left-radius: 8px;
 	  -webkit-border-bottom-right-radius: 8px;
+	}
+
+	/* Group Label */
+	#leftblocks .sideoption_group_label,
+	#rightblocks .sideoption_group_label {
+	  font-size: 16px;
+	  border: none;
 	}
 
 	#save_button,
