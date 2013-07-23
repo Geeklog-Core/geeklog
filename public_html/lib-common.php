@@ -440,22 +440,32 @@ $func = "theme_css_" . $_CONF['theme'];
 if (function_exists($func)) {
     foreach ($func() as $info) {
         $file = $info['file'];
-        $name = md5($file);
+        $name   = (!empty($info['name']))   ? $info['name']   : md5($file);
+        $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
         $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
         $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
-        $_SCRIPTS->setCssFile($name, $file, $constant, $attributes);
+        $_SCRIPTS->setCssFile($name, $file, $priority, $constant, $attributes);
     }
 }
 $func = "theme_js_libs_" . $_CONF['theme'];
 if (function_exists($func)) {
-    foreach ($func() as $name) {
-        $_SCRIPTS->setJavaScriptLibrary($name);
+    foreach ($func() as $info) {
+        $footer = true;
+        if (isset($info['footer']) && !$info['footer']) {
+            $footer = false;
+        }
+        $_SCRIPTS->setJavaScriptLibrary($info['library'], $footer);
     }
 }
 $func = "theme_js_files_" . $_CONF['theme'];
 if (function_exists($func)) {
-    foreach ($func() as $file) {
-        $_SCRIPTS->setJavaScriptFile(md5($file), $file);
+    foreach ($func() as $info) {
+        $footer = true;
+        if (isset($info['footer']) && !$info['footer']) {
+            $footer = false;
+        }
+        $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+        $_SCRIPTS->setJavaScriptFile(md5($info['file']), $info['file'], $footer, $priority);
     }
 }
 $func = "theme_init_" . $_CONF['theme'];

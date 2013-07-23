@@ -69,7 +69,10 @@ function theme_css_professional()
 function theme_js_libs_professional()
 {
     return array(
-        'jquery'
+       array(
+            'library'  => 'jquery',
+            'footer' => true // Not requred, default = true
+        )
     );
 }
 

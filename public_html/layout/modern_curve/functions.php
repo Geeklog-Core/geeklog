@@ -57,10 +57,14 @@ function theme_config_modern_curve()
 function theme_css_modern_curve()
 {
     global $_CONF, $LANG_DIRECTION;
+    
     return array(
-        array(
-            'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION
-        )
+         array(
+             'name' => 'theme', // Not required but if set to theme then will always be loaded first
+             'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION, 
+             'attributes' => array('media' => 'all'), // Not requred
+             'priority'   => 100  // Not requred, default = 100
+         )
     );
 }
 
@@ -70,7 +74,10 @@ function theme_css_modern_curve()
 function theme_js_libs_modern_curve()
 {
     return array(
-        'jquery'
+       array(
+            'library'  => 'jquery',
+            'footer' => true // Not requred, default = true
+        )
     );
 }
 
@@ -80,10 +87,19 @@ function theme_js_libs_modern_curve()
 function theme_js_files_modern_curve()
 {
     global $_CONF;
+    
     return array(
-        '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/search.js'
+       array(
+            'file'      => '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
+            'footer'    => true, // Not requred, default = true
+            'priority'  => 100 // Not requred, default = 100
+        ),
+        array(
+            'file'     => '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
+        ),
+        array(
+            'file'     => '/layout/' . $_CONF['theme'] . '/javascript/search.js',
+        )        
     );
 }
 

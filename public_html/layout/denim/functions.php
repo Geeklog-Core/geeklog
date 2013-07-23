@@ -71,7 +71,12 @@ function theme_css_denim()
  */
 function theme_js_libs_denim()
 {
-    return array('jquery');
+    return array(
+       array(
+            'library'  => 'jquery',
+            'footer' => true // Not requred, default = true
+        )
+    );
 }
 
 /**
@@ -82,8 +87,12 @@ function theme_js_files_denim()
     global $_CONF;
 
     return array(
-        '/layout/' . $_CONF['theme'] . '/javascript/script.js'
-    );
+       array(
+            'file'      => '/layout/' . $_CONF['theme'] . '/javascript/script.js',
+            'footer'    => true, // Not requred, default = true
+            'priority'  => 100 // Not requred, default = 100
+        )        
+    );    
 }
 
 /**

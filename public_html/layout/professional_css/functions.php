@@ -70,7 +70,10 @@ function theme_css_professional_css()
 function theme_js_libs_professional_css()
 {
     return array(
-        'jquery'
+       array(
+            'library'  => 'jquery',
+            'footer' => true // Not requred, default = true
+        )
     );
 }
 
@@ -80,10 +83,17 @@ function theme_js_libs_professional_css()
 function theme_js_files_professional_css()
 {
     global $_CONF;
+    
     return array(
-        '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
-        '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js'
-    );
+       array(
+            'file'      => '/layout/' . $_CONF['theme'] . '/javascript/fix_html.js',
+            'footer'    => true, // Not requred, default = true
+            'priority'  => 100 // Not requred, default = 100
+        ),
+        array(
+            'file'     => '/layout/' . $_CONF['theme'] . '/javascript/confirm.js',
+        )        
+    );    
 }
 
 /**
