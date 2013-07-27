@@ -41,9 +41,20 @@ if (!empty($default_theme)) {
 }
 $css_path = $path_themes . $theme . '/css/';
 
+// Create directions for RTL support
+$left  = 'left';
+$right = 'right';
+$dir = 'ltr';
+
+if ($_GET['dir'] === 'rtl') {
+    $left  = 'right';
+    $right = 'left';
+    $dir = 'rtl';
+}
+
 // We assume /data directory is right under $_CONF['path'] directory.  If you
 // have moved or renamed /data directory, please change the following line accordingly.
-$etag_filename =  $_CONF['path'] . 'data/' . $theme . '_etag.cache';
+$etag_filename =  $_CONF['path'] . 'data/' . $theme . '_' . $dir . '_etag.cache';
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     if (is_readable($etag_filename)) {
@@ -106,15 +117,6 @@ $files = array(
     
     'custom.css'
 );
-
-// Create directions for RTL support
-$left  = 'left';
-$right = 'right';
-
-if ($_GET['dir'] === 'rtl') {
-    $left  = 'right';
-    $right = 'left';
-}
 
 // Output the contents of each file
 foreach ($files as $file) {
