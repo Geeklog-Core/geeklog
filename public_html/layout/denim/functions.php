@@ -60,6 +60,7 @@ function theme_css_denim()
 
     return array(
         array(
+            'name' => 'theme',            
             'file'       => '/layout/' . $_CONF['theme'] . '/css_' . $LANG_DIRECTION . '/style.css',
             'attributes' => array('media' => 'all')
         )
