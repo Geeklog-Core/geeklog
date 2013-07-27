@@ -46,7 +46,8 @@ function theme_config_modern_curve()
 {
     return array(
         'image_type' => 'png',
-        'doctype' => 'xhtml10strict', 
+        'doctype' => 'xhtml10strict',
+        'etag' => true,
         'supported_version_theme' => '2.0.0' // support new theme format for the later Geeklog 2.0.0
     );
 }
@@ -57,14 +58,57 @@ function theme_config_modern_curve()
 function theme_css_modern_curve()
 {
     global $_CONF, $LANG_DIRECTION;
-    
-    return array(
+         
+    /* // Sample css settings
+    return array(        
          array(
              'name' => 'theme', // Not required but if set to theme then will always be loaded first
              'file' => '/layout/' . $_CONF['theme'] . '/style.css.php?dir=' . $LANG_DIRECTION, 
              'attributes' => array('media' => 'all'), // Not requred
              'priority'   => 100  // Not requred, default = 100
          )
+    );         
+     */    
+
+    // Instead of importing all files in a single css file we will load them seperately 
+    // since each file needs to be processed by style.css.php for language template vars
+    return array(
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/compatible.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/default.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/common.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/layout.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/block.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/option.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/form.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/story.css'),
+         
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/article/article.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/comment/comment.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/navbar/navbar.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/preferences/preferences.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/search/search.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/stats/stats.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/submit/submit.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/trackback/trackback.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/users/users.css'),
+         
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/common.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/block.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/envcheck.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/group.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/lists.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/commandcontrol.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/plugins.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/story.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/topic.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/trackback.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/user.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/admin/configuration.css'),
+         
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/plugin/japanize.css'),
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/plugin/sitecalendar.css'),
+         
+         array('file' => '/layout/' . $_CONF['theme'] . '/css/tooltips/tooltips.css'),
     );
 }
 

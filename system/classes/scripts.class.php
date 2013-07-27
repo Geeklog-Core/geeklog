@@ -409,14 +409,15 @@ class scripts {
     *
     * @param    $name       name of CSS file
     * @param    $file       location of file relative to public_html directory. Include '/' at beginning
-    * @param    $priority   In what order the script should be loaded in    
     * @param    $constant   Future use. Set to true if file is planned to be loaded all the time (Caching/Compression)
     * @param    $attributes (optional) array of extra attributes
+    * @param    $priority   In what order the script should be loaded in
+    * @param    $type       Type of css file  (current possible choices are theme or other)   
     * @access   public
     * @return   boolean 
     *
     */
-    public function setCSSFile($name, $file, $priority = 100, $constant = true, $attributes = array()) {
+    public function setCSSFile($name, $file, $constant = true, $attributes = array(), $priority = 100, $type = '') {
         
         global $_CONF;
 
@@ -450,7 +451,12 @@ class scripts {
         $this->css_files[$name]['extra'] = $extra;
         $this->css_files[$name]['priority'] = COM_applyFilter($priority, true);
         $this->css_files[$name]['constant'] = $constant;
-        $this->css_files[$name]['load'] = true;
+        if ($_CONF['theme_etag'] AND $type == 'theme') {
+            // Don't load css regular way for themes with etag enabled
+            $this->css_files[$name]['load'] = false;
+        } else {
+            $this->css_files[$name]['load'] = true;
+        }
         
         return true;
     }
@@ -464,7 +470,7 @@ class scripts {
     */     
     public function getHeader() {
         
-        global $_CONF, $MESSAGE;
+        global $_CONF, $MESSAGE, $LANG_DIRECTION;
         
         $this->header_set = true;
         
@@ -482,11 +488,18 @@ class scripts {
         }
         array_multisort($priority, SORT_ASC, $this->css_files);
         
+        // See if theme uses ETag, if so load first
+        if ($_CONF['theme_etag']) {
+            $csslink = '<link rel="stylesheet" type="text/css" href="'
+                     . $_CONF['layout_url'] . '/style.css.php?theme=' . $_CONF['theme'] . '&amp;dir=' . $LANG_DIRECTION . '" media="all"' . XHTML . '>' . LB;
+            $headercode = $csslink . $headercode;
+        }
         // Set CSS Files
         foreach ($this->css_files as $file) {
             if ($file['load'] && isset($file['file'])) {
                 $csslink = '<link rel="stylesheet" type="text/css" href="'
-                         . $_CONF['site_url'] . $file['file'] . '"' . $file['extra'] . XHTML . '>' . LB;
+                         . $_CONF['site_url'] . $file['file'] . '"' . $file['extra'] . XHTML . '>' . LB;                    
+                
                 if (isset($file['name']) && $file['name'] == 'theme') { // load theme css first
                     $headercode = $csslink . $headercode;
                 } else {

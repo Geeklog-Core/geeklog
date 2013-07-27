@@ -31,15 +31,12 @@
 
 require_once '../../siteconfig.php';
 
-$theme = 'modern_curve'; // Theme Name
-$default_theme = ''; // Default theme name. If nothing leave as blank string
-$path_themes = '../'; // Assumes the default if not then change
-
-$css_path_default='';
-if (!empty($default_theme)) {
-    $css_path_default = $path_themes . $default_theme . '/css/';
+// Get theme
+if (isset($_GET['theme'])) {
+    $theme = $_GET['theme'];
+} else {
+    exit();
 }
-$css_path = $path_themes . $theme . '/css/';
 
 // Create directions for RTL support
 $left  = 'left';
@@ -51,10 +48,88 @@ if ($_GET['dir'] === 'rtl') {
     $right = 'left';
     $dir = 'rtl';
 }
+$LANG_DIRECTION = $dir; // Need to set this for themes function.php file
+
+// Set Path Variables
+$path_html = $_CONF['path'] . 'public_html';
+$path_themes = $path_html . '/layout/'; 
+$path_layout = $path_themes . $theme . '/';
+
+/**
+* Get Theme Info
+*/
+if (file_exists($path_layout . 'functions.php')) {
+    require_once $path_layout . 'functions.php';
+} else {
+    exit;    
+}
+
+/**
+ * Get the configuration values from the theme
+ */
+$theme_default = ''; // Default is none
+$path_layout_default = ''; // Default is none
+$func = "theme_config_" . $theme;
+if (function_exists($func)) {
+    $theme_config = $func();
+    if (isset($theme_config['theme_default'])) {
+        $theme_default = $theme_config['theme_default'];
+        $path_layout_default = $path_themes . $theme_default . '/';
+        // reset fake config theme var to default so when fuction below loads in css files it will point to default
+    }
+}
+
+$cssfiles = array();
+// Load in default theme css files
+if (!empty($theme_default)) {
+    if (file_exists($path_layout_default . 'functions.php')) {
+        require_once $path_layout_default . 'functions.php';
+    } else {
+        exit;    
+    }
+    
+    /* Include scripts on behalf of the theme */
+    $_CONF['theme'] = $theme_default; // Need to set this for default themes function.php file
+    $func = "theme_css_" . $theme_default;
+    if (function_exists($func)) {
+        foreach ($func() as $info) {
+            $info['priority'] = (!empty($info['priority']))   ? $info['priority']   : 100;
+            $cssfiles[] = $info;
+        }
+    }        
+}
+/* Include scripts on behalf of the theme */
+$_CONF['theme'] = $theme; // Need to set this for themes function.php file
+$func = "theme_css_" . $theme;
+if (function_exists($func)) {
+    foreach ($func() as $info) {
+        $info['priority'] = (!empty($info['priority']))   ? $info['priority']   : 100;
+        $cssfiles[] = $info;
+    }
+}
+/*
+// Sort CSS Files based on priority if needed
+$priority = array();
+foreach($cssfiles as $k => $d) {
+  $priority[$k] = $d['priority'];
+}
+array_multisort($priority, SORT_ASC, $cssfiles);
+*/
+// Add in custom.css at end after sort
+if (!empty($theme_default)) {
+    $info = array();
+    $info['file'] = '/layout/' . $theme_default . '/custom.css';
+    $info['priority'] = 1000;
+    $cssfiles[] = $info;
+}
+$info = array();
+$info['file'] = '/layout/' . $theme . '/custom.css';
+$info['priority'] = 1000;
+$cssfiles[] = $info;
 
 // We assume /data directory is right under $_CONF['path'] directory.  If you
 // have moved or renamed /data directory, please change the following line accordingly.
-$etag_filename =  $_CONF['path'] . 'data/' . $theme . '_' . $dir . '_etag.cache';
+$etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $dir . '_etag.cache';
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     if (is_readable($etag_filename)) {
@@ -76,62 +151,27 @@ $etag = md5(microtime(TRUE));
 header('Content-Type: text/css; charset=UTF-8');
 header('ETag: "' . $etag . '"');
 
-// List of CSS files to be loaded
-$files = array(
-    'compatible.css',
-    'default.css',
-    'common.css',
-    'layout.css',
-    'block.css',
-    'option.css',
-    'form.css',
-    'story.css',
-
-    'article/article.css',
-    'comment/comment.css',
-    'navbar/navbar.css',
-    'preferences/preferences.css',
-    'search/search.css',
-    'stats/stats.css',
-    'submit/submit.css',
-    'trackback/trackback.css',
-    'users/users.css',
-
-    'admin/common.css',
-    'admin/block.css',
-    'admin/envcheck.css',
-    'admin/group.css',
-    'admin/lists.css',
-    'admin/commandcontrol.css',
-    'admin/plugins.css',
-    'admin/story.css',
-    'admin/topic.css',
-    'admin/trackback.css',
-    'admin/user.css',
-    'admin/configuration.css',
-
-    'plugin/japanize.css',
-    'plugin/sitecalendar.css',
-
-    'tooltips/tooltips.css', 
-    
-    'custom.css'
-);
-
 // Output the contents of each file
-foreach ($files as $file) {
+foreach ($cssfiles as $file) {
     $full_filepath = '';
-    if (!empty($default_theme)) {
+    // Set css path variables
+    $css_file_default='';
+    if (!empty($theme_default)) {
+        $css_file_default = $path_html . $file['file'];
+    }
+    $css_file = $path_html . $file['file'];  
+
+    if (!empty($theme_default)) {
         // First add own theme css file if found else add default css file
-        if (is_readable($css_path . $file)) {
-            $full_filepath = $css_path . $file;
-        } elseif (is_readable($css_path_default . $file)) {
-            $full_filepath = $css_path_default . $file;
+        if (is_readable($css_file)) {
+            $full_filepath = $css_file;
+        } elseif (is_readable($css_file_default)) {
+            $full_filepath = $css_file_default;
         }
     } else {
         // Add theme css file if found
-        if (is_readable($css_path . $file)) {
-            $full_filepath = $css_path . $file;
+        if (is_readable($css_file)) {
+            $full_filepath = $css_file;
         }
     }
     
@@ -141,7 +181,7 @@ foreach ($files as $file) {
         $css = preg_replace("@\s*\n+\s*@sm", "\n", $css); // strip indentation
     
         // Replace {right} and {left} placeholders with actual values.
-        // Used for RTL support.
+        // Used for RTL support in some themes.
         $css = str_replace('{right}', $right, $css);
         $css = str_replace('{left}', $left, $css);
     

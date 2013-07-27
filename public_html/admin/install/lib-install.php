@@ -1398,6 +1398,7 @@ function INST_clearCache($plugin='')
     }
 
     INST_clearCacheDirectories($_CONF['path'] . 'data/layout_cache/', $plugin);
+    INST_clearCacheDirectories($_CONF['path'] . 'data/layout_css/', $plugin);
 }
 
 function INST_checkCacheDir($path,$template,$classCounter)

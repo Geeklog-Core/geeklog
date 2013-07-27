@@ -348,6 +348,7 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
 $_CONF['theme_default'] = ''; // Default is none
 $_CONF['path_layout_default'] = ''; // Default is none
 $_CONF['supported_version_theme'] = '1.8.1'; // if the themes supported version of the theme engine not found assume lowest version
+$_CONF['theme_etag'] = false;
 $func = "theme_config_" . $_CONF['theme'];
 if (function_exists($func)) {
     $theme_config = $func();
@@ -357,9 +358,8 @@ if (function_exists($func)) {
         $_CONF['theme_default'] = $theme_config['theme_default'];
         $_CONF['path_layout_default'] = $_CONF['path_themes'] . $_CONF['theme_default'] . '/';
     }
-    if (isset($theme_config['supported_version_theme'])) {
-        $_CONF['supported_version_theme'] = $theme_config['supported_version_theme'];
-    }
+    $_CONF['supported_version_theme'] = (!isset($theme_config['supported_version_theme']))   ? $_CONF['supported_version_theme']   : $theme_config['supported_version_theme'];
+    $_CONF['theme_etag'] = (!isset($theme_config['etag']))   ? $_CONF['theme_etag']   : $theme_config['etag'];
 }
 /**
 * themes can specify the default image type
@@ -441,10 +441,10 @@ if (function_exists($func)) {
     foreach ($func() as $info) {
         $file = $info['file'];
         $name   = (!empty($info['name']))   ? $info['name']   : md5($file);
-        $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
         $constant   = (!empty($info['constant']))   ? $info['constant']   : true;
         $attributes = (!empty($info['attributes'])) ? $info['attributes'] : array();
-        $_SCRIPTS->setCssFile($name, $file, $priority, $constant, $attributes);
+        $priority = (!empty($info['priority']))   ? $info['priority']   : 100;
+        $_SCRIPTS->setCssFile($name, $file, $constant, $attributes, $priority, 'theme');
     }
 }
 $func = "theme_js_libs_" . $_CONF['theme'];
