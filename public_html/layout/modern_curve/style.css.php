@@ -107,14 +107,14 @@ if (function_exists($func)) {
         $cssfiles[] = $info;
     }
 }
-/*
-// Sort CSS Files based on priority if needed
+
+// Sort Theme CSS Files based on priority if needed
 $priority = array();
 foreach($cssfiles as $k => $d) {
   $priority[$k] = $d['priority'];
 }
 array_multisort($priority, SORT_ASC, $cssfiles);
-*/
+
 // Add in custom.css at end after sort
 if (!empty($theme_default)) {
     $info = array();

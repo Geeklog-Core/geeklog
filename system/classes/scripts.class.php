@@ -449,7 +449,7 @@ class scripts {
         $this->css_files[$name]['name'] = $name;
         $this->css_files[$name]['file'] = $file;
         $this->css_files[$name]['extra'] = $extra;
-        $this->css_files[$name]['priority'] = COM_applyFilter($priority, true);
+        $this->css_files[$name]['priority'] = $priority;
         $this->css_files[$name]['constant'] = $constant;
         if ($_CONF['theme_etag'] AND $type == 'theme') {
             // Don't load css regular way for themes with etag enabled
@@ -475,11 +475,6 @@ class scripts {
         $this->header_set = true;
         
         $headercode = '';
-        
-        // Set JavaScript Library files first incase other scripts need them
-        if (!$this->library_files_footer) { // // Do we load jQuery now?
-            $headercode .= $this->setJavaScriptLibraries();
-        }
 
         // Sort CSS Files based on priority
         $priority = array();
@@ -507,8 +502,13 @@ class scripts {
                 }
             }
         }
-
-        // Set JavaScript (do this before file in case variables are needed)
+        
+        // Set JavaScript Library files first incase other scripts need them
+        if (!$this->library_files_footer) { // // Do we load jQuery now?
+            $headercode .= $this->setJavaScriptLibraries();
+        }
+        
+        // Set JavaScript Variables (do this before file in case variables are needed)
         $iso639Code = COM_getLangIso639Code();
         $headercode .= <<<EOD
 <script type="text/javascript">
