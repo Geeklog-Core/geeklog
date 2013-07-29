@@ -1862,6 +1862,10 @@ span.warning  em { color: #CE5C00; }
   Comment Block
 --------------------------------------*/
 
+#commentarea {
+  clear: both;
+}
+
 /* Comment Information (Story Title | Comment Number | Username) */
 .commentbar_status {
   text-align: center;
