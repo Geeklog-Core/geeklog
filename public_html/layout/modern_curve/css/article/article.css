@@ -35,3 +35,10 @@ ul.list-story-options li {
   margin: 0;
   padding: 0;
 }
+
+/* Story Optiom */
+.block-related {
+  float: left;
+  width: 50%;
+  margin: 0 0 1.5em 0;
+}
