@@ -356,7 +356,7 @@ class scripts {
         
         $this->script_files[$name]['file'] = $file;
         $this->script_files[$name]['footer'] = $footer;
-        $this->script_files[$name]['priority'] = COM_applyFilter($priority, true);
+        $this->script_files[$name]['priority'] = $priority;
         
         $this->javascript_set = true;
         
