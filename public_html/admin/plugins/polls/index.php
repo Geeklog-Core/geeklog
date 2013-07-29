@@ -328,6 +328,9 @@ function savepoll($pid, $old_pid, $Q, $mainpage, $topic, $meta_description, $met
     } else {
         DB_change($_TABLES['comments'], 'sid', DB_escapeString($pid),
                   array('sid', 'type'), array(DB_escapeString($old_pid), 'polls'));
+        
+        DB_change($_TABLES['pollvoters'], 'pid', DB_escapeString($pid), 'pid', DB_escapeString($old_pid));
+        
         PLG_itemSaved($pid, 'polls', $old_pid);
     }
 
@@ -587,6 +590,7 @@ function deletePoll ($pid)
     DB_delete($_TABLES['polltopics'], 'pid', $pid);
     DB_delete($_TABLES['pollanswers'], 'pid', $pid);
     DB_delete($_TABLES['pollquestions'], 'pid', $pid);
+    DB_delete($_TABLES['pollvoters'], 'pid', $pid);
     DB_delete($_TABLES['comments'], array('sid', 'type'),
                                     array($pid,  'polls'));
 
