@@ -1639,6 +1639,11 @@ function plugin_upgrade_calendar()
             $current_version = '1.1.3';
             break;            
 
+        case '1.1.3':
+            
+            $current_version = '1.1.4';
+            break;            
+
         default:
             $done = true;
             break;
