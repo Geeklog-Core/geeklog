@@ -793,6 +793,11 @@ function plugin_upgrade_links()
             $current_version = '2.1.2';
             break;
             
+        case '2.1.2':
+
+            $current_version = '2.1.3';
+            break;            
+            
         default:
             $done = true;
         }
