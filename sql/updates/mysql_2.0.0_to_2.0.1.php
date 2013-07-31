@@ -18,6 +18,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['storysubmission']} ADD `text_version` tinyint(
 // Update all topic ids and Topic name to 128 characters
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE `tid` `tid` VARCHAR(128) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE `topic` `topic` VARCHAR(128) NULL DEFAULT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE `parent_id` `parent_id` VARCHAR(128) NOT NULL DEFAULT 'root'";
 $_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} CHANGE `tid` `tid` VARCHAR(128) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['topic_assignments']} CHANGE `id` `id` VARCHAR(128) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['sessions']} CHANGE `topic` `topic` VARCHAR(128) NOT NULL DEFAULT ''";

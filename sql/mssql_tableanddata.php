@@ -390,7 +390,7 @@ CREATE TABLE [dbo].[{$_TABLES['topics']}] (
     [limitnews] [smallint] NULL ,
     [is_default] [tinyint] NOT NULL ,
     [archive_flag] [tinyint]  NULL ,
-    [parent_id] [varchar] (20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    [parent_id] [varchar] (128) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
     [inherit] [tinyint] NOT NULL,
     [hidden] [tinyint] NOT NULL,
     [owner_id] [numeric](8, 0) NOT NULL ,

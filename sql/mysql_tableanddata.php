@@ -412,7 +412,7 @@ CREATE TABLE {$_TABLES['topics']} (
   limitnews tinyint(3) default NULL,
   is_default tinyint(1) unsigned NOT NULL DEFAULT '0',
   archive_flag tinyint(1) unsigned NOT NULL DEFAULT '0',
-  parent_id varchar(20) NOT NULL default 'root',
+  parent_id varchar(128) NOT NULL default 'root',
   inherit tinyint(1) NOT NULL default '1',
   hidden tinyint(1) NOT NULL default '0',
   owner_id mediumint(8) unsigned NOT NULL default '1',

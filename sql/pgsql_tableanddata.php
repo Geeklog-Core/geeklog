@@ -411,7 +411,7 @@ CREATE TABLE {$_TABLES['topics']} (
   limitnews smallint default NULL,
   is_default smallint NOT NULL DEFAULT '0',
   archive_flag smallint NOT NULL DEFAULT '0',
-  parent_id varchar(20) NOT NULL default 'root',
+  parent_id varchar(128) NOT NULL default 'root',
   inherit smallint NOT NULL default '1',
   hidden smallint NOT NULL default '0',
   owner_id smallint NOT NULL default '1',
