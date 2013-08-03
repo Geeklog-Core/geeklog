@@ -746,11 +746,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     );
 
     if ($advanced_editormode) {
-        $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-        // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
-        $js = 'document.getElementById("advanced_editor").style.display="";';
-        $_SCRIPTS->setJavaScript($js, true);
-        $_SCRIPTS->setJavaScriptFile('storyeditor_fckeditor', '/javascript/storyeditor_fckeditor.js');
+        $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
+        $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
+        $_SCRIPTS->setJavaScriptFile('storyeditor_adveditor', '/javascript/storyeditor_adveditor.js');
     }
     
     $story_templates->set_var('saved_images', $saved_images);

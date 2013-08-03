@@ -103,12 +103,10 @@ function staticpageeditor_form($A)
         $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));        
         
         // Add JavaScript
-        $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-        // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
-        $js = 'document.getElementById("advanced_editor").style.display="";';                 
-        $_SCRIPTS->setJavaScript($js, true);
-        $_SCRIPTS->setJavaScriptFile('staticpages_fckeditor', '/javascript/staticpages_fckeditor.js');
-
+        $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
+        $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
+        $_SCRIPTS->setJavaScriptFile('staticpages_adveditor', '/javascript/staticpages_adveditor.js');
+        
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);
         $sp_template->set_var('lang_toolbar', $LANG24[70]);

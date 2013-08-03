@@ -576,8 +576,9 @@ EOD;
             if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                 $footercode .= '<script type="text/javascript">' . LB;
                 $footercode .= 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB;
-                // Setup editor path for FCKeditor JS Functions
-                $footercode .= 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";' . LB;
+                // Setup editor path for advanced editor JS functions
+                $footercode .= 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/'
+                             . $_CONF['advanced_editor_name'] . '/";' . LB;
                 $footercode .= '</script>' . LB;
             }
             

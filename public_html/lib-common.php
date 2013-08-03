@@ -326,6 +326,11 @@ else if( $_CONF['allow_user_themes'] == 1 )
 // Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 
+$_CONF['advanced_editor_name'] = 'fckeditor';
+$_CONF['advanced_editor_js']   = '/fckeditor/fckeditor.js';
+// $_CONF['advanced_editor_name'] = 'ckeditor';
+// $_CONF['advanced_editor_js']   = '/ckeditor/ckeditor.js';
+
 /**
 * Include the Scripts class
 *

@@ -1035,11 +1035,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 $comment_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
                 
                 // Add JavaScript
-                $_SCRIPTS->setJavaScriptFile('fckeditor','/fckeditor/fckeditor.js');
-                // Hide the Advanced Editor as Javascript is required. If JS is enabled then the JS below will un-hide it
-                $js = 'document.getElementById("advanced_editor").style.display="";';                 
-                $_SCRIPTS->setJavaScript($js, true);
-                $_SCRIPTS->setJavaScriptFile('submitcomment_fckeditor', '/javascript/submitcomment_fckeditor.js');
+                $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
+                $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
+                $_SCRIPTS->setJavaScriptFile('submitcomment_adveditor', '/javascript/submitcomment_adveditor.js');
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
             }
