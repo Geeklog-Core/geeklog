@@ -33,12 +33,12 @@ window.onload = function() {
         bar = 0;
     }
     document.getElementById('advanced_editor').style.display = '';
-    adve_newEditor('sp_content', {'toolbar':bar});
+    adve_newEditor('adv_content', {'toolbar':bar});
     document.getElementById('fckeditor_toolbar_selector').options[bar].selected = true;
 }
 
 function changeToolbar(toolbar) {
-    adve_changeToolbar('sp_content', toolbar);
+    adve_changeToolbar('adv_content', toolbar);
 }
 
 function change_editmode(obj) {
@@ -58,14 +58,14 @@ function change_editmode(obj) {
 function swapEditorContent(curmode) {
     if (curmode == 'advanced') {
         var content = document.getElementById('html_content').value;
-        adve_setContent('sp_content', content);
+        adve_setContent('adv_content', content);
     } else {
-        document.getElementById('html_content').value = adve_getContent('sp_content');
+        document.getElementById('html_content').value = adve_getContent('adv_content');
     }
 }
 
 function set_postcontent() {
     if (document.getElementById('sel_editmode').value == 'adveditor') {
-        document.getElementById('html_content').value = adve_getContent('sp_content');
+        document.getElementById('html_content').value = adve_getContent('adv_content');
     }
 }
