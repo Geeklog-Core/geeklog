@@ -18,10 +18,10 @@
     
           <dt><label for="introtext">{lang_story}</label></dt>
           <dd>
-            <div class="text_editor" style="display: {show_texteditor};">
+            <div id="text_editor" style="display: {show_texteditor};">
               <textarea cols="45" rows="15" name="introtext" id="introtext" class="wide">{story_introtext}</textarea>
             </div>
-            <div class="html_editor" style="display: {show_htmleditor};">
+            <div id="html_editor" style="display: {show_htmleditor};">
               <textarea cols="45" rows="15" name="introhtml" id="introhtml" class="wide">{story_introtext}</textarea>
             </div>
           </dd>

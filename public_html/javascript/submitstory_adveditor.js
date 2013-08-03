@@ -28,8 +28,8 @@
 // +---------------------------------------------------------------------------+
 
 window.onload = function() {
-    document.getElementById('introhtml').style.display = '';
-    adve_newEditor('comment_html', {'toolbar':0});
+    document.getElementById('advanced_editor').style.display = '';
+    adve_newEditor('introhtml', {'toolbar':0});
 }
 
 function change_editmode(obj) {
