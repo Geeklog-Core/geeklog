@@ -188,6 +188,8 @@ function liststories($current_topic = '')
 
     $menu_arr[] = array('url' => $_CONF['site_admin_url'],
                         'text' => $LANG_ADMIN['admin_home']);
+    
+    $form_arr = array('bottom' => '', 'top' => '');
 
     $retval .= COM_startBlock($LANG24[22], '',
                               COM_getBlockTemplate('_admin_block', 'header'));
@@ -218,9 +220,12 @@ function liststories($current_topic = '')
         'query_fields' => array('title', 'introtext', 'bodytext', 'sid', 'tid'),
         'default_filter' => $excludetopics . COM_getPermSQL('AND')
     );
-
+    
+    // Add in topic filter so it is remembered with paging
+    $pagenavurl = '&amp;tid=' . $current_topic;
+    
     $retval .= ADMIN_list('story', 'ADMIN_getListField_stories', $header_arr,
-                          $text_arr, $query_arr, $defsort_arr, $filter);
+                          $text_arr, $query_arr, $defsort_arr, $filter, '', '', $form_arr, true, $pagenavurl);
     $retval .= COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer'));
 
     return $retval;
