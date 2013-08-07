@@ -1509,7 +1509,7 @@ h4 img {
   margin: 0;
   padding: 0 5px;
   white-space: nowrap;
-  border-bottom: 1px dashed #ccc;
+  border-bottom: 1px dotted #ccc;
 }
 
 #leftblocks .noliststyle,
@@ -1707,6 +1707,14 @@ div.third-party-login {
 .story_introtext {
   margin: 0 0 2em 0;
   line-height: 1.7em;
+}
+
+.story_introtext:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 1px;
+  overflow: hidden;
 }
 
 /* Topic Icon */
