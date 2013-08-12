@@ -1034,10 +1034,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 } 
                 $comment_template->set_var('noscript', COM_getNoScript(false, '', $link_message));
                 
-                // Add JavaScript
-                $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
-                $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
-                $_SCRIPTS->setJavaScriptFile('submitcomment_adveditor', '/javascript/submitcomment_adveditor.js');
+                // Setup Advanced Editor
+                COM_setupAdvancedEditor('/javascript/submitcomment_adveditor.js');
+
             } else {
                 $comment_template->set_file('form', 'commentform.thtml');
             }

@@ -128,10 +128,8 @@ function submitstory()
         } 
         $storyform->set_var('noscript', COM_getNoScript(false, '', $link_message));
         
-        // Add JavaScript
-        $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
-        $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
-        $_SCRIPTS->setJavaScriptFile('submitstory_adveditor', '/javascript/submitstory_adveditor.js');
+        // Setup Advanced Editor
+        COM_setupAdvancedEditor('/javascript/submitstory_adveditor.js');
         
         if ($story->EditElements('postmode') == 'html') {
             $storyform->set_var ('show_texteditor', 'none');

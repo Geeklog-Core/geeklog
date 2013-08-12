@@ -326,10 +326,9 @@ else if( $_CONF['allow_user_themes'] == 1 )
 // Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 
-// $_CONF['advanced_editor_name'] = 'fckeditor';
-// $_CONF['advanced_editor_js']   = '/fckeditor/fckeditor.js';
-$_CONF['advanced_editor_name'] = 'ckeditor';
-$_CONF['advanced_editor_js']   = '/ckeditor/ckeditor.js';
+//$_CONF['advanced_editor_name'] = 'fckeditor';
+//$_CONF['advanced_editor_name'] = 'tinymce';
+//$_CONF['advanced_editor_name'] = 'ckeditor';
 
 /**
 * Include the Scripts class
@@ -8716,6 +8715,63 @@ function COM_getLangIso639Code($langName = NULL)
 
     return isset($mapping[$langName]) ? $mapping[$langName] : 'en';
 }
+
+/**
+* Setup Advanced Editor
+*
+* @param   string   $custom    location of custom script file relative to
+*                              public_html directory. Include '/' at beginning
+* @param   string   $myeditor  
+* @return  void
+*/
+function COM_setupAdvancedEditor($custom, $myeditor='')
+{
+    global $_CONF, $_USER, $_SCRIPTS;
+
+    if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor']) return;
+
+    $name = 'ckeditor';
+    $js = '/ckeditor/ckeditor.js';
+
+    if (!empty($_CONF['advanced_editor_name'])) {
+        $name = $_CONF['advanced_editor_name'];
+    }
+    if (!empty($myeditor)) {
+        $name = $myeditor;
+    }
+
+    if (!file_exists($_CONF['path_html'] . $name . '/functions.php')) return;
+    require_once $_CONF['path_html'] . $name . '/functions.php';
+
+    $function = 'adveditor_config_' . $name;
+    $footer = $priority = '';
+    if (function_exists($function)) {
+        $config = $function();
+        $js       = $config['file'];
+        $footer   = $config['footer'];
+        $priority = $config['priority'];
+    }
+    if (empty($footer))   $footer   = true;
+    if (empty($priority)) $priority = 100;
+
+    $function = 'adveditor_init_' . $name;
+    if (function_exists($function)) $function();
+
+    // Add core JavaScript global variables
+    $script  = '<script type="text/javascript">' . LB
+             . 'var geeklogEditorName = "' . $name . '";' . LB
+             . 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB
+               // Setup editor path for advanced editor JS functions
+             . 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/' . $name . '/";' . LB
+             . '</script>' . LB;
+    $_SCRIPTS->setJavaScript($script);
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile("adveditor_$name", $js,                             $footer, $priority);
+    $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
+    $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$name/functions.js",       $footer, $priority + 2);
+    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                        $footer, $priority + 3);
+}
+
 
 /**
 * Now include all plugin functions

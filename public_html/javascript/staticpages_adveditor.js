@@ -2,13 +2,13 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
-// | Javascript functions for WISIWIG HTML Editor Integration into Geeklog     |
+// | Javascript functions for WYSIWYG HTML Editor Integration into Geeklog     |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2003-2013 by the following authors:                         |
 // |                                                                           |
-// | Authors:   Blaine Lang - blaine@portalparts.com                           |
-// |                                                                           |
+// | Authors:   Blaine Lang       - blaine AT portalparts DOT com              |
+// |            Yoshinori Tahara  - dengenxp AT gmail DOT com                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -27,45 +27,30 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
+var bar = 1;
+if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+    bar = 0;
+}
+
 window.onload = function() {
-    var bar = 1;
-    if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
-        bar = 0;
-    }
-    document.getElementById('advanced_editor').style.display = '';
-    adve_newEditor('adv_content', {'toolbar':bar});
-    document.getElementById('fckeditor_toolbar_selector').options[bar].selected = true;
+    AdvancedEditor.newEditor({
+        TextareaId:[
+            {plain:'html_content', advanced:'adv_content'}
+        ],
+        toolbar:bar
+    });
 }
 
-function changeToolbar(toolbar) {
-    adve_changeToolbar('adv_content', toolbar);
-}
-
-function change_editmode(obj) {
-    if (obj.value == 'adveditor') {
+// Override event listener
+AdvancedEditor.onchange_editmode = function() {
+    if (AdvancedEditor.isAdvancedMode()) {
         document.getElementById('advanced_editarea').style.display = '';
         document.getElementById('sel_toolbar').style.display = '';
         document.getElementById('html_editarea').style.display = 'none';
-        swapEditorContent('advanced');
     } else {
         document.getElementById('advanced_editarea').style.display = 'none';
         document.getElementById('sel_toolbar').style.display = 'none';
         document.getElementById('html_editarea').style.display = '';
-        swapEditorContent('html');
     }
-}
-
-function swapEditorContent(curmode) {
-    if (curmode == 'advanced') {
-        var content = document.getElementById('html_content').value;
-        adve_setContent('adv_content', content);
-    } else {
-        document.getElementById('html_content').value = adve_getContent('adv_content');
-    }
-}
-
-function set_postcontent() {
-    if (document.getElementById('sel_editmode').value == 'adveditor') {
-        document.getElementById('html_content').value = adve_getContent('adv_content');
-    }
+    AdvancedEditor.swapEditorContent();
 }

@@ -1,5 +1,5 @@
 ﻿
-function adve_newEditor(instanceName, options) {
+function ckeditor_newEditor(instanceName, options) {
     switch (options['toolbar']) {
         case 0:
             name = 'toolbar1';
@@ -16,15 +16,15 @@ function adve_newEditor(instanceName, options) {
     CKEDITOR.replace(instanceName, {toolbar:name});
 }
 
-function adve_getContent(instanceName) {
-    return CKEDITOR.instances[instanceName].getData();
-}
-
-function adve_setContent(instanceName, content) {
+function ckeditor_setContent(instanceName, content) {
     CKEDITOR.instances[instanceName].setData(content);
 }
 
-function adve_changeToolbar(instanceName, toolbar) {
+function ckeditor_getContent(instanceName) {
+    return CKEDITOR.instances[instanceName].getData();
+}
+
+function ckeditor_changeToolbar(instanceName, toolbar) {
     var name = '';
     switch (toolbar) {
         case 'editor-toolbar1':
@@ -43,10 +43,10 @@ function adve_changeToolbar(instanceName, toolbar) {
     CKEDITOR.replace(instanceName, {toolbar:name});
 }
 
-function adve_changeTextAreaSize(instanceName, option) {
+function ckeditor_changeTextAreaSize(instanceName, option) {
     var oEditor = CKEDITOR.instances[instanceName];
     var height = oEditor.ui.space('contents').getStyle('height');
-    currentSize = parseInt(height.replace("px", ""));
+    var currentSize = parseInt(height.replace("px", ""));
     if (option == 'larger') {
         var newsize = currentSize + 50;
     } else if (option == 'smaller') {
@@ -54,3 +54,11 @@ function adve_changeTextAreaSize(instanceName, option) {
     }
     oEditor.resize('100%', newsize, true);
 }
+
+AdvancedEditor.api['ckeditor'] = {
+    newEditor:          ckeditor_newEditor,
+    setContent:         ckeditor_setContent,
+    getContent:         ckeditor_getContent,
+    changeToolbar:      ckeditor_changeToolbar,
+    changeTextAreaSize: ckeditor_changeTextAreaSize
+};

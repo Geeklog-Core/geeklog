@@ -572,20 +572,10 @@ EOD;
         
         // Do we need to set JavaScript
         if ($this->javascript_set) {
-            // Add Core JavaScript global variables
-            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-                $footercode .= '<script type="text/javascript">' . LB;
-                $footercode .= 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB;
-                // Setup editor path for advanced editor JS functions
-                $footercode .= 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/'
-                             . $_CONF['advanced_editor_name'] . '/";' . LB;
-                $footercode .= '</script>' . LB;
-            }
-            
             // Set JavaScript Library files first incase other scripts need them
             if ($this->library_files_footer) { // Has jQuery already been loaded in header?
                 $footercode .= $this->setJavaScriptLibraries();
-            }            
+            }
             
             // Set JavaScript (do this before file incase variables are needed)
             if (isset($this->scripts['footer'])) {
@@ -600,7 +590,6 @@ EOD;
                     $footercode .= '<script type="text/javascript" src="' . $_CONF['site_url'] . $file['file'] . '"></script>' . LB;
                 }
             }
-
         }
         
         return $footercode;

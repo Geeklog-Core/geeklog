@@ -2,13 +2,13 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
-// | Javascript functions for WISIWIG HTML Editor Integration into Geeklog     |
+// | Javascript functions for WYSIWYG HTML Editor Integration into Geeklog     |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2003-2013 by the following authors:                         |
 // |                                                                           |
-// | Authors:   Blaine Lang - blaine@portalparts.com                           |
-// |                                                                           |
+// | Authors:   Blaine Lang       - blaine AT portalparts DOT com              |
+// |            Yoshinori Tahara  - dengenxp AT gmail DOT com                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -27,69 +27,32 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-window.onload = function() {
-    var bar = 1;
-    if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
-        bar = 0;
-    }
-    document.getElementById('advanced_editor').style.display = '';
-    adve_newEditor('introhtml', {'toolbar':bar});
-    adve_newEditor('bodyhtml',  {'toolbar':bar});
-    document.getElementById('fckeditor_toolbar_selector').options[bar].selected = true;
+var bar = 1;
+if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+    bar = 0;
 }
 
-function change_editmode(obj) {
+window.onload = function() {
+    AdvancedEditor.newEditor({
+        TextareaId:[
+            {plain:'introtext', advanced:'introhtml'},
+            {plain:'bodytext',  advanced:'bodyhtml' }
+        ],
+        ValModeAdvanced:'adveditor',
+        toolbar:bar,
+    });
+}
+
+// Override event listener
+AdvancedEditor.onchange_editmode = function() {
     var navlistcount = document.getElementById('navlist').getElementsByTagName('li').length;
     showhideEditorDiv('editor', navlistcount - 6);
-    if (obj.value == 'html') {
-        document.getElementById('html_editor').style.display = 'none';
-        document.getElementById('text_editor').style.display = '';
-        swapEditorContent('html', 'introhtml');
-        swapEditorContent('html', 'bodyhtml');
-    } else if (obj.value == 'adveditor') {
+    if (AdvancedEditor.isAdvancedMode()) {
         document.getElementById('text_editor').style.display = 'none';
         document.getElementById('html_editor').style.display = '';
-        swapEditorContent('adveditor', 'introhtml');
-        swapEditorContent('adveditor', 'bodyhtml');
     } else {
-        document.getElementById('html_editor').style.display = 'none';
         document.getElementById('text_editor').style.display = '';
-        swapEditorContent('text', 'introhtml');
-        swapEditorContent('text', 'bodyhtml');
+        document.getElementById('html_editor').style.display = 'none';
     }
-}
-
-function changeHTMLTextAreaSize(element, option) {
-    adve_changeTextAreaSize(element, option);
-}
-
-function changeTextAreaSize(element, option) {
-    var size = document.getElementById(element).rows;
-    if (option == 'larger') {
-        document.getElementById(element).rows = +(size) + 3;
-    } else if (option == 'smaller') {
-        document.getElementById(element).rows = +(size) - 3;
-    }
-}
-
-function swapEditorContent(curmode,instanceName) {
-    var textelem = (instanceName == 'introhtml') ? 'introtext' : 'bodytext';
-    if (curmode == 'adveditor') {
-        var content = document.getElementById(textelem).value;
-        adve_setContent(instanceName, content)
-    } else {
-        document.getElementById(textelem).value = adve_getContent(instanceName);
-    }
-}
-
-function set_postcontent() {
-    if (document.getElementById('sel_editmode').value == 'adveditor') {
-        document.getElementById('introtext').value = adve_getContent('introhtml');
-        document.getElementById('bodytext').value = adve_getContent('bodyhtml');
-    }
-}
-
-function changeToolbar(toolbar) {
-    adve_changeToolbar('introhtml', toolbar);
-    adve_changeToolbar('bodyhtml', toolbar);
+    AdvancedEditor.swapEditorContent();
 }

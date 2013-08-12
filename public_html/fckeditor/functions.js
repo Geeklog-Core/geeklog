@@ -1,5 +1,5 @@
 ﻿
-function adve_newEditor(instanceName, options) {
+function fckeditor_newEditor(instanceName, options) {
     var oEditor = new FCKeditor(instanceName);
     oEditor.BasePath = geeklogEditorBasePath;
     oEditor.Config['CustomConfigurationsPath'] = geeklogEditorBaseUrl + '/fckeditor/myconfig.js';
@@ -8,19 +8,19 @@ function adve_newEditor(instanceName, options) {
     oEditor.ReplaceTextarea();
 }
 
-function adve_getContent(instanceName) {
+function fckeditor_getContent(instanceName) {
     return FCKeditorAPI.GetInstance(instanceName).GetXHTML(true);
 }
 
-function adve_setContent(instanceName, content) {
+function fckeditor_setContent(instanceName, content) {
     FCKeditorAPI.GetInstance(instanceName).SetHTML(content);
 }
 
-function adve_changeToolbar(instanceName, toolbar) {
+function fckeditor_changeToolbar(instanceName, toolbar) {
     FCKeditorAPI.GetInstance(instanceName).ToolbarSet.Load(toolbar);
 }
 
-function adve_changeTextAreaSize(instanceName, option) {
+function fckeditor_changeTextAreaSize(instanceName, option) {
     var currentSize = parseInt(document.getElementById(instanceName + '___Frame').style.height);
     if (option == 'larger') {
         var newsize = currentSize + 50;
@@ -29,3 +29,11 @@ function adve_changeTextAreaSize(instanceName, option) {
     }
     document.getElementById(instanceName + '___Frame').style.height = newsize + 'px';
 }
+
+AdvancedEditor.api['fckeditor'] = {
+    newEditor:          fckeditor_newEditor,
+    setContent:         fckeditor_setContent,
+    getContent:         fckeditor_getContent,
+    changeToolbar:      fckeditor_changeToolbar,
+    changeTextAreaSize: fckeditor_changeTextAreaSize
+};

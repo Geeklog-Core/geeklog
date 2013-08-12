@@ -1,14 +1,16 @@
+<?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
-// | Javascript functions for WYSIWYG HTML Editor Integration into Geeklog     |
+// | functions.php                                                             |
 // |                                                                           |
+// | Functions implementing the Advanced Editor API                            |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2013 by the following authors:                         |
+// | Copyright (C) 2013 by the following authors:                              |
 // |                                                                           |
-// | Authors:   Blaine Lang       - blaine AT portalparts DOT com              |
-// |            Yoshinori Tahara  - dengenxp AT gmail DOT com                  |
+// | Authors: Yoshinori Tahara  - dengenxp AT gmail DOT com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -27,12 +29,28 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-window.onload = function() {
-    AdvancedEditor.newEditor({
-        TextareaId:[
-            {plain:'comment_text', advanced:'comment_html'}
-        ],
-        ValModeAdvanced:'html',
-        toolbar:0
-    });
+// this file can't be used on its own
+if (strpos(strtolower($_SERVER['PHP_SELF']), 'functions.php') !== false) {
+    die('This file can not be used on its own!');
 }
+
+/**
+ * Return the configuration values for the advanced editor
+ */
+function adveditor_config_ckeditor()
+{
+    return array(
+        'file'     => '/ckeditor/ckeditor.js',
+        'footer'   => true, // Not requred, default = true
+        'priority' => 110   // Not requred, default = 100
+    );
+}
+
+/**
+ * Do any other initialisation here
+ */
+function adveditor_init_ckeditor()
+{
+}
+
+?>

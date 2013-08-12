@@ -750,11 +750,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         . "});", TRUE, TRUE
     );
 
-    if ($advanced_editormode) {
-        $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
-        $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
-        $_SCRIPTS->setJavaScriptFile('storyeditor_adveditor', '/javascript/storyeditor_adveditor.js');
-    }
+    // Setup Advanced Editor
+    COM_setupAdvancedEditor('/javascript/storyeditor_adveditor.js');
     
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);

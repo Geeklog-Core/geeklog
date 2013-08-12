@@ -2,13 +2,13 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 2.0                                                               |
 // +---------------------------------------------------------------------------+
-// | Javascript functions for WISIWIG HTML Editor Integration into Geeklog     |
+// | Javascript functions for WYSIWYG HTML Editor Integration into Geeklog     |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2003-2013 by the following authors:                         |
 // |                                                                           |
-// | Authors:   Blaine Lang - blaine@portalparts.com                           |
-// |                                                                           |
+// | Authors:   Blaine Lang       - blaine AT portalparts DOT com              |
+// |            Yoshinori Tahara  - dengenxp AT gmail DOT com                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -28,33 +28,11 @@
 // +---------------------------------------------------------------------------+
 
 window.onload = function() {
-    document.getElementById('advanced_editor').style.display = '';
-    adve_newEditor('introhtml', {'toolbar':0});
-}
-
-function change_editmode(obj) {
-    if (obj.value == 'html') {
-        document.getElementById('text_editor').style.display = 'none';
-        document.getElementById('html_editor').style.display = '';
-        swapEditorContent('html');
-    } else {
-        document.getElementById('text_editor').style.display = '';
-        document.getElementById('html_editor').style.display = 'none';
-        swapEditorContent('text');
-    }
-}
-
-function swapEditorContent(curmode) {
-    if (curmode == 'html') {
-        var content = document.getElementById('introtext').value;
-        adve_setContent('introhtml', content);
-    } else {
-        document.getElementById('introtext').value = adve_getContent('introhtml');
-    }
-}
-
-function set_postcontent() {
-    if (document.getElementById('sel_editmode').value == 'html') {
-        document.getElementById('introtext').value = adve_getContent('introhtml');
-    }
+    AdvancedEditor.newEditor({
+        TextareaId:[
+            {plain:'introtext', advanced:'introhtml'}
+        ],
+        ValModeAdvanced:'html',
+        toolbar:0
+    });
 }

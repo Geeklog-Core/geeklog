@@ -102,10 +102,8 @@ function staticpageeditor_form($A)
         } 
         $sp_template->set_var('noscript', COM_getNoScript(false, '', $link_message));        
         
-        // Add JavaScript
-        $_SCRIPTS->setJavaScriptFile('adveditor', $_CONF['advanced_editor_js']);
-        $_SCRIPTS->setJavaScriptFile('adveditor_functions', "/{$_CONF['advanced_editor_name']}/functions.js");
-        $_SCRIPTS->setJavaScriptFile('staticpages_adveditor', '/javascript/staticpages_adveditor.js');
+        // Setup Advanced Editor
+        COM_setupAdvancedEditor('/javascript/staticpages_adveditor.js');
         
         $sp_template->set_var('lang_expandhelp', $LANG24[67]);
         $sp_template->set_var('lang_reducehelp', $LANG24[68]);
