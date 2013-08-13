@@ -39,13 +39,13 @@ AdvancedEditor.EditModeId = 'sel_editmode';
 
 AdvancedEditor.ValModeAdvanced = 'adveditor';
 
+AdvancedEditor.ValAutoToolbar = true;
+
 AdvancedEditor.api = [];
 
 AdvancedEditor.editor = 'ckeditor';
 
 AdvancedEditor.newEditor = function(options) {
-    var elem;
-    var bar = 1;
     if (geeklogEditorName) {
         this.editor = geeklogEditorName;
     }
@@ -58,8 +58,14 @@ AdvancedEditor.newEditor = function(options) {
     if (options.ValModeAdvanced) {
         this.ValModeAdvanced = options.ValModeAdvanced;
     }
+
+    var bar = 1;
     if (options.toolbar !== false) {
         bar = options.toolbar;
+    }
+    if (this.ValAutoToolbar === true &&
+            navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
+        bar = 0;
     }
 
     for (var i = 0; i < this.TextareaId.length; i++) {
@@ -68,6 +74,7 @@ AdvancedEditor.newEditor = function(options) {
 
     this.addEventListener();
 
+    var elem;
     elem = document.getElementById(this.ContainerId);
     if (elem) elem.style.display = '';
 

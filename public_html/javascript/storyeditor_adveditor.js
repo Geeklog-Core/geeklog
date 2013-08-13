@@ -27,19 +27,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 
-var bar = 1;
-if (navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
-    bar = 0;
-}
-
 window.onload = function() {
     AdvancedEditor.newEditor({
         TextareaId:[
             {plain:'introtext', advanced:'introhtml'},
             {plain:'bodytext',  advanced:'bodyhtml' }
         ],
-        ValModeAdvanced:'adveditor',
-        toolbar:bar,
+        toolbar:1,
     });
 }
 
