@@ -39,7 +39,7 @@ AdvancedEditor.EditModeId = 'sel_editmode';
 
 AdvancedEditor.ValModeAdvanced = 'adveditor';
 
-AdvancedEditor.ValAutoToolbar = true;
+AdvancedEditor.AutoToolbar = true;
 
 AdvancedEditor.api = [];
 
@@ -58,12 +58,15 @@ AdvancedEditor.newEditor = function(options) {
     if (options.ValModeAdvanced) {
         this.ValModeAdvanced = options.ValModeAdvanced;
     }
+    if (options.AutoToolbar === false) {
+        this.AutoToolbar = false;
+    }
 
     var bar = 1;
     if (options.toolbar !== false) {
         bar = options.toolbar;
     }
-    if (this.ValAutoToolbar === true &&
+    if (this.AutoToolbar === true &&
             navigator.userAgent.match(/iPhone|Android|IEMobile/i)) {
         bar = 0;
     }
