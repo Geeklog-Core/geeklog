@@ -173,6 +173,14 @@ th {
   padding: 1em 0;
 }
 
+#print div#story:after {
+  content: "";
+  display: block;
+  clear: both;
+  height: 1px;
+  overflow: hidden;
+}
+
 #print div#footer {
   font-size: 0.85em;
   padding: 5px 0px;
