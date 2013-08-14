@@ -866,6 +866,7 @@ a.pluginButton:hover {
 
 .wide {
   width: 98%;
+  resize: vertical;
 }
 
 .separator {
