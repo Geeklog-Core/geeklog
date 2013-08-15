@@ -51,6 +51,30 @@ function adveditor_config_fckeditor()
  */
 function adveditor_init_fckeditor()
 {
+    global $_CONF, $_SCRIPTS;
+
+    // Add core JavaScript global variables
+    $script  = '<script type="text/javascript">' . LB
+             . 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB
+               // Setup editor path for advanced editor JS functions
+             . 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/fckeditor/";' . LB
+             . '</script>' . LB;
+    $_SCRIPTS->setJavaScript($script);
 }
 
+/**
+ * Base function for override process to set JavaScript files
+ */
+/*
+function adveditor_setup_fckeditor($custom)
+{
+    global $_CONF, $_SCRIPTS;
+
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('adveditor_fckeditor', '/fckeditor/fckeditor.js',     true, 110);
+    $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js',   true, 111);
+    $_SCRIPTS->setJavaScriptFile('adveditor_api_fckeditor', '/fckeditor/functions.js', true, 112);
+    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                          true, 113);
+}
+*/
 ?>

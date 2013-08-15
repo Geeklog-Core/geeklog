@@ -53,4 +53,19 @@ function adveditor_init_ckeditor()
 {
 }
 
+/**
+ * Base function for override process to set JavaScript files
+ */
+/*
+function adveditor_setup_ckeditor($custom)
+{
+    global $_CONF, $_SCRIPTS;
+
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('adveditor_ckeditor', '/ckeditor/ckeditor.js',      true, 110);
+    $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', true, 111);
+    $_SCRIPTS->setJavaScriptFile('adveditor_api_ckeditor', '/ckeditor/functions.js', true, 112);
+    $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                        true, 113);
+}
+*/
 ?>

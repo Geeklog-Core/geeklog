@@ -8754,17 +8754,23 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
     if (empty($footer))   $footer   = true;
     if (empty($priority)) $priority = 100;
 
-    $function = 'adveditor_init_' . $name;
-    if (function_exists($function)) $function();
-
     // Add core JavaScript global variables
     $script  = '<script type="text/javascript">' . LB
              . 'var geeklogEditorName = "' . $name . '";' . LB
-             . 'var geeklogEditorBaseUrl = "' . $_CONF['site_url'] . '";' . LB
-               // Setup editor path for advanced editor JS functions
-             . 'var geeklogEditorBasePath = "' . $_CONF['site_url'] . '/' . $name . '/";' . LB
              . '</script>' . LB;
     $_SCRIPTS->setJavaScript($script);
+
+    $function = 'adveditor_init_' . $name;
+    if (function_exists($function)) $function();
+
+    $function = 'adveditor_setup_' . $name;
+    if (function_exists($function)) {
+        $function($custom);
+        return;
+    }
+
+    if (empty($js)) return;
+
     // Add JavaScript
     $_SCRIPTS->setJavaScriptFile("adveditor_$name", $js,                             $footer, $priority);
     $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
