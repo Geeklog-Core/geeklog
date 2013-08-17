@@ -148,6 +148,19 @@
 
     }
 
+    $(function() {
+        var elem = document.getElementById('sel_editmode');
+        if (elem.addEventListener) {
+          elem.addEventListener('change', modifyNavlist, false);
+        } else if (elem.attachEvent) {
+          elem.attachEvent('onchange', modifyNavlist);
+        }
+        function modifyNavlist() {
+            var navlistcount = document.getElementById('navlist').getElementsByTagName('li').length;
+            showhideEditorDiv('editor', navlistcount - 6);
+        }
+    });
+
     /* Enable if you want to have toolbar only auto-collapse when not editing in field */
     /*
     function FCKeditor_OnComplete( editorInstance )  {

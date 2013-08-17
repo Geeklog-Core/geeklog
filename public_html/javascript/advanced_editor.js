@@ -75,7 +75,7 @@ AdvancedEditor.newEditor = function(options) {
         this.api[this.editor].newEditor(this.TextareaId[i].advanced, {toolbar:bar});
     }
 
-    this.addEventListener();
+    this.addEvent();
 
     var elem;
     elem = document.getElementById(this.ContainerId);
@@ -121,6 +121,19 @@ AdvancedEditor.changeToolbar = function(toolbar) {
     }
 }
 
+AdvancedEditor.addEvent = function() {
+    var elem = document.getElementById(this.EditModeId);
+    this.addEventListener(elem, 'change', this.onchange_editmode);
+}
+
+AdvancedEditor.addEventListener = function(target, type, listener) {
+    if (target.addEventListener) {
+        target.addEventListener(type, listener, false);
+    } else if (target.attachEvent) {
+        target.attachEvent('on' + type, listener); // support legacy IE
+    }
+}
+
 AdvancedEditor.onchange_editmode = function() {
     if (AdvancedEditor.isAdvancedMode()) {
         document.getElementById('text_editor').style.display = 'none';
@@ -130,13 +143,6 @@ AdvancedEditor.onchange_editmode = function() {
         document.getElementById('html_editor').style.display = 'none';
     }
     AdvancedEditor.swapEditorContent();
-}
-
-AdvancedEditor.addEventListener = function() {
-//    document.getElementById(this.EditModeId)
-//        .addEventListener("change", this.onchange_editmode, false);
-    var elem = document.getElementById(this.EditModeId);
-    elem.onchange = this.onchange_editmode;
 }
 
 function changeToolbar(toolbar) {

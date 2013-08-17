@@ -36,17 +36,3 @@ window.onload = function() {
         toolbar:1,
     });
 }
-
-// Override event listener
-AdvancedEditor.onchange_editmode = function() {
-    var navlistcount = document.getElementById('navlist').getElementsByTagName('li').length;
-    showhideEditorDiv('editor', navlistcount - 6);
-    if (AdvancedEditor.isAdvancedMode()) {
-        document.getElementById('text_editor').style.display = 'none';
-        document.getElementById('html_editor').style.display = '';
-    } else {
-        document.getElementById('text_editor').style.display = '';
-        document.getElementById('html_editor').style.display = 'none';
-    }
-    AdvancedEditor.swapEditorContent();
-}
