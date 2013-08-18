@@ -130,6 +130,11 @@ $_CONF_VALIDATE['Core']['path_images'] = array(
     'message' => isset($LANG_VALIDATION['path']) ? 
                  $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
 );
+$_CONF_VALIDATE['Core']['path_editors'] = array(
+    'rule' => 'path',
+    'message' => isset($LANG_VALIDATION['path']) ? 
+                 $LANG_VALIDATION['path'] : $LANG_VALIDATION['default']
+);
 
 /* Subgroup Site, Tab Pear */
 $_CONF_VALIDATE['Core']['have_pear'] = array('rule' => 'boolean');
@@ -348,6 +353,7 @@ $_CONF_VALIDATE['Core']['postmode'] = array(
 $_CONF_VALIDATE['Core']['speedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['skip_preview'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['advanced_editor'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['advanced_editor_name'] = array('rule' => 'notEmpty');
 $_CONF_VALIDATE['Core']['wikitext_editor'] = array('rule' => 'boolean');
 
 /* Subgroup Users and Submissions, Tab Comments */

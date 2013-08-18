@@ -2,6 +2,6 @@
 <!-- preferences/editor.thtml { -->
 
     <dt><label for="advanced_editor">{lang_advanced_editor}</label></dt>
-    <dd><input type="checkbox" id="advanced_editor" name="advanced_editor" {advanced_editor_checked}{xhtml}>FCKeditor</dd>
+    <dd><input type="checkbox" id="advanced_editor" name="advanced_editor" {advanced_editor_checked}{xhtml}>{adveditor_name}</dd>
 
 <!-- } preferences/editor.thtml -->

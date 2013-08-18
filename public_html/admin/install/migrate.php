@@ -838,6 +838,8 @@ if (INST_phpOutOfDate()) {
         $_CONF['path_images'] = $html_path . 'images/';
         $config->set('path_themes', $html_path . 'layout/');
         $_CONF['path_themes'] = $html_path . 'layout/';
+        $config->set('path_editors', $html_path . 'editors/');
+        $_CONF['path_editors'] = $html_path . 'editors/';
         $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
         $_CONF['rdf_file'] = $html_path . 'backend/geeklog.rss';
         $config->set('path_pear', $_CONF['path_system'] . 'pear/');

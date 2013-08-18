@@ -520,6 +520,7 @@ function INST_installEngine($install_type, $install_step)
                         $config->set('path_data', $gl_path . 'data/');
                         $config->set('path_images', $html_path . 'images/');
                         $config->set('path_themes', $html_path . 'layout/');
+                        $config->set('path_editors', $html_path . 'editors/');
                         $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
                         $config->set('path_pear', $_CONF['path_system'] . 'pear/');
                         $config->set('cookie_path', INST_guessCookiePath(urldecode($site_url)));

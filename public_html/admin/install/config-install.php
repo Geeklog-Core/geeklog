@@ -93,6 +93,7 @@ function install_config()
     $c->add('backup_path','','text',0,3,NULL,110,TRUE, $me, 3);
     $c->add('path_data','','text',0,3,NULL,120,TRUE, $me, 3);
     $c->add('path_images','','text',0,3,NULL,130,TRUE, $me, 3);
+    $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
 
     $c->add('tab_pear', NULL, 'tab', 0, 4, NULL, 0, TRUE, $me, 4);
     $c->add('fs_pear', NULL, 'fieldset', 0, 4, NULL, 0, TRUE, $me, 4);
@@ -281,6 +282,7 @@ function install_config()
     $c->add('speedlimit',45,'text',4,20,NULL,820,TRUE, $me, 20);
     $c->add('skip_preview',0,'select',4,20,0,830,TRUE, $me, 20);
     $c->add('advanced_editor',FALSE,'select',4,20,1,840,TRUE, $me, 20);
+    $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
     $c->add('wikitext_editor',FALSE,'select',4,20,1,850,TRUE, $me, 20);
 
     $c->add('tab_comments', NULL, 'tab', 4, 21, NULL, 0, TRUE, $me, 21);

@@ -400,6 +400,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             $config->set('path_data', $_CONF['path'] . 'data/');
             $config->set('path_images', $html_path . 'images/');
             $config->set('path_themes', $html_path . 'layout/');
+            $config->set('path_editors', $html_path . 'editors/');
             $config->set('rdf_file', $html_path . 'backend/geeklog.rss');
             $config->set('path_pear', $_CONF['path_system'] . 'pear/');
 

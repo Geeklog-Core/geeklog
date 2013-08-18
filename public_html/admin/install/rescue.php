@@ -43,8 +43,8 @@ $self = basename(__FILE__);
 // The conf_values we're making available to edit.
 $configs = array(
     'site_url', 'site_admin_url', 'site_mail', 'rdf_file', 'language', 'path_html',
-    'path_themes', 'path_images', 'path_log', 'path_language', 'backup_path',
-    'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
+    'path_themes', 'path_editors', 'path_images', 'path_log', 'path_language',
+    'backup_path', 'path_data', 'path_pear', 'theme', 'cookie_path', 'cookiedomain',
 );
 
 // Start it off

@@ -79,6 +79,10 @@ function update_ConfValuesFor201()
     $c->del('languages', 'Core');
     $c->add('languages',array('en'=>'English', 'de'=>'Deutsch'),'*text',6,29,NULL,480,FALSE, $me, 28);       
 
+    // Advanced Editor Options
+    $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
+    $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
+
     return true;
 }
 

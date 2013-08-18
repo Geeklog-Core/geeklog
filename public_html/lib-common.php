@@ -326,10 +326,6 @@ else if( $_CONF['allow_user_themes'] == 1 )
 // Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
 
-//$_CONF['advanced_editor_name'] = 'fckeditor';
-//$_CONF['advanced_editor_name'] = 'tinymce';
-//$_CONF['advanced_editor_name'] = 'ckeditor';
-
 /**
 * Include the Scripts class
 *
@@ -8731,7 +8727,10 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
     if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor']) return;
 
     $name = 'ckeditor';
-    $js = '/ckeditor/ckeditor.js';
+    $js = 'ckeditor.js';
+
+    $dir = str_replace($_CONF['path_html'], '', $_CONF['path_editors']);
+    $dir = trim($dir, '/'); // defalt : 'editors'
 
     if (!empty($_CONF['advanced_editor_name'])) {
         $name = $_CONF['advanced_editor_name'];
@@ -8740,8 +8739,8 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
         $name = $myeditor;
     }
 
-    if (!file_exists($_CONF['path_html'] . $name . '/functions.php')) return;
-    require_once $_CONF['path_html'] . $name . '/functions.php';
+    if (!file_exists($_CONF['path_editors'] . $name . '/functions.php')) return;
+    require_once $_CONF['path_editors'] . $name . '/functions.php';
 
     $function = 'adveditor_config_' . $name;
     $footer = $priority = '';
@@ -8751,6 +8750,7 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
         $footer   = $config['footer'];
         $priority = $config['priority'];
     }
+    $js = trim($js, '/');
     if (empty($footer))   $footer   = true;
     if (empty($priority)) $priority = 100;
 
@@ -8772,9 +8772,9 @@ function COM_setupAdvancedEditor($custom, $myeditor='')
     if (empty($js)) return;
 
     // Add JavaScript
-    $_SCRIPTS->setJavaScriptFile("adveditor_$name", $js,                             $footer, $priority);
+    $_SCRIPTS->setJavaScriptFile("adveditor_$name", "/$dir/$name/$js",               $footer, $priority);
     $_SCRIPTS->setJavaScriptFile('adveditor_main', '/javascript/advanced_editor.js', $footer, $priority + 1);
-    $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$name/functions.js",       $footer, $priority + 2);
+    $_SCRIPTS->setJavaScriptFile("adveditor_api_$name", "/$dir/$name/functions.js",  $footer, $priority + 2);
     $_SCRIPTS->setJavaScriptFile('adveditor_custom', $custom,                        $footer, $priority + 3);
 }
 

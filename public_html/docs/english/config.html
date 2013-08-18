@@ -251,6 +251,9 @@ the admin panel.</p>
     <td valign="top">/path/to/geeklog/public_html/images/</td>
     <td valign="top">Path where Geeklog expects to find its images, including
         user photos and images for stories.</td>
+<tr><td valign="top"><a name="desc_path_editors">path_editors</a></td>
+    <td valign="top">/path/to/geeklog/public_html/editors/</td>
+    <td valign="top">Path where all WYSIWYG editors reside.</td>
 </table>
 
 <h3><a name="site_pear">Site: PEAR</a></h3>
@@ -1062,7 +1065,11 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">false</td>
   <td valign="top">Enable (if set to <code>true</code>) a WYSIWYG editor for
     story and comment submissions and static pages. Geeklog ships with <a
-    href="http://www.fckeditor.net/">FCKeditor</a>.</td></tr>
+    href="http://ckeditor.com">CKeditor</a>.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_advanced_editor_name">advanced_editor_name</a></td>
+  <td valign="top">CKeditor</td>
+  <td valign="top">Default editor to use on the site</td></tr>
 <tr>
   <td valign="top"><a name="desc_wikitext_editor">wikitext_editor</a></td>
   <td valign="top">false</td>

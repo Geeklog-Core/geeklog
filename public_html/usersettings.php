@@ -562,6 +562,30 @@ function editpreferences()
 
     if ($_CONF['advanced_editor'] == 1) {
         $preferences->set_var('lang_advanced_editor', $LANG04[165]);
+        $name = '';
+        $editor = $_CONF['advanced_editor_name'];
+        if (file_exists($_CONF['path_editors'] . $editor . '/functions.php')) {
+            require_once $_CONF['path_editors'] . $editor . '/functions.php';
+            $function = 'adveditor_config_' . $editor;
+            if (function_exists($function)) {
+                $config = $function();
+                $name = $config['name'];
+            }
+        }
+        if (empty($name)) {
+            $words = explode('_', $editor);
+            $bwords = array();
+            foreach ($words as $th) {
+                if ((strtolower($th[0]) == $th[0]) &&
+                    (strtolower($th[1]) == $th[1])) {
+                    $bwords[] = ucfirst($th);
+                } else {
+                    $bwords[] = $th;
+                }
+            }
+            $name = implode(' ', $bwords);
+        }
+        $preferences->set_var('adveditor_name', $name);
         if ($A['advanced_editor'] == 1) {
             $preferences->set_var('advanced_editor_checked', 'checked="checked"');
         } else {
