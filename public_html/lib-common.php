@@ -5201,7 +5201,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
-            $retval .= '<br' . XHTML . '>';
+            $retval .= '<div class="whatsnew-divider"></div>';
         }        
     }
 
@@ -5273,7 +5273,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
-            $retval .= '<br' . XHTML . '>';
+            $retval .= '<div class="whatsnew-divider"></div>';
         }
     }
 
@@ -5343,7 +5343,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
         if( $_CONF['hidenewplugins'] == 0 )
         {
-            $retval .= '<br' . XHTML . '>';
+            $retval .= '<div class="whatsnew-divider"></div>';
         }
     }
 
@@ -5368,7 +5368,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
                 if( $i + 1 < $plugins )
                 {
-                    $retval .= '<br' . XHTML . '>';
+                    $retval .= '<div class="whatsnew-divider"></div>';
                 }
             }
         }
