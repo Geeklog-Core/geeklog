@@ -633,7 +633,7 @@ case 'profile':
         }
         $display .= USER_showProfile($uid, false, $msg, $plugin);
     } else {
-        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        COM_handle404();
     }
     break;
 

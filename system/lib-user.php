@@ -860,7 +860,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     $result = DB_query("SELECT {$_TABLES['users']}.uid,username,fullname,regdate,homepage,about,location,pgpkey,photo,email,status FROM {$_TABLES['userinfo']},{$_TABLES['users']} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $uid");
     $nrows = DB_numRows($result);
     if ($nrows == 0) { // no such user
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_handle404();
     }
     $A = DB_fetchArray($result);
 
@@ -869,7 +869,7 @@ function USER_showProfile($uid, $preview = false, $msg = 0, $plugin = '')
     }
 
     if ($A['status'] != USER_ACCOUNT_ACTIVE && !SEC_hasRights('user.edit')) {
-        return COM_refresh($_CONF['site_url'] . '/index.php');
+        COM_handle404();
     }
     
     $display_name = COM_getDisplayName($uid, $A['username'], $A['fullname']);
