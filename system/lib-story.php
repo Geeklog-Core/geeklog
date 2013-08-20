@@ -834,11 +834,10 @@ function STORY_doDeleteThisStoryNow($sid)
     // notify plugins
     PLG_itemDeleted($sid, 'article');
 
-    // update RSS feed and Older Stories block
+    // update RSS feed
     COM_rdfUpToDateCheck('article');
     COM_rdfUpToDateCheck('comment');
     STORY_updateLastArticlePublished();
-    COM_olderStuff();
     CMT_updateCommentcodes();
 }
 
@@ -1342,9 +1341,6 @@ function plugin_moderationapprove_story_draft($sid)
     COM_rdfUpToDateCheck('article');
     COM_rdfUpToDateCheck('comment');
     STORY_updateLastArticlePublished();
-
-    // update Older Stories block
-    COM_olderStuff();
 }
 
 /**
@@ -1491,7 +1487,11 @@ function plugin_savecomment_article($title, $comment, $id, $pid, $postmode)
     } else { // success
         $comments = DB_count($_TABLES['comments'], array('type', 'sid'), array('article', $id));
         DB_change($_TABLES['stories'], 'comments', $comments, 'sid', $id);
-        COM_olderStuff(); // update comment count in Older Stories block
+        
+        // Comment count in Older Stories block may have changed so delete cache 
+        $cacheInstance = 'olderstories__'; // remove all olderstories instances
+        CACHE_remove_instance($cacheInstance); 
+
         $retval = COM_refresh(COM_buildUrl($_CONF['site_url']
                               . "/article.php?story=$id"));
     }
@@ -1523,6 +1523,11 @@ function plugin_deletecomment_article($cid, $id)
         CMT_deleteComment($cid, $id, 'article');
         $comments = DB_count ($_TABLES['comments'], 'sid', $id);
         DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $id);
+        
+        // Comment count in Older Stories block may have changed so delete cache 
+        $cacheInstance = 'olderstories__'; // remove all olderstories instances
+        CACHE_remove_instance($cacheInstance); 
+        
         $retval .= COM_refresh(COM_buildUrl($_CONF['site_url']
                  . "/article.php?story=$id") . '#comments');
     } else {
@@ -2033,11 +2038,10 @@ function service_submit_story($args, &$output, &$svc_msg)
             PLG_itemSaved($sid, 'article');
         }
 
-        // update feed(s) and Older Stories block
+        // update feed(s)
         COM_rdfUpToDateCheck('article', $story->DisplayElements('tid'), $sid);
         COM_rdfUpToDateCheck('comment');
         STORY_updateLastArticlePublished();
-        COM_olderStuff();
         CMT_updateCommentcodes();
 
         if ($story->type == 'submission') {

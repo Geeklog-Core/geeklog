@@ -4173,87 +4173,97 @@ function COM_mail($to, $subject, $message, $from = '', $html = false, $priority 
     return($retval === true ? true : false);
 }
 
-
 /**
-* Creates older stuff block
+* Shows older story information in a block
 *
-* Creates the olderstuff block for display.
-* Actually updates the olderstuff record in the gl_blocks database.
-* @return   void
+* Return the HTML that shows any older stories
+*
+* @param    string  $help     Help file for block
+* @param    string  $title    Title used in block header
+* @param    string  $position Position in which block is being rendered 'left', 'right' or blank (for centre)
+* @return   string  Return the HTML that shows any new stories, comments, etc
+*
 */
-
-function COM_olderStuff()
+function COM_olderStoriesBlock( $help = '', $title = '', $position = '' )
 {
     global $_TABLES, $_CONF;
 
-    $sql['mysql'] = "SELECT sid,ta.tid,title,comments,UNIX_TIMESTAMP(date) AS day 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
-        WHERE ta.type = 'article' AND ta.id = sid   
-        AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
-        GROUP BY sid 
-        ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $cacheInstance = 'olderstories__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+    $retval = CACHE_check_instance($cacheInstance, 0);
+    if (empty($retval)) {
+        $retval = COM_startBlock( $title, $help,
+                           COM_getBlockTemplate( 'older_stories_block', 'header', $position ));
+        
+        $sql['mysql'] = "SELECT sid,ta.tid,title,comments,UNIX_TIMESTAMP(date) AS day 
+            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta 
+            WHERE ta.type = 'article' AND ta.id = sid " . COM_getLangSQL('sid', 'AND') . "   
+            AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . "
+            GROUP BY sid 
+            ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+        
+        $sql['mssql'] = $sql['mysql'];
+        
+        $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day 
+            FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
+            WHERE ta.type = 'article' AND ta.id = sid  " . COM_getLangSQL('sid', 'AND') . "  
+            AND (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
+            GROUP BY sid, ta.tid, title, comments, day 
+            ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     
-    $sql['mssql'] = $sql['mysql'];
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
     
-    $sql['pgsql'] = "SELECT sid,ta.tid,title,comments,date_part('epoch',date) AS day 
-        FROM {$_TABLES['stories']}, {$_TABLES['topic_assignments']} ta  
-        WHERE ta.type = 'article' AND ta.id = sid AND 
-        (perm_anon = 2) AND (frontpage = 1) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL('AND', 1, 'ta') . " 
-        GROUP BY sid, ta.tid, title, comments, day 
-        ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
-
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
-
-    if( $nrows > 0 )
-    {
-        $dateonly = $_CONF['dateonly'];
-        if( empty( $dateonly ))
-        {
-            $dateonly = '%d-%b'; // fallback: day - abbrev. month name
-        }
-
-        $day = 'noday';
-        $string = '';
-
-        for( $i = 0; $i < $nrows; $i++ )
-        {
-            $A = DB_fetchArray( $result );
-
-            $daycheck = strftime( '%A', $A['day'] );
-            if( $day != $daycheck )
-            {
-                if( $day != 'noday' )
-                {
-                    $daylist = COM_makeList( $oldnews, 'list-older-stories' );
-                    $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
-                                             '', $daylist );
-                    $string .= $daylist . '<br' . XHTML . '>';
-                }
-
-                $day2 = strftime( $dateonly, $A['day'] );
-                $string .= '<h3>' . $daycheck . ' <small>' . $day2
-                        . '</small></h3>' . LB;
-                $oldnews = array();
-                $day = $daycheck;
+        if ($nrows > 0) {
+            $dateonly = $_CONF['dateonly'];
+            if (empty($dateonly)) {
+                $dateonly = '%d-%b'; // fallback: day - abbrev. month name
             }
-
-            $oldnews_url = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                . $A['sid'] );
-            $oldnews[] = COM_createLink($A['title'], $oldnews_url)
-                .' (' . COM_numberFormat( $A['comments'] ) . ')';
+    
+            $day = 'noday';
+            $string = '';
+    
+            for ($i = 0; $i < $nrows; $i++) {
+                $A = DB_fetchArray( $result );
+    
+                $daycheck = strftime( '%A', $A['day'] );
+                if( $day != $daycheck )
+                {
+                    if( $day != 'noday' )
+                    {
+                        $daylist = COM_makeList( $oldnews, 'list-older-stories' );
+                        $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
+                                                 '', $daylist );
+                        $string .= $daylist . '<div class="divider-older-stories"></div>';
+                    }
+    
+                    $day2 = strftime( $dateonly, $A['day'] );
+                    $string .= '<h3>' . $daycheck . ' <small>' . $day2
+                            . '</small></h3>' . LB;
+                    $oldnews = array();
+                    $day = $daycheck;
+                }
+    
+                $oldnews_url = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                    . $A['sid'] );
+                $oldnews[] = COM_createLink($A['title'], $oldnews_url)
+                    .' (' . COM_numberFormat( $A['comments'] ) . ')';
+            }
+    
+            if( !empty( $oldnews ))
+            {
+                $daylist = COM_makeList( $oldnews, 'list-older-stories' );
+                $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
+                $string .= $daylist;
+                
+                $retval .= $string;
+            }
         }
+        
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'older_stories_block', 'footer', $position ));
+        CACHE_create_instance($cacheInstance, $retval, 0);
+    }    
 
-        if( !empty( $oldnews ))
-        {
-            $daylist = COM_makeList( $oldnews, 'list-older-stories' );
-            $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
-            $string .= $daylist;
-            $string = DB_escapeString( $string );
-
-            DB_query( "UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'" );
-        }
-    }
+    return $retval;    
 }
 
 /**
@@ -4313,6 +4323,13 @@ function COM_showBlock( $name, $help='', $title='', $position='' )
                 $retval .= COM_whatsNewBlock( $help, $title, $position );
             }
             break;
+            
+        case 'older_stories':
+            if( !$_USER['noboxes'] )
+            {
+                $retval .= COM_olderStoriesBlock( $help, $title, $position );
+            }
+            break;            
     }
 
     return $retval;
@@ -5201,7 +5218,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
-            $retval .= '<div class="whatsnew-divider"></div>';
+            $retval .= '<div class="divider-whats-new"></div>';
         }        
     }
 
@@ -5273,7 +5290,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
-            $retval .= '<div class="whatsnew-divider"></div>';
+            $retval .= '<div class="divider-whats-new"></div>';
         }
     }
 
@@ -5343,7 +5360,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
         }
         if( $_CONF['hidenewplugins'] == 0 )
         {
-            $retval .= '<div class="whatsnew-divider"></div>';
+            $retval .= '<div class="divider-whats-new"></div>';
         }
     }
 
@@ -5368,7 +5385,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
                 if( $i + 1 < $plugins )
                 {
-                    $retval .= '<div class="whatsnew-divider"></div>';
+                    $retval .= '<div class="divider-whats-new"></div>';
                 }
             }
         }

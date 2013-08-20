@@ -614,9 +614,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $rdfurl = COM_sanitizeUrl ($rdfurl, array ('http', 'https'));
         }
         if ($type == 'gldefault') {
-            if ($name != 'older_stories') {
-                $content = '';
-            }
+            $content = '';
             $rdfurl = '';
             $rdfupdated = '';
             $rdflimit = 0;
@@ -676,10 +674,6 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
              $bid = DB_insertId();
         }
 
-        if (($type == 'gldefault') && ($name == 'older_stories')) {
-            COM_olderStuff ();
-        }
-        
         TOPIC_saveTopicSelectionControl('block', $bid);
         
         $cacheInstance = 'block__' . $bid . '__';  // remove any of this blocks instances if exists

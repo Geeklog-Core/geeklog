@@ -413,7 +413,6 @@ function moderation($mid, $action, $type, $count)
 
                 PLG_itemSaved($A['sid'], 'article');
                 COM_rdfUpToDateCheck ();
-                COM_olderStuff ();
             } elseif ($type == 'comment') {
                 $sid = CMT_approveModeration($mid[$i]);
                 if (! in_array($sid, $sidArray)) {

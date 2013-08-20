@@ -1166,7 +1166,6 @@ class Story
             COM_rdfUpToDateCheck('article');
             COM_rdfUpToDateCheck('comment');
             STORY_updateLastArticlePublished();
-            COM_olderStuff();
 
             return STORY_SAVED;
         }

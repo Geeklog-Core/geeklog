@@ -1004,13 +1004,10 @@ if (INST_phpOutOfDate()) {
                 && ($_OLD_CONF['site_url'] != $_CONF['site_url'])) {
 
             INST_updateSiteUrl($_OLD_CONF['site_url'], $_CONF['site_url']);
-
-        } else {
-
-            // refresh "Older Stories" block
-            COM_olderStuff();
-
         }
+        
+        // Clear the Geeklog Cache incase paths etc. in cache files        
+        INST_clearCache();        
 
         /** 
          * Import complete.

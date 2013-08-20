@@ -226,11 +226,13 @@ function plugin_itemdeleted_template($id, $type)
     // Also delete cache for topics block and topic_tree when topic or article is updated or deleted
 
     $whatsnew = false;
+    $olderstories = false;
     $topicsblock = false;
     $topic_tree = false;
     
     if ($type == 'article' OR $type == 'story') {
         $whatsnew = true;
+        $olderstories = true;
         $topicsblock = true;
     } elseif ($type == 'topic') {
         $topicsblock = true;
@@ -248,6 +250,10 @@ function plugin_itemdeleted_template($id, $type)
     if ($whatsnew) {
         $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
         CACHE_remove_instance($cacheInstance);  
+    }
+    if ($olderstories) {
+        $cacheInstance = 'olderstories__'; // remove all olderstories instances
+        CACHE_remove_instance($cacheInstance);      
     }
     if ($topicsblock) {
         $cacheInstance = 'topicsblock__';

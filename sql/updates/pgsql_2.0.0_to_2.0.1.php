@@ -32,6 +32,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['commentsubmissions']} CHANGE `sid` `sid` VARCH
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} CHANGE `sid` `sid` VARCHAR(128) NOT NULL DEFAULT ''";
 $_SQL[] = "ALTER TABLE {$_TABLES['trackback']} CHANGE `sid` `sid` VARCHAR(128) NOT NULL";
 
+// Clear out Older Stories Block
+$_SQL[] = "UPDATE {$_TABLES['blocks']} SET `content` = '' WHERE name = 'older_stories'";
+
 /**
  * Add new config options
  *
