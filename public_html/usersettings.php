@@ -1136,47 +1136,6 @@ function saveuser($A)
             }
         }
         
-/*
-        $msg = 5;
-        // Re Sync data if needed
-        if (isset($A['resynch'])) {
-            if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) {       
-                $modules = SEC_collectRemoteOAuthModules();
-
-                $active_service = (count($modules) == 0) ? false : in_array(substr($_USER['remoteservice'], 6), $modules);
-                if (!$active_service) {
-                    $status = -1;
-                    $msg = 115; // Remote service has been disabled.
-                } else {
-                    $query[] = '';
-                    $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
-
-                    if ($service == 'oauth.facebook') {
-                        // facebook does resynch during refresh
-                        return COM_refresh($callback_url);
-                    } else {
-                        // all other services use reauth/callback method
-                        // send request to OAuth Service for user information
-                        require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
-            
-                        $consumer = new OAuthConsumer($service);
-    
-                        $url = $consumer->find_identity_info($callback_url, $query);
-                        if (empty($url)) {
-                            $msg = 110; // Can not get URL for authentication.'
-                        } else {
-                            header('Location: ' . $url);
-                            exit;
-                        }
-                    }
-                }            
-            }
-            
-            if ($msg != 5) {
-                $msg = 114; // Account saved but re-synch failed.
-            }
-        }
-*/        
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
