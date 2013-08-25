@@ -3245,6 +3245,7 @@ function COM_userMenu( $help='', $title='', $position='' )
             $login->set_var('openid_login', '');
         }
 
+                
         // OAuth remote authentification.
         if ($_CONF['user_login_method']['oauth'] && ($_CONF['usersubmission'] == 0) && !$_CONF['disable_new_user_registration']) {
             $_SCRIPTS->setJavascriptFile('login', '/javascript/login.js');
@@ -3258,9 +3259,7 @@ function COM_userMenu( $help='', $title='', $position='' )
                     $login->set_var('oauth_service', $service);
                     $login->set_var('lang_oauth_service', $LANG01[$service]);
                     // for sign in image
-                    //$login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png');
-                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/login-with-' . $service . '.png');
-                    $login->set_var('oauth_sign_in_image_style', '');                    
+                    $login->set_var('oauth_sign_in_image', $_CONF['site_url'] . '/images/' . $service . '-login-icon.png'); // For use with oauth icon on regular buttons
                     $login->parse('output', 'oauth_login');
                     $html_oauth .= $login->finish($login->get_var('output'));
                 }

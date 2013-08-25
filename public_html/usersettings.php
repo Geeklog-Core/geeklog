@@ -1108,7 +1108,35 @@ function saveuser($A)
         }
 
         PLG_userInfoChanged ($_USER['uid']);
+        
+        // at this point, the user information has been saved, but now we're going to check to see if
+        // the user has requested resynchronization with their remoteservice account
+        $msg = 5; // default msg = Your account information has been successfully saved
+        if (isset($A['resynch']) ) {
+            if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0)) {
+                $modules = SEC_collectRemoteOAuthModules();
+                $active_service = (count($modules) == 0) ? false : in_array(substr($_USER['remoteservice'], 6), $modules);
+                if (!$active_service) {
+                    $status = -1;
+                    $msg = 115; // Remote service has been disabled.
+                } else {
+                    require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+                    $service = substr($_USER['remoteservice'], 6);
+                    $consumer = new OAuthConsumer($service);
+                    $callback_url = $_CONF['site_url'];
+                    $consumer->setRedirectURL($callback_url);
+                    $user = $consumer->authenticate_user();
+                    $consumer->doSynch($user);
+                }
+            }
 
+            if ($msg != 5) {
+                $msg = 114; // Account saved but re-synch failed.
+                COM_errorLog($MESSAGE[$msg]);
+            }
+        }
+        
+/*
         $msg = 5;
         // Re Sync data if needed
         if (isset($A['resynch'])) {
@@ -1148,7 +1176,7 @@ function saveuser($A)
                 $msg = 114; // Account saved but re-synch failed.
             }
         }
-        
+*/        
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
@@ -1395,7 +1423,86 @@ if (! COM_isAnonUser()) {
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?msg=5');
         break;
-        
+
+    case 'synch':
+        // This case is the result of a callback from an OAuth service.
+        // The user has made a request to resynch their glFusion user account with the remote OAuth service
+        if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0) && isset($_GET['oauth_login'])) {
+            $msg = 5;
+
+            $modules = SEC_collectRemoteOAuthModules();
+            $active_service = (count($modules) == 0) ? false : in_array(substr($_GET['oauth_login'], 6), $modules);
+            if (!$active_service) {
+                $status = -1;
+                $msg = 114; // resynch with remote account has failed but your other account information has been successfully saved.
+            } else {
+                $query = array_merge($_GET, $_POST);
+                $service = $query['oauth_login'];
+                // COM_errorLog("-------------------------------------------------------------------------");
+                // COM_errorLog("usersettings.php?mode=resynch&oauth_login={$service}");
+                // COM_errorLog("-------------------------------------------------------------------------");
+
+                require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
+
+                $consumer = new OAuthConsumer($service);
+
+                if($service == 'oauth.facebook') {
+                    // facebook resynchronizations are simple to perform
+                    $oauth_userinfo = $consumer->refresh_userinfo();
+                    if (empty($oauth_userinfo)) {
+                        $msg = 114; // Account saved but re-synch failed.
+                        COM_errorLog($MESSAGE[$msg]);
+                    } else {
+                        $consumer->doSynch($oauth_userinfo);
+                    }
+                } else {
+                    // other OAuth services are more complex
+                    // setup what we need to callback and authenticate
+                    $callback_query_string = $consumer->getCallback_query_string();
+                    // COM_errorLog("callback_query_string={$callback_query_string}");
+                    $cancel_query_string = $consumer->getCancel_query_string();
+                    // COM_errorLog("cancel_query_string={$cancel_query_string}");
+                    $callback_url = $_CONF['site_url'] . '/usersettings.php?mode=synch&oauth_login=' . $service;
+                    // COM_errorLog("callback_url={$callback_url}");
+
+                    // authenticate with the remote service
+                    if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
+                        $msg = 114; // Resynch with remote account has failed but other account information has been successfully saved
+                    // elseif the callback query string is set, then we have successfully authenticated
+                    } elseif (isset($query[$callback_query_string])) {
+                        // COM_errorLog("authenticated with remote service, retrieve userinfo");
+                        // foreach($query as $key=>$value) {
+                        //     COM_errorLog("query[{$key}]={$value}");
+                        // }
+                        $oauth_userinfo = $consumer->sreq_userinfo_response($query);
+                        if (empty($oauth_userinfo)) {
+                            $msg = 111; // Authentication error.
+                        } else {
+                            // COM_errorLog("resynchronizing userinfo");
+                            // foreach($oauth_userinfo as $key=>$value) {
+                            //     COM_errorLog("oauth_user_info[{$key}] set");
+                            // }
+                            $consumer->doSynch($oauth_userinfo);
+                        }
+                    } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
+                        $msg = 112; // Certification has been cancelled.
+                    } else {
+                        $msg = 91; // You specified an invalid identity URL.
+                    }
+                }
+            }
+
+            if ($msg == 5) {
+                $display = COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $_USER['uid'] . '&amp;msg=5');
+            } else {
+                COM_errorLog($MESSAGE[$msg]);
+                $display = COM_refresh ($_CONF['site_url'] . '/usersettings.php?msg=' . $msg);
+            }
+            break;
+        }
+
+        // If OAuth is disabled, drop into default case
+/*        
     case 'synch':
         // This mode is the result of a callback from an OAuth service. The user has made a request to resynch their Geeklog user account with the OAuth service they used to login with.
         if ($_CONF['user_login_method']['oauth'] && (strpos($_USER['remoteservice'], 'oauth.') === 0) && isset($_GET['oauth_login'])) {
@@ -1462,7 +1569,7 @@ if (! COM_isAnonUser()) {
         }
         
         // Go right into default
-
+*/
     default: // also if $mode == 'edit', 'preferences', or 'comments'
         $display .= COM_showMessageFromParameter();
         $display .= edituser();

@@ -2,8 +2,13 @@
 
 <form class="third-party-login" action="{site_url}/users.php?oauth_login={oauth_service}" method="post">
     <div>
-        <input style="border:0;height:22px;width:141px;padding:0;margin:0;" type="submit" value="" id="login_{oauth_service}"{xhtml}>
+        {# OAuth Button Style 1: Image buttons (uncomment line below) #}
+        {# <input style="border:0;height:22px;width:141px;padding:0;margin:0;" type="submit" value="" id="login_{oauth_service}"{xhtml}> #}
+        
+        {# OAuth Button Style 2: Login buttons with icons (uncomment line below) #}
+        <img alt="" src="{oauth_sign_in_image}"{xhtml}><input value="{lang_oauth_service}" type="submit" class="submit"{xhtml}>
     </div>
 </form>
 
 {# end {templatelocation} #}
+
