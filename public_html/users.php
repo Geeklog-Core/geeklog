@@ -890,16 +890,14 @@ default:
             !$_CONF['disable_new_user_registration'] &&
             isset($_GET['oauth_login'])) {
         // Here we go with the handling of OAuth authentification.
-
-        $active_service = false;
         $modules = SEC_collectRemoteOAuthModules();
         $active_service = (count($modules) == 0) ? false : in_array($_GET['oauth_login'], $modules);
         if (!$active_service) {
             $status = -1;
+            COM_errorLog("OAuth login failed - there was no consumer available for the service:" . $_GET['oauth_login']);
         } else {
             $query = array_merge($_GET, $_POST);
             $service = $query['oauth_login'];
-            $callback_url = $_CONF['site_url'] . '/users.php?oauth_login=' . $service;
 
             COM_clearSpeedlimit($_CONF['login_speedlimit'], $service);
             if (COM_checkSpeedlimit($service, $_CONF['login_attempts']) > 0) {
@@ -909,40 +907,21 @@ default:
             require_once $_CONF['path_system'] . 'classes/oauthhelper.class.php';
 
             $consumer = new OAuthConsumer($service);
-            $callback_query_string = $consumer->getCallback_query_string();
-            $cancel_query_string = $consumer->getCancel_query_string();
 
-            if (!isset($query[$callback_query_string]) && (empty($cancel_query_string) || !isset($query[$cancel_query_string]))) {
-                $url = $consumer->find_identity_info($callback_url, $query);
-                if (empty($url)) {
-                    COM_updateSpeedlimit('login');
-                    COM_updateSpeedlimit($service);
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=110');
-                    exit;
-                } else {
-                    header('Location: ' . $url);
-                    exit;
-                }
-            } elseif (isset($query[$callback_query_string])) {
-                $oauth_userinfo = $consumer->sreq_userinfo_response($query);
-                if (empty($oauth_userinfo)) {
-                    COM_updateSpeedlimit('login');
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=111');
-                    exit;
-                } else {
-                    $consumer->doAction($oauth_userinfo);
-                }
-            } elseif (!empty($cancel_query_string) && isset($query[$cancel_query_string])) {
-                    COM_updateSpeedlimit('login');
-                    echo COM_refresh($_CONF['site_url'] . '/users.php?msg=112');
-                    exit;
-            } else {
+            $callback_url = $_CONF['site_url'] . '/users.php?oauth_login=' . $service;
+
+            $consumer->setRedirectURL($callback_url);
+            $oauth_userinfo = $consumer->authenticate_user();
+            if ( $oauth_userinfo === false ) {
                 COM_updateSpeedlimit('login');
-                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=91');
+                COM_errorLog("OAuth Error: " . $consumer->error);
+                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=110'); // OAuth authentication error
                 exit;
             }
-        }
 
+            $consumer->doAction($oauth_userinfo);
+
+        }        
     } else {
         $status = -1;
     }

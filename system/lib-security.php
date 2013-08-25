@@ -2018,57 +2018,28 @@ function SEC_collectRemoteOAuthModules()
 {
     global $_CONF;
 
+    $available_modules = array('facebook','google','twitter','microsoft','linkedin','yahoo');
+
     $modules = array();
-    
-    // Check for OpenSSL PHP extension which is required
+
     if (extension_loaded('openssl')) {
-        $modulespath = $_CONF['path_system'] . 'classes/oauth/';
-        if (is_dir($modulespath)) {
-            $folder = opendir($modulespath);
-            while (($filename = @readdir($folder)) !== false) {
-                $pos = strpos($filename, '.auth.class.php');
-                if ($pos && (substr($filename, strlen($filename) - 4) == '.php')) {
-                    // See if login template file exists
-                    $file_exists = false;
-                    $mod = substr($filename, 0, $pos);
-                    $def_thtml = $_CONF['path_layout'] . 'loginform_oauth.thtml';
-                    $thtml = $_CONF['path_layout'] . 'loginform_' . $mod . '.thtml';
-                    if (file_exists($def_thtml) || file_exists($thtml)) {
-                        $file_exists = true;    
-                    } else {
-                        // See if default theme is being used
-                        if (!empty($_CONF['path_layout_default'])) {
-                            $def_thtml = $_CONF['path_layout_default'] . 'loginform_oauth.thtml';
-                            $thtml = $_CONF['path_layout_default'] . 'loginform_' . $mod . '.thtml';
-                            if (file_exists($def_thtml) || file_exists($thtml)) {
-                                $file_exists = true;
+        foreach ($available_modules as $mod) {
+            if (isset($_CONF[$mod . '_login'])) {
+                if ($_CONF[$mod . '_login']) {
+                    // Now check if a Consumer Key and Secret exist and are set
+                    if (isset($_CONF[$mod . '_consumer_key'])) {
+                        if ($_CONF[$mod . '_consumer_key'] != '') {
+                            if (isset($_CONF[$mod . '_consumer_secret'])) {
+                                if ($_CONF[$mod . '_consumer_secret'] != '') {
+                                    $modules[] = $mod;
+                                }
                             }
-                        }
-                    }
-                    if ($file_exists) {
-                        // Check to see if there is a config value to enable or disable login method
-                        if (isset($_CONF[$mod . '_login'])) {
-                            if ($_CONF[$mod . '_login']) {
-                                // Now check if a Consumer Key and Secret exist and are set
-                                if (isset($_CONF[$mod . '_consumer_key'])) {
-                                    if ($_CONF[$mod . '_consumer_key'] != '') {
-                                        if (isset($_CONF[$mod . '_consumer_secret'])) {
-                                            if ($_CONF[$mod . '_consumer_secret'] != '') {
-                                                $modules[] = $mod;
-                                            }
-                                        }                                
-                                    }
-                                }                                
-                            }
-                        } else {
-                            $modules[] = $mod;
                         }
                     }
                 }
             }
         }
     }
-    
     return $modules;
 }
 

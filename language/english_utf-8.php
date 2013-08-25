@@ -183,7 +183,10 @@ $LANG01 = array(
     139 => "Click <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">here</a> to return to the homepage",
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
-    'linkedin' => 'Login with LinkedIn', 
+    'linkedin' => 'Login with LinkedIn',
+    'google' => 'Login with Google',
+    'microsoft' => 'Login with Microsoft',
+    'yahoo' => 'Login with Yahoo',
     'ctl' => 'Clear Cache'
 );
 
@@ -1941,6 +1944,15 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => "Enable OAuth Login Method Twitter",
     'twitter_consumer_key' => "Twitter OAuth Consumer Key",    
     'twitter_consumer_secret' => "Twitter OAuth Consumer Secret",  
+    'google_login' => "Enable OAuth Login Method Google",
+    'google_consumer_key' => "Google OAuth Consumer Key",
+    'google_consumer_secret' => "Google OAuth Consumer Secret",
+    'microsoft_login' => "Enable OAuth Login Method Microsoft",
+    'microsoft_consumer_key' => "Microsoft OAuth Consumer Key",
+    'microsoft_consumer_secret' => "Microsoft OAuth Consumer Secret",   
+    'yahoo_login' => "Enable OAuth Login Method Yahoo",
+    'yahoo_consumer_key' => "Yahoo OAuth Consumer Key",
+    'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret",   
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Default Language",

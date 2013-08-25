@@ -836,7 +836,7 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_user_login_method_oauth">oauth</a></td>
   <td valign="top"><code>false</code></td>
   <td valign="top">Whether to allow logins using <a href="http://oauth.net/">OAuth</a>. This will display a special OAuth login below the normal login field.<br>
-    <strong>Note:</strong> Currently only OAuth 1.0 is supported. Current login methods supported: Facebook, Twitter and LinkedIn.<br>Please note that to enable login for a 
+    <strong>Note:</strong> Currently only OAuth 1.0 is supported. Current login methods supported: Facebook, Twitter, LinkedIn, Google and Microsoft.<br>Please note that to enable login for a 
     specific method, you need an authorization class in <tt>system/classes/oauth</tt>. If you only want to allow Facebook but not Twitter users (or vice versa), simply
     remove the class file for the unwanted service(s) or use the config options below. You must also update the config options below with the correct key and secret string 
     ($consumer_secret) values. The PHP extension OpenSSL is required to be loaded.<br>
@@ -892,6 +892,14 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top">Required to use Twitter OAuth login method. Visit this <a href="https://twitter.com/apps">Twitter Application page</a> 
   to create an application to receive your consumer key and secret.<br>
   See our <a href="http://wiki.geeklog.net/index.php/OAuth">Wiki OAuth page</a> for more information.</td></tr>
+  
+  
+  
+  
+  
+  
+  
+  
 <tr>
   <td valign="top"><a name="desc_aftersave_user">aftersave_user</a></td>
   <td valign="top"><code>'item'</code></td>
