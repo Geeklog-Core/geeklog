@@ -321,7 +321,10 @@ function loginform($hide_forgotpw_link = false, $userstatus = -1)
         $cfg['message'] = $LANG04[117];
         $cfg['hide_forgotpw_link'] = true;
         $cfg['no_newreg_link']     = true;
-    } else {
+    } elseif ($userstatus == -2) { // No error user just visited page to login
+        $cfg['title']   = $LANG04['user_login'];
+        $cfg['message'] = $LANG04['user_login_message'];
+    } else { // Status should be -1 which is login error        
         $cfg['title']   = $LANG04[65];
         $cfg['message'] = $LANG04[66];
     }
@@ -923,7 +926,7 @@ default:
 
         }        
     } else {
-        $status = -1;
+        $status = -2; // User just visited login page no error. -1 = error
     }
 
     if ($status == USER_ACCOUNT_ACTIVE) { // logged in AOK.
@@ -1089,6 +1092,7 @@ default:
                         // main site page and need to control the login process
                         $display .= CUSTOM_loginErrorHandler($msg);
                     } else {
+                        echo "ha " . $status;
                         $display .= loginform(false, $status);
                     }
                 }

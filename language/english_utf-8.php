@@ -407,7 +407,9 @@ $LANG04 = array(
     165 => 'Use Advanced Editor', 
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
-    168 => 'You may also login with one on of the below remote authentication services'
+    168 => 'You may also login with one on of the below remote authentication services',
+    'user_login' => 'User Login', 
+    'user_login_message' => 'Please login below. You must enter both a username and password.'
 );
 
 ###############################################################################
