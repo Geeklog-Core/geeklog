@@ -1086,14 +1086,20 @@ default:
                 displayLoginErrorAndAbort(82, $LANG04[113], $LANG04[112]);
             } else { // Show login form
                 if(($msg != 69) && ($msg != 70)) {
-                    if ($_CONF['custom_registration'] AND
-                            function_exists('CUSTOM_loginErrorHandler')) {
-                        // Typically this will be used if you have a custom
-                        // main site page and need to control the login process
-                        $display .= CUSTOM_loginErrorHandler($msg);
+                    if (COM_isAnonUser()) {
+                        if ($_CONF['custom_registration'] AND
+                                function_exists('CUSTOM_loginErrorHandler')) {
+                            // Typically this will be used if you have a custom
+                            // main site page and need to control the login process
+                            $display .= CUSTOM_loginErrorHandler($msg);
+                        } else {
+                            $display .= loginform(false, $status);
+                        }
                     } else {
-                        echo "ha " . $status;
-                        $display .= loginform(false, $status);
+                        // user is already logged in
+                        $display .= COM_startBlock ($LANG04['user_login']);
+                        $display .= '<p>' . $LANG04['user_logged_in_message'] . '</p>';
+                        $display .= COM_endBlock ();
                     }
                 }
             }

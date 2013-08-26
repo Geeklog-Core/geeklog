@@ -314,7 +314,7 @@ $LANG04 = array(
     67 => 'Member Since',
     68 => 'Remember Me For',
     69 => 'How long should we remember you after logging in?',
-    70 => "Customize the layout and content of {$_CONF['site_name']}",
+    70 => "Customize the layout and content of {$_CONF['site_name']}!",
     71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these great features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\" rel=\"nofollow\">register</a> with {$_CONF['site_name']}.  Are you already a member?  Then use the login form to the left to log in!",
     72 => 'Theme',
     73 => 'Language',
@@ -409,7 +409,8 @@ $LANG04 = array(
     167 => 'Remote login',
     168 => 'You may also login with one on of the below remote authentication services',
     'user_login' => 'User Login', 
-    'user_login_message' => 'Please login below. You must enter both a username and password.'
+    'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
 
 ###############################################################################

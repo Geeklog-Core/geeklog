@@ -1560,8 +1560,8 @@ if (! COM_isAnonUser()) {
         break;
     }
 } else {
-    $display .= COM_startBlock ($LANG04[70] . '!');
-    $display .= '<br' . XHTML . '>' . $LANG04[71] . '<br' . XHTML . '><br' . XHTML . '>';
+    $display .= COM_startBlock ($LANG04[70]);
+    $display .= '<p>' . $LANG04[71] . '</p>';
     $display .= COM_endBlock ();
     $display = COM_createHTMLDocument($display);
 }
