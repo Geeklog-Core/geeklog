@@ -330,15 +330,17 @@ class OAuthConsumer {
                 break;
             case 'yahoo' :
                 $users = array(
-                    'loginname'      => (isset($info->first_name) ? $info->first_name : $info->id),
-                    'email'          => $info->emails->preferred,
+                    'loginname'      => (isset($info->query->results->profile->givenName) ? $info->query->results->profile->givenName : $info->query->results->profile->guid),
+                    'email'          => $info->query->results->profile->emails->handle,
                     'passwd'         => '',
                     'passwd2'        => '',
-                    'fullname'       => $info->name,
+                    // 'fullname'       => $info->query->results->profile->familyName,
+                    'fullname'       => $info->query->results->profile->nickname,
                     'homepage'       => '',
-                    'remoteusername' => DB_escapeString($info->id),
+                    'remoteusername' => DB_escapeString($info->query->results->profile->guid),
                     'remoteservice'  => 'oauth.yahoo',
-                    'remotephoto'    => 'https://apis.live.net/v5.0/me/picture?access_token='.$this->client->access_token,
+                    // 'remotephoto'    => 'https://apis.live.net/v5.0/me/picture?access_token='.$this->client->access_token,
+                    'remotephoto'    => '',
                 );
                 break;
             case 'linkedin' :
