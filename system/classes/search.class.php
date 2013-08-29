@@ -82,7 +82,13 @@ class Search {
             $this->_query = strip_tags (COM_stripslashes ($_GET['query']));
         }
         if (isset ($_GET['topic'])) {
-            $this->_topic = COM_applyFilter ($_GET['topic']);
+            // see if topic exists
+            $tid = COM_applyFilter ($_GET['topic']);
+                 
+            // If it exists and user has access to it, it will return itself else an empty string     
+            $tid = DB_getItem($_TABLES['topics'], 'tid', "tid = '$tid'" . COM_getPermSQL('AND', 0, 2));                 
+            
+            $this->_topic = $tid;
         } else {
             $last_topic = SESS_getVariable('topic');
             if ($last_topic != '') {   
