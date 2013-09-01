@@ -1706,17 +1706,19 @@ class Story
         switch (strtolower($item))
         {
         case 'introtext':
-            $return = GLText::getDisplayText($this->_introtext,
-                          $this->_postmode,
-                          'story.edit',
-                          $this->_text_version);
-            break;
-
         case 'bodytext':
-            if (empty($this->_bodytext)) break;
-            $return = GLText::getDisplayText($this->_bodytext,
-                          $this->_postmode,
+            $postmode = $this->_postmode;
+            if ($this->_text_version != GLTEXT_FIRST_VERSION &&
+                    $this->_advanced_editor_mode == 1) {
+                $postmode = 'adveditor';
+            }
+            $return = GLText::getDisplayText(
+                          ((strtolower($item) == 'introtext') ?
+                              $this->_introtext :
+                              $this->_bodytext),
+                          $postmode,
                           'story.edit',
+                          $this->_uid,
                           $this->_text_version);
 
             break;
