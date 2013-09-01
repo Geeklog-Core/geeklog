@@ -261,6 +261,9 @@ class OAuthConsumer {
             case 'twitter' :
                 break;
             case 'yahoo' :
+                if ( isset($info->query->results->profile->location) ) {
+                    $userinfo['location'] = $info->query->results->profile->location;
+                }
                 break;
             case 'linkedin' :
                 if ( isset($info->location->name) ) {
@@ -330,17 +333,15 @@ class OAuthConsumer {
                 break;
             case 'yahoo' :
                 $users = array(
-                    'loginname'      => (isset($info->query->results->profile->givenName) ? $info->query->results->profile->givenName : $info->query->results->profile->guid),
+                    'loginname'      => (isset($info->query->results->profile->nickname) ? $info->query->results->profile->nickname : $info->query->results->profile->guid),
                     'email'          => $info->query->results->profile->emails->handle,
                     'passwd'         => '',
                     'passwd2'        => '',
-                    // 'fullname'       => $info->query->results->profile->familyName,
-                    'fullname'       => $info->query->results->profile->nickname,
-                    'homepage'       => '',
-                    'remoteusername' => DB_escapeString($info->query->results->profile->guid),
+                    'fullname'       => ($info->query->results->profile->givenName . ' ' . $info->query->results->profile->familyName),
+                    'homepage'       => $info->query->results->profile->profileUrl, 
+                    'remoteusername' => DB_escapeString($info->query->results->profile->guid), 
                     'remoteservice'  => 'oauth.yahoo',
-                    // 'remotephoto'    => 'https://apis.live.net/v5.0/me/picture?access_token='.$this->client->access_token,
-                    'remotephoto'    => '',
+                    'remotephoto'    => $info->query->results->profile->image->imageUrl,
                 );
                 break;
             case 'linkedin' :
