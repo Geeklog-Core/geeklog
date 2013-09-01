@@ -25,6 +25,7 @@ Geeklog History/Changes:
 - New Advanced Editor System that allows developers to easily to add new 
   javascript editors [Dengen]
 - Updated Hebrew language files, provided by LWC
+- jQuery can now be included in the header [Tom]
 
 Mar 29, 2013 (2.0.0)
 ------------
