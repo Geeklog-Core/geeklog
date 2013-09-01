@@ -127,6 +127,7 @@ $LANG_SX00 = array(
     'edit_personal_blacklist' => 'עריכת רשימה שחורה אישית',
     'mass_delete_spam_comments' => 'מחיקה המונית של תגובות ספאם',
     'mass_delete_trackback_spam' => 'מחיקה המונית של רשימה שחורה של HTTP Header',
+    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
     'edit_ip_blacklist' => 'עריכת רשימה שחורה של IP',
     'edit_ip_url_blacklist' => 'עריכת IP של רשימה שחורה של כתובות אתרי אינטרנט',
     'edit_sfs_blacklist' => 'עריכת רשימה שחורה של אימייל SFS',

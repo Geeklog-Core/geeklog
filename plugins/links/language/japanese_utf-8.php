@@ -264,7 +264,6 @@ $LANG_tab['links'] = array(
 $LANG_fs['links'] = array(
     'fs_public' => 'リンクのメイン設定',
     'fs_admin' => 'リンクの管理',
-// XXX
     'fs_permissions' => 'リンクのパーミッションのデフォルト([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
     'fs_cpermissions' => 'カテゴリのパーミッションのデフォルト([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
     'fs_autotag_permissions' => '自動タグのパーミッション([0]所有者 [1]グループ [2]メンバー [3]ゲスト)'

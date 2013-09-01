@@ -125,6 +125,8 @@ $LANG_STATIC = array(
     'draft' => 'ドラフト',
     'draft_yes' => '○',
     'draft_no' => '-',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - 静的ページタイトルで静的ページへのリンクを表示。アンカーテキストの指定は任意です。',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - 静的ページのコンテンツを表示します。'
 );

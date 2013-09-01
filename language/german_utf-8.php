@@ -58,7 +58,7 @@ $LANG01 = array(
     11 => 'Artikel',
     12 => 'Blöcke',
     13 => 'Kategorien',
-    14 => '',
+    14 => 'Command &amp; Control',
     15 => '',
     16 => '',
     17 => 'User',
@@ -84,7 +84,7 @@ $LANG01 = array(
     37 => 'Keine Artikel.',
     38 => 'Newsfeed',
     39 => 'Neuladen',
-    40 => '',
+    40 => 'Error in password request, invalid username',
     41 => 'Gäste',
     42 => 'Autor:',
     43 => 'Antwort schreiben',
@@ -187,6 +187,9 @@ $LANG01 = array(
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',
+    'google' => 'Login with Google',
+    'microsoft' => 'Login with Microsoft',
+    'yahoo' => 'Login with Yahoo',
     'ctl' => 'Clear Cache'
 );
 
@@ -407,7 +410,10 @@ $LANG04 = array(
     165 => 'WYSIWYG-Editor',
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
-    168 => 'You may also login with one on of the below remote authentication services'
+    168 => 'You may also login with one on of the below remote authentication services',
+    'user_login' => 'User Login',
+    'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
 
 ###############################################################################
@@ -772,7 +778,9 @@ $LANG21 = array(
     66 => 'Autotags',
     67 => 'Ankreuzen, um Autotags zu interpretieren',
     68 => 'Der Newsfeed für diesen Portalblock ist zu lang, um angezeigt zu werden. Bitte eine maximale Anzahl Artikel angeben, die für den Block importiert werden soll. Dieses entweder im Blockeditor einstellen oder in der allgemeinen Voreinstelung in der Geeklog Konfiguration.',
-    69 => 'Plugin-Name'
+    69 => 'Plugin-Name',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -932,7 +940,12 @@ $LANG27 = array(
     53 => 'Bild',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'Home',
-    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
+    'no_related_items' => 'No related items found.',
+    'topics:' => 'Topics:',
+    'filed_under:' => 'Filed under:'
 );
 
 ###############################################################################
@@ -1052,13 +1065,18 @@ $LANG29 = array(
     34 => 'Schaltzentrale',
     35 => 'Beiträge: Artikel',
     36 => 'Bezug oder Kommentar',
-    37 => '',
+    37 => 'Author',
     38 => 'Abschicken',
     39 => 'Derzeit gibt es keine Beiträge zu moderieren.',
     40 => 'Neue User',
     41 => 'Beiträge: Kommentare',
     42 => 'Username',
-    43 => 'Moderation aufheben?'
+    43 => 'Moderation aufheben?',
+    'core' => 'Core',
+    'plugins' => 'Plugins',
+    'tools' => 'Tools',
+    'users' => 'Users',
+    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
 );
 
 ###############################################################################
@@ -1825,6 +1843,7 @@ $LANG_confignames['Core'] = array(
     'backup_path' => 'Pfad zum Backup',
     'path_data' => 'Pfad zu Data',
     'path_images' => 'Pfad zu Images',
+    'path_editors' => 'Advanced Editors',
     'path_pear' => 'Pfad zu Pear',
     'have_pear' => 'Pear auf dem Server vorhanden?',
     'mail_settings' => 'Einstellungen ',
@@ -1857,6 +1876,15 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => 'Twitter OAuth-Anmeldemethode aktivieren',
     'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
     'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
+    'google_login' => 'Enable OAuth Login Method Google',
+    'google_consumer_key' => 'Google OAuth Consumer Key',
+    'google_consumer_secret' => 'Google OAuth Consumer Secret',
+    'microsoft_login' => 'Enable OAuth Login Method Microsoft',
+    'microsoft_consumer_key' => 'Microsoft OAuth Consumer Key',
+    'microsoft_consumer_secret' => 'Microsoft OAuth Consumer Secret',
+    'yahoo_login' => 'Enable OAuth Login Method Yahoo',
+    'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
+    'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
     'spamx' => 'Spam-X Actions',
     'sort_admin' => 'Admin Links sortieren',
     'language' => 'Sprache',
@@ -1908,6 +1936,7 @@ $LANG_confignames['Core'] = array(
     'speedlimit' => 'Post Speedlimit',
     'skip_preview' => 'Vorschau überspringen in Posts',
     'advanced_editor' => 'WYSIWYG-Editor?',
+    'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'Wikitext-Editor?',
     'cron_schedule_interval' => 'Zeitabstand für Cronjobs',
     'sortmethod' => 'Kategorien sortieren',
@@ -1930,6 +1959,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => 'Neue Trackbacks ausblenden',
     'hidenewplugins' => 'Neue Plugin-Einträge ausblenden',
     'title_trim_length' => 'Titel abschneiden nach ',
+    'whatsnew_cache_time' => 'Max Cache Time',
     'trackback_enabled' => 'Trackback möglich?',
     'pingback_enabled' => 'Pingback möglich?',
     'ping_enabled' => 'Ping möglich?',
@@ -1958,6 +1988,11 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => 'Main Page Navigation ausblenden?',
     'onlyrootfeatures' => 'Nur Root kann Hauptartikel schreiben?',
     'aftersave_story' => 'Nachdem der Artikel gespeichert wurde',
+    'related_topics' => 'Related Topics',
+    'related_topics_max' => 'Max Related Topics to Display',
+    'whats_related' => 'What\'s Related',
+    'whats_related_max' => 'Max What\'s Related to Display',
+    'whats_related_trim' => 'What\'s Related Title Length',
     'aftersave_user' => 'Nachdem der User gespeichert wurde',
     'show_right_blocks' => 'Immer rechte Blöcke anzeigen?',
     'showfirstasfeatured' => 'Ersten Artikel als Hauptartikel anzeigen?',
@@ -2049,6 +2084,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => 'Grundeinstellung Sortierreihenfolge',
     'autotag_permissions_story' => '[story: ]-Rechte',
     'autotag_permissions_user' => '[user: ]-Rechte',
+    'autotag_permissions_topic' => '[topic: ] Permissions',
+    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
+    'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
@@ -2080,6 +2118,7 @@ $LANG_fs['Core'] = array(
     'fs_admin_block' => 'Admin-Block',
     'fs_locale' => 'Lokalisierung',
     'fs_language' => 'Sprache',
+    'fs_multilanguage' => 'Multi-Language Content',
     'fs_debug' => 'Debug',
     'fs_cookies' => 'Cookies',
     'fs_login' => 'Anmeldeeinstellungen',
@@ -2190,7 +2229,9 @@ $LANG_configselects['Core'] = array(
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
 );
 
 ###############################################################################

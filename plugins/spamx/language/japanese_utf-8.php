@@ -43,7 +43,7 @@ $LANG_SX00 = array(
     'clicki' => 'クリックしてブラックリストをインポート',
     'ok' => 'OK',
     'rsscreated' => 'RSSフィードを作成しました',
-    'add1' => '',
+    'add1' => 'Added ',
     'add2' => ' 個のエントリを ',
     'add3' => 'さんのブラックリストから追加しました。',
     'adminc' => '管理者コマンド:',
@@ -118,7 +118,6 @@ $LANG_SX00 = array(
     'ipofurlblack' => 'Spam-X URLのIPアドレスのブラックリスト',
     'headerblack' => 'Spam-X HTTPヘッダーのブラックリスト',
     'headers' => 'リクエストヘッダー:',
-
     'stats_headline' => 'Spam-X 統計',
     'stats_page_title' => 'ブラックリスト',
     'stats_entries' => 'エントリ',
@@ -128,7 +127,6 @@ $LANG_SX00 = array(
     'stats_ipofurl' => 'URLのIPアドレスによってブロックしました',
     'stats_header' => 'HTTPヘッダー',
     'stats_deleted' => 'スパム投稿削除数',
-
     'invalid_email_or_ip' => '不正なe-mailアドレスまたはIPアドレスをブロックしています。',
     'email_ip_spam' => '%s または %s の登録を試みますが、スパマーだと思われます。',
     'edit_personal_blacklist' => 'パーソナルブラックリストを編集',
@@ -139,7 +137,6 @@ $LANG_SX00 = array(
     'edit_ip_url_blacklist' => 'URLのIPアドレスのブラックリストを編集',
     'edit_sfs_blacklist' => 'Stop Forum Spamのメールのブラックリストを編集',
     'edit_slv_whitelist' => 'スパムリンク検証のホワイトリストを編集',
-
     'plugin_name' => 'Spam-X',
     'slvwhitelist' => 'スパムリンク検証のホワイトリスト'
 );

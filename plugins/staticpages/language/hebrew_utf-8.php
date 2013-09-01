@@ -121,6 +121,8 @@ $LANG_STATIC = array(
     'draft' => 'טיוטה',
     'draft_yes' => 'כן',
     'draft_no' => 'לא',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - מציג קישור לעמוד סטטי בעזרת כותרת העמוד הסטטי בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - מציג את תכני העמוד הסטטי.'
 );

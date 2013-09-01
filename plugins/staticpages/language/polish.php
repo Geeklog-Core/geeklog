@@ -120,6 +120,8 @@ $LANG_STATIC = array(
     'draft' => 'Draft',
     'draft_yes' => 'Yes',
     'draft_no' => 'No',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - Displays the contents of a staticpage.'
 );

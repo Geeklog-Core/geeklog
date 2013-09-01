@@ -59,7 +59,7 @@ $LANG01 = array(
     11 => 'Tekst(a)',
     12 => 'Blokovi',
     13 => 'Kategorije',
-    14 => '',
+    14 => 'Command &amp; Control',
     15 => '',
     16 => '',
     17 => 'Korisnici',
@@ -85,7 +85,7 @@ $LANG01 = array(
     37 => 'Nema korisnickih tekstova',
     38 => 'RSS',
     39 => 'Osvezi',
-    40 => '',
+    40 => 'Error in password request, invalid username',
     41 => 'Gosti',
     42 => 'Autor:',
     43 => 'Odgovori na ovo',
@@ -188,6 +188,9 @@ $LANG01 = array(
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',
+    'google' => 'Login with Google',
+    'microsoft' => 'Login with Microsoft',
+    'yahoo' => 'Login with Yahoo',
     'ctl' => 'Clear Cache'
 );
 
@@ -408,7 +411,10 @@ $LANG04 = array(
     165 => 'Use Advanced Editor',
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
-    168 => 'You may also login with one on of the below remote authentication services'
+    168 => 'You may also login with one on of the below remote authentication services',
+    'user_login' => 'User Login',
+    'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
 
 ###############################################################################
@@ -773,7 +779,9 @@ $LANG21 = array(
     66 => 'Autotagovi',
     67 => 'Klikni da omogucis autotagove',
     68 => 'Feed za portal blog je previse dugacak za prikaz. Molimo podesite maximalan broj tekstova za import u samoj blok konfiguraciji ili u globalnim Geeklog Podesavanjima.',
-    69 => 'Plugin Name'
+    69 => 'Plugin Name',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -933,7 +941,12 @@ $LANG27 = array(
     53 => 'Image',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'Home',
-    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
+    'no_related_items' => 'No related items found.',
+    'topics:' => 'Topics:',
+    'filed_under:' => 'Filed under:'
 );
 
 ###############################################################################
@@ -1053,13 +1066,18 @@ $LANG29 = array(
     34 => 'Komande i Kontrola',
     35 => 'Zahtev za postavljanje teksta',
     36 => 'Parent or Comment',
-    37 => '',
+    37 => 'Author',
     38 => 'Potvrdi',
     39 => 'Trenutno nema tekstova (korisnickih doprinosa) za administraciju',
     40 => 'Korisnicki Tekstovi (Poslati Materijali)',
     41 => 'Comment Submissions',
     42 => 'Username',
-    43 => 'Auto-publish Comments?'
+    43 => 'Auto-publish Comments?',
+    'core' => 'Core',
+    'plugins' => 'Plugins',
+    'tools' => 'Tools',
+    'users' => 'Users',
+    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
 );
 
 ###############################################################################
@@ -1826,6 +1844,7 @@ $LANG_confignames['Core'] = array(
     'backup_path' => 'Backup',
     'path_data' => 'Podaci',
     'path_images' => 'Slike',
+    'path_editors' => 'Advanced Editors',
     'path_pear' => 'Pear Biblioteka',
     'have_pear' => 'Imate Pear Biblioteku?',
     'mail_settings' => 'Mail Podesavanja',
@@ -1858,6 +1877,15 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => 'Enable OAuth Login Method Twitter',
     'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
     'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
+    'google_login' => 'Enable OAuth Login Method Google',
+    'google_consumer_key' => 'Google OAuth Consumer Key',
+    'google_consumer_secret' => 'Google OAuth Consumer Secret',
+    'microsoft_login' => 'Enable OAuth Login Method Microsoft',
+    'microsoft_consumer_key' => 'Microsoft OAuth Consumer Key',
+    'microsoft_consumer_secret' => 'Microsoft OAuth Consumer Secret',
+    'yahoo_login' => 'Enable OAuth Login Method Yahoo',
+    'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
+    'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
     'spamx' => 'Spam-X Akcije',
     'sort_admin' => 'Sortiraj Linkove',
     'language' => 'Jezik',
@@ -1909,6 +1937,7 @@ $LANG_confignames['Core'] = array(
     'speedlimit' => 'Ogranicenje Brzine Tekstova',
     'skip_preview' => 'Preskoci Pregled u Tekstovima',
     'advanced_editor' => 'Napredni Editor?',
+    'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'Wikitext Editor?',
     'cron_schedule_interval' => 'Cron Dispecer Interval',
     'sortmethod' => 'Sortiraj Kategorije',
@@ -1931,6 +1960,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => 'Sakrij Nove Trackbacks',
     'hidenewplugins' => 'Sakrij Nove Plugin Zapise',
     'title_trim_length' => 'Duzina Isecka Naslova',
+    'whatsnew_cache_time' => 'Max Cache Time',
     'trackback_enabled' => 'Trackback Omogucen?',
     'pingback_enabled' => 'Pingback Omogucen?',
     'ping_enabled' => 'Ping Omogucen?',
@@ -1959,6 +1989,11 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => 'Sakrij Navigaciju Glavne Strane?',
     'onlyrootfeatures' => 'Samo za Root-a',
     'aftersave_story' => 'Nakon Dodavanja Teksta',
+    'related_topics' => 'Related Topics',
+    'related_topics_max' => 'Max Related Topics to Display',
+    'whats_related' => 'What\'s Related',
+    'whats_related_max' => 'Max What\'s Related to Display',
+    'whats_related_trim' => 'What\'s Related Title Length',
     'aftersave_user' => 'Nakon Dodavanja Korisnika',
     'show_right_blocks' => 'Uvek Prikazi Desne Blokove?',
     'showfirstasfeatured' => 'Uoblici Prvu Pricu?',
@@ -2050,6 +2085,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => 'Default Sort Order',
     'autotag_permissions_story' => '[story: ] Permissions',
     'autotag_permissions_user' => '[user: ] Permissions',
+    'autotag_permissions_topic' => '[topic: ] Permissions',
+    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
+    'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'multiple_breadcrumbs' => 'Multiple Breadcrumbs',
     'disable_breadcrumbs_topics' => 'Disable Topic Breadcrumbs',
     'disable_breadcrumbs_articles' => 'Disable Article Breadcrumbs',
@@ -2081,6 +2119,7 @@ $LANG_fs['Core'] = array(
     'fs_admin_block' => 'Admin Blok',
     'fs_locale' => 'Lokalizacija',
     'fs_language' => 'Jezik',
+    'fs_multilanguage' => 'Multi-Language Content',
     'fs_debug' => 'Debug',
     'fs_cookies' => 'Kolacici',
     'fs_login' => 'Podesavanje Prijava',
@@ -2191,7 +2230,9 @@ $LANG_configselects['Core'] = array(
     28 => array('No access' => 0, 'Use' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('Start' => 'start', 'End' => 'end', 'None' => 'none'),
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
 );
 
 ###############################################################################

@@ -63,7 +63,7 @@ $LANG01 = array(
     11 => '記事',
     12 => 'ブロック',
     13 => '話題',
-    14 => '',
+    14 => 'Command &amp; Control',
     15 => '',
     16 => '',
     17 => 'ユーザー',
@@ -89,7 +89,7 @@ $LANG01 = array(
     37 => '-',
     38 => 'フィード',
     39 => '更新',
-    40 => '',
+    40 => 'Error in password request, invalid username',
     41 => 'ゲストユーザー',
     42 => '投稿者:',
     43 => 'コメントを追加',
@@ -192,6 +192,9 @@ $LANG01 = array(
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
+    'google' => 'Login with Google',
+    'microsoft' => 'Login with Microsoft',
+    'yahoo' => 'Login with Yahoo',
     'ctl' => 'Clear Cache'
 );
 
@@ -412,7 +415,10 @@ $LANG04 = array(
     165 => 'アドバンストエディターの使用',
     166 => 'リモートアカウントの再同期',
     167 => 'リモートログイン',
-    168 => 'リモート認証サービスによるログインも可能です。'
+    168 => 'リモート認証サービスによるログインも可能です。',
+    'user_login' => 'User Login',
+    'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
 
 ###############################################################################
@@ -777,7 +783,9 @@ $LANG21 = array(
     66 => '自動タグ',
     67 => '自動タグの使用を許可',
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
-    69 => 'プラグイン名'
+    69 => 'プラグイン名',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -937,7 +945,12 @@ $LANG27 = array(
     53 => '画像',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'ホーム',
-    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
+    'no_related_items' => 'No related items found.',
+    'topics:' => 'Topics:',
+    'filed_under:' => 'Filed under:'
 );
 
 ###############################################################################
@@ -1057,13 +1070,18 @@ $LANG29 = array(
     34 => '投稿の管理',
     35 => '記事の投稿申請',
     36 => 'コメントの親',
-    37 => '',
+    37 => 'Author',
     38 => '実行',
     39 => '現在のところ申請はありません',
     40 => 'ユーザーの登録申請',
     41 => 'コメントの投稿申請',
     42 => 'ユーザー名',
-    43 => 'コメントを自動的に公開?'
+    43 => 'コメントを自動的に公開?',
+    'core' => 'Core',
+    'plugins' => 'Plugins',
+    'tools' => 'Tools',
+    'users' => 'Users',
+    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
 );
 
 ###############################################################################
@@ -1830,6 +1848,7 @@ $LANG_confignames['Core'] = array(
     'backup_path' => 'バックアップ',
     'path_data' => 'データ',
     'path_images' => '画像',
+    'path_editors' => 'Advanced Editors',
     'path_pear' => 'PEARのパス',
     'have_pear' => 'PEARをインストールしている',
     'mail_settings' => 'メール設定',
@@ -1862,6 +1881,15 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => 'TwitterのOAuthを有効にする',
     'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
     'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
+    'google_login' => 'Enable OAuth Login Method Google',
+    'google_consumer_key' => 'Google OAuth Consumer Key',
+    'google_consumer_secret' => 'Google OAuth Consumer Secret',
+    'microsoft_login' => 'Enable OAuth Login Method Microsoft',
+    'microsoft_consumer_key' => 'Microsoft OAuth Consumer Key',
+    'microsoft_consumer_secret' => 'Microsoft OAuth Consumer Secret',
+    'yahoo_login' => 'Enable OAuth Login Method Yahoo',
+    'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
+    'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
     'spamx' => 'Spam-X',
     'sort_admin' => 'リンクを並べ替える',
     'language' => '言語',
@@ -1913,6 +1941,7 @@ $LANG_confignames['Core'] = array(
     'speedlimit' => '投稿間隔の制限',
     'skip_preview' => 'プレビューしないで投稿する',
     'advanced_editor' => 'アドバンストエディターを使用する',
+    'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'Wikiテキストエディターを使用する',
     'cron_schedule_interval' => 'Cronのスケジュール間隔',
     'sortmethod' => '話題の並べ替え',
@@ -1935,6 +1964,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => 'トラックバックの新着表示をしない',
     'hidenewplugins' => 'プラグインの新着表示をしない',
     'title_trim_length' => 'タイトル最大長',
+    'whatsnew_cache_time' => 'Max Cache Time',
     'trackback_enabled' => 'トラックバックを有効にする',
     'pingback_enabled' => 'ピングバックを有効にする',
     'ping_enabled' => 'ピングを有効',
@@ -1963,6 +1993,11 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => 'ページナビゲーションを表示しない',
     'onlyrootfeatures' => 'Rootユーザーだけが注目記事を設定する',
     'aftersave_story' => '記事保存後の画面遷移',
+    'related_topics' => 'Related Topics',
+    'related_topics_max' => 'Max Related Topics to Display',
+    'whats_related' => 'What\'s Related',
+    'whats_related_max' => 'Max What\'s Related to Display',
+    'whats_related_trim' => 'What\'s Related Title Length',
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
@@ -2054,6 +2089,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => '並べ替えの順序のデフォルト',
     'autotag_permissions_story' => '[story: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
+    'autotag_permissions_topic' => '[topic: ] Permissions',
+    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
+    'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'multiple_breadcrumbs' => 'マルチプルパンくずリストを有効にする',
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする',
@@ -2085,6 +2123,7 @@ $LANG_fs['Core'] = array(
     'fs_admin_block' => '管理者ブロック',
     'fs_locale' => 'ロケール',
     'fs_language' => '言語',
+    'fs_multilanguage' => 'Multi-Language Content',
     'fs_debug' => 'デバッグ',
     'fs_cookies' => 'クッキー',
     'fs_login' => 'ログイン',
@@ -2195,7 +2234,9 @@ $LANG_configselects['Core'] = array(
     28 => array('アクセス不可' => 0, '利用する' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none'),
-    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC')
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
 );
 
 ###############################################################################
