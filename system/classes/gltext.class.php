@@ -91,14 +91,15 @@ class GLText
      * Returns text ready for display.
      *
      * @param   string  $text         Text to prepare for display
-     * @param   string  $postmode     Indicates if text is html, wikitext or plaintext
+     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
      * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int     $uid          User ID
      * @param   int     $version      version of GLText engine
      * @return  string  Escaped String
      * @access  public
      *
      */
-    public static function getDisplayText($text, $postmode, $permissions, $version)
+    public static function getDisplayText($text, $postmode, $permissions, $uid, $version)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
 
@@ -117,8 +118,8 @@ class GLText
 
             // latest version
 
-            if ($postmode == 'html') {
-                $text = self::checkHTML($text, $permissions);
+            if ($postmode == 'html' || $postmode == 'adveditor') {
+                $text = self::checkHTML($text, $permissions, $uid, $postmode, $version);
             }
 
             if ($postmode == 'plaintext') {
@@ -130,7 +131,7 @@ class GLText
             if ($postmode == 'wikitext') {
                 $text = self::_editUnescape($text, $postmode);
                 $text = self::renderWikiText($text);
-//              $text = self::_htmLawed($text, 'story.edit');
+//              $text = self::_htmLawed($text, 'story.edit', $uid, $postmode, $version);
             }
 
             $text = COM_checkWords($text);
@@ -149,13 +150,24 @@ class GLText
      *
      * @param   string  $str          HTML to check
      * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int     $uid          User ID
+     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   int     $version      version of GLText engine
      * @return  string  Filtered HTML
      * @access  public
      *
      */
-    public static function checkHTML($str, $permissions = 'story.edit')
+    public static function checkHTML($str, $permissions = 'story.edit', $uid = '', $postmode = 'html', $version = GLTEXT_FIRST_VERSION)
     {
         global $_CONF, $_USER;
+
+        if (empty($uid)) {
+            if (empty($_USER['uid'])) {
+                $uid = 1;
+            } else {
+                $uid = $_USER['uid'];
+            }
+        }
 
 //        $str = COM_stripslashes($str); // it should not be here
 
@@ -173,10 +185,16 @@ class GLText
         // // Replace any $ with &#36; (HTML equiv)
         // $str = str_replace( '$', '&#36;', $str);
 
-        if (!SEC_hasRights('htmlfilter.skip') &&
-            (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
-
-            $str = self::_htmLawed($str, $permissions);
+        if ($version == GLTEXT_FIRST_VERSION) {
+            if (!SEC_hasRights('htmlfilter.skip') &&
+                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
+                $str = self::_htmLawed($str, $permissions, $uid, $postmode, $version);
+            }
+        } else {
+            if (!self::_hasRights('htmlfilter.skip', $uid) &&
+                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root', $uid))) {
+                $str = self::_htmLawed($str, $permissions, $uid, $postmode, $version);
+            }
         }
 
         // Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
@@ -216,7 +234,7 @@ class GLText
 
     // Private Methods:
 
-    private function _htmLawed($str, $permissions)
+    private function _htmLawed($str, $permissions, $uid = '', $postmode = 'html', $version = GLTEXT_FIRST_VERSION)
     {
         global $_CONF, $_USER;
 
@@ -245,17 +263,33 @@ class GLText
         $schemes = str_replace(':', '', implode(', ', $schemes));
         $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
 
-        if( empty($permissions) || !SEC_hasRights($permissions) ||
-                empty($_CONF['admin_html'])) {
-            $html = $_CONF['user_html'];
-        } else {
-            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-                $html = array_merge_recursive($_CONF['user_html'],
-                                              $_CONF['admin_html'],
-                                              $_CONF['advanced_html']);
+        if ($version == GLTEXT_FIRST_VERSION) {
+            if (empty($permissions) || !SEC_hasRights($permissions) ||
+                    empty($_CONF['admin_html'])) {
+                $html = $_CONF['user_html'];
             } else {
-                $html = array_merge_recursive($_CONF['user_html'],
-                                              $_CONF['admin_html']);
+                if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+                    $html = array_merge_recursive($_CONF['user_html'],
+                                                  $_CONF['admin_html'],
+                                                  $_CONF['advanced_html']);
+                } else {
+                    $html = array_merge_recursive($_CONF['user_html'],
+                                                  $_CONF['admin_html']);
+                }
+            }
+        } else {
+            if (empty($permissions) || !self::_hasRights($permissions, $uid) ||
+                    empty($_CONF['admin_html'])) {
+                $html = $_CONF['user_html'];
+            } else {
+                if ($postmode == 'adveditor') {
+                    $html = array_merge_recursive($_CONF['user_html'],
+                                                  $_CONF['admin_html'],
+                                                  $_CONF['advanced_html']);
+                } else {
+                    $html = array_merge_recursive($_CONF['user_html'],
+                                                  $_CONF['admin_html']);
+                }
             }
         }
 
@@ -274,6 +308,41 @@ class GLText
         $str = htmLawed($str, $config, $spec);
 
         return $str;
+    }
+
+    /**
+     * Checks if user has rights to a feature
+     *
+     * Takes either a single feature or an array of features and returns
+     * an array of whether the user has those rights
+     *
+     * @param   string|array  $features  Features to check
+     * @param   int           $uid       User ID
+     * @return  boolean       Return true if user has access to feature(s), otherwise false.
+     *
+     */
+    private function _hasRights($features, $uid)
+    {
+        static $rights = array();
+
+        if (empty($rights[$uid])) {
+            $rights[$uid] = explode(',', SEC_getUserPermissions('', $uid));
+        }
+
+        if (is_string($features) && strpos($features, ',') !== false) {
+            $features = explode(',', $features);
+        }
+
+        if (is_array($features)) {
+            foreach ($features as $f) {
+                if (!in_array($f, $rights[$uid])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return in_array($features, $rights[$uid]);
     }
 
     /**
