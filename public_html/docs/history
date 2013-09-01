@@ -1,7 +1,29 @@
 Geeklog History/Changes:
 
-??? ??, 2013 (2.0.1)
+??? ??, 2013 (2.1.0)
 ------------
+- Integrated Caching Template Library original developed by Joe Mucchiello [Tom]
+- Support for themes to specify a default theme. Default themes template and css 
+  files will be used unless they are included in the new theme directory [Tom]
+- Added configruable caching support for blocks (regular and gldefault), 
+  staticpages and articles [Tom]
+- Speed increases by caching topic tree structire [Tom]
+- What's Related article block now includes all Topics. Can set length of titles 
+  [Tom]
+- Articles now list what Topics they are filed under. [Tom]
+- New related_topics autotag. It displays all topics an item belongs too. [To]
+- New related_items autotag. It displays all other related items based on what 
+  topics the defined item belongs too [Tom]
+- Updated Command & Control layout. Plugins can now organized into groups. [Tom]
+- New OAuth login methods supported (Google, Microsoft, Yahoo). OAuth supported 
+  now includes 1.0, 1.0a, and 2.0 (depends on what the provider supports) [Tom]
+- Javascript and css can now be loaded in a specified order. [Tom]
+- Numerous fixes for multi-language support [Tom]
+- Added CKEditor as the default advanced editor for Geeklog [Dengen]
+- New article render which fixes entities etc... from showing up where they 
+  shouldn't [Dengen]
+- New Advanced Editor System that allows developers to easily to add new 
+  javascript editors [Dengen]
 - Updated Hebrew language files, provided by LWC
 
 Mar 29, 2013 (2.0.0)

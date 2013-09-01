@@ -498,12 +498,12 @@ function INST_doDatabaseUpgrades($current_gl_version)
             break;
 
         case '2.0.0':
-            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.0.0_to_2.0.1.php';
+            require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.0.0_to_2.1.0.php';
             INST_updateDB($_SQL);
 
-            update_ConfValuesFor201();
+            update_ConfValuesFor210();
 
-            $current_gl_version = '2.0.1';
+            $current_gl_version = '2.1.0';
             $_SQL = '';
             break;
             

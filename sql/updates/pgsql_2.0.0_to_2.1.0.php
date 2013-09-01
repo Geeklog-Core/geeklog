@@ -39,7 +39,7 @@ $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `content` = '' WHERE name = 'older_st
  * Add new config options
  *
  */
-function update_ConfValuesFor201()
+function update_ConfValuesFor210()
 {
     global $_CONF, $_TABLES;
 
