@@ -26,6 +26,7 @@ Geeklog History/Changes:
   javascript editors [Dengen]
 - Updated Hebrew language files, provided by LWC
 - jQuery can now be included in the header [Tom]
+- Updated to jQuery 1.10.2 and jQuery UI to 1.10.3 [Tom]
 
 Mar 29, 2013 (2.0.0)
 ------------
