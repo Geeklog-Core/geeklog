@@ -3,8 +3,13 @@
  ** Auto generate ID based on title **
  *******************************************/
 
-function TitleToId(getTitle = 'title', setTl2ID = 'id', size = 128) {
+function TitleToId(getTitle, setTl2ID, size) {
 
+    // Set defaults if needed
+    getTitle = typeof getTitle !== 'undefined' ? getTitle : 'title';
+    setTl2ID = typeof setTl2ID !== 'undefined' ? setTl2ID : 'id';
+    size = typeof size !== 'undefined' ? size : 128;
+    
 	var Separ = "-";
 	var Sch = ["ă", "â", "î", "ş", "ţ", "à", "á", "ã", "ä", "å", "æ", "ç", "œ", "ð", "è", "é", "ê", "ë", "ì", "í", "ï", "ñ", "û", "ù", "ú", "ü", "ž", "ý", "ÿ", "ò", "ó", "õ", "ô", "ö", "ø", "š"];
 	var Nch = ["a", "a", "i", "s", "t", "a", "a", "a", "a", "a", "a", "c", "oe", "d", "e", "e", "e", "e", "i", "i", "i", "n", "u", "u", "u", "u", "z", "y", "y", "o", "o", "o", "o", "o", "o", "s"];
