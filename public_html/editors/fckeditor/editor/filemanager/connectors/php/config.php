@@ -26,7 +26,7 @@ if (strpos(strtolower($_SERVER['PHP_SELF']), 'config.php') !== false) {
     die('This file can not be used on its own!');
 }
 
-include '../../../../../lib-common.php';
+include '../../../../../../lib-common.php';
 global $Config ;
 
 // SECURITY: You must explicitly enable this "connector". (Set it to "true").
