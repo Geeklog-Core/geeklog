@@ -89,6 +89,9 @@ function staticpageeditor_form($A)
         }
     }
     $retval = '';
+    
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');    
 
     $sp_template = COM_newTemplate($template_path);
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
