@@ -617,6 +617,7 @@ class config {
         if ($this->config_array['Core']['allow_user_themes'] == 1 && !empty($_USER['theme'])) {
             $theme = $_USER['theme'];
         }
+        $this->config_array['Core']['path_themes'] =  $this->config_array['Core']['path_html'] . 'layout/'; // Cannot be set by admin anymore
         $this->config_array['Core']['path_layout'] = $this->config_array['Core']['path_themes'] . $theme . '/';
         $this->config_array['Core']['layout_url'] = $this->config_array['Core']['site_url'] . '/layout/' . $theme;
     }

@@ -286,7 +286,6 @@ if ($topic != '') {
 require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
 // Set theme
-
 $usetheme = '';
 if( isset( $_POST['usetheme'] ))
 {

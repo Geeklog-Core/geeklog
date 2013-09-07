@@ -96,6 +96,9 @@ function update_ConfValuesFor210()
     // Advanced Editor Options
     $c->add('path_editors','','text',0,3,NULL,132,TRUE, $me, 3);
     $c->add('advanced_editor_name','ckeditor','select',4,20,NULL,845,TRUE, $me, 20);
+    
+    // Remove path_themes (the location of the layout directory since hardcoded now)
+    $c->del('path_themes', 'Core');    
 
     return true;
 }
