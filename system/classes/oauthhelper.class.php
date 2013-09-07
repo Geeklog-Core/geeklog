@@ -395,20 +395,27 @@ class OAuthConsumer {
         $sql .= " WHERE uid = ".(int) $uid;
         DB_query($sql);
     }
-
+    
     protected function _saveUserPhoto($from, $to) {
         $ret = '';
-        require_once 'HTTP/Request.php';
-        $req = new HTTP_Request($from);
-        $req->addHeader('User-Agent', 'Geeklog/' . VERSION);
-        $req->addHeader('Referer', COM_getCurrentUrl());
-        $res = $req->sendRequest();
-        if( !PEAR::isError($res) ){
-            $img = $req->getResponseBody();
+        require_once 'HTTP/Request2.php';
+        $request = new HTTP_Request2($from, HTTP_Request2::METHOD_GET);
+        $request->setConfig(array(
+            'adapter' => 'HTTP_Request2_Adapter_Curl',
+            'connect_timeout' => 15,
+            'timeout' => 30,
+            'follow_redirects' => TRUE,
+            'max_redirects' => 5,
+        ));        
+        $request->setHeader('User-Agent', 'Geeklog/' . VERSION);
+        $request->setHeader('Referer', COM_getCurrentUrl());
+        $response = $request->send();
+        if (200 == $response->getStatus()) {
+            $img = $response->getBody();
             $ret = file_put_contents($to, $img);
         }
         return $ret;
-    }
+    }    
 
     protected function _getImageExt($img, $dot = true) {
         $size = @getimagesize($img);
