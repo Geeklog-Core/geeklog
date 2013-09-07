@@ -51,9 +51,12 @@ if ($_GET['dir'] === 'rtl') {
 $LANG_DIRECTION = $dir; // Need to set this for themes function.php file
 
 // Set Path Variables
-$path_html = $_CONF['path'] . 'public_html';
-$path_themes = $path_html . '/layout/'; 
+$path_html = dirname(dirname(getcwd())); // Should always be the directory above
+$path_themes = $path_html . '/layout/';  
 $path_layout = $path_themes . $theme . '/';
+// Set etag file name and path
+// have moved or renamed /data directory, please change the following line accordingly.
+$etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $dir . '_etag.cache';
 
 /**
 * Get Theme Info
@@ -126,10 +129,6 @@ $info = array();
 $info['file'] = '/layout/' . $theme . '/custom.css';
 $info['priority'] = 1000;
 $cssfiles[] = $info;
-
-// We assume /data directory is right under $_CONF['path'] directory.  If you
-// have moved or renamed /data directory, please change the following line accordingly.
-$etag_filename =  $_CONF['path'] . 'data/layout_css/' . $theme . '_' . $dir . '_etag.cache';
 
 if (isset($_SERVER['HTTP_IF_NONE_MATCH'])) {
     if (is_readable($etag_filename)) {
