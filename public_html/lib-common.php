@@ -3779,8 +3779,16 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 function COM_adminMenu( $help = '', $title = '', $position = '' )
 {
     $retval = '';
+    
+    // This is quick so do first
+    if (COM_isAnonUser()) {
+        return $retval;
+    }    
  
-    if (!COM_isAnonUser()) {
+    $plugin_options = PLG_getAdminOptions();
+    $num_plugins = count( $plugin_options );
+
+    if( SEC_isModerator() OR SEC_hasRights( 'story.edit,block.edit,topic.edit,user.edit,plugin.edit,user.mail,syndication.edit', 'OR' ) OR ( $num_plugins > 0 ) OR SEC_hasConfigAccess()) {
         $retval = COM_commandControl(true, $help, $title, $position);
     }
     
