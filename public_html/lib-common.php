@@ -3952,6 +3952,7 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
 */
 function COM_undoSpecialChars( $string )
 {
+    $string = str_replace( '&#039;', "'", $string );
     $string = str_replace( '&#36;',  '$', $string );
     $string = str_replace( '&#123;', '{', $string );
     $string = str_replace( '&#125;', '}', $string );
