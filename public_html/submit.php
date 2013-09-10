@@ -226,10 +226,12 @@ function sendNotification ($table, $story)
     global $_CONF, $_TABLES, $LANG01, $LANG08, $LANG24, $LANG29, $LANG_ADMIN;
 
     $title = COM_undoSpecialChars( $story->displayElements('title') );
-    if ($A['postmode'] == 'html') {
-        $A['introtext'] = strip_tags ($A['introtext']);
-    }
     $introtext = COM_undoSpecialChars( $story->displayElements('introtext') . "\n" . $story->displayElements('bodytext') );
+    if ($story->_postmode == 'html') {
+        $introtext = strip_tags($introtext);
+    } else {
+        $introtext = str_replace('<br' . XHTML . '>', "\n", $introtext);
+    }
     $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
     $topic = stripslashes(DB_getItem ($_TABLES['topics'], 'topic',
                                        'tid = \''.$story->displayElements('tid').'\''));

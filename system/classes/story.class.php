@@ -971,6 +971,9 @@ class Story
             $this->_uid = $_USER['uid'];
         }
 
+        // initialize the GLText version to the latest version
+        $this->_text_version = GLTEXT_LATEST_VERSION;
+
         $this->_postmode = $_CONF['postmode'];
 
         // If a topic has been specified, use it, if permitted
@@ -1020,6 +1023,9 @@ class Story
         {
             $array[$key] = COM_stripslashes($value);
         }
+
+        // initialize the GLText version to the latest version
+        $this->_text_version = GLTEXT_LATEST_VERSION;
 
         $this->_postmode = COM_applyFilter($array['postmode']);
         $this->_sid = COM_applyFilter($array['sid']);
@@ -1099,8 +1105,8 @@ class Story
 
 
         // Remove any autotags the user doesn't have permission to use
-        $this->_introtext = PLG_replaceTags($this->_introtext, '', true);
-        $this->_bodytext = PLG_replaceTags($this->_bodytext, '', true);
+        $introtext = PLG_replaceTags($this->_introtext, '', true);
+        $bodytext = PLG_replaceTags($this->_bodytext, '', true);
 
         if (!TOPIC_hasMultiTopicAccess('topic')) {
             // user doesn't have access to one or more topics - bail
@@ -1109,18 +1115,18 @@ class Story
 
 
         if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
-            $this->_sid = DB_escapeString($this->_sid);
-            $this->_title = DB_escapeString($this->_title);
+            $sid = DB_escapeString($this->_sid);
+            $title = DB_escapeString($this->_title);
 
-            $this->_introtext = DB_escapeString($this->_introtext);
-            $this->_bodytext = DB_escapeString($this->_bodytext);
-            $this->_postmode = DB_escapeString($this->_postmode);
-            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode',
-                        "{$this->_sid},{$this->_uid},'{$this->_title}'," .
-                        "'{$this->_introtext}','{$this->_bodytext}',NOW(),'{$this->_postmode}'");
+            $introtext = DB_escapeString($introtext);
+            $bodytext = DB_escapeString($bodytext);
+            $postmode = DB_escapeString($this->_postmode);
+            DB_save($_TABLES['storysubmission'], 'sid,uid,title,introtext,bodytext,date,postmode,text_version',
+                        "$sid,{$this->_uid},'$title'," .
+                        "'$introtext','$bodytext',NOW(),'$postmode','{$this->_text_version}'");
 
             // Save Topics selected
-            TOPIC_saveTopicSelectionControl('article', $this->_sid);
+            TOPIC_saveTopicSelectionControl('article', $sid);
 
             return STORY_SAVED_SUBMISSION;
         } else {
