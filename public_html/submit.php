@@ -233,8 +233,7 @@ function sendNotification ($table, $story)
         $introtext = str_replace('<br' . XHTML . '>', "\n", $introtext);
     }
     $storyauthor = COM_getDisplayName( $story->displayelements('uid') );
-    $topic = stripslashes(DB_getItem ($_TABLES['topics'], 'topic',
-                                       'tid = \''.$story->displayElements('tid').'\''));
+    $topic = TOPIC_getTopicAdminColumn('article', $story->getSid());
     $mailbody = "$LANG08[31]: {$title}\n"
               . "$LANG24[7]: {$storyauthor}\n"
               . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
