@@ -2073,7 +2073,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
     }
     
     $headercode = $_SCRIPTS->getHeader() . $headercode;
-    $header->set_var( 'plg_headercode', $headercode );
+    $header->set_var( 'plg_headercode', $headercode );   
     
     $header->set_var( 'breadcrumb_trail', $breadcrumbs );
 
@@ -2287,7 +2287,7 @@ function COM_createHTMLDocument(&$content = '', $information = array())
 
 function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' )
 {
-    global $_CONF, $LANG01, $_IMAGE_TYPE;
+    global $_CONF, $LANG01, $LANG32, $_IMAGE_TYPE, $_SCRIPTS;
     
     // If the theme implemented this for us then call their version instead.
     $function = $_CONF['theme'] . '_startBlock';
@@ -2300,10 +2300,61 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     $block->set_var( 'block_title', stripslashes( $title ));
 
+     
     if( !empty( $helpfile )) {
+        // Only works when header generated all at once
+        if ($_CONF['supported_version_theme'] != '1.8.1') {
+            // Only need to set it once
+            if (! defined('GL-HELP-SET')) {
+                define('GL-HELP-SET', true);
+                
+                // Add in Query dialog for help file
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.dialog'); 
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.draggable'); 
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.droppable');
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.resizable');
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
+                
+                $js = '
+                    $(document).ready(function() {
+                        var $loading = $(\'<img src="loading.gif" alt="loading">\');
+                    
+                        $(\'.blocktitle\').each(function() {
+                            var $dialog = $(\'<div></div>\')
+                                .append($loading.clone());
+                            var $link = $(this).one(\'click\', function() {
+                                $dialog
+                                    .load($link.attr(\'href\')+ \' #content\')
+                                    .dialog({
+                                        title: $link.attr("title"),
+                                        width: 500,
+                                        height: 300,
+                                        buttons: {
+                                            ' . $LANG32[60] . ': function() {
+                                            $(this).dialog("close");
+                                            }
+                                        }                                        
+                                    });
+                    
+                                $link.click(function() {
+                                    $dialog.dialog("open");
+                    
+                                    return false;
+                                });
+                    
+                                return false;
+                            });
+                        });
+                    });
+                ';
+                
+                $_SCRIPTS->setJavaScript($js, true, true);        
+            }        
+        }
+        
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $help_content = '<img src="' . $helpimg. '" alt="?"' . XHTML . '>';
-        $help_attr = array('class'=>'blocktitle');
+        $help_attr = array('class'=>'blocktitle', 'id'=>'gl-help', 'title'=>"$title");
         if( !stristr( $helpfile, 'http://' )) {
             $help_url = $_CONF['site_url'] . "/help/$helpfile";
         } else {
