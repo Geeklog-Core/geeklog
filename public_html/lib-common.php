@@ -2072,9 +2072,6 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         }
     }
     
-    $headercode = $_SCRIPTS->getHeader() . $headercode;
-    $header->set_var( 'plg_headercode', $headercode );   
-    
     $header->set_var( 'breadcrumb_trail', $breadcrumbs );
 
     COM_hit();
@@ -2241,6 +2238,10 @@ function COM_createHTMLDocument(&$content = '', $information = array())
         $layout_columns = 'center';
     }
     $header->set_var( 'layout_columns', $layout_columns );
+    
+    // All blocks, autotags, template files, etc, now have been rendered (since can be done in footer) so all scripts and css should be set now
+    $headercode = $_SCRIPTS->getHeader() . $headercode;
+    $header->set_var( 'plg_headercode', $headercode );    
 
     $retval_header = $header->finish($header->parse('index_header', 'header'));
 
