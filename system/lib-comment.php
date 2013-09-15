@@ -1297,8 +1297,12 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
         return $someError;
     }
 
-    $comment = DB_escapeString(CMT_prepareText($comment, $postmode, $type));
-    $title = DB_escapeString(COM_checkWords(strip_tags($title)));
+    // Store unescaped comment and title for use in notification.
+    $comment0 = CMT_prepareText($comment, $postmode, $type);
+    $title0 = COM_checkWords(strip_tags($title));
+
+    $comment = DB_escapeString($comment0);
+    $title = DB_escapeString($title0);
     if (($uid == 1) && isset($_POST[CMT_USERNAME])) {
         $anon = COM_getDisplayName(1);
         if (strcmp($_POST[CMT_USERNAME], $anon) != 0) {
@@ -1440,9 +1444,9 @@ function CMT_saveComment($title, $comment, $sid, $pid, $type, $postmode)
             $cid = 0; // comment went into the submission queue
         }
         if (($uid == 1) && isset($username)) {
-            CMT_sendNotification($title, $comment, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, $username, $_SERVER['REMOTE_ADDR'], $type, $cid);
         } else {
-            CMT_sendNotification($title, $comment, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $cid);
+            CMT_sendNotification($title0, $comment0, $uid, '', $_SERVER['REMOTE_ADDR'], $type, $cid);
         }
     }
     
@@ -1473,9 +1477,7 @@ function CMT_sendNotification($title, $comment, $uid, $username, $ipaddress, $ty
         return false;
     }
 
-    // we have to undo the addslashes() call from savecomment()
-    $title = stripslashes($title);
-    $comment = stripslashes($comment);
+    $comment = str_replace("\r\n", "\n", $comment);
 
     // strip HTML if posted in HTML mode
     if (preg_match('/<.*>/', $comment) != 0) {
