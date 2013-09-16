@@ -2320,7 +2320,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
                     $(document).ready(function() {
                         var $loading = $(\'<img src="loading.gif" alt="loading">\');
                     
-                        $(\'.blocktitle\').each(function() {
+                        $(\'a.blocktitle\').each(function() {
                             var $dialog = $(\'<div></div>\')
                                 .append($loading.clone());
                             var $link = $(this).one(\'click\', function() {
@@ -2355,7 +2355,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
         
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $help_content = '<img src="' . $helpimg. '" alt="?"' . XHTML . '>';
-        $help_attr = array('class'=>'blocktitle', 'id'=>'gl-help', 'title'=>"$title");
+        $help_attr = array('class'=>'blocktitle', 'title'=>"$title");
         if( !stristr( $helpfile, 'http://' )) {
             $help_url = $_CONF['site_url'] . "/help/$helpfile";
         } else {
