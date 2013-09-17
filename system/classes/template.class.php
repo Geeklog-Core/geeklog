@@ -2052,7 +2052,11 @@ function CACHE_remove_instance($iid)
     global $TEMPLATE_OPTIONS;
 
     $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
-    $iid = str_replace('-','_',$iid);
+    // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores
+    // When creating the cache file we use COM_sanitizeFilename which doesn't change dashes so 
+    // no need to change here when deleting cache file (since names will not match).
+    // Dashes can be used in ids like with blocks, articles, and staticpages
+    // $iid = str_replace('-','_',$iid); 
     $path_cache = substr($TEMPLATE_OPTIONS['path_cache'], 0, -1);
     CACHE_clean_directories($path_cache, 'instance__'.$iid);
 }
