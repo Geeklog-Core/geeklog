@@ -1192,7 +1192,7 @@ function TOPIC_getTopic($type = '', $id = '')
     }
     // See if user has access to view topic
     if ($topic != '') {
-        if ($topic != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'))) {
+        if (strtolower($topic) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND')))) {
             $topic = '';
         }
     }

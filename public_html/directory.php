@@ -543,9 +543,13 @@ if ($dir_topic == 'all') {
 }
 // See if user has access to view topic.
 if ($topic != '') {
-    if ($topic != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'))) {
+    $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
+    if (strtolower($topic) != strtolower($test_topic)) {
         $topic = '';
         $dir_topic = 'all';
+    } else {
+        $topic = $test_topic;
+        $dir_topic = $test_topic;
     }
 }
 

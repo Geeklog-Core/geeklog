@@ -274,9 +274,12 @@ if (isset($_GET['topic'])) {
 }
 // See if user has access to view topic
 if ($topic != '') {
-    if ($topic != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'))) {
+    $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
+    if (strtolower($topic) != strtolower($test_topic)) {
         $topic = '';
-    }
+    } else { // Make it equal to the db version since case maybe different
+        $topic = $test_topic;
+    }    
 }
 
 /**

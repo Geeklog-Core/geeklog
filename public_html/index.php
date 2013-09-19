@@ -262,7 +262,7 @@ if (!empty($topic)) {
     $sql .= " AND frontpage = 1 AND ta.tdefault = 1";
 }
 
-if ($topic != $archivetid) {
+if (strtolower($topic) != strtolower($archivetid)) {
     $sql .= " AND ta.tid != '{$archivetid}' ";
 }
 
