@@ -93,7 +93,7 @@ if (isset($_GET['topic'])) {
     $topic_check = COM_applyFilter($_POST['topic']);
 }
 if ($topic_check != '') {
-    if ($topic_check != DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND'))) {
+    if (strtolower($topic_check) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic_check' " . COM_getPermSQL('AND')))) {
         COM_handle404();  
     }
 }
