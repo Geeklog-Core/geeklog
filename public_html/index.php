@@ -318,11 +318,10 @@ $msql['pgsql'] = "SELECT s.*, ta.tid, UNIX_TIMESTAMP(s.date) AS unixdate,
 
 $result = DB_query ($msql);
 
-$nrows = DB_numRows ($result);
-
-$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql");
-$D = DB_fetchArray ($data);
-$num_pages = ceil ($D['count'] / $limit);
+//Figure out number of total pages
+$data = DB_query ("SELECT s.sid FROM {$_TABLES['stories']} AS s, {$_TABLES['topic_assignments']} AS ta WHERE ta.type = 'article' AND ta.id = s.sid AND $sql GROUP BY s.sid");
+$nrows = DB_numRows ($data);
+$num_pages = ceil ($nrows / $limit);
 
 $breadcrumbs = '';
 
