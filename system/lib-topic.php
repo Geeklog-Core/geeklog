@@ -1192,10 +1192,13 @@ function TOPIC_getTopic($type = '', $id = '')
     }
     // See if user has access to view topic
     if ($topic != '') {
-        if (strtolower($topic) != strtolower(DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND')))) {
+        $test_topic = DB_getItem($_TABLES['topics'], 'tid', "tid = '$topic' " . COM_getPermSQL('AND'));
+        if (strtolower($topic) != strtolower($test_topic)) {
             $topic = '';
-        }
-    }
+        } else { // Make it equal to the db version since case maybe different
+            $topic = $test_topic;
+        }    
+    }    
     
     // Check and return Previous topic
     if ($topic == '') {
