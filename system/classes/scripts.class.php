@@ -57,6 +57,7 @@ class scripts {
     
     private $header_set; // Flag to know if Header Code already has been retrieved
     private $javascript_set; // Flag to know if ANY JavaScript has been set yet
+    private $css_set; // Flag to know if ANY css has been set yet
 
     /**
     * Constructor
@@ -74,6 +75,7 @@ class scripts {
         $this->script_files = array();
         $this->css_files = array();
         $this->scripts = array();
+        $this->css = array();
         $this->restricted_names = array();
         
         $this->header_set = false;
@@ -461,6 +463,29 @@ class scripts {
         
         return true;
     }
+    
+
+    /**
+    * Set CSS in header using style tag
+    *
+    * @param    $css        css to include in head
+    * @access   public
+    * @return   boolean 
+    *
+    */    
+    public function setCSS($css) {
+        
+        // If header code make sure header not already set
+        if ($this->header_set) {
+            return false;
+        }
+            
+        $this->css[] = $css;
+        
+        $this->css_set = true;
+        
+        return true;
+    }    
 
     /**
     * Returns header code (JavaScript and CSS) to include in the Head of the webpage
@@ -502,6 +527,14 @@ class scripts {
                     $headercode .= $csslink;
                 }
             }
+        }
+        // Set CSS         
+        if ($this->css_set) {
+            $headercode .= '<style type="text/css">' . LB;
+            foreach ($this->css as $css) {
+                $headercode .= $css . LB;
+            }
+            $headercode .= '</style>' . LB;
         }
         
         // Set JavaScript Library files first incase other scripts need them
