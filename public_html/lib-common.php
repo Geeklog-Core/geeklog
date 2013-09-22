@@ -2321,7 +2321,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
                 
                 $js = '
                     $(document).ready(function() {
-                        var $loading = $(\'<img src="loading.gif" alt="loading">\');
+                        var $loading = $(\'<div style="margin: auto; padding-top: 90px; width: 32px; height: 32px"><img src="/layout/' . $_CONF['theme'] .  '/images/loading.gif" alt="loading"' . XHTML . '></div>\');
                     
                         $(\'a.blocktitle\').each(function() {
                             var $dialog = $(\'<div></div>\')
