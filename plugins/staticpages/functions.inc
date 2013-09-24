@@ -664,7 +664,9 @@ function SP_returnStaticpage($page='', $mode='', $comment_order = 'ASC', $commen
     $svc_msg = array();
 
     if (PLG_invokeService('staticpages', 'get', $args, $retval, $svc_msg) == PLG_RET_OK) {
-
+        //// Grab page id from database since some comparisons are case sensitive and staticpage ids are not.
+        $page = DB_getItem($_TABLES['staticpage'], 'sp_id', "sp_id = '$page' ");
+        
         if ($mode == 'print') {
             $retval = SP_printPage($page, $retval);
         } elseif ($mode =='autotag') {

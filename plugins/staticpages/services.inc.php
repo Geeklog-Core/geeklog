@@ -719,14 +719,14 @@ function service_get_staticpages($args, &$output, &$svc_msg)
         $topic_perms .= " GROUP BY sp_id";        
         
         $sql = array();
-        $sql['mysql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
+        $sql['mysql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
                       . "perm_members,perm_anon,sp_help,sp_php,sp_inblock,cache_time "
                       . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta "
                       . "WHERE (sp_id = '$page')" . $perms
                       . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
-        $sql['mssql'] = "SELECT sp_title,sp_page_title,"
+        $sql['mssql'] = "SELECT sp_id,sp_title,sp_page_title,"
                       . "CAST(sp_content AS text) AS sp_content,sp_hits,"
                       . "created,modified,sp_format,commentcode,"
                       . "CAST(meta_description AS text) AS meta_description,"
@@ -736,7 +736,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
                       . "FROM {$_TABLES['staticpage']}, {$_TABLES['topic_assignments']} ta WHERE (sp_id = '$page')"
                       . $perms
                       . " AND ta.type = 'staticpages' AND ta.id = sp_id " . $topic_perms;
-        $sql['pgsql'] = "SELECT sp_title,sp_page_title,sp_content,sp_hits,"
+        $sql['pgsql'] = "SELECT sp_id,sp_title,sp_page_title,sp_content,sp_hits,"
                       . "created,modified,sp_format,"
                       . "commentcode,meta_description,meta_keywords,template_flag,template_id,draft_flag,"
                       . "owner_id,group_id,perm_owner,perm_group,"
@@ -753,6 +753,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
 
         if (!($error)) {
             $output = DB_fetchArray($result, false);
+            $page = $output['sp_id']; // reset page id so case mimics id perfectly since this affects the cache file and canonical link
 
             // WE ASSUME $output doesn't have any confidential fields
             // Generate output now (omly if not grabing a template since template is combined with variables first and then generated)
