@@ -645,7 +645,7 @@ function getTopicChildTreeArray($sel_id = TOPIC_ROOT, $tarray = array(), $orderb
 */
 function reorderTopics()
 {
-    global $_TABLES;
+    global $_TABLES, $_TOPICS;
 
     $order = 0;
     $A = getTopicChildTreeArray();
@@ -655,6 +655,17 @@ function reorderTopics()
             DB_query("UPDATE {$_TABLES['topics']} SET sortnum = '$order' WHERE tid = '{$B['tid']}'");
         }
     }
+
+    // Delete topic cache info since topics have changed    
+    $cacheInstance = 'topicsblock__';
+    CACHE_remove_instance($cacheInstance);   
+
+    $cacheInstance = 'topic_tree__';
+    CACHE_remove_instance($cacheInstance);
+    
+    // Update Topics Array to reflect any changes since not sure what is called after
+    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    
 }
 
 /**
@@ -988,7 +999,6 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 
 } else { // 'cancel' or no mode at all
     $display .= COM_showMessageFromParameter();
-    reorderTopics();
     $display .= listTopics(SEC_createToken());
 
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));

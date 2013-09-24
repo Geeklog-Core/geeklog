@@ -2950,7 +2950,7 @@ function COM_showTopics($topic = '')
     
     // See if topic block cache is there for specified topic (since topics can be hidden here depending on what topic is clicked)
     $cacheInstance = 'topicsblock__' . $topic . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-    $retval = CACHE_check_instance($cacheInstance, 0);
+    $retval = CACHE_check_instance($cacheInstance); // Language and theme specific
     if ($retval) {
         return $retval;
     }    
