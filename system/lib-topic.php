@@ -1766,11 +1766,10 @@ function plugin_autotags_topic($op, $content = '', $autotag = '')
             if (!empty($type) AND !empty($id)) {
                 // Return topics of object
                 $related_items = TOPIC_relatedItems($type, $id, $include_types, $max, $trim, $tids);
-            } elseif (!empty($tids)) {
+            } elseif (!empty($tids) OR !empty($id)) {
                 // Since list of topics specified add id to topic list (since really a topic)
-                if (!empty($id)) {
-                    $tids[] = $id;
-                }
+                $tids[] = $id;
+                
                 $related_items = TOPIC_relatedItems('', '', $include_types, $max, $trim, $tids);
             }
 
