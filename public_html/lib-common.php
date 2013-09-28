@@ -363,7 +363,7 @@ if (function_exists($func)) {
     $_CONF['supported_version_theme'] = (!isset($theme_config['supported_version_theme']))   ? $_CONF['supported_version_theme']   : $theme_config['supported_version_theme'];
     $_CONF['theme_etag'] = (!isset($theme_config['etag']))   ? $_CONF['theme_etag']   : $theme_config['etag'];
     if ($_CONF['theme_etag'] AND !file_exists($_CONF['path_layout'] . 'style.css.php')) {
-        // See if stylw.css.php file exists that is required
+        // See if style.css.php file exists that is required
         $_CONF['theme_etag'] = false;
     }
 }
