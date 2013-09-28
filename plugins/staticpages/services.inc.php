@@ -692,13 +692,7 @@ function service_get_staticpages($args, &$output, &$svc_msg)
             if (! empty($perms)) {
                 $perms .= ' AND';
             }
-            if (isset($args['template'])) {
-                // Allow the viewing of a template since it is being retrieved by another staticpage
-                $perms .= '(draft_flag = 0)';
-            } else {
-                // Usually normal user cannot view staticpage that is a draft or template 
-                $perms .= '(draft_flag = 0) AND (template_flag = 0)';
-            } 
+            $perms .= '(draft_flag = 0)';
         }
         if (! empty($perms)) {
             $perms = ' AND ' . $perms;
