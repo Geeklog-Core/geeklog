@@ -515,15 +515,15 @@ function savetopic($tid,$topic,$inherit,$hidden,$parent_id,$imageurl,$meta_descr
             }
     
             DB_save($_TABLES['topics'],'tid, topic, inherit, hidden, parent_id, imageurl, meta_description, meta_keywords, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', $inherit, $hidden, '$parent_id', '$imageurl', '$meta_description', '$meta_keywords','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
-            
-            // Update Topics Array to reflect any changes since not sure what is called after
-            $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
     
             if ($old_tid != $tid) {
                 PLG_itemSaved($tid, 'topic', $old_tid);
             } else {
                 PLG_itemSaved($tid, 'topic');
             }
+            
+            // Reorder Topics, Delete topic cache and reload topic tree
+            reorderTopics(); 
             
             // update feed(s)
             COM_rdfUpToDateCheck('article', $tid);
@@ -707,6 +707,9 @@ function moveTopics($tid, $where)
     
     PLG_itemSaved($tid, 'topic');
     
+    // Reorder Topics, Delete topic cache and reload topic tree
+    reorderTopics(); 
+    
 }
 
 /**
@@ -800,8 +803,8 @@ function deleteTopic ($tid)
     DB_delete($_TABLES['topic_assignments'], 'tid', $tid);
     DB_delete($_TABLES['topics'], 'tid', $tid);
 
-    // Update Topics Array to reflect any changes since not sure what is called after
-    $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
+    // Reorder Topics, Delete topic cache and reload topic tree
+    reorderTopics(); 
     
     // update feed(s)
     COM_rdfUpToDateCheck('article');
@@ -993,7 +996,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
 } elseif ($mode == 'change_sortnum' && SEC_checkToken()) {
     $display .= COM_showMessageFromParameter();
     moveTopics(COM_applyFilter($_GET['tid']), COM_applyFilter($_GET['where']));
-    reorderTopics();
+    
     $display .= listTopics(SEC_createToken());
     $display = COM_createHTMLDocument($display, array('pagetitle' => $LANG27[8]));
 
