@@ -74,6 +74,8 @@ $TEMPLATE_OPTIONS = array(
                         'site_url' => $_CONF['site_url'],
                         'site_admin_url' => $_CONF['site_admin_url'],
                         'layout_url' => $_CONF['layout_url'], // Can be set by lib-common on theme change
+                        'anonymous_user' => true, // Set to false in lib-common if current visitor is logged in
+                        
                       ),
     'hook' => array(),
 );

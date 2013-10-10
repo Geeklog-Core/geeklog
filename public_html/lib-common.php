@@ -327,6 +327,7 @@ else if( $_CONF['allow_user_themes'] == 1 )
 }
 // Set template class default template variables option
 $TEMPLATE_OPTIONS['default_vars']['layout_url'] = $_CONF['layout_url'];
+$TEMPLATE_OPTIONS['default_vars']['anonymous_user'] = COM_isAnonUser();
 
 /**
 * Include the Scripts class
