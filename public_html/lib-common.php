@@ -835,10 +835,24 @@ function COM_renderMenu( &$header, $plugin_menu )
                 $url = '';
                 $label = '';
                 break;
-
+            case 'login':
+                if ($anon) {
+                    $url = $_CONF['site_url'] . '/users.php';
+                    $label = $LANG01[58];
+                } else {
+                    $url = $_CONF['site_url'] . '/users.php?mode=logout';
+                    $label = $LANG01[35];
+                }
+                break;
+                
             case 'prefs':
-                $url = $_CONF['site_url'] . '/usersettings.php';
-                $label = $LANG01[48];
+                if ($anon) {
+                    $url = '';
+                    $label = '';
+                } else {
+                    $url = $_CONF['site_url'] . '/usersettings.php';
+                    $label = $LANG01[48];
+                }
                 break;
 
             case 'search':
