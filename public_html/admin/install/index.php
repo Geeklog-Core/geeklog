@@ -645,6 +645,10 @@ function INST_installEngine($install_type, $install_step)
                 }
                 break;
         }
+        
+        // Clear the Geeklog Cache        
+        INST_clearCache();
+
         break;
 
     /**
@@ -1317,9 +1321,6 @@ if (INST_phpOutOfDate()) {
 
         // Run the installation function
         INST_installEngine($mode, $step); 
-
-        // Clear the Geeklog Cache        
-        INST_clearCache();
 
         break;
 

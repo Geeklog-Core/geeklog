@@ -526,8 +526,11 @@ $serialized_topic_tree = CACHE_check_instance($cacheInstance, true);
 if (empty($serialized_topic_tree)) {
     $_TOPICS = TOPIC_buildTree(TOPIC_ROOT, true);
 
-    // Save updated topic tree and date
-    CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
+    // Need this check since this variable is not set correctly when Geeklog is being install
+    if (isset($GLOBALS['TEMPLATE_OPTIONS']) && is_array($TEMPLATE_OPTIONS) && isset($TEMPLATE_OPTIONS['path_cache'])) { 
+        // Save updated topic tree and date
+        CACHE_create_instance($cacheInstance, serialize($_TOPICS), true);
+    }
 } else {
     $_TOPICS = unserialize($serialized_topic_tree);
 }    
