@@ -1932,7 +1932,8 @@ function _postprocess($str)
           $path_cache .= $_CONF['language'] . '/';
       }
       $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
-      $iid = str_replace('-','_',$iid);
+      // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
+      // $iid = str_replace('-','_',$iid);
       $filename = $path_cache.'instance__'.$iid.'.php';
       $tmplt = '<!-- begin cached as '.htmlspecialchars($iid)." -->\n"
              . $tmplt
@@ -1976,10 +1977,11 @@ function _postprocess($str)
           $path_cache .= $_CONF['language'] . '/';
       }
       $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
-      $iid = str_replace('-','_',$iid);
+      // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
+      // $iid = str_replace('-','_',$iid);
       $filename = $path_cache.'instance__'.$iid.'.php';
       if (file_exists($filename) && array_key_exists($filevar, $this->file)) {
-          $this->file[$filevar] = $filename;
+          $this->file[$filevar] = $filename; 
           return true;
       }
       return false;
@@ -2054,7 +2056,7 @@ function CACHE_remove_instance($iid)
     global $TEMPLATE_OPTIONS;
 
     $iid = str_replace(array('..', '/', '\\', ':'), '', $iid);
-    // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores
+    // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
     // When creating the cache instance file we use COM_sanitizeFilename which doesn't change dashes so 
     // no need to change here when deleting cache file (since names will not match).
     // Dashes can be used in ids like with blocks, articles, and staticpages
