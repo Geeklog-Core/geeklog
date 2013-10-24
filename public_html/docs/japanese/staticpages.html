@@ -243,7 +243,18 @@
   <td>0</td>
   <td>パンくずリストを無効(0)、または有効(1)にします。</td>
 </tr>
-
+<tr class="r2">
+  <td><a name="desc_default_cache_time">default_cache_time</a></td>
+  <td>0</td>
+  <td>The default cache time for a staticpage. Possible values:<br>
+    <ul>
+        <li>1 or more = Amount of seconds a static page will be cached before it is regenerated and saved again to a new cache file.</li>
+        <li>0 = Not cached. Page is always regenerated.</li>
+        <li>-1 = Always cached and only regenerated when the page is updated and saved through the staticpage editor.</li>
+    </ul>
+</td>
+</tr>
+</table>
 
 <h3><a name="whatsnew">新着ブロック</a></h3>
 

@@ -60,6 +60,8 @@ $_CONF_VALIDATE['staticpages']['comment_code'] = array(
     'rule' => array('inList', array('0', '-1'), true)
 );
 $_CONF_VALIDATE['staticpages']['draft_flag'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['staticpages']['disable_breadcrumbs_staticpages'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['staticpages']['default_cache_time'] = array('rule' => 'numeric');
 
 // What's New Block
 $_CONF_VALIDATE['staticpages']['newstaticpagesinterval'] = array('rule' => 'numeric');

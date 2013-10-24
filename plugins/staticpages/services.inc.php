@@ -229,7 +229,7 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         }
         
         if (empty($args['cache_time'])) {
-            $args['cache_time'] = 0;
+            $args['cache_time'] = $_SP_CONF['default_cache_time'];;
         }        
         
         if (empty($args['template_flag'])) {
@@ -394,11 +394,11 @@ function service_submit_staticpages($args, &$output, &$svc_msg)
         
         // If PHP page then no cache
         if ($sp_php == 0) {
-            if ($cache_time < 0) {
-                $cache_time = 0;
+            if ($cache_time < -1) {
+                $cache_time = $_SP_CONF['default_cache_time'];
             }
         } else {
-            $cache_time = 0;
+            $cache_time = $_SP_CONF['default_cache_time'];
         }
         
         // If marked as a template then set id to nothing and other default settings

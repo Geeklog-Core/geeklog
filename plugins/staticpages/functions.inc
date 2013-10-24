@@ -1479,6 +1479,8 @@ function plugin_upgrade_staticpages()
                     DB_query($sql);
                 }
             }
+            
+            SP_update_ConfValues_1_6_5();
 
             $current_version = '1.6.6';
             break;             
@@ -1685,14 +1687,16 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
     $retval = '';
     
     // Retrieve non php staticpage from cache
-    if ($cache_time > 0 AND $sp_php == 0) {
+    if ($cache_time > -1 AND $sp_php == 0) {
         // Don't need to cache per theme since not rendered in a block yet 
         $cacheInstance = 'staticpage__' . $sp_id . '__' . CACHE_security_hash();
-        $retval = CACHE_check_instance($cacheInstance, 0);
-        if ($retval) {
-            $lu = CACHE_get_instance_update($cacheInstance, 0);
+        $retval = CACHE_check_instance($cacheInstance);
+        if ($retval AND $cache_time == -1) {
+            return $retval;
+        } elseif ($retval AND $cache_time > 0) {        
+            $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
-            if (($now - $lu) < $cache_time ) {
+            if (($now - $lu) < $cache_time) {
                 return $retval;
             } else {
                 $retval = '';
@@ -1762,7 +1766,7 @@ function SP_render_content($sp_id, $sp_content, $sp_php, $cache_time = 0, $templ
     
     $sp_content = stripslashes($sp_content);
 
-    if ($cache_time > 0 AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $sp_content, 0); }
+    if (($cache_time > 0 OR $cache_time == -1) AND $sp_php == 0) { CACHE_create_instance($cacheInstance, $sp_content); }
     
     return $sp_content;
 }

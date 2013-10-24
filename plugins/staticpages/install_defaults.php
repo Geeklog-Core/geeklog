@@ -124,6 +124,12 @@ $_SP_DEFAULT['draft_flag'] = 0;
 // Whether to display breadcrumbs on staticpages
 $_SP_DEFAULT['disable_breadcrumbs_staticpages'] = 0;
 
+// The default cache time for a staticpage. Possible values:
+// 1 or more = Amount of seconds a static page will be cached before it is regenerated and saved again to a new cache file
+//  0 = Not cached. Page is always regenerated
+// -1 = Always cached and only regenerated when the page is updated and saved through the edit staticpage editor
+$_SP_DEFAULT['default_cache_time'] = 0;
+
 // Define default permissions for new pages created from the Admin panel.
 // Permissions are perm_owner, perm_group, perm_members, perm_anon (in that
 // order). Possible values:
@@ -198,6 +204,8 @@ function plugin_initconfig_staticpages()
                 0, 0, 0, 127, true, 'staticpages', 0);
         $c->add('disable_breadcrumbs_staticpages', $_SP_DEFAULT['disable_breadcrumbs_staticpages'], 'select',
                 0, 0, 0, 128, true, 'staticpages', 0);        
+        $c->add('default_cache_time', $_SP_DEFAULT['default_cache_time'], 'text',
+                0, 0, null, 129, true, 'staticpages', 0);
 
         $c->add('tab_whatsnew', NULL, 'tab', 0, 1, NULL, 0, true, 'staticpages', 1);
         $c->add('fs_whatsnew', NULL, 'fieldset', 0, 1, NULL, 0, true, 'staticpages', 1);

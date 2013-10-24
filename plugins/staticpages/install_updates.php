@@ -73,4 +73,22 @@ function SP_update_ConfValues_1_6_4()
     return true;
 }
 
+
+function SP_update_ConfValues_1_6_5()
+{
+    global $_CONF, $_TABLES, $_SP_DEFAULT;
+
+    require_once $_CONF['path_system'] . 'classes/config.class.php';
+
+    $c = config::get_instance();
+
+    require_once $_CONF['path'] . 'plugins/staticpages/install_defaults.php';
+
+    // Cache Time
+    $c->add('default_cache_time', $_SP_DEFAULT['default_cache_time'], 'text',
+            0, 0, null, 129, true, 'staticpages', 0);
+    
+    return true;
+}
+
 ?>

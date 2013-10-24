@@ -122,7 +122,7 @@ $LANG_STATIC = array(
     'draft_yes' => 'Yes',
     'draft_no' => 'No',
     'cache_time'        => 'Cache Time',
-    'cache_time_desc'   => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
+    'cache_time_desc'   => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until page is edited again. Staticpages with PHP enabled or are a template will not be cached. (3600 = 1 hour,  86400 = 1 day)',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - Displays a link to a static page using the static page title as the title. An alternate title may be specified but is not required.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id] - Displays the contents of a staticpage.'
 );
@@ -163,6 +163,7 @@ $LANG_confignames['staticpages'] = array(
     'comment_code' => 'Comment Default',
     'draft_flag' => 'Draft Flag Default',
     'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
+    'default_cache_time' => 'Default Cache Time',
     'newstaticpagesinterval' => 'New Static Page Interval',
     'hidenewstaticpages' => 'New Static Pages',
     'title_trim_length' => 'Title Trim Length',
