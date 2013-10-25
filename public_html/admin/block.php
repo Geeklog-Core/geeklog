@@ -207,7 +207,7 @@ function editblock ($bid = '')
         $A['title'] = '';
         $A['tid'] = '';
         $A['blockorder'] = 0;
-        $A['cache_time'] = 0;
+        $A['cache_time'] = $_CONF['default_cache_time_block'];
         $A['content'] = '';
         $A['allow_autotags'] = 0;
         $A['rdfurl'] = '';
@@ -593,8 +593,8 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $allow_autotags = 0;
         }
         
-        if (empty($cache_time) OR $cache_time < 0) {
-            $cache_time = 0;
+        if (empty($cache_time) OR $cache_time < -1) {
+            $cache_time = $_CONF['default_cache_time_block'];
         }        
 
         if ($type == 'portal') {
@@ -909,7 +909,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty ($LANG_ADMIN['delete'])) {
     if (isset ($_POST['allow_autotags'])) {
         $allow_autotags = $_POST['allow_autotags'];
     }
-    $cache_time = 0;
+    $cache_time = $_CONF['default_cache_time_block'];
     if (isset ($_POST['cache_time'])) {
         $cache_time = COM_applyFilter ($_POST['cache_time'], true);
     }    

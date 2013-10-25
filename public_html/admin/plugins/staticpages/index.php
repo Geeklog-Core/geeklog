@@ -642,7 +642,7 @@ function staticpageeditor($sp_id, $mode = '', $editor = '')
         $A['commentcode'] = $_SP_CONF['comment_code'];
         $A['sp_where'] = 1; // default new pages to "top of page"
         $A['draft_flag'] = $_SP_CONF['draft_flag'];
-        $A['cache_time'] = 0;
+        $A['cache_time'] = $_SP_CONF['default_cache_time'];
         $A['template_flag'] = ''; // Defaults to not a template
         $A['template_id'] = ''; // Defaults to None
         if ($_USER['advanced_editor'] == 1) {
@@ -841,7 +841,7 @@ if (($mode == $LANG_ADMIN['delete']) && !empty($LANG_ADMIN['delete']) && SEC_che
             $_POST['draft_flag'] = '';
         }
         if (!isset($_POST['cache_time'])) {
-            $_POST['cache_time'] = 0;
+            $_POST['cache_time'] = $_SP_CONF['default_cache_time'];
         }
         if (!isset($_POST['template_flag'])) {
             $_POST['template_flag'] = '';

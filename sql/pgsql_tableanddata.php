@@ -320,6 +320,7 @@ CREATE TABLE {$_TABLES['stories']} (
   frontpage smallint default '1',
   meta_description TEXT NULL,
   meta_keywords TEXT NULL,
+  cache_time INT NOT NULL DEFAULT '0',
   owner_id smallint NOT NULL default '1',
   group_id smallint NOT NULL default '2',
   perm_owner smallint NOT NULL default '3',

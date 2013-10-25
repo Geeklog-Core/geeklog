@@ -53,6 +53,10 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td class="alignright" style="vertical-align:top">{lang_cachetime}:</td>
+                                        <td><input type="text" size="8" name="cache_time" value="{cache_time}"{xhtml}><div class="pluginMediumText">{lang_cachetime_desc}</div></td>
+                                    </tr>                                        
+                                    <tr>
                                         <td class="alignright">{lang_draft}:</td>
                                         <td><input type="checkbox" name="draft_flag" {is_checked}{xhtml}></td>
                                     </tr>

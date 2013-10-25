@@ -6,6 +6,9 @@ $_SQL[] = "DELETE FROM {$_TABLES['usercomment']} WHERE uid = 1";
 // Add Cache Time variable to Blocks table
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [allow_autotags]"; 
 
+// Add Cache Time variable to Blocks table
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD [cache_time] INT NOT NULL DEFAULT '0' AFTER [meta_keywords]"; 
+
 // Remove unused columns in Comments table
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']}  DROP `score`, DROP `reason`";
 
@@ -99,6 +102,10 @@ function update_ConfValuesFor210()
     
     // Remove path_themes (the location of the layout directory since hardcoded now)
     $c->del('path_themes', 'Core');    
+    
+    // Default Cache Times
+    $c->add('default_cache_time_article',0,'text',1,7,NULL,1390,TRUE, $me, 7);
+    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);    
 
     return true;
 }

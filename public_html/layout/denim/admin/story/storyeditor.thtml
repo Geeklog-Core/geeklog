@@ -44,6 +44,10 @@
 
       <dt><label for="admin-storyeditor-show_topic_icon">{lang_show_topic_icon}</label></dt>
       <dd><input type="checkbox" {show_topic_icon_checked} name="show_topic_icon" id="admin-storyeditor-show_topic_icon"{xhtml}></dd>
+      
+      <dt><label for="admin-storyeditor-cachetime">{lang_cachetime}</label></dt>
+      <dd><input type="text" size="8" value="{cache_time}" name="cache_time" id="admin-storyeditor-cachetime" class="text"{xhtml}></dd>
+      <dd class="description">{lang_cachetime_desc}</dd>         
 
       <dt><label for="admin-storyeditor-draft_flag">{lang_draft}</label></dt>
       <dd><input type="checkbox" {is_checked} name="draft_flag" id="admin-storyeditor-draft_flag"{xhtml}></dd>

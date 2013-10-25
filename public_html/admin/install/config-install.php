@@ -149,6 +149,7 @@ function install_config()
     $c->add('whats_related',1,'select',1,7,33,1360,TRUE, $me, 7);
     $c->add('whats_related_max',0,'text',1,7,NULL,1370,TRUE, $me, 7);
     $c->add('whats_related_trim',26,'text',1,7,NULL,1380,TRUE, $me, 7);
+    $c->add('default_cache_time_article',0,'text',1,7,NULL,1390,TRUE, $me, 7);
 
     $c->add('tab_trackback', NULL, 'tab', 1, 8, NULL, 0, TRUE, $me, 8);
     $c->add('fs_trackback', NULL, 'fieldset', 1, 8, NULL, 0, TRUE, $me, 8);
@@ -407,6 +408,7 @@ function install_config()
     $c->add('compressed_output',0,'select',7,31,1,1756,TRUE, $me, 31);
     $c->add('frame_options','DENY','select',7,31,22,1758,TRUE, $me, 31);
     $c->add('page_navigation_max_pages',7,'text',7,31,NULL,1800,TRUE, $me, 31);
+    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);
 
     $c->add('tab_debug', NULL, 'tab', 7, 32, NULL, 0, TRUE, $me, 32);
     $c->add('fs_debug', NULL, 'fieldset', 7, 32, NULL, 0, TRUE, $me, 32);

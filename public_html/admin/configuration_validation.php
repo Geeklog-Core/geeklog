@@ -213,6 +213,7 @@ $_CONF_VALIDATE['Core']['whats_related'] = array(
 );    
 $_CONF_VALIDATE['Core']['whats_related_max'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['whats_related_trim'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['default_cache_time_article'] = array('rule' => 'numeric');
 
 /* Subgroup Stories and Trackback, Tab Trackback */
 $_CONF_VALIDATE['Core']['trackback_enabled'] = array('rule' => 'boolean');
@@ -499,6 +500,7 @@ $_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
     'message' => isset($LANG_VALIDATION['page_navigation_max_pages']) ? 
                  $LANG_VALIDATION['page_navigation_max_pages'] : $LANG_VALIDATION['default']
 );
+$_CONF_VALIDATE['Core']['default_cache_time_block'] = array('rule' => 'numeric');
 
 /* Subgroup Misc, Tab Debug */
 $_CONF_VALIDATE['Core']['rootdebug'] = array('rule' => 'boolean');

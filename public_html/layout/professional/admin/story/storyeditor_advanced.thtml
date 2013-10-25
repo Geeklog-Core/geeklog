@@ -50,6 +50,10 @@
                 </td>
             </tr>
             <tr>
+                <td class="alignright" style="vertical-align:top">{lang_cachetime}:</td>
+                <td><input type="text" size="8" name="cache_time" value="{cache_time}"{xhtml}><div class="pluginMediumText">{lang_cachetime_desc}</div></td>
+            </tr>                                        
+            <tr>
                 <td class="alignright">{lang_show_topic_icon}:<input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}{xhtml}> </td>
                 <td style="padding-left:25px;">{lang_draft}:<input type="checkbox" name="draft_flag" {is_checked}{xhtml}><span style="padding-left:30px;">{lang_postmode}:</span>&nbsp;<select id="sel_editmode" name="postmode" {change_editormode}>{post_options}</select></td>
             </tr>

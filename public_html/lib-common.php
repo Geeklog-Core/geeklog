@@ -3160,7 +3160,7 @@ function COM_showTopics($topic = '')
     }
 
     // Create cache so don't need to recreate unless change
-    CACHE_create_instance($cacheInstance, $retval, 0);
+    CACHE_create_instance($cacheInstance, $retval);
     
     return $retval;
 }
@@ -4272,8 +4272,8 @@ function COM_olderStoriesBlock( $help = '', $title = '', $position = '' )
 {
     global $_TABLES, $_CONF;
 
-    $cacheInstance = 'olderstories__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-    $retval = CACHE_check_instance($cacheInstance, 0);
+    $cacheInstance = 'olderarticles__' . CACHE_security_hash() . '__' . $_CONF['theme'];
+    $retval = CACHE_check_instance($cacheInstance);
     if (empty($retval)) {
         $retval = COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'older_stories_block', 'header', $position ));
@@ -4344,7 +4344,7 @@ function COM_olderStoriesBlock( $help = '', $title = '', $position = '' )
         }
         
         $retval .= COM_endBlock( COM_getBlockTemplate( 'older_stories_block', 'footer', $position ));
-        CACHE_create_instance($cacheInstance, $retval, 0);
+        CACHE_create_instance($cacheInstance, $retval);
     }    
 
     return $retval;    
@@ -4620,11 +4620,13 @@ function COM_formatBlock( $A, $noboxes = false )
     } else {
         // The only time cache_time would not be set if for dynamic blocks (they can handle their own caching if needed)
         // Don't Cache default blocks either
-        if (isset($A['cache_time']) AND $A['cache_time'] > 0) {
+        if (isset($A['cache_time']) AND ($A['cache_time'] > 0 OR $A['cache_time'] == -1)) {
             $cacheInstance = 'block__' . $A['bid'] . '__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-            $retval = CACHE_check_instance($cacheInstance, 0);
-            if ($retval) {
-                $lu = CACHE_get_instance_update($cacheInstance, 0);
+            $retval = CACHE_check_instance($cacheInstance);
+            if ($retval AND $A['cache_time'] == -1) {
+                return $retval;
+            } elseif ($retval AND $A['cache_time'] > 0) {
+                $lu = CACHE_get_instance_update($cacheInstance);
                 $now = time();
                 if (($now - $lu) < $A['cache_time'] ) {
                     return $retval;
@@ -4698,7 +4700,7 @@ function COM_formatBlock( $A, $noboxes = false )
                 . COM_endBlock(COM_getBlockTemplate($A['name'], 'footer', $position));
     }
     // Cache only if enabled and not gldefault or dynamic
-    if (isset($A['cache_time']) AND $A['cache_time'] > 0 AND $A['type'] != 'gldefault') { CACHE_create_instance($cacheInstance, $retval, 0); }
+    if (isset($A['cache_time']) AND ($A['cache_time'] > 0 OR $A['cache_time'] == -1) AND $A['type'] != 'gldefault') { CACHE_create_instance($cacheInstance, $retval); }
 
     return $retval;
 }
@@ -5213,9 +5215,9 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
 
     if ($_CONF['whatsnew_cache_time'] > 0) {
         $cacheInstance = 'whatsnew__' . CACHE_security_hash() . '__' . $_CONF['theme'];
-        $retval = CACHE_check_instance($cacheInstance, 0);
+        $retval = CACHE_check_instance($cacheInstance);
         if ( $retval ) {
-            $lu = CACHE_get_instance_update($cacheInstance, 0);
+            $lu = CACHE_get_instance_update($cacheInstance);
             $now = time();
             if (( $now - $lu ) < $_CONF['whatsnew_cache_time'] ) {
                 return $retval;
@@ -5476,7 +5478,7 @@ function COM_whatsNewBlock( $help = '', $title = '', $position = '' )
     }
 
     $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer', $position ));
-    if ($_CONF['whatsnew_cache_time'] > 0) { CACHE_create_instance($cacheInstance, $retval, 0); }
+    if ($_CONF['whatsnew_cache_time'] > 0) { CACHE_create_instance($cacheInstance, $retval); }
 
     return $retval;
 }

@@ -224,13 +224,17 @@ function plugin_itemdeleted_template($id, $type)
     // plugins that do not use itemsaved but let's delete the cache when we can
     
     // Also delete cache for topics block and topic_tree when topic or article is updated or deleted
+    
+    // Also delete article cache on article save and delete
 
+    $article = false;
     $whatsnew = false;
     $olderstories = false;
     $topicsblock = false;
     $topic_tree = false;
     
     if ($type == 'article' OR $type == 'story') {
+        $article = true;
         $whatsnew = true;
         $olderstories = true;
         $topicsblock = true;
@@ -246,13 +250,17 @@ function plugin_itemdeleted_template($id, $type)
             }
         }
     }
-    
+
+    if ($article) {
+        $cacheInstance = 'article__' . $id; // remove all article instances
+        CACHE_remove_instance($cacheInstance);
+    }
     if ($whatsnew) {
         $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
         CACHE_remove_instance($cacheInstance);  
     }
     if ($olderstories) {
-        $cacheInstance = 'olderstories__'; // remove all olderstories instances
+        $cacheInstance = 'olderarticles__'; // remove all olderarticles instances
         CACHE_remove_instance($cacheInstance);      
     }
     if ($topicsblock) {

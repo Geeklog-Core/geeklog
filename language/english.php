@@ -847,7 +847,7 @@ $LANG21 = array(
     68 => 'The feed for this portal block is too long to display. Please set a maximum number of articles to import for the block in the block setup screen, or a global maximum in Geeklog Configuration.',
     69 => 'Plugin Name',
     'cache_time'        => 'Cache Time',
-    'cache_time_desc'   => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time_desc'   => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -945,7 +945,9 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'You can always hit "Preview" to extend the expiry time.',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'  
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'cache_time'        => 'Cache Time',
+    'cache_time_desc'   => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 
@@ -2064,6 +2066,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => "What's Related",
     'whats_related_max' => "Max What's Related to Display",
     'whats_related_trim' => "What's Related Title Length",
+    'default_cache_time_article' => "Default Article Cache Time",
     'aftersave_user' => "After Saving User",
     'show_right_blocks' => "Always Show Right Blocks?",
     'showfirstasfeatured' => "Show First Story as Featured?",
@@ -2123,6 +2126,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Send compressed output?',
     'frame_options' => 'Protection against "clickjacking"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => "Censor Mode?",
     'censorreplace' => "Censor Replace Text",
     'censorlist' => "Censor List",

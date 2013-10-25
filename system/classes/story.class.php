@@ -133,6 +133,7 @@ class Story
     var $_expire;
     var $_advanced_editor_mode;
     var $_frontpage;
+    var $_cache_time;
     var $_owner_id;
     var $_group_id;
     var $_perm_owner;
@@ -206,6 +207,7 @@ class Story
            'postmode' => 1,
            'advanced_editor_mode' => 1,
            'frontpage' => 1,
+           'cache_time' => 1,
            'owner_id' => 1,
            'group_id' => 1,
            'perm_owner' => 1,
@@ -310,6 +312,11 @@ class Story
               (
                 STORY_AL_NUMERIC,
                 '_trackbacks'
+              ),
+           'cache_time' => array
+              (
+                STORY_AL_NUMERIC,
+                '_cache_time'
               ),
            'owner_id' => array
               (
@@ -464,7 +471,7 @@ class Story
                 FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE ta.type = 'article' AND ta.id = sid {$topic_sql} AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
 
-            $sql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.text_version, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
+            $sql['mssql'] = "SELECT s.sid, s.uid, s.draft_flag, s.tid, s.date, s.title, CAST(s.introtext AS text) AS introtext, CAST(s.bodytext AS text) AS bodytext, s.text_version, s.hits, s.numemails, s.comments, s.trackbacks, s.related, s.featured, s.show_topic_icon, s.commentcode, s.trackbackcode, s.statuscode, s.expire, s.postmode, s.frontpage, s.cache_time, s.owner_id, s.group_id, s.perm_owner, s.perm_group, s.perm_members, s.perm_anon, s.advanced_editor_mode, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, u.username, u.fullname, u.photo, u.email, t.tid, t.topic, t.imageurl
                 FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t, {$_TABLES['topic_assignments']} AS ta
                 WHERE ta.type = 'article' AND ta.id = sid AND ta.tdefault = 1 AND (s.uid = u.uid) AND (ta.tid = t.tid) AND (sid = '$sid')";
 
@@ -506,6 +513,12 @@ class Story
             } else {
                 $this->_show_topic_icon = 1;
             }
+            
+            if (isset($_CONF['default_cache_time_article'])) {
+                $this->_cache_time = $_CONF['default_cache_time_article'];
+            } else {
+                $this->_cache_time = 0;
+            }            
 
             if (COM_isAnonUser()) {
                 $this->_uid = 1;
@@ -552,6 +565,7 @@ class Story
 
             $this->_statuscode = 0;
             $this->_featured = 0;
+            $this->_cache_time = $_CONF['default_cache_time_article'];
             if (COM_isAnonUser()) {
                 $this->_owner_id = 1;
             } else {
@@ -642,6 +656,7 @@ class Story
             $this->_commentcode = $_CONF['comment_code'];
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_featured = 0;
+            $this->_cache_time = $_CONF['default_cache_time_article'];
             $this->_expire = time();
             if ($_CONF['article_comment_close_enabled']) {
                 $this->_comment_expire = time() +
@@ -1152,6 +1167,7 @@ class Story
             $this->_trackbackcode = $_CONF['trackback_code'];
             $this->_statuscode = 0;
             $this->_show_topic_icon = $_CONF['show_topic_icon'];
+            $this->_cache_time = $_CONF['default_cache_time_article'];
             if (COM_isAnonUser()) {
                 $this->_owner_id = 1;
             } else {
@@ -1656,6 +1672,15 @@ class Story
                 $return = true;
             } else {
                 $return = false;
+            }
+
+            break;
+            
+        case 'cache_time':
+            if (empty($this->_cache_time) OR $this->_cache_time < -1) {
+                $return  = $_CONF['default_cache_time_article'];
+            } else {
+                $return = intval($this->_cache_time);
             }
 
             break;

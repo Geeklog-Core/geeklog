@@ -479,6 +479,15 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
   <td valign="top"><a name="desc_whats_related_trim">whats_related_trim</a></td>
   <td valign="top">26</td>
   <td valign="top">Max. length of the title of items listed in the What's Related list. If 0 will not trim titles. If this option is changed this will update all related links in the database for articles.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_cache_time_article">default_cache_time_article</a></td>
+  <td valign="top">0</td>
+  <td valign="top">The default cache time for a article. Possible values:<br>
+    <ul>
+        <li>1 or more = Amount of seconds a article will be cached before it is regenerated and saved again to a new cache file.</li>
+        <li>0 = Not cached. Article is always regenerated.</li>
+        <li>-1 = Always cached and only regenerated when the article is updated and saved through the article editor.</li>
+    </ul></td></tr>    
 </table>
 
 <h3><a name="stories_trackback">Stories and Trackback: Trackback</a></h3>
@@ -1646,7 +1655,16 @@ running on a MySQL database. They are ignored when using MS SQL.</p>
 <tr>
   <td valign="top"><a name="desc_page_navigation_max_pages">page_navigation_max_pages</a></td>
   <td valign="top">7</td>
-  <td valign="top">Maximum number of pages to show for the page navigation. Minimum of 3 pages to a maximum of 20 pages allowed.</td></tr>        
+  <td valign="top">Maximum number of pages to show for the page navigation. Minimum of 3 pages to a maximum of 20 pages allowed.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_default_cache_time_block">default_cache_time_block</a></td>
+  <td valign="top">0</td>
+  <td valign="top">The default cache time for a block. Possible values:<br>
+    <ul>
+        <li>1 or more = Amount of seconds a block will be cached before it is regenerated and saved again to a new cache file.</li>
+        <li>0 = Not cached. Block is always regenerated.</li>
+        <li>-1 = Always cached and only regenerated when the block is updated and saved through the block editor.</li>
+    </ul></td></tr>  
 </table>
 
 <h3><a name="misc_debug">Miscellaneous: Debug</a></h3>
