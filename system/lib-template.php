@@ -228,6 +228,7 @@ function plugin_itemdeleted_template($id, $type)
     // Also delete article cache on article save and delete
 
     $article = false;
+    $block = false;
     $whatsnew = false;
     $olderstories = false;
     $topicsblock = false;
@@ -241,6 +242,9 @@ function plugin_itemdeleted_template($id, $type)
     } elseif ($type == 'topic') {
         $topicsblock = true;
         $topic_tree = true;
+        // These items use topics and may display info about topics
+        $article = true;
+        $block = true;
     } else {
         // hack to see if plugin supports what's new
         $fn_head = 'plugin_whatsnewsupported_' . $type; 
@@ -255,6 +259,10 @@ function plugin_itemdeleted_template($id, $type)
         $cacheInstance = 'article__' . $id; // remove all article instances
         CACHE_remove_instance($cacheInstance);
     }
+    if ($block) {
+        $cacheInstance = 'block__' . $id; // remove all block instances
+        CACHE_remove_instance($cacheInstance);
+    }    
     if ($whatsnew) {
         $cacheInstance = 'whatsnew__'; // remove all whatsnew instances
         CACHE_remove_instance($cacheInstance);  
