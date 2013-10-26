@@ -108,6 +108,8 @@ $_UPDATES = array(
 function polls_update_polltopics()
 {
     global $_TABLES;
+    
+    $P_SQL = array();
 
     $move_sql = "SELECT pid, topic FROM {$_TABLES['polltopics']}";
     $move_rst = DB_query($move_sql);
