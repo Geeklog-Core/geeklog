@@ -397,6 +397,8 @@ class Story
      */
     function loadFromArray($story)
     {
+        global $_USER;
+        
         /* Use the magic cheat array to quickly reload the whole story
          * from the database result array, doing the quick stripslashes.
          */
@@ -418,6 +420,12 @@ class Story
         if (array_key_exists('fullname', $story)) {
             $this->_fullname = $story['fullname'];
         }
+        
+        if (COM_isAnonUser()) {
+            $this->_uid = 1;
+        } else {
+            $this->_uid = $_USER['uid'];
+        }        
 
         // Overwrite the date with the timestamp.
         $this->_date = $story['unixdate'];

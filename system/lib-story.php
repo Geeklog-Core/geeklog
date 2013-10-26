@@ -106,6 +106,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     $article->set_var('story_date', $story->DisplayElements('date'), false, true);
     
     // Topic Icon is user configurable so do not cache
+    $topicname = $story->DisplayElements('topic');
+    $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid');
     if(( !isset( $_USER['noicons'] ) OR ( $_USER['noicons'] != 1 )) AND $story->DisplayElements('show_topic_icon') == 1 ) {
         $imageurl = $story->DisplayElements('imageurl');
         if (!empty($imageurl)) {
@@ -254,12 +256,9 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
             }
         }
       
-        $topicname = $story->DisplayElements('topic');
-        
         $article->set_var('story_topic_id', $story->DisplayElements('tid'));
         $article->set_var('story_topic_name', $topicname);
     
-        $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $story->DisplayElements('tid');
         $article->set_var( 'story_topic_url', $topicurl );
     
         $recent_post_anchortag = '';
