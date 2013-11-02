@@ -406,6 +406,8 @@ class OAuthConsumer {
             'timeout' => 30,
             'follow_redirects' => TRUE,
             'max_redirects' => 5,
+            'ssl_verify_peer'   => false,
+            'ssl_verify_host'   => false
         ));        
         $request->setHeader('User-Agent', 'Geeklog/' . VERSION);
         $request->setHeader('Referer', COM_getCurrentUrl());
