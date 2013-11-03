@@ -485,7 +485,9 @@ unset(
 );
 
 // Clear out any expired sessions
+DB_lockTable($_TABLES['sessions']);
 DB_query( "UPDATE {$_TABLES['sessions']} SET whos_online = 0 WHERE start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
+DB_unlockTable($_TABLES['sessions']);
 
 /**
 * Global array of groups current user belongs to

@@ -332,8 +332,10 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
                                             array(1, $remote_ip));
         }
     } else {
+        DB_lockTable($_TABLES['sessions']);
         $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < $expirytime)";
         $delresult = DB_query($deleteSQL);
+        DB_unlockTable($_TABLES['sessions']);
 
         if ($_SESS_VERBOSE) {
             COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL\n",1);
