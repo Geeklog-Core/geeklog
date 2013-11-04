@@ -11,7 +11,7 @@ Geeklog History/Changes:
 - What's Related article block now includes all Topics. Can set length of titles 
   [Tom]
 - Articles now list what Topics they are filed under. [Tom]
-- New related_topics autotag. It displays all topics an item belongs too. [To]
+- New related_topics autotag. It displays all topics an item belongs too. [Tom]
 - New related_items autotag. It displays all other related items based on what 
   topics the defined item belongs too [Tom]
 - Updated Command & Control layout. Plugins can now organized into groups. [Tom]
@@ -24,6 +24,10 @@ Geeklog History/Changes:
   shouldn't [Dengen]
 - New Advanced Editor System that allows developers to easily to add new 
   javascript editors [Dengen]
+- Article, Staticpages Poll and Topic IDs can now be 128 characters long [Tom]
+- User Login page now can be accessed directly without first displaying a login 
+  error message [Tom]
+- Fixed deadlock issues with the session table [Tom]
 - Updated Hebrew language files, provided by LWC
 - jQuery can now be included in the header [Tom]
 - Updated to jQuery 1.10.2 and jQuery UI to 1.10.3 [Tom]
