@@ -104,6 +104,12 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     
     // Date formatting set by user therefore cannot be cached
     $article->set_var('story_date', $story->DisplayElements('date'), false, true);
+
+    // Story views increase with every visit so cannot be cached
+    if( $_CONF['hideviewscount'] != 1 ) {
+        $article->set_var('lang_views', $LANG01[106], false, true);
+        $article->set_var('story_hits', $story->DisplayElements('hits'), false, true);
+    }      
     
     // Topic Icon is user configurable so do not cache
     $topicname = $story->DisplayElements('topic');
@@ -197,11 +203,6 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
         $article->set_var( 'story_date_short', $story->DisplayElements('shortdate') );
         $article->set_var( 'story_date_only', $story->DisplayElements('dateonly') );
         $article->set_var( 'story_id', $story->getSid() );
-        
-        if( $_CONF['hideviewscount'] != 1 ) {
-            $article->set_var('lang_views', $LANG01[106]);
-            $article->set_var('story_hits', $story->DisplayElements('hits'));
-        }        
     
         if ($_CONF['contributedbyline'] == 1) {
             $article->set_var('lang_contributed_by', $LANG01[1]);
