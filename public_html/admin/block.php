@@ -593,7 +593,7 @@ function saveblock($bid, $name, $title, $help, $type, $blockorder, $content, $rd
             $allow_autotags = 0;
         }
         
-        if (empty($cache_time) OR $cache_time < -1) {
+        if ($cache_time < -1 OR $cache_time == "") {
             $cache_time = $_CONF['default_cache_time_block'];
         }        
 

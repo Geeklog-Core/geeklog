@@ -1685,7 +1685,7 @@ class Story
             break;
             
         case 'cache_time':
-            if (empty($this->_cache_time) OR $this->_cache_time < -1) {
+            if ($this->_cache_time < -1 OR $this->_cache_time == '') {
                 $return  = $_CONF['default_cache_time_article'];
             } else {
                 $return = intval($this->_cache_time);
