@@ -130,87 +130,87 @@ div.comments div.block-comment-content {
 /* Individual Comment Level(Nested | Tree) */
 div.comments div.level-0,
 div.comments ul.level-0 {
-  margin-{left}: 0;
+  margin-left: 0;
 }
 
 div.comments div.level-25,
 div.comments ul.level-25 {
-  margin-{left}: 16px;
+  margin-left: 16px;
 }
 
 div.comments div.level-50,
 div.comments ul.level-50 {
-  margin-{left}: 32px;
+  margin-left: 32px;
 }
 
 div.comments div.level-75,
 div.comments ul.level-75 {
-  margin-{left}: 48px;
+  margin-left: 48px;
 }
 
 div.comments div.level-100,
 div.comments ul.level-100 {
-  margin-{left}: 64px;
+  margin-left: 64px;
 }
 
 div.comments div.level-125,
 div.comments ul.level-125 {
-  margin-{left}: 80px;
+  margin-left: 80px;
 }
 
 div.comments div.level-150,
 div.comments ul.level-150 {
-  margin-{left}: 96px;
+  margin-left: 96px;
 }
 
 div.comments div.level-175,
 div.comments ul.level-175 {
-  margin-{left}: 112px;
+  margin-left: 112px;
 }
 
 div.comments div.level-200,
 div.comments ul.level-200 {
-  margin-{left}: 128px;
+  margin-left: 128px;
 }
 
 div.comments div.level-225,
 div.comments ul.level-225 {
-  margin-{left}: 144px;
+  margin-left: 144px;
 }
 
 div.comments div.level-250,
 div.comments ul.level-250 {
-  margin-{left}: 160px;
+  margin-left: 160px;
 }
 
 div.comments div.level-275,
 div.comments ul.level-275 {
-  margin-{left}: 176px;
+  margin-left: 176px;
 }
 
 div.comments div.level-300,
 div.comments ul.level-300 {
-  margin-{left}: 192px;
+  margin-left: 192px;
 }
 
 div.comments div.level-325,
 div.comments ul.level-325 {
-  margin-{left}: 208px;
+  margin-left: 208px;
 }
 
 div.comments div.level-350,
 div.comments ul.level-350 {
-  margin-{left}: 224px;
+  margin-left: 224px;
 }
 
 div.comments div.level-375,
 div.comments ul.level-375 {
-  margin-{left}: 240px;
+  margin-left: 240px;
 }
 
 div.comments div.level-400,
 div.comments ul.level-400 {
-  margin-{left}: 256px;
+  margin-left: 256px;
 }
 
 /* Comment Information  */
