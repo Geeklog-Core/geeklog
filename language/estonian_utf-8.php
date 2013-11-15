@@ -875,7 +875,9 @@ $LANG24 = array(
     89 => 'Meta kirjeldus',
     90 => 'Meta märksõnad',
     91 => 'Sa võid alati klõpsata "Eelvaade", et aegumisaega pikendada.',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -1990,6 +1992,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => 'What\'s Related',
     'whats_related_max' => 'Max What\'s Related to Display',
     'whats_related_trim' => 'What\'s Related Title Length',
+    'default_cache_time_article' => 'Default Article Cache Time',
     'aftersave_user' => 'Pärast kasutaja salvestamist',
     'show_right_blocks' => 'Näita alati paremplokki?',
     'showfirstasfeatured' => 'Näita esimest lugu pealoona?',
@@ -2049,6 +2052,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Saada väljund tihendatult?',
     'frame_options' => 'Kaitse "clickjacking" vastu',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => 'Tsensuurireþiim?',
     'censorreplace' => 'Tsensuuri asendustekst',
     'censorlist' => 'Tsenseerimisloetelu',

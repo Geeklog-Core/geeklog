@@ -876,7 +876,9 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'É possibile estendere il tempo scadenza.',
-    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.'
+    'autotag_desc_story' => '[story: id alternate title] - Displays a link to a Story using the Story Title as the title. An alternate title may be specified but is not required.',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -1991,6 +1993,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => 'What\'s Related',
     'whats_related_max' => 'Max What\'s Related to Display',
     'whats_related_trim' => 'What\'s Related Title Length',
+    'default_cache_time_article' => 'Default Article Cache Time',
     'aftersave_user' => 'Dopo Aver Salvato l\'Utente',
     'show_right_blocks' => 'Mostrare Sempre I blocchi a Destra?',
     'showfirstasfeatured' => 'Mostrare il Primo Articolo come "In Vetrina"?',
@@ -2050,6 +2053,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Inviare i dati in Formato Compresso?',
     'frame_options' => 'Protezione contro "clickjacking"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => 'Attivare Modo Censurato?',
     'censorreplace' => 'Sostituire Il Testo Censurato Con',
     'censorlist' => 'Lista di Parole Censurate',

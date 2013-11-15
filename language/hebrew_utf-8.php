@@ -56,7 +56,7 @@ $LANG01 = array(
     11 => 'מאמרים',
     12 => 'קוביות מידע',
     13 => 'נושאים',
-    14 => '',
+    14 => 'Command &amp; Control',
     15 => '',
     16 => '',
     17 => 'משתמשים',
@@ -82,7 +82,7 @@ $LANG01 = array(
     37 => 'טרם נכתבו מאמרים',
     38 => 'סינדיקציית תוכן',
     39 => 'רענן',
-    40 => '',
+    40 => 'Error in password request, invalid username',
     41 => 'אורחים',
     42 => 'נכתב על ידי:',
     43 => 'הגיבו לזה',
@@ -184,7 +184,11 @@ $LANG01 = array(
     139 => "ליחצו <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">כאן</a> כדי לחזור לדף הבית",
     'facebook' => 'כניסה בעזרת פייסבוק',
     'twitter' => 'כניסה בעזרת טוויטר',
-    'linkedin' => 'כניסה בעזרת לינקדאין'
+    'linkedin' => 'כניסה בעזרת לינקדאין',
+    'google' => 'Login with Google',
+    'microsoft' => 'Login with Microsoft',
+    'yahoo' => 'Login with Yahoo',
+    'ctl' => 'Clear Cache'
 );
 
 ###############################################################################
@@ -389,7 +393,6 @@ $LANG04 = array(
     145 => 'הפרופיל הציבורי שלך',
     146 => 'סיסמה וכתובת אימייל',
     147 => 'שדות ססמה לחשבונות לא מרוחקים בלבד. עירכו את ססמת החשבון, כתובת האימייל ופונקציות הזיהוי האוטומטי שלכם. תצטרכו להכניס פעמיים את אותה הססמה או כתובת אימייל למען הוידוא.',
-
     148 => 'מידע משתמש',
     149 => "שנו את מידע המשתמש שלכם שיוצג למשתמשים אחרים.<ul><li>החתימה שלכם תתווסף לכל תגובה או הודעה בפורום שתכתבו\n</li><li>הביוגרפיה שלכם היא תקציר מסכם של עצמכם בשביל לחלוק בו</li><li>\nחלקו את מפתח ה-PHP שלכם</li></ul>",
     150 => '',
@@ -405,7 +408,10 @@ $LANG04 = array(
     165 => 'שימוש בעורך מתקדם',
     166 => 'סינכרון מחדש של חשבון מרוחק',
     167 => 'כניסה מרחוק',
-    168 => 'הנכם יכולים גם להיכנס עם אחד משירותי הזיהוי המרוחקים הבאים'
+    168 => 'הנכם יכולים גם להיכנס עם אחד משירותי הזיהוי המרוחקים הבאים',
+    'user_login' => 'User Login',
+    'user_login_message' => 'Please login below. You must enter both a username and password.',
+    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
 );
 
 ###############################################################################
@@ -427,7 +433,7 @@ $LANG_MYACCOUNT = array(
 $LANG05 = array(
     1 => 'אין חדשות להצגה',
     2 => 'אין שום חדשות להצגה. ייתכן שאין שום חדשות בתוך הנושא הזה או שהגדרות המשתמש שלך מגבילות מדי',
-    3 => ' עבור נושא %s',
+    3 => '',
     4 => 'המאמר המוצג של היום',
     5 => 'הבא',
     6 => 'הקודם',
@@ -674,6 +680,18 @@ $LANG12 = array(
 ###############################################################################
 
 ###############################################################################
+# admin/logviewer.php
+
+$LANG_LOGVIEW = array(
+    'log_viewer' => 'Log Viewer',
+    'info' => 'Geeklog log file administration.',
+    'logs' => 'Logs',
+    'view' => 'View Log File',
+    'clear' => 'Clear Log File',
+    'log_file' => 'Log File'
+);
+
+###############################################################################
 # admin/auth.inc.php
 
 $LANG20 = array(
@@ -758,7 +776,9 @@ $LANG21 = array(
     66 => 'Autotags',
     67 => 'סמנו כדי לאפשר autotags',
     68 => 'הזנה זו לקוביית מידע זו של פורטל היא ארוכה מדי להצגה. אנא הגדירו מספר מקסימלי של מאמרים כדי לייבא לקוביית המידע במסך ההגדרות של קוביות המידע, או מקסימום גלובלי במסך הכיוון של Geeklog.',
-    69 => 'שם ה-plugin'
+    69 => 'שם ה-plugin',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until block is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -813,8 +833,8 @@ $LANG24 = array(
     46 => '<b>שימו לב:</b> אם תשנו תאריך זה להיות בעתיד, מאמר זה לא יפורסם עד אותו תאריך. משמעות הדבר היא גם שהוא לא ייכלל בהזנת כותרות ההזנה והוא יזכה להתעלמות מעמודי החיפוש והסטטיסטיקה.',
     47 => 'תמונות',
     48 => 'תמונה',
-	49 => 'ימין [שמאל במצב שפה RTL]',
-	50 => 'שמאל [ימין במצב שפה RTL]',
+    49 => 'ימין [שמאל במצב שפה RTL]',
+    50 => 'שמאל [ימין במצב שפה RTL]',
     51 => 'כדי להוסיף את אחת מהתמונות שהינכם מצרפים למאמר זה עליכם להכניס טקסט מפורמט באופן מיוחד. הטקסט המפורמט באופן מיוחד הוא [imageX], [imageX_right] או [imageX_left] כאשר X הוא מספר התמונה שצירפתם. *שימו לב:* הינכם חייבים להשתמש בתמונות שצירפתם. אם לא תעשו זאת לא תוכלו לשמור את מאמרכם.<br' . XHTML . '>',
     52 => '',
     53 => 'לא הייתה בשימוש. הנכם חייבים להוסיף את התמונה לטקסט הפתיחה או לטקסט ההמשך לפני שתוכלו לשמור את השינויים שביצעתם.',
@@ -856,7 +876,9 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'הנכם יכולים תמיד ללחוץ על "תצוגה מקדימה" כדי להאריך את תוקף התפוגה.',
-    'autotag_desc_story' => '[story: id alternate title] - מציג קישור למאמר תוך שימוש בכותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
+    'autotag_desc_story' => '[story: id alternate title] - מציג קישור למאמר תוך שימוש בכותרת המאמר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -903,9 +925,7 @@ $LANG27 = array(
     38 => 'כולם',
     39 => 'רק בדף הבית',
     40 => 'שיוך לנושא אחד או יותר. ',
-    41 => 'אם יבחר "כולם" אז הפריט יופיע עבור כל הנושאים. אם יבחר "רק בדף הבית" אז הפריט יופיע רק בדף 
-
-הבית. אחרת עליכם לבחור לפחות נושא אחד אליו ישויך הפריט. ',
+    41 => "אם יבחר \"כולם\" אז הפריט יופיע עבור כל הנושאים. אם יבחר \"רק בדף הבית\" אז הפריט יופיע רק בדף \n\nהבית. אחרת עליכם לבחור לפחות נושא אחד אליו ישויך הפריט. ",
     42 => 'ירושה כוללת את רשימת הנושאים ששויכו. אם הנושא נבחר אז הפריט יעבור בירושה לנושא שמעליו. עליכם תחילה לשמור את הפריט לפני שמשהו יירשם בתיבת הירושה. ',
     43 => 'ברירת המחדל כוללת את רשימת הנושאים ששויכו. זהו נושא ברירת המחדל שישמש כדי להציג את הפריט אם הנושא הממשי שהמשתמש נמצא בו לא נמצא. ',
     44 => 'ירושה',
@@ -919,7 +939,13 @@ $LANG27 = array(
     52 => 'מאמר',
     53 => 'תמונה',
     'breadcrumb_separator' => '>',
-    'breadcrumb_root' => 'בית'
+    'breadcrumb_root' => 'בית',
+    'autotag_desc_topic' => '[topic:id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
+    'no_related_items' => 'No related items found.',
+    'topics:' => 'Topics:',
+    'filed_under:' => 'Filed under:'
 );
 
 ###############################################################################
@@ -1039,13 +1065,18 @@ $LANG29 = array(
     34 => 'שליטה ובקרה',
     35 => 'הגשות מאמרים',
     36 => 'הורה או תגובה',
-    37 => '',
+    37 => 'Author',
     38 => 'אישור',
     39 => 'אין הגשות שדורשות פיקוח בזמן זה',
     40 => 'הגשות של משתמשים',
     41 => 'הגשות תגובות',
     42 => 'שם משתמש',
-    43 => 'האם לפרסם אוטומטית תגובות?'
+    43 => 'האם לפרסם אוטומטית תגובות?',
+    'core' => 'Core',
+    'plugins' => 'Plugins',
+    'tools' => 'Tools',
+    'users' => 'Users',
+    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
 );
 
 ###############################################################################
@@ -1097,7 +1128,7 @@ $LANG32 = array(
     11 => 'כדי לערוך או למחוק plug-in, ליחצו על אייקון העריכה מתחת. זה יראה את פרטי ה-plugin כולל האתר של יוצריו. גם הגירסה המותקנת וגם הגירסה שמוחזרת מקוד ה-plugin מוצגות. זה יעזור לכם לדעת ה-plugin צריך לעבור שידרוג. כדי להתקין או לשדרג plugin אנא עיברו על הדוקומנטציה שלו.',
     12 => 'שום שם של plugin לא ניתן ל-plugineditor()',
     13 => 'מרכז מידע Plugins',
-    14 => 'Plugins שהוסרו', // Resynch
+    14 => 'Plugins שהוסרו',
     15 => 'מרכז הניהול',
     16 => 'שם ה-Plugin',
     17 => 'גירסת ה-Plugin',
@@ -1332,8 +1363,14 @@ $MESSAGE = array(
     113 => 'חשבונכם נוצר בהצלחה. {site_url}',
     114 => 'הסינכרון מחדש שלכם עם החשבון המרוחק נכשל אך שאר מידע החשבון שלכם נשמר בהצלחה.',
     115 => 'השירות המרוחק נוטרל.',
+    116 => 'Loading...',
+    117 => 'Help page is not found.',
+    118 => 'Click to select a date',
+    119 => 'More..',
+    120 => 'Send this?',
     400 => 'לא כל השדות הנדרשים עברו וידוא',
-    401 => 'אנא הכניסו שם מלא'
+    401 => 'אנא הכניסו שם מלא',
+    500 => 'The Template Cache has been successfully cleared.'
 );
 
 ###############################################################################
@@ -1464,7 +1501,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => '404 Error',
     2 => 'לא נמצא העמוד <b>%s</b>.',
-    3 => "<p>מצטערים, אבל הקובץ שביקשתם לקבל לא קיים. אנא הרגישו חופשי לבדוק את <a href=\"{$_CONF['site_url']}\">העמוד הראשי</a> או את <a href=\"{$_CONF['site_url']}/search.php\">עמוד החיפוש</a> כדי לראות אם תוכלו למצוא את מה שאיבדתם."
+    3 => "<p>מצטערים, אבל הקובץ שביקשתם לקבל לא קיים. אנא הרגישו חופשי לבדוק את <a href=\"{$_CONF['site_url']}\">העמוד הראשי</a> או את <a href=\"{$_CONF['site_url']}/search.php\">עמוד החיפוש</a> כדי לראות אם תוכלו למצוא את מה שאיבדתם.",
+    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
 ###############################################################################
@@ -1805,6 +1843,7 @@ $LANG_confignames['Core'] = array(
     'backup_path' => 'גיבוי',
     'path_data' => 'נתונים',
     'path_images' => 'תמונות',
+    'path_editors' => 'Advanced Editors',
     'path_pear' => 'נתיב ל-Pear',
     'have_pear' => 'יש Pear?',
     'mail_settings' => 'הגדרות דואר',
@@ -1816,6 +1855,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'הצהרת DOCTYPE',
     'menu_elements' => 'פריטי תפריט',
     'path_themes' => 'נתיב לנושאים עיצוביים',
+    'cache_templates' => 'Cache Templates?',
     'disable_new_user_registration' => 'ביטול הרשמות חדשות',
     'allow_user_themes' => 'איפשור בחירת נושאים עיצוביים למשתמשים',
     'allow_user_language' => 'איפשור בחירת שפה למשתמשים',
@@ -1836,6 +1876,15 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => 'אפשרו זיהוי OAuth של טוויטר',
     'twitter_consumer_key' => 'מפתח לקוח OAuth של טוויטר',
     'twitter_consumer_secret' => 'סוד לקוח OAuth של טוויטר',
+    'google_login' => 'Enable OAuth Login Method Google',
+    'google_consumer_key' => 'Google OAuth Consumer Key',
+    'google_consumer_secret' => 'Google OAuth Consumer Secret',
+    'microsoft_login' => 'Enable OAuth Login Method Microsoft',
+    'microsoft_consumer_key' => 'Microsoft OAuth Consumer Key',
+    'microsoft_consumer_secret' => 'Microsoft OAuth Consumer Secret',
+    'yahoo_login' => 'Enable OAuth Login Method Yahoo',
+    'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
+    'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
     'spamx' => 'פעולות Spam-X',
     'sort_admin' => 'מיון קישורים',
     'language' => 'שפה',
@@ -1887,6 +1936,7 @@ $LANG_confignames['Core'] = array(
     'speedlimit' => 'הגבלת מהירות הגשה',
     'skip_preview' => 'דילוג על תצוגה מקדימה של הגשות',
     'advanced_editor' => 'עורך מתקדם?',
+    'advanced_editor_name' => 'Advanced Editor Name?',
     'wikitext_editor' => 'עורך טקסט וויקי?',
     'cron_schedule_interval' => 'מרווח תזמון cron',
     'sortmethod' => 'מיון נושאים',
@@ -1909,6 +1959,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => 'החבאת טראקבקים חדשים',
     'hidenewplugins' => 'החבאת כניסות של plugins חדשים',
     'title_trim_length' => 'אורך קיצוץ כותרות',
+    'whatsnew_cache_time' => 'Max Cache Time',
     'trackback_enabled' => 'איפשור טראקבקים?',
     'pingback_enabled' => 'איפשור פינג חוזר?',
     'ping_enabled' => 'איפשור פינגים?',
@@ -1937,9 +1988,16 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => 'החבאת ניווט בדף הראשי?',
     'onlyrootfeatures' => 'רק מנהלים ראשיים יכולים להציג בדף הראשי?',
     'aftersave_story' => 'לאחר שמירת מאמר',
+    'related_topics' => 'Related Topics',
+    'related_topics_max' => 'Max Related Topics to Display',
+    'whats_related' => 'What\'s Related',
+    'whats_related_max' => 'Max What\'s Related to Display',
+    'whats_related_trim' => 'What\'s Related Title Length',
+    'default_cache_time_article' => 'Default Article Cache Time',
     'aftersave_user' => 'לאחר שמירת משתמש',
     'show_right_blocks' => 'תמיד להציג קוביות מידע ימניות [שמאליות במצב שפה RTL]?',
     'showfirstasfeatured' => 'הצגת המאמר הראשון כמאמר המוצג היומי?',
+    'template_comments' => 'Template Comments in Output?',
     'backend' => 'איפשור הזנות?',
     'rdf_file' => 'ספריית פלט סינדיקציה',
     'rdf_limit' => 'הגבלת הזנות',
@@ -1974,6 +2032,7 @@ $LANG_confignames['Core'] = array(
     'commentspeedlimit' => 'הגבלת מהירות תגובות',
     'comment_limit' => 'הגבלות תגובות',
     'comment_mode' => 'מצב תגובות',
+    'comment_order' => 'Comment Order',
     'comment_code' => 'ברירת המחדל של תגובות',
     'comment_edit' => 'איפשור עריכת תגובות?',
     'comment_edittime' => 'זמן עריכת תגובות (בשניות)',
@@ -1994,6 +2053,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'שליחת פלט מכווץ?',
     'frame_options' => 'הגנה נגד "clickjacking"',
     'page_navigation_max_pages' => 'המספר המקסימלי של הדפים לניווט',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => 'הפעלת צנזורה?',
     'censorreplace' => 'צנזורת החלפת טקסט',
     'censorlist' => 'רשימת צנזורה',
@@ -2026,6 +2086,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => 'ברירת המחדל של סדר מיון',
     'autotag_permissions_story' => '[story: ] הרשאות',
     'autotag_permissions_user' => '[user: ] הרשאות',
+    'autotag_permissions_topic' => '[topic: ] Permissions',
+    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
+    'autotag_permissions_related_items' => '[related_items: ] Permissions',
     'multiple_breadcrumbs' => 'הצגת מיקומים מרובים',
     'disable_breadcrumbs_topics' => 'ניטרול הצגת מיקום של נושאים',
     'disable_breadcrumbs_articles' => 'ניטרול הצגת מיקום של מאמרים',
@@ -2057,6 +2120,7 @@ $LANG_fs['Core'] = array(
     'fs_admin_block' => 'קוביית המידע של הניהול',
     'fs_locale' => 'לוקאליזציה',
     'fs_language' => 'שפה',
+    'fs_multilanguage' => 'Multi-Language Content',
     'fs_debug' => 'דיבג',
     'fs_cookies' => 'עוגיות',
     'fs_login' => 'הגדרות הזדהות',
@@ -2166,7 +2230,10 @@ $LANG_configselects['Core'] = array(
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
     28 => array('ללא גישה' => 0, 'שימוש' => 2),
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
-    30 => array('התחלה' => 'start', 'סיום' => 'end', 'ללא' => 'none')
+    30 => array('התחלה' => 'start', 'סיום' => 'end', 'ללא' => 'none'),
+    31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
+    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
+    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
 );
 
 ###############################################################################

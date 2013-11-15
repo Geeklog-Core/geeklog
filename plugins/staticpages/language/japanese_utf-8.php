@@ -166,6 +166,7 @@ $LANG_confignames['staticpages'] = array(
     'comment_code' => '新規作成時のデフォルト',
     'draft_flag' => 'ドラフトモードをデフォルトにする',
     'disable_breadcrumbs_staticpages' => 'パンくずリストを無効にする',
+    'default_cache_time' => 'Default Cache Time',
     'newstaticpagesinterval' => '静的ページの"新着"期間',
     'hidenewstaticpages' => '新着ブロック表示',
     'title_trim_length' => 'タイトル最大長',

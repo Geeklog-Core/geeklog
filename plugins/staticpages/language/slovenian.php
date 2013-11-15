@@ -163,6 +163,7 @@ $LANG_confignames['staticpages'] = array(
     'comment_code' => 'Prednastavljeni komentarji',
     'draft_flag' => 'Prednastavljena kot osnutek',
     'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
+    'default_cache_time' => 'Default Cache Time',
     'newstaticpagesinterval' => 'Interval nove statiène strani',
     'hidenewstaticpages' => 'Skrij nove statiène strani',
     'title_trim_length' => 'Krajšanje dolžine naslova',

@@ -883,7 +883,9 @@ $LANG24 = array(
     89 => '説明文のメタタグ',
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
-    'autotag_desc_story' => '[story: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。'
+    'autotag_desc_story' => '[story: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -1998,6 +2000,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => 'What\'s Related',
     'whats_related_max' => 'Max What\'s Related to Display',
     'whats_related_trim' => 'What\'s Related Title Length',
+    'default_cache_time_article' => 'Default Article Cache Time',
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
@@ -2057,6 +2060,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'HTMLの出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止',
     'page_navigation_max_pages' => 'ページナビゲーションの最大ページ数',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => '語句の検査',
     'censorreplace' => '置き換える単語',
     'censorlist' => 'バッドワード',

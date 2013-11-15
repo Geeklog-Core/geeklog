@@ -186,7 +186,7 @@ $LANG01 = array(
     'linkedin' => 'Login with LinkedIn',
     'google' => 'Login with Google',
     'microsoft' => 'Login with Microsoft',
-    'yahoo' => 'Login with Yahoo',    
+    'yahoo' => 'Login with Yahoo',
     'ctl' => 'Clear Cache'
 );
 
@@ -743,7 +743,7 @@ $LANG_ENVCHECK = array(
     'bypass_note'               => 'Since either Safe Mode or open_basedir restrictions were detected, the check for graphic libraries were skipped.',
     'not_used_note'             => 'No graphic libraries are set to be used by Geeklog.',
     'location'                  => 'Location',
-    'status'                     => 'Status',
+    'status'                    => 'Status',
     'item'                      => 'Item',
     
     /* Left incase we decided to use jhead and/or jpegtran Program in future */
@@ -990,7 +990,7 @@ $LANG27 = array(
     33 => 'Inherit',
     34 => 'Parent topic inherits all inheritable items',
     35 => 'Hidden', 
-    36 => 'Topic will be hidden in the Topic Block until it\'s parent topic is selected', 
+    36 => 'Topic will be hidden in the Topic Block until it\'s parent topic is selected',
     37 => 'Root',
     38 => 'All',
     39 => 'Homepage Only', 
@@ -1947,17 +1947,17 @@ $LANG_confignames['Core'] = array(
     'linkedin_consumer_key' => "LinkedIn OAuth API Key",    
     'linkedin_consumer_secret' => "LinkedIn OAuth Secret Key",    
     'twitter_login' => "Enable OAuth Login Method Twitter",
-    'twitter_consumer_key' => "Twitter OAuth Consumer Key",    
+    'twitter_consumer_key' => "Twitter OAuth Consumer Key",
     'twitter_consumer_secret' => "Twitter OAuth Consumer Secret",
     'google_login' => "Enable OAuth Login Method Google",
     'google_consumer_key' => "Google OAuth Consumer Key",
     'google_consumer_secret' => "Google OAuth Consumer Secret",
     'microsoft_login' => "Enable OAuth Login Method Microsoft",
     'microsoft_consumer_key' => "Microsoft OAuth Consumer Key",
-    'microsoft_consumer_secret' => "Microsoft OAuth Consumer Secret",   
+    'microsoft_consumer_secret' => "Microsoft OAuth Consumer Secret",
     'yahoo_login' => "Enable OAuth Login Method Yahoo",
     'yahoo_consumer_key' => "Yahoo OAuth Consumer Key",
-    'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret", 
+    'yahoo_consumer_secret' => "Yahoo OAuth Consumer Secret",
     'spamx' => "Spam-X Actions",
     'sort_admin' => "Sort Links",
     'language' => "Default Language",

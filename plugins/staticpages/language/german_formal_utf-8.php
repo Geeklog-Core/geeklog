@@ -165,6 +165,7 @@ $LANG_confignames['staticpages'] = array(
     'comment_code' => 'Kommentar Grundeinstellung',
     'draft_flag' => 'Als Grundeinstellung auf Entwurf',
     'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
+    'default_cache_time' => 'Default Cache Time',
     'newstaticpagesinterval' => 'Zeitabstand für neue Seiten',
     'hidenewstaticpages' => 'Neue Seiten ausblenden',
     'title_trim_length' => 'Titel abschneiden nach',

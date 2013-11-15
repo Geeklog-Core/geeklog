@@ -875,7 +875,9 @@ $LANG24 = array(
     89 => 'Meta Description',
     90 => 'Meta Keywords',
     91 => 'Vous pouvez toujours utiliser le bouton "Aperçu" pour prolonger le délai de péremption.',
-    'autotag_desc_story' => '[story: id Titre alternatif] - Affiche un lien vers un article en utilisant le titre de l\'article, où id est l\'identifiant de l\'article. Optionnellement, un titre alternatif peut être spécifier.'
+    'autotag_desc_story' => '[story: id Titre alternatif] - Affiche un lien vers un article en utilisant le titre de l\'article, où id est l\'identifiant de l\'article. Optionnellement, un titre alternatif peut être spécifier.',
+    'cache_time' => 'Cache Time',
+    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
 );
 
 ###############################################################################
@@ -1990,6 +1992,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => 'What\'s Related',
     'whats_related_max' => 'Max What\'s Related to Display',
     'whats_related_trim' => 'What\'s Related Title Length',
+    'default_cache_time_article' => 'Default Article Cache Time',
     'aftersave_user' => 'Après la sauvegarde d\'un membre',
     'show_right_blocks' => 'Toujours afficher les blocs de gauche',
     'showfirstasfeatured' => 'Toujours afficher le premier article en avant',
@@ -2049,6 +2052,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'Envoyer l\'output compréssé',
     'frame_options' => 'Protection contre "clickjacking"',
     'page_navigation_max_pages' => 'Max Pages for Navigation',
+    'default_cache_time_block' => 'Default Block Cache Time',
     'censormode' => 'Mode censure',
     'censorreplace' => 'Texte de remplacement',
     'censorlist' => 'Liste des termes censurés',
