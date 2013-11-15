@@ -5,9 +5,9 @@
 #
 # This is the Hebrew language file for the Geeklog Polls plugin
 #
-# Copyright (C) 2009
+# Copyright (C) 2013
 # http://lior.weissbrod.com
-# Version 1.6.1#1
+# Version 2.0.0#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -36,11 +36,11 @@ global $LANG32;
 
 $LANG_POLLS = array(
     'polls' => 'סקרים',
-    'poll' => 'Poll',
+    'poll' => 'סקר',
     'results' => 'תוצאות',
     'pollresults' => 'תוצאות סקרים',
     'votes' => 'הצבעות',
-    'voters' => 'voters',
+    'voters' => 'מצביעים',
     'vote' => 'הצבעה',
     'pastpolls' => 'סקרי עבר',
     'savedvotetitle' => 'ההצבעה נשמרה',
@@ -62,9 +62,9 @@ $LANG_POLLS = array(
     'pollhidden' => 'כבר הצבעתם. תוצאות הסקר יוצגו כאשר ההצבעה תיסגר.',
     'start_poll' => 'התחילו את הסקר',
     'no_new_polls' => 'אין סקרים חדשים',
-    'autotag_desc_poll' => '[poll: id alternate title] - מציג קישור לסקר בעזרת כותרת הסקר בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
-    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - מציג סקר להצבעה. Class ו-Showall אינם הכרחיים. Class מציינת את ה-css class ו-Showall אם מכוון ל-1, מציג את כל השאלות',
-    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - מציג תשובות לסקר. Class אינו הכרחי. Class מציין את ה-css class.',
+    'autotag_desc_poll' => '[poll: id alternate title] - מציג קישור לסקר בעזרת כותרת הקישור בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
+    'autotag_desc_poll_vote' => '[poll_vote: id class:poll-autotag showall:1] - מציג סקר להצבעה. Class ו-showall אינם נחוצים. Class מציינת את ה-css class ו-Showall, אם הוא 1, מציג את כל השאלות',
+    'autotag_desc_poll_result' => '[poll_result: id class:poll-autotag] - מציג תוצאות סקר. Class אינו נחוץ. Class מציינת את ה-css class.',
     'deny_msg' => 'הגישה לסקר זה לא מאושרת. הסקר הוזז/נמחק או שאין ברשותכם הרשאות מתאימות.'
 );
 
@@ -146,13 +146,13 @@ $LANG_confignames['polls'] = array(
     'hidenewpolls' => 'סקרים חדשים',
     'title_trim_length' => 'אורך כותרות מקוצרות',
     'meta_tags' => 'אפשרו תגיות Meta',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'block_enable' => 'מאופשר',
+    'block_isleft' => 'הצגת קוביות מידע בצד שמאל [ימין במצב שפה RTL]',
+    'block_order' => 'סדר מיון קוביות מידע',
+    'block_topic_option' => 'אפשרויות נושא',
+    'block_topic' => 'נושא',
+    'block_group_id' => 'קבוצה',
+    'block_permissions' => 'הרשאות'
 );
 
 $LANG_configsubgroups['polls'] = array(
@@ -160,20 +160,20 @@ $LANG_configsubgroups['polls'] = array(
 );
 
 $LANG_tab['polls'] = array(
-    'tab_main' => 'General Polls Settings',
-    'tab_whatsnew' => 'What\'s New Block',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_poll_block' => 'Poll Block'
+    'tab_main' => 'הגדרות סקר כלליות',
+    'tab_whatsnew' => 'קוביית המידע מה חדש',
+    'tab_permissions' => 'הרשאות ברירת המחדל',
+    'tab_autotag_permissions' => 'הרשאות שימוש ב-Autotag',
+    'tab_poll_block' => 'קוביית מידע סקר'
 );
 
 $LANG_fs['polls'] = array(
     'fs_main' => 'הגדרות סקר כלליות',
     'fs_whatsnew' => 'קוביית המידע מה חדש',
     'fs_permissions' => 'הרשאות ברירת המחדל',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_autotag_permissions' => 'הרשאות שימוש ב-Autotag',
+    'fs_block_settings' => 'הגדרות קוביית מידע',
+    'fs_block_permissions' => 'הרשאות קוביית מידע'
 );
 
 // Note: entries 0, 1, and 12 are the same as in $LANG_configselects['Core']
@@ -184,9 +184,9 @@ $LANG_configselects['polls'] = array(
     5 => array('החבאה' => 'hide', 'הצגה - שימוש בתאריך העדכון' => 'modified', 'הצגה - שימוש בתאריך היצירה' => 'created'),
     9 => array('הפניה לסקר' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת רשימה ציבורית' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
+    13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
+    14 => array('ללא גישה' => 0, 'קריאה בלבד' => 2),
+    15 => array('כולם' => 'TOPIC_ALL_OPTION', 'דף הבית בלבד' => 'TOPIC_HOMEONLY_OPTION', 'בחירת נושאים' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>

@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language file for the Geeklog Static Page plugin
 #
-# Copyright (C) 2010
+# Copyright (C) 2013
 # http://lior.weissbrod.com
-# Version 1.7.1#1
+# Version 2.0.0#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -65,7 +65,7 @@ $LANG_STATIC = array(
     'all_html_allowed' => 'כל HTML באשר הוא מותר',
     'results' => 'תוצאות עמודים סטטיים',
     'author' => 'יוצר',
-    'no_title_or_content' => 'הנכם חייבם לפחות למלא את שדות <b>הכותרת</b> <b>והתוכן</b>.',
+    'no_title_or_content' => 'הנכם חייבם לפחות למלא את שדות <b>הכותרת</b> <b>והתוכן</b>, כמו גם לבצע בחירת <b>נושא</b>.',
     'no_such_page_anon' => 'אנא הזדהו במערכת..',
     'no_page_access_msg' => "זה עשוי להיות מפני שלא הזדהיתם במערכת, או שאינכם חברים ב-{$_CONF['site_name']}. אנא <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> תירשמו כחברים</a> ב-{$_CONF['site_name']} כדי לקבל גישה מלאה של מנויים",
     'php_msg' => 'PHP: ',
@@ -81,8 +81,8 @@ $LANG_STATIC = array(
     'duplicate_id' => 'קוד הזיהוי שבחרתם לעמוד סטטי זה כבר נמצא בשימוש. אנא ביחרו קוד אחר.',
     'instructions' => 'כדי לשנות או למחוק עמוד סטטי, ליחצו על אייקון העריכה שלו להלן. כדי לצפות בעמוד סטטי, ליחצו על כותרת העמוד שברצונכם לצפות בו. כדי ליצור עמוד סטטי חדש, ליחצו על "צרו חדש" לעיל. ליחצו על אייקון ההעתקה כדי ליצור עותק של עמוד קיים.',
     'centerblock' => 'קוביית מידע מרכזית: ',
-    'centerblock_msg' => 'כאשר מסומן, עמוד סטטי זה יוצג כקוביית מידע מרכזית בעמוד האינדקס.',
-    'topic' => 'נושא: ',
+    'centerblock_msg' => 'כאשר מסומן, עמוד סטטי זה יוצג כקוביית מידע מרכזית בעמוד האינדקס של הנושאים שהעמוד משויך אליכם.',
+    'topic' => 'נושא',
     'position' => 'מקום: ',
     'all_topics' => 'בהכל',
     'no_topic' => 'רק בדף הבית',
@@ -121,8 +121,6 @@ $LANG_STATIC = array(
     'draft' => 'טיוטה',
     'draft_yes' => 'כן',
     'draft_no' => 'לא',
-    'cache_time' => 'Cache Time',
-    'cache_time_desc' => 'This staticpage content will be cached for no longer than this many seconds. If 0 caching is disabled (3600 = 1 hour,  86400 = 1 day). Staticpages with PHP enabled or are a template will not be cached.',
     'autotag_desc_staticpage' => '[staticpage: id alternate title] - מציג קישור לעמוד סטטי בעזרת כותרת העמוד הסטטי בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.',
     'autotag_desc_staticpage_content' => '[staticpage_content: id alternate title] - מציג את תכני העמוד הסטטי.'
 );
@@ -154,14 +152,14 @@ $LANG_confignames['staticpages'] = array(
     'filter_html' => 'סינון HTML?',
     'censor' => 'צינזור תוכן?',
     'default_permissions' => 'הרשאות ברירת המחדל של עמוד',
-    'autotag_permissions_staticpage' => '[staticpage: ] Permissions',
-    'autotag_permissions_staticpage_content' => '[staticpage_content: ] Permissions',
+    'autotag_permissions_staticpage' => '[staticpage: ] הרשאות',
+    'autotag_permissions_staticpage_content' => '[staticpage_content: ] הרשאות',
     'aftersave' => 'לאחר שמירת עמוד',
     'atom_max_items' => 'הכמות המקסימלית של עמודים בהזנת שירותי רשת',
     'meta_tags' => 'אפשרו תגיות Meta',
     'comment_code' => 'ברירת המחדל של תגובות',
     'draft_flag' => 'ברירת המחדל של סימון כטיוטה',
-    'disable_breadcrumbs_staticpages' => 'Disable Breadcrumbs',
+    'disable_breadcrumbs_staticpages' => 'ניטרול הצגת מיקום',
     'newstaticpagesinterval' => 'מרווח עמוד סטטי חדש',
     'hidenewstaticpages' => 'החביאו עמודים סטטיים חדשים',
     'title_trim_length' => 'אורך קיצוץ כותרות',
@@ -177,11 +175,11 @@ $LANG_configsubgroups['staticpages'] = array(
 );
 
 $LANG_tab['staticpages'] = array(
-    'tab_main' => 'Static Pages Main Settings',
-    'tab_whatsnew' => 'What\'s New Block',
-    'tab_search' => 'Search Results',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions'
+    'tab_main' => 'הגדרות כלליות של עמודים סטטיים',
+    'tab_whatsnew' => 'קוביית המידע מה חדש',
+    'tab_search' => 'תוצאות חיפוש',
+    'tab_permissions' => 'הרשאות ברירת המחדל',
+    'tab_autotag_permissions' => 'הרשאות שימוש ב-Autotag'
 );
 
 $LANG_fs['staticpages'] = array(
@@ -189,7 +187,7 @@ $LANG_fs['staticpages'] = array(
     'fs_whatsnew' => 'קוביית המידע של מה חדש',
     'fs_search' => 'תוצאות חיפוש',
     'fs_permissions' => 'הרשאות ברירת המחדל',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions'
+    'fs_autotag_permissions' => 'הרשאות שימוש ב-Autotag'
 );
 
 // Note: entries 0, 1, 9, 12, 17 are the same as in $LANG_configselects['Core']
@@ -202,7 +200,7 @@ $LANG_configselects['staticpages'] = array(
     5 => array('החבאה' => 'hide', 'הצגה - שימוש בתאריך העדכון' => 'modified', 'הצגה - שימוש בתאריך היצירה' => 'created'),
     9 => array('הפנייה לעמוד' => 'item', 'הצגת רשימה' => 'list', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
+    13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     17 => array('איפשור תגובות' => 0, 'ניטרול תגובות' => -1)
 );
 

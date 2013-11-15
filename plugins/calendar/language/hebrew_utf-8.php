@@ -4,9 +4,9 @@
 # hebrew_utf-8.php
 # This is the Hebrew language page for the Geeklog Calendar Plug-in!
 #
-# Copyright (C) 2009
+# Copyright (C) 2013
 # http://lior.weissbrod.com
-# Version 1.6#1
+# Version 2.0.0#1
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ $LANG_CAL_1 = array(
     49 => 'נראה שאין שום אירועים באתר זה או שאף אחד עוד לא לחץ על אחד מהם.',
     50 => 'אירועים',
     51 => 'מחיקה',
-    'autotag_desc_event' => '[event: id alternate title] - מציג קישור לאירוע מהיומן בעזרת כותרת האירוע בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
+    'autotag_desc_event' => '[event: id alternate title] - מציג קישור לקישור של אירוע מהיומן בעזרת כותרת האירוע בתור הכותרת. ניתן לציין כותרת אלטרנטיבית אך זו לא חובה.'
 );
 
 $_LANG_CAL_SEARCH = array(
@@ -208,14 +208,14 @@ $LANG_confignames['calendar'] = array(
     'delete_event' => 'מחיקת אירועים ביחד עם שולחיהם?',
     'aftersave' => 'לאחר שמירת האירוע',
     'default_permissions' => 'אישורי ברירת המחדל של אירוע',
-    'autotag_permissions_event' => '[event: ] Permissions',
-    'block_enable' => 'Enabled',
-    'block_isleft' => 'Display Block on Left',
-    'block_order' => 'Block Order',
-    'block_topic_option' => 'Topic Options',
-    'block_topic' => 'Topic',
-    'block_group_id' => 'Group',
-    'block_permissions' => 'Permissions'
+    'autotag_permissions_event' => '[event: ] הרשאות',
+    'block_enable' => 'מאופשר',
+    'block_isleft' => 'הצגת קוביית מידע מצד שמאל [ימין במצב שפה RTL]',
+    'block_order' => 'סדר מיון קוביות מידע',
+    'block_topic_option' => 'אפשרויות נושא',
+    'block_topic' => 'נושא',
+    'block_group_id' => 'קבוצה',
+    'block_permissions' => 'הרשאות'
 );
 
 $LANG_configsubgroups['calendar'] = array(
@@ -223,18 +223,18 @@ $LANG_configsubgroups['calendar'] = array(
 );
 
 $LANG_tab['calendar'] = array(
-    'tab_main' => 'General Calendar Settings',
-    'tab_permissions' => 'Default Permissions',
-    'tab_autotag_permissions' => 'Autotag Usage Permissions',
-    'tab_events_block' => 'Events Block'
+    'tab_main' => 'הגדרות יומן כלליות',
+    'tab_permissions' => 'הרשאות ברירת המחדל',
+    'tab_autotag_permissions' => 'הרשאות שימוש ב-Autotag',
+    'tab_events_block' => 'קוביית מידע אירועים'
 );
 
 $LANG_fs['calendar'] = array(
     'fs_main' => 'הגדרות יומן כללי',
     'fs_permissions' => 'הרשאות ברירת המחדל',
-    'fs_autotag_permissions' => 'Autotag Usage Permissions',
-    'fs_block_settings' => 'Block Settings',
-    'fs_block_permissions' => 'Block Permissions'
+    'fs_autotag_permissions' => 'הרשאות שימוש ב-Autotag',
+    'fs_block_settings' => 'הגדרות קוביית מידע',
+    'fs_block_permissions' => 'הרשאות קוביית מידע'
 );
 
 // Note: entries 0, 1, 6, 9, 12 are the same as in $LANG_configselects['Core']
@@ -244,9 +244,9 @@ $LANG_configselects['calendar'] = array(
     6 => array('12' => 12, '24' => 24),
     9 => array('הפנייה לאירוע' => 'item', 'הצגת רשימת הניהול' => 'list', 'הצגת היומן' => 'plugin', 'הצגת דף הבית' => 'home', 'הצגת דף הניהול' => 'admin'),
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
-    13 => array('No access' => 0, 'Use' => 2),
-    14 => array('No access' => 0, 'Read-Only' => 2),
-    15 => array('All' => 'TOPIC_ALL_OPTION', 'Homepage Only' => 'TOPIC_HOMEONLY_OPTION', 'Select Topics' => 'TOPIC_SELECTED_OPTION')
+    13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
+    14 => array('אין גישה' => 0, 'קריאה בלבד' => 2),
+    15 => array('כולם' => 'TOPIC_ALL_OPTION', 'דף הבית בלבד' => 'TOPIC_HOMEONLY_OPTION', 'בחירת נושאים' => 'TOPIC_SELECTED_OPTION')
 );
 
 ?>
