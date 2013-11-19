@@ -397,8 +397,6 @@ class Story
      */
     function loadFromArray($story)
     {
-        global $_USER;
-        
         /* Use the magic cheat array to quickly reload the whole story
          * from the database result array, doing the quick stripslashes.
          */
@@ -457,6 +455,7 @@ class Story
 
         $sid = DB_escapeString(COM_applyFilter($sid));
 
+        $sql = array();
         if (!empty($sid) && (($mode == 'edit') || ($mode == 'view') || ($mode == 'clone'))) {
             if (empty($topic)) {
                 $topic_sql = ' AND ta.tdefault = 1';
@@ -464,7 +463,6 @@ class Story
                 $topic_sql = " AND ta.tid = '{$topic}'";
             }
 
-            $sql = array();
             /* Original
             $sql['mysql'] = "SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) AS unixdate, UNIX_TIMESTAMP(s.expire) AS expireunix, UNIX_TIMESTAMP(s.comment_expire) AS cmt_expire_unix, "
                 . "u.username, u.fullname, u.photo, u.email, t.topic, t.imageurl " . "FROM {$_TABLES['stories']} AS s, {$_TABLES['users']} AS u, {$_TABLES['topics']} AS t " . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')";
