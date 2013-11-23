@@ -401,7 +401,7 @@ class OAuthConsumer {
         require_once 'HTTP/Request2.php';
         $request = new HTTP_Request2($from, HTTP_Request2::METHOD_GET);
         $request->setConfig(array(
-            'adapter' => 'HTTP_Request2_Adapter_Curl',
+            'adapter' => 'HTTP_Request2_Adapter_Socket',
             'connect_timeout' => 15,
             'timeout' => 30,
             'follow_redirects' => TRUE,
