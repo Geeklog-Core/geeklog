@@ -568,7 +568,7 @@ function SEC_getUserPermissions($grp_id='', $uid='')
         }
     }
 
-    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
+    if ((empty ($_USER['uid']) && ($uid == 1)) || (!empty ($_USER['uid']) && ($uid == $_USER['uid']))) {
         if (empty ($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups ($uid);
         }

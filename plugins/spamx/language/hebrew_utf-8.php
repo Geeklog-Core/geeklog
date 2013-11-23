@@ -5,7 +5,7 @@
  * This is the Hebrew language file for the Geeklog Spam-X plugin
 * Copyright (C) 2013
  * http://lior.weissbrod.com
- * Version 2.0.0#1
+ * Version 2.0.0#2
  * 
  * Licensed under GNU General Public License
  *
@@ -126,8 +126,8 @@ $LANG_SX00 = array(
     'email_ip_spam' => '%s או %s ניסו להירשם אבל נחשבו כספאם.',
     'edit_personal_blacklist' => 'עריכת רשימה שחורה אישית',
     'mass_delete_spam_comments' => 'מחיקה המונית של תגובות ספאם',
-    'mass_delete_trackback_spam' => 'מחיקה המונית של רשימה שחורה של HTTP Header',
-    'edit_http_header_blacklist' => 'Edit HTTP Header Blacklist',
+    'mass_delete_trackback_spam' => 'מחיקה המונית של ספאם trackback',
+    'edit_http_header_blacklist' => 'עריכת רשימה שחורה של HTTP Header',
     'edit_ip_blacklist' => 'עריכת רשימה שחורה של IP',
     'edit_ip_url_blacklist' => 'עריכת IP של רשימה שחורה של כתובות אתרי אינטרנט',
     'edit_sfs_blacklist' => 'עריכת רשימה שחורה של אימייל SFS',
