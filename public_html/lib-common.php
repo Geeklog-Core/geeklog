@@ -5682,7 +5682,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
 
     $page_navigation = COM_newTemplate($_CONF['path_layout']);
     $page_navigation->set_file('page_navigation', 'pagenavigation.thtml');
-    $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended');
+    $blocks = array('page', 'page-current', 'nav-end', 'nav-open-ended', 'message');
     foreach ($blocks as $block) {
         $page_navigation->set_block('page_navigation', $block);
     }    
@@ -5762,7 +5762,10 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages,
     }
 
     if (!empty($msg)) {
-        $page_navigation->set_var('message', $msg . ' ');
+        $page_navigation->set_var('message_text', $msg . ' ');
+        $page_navigation->parse('message', 'message');
+    } else {
+        $page_navigation->parse('message', '');
     }
 
     return $page_navigation->finish($page_navigation->parse('output', 'page_navigation'));
