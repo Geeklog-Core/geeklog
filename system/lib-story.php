@@ -317,22 +317,22 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
                     $story_page = 1;
     
                     // page selector
-                    if( is_numeric( $mode ))
-                    {
+                    if (is_numeric($mode)) {
                         $story_page = $mode;
-                        if( $story_page <= 0 )
-                        {
+                        if ($story_page <= 0) {
                             $story_page = 1;
                             $mode = 0;
-                        }
-                        elseif( $story_page > 1 )
-                        {
+                        } elseif ($story_page > 1) {
                             $introtext = '';
                         }
                     }
                     $article_array = explode( '[page_break]', $bodytext );
+                    $page_break_count = count($article_array);
+                    if ($story_page > $page_break_count) { // Can't have page count greate than actual number of pages
+                        $story_page = $page_break_count;
+                    }
                     $pagelinks = COM_printPageNavigation(
-                        $articleUrl, $story_page, count( $article_array ),
+                        $articleUrl, $story_page, $page_break_count,
                         'mode=', $_CONF['url_rewrite'], $LANG01[118]);
                     if( count( $article_array ) > 1 )
                     {

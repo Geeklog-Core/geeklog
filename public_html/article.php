@@ -384,23 +384,33 @@ if ($A['count'] > 0) {
                                   STORY_renderArticle ($story, 'n', $tmpl, $query));
 
         // display comments or not?
-        if ( (is_numeric($mode)) and ($_CONF['allow_page_breaks'] == 1) )
-        {
-            $story_page = $mode;
+        if ($_CONF['allow_page_breaks'] == 1) {
+            if (!is_numeric($mode)){
+                $story_page = 1;
+            } else {
+                $story_page = $mode;
+            }
             $mode = '';
+            
             if( $story_page <= 0 ) {
                 $story_page = 1;
             }
+            
             $article_arr = explode( '[page_break]', $story->displayElements('bodytext'));
-            $conf = $_CONF['page_break_comments'];
-            if  (
-                 ($conf == 'all') or
-                 ( ($conf =='first') and ($story_page == 1) ) or
-                 ( ($conf == 'last') and (count($article_arr) == ($story_page)) )
-                ) {
-                $show_comments = true;
+            $page_break_count = count($article_arr);
+            if ($page_break_count > 1) {
+                $conf = $_CONF['page_break_comments'];
+                if  (
+                     ($conf == 'all') or
+                     ( ($conf =='first') and ($story_page == 1) ) or
+                     ( ($conf == 'last') and ($page_break_count == $story_page) )
+                    ) {
+                    $show_comments = true;
+                } else {
+                    $show_comments = false;
+                }
             } else {
-                $show_comments = false;
+                $show_comments = true;
             }
         } else {
             $show_comments = true;
