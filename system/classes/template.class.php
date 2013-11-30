@@ -1935,9 +1935,9 @@ function _postprocess($str)
       // COMMENT ORIGINAL LINE below out since not sure why changing dashes to under scores ... this affects articles and staticpages
       // $iid = str_replace('-','_',$iid);
       $filename = $path_cache.'instance__'.$iid.'.php';
-      $tmplt = '<!-- begin cached as '.htmlspecialchars($iid)." -->\n"
+      $tmplt = '{# begin cached as '.htmlspecialchars($iid)." #}\n"
              . $tmplt
-             . '<!-- end cached as '.htmlspecialchars($iid)." -->\n";
+             . '{# end cached as '.htmlspecialchars($iid)." #}\n";
       $this->cache_write($filename, $tmplt);
       $this->unknowns = $old_unknowns;
       return $filename;
