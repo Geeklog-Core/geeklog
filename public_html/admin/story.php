@@ -271,9 +271,8 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
         $result = $story->loadFromArgsArray($_POST);
 
-        // in preview mode, we now need to re-insert the images
         if ($_CONF['maximagesperarticle'] > 0) {
-            $errors = $story->insertImages();
+            $errors = $story->checkAttachedImages();
             if (count($errors) > 0) {
                 $msg = $LANG24[55] . LB . '<ul>' . LB;
                 foreach ($errors as $err) {

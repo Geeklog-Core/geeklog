@@ -2092,19 +2092,20 @@ function service_submit_story($args, &$output, &$svc_msg)
         }
 
         if ($_CONF['maximagesperarticle'] > 0) {
-            $errors = $story->insertImages();
+            $errors = $story->checkAttachedImages();
             if (count($errors) > 0) {
                 $output .= COM_startBlock($LANG24[54], '',
-                                COM_getBlockTemplate('_msg_block', 'header'));
+                               COM_getBlockTemplate('_msg_block', 'header'));
                 $output .= $LANG24[55] . LB . '<ul>' . LB;
                 foreach ($errors as $err) {
                     $output .= '<li>' . $err . '</li>' . LB;
                 }
                 $output .= '</ul>' . LB;
-                $output .= COM_endBlock(COM_getBlockTemplate('_msg_block',
-                                                             'footer'));
+                $output .= COM_endBlock(
+                               COM_getBlockTemplate('_msg_block', 'footer'));
                 $output .= storyeditor($sid);
-                $output = COM_createHTMLDocument($output, array('pagetitle' => $LANG24[54]));
+                $output = COM_createHTMLDocument($output,
+                              array('pagetitle' => $LANG24[54]));
                 echo $output;
                 exit;
             }

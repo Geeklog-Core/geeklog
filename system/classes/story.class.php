@@ -1194,19 +1194,14 @@ class Story
     }
 
     /**
-     * Inserts image HTML into the place of Image Placeholders for stories
-     * with images.
+     * Replaces all special syntax tags in intro and body with image HTML
      *
-     * @return array    containing errors, or empty.
+     * @param    string      $text  Intro or Body text
+     * @return   string      processed text
      */
-    function insertImages()
+    function renderImageTags($text)
     {
         global $_CONF, $_TABLES, $LANG24;
-
-        // Grab member vars into locals:
-        $intro = $this->_introtext;
-        $body = $this->_bodytext;
-        $fulltext = "$intro $body";
 
         // check if we have a (different) old sid - the article_images table
         // will only be updated later! cf. bug #0001256
@@ -1217,11 +1212,11 @@ class Story
             $ai_sid = $this->_sid;
         }
 
-        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
+        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} "
+                         . "WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
         $nrows = DB_numRows($result);
-        $errors = array();
-        $stdImageLoc = true;
 
+        $stdImageLoc = true;
         if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
             $stdImageLoc = false;
         }
@@ -1229,132 +1224,142 @@ class Story
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
 
+            $imgpath = '';
+
+            // If we are storing images on a "standard path" i.e. is
+            // available to the host web server, then the url to this
+            // image is based on the path to images, site url, articles
+            // folder and it's filename.
+            //
+            // Otherwise, we have to use the image handler to load the
+            // image from whereever else on the file system we're
+            // keeping them:
+            if ($stdImageLoc) {
+                $imgpath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
+                $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/' . $A['ai_filename'];
+            } else {
+                $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+            }
+
             $sizeattributes = COM_getImgSizeAttributes($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
+
+            // Build image tags for each flavour of the image:
+            $img_noalign   = '<img ' . $sizeattributes . 'src="'                    . $imgSrc . '" alt=""' . XHTML . '>';
+            $img_leftalgn  = '<img ' . $sizeattributes . 'class="floatleft" src="'  . $imgSrc . '" alt=""' . XHTML . '>';
+            $img_rightalgn = '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt=""' . XHTML . '>';
+
+            // Are we keeping unscaled images?
+            if ($_CONF['keep_unscaled_image'] == 1) {
+                // Yes we are, so, we need to find out what the filename
+                // of the original, unscaled image is:
+                $lFilename_large = substr_replace($A['ai_filename'], '_original.',
+                                        strrpos($A['ai_filename'], '.'), 1);
+                $lFilename_large_complete = $_CONF['path_images'] . 'articles/' .
+                                                $lFilename_large;
+
+                // We need to map that filename to the right location
+                // or the fetch script:
+                if ($stdImageLoc) {
+                    $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath .
+                                            'articles/' . $lFilename_large;
+                } else {
+                    $lFilename_large_URL = $_CONF['site_url'] .
+                                            '/getimage.php?mode=show&amp;image=' .
+                                            $lFilename_large;
+                }
+
+                // And finally, replace the [imageX_mode] tags with the
+                // image and its hyperlink (only when the large image
+                // actually exists)
+                $lLink_url  = '';
+                $lLink_attr = '';
+                if (file_exists($lFilename_large_complete)) {
+                    $lLink_url = $lFilename_large_URL;
+                    $lLink_attr = array('title' => $LANG24[57]);
+                }
+            }
 
             $norm  = '[image' . $i . ']';
             $left  = '[image' . $i . '_left]';
             $right = '[image' . $i . '_right]';
 
-            $unscalednorm  = '[unscaled' . $i . ']';
-            $unscaledleft  = '[unscaled' . $i . '_left]';
-            $unscaledright = '[unscaled' . $i . '_right]';
+            if (!empty($lLink_url)) {
+                $text = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $text);
+                $text = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $text);
+                $text = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $text);
+            } else {
+                // We aren't wrapping our image tags in hyperlinks, so
+                // just replace the [imagex_mode] tags with the image:
+                $text = str_replace($norm,  $img_noalign,   $text);
+                $text = str_replace($left,  $img_leftalgn,  $text);
+                $text = str_replace($right, $img_rightalgn, $text);
+            }
+
+            // And insert the unscaled mode images:
+            if (($_CONF['allow_user_scaling'] == 1) and ($_CONF['keep_unscaled_image'] == 1)) {
+                if (file_exists($lFilename_large_complete)) {
+                    $imgSrc = $lFilename_large_URL;
+                    $sizeattributes = COM_getImgSizeAttributes($lFilename_large_complete);
+                }
+
+                $unscalednorm  = '[unscaled' . $i . ']';
+                $unscaledleft  = '[unscaled' . $i . '_left]';
+                $unscaledright = '[unscaled' . $i . '_right]';
+
+                $text = str_replace($unscalednorm,
+                    '<img ' . $sizeattributes . 'src="'               . $imgSrc . '" alt=""' . XHTML . '>', $text);
+                $text = str_replace($unscaledleft,
+                    '<img ' . $sizeattributes . 'align="left" src="'  . $imgSrc . '" alt=""' . XHTML . '>', $text);
+                $text = str_replace($unscaledright,
+                    '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $text);
+            }
+        }
+
+        return $text;
+    }
+
+    /**
+     * Check if using attached images
+     *
+     * @return array    containing errors, or empty.
+     */
+    function checkAttachedImages()
+    {
+        global $_TABLES, $LANG24;
+
+        $text = $this->_introtext . ' ' . $this->_bodytext;
+
+        // check if we have a (different) old sid - the article_images table
+        // will only be updated later! cf. bug #0001256
+        if (! empty($this->_originalSid) &&
+                ($this->_sid != $this->_originalSid)) {
+            $ai_sid = $this->_originalSid;
+        } else {
+            $ai_sid = $this->_sid;
+        }
+
+        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} "
+                         . "WHERE ai_sid = '{$ai_sid}' ORDER BY ai_img_num");
+        $nrows = DB_numRows($result);
+        $errors = array();
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
 
             // See how many times image $i is used in the fulltext of the article:
-            $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) +
-                      substr_count($fulltext, $right);
-            // including unscaled.
-            $icount = $icount + substr_count($fulltext, $unscalednorm) +
-                      substr_count($fulltext, $unscaledleft)
-                      + substr_count($fulltext, $unscaledright);
+            $icount = substr_count($text, '[image'    . $i . ']')
+                    + substr_count($text, '[image'    . $i . '_left]')
+                    + substr_count($text, '[image'    . $i . '_right]')
+                    + substr_count($text, '[unscaled' . $i . ']')
+                    + substr_count($text, '[unscaled' . $i . '_left]')
+                    + substr_count($text, '[unscaled' . $i . '_right]');
 
             // If the image we are currently looking at wasn't used, we need
             // to log an error
             if ($icount == 0) {
                 // There is an image that wasn't used, create an error
                 $errors[] = $LANG24[48] . " #$i, {$A['ai_filename']}, " . $LANG24[53];
-            } else {
-                // We had no errors, so this image and all previous images
-                // are used, so we will then go and replace them
-                if (count($errors) == 0) {
-
-                    $imgpath = '';
-
-                    // If we are storing images on a "standard path" i.e. is
-                    // available to the host web server, then the url to this
-                    // image is based on the path to images, site url, articles
-                    // folder and it's filename.
-                    //
-                    // Otherwise, we have to use the image handler to load the
-                    // image from whereever else on the file system we're
-                    // keeping them:
-                    if ($stdImageLoc) {
-                        $imgpath = substr($_CONF['path_images'], strlen($_CONF['path_html']));
-                        $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/' . $A['ai_filename'];
-                    } else {
-                        $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
-                    }
-
-                    // Build image tags for each flavour of the image:
-                    $img_noalign   = '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt=""' . XHTML . '>';
-                    $img_leftalgn  = '<img ' . $sizeattributes . 'class="floatleft" src="'  . $imgSrc . '" alt=""' . XHTML . '>';
-                    $img_rightalgn = '<img ' . $sizeattributes . 'class="floatright" src="' . $imgSrc . '" alt=""' . XHTML . '>';
-
-
-                    // Are we keeping unscaled images?
-                    if ($_CONF['keep_unscaled_image'] == 1) {
-                        // Yes we are, so, we need to find out what the filename
-                        // of the original, unscaled image is:
-                        $lFilename_large = substr_replace($A['ai_filename'], '_original.',
-                                                strrpos($A['ai_filename'], '.'), 1);
-                        $lFilename_large_complete = $_CONF['path_images'] . 'articles/' .
-                                                        $lFilename_large;
-
-                        // We need to map that filename to the right location
-                        // or the fetch script:
-                        if ($stdImageLoc) {
-                            $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath .
-                                                    'articles/' . $lFilename_large;
-                        } else {
-                            $lFilename_large_URL = $_CONF['site_url'] .
-                                                    '/getimage.php?mode=show&amp;image=' .
-                                                    $lFilename_large;
-                        }
-
-                        // And finally, replace the [imageX_mode] tags with the
-                        // image and its hyperlink (only when the large image
-                        // actually exists)
-                        $lLink_url  = '';
-                        $lLink_attr = '';
-                        if (file_exists($lFilename_large_complete)) {
-                            $lLink_url = $lFilename_large_URL;
-                            $lLink_attr = array('title' => $LANG24[57]);
-                        }
-                    }
-
-                    if (!empty($lLink_url)) {
-                        $intro = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $intro);
-                        $body  = str_replace($norm,  COM_createLink($img_noalign,   $lLink_url, $lLink_attr), $body);
-                        $intro = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $intro);
-                        $body  = str_replace($left,  COM_createLink($img_leftalgn,  $lLink_url, $lLink_attr), $body);
-                        $intro = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $intro);
-                        $body  = str_replace($right, COM_createLink($img_rightalgn, $lLink_url, $lLink_attr), $body);
-                    } else {
-                        // We aren't wrapping our image tags in hyperlinks, so
-                        // just replace the [imagex_mode] tags with the image:
-                        $intro = str_replace($norm,  $img_noalign,   $intro);
-                        $body  = str_replace($norm,  $img_noalign,   $body);
-                        $intro = str_replace($left,  $img_leftalgn,  $intro);
-                        $body  = str_replace($left,  $img_leftalgn,  $body);
-                        $intro = str_replace($right, $img_rightalgn, $intro);
-                        $body  = str_replace($right, $img_rightalgn, $body);
-                    }
-
-                    // And insert the unscaled mode images:
-                    if (($_CONF['allow_user_scaling'] == 1) and ($_CONF['keep_unscaled_image'] == 1)) {
-                        if (file_exists($lFilename_large_complete)) {
-                            $imgSrc = $lFilename_large_URL;
-                            $sizeattributes = COM_getImgSizeAttributes($lFilename_large_complete);
-                        }
-
-                        $intro = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' .
-                                             $imgSrc . '" alt=""' . XHTML . '>', $intro);
-                        $body  = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' .
-                                             $imgSrc . '" alt=""' . XHTML . '>', $body);
-                        $intro = str_replace($unscaledleft, '<img ' . $sizeattributes .
-                                             'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $intro);
-                        $body  = str_replace($unscaledleft, '<img ' . $sizeattributes .
-                                             'align="left" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
-                        $intro = str_replace($unscaledright, '<img ' . $sizeattributes .
-                                             'align="right" src="' . $imgSrc. '" alt=""' . XHTML . '>', $intro);
-                        $body  = str_replace($unscaledright, '<img ' . $sizeattributes .
-                                             'align="right" src="' . $imgSrc . '" alt=""' . XHTML . '>', $body);
-                    }
-                }
             }
         }
-
-        $this->_introtext = $intro;
-        $this->_bodytext  = $body;
 
         return $errors;
     }
@@ -1363,9 +1368,7 @@ class Story
      * This replaces all article image HTML in intro and body with
      * GL special syntax
      *
-     * @param    string      $sid    ID for story to parse
-     * @param    string      $intro  Intro text
-     * @param    string      $body   Body text
+     * @param    string      $text  Intro or Body text
      * @return   string      processed text
      *
      */
@@ -1686,15 +1689,15 @@ class Story
             break;
 
         case 'introtext':
-            $return = $this->replaceImages($this->_introtext);
-            $return = GLText::getEditText($return, $this->_postmode,
-                          $this->_text_version);
-
-            break;
-
         case 'bodytext':
-            $return = $this->replaceImages($this->_bodytext);
-            $return = GLText::getEditText($return, $this->_postmode,
+            $return = (strtolower($item) == 'introtext') ?
+                $this->_introtext : $this->_bodytext;
+            if ($this->_text_version == GLTEXT_FIRST_VERSION) {
+                $return = $this->replaceImages($return);
+            }
+            $return = GLText::getEditText(
+                          $return,
+                          $this->_postmode,
                           $this->_text_version);
 
             break;
@@ -1738,19 +1741,23 @@ class Story
         {
         case 'introtext':
         case 'bodytext':
+            $return = (strtolower($item) == 'introtext') ?
+                $this->_introtext : $this->_bodytext;
+            if ($this->_text_version == GLTEXT_FIRST_VERSION) {
+                $return = $this->replaceImages($return);
+            }
             $postmode = $this->_postmode;
             if ($this->_text_version != GLTEXT_FIRST_VERSION &&
                     $this->_advanced_editor_mode == 1) {
                 $postmode = 'adveditor';
             }
             $return = GLText::getDisplayText(
-                          ((strtolower($item) == 'introtext') ?
-                              $this->_introtext :
-                              $this->_bodytext),
+                          $return,
                           $postmode,
                           'story.edit',
                           $this->_uid,
                           $this->_text_version);
+            $return = $this->renderImageTags($return);
 
             break;
 
