@@ -212,7 +212,7 @@ function ADMIN_simpleList($fieldfunction, $header_arr, $text_arr,
 * @param    array   $options        array of options - intially just used for the Check-All feature
 * @param    array   $form_arr       optional extra forms at top or bottom
 * @param    bool    $showsearch     whether to show the search functionality
-* @param    string  $pagenavurl     additional url values that page navigation may need for any additonal filters
+* @param    string  $pagenavurl     additional url values that page navigation and sorting by columns may need for any additonal filters
 * @return   string                  HTML output of function
 *
 */
@@ -415,6 +415,10 @@ function ADMIN_list($component, $fieldfunction, $header_arr, $text_arr,
             if (!empty($query_limit)) {
                 $th_subtags .= '&amp;query_limit=' . $query_limit;
             }
+            if (!empty($pagenavurl)) { // used for any additional filters
+                $th_subtags .= $pagenavurl;
+            }
+            
             $th_subtags .= "';\"";
         }
 
