@@ -1492,8 +1492,12 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
             FROM {$_TABLES['topics']} t   
             WHERE (tid IN ('" . implode( "','", $tids ) . "'))"; 
     }
-    $sql .= COM_getPermSQL('AND') . "
-        ORDER BY topic ASC";
+    $sql .= COM_getPermSQL('AND');
+    if ($from_db) {
+        $sql .= " ORDER BY tdefault DESC, topic ASC";
+    } else {
+        $sql .= " ORDER BY topic ASC";        
+    }
     if ($max > 0) {    
         $sql .= " LIMIT " . $max;
     }
