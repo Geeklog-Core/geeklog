@@ -407,7 +407,7 @@ $LANG04 = array(
     165 => 'Use Advanced Editor', 
     166 => 'Re-synch Remote Account',
     167 => 'Remote login',
-    168 => 'You may also login with one on of the below remote authentication services',
+    168 => 'You may also login with one of the remote authentication services below.',
     'user_login' => 'User Login', 
     'user_login_message' => 'Please login below. You must enter both a username and password.',
     'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
