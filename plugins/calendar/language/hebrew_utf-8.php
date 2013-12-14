@@ -246,7 +246,7 @@ $LANG_configselects['calendar'] = array(
     12 => array('אין גישה' => 0, 'קריאה בלבד' => 2, 'קריאה וכתיבה' => 3),
     13 => array('אין גישה' => 0, 'מותר לשימוש' => 2),
     14 => array('אין גישה' => 0, 'קריאה בלבד' => 2),
-    15 => array('כולם' => 'TOPIC_ALL_OPTION', 'דף הבית בלבד' => 'TOPIC_HOMEONLY_OPTION', 'בחירת נושאים' => 'TOPIC_SELECTED_OPTION')
+    15 => array('כולם' => TOPIC_ALL_OPTION, 'דף הבית בלבד' => TOPIC_HOMEONLY_OPTION, 'בחירת נושאים' => TOPIC_SELECTED_OPTION)
 );
 
 ?>
