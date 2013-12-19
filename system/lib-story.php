@@ -146,8 +146,8 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     }
     
     // Main article content
-    $introtext = $story->displayElements('introtext');
-    $bodytext = $story->displayElements('bodytext');
+    $introtext = $story->getPreviewText('introtext');
+    $bodytext  = $story->getPreviewText('bodytext');
     $readmore = empty($bodytext)?0:1;
     $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
     if (COM_onFrontpage()) {

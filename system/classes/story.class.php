@@ -823,6 +823,19 @@ class Story
 
         $this->_text_version = GLTEXT_LATEST_VERSION;
 
+        // Apply HTML filter to the text just before save
+        // with the permissions of current editor
+        $this->_introtext = GLText::applyHTMLFilter(
+                $this->_introtext,
+                $this->_postmode,
+                'story.edit',
+                $this->_text_version);
+        $this->_bodytext = GLText::applyHTMLFilter(
+                $this->_bodytext,
+                $this->_postmode,
+                'story.edit',
+                $this->_text_version);
+
         /* This uses the database field array to generate a SQL Statement. This
          * means that when adding new fields to save and load, all we need to do
          * is add the field name to the array, and the code will magically cope.
@@ -1746,16 +1759,9 @@ class Story
             if ($this->_text_version == GLTEXT_FIRST_VERSION) {
                 $return = $this->replaceImages($return);
             }
-            $postmode = $this->_postmode;
-            if ($this->_text_version != GLTEXT_FIRST_VERSION &&
-                    $this->_advanced_editor_mode == 1) {
-                $postmode = 'adveditor';
-            }
             $return = GLText::getDisplayText(
                           $return,
-                          $postmode,
-                          'story.edit',
-                          $this->_uid,
+                          $this->_postmode,
                           $this->_text_version);
             $return = $this->renderImageTags($return);
 
@@ -1844,6 +1850,28 @@ class Story
         return $return;
     }
 
+    /**
+     * Returns text ready for preview.
+     *
+     * @param   string    $item   Item to fetch. Valid only bodytext and introtext.
+     * @return  string    text for preview in edit mode
+     */
+    function getPreviewText($item)
+    {
+        $text = (strtolower($item) == 'introtext') ?
+            $this->_introtext : $this->_bodytext;
+        if ($this->_text_version == GLTEXT_FIRST_VERSION) {
+            $text = $this->replaceImages($text);
+        }
+        $text = GLText::getPreviewText(
+                    $text,
+                    $this->_postmode,
+                    'story.edit',
+                    $this->_text_version);
+        $text = $this->renderImageTags($text);
+
+        return $text;
+    }
 
     /**
      * Perform a security check and return permission level.

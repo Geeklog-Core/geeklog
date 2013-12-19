@@ -92,14 +92,12 @@ class GLText
      *
      * @param   string  $text         Text to prepare for display
      * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
-     * @param   int     $uid          User ID
      * @param   int     $version      version of GLText engine
      * @return  string  Escaped String
      * @access  public
      *
      */
-    public static function getDisplayText($text, $postmode, $permissions, $uid, $version)
+    public static function getDisplayText($text, $postmode, $version)
     {
         if ($version == GLTEXT_FIRST_VERSION) {
 
@@ -119,7 +117,17 @@ class GLText
             // latest version
 
             if ($postmode == 'html' || $postmode == 'adveditor') {
-                $text = self::checkHTML($text, $permissions, $uid, $postmode, $version);
+
+                // Get rid of any newline characters
+                $text = str_replace("\n", '', $text);
+
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[code]', '[/code]', '<pre><code>', '</code></pre>'),
+                    '_escapeSPChars');
+
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[raw]', '[/raw]', '<!--raw--><span class="raw">', '</span><!--/raw-->'),
+                    '_escapeSPChars');
             }
 
             if ($postmode == 'plaintext') {
@@ -131,13 +139,74 @@ class GLText
             if ($postmode == 'wikitext') {
                 $text = self::_editUnescape($text, $postmode);
                 $text = self::renderWikiText($text);
-//              $text = self::_htmLawed($text, 'story.edit', $uid, $postmode, $version);
+//              $text = self::_htmLawed($text, 'story.edit');
             }
 
             $text = COM_checkWords($text);
         }
 
         $text = PLG_replaceTags(self::_displayEscape($text));
+
+        return $text;
+    }
+
+    /**
+     * Apply HTML filter to the text
+     *
+     * @param   string  $text         Text to prepare for store to databese
+     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int     $version      version of GLText engine
+     * @return  string  Escaped String
+     * @access  public
+     *
+     */
+    public static function applyHTMLFilter($text, $postmode, $permissions, $version)
+    {
+        global $_CONF;
+
+        if (($version != GLTEXT_FIRST_VERSION) &&
+            ($postmode == 'html' || $postmode == 'adveditor')) {
+
+            if (!SEC_hasRights('htmlfilter.skip') &&
+                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
+
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[code]', '[/code]', '[code2]', '[/code2]'),
+                    '_maskCode');
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[raw]', '[/raw]', '[raw2]', '[/raw2]'),
+                    '_maskCode');
+
+                $text = self::_htmLawed($text, $permissions);
+
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[code2]', '[/code2]', '[code]', '[/code]'),
+                    '_unmaskCode');
+                $text = self::_handleSpecialTag_callback($text,
+                    array('[raw2]', '[/raw2]', '[raw]', '[/raw]'),
+                    '_unmaskCode');
+            }
+        }
+
+        return $text;
+    }
+
+    /**
+     * Returns text ready for preview.
+     *
+     * @param   string  $text         Text to prepare for store to databese
+     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
+     * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
+     * @param   int     $version      version of GLText engine
+     * @return  string  Escaped String
+     * @access  public
+     *
+     */
+    public static function getPreviewText($text, $postmode, $permissions, $version)
+    {
+        $text = self::applyHTMLFilter($text, $postmode, $permissions, $version);
+        $text = self::getDisplayText($text, $postmode, $version);
 
         return $text;
     }
@@ -150,32 +219,25 @@ class GLText
      *
      * @param   string  $str          HTML to check
      * @param   string  $permissions  comma-separated list of rights which identify the current user as an "Admin"
-     * @param   int     $uid          User ID
-     * @param   string  $postmode     Indicates if text is html, adveditor, wikitext or plaintext
-     * @param   int     $version      version of GLText engine
      * @return  string  Filtered HTML
      * @access  public
      *
      */
-    public static function checkHTML($str, $permissions = 'story.edit', $uid = '', $postmode = 'html', $version = GLTEXT_FIRST_VERSION)
+    public static function checkHTML($str, $permissions = 'story.edit')
     {
         global $_CONF, $_USER;
-
-        if (empty($uid)) {
-            if (empty($_USER['uid'])) {
-                $uid = 1;
-            } else {
-                $uid = $_USER['uid'];
-            }
-        }
 
 //        $str = COM_stripslashes($str); // it should not be here
 
         // Get rid of any newline characters
         $str = str_replace("\n", '', $str);
 
-        $str = self::_handleSpecialTag($str, array('[code]', '[/code]', '<pre><code>', '</code></pre>'));
-        $str = self::_handleSpecialTag($str, array('[raw]', '[/raw]', '[raw2]', '[/raw2]'));
+        $str = self::_handleSpecialTag_callback($str,
+            array('[code]', '[/code]', '<pre><code>', '</code></pre>'),
+            '_escapeSPChars');
+        $str = self::_handleSpecialTag_callback($str,
+            array('[raw]', '[/raw]', '[raw2]', '[/raw2]'),
+            '_escapeSPChars');
 
         // To begin with, why handle '$' and '\' as the special character?
         //
@@ -185,16 +247,9 @@ class GLText
         // // Replace any $ with &#36; (HTML equiv)
         // $str = str_replace( '$', '&#36;', $str);
 
-        if ($version == GLTEXT_FIRST_VERSION) {
-            if (!SEC_hasRights('htmlfilter.skip') &&
-                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
-                $str = self::_htmLawed($str, $permissions, $uid, $postmode, $version);
-            }
-        } else {
-            if (!self::_hasRights('htmlfilter.skip', $uid) &&
-                (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root', $uid))) {
-                $str = self::_htmLawed($str, $permissions, $uid, $postmode, $version);
-            }
+        if (!SEC_hasRights('htmlfilter.skip') &&
+            (($_CONF['skip_html_filter_for_root'] != 1) || !SEC_inGroup('Root'))) {
+            $str = self::_htmLawed($str, $permissions);
         }
 
         // Replace [raw][/raw] with <!--raw--><!--/raw-->, note done "late" because
@@ -234,7 +289,7 @@ class GLText
 
     // Private Methods:
 
-    private function _htmLawed($str, $permissions, $uid = '', $postmode = 'html', $version = GLTEXT_FIRST_VERSION)
+    private function _htmLawed($str, $permissions)
     {
         global $_CONF, $_USER;
 
@@ -246,7 +301,8 @@ class GLText
             'balance'        => 1, // Balance tags for well-formedness and proper nesting
             'comment'        => 3, // Allow HTML comment
             'css_expression' => 1, // Allow dynamic CSS expression in "style" attributes
-            'keep_bad'       => 1, // Neutralize both tags and element content
+//            'keep_bad'       => 1, // Neutralize both tags and element content
+            'keep_bad'       => 0, // Neutralize both tags and element content
             'tidy'           => 0, // Don't beautify or compact HTML code
             'unique_ids'     => 1, // Remove duplicate and/or invalid ids
             'valid_xhtml'    => 1, // Magic parameter to make input the most valid XHTML
@@ -263,33 +319,17 @@ class GLText
         $schemes = str_replace(':', '', implode(', ', $schemes));
         $config['schemes'] = 'href: ' . $schemes . '; *: ' . $schemes;
 
-        if ($version == GLTEXT_FIRST_VERSION) {
-            if (empty($permissions) || !SEC_hasRights($permissions) ||
-                    empty($_CONF['admin_html'])) {
-                $html = $_CONF['user_html'];
-            } else {
-                if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
-                    $html = array_merge_recursive($_CONF['user_html'],
-                                                  $_CONF['admin_html'],
-                                                  $_CONF['advanced_html']);
-                } else {
-                    $html = array_merge_recursive($_CONF['user_html'],
-                                                  $_CONF['admin_html']);
-                }
-            }
+        if (empty($permissions) || !SEC_hasRights($permissions) ||
+                empty($_CONF['admin_html'])) {
+            $html = $_CONF['user_html'];
         } else {
-            if (empty($permissions) || !self::_hasRights($permissions, $uid) ||
-                    empty($_CONF['admin_html'])) {
-                $html = $_CONF['user_html'];
+            if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+                $html = array_merge_recursive($_CONF['user_html'],
+                                              $_CONF['admin_html'],
+                                              $_CONF['advanced_html']);
             } else {
-                if ($postmode == 'adveditor') {
-                    $html = array_merge_recursive($_CONF['user_html'],
-                                                  $_CONF['admin_html'],
-                                                  $_CONF['advanced_html']);
-                } else {
-                    $html = array_merge_recursive($_CONF['user_html'],
-                                                  $_CONF['admin_html']);
-                }
+                $html = array_merge_recursive($_CONF['user_html'],
+                                              $_CONF['admin_html']);
             }
         }
 
@@ -308,41 +348,6 @@ class GLText
         $str = htmLawed($str, $config, $spec);
 
         return $str;
-    }
-
-    /**
-     * Checks if user has rights to a feature
-     *
-     * Takes either a single feature or an array of features and returns
-     * an array of whether the user has those rights
-     *
-     * @param   string|array  $features  Features to check
-     * @param   int           $uid       User ID
-     * @return  boolean       Return true if user has access to feature(s), otherwise false.
-     *
-     */
-    private function _hasRights($features, $uid)
-    {
-        static $rights = array();
-
-        if (empty($rights[$uid])) {
-            $rights[$uid] = explode(',', SEC_getUserPermissions('', $uid));
-        }
-
-        if (is_string($features) && strpos($features, ',') !== false) {
-            $features = explode(',', $features);
-        }
-
-        if (is_array($features)) {
-            foreach ($features as $f) {
-                if (!in_array($f, $rights[$uid])) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        return in_array($features, $rights[$uid]);
     }
 
     /**
@@ -398,15 +403,15 @@ class GLText
     }
 
     /**
-     * Handles the part within a [code] ... [/code] section, i.e. escapes all
-     * special characters.
+     * Callback funtion for escapes all special characters within a 
+     * [code] ... [/code] section.
      *
      * @param   string  $str  the code section to encode
      * @return  string  String with the special characters encoded
      * @access  private
      *
      */
-    private function _handleCode($str)
+    private function _escapeSPChars($str)
     {
         $search  = array('&',     '<',    '>',    '[',     ']'    );
         $replace = array('&amp;', '&lt;', '&gt;', '&#91;', '&#93;');
@@ -415,8 +420,40 @@ class GLText
         return $str;
     }
 
-    private function _handleSpecialTag($str, $tags)
+    /**
+     * Callback funtion for mask text within a [code] ... [/code] section.
+     *
+     * @param   string  $str  the code section to mask
+     * @return  string  String with characters encoded
+     * @access  private
+     *
+     */
+    private function _maskCode($str)
     {
+        return rawurlencode($str);
+    }
+
+    /**
+     * Callback funtion for unmask text within a [code] ... [/code] section.
+     *
+     * @param   string  $str  the code section to unmask
+     * @return  string  String with characters decoded
+     * @access  private
+     *
+     */
+    private function _unmaskCode($str)
+    {
+        return rawurldecode($str);
+    }
+
+    private function _handleSpecialTag_callback($str, $tags, $args)
+    {
+        if (is_array($args)) {
+            $function = array_shift($args);
+        } else {
+            $function = $args;
+        }
+
         // handle [code] ... [/code] or [raw] ... [/raw]
         do {
             $start_pos = MBYTE_strpos(MBYTE_strtolower($str), $tags[0]);
@@ -425,15 +462,28 @@ class GLText
                 $end_pos = MBYTE_strpos(MBYTE_strtolower($str), $tags[1]);
                 if ($end_pos !== false) {
                     $len_end = strlen($tags[1]);
-                    $encoded = self::_handleCode(
-                        MBYTE_substr($str, $start_pos + $len_start,
-                            $end_pos - ($start_pos + $len_start)));
+
+                    $part = MBYTE_substr($str, $start_pos + $len_start,
+                        $end_pos - ($start_pos + $len_start));
+                    if (is_array($args)) {
+                        $encoded = self::$function($part, $args);
+                    } else {
+                        $encoded = self::$function($part);
+                    }
+
                     $encoded = $tags[2] . $encoded . $tags[3];
                     $str = MBYTE_substr($str, 0, $start_pos) . $encoded
                          . MBYTE_substr($str, $end_pos + $len_end);
+
                 } else { // missing [/code] or [/raw]
-                    $encoded = self::_handleCode(
-                        MBYTE_substr($str, $start_pos + $len_start));
+
+                    $part = MBYTE_substr($str, $start_pos + $len_start);
+                    if (is_array($args)) {
+                        $encoded = self::$function($part, $args);
+                    } else {
+                        $encoded = self::$function($part);
+                    }
+
                     $encoded = $tags[2] . $encoded . $tags[3];
                     $str = MBYTE_substr($str, 0, $start_pos) . $encoded;
                 }
