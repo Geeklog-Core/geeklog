@@ -527,13 +527,18 @@ class upload
             }
         }
 
-        if (isset($this->_currentFile['_gl_data_dir']) &&
-                $this->_currentFile['_gl_data_dir']) {
-            // uploaded file was involved in a recreated POST after an expired
-            // token - can't use move_uploaded_file() here
+        if (isset($this->_currentFile['non_upload']) && $this->_currentFile['non_upload'] == true) {
+            // Not from the upload file dialogue so just move
             $returnMove = rename($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
         } else {
-            $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+            if (isset($this->_currentFile['_gl_data_dir']) &&
+                    $this->_currentFile['_gl_data_dir']) {
+                // uploaded file was involved in a recreated POST after an expired
+                // token - can't use move_uploaded_file() here
+                $returnMove = rename($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+            } else {
+                $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+            }
         }
 
         if (!($sizeOK)) {

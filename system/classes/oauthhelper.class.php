@@ -379,7 +379,7 @@ class OAuthConsumer {
 
         $sql = "UPDATE {$_TABLES['users']} SET remoteusername = '".DB_escapeString($users['remoteusername'])."', remoteservice = '".DB_escapeString($users['remoteservice'])."', status = 3 ";
         if (!empty($users['remotephoto'])) {
-            $save_img = $_CONF['path_images'] . 'userphotos/' . $uid ;
+            $save_img = $_CONF['path_images'] . 'userphotos/' . $uid;
             $imgsize = $this->_saveUserPhoto($users['remotephoto'], $save_img);
             if (!empty($imgsize)) {
                 $ext = $this->_getImageExt($save_img);
@@ -388,6 +388,9 @@ class OAuthConsumer {
                     unlink($image);
                 }
                 rename($save_img, $image);
+                
+                $this->_handleImageResize($_CONF['path_images'] . 'userphotos/' . $uid . $ext);
+                
                 $imgname = $uid . $ext;
                 $sql .= ", photo = '".DB_escapeString($imgname)."'";
             }
@@ -436,6 +439,86 @@ class OAuthConsumer {
                 break;
         }
         return ($dot ? '.' : '') . $ext;
+    }
+    
+    protected function _handleImageResize($to_path) {
+        global $_CONF;
+        
+        require_once ($_CONF['path_system'] . 'classes/upload.class.php');
+        
+        // Figure out file name
+        $path_parts = pathinfo($to_path);
+        $filename = $path_parts['basename'];
+        
+        $upload = new upload();
+        if (!empty ($_CONF['image_lib'])) {
+            if ($_CONF['image_lib'] == 'imagemagick') {
+                // Using imagemagick
+                $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+            } elseif ($_CONF['image_lib'] == 'netpbm') {
+                // using netPBM
+                $upload->setNetPBM ($_CONF['path_to_netpbm']);
+            } elseif ($_CONF['image_lib'] == 'gdlib') {
+                // using the GD library
+                $upload->setGDLib ();
+            }
+            $upload->setAutomaticResize (true);
+            if (isset ($_CONF['debug_image_upload']) &&
+                    $_CONF['debug_image_upload']) {
+                $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+                $upload->setDebug (true);
+            }
+            if (isset($_CONF['jpeg_quality'])) {
+                $upload->setJpegQuality($_CONF['jpeg_quality']);
+            }
+        }
+        $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
+                                             'image/jpeg'  => '.jpg,.jpeg',
+                                             'image/pjpeg' => '.jpg,.jpeg',
+                                             'image/x-png' => '.png',
+                                             'image/png'   => '.png'
+                                     )      );
+        // Set new path and image name
+        if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
+            exit; // don't return
+        }
+        
+        // Current path of image to resize
+        $path = $_CONF['path_images'] . 'userphotos/' . $filename;
+        $path_parts = pathinfo($path);
+        $_FILES['imagefile']['name'] = $path_parts['basename'];
+        $_FILES['imagefile']['tmp_name'] = $path;
+        $_FILES['imagefile']['type'] = '';
+        switch ($path_parts['extension']) {
+            case 'gif':
+                $_FILES['imagefile']['type'] = 'image/gif';
+                break;
+            case 'jpg':
+            case 'jpeg':
+                $_FILES['imagefile']['type'] = 'image/jpeg';
+                break;
+            case 'png':
+                $_FILES['imagefile']['type'] = 'image/png';
+                break;
+        }
+        $_FILES['imagefile']['size'] = filesize($_FILES['imagefile']['tmp_name'] );
+        $_FILES['imagefile']['error'] = '';
+        $_FILES['imagefile']['non_upload'] = true; // Flag to bypass upload process via browser file form 
+        
+        // do the upload
+        if (!empty($filename)) {
+            $upload->setFileNames($filename);
+            $upload->setPerms('0644');
+            $upload->setMaxDimensions($_CONF['max_photo_width'], $_CONF['max_photo_height']);
+            $upload->setMaxFileSize($_CONF['max_photo_size']);
+            $upload->uploadFiles();
+        
+            if ($upload->areErrors()) {
+                exit; // don't return
+            }
+        }            
+            
+        return $path; // return new path and filename       
     }
 }
 
