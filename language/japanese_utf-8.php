@@ -63,7 +63,7 @@ $LANG01 = array(
     11 => '記事',
     12 => 'ブロック',
     13 => '話題',
-    14 => 'Command &amp; Control',
+    14 => '管理画面TOP',
     15 => '',
     16 => '',
     17 => 'ユーザー',
@@ -89,7 +89,7 @@ $LANG01 = array(
     37 => '-',
     38 => 'フィード',
     39 => '更新',
-    40 => 'Error in password request, invalid username',
+    40 => 'パスワードリクエストエラー、ユーザーネームエラー',
     41 => 'ゲストユーザー',
     42 => '投稿者:',
     43 => 'コメントを追加',
@@ -157,7 +157,7 @@ $LANG01 = array(
     105 => 'メール',
     106 => '表示回数',
     107 => 'GLバージョン確認',
-    108 => 'キャッシュをクリア',
+    108 => 'キャッシュ一括削除',
     109 => '不正報告',
     110 => '投稿をサイト管理者に報告',
     111 => '',
@@ -192,10 +192,10 @@ $LANG01 = array(
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',
-    'google' => 'Login with Google',
-    'microsoft' => 'Login with Microsoft',
-    'yahoo' => 'Login with Yahoo',
-    'ctl' => 'Clear Cache'
+    'google' => 'Googleでログイン',
+    'microsoft' => 'Microsoftでログイン',
+    'yahoo' => 'Yahooでログイン',
+    'ctl' => 'キャッシュ一括削除'
 );
 
 ###############################################################################
@@ -416,9 +416,9 @@ $LANG04 = array(
     166 => 'リモートアカウントの再同期',
     167 => 'リモートログイン',
     168 => 'リモート認証サービスによるログインも可能です。',
-    'user_login' => 'User Login',
-    'user_login_message' => 'Please login below. You must enter both a username and password.',
-    'user_logged_in_message' => "You are already logged in. Whould you like to <a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">logout</a>?"
+    'user_login' => 'ユーザーログイン',
+    'user_login_message' => 'ログインしてください。ユーザー名とパスワードの両方を入力してください。',
+    'user_logged_in_message' => "すでにログインしています。<a href=\"{$_CONF['site_url']}/users.php?mode=logout\" rel=\"nofollow\">ログアウト</a>しますか?"
 );
 
 ###############################################################################
@@ -690,13 +690,85 @@ $LANG12 = array(
 # admin/logviewer.php
 
 $LANG_LOGVIEW = array(
-    'log_viewer' => 'Log Viewer',
-    'info' => 'Geeklog log file administration.',
-    'logs' => 'Logs',
-    'view' => 'View Log File',
-    'clear' => 'Clear Log File',
-    'log_file' => 'Log File'
+    'log_viewer' => 'ログビューワー',
+    'info' => 'Geeklog ログファイルを管理します。',
+    'logs' => 'ログ',
+    'view' => 'ログファイルを見る',
+    'clear' => 'ログファイルを消す',
+    'log_file' => 'ログファイル'
 );
+
+###############################################################################
+# admin/envcheck.php - distribution integrity checker
+
+$LANG_ENVCHECK = array(
+    'correct_perms'             => '以下の問題を解決してください。解決したら、<b>再チェック</b>ボタンをクリックして環境チェックしてください。　',
+    'current'                   => 'カレント',
+    'current_php_settings'      => 'カレントPHPの設定',
+    'directory_permissions'     => 'ディレクトリパーミッション',
+    'enabled'                   => '有効',
+    'env_check'                 => '環境チェック',
+    'file_permissions'          => 'ファイルパーミッション',
+    'file_uploads'              => 'Geeklogの多くの機能が、ファイルのアップロードを要求するので有効にしてください。
+',
+    'filesystem_check'          => 'ディレクトリ / ファイルパーミッション',
+    'gd_lib'                    => 'GDライブラリ',
+    'gd_not_found'              => 'GDライブラリ関数が有効にできません。GDライブラリがPHPにコンパイルされているかどうか確認してください。あるいは代替のライブラリを選択してください。',
+    'gd_ok'                     => 'GDライブラリv2 がインストールされています。',
+    'gd_v1'                     => 'GDライブラリv1 がインストール - このバージョンは JPG 画像の処理すべてに対応していません。そのため何らかの不具合が生じることがあります。',
+    'graphics'                  => 'グラフィックライブラリ',
+    'libraries'                 => 'ライブラリ',
+    'hosting_env'               => 'ホスティング環境チェック',
+    'imagemagick'               => 'ImageMagick プログラム',
+    'im_not_found'              => 'ImageMagickの<strong>変換</strong>を有効にできません。',
+    'im_ok'                     => '<strong>変換</strong>が有効です。',
+    'memory_limit'              => 'サイトでは少なくとも 48M のメモリーが必要です。',
+    'not_writable'              => '書き込み不可',
+    'notes'                     => '注意',
+    'not_found'                 => 'みつかりません',
+    'netpbm'                    => 'NetPBMライブラリ',
+    'np_ok'                     => 'NetPBMライブラリがインストール',
+    'np_not_found'              => 'NetPBMを有効にできません。',
+    'openssl_library'           => 'OpenSSLライブラリ',
+    'openssl_ok'                => 'OpenSSLがロードされています。そのライブラリはGeeklogのOAuthユーザーログインに必要です。',
+    'openssl_not_found'         => 'OpenSSLライブラリがロードされていません。そのライブラリはGeeklogのOAuthユーザーログイン<strong>のみ</strong>に必要です。',
+    'off'                       => 'Off',
+    'ok'                        => 'OK',
+    'on'                        => 'On',
+    'open_basedir'              => 'もしこのサイト<strong>open_basedir</strong> の制限がこのサイトで有効の場合、 インストールの際にパーミッションで問題がおきるかもしれません。以下のファイルシステムチェックを行ってください。',
+    'php_req_version'           => 'Geeklog は PHP version 5.2.0 以降を要求しています。',
+    'php_settings'              => 'PHP 設定',
+    'php_version'               => 'PHP Version',
+    'php_warning'               => 'もし以下のリストで<span class="no">赤</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',
+    'post_max_size'             => 'Geeklogはプラグインと画像、ファイルのアップロードを許可しています。アップロードファイル制限を少なくとも8M以上にしてください。',
+    'recheck'                   => '環境を再チェック',
+    'recommended'               => '推奨',
+    'register_globals'          => 'もしPHPの<strong>register_globals</strong>が有効なら、それはセキュリティ問題が発生します。',
+    'safe_mode'                 => 'もし PHPの <strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMedia Galleryプラグイン。',
+    'setting'                   => '設定',
+    'unable_mkdir'              => 'ディレクトリ作成が可能',
+    'upload_max_filesize'       => 'Geeklogプラグインと画像、ファイルのアップロードが有効です。アップロードファイル制限を少なくとも8M以上にしてください。',
+    'not_checked'               => 'スキップ',
+    'bypass_note'               => 'Safe Modeまたはopen_basedir制限が検知されたので、グラフィックライブラリのチェックがスキップされました。',
+    'not_used_note'             => 'Geeklogのグラフィックライブラリはセットされていません。',
+    'location'                  => 'ロケーション',
+    'status'                    => 'ステータス',
+    'item'                      => 'アイテム',
+    
+    /* Left incase we decided to use jhead and/or jpegtran Program in future */
+    'jhead'                     => 'jheadプログラム',
+    'jhead_not_found'           => 'jheadを有効にできません。',
+    'jhead_ok'                  => 'jheadはインストールされています。',
+    'jpegtran'                  => 'jpegtranプログラム',
+    'jpegtran_not_found'        => 'jpegtranを有効にできません。',
+    'jpegtran_ok'               => 'jpegtranはインストールされています。',
+    
+    'showhide_phpinfo'          => 'phpinfo 表示/非表示',
+    'view_online'               => 'オンライン表示はここ %s をクリック',
+    'no_new_items'              => '新アイテムはありません',
+    'max_execution_time'        => 'Geeklogは 最少PHPデフォルト値として30秒を要求していますが、プラグインアップロードとその他の操作では、サーバー環境によってそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応が可能になります。'
+);
+
 
 ###############################################################################
 # admin/auth.inc.php
@@ -784,8 +856,8 @@ $LANG21 = array(
     67 => '自動タグの使用を許可',
     68 => 'このポータルブロックのフィードは長すぎて表示できません。ブロック設定画面でブロックに表示する記事の最大数を設定するか、コンフィギュレーションで標準の最大数を設定してください。',
     69 => 'プラグイン名',
-    'cache_time' => 'Cache Time',
-    'cache_time_desc' => 'This block will be cached for no longer than this many seconds. If 0 caching is disabled. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time' => 'キャッシュタイム',
+    'cache_time_desc' => 'このブロックは指定された秒数内にキャッシュされます。もし0なら、キャッシュされません。 (3600 = 1時間,  86400 = 1日)'
 );
 
 ###############################################################################
@@ -884,9 +956,10 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     'autotag_desc_story' => '[story: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
-    'cache_time' => 'Cache Time',
-    'cache_time_desc' => 'This article will be cached for no longer than this many seconds. If 0 caching is disabled. If -1 cached until article is edited again. (3600 = 1 hour,  86400 = 1 day)'
+    'cache_time'        => 'キャッシュタイム',
+    'cache_time_desc'   => 'この記事は指定された秒数内にキャッシュされます。もし0なら、キャッシュされません。 (3600 = 1時間,  86400 = 1日)'
 );
+
 
 ###############################################################################
 # admin/topic.php
@@ -947,12 +1020,12 @@ $LANG27 = array(
     53 => '画像',
     'breadcrumb_separator' => '>',
     'breadcrumb_root' => 'ホーム',
-    'autotag_desc_topic' => '[topic: id alternate title] - Displays a link to a topic using the ID as the title. An alternate title may be specified but is not required.',
-    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - Creates a clickable horizontal list of related topics based on the item id and type.',
-    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - Create a clickable list of related items based on the item id and type.',
-    'no_related_items' => 'No related items found.',
-    'topics:' => 'Topics:',
-    'filed_under:' => 'Filed under:'
+    'autotag_desc_topic' => '[topic: id alternate title] - 話題へのリンク表示にIDを使う。代替のタイトルは必須ではありません。',
+    'autotag_desc_related_topics' => '[related_topics:id type:plugin max:max_items_listed] - IDとタイプにおける関連話題のクリッカブルホリゾンタルリストを作成する。',
+    'autotag_desc_related_items' => '[related_items:id type:plugin max:max_items_listed trim:max_length include:plugin] - IDとタイプにおける関連話題のクリッカブルリストを作成する。',
+    'no_related_items' => '関連アイテムがありません。',
+    'topics:' => '話題:',
+    'filed_under:' => '話題:'
 );
 
 ###############################################################################
@@ -1069,7 +1142,7 @@ $LANG29 = array(
     16 => 'ユーザー名',
     17 => '氏名',
     18 => 'メールアドレス',
-    34 => '投稿の管理',
+    34 => '管理画面TOP',
     35 => '記事の投稿申請',
     36 => 'コメントの親',
     37 => 'Author',
@@ -1083,7 +1156,7 @@ $LANG29 = array(
     'plugins' => 'Plugins',
     'tools' => 'Tools',
     'users' => 'Users',
-    'submissions_desc' => 'To modify or delete a user submssion, click on that item\'s edit icon below. To approve and delete multiple submissions use the radio options in the lists and then click submit.'
+    'submissions_desc' => 'ユーザーの投稿を編集または削除するには、そのアイテムの編集アイコンをクリックしてください。マルチプル投稿を承認、削除するには、リストのライジオオプションを試用して保存をクリックしてください。'
 );
 
 ###############################################################################
@@ -1191,6 +1264,10 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
+
+    // to match the PHP error constants,
+    // http://www.php.net/manual/en/features.file-upload.errors.php
+    // TBD: move to a separate $LANG array
     99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードしようとしたファイルのサイズが php.ini 内の upload_max_filesize の値を超えています。',
@@ -1377,7 +1454,7 @@ $MESSAGE = array(
     120 => 'この項目を送信しますか?',
     400 => '検証に通っていない必須のフィールドがあります。',
     401 => '氏名を入力してください。',
-    500 => 'The Template Cache has been successfully cleared.'
+    500 => 'テンプレートキャッシュの削除が完了しました。'
 );
 
 ###############################################################################
@@ -1456,7 +1533,10 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',
     'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「新規作成」をクリックしてください。',
-    'not_found' => "正しくないパス、セキュリティ上の制限が適用、mysqldumpの実行ができない、といった状況です。<br" . XHTML . "> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br" . XHTML . "> PHPの<a href=\"http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a>の設定を確認してください。<br" . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定しています。",
+    'not_found' => '正しくないパス、セキュリティ上の制限が適用、mysqldumpの実行ができない、といった状況です。<br'
+                    . XHTML . '> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br'
+                    . XHTML . '> PHPの<a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a>の設定を確認してください。<br'
+                    . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定しています。",
     'zero_size' => 'バックアップに失敗: ファイルの大きさが0バイトです。',
     'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
     'no_access' => "エラー: {$_CONF['backup_path']} にアクセスできません。",
@@ -1477,6 +1557,7 @@ $LANG_DB_BACKUP = array(
     'conversion_patience' => '注意: 変換には少々の時間が必要です。今しばらく、お待ちください。',
     'innodb_success' => 'InnoDBテーブルへの変換を完了しました。',
     'table_issues' => 'いくつかのテーブルで問題が発生した可能性があります。詳細については、error.logを確認してください。',
+
     'optimize_menu' => 'テーブルの最適化',
     'optimize_title' => 'テーブルの最適化',
     'optimize_button' => '最適化',
@@ -1509,7 +1590,7 @@ $LANG_404 = array(
     1 => '404 Error',
     2 => '<strong>%s</strong>はどこにも見つかりませんでした。',
     3 => "<p>指定したファイルは存在しません。<a href=\"{$_CONF['site_url']}\">メインページ</a>をチェックしたり、<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で探してみてください。",
-    4 => "<p>We're sorry, but the page you have requested does not exist. We recommend going back to this <a href=\"%s\">related page</a>, or you may want to check the <a href=\"{$_CONF['site_url']}/\">home page</a>, or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
+    4 => "<p>リクエストされたページは見つかりません。<a href=\"%s\">関連ページ</a>に戻るか、<a href=\"{$_CONF['site_url']}/\">ホームページ</a>に戻る、あるいは<a href=\"{$_CONF['site_url']}/search.php\">検索ページ</a>で目的のページを探してください。"
 );
 
 ###############################################################################
@@ -1647,17 +1728,17 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
-# 
-# For the first two strings, you can use the following placeholders.
-# Order them so it makes sense in your language:
-# %i    item, "Stories"
-# %n    amount, "2", "20" etc.
-# %t    time, "2" (weeks)
-# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
+    # This here determines the order of the sentence "No new stories in 2 hrs"
+    # order it so it makes sense in your language:
+    # %i    item, "Stories"
+    # %n    amount, "2", "20" etc
+    # %t    time, "2" (weeks)
+    # %s    scale, "hrs", "weeks"
     'new_string' => '新着%i %n件(%t%s)',
     'new_last' => '新着(%t%s)',
+    # other strings
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
@@ -1862,7 +1943,7 @@ $LANG_confignames['Core'] = array(
     'doctype' => 'DOCTYPE宣言',
     'menu_elements' => 'メニュー項目',
     'path_themes' => 'テーマのパス',
-    'cache_templates' => 'Cache Templates?',
+    'cache_templates' => 'キャッシュテンプレートを使う?',
     'disable_new_user_registration' => '新規ユーザー登録を停止する',
     'allow_user_themes' => 'テーマ選択を許可する',
     'allow_user_language' => '言語選択を許可する',
@@ -1883,13 +1964,13 @@ $LANG_confignames['Core'] = array(
     'twitter_login' => 'TwitterのOAuthを有効にする',
     'twitter_consumer_key' => 'Twitter OAuth Consumer Key',
     'twitter_consumer_secret' => 'Twitter OAuth Consumer Secret',
-    'google_login' => 'Enable OAuth Login Method Google',
+    'google_login' => 'GoogleのOAuthをを有効にする',
     'google_consumer_key' => 'Google OAuth Consumer Key',
     'google_consumer_secret' => 'Google OAuth Consumer Secret',
-    'microsoft_login' => 'Enable OAuth Login Method Microsoft',
+    'microsoft_login' => 'MicrosoftのOAuthをを有効にする',
     'microsoft_consumer_key' => 'Microsoft OAuth Consumer Key',
     'microsoft_consumer_secret' => 'Microsoft OAuth Consumer Secret',
-    'yahoo_login' => 'Enable OAuth Login Method Yahoo',
+    'yahoo_login' => 'YahooのOAuthをを有効にする',
     'yahoo_consumer_key' => 'Yahoo OAuth Consumer Key',
     'yahoo_consumer_secret' => 'Yahoo OAuth Consumer Secret',
     'spamx' => 'Spam-X',
@@ -1943,7 +2024,7 @@ $LANG_confignames['Core'] = array(
     'speedlimit' => '投稿間隔の制限',
     'skip_preview' => 'プレビューしないで投稿する',
     'advanced_editor' => 'アドバンストエディターを使用する',
-    'advanced_editor_name' => 'Advanced Editor Name?',
+    'advanced_editor_name' => 'アドバンストエディター名?',
     'wikitext_editor' => 'Wikiテキストエディターを使用する',
     'cron_schedule_interval' => 'Cronのスケジュール間隔',
     'sortmethod' => '話題の並べ替え',
@@ -1966,7 +2047,7 @@ $LANG_confignames['Core'] = array(
     'hidenewtrackbacks' => 'トラックバックの新着表示をしない',
     'hidenewplugins' => 'プラグインの新着表示をしない',
     'title_trim_length' => 'タイトル最大長',
-    'whatsnew_cache_time' => 'Max Cache Time',
+    'whatsnew_cache_time' => 'キャッシュタイムの最大値',
     'trackback_enabled' => 'トラックバックを有効にする',
     'pingback_enabled' => 'ピングバックを有効にする',
     'ping_enabled' => 'ピングを有効',
@@ -1995,16 +2076,16 @@ $LANG_confignames['Core'] = array(
     'hide_main_page_navigation' => 'ページナビゲーションを表示しない',
     'onlyrootfeatures' => 'Rootユーザーだけが注目記事を設定する',
     'aftersave_story' => '記事保存後の画面遷移',
-    'related_topics' => 'Related Topics',
-    'related_topics_max' => 'Max Related Topics to Display',
-    'whats_related' => 'What\'s Related',
-    'whats_related_max' => 'Max What\'s Related to Display',
-    'whats_related_trim' => 'What\'s Related Title Length',
-    'default_cache_time_article' => 'Default Article Cache Time',
+    'related_topics' => '関連話題',
+    'related_topics_max' => '表示する関連話題の最大数',
+    'whats_related' => '関連コンテンツ',
+    'whats_related_max' => '表示する関連コンテンツの最大数',
+    'whats_related_trim' => '関連コンテンツタイトルのタイトル最大長',
+    'default_cache_time_article' => "記事のデフォルトキャッシュタイム",
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
-    'template_comments' => 'Template Comments in Output?',
+    'template_comments' => 'テンプレートコメントを表示する?',
     'backend' => 'フィードを有効にする',
     'rdf_file' => 'フィードの出力ファイル',
     'rdf_limit' => 'フィードの最大数',
@@ -2060,7 +2141,7 @@ $LANG_confignames['Core'] = array(
     'compressed_output' => 'HTMLの出力を圧縮して送信する',
     'frame_options' => '"クリックジャッキング"を防止',
     'page_navigation_max_pages' => 'ページナビゲーションの最大ページ数',
-    'default_cache_time_block' => 'Default Block Cache Time',
+    'default_cache_time_block' => 'ブロックのデフォルトキャシュタイム',
     'censormode' => '語句の検査',
     'censorreplace' => '置き換える単語',
     'censorlist' => 'バッドワード',
@@ -2093,9 +2174,9 @@ $LANG_confignames['Core'] = array(
     'search_def_sort' => '並べ替えの順序のデフォルト',
     'autotag_permissions_story' => '[story: ] パーミッション',
     'autotag_permissions_user' => '[user: ] パーミッション',
-    'autotag_permissions_topic' => '[topic: ] Permissions',
-    'autotag_permissions_related_topics' => '[related_topics: ] Permissions',
-    'autotag_permissions_related_items' => '[related_items: ] Permissions',
+    'autotag_permissions_topic' => '[topic: ] パーミッション',
+    'autotag_permissions_related_topics' => '[related_topics: ] パーミッション',
+    'autotag_permissions_related_items' => '[related_items: ] パーミッション',
     'multiple_breadcrumbs' => 'マルチプルパンくずリストを有効にする',
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする',
@@ -2127,7 +2208,7 @@ $LANG_fs['Core'] = array(
     'fs_admin_block' => '管理者ブロック',
     'fs_locale' => 'ロケール',
     'fs_language' => '言語',
-    'fs_multilanguage' => 'Multi-Language Content',
+    'fs_multilanguage' => '多言語コンテンツ',
     'fs_debug' => 'デバッグ',
     'fs_cookies' => 'クッキー',
     'fs_login' => 'ログイン',
@@ -2206,12 +2287,21 @@ $LANG_tab['Core'] = array(
     'tab_topics' => 'パンくずリスト'
 );
 
+
+
 $LANG_configselects['Core'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('拒否' => 0, '最新ポストのみ保持' => 1, 'マルチポストを許可' => 2),
     3 => array('トラックバックを有効' => 0, 'トラックバックを停止' => -1),
-    4 => array('何も検査しない' => 0, 'サイトのURLリンクを検査' => 1, '完全なURLを検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'IPアドレスとサイトのIPアドレスを検査' => 4, 'IPアドレスとサイトのURLリンクを検査' => 5, 'IPアドレスと完全なURLを検査' => 6, 'IPアドレス、完全なURL、サイトのURLを検査' => 7),
+    4 => array('何も検査しない' => 0, 
+               'サイトのURLリンクを検査' => 1, 
+               '完全なURLを検査' => 2, 
+               'サイトのURLと完全なURLを検査' => 3, 
+               'IPアドレスとサイトのIPアドレスを検査' => 4, 
+               'IPアドレスとサイトのURLリンクを検査' => 5, 
+               'IPアドレスと完全なURLを検査' => 6, 
+               'IPアドレス、完全なURL、サイトのURLを検査' => 7),
     5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),
@@ -2239,9 +2329,10 @@ $LANG_configselects['Core'] = array(
     29 => array('md5' => 0, 'sha1' => 1, 'sha256' => 2, 'sha512' => 3, 'blowfish' => 4),
     30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none'),
     31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
-    32 => array('Disabled' => 0, 'Just Article Pages' => 1, 'Articles and Topics' => 2),
-    33 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (No Links)' => 2, 'Enabled (No Outbound Links)' => 3)
+    32 => array('無効にする' => 0, '記事のページのみ' => 1, '記事と話題' => 2),
+    33 => array('無効にする' => 0, '有効にする' => 1, '有効にする (リンクなし)' => 2, '有効にする (外部リンクなし)' => 3)
 );
+
 
 ###############################################################################
 # Localization of validation error messages
@@ -2281,15 +2372,17 @@ $LANG_VALIDATION = array(
     'search_limits' => 'このフィールドにはコンマで区切られた数値を入力してください',
     'num_search_results' => 'このフィールドには下の\'search_limits\'の数値を入力してください',
     'theme' => 'テーマディレクトリがありません',
-    'path_themes' => 'テーマパスは絶対パスでなければならず、最後にディレクトリセパレータの\'/\'が必要です',
-    'path_to_mogrify' => '画像処理ライブラリimagemagickのセットアップを行い、このフィールドにmogrifyの実行ファイルのパスを入力してください',
-    'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、このフィールドにnetpbmのパッケージのバイナリのあるディレクトリのパスを入力してください',
+    'path_themes' => 'テーマパスは絶対パスでなければならず、' .
+                     '最後にディレクトリセパレータが必要です',
+    'path_to_mogrify' => '画像処理ライブラリimagemagickのセットアップを行い、' .
+                     'このフィールドにmogrifyの実行ファイルのパスを入力してください',
+    'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、' .
+                     'このフィールドにnetpbmのパッケージのバイナリのあるディレクトリのパスを入力してください',
     'language' => '言語ファイルがありません',
     'timezone' => '無効なタイムゾーンです',
     'single_char' => 'このフィールドには半角1文字を入力してください',
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
-
 
 ?>
