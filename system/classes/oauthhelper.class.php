@@ -376,6 +376,8 @@ class OAuthConsumer {
 
     protected function _DBupdate_users($uid, $users) {
         global $_TABLES, $_CONF;
+        
+        $photo = '';
 
         $sql = "UPDATE {$_TABLES['users']} SET remoteusername = '".DB_escapeString($users['remoteusername'])."', remoteservice = '".DB_escapeString($users['remoteservice'])."', status = 3 ";
         if (!empty($users['remotephoto'])) {
@@ -389,10 +391,20 @@ class OAuthConsumer {
                 }
                 rename($save_img, $image);
                 
-                $this->_handleImageResize($_CONF['path_images'] . 'userphotos/' . $uid . $ext);
+                $photo = $uid . $ext;
+                $img_path = $this->_handleImageResize($_CONF['path_images'] . 'userphotos/' . $photo);
                 
-                $imgname = $uid . $ext;
-                $sql .= ", photo = '".DB_escapeString($imgname)."'";
+                // If nothing returned then image resize did not go right
+                if (!empty($img_path)) {
+                    if (!file_exists($img_path)) {
+                        $photo = '';
+                    }
+                } else {
+                    USER_deletePhoto($photo, false);
+                    $photo = '';
+                }
+                
+                $sql .= ", photo = '".DB_escapeString($photo)."'"; // update photo even if blank just incase OAuth profile picture has been removed
             }
         }
         $sql .= " WHERE uid = ".(int) $uid;
@@ -400,6 +412,7 @@ class OAuthConsumer {
     }
     
     protected function _saveUserPhoto($from, $to) {
+        // Use Pear HTTP Request 2 since first Facebook url to profile picture redirects to a new location 
         $ret = '';
         require_once 'HTTP/Request2.php';
         $request = new HTTP_Request2($from, HTTP_Request2::METHOD_GET);
@@ -480,7 +493,7 @@ class OAuthConsumer {
                                      )      );
         // Set new path and image name
         if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
-            exit; // don't return
+            return;
         }
         
         // Current path of image to resize
@@ -508,13 +521,24 @@ class OAuthConsumer {
         // do the upload
         if (!empty($filename)) {
             $upload->setFileNames($filename);
-            $upload->setPerms('0644');
-            $upload->setMaxDimensions($_CONF['max_photo_width'], $_CONF['max_photo_height']);
-            $upload->setMaxFileSize($_CONF['max_photo_size']);
+            $upload->setPerms ('0644');
+            if (($_CONF['max_photo_width'] > 0) &&
+                ($_CONF['max_photo_height'] > 0)) {
+                $upload->setMaxDimensions ($_CONF['max_photo_width'],
+                                           $_CONF['max_photo_height']);
+            } else {
+                $upload->setMaxDimensions ($_CONF['max_image_width'],
+                                           $_CONF['max_image_height']);
+            }
+            if ($_CONF['max_photo_size'] > 0) {
+                $upload->setMaxFileSize($_CONF['max_photo_size']);
+            } else {
+                $upload->setMaxFileSize($_CONF['max_image_size']);
+            }
             $upload->uploadFiles();
         
             if ($upload->areErrors()) {
-                exit; // don't return
+                return; 
             }
         }            
             
