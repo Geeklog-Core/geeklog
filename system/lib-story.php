@@ -146,8 +146,13 @@ function STORY_renderArticle( &$story, $index='', $storytpl='storytext.thtml', $
     }
     
     // Main article content
-    $introtext = $story->getPreviewText('introtext');
-    $bodytext  = $story->getPreviewText('bodytext');
+    if ($index == 'p') {
+        $introtext = $story->getPreviewText('introtext');
+        $bodytext  = $story->getPreviewText('bodytext');
+    } else {
+        $introtext = $story->displayElements('introtext');
+        $bodytext  = $story->displayElements('bodytext');
+    }
     $readmore = empty($bodytext)?0:1;
     $numwords = COM_numberFormat(count(explode(' ', COM_getTextContent($bodytext))));
     if (COM_onFrontpage()) {
