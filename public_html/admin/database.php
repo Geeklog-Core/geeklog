@@ -251,7 +251,7 @@ function dobackup()
         $backupfile = $_CONF['backup_path'] . $filename_mask;
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user";
         if (!empty($_DB_pass)) {
-            $command .= " -p$_DB_pass";
+            $command .= " -p'$_DB_pass'";
         }
         if (!empty($_CONF['mysqldump_options'])) {
             $command .= ' ' . $_CONF['mysqldump_options'];
