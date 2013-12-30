@@ -150,10 +150,12 @@
 
     $(function() {
         var elem = document.getElementById('sel_editmode');
-        if (elem.addEventListener) {
-          elem.addEventListener('change', modifyNavlist, false);
-        } else if (elem.attachEvent) {
-          elem.attachEvent('onchange', modifyNavlist);
+        if (elem) {
+            if (elem.addEventListener) {
+                elem.addEventListener('change', modifyNavlist, false);
+            } else if (elem.attachEvent) {
+                elem.attachEvent('onchange', modifyNavlist);
+            }
         }
         function modifyNavlist() {
             var navlistcount = document.getElementById('navlist').getElementsByTagName('li').length;
