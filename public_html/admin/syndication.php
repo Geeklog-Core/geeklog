@@ -455,13 +455,46 @@ function savefeed ($A)
     } else {
         $A['is_enabled'] = 0;
     }
+
+    // Make sure correct format returned and correct file extenstion
+    $file_parts = pathinfo($A['filename']);
+    $A['filename'] = ''; // Clear out filename. If it doesn't get recreated then we know there is an error
+    if (!empty($file_parts['filename'])) {
+        $formats = find_feedFormats();
+        foreach ($formats as $f) {
+            if ($A['format'] == ($f['name'] . '-' . $f['version'])) {
+                switch($f['name'])
+                {
+                    case "Atom":
+                        if ($file_parts['extension'] != "atm" OR $file_parts['extension'] != "xml") {
+                            $A['filename'] = $file_parts['filename'] . '.atm'; 
+                        }
+                        break;
+                    
+                    case "RSS":
+                        if ($file_parts['extension'] != "rss" OR $file_parts['extension'] != "xml") {
+                            $A['filename'] = $file_parts['filename'] . '.rss';
+                        }
+                        break;
+                        
+                    case "RDF":
+                        if ($file_parts['extension'] != "rdf") {
+                            $A['filename'] = $file_parts['filename'] . '.rdf';
+                        }
+                        break;
+                        
+                }
+                
+            }
+        }
+    }
     if (empty ($A['title']) || empty ($A['description']) ||
             empty ($A['filename'])) {
         $retval = COM_showMessageText($LANG33[39], $LANG33[38])
                 . editfeed ($A['fid'], $A['type']);
         $retval = COM_createHTMLDocument($retval, array('pagetitle' => $LANG33[38]));
         return $retval;
-    }
+    }    
 
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['syndication']} WHERE filename = '{$A['filename']}' AND (fid <> '{$A['fid']}')");
     $C = DB_fetchArray($result);
