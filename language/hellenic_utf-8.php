@@ -698,6 +698,73 @@ $LANG_LOGVIEW = array(
 );
 
 ###############################################################################
+# admin/envcheck.php - distribution integrity checker
+
+$LANG_ENVCHECK = array(
+    'correct_perms' => 'Please correct the issues identified below. Once they have been corrected, use the <b>Recheck</b> button to validate the environment.',
+    'current' => 'Current',
+    'current_php_settings' => 'Current PHP Settings',
+    'directory_permissions' => 'Directory Permissions',
+    'enabled' => 'Enabled',
+    'env_check' => 'Environment Check',
+    'file_permissions' => 'File Permissions',
+    'file_uploads' => 'Many features of Geeklog require the ability to upload files, this should be enabled.',
+    'filesystem_check' => 'Directory / File Permissions',
+    'gd_lib' => 'GD Libraries',
+    'gd_not_found' => 'Unable to locate the GD library functions.  Please ensure that the GD libraries were compiled into PHP or select an alternate graphics library.',
+    'gd_ok' => 'GD Libraries v2 are installed.',
+    'gd_v1' => 'GD Libraries v1 is installed - This version does not fully support JPG image processing so there may be some quality issues.',
+    'graphics' => 'Graphics Library',
+    'libraries' => 'Libraries',
+    'hosting_env' => 'Hosting Environment Check',
+    'imagemagick' => 'ImageMagick Programs',
+    'im_not_found' => 'Unable to locate the <strong>convert</strong> executable for ImageMagick.',
+    'im_ok' => 'The <strong>convert</strong> executable appears to be valid.',
+    'memory_limit' => 'It is recommended that you have at least 48M of memory enabled on your site.',
+    'not_writable' => 'NOT WRITABLE',
+    'notes' => 'Notes',
+    'not_found' => 'Not Found',
+    'netpbm' => 'NetPBM Library',
+    'np_ok' => 'The NetPBM library is installed',
+    'np_not_found' => 'The NetPBM executables were not found.',
+    'openssl_library' => 'OpenSSL Library',
+    'openssl_ok' => 'The OpenSSL library is loaded. This library is required if you wish to use the OAuth user login method with Geeklog.',
+    'openssl_not_found' => 'The OpenSSL library is not loaded. This is required <strong>only</strong> if you wish to use the OAuth user login method with Geeklog.',
+    'off' => 'Off',
+    'ok' => 'OK',
+    'on' => 'On',
+    'open_basedir' => 'If <strong>open_basedir</strong> restrictions are enabled on your site, it may cause permission problems during the install. The File System Check below should point out any issues.',
+    'php_req_version' => 'Geeklog requires PHP version 5.2.0 or newer.',
+    'php_settings' => 'PHP Settings',
+    'php_version' => 'PHP Version',
+    'php_warning' => 'If any of the items below are marked in <span class="no">red</span>, you may encounter problems with your Geeklog site.  Check with your hosting provider for information on changing any of these PHP settings.',
+    'post_max_size' => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the maximum post size.',
+    'recheck' => 'Recheck Environment',
+    'recommended' => 'Recommended',
+    'register_globals' => 'If PHP\'s <strong>register_globals</strong> is enabled, it can create security issues.',
+    'safe_mode' => 'If PHP\'s <strong>safe_mode</strong> is enabled, some functions of Geeklog may not work correctly. Specifically the Media Gallery plugin.',
+    'setting' => 'Setting',
+    'unable_mkdir' => 'Unable to create directory',
+    'upload_max_filesize' => 'Geeklog allows you to upload plugins, images, and files. You should allow at least 8M for the upload size.',
+    'not_checked' => 'Skipped',
+    'bypass_note' => 'Since either Safe Mode or open_basedir restrictions were detected, the check for graphic libraries were skipped.',
+    'not_used_note' => 'No graphic libraries are set to be used by Geeklog.',
+    'location' => 'Location',
+    'status' => 'Status',
+    'item' => 'Item',
+    'jhead' => 'jhead Program',
+    'jhead_not_found' => 'Unable to locate the jhead executable.',
+    'jhead_ok' => 'The jhead executable is installed.',
+    'jpegtran' => 'jpegtran Program',
+    'jpegtran_not_found' => 'Unable to locate the jpegtran executable.',
+    'jpegtran_ok' => 'The jpegtran executable is installed.',
+    'showhide_phpinfo' => 'Show/Hide Full PHP Info',
+    'view_online' => 'Click here %s to view online',
+    'no_new_items' => 'No New Items',
+    'max_execution_time' => 'Geeklog recommends the PHP default value of 30 seconds as a minimum, but plugin uploads and other operations may take longer than this depending upon your hosting environment.  If safe_mode (above) is Off, you may be able to increase this by modifying the value of <b>max_execution_time</b> in your php.ini file.'
+);
+
+###############################################################################
 # admin/auth.inc.php
 
 $LANG20 = array(
