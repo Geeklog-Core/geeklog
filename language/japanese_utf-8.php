@@ -702,73 +702,68 @@ $LANG_LOGVIEW = array(
 # admin/envcheck.php - distribution integrity checker
 
 $LANG_ENVCHECK = array(
-    'correct_perms'             => '以下の問題を解決してください。解決したら、<b>再チェック</b>ボタンをクリックして環境チェックしてください。　',
-    'current'                   => 'カレント',
-    'current_php_settings'      => 'カレントPHPの設定',
-    'directory_permissions'     => 'ディレクトリパーミッション',
-    'enabled'                   => '有効',
-    'env_check'                 => '環境チェック',
-    'file_permissions'          => 'ファイルパーミッション',
-    'file_uploads'              => 'Geeklogの多くの機能が、ファイルのアップロードを要求するので有効にしてください。
-',
-    'filesystem_check'          => 'ディレクトリ / ファイルパーミッション',
-    'gd_lib'                    => 'GDライブラリ',
-    'gd_not_found'              => 'GDライブラリ関数が有効にできません。GDライブラリがPHPにコンパイルされているかどうか確認してください。あるいは代替のライブラリを選択してください。',
-    'gd_ok'                     => 'GDライブラリv2 がインストールされています。',
-    'gd_v1'                     => 'GDライブラリv1 がインストール - このバージョンは JPG 画像の処理すべてに対応していません。そのため何らかの不具合が生じることがあります。',
-    'graphics'                  => 'グラフィックライブラリ',
-    'libraries'                 => 'ライブラリ',
-    'hosting_env'               => 'ホスティング環境チェック',
-    'imagemagick'               => 'ImageMagick プログラム',
-    'im_not_found'              => 'ImageMagickの<strong>変換</strong>を有効にできません。',
-    'im_ok'                     => '<strong>変換</strong>が有効です。',
-    'memory_limit'              => 'サイトでは少なくとも 48M のメモリーが必要です。',
-    'not_writable'              => '書き込み不可',
-    'notes'                     => '注意',
-    'not_found'                 => 'みつかりません',
-    'netpbm'                    => 'NetPBMライブラリ',
-    'np_ok'                     => 'NetPBMライブラリがインストール',
-    'np_not_found'              => 'NetPBMを有効にできません。',
-    'openssl_library'           => 'OpenSSLライブラリ',
-    'openssl_ok'                => 'OpenSSLがロードされています。そのライブラリはGeeklogのOAuthユーザーログインに必要です。',
-    'openssl_not_found'         => 'OpenSSLライブラリがロードされていません。そのライブラリはGeeklogのOAuthユーザーログイン<strong>のみ</strong>に必要です。',
-    'off'                       => 'Off',
-    'ok'                        => 'OK',
-    'on'                        => 'On',
-    'open_basedir'              => 'もしこのサイト<strong>open_basedir</strong> の制限がこのサイトで有効の場合、 インストールの際にパーミッションで問題がおきるかもしれません。以下のファイルシステムチェックを行ってください。',
-    'php_req_version'           => 'Geeklog は PHP version 5.2.0 以降を要求しています。',
-    'php_settings'              => 'PHP 設定',
-    'php_version'               => 'PHP Version',
-    'php_warning'               => 'もし以下のリストで<span class="no">赤</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',
-    'post_max_size'             => 'Geeklogはプラグインと画像、ファイルのアップロードを許可しています。アップロードファイル制限を少なくとも8M以上にしてください。',
-    'recheck'                   => '環境を再チェック',
-    'recommended'               => '推奨',
-    'register_globals'          => 'もしPHPの<strong>register_globals</strong>が有効なら、それはセキュリティ問題が発生します。',
-    'safe_mode'                 => 'もし PHPの <strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMedia Galleryプラグイン。',
-    'setting'                   => '設定',
-    'unable_mkdir'              => 'ディレクトリ作成が可能',
-    'upload_max_filesize'       => 'Geeklogプラグインと画像、ファイルのアップロードが有効です。アップロードファイル制限を少なくとも8M以上にしてください。',
-    'not_checked'               => 'スキップ',
-    'bypass_note'               => 'Safe Modeまたはopen_basedir制限が検知されたので、グラフィックライブラリのチェックがスキップされました。',
-    'not_used_note'             => 'Geeklogのグラフィックライブラリはセットされていません。',
-    'location'                  => 'ロケーション',
-    'status'                    => 'ステータス',
-    'item'                      => 'アイテム',
-    
-    /* Left incase we decided to use jhead and/or jpegtran Program in future */
-    'jhead'                     => 'jheadプログラム',
-    'jhead_not_found'           => 'jheadを有効にできません。',
-    'jhead_ok'                  => 'jheadはインストールされています。',
-    'jpegtran'                  => 'jpegtranプログラム',
-    'jpegtran_not_found'        => 'jpegtranを有効にできません。',
-    'jpegtran_ok'               => 'jpegtranはインストールされています。',
-    
-    'showhide_phpinfo'          => 'phpinfo 表示/非表示',
-    'view_online'               => 'オンライン表示はここ %s をクリック',
-    'no_new_items'              => '新アイテムはありません',
-    'max_execution_time'        => 'Geeklogは 最少PHPデフォルト値として30秒を要求していますが、プラグインアップロードとその他の操作では、サーバー環境によってそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応が可能になります。'
+    'correct_perms' => '以下の問題を解決してください。解決したら、<b>再チェック</b>ボタンをクリックして環境チェックしてください。　',
+    'current' => 'カレント',
+    'current_php_settings' => 'カレントPHPの設定',
+    'directory_permissions' => 'ディレクトリパーミッション',
+    'enabled' => '有効',
+    'env_check' => '環境チェック',
+    'file_permissions' => 'ファイルパーミッション',
+    'file_uploads' => "Geeklogの多くの機能が、ファイルのアップロードを要求するので有効にしてください。\n",
+    'filesystem_check' => 'ディレクトリ / ファイルパーミッション',
+    'gd_lib' => 'GDライブラリ',
+    'gd_not_found' => 'GDライブラリ関数が有効にできません。GDライブラリがPHPにコンパイルされているかどうか確認してください。あるいは代替のライブラリを選択してください。',
+    'gd_ok' => 'GDライブラリv2 がインストールされています。',
+    'gd_v1' => 'GDライブラリv1 がインストール - このバージョンは JPG 画像の処理すべてに対応していません。そのため何らかの不具合が生じることがあります。',
+    'graphics' => 'グラフィックライブラリ',
+    'libraries' => 'ライブラリ',
+    'hosting_env' => 'ホスティング環境チェック',
+    'imagemagick' => 'ImageMagick プログラム',
+    'im_not_found' => 'ImageMagickの<strong>変換</strong>を有効にできません。',
+    'im_ok' => '<strong>変換</strong>が有効です。',
+    'memory_limit' => 'サイトでは少なくとも 48M のメモリーが必要です。',
+    'not_writable' => '書き込み不可',
+    'notes' => '注意',
+    'not_found' => 'みつかりません',
+    'netpbm' => 'NetPBMライブラリ',
+    'np_ok' => 'NetPBMライブラリがインストール',
+    'np_not_found' => 'NetPBMを有効にできません。',
+    'openssl_library' => 'OpenSSLライブラリ',
+    'openssl_ok' => 'OpenSSLがロードされています。そのライブラリはGeeklogのOAuthユーザーログインに必要です。',
+    'openssl_not_found' => 'OpenSSLライブラリがロードされていません。そのライブラリはGeeklogのOAuthユーザーログイン<strong>のみ</strong>に必要です。',
+    'off' => 'Off',
+    'ok' => 'OK',
+    'on' => 'On',
+    'open_basedir' => 'もしこのサイト<strong>open_basedir</strong> の制限がこのサイトで有効の場合、 インストールの際にパーミッションで問題がおきるかもしれません。以下のファイルシステムチェックを行ってください。',
+    'php_req_version' => 'Geeklog は PHP version 5.2.0 以降を要求しています。',
+    'php_settings' => 'PHP 設定',
+    'php_version' => 'PHP Version',
+    'php_warning' => 'もし以下のリストで<span class="no">赤</span>があれば、あなたのGeeklogサイトで問題が発生するかもしれません。これらのPHP設定をホスティングプロバイダーの情報に照らし合わせてチェックしてください。',
+    'post_max_size' => 'Geeklogはプラグインと画像、ファイルのアップロードを許可しています。アップロードファイル制限を少なくとも8M以上にしてください。',
+    'recheck' => '環境を再チェック',
+    'recommended' => '推奨',
+    'register_globals' => 'もしPHPの<strong>register_globals</strong>が有効なら、それはセキュリティ問題が発生します。',
+    'safe_mode' => 'もし PHPの <strong>safe_mode</strong>が有効なら、いくつかのGeeklogの関数が動かなくなります。特にMedia Galleryプラグイン。',
+    'setting' => '設定',
+    'unable_mkdir' => 'ディレクトリ作成が可能',
+    'upload_max_filesize' => 'Geeklogプラグインと画像、ファイルのアップロードが有効です。アップロードファイル制限を少なくとも8M以上にしてください。',
+    'not_checked' => 'スキップ',
+    'bypass_note' => 'Safe Modeまたはopen_basedir制限が検知されたので、グラフィックライブラリのチェックがスキップされました。',
+    'not_used_note' => 'Geeklogのグラフィックライブラリはセットされていません。',
+    'location' => 'ロケーション',
+    'status' => 'ステータス',
+    'item' => 'アイテム',
+    'jhead' => 'jheadプログラム',
+    'jhead_not_found' => 'jheadを有効にできません。',
+    'jhead_ok' => 'jheadはインストールされています。',
+    'jpegtran' => 'jpegtranプログラム',
+    'jpegtran_not_found' => 'jpegtranを有効にできません。',
+    'jpegtran_ok' => 'jpegtranはインストールされています。',
+    'showhide_phpinfo' => 'phpinfo 表示/非表示',
+    'view_online' => 'オンライン表示はここ %s をクリック',
+    'no_new_items' => '新アイテムはありません',
+    'max_execution_time' => 'Geeklogは 最少PHPデフォルト値として30秒を要求していますが、プラグインアップロードとその他の操作では、サーバー環境によってそれ以上を要求します。もしsafe_mode (上記)がOffなら、php.iniで<b>max_execution_time</b> を増やすことで対応が可能になります。'
 );
-
 
 ###############################################################################
 # admin/auth.inc.php
@@ -956,10 +951,9 @@ $LANG24 = array(
     90 => 'キーワードのメタタグ',
     91 => '「プレビュー」ボタンをクリックすれば、いつでも有効期限を延長できます。',
     'autotag_desc_story' => '[story: id alternate title] - 記事タイトルを記事へのリンクの表示にします。別のリンクのタイトルを指定できますが、必須ではありません。',
-    'cache_time'        => 'キャッシュタイム',
-    'cache_time_desc'   => 'この記事は指定された秒数内にキャッシュされます。もし0なら、キャッシュされません。 (3600 = 1時間,  86400 = 1日)'
+    'cache_time' => 'キャッシュタイム',
+    'cache_time_desc' => 'この記事は指定された秒数内にキャッシュされます。もし0なら、キャッシュされません。 (3600 = 1時間,  86400 = 1日)'
 );
-
 
 ###############################################################################
 # admin/topic.php
@@ -1264,10 +1258,6 @@ $LANG32 = array(
     67 => 'ディレクトリ "%s" は書き込みできません。',
     68 => 'あなたにはプラグインをインストールする権限はありません。',
     69 => 'あなたにはプラグインをアップロードする権限はありません。',
-
-    // to match the PHP error constants,
-    // http://www.php.net/manual/en/features.file-upload.errors.php
-    // TBD: move to a separate $LANG array
     99 => '不明なエラーが発生しました。',
     100 => 'Ok.',
     101 => 'アップロードしようとしたファイルのサイズが php.ini 内の upload_max_filesize の値を超えています。',
@@ -1533,10 +1523,7 @@ $LANG_DB_BACKUP = array(
     'do_backup' => 'バックアップの実行',
     'backup_successful' => 'データベースのバックアップを完了しました。',
     'db_explanation' => 'サイトのデータベースのバックアップを新しく作成するには「新規作成」をクリックしてください。',
-    'not_found' => '正しくないパス、セキュリティ上の制限が適用、mysqldumpの実行ができない、といった状況です。<br'
-                    . XHTML . '> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br'
-                    . XHTML . '> PHPの<a href="http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir">open_basedir</a>の設定を確認してください。<br'
-                    . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定しています。",
+    'not_found' => "正しくないパス、セキュリティ上の制限が適用、mysqldumpの実行ができない、といった状況です。<br" . XHTML . "> コンフィギュレーションで<strong>mysqldump_path</strong>の設定を確認してください。<br" . XHTML . "> PHPの<a href=\"http://www.php.net/manual/en/features.safe-mode.php#ini.open-basedir\">open_basedir</a>の設定を確認してください。<br" . XHTML . "> 現在のパスは<var>{$_DB_mysqldump_path}</var>に設定しています。",
     'zero_size' => 'バックアップに失敗: ファイルの大きさが0バイトです。',
     'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
     'no_access' => "エラー: {$_CONF['backup_path']} にアクセスできません。",
@@ -1557,7 +1544,6 @@ $LANG_DB_BACKUP = array(
     'conversion_patience' => '注意: 変換には少々の時間が必要です。今しばらく、お待ちください。',
     'innodb_success' => 'InnoDBテーブルへの変換を完了しました。',
     'table_issues' => 'いくつかのテーブルで問題が発生した可能性があります。詳細については、error.logを確認してください。',
-
     'optimize_menu' => 'テーブルの最適化',
     'optimize_title' => 'テーブルの最適化',
     'optimize_button' => '最適化',
@@ -1728,17 +1714,17 @@ $LANG_SECTEST = array(
 
 ###############################################################################
 # "What's New" Time Strings
+# 
+# For the first two strings, you can use the following placeholders.
+# Order them so it makes sense in your language:
+# %i    item, "Stories"
+# %n    amount, "2", "20" etc.
+# %t    time, "2" (weeks)
+# %s    scale, "hrs", "weeks"
 
 $LANG_WHATSNEW = array(
-    # This here determines the order of the sentence "No new stories in 2 hrs"
-    # order it so it makes sense in your language:
-    # %i    item, "Stories"
-    # %n    amount, "2", "20" etc
-    # %t    time, "2" (weeks)
-    # %s    scale, "hrs", "weeks"
     'new_string' => '新着%i %n件(%t%s)',
     'new_last' => '新着(%t%s)',
-    # other strings
     'minutes' => '分',
     'hours' => '時間',
     'days' => '日',
@@ -2081,7 +2067,7 @@ $LANG_confignames['Core'] = array(
     'whats_related' => '関連コンテンツ',
     'whats_related_max' => '表示する関連コンテンツの最大数',
     'whats_related_trim' => '関連コンテンツタイトルのタイトル最大長',
-    'default_cache_time_article' => "記事のデフォルトキャッシュタイム",
+    'default_cache_time_article' => '記事のデフォルトキャッシュタイム',
     'aftersave_user' => 'ユーザー保存後の画面遷移',
     'show_right_blocks' => '右ブロックを常に表示する',
     'showfirstasfeatured' => '最初の記事を注目記事として表示する',
@@ -2287,21 +2273,12 @@ $LANG_tab['Core'] = array(
     'tab_topics' => 'パンくずリスト'
 );
 
-
-
 $LANG_configselects['Core'] = array(
     0 => array('はい' => 1, 'いいえ' => 0),
     1 => array('はい' => true, 'いいえ' => false),
     2 => array('拒否' => 0, '最新ポストのみ保持' => 1, 'マルチポストを許可' => 2),
     3 => array('トラックバックを有効' => 0, 'トラックバックを停止' => -1),
-    4 => array('何も検査しない' => 0, 
-               'サイトのURLリンクを検査' => 1, 
-               '完全なURLを検査' => 2, 
-               'サイトのURLと完全なURLを検査' => 3, 
-               'IPアドレスとサイトのIPアドレスを検査' => 4, 
-               'IPアドレスとサイトのURLリンクを検査' => 5, 
-               'IPアドレスと完全なURLを検査' => 6, 
-               'IPアドレス、完全なURL、サイトのURLを検査' => 7),
+    4 => array('何も検査しない' => 0, 'サイトのURLリンクを検査' => 1, '完全なURLを検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'IPアドレスとサイトのIPアドレスを検査' => 4, 'IPアドレスとサイトのURLリンクを検査' => 5, 'IPアドレスと完全なURLを検査' => 6, 'IPアドレス、完全なURL、サイトのURLを検査' => 7),
     5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),
@@ -2332,7 +2309,6 @@ $LANG_configselects['Core'] = array(
     32 => array('無効にする' => 0, '記事のページのみ' => 1, '記事と話題' => 2),
     33 => array('無効にする' => 0, '有効にする' => 1, '有効にする (リンクなし)' => 2, '有効にする (外部リンクなし)' => 3)
 );
-
 
 ###############################################################################
 # Localization of validation error messages
@@ -2372,17 +2348,15 @@ $LANG_VALIDATION = array(
     'search_limits' => 'このフィールドにはコンマで区切られた数値を入力してください',
     'num_search_results' => 'このフィールドには下の\'search_limits\'の数値を入力してください',
     'theme' => 'テーマディレクトリがありません',
-    'path_themes' => 'テーマパスは絶対パスでなければならず、' .
-                     '最後にディレクトリセパレータが必要です',
-    'path_to_mogrify' => '画像処理ライブラリimagemagickのセットアップを行い、' .
-                     'このフィールドにmogrifyの実行ファイルのパスを入力してください',
-    'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、' .
-                     'このフィールドにnetpbmのパッケージのバイナリのあるディレクトリのパスを入力してください',
+    'path_themes' => 'テーマパスは絶対パスでなければならず、最後にディレクトリセパレータが必要です',
+    'path_to_mogrify' => '画像処理ライブラリimagemagickのセットアップを行い、このフィールドにmogrifyの実行ファイルのパスを入力してください',
+    'path_to_netpbm' => '画像処理ライブラリnetpbmのセットアップを行い、このフィールドにnetpbmのパッケージのバイナリのあるディレクトリのパスを入力してください',
     'language' => '言語ファイルがありません',
     'timezone' => '無効なタイムゾーンです',
     'single_char' => 'このフィールドには半角1文字を入力してください',
     'page_navigation_max_pages' => 'このフィールドには2から21の数値を入力してください',
     'hash' => 'このフィールドにはあなたの使用しているPHPのバージョンでサポートしているhash関数を入力しなければなりません'
 );
+
 
 ?>
