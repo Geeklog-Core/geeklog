@@ -552,7 +552,7 @@ function _postprocess($str)
     function set_var($varname, $value = "", $append = false, $nocache = false)
     {
         if (!is_array($varname)) {
-            if (!empty($varname)) {
+            if (!empty($varname) || $varname == 0) { // Allow varname to be numbers including 0
                 if ($this->debug & 1) {
                     printf("<b>set_var:</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varname, htmlentities($value));
                 }
@@ -568,7 +568,7 @@ function _postprocess($str)
         } else {
             reset($varname);
             while(list($k, $v) = each($varname)) {
-                if (!empty($k)) {
+                if (!empty($k) || $k == 0) { // Allow varname to be numbers including 0
                     if ($this->debug & 1) {
                         printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $k, htmlentities($v));
                     }
@@ -608,7 +608,7 @@ function _postprocess($str)
     function clear_var($varname)
     {
         if (!is_array($varname)) {
-            if (!empty($varname)) {
+            if (!empty($varname) || $varname == 0) { // Allow number variable names including 0
                 if ($this->debug & 1) {
                     printf("<b>clear_var:</b> (with scalar) <b>%s</b><br>\n", $varname);
                 }
@@ -617,7 +617,7 @@ function _postprocess($str)
         } else {
             reset($varname);
             while(list($k, $v) = each($varname)) {
-                if (!empty($v)) {
+                if (!empty($v) || $v == 0) { // Allow number variable names including 0
                     if ($this->debug & 1) {
                         printf("<b>clear_var:</b> (with array) <b>%s</b><br>\n", $v);
                     }
@@ -650,7 +650,7 @@ function _postprocess($str)
     function unset_var($varname)
     {
         if (!is_array($varname)) {
-            if (!empty($varname)) {
+            if (!empty($varname) || $varname == 0) { // Allow number variable names including 0
                 if ($this->debug & 1) {
                     printf("<b>unset_var:</b> (with scalar) <b>%s</b><br>\n", $varname);
                 }
@@ -660,7 +660,7 @@ function _postprocess($str)
         } else {
             reset($varname);
             while(list($k, $v) = each($varname)) {
-                if (!empty($v)) {
+                if (!empty($v) || $v == 0) { // Allow number variable names including 0
                     if ($this->debug & 1) {
                         printf("<b>unset_var:</b> (with array) <b>%s</b><br>\n", $v);
                     }
