@@ -1860,7 +1860,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Plain Old Text',
-    'html'      => 'HTML Formatted'
+    'html'      => 'HTML Formatted',
+    'wikitext'  => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2285,7 +2286,7 @@ $LANG_configselects['Core'] = array(
                "Check IP and Site URL" => 5,
                "Check IP and Full URL" => 6,
                "Check IP, Full URL, and Site URL" => 7),
-    5 => array('Plain Old Text' => 'plaintext', 'HTML Formatted' => 'html'),
+    5 => array('Plain Old Text' => 'plaintext', 'HTML Formatted' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12'=>'12','24'=>'24'),
     7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
     8 => array('Right'=>'right', 'Left'=>'left'),

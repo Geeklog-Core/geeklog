@@ -359,7 +359,7 @@ $_CONF_VALIDATE['Core']['usersubmission'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['storysubmission'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['listdraftstories'] = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['postmode'] = array(
-    'rule' => array('inList', array('html', 'plaintext'), true)
+    'rule' => array('inList', array('html', 'plaintext', 'wikitext'), true)
 );
 $_CONF_VALIDATE['Core']['speedlimit'] = array('rule' => 'numeric');
 $_CONF_VALIDATE['Core']['skip_preview'] = array('rule' => 'boolean');

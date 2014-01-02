@@ -555,7 +555,8 @@ class Story
             $this->_numemails = 0;
 
             if (($_CONF['advanced_editor'] && $_USER['advanced_editor']) &&
-                    ($_CONF['postmode'] != 'plaintext')) {
+                    ($_CONF['postmode'] !== 'plaintext') &&
+                    ($_CONF['postmode'] !== 'wikitext')) {
                 $this->_advanced_editor_mode = 1;
                 $this->_postmode = 'adveditor';
             } else {

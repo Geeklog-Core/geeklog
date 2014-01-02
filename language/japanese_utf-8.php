@@ -1862,7 +1862,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'テキスト',
-    'html' => 'HTML'
+    'html'      => 'HTML',
+    'wikitext'  => 'Wikiスタイル'
 );
 
 $LANG_sortcodes = array(
@@ -2279,7 +2280,7 @@ $LANG_configselects['Core'] = array(
     2 => array('拒否' => 0, '最新ポストのみ保持' => 1, 'マルチポストを許可' => 2),
     3 => array('トラックバックを有効' => 0, 'トラックバックを停止' => -1),
     4 => array('何も検査しない' => 0, 'サイトのURLリンクを検査' => 1, '完全なURLを検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'IPアドレスとサイトのIPアドレスを検査' => 4, 'IPアドレスとサイトのURLリンクを検査' => 5, 'IPアドレスと完全なURLを検査' => 6, 'IPアドレス、完全なURL、サイトのURLを検査' => 7),
-    5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
+    5 => array('テキスト' => 'plaintext', 'HTML' => 'html', 'Wikiスタイル' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),
     8 => array('右' => 'right', '左' => 'left'),
