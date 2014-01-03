@@ -2272,7 +2272,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Lükka tagasi' => 0, 'Jäta ainult viimane' => 1, 'Luba mitut postitust' => 2),
     3 => array('Trackback lubatud' => 0, 'Trackback keelatud' => -1),
     4 => array('Ei kontrolli midagi' => 0, 'Kontrolli saidi URL-i' => 1, 'Kontrolli Täis URL-i' => 2, 'Kontrolli saidi URL-i ja täis URL-i' => 3, 'Võrdle IP saidi IP-ga' => 4, 'Kontrolli IP ja saidi URL-i' => 5, 'Kontrolli IP ja täis URL-i' => 6, 'Kontrolli IP, täis URL-i, ja saidi URL-i' => 7),
-    5 => array('Puhas tekst' => 'plaintext', 'HTML kujundusega' => 'html'),
+    5 => array('Puhas tekst' => 'plaintext', 'HTML kujundusega' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Viimane leht' => 'last', 'Esimene leht' => 'first', 'Iga leht' => 'all'),
     8 => array('Parem' => 'right', 'Vasak' => 'left'),

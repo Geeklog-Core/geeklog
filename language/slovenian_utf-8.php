@@ -2274,7 +2274,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Zavrni' => 0, 'Obdrži samo zadnje' => 1, 'Dovoli Multiple Posts' => 2),
     3 => array('Trackback Enabled' => 0, 'Trackback onemogočen' => -1),
     4 => array('Ne preverjaj ničesar' => 0, 'Preveri glede na URL strani' => 1, 'Preveri polni URL' => 2, 'Preveri glede na URL strani in polni URL' => 3, 'Preveri IP glede na IP strani' => 4, 'Preveri IP in URL strani' => 5, 'Preveri IP in polni URL' => 6, 'Preveri IP, polni URL, in URL strani' => 7),
-    5 => array('Samo besedilo' => 'plaintext', 'HTML formatirano' => 'html'),
+    5 => array('Samo besedilo' => 'plaintext', 'HTML formatirano' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Zadnja stran' => 'last', 'Prva stran' => 'first', 'Vse strani' => 'all'),
     8 => array('Desno' => 'right', 'Levo' => 'left'),

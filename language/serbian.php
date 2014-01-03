@@ -2276,7 +2276,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Odbaci' => 0, 'Zadrzi Samo Poslednje' => 1, 'Dozvoli Visestruke Tekstove' => 2),
     3 => array('Trackback Omogucen' => 0, 'Trackback Onemogucen' => -1),
     4 => array('Ne Proveravaj Nista' => 0, 'Proveri suprotni Sajt URL' => 1, 'Proveri kompletan URL' => 2, 'Proveri suprotni i kompletan URL' => 3, 'Porveri IP suprotnog Sajta' => 4, 'Proveri IP i Sajt URL' => 5, 'Proveri IP kompletan URL' => 6, 'Proveri IP, Kompletan URL, I Sajt URL' => 7),
-    5 => array('Obican tekst' => 'plaintext', 'HTML Format' => 'html'),
+    5 => array('Obican tekst' => 'plaintext', 'HTML Format' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Last Page' => 'last', 'First Page' => 'first', 'Every Page' => 'all'),
     8 => array('Desno' => 'right', 'Levo' => 'left'),

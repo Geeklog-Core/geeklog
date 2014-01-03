@@ -2271,7 +2271,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Odrzuć' => 0, 'Tylko Najnowsze' => 1, 'Zezwalaj na Wiele Postów' => 2),
     3 => array('Trackback Włączony' => 0, 'Trackback Wyłączony' => -1),
     4 => array('Nie sprawdzaj Niczego' => 0, 'Sprawdź wedle adresu strony' => 1, 'Sprawdź cały URL' => 2, 'Sprawdź wedle adresu strony i kompletnego URL' => 3, 'Check IP against Site IP' => 4, 'Sprawdź IP i URL strony' => 5, 'Sprawdź IP i pełny URL' => 6, 'Sprawdź IP, pełny URL, i URL strony' => 7),
-    5 => array('Tekst' => 'plaintext', 'HTML' => 'html'),
+    5 => array('Tekst' => 'plaintext', 'HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Ostatnia Strona' => 'last', 'Pierwsza Strona' => 'first', 'Wszystkie Strony' => 'all'),
     8 => array('Prawa' => 'right', 'Lewa' => 'left'),

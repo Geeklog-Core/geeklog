@@ -2272,7 +2272,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Rejeté' => 0, 'Conserver le dernier' => 1, 'Permettre les posts multiples' => 2),
     3 => array('Trackback activé' => 0, 'Trackback désactivé' => -1),
     4 => array('Ne rien vérifier' => 0, 'Vérifier l\'URL du site' => 1, 'Vérifier l\'URL complète' => 2, 'Vérifier l\'URL du site et l\'URL complète' => 3, 'Comparer l\'IP et l\'IP du site' => 4, 'Véricier l\'IP et l\'URL du site' => 5, 'Vérifier l\IP et l\'URL complète' => 6, 'Vérifier l\'IP, l\'UR complète et l\'URL du site' => 7),
-    5 => array('Texte seul' => 'plaintext', 'Format HTML' => 'html'),
+    5 => array('Texte seul' => 'plaintext', 'Format HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Dernière page' => 'last', 'Première page' => 'first', 'Toutes les pages' => 'all'),
     8 => array('Droite' => 'right', 'Gauche' => 'left'),

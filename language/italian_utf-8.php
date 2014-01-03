@@ -2273,7 +2273,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Non accettare' => 0, 'Salva solo gli ultimi' => 1, 'Permetti Multipli Inserimenti' => 2),
     3 => array('Trackback Abilitato' => 0, 'Trackback Disabilitato' => -1),
     4 => array('Non controllare nulla' => 0, 'Confronta con l\'indirizzo del sito' => 1, 'Confronta con l\'intero indirizzo' => 2, 'Confronta con Entrambi' => 3, 'Confronta IP con IP del sito' => 4, 'Confronta IP con l\'indirizzo del sito' => 5, 'Controlla IP e l\'intero indirizzo' => 6, 'Controlla IP, l\'intero indirizzo, e l\'indirizzo del sito' => 7),
-    5 => array('Testo non formattato' => 'plaintext', 'Testo in formato HTML' => 'html'),
+    5 => array('Testo non formattato' => 'plaintext', 'Testo in formato HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Ultima Pagina' => 'last', 'Prima Pagina' => 'first', 'Ogni Pagina' => 'all'),
     8 => array('Destra' => 'right', 'Sinistra' => 'left'),
