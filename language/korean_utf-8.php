@@ -1854,7 +1854,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'plaintext',
-    'html' => 'html'
+    'html' => 'html',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(

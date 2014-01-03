@@ -1869,7 +1869,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'ќбычный текст',
-    'html' => 'HTML форматирование'
+    'html' => 'HTML форматирование',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(

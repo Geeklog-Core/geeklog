@@ -1859,7 +1859,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Gewone, oude tekst',
-    'html' => 'HTML-formaat'
+    'html' => 'HTML-formaat',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(

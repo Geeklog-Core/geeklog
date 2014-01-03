@@ -1853,7 +1853,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Gewone Teks',
-    'html' => 'HTML Formaat'
+    'html' => 'HTML Formaat',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
