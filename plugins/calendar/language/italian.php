@@ -241,7 +241,7 @@ $LANG_configselects['calendar'] = array(
     0 => array('Vero' => 1, 'Falso' => 0),
     1 => array('Vero' => true, 'Falso' => false),
     6 => array('12' => 12, '24' => 24),
-    9 => array('Vai a pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Admin' => 'admin'),
+    9 => array('Vai a pagina' => 'item', 'Mostra Lista' => 'list', 'Display Calendar' => 'plugin', 'Mostra Home' => 'home', 'Mostra Admin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Sola lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2),
     14 => array('No access' => 0, 'Read-Only' => 2),
