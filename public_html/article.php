@@ -72,7 +72,9 @@ if (isset ($_POST['mode'])) {
     $mode = COM_applyFilter ($_POST['format']);
 }
 if (!empty($mode)) {
-    $sid = COM_applyFilter ($_POST['story']);
+    if (isset ($_POST['story'])) {
+        $sid = COM_applyFilter ($_POST['story']);
+    }
     if (isset ($_POST['order'])) {
         $order = COM_applyFilter ($_POST['order']);
     }
