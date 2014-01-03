@@ -2294,7 +2294,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Grundeinstellung nur auf der Startseite)' => 2),
-    24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
+    24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Login' => 'login', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
     25 => array('Neuer Artikel' => 'story', 'Neuer Kommentar' => 'comment', 'Neuer Trackback' => 'trackback', 'Neuer Pingback' => 'pingback', 'Neuer User' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (aufst)' => 'hits|asc', 'Hits (abst)' => 'hits|desc', 'Datum (aufst)' => 'date|asc', 'Datum (abst)' => 'date|desc', 'Titel (aufst)' => 'title|asc', 'Titel (abst)' => 'title|desc', 'Autor (aufst)' => 'uid|asc', 'Autor (abst)' => 'uid|desc'),

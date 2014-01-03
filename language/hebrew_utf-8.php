@@ -2292,7 +2292,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
-    24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
+    24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'Login' => 'login', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
     25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user'),
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),
