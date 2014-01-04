@@ -108,10 +108,17 @@ if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor'] || COM_isAnonUser()
 
 // Checks a referer
 $refererCheck = false;
+COM_errorLog('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER']);
 
 $validReferers = array(
+	// CKEditor
 	$_CONF['site_admin_url'] . '/story.php?mode=edit',
 	$_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
+	
+	// FCKeditor
+	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_flash.html',
+	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_image.html',
+	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_link.html',
 );
 
 foreach ($validReferers as $referer) {
