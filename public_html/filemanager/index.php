@@ -108,7 +108,6 @@ if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor'] || COM_isAnonUser()
 
 // Checks a referer
 $refererCheck = false;
-COM_errorLog('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER']);
 
 $validReferers = array(
 	// CKEditor
