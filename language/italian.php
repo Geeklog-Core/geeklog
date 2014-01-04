@@ -1855,7 +1855,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Testo non formattato',
-    'html' => 'Testo in formato HTML'
+    'html' => 'Testo in formato HTML',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2272,7 +2273,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Non accettare' => 0, 'Salva solo gli ultimi' => 1, 'Permetti Multipli Inserimenti' => 2),
     3 => array('Trackback Abilitato' => 0, 'Trackback Disabilitato' => -1),
     4 => array('Non controllare nulla' => 0, 'Confronta con l\'indirizzo del sito' => 1, 'Confronta con l\'intero indirizzo' => 2, 'Confronta con Entrambi' => 3, 'Confronta IP con IP del sito' => 4, 'Confronta IP con l\'indirizzo del sito' => 5, 'Controlla IP e l\'intero indirizzo' => 6, 'Controlla IP, l\'intero indirizzo, e l\'indirizzo del sito' => 7),
-    5 => array('Testo non formattato' => 'plaintext', 'Testo in formato HTML' => 'html'),
+    5 => array('Testo non formattato' => 'plaintext', 'Testo in formato HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Ultima Pagina' => 'last', 'Prima Pagina' => 'first', 'Ogni Pagina' => 'all'),
     8 => array('Destra' => 'right', 'Sinistra' => 'left'),
@@ -2291,7 +2292,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Elevata' => 'DENY', 'Stessa Origine' => 'SAMEORIGIN', '(disabilitata)' => ''),
     23 => array('Disabilitati' => 0, 'Abilitati' => 1, 'Abilitati (Predefiniti solo per la homepage)' => 2),
-    24 => array('Contribuisci' => 'contribute', 'Home' => 'home', 'Ricerca Avanzata' => 'search', 'Directory' => 'directory', 'Il Mio Account' => 'prefs', 'Inserimenti di Plug-in' => 'plugins', 'Inserimenti personalizzati' => 'custom', 'Statistiche del Sito' => 'stats'),
+    24 => array('Contribuisci' => 'contribute', 'Home' => 'home', 'Ricerca Avanzata' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'Il Mio Account' => 'prefs', 'Inserimenti di Plug-in' => 'plugins', 'Inserimenti personalizzati' => 'custom', 'Statistiche del Sito' => 'stats'),
     25 => array('Nuove Storie' => 'story', 'Nuovi Commenti' => 'comment', 'Nuovi Trackback' => 'trackback', 'Nuovi Pingback' => 'pingback', 'Nuovi Utenti' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Visite (asc)' => 'hits|asc', 'Visite (desc)' => 'hits|desc', 'Data (asc)' => 'date|asc', 'Data (desc)' => 'date|desc', 'Titolo (asc)' => 'title|asc', 'Titolo (desc)' => 'title|desc', 'Autore (asc)' => 'uid|asc', 'Autore (desc)' => 'uid|desc'),

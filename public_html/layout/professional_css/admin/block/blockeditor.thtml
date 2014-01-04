@@ -52,7 +52,7 @@
     </dl>
   </div>
 
-  <fieldset>
+  <fieldset id="fs-phpblock-options">
     <legend>{lang_phpblockoptions}</legend>
 
     <dl>
@@ -62,7 +62,7 @@
     </dl>
   </fieldset>
 
-  <fieldset>
+  <fieldset id="fs-portal-options">
     <legend>{lang_portalblockoptions}</legend>
 
     <dl>
@@ -77,7 +77,7 @@
     </dl>
   </fieldset>
 
-  <fieldset>
+  <fieldset id="fs-normal-options">
     <legend>{lang_normalblockoptions}</legend>
 
     <dl>

@@ -1856,7 +1856,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Samo besedilo',
-    'html' => 'Oblikovano v HTML'
+    'html' => 'Oblikovano v HTML',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2273,7 +2274,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Zavrni' => 0, 'Obdri samo zadnje' => 1, 'Dovoli Multiple Posts' => 2),
     3 => array('Trackback Enabled' => 0, 'Trackback onemogoèen' => -1),
     4 => array('Ne preverjaj nièesar' => 0, 'Preveri glede na URL strani' => 1, 'Preveri polni URL' => 2, 'Preveri glede na URL strani in polni URL' => 3, 'Preveri IP glede na IP strani' => 4, 'Preveri IP in URL strani' => 5, 'Preveri IP in polni URL' => 6, 'Preveri IP, polni URL, in URL strani' => 7),
-    5 => array('Samo besedilo' => 'plaintext', 'HTML formatirano' => 'html'),
+    5 => array('Samo besedilo' => 'plaintext', 'HTML formatirano' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Zadnja stran' => 'last', 'Prva stran' => 'first', 'Vse strani' => 'all'),
     8 => array('Desno' => 'right', 'Levo' => 'left'),
@@ -2292,7 +2293,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Disabled' => 0, 'Enabled' => 1, 'Enabled (Default for Homepage only)' => 2),
-    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
+    24 => array('Contribute' => 'contribute', 'Home' => 'home', 'Advanced Search' => 'search', 'Directory' => 'directory', 'Login' => 'login', 'My Account' => 'prefs', 'Plugin Entries' => 'plugins', 'Custom Entries' => 'custom', 'Site Statistics' => 'stats'),
     25 => array('New Stories' => 'story', 'New Comments' => 'comment', 'New Trackbacks' => 'trackback', 'New Pingbacks' => 'pingback', 'New Users' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (asc)' => 'hits|asc', 'Hits (desc)' => 'hits|desc', 'Date (asc)' => 'date|asc', 'Date (desc)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),

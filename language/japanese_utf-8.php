@@ -1862,7 +1862,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'テキスト',
-    'html' => 'HTML'
+    'html' => 'HTML',
+    'wikitext' => 'Wikiスタイル'
 );
 
 $LANG_sortcodes = array(
@@ -2279,7 +2280,7 @@ $LANG_configselects['Core'] = array(
     2 => array('拒否' => 0, '最新ポストのみ保持' => 1, 'マルチポストを許可' => 2),
     3 => array('トラックバックを有効' => 0, 'トラックバックを停止' => -1),
     4 => array('何も検査しない' => 0, 'サイトのURLリンクを検査' => 1, '完全なURLを検査' => 2, 'サイトのURLと完全なURLを検査' => 3, 'IPアドレスとサイトのIPアドレスを検査' => 4, 'IPアドレスとサイトのURLリンクを検査' => 5, 'IPアドレスと完全なURLを検査' => 6, 'IPアドレス、完全なURL、サイトのURLを検査' => 7),
-    5 => array('テキスト' => 'plaintext', 'HTML' => 'html'),
+    5 => array('テキスト' => 'plaintext', 'HTML' => 'html', 'Wikiスタイル' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('最後のページ' => 'last', '最初のページ' => 'first', '各ページ' => 'all'),
     8 => array('右' => 'right', '左' => 'left'),
@@ -2298,7 +2299,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('無効にする' => 0, '有効にする' => 1, '有効にする(トップページにのみデフォルトを使用する)' => 2),
-    24 => array('記事投稿' => 'contribute', 'ホーム' => 'home', '検索オプション' => 'search', '記事一覧' => 'directory', 'マイアカウント' => 'prefs', 'プラグインエントリ' => 'plugins', 'カスタムエントリ' => 'custom', 'サイト情報' => 'stats'),
+    24 => array('記事投稿' => 'contribute', 'ホーム' => 'home', '検索オプション' => 'search', '記事一覧' => 'directory', 'Login' => 'login', 'マイアカウント' => 'prefs', 'プラグインエントリ' => 'plugins', 'カスタムエントリ' => 'custom', 'サイト情報' => 'stats'),
     25 => array('新着記事' => 'story', '新着コメント' => 'comment', '新着トラックバック' => 'trackback', '新着ピングバック' => 'pingback', '新着ユーザー' => 'user'),
     26 => array('G (一般向け)' => 'G', 'PG (保護者の指導が望ましい)' => 'PG', 'R (保護者同伴制限付き' => 'R', 'X (17歳未満利用禁止)' => 'X'),
     27 => array('表示回数 (昇順)' => 'hits|asc', '表示回数 (降順)' => 'hits|desc', '日付 (昇順)' => 'date|asc', '日付 (降順)' => 'date|desc', 'タイトル (昇順)' => 'title|asc', 'タイトル (降順)' => 'title|desc', '所有者 (昇順)' => 'uid|asc', '所有者 (降順)' => 'uid|desc'),

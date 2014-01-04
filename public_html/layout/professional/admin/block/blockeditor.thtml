@@ -39,7 +39,7 @@
                                         <tr>
                                             <td class="alignright">{lang_blocktype}:</td>
                                             <td>
-                                                <select name="type">
+                                                <select name="type" id="admin-blockeditor-type">
                                                     <option value="normal" {normal_selected}>{lang_normalblock}</option>
                                                     <option value="phpblock" {php_selected}>{lang_phpblock}</option>
                                                     <option value="portal" {portal_selected}>{lang_portalblock}</option>
@@ -54,46 +54,68 @@
                                             <td colspan="2"><hr{xhtml}></td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2"><b>{lang_phpblockoptions}</b></td>
+                                            <td colspan="2">
+                                                <table id="fs-phpblock-options">
+                                                    <tr>
+                                                        <td colspan="2"><b>{lang_phpblockoptions}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright">{lang_blockfunction}:</td>
+                                                        <td><input type="text" size="50" maxlength="64" name="phpblockfn" value="{block_phpblockfn}"{xhtml}></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">{lang_phpblockwarning}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><hr{xhtml}></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td class="alignright">{lang_blockfunction}:</td>
-                                            <td><input type="text" size="50" maxlength="64" name="phpblockfn" value="{block_phpblockfn}"{xhtml}></td>
+                                            <td colspan="2">
+                                                <table id="fs-portal-options">
+                                                    <tr>
+                                                        <td colspan="2"><b>{lang_portalblockoptions}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright">{lang_rdfurl}:</td>
+                                                        <td><input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"{xhtml}></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright">{lang_rdflimit}:</td>
+                                                        <td><input type="text" size="3" maxlength="3" name="rdflimit" value="{block_rdflimit}"{xhtml}></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright">{lang_lastrdfupdate}:</td>
+                                                        <td><input type="text" size="19" name="rdfupdated" value="{block_rdfupdated}"{xhtml}></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><hr{xhtml}></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <td colspan="2">{lang_phpblockwarning}</td>
-                                        </tr>
-                                        <tr><td colspan="2"><hr{xhtml}></td></tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_portalblockoptions}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="alignright">{lang_rdfurl}:</td>
-                                            <td><input type="text" dir="ltr" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="alignright">{lang_rdflimit}:</td>
-                                            <td><input type="text" size="3" maxlength="3" name="rdflimit" value="{block_rdflimit}"{xhtml}></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="alignright">{lang_lastrdfupdate}:</td>
-                                            <td><input type="text" size="19" name="rdfupdated" value="{block_rdfupdated}"{xhtml}></td>
-                                        </tr>
-                                        <tr><td colspan="2"><hr{xhtml}></td></tr>
-                                        <tr>
-                                            <td colspan="2"><b>{lang_normalblockoptions}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="alignright" style="vertical-align:top">{lang_blockcontent}:</td>
-                                            <td><textarea name="content" cols="45" rows="12" style="width:100%;">{block_content}</textarea><br{xhtml}>
-                                                <span class="warningsmall">{lang_allowed_html}</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="alignright">{lang_autotags}:</td>
-                                            <td><input type="checkbox" name="allow_autotags" {allow_autotags}{xhtml}> ({lang_use_autotags})</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2"><hr{xhtml}></td>
+                                            <td colspan="2">
+                                                <table id="fs-normal-options">
+                                                    <tr>
+                                                        <td colspan="2"><b>{lang_normalblockoptions}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright" style="vertical-align:top">{lang_blockcontent}:</td>
+                                                        <td><textarea name="content" cols="45" rows="12" style="width:100%;">{block_content}</textarea><br{xhtml}>
+                                                            <span class="warningsmall">{lang_allowed_html}</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="alignright">{lang_autotags}:</td>
+                                                        <td><input type="checkbox" name="allow_autotags" {allow_autotags}{xhtml}> ({lang_use_autotags})</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><hr{xhtml}></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"><b>{lang_accessrights}</b></td>

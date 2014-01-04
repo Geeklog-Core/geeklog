@@ -265,7 +265,7 @@ $LANG_fs['links'] = array(
 $LANG_configselects['links'] = array(
     0 => array('Vero' => 1, 'Falso' => 0),
     1 => array('Vero' => true, 'Falso' => false),
-    9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
+    9 => array('Mostra Pagina' => 'item', 'Mostra Lista' => 'list', 'Display Public List' => 'plugin', 'Mostra Home' => 'home', 'Mostra Ammin' => 'admin'),
     12 => array('Nessun Accesso' => 0, 'Solo Lettura' => 2, 'Lettura e Scrittura' => 3),
     13 => array('Nessun Accesso' => 0, 'Utilizzo' => 2)
 );

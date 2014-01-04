@@ -190,7 +190,7 @@ class IP extends BaseCommand {
             } elseif (strpos($val, '-') !== false) {
                 $matches = $this->_matchRange($ip, $val);
             } else {
-                $matches = (preg_match("#$val#i", $ip) == 0 ? false : true);
+                $matches = preg_match("#^{$val}$#i", $ip);
             }
 
             if ($matches) {

@@ -1855,7 +1855,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'טקסט פשוט',
-    'html' => 'פורמט HTML'
+    'html' => 'פורמט HTML',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2272,7 +2273,7 @@ $LANG_configselects['Core'] = array(
     2 => array('דחייה' => 0, 'שמירת רק של החדשים' => 1, 'איפשור שליחות מרובות' => 2),
     3 => array('איפשור הפניות' => 0, 'ניטרול הפניות' => -1),
     4 => array('לא לבדוק כלום' => 0, 'בדיקה כנגד כתובת האתר' => 1, 'בדיקת הקישור המלא' => 2, 'בדיקה כנגד כתובת האתר והקישור המלא' => 3, 'בדיקת IP כנגד ה-IP של האתר' => 4, 'בדיקת IP וכתובת האתר' => 5, 'בדיקת IP והקישור המלא' => 6, 'בדיקת IP, הקישור המלא, וכתובת האתר' => 7),
-    5 => array('טקסט פשוט' => 'plaintext', 'פורמט HTML' => 'html'),
+    5 => array('טקסט פשוט' => 'plaintext', 'פורמט HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('בעמוד האחרון' => 'last', 'בעמוד הראשון' => 'first', 'בכל עמוד' => 'all'),
     8 => array('ימין' => 'right', 'שמאל' => 'left'),
@@ -2291,7 +2292,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('נוקשה' => 'DENY', 'מאותו המקור' => 'SAMEORIGIN', '(מנוטרל)' => ''),
     23 => array('מנוטרל' => 0, 'מאופשר' => 1, 'מאופשר (ברירת המחדל לדף הבית בלבד)' => 2),
-    24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
+    24 => array('הגשות' => 'contribute', 'דף הבית' => 'home', 'חיפוש מתקדם' => 'search', 'ספרייה' => 'directory', 'Login' => 'login', 'החשבון שלי' => 'prefs', 'פריטי plugins' => 'plugins', 'פריטים מותאמים אישית' => 'custom', 'סטטיסטיקת אתר' => 'stats'),
     25 => array('מאמרים חדשים' => 'story', 'תגובות חדשות' => 'comment', 'הפניות חדשות' => 'trackback', 'פינגים חוזרים חדשים' => 'pingback', 'משתמשים חדשים' => 'user'),
     26 => array('G (קהל כללי)' => 'G', 'PG (ליווי הורים)' => 'PG', 'R (מוגבל)' => 'R', 'X (בוטה)' => 'X'),
     27 => array('כניסות (סדר עולה)' => 'hits|asc', 'כניסות (סדר יורד)' => 'hits|desc', 'תאריך (סדר עולה)' => 'date|asc', 'תאריך (סדר יורד)' => 'date|desc', 'כותרת (סדר עולה)' => 'title|asc', 'כותרת (סדר יורד)' => 'title|desc', 'יוצר (סדר עולה)' => 'uid|asc', 'יוצר (סדר יורד)' => 'uid|desc'),

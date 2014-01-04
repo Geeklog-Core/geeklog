@@ -1003,7 +1003,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
                 }
 
                 if (COMMENT_ON_SAME_PAGE) {
-                    $A['cid'] = $A[CMT_CID];
+                    if (isset($A[CMT_CID])) {
+                        $A['cid'] = $A[CMT_CID];
+                    }
                     $A['sid'] = $A[CMT_SID];
                     $A['pid'] = $A[CMT_PID];
                     $A['uid'] = $A[CMT_UID];

@@ -1854,7 +1854,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'Puhas tekst',
-    'html' => 'HTML kujundusega'
+    'html' => 'HTML kujundusega',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2271,7 +2272,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Lükka tagasi' => 0, 'Jäta ainult viimane' => 1, 'Luba mitut postitust' => 2),
     3 => array('Trackback lubatud' => 0, 'Trackback keelatud' => -1),
     4 => array('Ei kontrolli midagi' => 0, 'Kontrolli saidi URL-i' => 1, 'Kontrolli Täis URL-i' => 2, 'Kontrolli saidi URL-i ja täis URL-i' => 3, 'Võrdle IP saidi IP-ga' => 4, 'Kontrolli IP ja saidi URL-i' => 5, 'Kontrolli IP ja täis URL-i' => 6, 'Kontrolli IP, täis URL-i, ja saidi URL-i' => 7),
-    5 => array('Puhas tekst' => 'plaintext', 'HTML kujundusega' => 'html'),
+    5 => array('Puhas tekst' => 'plaintext', 'HTML kujundusega' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Viimane leht' => 'last', 'Esimene leht' => 'first', 'Iga leht' => 'all'),
     8 => array('Parem' => 'right', 'Vasak' => 'left'),
@@ -2290,7 +2291,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Range' => 'DENY', 'Sama allikas' => 'SAMEORIGIN', '(väljas)' => ''),
     23 => array('Keelatud' => 0, 'Lubatud' => 1, 'Lubatud (vaikimisi ainult avalehel)' => 2),
-    24 => array('Avlda' => 'contribute', 'Avaleht' => 'home', 'Täpsem otsing' => 'search', 'Artiklid' => 'directory', 'Minu konto' => 'prefs', 'Pluginate kanded' => 'plugins', 'Kohandatud kanded' => 'custom', 'Lehe statistika' => 'stats'),
+    24 => array('Avlda' => 'contribute', 'Avaleht' => 'home', 'Täpsem otsing' => 'search', 'Artiklid' => 'directory', 'Login' => 'login', 'Minu konto' => 'prefs', 'Pluginate kanded' => 'plugins', 'Kohandatud kanded' => 'custom', 'Lehe statistika' => 'stats'),
     25 => array('Uued lood' => 'story', 'Uued kommentaarid' => 'comment', 'Uued Trackbackid' => 'trackback', 'Uued Pingbackid' => 'pingback', 'Uued kasutajad' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Klikke (ksv.)' => 'hits|asc', 'Klikke (kahan.)' => 'hits|desc', 'Aeg (ksv.)' => 'date|asc', 'Aeg (kahan.)' => 'date|desc', 'Title (asc)' => 'title|asc', 'Title (desc)' => 'title|desc', 'Author (asc)' => 'uid|asc', 'Author (desc)' => 'uid|desc'),

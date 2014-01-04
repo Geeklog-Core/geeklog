@@ -1858,7 +1858,8 @@ $LANG_frontpagecodes = array(
 
 $LANG_postmodes = array(
     'plaintext' => 'als Text',
-    'html' => 'in HTML'
+    'html' => 'in HTML',
+    'wikitext' => 'Wiki-style format'
 );
 
 $LANG_sortcodes = array(
@@ -2275,7 +2276,7 @@ $LANG_configselects['Core'] = array(
     2 => array('Zurückweisen' => 0, 'Nur letzten behalten' => 1, 'Mehrfache Posts erlauben' => 2),
     3 => array('Trackbacks erlaubt' => 0, 'Keine Trackbacks' => -1),
     4 => array('Nichts checken' => 0, 'Site URL checken' => 1, 'Volle URL checken' => 2, 'Site URL und volle URL checken' => 3, 'Trackback IP mit Site IP vergleichen' => 4, 'IP und Site URL checken' => 5, 'IP und volle URL checken' => 6, 'IP, volle URL, und Site URL checken' => 7),
-    5 => array('als Text' => 'plaintext', 'in HTML' => 'html'),
+    5 => array('als Text' => 'plaintext', 'in HTML' => 'html', 'Wiki-style Format' => 'wikitext'),
     6 => array('12' => 12, '24' => 24),
     7 => array('Letzte Seite' => 'last', 'Erste Seite' => 'first', 'Jede Seite' => 'all'),
     8 => array('Rechts' => 'right', 'Links' => 'left'),
@@ -2294,7 +2295,7 @@ $LANG_configselects['Core'] = array(
     21 => array('HTML 4.01 Transitional' => 'html401transitional', 'HTML 4.01 Strict' => 'html401strict', 'XHTML 1.0 Transitional' => 'xhtml10transitional', 'XHTML 1.0 Strict' => 'xhtml10strict', 'HTML5' => 'html5', 'HTML5 with XHTML syntax' => 'xhtml5'),
     22 => array('Strict' => 'DENY', 'Same Origin' => 'SAMEORIGIN', '(disabled)' => ''),
     23 => array('Deaktiviert' => 0, 'Aktiviert' => 1, 'Aktiviert (Grundeinstellung nur auf der Startseite)' => 2),
-    24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
+    24 => array('Mitmachen' => 'contribute', 'Home' => 'home', 'Erweiterte Suche' => 'search', 'Verzeichnis' => 'directory', 'Login' => 'login', 'Mein Profil' => 'prefs', 'Plugin Einträge' => 'plugins', 'Custom Einträge' => 'custom', 'Statistik' => 'stats'),
     25 => array('Neuer Artikel' => 'story', 'Neuer Kommentar' => 'comment', 'Neuer Trackback' => 'trackback', 'Neuer Pingback' => 'pingback', 'Neuer User' => 'user'),
     26 => array('G (General Audiences)' => 'G', 'PG (Parental Guidance)' => 'PG', 'R (Restricted)' => 'R', 'X (Explicit)' => 'X'),
     27 => array('Hits (aufst)' => 'hits|asc', 'Hits (abst)' => 'hits|desc', 'Datum (aufst)' => 'date|asc', 'Datum (abst)' => 'date|desc', 'Titel (aufst)' => 'title|asc', 'Titel (abst)' => 'title|desc', 'Autor (aufst)' => 'uid|asc', 'Autor (abst)' => 'uid|desc'),
