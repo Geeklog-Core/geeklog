@@ -170,7 +170,7 @@ function editdefaultblock ($A, $access)
 function editblock ($bid = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG01, $LANG21, $LANG_ACCESS,
-           $LANG_ADMIN, $MESSAGE;
+           $LANG_ADMIN, $MESSAGE, $_SCRIPTS;
 
     $retval = '';
 
@@ -350,6 +350,24 @@ function editblock ($bid = '')
             COM_endBlock(COM_getBlockTemplate('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
+
+    // Shows/Hides relevant block options dynamically
+    $_SCRIPTS->setJavaScript("
+jQuery(function () {
+    var $ = jQuery;
+    $('#admin-blockeditor-type').on('change', function () {
+        var fs, i, fieldsets = ['normal', 'phpblock', 'portal'];
+        
+        for (i = 0; i < 3; i++) {
+            if (this.value === fieldsets[i]) {
+                $('#fs-' + fieldsets[i] + '-options').show();
+            } else {
+                $('#fs-' + fieldsets[i] + '-options').hide();
+            }
+        }
+    })
+    .trigger('change');
+});", true, true);
 
     return $retval;
 }
