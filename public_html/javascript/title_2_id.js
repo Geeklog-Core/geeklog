@@ -20,9 +20,11 @@ function TitleToId(getTitle, setTl2ID, size) {
 		Title = Title.replace(Sch[i], Nch[i]);
 		}
 	}
-	var urlID = Title.replace(/\s\s+/g, " ").replace(/\s/g, "_").replace(/\W/g, Separ).replace(/_/g, Separ);
+	var urlID = Title.replace(/\s\s+/g, " ").replace(/\s/g, "_").replace(/\W/g, Separ).replace(/_/g, Separ).replace(/^-+|-+$/g, ""); // Final replace trim any leading and trailing dashes
+	
 	var T2ID = document.getElementById(setTl2ID);
 	
 	T2ID.value = urlID.slice(0, size); // Max size of id
-
+	
+	
 }
