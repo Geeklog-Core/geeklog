@@ -731,10 +731,16 @@ function plugin_upload()
                     $pi_was_enabled = ($A['pi_enabled'] == 1);
                 }
 
+				$callback = 'plugin_enablestatechange_' . $dirname;
+
                 if ($pi_was_enabled) {
                     // disable temporarily while we move the files around
-                    DB_change($_TABLES['plugins'], 'pi_enabled', 0,
-                                                   'pi_name', $dirname);
+                    if (is_callable($callback)) {
+                        changePluginStatus($dirname);
+                    } else {
+                        DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                                       'pi_name', $dirname);
+                    }
                 }
 
                 require_once 'System.php';
@@ -779,10 +785,13 @@ function plugin_upload()
                 $fdata = fread($fhandle, filesize($plugin_inst));
                 fclose($fhandle);
             }
-
+/*
             // Remove the plugin from data/
             require_once 'System.php';
             @System::rm('-rf ' . $_CONF['path'] . 'data/' . $dirname);
+*/
+            // Some plugins seem to expect files under the data directory to
+            // be unchanged while they are disabled.  Let's leave the files untouched.
 
             /**
              * One time I wanted to install a muffler on my car and
@@ -834,6 +843,8 @@ function plugin_upload()
             unset($archive); // Collect some garbage
 
             // cleanup when uploading a new version
+            require_once 'System.php';
+
             if ($pi_did_exist) {
                 $plugin_dir = $_CONF['path'] . 'plugins/' . $dirname;
                 if (file_exists($plugin_dir . '.previous')) {
@@ -851,8 +862,13 @@ function plugin_upload()
                 }
 
                 if ($pi_was_enabled) {
-                    DB_change($_TABLES['plugins'], 'pi_enabled', 1,
-                                                   'pi_name', $dirname);
+                    // Enable the plugin again
+                    if (is_callable($callback)) {
+                        changePluginStatus($dirname);
+                    } else {
+                        DB_change($_TABLES['plugins'], 'pi_enabled', 1,
+                                                       'pi_name', $dirname);
+                    }
                 }
             }
 
