@@ -731,10 +731,10 @@ function plugin_upload()
                     $pi_was_enabled = ($A['pi_enabled'] == 1);
                 }
 
-                // Prevents the existing plugin from being overwritten with
-                // the files uploaded
-                if ($pi_was_enabled || $pi_had_entry) {
-                    return COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=99');
+                if ($pi_was_enabled) {
+                    // disable temporarily while we move the files around
+                    DB_change($_TABLES['plugins'], 'pi_enabled', 0,
+                                                   'pi_name', $dirname);
                 }
 
                 require_once 'System.php';
