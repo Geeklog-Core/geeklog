@@ -1136,7 +1136,7 @@ class config {
      * @param  mixed  $selectionArray Array of option of select element
      * @param  bool   $deleteable If configuration is deleteable
      * @param  bool   $allow_reset Allow set and unset of configuration
-     * @return
+     * @return string
      */
     function _UI_get_conf_element($group, $name, $display_name, $type, $val,
                                   $selectionArray = null , $deletable = false,
@@ -1316,7 +1316,7 @@ class config {
      * @param  mixed  $selectionArray Array of option of select element
      * @param  bool   $deleteable If configuration is deleteable
      * @param  bool   $allow_reset Allow set and unset of configuration
-     * @return
+     * @return string
      */
     function _UI_get_conf_element_2($group, $name, $display_name, $type, $val,
                                   $selectionArray = null , $deletable = false,
