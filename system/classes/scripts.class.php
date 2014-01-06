@@ -59,6 +59,8 @@ class scripts {
     private $javascript_set; // Flag to know if ANY JavaScript has been set yet
     private $css_set; // Flag to know if ANY css has been set yet
 
+    private $lang; // Array of language variables used in JavaScript
+
     /**
     * Constructor
     *
@@ -77,6 +79,7 @@ class scripts {
         $this->scripts = array();
         $this->css = array();
         $this->restricted_names = array();
+        $this->lang = array();
         
         $this->header_set = false;
         $this->javascript_set = false;
@@ -408,6 +411,21 @@ class scripts {
     }
     
     /**
+    * Set language variables used in JavaScript.
+    *
+    * @param    $lang_array   array of language variables
+    * @access   public
+    * @return   boolean
+    *
+    */
+    public function setLang($lang_array) {
+
+        $this->lang = array_merge($this->lang, $lang_array);
+
+        return true;
+    }
+
+    /**
     * Set CSS file to load
     *
     * @param    $name       name of CSS file
@@ -544,25 +562,38 @@ class scripts {
         
         // Set JavaScript Variables (do this before file in case variables are needed)
         $iso639Code = COM_getLangIso639Code();
+        $lang = array(
+            'iso639Code'          => $iso639Code,
+            'tooltip_loading'     => $MESSAGE[116],
+            'tooltip_not_found'   => $MESSAGE[117],
+            'tooltip_select_date' => $MESSAGE[118],
+            'tabs_more'           => $MESSAGE[119],
+            'confirm_delete'      => $MESSAGE[76],
+            'confirm_send'        => $MESSAGE[120]
+        );
+        if (!empty($this->lang)) {
+            $lang = array_merge($lang, $this->lang);
+        }
+        $src = array(
+            'site_url'       => $_CONF['site_url'],
+            'site_admin_url' => $_CONF['site_admin_url'],
+            'layout_url'     => $_CONF['layout_url'],
+            'xhtml'          => XHTML,
+            'lang'           => $lang,
+        );
+        $str = $this->_array_to_jsobj($src);
+        // Strip '{' and '}' from both ends of $str
+        $str = substr($str, 1);
+        $str = substr($str, 0, strlen($str) - 1);
         $headercode .= <<<EOD
 <script type="text/javascript">
 var geeklog = {
     doc: document,
-    site_url: "{$_CONF['site_url']}",
-    layout_url: "{$_CONF['layout_url']}",
-    lang: {
-        iso639Code: "{$iso639Code}",
-        tooltip_loading: "{$MESSAGE[116]}",
-        tooltip_not_found: "{$MESSAGE[117]}",
-        tooltip_select_date: "{$MESSAGE[118]}",
-        tabs_more: "{$MESSAGE[119]}",
-        confirm_delete: "{$MESSAGE[76]}",
-        confirm_send: "{$MESSAGE[120]}"
-    },
     win: window,
     $: function (id) {
         return this.doc.getElementById(id);
-    }
+    },
+    {$str}
 };
 </script>
 
@@ -589,6 +620,24 @@ EOD;
         }
             
         return $headercode;
+    }
+
+    /**
+    * Convert from array to JavaScript object format string
+    *
+    */
+    private function _array_to_jsobj($src) {
+        $retval = '{';
+        foreach ($src as $key => $val) {
+            $retval .= "$key:";
+            if (is_array($val)) {
+                $retval .= $this->_array_to_jsobj($val) . ',';
+            } else {
+                $retval .= '"' . $val . '",';
+            }
+        }
+        $retval = rtrim($retval, ',') . '}';
+        return $retval;
     }
 
     /**
