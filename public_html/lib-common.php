@@ -6918,15 +6918,23 @@ function COM_makeClickableLinks( $text )
     // they should NOT be used for validating links.
 
     // matches anything starting with http:// or https:// or ftp:// or ftps://
-    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:(?:ht|f)tps?:\/{2})(?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)+)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
-    $replace[] = "COM_makeClickableLinksCallback('', '\\1')";
+    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:(?:ht|f)tps?:\/{2})(?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)+)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
+    $replace = create_function(
+        '$match',
+        'return COM_makeClickableLinksCallback(\'\', $match[1]);'
+    );
+
+    $text = preg_replace_callback($regex, $replace, $text);
 
     // matches anything containing a top level domain: xxx.com or xxx.yyy.net/stuff.php or xxx.yyy.zz
     // list taken from: http://en.wikipedia.org/wiki/List_of_Internet_TLDs
-    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z]{2})(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
-    $replace[] = "COM_makeClickableLinksCallback('http://', '\\1')";
+    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|post|pro|tel|travel|[a-z]{2})(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
+    $replace = create_function(
+        '$match',
+        'return COM_makeClickableLinksCallback(\'http://\', $match[1]);'
+    );
 
-    $text = preg_replace( $regex, $replace, $text );
+    $text = preg_replace_callback($regex, $replace, $text);
 
     return $text;
 }

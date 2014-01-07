@@ -46,8 +46,8 @@ require_once $_CONF['path_system'] . 'classes/listfactory.class.php';
 * @package net.geeklog.search
 *
 */
-class Search {
-
+class Search
+{
     // PRIVATE VARIABLES
     private $_query = '';
     private $_topic = '';
@@ -70,10 +70,9 @@ class Search {
     * Sets up private search variables
     *
     * @author Tony Bibbs, tony AT geeklog DOT net
-    * @access public
     *
     */
-    function Search()
+    public function __construct()
     {
         global $_CONF, $_TABLES;
 
@@ -128,11 +127,10 @@ class Search {
     * This performs those checks
     *
     * @author Tony Bibbs, tony AT geeklog DOT net
-    * @access private
     * @return boolean True if search is allowed, otherwise false
     *
     */
-    function _isSearchAllowed()
+    private function _isSearchAllowed()
     {
         global $_CONF;
 
@@ -160,11 +158,10 @@ class Search {
     * This performs those checks
     *
     * @author Dirk Haun, dirk AT haun-online DOT de
-    * @access private
     * @return boolean True if form usage is allowed, otherwise false
     *
     */
-    function _isFormAllowed ()
+    private function _isFormAllowed()
     {
         global $_CONF;
 
@@ -181,11 +178,10 @@ class Search {
     * Shows advanced search page
     *
     * @author Tony Bibbs, tony AT geeklog DOT net
-    * @access public
     * @return string HTML output for form
     *
     */
-    function showForm ()
+    public function showForm()
     {
         global $_CONF, $_TABLES, $LANG09;
 
@@ -324,11 +320,10 @@ class Search {
     /**
     * Performs search on all stories
     *
-    * @access private
     * @return object plugin object
     *
     */
-    function _searchStories()
+    private function _searchStories()
     {
         global $_TABLES, $_DB_dbms, $LANG09;
         
@@ -423,11 +418,10 @@ class Search {
     * in this function to allow legacy support to plugins using
     * the old API calls defined versions prior to Geeklog 1.5.1
     *
-    * @access public
     * @return string HTML output for search results
     *
     */
-    function doSearch()
+    public function doSearch()
     {
         global $_CONF, $LANG01, $LANG09, $LANG31;
 
@@ -687,12 +681,11 @@ class Search {
     * each row accordingly for example pulling usernames from the
     * users table and displaying a link to their profile.
     *
-    * @access public
     * @param array $row An array of plain data to format
     * @return array A reformatted version of the input array
     *
     */
-    function searchFormatCallback( $preSort, $row )
+    public function searchFormatCallback($preSort, $row)
     {
         global $_CONF, $LANG09;
 
@@ -768,14 +761,13 @@ class Search {
     * version depending where the text was cut. Works on a
     * word basis, so long words wont get cut.
     *
-    * @access private
     * @param string $keyword The word to centre around
     * @param string $text The complete text string
     * @param int $num_words The number of words to display, best to use an odd number
     * @return string A short version of the text
     *
     */
-    function _shortenText($keyword, $text, $num_words = 7)
+    private function _shortenText($keyword, $text, $num_words = 7)
     {
         $text = COM_getTextContent($text);
         $words = explode(' ', $text);
@@ -853,10 +845,9 @@ class Search {
     * @param   string  $needle    keyword(s), separated by spaces
     * @param   array   $haystack  array of words to search through
     * @return  mixed              index in $haystack or false when not found
-    * @access  private
     *
     */
-    function _arraySearch($needle, $haystack)
+    private function _arraySearch($needle, $haystack)
     {
         $keywords = explode(' ', $needle);
         $num_keywords = count($keywords);
@@ -890,13 +881,12 @@ class Search {
     * number of similar heading names. Used for backwards
     * compatibility in the doSearch() function.
     *
-    * @access private
     * @param array $headings All the headings
     * @param array $find An array of alternative headings to find
     * @return int The index of the alternative heading
     *
     */
-    function _findColumn( $headings, $find )
+    private function _findColumn($headings, $find)
     {
         // We can't use normal for loops here as some of the
         // heading indexes start from 1, so foreach works better
@@ -914,29 +904,43 @@ class Search {
         return -1;
     }
 
+    private function _convertsqlCallback($replace, $match)
+    {
+        return preg_replace('/,?(\'[^\']+\'|[^,]+),/i', $replace, $match);
+    }
+
     /**
     * Converts the MySQL CONCAT function to the MS SQL / Postgres equivalents
     *
-    * @access private
     * @param  string $sql The SQL to convert
     * @return string      MS SQL or PostgreSQL friendly SQL
     *
     */
-    function _convertsql($sql)
+    private function _convertsql($sql)
     {
         global $_DB_dbms;
 
-        if ($_DB_dbms == 'mssql') {
+        if ($_DB_dbms === 'mssql') {
+            $callback = create_function(
+                '$match',
+                'return $this->_convertsqlCallback(\'\\\\1 + \', $match[1]);'
+            );
+
             if (is_string($sql)) {
-                $sql = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 + ', '\\1')", $sql);
+                $sql = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql);
             } elseif (is_array($sql)) {
-                $sql['mssql'] = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 + ', '\\1')", $sql['mssql']);
+                $sql['mssql'] = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql['mssql']);
             }
-        } elseif ($_DB_dbms == 'pgsql') {
+        } elseif ($_DB_dbms === 'pgsql') {
+            $callback = create_function(
+                '$match',
+                'return $this->_convertsqlCallback(\'\\\\1 || \', $match[1]);'
+            );
+
             if (is_string($sql)) {
-                $sql = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', '\\1')", $sql);
+                $sql = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql);
             } elseif (is_array($sql)) {
-                $sql['pgsql'] = preg_replace("/CONCAT\(([^\)]+)\)/ie", "preg_replace('/,?(\'[^\']+\'|[^,]+),/i', '\\\\1 || ', '\\1')", $sql['pgsql']);
+                $sql['pgsql'] = preg_replace_callback("/CONCAT\(([^\)]+)\)/i", $callback, $sql['pgsql']);
             }
         }
 
