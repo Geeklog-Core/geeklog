@@ -164,6 +164,12 @@ require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
 TimeZoneConfig::setSystemTimeZone();
 
 /**
+* Include multibyte functions
+*
+*/
+require_once $_CONF['path_system'] . 'lib-mbyte.php';
+
+/**
 * Include plugin class.
 * This is a poorly implemented class that was not very well thought out.
 * Still very necessary
@@ -281,12 +287,6 @@ if ($topic != '') {
         $topic = $test_topic;
     }    
 }
-
-/**
-* Multibyte functions
-*
-*/
-require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
 // Set theme
 $usetheme = '';
