@@ -2324,7 +2324,7 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     $block->set_var( 'block_title', stripslashes( $title ));
 
-     
+
     if( !empty( $helpfile )) {
         // Only works when header generated all at once
         if ($_CONF['supported_version_theme'] != '1.8.1') {
@@ -2333,49 +2333,20 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
                 define('GL-HELP-SET', true);
                 
                 // Add in Query dialog for help file
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.dialog'); 
-                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.draggable'); 
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.dialog');
+                $_SCRIPTS->setJavaScriptLibrary('jquery.ui.draggable');
                 $_SCRIPTS->setJavaScriptLibrary('jquery.ui.droppable');
                 $_SCRIPTS->setJavaScriptLibrary('jquery.ui.resizable');
                 $_SCRIPTS->setJavaScriptLibrary('jquery.ui.button');
-                
-                $js = '
-                    $(document).ready(function() {
-                        var $loading = $(\'<div style="margin: auto; padding-top: 90px; width: 32px; height: 32px"><img src="/layout/' . $_CONF['theme'] .  '/images/loading.gif" alt="loading"' . XHTML . '></div>\');
-                    
-                        $(\'a.blocktitle\').each(function() {
-                            var $dialog = $(\'<div></div>\')
-                                .append($loading.clone());
-                            var $link = $(this).one(\'click\', function() {
-                                $dialog
-                                    .load($link.attr(\'href\')+ \' #content\')
-                                    .dialog({
-                                        title: $link.attr("title"),
-                                        width: 500,
-                                        height: 300,
-                                        buttons: {
-                                            ' . $LANG32[60] . ': function() {
-                                            $(this).dialog("close");
-                                            }
-                                        }                                        
-                                    });
-                    
-                                $link.click(function() {
-                                    $dialog.dialog("open");
-                    
-                                    return false;
-                                });
-                    
-                                return false;
-                            });
-                        });
-                    });
-                ';
-                
-                $_SCRIPTS->setJavaScript($js, true, true);        
-            }        
+
+                // Add Language valiables
+                $_SCRIPTS->setLang(array('close' => $LANG32[60]));
+
+                // Add JavaScript
+                $_SCRIPTS->setJavaScriptFile('dialog_help', '/javascript/dialog_help.js');
+            }
         }
-        
+
         $helpimg = $_CONF['layout_url'] . '/images/button_help.' . $_IMAGE_TYPE;
         $help_content = '<img src="' . $helpimg. '" alt="?"' . XHTML . '>';
         $help_attr = array('class'=>'blocktitle', 'title'=>"$title");
@@ -6947,15 +6918,23 @@ function COM_makeClickableLinks( $text )
     // they should NOT be used for validating links.
 
     // matches anything starting with http:// or https:// or ftp:// or ftps://
-    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:(?:ht|f)tps?:\/{2})(?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)+)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
-    $replace[] = "COM_makeClickableLinksCallback('', '\\1')";
+    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:(?:ht|f)tps?:\/{2})(?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)+)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
+    $replace = create_function(
+        '$match',
+        'return COM_makeClickableLinksCallback(\'\', $match[1]);'
+    );
+
+    $text = preg_replace_callback($regex, $replace, $text);
 
     // matches anything containing a top level domain: xxx.com or xxx.yyy.net/stuff.php or xxx.yyy.zz
     // list taken from: http://en.wikipedia.org/wiki/List_of_Internet_TLDs
-    $regex[] = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z]{2})(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/ei';
-    $replace[] = "COM_makeClickableLinksCallback('http://', '\\1')";
+    $regex = '/(?<=^|[\n\r\t\s\(\)\[\]<>";])((?:[a-z0-9]+\.)*[a-z0-9]+\.(?:aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|post|pro|tel|travel|[a-z]{2})(?:[\/?#](?:[^\n\r\t\s\(\)\[\]<>"&]+(?:&amp;)?)*)?)(?=[\n\r\t\s\(\)\[\]<>"&]|$)/i';
+    $replace = create_function(
+        '$match',
+        'return COM_makeClickableLinksCallback(\'http://\', $match[1]);'
+    );
 
-    $text = preg_replace( $regex, $replace, $text );
+    $text = preg_replace_callback($regex, $replace, $text);
 
     return $text;
 }
