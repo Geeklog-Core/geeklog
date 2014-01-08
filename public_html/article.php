@@ -391,8 +391,8 @@ if ($A['count'] > 0) {
                 $story_page = 1;
             } else {
                 $story_page = $mode;
+                $mode = '';
             }
-            $mode = '';
             
             if( $story_page <= 0 ) {
                 $story_page = 1;
