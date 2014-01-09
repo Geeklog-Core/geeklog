@@ -128,13 +128,13 @@ class IP extends BaseCommand {
     /**
      * Private internal method to match an IP address against an address range
      *
+     * Original authors: dh06 and Stephane, taken from
+     * @link http://www.php.net/manual/en/function.ip2long.php#70707
+     *
      * @param   string  $ip     IP address to check
      * @param   string  $range  IP address range to check against
      * @return  boolean         true if IP falls into the IP range, else false
      * @access  private
-     *
-     * Original authors: dh06 and Stephane, taken from
-     * @link http://www.php.net/manual/en/function.ip2long.php#70707
      *
      */
     function _matchRange($ip, $range)

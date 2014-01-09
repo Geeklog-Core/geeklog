@@ -594,7 +594,9 @@ function USER_emailMatches ($email, $domain_list)
         $email_domain = substr ($email, strpos ($email, '@') + 1);
 
         foreach ($domains as $domain) {
-            if (preg_match ("#$domain#i", $email_domain)) {
+            $domain = trim($domain);	// To fix bug #0001701
+
+            if (preg_match("#{$domain}#i", $email_domain)) {
                 $match_found = true;
                 break;
             }

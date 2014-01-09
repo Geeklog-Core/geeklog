@@ -521,6 +521,30 @@ function _postprocess($str)
         return true;
     }
 
+    /**
+    * Modifies template location to prevent non-Root users from seeing it
+    *
+    * @param    string   $location
+    * @return   string   If the current user is in the Root group, $location is
+    *                    unchanged.  Otherwise, $location is changed into a path
+    *                    relative to $_CONF['path_layout'].
+    */
+    protected function _modifyTemplateLocation($location)
+    {
+        global $_CONF;
+        static $switch = null;
+
+        if ($switch === null) {
+            $switch = ($this->debug > 0) && SEC_inGroup('Root');
+        }
+
+        if (!$switch) {
+            $location = str_ireplace($_CONF['path_layout'], '', $location);
+        }
+
+        return $location;
+    }
+
 
    /******************************************************************************
     * This functions sets the value of a variable.
@@ -556,6 +580,11 @@ function _postprocess($str)
                 if ($this->debug & 1) {
                     printf("<b>set_var:</b> (with scalar) <b>%s</b> = '%s'<br>\n", $varname, htmlentities($value));
                 }
+
+                if ($varname === 'templatelocation') {
+                    $value = $this->_modifyTemplateLocation($value);
+                }
+
                 if ($append && isset($this->varvals[$varname])) {
                     $this->varvals[$varname] .= $value;
                 } else {
@@ -572,6 +601,11 @@ function _postprocess($str)
                     if ($this->debug & 1) {
                         printf("<b>set_var:</b> (with array) <b>%s</b> = '%s'<br>\n", $k, htmlentities($v));
                     }
+
+                    if ($k === 'templatelocation') {
+                        $v = $this->_modifyTemplateLocation($v);
+                    }
+
                     if ($append && isset($this->varvals[$k])) {
                         $this->varvals[$k] .= $v;
                     } else {
