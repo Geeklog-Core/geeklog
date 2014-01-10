@@ -105,7 +105,10 @@ function update_ConfValuesFor210()
    
     // Default Cache Times
     $c->add('default_cache_time_article',0,'text',1,7,NULL,1390,TRUE, $me, 7);
-    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);    
+    $c->add('default_cache_time_block',0,'text',7,31,NULL,1810,TRUE, $me, 31);  
+    
+    // Title To Id Option for supported Admin Editors
+    $c->add('titletoid',0,'select',7,31,1,1820,TRUE, $me, 31);    
 
     return true;
 }

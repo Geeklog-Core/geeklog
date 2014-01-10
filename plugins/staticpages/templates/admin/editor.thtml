@@ -5,7 +5,7 @@
     <div class="admin_basic">
       <dl class="form_block">
         <dt><label for="sp-editor-sp_title">{lang_title}</label></dt>
-        <dd><input type="text" maxlength="128" onkeyup="TitleToId('sp-editor-sp_title','sp-editor-sp_id');" name="sp_title" value="{sp_title}" id="sp-editor-sp_title" class="size5"{xhtml}></dd>
+        <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('sp-editor-sp_title','sp-editor-sp_id');" {!endif}name="sp_title" value="{sp_title}" id="sp-editor-sp_title" class="size5"{xhtml}></dd>
 
         <dt><label for="sp-editor-sp_id">{lang_id}</label></dt>
         <dd><input type="text" dir="ltr" name="sp_id" maxlength="128" value="{sp_id}" id="sp-editor-sp_id" class="size5"{xhtml}></dd>

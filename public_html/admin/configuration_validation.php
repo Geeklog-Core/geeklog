@@ -501,6 +501,7 @@ $_CONF_VALIDATE['Core']['page_navigation_max_pages'] = array(
                  $LANG_VALIDATION['page_navigation_max_pages'] : $LANG_VALIDATION['default']
 );
 $_CONF_VALIDATE['Core']['default_cache_time_block'] = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['titletoid'] = array('rule' => 'boolean');
 
 /* Subgroup Misc, Tab Debug */
 $_CONF_VALIDATE['Core']['rootdebug'] = array('rule' => 'boolean');

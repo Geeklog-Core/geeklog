@@ -103,8 +103,6 @@ function edittopic ($tid = '')
             return $retval;
         }
     }
-
-    $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
     
     $token = SEC_createToken();
 
@@ -136,6 +134,10 @@ function edittopic ($tid = '')
                                   sprintf($delbutton, ''));
         $topic_templates->set_var('warning_msg', $LANG27[6]);
     }
+    if ($_CONF['titletoid']) {
+        $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
+        $topic_templates->set_var('titletoid', true);
+    }    
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
     

@@ -5,7 +5,7 @@
   <div class="admin_basic">
     <dl>
       <dt><label for="admin-topiceditor-topic">{lang_topicname}</label></dt>
-      <dd><input type="text" size="48" maxlength="128" onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="text"{xhtml}></dd>
+      <dd><input type="text" size="48" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-topiceditor-topic','admin-topiceditor-tid');" {!endif}value="{topic_name}" name="topic_name" id="admin-topiceditor-topic" class="text"{xhtml}></dd>
       
       <dt><label for="admin-topiceditor-tid">{lang_topicid}</label></dt>
       <dd><input type="text" size="48" maxlength="128" value="{topic_id}" name="tid" id="admin-topiceditor-tid" class="text"{xhtml}></dd>

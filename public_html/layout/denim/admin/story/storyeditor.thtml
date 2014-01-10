@@ -34,7 +34,7 @@
       <dd class="description">{publish_date_explanation}</dd>
 
       <dt><label for="admin-storyeditor-title">{lang_title}</label></dt>
-      <dd><input type="text" maxlength="128" onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" value="{story_title}" name="title" id="admin-storyeditor-title" class="size6"{xhtml}></dd>
+      <dd><input type="text" maxlength="128" {!if titletoid}onkeyup="TitleToId('admin-storyeditor-title','admin-storyeditor-sid');" {!endif}value="{story_title}" name="title" id="admin-storyeditor-title" class="size6"{xhtml}></dd>
 
       <dt><label for="admin-storyeditor-page_title">{lang_page_title}</label></dt>
       <dd><input type="text" maxlength="128" value="{page_title}" name="page_title" id="admin-storyeditor-page_title" class="size6"{xhtml}></dd>
