@@ -4688,7 +4688,7 @@ function COM_formatBlock( $A, $noboxes = false )
 * @param    string  $rdfurl         URL to get headlines from
 * @param    string  $date           Last time the headlines were imported
 * @param    string  $maxheadlines   max. number of headlines to import
-* @return   void
+* @return   boolean                 true = feed was updated, false = otherwise
 * @see function COM_rdfImport
 *
 */
