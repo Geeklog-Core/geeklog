@@ -178,7 +178,8 @@ function editlink ($mode, $lid = '')
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG_LINKS_ADMIN[9]);
     $link_templates->set_var('link_description', stripslashes($A['description']));
-    $allowed = COM_allowedHTML('links.edit');
+    $allowed = COM_allowedHTML('links.edit')
+             . COM_allowedAutotags();
     $link_templates->set_var('lang_allowed_html', $allowed);
     $link_templates->set_var('lang_save', $LANG_ADMIN['save']);
     $link_templates->set_var('lang_cancel', $LANG_ADMIN['cancel']);

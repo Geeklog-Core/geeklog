@@ -189,6 +189,7 @@ $LANG01 = array(
     137 => '警告: 機能を有効とするにはJavaScriptの使用の許可が必要です',
     138 => "アドバンストエディターを無効にして、JavaScriptが不要なノーマルエディターを有効にするには<a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">こちら</a>をクリックしてください。",
     139 => "ホームページへは<a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">こちら</a>をクリック",
+    140 => '使用できる自動タグ:',
     'facebook' => 'Facebookでログイン',
     'twitter' => 'Twitterでログイン',
     'linkedin' => 'LinkedInでログイン',

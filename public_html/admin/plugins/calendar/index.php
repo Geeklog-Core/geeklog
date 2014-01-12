@@ -83,6 +83,9 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
     $_SCRIPTS->setJavaScriptLibrary('jquery-ui-i18n');
     $_SCRIPTS->setJavaScriptFile('datepicker', '/javascript/datepicker.js');
 
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
+
     $langCode = COM_getLangIso639Code();
     $toolTip  = $MESSAGE[118];
     $imgUrl   = $_CONF['site_url'] . '/images/calendar.png';
@@ -102,8 +105,14 @@ function CALENDAR_editEvent ($mode, $A, $msg = '')
 
     $event_templates = COM_newTemplate($_CONF['path'] . 'plugins/calendar/templates/admin');
     $event_templates->set_file('editor','eventeditor.thtml');
-    $event_templates->set_var('lang_allowed_html',
-                              COM_allowedHTML('calendar.edit'));
+
+    $allowed = '';
+    foreach (array('plaintext', 'html') as $pm) {
+        $allowed .= COM_allowedHTML('calendar.edit', false, 1, $pm);
+    }
+    $allowed .= COM_allowedAutotags();
+
+    $event_templates->set_var('lang_allowed_html', $allowed);
     $event_templates->set_var('lang_postmode', $LANG_CAL_ADMIN[3]);
 
     if ($mode <> 'editsubmission' AND !empty($A['eid'])) {

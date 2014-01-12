@@ -676,9 +676,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
     }
     $post_options = COM_optionList($_TABLES['postmodes'],'code,name',$postmode);
+    $postmode_list = 'plaintext,html';
 
     // If Advanced Mode - add post option and set default if editing story created with Advanced Editor
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
+        $postmode_list .= ',adveditor';
         if ($story->EditElements('advanced_editor_mode') == 1 OR $story->EditElements('postmode') == 'adveditor') {
             $post_options .= '<option value="adveditor" selected="selected">'.$LANG24[86].'</option>';
         } else {
@@ -686,6 +688,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
     }
     if ($_CONF['wikitext_editor']) {
+        $postmode_list .= ',wikitext';
         if ($story->EditElements('postmode') == 'wikitext') {
             $post_options .= '<option value="wikitext" selected="selected">'.$LANG24[88].'</option>';
         } else {
@@ -693,12 +696,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
     }
     $story_templates->set_var('post_options',$post_options );
+    $postmode_array = explode(',', $postmode_list);
+    $allowed_html = '';
+    foreach ($postmode_array as $pm) {
+        $allowed_html .= COM_allowedHTML('story.edit', false, 1, $pm);
+    }
     $allowed_tags = array('code', 'raw');
     if ($_CONF['allow_page_breaks'] == 1) {
         $allowed_tags = array_merge($allowed_tags, array('page_break'));
     }
-    $story_templates->set_var('lang_allowed_html',
-                              COM_allowedHTML('story.edit', false, 1, $allowed_tags));
+    $allowed_html .= COM_allowedAutotags(false, $allowed_tags);
+    $story_templates->set_var('lang_allowed_html', $allowed_html);
     $fileinputs = '';
     $saved_images = '';
     if ($_CONF['maximagesperarticle'] > 0) {
@@ -738,6 +746,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
         $story_templates->set_var('titletoid', true);
     }     
+    $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');    
 
     // Loads jQuery UI datepicker
     $_SCRIPTS->setJavaScriptLibrary('jquery.ui.datepicker');

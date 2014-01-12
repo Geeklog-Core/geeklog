@@ -181,6 +181,7 @@ $LANG01 = array(
     137 => 'Avertissment : Javascript est nécessaire pour activé cette fonction.',
     138 => "Cliquez <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">ici</a> pour désactiver l\éditeur avancé et utiliser l\'éditeur par défaut qui ne nécessite pas JavaScript.",
     139 => "Cliquez <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">ici</a> pour retourner à la page d\'accueil.",
+    140 => 'Allowed Autotags:',
     'facebook' => 'Login with Facebook',
     'twitter' => 'Login with Twitter',
     'linkedin' => 'Login with LinkedIn',
