@@ -4844,21 +4844,17 @@ function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filte
     global $_CONF, $LANG01;
 
     $retval = '';
-    $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
     $has_list = false;
-    if (($has_skiphtmlfilterPermissions || (isset($_CONF['skip_html_filter_for_root']) &&
+    if ((SEC_hasRights('htmlfilter.skip') || (isset($_CONF['skip_html_filter_for_root']) &&
              ($_CONF['skip_html_filter_for_root'] == 1) &&
             SEC_inGroup('Root'))) || ($filter_html_flag == 0)) {
         $description = $LANG01[123]; // All HTML is allowed
-    } elseif ($filter_html_flag == 2) {
+    } elseif ($filter_html_flag == 2 ||
+            in_array($post_mode, array('plaintext', 'wikitext'))) {
         $description = $LANG01[131]; // No HTML is allowed
     } else {
-        if (in_array($post_mode, array('plaintext', 'wikitext'))) {
-            $description = $LANG01[131]; // No HTML is allowed
-        } else {
-            $has_list = true;
-            $description = $LANG01[31];  // Allowed HTML Tags:
-        }
+        $has_list = true;
+        $description = $LANG01[31];  // Allowed HTML Tags:
     }
 
     if (!$list_only) {
@@ -4945,7 +4941,7 @@ function COM_allowedAutotags($list_only = false, $allowed_tags = '')
                  . $list . '</div>';
     }
 
-    $retval = '<div class="allowed_autotags">' . $retval . '</div>';
+    $retval = '<div dir="ltr" class="allowed_autotags">' . $retval . '</div>';
 
     return $retval;
 }
