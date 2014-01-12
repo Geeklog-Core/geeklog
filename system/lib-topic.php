@@ -1509,9 +1509,9 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
         $topicrelated->set_file( array(
             'topicrelated' => 'topicrelated.thtml'
             ));
-        $blocks = array('topic', 'separator');
+        $blocks = array('topicitem', 'separator');
         foreach ($blocks as $block) {
-            $topicrelated->set_block('menunavigation', $block);
+            $topicrelated->set_block('topicrelated', $block);
         }             
         
         $topicrelated->set_var('lang_filed_under', $LANG27['filed_under:']);
