@@ -202,7 +202,7 @@ function edittopic ($tid = '')
     $topic_templates->set_var('default_limit', $_CONF['limitnews']);
     $topic_templates->set_var('lang_defaultis', $LANG27[16]);
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
-    $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
+    $topic_templates->set_var('topic_name', htmlspecialchars(stripslashes($A['topic']), ENT_QUOTES, COM_getEncodingt()));
     if (empty($A['tid'])) {
         $A['imageurl'] = '/images/topics/';
     }
