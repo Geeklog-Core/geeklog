@@ -90,9 +90,6 @@ function staticpageeditor_form($A)
     }
     $retval = '';
     
-    // Add JavaScript
-    $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');    
-
     $sp_template = COM_newTemplate($template_path);
     if ($_CONF['advanced_editor'] && $_USER['advanced_editor']) {
         $sp_template->set_file('form', 'editor_advanced.thtml');
@@ -139,6 +136,12 @@ function staticpageeditor_form($A)
                               'onchange="change_editmode(this);"');
     } else {
         $sp_template->set_file('form', 'editor.thtml');
+    }
+    
+    // Add JavaScript
+    if ($_CONF['titletoid']) {
+        $_SCRIPTS->setJavaScriptFile('title_2_id', '/javascript/title_2_id.js');
+        $sp_template->set_var('titletoid', true);
     }
 
     $sp_template->set_var('lang_mode', $LANG24[3]);

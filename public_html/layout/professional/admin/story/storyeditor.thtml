@@ -36,7 +36,7 @@
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_title}:</td>
-                                        <td><input type="text" size="48" maxlength="128" onkeyup="TitleToId();" value="{story_title}" id="title" name="title"{xhtml}></td>
+                                        <td><input type="text" size="48" maxlength="128" {!if titletoid}onkeyup="TitleToId();" {!endif}value="{story_title}" id="title" name="title"{xhtml}></td>
                                     </tr>
                                     <tr>
                                         <td class="alignright">{lang_page_title}:</td>

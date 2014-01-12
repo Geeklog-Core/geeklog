@@ -1,0 +1,12 @@
+{# begin {templatelocation} - Related Topics uses template blocks which is built into this file #}
+
+<div class="related-topics">{lang_filed_under} {topics}</div>
+
+{# end {templatelocation} #}
+
+<!-- BEGIN topicitem -->
+<a href="{topic_url}">{topic}</a>
+<!-- END topicitem -->
+<!-- BEGIN separator -->
+&nbsp
+<!-- END separator -->

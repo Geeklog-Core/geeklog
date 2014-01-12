@@ -1505,15 +1505,30 @@ function TOPIC_relatedTopics($type, $id, $max = 6, $tids = array())
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $retval = '<div class="related-topics">' . $LANG27['filed_under:'];
+        $topicrelated = COM_newTemplate($_CONF['path_layout']);
+        $topicrelated->set_file( array(
+            'topicrelated' => 'topicrelated.thtml'
+            ));
+        $blocks = array('topic', 'separator');
+        foreach ($blocks as $block) {
+            $topicrelated->set_block('menunavigation', $block);
+        }             
+        
+        $topicrelated->set_var('lang_filed_under', $LANG27['filed_under:']);
         for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];            
+            $url = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
             
-            $retval .= ' <a href="' . $url . '">' . $A['topic'] . '</a>';
+            $topicrelated->set_var('topic_url', $url);
+            $topicrelated->set_var('topic', $A['topic']);            
+            
+            $topicrelated->parse('topics', 'topicitem', true);
+            if (($i+1) < $nrows) {
+                $topicrelated->parse('topics', 'separator', true);
+            }
         }
         
-        $retval .= '</div>';
+        $retval = $topicrelated->finish($topicrelated->parse('topicrelated', 'topicrelated'));
     }    
 
     return $retval;

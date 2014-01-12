@@ -164,6 +164,12 @@ require_once $_CONF['path_system'] . 'classes/timezoneconfig.class.php';
 TimeZoneConfig::setSystemTimeZone();
 
 /**
+* Include multibyte functions
+*
+*/
+require_once $_CONF['path_system'] . 'lib-mbyte.php';
+
+/**
 * Include plugin class.
 * This is a poorly implemented class that was not very well thought out.
 * Still very necessary
@@ -281,12 +287,6 @@ if ($topic != '') {
         $topic = $test_topic;
     }    
 }
-
-/**
-* Multibyte functions
-*
-*/
-require_once( $_CONF['path_system'] . 'lib-mbyte.php' );
 
 // Set theme
 $usetheme = '';
@@ -4693,7 +4693,7 @@ function COM_formatBlock( $A, $noboxes = false )
 * @param    string  $rdfurl         URL to get headlines from
 * @param    string  $date           Last time the headlines were imported
 * @param    string  $maxheadlines   max. number of headlines to import
-* @return   void
+* @return   boolean                 true = feed was updated, false = otherwise
 * @see function COM_rdfImport
 *
 */
