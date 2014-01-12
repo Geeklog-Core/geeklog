@@ -4834,78 +4834,118 @@ function COM_rdfImport($bid, $rdfurl, $maxheadlines = 0)
                                         1 = returns allowed HTML tags only,
                                         2 = returns No HTML Tags Allowed (this is used by plugins if they have a config
                                                that overrides Geeklogs filter html settings or do not have a post mode)
-* @param    array   $allowed_tags       Array of allowed special tags ('code', 'raw', 'page_break' ...)
+* @param    string   $post_mode         Indicates if text is html, adveditor, wikitext or plaintext
 * @return   string                      HTML <div>/<span> enclosed string
 * @see      function COM_checkHTML
 *
 */
-function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1, $allowed_tags = '')
+function COM_allowedHTML($permissions = 'story.edit', $list_only = false, $filter_html_flag = 1, $post_mode = '')
 {
-    global $_CONF, $_PLUGINS, $LANG01;
+    global $_CONF, $LANG01;
 
     $retval = '';
     $has_skiphtmlfilterPermissions = SEC_hasRights ('htmlfilter.skip');
-
+    $has_list = false;
     if (($has_skiphtmlfilterPermissions || (isset($_CONF['skip_html_filter_for_root']) &&
              ($_CONF['skip_html_filter_for_root'] == 1) &&
             SEC_inGroup('Root'))) || ($filter_html_flag == 0)) {
-
-        if (!$list_only) {
-            $retval .= '<span class="warningsmall">' . $LANG01[123]
-                    . ',</span> ';
-        }
-        $retval .= '<div dir="ltr" class="warningsmall">';
+        $description = $LANG01[123]; // All HTML is allowed
     } elseif ($filter_html_flag == 2) {
-
-        if (!$list_only) {
-            $retval .= '<span class="warningsmall">' . $LANG01[131]
-                    . ',</span> ';
-        }
-        $retval .= '<div dir="ltr" class="warningsmall">';
+        $description = $LANG01[131]; // No HTML is allowed
     } else {
-
-        if (! $list_only) {
-            $retval .= '<span class="warningsmall">' . $LANG01[31] . '</span> ';
+        if (in_array($post_mode, array('plaintext', 'wikitext'))) {
+            $description = $LANG01[131]; // No HTML is allowed
+        } else {
+            $has_list = true;
+            $description = $LANG01[31];  // Allowed HTML Tags:
         }
+    }
 
+    if (!$list_only) {
+        $retval .= '<span class="warningsmall">'
+                 . $description . '</span>';
+    }
+
+    if ($has_list) {
         if (empty($permissions) || !SEC_hasRights($permissions) ||
                 empty($_CONF['admin_html'])) {
             $html = $_CONF['user_html'];
         } else {
-            $html = array_merge_recursive($_CONF['user_html'],
-                                          $_CONF['admin_html']);
+            if ($post_mode == 'adveditor') {
+                $html = array_merge_recursive($_CONF['user_html'],
+                                              $_CONF['admin_html'],
+                                              $_CONF['advanced_html']);
+            } else {
+                $html = array_merge_recursive($_CONF['user_html'],
+                                              $_CONF['admin_html']);
+            }
         }
 
-        $retval .= '<div dir="ltr" class="warningsmall">';
+        $list = '';
         foreach ($html as $tag => $attr) {
-            $retval .= '&lt;' . $tag . '&gt;, ';
+            $list .= '&lt;' . $tag . '&gt;&nbsp;, ';
+        }
+        $list = rtrim($list, ', ');
+        if (!empty($list)) {
+            $retval .= '<div class="warningsmall">'
+                     . $list . '</div>';
         }
     }
 
-    if ($filter_html_flag !== 2 && is_array($allowed_tags)) {
+    $class = !empty($post_mode) ? ' post_mode_' . $post_mode : '';
+    $retval = '<div dir="ltr" class="allowed_html_tags'
+            . $class . '">' . $retval . '</div>';
+
+    return $retval;
+}
+
+/**
+* Returns what autotag is allowed in content
+*
+* Returns what autotags the system allows to be used inside content.
+*
+* @param    boolean  $list_only         true = return only the list of HTML tags
+* @param    array    $allowed_tags      Array of allowed special tags ('code', 'raw', 'page_break' ...)
+* @return   string                      HTML <div>/<span> enclosed string
+* @see      function COM_checkHTML
+*
+*/
+function COM_allowedAutotags($list_only = false, $allowed_tags = '')
+{
+    global $LANG01;
+
+    $retval = '';
+    if (!$list_only) {
+        $retval .= '<span class="warningsmall">'
+                 . $LANG01[140] // Allowed Autotags:
+                 . '</span>';
+    }
+
+    $list = '';
+    if (is_array($allowed_tags)) {
         foreach ($allowed_tags as $tag) {
-            $retval .= '&#91;' . $tag . '&#93;, ';
+            $list .= '&#91;' . $tag . '&#93;&nbsp;, ';
         }
     }
 
     // List autotags user has permission to use (with descriptions)
     $autotags = array_keys(PLG_collectTags('permission'));
     $description = array_flip(PLG_collectTags('description'));
-    $done_once = false;
-    $comma = '';
     foreach ($autotags as $tag) {
-        if ($done_once) { 
-            $comma = ', ';
-        }
-        if (! empty($description[$tag])) {
+        if (!empty($description[$tag])) {
            $desc = str_replace(array('[',']'), array('&#91;', '&#93;'), $description[$tag]);
-           $retval .= $comma . COM_getTooltip('&#91;' . $tag . ':&#93;', $desc, '', $LANG01[132],'information');
+           $list .= COM_getTooltip('&#91;' . $tag . ':&#93;', $desc, '', $LANG01[132], 'information') . ', ';
         } else {
-           $retval .= $comma . '&#91;' . $tag . ':&#93;';
+           $list .= '&#91;' . $tag . ':&#93;&nbsp;, ';
         }
-        $done_once = true;
     }
-    $retval .= '</div>';
+    $list = rtrim($list, ', ');
+    if (!empty($list)) {
+        $retval .= '<div class="warningsmall">'
+                 . $list . '</div>';
+    }
+
+    $retval = '<div class="allowed_autotags">' . $retval . '</div>';
 
     return $retval;
 }

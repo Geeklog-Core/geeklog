@@ -451,8 +451,8 @@ function staticpageeditor_form($A)
                                $content);
     }
     $sp_template->set_var('sp_content', $content);
-
-    $allowed = COM_allowedHTML('staticpages.edit', false, $_SP_CONF['filter_html']);
+    $allowed = COM_allowedHTML('staticpages.edit', false, $_SP_CONF['filter_html'])
+             . COM_allowedAutotags();
     $sp_template->set_var('lang_allowedhtml', $allowed);
     $sp_template->set_var('lang_allowed_html', $allowed);
     $sp_template->set_var('lang_hits', $LANG_STATIC['hits']);

@@ -99,6 +99,9 @@ function submitstory()
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG12, $LANG24, $_SCRIPTS;
 
+    // Add JavaScript
+    $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
+
     $retval = '';
 
     $story = new Story();
@@ -191,8 +194,15 @@ function submitstory()
     $storyform->set_var('story_introtext', $story->EditElements('introtext'));
     $storyform->set_var('story_bodytext', $story->EditElements('bodytext'));
     $storyform->set_var('lang_postmode', $LANG12[36]);
-    $storyform->set_var('story_postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$story->EditElements('postmode')));
-    $storyform->set_var('allowed_html', COM_allowedHTML());
+    $postmode = $story->EditElements('postmode');
+    $storyform->set_var('story_postmode_options',
+        COM_optionList($_TABLES['postmodes'], 'code,name', $postmode));
+    $allowed_html = '';
+    foreach (array('plaintext', 'html') as $pm) {
+        $allowed_html .= COM_allowedHTML('story.edit', false, 1, $pm);
+    }
+    $allowed_html .= COM_allowedAutotags();
+    $storyform->set_var('allowed_html', $allowed_html);
     $storyform->set_var('story_uid', $story->EditElements('uid'));
     $storyform->set_var('story_sid', $story->EditElements('sid'));
     $storyform->set_var('story_date', $story->EditElements('unixdate'));

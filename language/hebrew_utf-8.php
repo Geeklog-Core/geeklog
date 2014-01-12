@@ -182,6 +182,7 @@ $LANG01 = array(
     137 => 'אזהרה: דרוש Javascript בשביל לאפשר ביצועים',
     138 => "ליחצו <a href=\"{$_CONF['site_url']}/usersettings.php\" rel=\"nofollow\">כאן</a> כדי לנטרל את העורך המתקדם ולהשתמש בעורך ברירת המחדל שלא מצריך שימוש ב-Javascript",
     139 => "ליחצו <a href=\"{$_CONF['site_url']}/\" rel=\"nofollow\">כאן</a> כדי לחזור לדף הבית",
+    140 => 'Allowed Autotags:',
     'facebook' => 'כניסה בעזרת פייסבוק',
     'twitter' => 'כניסה בעזרת טוויטר',
     'linkedin' => 'כניסה בעזרת לינקדאין',

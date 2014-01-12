@@ -917,6 +917,9 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             }
         } else {
 
+            // Add JavaScript
+            $_SCRIPTS->setJavaScriptFile('postmode_control', '/javascript/postmode_control.js');
+
             if (($postmode != 'html') && ($postmode != 'plaintext')) {
                 if (empty($postmode) && $_CONF['advanced_editor'] && $_USER['advanced_editor']) {
                     $postmode = 'html';
@@ -1173,9 +1176,13 @@ function CMT_commentForm($title, $comment, $sid, $pid='0', $type, $mode, $postmo
             $comment_template->set_var('lang_postmode', $LANG03[2]);
             $comment_template->set_var('postmode_options',
                 COM_optionList($_TABLES['postmodes'], 'code,name', $postmode));
-            $comment_template->set_var('allowed_html',
-                COM_allowedHTML($type == 'article'
-                                ? 'story.edit' : "$type.edit"));
+            $allowed_html = '';
+            $permission = ($type == 'article') ? 'story.edit' : "$type.edit";
+            foreach (array('plaintext', 'html') as $pm) {
+                $allowed_html .= COM_allowedHTML($permission, false, 1, $pm);
+            }
+            $allowed_html .= COM_allowedAutotags();
+            $comment_template->set_var('allowed_html', $allowed_html);
             $comment_template->set_var('lang_importantstuff', $LANG03[18]);
             $comment_template->set_var('lang_instr_line1', $LANG03[19]);
             $comment_template->set_var('lang_instr_line2', $LANG03[20]);
