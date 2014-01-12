@@ -195,7 +195,8 @@ $LANG01 = array(
     'google' => 'Googleでログイン',
     'microsoft' => 'Microsoftでログイン',
     'yahoo' => 'Yahooでログイン',
-    'ctl' => 'キャッシュ一括削除'
+    'ctl' => 'キャッシュ一括削除',
+    'filemanager' => 'ファイルマネージャー'
 );
 
 ###############################################################################
@@ -2168,7 +2169,33 @@ $LANG_confignames['Core'] = array(
     'disable_breadcrumbs_topics' => '話題のパンくずリストを無効にする',
     'disable_breadcrumbs_articles' => '記事のパンくずリストを無効にする',
     'disable_breadcrumbs_plugins' => 'プラグインのパンくずリストを無効にする',
-    'breadcrumb_root_site_name' => 'サイト名をパンくずリストのルートにする'
+    'breadcrumb_root_site_name' => 'サイト名をパンくずリストのルートにする',
+    'filemanager_disabled' => 'ファイルマネージャーを無効にする?',
+    'filemanager_browse_only' => '閲覧のみ?',
+    'filemanager_default_view_mode' => '表示モードの初期値',
+    'filemanager_show_confirmation' => '確認メッセージを表示する?',
+    'filemanager_search_box' => '検索ボックスを表示する?',
+    'filemanager_file_sorting' => 'ファイルのソート方法',
+    'filemanager_chars_only_latin' => 'ファイル名にラテン文字だけを許可する?',
+    'filemanager_date_format' => '日付のフォーマット',
+    'filemanager_logger' => 'ロガーを有効にする?',
+    'filemanager_show_thumbs' => 'サムネール画像を表示する?',
+    'filemanager_generate_thumbnails' => 'サムネール画像を作成する?',
+    'filemanager_upload_restrictions' => '許可するファイル拡張子',
+    'filemanager_upload_overwrite' => '既存のファイルを上書きする?',
+    'filemanager_upload_images_only' => '画像ファイルだけをアップロードする?',
+    'filemanager_upload_file_size_limit' => 'アップロードするファイルサイズの上限 (MB)',
+    'filemanager_unallowed_files' => '表示しないファイル拡張子',
+    'filemanager_unallowed_dirs' => '表示しないディレクトリ',
+    'filemanager_unallowed_files_regexp' => '許可しないファイルの正規表現',
+    'filemanager_unallowed_dirs_regexp' => '許可しないディレクトリの正規表現',
+    'filemanager_images_ext' => '画像ファイルの拡張子',
+    'filemanager_show_video_player' => 'ビデオプレーヤーを表示する?',
+    'filemanager_videos_ext' => 'ビデオファイルの拡張子',
+    'filemanager_videos_player_width' => 'ビデオプレーヤーの幅(px)',
+    'filemanager_videos_player_height' => 'ビデオプレーヤーの高さ(px)',
+    'filemanager_show_audio_player' => 'オーディオプレーヤーを表示する?',
+    'filemanager_audios_ext' => 'オーディオファイルの拡張子'
 );
 
 $LANG_configsubgroups['Core'] = array(
@@ -2179,7 +2206,8 @@ $LANG_configsubgroups['Core'] = array(
     'sg_users' => 'ユーザーと投稿',
     'sg_images' => '画像',
     'sg_locale' => '言語とロケール',
-    'sg_misc' => 'その他'
+    'sg_misc' => 'その他',
+    'sg_filemanager' => 'ファイルマネージャー'
 );
 
 $LANG_fs['Core'] = array(
@@ -2228,7 +2256,12 @@ $LANG_fs['Core'] = array(
     'fs_webservices' => 'Webサービス',
     'fs_autotag_permissions' => '自動タグのパーミッション ([0]所有者 [1]グループ [2]メンバー [3]ゲスト)',
     'fs_breadcrumbs' => 'パンくずリスト',
-    'fs_pass' => 'パスワード設定'
+    'fs_pass' => 'パスワード設定',
+    'fs_filemanager_general' => '全般',
+    'fs_filemanager_upload' => 'アップロード',
+    'fs_filemanager_images' => '画像',
+    'fs_filemanager_videos' => 'ビデオ',
+    'fs_filemanager_audios' => 'オーディオ'
 );
 
 $LANG_tab['Core'] = array(
@@ -2271,7 +2304,12 @@ $LANG_tab['Core'] = array(
     'tab_iplookup' => 'IP検索',
     'tab_permissions' => 'パーミッション',
     'tab_webservices' => 'Webサービス',
-    'tab_topics' => 'パンくずリスト'
+    'tab_topics' => 'パンくずリスト',
+    'tab_filemanager_general' => '全般',
+    'tab_filemanager_upload' => 'アップロード',
+    'tab_filemanager_images' => '画像',
+    'tab_filemanager_videos' => 'ビデオ',
+    'tab_filemanager_audios' => 'オーディオ'
 );
 
 $LANG_configselects['Core'] = array(
@@ -2308,7 +2346,9 @@ $LANG_configselects['Core'] = array(
     30 => array('開始' => 'start', '終了' => 'end', 'なし' => 'none'),
     31 => array('Newest First' => 'DESC', 'Oldest First' => 'ASC'),
     32 => array('無効にする' => 0, '記事のページのみ' => 1, '記事と話題' => 2),
-    33 => array('無効にする' => 0, '有効にする' => 1, '有効にする (リンクなし)' => 2, '有効にする (外部リンクなし)' => 3)
+    33 => array('無効にする' => 0, '有効にする' => 1, '有効にする (リンクなし)' => 2, '有効にする (外部リンクなし)' => 3),
+    34 => array('グリッド' => 'grid', 'リスト' => 'list'),
+    35 => array('デフォルト' => 'default', '名前(昇順)' => 'NAME_ASC', '名前(降順)' => 'NAME_DESC', '種類(昇順)' => 'TYPE_ASC', '種類(降順)' => 'TYPE_DESC', '変更日時(昇順)' => 'MODIFIED_ASC', '変更日時(降順)' => 'MODIFIED_DESC')
 );
 
 ###############################################################################

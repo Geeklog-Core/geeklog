@@ -1134,7 +1134,10 @@ if (INST_phpOutOfDate()) {
                                 $_PATH['public_html/'] . 'backend/geeklog.rss',
                                 $_PATH['public_html/'] . 'images/articles/',
                                 $_PATH['public_html/'] . 'images/topics/',
-                                $_PATH['public_html/'] . 'images/userphotos' );
+                                $_PATH['public_html/'] . 'images/userphotos',
+                                $_PATH['public_html/'] . 'filemanager/scripts/filemanager.config.js',
+                                $_PATH['public_html/'] . 'images/library/_thumbs/Image/',
+                                $_PATH['public_html/'] . 'images/library/_thumbs/Image/icons/');
 
             if (!isset($_CONF['allow_mysqldump']) && $_DB_dbms == 'mysql') {
                 array_splice($file_list, 1, 0, $gl_path . 'backups/');

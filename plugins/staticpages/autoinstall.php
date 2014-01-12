@@ -167,4 +167,21 @@ function plugin_compatible_with_this_version_staticpages($pi_name)
     return true;
 }
 
+/**
+* Give "filemanager.admin" feature to Static Page Admin
+*
+* @param   string   $pi_name   plugin name, i.e., 'staticpages'
+* @return  boolean             TRUE = success, FALSE = otherwise
+*/
+function plugin_postinstall_staticpages($pi_name)
+{
+    global $_CONF, $_TABLES;
+
+    if (DB_count($_TABLES['features'], 'ft_name', 'filemanager.admin') == 1) {
+        $featureId = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'filemanager.admin' ");
+        $staticPageAdminId = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin' ");
+        DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ({$featureId}, {$staticPageAdminId}) ");
+    }
+}
+
 ?>

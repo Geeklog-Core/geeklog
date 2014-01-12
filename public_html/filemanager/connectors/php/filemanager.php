@@ -17,6 +17,12 @@
 require_once('./inc/filemanager.inc.php');
 require_once('filemanager.class.php');
 
+require_once '../../../lib-common.php';
+
+if (!auth()) {
+    die('No direct access!');
+}
+
 /**
  *	Check if user is authorized
  *
@@ -25,7 +31,7 @@ require_once('filemanager.class.php');
 function auth() {
   // You can insert your own code over here to check if the user is authorized.
   // If you use a session variable, you've got to start the session first (session_start())
-  return true;
+  return SEC_inGroup('Root') || (!$_CONF['filemanager_disabled'] && (SEC_inGroup('Filemanager Admin') || SEC_hasRights('filemanager.admin')));
 }
 
 

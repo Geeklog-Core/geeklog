@@ -34,243 +34,187 @@
 
 require_once dirname(__FILE__) . '/../lib-common.php';
 
-/**
-* Converts formats used in strftime() into counterparts used in date()
-*
-* @param   string   $format    a format string used for strftime() function
-* @return  string              a format string used for date() function
-*/
-function convertDateTimeFormat($format) {
-	$table = array(
-		// strftime()               => date()
-		'%h' => '%b',				// = %b
-		'%r' => '%I:%M:%S %p',		// = "%I:%M:%S %p"
-		'%R' => '%H:%M',			// = "%H:%M"
-		'%T' => '%H:%M:%S',			// = "%H:%M:%S"
-		'%D' => '%m/%d/%y',			// = "%m/%d/%y"
-		'%F' => '%Y-%m-%d',			// = "%Y-%m-%d"
-		'%X' => 'H:i:s',			// ?: '03:59:16', '15:59:16', ...
-		'%c' => 'D M j H:i:s Y',	// ?: 'Tue Feb 5 00:45:10 2009'
-		'%x' => 'm/d/y',			// ?: 02/05/09
+// First of all, checks if the current user has access to Filemanager
+if (!SEC_inGroup('Root') &&
+        ($_CONF['filemanager_disabled'] ||
+            (!SEC_inGroup('Filemanager Admin') && !SEC_hasRights('filemanager.admin')))) {
+    $display = COM_createHTMLDocument(
+        COM_showMessageText($MESSAGE[29], $MESSAGE[30]),
+        array('pagetitle' => $MESSAGE[30])
+    );
 
-		'%a' => 'D',				// abbr. day: 'Sun', 'Mon', ...
-		'%A' => 'l',				// day: 'Sunday', 'Monday', ...
-		'%d' => 'd',				// day of the month: '01', '02', ..., '31'
-		'%e' => 'j',				// day of the month: ' 1', ' 2', ..., '31'
-		'%j' => '?',				// day of the year: '001' ... '366'
-		'%u' => 'N',				// ISO-8601 day of the week: 1 = Monday, 7 = Sunday
-		'%w' => 'w',				// day of the week: 0 = Sunday, 6 = Saturday
-		'%U' => 'W',				// week number: 1, 2, ...
-		'%V' => 'W',				// ISO-8601:1988 week number: 01 ... 53
-		'%W' => 'W',				// week number: 1, 2, ...
-		'%b' => 'M',				// abbr. month name: 'Jan', 'Feb', ...
-		'%B' => 'F',				// month name: 'January', 'February', ...
-		'%m' => 'm',				// month: '01' ... '12'
-		'%C' => '?',				// century: 19 = 20th century
-		'%g' => 'y',				// year: 09 = 2009
-		'%G' => 'Y',				// year: 2009
-		'%y' => 'y',				// year: 09 = 2009, 79 = 1979
-		'%Y' => 'Y',				// year: 2009
-		'%H' => 'H',				// hour: 00 ... 23
-		'%k' => 'G',				// hour: ' 0', ' 1' ... '23'
-		'%I' => 'h',				// hour: 01 ... 12
-		'%l' => 'g',				// hour: ' 1', ' 2' ... '12'
-		'%M' => 'i',				// minute: 00 ... 59
-		'%p' => 'A',				// 'AM' | 'PM'
-		'%P' => 'a',				// 'am' | 'pm'
-		'%S' => 's',				// second: 00 ... 59
-		'%z' => 'O',				// time zone offset: -0500
-		'%s' => 'U',				// Unix Epoch Time timestamp: 305815200 = 'September 10, 1979 08:40:00 AM'
-		'%n' => "\n",				// "\n"
-		'%t' => "\t",				// "\t"
-		'%%' => '%',				// '%'
-	);
-
-	$retval = '';
-	$keys   = array_keys($table);
-	$values = array_values($table);
-	
-	foreach (explode('%%', $format) as $part) {
-		$retval .= str_replace($keys, $values, $part);
-	}
-	
-	return $retval;
+    // Log attempt to access.log
+    COM_accessLog("User {$_USER['username']} tried to illegally access the Filemanager.");
+    COM_output($display);
+    exit;
 }
-
-//=============================================================================
-// Main
-//=============================================================================
-
-if (!$_CONF['advanced_editor'] || !$_USER['advanced_editor'] || COM_isAnonUser()) {
-	COM_handle404();
-	exit;
-}
-
-// Checks a referer
-$refererCheck = false;
-
-$validReferers = array(
-	// CKEditor
-	$_CONF['site_admin_url'] . '/story.php?mode=edit',
-	$_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit',
-	
-	// FCKeditor
-	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_flash.html',
-	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_image.html',
-	$_CONF['site_url'] . '/editors/fckeditor/editor/dialog/fck_link.html',
-);
-
-foreach ($validReferers as $referer) {
-	if (stripos($_SERVER['HTTP_REFERER'], $referer) === 0) {
-		$refererCheck = true;
-		break;
-	}
-}
-
-if (!$refererCheck) {
-	COM_handle404();
-	exit;
-}
-
-// Add extra checks here
-
-
-
 
 // Default values defined in filemanager.config.js.dist
-$_FILEMANAGER_CONF = array(
-	'_comment' => 'IMPORTANT : go to the wiki page to know about options configuration https://github.com/simogeo/Filemanager/wiki/Filemanager-configuration-file',
-	'options' => array(
-		'culture' => 'en',
-		'lang' => 'php',
-		'defaultViewMode' => 'grid',
-		'autoload' => true,
-		'showFullPath' => false,
-		'browseOnly' => false,
-		'showConfirmation' => true,
-		'showThumbs' => true,
-		'generateThumbnails' => true,
-		'searchBox' => true,
-		'listFiles' => true,
-		'fileSorting' => 'default',
-		'chars_only_latin' => true,
-		'dateFormat' => 'd M Y H:i',
-		'serverRoot' => false,
-		'fileRoot' => true,
-		'relPath' => false,
-		'logger' => false,
-		'capabilities' => array('select', 'download', 'rename', 'move', 'delete'),
-		'plugins' => array()
-	),
-	'security' => array(
-		'uploadPolicy' => 'DISALLOW_ALL',
-		'uploadRestrictions' => array(
-			'jpg',
-			'jpeg',
-			'gif',
-			'png',
-			'svg',
-			'txt',
-			'pdf',
-			'odp',
-			'ods',
-			'odt',
-			'rtf',
-			'doc',
-			'docx',
-			'xls',
-			'xlsx',
-			'ppt',
-			'pptx',
-			'ogv',
-			'mp4',
-			'webm',
-			'ogg',
-			'mp3',
-			'wav'
-		)
-	),
-	'upload' => array(
-		'overwrite' => false,
-		'imagesOnly' => false,
-		'fileSizeLimit' => 16
-	),
-	'exclude' => array(
-		'unallowed_files' => array(
-			'.htaccess'
-		),
-		'unallowed_dirs' => array(
-			'_thumbs',
-			'.CDN_ACCESS_LOGS',
-			'cloudservers'
-		),
-		'unallowed_files_REGEXP' => '/^\\./uis',
-		'unallowed_dirs_REGEXP' => '/^\\./uis'
-	),
-	'images' => array(
-		'imagesExt' => array(
-			'jpg',
-			'jpeg',
-			'gif',
-			'png',
-			'svg'
-		)
-	),
-	'videos' => array(
-		'showVideoPlayer' => true,
-		'videosExt' => array(
-			'ogv',
-			'mp4',
-			'webm'
-		),
-		'videosPlayerWidth' => 400,
-		'videosPlayerHeight' => 222
-	),
-	'audios' => array(
-		'showAudioPlayer' => true,
-		'audiosExt' => array(
-			'ogg',
-			'mp3',
-			'wav'
-		)
-	),
-	'extras' => array(
-		'extra_js' => array(),
-		'extra_js_async' => true
-	),
-	'icons' => array(
-		'path' => 'images/fileicons/',
-		'directory' => '_Open.png',
-		'default' => 'default.png'
-	)
+$_FM_CONF = array(
+    '_comment' => 'IMPORTANT : go to the wiki page to know about options configuration https://github.com/simogeo/Filemanager/wiki/Filemanager-configuration-file',
+    'options' => array(
+        'culture' => 'en',
+        'lang' => 'php',
+        'defaultViewMode' => 'grid',
+        'autoload' => true,
+        'showFullPath' => false,
+        'browseOnly' => false,
+        'showConfirmation' => true,
+        'showThumbs' => true,
+        'generateThumbnails' => true,
+        'searchBox' => true,
+        'listFiles' => true,
+        'fileSorting' => 'default',
+        'chars_only_latin' => true,
+        'dateFormat' => 'd M Y H:i',
+        'serverRoot' => false,
+        'fileRoot' => true,
+        'relPath' => false,
+        'logger' => false,
+        'capabilities' => array('select', 'download', 'rename', 'move', 'delete'),
+        'plugins' => array()
+    ),
+    'security' => array(
+        'uploadPolicy' => 'DISALLOW_ALL',
+        'uploadRestrictions' => array(
+            'jpg',
+            'jpeg',
+            'gif',
+            'png',
+            'svg',
+            'txt',
+            'pdf',
+            'odp',
+            'ods',
+            'odt',
+            'rtf',
+            'doc',
+            'docx',
+            'xls',
+            'xlsx',
+            'ppt',
+            'pptx',
+            'ogv',
+            'mp4',
+            'webm',
+            'ogg',
+            'mp3',
+            'wav'
+        )
+    ),
+    'upload' => array(
+        'overwrite' => false,
+        'imagesOnly' => false,
+        'fileSizeLimit' => 16
+    ),
+    'exclude' => array(
+        'unallowed_files' => array(
+            '.htaccess'
+        ),
+        'unallowed_dirs' => array(
+            '_thumbs',
+            '.CDN_ACCESS_LOGS',
+            'cloudservers'
+        ),
+        'unallowed_files_REGEXP' => '/^\\./uis',
+        'unallowed_dirs_REGEXP' => '/^\\./uis'
+    ),
+    'images' => array(
+        'imagesExt' => array(
+            'jpg',
+            'jpeg',
+            'gif',
+            'png',
+            'svg'
+        )
+    ),
+    'videos' => array(
+        'showVideoPlayer' => true,
+        'videosExt' => array(
+            'ogv',
+            'mp4',
+            'webm'
+        ),
+        'videosPlayerWidth' => 400,
+        'videosPlayerHeight' => 222
+    ),
+    'audios' => array(
+        'showAudioPlayer' => true,
+        'audiosExt' => array(
+            'ogg',
+            'mp3',
+            'wav'
+        )
+    ),
+    'extras' => array(
+        'extra_js' => array(),
+        'extra_js_async' => true
+    ),
+    'icons' => array(
+        'path' => 'images/fileicons/',
+        'directory' => '_Open.png',
+        'default' => 'default.png'
+    )
 );
 
-// Values to be overridden by Geeklog
+// Values to be overridden by Geeklog (system)
 $_CONF['path_html'] = str_replace('\\', '/', $_CONF['path_html']);
 $fileRoot = $_CONF['path_html'] . 'images/library/';
 $docRoot  = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+$relPath  = str_replace($docRoot, '', $fileRoot);
 
-$_FILEMANAGER_CONF['options']['capabilities'] = array(
-	'select', 'download', 'rename', 'move', 'delete'
-);
-$_FILEMANAGER_CONF['options']['culture']      = COM_getLangIso639Code();
-$_FILEMANAGER_CONF['options']['dateFormat']   = convertDateTimeFormat($_CONF['daytime']);
-$_FILEMANAGER_CONF['options']['fileRoot']     = $fileRoot;
-$_FILEMANAGER_CONF['options']['relPath']      = str_replace($docRoot, '', $fileRoot);
+$_FM_CONF['options']['culture']            = COM_getLangIso639Code();
+$_FM_CONF['options']['defaultViewMode']    = $_CONF['filemanager_default_view_mode'];
+$_FM_CONF['options']['browseOnly']         = $_CONF['filemanager_browse_only'];
+$_FM_CONF['options']['showConfirmation']   = $_CONF['filemanager_show_confirmation'];
+$_FM_CONF['options']['showThumbs']         = $_CONF['filemanager_show_thumbs'];
+$_FM_CONF['options']['generateThumbnails'] = $_CONF['filemanager_generate_thumbnails'];
+$_FM_CONF['options']['searchBox']          = $_CONF['filemanager_search_box'];
+$_FM_CONF['options']['fileSorting']        = $_CONF['filemanager_file_sorting'];
+$_FM_CONF['options']['chars_only_latin']   = $_CONF['filemanager_chars_only_latin'];
+$_FM_CONF['options']['dateFormat']         = $_CONF['filemanager_date_format'];
+$_FM_CONF['options']['fileRoot']           = $fileRoot;
+$_FM_CONF['options']['relPath']            = $relPath;
+$_FM_CONF['options']['logger']             = $_CONF['filemanager_logger'];
 
-// Writes into config file
+if ($_CONF['filemanager_logger']) {
+    $_FM_CONF['options']['logfile'] = $_CONF['path'] . 'logs/error.log';
+}
+
+$_FM_CONF['security']['uploadRestrictions'] = $_CONF['filemanager_upload_restrictions'];
+
+$_FM_CONF['upload']['overwrite']     = $_CONF['filemanager_upload_overwrite'];
+$_FM_CONF['upload']['imagesOnly']    = $_CONF['filemanager_upload_images_only'];
+$_FM_CONF['upload']['fileSizeLimit'] = $_CONF['filemanager_upload_file_size_limit'];
+
+$_FM_CONF['exclude']['unallowed_files']        = $_CONF['filemanager_unallowed_files'];
+$_FM_CONF['exclude']['unallowed_dirs']         = $_CONF['filemanager_unallowed_dirs'];
+$_FM_CONF['exclude']['unallowed_files_REGEXP'] = $_CONF['filemanager_unallowed_files_regexp'];
+$_FM_CONF['exclude']['unallowed_dirs_REGEXP']  = $_CONF['filemanager_unallowed_dirs_regexp'];
+
+$_FM_CONF['images']['imagesExt'] = $_CONF['filemanager_images_ext'];
+
+$_FM_CONF['videos']['showVideoPlayer']    = $_CONF['filemanager_show_video_player'];
+$_FM_CONF['videos']['videosExt']          = $_CONF['filemanager_videos_ext'];
+$_FM_CONF['videos']['videosPlayerWidth']  = $_CONF['filemanager_videos_player_width'];
+$_FM_CONF['videos']['videosPlayerHeight'] = $_CONF['filemanager_videos_player_height'];
+
+$_FM_CONF['audios']['showAudioPlayer'] = $_CONF['filemanager_show_audio_player'];
+$_FM_CONF['audios']['audiosExt']       = $_CONF['filemanager_audios_ext'];
+
+// Writes back into config file
 $path = $_CONF['path_html'] . 'filemanager/scripts/filemanager.config.js';
-$data = json_encode($_FILEMANAGER_CONF);
+$data = json_encode($_FM_CONF);
 
 if (is_callable('json_last_error') && (json_last_error() !== JSON_ERROR_NONE)) {
-	$data = false;
-	COM_errorLog('Filemanager: json_encode() failed.  Error code = ' . json_last_error());
+    $data = false;
+    COM_errorLog('Filemanager: json_encode() failed.  Error code = ' . json_last_error());
 }
 
 if ($data !== false) {
-	if (file_put_contents($path, $data) === false) {
-		COM_errorLog('Filemanager: configuration file "' . $path . '" is not writable');
-	}
+    if (@file_put_contents($path, $data) === false) {
+        COM_errorLog('Filemanager: configuration file "' . $path . '" is not writable');
+    }
 }
 
 // Display
@@ -339,10 +283,10 @@ header('Content-Type: text/html; charset=utf-8');
 </ul>
 
 <script type="text/javascript" src="scripts/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.form-3.24.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.splitter/jquery.splitter-1.5.1.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.filetree/jqueryFileTree.min.js"></script>
-<script type="text/javascript" src="scripts/jquery.contextmenu/jquery.contextMenu-1.01.min.js"></script>
+<script type="text/javascript" src="scripts/jquery.form-3.24.js"></script>
+<script type="text/javascript" src="scripts/jquery.splitter/jquery.splitter-1.5.1.js"></script>
+<script type="text/javascript" src="scripts/jquery.filetree/jqueryFileTree.js"></script>
+<script type="text/javascript" src="scripts/jquery.contextmenu/jquery.contextMenu-1.01.js"></script>
 <script type="text/javascript" src="scripts/jquery.impromptu-3.2.min.js"></script>
 <script type="text/javascript" src="scripts/jquery.tablesorter-2.7.2.min.js"></script>
 <script type="text/javascript" src="scripts/filemanager.min.js"></script>

@@ -501,6 +501,7 @@ function INST_doDatabaseUpgrades($current_gl_version)
             require_once $_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_2.0.0_to_2.1.0.php';
             INST_updateDB($_SQL);
 
+            update_addFilemanager();
             update_ConfValuesFor210();
 
             $current_gl_version = '2.1.0';
