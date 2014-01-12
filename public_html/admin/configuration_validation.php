@@ -601,4 +601,47 @@ $_CONF_VALIDATE['Core']['disable_breadcrumbs_articles'] = array('rule' => 'boole
 $_CONF_VALIDATE['Core']['disable_breadcrumbs_plugins']  = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['breadcrumb_root_site_name']    = array('rule' => 'boolean');
 
+// Subgroup Filemanager, Tab General Settings
+$_CONF_VALIDATE['Core']['filemanager_disabled']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_browse_only']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_default_view_mode']   = array('inList', array('grid', 'list'), true);
+$_CONF_VALIDATE['Core']['filemanager_show_confirmation']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_search_box']          = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_file_sorting']        = array(
+    'inList',
+    array(
+        'default', 'NAME_ASC', 'NAME_DESC', 'TYPE_ASC', 'TYPE_DESC',
+        'MODIFIED_ASC', 'MODIFIED_DESC'
+    ),
+    true
+);
+$_CONF_VALIDATE['Core']['filemanager_chars_only_latin']    = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_date_format']         = array('rule' => 'notEmpty');
+$_CONF_VALIDATE['Core']['filemanager_logger']              = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_show_thumbs']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_generate_thumbnails'] = array('rule' => 'boolean');
+
+// Subgroup Filemanager, Tab Upload
+//$_CONF_VALIDATE['Core']['filemanager_upload_restrictions'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_upload_overwrite']      = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_upload_images_only']    = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_upload_file_size_limit'] = array('rule' => 'numeric');
+//$_CONF_VALIDATE['Core']['filemanager_unallowed_files'] = array('rule' => 'boolean');
+//$_CONF_VALIDATE['Core']['filemanager_unallowed_dirs'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_unallowed_files_regexp'] = array('rule' => 'stringOrEmpty');
+$_CONF_VALIDATE['Core']['filemanager_unallowed_dirs_regexp']  = array('rule' => 'stringOrEmpty');
+
+// Subgroup Filemanager, Tab Images
+//$_CONF_VALIDATE['Core']['filemanager_images_ext'] = array('rule' => 'boolean');
+
+// Subgroup Filemanager, Tab Videos
+$_CONF_VALIDATE['Core']['filemanager_show_video_player']    = array('rule' => 'boolean');
+//$_CONF_VALIDATE['Core']['filemanager_videos_ext'] = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_videos_player_width']  = array('rule' => 'numeric');
+$_CONF_VALIDATE['Core']['filemanager_videos_player_height'] = array('rule' => 'numeric');
+
+// Subgroup Filemanager, Tab Audios
+$_CONF_VALIDATE['Core']['filemanager_show_audio_player'] = array('rule' => 'boolean');
+//$_CONF_VALIDATE['Core']['filemanager_audios_ext'] = array('rule' => 'boolean');
+
 ?>
