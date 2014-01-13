@@ -2327,7 +2327,8 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 
     if( !empty( $helpfile )) {
         // Only works when header generated all at once
-        if ($_CONF['supported_version_theme'] != '1.8.1') {
+        // Make sure not a full link. Needs to follow help file format (correct location and divs)  
+        if ($_CONF['supported_version_theme'] != '1.8.1' AND !stristr( $helpfile, 'http://')) {
             // Only need to set it once
             if (! defined('GL-HELP-SET')) {
                 define('GL-HELP-SET', true);
