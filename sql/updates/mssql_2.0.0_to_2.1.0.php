@@ -164,16 +164,16 @@ function update_ConfValuesFor210()
 
     // Subgroup: File Manager
     // subgroup
-    $sg  =  (int) DB_getItem("MAX(subgroup)", $_TABLES['conf_values']) + 1;
+    $sg  =  (int) DB_getItem($_TABLES['conf_values'], "MAX(subgroup)") + 1;
 
     // fieldset
-    $fs  = (int) DB_getItem("MAX(fieldset)", $_TABLES['conf_values']) + 1;
+    $fs  = (int) DB_getItem($_TABLES['conf_values'], "MAX(fieldset)") + 1;
 
     // tab
-    $tab = (int) DB_getItem("MAX(tab)", $_TABLES['conf_values']) + 1;
+    $tab = (int) DB_getItem($_TABLES['conf_values'], "MAX(tab)") + 1;
     
     // sort
-    $so  = (int) DB_getItem("MAX(sort_order)", $_TABLES['conf_values']) + 10;
+    $so  = (int) DB_getItem($_TABLES['conf_values'], "MAX(sort_order)") + 10;
 
     // Subgroup: File Manager - General Settings
     $c->add('sg_filemanager', NULL, 'subgroup', $sg, $fs, NULL, 0, TRUE, $me, 0);
