@@ -35,7 +35,7 @@ require_once $_CONF['path_system'] . '/lib-webservices.php';
 /* Check if WS component is enabled */
 if ($_CONF['disable_webservices']) {
     /* Pretend the WS doesn't exist */
-    COM_displayMessageAndAbort($LANG_404[3], '', 404, 'Not Found');
+    COM_displayMessageAndAbort(79, '', 404, 'Not Found');
 }
 
 // Set the default content type
