@@ -1438,4 +1438,22 @@ function INST_checkCacheDir($path,$template,$classCounter)
     return $permError;
 }
 
+/**
+ * Replaces all newlines in a string with <br> or <br />,
+ * depending on the detected setting.  Ported from "lib-common.php"
+ * 
+ * @param    string    $string  The string to modify
+ * @return   string             The modified string
+ */
+function INST_nl2br($string)
+{
+    if (! defined('XHTML')) {
+        define('XHTML', '');
+    }
+
+    $replace = '<br' . XHTML . '>';
+    $find = array("\r\n", "\n\r", "\r", "\n");
+    return str_replace($find, $replace, $string);
+}
+
 ?>

@@ -7001,14 +7001,23 @@ function COM_makeClickableLinks( $text )
 function COM_makeClickableLinksCallback( $http, $link )
 {
     global $_CONF;
-    
-    if ($_CONF['linktext_maxlen'] > 0) {
-        $text = COM_truncate( $link, $_CONF['linktext_maxlen'], '...', '10' );
+
+    // When $link ends with a period, the period will be moved out of the link
+    // text (bug #0001675)
+    if (substr($link, -1) === '.') {
+        $link = substr($link, 0, -1);
+        $end = '.';
     } else {
-        $text = $link;        
+        $end = '';
     }
 
-    return "<a href=\"$http$link\">$text</a>";
+    if ($_CONF['linktext_maxlen'] > 0) {
+        $text = COM_truncate($link, $_CONF['linktext_maxlen'], '...', 10);
+    } else {
+        $text = $link;
+    }
+
+    return "<a href=\"{$http}{$link}\">{$text}</a>{$end}";
 }
 
 /**
