@@ -3740,6 +3740,8 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 
                     if (isset($cc_arr[$i]['target'])) {
                         $adminmenu->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
+                    } else {
+                        $adminmenu->set_var('target', '');
                     }
 
                     $item = $adminmenu->finish($adminmenu->parse('item',
@@ -3755,6 +3757,8 @@ function COM_commandControl($adminMenu = false, $help = '', $title = '', $positi
 
                         if (isset($cc_arr[$i]['target'])) {
                             $admin_templates->set_var('target', ' target="' . $cc_arr[$i]['target'] . '"');
+                        } else {
+                            $admin_templates->set_var('target', '');
                         }
 
                         $item = $admin_templates->parse('cc_main_options', 'ccitem', false);
