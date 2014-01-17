@@ -158,10 +158,13 @@ $_FM_CONF = array(
 );
 
 // Values to be overridden by Geeklog (system)
-$_CONF['path_html'] = str_replace('\\', '/', $_CONF['path_html']);
 $fileRoot = $_CONF['path_html'] . 'images/library/';
+$fileRoot = str_replace('\\', '/', $fileRoot);
 $docRoot  = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
-$relPath  = str_replace($docRoot, '', $fileRoot);
+
+$serverRoot = (stripos($fileRoot, $docRoot) === 0);
+preg_match('@\Ahttps?://[^/]+(/.*/)filemanager/index\.php@i', COM_getCurrentURL(), $match);
+$relPath = $match[1] . 'images/library/';
 
 $_FM_CONF['options']['culture']            = COM_getLangIso639Code();
 $_FM_CONF['options']['defaultViewMode']    = $_CONF['filemanager_default_view_mode'];
@@ -173,6 +176,7 @@ $_FM_CONF['options']['searchBox']          = $_CONF['filemanager_search_box'];
 $_FM_CONF['options']['fileSorting']        = $_CONF['filemanager_file_sorting'];
 $_FM_CONF['options']['chars_only_latin']   = $_CONF['filemanager_chars_only_latin'];
 $_FM_CONF['options']['dateFormat']         = $_CONF['filemanager_date_format'];
+$_FM_CONF['options']['serverRoot']         = $serverRoot;
 $_FM_CONF['options']['fileRoot']           = $fileRoot;
 $_FM_CONF['options']['relPath']            = $relPath;
 $_FM_CONF['options']['logger']             = $_CONF['filemanager_logger'];
