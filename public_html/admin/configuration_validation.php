@@ -602,10 +602,12 @@ $_CONF_VALIDATE['Core']['disable_breadcrumbs_plugins']  = array('rule' => 'boole
 $_CONF_VALIDATE['Core']['breadcrumb_root_site_name']    = array('rule' => 'boolean');
 
 // Subgroup Filemanager, Tab General Settings
-$_CONF_VALIDATE['Core']['filemanager_disabled']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_disabled']            = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_browse_only']         = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['filemanager_default_view_mode']   = array('inList', array('grid', 'list'), true);
-$_CONF_VALIDATE['Core']['filemanager_show_confirmation']         = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_default_view_mode']   = array(
+    'rule' => array('inList', array('grid', 'list'), true)
+);
+$_CONF_VALIDATE['Core']['filemanager_show_confirmation']   = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_search_box']          = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_file_sorting']        = array(
     'inList',
@@ -623,8 +625,8 @@ $_CONF_VALIDATE['Core']['filemanager_generate_thumbnails'] = array('rule' => 'bo
 
 // Subgroup Filemanager, Tab Upload
 //$_CONF_VALIDATE['Core']['filemanager_upload_restrictions'] = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['filemanager_upload_overwrite']      = array('rule' => 'boolean');
-$_CONF_VALIDATE['Core']['filemanager_upload_images_only']    = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_upload_overwrite']       = array('rule' => 'boolean');
+$_CONF_VALIDATE['Core']['filemanager_upload_images_only']     = array('rule' => 'boolean');
 $_CONF_VALIDATE['Core']['filemanager_upload_file_size_limit'] = array('rule' => 'numeric');
 //$_CONF_VALIDATE['Core']['filemanager_unallowed_files'] = array('rule' => 'boolean');
 //$_CONF_VALIDATE['Core']['filemanager_unallowed_dirs'] = array('rule' => 'boolean');
