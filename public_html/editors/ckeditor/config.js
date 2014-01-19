@@ -8,6 +8,9 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 
+	// Disable Advanced Content Filter
+	config.allowedContent = true;
+
 	config.protectedSource.push(/<pre[\s\S]+?\/pre>/g);
 	config.protectedSource.push(/\[code[^:][\s\S]+?\/code\]/g);
 	config.protectedSource.push(/\[code:[a-z0-9_]+[\s\S]+?\/code:[a-z0-9_]+\]/g);
